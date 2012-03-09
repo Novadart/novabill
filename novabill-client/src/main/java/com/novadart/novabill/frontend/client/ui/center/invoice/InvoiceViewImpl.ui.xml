@@ -1,0 +1,131 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:i="urn:import:com.novadart.novabill.frontend.client.ui.center.invoice"
+	xmlns:d="urn:import:com.google.gwt.user.datepicker.client">
+
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
+		field="i18n"></ui:with>
+
+
+	<g:VerticalPanel>
+
+		<g:HorizontalPanel>
+			<g:Label styleName="newInvoice" text="{i18n.newInvoiceCreation}"></g:Label>
+			<g:Button styleName="modifyButton" ui:field="modifyInvoice"
+				text="{i18n.modifyInvoice}"></g:Button>
+			<g:Button styleName="createButton" ui:field="createInvoice"
+				text="{i18n.createInvoice}"></g:Button>
+			<g:Button styleName="saveAsEstimation" ui:field="createEstimate"
+				text="{i18n.createEstimate}"></g:Button>
+		</g:HorizontalPanel>
+
+
+		<g:Grid styleName="invoiceMainDetails">
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.client}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="box clientName" ui:field="clientName"></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.invoiceNumber}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="box number" ui:field="number"></g:TextBox>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.date}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<d:DateBox styleName="box date" ui:field="date"></d:DateBox>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.payment}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:ListBox styleName="listBox payment" ui:field="payment"></g:ListBox>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.paymentNote}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextArea styleName="box paymentNote" ui:field="paymentNote"></g:TextArea>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.note}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextArea styleName="box note" ui:field="note"></g:TextArea>
+				</g:customCell>
+			</g:row>
+		</g:Grid>
+
+
+		<g:SimplePanel styleName="itemTableContainer">
+			<g:VerticalPanel>
+				<i:ItemTable ui:field="itemTable" styleName="itemTable"></i:ItemTable>
+
+				<g:SimplePanel styleName="newItemContainer" ui:field="newItemContainer" visible="false">
+					<g:HorizontalPanel>
+						<g:VerticalPanel styleName="itemContainer">
+							<g:Label styleName="smallLabel" text="{i18n.nameDescription}"></g:Label>
+							<g:TextBox ui:field="item" styleName="item invoiceEntry"></g:TextBox>
+						</g:VerticalPanel>
+						<g:VerticalPanel styleName="quantityContainer">
+							<g:Label styleName="smallLabel" text="{i18n.quantity}"></g:Label>
+							<g:TextBox ui:field="quantity" styleName="quantity invoiceEntry"></g:TextBox>
+						</g:VerticalPanel>
+						<g:VerticalPanel styleName="unitOfMeasureContainer">
+							<g:Label styleName="smallLabel" text="{i18n.unityOfMeasure}"></g:Label>
+							<g:TextBox ui:field="unitOfMeasure" styleName="unitOfMeasure invoiceEntry"></g:TextBox>
+						</g:VerticalPanel>
+						<g:VerticalPanel styleName="priceContainer">
+							<g:Label styleName="smallLabel" text="{i18n.price}"></g:Label>
+							<g:TextBox ui:field="price" styleName="price invoiceEntry"></g:TextBox>
+						</g:VerticalPanel>
+						<g:VerticalPanel styleName="taxContainer">
+							<g:Label styleName="smallLabel" text="{i18n.vat}"></g:Label>
+							<g:ListBox styleName="tax invoiceEntry" ui:field="tax"></g:ListBox>
+						</g:VerticalPanel>
+						<g:SimplePanel styleName="addButtonContainer">
+							<g:Button ui:field="add" text="{i18n.add}"></g:Button>
+						</g:SimplePanel>
+					</g:HorizontalPanel>
+				</g:SimplePanel>
+			</g:VerticalPanel>
+
+		</g:SimplePanel>
+
+		<g:SimplePanel>
+			<g:HorizontalPanel>
+				<g:VerticalPanel styleName="totalContainer totalBeforeTaxes">
+					<g:Label styleName="label" text="{i18n.totalBeforeTaxes}"></g:Label>
+					<g:Label styleName="total" ui:field="totalBeforeTaxes"></g:Label>
+				</g:VerticalPanel>
+				<g:VerticalPanel styleName="totalContainer totalTax">
+					<g:Label styleName="label" text="{i18n.totalTax}"></g:Label>
+					<g:Label styleName="total" ui:field="totalTax"></g:Label>
+				</g:VerticalPanel>
+				<g:VerticalPanel styleName="totalContainer totalAfterTaxes">
+					<g:Label styleName="label" text="{i18n.totalAfterTaxes}"></g:Label>
+					<g:Label styleName="total" ui:field="totalAfterTaxes"></g:Label>
+				</g:VerticalPanel>
+			</g:HorizontalPanel>
+		</g:SimplePanel>
+
+	</g:VerticalPanel>
+
+
+</ui:UiBinder> 

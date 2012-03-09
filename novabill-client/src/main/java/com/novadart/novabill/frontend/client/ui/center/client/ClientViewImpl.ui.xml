@@ -1,0 +1,32 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:i="urn:import:com.novadart.novabill.frontend.client.ui.widget.list.impl">
+
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
+		field="i18n"></ui:with>
+
+	<g:FlowPanel>
+		<g:Label styleName="clientName" ui:field="clientName"></g:Label>
+		
+		<g:HorizontalPanel styleName="clientDetailsContainer">
+			<g:HTML styleName="clientDetails" ui:field="clientDetails"></g:HTML>
+			<g:VerticalPanel>
+				<g:Label styleName="modifyClient" ui:field="modifyClient" text="{i18n.modifyClient}"></g:Label>
+				<g:Label styleName="cancelClient" ui:field="cancelClient" text="{i18n.cancelClient}"></g:Label>
+			</g:VerticalPanel>
+		</g:HorizontalPanel>
+			
+		
+		<g:SimplePanel styleName="centralPanel">
+			<g:Button ui:field="new_" styleName="newInvoice" text="{i18n.newInvoice}"></g:Button>
+		</g:SimplePanel>
+
+		<g:SimplePanel styleName="listWrapper panel">
+			<i:InvoiceList ui:field="invoiceList"></i:InvoiceList>
+		</g:SimplePanel>
+
+
+	</g:FlowPanel>
+
+</ui:UiBinder> 

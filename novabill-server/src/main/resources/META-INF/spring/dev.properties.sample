@@ -1,0 +1,5 @@
+# Add LD_LIBRARY_PATH as an environment variable in Tomcat
+
+jep.includepath=/usr/local/lib/libjep.so.2.0.1:/home/risto/novadart/novabill/code/novabill-report/src
+py.inv.gen.script=/home/risto/novadart/novabill/code/novabill-report/src/main.py
+inv.out.location=/tmp/novabill

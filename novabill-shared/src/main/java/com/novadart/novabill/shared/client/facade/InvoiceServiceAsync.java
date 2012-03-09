@@ -1,0 +1,27 @@
+package com.novadart.novabill.shared.client.facade;
+
+import java.util.List;
+
+import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+
+public interface InvoiceServiceAsync {
+
+	void get(long id, AsyncCallback<InvoiceDTO> callback);
+
+	void getAllInRange(int start, int length, AsyncCallback<List<InvoiceDTO>> callback);
+
+	void update(InvoiceDTO invoiceDTO, AsyncCallback<Void> callback);
+
+	void getAllForClient(long clientId, AsyncCallback<List<InvoiceDTO>> callback);
+
+	void add(InvoiceDTO invoiceDTO, AsyncCallback<Long> callback);
+
+	void getNextInvoiceId(AsyncCallback<Long> callback);
+
+	void remove(Long id, AsyncCallback<Void> callback);
+
+	void getAllForClientInRange(long clientId, int start, int length,
+			AsyncCallback<List<InvoiceDTO>> callback);
+
+}

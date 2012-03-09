@@ -1,0 +1,105 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+
+	<!-- POM file generated with GWT webAppCreator -->
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>novabill</artifactId>
+		<groupId>com.novadart.novabill</groupId>
+		<version>1.0-SNAPSHOT</version>
+	</parent>
+	<groupId>com.novadart.novabill.client</groupId>
+	<artifactId>novabill-client</artifactId>
+	<packaging>jar</packaging>
+	<name>Novabill - Client Component</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.novadart.novabill.shared</groupId>
+			<artifactId>novabill-shared</artifactId>
+			<version>${project.version}</version>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-servlet</artifactId>
+			<version>${gwtVersion}</version>
+			<scope>runtime</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt</groupId>
+			<artifactId>gwt-user</artifactId>
+			<version>${gwtVersion}</version>
+		</dependency>
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<version>4.7</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.validation</groupId>
+			<artifactId>validation-api</artifactId>
+			<version>1.0.0.GA</version>
+			<classifier>sources</classifier>
+			<scope>test</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.gwt.google-apis</groupId>
+			<artifactId>gwt-maps</artifactId>
+			<version>1.0.4</version>
+		</dependency>
+		<dependency>
+			<groupId>com.novadart</groupId>
+			<artifactId>novadart-gwt</artifactId>
+			<version>1.0.3-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<!-- Generate compiled stuff in the folder used for developing mode -->
+		<outputDirectory>src/main/webapp/WEB-INF/classes</outputDirectory>
+
+		<plugins>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.9</version>
+				<configuration>
+					<classpathContainers>
+   						<classpathContainer>org.eclipse.jdt.launching.JRE_CONTAINER</classpathContainer>
+						<classpathContainer>com.google.gwt.eclipse.core.GWT_CONTAINER</classpathContainer>
+					</classpathContainers>
+					<additionalBuildcommands>
+						<buildCommand>
+							<name>com.google.gwt.eclipse.core.gwtProjectValidator</name>
+						</buildCommand>
+					</additionalBuildcommands>
+					<additionalProjectnatures>
+						<projectnature>com.google.gwt.eclipse.core.gwtNature</projectnature>
+						<!-- <projectnature>com.google.appengine.eclipse.core.gaeNature</projectnature> -->
+					</additionalProjectnatures>
+				</configuration>
+			</plugin>
+
+		</plugins>
+
+		<resources>
+			<resource>
+				<directory>${basedir}/src/main/resources</directory>
+			</resource>
+			<resource>
+				<directory>${basedir}/src/main/java</directory>
+			</resource>
+
+		</resources>
+	</build>
+
+</project>

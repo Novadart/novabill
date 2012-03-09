@@ -1,0 +1,32 @@
+package com.novadart.novabill.frontend.client.ui.center.home;
+
+import java.util.List;
+
+import com.google.gwt.view.client.AsyncDataProvider;
+import com.google.gwt.view.client.HasData;
+import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+
+public class InvoiceDataProvider extends AsyncDataProvider<InvoiceDTO> {
+
+	@Override
+	protected void onRangeChanged(HasData<InvoiceDTO> display) {
+		final int start = display.getVisibleRange().getStart();
+        int length = display.getVisibleRange().getLength();
+		
+        ServerFacade.invoice.getAllInRange(start, length, new AuthAwareAsyncCallback<List<InvoiceDTO>>() {
+			
+			@Override
+			public void onSuccess(List<InvoiceDTO> result) {
+				updateRowData(start, result);
+			}
+			
+			@Override
+			public void onException(Throwable caught) {
+				
+			}
+		});
+	}
+
+}

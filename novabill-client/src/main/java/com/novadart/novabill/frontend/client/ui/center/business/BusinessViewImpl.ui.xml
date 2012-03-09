@@ -1,0 +1,32 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:t="urn:import:com.novadart.gwtshared.client.textbox">
+
+	<g:FlowPanel>
+		<g:SimplePanel>
+			<g:Button styleName="saveData" ui:field="saveData" text="save"></g:Button>
+		</g:SimplePanel>
+
+
+		<g:HorizontalPanel>
+
+			<g:VerticalPanel>
+				<g:Image ui:field="logo" styleName="logo"></g:Image>
+
+				<g:FormPanel ui:field="formPanel" styleName="formPanel">
+					<g:FileUpload name="name" styleName="logoFileUpload"></g:FileUpload>
+				</g:FormPanel>
+
+			</g:VerticalPanel>
+
+			<g:VerticalPanel>
+				<t:UpdateLabel ui:field="companyName" styleName="companyName"></t:UpdateLabel>
+				<t:UpdateLabel ui:field="address" styleName="address"></t:UpdateLabel>
+
+			</g:VerticalPanel>
+
+		</g:HorizontalPanel>
+
+	</g:FlowPanel>
+
+</ui:UiBinder> 

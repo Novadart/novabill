@@ -1,0 +1,33 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N" field="i18n"></ui:with>
+	
+	<g:FlowPanel styleName="authDialog">
+		<g:Grid styleName="authDialogGrid">
+			<g:row>
+				<g:customCell>
+					<g:Label text="{i18n.username}" styleName="usernameLabel"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="username" ui:field="username"></g:TextBox>	
+				</g:customCell>
+			</g:row>
+			
+			<g:row>
+				<g:customCell>
+					<g:Label text="{i18n.password}" styleName="passwordLabel"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:PasswordTextBox styleName="password" ui:field="password"></g:PasswordTextBox>
+				</g:customCell>
+			</g:row>
+		</g:Grid>
+		
+		<g:SimplePanel styleName="submitContainer">
+			<g:Button ui:field="submit" styleName="submit" text="{i18n.submit}"></g:Button>
+		</g:SimplePanel>	
+	</g:FlowPanel>
+	
+</ui:UiBinder> 

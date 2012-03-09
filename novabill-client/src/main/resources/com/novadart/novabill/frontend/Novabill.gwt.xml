@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<module rename-to='rpc'>
+  <!-- Inherit the core Web Toolkit stuff.                        -->
+  <inherits name='com.google.gwt.user.User'/>
+
+  <!-- Inherit the default GWT style sheet.  You can change       -->
+  <!-- the theme of your GWT application by uncommenting          -->
+  <!-- any one of the following lines.                            -->
+  <!-- <inherits name='com.google.gwt.user.theme.clean.Clean'/> -->
+  <!-- <inherits name='com.google.gwt.user.theme.standard.Standard'/> -->
+  <!-- <inherits name='com.google.gwt.user.theme.chrome.Chrome'/> -->
+  <!-- <inherits name='com.google.gwt.user.theme.dark.Dark'/>     -->
+  
+
+  <!-- Other module inherits                                      -->
+  <inherits name="com.google.gwt.activity.Activity"/>
+  <inherits name="com.google.gwt.place.Place"/>
+  <inherits name="com.novadart.novabill.shared.Novabill-shared" />
+  <inherits name="com.google.gwt.i18n.I18N"/>
+  <inherits name="com.google.gwt.resources.Resources" />
+  <inherits name='com.google.gwt.maps.GoogleMaps' />
+  <inherits name='com.novadart.gwtshared.Novadart_GWT' />
+  
+  <!-- Locales -->
+  <extend-property name="locale" values="it_IT"/>
+  
+  <!-- Use ClientFactoryImpl by default -->
+  <replace-with class="com.novadart.novabill.frontend.client.ClientFactoryImpl">
+    <when-type-is class="com.novadart.novabill.frontend.client.ClientFactory"/>
+  </replace-with>
+
+  <!-- Specify the app entry point class.                         -->
+  <entry-point class='com.novadart.novabill.frontend.client.Novabill'/>
+
+  <!-- Specify the paths for translatable code                    -->
+  <source path='client'/>
+
+</module>

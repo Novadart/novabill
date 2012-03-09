@@ -1,0 +1,164 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:v="urn:import:com.novadart.novabill.frontend.client.ui.widget.validation">
+
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
+		field="i18n"></ui:with>
+
+	<g:FlowPanel styleName="gridWrapper">
+		<g:Grid styleName="grid">
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.companyName}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<v:NotEmptyTextBox styleName="value" ui:field="companyName"></v:NotEmptyTextBox>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="requiredValue" text="*"></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.address}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="value" ui:field="address"></g:TextBox>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="requiredValue" text=""></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.city}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="value" ui:field="city"></g:TextBox>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="requiredValue" text=""></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.province}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="value" ui:field="province"></g:TextBox>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="requiredValue" text=""></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.country}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="value" ui:field="country"></g:TextBox>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="requiredValue" text=""></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.postcode}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="value" ui:field="postcode"></g:TextBox>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="requiredValue" text=""></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.phone}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="value" ui:field="phone"></g:TextBox>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="requiredValue" text=""></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.mobile}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="value" ui:field="mobile"></g:TextBox>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="requiredValue" text=""></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.fax}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="value" ui:field="fax"></g:TextBox>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="requiredValue" text=""></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.email}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="value" ui:field="email"></g:TextBox>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="requiredValue" text=""></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.web}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="value" ui:field="web"></g:TextBox>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="requiredValue" text=""></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.vatID}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<v:VatIdTextBox styleName="value" ui:field="vatID"></v:VatIdTextBox>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="requiredValue" text="*"></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.ssn}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<v:SSNTextBox styleName="value" ui:field="ssn"></v:SSNTextBox>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="requiredValue" text=""></g:Label>
+				</g:customCell>
+			</g:row>
+
+		</g:Grid>
+
+		<g:SimplePanel styleName="buttonContainer">
+			<g:HorizontalPanel>
+				<g:Button ui:field="ok" text="{i18n.createClient}"></g:Button>
+				<g:Button ui:field="cancel" text="{i18n.cancel}"></g:Button>
+			</g:HorizontalPanel>
+		</g:SimplePanel>
+	</g:FlowPanel>
+
+</ui:UiBinder> 

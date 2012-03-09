@@ -1,0 +1,24 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
+	xmlns:w="urn:import:com.novadart.novabill.frontend.client.ui.west">
+
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
+		field="i18n"></ui:with>
+
+	<g:FlowPanel styleName="clientListWrapper">
+
+		<g:Label styleName="homeButton" ui:field="home" text="{i18n.home}"></g:Label>
+
+		<g:FlowPanel ui:field="clientContainer" styleName="clientContainer">
+			<g:HorizontalPanel styleName="clientsHeader">
+				<g:Label styleName="clients" text="{i18n.clients}"></g:Label>
+				<g:Button styleName="addClient" ui:field="addClient" text="{i18n.newClient}"></g:Button>
+			</g:HorizontalPanel>
+			<g:TextBox styleName="filterClient" ui:field="filterClient"></g:TextBox>
+			<c:CellList ui:field="clientList"></c:CellList>
+		</g:FlowPanel>
+
+	</g:FlowPanel>
+
+</ui:UiBinder> 
