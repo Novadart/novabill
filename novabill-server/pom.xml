@@ -53,11 +53,6 @@
 			<artifactId>novabill-shared</artifactId>
 			<version>${project.version}</version>
 		</dependency>
-		<dependency>
-			<groupId>com.novadart.utils</groupId>
-			<artifactId>novadart-utils</artifactId>
-			<version>${project.version}</version>
-		</dependency>
 
 		<!-- General dependencies for standard applications -->
 		<dependency>
@@ -340,12 +335,12 @@
 		<dependency>
 			<groupId>com.novadart.utils</groupId>
 			<artifactId>novadart-utils</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.2</version>
 		</dependency>
 		<dependency>
 			<groupId>com.novadart.services.shared</groupId>
 			<artifactId>novadart-services-shared</artifactId>
-			<version>1.0-SNAPSHOT</version>
+			<version>1.0</version>
 		</dependency>
 		<dependency>
 			<groupId>com.healthmarketscience.rmiio</groupId>
@@ -486,13 +481,13 @@
 				<version>2.7</version>
 				<!-- Note 2.8 does not work with AspectJ aspect path -->
 				<configuration>
-					<linkedResources>
+					<!-- <linkedResources>
 						<linkedResource>
 							<name>src/main/webapp/rpc</name>
 							<type>2</type>
 							<location>../novabill-client/src/main/webapp/rpc</location>
 						</linkedResource>
-					</linkedResources>
+					</linkedResources> -->
 					<downloadSources>true</downloadSources>
 					<downloadJavadocs>false</downloadJavadocs>
 					<wtpversion>2.0</wtpversion>

@@ -20,6 +20,10 @@
 		<gwtVersion>2.4.0</gwtVersion>
 	</properties>
 
+	<scm>
+		<connection>scm:git:ssh://gitolite@labs.novadart.com/novadart/novadart-novabill.git</connection>
+		<developerConnection>scm:git:ssh://gitolite@labs.novadart.com/novadart/novadart-novabill.git</developerConnection>
+	</scm>
 
 	<modules>
 		<module>novabill-server</module>
@@ -57,12 +61,12 @@
 	<distributionManagement>
 		
 		<repository>
-			<id>labs.novadart.com</id>
+			<id>novadart-labs</id>
 			<url>http://labs.novadart.com:8888/archiva/repository/internal/</url>
 		</repository>
 		
 		<snapshotRepository>
-			<id>labs.novadart.com</id>
+			<id>novadart-labs</id>
 			<url>http://labs.novadart.com:8888/archiva/repository/snapshots/</url>
 		</snapshotRepository>
 	
