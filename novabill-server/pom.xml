@@ -345,8 +345,6 @@
 					<!-- <linkedResources> <linkedResource> <name>src/main/webapp/rpc</name> 
 						<type>2</type> <location>../novabill-client/src/main/webapp/rpc</location> 
 						</linkedResource> </linkedResources> -->
-					<downloadSources>true</downloadSources>
-					<downloadJavadocs>false</downloadJavadocs>
 					<wtpversion>2.0</wtpversion>
 					<additionalBuildcommands>
 						<buildCommand>
