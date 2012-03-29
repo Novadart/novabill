@@ -9,11 +9,21 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
+import javax.persistence.PersistenceContext;
 import javax.persistence.Transient;
+import javax.persistence.Version;
 import javax.validation.constraints.Size;
+import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
+import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
 import org.apache.solr.analysis.LowerCaseFilterFactory;
 import org.apache.solr.analysis.StandardTokenizerFactory;
@@ -27,15 +37,11 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.validator.constraints.Email;
-import org.springframework.roo.addon.javabean.RooJavaBean;
-import org.springframework.roo.addon.jpa.activerecord.RooJpaActiveRecord;
-import org.springframework.roo.addon.tostring.RooToString;
+import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.transaction.annotation.Transactional;
 import com.novadart.utils.fts.TermValueFilterFactory;
 import java.io.Serializable;
 
-@RooJavaBean
-@RooToString
-@RooJpaActiveRecord
 @Indexed
 @AnalyzerDef(name = FTSNamespace.DEFAULT_CLIENT_ANALYZER,
 	tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
@@ -47,6 +53,8 @@ import java.io.Serializable;
 @FullTextFilterDefs({
 	@FullTextFilterDef(name = FTSNamespace.CLIENT_BY_BUSINESS_ID_FILTER, impl = TermValueFilterFactory.class)
 })
+@Configurable
+@Entity
 public class Client implements Serializable {
 	
 	private static final long serialVersionUID = 8383909226336873374L;
@@ -131,6 +139,250 @@ public class Client implements Serializable {
     			.setParameter("clientId", getId())
     			.setFirstResult(start)
     			.setMaxResults(length).getResultList();
+    }
+    
+    /*
+     * Getters and setters
+     * */
+    
+    public String getName() {
+        return this.name;
+    }
+    
+    public void setName(String name) {
+        this.name = name;
+    }
+    
+    public String getAddress() {
+        return this.address;
+    }
+    
+    public void setAddress(String address) {
+        this.address = address;
+    }
+    
+    public String getPostcode() {
+        return this.postcode;
+    }
+    
+    public void setPostcode(String postcode) {
+        this.postcode = postcode;
+    }
+    
+    public String getCity() {
+        return this.city;
+    }
+    
+    public void setCity(String city) {
+        this.city = city;
+    }
+    
+    public String getProvince() {
+        return this.province;
+    }
+    
+    public void setProvince(String province) {
+        this.province = province;
+    }
+    
+    public String getCountry() {
+        return this.country;
+    }
+    
+    public void setCountry(String country) {
+        this.country = country;
+    }
+    
+    public String getEmail() {
+        return this.email;
+    }
+    
+    public void setEmail(String email) {
+        this.email = email;
+    }
+    
+    public String getPhone() {
+        return this.phone;
+    }
+    
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
+    
+    public String getMobile() {
+        return this.mobile;
+    }
+    
+    public void setMobile(String mobile) {
+        this.mobile = mobile;
+    }
+    
+    public String getFax() {
+        return this.fax;
+    }
+    
+    public void setFax(String fax) {
+        this.fax = fax;
+    }
+    
+    public String getWeb() {
+        return this.web;
+    }
+    
+    public void setWeb(String web) {
+        this.web = web;
+    }
+    
+    public String getVatID() {
+        return this.vatID;
+    }
+    
+    public void setVatID(String vatID) {
+        this.vatID = vatID;
+    }
+    
+    public String getSsn() {
+        return this.ssn;
+    }
+    
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
+    }
+    
+    public Set<Invoice> getInvoices() {
+        return this.invoices;
+    }
+    
+    public void setInvoices(Set<Invoice> invoices) {
+        this.invoices = invoices;
+    }
+    
+    public Set<Estimation> getEstimations() {
+        return this.estimations;
+    }
+    
+    public void setEstimations(Set<Estimation> estimations) {
+        this.estimations = estimations;
+    }
+    
+    public Business getBusiness() {
+        return this.business;
+    }
+    
+    public void setBusiness(Business business) {
+        this.business = business;
+    }
+    
+    /*
+     * End of getters and setters section
+     * */
+    
+    /*
+     * Active record functionality
+     * */
+    
+    @PersistenceContext
+    transient EntityManager entityManager;
+    
+    public static final EntityManager entityManager() {
+        EntityManager em = new Client().entityManager;
+        if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
+        return em;
+    }
+    
+    public static long countClients() {
+        return entityManager().createQuery("SELECT COUNT(o) FROM Client o", Long.class).getSingleResult();
+    }
+    
+    public static List<Client> findAllClients() {
+        return entityManager().createQuery("SELECT o FROM Client o", Client.class).getResultList();
+    }
+    
+    public static Client findClient(Long id) {
+        if (id == null) return null;
+        return entityManager().find(Client.class, id);
+    }
+    
+    public static List<Client> findClientEntries(int firstResult, int maxResults) {
+        return entityManager().createQuery("SELECT o FROM Client o", Client.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+    }
+    
+    @Transactional
+    public void persist() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        this.entityManager.persist(this);
+    }
+    
+    @Transactional
+    public void remove() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        if (this.entityManager.contains(this)) {
+            this.entityManager.remove(this);
+        } else {
+            Client attached = Client.findClient(this.id);
+            this.entityManager.remove(attached);
+        }
+    }
+    
+    @Transactional
+    public void flush() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        this.entityManager.flush();
+    }
+    
+    @Transactional
+    public void clear() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        this.entityManager.clear();
+    }
+    
+    @Transactional
+    public Client merge() {
+        if (this.entityManager == null) this.entityManager = entityManager();
+        Client merged = this.entityManager.merge(this);
+        this.entityManager.flush();
+        return merged;
+    }
+    
+    /*
+     * End of active record functionality section
+     * */
+    
+    /*
+     * Entity
+     * */
+    
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
+    
+    @Version
+    @Column(name = "version")
+    private Integer version;
+    
+    public Long getId() {
+        return this.id;
+    }
+    
+    public void setId(Long id) {
+        this.id = id;
+    }
+    
+    public Integer getVersion() {
+        return this.version;
+    }
+    
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+    
+    /*
+     * End of entity section
+     * */
+    
+    public String toString() {
+        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
     
 }
