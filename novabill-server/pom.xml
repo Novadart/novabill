@@ -53,14 +53,7 @@
 			<groupId>org.slf4j</groupId>
 			<artifactId>slf4j-log4j12</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjrt</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.aspectj</groupId>
-			<artifactId>aspectjweaver</artifactId>
-		</dependency>
+
 		<dependency>
 			<groupId>javax.servlet</groupId>
 			<artifactId>servlet-api</artifactId>
@@ -73,12 +66,6 @@
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
-		</dependency>
-		<!-- ROO dependencies -->
-		<dependency>
-			<groupId>org.springframework.roo</groupId>
-			<artifactId>org.springframework.roo.annotations</artifactId>
-			<scope>provided</scope>
 		</dependency>
 		<!-- Spring dependencies -->
 		<dependency>
@@ -99,14 +86,6 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aop</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.springframework</groupId>
-			<artifactId>spring-aspects</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>postgresql</groupId>
@@ -294,31 +273,12 @@
 
 	<build>
 		<plugins>
-
-			<!-- !!! NOTE !!! The warSourceExcludes is added because the linkedResources 
-				configuration in eclipse plugin doesn't work In fact, since the virtual link 
-				doesn't work a physical one is added and this means that stale gwt files 
-				might be included in the final war. Therefore, the rpc (linked) directory 
-				shall be ignored in favor to the one generated after the compilation of GWT -->
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
-				<!-- <configuration> <webXml>target/web.xml</webXml> </configuration> -->
 				<configuration>
 					<warSourceExcludes>**/rpc/**</warSourceExcludes>
 				</configuration>
-			</plugin>
-			<plugin>
-				<groupId>org.codehaus.mojo</groupId>
-				<artifactId>aspectj-maven-plugin</artifactId>
-				<executions>
-					<execution>
-						<goals>
-							<goal>compile</goal>
-							<goal>test-compile</goal>
-						</goals>
-					</execution>
-				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -330,9 +290,6 @@
 				<configuration>
 					<printSummary>false</printSummary>
 					<redirectTestOutputToFile>true</redirectTestOutputToFile>
-					<excludes>
-						<exclude>**/*_Roo_*</exclude>
-					</excludes>
 				</configuration>
 			</plugin>
 
@@ -342,24 +299,20 @@
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<!-- Note 2.8 does not work with AspectJ aspect path -->
 				<configuration>
-					<!-- <linkedResources> <linkedResource> <name>src/main/webapp/rpc</name> 
-						<type>2</type> <location>../novabill-client/src/main/webapp/rpc</location> 
-						</linkedResource> </linkedResources> -->
+					<linkedResources>
+						<linkedResource>
+							<name>src/main/webapp/rpc</name>
+							<type>2</type>
+							<location>${project.build.directory}/${project.build.finalName}/rpc</location>
+						</linkedResource>
+					</linkedResources>
 					<wtpversion>2.0</wtpversion>
 					<additionalBuildcommands>
-						<buildCommand>
-							<name>org.eclipse.ajdt.core.ajbuilder</name>
-							<arguments>
-								<aspectPath>org.springframework.aspects</aspectPath>
-							</arguments>
-						</buildCommand>
 						<buildCommand>
 							<name>org.springframework.ide.eclipse.core.springbuilder</name>
 						</buildCommand>
 					</additionalBuildcommands>
 					<additionalProjectnatures>
-						<projectnature>org.eclipse.ajdt.ui.ajnature</projectnature>
-						<projectnature>com.springsource.sts.roo.core.nature</projectnature>
 						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
 					</additionalProjectnatures>
 				</configuration>
@@ -385,72 +338,6 @@
 				</executions>
 
 			</plugin>
-
-
-			<!-- Check with ant if the rpc directory in the novabill-client is present, 
-				if not create it. This is necessary because otherwise the junction plugin 
-				will fail... -->
-			<plugin>
-				<artifactId>maven-antrun-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase> validate </phase>
-						<configuration>
-							<target>
-								<taskdef resource="net/sf/antcontrib/antcontrib.properties" />
-
-								<property name="rpcdir"
-									value="${basedir}/../novabill-client/src/main/webapp/rpc" />
-								<available file="${rpcdir}" type="dir" property="rpcdir.present" />
-
-								<if>
-									<not>
-										<isset property="rpcdir.present" />
-									</not>
-									<then>
-										<mkdir dir="${rpcdir}" />
-									</then>
-								</if>
-							</target>
-						</configuration>
-
-						<goals>
-							<goal>run</goal>
-						</goals>
-					</execution>
-				</executions>
-				<dependencies>
-					<dependency>
-						<groupId>ant-contrib</groupId>
-						<artifactId>ant-contrib</artifactId>
-						<version>20020829</version>
-					</dependency>
-				</dependencies>
-			</plugin>
-
-			<!-- This plugin will create a link to the rpc directory created in the 
-				novabill-client project. This is necessary for developing/debugging the project -->
-			<plugin>
-				<groupId>com.pyx4j</groupId>
-				<artifactId>maven-junction-plugin</artifactId>
-				<executions>
-					<execution>
-						<phase>validate</phase>
-						<goals>
-							<goal>link</goal>
-						</goals>
-					</execution>
-				</executions>
-				<configuration>
-					<links>
-						<link>
-							<dst>${basedir}/src/main/webapp/rpc</dst>
-							<src>${basedir}/../novabill-client/src/main/webapp/rpc</src>
-						</link>
-					</links>
-				</configuration>
-			</plugin>
-
 		</plugins>
 	</build>
 
