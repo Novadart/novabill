@@ -106,4 +106,5 @@
     	<property name="serviceInterface" value="com.novadart.services.shared.ImageStoreService"/>
 	</bean>
 	
+	<import resource="webflow-config.xml"/>	
 </beans>
