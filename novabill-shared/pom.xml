@@ -8,9 +8,9 @@
 		<groupId>com.novadart.novabill</groupId>
 		<version>1.0-SNAPSHOT</version>
 	</parent>
-	<groupId>com.novadart.novabill.shared</groupId>
 	<artifactId>novabill-shared</artifactId>
 	<name>Novabill - Shared</name>
+	
 	<dependencies>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
