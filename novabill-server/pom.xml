@@ -287,12 +287,12 @@
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<version>1.4.1</version>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
-			<version>1.7</version>
+			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
@@ -303,7 +303,7 @@
 				<filtering>true</filtering>
 			</resource>
 		</resources>
-	
+
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -341,7 +341,7 @@
 						<version>${aspectj.version}</version>
 					</dependency>
 				</dependencies>
-				
+
 				<executions>
 					<execution>
 						<goals>
