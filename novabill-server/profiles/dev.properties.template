@@ -2,7 +2,7 @@ path.jep.value=/usr/local/lib/libjep.so.2.0.1:/home/gio/GIT/novabill/code/novabi
 path.report_script.value=/home/gio/GIT/novabill/code/novabill-report/src/main.py
 path.tmpdir.invoice_generation.value=/tmp/novabill
 
-url.store_service.serviceUrl=rmi://localhost:1199/ImageStoreService
+url.store_service.serviceUrl.value=rmi://localhost:1199/ImageStoreService
 
 db.driverClassName=org.postgresql.Driver
 db.url=jdbc:postgresql://localhost/novabill
