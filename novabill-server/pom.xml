@@ -287,12 +287,10 @@
 		<dependency>
 			<groupId>javax.mail</groupId>
 			<artifactId>mail</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
-			<scope>runtime</scope>
 		</dependency>
 	</dependencies>
 
