@@ -109,5 +109,4 @@
 		<property name="serviceInterface"
 			value="com.novadart.services.shared.ImageStoreService" />
 	</bean>
-
 </beans>
