@@ -20,13 +20,13 @@ import flexjson.transformer.HtmlEncoderTransformer;
 @Service
 public class PDFGenerator {
 
-	@Value("${jep.includepath}")
+	@Value("${path.jep}")
 	private String includePath;
 	
-	@Value("${py.inv.gen.script}")
+	@Value("${path.report_script}")
 	private String pyInvGenScript;
 	
-	@Value("${inv.out.location}")
+	@Value("${path.tmpdir.invoice_generation}")
 	private String invOutLocation;
 	
 	private void checkCreateOutputLocation(File file){

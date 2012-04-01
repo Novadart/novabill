@@ -297,6 +297,13 @@
 	</dependencies>
 
 	<build>
+		<resources>
+			<resource>
+				<directory>src/main/resources</directory>
+				<filtering>true</filtering>
+			</resource>
+		</resources>
+	
 		<plugins>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
@@ -333,8 +340,8 @@
 						<artifactId>aspectjtools</artifactId>
 						<version>${aspectj.version}</version>
 					</dependency>
-
 				</dependencies>
+				
 				<executions>
 					<execution>
 						<goals>
@@ -415,6 +422,33 @@
 						</executions>
 					</plugin>
 				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>dev</id>
+			<activation>
+				<activeByDefault>true</activeByDefault>
+			</activation>
+			<build>
+				<filters>
+					<filter>profiles/dev.properties</filter>
+				</filters>
+			</build>
+		</profile>
+		<profile>
+			<id>staging</id>
+			<build>
+				<filters>
+					<filter>profiles/staging.properties</filter>
+				</filters>
+			</build>
+		</profile>
+		<profile>
+			<id>production</id>
+			<build>
+				<filters>
+					<filter>profiles/production.properties</filter>
+				</filters>
 			</build>
 		</profile>
 	</profiles>
