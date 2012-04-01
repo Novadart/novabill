@@ -1,0 +1,6 @@
+<html>
+<body>
+<h3>To successfully finish the registration procedure press <a href="${activationLink}">here</a></h3>
+</body>
+
+</html>

@@ -67,4 +67,30 @@
         <property name="persistenceUnitName" value="persistenceUnit"/>
         <property name="dataSource" ref="dataSource"/>
     </bean>
+    
+    <bean id="validator" class="org.springframework.validation.beanvalidation.LocalValidatorFactoryBean" />
+    
+    <bean class="com.novadart.novabill.aspect.HashFieldAspect" factory-method="aspectOf">
+		<property name="encoder" ref="passwordEncoder"/>
+	</bean>
+	
+	<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+  		<property name="host" value="localhost"/>
+	</bean>
+	
+	<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+      <property name="velocityProperties">
+         <value>
+          resource.loader=class
+          class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+         </value>
+      </property>
+   	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.MailAspect" factory-method="aspectOf">
+		<property name="mailSender" ref="mailSender"/>
+		<property name="velocityEngine" ref="velocityEngine"/>
+		<property name="from" value="risto.gligorov@novadart.com"/>
+	</bean>
+	
 </beans>

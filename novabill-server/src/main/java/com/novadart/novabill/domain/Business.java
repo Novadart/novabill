@@ -1,5 +1,6 @@
 package com.novadart.novabill.domain;
 
+import com.novadart.novabill.annotation.Hash;
 import com.novadart.novabill.domain.security.RoleTypes;
 import com.novadart.utils.fts.TermValueFilterFactory;
 import java.io.Serializable;
@@ -87,7 +88,7 @@ public class Business implements Serializable {
 
     private String password;
     
-    private Long creationTime;
+    private Long creationTime = System.currentTimeMillis();
     
     @Column(precision = 29, scale = 0)
     private BigInteger logoId;
@@ -310,6 +311,7 @@ public class Business implements Serializable {
         return this.password;
     }
     
+    @Hash(saltMethod = "getCreationTime")
     public void setPassword(String password) {
         this.password = password;
     }

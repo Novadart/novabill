@@ -8,6 +8,10 @@
   
   <definition name="concurentAccess" template="/WEB-INF/views/concurrentAccess.jsp"/>
   
+  <definition name="register" template="/WEB-INF/views/register.jsp"/>
+  
+  <definition name="registrationCompleted" template="/WEB-INF/views/registrationCompleted.jsp"/>
+  
   <definition extends="public" name="dataAccessFailure">
     <put-attribute name="body" value="/WEB-INF/views/dataAccessFailure.jspx"/>
   </definition>
