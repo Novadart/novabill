@@ -20,7 +20,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PostPersist;
+import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
@@ -45,6 +45,14 @@ import org.springframework.transaction.annotation.Transactional;
 public class Business implements Serializable {
 
 	private static final long serialVersionUID = 261999997691744944L;
+	
+	public Business(){}
+	
+	public Business(Registration registration){
+		email = registration.getEmail();
+		password = registration.getPassword();
+		creationTime = registration.getCreationTime();
+	}
 
 	@Size(max = 255)
     private String name;
@@ -110,11 +118,6 @@ public class Business implements Serializable {
 
     @ElementCollection
     private Set<RoleTypes> grantedRoles = new HashSet<RoleTypes>();
-    
-    @PostPersist
-    protected void onCreate(){
-    	creationTime = System.currentTimeMillis();
-    }
     
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.invoiceYear desc, invoice.invoiceID desc";

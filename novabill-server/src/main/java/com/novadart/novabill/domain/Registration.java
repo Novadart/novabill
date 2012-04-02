@@ -39,10 +39,33 @@ public class Registration implements Serializable{
 	
 	private Long creationTime = System.currentTimeMillis();
 	
+	@Size(max = 64)
+	private String activationToken;
+	
+	public static Registration findRegistration(String email, String token){
+		String query = "select registration from Registration registration where registration.email = :email and registration.activationToken = :token";
+		return entityManager().createQuery(query, Registration.class)
+				.setParameter("email", email)
+				.setParameter("token", token).getSingleResult();
+	}
+	
+	@Override
+	public Object clone() throws CloneNotSupportedException {
+		Registration registration = new Registration();
+		registration.setId(id);
+		registration.setEmail(email);
+		registration.setPassword(password);
+		registration.setConfirmPassword(confirmPassword);
+		registration.setActivationToken(activationToken);
+		registration.creationTime = creationTime;
+		return registration;
+	}
+	
 	/*
 	 * Getters and setters
 	 * */
 	
+
 	public String getEmail() {
 		return email;
 	}
@@ -71,6 +94,14 @@ public class Registration implements Serializable{
 	
 	public Long getCreationTime() {
 		return creationTime;
+	}
+	
+	public String getActivationToken() {
+		return activationToken;
+	}
+
+	public void setActivationToken(String activationToken) {
+		this.activationToken = activationToken;
 	}
 
 	/*

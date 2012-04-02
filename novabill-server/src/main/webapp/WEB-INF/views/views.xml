@@ -10,6 +10,10 @@
   
   <definition name="register" template="/WEB-INF/views/register.jsp"/>
   
+  <definition name="activate" template="/WEB-INF/views/activate.jsp"/>
+  
+  <definition name="invalidActivationRequest" template="/WEB-INF/views/invalidActivationRequest.jsp"/>
+  
   <definition name="registrationCompleted" template="/WEB-INF/views/registrationCompleted.jsp"/>
   
   <definition extends="public" name="dataAccessFailure">

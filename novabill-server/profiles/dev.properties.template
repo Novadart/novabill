@@ -12,3 +12,5 @@ db.password=novadart
 hibernate.hbm2ddl.auto.value=create
 hibernate.search.default.indexBase.value=/var/novabill/lucene.indexBase
 hibernate.show_sql.value=true
+
+activation.url.pattern.value=http://localhost:8080/novabill-server/activate?email=%s&token=%s

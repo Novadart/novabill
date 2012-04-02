@@ -25,7 +25,7 @@
         <!-- SHA-256 values can be produced using 'echo -n your_desired_password | sha256sum' (using normal *nix environments) -->
         <authentication-provider user-service-ref="principalDetailsService">
 	    	<password-encoder ref="passwordEncoder">
-<!-- 	    		<salt-source user-property="creationTime" /> -->
+	    		<salt-source user-property="creationTime" />
 	    	</password-encoder>
     	</authentication-provider>
     </authentication-manager>

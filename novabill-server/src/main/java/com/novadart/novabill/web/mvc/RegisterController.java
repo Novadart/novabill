@@ -1,9 +1,13 @@
 package com.novadart.novabill.web.mvc;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.domain.Registration;
+import com.novadart.novabill.service.AuthenticationTokenGenerator;
 import com.novadart.novabill.service.validator.RegistrationValidator;
 
 
@@ -32,6 +37,12 @@ public class RegisterController{
 	@Autowired
 	private MessageSource messageSource;
 	
+	@Autowired
+	private AuthenticationTokenGenerator tokenGenerator;
+	
+	@Value("${activation.url.pattern}")
+	private String activationUrlPattern;
+	
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
@@ -44,14 +55,17 @@ public class RegisterController{
 		return "register";
 	}
 	
-	private void sendActivationMail(Registration registration, Locale locale){
+	private void sendActivationMail(Registration registration, Locale locale) throws UnsupportedEncodingException{
 		Map<String, Object> templateVars = new HashMap<String, Object>();
-		templateVars.put("activationLink", "#");
+		String activationLink = String.format(activationUrlPattern,
+				URLEncoder.encode(registration.getEmail(), "UTF-8"), URLEncoder.encode(registration.getActivationToken(), "UTF-8"));
+		templateVars.put("activationLink", activationLink);
 		sendMessage(registration.getEmail(), messageSource.getMessage("activation.notification", null, locale), templateVars, "mail-templates/activation-notification.vm");
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
-	public String processSubmit(@ModelAttribute("registration") Registration registration, BindingResult result, SessionStatus status, Locale locale){
+	public String processSubmit(@ModelAttribute("registration") Registration registration, BindingResult result, SessionStatus status, Locale locale)
+			throws NoSuchAlgorithmException, UnsupportedEncodingException{
 		validator.validate(registration, result);
 		if(result.hasErrors())
 			return "register";
@@ -59,6 +73,7 @@ public class RegisterController{
 			String rawRassword = registration.getPassword();
 			registration.setPassword(rawRassword); //force hashing
 			registration.setConfirmPassword(rawRassword); //force hashing
+			registration.setActivationToken(tokenGenerator.generateToken());
 			sendActivationMail(registration.merge(), locale);
 			status.setComplete();
 			return "redirect:/registrationCompleted";

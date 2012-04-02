@@ -44,6 +44,10 @@ public class PrincipalDetails implements UserDetails {
 	public String getUsername() {
 		return this.principal.getEmail();
 	}
+	
+	public Long getCreationTime(){
+		return this.principal.getCreationTime();
+	}
 
 	@Override
 	public boolean isAccountNonExpired() {
