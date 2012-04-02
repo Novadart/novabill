@@ -41,7 +41,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		
-		formPanel.setAction(GWT.getHostPageBaseURL()+"/private/businesses/logo");
+		formPanel.setAction(GWT.getHostPageBaseURL()+"businesses/logo");
 		formPanel.setMethod(FormPanel.METHOD_POST);
 		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
 		

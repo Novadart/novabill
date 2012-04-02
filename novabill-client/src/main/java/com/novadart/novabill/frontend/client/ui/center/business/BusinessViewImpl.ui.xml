@@ -14,7 +14,7 @@
 				<g:Image ui:field="logo" styleName="logo"></g:Image>
 
 				<g:FormPanel ui:field="formPanel" styleName="formPanel">
-					<g:FileUpload name="name" styleName="logoFileUpload"></g:FileUpload>
+					<g:FileUpload name="file" styleName="logoFileUpload"></g:FileUpload>
 				</g:FormPanel>
 
 			</g:VerticalPanel>
