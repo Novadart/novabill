@@ -4,13 +4,20 @@ path.tmpdir.invoice_generation.value=/tmp/novabill
 
 url.store_service.serviceUrl.value=rmi://localhost:1199/ImageStoreService
 
-db.driverClassName=org.postgresql.Driver
-db.url=jdbc:postgresql://localhost/novabill
-db.username=novadart
-db.password=novadart
+database.driverClassName.value=org.postgresql.Driver
+database.url.value=jdbc:postgresql://localhost/novabill
+database.username.value=novadart
+database.password.value=novadart
 
 hibernate.hbm2ddl.auto.value=create
 hibernate.search.default.indexBase.value=/var/novabill/lucene.indexBase
 hibernate.show_sql.value=true
 
 activation.url.pattern.value=http://localhost:8080/novabill-server/activate?email=%s&token=%s
+
+smtp.auth.enabled.value=false
+smtp.host.value=localhost
+smtp.port.value=25
+smtp.username.value=
+smtp.password.value=
+smtp.mail.registration_completed_sender.value=risto.gligorov@novadart.com

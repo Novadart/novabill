@@ -8,10 +8,12 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FormPanel;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.novadart.gwtshared.client.textbox.UpdateLabel;
+import com.novadart.novabill.frontend.client.Const;
 import com.novadart.novabill.frontend.client.ui.center.BusinessView;
 
 public class BusinessViewImpl extends Composite implements BusinessView {
@@ -26,6 +28,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	private Presenter presenter;
 	
 	@UiField FormPanel formPanel;
+	@UiField Image logo;
 	@UiField(provided=true) UpdateLabel companyName;
 	@UiField(provided=true) UpdateLabel address;
 	
@@ -41,7 +44,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		
 		initWidget(uiBinder.createAndBindUi(this));
 		
-		formPanel.setAction(GWT.getHostPageBaseURL()+"/private/businesses/logo");
+		formPanel.setAction(Const.URL_LOGO);
 		formPanel.setMethod(FormPanel.METHOD_POST);
 		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
 		
@@ -58,10 +61,10 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 			
 			@Override
 			public void onSubmitComplete(SubmitCompleteEvent event) {
-				Window.alert("logo uploaded!");
-				
+				logo.setUrl(Const.genLogoUrl());
 			}
 		});
+		logo.setUrl(Const.genLogoUrl());
 	}
 
 	@Override
