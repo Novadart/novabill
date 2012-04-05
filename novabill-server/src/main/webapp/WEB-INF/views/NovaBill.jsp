@@ -13,8 +13,8 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="gwt:property" content="locale=it_IT">
 
-    <link type="text/css" rel="stylesheet" href="../css/reset-min.css">
-    <link type="text/css" rel="stylesheet" href="../css/style.css">
+    <link type="text/css" rel="stylesheet" href="css/reset-min.css">
+    <link type="text/css" rel="stylesheet" href="css/style.css">
 
     <title>NovaBill</title>
     
@@ -22,7 +22,7 @@
     	var business = <%=request.getAttribute("business")%>
     </script>
     
-    <script type="text/javascript" language="javascript" src="../rpc/rpc.nocache.js"></script>
+    <script type="text/javascript" language="javascript" src="rpc/rpc.nocache.js"></script>
   </head>
 
   <body>
