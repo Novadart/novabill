@@ -29,7 +29,7 @@ privileged aspect MailAspect {
 	declare parents : @MailMixin * implements MailSender;
 
 
-	public void MailSender.sendMessage(String to, String subject, Map<String, Object> model, String templateLocation){
+	public void MailSender.sendMessage(String[] to, String subject, Map<String, Object> model, String templateLocation){
 		MailAspect thisAspect = MailAspect.aspectOf();
 		MimeMessage mimeMessage = thisAspect.mailSender.createMimeMessage();
 		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
@@ -43,6 +43,10 @@ privileged aspect MailAspect {
 		} catch (MessagingException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public void MailSender.sendMessage(String to, String subject, Map<String, Object> model, String templateLocation){
+		sendMessage(new String[]{to}, subject, model, templateLocation);
 	}
 	
 }

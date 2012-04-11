@@ -1,0 +1,6 @@
+<html>
+<body>
+	<p>${message}</p>
+	<p>${stackTrace}</p>
+</body>
+</html>

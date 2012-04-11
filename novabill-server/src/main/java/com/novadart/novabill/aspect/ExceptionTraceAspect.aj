@@ -1,13 +1,19 @@
 package com.novadart.novabill.aspect;
 
+import java.io.PrintWriter;
+import java.io.StringWriter;
+import java.util.HashMap;
+import java.util.Map;
 import org.apache.commons.lang.StringUtils;
 import org.apache.log4j.Level;
 import org.apache.log4j.Logger;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.springframework.beans.factory.annotation.Autowired;
+import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.service.UtilsService;
 
+@MailMixin
 public aspect ExceptionTraceAspect {
 	
 	private Logger logger = Logger.getLogger("exceptions");
@@ -27,6 +33,13 @@ public aspect ExceptionTraceAspect {
 		return StringUtils.join(argsStrs, ',');
 	}
 	
+	private String fetchAndFormatForWeb(Throwable ex){
+		StringWriter sw = new StringWriter();
+		PrintWriter pw = new PrintWriter(sw);
+		ex.printStackTrace(pw);
+		return sw.toString().replace(System.getProperty("line.separator"), "<br/>\n");
+	}
+	
 	after() throwing(Throwable ex): exceptionTraced(){
 		if(lastLoggedException.get() != ex){
 			lastLoggedException.set(ex);
@@ -34,6 +47,10 @@ public aspect ExceptionTraceAspect {
 			String principal = utilsService.isAuthenticated()? utilsService.getAuthenticatedPrincipalDetails().getUsername(): "anonymous";
 			String message = String.format("principal: %s, method: %s, args: [%s]", principal, signature.toShortString(), getArgsMesssage(thisJoinPoint));
 			logger.log(Level.ERROR, message, ex);
+			Map<String, Object> templateVars = new HashMap<String, Object>();
+			templateVars.put("message", message);
+			templateVars.put("stackTrace", fetchAndFormatForWeb(ex));
+			sendMessage(new String[]{"giordano.battilana@novadart.com", "risto.gligorov@novadart.com"}, "Exception", templateVars, "mail-templates/exception-notification.vm");
 		}
 	}
 
