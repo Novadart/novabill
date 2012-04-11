@@ -24,7 +24,7 @@ import org.springframework.web.multipart.MultipartFile;
 import com.healthmarketscience.rmiio.RemoteInputStreamClient;
 import com.healthmarketscience.rmiio.SimpleRemoteInputStream;
 import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.service.GWTRPCUtilsService;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.services.shared.ImageDTO;
 import com.novadart.services.shared.ImageStoreService;
 import com.novadart.utils.image.ImageFormat;
@@ -42,7 +42,7 @@ public class BusinessLogoController {
 	private ImageStoreService imageStoreService;
 	
 	@Autowired
-	private GWTRPCUtilsService utilsService;
+	private UtilsService utilsService;
 	
 	@ExceptionHandler(Exception.class)
 	public String handleException(Exception ex, HttpServletRequest request, HttpServletResponse response){

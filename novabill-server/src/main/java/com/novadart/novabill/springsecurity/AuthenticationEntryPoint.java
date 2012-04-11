@@ -7,13 +7,13 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.web.authentication.LoginUrlAuthenticationEntryPoint;
-import com.novadart.novabill.service.GWTRPCUtilsService;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
 public class AuthenticationEntryPoint extends LoginUrlAuthenticationEntryPoint {
 	
 	@Autowired
-	GWTRPCUtilsService utilsService;
+	UtilsService utilsService;
 
 	public AuthenticationEntryPoint(String loginFormUrl) {
 		super(loginFormUrl);

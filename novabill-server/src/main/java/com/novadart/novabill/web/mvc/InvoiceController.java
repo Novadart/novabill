@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.healthmarketscience.rmiio.RemoteInputStreamClient;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.service.GWTRPCUtilsService;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.PDFGenerator;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -31,7 +31,7 @@ public class InvoiceController {
 	PDFGenerator pdfGenerator;
 	
 	@Autowired
-	GWTRPCUtilsService utilsService;
+	UtilsService utilsService;
 	
 	@Autowired
 	ImageStoreService imageStoreService;

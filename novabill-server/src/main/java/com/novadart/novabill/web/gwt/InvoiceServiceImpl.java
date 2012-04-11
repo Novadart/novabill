@@ -12,7 +12,7 @@ import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.InvoiceDTOFactory;
 import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
-import com.novadart.novabill.service.GWTRPCUtilsService;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -24,7 +24,7 @@ import com.novadart.novabill.shared.client.facade.InvoiceService;
 public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, InvoiceServiceImpl> implements InvoiceService {
 
 	@Autowired
-	private GWTRPCUtilsService utilsService;
+	private UtilsService utilsService;
 
 	public InvoiceServiceImpl() {
 		super(InvoiceService.class);

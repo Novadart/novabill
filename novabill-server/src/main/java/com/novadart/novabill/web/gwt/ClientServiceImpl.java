@@ -10,7 +10,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.ClientDTOFactory;
 import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.service.GWTRPCUtilsService;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
@@ -23,7 +23,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	private static final long serialVersionUID = -5418569389456426364L;
 
 	@Autowired
-	private GWTRPCUtilsService utilsService;
+	private UtilsService utilsService;
 	
 	public ClientServiceImpl() {
 		super(ClientService.class);

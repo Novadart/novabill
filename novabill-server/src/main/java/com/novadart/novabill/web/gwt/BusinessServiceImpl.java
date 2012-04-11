@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.BusinessDTOFactory;
 import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.service.GWTRPCUtilsService;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -22,7 +22,7 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 	private static final long serialVersionUID = -8341228475620801759L;
 	
 	@Autowired
-	private GWTRPCUtilsService utilsService;
+	private UtilsService utilsService;
 
 	public BusinessServiceImpl() {
 		super(BusinessService.class);

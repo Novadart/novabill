@@ -11,7 +11,7 @@ import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.EstimationDTOFactory;
 import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
-import com.novadart.novabill.service.GWTRPCUtilsService;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -23,7 +23,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	private static final long serialVersionUID = -6918867132306850872L;
 	
 	@Autowired
-	private GWTRPCUtilsService utilsService;
+	private UtilsService utilsService;
 
 	public EstimationServiceImpl() {
 		super(EstimationService.class);
