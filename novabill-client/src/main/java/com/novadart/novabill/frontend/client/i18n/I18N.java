@@ -88,4 +88,8 @@ public interface I18N extends Constants {
 	public String delete();
 	public String add();
 	public String vatID();
+	public String bootstrapWelcomeMessage();
+	public String numberValidationError();
+	public String postcodeValidationError();
+	public String emailValidationError();
 }

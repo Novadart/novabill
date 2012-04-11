@@ -16,9 +16,9 @@ import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
-import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyTextBox;
-import com.novadart.novabill.frontend.client.ui.widget.validation.SSNTextBox;
-import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdTextBox;
+import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
+import com.novadart.novabill.frontend.client.ui.widget.validation.SsnValidation;
+import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientDialog extends Dialog {
@@ -42,7 +42,7 @@ public class ClientDialog extends Dialog {
 		OTHER_ERROR
 	}
 
-	@UiField NotEmptyTextBox companyName;
+	@UiField(provided=true) ValidatedTextBox companyName;
 	@UiField TextBox address;
 	@UiField TextBox city;
 	@UiField TextBox province;
@@ -53,16 +53,17 @@ public class ClientDialog extends Dialog {
 	@UiField TextBox fax;
 	@UiField TextBox email;
 	@UiField TextBox web;
-	@UiField(provided=true) VatIdTextBox vatID;
-	@UiField(provided=true) SSNTextBox ssn;
+	@UiField(provided=true) ValidatedTextBox vatID;
+	@UiField(provided=true) ValidatedTextBox ssn;
 
 	@UiField Button ok;
 	
 	private ClientDTO client = null;
 
 	private ClientDialog() {
-		vatID = new VatIdTextBox(true);
-		ssn = new SSNTextBox(true);
+		companyName = new ValidatedTextBox(new NotEmptyValidation());
+		vatID =  new ValidatedTextBox(new VatIdValidation());
+		ssn =  new ValidatedTextBox(new SsnValidation());
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("ClientDialog panel");
 	}

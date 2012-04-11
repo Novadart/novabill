@@ -24,14 +24,12 @@ button:HOVER {
 	font-family: Arial, sans-serif, serif;
 }
 
-input[type="text"],
-input[type="password"] {
+input[type="text"],input[type="password"] {
 	border: 0.1em solid #CCC;
 	padding: 0.4em;
 }
 
-input[type="text"]:HOVER,
-input[type="password"]:HOVER {
+input[type="text"]:HOVER,input[type="password"]:HOVER {
 	border: 0.1em solid #000;
 }
 
@@ -98,36 +96,29 @@ textarea:HOVER {
 }
 
 .AuthDialog .authDialog {
-		
+	
 }
 
-.AuthDialog .username,
-.AuthDialog .password {
+.AuthDialog .username,.AuthDialog .password {
 	width: 15em;
 	margin-left: 2em;
 }
 
-.AuthDialog .password,
-.AuthDialog .passwordLabel  {
+.AuthDialog .password,.AuthDialog .passwordLabel {
 	margin-top: 1em;
 }
 
-.AuthDialog .submit{
+.AuthDialog .submit {
 	margin-top: 2em;
 	text-align: center;
 	width: 100%;
 }
 
-.AuthDialog .submitContainer{
+.AuthDialog .submitContainer {
 	margin-left: auto;
 	margin-right: auto;
 	width: 8em;
 }
-
-
-
-
-
 
 .Novabill {
 	margin: 0 auto;
@@ -178,14 +169,14 @@ textarea:HOVER {
 	font-size: 1.2em;
 }
 
-.ClientView .clientDetailsContainer .modifyClient,
-.ClientView .clientDetailsContainer .cancelClient {
+.ClientView .clientDetailsContainer .modifyClient,.ClientView .clientDetailsContainer .cancelClient
+	{
 	padding: 0.5em;
 	font-weight: bold;
 }
 
-.ClientView .clientDetailsContainer .modifyClient:HOVER,
-.ClientView .clientDetailsContainer .cancelClient:HOVER {
+.ClientView .clientDetailsContainer .modifyClient:HOVER,.ClientView .clientDetailsContainer .cancelClient:HOVER
+	{
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -538,8 +529,7 @@ td.datePickerMonth {
 	padding: 0.2em 2em 0.7em 0;
 }
 
-.InvoiceView .modifyButton,
-.InvoiceView .createButton {
+.InvoiceView .modifyButton,.InvoiceView .createButton {
 	margin-left: 2em;
 }
 
@@ -560,6 +550,7 @@ td.datePickerMonth {
 }
 
 .InvoiceView .newItemContainer {
+	
 }
 
 .InvoiceView .smallLabel {
@@ -597,8 +588,8 @@ td.datePickerMonth {
 	padding: 1.6em 0 0 0.5em;
 }
 
-.InvoiceView .totalContainer.totalTax,
-.InvoiceView .totalContainer.totalAfterTaxes {
+.InvoiceView .totalContainer.totalTax,.InvoiceView .totalContainer.totalAfterTaxes
+	{
 	margin-left: 4em;
 }
 
@@ -617,3 +608,53 @@ td.datePickerMonth {
 	border-radius: 0.5em;
 }
 
+.BootstrapDialog .welcomeMessage {
+	background-color: #FFFFB1;
+	padding: 1em;
+	border: 0.1em solid #333;
+	width: 30em;
+}
+
+.BootstrapDialog .bootstrapDialogBody {
+	background-color: #FFE;
+	padding: 0.5em;
+}
+
+.BootstrapDialog .gridContainer {
+	margin: 1em auto;
+	width: 22em;
+}
+
+.BootstrapDialog .submit {
+	margin: 0 auto;
+	display: block;
+	width: 10em;
+}
+
+.BootstrapDialog .RichTextBox {
+	width: 20em;
+	margin: 0.3em;
+}
+
+.BootstrapDialog .RichTextBox.RichTextBox-labelStyle {
+	color: #666;
+	font-style: italic;
+}
+
+.ValidatedTextBox-validationOk {
+	border-color: #4DE133;
+	background-color: #DEFFD8;
+}
+
+.ValidatedTextBox-validationError {
+	border-color: #E32424;
+	background-color: #F9E0E0;
+}
+
+.ValidationBaloonMessage-validationMessage {
+	background-color: #F9E0E0;
+	border: 0.1em solid red;
+	border-radius: 0.5em;
+	padding: 0.3em;
+	margin-left: 5px;
+}
