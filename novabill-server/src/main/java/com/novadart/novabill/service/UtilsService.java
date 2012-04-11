@@ -14,7 +14,7 @@ import com.google.gwt.user.server.rpc.RPC;
 import com.novadart.novabill.domain.security.PrincipalDetails;
 
 @Service
-public class GWTRPCUtilsService {
+public class UtilsService {
 
 	private Authentication getAuthentication(){
 		return SecurityContextHolder.getContext().getAuthentication();
