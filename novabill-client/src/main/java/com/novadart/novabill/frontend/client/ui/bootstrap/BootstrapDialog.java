@@ -69,7 +69,8 @@ public class BootstrapDialog extends Dialog {
 	
 	private boolean validate(){
 		boolean valid = true;
-		for (RichTextBox r : new RichTextBox[]{name, ssn, vatID, address, city, province, country, postcode}) {
+		for (RichTextBox r : new RichTextBox[]{name, ssn, vatID, address, city, province, country, 
+				postcode, phone, email, mobile, fax, web}) {
 			r.validate();
 			valid &= r.isValid();
 		}
