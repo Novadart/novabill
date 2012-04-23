@@ -3,6 +3,7 @@ package com.novadart.novabill.frontend.client.ui;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -21,6 +22,7 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.resources.Image;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
@@ -38,6 +40,7 @@ public class MainWidget extends Composite {
 	@UiField(provided=true) HTML businessBanner;
 	@UiField(provided=true) HTML stats;
 	
+	private PlaceController placeController;
 	
 	public MainWidget() {
 		businessBanner = createBusinessBanner();
@@ -66,6 +69,15 @@ public class MainWidget extends Composite {
 				}
 			}
 		});
+	}
+	
+	public void setPlaceController(PlaceController placeController) {
+		this.placeController = placeController;
+	}
+	
+	@UiHandler("changeButton")
+	void onChangeBusinessDetailsClicked(ClickEvent e){
+		this.placeController.goTo(new BusinessPlace());
 	}
 	
 	@UiFactory

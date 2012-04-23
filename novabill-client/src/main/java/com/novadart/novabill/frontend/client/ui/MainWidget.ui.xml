@@ -28,7 +28,10 @@
 		</g:center>
 
 		<g:south size="2">
-			<g:HTML styleName="banner" ui:field="businessBanner"></g:HTML>
+			<g:HorizontalPanel>
+				<g:Button ui:field="changeButton" styleName="changeButton" text="{i18n.modify}"></g:Button>
+				<g:HTML styleName="banner" ui:field="businessBanner"></g:HTML>
+			</g:HorizontalPanel>
 		</g:south>
 
 	</g:DockLayoutPanel>

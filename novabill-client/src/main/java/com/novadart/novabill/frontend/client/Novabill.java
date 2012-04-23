@@ -16,7 +16,6 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.mvp.AppPlaceHistoryMapper;
 import com.novadart.novabill.frontend.client.mvp.CenterActivityMapper;
 import com.novadart.novabill.frontend.client.mvp.WestActivityMapper;
-import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.ui.MainWidget;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
@@ -68,13 +67,11 @@ public class Novabill implements EntryPoint {
 						AppPlaceHistoryMapper historyMapper= GWT.create(AppPlaceHistoryMapper.class);
 						PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
 						historyHandler.register(placeController, eventBus, defaultPlace);
-
+						
+						main.setPlaceController(placeController);
 						RootLayoutPanel.get().add(main);
 						// Goes to place represented on URL or default place
 						historyHandler.handleCurrentHistory();
-						
-						
-						placeController.goTo(new BusinessPlace());
 					}
 
 					@Override

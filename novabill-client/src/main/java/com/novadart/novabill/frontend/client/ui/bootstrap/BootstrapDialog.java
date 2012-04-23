@@ -14,7 +14,7 @@ import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidatio
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.PostcodeValidation;
-import com.novadart.novabill.frontend.client.ui.widget.validation.SsnValidation;
+import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
@@ -52,7 +52,7 @@ public class BootstrapDialog extends Dialog {
 		NotEmptyValidation nev = new NotEmptyValidation();
 		NumberValidation nuv = new NumberValidation(true);
 		name = new RichTextBox(I18N.get.companyName(), nev);
-		ssn = new RichTextBox(I18N.get.ssn(), new SsnValidation());
+		ssn = new RichTextBox(I18N.get.ssn(), new SsnOrVatIdValidation());
 		vatID = new RichTextBox(I18N.get.vatID(), new VatIdValidation());
 		address = new RichTextBox(I18N.get.address(), nev);
 		city = new RichTextBox(I18N.get.city(), nev);
