@@ -217,9 +217,24 @@ textarea:HOVER {
 	
 }
 
+.MainWidget .southContainer .changeButton {
+	background-color: white;
+	border: 0.1em solid #EEE;
+	color: #DDD;
+	margin: 0 0.3em 0.1em;
+}
+
+.MainWidget .southContainer .changeButton:HOVER {
+	border: 0.1em solid #B9F2B3;
+	background-color: #66C25B;
+	color: white;
+}
+
 .MainWidget .banner {
 	background-color: #EEE;
 	text-align: center;
+	height: 1.5em;
+	padding: 0.5em 1em 0;
 }
 
 .MainWidget .banner .name {
