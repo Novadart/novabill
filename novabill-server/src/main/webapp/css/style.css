@@ -219,8 +219,8 @@ textarea:HOVER {
 
 .MainWidget .southContainer .changeButton {
 	background-color: white;
-	border: 0.1em solid #EEE;
-	color: #DDD;
+	border: 0.1em solid #CCC;
+	color: #CCC;
 	margin: 0 0.3em 0.1em;
 }
 
@@ -673,3 +673,35 @@ td.datePickerMonth {
 	padding: 0.3em;
 	margin-left: 5px;
 }
+
+
+.BusinessView .ValidatedTextBox {
+	width: 25em;
+}
+
+.BusinessView .logoContainerWrapper {
+	padding: 1em;
+}
+
+.BusinessView .gridContainer {
+	padding: 1em;
+}
+
+.BusinessView .businessLabel{
+	margin-right: 1em;
+}
+
+.BusinessView {
+	
+}
+
+.BusinessView {
+	
+}
+
+.BusinessView {
+	
+}
+
+
+

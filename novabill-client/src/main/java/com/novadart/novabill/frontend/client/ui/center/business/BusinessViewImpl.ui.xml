@@ -6,9 +6,9 @@
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n" />
 
-	<g:FlowPanel>
+	<g:FlowPanel styleName="BusinessView">
 		<g:SimplePanel>
-			<g:Button styleName="saveData" ui:field="saveData" text="save"></g:Button>
+			<g:Button styleName="saveData" ui:field="saveData" text="{i18n.saveModifications}"></g:Button>
 		</g:SimplePanel>
 
 
@@ -122,11 +122,13 @@
 					</g:row>
 				</g:Grid>
 			</g:SimplePanel>
-			
-			<g:VerticalPanel styleName="logoContainer">
-				<g:Image ui:field="logo" styleName="logo"></g:Image>
-				<g:FormPanel ui:field="formPanel" styleName="formPanel" />
-			</g:VerticalPanel>
+
+			<g:SimplePanel styleName="logoContainerWrapper">
+				<g:VerticalPanel styleName="logoContainer">
+					<g:Image ui:field="logo" styleName="logo"></g:Image>
+					<g:FormPanel ui:field="formPanel" styleName="formPanel" />
+				</g:VerticalPanel>
+			</g:SimplePanel>
 
 		</g:HorizontalPanel>
 
