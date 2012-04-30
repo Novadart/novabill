@@ -1,14 +1,12 @@
 package com.novadart.novabill.domain;
 
-import com.novadart.novabill.annotation.Hash;
-import com.novadart.novabill.domain.security.RoleTypes;
-import com.novadart.utils.fts.TermValueFilterFactory;
 import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -20,10 +18,10 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PrePersist;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -38,6 +36,10 @@ import org.hibernate.search.jpa.Search;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.annotation.Hash;
+import com.novadart.novabill.domain.security.RoleTypes;
+import com.novadart.utils.fts.TermValueFilterFactory;
 
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 @Configurable

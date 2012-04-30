@@ -6,7 +6,7 @@ import com.google.gwt.core.client.GWT;
 
 public class Const {
 	
-	public static final String URL_LOGO = GWT.getHostPageBaseURL()+"businesses/logo";
+	public static final String URL_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo";
 	
 
 	public static String genLogoUrl(){

@@ -109,7 +109,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	@Override
 	public void setClean() {
 		FileUpload fileUpload = new FileUpload();
-		fileUpload.setName("name");
+		fileUpload.setName("file");
 		fileUpload.setStyleName("logoFileUpload");
 		fileUpload.addChangeHandler(new ChangeHandler() {
 			

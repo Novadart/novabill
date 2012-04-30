@@ -225,9 +225,9 @@ textarea:HOVER {
 }
 
 .MainWidget .southContainer .changeButton:HOVER {
-	border: 0.1em solid #B9F2B3;
-	background-color: #66C25B;
-	color: white;
+	background-color: #EEE;
+	border: 0.1em solid #DDD;
+	color: #333;
 }
 
 .MainWidget .banner {
