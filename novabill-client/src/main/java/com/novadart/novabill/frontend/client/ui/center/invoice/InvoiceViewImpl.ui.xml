@@ -18,6 +18,8 @@
 				text="{i18n.createInvoice}"></g:Button>
 			<g:Button styleName="saveAsEstimation" ui:field="createEstimate"
 				text="{i18n.createEstimate}"></g:Button>
+			<g:Label ui:field="convertToInvoice" styleName="convertToInvoice" visible="false"
+				text="{i18n.convertToInvoice}"></g:Label>
 		</g:HorizontalPanel>
 
 
@@ -32,7 +34,7 @@
 			</g:row>
 			<g:row>
 				<g:customCell>
-					<g:Label styleName="label" text="{i18n.invoiceNumber}"></g:Label>
+					<g:Label ui:field="invoiceNumber" styleName="label" text="{i18n.invoiceNumber}"></g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:TextBox styleName="box number" ui:field="number"></g:TextBox>

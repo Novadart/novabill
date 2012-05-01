@@ -32,6 +32,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
@@ -60,6 +61,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiField Button createEstimate;
 	@UiField Button createInvoice;
 	@UiField Button modifyInvoice;
+	@UiField Label convertToInvoice;
 	@UiField SimplePanel newItemContainer;
 
 	@UiField Label totalBeforeTaxes;
@@ -69,6 +71,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 	private Presenter presenter;
 	private InvoiceDTO invoice;
+	private EstimationDTO estimation;
 	private ListDataProvider<InvoiceItemDTO> invoiceItems = new ListDataProvider<InvoiceItemDTO>();
 	private ClientDTO client;
 	private boolean editable = false;
@@ -296,6 +299,30 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		paymentNote.setEnabled(true);
 	}
 
+	@Override
+	public void setDataForNewEstimation(ClientDTO client) {
+		this.client =client;
+		
+		clientName.setText(client.getName());
+		date.setValue(new Date());
+		
+		createInvoice.setVisible(false);
+		createEstimate.setVisible(true);
+		convertToInvoice.setVisible(true);
+		newItemContainer.setVisible(true);
+		date.setEnabled(true);
+		number.setReadOnly(false);
+		payment.setEnabled(true);
+		note.setEnabled(true);
+		paymentNote.setEnabled(true);
+	}
+	
+	
+	@Override
+	public void setEstimation(EstimationDTO estimation) {
+		this.estimation = estimation;
+		
+	}
 
 
 	@Override
@@ -366,6 +393,8 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@Override
 	public void setClean() {
 		this.invoice = null;
+		this.client = null;
+		this.estimation = null;
 		number.setReadOnly(true);
 		date.setEnabled(false);
 		payment.setSelectedIndex(0);
@@ -381,6 +410,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		createInvoice.setVisible(false);
 		modifyInvoice.setVisible(false);
 		modifyInvoice.setText(I18N.get.modifyInvoice());
+		convertToInvoice.setVisible(false);
 		newItemContainer.setVisible(false);
 		note.setEnabled(false);
 		paymentNote.setEnabled(false);
