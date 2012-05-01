@@ -27,5 +27,7 @@ public interface ClientService extends RemoteService{
 	public ClientDTO getFromInvoiceId(Long invoiceId) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
 	
 	public List<ClientDTO> searchClients(String query) throws InvalidArgumentException, NotAuthenticatedException, ConcurrentAccessException;
+
+	public ClientDTO getFromEstimationId(Long estimationId) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
 	
 }

@@ -1,6 +1,7 @@
 package com.novadart.novabill.shared.client.facade;
 
 import java.util.List;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
@@ -19,5 +20,7 @@ public interface ClientServiceAsync {
 	void getFromInvoiceId(Long invoiceId, AsyncCallback<ClientDTO> callback);
 
 	void searchClients(String query, AsyncCallback<List<ClientDTO>> callback);
+
+	void getFromEstimationId(Long estimationId, AsyncCallback<ClientDTO> callback);
 
 }
