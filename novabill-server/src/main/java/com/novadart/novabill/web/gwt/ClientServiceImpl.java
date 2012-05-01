@@ -12,10 +12,12 @@ import com.novadart.novabill.domain.ClientDTOFactory;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.facade.ClientService;
 
 public class ClientServiceImpl extends AbstractGwtController<ClientService, ClientServiceImpl> implements ClientService {
@@ -112,6 +114,14 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 		for(Client client: clients)
 			clientDTOs.add(ClientDTOFactory.toDTO(client));
 		return clientDTOs;
+	}
+	
+	@Override
+	public ClientDTO getFromEstimationId(Long estimationId)
+			throws DataAccessException, NotAuthenticatedException,
+			NoSuchObjectException, ConcurrentAccessException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 }

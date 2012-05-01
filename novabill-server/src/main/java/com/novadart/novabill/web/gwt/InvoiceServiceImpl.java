@@ -13,11 +13,13 @@ import com.novadart.novabill.domain.InvoiceDTOFactory;
 import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.InvalidInvoiceIDException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 
 @SuppressWarnings("serial")
@@ -166,6 +168,13 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		for(Invoice invoice: invoices)
 			invoiceDTOs.add(InvoiceDTOFactory.toDTO(invoice));
 		return invoiceDTOs;
+	}
+	
+	@Override
+	public InvoiceDTO createFromEstimation(EstimationDTO estimation)
+			throws NotAuthenticatedException {
+		// TODO Auto-generated method stub
+		return null;
 	}
 	
 }
