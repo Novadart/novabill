@@ -8,24 +8,43 @@
 
 	<g:FlowPanel>
 		<g:Label styleName="clientName" ui:field="clientName"></g:Label>
-		
+
 		<g:HorizontalPanel styleName="clientDetailsContainer">
 			<g:HTML styleName="clientDetails" ui:field="clientDetails"></g:HTML>
 			<g:VerticalPanel>
-				<g:Label styleName="modifyClient" ui:field="modifyClient" text="{i18n.modifyClient}"></g:Label>
-				<g:Label styleName="cancelClient" ui:field="cancelClient" text="{i18n.cancelClient}"></g:Label>
+				<g:Label styleName="modifyClient" ui:field="modifyClient"
+					text="{i18n.modifyClient}"></g:Label>
+				<g:Label styleName="cancelClient" ui:field="cancelClient"
+					text="{i18n.cancelClient}"></g:Label>
 			</g:VerticalPanel>
 		</g:HorizontalPanel>
-			
-		
+
+
 		<g:SimplePanel styleName="centralPanel">
 			<g:Button ui:field="new_" styleName="newInvoice" text="{i18n.newInvoice}"></g:Button>
 		</g:SimplePanel>
 
-		<g:SimplePanel styleName="listWrapper panel">
-			<i:InvoiceList ui:field="invoiceList"></i:InvoiceList>
-		</g:SimplePanel>
+		<g:SimpleLayoutPanel styleName="clientMainBody">
+			<g:TabLayoutPanel ui:field="tabPanel" barHeight="3.5" barUnit='EM'>
+				<g:tab>
+					<g:customHeader>
+						<g:Label styleName="tabHeaderLabel" text="{i18n.invoices}"></g:Label>
+					</g:customHeader>
+					<g:SimplePanel styleName="listWrapper panel">
+						<i:InvoiceList ui:field="invoiceList"></i:InvoiceList>
+					</g:SimplePanel>
+				</g:tab>
+				<g:tab>
+					<g:customHeader>
+						<g:Label styleName="tabHeaderLabel" text="{i18n.estimates}"></g:Label>
+					</g:customHeader>
+					<g:SimplePanel styleName="listWrapper panel">
+						<i:InvoiceList ui:field="estimatesList"></i:InvoiceList>
+					</g:SimplePanel>
+				</g:tab>
 
+			</g:TabLayoutPanel>
+		</g:SimpleLayoutPanel>
 
 	</g:FlowPanel>
 

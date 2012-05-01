@@ -93,4 +93,7 @@ public interface I18N extends Constants {
 	public String postcodeValidationError();
 	public String emailValidationError();
 	public String ssnOrVatIdValidationError();
+	public String invoices();
+	public String estimates();
+	public String convertToInvoice();
 }

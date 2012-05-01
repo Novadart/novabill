@@ -12,6 +12,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
@@ -26,6 +27,7 @@ import com.novadart.novabill.frontend.client.ui.center.ClientView;
 import com.novadart.novabill.frontend.client.ui.center.client.dialog.ClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoiceList;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 
@@ -40,10 +42,12 @@ public class ClientViewImpl extends Composite implements ClientView {
 	private Presenter presenter;
 	private ClientDTO client;
 	private final ListDataProvider<InvoiceDTO> invoiceDataProvider = new ListDataProvider<InvoiceDTO>();
+	private final ListDataProvider<EstimationDTO> estimationDataProvider = new ListDataProvider<EstimationDTO>();
 	
 	@UiField InvoiceList invoiceList;
 	@UiField Label clientName;
 	@UiField HTML clientDetails;
+	@UiField TabLayoutPanel tabPanel;
 
 	
 	public ClientViewImpl() {
@@ -74,6 +78,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		clientDetails.setHTML("");
 		invoiceDataProvider.getList().clear();
 		invoiceDataProvider.refresh();
+		tabPanel.selectTab(0);
 	}
 	
 	@UiHandler("new_")
@@ -181,6 +186,25 @@ public class ClientViewImpl extends Composite implements ClientView {
 				}
 				invoiceDataProvider.setList(result);
 				invoiceDataProvider.refresh();
+			}
+		});
+	}
+	
+	private void loadEstimations(){
+		ServerFacade.estimation.getAllForClient(client.getId(), new AuthAwareAsyncCallback<List<EstimationDTO>>() {
+
+			@Override
+			public void onException(Throwable caught) {
+				Window.alert(I18N.get.errorServerCommunication());
+			}
+
+			@Override
+			public void onSuccess(List<EstimationDTO> result) {
+				if(result == null){
+					return;
+				}
+				estimationDataProvider.setList(result);
+				estimationDataProvider.refresh();
 			}
 		});
 	}

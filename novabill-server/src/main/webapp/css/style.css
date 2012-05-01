@@ -181,6 +181,57 @@ textarea:HOVER {
 	cursor: pointer;
 }
 
+.ClientView .clientMainBody {
+	margin: 0 auto 1em;
+	width: 70%;
+	height: 40em;
+}
+
+.ClientView .clientMainBody .gwt-TabLayoutPanelTabs {
+	
+}
+
+
+.ClientView .clientMainBody .gwt-TabLayoutPanelTab {
+	padding: 0.5em 1em;
+	background-color: white;
+	border: 0.2em solid #EEE;
+	width: 8em;
+	border-top-right-radius: 1em;
+	border-top-left-radius: 1em;
+	font-size: 1.2em;
+	cursor: pointer;
+}
+
+.ClientView .clientMainBody .gwt-TabLayoutPanelTab:HOVER {
+	text-decoration: underline;
+}
+
+.ClientView .clientMainBody .gwt-TabLayoutPanelTab-selected:HOVER {
+	text-decoration: none;
+}
+
+
+.ClientView .clientMainBody .gwt-TabLayoutPanelTab-selected {
+	background-color: #EEE;
+	font-weight: bold;	
+}
+
+.ClientView .clientMainBody .gwt-TabLayoutPanelTabInner {
+	
+	
+}
+
+.ClientView .clientMainBody .tabHeaderLabel {
+	
+	
+}
+
+
+
+
+
+
 .HomeView .homeBody {
 	width: 100%;
 }
@@ -189,12 +240,13 @@ textarea:HOVER {
 	border: 0.2px solid #DDD;
 	padding: 1em;
 	background-color: #EEE;
-	border-radius: 1em;
+	border-bottom-left-radius: 1em;
+	border-bottom-right-radius: 1em;
+	border-top-right-radius: 1em;
 	margin: 0 auto;
 }
 
 .ClientView .listWrapper {
-	width: 60%;
 }
 
 .HomeView .listWrapper {
