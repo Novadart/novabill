@@ -12,6 +12,8 @@ import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.BusinessServiceAsync;
 import com.novadart.novabill.shared.client.facade.ClientService;
 import com.novadart.novabill.shared.client.facade.ClientServiceAsync;
+import com.novadart.novabill.shared.client.facade.EstimationService;
+import com.novadart.novabill.shared.client.facade.EstimationServiceAsync;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 import com.novadart.novabill.shared.client.facade.InvoiceServiceAsync;
 
@@ -23,7 +25,7 @@ public class ServerFacade {
 
 	public static final BusinessServiceAsync business = (BusinessServiceAsync)GWT.create(BusinessService.class);
 
-
+	public static final EstimationServiceAsync estimation = (EstimationServiceAsync)GWT.create(EstimationService.class);
 	
 	
 	
