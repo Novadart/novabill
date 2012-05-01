@@ -9,6 +9,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.ClientDTOFactory;
+import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -32,6 +33,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public List<ClientDTO> getAll() {
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId()); 
 		Set<Client> clients = business.getClients();
@@ -42,6 +44,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void remove(Long id) throws DataAccessException, NoSuchObjectException, DataIntegrityException {
 		Client client = Client.findClient(id);
 		if(client == null)
@@ -81,6 +84,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	}
 
 	@Override
+	@Transactional(readOnly = true)
 	public ClientDTO get(Long id) throws DataAccessException, NoSuchObjectException {
 		Client client = Client.findClient(id);
 		if(client == null) 
@@ -117,11 +121,14 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	}
 	
 	@Override
-	public ClientDTO getFromEstimationId(Long estimationId)
-			throws DataAccessException, NotAuthenticatedException,
-			NoSuchObjectException, ConcurrentAccessException {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional(readOnly = true)
+	public ClientDTO getFromEstimationId(Long estimationId) throws DataAccessException, NotAuthenticatedException,NoSuchObjectException, ConcurrentAccessException {
+		Client client = Estimation.findEstimation(estimationId).getClient();
+		if(client == null)
+			throw new NoSuchObjectException();
+		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+			throw new DataAccessException();
+		return ClientDTOFactory.toDTO(client);
 	}
 
 }
