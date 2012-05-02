@@ -21,10 +21,12 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.ClientView;
 import com.novadart.novabill.frontend.client.ui.center.client.dialog.ClientDialog;
+import com.novadart.novabill.frontend.client.ui.widget.list.impl.EstimationList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoiceList;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -45,6 +47,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	private final ListDataProvider<EstimationDTO> estimationDataProvider = new ListDataProvider<EstimationDTO>();
 	
 	@UiField InvoiceList invoiceList;
+	@UiField EstimationList estimationList;
 	@UiField Label clientName;
 	@UiField HTML clientDetails;
 	@UiField TabLayoutPanel tabPanel;
@@ -54,6 +57,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("ClientView");
 		invoiceDataProvider.addDataDisplay(invoiceList.getList());
+		estimationDataProvider.addDataDisplay(estimationList.getList());
 		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
 			
 			@Override
@@ -64,12 +68,23 @@ public class ClientViewImpl extends Composite implements ClientView {
 				
 			}
 		});
+		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
+			
+			@Override
+			public void onDataUpdated(DATA data) {
+				if(DATA.ESTIMATION.equals(data)){
+					loadEstimations();
+				}
+				
+			}
+		});
 	}
 
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 		invoiceList.setPresenter(presenter);
+		estimationList.setPresenter(presenter);
 	}
 
 	@Override
@@ -78,11 +93,13 @@ public class ClientViewImpl extends Composite implements ClientView {
 		clientDetails.setHTML("");
 		invoiceDataProvider.getList().clear();
 		invoiceDataProvider.refresh();
+		estimationDataProvider.getList().clear();
+		estimationDataProvider.refresh();
 		tabPanel.selectTab(0);
 	}
 	
-	@UiHandler("new_")
-	void onNewClicked(ClickEvent e){
+	@UiHandler("newInvoice")
+	void onNewInvoiceClicked(ClickEvent e){
 		ServerFacade.invoice.getNextInvoiceId(new AuthAwareAsyncCallback<Long>() {
 			
 			@Override
@@ -101,6 +118,14 @@ public class ClientViewImpl extends Composite implements ClientView {
 			}
 		});
 	}
+	
+	@UiHandler("newEstimation")
+	void onNewEstimationClicked(ClickEvent e){
+		EstimationPlace ep = new EstimationPlace();
+		ep.setDataForNewInvoice(client);
+		presenter.goTo(ep);
+	}
+	
 	
 	@UiHandler("modifyClient")
 	void onModifyClientClicked(ClickEvent e){
@@ -143,6 +168,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		clientName.setText(client.getName());
 		updateClientDetails(client);
 		loadInvoices();
+		loadEstimations();
 	}
 	
 	private void updateClientDetails(ClientDTO client){

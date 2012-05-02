@@ -19,7 +19,7 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 	public static interface Handler {
 		public void onPdfClicked(EstimationDTO invoice);
 		public void onDeleteClicked(EstimationDTO invoice);
-		public void onOpenInvoiceClicked(EstimationDTO invoice);
+		public void onOpenEstimationClicked(EstimationDTO invoice);
 	}
 	
 	private Handler handler;
@@ -34,9 +34,6 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 			sb.appendHtmlConstant("<div class='invoice'>");
 		}
 		sb.appendHtmlConstant("<div class='main'>");
-		sb.appendHtmlConstant("<span class='id'>");
-		sb.append(value.getInvoiceID());
-		sb.appendHtmlConstant("</span>");
 
 		sb.appendHtmlConstant("<span class='date'>");
 		sb.appendEscaped(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_LONG).format(value.getInvoiceDate()));
@@ -56,8 +53,8 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 			sb.appendHtmlConstant("</div>");
 
 			sb.appendHtmlConstant("<div class='tools'>");
-			sb.appendHtmlConstant("<span class='openInvoice'>");
-			sb.appendEscaped(I18N.get.openInvoice());
+			sb.appendHtmlConstant("<span class='openEstimation'>");
+			sb.appendEscaped(I18N.get.openEstimation());
 			sb.appendHtmlConstant("</span>");
 			sb.appendHtmlConstant("<span class='downloadAsPDF'>");
 			sb.appendHtmlConstant("<img class='pdf' src='"+Image.get.pdf().getSafeUri().asString()+"'>");
@@ -94,8 +91,8 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 				handler.onPdfClicked(value);
 			} else if(isDelete(event.getEventTarget())){
 				handler.onDeleteClicked(value);
-			} else if(isOpenInvoice(event.getEventTarget())){
-				handler.onOpenInvoiceClicked(value);
+			} else if(isOpenEstimation(event.getEventTarget())){
+				handler.onOpenEstimationClicked(value);
 			} else {
 				super.onBrowserEvent(context, parent, value, event, valueUpdater);
 			}
@@ -105,10 +102,10 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 		}
 	}
 	
-	private boolean isOpenInvoice(EventTarget et){
+	private boolean isOpenEstimation(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement delete = et.cast();
-			return "openInvoice".equals(delete.getClassName());
+			return "openEstimation".equals(delete.getClassName());
 			
 		} else {
 			return false;

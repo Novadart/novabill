@@ -21,10 +21,12 @@ public interface I18N extends Constants {
 	public String saveModifications();
 	public String saveModificationsConfirm();
 	public String modifyInvoice();
+	public String modifyEstimation();
 	public String errorSessionExpired();
 	public String openInvoice();
 	public String errorServerCommunication();
 	public String confirmInvoiceDeletion();
+	public String confirmEstimationDeletion();
 	public String errorClientData();
 	public String cancel();
 	public String createClient();
@@ -45,8 +47,12 @@ public interface I18N extends Constants {
 	public String errorLoadingAppConfiguration();
 	public String invoiceCreationFailure();
 	public String invoiceCreationSuccess();
+	public String estimationCreationSuccess();
+	public String estimationCreationFailure();
 	public String invoiceUpdateFailure();
 	public String invoiceUpdateSuccess();
+	public String estimationUpdateFailure();
+	public String estimationUpdateSuccess();
 	public String errorInvoiceData();
 	public String createInvoice();
 	public String createEstimate();
@@ -96,4 +102,7 @@ public interface I18N extends Constants {
 	public String invoices();
 	public String estimates();
 	public String convertToInvoice();
+	public String newEstimation();
+	public String openEstimation();
+	public String errorEstimationData();
 }

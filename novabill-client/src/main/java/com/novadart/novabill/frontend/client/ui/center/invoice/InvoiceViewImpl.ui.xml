@@ -12,8 +12,7 @@
 
 		<g:HorizontalPanel>
 			<g:Label styleName="newInvoice" text="{i18n.newInvoiceCreation}"></g:Label>
-			<g:Button styleName="modifyButton" ui:field="modifyInvoice"
-				text="{i18n.modifyInvoice}"></g:Button>
+			<g:Button styleName="modifyButton" ui:field="modifyDocument"></g:Button>
 			<g:Button styleName="createButton" ui:field="createInvoice"
 				text="{i18n.createInvoice}"></g:Button>
 			<g:Button styleName="saveAsEstimation" ui:field="createEstimate"
@@ -50,7 +49,7 @@
 			</g:row>
 			<g:row>
 				<g:customCell>
-					<g:Label styleName="label" text="{i18n.payment}"></g:Label>
+					<g:Label ui:field="paymentLabel" styleName="label" text="{i18n.payment}"></g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:ListBox styleName="listBox payment" ui:field="payment"></g:ListBox>
@@ -58,7 +57,7 @@
 			</g:row>
 			<g:row>
 				<g:customCell>
-					<g:Label styleName="label" text="{i18n.paymentNote}"></g:Label>
+					<g:Label ui:field="paymentNoteLabel" styleName="label" text="{i18n.paymentNote}"></g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:TextArea styleName="box paymentNote" ui:field="paymentNote"></g:TextArea>

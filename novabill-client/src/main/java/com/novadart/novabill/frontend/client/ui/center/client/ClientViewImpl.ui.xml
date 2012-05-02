@@ -20,9 +20,10 @@
 		</g:HorizontalPanel>
 
 
-		<g:SimplePanel styleName="centralPanel">
-			<g:Button ui:field="new_" styleName="newInvoice" text="{i18n.newInvoice}"></g:Button>
-		</g:SimplePanel>
+		<g:FlowPanel styleName="centralPanel">
+			<g:Button ui:field="newInvoice" styleName="newInvoice" text="{i18n.newInvoice}"></g:Button>
+			<g:Button ui:field="newEstimation" styleName="newEstimation" text="{i18n.newEstimation}"></g:Button>
+		</g:FlowPanel>
 
 		<g:SimpleLayoutPanel styleName="clientMainBody">
 			<g:TabLayoutPanel ui:field="tabPanel" barHeight="3.5" barUnit='EM'>
@@ -39,7 +40,7 @@
 						<g:Label styleName="tabHeaderLabel" text="{i18n.estimates}"></g:Label>
 					</g:customHeader>
 					<g:SimplePanel styleName="listWrapper panel">
-						<i:InvoiceList ui:field="estimatesList"></i:InvoiceList>
+						<i:EstimationList ui:field="estimationList"></i:EstimationList>
 					</g:SimplePanel>
 				</g:tab>
 

@@ -23,6 +23,10 @@ public class DataWatcher {
 		handlerManager.fireEvent(new DataWatchEvent(DATA.INVOICE));
 	}
 	
+	public void fireEstimationEvent(){
+		handlerManager.fireEvent(new DataWatchEvent(DATA.ESTIMATION));
+	}
+	
 	public void fireClientEvent(){
 		handlerManager.fireEvent(new DataWatchEvent(DATA.CLIENT));
 	}

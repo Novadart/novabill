@@ -8,6 +8,7 @@ public class DataWatchEvent extends GwtEvent<DataWatchEventHandler> {
 	
 	public static enum DATA{
 		INVOICE,
+		ESTIMATION,
 		CLIENT,
 		STATS
 	}

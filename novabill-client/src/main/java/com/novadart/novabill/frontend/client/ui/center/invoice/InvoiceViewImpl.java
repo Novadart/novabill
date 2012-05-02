@@ -30,6 +30,7 @@ import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
+import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -45,6 +46,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	interface InvoiceViewImplUiBinder extends UiBinder<Widget, InvoiceViewImpl> {
 	}
 
+	@UiField Label paymentLabel;
 	@UiField(provided=true) ListBox payment;
 	@UiField(provided=true) ListBox tax;
 	@UiField(provided=true) ItemTable itemTable;
@@ -55,12 +57,14 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiField TextBox price;
 	@UiField Label clientName;
 	@UiField(provided=true) DateBox date;
+	@UiField Label invoiceNumber;
 	@UiField TextBox number;
+	@UiField Label paymentNoteLabel;
 	@UiField TextArea paymentNote;
 	@UiField TextArea note;
 	@UiField Button createEstimate;
 	@UiField Button createInvoice;
-	@UiField Button modifyInvoice;
+	@UiField Button modifyDocument;
 	@UiField Label convertToInvoice;
 	@UiField SimplePanel newItemContainer;
 
@@ -99,7 +103,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 			}
 		});
 		invoiceItems.addDataDisplay(itemTable);
-		
+
 		date = new DateBox();
 		date.getTextBox().setReadOnly(true);
 		date.setFormat(new DateBox.DefaultFormat
@@ -144,21 +148,68 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 	}
 
+	@UiHandler("convertToInvoice")
+	void onConvertToInvoice(ClickEvent e){
+		if(!validateEstimate()){
+			Window.alert(I18N.get.errorEstimationData());
+			return; //TODO improve message
+		}
+		
+		EstimationDTO estimation = createEstimation(this.estimation);
+		ServerFacade.invoice.createFromEstimation(estimation, new AuthAwareAsyncCallback<InvoiceDTO>() {
+
+			@Override
+			public void onSuccess(InvoiceDTO result) {
+				DataWatcher.getInstance().fireInvoiceEvent();
+				DataWatcher.getInstance().fireStatsEvent();
+				
+				InvoicePlace ip = new InvoicePlace();
+				ip.setInvoiceId(result.getInvoiceID());
+				presenter.goTo(ip);
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+				Window.alert(I18N.get.invoiceCreationFailure());
+			}
+		});
+	}
+
 
 	@UiHandler("createEstimate")
 	void onCreateEstimateClicked(ClickEvent e){
 		if(!validateEstimate()){
-			Window.alert(I18N.get.errorInvoiceData());
+			Window.alert(I18N.get.errorEstimationData());
 			return; //TODO improve message
 		}
 
+		EstimationDTO estimation = createEstimation(null);
+
+		ServerFacade.estimation.add(estimation, new AuthAwareAsyncCallback<Long>() {
+
+			@Override
+			public void onSuccess(Long result) {
+				Window.alert(I18N.get.estimationCreationSuccess());
+
+				DataWatcher.getInstance().fireEstimationEvent();
+
+				ClientPlace cp = new ClientPlace();
+				cp.setClientId(client.getId());
+				presenter.goTo(cp);
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+				Window.alert(I18N.get.estimationCreationFailure());
+			}
+		});
 
 	}
 
 
 	private InvoiceDTO createInvoice(InvoiceDTO invoice){
 		InvoiceDTO inv;
-		
+
 		if(invoice != null){
 			inv = invoice;
 		} else {
@@ -166,8 +217,8 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 			inv.setBusiness(Configuration.getBusiness());
 			inv.setClient(client);
 		}
-		
-		
+
+
 		inv.setInvoiceID(Long.parseLong(number.getText()));
 		inv.setInvoiceDate(date.getValue());
 		List<InvoiceItemDTO> invItems = new ArrayList<InvoiceItemDTO>();
@@ -192,12 +243,46 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 			totTaxes = totTaxes.add(InvoiceUtils.calculateTaxesForItem(item));
 		}
 		BigDecimal totAfterTaxes = totBeforeTaxes.add(totTaxes);
-		
+
 		inv.setTotalBeforeTax(totBeforeTaxes);
 		inv.setTotalTax(totTaxes);
 		inv.setTotal(totAfterTaxes);
 
 		return inv;
+	}
+
+	private EstimationDTO createEstimation(EstimationDTO estimation){
+		EstimationDTO es;
+
+		if(estimation != null){
+			es = estimation;
+		} else {
+			es = new EstimationDTO();
+			es.setBusiness(Configuration.getBusiness());
+			es.setClient(client);
+		}
+
+		es.setInvoiceDate(date.getValue());
+		List<InvoiceItemDTO> invItems = new ArrayList<InvoiceItemDTO>();
+		for (InvoiceItemDTO invoiceItemDTO : invoiceItems.getList()) {
+			invItems.add(invoiceItemDTO);
+		}
+		es.setItems(invItems);
+		es.setNote(note.getText());
+
+		BigDecimal totBeforeTaxes = BigDecimal.ZERO;
+		BigDecimal totTaxes = BigDecimal.ZERO;
+		for (InvoiceItemDTO item : invoiceItems.getList()) {
+			totBeforeTaxes = totBeforeTaxes.add(InvoiceUtils.calculateTotalBeforeTaxesForItem(item));
+			totTaxes = totTaxes.add(InvoiceUtils.calculateTaxesForItem(item));
+		}
+		BigDecimal totAfterTaxes = totBeforeTaxes.add(totTaxes);
+
+		es.setTotalBeforeTax(totBeforeTaxes);
+		es.setTotalTax(totTaxes);
+		es.setTotal(totAfterTaxes);
+
+		return es;
 	}
 
 
@@ -223,12 +308,21 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		}
 	}
 
-	@UiHandler("modifyInvoice")
+	@UiHandler("modifyDocument")
 	void onModifyInvoiceClicked(ClickEvent e){
+
+		if(invoice != null){
+			onModifyInvoice();
+		} else {
+			onModifyEstimation();
+		}
+	}
+
+	private void onModifyInvoice(){
 		if(editable){
 			if( Window.confirm(I18N.get.saveModificationsConfirm()) ){
 				final InvoiceDTO inv = createInvoice(invoice);
-				
+
 				ServerFacade.invoice.update(inv, new AuthAwareAsyncCallback<Void>() {
 
 					@Override
@@ -248,21 +342,57 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 						presenter.goTo(cp);
 					}
 				});
-				
+
 			} 
-			
+
 		} else {
 			editable = true;
-			
+
 			newItemContainer.setVisible(true);
 			date.setEnabled(true);
-			number.setReadOnly(false);
-			modifyInvoice.setText(I18N.get.saveModifications());
-			payment.setEnabled(true);
+			modifyDocument.setText(I18N.get.saveModifications());
 			note.setEnabled(true);
-			paymentNote.setEnabled(true);
 		}
 	}
+
+	private void onModifyEstimation(){if(editable){
+		if( Window.confirm(I18N.get.saveModificationsConfirm()) ){
+			final EstimationDTO es = createEstimation(estimation);
+
+			ServerFacade.estimation.update(es, new AuthAwareAsyncCallback<Void>() {
+
+				@Override
+				public void onException(Throwable caught) {
+					Window.alert(I18N.get.estimationUpdateFailure());
+				}
+
+				@Override
+				public void onSuccess(Void result) {
+					Window.alert(I18N.get.estimationUpdateSuccess());
+
+					DataWatcher.getInstance().fireEstimationEvent();
+
+					ClientPlace cp = new ClientPlace();
+					cp.setClientId(es.getClient().getId());
+					presenter.goTo(cp);
+				}
+			});
+
+		} 
+
+	} else {
+		editable = true;
+
+		newItemContainer.setVisible(true);
+		date.setEnabled(true);
+		number.setReadOnly(false);
+		modifyDocument.setText(I18N.get.saveModifications());
+		payment.setEnabled(true);
+		note.setEnabled(true);
+		paymentNote.setEnabled(true);
+	}}
+
+
 
 	@Override
 	public void setInvoice(InvoiceDTO invoice) {
@@ -273,10 +403,10 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		note.setText(invoice.getNote());
 		paymentNote.setText(invoice.getPaymentNote());
 		payment.setSelectedIndex(invoice.getPaymentType().ordinal());
-		createEstimate.setVisible(false);
 		clientName.setText(invoice.getClient().getName());
-		modifyInvoice.setVisible(true);
-		
+		modifyDocument.setVisible(true);
+		modifyDocument.setText(I18N.get.modifyInvoice());
+
 		updateFields();
 	}
 
@@ -288,7 +418,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		clientName.setText(client.getName());
 		date.setValue(new Date());
 		number.setText(progressiveId.toString());
-		
+
 		createInvoice.setVisible(true);
 		createEstimate.setVisible(true);
 		newItemContainer.setVisible(true);
@@ -302,26 +432,48 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@Override
 	public void setDataForNewEstimation(ClientDTO client) {
 		this.client =client;
-		
+
 		clientName.setText(client.getName());
 		date.setValue(new Date());
-		
-		createInvoice.setVisible(false);
+
 		createEstimate.setVisible(true);
 		convertToInvoice.setVisible(true);
 		newItemContainer.setVisible(true);
 		date.setEnabled(true);
-		number.setReadOnly(false);
-		payment.setEnabled(true);
+
+		number.setVisible(false);
+		invoiceNumber.setVisible(false);
+		paymentNoteLabel.setVisible(false);
+		paymentNote.setVisible(false);
+		paymentLabel.setVisible(false);
+		payment.setVisible(false);
+
 		note.setEnabled(true);
-		paymentNote.setEnabled(true);
 	}
-	
-	
+
+
 	@Override
 	public void setEstimation(EstimationDTO estimation) {
 		this.estimation = estimation;
-		
+
+		invoiceItems.setList(estimation.getItems());
+		date.setValue(estimation.getInvoiceDate());
+		note.setText(estimation.getNote());
+		clientName.setText(estimation.getClient().getName());
+
+		modifyDocument.setVisible(true);
+		modifyDocument.setText(I18N.get.modifyEstimation());
+
+		convertToInvoice.setVisible(true);
+
+		number.setVisible(false);
+		invoiceNumber.setVisible(false);
+		paymentNoteLabel.setVisible(false);
+		paymentNote.setVisible(false);
+		paymentLabel.setVisible(false);
+		payment.setVisible(false);
+
+		updateFields();
 	}
 
 
@@ -397,6 +549,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		this.estimation = null;
 		number.setReadOnly(true);
 		date.setEnabled(false);
+		payment.setVisible(true);
 		payment.setSelectedIndex(0);
 		payment.setEnabled(false);
 		paymentNote.setText("");
@@ -408,13 +561,17 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		totalAfterTaxes.setText("");
 		createEstimate.setVisible(false);
 		createInvoice.setVisible(false);
-		modifyInvoice.setVisible(false);
-		modifyInvoice.setText(I18N.get.modifyInvoice());
+		modifyDocument.setVisible(false);
+		modifyDocument.setText(I18N.get.modifyInvoice());
 		convertToInvoice.setVisible(false);
 		newItemContainer.setVisible(false);
 		note.setEnabled(false);
 		paymentNote.setEnabled(false);
+		paymentNote.setVisible(true);
 		resetItemTableForm();
+		invoiceNumber.setVisible(true);
+		paymentNoteLabel.setVisible(true);
+		paymentLabel.setVisible(true);
 		editable = false;
 	}
 
