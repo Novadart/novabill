@@ -63,14 +63,12 @@ public abstract class AbstractInvoice {
 		return calendar.get(Calendar.YEAR);
     }
     
-    @SuppressWarnings("unused")
 	@PreUpdate
     protected void onUpdate(){
     	if(invoiceDate != null)
     		invoiceYear = getYear(invoiceDate);
     }
     
-    @SuppressWarnings("unused")
     @PrePersist
     protected void onPersist(){
     	if(invoiceDate != null)

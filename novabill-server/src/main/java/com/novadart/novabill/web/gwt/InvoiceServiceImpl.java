@@ -3,11 +3,11 @@ package com.novadart.novabill.web.gwt;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
+
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.domain.AbstractInvoiceDTOFactory;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Estimation;
@@ -17,7 +17,6 @@ import com.novadart.novabill.domain.InvoiceDTOFactory;
 import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.shared.client.dto.AbstractInvoiceDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
