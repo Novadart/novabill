@@ -3,6 +3,7 @@ package com.novadart.novabill.shared.client.facade;
 import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -29,5 +30,5 @@ public interface InvoiceService extends RemoteService {
 
 	public List<InvoiceDTO> getAllForClientInRange(long clientId, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
 	
-	public InvoiceDTO createFromEstimation(Long estimationID) throws NotAuthenticatedException, DataAccessException, InvalidInvoiceIDException, NoSuchObjectException;
+	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidInvoiceIDException, NoSuchObjectException;
 }

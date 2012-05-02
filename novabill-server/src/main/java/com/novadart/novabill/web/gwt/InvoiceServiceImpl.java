@@ -17,6 +17,7 @@ import com.novadart.novabill.domain.InvoiceDTOFactory;
 import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.shared.client.dto.AbstractInvoiceDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
@@ -176,17 +177,19 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	
 	@Override
 	@Transactional(readOnly = false)
-	public InvoiceDTO createFromEstimation(Long estimationID) throws NotAuthenticatedException, DataAccessException, InvalidInvoiceIDException, NoSuchObjectException {
-		if(estimationID == null)
-			throw new DataAccessException();
-		Estimation estimation = Estimation.findEstimation(estimationID);
-		if(estimation == null)
-			throw new NoSuchObjectException();
+	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidInvoiceIDException, NoSuchObjectException {
+		if(estimationDTO.getId() != null){//present in DB
+			Estimation estimation = Estimation.findEstimation(estimationDTO.getId());
+			if(estimation == null)
+				throw new NoSuchObjectException();
+			estimation.remove();
+		}
+		Estimation estimation = new Estimation();
+		EstimationDTOFactory.copyFromDTO(estimation, estimationDTO, true);
 		InvoiceDTO invoiceDTO = EstimationDTOFactory.toInvoiceDTO(estimation);
 		invoiceDTO.setInvoiceID(getNextInvoiceId());
 		Long invoiceID = add(invoiceDTO);
 		invoiceDTO.setId(invoiceID);
-		estimation.remove();
 		return invoiceDTO;
 	}
 	
