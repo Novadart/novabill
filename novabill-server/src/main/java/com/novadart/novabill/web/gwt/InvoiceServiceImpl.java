@@ -6,8 +6,12 @@ import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.domain.AbstractInvoiceDTOFactory;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Estimation;
+import com.novadart.novabill.domain.EstimationDTOFactory;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.InvoiceDTOFactory;
 import com.novadart.novabill.domain.InvoiceItem;
@@ -171,10 +175,19 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	}
 	
 	@Override
-	public InvoiceDTO createFromEstimation(EstimationDTO estimation)
-			throws NotAuthenticatedException {
-		// TODO Auto-generated method stub
-		return null;
+	@Transactional(readOnly = false)
+	public InvoiceDTO createFromEstimation(Long estimationID) throws NotAuthenticatedException, DataAccessException, InvalidInvoiceIDException, NoSuchObjectException {
+		if(estimationID == null)
+			throw new DataAccessException();
+		Estimation estimation = Estimation.findEstimation(estimationID);
+		if(estimation == null)
+			throw new NoSuchObjectException();
+		InvoiceDTO invoiceDTO = EstimationDTOFactory.toInvoiceDTO(estimation);
+		invoiceDTO.setInvoiceID(getNextInvoiceId());
+		Long invoiceID = add(invoiceDTO);
+		invoiceDTO.setId(invoiceID);
+		estimation.remove();
+		return invoiceDTO;
 	}
 	
 }

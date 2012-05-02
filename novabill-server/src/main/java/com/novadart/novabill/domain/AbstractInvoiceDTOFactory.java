@@ -7,7 +7,7 @@ import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 
 public abstract class AbstractInvoiceDTOFactory {
 	
-	protected static AbstractInvoiceDTO copyToDTO(AbstractInvoice abstractInvoice, AbstractInvoiceDTO abstractInvoiceDTO) {
+	protected static void copyToDTO(AbstractInvoice abstractInvoice, AbstractInvoiceDTO abstractInvoiceDTO) {
 		abstractInvoiceDTO.setId(abstractInvoice.getId());
 		abstractInvoiceDTO.setInvoiceID(abstractInvoice.getInvoiceID());
 		abstractInvoiceDTO.setInvoiceDate(abstractInvoice.getInvoiceDate());
@@ -19,7 +19,6 @@ public abstract class AbstractInvoiceDTOFactory {
 		abstractInvoiceDTO.setTotal(abstractInvoice.getTotal());
 		abstractInvoiceDTO.setTotalTax(abstractInvoice.getTotalTax());
 		abstractInvoiceDTO.setTotalBeforeTax(abstractInvoice.getTotalBeforeTax());
-		return abstractInvoiceDTO;
 	}
 	
 	public static void copyFromDTO(AbstractInvoice abstractInvoice, AbstractInvoiceDTO abstractInvoiceDTO, boolean copyItems){
