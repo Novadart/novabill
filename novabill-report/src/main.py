@@ -1,14 +1,14 @@
 # coding: utf-8
 from os import remove
 from os.path import exists
-from template.default import DefaultTemplate
+from template.default import DefaultTemplate, DocumentType
 
 
 
 
-def create_invoice(out, invoice, pathToLogo=None, logoWidth=None, logoHeight=None):
+def create_invoice(out, invoice, pathToLogo=None, logoWidth=None, logoHeight=None, docType=DocumentType.INVOICE):
     #TODO manage different templates
-    doc = DefaultTemplate(invoice, pathToLogo, logoWidth, logoHeight, out)
+    doc = DefaultTemplate(invoice, pathToLogo, logoWidth, logoHeight, out, docType)
     doc.build()
 
 

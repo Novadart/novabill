@@ -10,7 +10,7 @@ from reportlab.platypus.tables import Table, TableStyle
 from reportlab.rl_config import defaultPageSize
 from reportlab.lib.colors import gray
 
-__all__ = ["DefaultTemplate"]
+__all__ = ["DefaultTemplate", "DocumentType"]
 
 BORDER_SIZE = 0.5
 BORDER_COLOR = gray
@@ -97,14 +97,20 @@ class FloatToEnd(KeepTogether):
             t = Table([[""]], colWidths=[self._W], rowHeights=[aH - H], style=[])
             return [t] + self._content
 
+class DocumentType(object):
+    
+    INVOICE = 0
+    
+    ESTIMATION = 1
 
 class DefaultTemplate(InvoiceTemplate):
     
-    def __init__(self, jsonData, pathToLogo, logoWidth, logoHeight, outputFilePath):
+    def __init__(self, jsonData, pathToLogo, logoWidth, logoHeight, outputFilePath, docType = DocumentType.INVOICE):
         InvoiceTemplate.__init__(self, jsonData, outputFilePath)
+        self.docType = docType
         self.pathToLogo = pathToLogo
-        self.logoWidth = float(logoWidth)
-        self.logoHeight = float(logoHeight)
+        self.logoWidth = float(logoWidth) if logoWidth is not None else logoWidth
+        self.logoHeight = float(logoHeight) if logoHeight is not None else logoHeight
         
     def __get(self, prop, defaultValue):
 #        return self._getData()[prop] if prop in self._getData() and self._getData()[prop] is not None else defaultValue
@@ -139,15 +145,18 @@ class DefaultTemplate(InvoiceTemplate):
     
     def __invoice_details_flowable(self, width, ratio):
         style = getSampleStyleSheet()["Normal"]
-        t = Table([
-            [Paragraph("<b>FATTURA</b>", style), Paragraph("%s" % self._getData().getInvoiceID(), style)],
-            [Paragraph("<b>DATA</b>", style), Paragraph("%s" % self._getData().getInvoiceDate(), style)],
+        tableFlowables = [
+            [Paragraph("<b>FATTURA</b>", style), Paragraph("%s" % self.__get(self._getData().getInvoiceID(), ""), style)],
+            [Paragraph("<b>DATA</b>", style), Paragraph("%s" % self.__get(self._getData().getInvoiceDate(), ""), style)],
+        ]
+        if self.docType == DocumentType.INVOICE:
+            tableFlowables +=[
             [Paragraph("<b>Pagamento</b>", style), Paragraph(self.__get(self._getData().getHumanReadablePaymentType(), ""), style)],
             [Paragraph("<b>Note Pagamento</b>", style), Paragraph(self.__get(self._getData().getPaymentNote(), ""), style)],
             [Paragraph("<b>Scadenza Pagamento</b>", style), Paragraph(self.__get(self._getData().getPaymentDueDate(), ""), style)],
-            [Paragraph("<b>Note</b>", style), Paragraph(self.__get(self._getData().getNote(), ""), style)]
-    
-        ], colWidths=[width * ratio, width * (1 - ratio)])
+        ]
+        tableFlowables.append([Paragraph("<b>Note</b>", style), Paragraph(self.__get(self._getData().getNote(), ""), style)])
+        t = Table(tableFlowables, colWidths=[width * ratio, width * (1 - ratio)])
         t.setStyle(TableStyle([("BOX", (0, 0), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))
         return t
     

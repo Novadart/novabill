@@ -32,7 +32,7 @@ public class InvoiceList extends QuickViewList<InvoiceDTO> {
 			
 			@Override
 			public void onPdfClicked(InvoiceDTO invoice) {
-				Window.open(GWT.getHostPageBaseURL()+"private/invoices/"+invoice.getId(), null, null);
+				Window.open(GWT.getHostPageBaseURL()+"private/pdf/invoices/"+invoice.getId(), null, null);
 			}
 
 			@Override

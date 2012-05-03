@@ -11,7 +11,7 @@ import jep.Jep;
 import jep.JepException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.AbstractInvoice;
 import flexjson.JSONSerializer;
 import flexjson.transformer.AbstractTransformer;
 import flexjson.transformer.DateTransformer;
@@ -19,6 +19,10 @@ import flexjson.transformer.HtmlEncoderTransformer;
 
 @Service
 public class PDFGenerator {
+	
+	public enum DocumentType{
+		INVOICE, ESTIMATION
+	}
 
 	@Value("${path.jep}")
 	private String includePath;
@@ -38,7 +42,8 @@ public class PDFGenerator {
 		public void beforeWriteCallback(File file);
 	};
 	
-	public void createAndWrite(OutputStream out, Invoice invoice, String pathToLogo, Integer logoWidth, Integer logoHeight, BeforeWriteEventHandler bwEvHnld) throws IOException{
+	public void createAndWrite(OutputStream out, AbstractInvoice invoice, String pathToLogo, Integer logoWidth, Integer logoHeight, 
+			DocumentType docType, BeforeWriteEventHandler bwEvHnld) throws IOException{
 		File outDir = new File(invOutLocation);
 		checkCreateOutputLocation(outDir);
 		File invFile = File.createTempFile("inv", ".pdf", outDir);
@@ -51,10 +56,11 @@ public class PDFGenerator {
 			Jep jep = new Jep(false, includePath,  Thread.currentThread().getContextClassLoader());
 			jep.runScript(pyInvGenScript, Thread.currentThread().getContextClassLoader());
 			jep.eval("import json");
+			int docTypeConst = docType == DocumentType.INVOICE? 0: 1;
 			if(pathToLogo == null)
-				jep.eval(String.format("create_invoice('%s', json.loads('%s'))", invFile.getAbsolutePath(), json));
+				jep.eval(String.format("create_invoice('%s', json.loads('%s'), docType=%d)", invFile.getAbsolutePath(), json, docTypeConst));
 			else
-				jep.eval(String.format("create_invoice('%s', json.loads('%s'), '%s', %d, %d)", invFile.getAbsolutePath(), json, pathToLogo, logoWidth, logoHeight));
+				jep.eval(String.format("create_invoice('%s', json.loads('%s'), '%s', %d, %d, %d)", invFile.getAbsolutePath(), json, pathToLogo, logoWidth, logoHeight, docTypeConst));
 			jep.close();
 			bwEvHnld.beforeWriteCallback(invFile);
 			InputStream in = new FileInputStream(invFile);
