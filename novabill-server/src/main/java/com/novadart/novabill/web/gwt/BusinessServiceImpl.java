@@ -92,7 +92,6 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 		if(business == null)
 			throw new NoSuchObjectException();
 		BusinessDTOFactory.copyFromDTO(business, businessDTO);
-		business.flush();
 	}
 
 }
