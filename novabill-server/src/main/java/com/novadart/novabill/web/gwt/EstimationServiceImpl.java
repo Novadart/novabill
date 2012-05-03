@@ -89,6 +89,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	}
 
 	@Override
+	@Transactional(readOnly = false)
 	public void update(EstimationDTO estimationDTO) throws DataAccessException, NoSuchObjectException {
 		if(estimationDTO.getId() == null)
 			throw new DataAccessException();
