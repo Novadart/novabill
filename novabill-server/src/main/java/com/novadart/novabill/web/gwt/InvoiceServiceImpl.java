@@ -183,12 +183,10 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 				throw new NoSuchObjectException();
 			estimation.remove();
 		}
-		Estimation estimation = new Estimation();
-		EstimationDTOFactory.copyFromDTO(estimation, estimationDTO, true);
-		InvoiceDTO invoiceDTO = EstimationDTOFactory.toInvoiceDTO(estimation);
+		InvoiceDTO invoiceDTO = EstimationDTOFactory.toInvoiceDTO(estimationDTO);
 		invoiceDTO.setInvoiceID(getNextInvoiceId());
-		Long invoiceID = add(invoiceDTO);
-		invoiceDTO.setId(invoiceID);
+		Long id = add(invoiceDTO);
+		invoiceDTO.setId(id);
 		return invoiceDTO;
 	}
 	

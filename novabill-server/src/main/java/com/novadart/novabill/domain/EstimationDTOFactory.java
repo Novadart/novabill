@@ -15,9 +15,13 @@ public class EstimationDTOFactory extends AbstractInvoiceDTOFactory {
 		return estimationDTO; 
 	}
 	
-	public static InvoiceDTO toInvoiceDTO(Estimation estimation){
+	public static InvoiceDTO toInvoiceDTO(EstimationDTO estimationDTO){
+		AbstractInvoice abstractInvoice = new Estimation();
+		AbstractInvoiceDTOFactory.copyFromDTO(abstractInvoice, estimationDTO, true);
 		InvoiceDTO invoiceDTO = new InvoiceDTO();
-		AbstractInvoiceDTOFactory.copyToDTO(estimation, invoiceDTO);
+		AbstractInvoiceDTOFactory.copyToDTO(abstractInvoice, invoiceDTO);
+		invoiceDTO.setBusiness(estimationDTO.getBusiness());
+		invoiceDTO.setClient(estimationDTO.getClient());
 		return invoiceDTO;
 	}
 
