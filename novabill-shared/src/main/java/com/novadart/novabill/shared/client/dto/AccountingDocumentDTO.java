@@ -6,11 +6,11 @@ import java.util.Date;
 import java.util.List;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class AbstractInvoiceDTO implements IsSerializable{
+public class AccountingDocumentDTO implements IsSerializable{
 	
 	protected Long id;
 	
-	protected Long invoiceID;
+	protected Long documentID;
 	
 	protected Date invoiceDate;
 	
@@ -36,12 +36,12 @@ public class AbstractInvoiceDTO implements IsSerializable{
 		this.id = id;
 	}
 
-	public Long getInvoiceID() {
-		return invoiceID;
+	public Long getDocumentID() {
+		return documentID;
 	}
 
-	public void setInvoiceID(Long invoiceID) {
-		this.invoiceID = invoiceID;
+	public void setDocumentID(Long documentID) {
+		this.documentID = documentID;
 	}
 
 	public Date getInvoiceDate() {

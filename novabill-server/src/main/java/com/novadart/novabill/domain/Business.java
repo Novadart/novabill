@@ -122,36 +122,36 @@ public class Business implements Serializable {
     private Set<RoleTypes> grantedRoles = new HashSet<RoleTypes>();
     
     public List<Invoice> getAllInvoicesInRange(int start, int length){
-    	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.invoiceYear desc, invoice.invoiceID desc";
+    	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.invoiceYear desc, invoice.documentID desc";
     	return entityManager().createQuery(query, Invoice.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
     }
     
-    public Long getNextInvoiceId(){
-    	String query = "select max(invoice.invoiceID) from Invoice as invoice where invoice.business.id = :businessId and invoice.invoiceYear = :year";
+    public Long getNextInvoiceDocumentID(){
+    	String query = "select max(invoice.documentID) from Invoice as invoice where invoice.business.id = :businessId and invoice.invoiceYear = :year";
     	Long id = entityManager.createQuery(query, Long.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getSingleResult(); 
     	return (id == null)? 1: id + 1;
     }
     
-    public List<Long> getCurrentYearInvoicesIds(){
-    	String query = "select invoice.invoiceID from Invoice as invoice where invoice.business.id = :businessId and invoice.invoiceYear = :year order by invoice.invoiceID";
+    public List<Long> getCurrentYearInvoicesDocumentIDs(){
+    	String query = "select invoice.documentID from Invoice as invoice where invoice.business.id = :businessId and invoice.invoiceYear = :year order by invoice.documentID";
     	return entityManager.createQuery(query, Long.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getResultList();
     }
     
-    public Invoice getInvoiceByIdInYear(Long invoiceId, Integer year){
-    	String query = "select invoice from Invoice invoice where invoice.business.id = :businessId and invoice.invoiceYear = :year and invoice.invoiceID = :id";
+    public Invoice getInvoiceByIdInYear(Long documentID, Integer year){
+    	String query = "select invoice from Invoice invoice where invoice.business.id = :businessId and invoice.invoiceYear = :year and invoice.documentID = :id";
     	List<Invoice> result =  entityManager().createQuery(query, Invoice.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", year)
-    			.setParameter("id", invoiceId).getResultList();
+    			.setParameter("id", documentID).getResultList();
     	return result.size() == 0? null: result.get(0);
     }
     
-    public Long getNextEstimationId(){
-    	String query = "select max(estimation.invoiceID) from Estimation as estimation where estimation.business.id = :businessId and estimation.invoiceYear = :year";
+    public Long getNextEstimationDocumentID(){
+    	String query = "select max(estimation.documentID) from Estimation as estimation where estimation.business.id = :businessId and estimation.invoiceYear = :year";
     	Long id = entityManager.createQuery(query, Long.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getSingleResult();

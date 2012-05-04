@@ -1,5 +1,5 @@
 package com.novadart.novabill.shared.client.dto;
 
-public class EstimationDTO extends AbstractInvoiceDTO {
+public class EstimationDTO extends AccountingDocumentDTO {
 
 }

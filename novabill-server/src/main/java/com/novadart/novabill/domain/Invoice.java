@@ -21,7 +21,7 @@ import com.novadart.novabill.shared.client.dto.PaymentType;
 
 @Configurable
 @Entity
-public class Invoice extends AbstractInvoice implements Serializable {
+public class Invoice extends AccountingDocument implements Serializable {
 	
 	private static final long serialVersionUID = 3369941491294470750L;
 

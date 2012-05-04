@@ -2,10 +2,10 @@ package com.novadart.novabill.domain;
 
 import java.util.Comparator;
 
-public class AbstractInvoiceComparator implements Comparator<AbstractInvoice> {
+public class AccountingDocumentComparator implements Comparator<AccountingDocument> {
 	
 	@Override
-	public int compare(AbstractInvoice abInv1, AbstractInvoice abInv2) {
+	public int compare(AccountingDocument abInv1, AccountingDocument abInv2) {
 		if( !abInv1.getClass().equals(abInv2.getClass()) ){
 			return 0;
 		}
@@ -16,7 +16,7 @@ public class AbstractInvoiceComparator implements Comparator<AbstractInvoice> {
 		
 		int cmpInvId;
 		if(abInv1 instanceof Invoice){
-			cmpInvId = abInv1.getInvoiceID().compareTo(abInv2.getInvoiceID());
+			cmpInvId = abInv1.getDocumentID().compareTo(abInv2.getDocumentID());
 		} else {
 			cmpInvId = abInv1.getId().compareTo(abInv2.getId());
 		}

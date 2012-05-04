@@ -34,9 +34,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Configurable
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-public abstract class AbstractInvoice {
+public abstract class AccountingDocument {
 	
-	protected Long invoiceID;
+	protected Long documentID;
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "S-")
@@ -84,12 +84,12 @@ public abstract class AbstractInvoice {
 	 * *
 	 */
 	
-	public Long getInvoiceID() {
-        return this.invoiceID;
+	public Long getDocumentID() {
+        return this.documentID;
     }
     
-    public void setInvoiceID(Long invoiceID) {
-        this.invoiceID = invoiceID;
+    public void setDocumentID(Long documentID) {
+        this.documentID = documentID;
     }
     
     public Date getInvoiceDate() {
@@ -157,27 +157,27 @@ public abstract class AbstractInvoice {
     transient EntityManager entityManager;
     
     public static final EntityManager entityManager() {
-        EntityManager em = new AbstractInvoice() {
+        EntityManager em = new AccountingDocument() {
         }.entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
     
-    public static long countAbstractInvoices() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM AbstractInvoice o", Long.class).getSingleResult();
+    public static long countAccountingDocuments() {
+        return entityManager().createQuery("SELECT COUNT(o) FROM AccountingDocument o", Long.class).getSingleResult();
     }
     
-    public static List<AbstractInvoice> findAllAbstractInvoices() {
-        return entityManager().createQuery("SELECT o FROM AbstractInvoice o", AbstractInvoice.class).getResultList();
+    public static List<AccountingDocument> findAllAccountingDocuments() {
+        return entityManager().createQuery("SELECT o FROM AccountingDocument o", AccountingDocument.class).getResultList();
     }
     
-    public static AbstractInvoice findAbstractInvoice(Long id) {
+    public static AccountingDocument findAccountingDocument(Long id) {
         if (id == null) return null;
-        return entityManager().find(AbstractInvoice.class, id);
+        return entityManager().find(AccountingDocument.class, id);
     }
     
-    public static List<AbstractInvoice> findAbstractInvoiceEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM AbstractInvoice o", AbstractInvoice.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+    public static List<AccountingDocument> findAccountingDocumentEntries(int firstResult, int maxResults) {
+        return entityManager().createQuery("SELECT o FROM AccountingDocument o", AccountingDocument.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
     
     @Transactional
@@ -192,7 +192,7 @@ public abstract class AbstractInvoice {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            AbstractInvoice attached = AbstractInvoice.findAbstractInvoice(this.id);
+            AccountingDocument attached = AccountingDocument.findAccountingDocument(this.id);
             this.entityManager.remove(attached);
         }
     }
@@ -210,9 +210,9 @@ public abstract class AbstractInvoice {
     }
     
     @Transactional
-    public AbstractInvoice merge() {
+    public AccountingDocument merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
-        AbstractInvoice merged = this.entityManager.merge(this);
+        AccountingDocument merged = this.entityManager.merge(this);
         this.entityManager.flush();
         return merged;
     }

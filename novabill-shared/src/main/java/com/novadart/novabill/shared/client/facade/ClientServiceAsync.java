@@ -17,10 +17,10 @@ public interface ClientServiceAsync {
 
 	void get(Long id, AsyncCallback<ClientDTO> callback);
 
-	void getFromInvoiceId(Long invoiceId, AsyncCallback<ClientDTO> callback);
+	void getFromInvoiceId(Long id, AsyncCallback<ClientDTO> callback);
 
 	void searchClients(String query, AsyncCallback<List<ClientDTO>> callback);
 
-	void getFromEstimationId(Long estimationId, AsyncCallback<ClientDTO> callback);
+	void getFromEstimationId(Long id, AsyncCallback<ClientDTO> callback);
 
 }

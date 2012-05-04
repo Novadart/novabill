@@ -100,7 +100,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	@UiHandler("newInvoice")
 	void onNewInvoiceClicked(ClickEvent e){
-		ServerFacade.invoice.getNextInvoiceId(new AuthAwareAsyncCallback<Long>() {
+		ServerFacade.invoice.getNextInvoiceDocumentID(new AuthAwareAsyncCallback<Long>() {
 			
 			@Override
 			public void onSuccess(Long result) {

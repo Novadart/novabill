@@ -177,7 +177,7 @@ class InvoiceData(object):
         return self.__data["invoiceDate"]
     
     def getInvoiceID(self):
-        return self.__data["invoiceID"]
+        return self.__data["documentID"]
     
     def getInvoiceYear(self):
         return self.__data["invoiceYear"]

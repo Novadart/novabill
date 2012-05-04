@@ -3,23 +3,23 @@ package com.novadart.novabill.domain;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
-public class EstimationDTOFactory extends AbstractInvoiceDTOFactory {
+public class EstimationDTOFactory extends AccountingDocumentDTOFactory {
 	
 	public static EstimationDTO toDTO(Estimation estimation) {
 		if(estimation == null)
 			return null;
 		EstimationDTO estimationDTO = new EstimationDTO();
-		AbstractInvoiceDTOFactory.copyToDTO(estimation, estimationDTO);
+		AccountingDocumentDTOFactory.copyToDTO(estimation, estimationDTO);
 		estimationDTO.setBusiness(BusinessDTOFactory.toDTO(estimation.getBusiness()));
 		estimationDTO.setClient(ClientDTOFactory.toDTO(estimation.getClient()));
 		return estimationDTO; 
 	}
 	
 	public static InvoiceDTO toInvoiceDTO(EstimationDTO estimationDTO){
-		AbstractInvoice abstractInvoice = new Estimation();
-		AbstractInvoiceDTOFactory.copyFromDTO(abstractInvoice, estimationDTO, true);
+		AccountingDocument accountingDocument = new Estimation();
+		AccountingDocumentDTOFactory.copyFromDTO(accountingDocument, estimationDTO, true);
 		InvoiceDTO invoiceDTO = new InvoiceDTO();
-		AbstractInvoiceDTOFactory.copyToDTO(abstractInvoice, invoiceDTO);
+		AccountingDocumentDTOFactory.copyToDTO(accountingDocument, invoiceDTO);
 		invoiceDTO.setBusiness(estimationDTO.getBusiness());
 		invoiceDTO.setClient(estimationDTO.getClient());
 		return invoiceDTO;

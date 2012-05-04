@@ -44,7 +44,7 @@ public class InvoiceItem implements Serializable {
     private BigDecimal total;
     
     @ManyToOne
-    private AbstractInvoice invoice;
+    private AccountingDocument invoice;
     
     /*
      * Getters and setters
@@ -114,11 +114,11 @@ public class InvoiceItem implements Serializable {
         this.total = total;
     }
     
-    public AbstractInvoice getInvoice() {
+    public AccountingDocument getInvoice() {
         return this.invoice;
     }
     
-    public void setInvoice(AbstractInvoice invoice) {
+    public void setInvoice(AccountingDocument invoice) {
         this.invoice = invoice;
     }
     

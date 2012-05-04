@@ -116,7 +116,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 
 	@Override
 	public Long getNextEstimationId() throws NotAuthenticatedException, ConcurrentAccessException {
-		return utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getNextEstimationId();
+		return utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getNextEstimationDocumentID();
 	}
 
 }

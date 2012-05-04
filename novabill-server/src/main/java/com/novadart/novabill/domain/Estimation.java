@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
-public class Estimation extends AbstractInvoice implements Serializable {
+public class Estimation extends AccountingDocument implements Serializable {
 	
 	private static final long serialVersionUID = 8020837636815686509L;
 

@@ -117,24 +117,24 @@ public class Client implements Serializable {
     private Business business;
     
     @Transient
-    private static final Comparator<AbstractInvoice> ABSTRACT_INVOICE_COMPARATOR = new AbstractInvoiceComparator();
+    private static final Comparator<AccountingDocument> ACCOUNTING_DOCUMENT_COMPARATOR = new AccountingDocumentComparator();
     
-    private <T extends AbstractInvoice> List<T> sortAbstractInvoices(Collection<T> collection){
-    	SortedSet<T> sortedSet = new TreeSet<T>(ABSTRACT_INVOICE_COMPARATOR);
+    private <T extends AccountingDocument> List<T> sortAccountingDocuments(Collection<T> collection){
+    	SortedSet<T> sortedSet = new TreeSet<T>(ACCOUNTING_DOCUMENT_COMPARATOR);
     	sortedSet.addAll(collection);
     	return new ArrayList<T>(sortedSet);
     }
     
     public List<Invoice> getSortedInvoices(){
-    	return sortAbstractInvoices(getInvoices()); 
+    	return sortAccountingDocuments(getInvoices()); 
     }
 	
     public List<Estimation> getSortedEstimations(){
-    	return sortAbstractInvoices(getEstimations());
+    	return sortAccountingDocuments(getEstimations());
     }
     
     public List<Invoice> getAllInvoicesInRange(Integer start, Integer length){
-    	String query = "select invoice from Invoice as invoice where invoice.client.id = :clientId order by invoice.invoiceYear desc, invoice.invoiceID desc";
+    	String query = "select invoice from Invoice as invoice where invoice.client.id = :clientId order by invoice.invoiceYear desc, invoice.documentID desc";
     	return entityManager.createQuery(query, Invoice.class)
     			.setParameter("clientId", getId())
     			.setFirstResult(start)

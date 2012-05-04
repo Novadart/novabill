@@ -35,7 +35,7 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 		}
 		sb.appendHtmlConstant("<div class='main'>");
 		sb.appendHtmlConstant("<span class='id'>");
-		sb.append(value.getInvoiceID());
+		sb.append(value.getDocumentID());
 		sb.appendHtmlConstant("</span>");
 
 		sb.appendHtmlConstant("<span class='date'>");

@@ -164,7 +164,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 				DataWatcher.getInstance().fireStatsEvent();
 				
 				InvoicePlace ip = new InvoicePlace();
-				ip.setInvoiceId(result.getInvoiceID());
+				ip.setInvoiceId(result.getDocumentID());
 				presenter.goTo(ip);
 			}
 
@@ -219,7 +219,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		}
 
 
-		inv.setInvoiceID(Long.parseLong(number.getText()));
+		inv.setDocumentID(Long.parseLong(number.getText()));
 		inv.setInvoiceDate(date.getValue());
 		List<InvoiceItemDTO> invItems = new ArrayList<InvoiceItemDTO>();
 		for (InvoiceItemDTO invoiceItemDTO : invoiceItems.getList()) {
@@ -398,7 +398,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	public void setInvoice(InvoiceDTO invoice) {
 		this.invoice = invoice;
 		invoiceItems.setList(invoice.getItems());
-		number.setText(invoice.getInvoiceID().toString());
+		number.setText(invoice.getDocumentID().toString());
 		date.setValue(invoice.getInvoiceDate());
 		note.setText(invoice.getNote());
 		paymentNote.setText(invoice.getPaymentNote());

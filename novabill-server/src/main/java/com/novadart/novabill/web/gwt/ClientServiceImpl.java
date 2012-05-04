@@ -96,8 +96,8 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 
 	@Override
 	@Transactional(readOnly = true)
-	public ClientDTO getFromInvoiceId(Long invoiceId) throws DataAccessException, NoSuchObjectException {
-		Client client = Invoice.findInvoice(invoiceId).getClient();
+	public ClientDTO getFromInvoiceId(Long id) throws DataAccessException, NoSuchObjectException {
+		Client client = Invoice.findInvoice(id).getClient();
 		if(client == null)
 			throw new NoSuchObjectException();
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
@@ -122,8 +122,8 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	
 	@Override
 	@Transactional(readOnly = true)
-	public ClientDTO getFromEstimationId(Long estimationId) throws DataAccessException, NotAuthenticatedException,NoSuchObjectException, ConcurrentAccessException {
-		Client client = Estimation.findEstimation(estimationId).getClient();
+	public ClientDTO getFromEstimationId(Long id) throws DataAccessException, NotAuthenticatedException,NoSuchObjectException, ConcurrentAccessException {
+		Client client = Estimation.findEstimation(id).getClient();
 		if(client == null)
 			throw new NoSuchObjectException();
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))

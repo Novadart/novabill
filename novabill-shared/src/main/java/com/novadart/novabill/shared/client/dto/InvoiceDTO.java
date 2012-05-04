@@ -3,7 +3,7 @@ package com.novadart.novabill.shared.client.dto;
 import java.util.Date;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
+public class InvoiceDTO extends AccountingDocumentDTO implements IsSerializable {
     
     private String paymentNote;
     

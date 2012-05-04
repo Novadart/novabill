@@ -7,7 +7,7 @@ import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.InvalidInvoiceIDException;
+import com.novadart.novabill.shared.client.exception.InvalidDocumentIDException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
@@ -18,17 +18,17 @@ public interface InvoiceService extends RemoteService {
 
 	public List<InvoiceDTO> getAllInRange(int start, int length) throws NotAuthenticatedException, ConcurrentAccessException;
 
-	public List<InvoiceDTO> getAllForClient(long clientId) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
+	public List<InvoiceDTO> getAllForClient(long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
 
-	public Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, DataAccessException, InvalidInvoiceIDException, ConcurrentAccessException;
+	public Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, ConcurrentAccessException;
 
-	public void update(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, InvalidInvoiceIDException, ConcurrentAccessException;
+	public void update(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, InvalidDocumentIDException, ConcurrentAccessException;
 
-	public Long getNextInvoiceId() throws NotAuthenticatedException, ConcurrentAccessException;
+	public Long getNextInvoiceDocumentID() throws NotAuthenticatedException, ConcurrentAccessException;
 
 	public void remove(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
 
-	public List<InvoiceDTO> getAllForClientInRange(long clientId, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
+	public List<InvoiceDTO> getAllForClientInRange(long id, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
 	
-	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidInvoiceIDException, NoSuchObjectException;
+	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, NoSuchObjectException;
 }

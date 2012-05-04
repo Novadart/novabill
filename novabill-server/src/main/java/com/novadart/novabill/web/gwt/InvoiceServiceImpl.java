@@ -21,7 +21,7 @@ import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.InvalidInvoiceIDException;
+import com.novadart.novabill.shared.client.exception.InvalidDocumentIDException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
@@ -56,8 +56,8 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		return invoiceDTOs;
 	}
 
-	private Long suggestInvoiceID(Business business){
-		List<Long> invoiceIDs = business.getCurrentYearInvoicesIds();
+	private Long suggestInvoiceDocumentID(Business business){
+		List<Long> invoiceIDs = business.getCurrentYearInvoicesDocumentIDs();
 		if(invoiceIDs.size() == 0) return 1l;
 		if(invoiceIDs.get(0) > 1) return 1l;
 		int i = 0, len = invoiceIDs.size();
@@ -69,22 +69,22 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		return invoiceIDs.get(i) + 1;
 	}
 	
-	private void checkInvoiceID(Business business, Long id, Long invoiceId) throws InvalidInvoiceIDException {
-		if(invoiceId == null) return;
+	private void checkInvoiceDocumentID(Business business, Long id, Long documentID) throws InvalidDocumentIDException {
+		if(documentID == null) return;
 		if(id == null){
-			if(business.getInvoiceByIdInYear(invoiceId, Calendar.getInstance().get(Calendar.YEAR)) != null)
-				throw new InvalidInvoiceIDException(suggestInvoiceID(business));
+			if(business.getInvoiceByIdInYear(documentID, Calendar.getInstance().get(Calendar.YEAR)) != null)
+				throw new InvalidDocumentIDException(suggestInvoiceDocumentID(business));
 		}else{
-			Invoice invoice = business.getInvoiceByIdInYear(invoiceId, Calendar.getInstance().get(Calendar.YEAR));
+			Invoice invoice = business.getInvoiceByIdInYear(documentID, Calendar.getInstance().get(Calendar.YEAR));
 			if(invoice != null && !invoice.getId().equals(id))
-				throw new InvalidInvoiceIDException(suggestInvoiceID(business));
+				throw new InvalidDocumentIDException(suggestInvoiceDocumentID(business));
 		}
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<InvoiceDTO> getAllForClient(long clientId) throws DataAccessException, NoSuchObjectException {
-		Client client = Client.findClient(clientId);
+	public List<InvoiceDTO> getAllForClient(long id) throws DataAccessException, NoSuchObjectException {
+		Client client = Client.findClient(id);
 		if(client == null)
 			throw new NoSuchObjectException();
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
@@ -113,14 +113,14 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 
 	@Override
 	@Transactional(readOnly = false)
-	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, InvalidInvoiceIDException {
+	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, InvalidDocumentIDException {
 		Client client = Client.findClient(invoiceDTO.getClient().getId());;
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		Business business = Business.findBusiness(invoiceDTO.getBusiness().getId());
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
 			throw new DataAccessException();
-		checkInvoiceID(business, invoiceDTO.getId(), invoiceDTO.getInvoiceID());
+		checkInvoiceDocumentID(business, invoiceDTO.getId(), invoiceDTO.getDocumentID());
 		Invoice invoice = new Invoice();//create new invoice
 		invoice.setClient(client);
 		client.getInvoices().add(invoice);
@@ -134,7 +134,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 
 	@Override
 	@Transactional(readOnly = false)
-	public void update(InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, InvalidInvoiceIDException {
+	public void update(InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, InvalidDocumentIDException {
 		if(invoiceDTO.getId() == null)
 			throw new DataAccessException();
 		Client client = Client.findClient(invoiceDTO.getClient().getId());
@@ -143,7 +143,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		Business business = Business.findBusiness(invoiceDTO.getBusiness().getId());
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
 			throw new DataAccessException();
-		checkInvoiceID(business, invoiceDTO.getId(), invoiceDTO.getInvoiceID());
+		checkInvoiceDocumentID(business, invoiceDTO.getId(), invoiceDTO.getDocumentID());
 		Invoice persistedInvoice = Invoice.findInvoice(invoiceDTO.getId());
 		if(persistedInvoice == null)
 			throw new NoSuchObjectException();
@@ -158,13 +158,13 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	}
 	
 	@Override
-	public Long getNextInvoiceId() {
-		return utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getNextInvoiceId();
+	public Long getNextInvoiceDocumentID() {
+		return utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getNextInvoiceDocumentID();
 	}
 
 	@Override
-	public List<InvoiceDTO> getAllForClientInRange(long clientId, int start, int length) throws DataAccessException, NoSuchObjectException {
-		Client client = Client.findClient(clientId);
+	public List<InvoiceDTO> getAllForClientInRange(long id, int start, int length) throws DataAccessException, NoSuchObjectException {
+		Client client = Client.findClient(id);
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		List<Invoice> invoices = client.getAllInvoicesInRange(start, length);
@@ -176,7 +176,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	
 	@Override
 	@Transactional(readOnly = false)
-	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidInvoiceIDException, NoSuchObjectException {
+	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, NoSuchObjectException {
 		if(estimationDTO.getId() != null){//present in DB
 			Estimation estimation = Estimation.findEstimation(estimationDTO.getId());
 			if(estimation == null)
@@ -184,7 +184,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 			estimation.remove();
 		}
 		InvoiceDTO invoiceDTO = EstimationDTOFactory.toInvoiceDTO(estimationDTO);
-		invoiceDTO.setInvoiceID(getNextInvoiceId());
+		invoiceDTO.setDocumentID(getNextInvoiceDocumentID());
 		Long id = add(invoiceDTO);
 		invoiceDTO.setId(id);
 		return invoiceDTO;

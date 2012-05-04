@@ -2,17 +2,17 @@ package com.novadart.novabill.shared.client.exception;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class InvalidInvoiceIDException extends Exception implements IsSerializable {
+public class InvalidDocumentIDException extends Exception implements IsSerializable {
 	
 	private Long firstValidInvoiceID;
 
 	private static final long serialVersionUID = -8042639486612398159L;
 	
-	public InvalidInvoiceIDException(){
+	public InvalidDocumentIDException(){
 		this(1l);
 	}
 	
-	public InvalidInvoiceIDException(Long firstValidInvoiceID) {
+	public InvalidDocumentIDException(Long firstValidInvoiceID) {
 		this.firstValidInvoiceID = firstValidInvoiceID;
 	}
 	

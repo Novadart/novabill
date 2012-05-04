@@ -11,7 +11,7 @@ import jep.Jep;
 import jep.JepException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.novadart.novabill.domain.AbstractInvoice;
+import com.novadart.novabill.domain.AccountingDocument;
 import flexjson.JSONSerializer;
 import flexjson.transformer.AbstractTransformer;
 import flexjson.transformer.DateTransformer;
@@ -42,7 +42,7 @@ public class PDFGenerator {
 		public void beforeWriteCallback(File file);
 	};
 	
-	public void createAndWrite(OutputStream out, AbstractInvoice invoice, String pathToLogo, Integer logoWidth, Integer logoHeight, 
+	public void createAndWrite(OutputStream out, AccountingDocument invoice, String pathToLogo, Integer logoWidth, Integer logoHeight, 
 			DocumentType docType, BeforeWriteEventHandler bwEvHnld) throws IOException{
 		File outDir = new File(invOutLocation);
 		checkCreateOutputLocation(outDir);

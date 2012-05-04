@@ -14,7 +14,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.healthmarketscience.rmiio.RemoteInputStreamClient;
-import com.novadart.novabill.domain.AbstractInvoice;
+import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
@@ -57,7 +57,7 @@ public class PDFController {
 		generatePDF(response, estimation, estimation.getBusiness(), PDFGenerator.DocumentType.ESTIMATION);
 	}
 	
-	private void generatePDF(final HttpServletResponse response, final AbstractInvoice invoice, Business invoiceOwner, final PDFGenerator.DocumentType docType) throws DataAccessException,
+	private void generatePDF(final HttpServletResponse response, final AccountingDocument invoice, Business invoiceOwner, final PDFGenerator.DocumentType docType) throws DataAccessException,
 			FileNotFoundException, RemoteException, IOException {
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
 		if(!business.getId().equals(invoiceOwner.getId()))
@@ -76,7 +76,7 @@ public class PDFController {
 				@Override
 				public void beforeWriteCallback(File file) {
 					String fileName = String.format(docType == DocumentType.INVOICE? "invoice-%s-%s.pdf": "estimation-%s-%s.pdf",
-							invoice.getInvoiceYear().toString(), invoice.getInvoiceID().toString());
+							invoice.getInvoiceYear().toString(), invoice.getDocumentID().toString());
 					response.setContentType("application/pdf");
 					response.setHeader ("Content-Disposition", String.format("attachment; filename=\"%s\"", fileName));
 					response.setHeader ("Content-Length", String.valueOf(file.length()));

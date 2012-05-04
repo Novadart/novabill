@@ -24,10 +24,10 @@ public interface ClientService extends RemoteService{
 	
 	public ClientDTO get(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
 	
-	public ClientDTO getFromInvoiceId(Long invoiceId) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
+	public ClientDTO getFromInvoiceId(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
 	
 	public List<ClientDTO> searchClients(String query) throws InvalidArgumentException, NotAuthenticatedException, ConcurrentAccessException;
 
-	public ClientDTO getFromEstimationId(Long estimationId) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
+	public ClientDTO getFromEstimationId(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
 	
 }
