@@ -17,4 +17,6 @@ public interface EstimationServiceAsync {
 
 	void update(EstimationDTO estimationDTO, AsyncCallback<Void> callback);
 
+	void getNextEstimationId(AsyncCallback<Long> callback);
+
 }

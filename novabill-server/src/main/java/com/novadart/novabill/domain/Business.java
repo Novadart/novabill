@@ -150,6 +150,14 @@ public class Business implements Serializable {
     	return result.size() == 0? null: result.get(0);
     }
     
+    public Long getNextEstimationId(){
+    	String query = "select max(estimation.invoiceID) from Estimation as estimation where estimation.business.id = :businessId and estimation.invoiceYear = :year";
+    	Long id = entityManager.createQuery(query, Long.class)
+    			.setParameter("businessId", getId())
+    			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getSingleResult();
+    	return (id == null)? 1: id + 1;
+    }
+    
     @SuppressWarnings("unchecked")
 	public List<Client> searchClients(String query) throws ParseException{
     	FullTextEntityManager ftEntityManager = Search.getFullTextEntityManager(entityManager);

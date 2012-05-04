@@ -23,4 +23,6 @@ public interface EstimationService extends RemoteService {
 	
 	public void update(EstimationDTO estimationDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
 	
+	public Long getNextEstimationId() throws NotAuthenticatedException, ConcurrentAccessException;
+	
 }

@@ -14,8 +14,10 @@ import com.novadart.novabill.domain.InvoiceItemDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 
 public class EstimationServiceImpl extends AbstractGwtController<EstimationService, EstimationServiceImpl> implements EstimationService {
@@ -110,6 +112,11 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 			invoiceItem.setInvoice(persistedEstimation);
 			persistedEstimation.getInvoiceItems().add(invoiceItem);
 		}
+	}
+
+	@Override
+	public Long getNextEstimationId() throws NotAuthenticatedException, ConcurrentAccessException {
+		return utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getNextEstimationId();
 	}
 
 }
