@@ -2,9 +2,13 @@ package com.novadart.novabill.web.gwt;
 
 import java.math.BigDecimal;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
@@ -20,6 +24,8 @@ import com.novadart.novabill.shared.client.facade.BusinessService;
 public class BusinessServiceImpl extends AbstractGwtController<BusinessService, BusinessServiceImpl> implements BusinessService{
 
 	private static final long serialVersionUID = -8341228475620801759L;
+
+	private static final Logger LOGGER = LoggerFactory.getLogger(BusinessServiceImpl.class);
 	
 	@Autowired
 	private UtilsService utilsService;
@@ -35,6 +41,8 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		stats.setInvoicesCountForYear(countInvoicesForYear(year));
 		stats.setTotalAfterTaxesForYear(getTotalAfterTaxesForYear(year));
+		LOGGER.info("Stats: clients count {} invoices Count {} now it is {}",
+				new Object[]{stats.getClientsCount(), stats.getInvoicesCountForYear(), new Date()});
 		return stats;
 	}
 	
