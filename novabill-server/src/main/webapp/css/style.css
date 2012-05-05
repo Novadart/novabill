@@ -141,13 +141,19 @@ textarea:HOVER {
 	padding: 20px 0;
 }
 
-.ClientView .newInvoice {
+.ClientView .newInvoice,
+.ClientView .newEstimation {
 	border: 1px solid #B9F2B3;
 	background-color: #66C25B;
 	color: white;
 	font-size: 1.5em;
 }
 
+.ClientView .newEstimation {
+	margin-left: 1em;
+}
+
+.ClientView .newEstimation:HOVER,
 .ClientView .newInvoice:HOVER {
 	border: 1px solid #2F9524;
 }
@@ -185,7 +191,7 @@ textarea:HOVER {
 }
 
 .ClientView .clientMainBody {
-	margin: 0 auto 1em;
+	margin: 0 auto 2em;
 	width: 70%;
 	height: 40em;
 }
@@ -421,6 +427,8 @@ textarea:HOVER {
 	border: 0.1em solid #EEE;
 	padding: 1em 0.5em;
 	margin: 0.1em 0;
+	border-top-color: #333;
+	border-left-color: #333;
 }
 
 .westContainer .client-simple:HOVER {
