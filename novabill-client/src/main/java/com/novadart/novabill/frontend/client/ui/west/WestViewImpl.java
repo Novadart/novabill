@@ -63,12 +63,12 @@ public class WestViewImpl extends Composite implements WestView {
 	}
 	
 	private CellList<ClientDTO> createClientList(){
-		ClientCell cell = new ClientCell();
+		SimpleClientCell cell = new SimpleClientCell();
 		CellList<ClientDTO> list = new CellList<ClientDTO>(cell);
 		list.setStyleName("cellList");
 		list.setVisibleRange(CLIENT_LIST_RANGE);
 		
-		cell.setHandler(new ClientCell.Handler() {
+		cell.setHandler(new SimpleClientCell.Handler() {
 			
 			@Override
 			public void onClientSelected(ClientDTO client) {

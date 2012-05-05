@@ -3,6 +3,7 @@ body {
 	color: #333;
 }
 
+.button,
 button {
 	padding: 0.5em;
 	color: white;
@@ -12,8 +13,10 @@ button {
 	background-color: #EEE;
 	border: 0.1em solid #DDD;
 	color: #333;
+	margin: 1px;
 }
 
+.button:HOVER,
 button:HOVER {
 	background-color: #DDD;
 	border: 0.1em solid #EEE;
@@ -414,6 +417,16 @@ textarea:HOVER {
 	background-color: #EEE;
 }
 
+.westContainer .client-simple {
+	border: 0.1em solid #EEE;
+	padding: 1em 0.5em;
+	margin: 0.1em 0;
+}
+
+.westContainer .client-simple:HOVER {
+	background-color: #EEE;
+}
+
 .ClientWidget .name,.westContainer .client .name {
 	font-weight: bold;
 }
@@ -582,6 +595,13 @@ td.datePickerMonth {
 	font-size: 2em;
 }
 
+.InvoiceView .modifyDocument,
+.InvoiceView .createInvoice,
+.InvoiceView .saveAsEstimation,
+.InvoiceView .convertToInvoice {
+	margin-left: 2em;
+}
+
 .InvoiceView .invoiceMainDetails {
 	margin-top: 0.5em;
 }
@@ -673,6 +693,7 @@ td.datePickerMonth {
 	padding: 0.4em 1em;
 	text-align: center;
 	border-radius: 0.5em;
+	height: 1.2em;
 }
 
 .BootstrapDialog .welcomeMessage {

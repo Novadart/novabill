@@ -17,8 +17,8 @@
 				text="{i18n.createInvoice}"></g:Button>
 			<g:Button styleName="saveAsEstimation" ui:field="createEstimate"
 				text="{i18n.createEstimate}"></g:Button>
-			<g:Label ui:field="convertToInvoice" styleName="convertToInvoice" visible="false"
-				text="{i18n.convertToInvoice}"></g:Label>
+			<g:Button ui:field="convertToInvoice" styleName="convertToInvoice" visible="false"
+				text="{i18n.convertToInvoice}"></g:Button>
 		</g:HorizontalPanel>
 
 

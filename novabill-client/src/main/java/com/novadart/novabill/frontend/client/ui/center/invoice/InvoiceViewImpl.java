@@ -65,7 +65,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiField Button createEstimate;
 	@UiField Button createInvoice;
 	@UiField Button modifyDocument;
-	@UiField Label convertToInvoice;
+	@UiField Button convertToInvoice;
 	@UiField SimplePanel newItemContainer;
 
 	@UiField Label totalBeforeTaxes;
