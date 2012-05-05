@@ -109,6 +109,7 @@
 
 	<bean class="com.novadart.novabill.aspect.logging.ExceptionTraceAspect"
 		factory-method="aspectOf">
+		<property name="sendEmail" value="false"/>
 	</bean>
 	
 	<bean class="com.novadart.novabill.aspect.logging.LoginLogoutAspect"

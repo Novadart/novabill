@@ -21,9 +21,15 @@ public aspect ExceptionTraceAspect {
 	
 	private ThreadLocal<Throwable> lastLoggedException = new ThreadLocal<Throwable>();
 	
+	private boolean sendEmail;
+	
 	@Autowired
 	private UtilsService utilsService;
 	
+	public void setSendEmail(boolean sendEmail) {
+		this.sendEmail = sendEmail;
+	}
+
 	pointcut exceptionTraced(): execution(* *.*(..)) && within(com.novadart.novabill..*) && !within(ExceptionTraceAspect);
 	
 	private String getArgsMesssage(JoinPoint joinPoint){
@@ -51,7 +57,8 @@ public aspect ExceptionTraceAspect {
 			Map<String, Object> templateVars = new HashMap<String, Object>();
 			templateVars.put("message", message);
 			templateVars.put("stackTrace", fetchAndFormatForWeb(ex));
-			//sendMessage(new String[]{"giordano.battilana@novadart.com", "risto.gligorov@novadart.com"}, "Exception", templateVars, "mail-templates/exception-notification.vm");
+			if(sendEmail)
+				sendMessage(new String[]{"giordano.battilana@novadart.com", "risto.gligorov@novadart.com"}, "Exception", templateVars, "mail-templates/exception-notification.vm");
 		}
 	}
 
