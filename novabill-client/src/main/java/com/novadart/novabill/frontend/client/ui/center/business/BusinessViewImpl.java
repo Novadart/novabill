@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
@@ -28,6 +29,7 @@ import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidati
 import com.novadart.novabill.frontend.client.ui.widget.validation.PostcodeValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
+import com.novadart.novabill.shared.client.data.Province;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
 public class BusinessViewImpl extends Composite implements BusinessView {
@@ -49,7 +51,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	@UiField(provided=true) ValidatedTextBox vatID;
 	@UiField(provided=true) ValidatedTextBox address;
 	@UiField(provided=true) ValidatedTextBox city;
-	@UiField(provided=true) ValidatedTextBox province;
+	@UiField(provided=true) ListBox province;
 	@UiField(provided=true) ValidatedTextBox country;
 	@UiField(provided=true) ValidatedTextBox postcode;
 	@UiField(provided=true) ValidatedTextBox phone;
@@ -74,8 +76,18 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		address.setText(b.getAddress());
 		city = new ValidatedTextBox(nev);
 		city.setText(b.getCity());
-		province = new ValidatedTextBox(nev);
-		province.setText(b.getProvince());
+		province = new ListBox();
+		
+		Province[] provs = Province.values();
+		String bProv = b.getProvince();
+		int selIndex = 0;
+		for (int i=0; i<provs.length; i++) {
+			province.addItem(provs[i].name());
+			if(bProv != null && bProv.equalsIgnoreCase(provs[i].name())){
+				selIndex = i;
+			}
+		}
+		province.setSelectedIndex(selIndex);
 		country = new ValidatedTextBox(nev);
 		country.setText(b.getCountry());
 		postcode = new ValidatedTextBox(new PostcodeValidation());
@@ -119,7 +131,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 			}
 		});
 		formPanel.setWidget(fileUpload);
-		for (ValidatedTextBox v : new ValidatedTextBox[]{name,	ssn, vatID, address, city, province, 
+		for (ValidatedTextBox v : new ValidatedTextBox[]{name,	ssn, vatID, address, city, 
 				country, postcode, phone, email, mobile, fax, web}) {
 			v.reset();
 		}
@@ -131,7 +143,17 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		vatID.setText(b.getVatID());
 		address.setText(b.getAddress());
 		city.setText(b.getCity());
-		province.setText(b.getProvince());
+		
+		Province[] provs = Province.values();
+		String bProv = b.getProvince();
+		int selIndex = 0;
+		for (int i=0; i<provs.length; i++) {
+			if(bProv != null && bProv.equalsIgnoreCase(provs[i].name())){
+				selIndex = i;
+			}
+		}
+		province.setSelectedIndex(selIndex);
+		
 		country.setText(b.getCountry());
 		postcode.setText(b.getPostcode());
 		phone.setText(b.getPostcode());
@@ -147,7 +169,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 
 	private boolean validate(){
 		boolean validationOk = true;
-		for (ValidatedTextBox v : new ValidatedTextBox[]{name,	ssn, vatID, address, city, province, 
+		for (ValidatedTextBox v : new ValidatedTextBox[]{name,	ssn, vatID, address, city, 
 				country, postcode, phone, email, mobile, fax, web}) {
 			v.validate();
 			validationOk = validationOk && v.isValid();
@@ -164,7 +186,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 			b.setSsn(ssn.getText());
 			b.setVatID(vatID.getText());
 			b.setCity(city.getText());
-			b.setProvince(province.getText());
+			b.setProvince(province.getItemText(province.getSelectedIndex()));
 			b.setCountry(country.getText());
 			b.setPostcode(postcode.getText());
 			b.setPhone(phone.getText());
