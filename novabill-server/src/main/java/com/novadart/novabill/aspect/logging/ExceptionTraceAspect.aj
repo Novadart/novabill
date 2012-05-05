@@ -51,7 +51,7 @@ public aspect ExceptionTraceAspect {
 			Map<String, Object> templateVars = new HashMap<String, Object>();
 			templateVars.put("message", message);
 			templateVars.put("stackTrace", fetchAndFormatForWeb(ex));
-			sendMessage(new String[]{"giordano.battilana@novadart.com", "risto.gligorov@novadart.com"}, "Exception", templateVars, "mail-templates/exception-notification.vm");
+			//sendMessage(new String[]{"giordano.battilana@novadart.com", "risto.gligorov@novadart.com"}, "Exception", templateVars, "mail-templates/exception-notification.vm");
 		}
 	}
 

@@ -107,7 +107,7 @@
 		<property name="from" value="${smtp.mail.registration_completed_sender}" />
 	</bean>
 
-	<bean class="com.novadart.novabill.aspect.ExceptionTraceAspect"
+	<bean class="com.novadart.novabill.aspect.logging.ExceptionTraceAspect"
 		factory-method="aspectOf">
 	</bean>
 	
