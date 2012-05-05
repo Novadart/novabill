@@ -103,6 +103,8 @@ public class Business implements Serializable {
     @Column(precision = 29, scale = 0)
     private BigInteger logoId;
     
+    private Long lastLogin;
+    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Item> items = new HashSet<Item>();
 
@@ -345,7 +347,15 @@ public class Business implements Serializable {
         this.logoId = logoId;
     }
     
-    public Set<Item> getItems() {
+    public Long getLastLogin() {
+		return lastLogin;
+	}
+
+	public void setLastLogin(Long lastLogin) {
+		this.lastLogin = lastLogin;
+	}
+
+	public Set<Item> getItems() {
         return this.items;
     }
     

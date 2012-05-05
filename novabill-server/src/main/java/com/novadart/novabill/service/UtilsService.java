@@ -13,7 +13,7 @@ import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RPC;
 import com.novadart.novabill.domain.security.PrincipalDetails;
 
-@Service
+@Service("utilsService")
 public class UtilsService {
 
 	private Authentication getAuthentication(){

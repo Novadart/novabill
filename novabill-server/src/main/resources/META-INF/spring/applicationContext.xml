@@ -110,5 +110,10 @@
 	<bean class="com.novadart.novabill.aspect.ExceptionTraceAspect"
 		factory-method="aspectOf">
 	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.logging.LoginLogoutAspect"
+		factory-method="aspectOf">
+		<property name="utilsService" ref="utilsService"/>
+	</bean>
 
 </beans>
