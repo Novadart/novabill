@@ -24,6 +24,8 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.google.gwt.view.client.ListDataProvider;
+import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
+import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
@@ -32,6 +34,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
+import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -47,7 +50,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	}
 
 	@UiField Label paymentLabel;
-	@UiField(provided=true) ListBox payment;
+	@UiField(provided=true) ValidatedListBox payment;
 	@UiField(provided=true) ListBox tax;
 	@UiField(provided=true) ItemTable itemTable;
 
@@ -58,7 +61,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiField Label clientName;
 	@UiField(provided=true) DateBox date;
 	@UiField Label invoiceNumber;
-	@UiField TextBox number;
+	@UiField(provided=true) ValidatedTextBox number;
 	@UiField Label paymentNoteLabel;
 	@UiField TextArea paymentNote;
 	@UiField TextArea note;
@@ -81,7 +84,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	private boolean editable = false;
 
 	public InvoiceViewImpl() {
-		payment = new ListBox();
+		payment = new ValidatedListBox(I18N.get.notEmptyValidationError());
 		for (String item : I18N.get.paymentItems()) {
 			payment.addItem(item);
 		}
@@ -89,6 +92,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		for (String item : I18N.get.vatItems()) {
 			tax.addItem(item+"%", item);
 		}
+		number = new ValidatedTextBox(new NumberValidation());
 		itemTable = new ItemTable(new ItemTable.Handler() {
 
 			@Override
@@ -489,7 +493,9 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		if(!validateEstimate()){
 			return false;
 		}
-		if(!InvoiceUtils.isNumber(number.getText()) || Long.parseLong(number.getText()) < 0){
+		number.validate();
+		payment.validate();
+		if(!number.isValid() || !payment.isValid()){
 			return false;
 		}
 
@@ -554,6 +560,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		this.editable = false;
 		
 		//reset widget statuses
+		number.reset();
 		number.setReadOnly(true);
 		date.setEnabled(false);
 		payment.setVisible(true);
