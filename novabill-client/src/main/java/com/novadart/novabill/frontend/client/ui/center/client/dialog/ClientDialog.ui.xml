@@ -46,7 +46,7 @@
 					<g:Label styleName="label" text="{i18n.province}"></g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:TextBox styleName="value" ui:field="province"></g:TextBox>
+					<g:ListBox styleName="value" ui:field="province"></g:ListBox>
 				</g:customCell>
 				<g:customCell>
 					<g:Label styleName="requiredValue" text=""></g:Label>
@@ -68,7 +68,7 @@
 					<g:Label styleName="label" text="{i18n.postcode}"></g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:TextBox styleName="value" ui:field="postcode"></g:TextBox>
+					<validation:ValidatedTextBox styleName="value" ui:field="postcode"></validation:ValidatedTextBox>
 				</g:customCell>
 				<g:customCell>
 					<g:Label styleName="requiredValue" text=""></g:Label>
@@ -79,7 +79,7 @@
 					<g:Label styleName="label" text="{i18n.phone}"></g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:TextBox styleName="value" ui:field="phone"></g:TextBox>
+					<validation:ValidatedTextBox styleName="value" ui:field="phone"></validation:ValidatedTextBox>
 				</g:customCell>
 				<g:customCell>
 					<g:Label styleName="requiredValue" text=""></g:Label>
@@ -90,7 +90,7 @@
 					<g:Label styleName="label" text="{i18n.mobile}"></g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:TextBox styleName="value" ui:field="mobile"></g:TextBox>
+					<validation:ValidatedTextBox styleName="value" ui:field="mobile"></validation:ValidatedTextBox>
 				</g:customCell>
 				<g:customCell>
 					<g:Label styleName="requiredValue" text=""></g:Label>
@@ -101,7 +101,7 @@
 					<g:Label styleName="label" text="{i18n.fax}"></g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:TextBox styleName="value" ui:field="fax"></g:TextBox>
+					<validation:ValidatedTextBox styleName="value" ui:field="fax"></validation:ValidatedTextBox>
 				</g:customCell>
 				<g:customCell>
 					<g:Label styleName="requiredValue" text=""></g:Label>
@@ -112,7 +112,7 @@
 					<g:Label styleName="label" text="{i18n.email}"></g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:TextBox styleName="value" ui:field="email"></g:TextBox>
+					<validation:ValidatedTextBox styleName="value" ui:field="email"></validation:ValidatedTextBox>
 				</g:customCell>
 				<g:customCell>
 					<g:Label styleName="requiredValue" text=""></g:Label>

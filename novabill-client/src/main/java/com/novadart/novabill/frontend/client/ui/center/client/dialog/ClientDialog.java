@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
@@ -16,9 +17,13 @@ import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
+import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
-import com.novadart.novabill.frontend.client.ui.widget.validation.SsnValidation;
+import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
+import com.novadart.novabill.frontend.client.ui.widget.validation.PostcodeValidation;
+import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
+import com.novadart.novabill.shared.client.data.Province;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientDialog extends Dialog {
@@ -36,22 +41,16 @@ public class ClientDialog extends Dialog {
 		return instance;
 	}
 
-	private static enum VALIDATION_RESULT {
-		OK,
-		MISSING_VAT_SSN_ERROR,
-		OTHER_ERROR
-	}
-
 	@UiField(provided=true) ValidatedTextBox companyName;
 	@UiField TextBox address;
 	@UiField TextBox city;
-	@UiField TextBox province;
+	@UiField(provided=true) ListBox province;
 	@UiField TextBox country;
-	@UiField TextBox postcode;
-	@UiField TextBox phone;
-	@UiField TextBox mobile;
-	@UiField TextBox fax;
-	@UiField TextBox email;
+	@UiField(provided=true) ValidatedTextBox postcode;
+	@UiField(provided=true) ValidatedTextBox phone;
+	@UiField(provided=true) ValidatedTextBox mobile;
+	@UiField(provided=true) ValidatedTextBox fax;
+	@UiField(provided=true) ValidatedTextBox email;
 	@UiField TextBox web;
 	@UiField(provided=true) ValidatedTextBox vatID;
 	@UiField(provided=true) ValidatedTextBox ssn;
@@ -63,7 +62,21 @@ public class ClientDialog extends Dialog {
 	private ClientDialog() {
 		companyName = new ValidatedTextBox(new NotEmptyValidation());
 		vatID =  new ValidatedTextBox(new VatIdValidation());
-		ssn =  new ValidatedTextBox(new SsnValidation());
+		ssn =  new ValidatedTextBox(new SsnOrVatIdValidation());
+		postcode = new ValidatedTextBox(new PostcodeValidation());
+		
+		NumberValidation nv = new NumberValidation(true);
+		phone = new ValidatedTextBox(nv);
+		mobile = new ValidatedTextBox(nv);
+		fax = new ValidatedTextBox(nv);
+		
+		email = new ValidatedTextBox(new EmailValidation(true));
+		
+		province = new ListBox();
+		province.addItem("");
+		for (Province p : Province.values()) {
+			province.addItem(p.name());
+		}
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("ClientDialog panel");
 	}
@@ -79,7 +92,19 @@ public class ClientDialog extends Dialog {
 		companyName.setText(client.getName());
 		address.setText(client.getAddress());
 		city.setText(client.getCity());
-		province.setText(client.getProvince());
+		
+		String cProv = client.getProvince();
+		if(cProv != null){
+			Province[] provs = Province.values();
+			int selIndex = 0;
+			for (int i=0; i<provs.length; i++) {
+				if(cProv.equalsIgnoreCase(provs[i].name())){
+					selIndex = i+1;
+				}
+			}
+			province.setSelectedIndex(selIndex);
+		}
+		
 		country.setText(client.getCountry());
 		postcode.setText(client.getPostcode());
 		phone.setText(client.getPhone());
@@ -96,17 +121,9 @@ public class ClientDialog extends Dialog {
 
 	@UiHandler("ok")
 	void onOkClicked(ClickEvent e){
-		
-		switch (validate()) {
-		case MISSING_VAT_SSN_ERROR:
-			Window.alert(I18N.get.missingVatIdAndSSNValidationError());
-			return;
-			
-		case OTHER_ERROR:
-			Window.alert(I18N.get.errorClientData());
+		if(!validate()){
 			return;
 		}
-		
 
 		ClientDTO client = this.client==null ? new ClientDTO() : this.client;
 		client.setAddress(address.getText());
@@ -118,7 +135,7 @@ public class ClientDialog extends Dialog {
 		client.setName(companyName.getText());
 		client.setPhone(phone.getText());
 		client.setPostcode(postcode.getText());
-		client.setProvince(province.getText());
+		client.setProvince(province.getItemText(province.getSelectedIndex()));
 		client.setSsn(ssn.getText());
 		client.setVatID(vatID.getText());
 		client.setWeb(web.getText());
@@ -164,33 +181,25 @@ public class ClientDialog extends Dialog {
 
 	private void clearData(){
 		client = null;
-		for (TextBox t : new TextBox[]{companyName, address, city, province, country,
-				postcode, phone, mobile, fax, email, web}) {
+		province.setSelectedIndex(0);
+		for (TextBox t : new TextBox[]{address, city, country, web}) {
 			t.setText("");
 		}
-		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, ssn}){
+		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, 
+				ssn, postcode, phone, mobile, fax, email}){
 			tb.reset();
 		}
 		ok.setText(I18N.get.createClient());
 	}
 
-	private VALIDATION_RESULT validate(){
-		companyName.validate();
-		vatID.validate();
-		ssn.validate();
-		
-		if(companyName.isValid() && vatID.isValid() && ssn.isValid() && 
-				(!vatID.getText().isEmpty() || !ssn.getText().isEmpty())){
-			return VALIDATION_RESULT.OK;
-			
-		} else if(vatID.getText().isEmpty() && ssn.getText().isEmpty()){
-			return VALIDATION_RESULT.MISSING_VAT_SSN_ERROR;
-			
-		} else {
-			return VALIDATION_RESULT.OTHER_ERROR;
-			
+	private boolean validate(){
+		boolean isValid = true;
+		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, 
+				ssn, postcode, phone, mobile, fax, email}){
+			tb.validate();
+			isValid = isValid && tb.isValid();
 		}
-		
+		return isValid;
 	}
 
 

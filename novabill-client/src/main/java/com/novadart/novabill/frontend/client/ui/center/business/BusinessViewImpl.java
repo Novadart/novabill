@@ -78,13 +78,14 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		city.setText(b.getCity());
 		province = new ListBox();
 		
+		province.addItem("");
 		Province[] provs = Province.values();
 		String bProv = b.getProvince();
 		int selIndex = 0;
 		for (int i=0; i<provs.length; i++) {
 			province.addItem(provs[i].name());
 			if(bProv != null && bProv.equalsIgnoreCase(provs[i].name())){
-				selIndex = i;
+				selIndex = i+1; //because first one is empty
 			}
 		}
 		province.setSelectedIndex(selIndex);
@@ -149,7 +150,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		int selIndex = 0;
 		for (int i=0; i<provs.length; i++) {
 			if(bProv != null && bProv.equalsIgnoreCase(provs[i].name())){
-				selIndex = i;
+				selIndex = i+1; //because first one is empty
 			}
 		}
 		province.setSelectedIndex(selIndex);
