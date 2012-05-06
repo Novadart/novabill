@@ -15,19 +15,13 @@
 				<g:customCell>
 					<validation:ValidatedTextBox styleName="value" ui:field="companyName"></validation:ValidatedTextBox>
 				</g:customCell>
-				<g:customCell>
-					<g:Label styleName="requiredValue" text="*"></g:Label>
-				</g:customCell>
 			</g:row>
 			<g:row>
 				<g:customCell>
 					<g:Label styleName="label" text="{i18n.address}"></g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:TextBox styleName="value" ui:field="address"></g:TextBox>
-				</g:customCell>
-				<g:customCell>
-					<g:Label styleName="requiredValue" text=""></g:Label>
+					<validation:ValidatedTextBox styleName="value" ui:field="address"></validation:ValidatedTextBox>
 				</g:customCell>
 			</g:row>
 			<g:row>
@@ -35,10 +29,7 @@
 					<g:Label styleName="label" text="{i18n.city}"></g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:TextBox styleName="value" ui:field="city"></g:TextBox>
-				</g:customCell>
-				<g:customCell>
-					<g:Label styleName="requiredValue" text=""></g:Label>
+					<validation:ValidatedTextBox styleName="value" ui:field="city"></validation:ValidatedTextBox>
 				</g:customCell>
 			</g:row>
 			<g:row>
@@ -46,10 +37,7 @@
 					<g:Label styleName="label" text="{i18n.province}"></g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:ListBox styleName="value" ui:field="province"></g:ListBox>
-				</g:customCell>
-				<g:customCell>
-					<g:Label styleName="requiredValue" text=""></g:Label>
+					<validation:ValidatedListBox styleName="value" ui:field="province"></validation:ValidatedListBox>
 				</g:customCell>
 			</g:row>
 			<g:row>
@@ -57,10 +45,7 @@
 					<g:Label styleName="label" text="{i18n.country}"></g:Label>
 				</g:customCell>
 				<g:customCell>
-					<g:TextBox styleName="value" ui:field="country"></g:TextBox>
-				</g:customCell>
-				<g:customCell>
-					<g:Label styleName="requiredValue" text=""></g:Label>
+					<validation:ValidatedTextBox styleName="value" ui:field="country"></validation:ValidatedTextBox>
 				</g:customCell>
 			</g:row>
 			<g:row>
@@ -70,9 +55,6 @@
 				<g:customCell>
 					<validation:ValidatedTextBox styleName="value" ui:field="postcode"></validation:ValidatedTextBox>
 				</g:customCell>
-				<g:customCell>
-					<g:Label styleName="requiredValue" text=""></g:Label>
-				</g:customCell>
 			</g:row>
 			<g:row>
 				<g:customCell>
@@ -80,9 +62,6 @@
 				</g:customCell>
 				<g:customCell>
 					<validation:ValidatedTextBox styleName="value" ui:field="phone"></validation:ValidatedTextBox>
-				</g:customCell>
-				<g:customCell>
-					<g:Label styleName="requiredValue" text=""></g:Label>
 				</g:customCell>
 			</g:row>
 			<g:row>
@@ -92,9 +71,6 @@
 				<g:customCell>
 					<validation:ValidatedTextBox styleName="value" ui:field="mobile"></validation:ValidatedTextBox>
 				</g:customCell>
-				<g:customCell>
-					<g:Label styleName="requiredValue" text=""></g:Label>
-				</g:customCell>
 			</g:row>
 			<g:row>
 				<g:customCell>
@@ -102,9 +78,6 @@
 				</g:customCell>
 				<g:customCell>
 					<validation:ValidatedTextBox styleName="value" ui:field="fax"></validation:ValidatedTextBox>
-				</g:customCell>
-				<g:customCell>
-					<g:Label styleName="requiredValue" text=""></g:Label>
 				</g:customCell>
 			</g:row>
 			<g:row>
@@ -114,9 +87,6 @@
 				<g:customCell>
 					<validation:ValidatedTextBox styleName="value" ui:field="email"></validation:ValidatedTextBox>
 				</g:customCell>
-				<g:customCell>
-					<g:Label styleName="requiredValue" text=""></g:Label>
-				</g:customCell>
 			</g:row>
 			<g:row>
 				<g:customCell>
@@ -124,9 +94,6 @@
 				</g:customCell>
 				<g:customCell>
 					<g:TextBox styleName="value" ui:field="web"></g:TextBox>
-				</g:customCell>
-				<g:customCell>
-					<g:Label styleName="requiredValue" text=""></g:Label>
 				</g:customCell>
 			</g:row>
 			<g:row>
@@ -136,9 +103,6 @@
 				<g:customCell>
 					<validation:ValidatedTextBox styleName="value" ui:field="vatID"></validation:ValidatedTextBox>
 				</g:customCell>
-				<g:customCell>
-					<g:Label styleName="requiredValue" text="*"></g:Label>
-				</g:customCell>
 			</g:row>
 			<g:row>
 				<g:customCell>
@@ -146,9 +110,6 @@
 				</g:customCell>
 				<g:customCell>
 					<validation:ValidatedTextBox styleName="value" ui:field="ssn"></validation:ValidatedTextBox>
-				</g:customCell>
-				<g:customCell>
-					<g:Label styleName="requiredValue" text=""></g:Label>
 				</g:customCell>
 			</g:row>
 

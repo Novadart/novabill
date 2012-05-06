@@ -4,7 +4,7 @@ import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.gwtshared.client.validation.ValidationBundle;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 
-public class PostcodeValidation implements ValidationBundle {
+public class PostcodeValidation implements ValidationBundle<String> {
 
 	@Override
 	public boolean isValid(String text) {

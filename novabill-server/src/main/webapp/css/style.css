@@ -737,12 +737,12 @@ td.datePickerMonth {
 	font-style: italic;
 }
 
-.ValidatedTextBox-validationOk {
+.ValidatedWidget-validationOk {
 	border-color: #4DE133;
 	background-color: #DEFFD8;
 }
 
-.ValidatedTextBox-validationError {
+..ValidatedWidget-validationError {
 	border-color: #E32424;
 	background-color: #F9E0E0;
 }

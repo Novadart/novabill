@@ -14,8 +14,8 @@ import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.Const;
@@ -51,7 +51,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	@UiField(provided=true) ValidatedTextBox vatID;
 	@UiField(provided=true) ValidatedTextBox address;
 	@UiField(provided=true) ValidatedTextBox city;
-	@UiField(provided=true) ListBox province;
+	@UiField(provided=true) ValidatedListBox province;
 	@UiField(provided=true) ValidatedTextBox country;
 	@UiField(provided=true) ValidatedTextBox postcode;
 	@UiField(provided=true) ValidatedTextBox phone;
@@ -76,19 +76,13 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		address.setText(b.getAddress());
 		city = new ValidatedTextBox(nev);
 		city.setText(b.getCity());
-		province = new ListBox();
+		province = new ValidatedListBox(I18N.get.notEmptyValidationError());
 		
-		province.addItem("");
 		Province[] provs = Province.values();
-		String bProv = b.getProvince();
-		int selIndex = 0;
-		for (int i=0; i<provs.length; i++) {
-			province.addItem(provs[i].name());
-			if(bProv != null && bProv.equalsIgnoreCase(provs[i].name())){
-				selIndex = i+1; //because first one is empty
-			}
+		for (Province p : provs) {
+			province.addItem(p.name());
 		}
-		province.setSelectedIndex(selIndex);
+		province.setSelectedItem(b.getProvince());
 		country = new ValidatedTextBox(nev);
 		country.setText(b.getCountry());
 		postcode = new ValidatedTextBox(new PostcodeValidation());
@@ -144,17 +138,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		vatID.setText(b.getVatID());
 		address.setText(b.getAddress());
 		city.setText(b.getCity());
-		
-		Province[] provs = Province.values();
-		String bProv = b.getProvince();
-		int selIndex = 0;
-		for (int i=0; i<provs.length; i++) {
-			if(bProv != null && bProv.equalsIgnoreCase(provs[i].name())){
-				selIndex = i+1; //because first one is empty
-			}
-		}
-		province.setSelectedIndex(selIndex);
-		
+		province.setSelectedItem(b.getProvince());
 		country.setText(b.getCountry());
 		postcode.setText(b.getPostcode());
 		phone.setText(b.getPostcode());
@@ -175,6 +159,8 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 			v.validate();
 			validationOk = validationOk && v.isValid();
 		}
+		province.validate();
+		validationOk = validationOk && province.isValid();
 		return validationOk;
 	}
 
@@ -187,7 +173,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 			b.setSsn(ssn.getText());
 			b.setVatID(vatID.getText());
 			b.setCity(city.getText());
-			b.setProvince(province.getItemText(province.getSelectedIndex()));
+			b.setProvince(province.getSelectedItemText());
 			b.setCountry(country.getText());
 			b.setPostcode(postcode.getText());
 			b.setPhone(phone.getText());

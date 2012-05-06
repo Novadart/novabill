@@ -4,7 +4,7 @@ import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.gwtshared.client.validation.ValidationBundle;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 
-public class EmailValidation implements ValidationBundle {
+public class EmailValidation implements ValidationBundle<String> {
 
 	private final boolean canBeEmpty;
 
@@ -17,8 +17,8 @@ public class EmailValidation implements ValidationBundle {
 	}
 
 	@Override
-	public boolean isValid(String text) {
-		return canBeEmpty ? (text.isEmpty() || Validation.isEmail(text)) : Validation.isEmail(text);
+	public boolean isValid(String value) {
+		return canBeEmpty ? (value.isEmpty() || Validation.isEmail(value)) : Validation.isEmail(value);
 	}
 
 	@Override

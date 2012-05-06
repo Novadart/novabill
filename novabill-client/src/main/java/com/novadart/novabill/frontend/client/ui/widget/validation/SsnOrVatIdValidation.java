@@ -3,7 +3,7 @@ package com.novadart.novabill.frontend.client.ui.widget.validation;
 import com.novadart.gwtshared.client.validation.ValidationBundle;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 
-public class SsnOrVatIdValidation implements ValidationBundle {
+public class SsnOrVatIdValidation implements ValidationBundle<String> {
 	private static final SsnValidation SSN_VALIDATION = new SsnValidation();
 	private static final VatIdValidation VAT_ID_VALIDATION = new VatIdValidation();
 
