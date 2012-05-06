@@ -49,7 +49,7 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 
 			@Override
 			public String getValue(InvoiceItemDTO object) {
-				return String.valueOf(object.getQuantity());
+				return NumberFormat.getDecimalFormat().format(object.getQuantity());
 			}
 		};
 	
