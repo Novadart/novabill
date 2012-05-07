@@ -12,13 +12,16 @@
 
 		<g:HorizontalPanel>
 			<g:Label styleName="newInvoice" text="{i18n.newInvoiceCreation}"></g:Label>
-			<g:Button styleName="modifyButton" ui:field="modifyDocument"></g:Button>
+			<g:Button styleName="modifyButton" ui:field="modifyDocument"
+				text="{i18n.saveModifications}"></g:Button>
 			<g:Button styleName="createButton" ui:field="createInvoice"
 				text="{i18n.createInvoice}"></g:Button>
 			<g:Button styleName="saveAsEstimation" ui:field="createEstimate"
 				text="{i18n.createEstimate}"></g:Button>
-			<g:Button ui:field="convertToInvoice" styleName="convertToInvoice" visible="false"
+			<g:Button ui:field="convertToInvoice" styleName="convertToInvoice"
 				text="{i18n.convertToInvoice}"></g:Button>
+			<g:Button ui:field="abort" styleName="abortButton"
+				text="{i18n.cancel}"></g:Button>
 		</g:HorizontalPanel>
 
 
@@ -33,10 +36,12 @@
 			</g:row>
 			<g:row>
 				<g:customCell>
-					<g:Label ui:field="invoiceNumber" styleName="label" text="{i18n.invoiceNumber}"></g:Label>
+					<g:Label ui:field="invoiceNumber" styleName="label"
+						text="{i18n.invoiceNumber}"></g:Label>
 				</g:customCell>
 				<g:customCell>
-					<v:ValidatedTextBox styleName="box number" ui:field="number"></v:ValidatedTextBox>
+					<v:ValidatedTextBox styleName="box number"
+						ui:field="number"></v:ValidatedTextBox>
 				</g:customCell>
 			</g:row>
 			<g:row>
@@ -52,12 +57,14 @@
 					<g:Label ui:field="paymentLabel" styleName="label" text="{i18n.payment}"></g:Label>
 				</g:customCell>
 				<g:customCell>
-					<v:ValidatedListBox styleName="listBox payment" ui:field="payment"></v:ValidatedListBox>
+					<v:ValidatedListBox styleName="listBox payment"
+						ui:field="payment"></v:ValidatedListBox>
 				</g:customCell>
 			</g:row>
 			<g:row>
 				<g:customCell>
-					<g:Label ui:field="paymentNoteLabel" styleName="label" text="{i18n.paymentNote}"></g:Label>
+					<g:Label ui:field="paymentNoteLabel" styleName="label"
+						text="{i18n.paymentNote}"></g:Label>
 				</g:customCell>
 				<g:customCell>
 					<g:TextArea styleName="box paymentNote" ui:field="paymentNote"></g:TextArea>
@@ -78,7 +85,7 @@
 			<g:VerticalPanel>
 				<i:ItemTable ui:field="itemTable" styleName="itemTable"></i:ItemTable>
 
-				<g:SimplePanel styleName="newItemContainer" ui:field="newItemContainer" visible="false">
+				<g:SimplePanel styleName="newItemContainer" ui:field="newItemContainer">
 					<g:HorizontalPanel>
 						<g:VerticalPanel styleName="itemContainer">
 							<g:Label styleName="smallLabel" text="{i18n.nameDescription}"></g:Label>

@@ -6,6 +6,7 @@ import com.google.gwt.i18n.client.Constants;
 public interface I18N extends Constants {
 	public static final I18N get = GWT.create(I18N.class);
 
+	public String cancelModificationsConfirmation();
 	public String missingVatIdAndSSNValidationError();
 	public String notEmptyValidationError();
 	public String vatidValidationError();

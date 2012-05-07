@@ -603,6 +603,7 @@ td.datePickerMonth {
 	font-size: 2em;
 }
 
+.InvoiceView .abortButton,
 .InvoiceView .modifyDocument,
 .InvoiceView .createInvoice,
 .InvoiceView .saveAsEstimation,
