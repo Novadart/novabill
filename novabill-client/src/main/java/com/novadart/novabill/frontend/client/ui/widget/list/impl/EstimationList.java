@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.ui.widget.list.impl;
 
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.Window;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
@@ -31,7 +32,7 @@ public class EstimationList extends QuickViewList<EstimationDTO> {
 			
 			@Override
 			public void onPdfClicked(EstimationDTO estimation) {
-//				Window.open(GWT.getHostPageBaseURL()+"private/invoices/"+invoice.getId(), null, null);
+				Window.open(GWT.getHostPageBaseURL()+"private/pdf/estimations/"+estimation.getId(), null, null);
 			}
 
 			@Override
