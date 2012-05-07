@@ -83,7 +83,7 @@
 
 		<g:SimplePanel styleName="itemTableContainer">
 			<g:VerticalPanel>
-				<g:ScrollPanel styleName="itemTableScroller">
+				<g:ScrollPanel ui:field="itemTableScroller" styleName="itemTableScroller">
 					<i:ItemTable ui:field="itemTable" styleName="itemTable"></i:ItemTable>				
 				</g:ScrollPanel>
 

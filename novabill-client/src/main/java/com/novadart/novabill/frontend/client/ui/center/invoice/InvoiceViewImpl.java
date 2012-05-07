@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
-import com.google.gwt.user.client.ui.SimplePanel;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -53,6 +53,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiField(provided=true) ValidatedListBox payment;
 	@UiField(provided=true) ListBox tax;
 	@UiField(provided=true) ItemTable itemTable;
+	@UiField ScrollPanel itemTableScroller;
 
 	@UiField TextBox item;
 	@UiField TextBox quantity;
@@ -69,7 +70,6 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiField Button createInvoice;
 	@UiField Button modifyDocument;
 	@UiField Button convertToInvoice;
-	@UiField SimplePanel newItemContainer;
 
 	@UiField Label totalBeforeTaxes;
 	@UiField Label totalTax;
@@ -309,6 +309,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 			invoiceItems.getList().add(ii);
 			updateFields();
+			itemTableScroller.scrollToBottom();
 		}
 	}
 
