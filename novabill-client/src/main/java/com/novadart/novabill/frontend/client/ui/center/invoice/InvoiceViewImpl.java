@@ -292,15 +292,21 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 	@UiHandler("add")
 	void onAddClicked(ClickEvent e){
-		if(validateTableEntry()){
+		if(tableEntryBasicValidation()){
 			InvoiceItemDTO ii = new InvoiceItemDTO();
-
-			ii.setDescription(item.getText());
-			ii.setPrice(new BigDecimal( price.getText()) );
-			ii.setQuantity(new BigDecimal(quantity.getText()));
-			ii.setUnitOfMeasure(unitOfMeasure.getText());
-			ii.setTax(new BigDecimal(tax.getValue(tax.getSelectedIndex())));
-
+			double tmpVal;
+			
+			try {
+				ii.setDescription(item.getText());
+				tmpVal = NumberFormat.getDecimalFormat().parse(price.getText());
+				ii.setPrice(new BigDecimal( tmpVal ) );
+				tmpVal = NumberFormat.getDecimalFormat().parse(quantity.getText());
+				ii.setQuantity(new BigDecimal(tmpVal));
+				ii.setUnitOfMeasure(unitOfMeasure.getText());
+				ii.setTax(new BigDecimal(tax.getValue(tax.getSelectedIndex())));
+			} catch (NumberFormatException ex) {
+				return;
+			}
 			BigDecimal totBeforeTaxesForItem = InvoiceUtils.calculateTotalBeforeTaxesForItem(ii);
 			BigDecimal totTaxesForItem = InvoiceUtils.calculateTaxesForItem(ii);
 			ii.setTotal(totBeforeTaxesForItem.add(totTaxesForItem));
@@ -310,6 +316,16 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 			invoiceItems.getList().add(ii);
 			updateFields();
 		}
+	}
+
+	private boolean tableEntryBasicValidation(){
+		for (TextBox tbox : new TextBox[]{item,quantity,unitOfMeasure,price}) {
+			if(tbox.getText().isEmpty()){
+				return false;
+			}
+		}
+
+		return true;
 	}
 
 	@UiHandler("modifyDocument")
@@ -390,7 +406,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 		} else {
 			editable = true;
-			
+
 			newItemContainer.setVisible(true);
 			date.setEnabled(true);
 			modifyDocument.setText(I18N.get.saveModifications());
@@ -512,20 +528,6 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		return true;
 	}
 
-	private boolean validateTableEntry(){
-		for (TextBox tbox : new TextBox[]{item,quantity,unitOfMeasure,price}) {
-			if(tbox.getText().isEmpty()){
-				return false;
-			}
-		}
-
-		if(!InvoiceUtils.isNumber(quantity.getText()) || !InvoiceUtils.isNumber(price.getText())){
-			return false;
-		}
-
-		return true;
-	}
-
 
 	private void updateFields(){
 		BigDecimal totBeforeTaxes = BigDecimal.ZERO;
@@ -558,7 +560,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		this.client = null;
 		this.estimation = null;
 		this.editable = false;
-		
+
 		//reset widget statuses
 		number.reset();
 		number.setReadOnly(true);
@@ -576,7 +578,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		invoiceNumber.setVisible(true);
 		paymentNoteLabel.setVisible(true);
 		paymentLabel.setVisible(true);
-		
+
 		//reset widget contents		
 		payment.setSelectedIndex(0);
 		paymentNote.setText("");
@@ -588,7 +590,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		totalAfterTaxes.setText("");
 		modifyDocument.setText(I18N.get.modifyInvoice());
 		resetItemTableForm();
-		
+
 	}
 
 
