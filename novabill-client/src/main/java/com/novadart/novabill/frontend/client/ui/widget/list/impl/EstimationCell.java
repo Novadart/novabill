@@ -34,6 +34,9 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 			sb.appendHtmlConstant("<div class='invoice'>");
 		}
 		sb.appendHtmlConstant("<div class='main'>");
+		sb.appendHtmlConstant("<span class='id'>");
+		sb.append(value.getDocumentID());
+		sb.appendHtmlConstant("</span>");
 
 		sb.appendHtmlConstant("<span class='date'>");
 		sb.appendEscaped(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_LONG).format(value.getInvoiceDate()));
