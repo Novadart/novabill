@@ -24,7 +24,8 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 	private final Handler handler;
 	
 	public ItemTable(Handler handler) {
-
+		super(2000);
+		
 		this.handler = handler;
 		
 		//Name & Description
