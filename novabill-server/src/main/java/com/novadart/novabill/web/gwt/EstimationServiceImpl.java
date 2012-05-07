@@ -69,6 +69,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 			throw new DataAccessException();
 		estimation.setBusiness(business);
 		business.getEstimations().add(estimation);
+		estimation.setDocumentID(business.getNextEstimationDocumentID());
 		EstimationDTOFactory.copyFromDTO(estimation, estimationDTO, true);
 		estimation.persist();
 		estimation.flush();
