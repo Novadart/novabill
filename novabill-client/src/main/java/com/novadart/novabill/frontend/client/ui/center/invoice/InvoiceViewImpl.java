@@ -168,7 +168,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 				DataWatcher.getInstance().fireStatsEvent();
 
 				InvoicePlace ip = new InvoicePlace();
-				ip.setInvoiceId(result.getDocumentID());
+				ip.setInvoiceId(result.getId());
 				presenter.goTo(ip);
 			}
 
