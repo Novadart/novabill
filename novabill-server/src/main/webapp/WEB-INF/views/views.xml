@@ -4,7 +4,7 @@
 
   <definition name="index" template="/WEB-INF/views/index.jsp"/>
   
-  <definition name="novabill" template="/WEB-INF/views/NovaBill.jsp"/>
+  <definition name="novabill" template="/WEB-INF/views/private.jsp"/>
   
   <definition name="concurentAccess" template="/WEB-INF/views/concurrentAccess.jsp"/>
   
