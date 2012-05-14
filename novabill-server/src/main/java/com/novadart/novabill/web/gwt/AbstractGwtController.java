@@ -3,20 +3,18 @@ package com.novadart.novabill.web.gwt;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.springframework.web.context.ServletContextAware;
 import org.springframework.web.servlet.ModelAndView;
 import org.springframework.web.servlet.mvc.Controller;
-
 import com.google.gwt.user.client.rpc.IncompatibleRemoteServiceException;
 import com.google.gwt.user.client.rpc.RpcTokenException;
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RPC;
 import com.google.gwt.user.server.rpc.RPCRequest;
-import com.google.gwt.user.server.rpc.RemoteServiceServlet;
+import com.google.gwt.user.server.rpc.XsrfProtectedServiceServlet;
 
 public abstract class AbstractGwtController<RemoteService, RemoteServiceImpl extends RemoteService> 
-							extends RemoteServiceServlet implements Controller, ServletContextAware {
+							extends XsrfProtectedServiceServlet implements Controller, ServletContextAware {
 
 	private static final long serialVersionUID = 1L;
 
