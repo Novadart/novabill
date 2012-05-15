@@ -41,7 +41,7 @@ public class ActivateAccountController {
 			return "activate";
 		}
 		Business business = new Business(registration);
-		business.getGrantedRoles().add(RoleTypes.ROLE_BUSINESS);
+		business.getGrantedRoles().add(RoleTypes.ROLE_BUSINESS_FREE);
 		business.persist();
 		registration.remove();
 		status.setComplete();
