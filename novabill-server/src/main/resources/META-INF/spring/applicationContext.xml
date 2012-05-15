@@ -116,5 +116,10 @@
 		factory-method="aspectOf">
 		<property name="utilsService" ref="utilsService"/>
 	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.CheckQuotasAspect"
+		factory-method="aspectOf">
+		<property name="utilsService" ref="utilsService"/>
+	</bean>
 
 </beans>
