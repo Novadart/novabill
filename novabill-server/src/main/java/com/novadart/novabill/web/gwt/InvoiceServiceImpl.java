@@ -1,6 +1,7 @@
 package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
+import java.util.BitSet;
 import java.util.Calendar;
 import java.util.List;
 
@@ -21,6 +22,7 @@ import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.InvalidDocumentIDException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -56,18 +58,29 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 			invoiceDTOs.add(InvoiceDTOFactory.toDTO(invoice));
 		return invoiceDTOs;
 	}
+	
+	private List<Long> computeDocumentIDGaps(List<Long> invoiceIDs, int max){
+		int size = invoiceIDs.size(); 
+		if(size == 0)
+			return new ArrayList<Long>();
+		BitSet invoiceIDsBSet = new BitSet(invoiceIDs.get(size - 1).intValue() - 1);
+		for(Long invoiceID: invoiceIDs)
+			invoiceIDsBSet.flip(invoiceID.intValue() - 1);
+		invoiceIDsBSet.flip(0, invoiceIDs.get(0).intValue() - 1);//flip all bits till the first invoice
+		BitSet mask = new BitSet(invoiceIDsBSet.length());
+		mask.flip(0, invoiceIDsBSet.length());
+		invoiceIDsBSet.xor(mask);
+		List<Long> gaps = new ArrayList<Long>(invoiceIDsBSet.cardinality());
+		for(int i=invoiceIDsBSet.nextSetBit(0), c = 0; i >= 0 && c < max; i = invoiceIDsBSet.nextSetBit(i+1), c++)
+			gaps.add(new Long(i + 1));
+		return gaps;
+	}
 
 	private Long suggestInvoiceDocumentID(Business business){
 		List<Long> invoiceIDs = business.getCurrentYearInvoicesDocumentIDs();
 		if(invoiceIDs.size() == 0) return 1l;
 		if(invoiceIDs.get(0) > 1) return 1l;
-		int i = 0, len = invoiceIDs.size();
-		while(i < len - 1){
-			if(invoiceIDs.get(i + 1) - invoiceIDs.get(i) > 1)
-				break;
-			i++;
-		}
-		return invoiceIDs.get(i) + 1;
+		return computeDocumentIDGaps(invoiceIDs, 1).get(0);
 	}
 	
 	private void checkInvoiceDocumentID(Business business, Long id, Long documentID) throws InvalidDocumentIDException {
@@ -177,7 +190,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	
 	@Override
 	@Transactional(readOnly = false)
-	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, NoSuchObjectException {
+	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, NoSuchObjectException, ConcurrentAccessException {
 		if(estimationDTO.getId() != null){//present in DB
 			Estimation estimation = Estimation.findEstimation(estimationDTO.getId());
 			if(estimation == null)
@@ -189,6 +202,15 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		Long id = add(invoiceDTO);
 		invoiceDTO.setId(id);
 		return invoiceDTO;
+	}
+
+	@Override
+	public List<Long> validateInvoiceDocumentID(Long documentID) throws NotAuthenticatedException, ConcurrentAccessException{
+		List<Long> invoiceIDs = utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getCurrentYearInvoicesDocumentIDs();
+		if(invoiceIDs.size() == 0)//first invoice
+			return new ArrayList<Long>();
+		invoiceIDs.add(documentID);
+		return computeDocumentIDGaps(invoiceIDs, 10);
 	}
 	
 }

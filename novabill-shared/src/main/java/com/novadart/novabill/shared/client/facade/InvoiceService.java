@@ -30,5 +30,7 @@ public interface InvoiceService extends RemoteService {
 
 	public List<InvoiceDTO> getAllForClientInRange(long id, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
 	
-	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, NoSuchObjectException;
+	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, NoSuchObjectException, ConcurrentAccessException;
+	
+	public List<Long> validateInvoiceDocumentID(Long documentID) throws NotAuthenticatedException, ConcurrentAccessException;
 }

@@ -20,8 +20,8 @@ public aspect CheckQuotasAspect {
 
 	before(CheckQuotas checkQuotas) throws OverQuotaException : quotaRestrictedMethod(checkQuotas){
 		Business authenticatedBusiness = utilsService.getAuthenticatedPrincipalDetails().getPrincipal();
-		if(authenticatedBusiness.getGrantedRoles().contains(RoleTypes.ROLE_BUSINESS_PREMIUM)) //premium business
-			return;
+//		if(authenticatedBusiness.getGrantedRoles().contains(RoleTypes.ROLE_BUSINESS_PREMIUM)) //premium business
+//			return;
 		for(Class<? extends QuotaChecker> checkerClass: checkQuotas.checkers())
 			try {
 				checkerClass.newInstance().check(authenticatedBusiness);
