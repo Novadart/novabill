@@ -70,7 +70,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		BitSet mask = new BitSet(invoiceIDsBSet.length());
 		mask.flip(0, invoiceIDsBSet.length());
 		invoiceIDsBSet.xor(mask);
-		List<Long> gaps = new ArrayList<Long>(invoiceIDsBSet.cardinality());
+		List<Long> gaps = new ArrayList<Long>(Math.min(invoiceIDsBSet.cardinality(), max));
 		for(int i=invoiceIDsBSet.nextSetBit(0), c = 0; i >= 0 && c < max; i = invoiceIDsBSet.nextSetBit(i+1), c++)
 			gaps.add(new Long(i + 1));
 		return gaps;
