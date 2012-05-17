@@ -10,7 +10,7 @@
     <meta name="gwt:property" content="locale=it_IT">
 
     <link type="text/css" rel="stylesheet" href="css/reset-min.css">
-    <link type="text/css" rel="stylesheet" href="css/private/style.css">
+    <link type="text/css" rel="stylesheet" href="css/private.css">
 
     <title>NovaBill</title>
     

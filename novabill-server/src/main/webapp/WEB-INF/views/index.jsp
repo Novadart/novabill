@@ -10,6 +10,7 @@
 	<head>
 		<title>Product Splash</title>
 		<link rel="stylesheet" type="text/css" href="css/index.css" />
+		<link rel="stylesheet" type="text/css" href="css/login.css" />
 		<link rel="stylesheet" href="js/nivoslider/nivo-slider.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="js/nivoslider/themes/default/default.css" type="text/css" media="screen" />
 		<link rel="stylesheet" href="js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
@@ -24,6 +25,29 @@
 				<div class="get-it-buttons">
 					<a href="#" class="free-trial-button">Free Trial</a>
 					<a href="#" class="buy-it-button">Buy It Now</a>
+					<!-- Login Starts Here -->
+		            <div id="loginContainer">
+		                <a href="#" id="loginButton"><span>Login</span><em></em></a>
+		                <div style="clear:both"></div>
+		                <div id="loginBox">                
+		                    <form id="loginForm" action="${login_url}" method="post">
+		                        <fieldset id="body">
+		                            <fieldset>
+		                                <label for="email">Email Address</label>
+		                                <input type="text" name="j_username" id="email" />
+		                            </fieldset>
+		                            <fieldset>
+		                                <label for="password">Password</label>
+		                                <input type="password" name="j_password" id="password" />
+		                            </fieldset>
+		                            <input type="submit" id="login" value="Sign in" />
+		                            <label for="checkbox"><input type="checkbox" id="checkbox" />Remember me</label>
+		                        </fieldset>
+		                        <span><a href="#">Forgot your password?</a></span>
+		                    </form>
+		                </div>
+		            </div>
+		            <!-- Login Ends Here -->
 				</div>
 			</div>
 			<div class="intro">
@@ -177,6 +201,7 @@
 		<script type="text/javascript" src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 		<script type="text/javascript" src="js/fancybox/jquery.easing-1.3.pack.js"></script>
 		<script type="text/javascript" src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+		<script type="text/javascript" src="js/login.js"></script>
 		
 		<script type="text/javascript">
 		$(window).load(function() {
