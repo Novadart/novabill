@@ -50,7 +50,7 @@ table {
 }
 
 html {
-	background: #F7F6F6 url('images/background.png') repeat;
+	background: #F7F6F6 url('../images/background.png') repeat;
 }
 
 p {
@@ -67,7 +67,7 @@ strong {
 	font-style: normal;
 }
 body {
-	background: url('images/header-bg.png') repeat-x;
+	background: url('../images/header-bg.png') repeat-x;
 	min-height: 400px;
 }
 
@@ -79,7 +79,7 @@ body {
 .header {
 	width: 960px;
 	height: 60px;
-	background: url('images/divider-1.png') no-repeat bottom;
+	background: url('../images/divider-1.png') no-repeat bottom;
 }
 
 h1 {
@@ -230,7 +230,7 @@ h1 {
 	height: 546px;
 	position: absolute;
 	z-index: 5000;
-	background: url(images/gloss-large.png);
+	background: url('../images/gloss-large.png');
 	top: 0px;
 	left: 0px;
 }
@@ -238,7 +238,7 @@ h1 {
 .divider-2 {
 	width: 960px;
 	height: 17px;
-	background: url('images/divider-2.png') no-repeat;
+	background: url('../images/divider-2.png') no-repeat;
 	margin: 60px 0 20px 0;
 }
 
@@ -253,7 +253,7 @@ h3 {
 .inset {
 	width: 960px;
 	padding: 1px 0 0 0;
-	background: url('images/inset-mid.png') repeat-y;
+	background: url('../images/inset-mid.png') repeat-y;
 }
 
 .inset-top {
@@ -261,7 +261,7 @@ h3 {
 	height: 13px;
 	margin: 20px 0 0 0;
 	padding: 0;
-	background: url('images/inset-top.png') no-repeat;
+	background: url('../images/inset-top.png') no-repeat;
 }
 
 .inset-btm {
@@ -269,7 +269,7 @@ h3 {
 	height: 9px;
 	margin: 0 0 30px 0;
 	padding: 0;
-	background: url('images/inset-btm.png') no-repeat;
+	background: url('../images/inset-btm.png') no-repeat;
 }
 
 .inset .row {
@@ -307,13 +307,13 @@ h4 {
 	width: 106px;
 	height: 106px;
 	position: absolute;
-	background: url('images/gloss-thumbnail.png');
+	background: url('../images/gloss-thumbnail.png');
 	top: 0;
 	left: 0;
 }
 
 .mask-gloss-thumbnail:hover {
-	background: url('images/gloss-thumbnail-hover.png');
+	background: url('../images/gloss-thumbnail-hover.png');
 }
 
 .feature-image {
@@ -332,7 +332,7 @@ h4 {
 	height: 163px;
 	margin: 20px 10px 30px 0;
 	padding: 20px 30px 20px 20px;
-	background: url('images/quote-bg.png') no-repeat;
+	background: url('../images/quote-bg.png') no-repeat;
 }
 
 .quote p {
@@ -347,7 +347,7 @@ h4 {
 .footer {
 	width: 960px;
 	height: 80px;
-	background: url('images/divider-1.png') no-repeat top;
+	background: url('../images/divider-1.png') no-repeat top;
 	padding: 1px 0 0 0;
 }
 
