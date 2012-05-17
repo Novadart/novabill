@@ -110,6 +110,12 @@
 	<bean class="com.novadart.novabill.aspect.logging.ExceptionTraceAspect"
 		factory-method="aspectOf">
 		<property name="sendEmail" value="false"/>
+		<property name="emailAddresses">
+			<list>
+				<value>giordano.battilana@novadart.com</value>
+				<value>risto.gligorov@novadart.com</value>
+			</list>
+		</property>
 	</bean>
 	
 	<bean class="com.novadart.novabill.aspect.logging.LoginLogoutAspect"
@@ -120,6 +126,17 @@
 	<bean class="com.novadart.novabill.aspect.CheckQuotasAspect"
 		factory-method="aspectOf">
 		<property name="utilsService" ref="utilsService"/>
+	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.logging.RegistrationActivationAspect"
+		factory-method="aspectOf">
+		<property name="sendEmail" value="false"/>
+		<property name="emailAddresses">
+			<list>
+				<value>giordano.battilana@novadart.com</value>
+				<value>risto.gligorov@novadart.com</value>
+			</list>
+		</property>
 	</bean>
 
 </beans>

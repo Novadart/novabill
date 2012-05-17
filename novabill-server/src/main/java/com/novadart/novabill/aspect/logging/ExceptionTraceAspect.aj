@@ -2,10 +2,10 @@ package com.novadart.novabill.aspect.logging;
 
 import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.commons.lang.StringUtils;
-import org.apache.log4j.Level;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.slf4j.Logger;
@@ -14,22 +14,15 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.service.UtilsService;
 
-@MailMixin
-public aspect ExceptionTraceAspect {
+public aspect ExceptionTraceAspect extends AbstractLogEventEmailSenderAspect {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(ExceptionTraceAspect.class);
 	
 	private ThreadLocal<Throwable> lastLoggedException = new ThreadLocal<Throwable>();
 	
-	private boolean sendEmail;
-	
 	@Autowired
 	private UtilsService utilsService;
 	
-	public void setSendEmail(boolean sendEmail) {
-		this.sendEmail = sendEmail;
-	}
-
 	pointcut exceptionTraced(): execution(* *.*(..)) && within(com.novadart.novabill..*) && !within(ExceptionTraceAspect);
 	
 	private String getArgsMesssage(JoinPoint joinPoint){
@@ -57,8 +50,7 @@ public aspect ExceptionTraceAspect {
 			Map<String, Object> templateVars = new HashMap<String, Object>();
 			templateVars.put("message", message);
 			templateVars.put("stackTrace", fetchAndFormatForWeb(ex));
-			if(sendEmail)
-				sendMessage(new String[]{"giordano.battilana@novadart.com", "risto.gligorov@novadart.com"}, "Exception", templateVars, "mail-templates/exception-notification.vm");
+			sendEmailMessage("Exception", principal, new Date(), templateVars, "mail-templates/exception-notification.vm");
 		}
 	}
 
