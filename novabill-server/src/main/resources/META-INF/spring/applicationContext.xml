@@ -3,13 +3,17 @@
 	xmlns:aop="http://www.springframework.org/schema/aop" xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd         http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd         http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd         http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd         http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.1.xsd         
+	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.1.xsd         
+	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd         
+	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.1.xsd         
+	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.1.xsd">
 	<!-- This will automatically locate any and all property files you have 
 		within your classpath, provided they fall under the META-INF/spring directory. 
 		The located property files are parsed and their values can then be used within 
 		application context files in the form of ${propertyKey}. -->
 	<context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
-	
+
 	<!-- Turn on AspectJ @Configurable support. As a result, any time you instantiate 
 		an object, Spring will attempt to perform dependency injection on that object. 
 		This occurs for instantiation via the "new" keyword, as well as via reflection. 
@@ -21,7 +25,7 @@
 		use this useful feature in a number of areas, such as @PersistenceContext 
 		injection into entities. -->
 	<context:spring-configured />
-	
+
 	<!-- This declaration will cause Spring to locate every @Component, @Repository 
 		and @Service in your application. In practical terms this allows you to write 
 		a POJO and then simply annotate the new POJO as an @Service and Spring will 
@@ -38,7 +42,7 @@
 		Edition annotations in your classes without needing to do any special configuration. 
 		The most commonly used annotation is @Autowired, which instructs Spring to 
 		dependency inject an object into your class. -->
-		
+
 	<context:component-scan base-package="com.novadart.novabill">
 		<context:exclude-filter expression="org.springframework.stereotype.Controller"
 			type="annotation" />
@@ -109,7 +113,7 @@
 
 	<bean class="com.novadart.novabill.aspect.logging.ExceptionTraceAspect"
 		factory-method="aspectOf">
-		<property name="sendEmail" value="false"/>
+		<property name="sendEmail" value="false" />
 		<property name="emailAddresses">
 			<list>
 				<value>giordano.battilana@novadart.com</value>
@@ -117,20 +121,21 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean class="com.novadart.novabill.aspect.logging.LoginLogoutAspect"
 		factory-method="aspectOf">
-		<property name="utilsService" ref="utilsService"/>
+		<property name="utilsService" ref="utilsService" />
 	</bean>
-	
+
 	<bean class="com.novadart.novabill.aspect.CheckQuotasAspect"
 		factory-method="aspectOf">
-		<property name="utilsService" ref="utilsService"/>
+		<property name="utilsService" ref="utilsService" />
 	</bean>
-	
-	<bean class="com.novadart.novabill.aspect.logging.RegistrationActivationAspect"
+
+	<bean
+		class="com.novadart.novabill.aspect.logging.RegistrationActivationAspect"
 		factory-method="aspectOf">
-		<property name="sendEmail" value="false"/>
+		<property name="sendEmail" value="false" />
 		<property name="emailAddresses">
 			<list>
 				<value>giordano.battilana@novadart.com</value>
