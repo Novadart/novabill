@@ -18,6 +18,8 @@
 		template="/WEB-INF/views/invalidActivationRequest.jsp" />
 
 	<definition name="registrationCompleted" template="/WEB-INF/views/registrationCompleted.jsp" />
+	
+	<definition name="paypalSubscriptionRequest" template="/WEB-INF/views/paypalSubscriptionRequest.jsp" />
 
 
 	<definition name="error" template="/WEB-INF/views/error.jspx" />
