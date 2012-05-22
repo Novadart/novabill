@@ -7,8 +7,9 @@ import javax.annotation.PostConstruct;
 import org.springframework.stereotype.Service;
 import sun.misc.BASE64Encoder;
 
+@SuppressWarnings("restriction")
 @Service
-public class AuthenticationTokenGenerator {
+public class TokenGenerator {
 	
 	private BASE64Encoder base64Encoder;
 	

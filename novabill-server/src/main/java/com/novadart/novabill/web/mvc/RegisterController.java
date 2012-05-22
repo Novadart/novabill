@@ -21,7 +21,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.domain.Registration;
-import com.novadart.novabill.service.AuthenticationTokenGenerator;
+import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.validator.RegistrationValidator;
 
 
@@ -38,7 +38,7 @@ public class RegisterController{
 	private MessageSource messageSource;
 	
 	@Autowired
-	private AuthenticationTokenGenerator tokenGenerator;
+	private TokenGenerator tokenGenerator;
 	
 	@Value("${activation.url.pattern}")
 	private String activationUrlPattern;

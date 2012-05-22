@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,6 +20,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.SubscriptionToken;
 import com.novadart.novabill.domain.security.RoleTypes;
 import com.novadart.novabill.service.PrincipalDetailsService;
+import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
 
 @Controller
@@ -30,12 +32,15 @@ public class UpgradeAccountController {
 	
 	@Autowired
 	private PrincipalDetailsService principalDetailsService;
+	
+	@Autowired
+	private TokenGenerator tokenGenerator;
 
 	@RequestMapping("/send-paypal-supscription-request")
 	@Transactional(readOnly = false)
-	public String sendPaypalSubscriptionRequest(Model model, HttpServletRequest request) throws MalformedURLException, UnsupportedEncodingException{
+	public String sendPaypalSubscriptionRequest(Model model, HttpServletRequest request) throws MalformedURLException, UnsupportedEncodingException, NoSuchAlgorithmException{
 		String email = utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getEmail();
-		String token = "ShouldBeRandomValue";
+		String token = tokenGenerator.generateToken();
 		SubscriptionToken subcriptionToken = new SubscriptionToken();
 		subcriptionToken.setEmail(email);
 		subcriptionToken.setToken(token);
