@@ -8,9 +8,9 @@
 </head>
 <body>
 
-<form action="https://www.sandbox.paypal.com/cgi-bin/webscr" method="post" id="paypalSubscriptionRequestForm">
+<form action="${paypalAction}" method="post" id="paypalSubscriptionRequestForm">
 	<input type="hidden" name="cmd" value="_s-xclick">
-	<input type="hidden" name="hosted_button_id" value="QR96B53BDX3FJ">
+	<input type="hidden" name="hosted_button_id" value="${hostedButtonID}">
 	<input type="hidden" name="rm" value="2">
 	<input type="hidden" name="return" value="${returnUrl}">
 </form>

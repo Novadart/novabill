@@ -10,6 +10,7 @@ import java.util.List;
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -35,6 +36,12 @@ public class UpgradeAccountController {
 	
 	@Autowired
 	private TokenGenerator tokenGenerator;
+	
+	@Value("${paypal.action}")
+	private String paypalAction;
+	
+	@Value("${paypal.hostedButtonID}")
+	private String hostedButtonID;
 
 	@RequestMapping("/send-paypal-supscription-request")
 	@Transactional(readOnly = false)
@@ -48,6 +55,8 @@ public class UpgradeAccountController {
 		String returnURL = new URL(request.getScheme(), request.getServerName(), request.getServerPort(),
 				request.getContextPath() + String.format("/private/upgrade/paypal-callback?email=%s&novabillToken=%s", 
 						URLEncoder.encode(email, "UTF-8"), URLEncoder.encode(token, "UTF-8"))).toString();
+		model.addAttribute("paypalAction", paypalAction);
+		model.addAttribute("hostedButtonID", hostedButtonID);
 		model.addAttribute("returnUrl", returnURL);
 		return "paypalSubscriptionRequest";
 	}
