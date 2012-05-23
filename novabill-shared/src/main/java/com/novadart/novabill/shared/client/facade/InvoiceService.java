@@ -10,6 +10,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.InvalidDocumentIDException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import com.novadart.novabill.shared.client.exception.QuotaException;
 
 @RemoteServiceRelativePath("invoice.rpc")
 public interface InvoiceService extends RemoteService {
@@ -20,7 +21,7 @@ public interface InvoiceService extends RemoteService {
 
 	public List<InvoiceDTO> getAllForClient(long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
 
-	public Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, ConcurrentAccessException;
+	public Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, ConcurrentAccessException, QuotaException;
 
 	public void update(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, InvalidDocumentIDException, ConcurrentAccessException;
 
@@ -30,7 +31,7 @@ public interface InvoiceService extends RemoteService {
 
 	public List<InvoiceDTO> getAllForClientInRange(long id, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
 	
-	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, NoSuchObjectException, ConcurrentAccessException;
+	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, NoSuchObjectException, ConcurrentAccessException, QuotaException;
 	
 	public List<Long> validateInvoiceDocumentID(Long documentID) throws NotAuthenticatedException, ConcurrentAccessException;
 }

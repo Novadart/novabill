@@ -22,8 +22,8 @@ public class NumberOfClientsQuotaReachedChecker implements QuotaChecker {
 
 	@Override
 	public void check(Business business) throws QuotaException {
-		LOGGER.debug("Number of clients quota check - quota: {}", new Object[]{numberOfClientsQuota});
-		if(business.getGrantedRoles().contains(RoleTypes.ROLE_BUSINESS_FREE) && business.getClients().size() == numberOfClientsQuota)
+		LOGGER.debug("Number of clients quota check - quota: {}, roles: {}", new Object[]{numberOfClientsQuota, business.getGrantedRoles()});
+		if(business.getGrantedRoles().contains(RoleTypes.ROLE_BUSINESS_FREE) && business.getClients().size() >= numberOfClientsQuota)
 			throw new QuotaException();
 	}
 

@@ -62,30 +62,19 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 		return business.getInvoices().size();
 	}
 
-	@Transactional(readOnly = true)
-	private List<Invoice> getInvoicesForYear(int year) {
-		Long id = utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId();
-		Business business = Business.findBusiness(id);
-		List<Invoice> invoices = new LinkedList<Invoice>();
-		Iterator<Invoice> iter = business.getInvoices().iterator();
-		Invoice inv;
-		while(iter.hasNext()){
-			inv = iter.next();
-			if(inv.getInvoiceYear().intValue() == year)
-				invoices.add(inv);
-		}
-		return invoices;
-	}
-	
 	@Override
 	public long countInvoicesForYear(int year) {
-		return getInvoicesForYear(year).size();
+		Long id = utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId();
+		Business business = Business.findBusiness(id);
+		return business.getInvoicesForYear(year).size();
 	}
 
 	@Override
 	public BigDecimal getTotalAfterTaxesForYear(int year) {
+		Long id = utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId();
+		Business business = Business.findBusiness(id);
 		BigDecimal totalAfterTaxes = new BigDecimal("0.0");
-		Iterator<Invoice> iter = getInvoicesForYear(year).iterator();
+		Iterator<Invoice> iter = business.getInvoicesForYear(year).iterator();
 		while(iter.hasNext())
 			totalAfterTaxes = totalAfterTaxes.add(iter.next().getTotal());
 		return totalAfterTaxes.setScale(2, BigDecimal.ROUND_HALF_EVEN);

@@ -4,6 +4,8 @@ import java.io.Serializable;
 import java.math.BigInteger;
 import java.util.Calendar;
 import java.util.HashSet;
+import java.util.Iterator;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
@@ -174,6 +176,19 @@ public class Business implements Serializable {
     		.setParameter(TermValueFilterFactory.FIELD_VALUE, new LongBridge().objectToString(getId()));
     	return ftQuery.getResultList();
     }
+    
+    @Transactional(readOnly = true)
+	public List<Invoice> getInvoicesForYear(int year) {
+		List<Invoice> invoices = new LinkedList<Invoice>();
+		Iterator<Invoice> iter = getInvoices().iterator();
+		Invoice inv;
+		while(iter.hasNext()){
+			inv = iter.next();
+			if(inv.getInvoiceYear().intValue() == year)
+				invoices.add(inv);
+		}
+		return invoices;
+	}
 
 	@Override
 	public int hashCode() {

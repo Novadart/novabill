@@ -4,11 +4,9 @@ import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.Calendar;
 import java.util.List;
-
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.novadart.novabill.annotation.CheckQuotas;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -18,6 +16,7 @@ import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.InvoiceDTOFactory;
 import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
+import com.novadart.novabill.quota.NumberOfInvoicesPerYearQuotaReachedChecker;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -27,6 +26,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.InvalidDocumentIDException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import com.novadart.novabill.shared.client.exception.QuotaException;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 
 @SuppressWarnings("serial")
@@ -127,7 +127,8 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 
 	@Override
 	@Transactional(readOnly = false)
-	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, InvalidDocumentIDException {
+	@CheckQuotas(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
+	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, InvalidDocumentIDException, QuotaException {
 		Client client = Client.findClient(invoiceDTO.getClient().getId());;
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
@@ -190,7 +191,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	
 	@Override
 	@Transactional(readOnly = false)
-	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, NoSuchObjectException, ConcurrentAccessException {
+	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, NoSuchObjectException, ConcurrentAccessException, QuotaException {
 		if(estimationDTO.getId() != null){//present in DB
 			Estimation estimation = Estimation.findEstimation(estimationDTO.getId());
 			if(estimation == null)
