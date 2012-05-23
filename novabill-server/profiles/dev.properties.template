@@ -24,3 +24,5 @@ smtp.mail.registration_completed_sender.value=risto.gligorov@novadart.com
 
 paypal.action.value=https://www.sandbox.paypal.com/cgi-bin/webscr
 paypal.hostedButtonID.value=QR96B53BDX3FJ
+
+quota.numberOfClients.value=1
