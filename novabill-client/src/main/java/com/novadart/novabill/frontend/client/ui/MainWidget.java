@@ -69,6 +69,10 @@ public class MainWidget extends Composite {
 					
 				case BUSINESS:
 					generateBusinessBanner();
+					break;
+					
+				default:
+					break;
 				}
 			}
 		});
