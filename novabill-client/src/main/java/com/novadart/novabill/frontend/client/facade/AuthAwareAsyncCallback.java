@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.facade;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
@@ -36,14 +37,7 @@ public abstract class AuthAwareAsyncCallback<T> implements AsyncCallback<T> {
 
 		@Override
 		public void onSuccess(Boolean result) {
-			dialog.hide();
-			dialog.removeFromParent();
-
-			if(result){
-				authDialogVisible = false;
-			} else {
-				showAuthDialog();
-			}
+			Window.Location.reload();
 		}
 
 	}
