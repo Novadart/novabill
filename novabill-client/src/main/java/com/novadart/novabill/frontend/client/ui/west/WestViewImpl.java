@@ -9,7 +9,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.Range;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
@@ -17,7 +16,6 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
-import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.ui.center.client.dialog.ClientDialog;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
@@ -32,7 +30,6 @@ public class WestViewImpl extends Composite implements WestView {
 	private static final Range CLIENT_LIST_RANGE = new Range(0, 20);
 	
 	@UiField(provided=true) CellList<ClientDTO> clientList;
-	@UiField Label home;
 	@UiField FlowPanel clientContainer;
 	
 	private Presenter presenter;
@@ -81,21 +78,10 @@ public class WestViewImpl extends Composite implements WestView {
 		return list;
 	}
 
-	@UiHandler("home")
-	void onHomeClicked(ClickEvent e){
-		presenter.goTo(new HomePlace());
-	}
-	
 	@UiHandler("addClient")
 	void onAddClientClicked(ClickEvent e){
 		ClientDialog.getInstance().showCentered();
 	}
-	
-	@Override
-	public void setHome(){
-		home.addStyleName("selected");
-	}
-	
 	
 	@Override
 	public void setClient(ClientDTO client) {
@@ -109,7 +95,6 @@ public class WestViewImpl extends Composite implements WestView {
 
 	@Override
 	public void setClean() {
-		home.removeStyleName("selected");
 		clientContainer.setVisible(true);
 	}
 

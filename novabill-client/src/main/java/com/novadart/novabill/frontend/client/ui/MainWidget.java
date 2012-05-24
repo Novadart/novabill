@@ -23,6 +23,7 @@ import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.BusinessPlace;
+import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.resources.Image;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
@@ -95,6 +96,11 @@ public class MainWidget extends Composite {
 		Window.Location.assign(GWT.getHostPageBaseURL()+"resources/j_spring_security_logout");
 	}
 
+	@UiHandler("home")
+	void onHomeClicked(ClickEvent e){
+		this.placeController.goTo(new HomePlace());
+	}
+	
 	public SimplePanel getCenterContainer() {
 		return centerContainer;
 	}

@@ -8,8 +8,6 @@
 
 	<g:FlowPanel styleName="clientListWrapper">
 
-		<g:Label styleName="homeButton" ui:field="home" text="{i18n.home}"></g:Label>
-
 		<g:FlowPanel ui:field="clientContainer" styleName="clientContainer">
 			<g:HorizontalPanel styleName="clientsHeader">
 				<g:Label styleName="clients" text="{i18n.clients}"></g:Label>

@@ -16,7 +16,6 @@ public class HomeActivity extends BasicActivity {
 	@Override
 	public void start(AcceptsOneWidget panel, EventBus eventBus) {
 		WestView cv = getClientFactory().getWestView();
-		cv.setHome();
 		cv.setPresenter(this);
 		panel.setWidget(cv);
 	}

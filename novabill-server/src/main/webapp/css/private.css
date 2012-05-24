@@ -3,8 +3,7 @@ body {
 	color: #333;
 }
 
-.button,
-button {
+.button,button {
 	padding: 0.5em;
 	color: white;
 	font-size: 1em;
@@ -16,8 +15,7 @@ button {
 	margin: 1px;
 }
 
-.button:HOVER,
-button:HOVER {
+.button:HOVER,button:HOVER {
 	background-color: #DDD;
 	border: 0.1em solid #EEE;
 	color: #EEE;
@@ -65,17 +63,30 @@ textarea:HOVER {
 }
 
 .header .stats {
-	float: left;
-	font-size: 1.5em;
+	font-size: 1.2em;
 	padding-bottom: 0.5em;
-	margin-left: 5em;
 	padding-top: 0.5em;
+	position: absolute;
+	right: 0.5em;
+	top: 0.8em;
 }
 
 .header .exitButton {
-	float: right;
+	float: left;
 	height: 2.5em;
 	width: 6em;
+	margin-left: 0.5em;
+}
+
+.header .homeButton {
+	height: 2.5em;
+	width: 6em;
+	float: left;
+	margin-left: 13em;
+}
+
+.header .homeButton:HOVER {
+	background-color: #EEE;
 }
 
 .header .productName {
@@ -141,8 +152,7 @@ textarea:HOVER {
 	padding: 20px 0;
 }
 
-.ClientView .newInvoice,
-.ClientView .newEstimation {
+.ClientView .newInvoice,.ClientView .newEstimation {
 	border: 1px solid #B9F2B3;
 	background-color: #66C25B;
 	color: white;
@@ -153,8 +163,7 @@ textarea:HOVER {
 	margin-left: 1em;
 }
 
-.ClientView .newEstimation:HOVER,
-.ClientView .newInvoice:HOVER {
+.ClientView .newEstimation:HOVER,.ClientView .newInvoice:HOVER {
 	border: 1px solid #2F9524;
 }
 
@@ -200,7 +209,6 @@ textarea:HOVER {
 	
 }
 
-
 .ClientView .clientMainBody .gwt-TabLayoutPanelTab {
 	padding: 0.5em 1em;
 	background-color: white;
@@ -220,26 +228,18 @@ textarea:HOVER {
 	text-decoration: none;
 }
 
-
 .ClientView .clientMainBody .gwt-TabLayoutPanelTab-selected {
 	background-color: #EEE;
-	font-weight: bold;	
+	font-weight: bold;
 }
 
 .ClientView .clientMainBody .gwt-TabLayoutPanelTabInner {
-	
 	
 }
 
 .ClientView .clientMainBody .tabHeaderLabel {
 	
-	
 }
-
-
-
-
-
 
 .HomeView .homeBody {
 	width: 100%;
@@ -256,6 +256,7 @@ textarea:HOVER {
 }
 
 .ClientView .listWrapper {
+	
 }
 
 .HomeView .listWrapper {
@@ -354,38 +355,6 @@ textarea:HOVER {
 
 .InvoiceList .details {
 	padding: 5px;
-}
-
-.westContainer .homeButton {
-	border-top-width: 0.1em;
-	border-bottom-width: 0.1em;
-	border-left: none;
-	border-right: none;
-	border-color: #EEE;
-	border-style: solid;
-	background-color: transparent;
-	padding: 0.5em 0.1em;
-	font-size: 1.5em;
-	cursor: pointer;
-	font-weight: bold;
-	margin: 2.1em auto 0;
-	width: 100%;
-	text-align: center;
-}
-
-.westContainer .homeButton:HOVER {
-	background-color: #EEE;
-}
-
-.westContainer .homeButton.selected {
-	background-color: #EEE;
-	border-top-width: 0.2em;
-	border-bottom-width: 0.2em;
-	border-color: #DDD;
-	border-style: solid;
-	border-left: none;
-	border-right: none;
-	padding: 0.4em 0.1em;
 }
 
 .westContainer {
@@ -603,11 +572,8 @@ td.datePickerMonth {
 	font-size: 2em;
 }
 
-.InvoiceView .abortButton,
-.InvoiceView .modifyDocument,
-.InvoiceView .createInvoice,
-.InvoiceView .saveAsEstimation,
-.InvoiceView .convertToInvoice {
+.InvoiceView .abortButton,.InvoiceView .modifyDocument,.InvoiceView .createInvoice,.InvoiceView .saveAsEstimation,.InvoiceView .convertToInvoice
+	{
 	margin-left: 2em;
 }
 
@@ -747,7 +713,8 @@ td.datePickerMonth {
 	background-color: #DEFFD8;
 }
 
-..ValidatedWidget-validationError {
+.
+.ValidatedWidget-validationError {
 	border-color: #E32424;
 	background-color: #F9E0E0;
 }
@@ -759,7 +726,6 @@ td.datePickerMonth {
 	padding: 0.3em;
 	margin-left: 5px;
 }
-
 
 .BusinessView .ValidatedTextBox {
 	width: 25em;
@@ -773,10 +739,6 @@ td.datePickerMonth {
 	padding: 1em;
 }
 
-.BusinessView .businessLabel{
+.BusinessView .businessLabel {
 	margin-right: 1em;
 }
-
-
-
-

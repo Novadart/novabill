@@ -97,7 +97,5 @@ public class ClientFactoryImpl implements ClientFactory
 			return getView(WestView.class, new WestViewImpl());
 		}
 	}
-	
-	
 
 }

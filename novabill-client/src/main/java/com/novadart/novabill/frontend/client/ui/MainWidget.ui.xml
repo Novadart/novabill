@@ -13,9 +13,11 @@
 			<g:FlowPanel styleName="header">
 				<g:Image styleName="logo" url="{img.bullet.getSafeUri.asString}"></g:Image>
 				<g:Label styleName="productName" text="Novabill"></g:Label>
-				<g:HTML styleName="stats" ui:field="stats"></g:HTML>
+				<g:Button styleName="homeButton" text="{i18n.home}"
+					ui:field="home"></g:Button>
 				<g:Button styleName="exitButton" text="{i18n.logout}"
 					ui:field="logout"></g:Button>
+				<g:HTML styleName="stats" ui:field="stats"></g:HTML>
 			</g:FlowPanel>
 		</g:north>
 
