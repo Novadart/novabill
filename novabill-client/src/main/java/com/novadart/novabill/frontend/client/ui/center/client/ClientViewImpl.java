@@ -62,8 +62,30 @@ public class ClientViewImpl extends Composite implements ClientView {
 			
 			@Override
 			public void onDataUpdated(DATA data) {
-				if(DATA.INVOICE.equals(data)){
+				switch (data) {
+				case INVOICE:
 					loadInvoices();
+					break;
+					
+				case CLIENT:
+					ServerFacade.client.get(ClientViewImpl.this.client.getId(), 
+							new AuthAwareAsyncCallback<ClientDTO>() {
+
+						@Override
+						public void onSuccess(ClientDTO result) {
+							setClient(result);
+						}
+
+						@Override
+						public void onException(Throwable caught) {
+							//TODO
+							Window.Location.reload();
+						}
+					});
+					break;
+
+				default:
+					break;
 				}
 				
 			}
