@@ -16,6 +16,7 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
@@ -33,6 +34,7 @@ import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdVali
 import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
 import com.novadart.novabill.shared.client.data.Province;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
 
 public class BusinessViewImpl extends Composite implements BusinessView {
 
@@ -118,11 +120,46 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 
 			@Override
 			public void onSubmitComplete(SubmitCompleteEvent event) {
+				String resultCodeStr = event.getResults();
 				logoUpdateCompleted = true;
-				logo.setUrl(Const.genLogoUrl());
+				
+				int resultCode = 0;
+				
+				if(! Validation.isPositiveNumber(resultCodeStr)){
+					Window.alert(I18N.INSTANCE.errorLogoIllegalRequest());
+					return;
+				} else {
+					resultCode = Integer.parseInt(resultCodeStr);
+					if(resultCode > LogoUploadStatus.values().length){
+						Window.alert(I18N.INSTANCE.errorLogoIllegalRequest());
+						return;	
+					}
+				}
+				
+				LogoUploadStatus status = LogoUploadStatus.values()[resultCode];
+				switch(status){
+				case ILLEGAL_PAYLOAD:
+					Window.alert(I18N.INSTANCE.errorLogoIllegalFile());
+					break;
+					
+				case ILLEGAL_SIZE:
+					Window.alert(I18N.INSTANCE.errorLogoSizeTooBig());
+					break;
+					
+					default:
+				case ILLEGAL_REQUEST:
+				case INTERNAL_ERROR:
+					Window.alert(I18N.INSTANCE.errorLogoIllegalRequest());
+					break;
+					
+				case OK:
+					logo.setUrl(Const.genLogoUrl());
+					break;
+				
+				}
 			}
 		});
-		logo.setUrl(Const.genLogoUrl());
+		
 	}
 
 

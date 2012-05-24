@@ -25,6 +25,7 @@ import com.healthmarketscience.rmiio.RemoteInputStreamClient;
 import com.healthmarketscience.rmiio.SimpleRemoteInputStream;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
 import com.novadart.services.shared.ImageDTO;
 import com.novadart.services.shared.ImageStoreService;
 import com.novadart.utils.image.ImageFormat;
@@ -74,17 +75,16 @@ public class BusinessLogoController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public void uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws IOException, 
-		InterruptedException, IM4JavaException{
+	public int uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
 		if(!ServletFileUpload.isMultipartContent(request))
-			throw new IllegalArgumentException("Request is not multipart.");
+			return LogoUploadStatus.ILLEGAL_REQUEST.ordinal();
 		if(file == null)
-			throw new IllegalArgumentException("No content uploaded.");
+			return LogoUploadStatus.ILLEGAL_REQUEST.ordinal();
 		if(file.getSize() > LOGO_SIZE_LIMIT)
-			throw new IllegalArgumentException(String.format("File too big: max allowed size is %d bytes.", LOGO_SIZE_LIMIT));
+			return LogoUploadStatus.ILLEGAL_SIZE.ordinal();
 		String contentType = file.getContentType(); 
 		if(!contentType.startsWith("image"))
-			throw new IllegalArgumentException("File is not image.");
+			return LogoUploadStatus.ILLEGAL_PAYLOAD.ordinal();
 		String subtype = contentType.substring(contentType.lastIndexOf('/') + 1);
 		boolean acceptedFormat = false;
 		for(ImageFormat format: ImageFormat.values())
@@ -112,10 +112,17 @@ public class BusinessLogoController {
 			business.flush();
 			if(oldLogoId != null)//changes to business successful - remove old logo, if any
 				imageStoreService.delete(oldLogoId);
+		} catch (IOException e) {
+			return LogoUploadStatus.INTERNAL_ERROR.ordinal();
+		} catch (InterruptedException e) {
+			return LogoUploadStatus.INTERNAL_ERROR.ordinal();
+		} catch (IM4JavaException e) {
+			return LogoUploadStatus.INTERNAL_ERROR.ordinal();
 		}finally{
 			if(inFile != null) inFile.delete();
 			if(outFile != null) outFile.delete();
 		}
+		return LogoUploadStatus.OK.ordinal();
 	}
 
 }
