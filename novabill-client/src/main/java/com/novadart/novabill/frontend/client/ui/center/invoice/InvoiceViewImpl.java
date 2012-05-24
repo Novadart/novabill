@@ -225,7 +225,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		}
 		inv.setItems(invItems);
 		inv.setNote(note.getText());
-		inv.setPaymentType(PaymentType.values()[payment.getSelectedIndex()]);
+		inv.setPaymentType(PaymentType.values()[payment.getSelectedIndex()-1]);
 		if(payment.getSelectedIndex() > 0){
 			inv.setPaymentDueDate(InvoiceUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
 		} else {
@@ -420,7 +420,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		note.setText(invoice.getNote());
 		paymentNote.setText(invoice.getPaymentNote());
 		if(invoice.getPaymentType() != null) { //can be null if the invoice is derived from an estimation
-			payment.setSelectedIndex(invoice.getPaymentType().ordinal());
+			payment.setSelectedIndex(invoice.getPaymentType().ordinal()+1);
 		}
 		clientName.setText(invoice.getClient().getName());
 		modifyDocument.setVisible(true);
