@@ -3,7 +3,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.novadart.novabill</groupId>
 	<artifactId>novabill</artifactId>
-	<version>1.1-SNAPSHOT</version>
+	<version>1.1</version>
 	<name>The Novabill Project</name>
 	<url>http://labs.novadart.com:8080</url>
 	<packaging>pom</packaging>
