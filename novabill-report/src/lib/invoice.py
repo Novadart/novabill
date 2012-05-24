@@ -174,13 +174,13 @@ class InvoiceData(object):
         return self.__data["id"]
     
     def getInvoiceDate(self):
-        return self.__data["invoiceDate"]
+        return self.__data["accountingDocumentDate"]
     
     def getInvoiceID(self):
         return self.__data["documentID"]
     
     def getInvoiceYear(self):
-        return self.__data["invoiceYear"]
+        return self.__data["accountingDocumentYear"]
     
     def getNote(self):
         return self.__data["note"]

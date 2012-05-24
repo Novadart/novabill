@@ -12,7 +12,7 @@ public class AccountingDocumentDTO implements IsSerializable{
 	
 	protected Long documentID;
 	
-	protected Date invoiceDate;
+	protected Date accountingDocumentDate;
 	
     protected String note;
     
@@ -44,12 +44,12 @@ public class AccountingDocumentDTO implements IsSerializable{
 		this.documentID = documentID;
 	}
 
-	public Date getInvoiceDate() {
-		return invoiceDate;
+	public Date getAccountingDocumentDate() {
+		return accountingDocumentDate;
 	}
 
-	public void setInvoiceDate(Date invoiceDate) {
-		this.invoiceDate = invoiceDate;
+	public void setAccountingDocumentDate(Date invoiceDate) {
+		this.accountingDocumentDate = invoiceDate;
 	}
 
 	public String getNote() {

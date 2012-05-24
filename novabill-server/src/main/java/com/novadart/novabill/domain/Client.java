@@ -134,7 +134,7 @@ public class Client implements Serializable {
     }
     
     public List<Invoice> getAllInvoicesInRange(Integer start, Integer length){
-    	String query = "select invoice from Invoice as invoice where invoice.client.id = :clientId order by invoice.invoiceYear desc, invoice.documentID desc";
+    	String query = "select invoice from Invoice as invoice where invoice.client.id = :clientId order by invoice.accountingDocumentYear desc, invoice.documentID desc";
     	return entityManager.createQuery(query, Invoice.class)
     			.setParameter("clientId", getId())
     			.setFirstResult(start)

@@ -10,7 +10,7 @@ public class AccountingDocumentComparator implements Comparator<AccountingDocume
 			return 0;
 		}
 		
-		int cmpYear = abInv1.getInvoiceYear().compareTo(abInv2.getInvoiceYear());
+		int cmpYear = abInv1.getAccountingDocumentYear().compareTo(abInv2.getAccountingDocumentYear());
 		if(cmpYear > 0) return -1;
 		if(cmpYear < 0) return 1;
 		

@@ -40,9 +40,9 @@ public abstract class AccountingDocument {
 
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "S-")
-    protected Date invoiceDate;
+    protected Date accountingDocumentDate;
     
-    protected Integer invoiceYear;
+    protected Integer accountingDocumentYear;
     
     @Type(type = "text")
     protected String note;
@@ -65,18 +65,18 @@ public abstract class AccountingDocument {
     
 	@PreUpdate
     protected void onUpdate(){
-    	if(invoiceDate != null)
-    		invoiceYear = getYear(invoiceDate);
+    	if(accountingDocumentDate != null)
+    		accountingDocumentYear = getYear(accountingDocumentDate);
     }
     
     @PrePersist
     protected void onPersist(){
-    	if(invoiceDate != null)
-    		invoiceYear = getYear(invoiceDate);
+    	if(accountingDocumentDate != null)
+    		accountingDocumentYear = getYear(accountingDocumentDate);
     }
 
-	protected void setInvoiceYear(Integer invoiceYear) {
-        this.invoiceYear = invoiceYear;
+	protected void setAccountingDocumentYear(Integer year) {
+        this.accountingDocumentYear = year;
     }
 	
 	/*
@@ -92,16 +92,16 @@ public abstract class AccountingDocument {
         this.documentID = documentID;
     }
     
-    public Date getInvoiceDate() {
-        return this.invoiceDate;
+    public Date getAccountingDocumentDate() {
+        return this.accountingDocumentDate;
     }
     
-    public void setInvoiceDate(Date invoiceDate) {
-        this.invoiceDate = invoiceDate;
+    public void setAccountingDocumentDate(Date date) {
+        this.accountingDocumentDate = date;
     }
     
-    public Integer getInvoiceYear() {
-        return this.invoiceYear;
+    public Integer getAccountingDocumentYear() {
+        return this.accountingDocumentYear;
     }
     
     public String getNote() {

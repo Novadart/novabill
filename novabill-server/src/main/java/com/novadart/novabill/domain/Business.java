@@ -126,12 +126,12 @@ public class Business implements Serializable {
     private Set<RoleTypes> grantedRoles = new HashSet<RoleTypes>();
     
     public List<Invoice> getAllInvoicesInRange(int start, int length){
-    	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.invoiceYear desc, invoice.documentID desc";
+    	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
     	return entityManager().createQuery(query, Invoice.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
     }
     
     public Long getNextInvoiceDocumentID(){
-    	String query = "select max(invoice.documentID) from Invoice as invoice where invoice.business.id = :businessId and invoice.invoiceYear = :year";
+    	String query = "select max(invoice.documentID) from Invoice as invoice where invoice.business.id = :businessId and invoice.accountingDocumentYear = :year";
     	Long id = entityManager.createQuery(query, Long.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getSingleResult(); 
@@ -139,14 +139,14 @@ public class Business implements Serializable {
     }
     
     public List<Long> getCurrentYearInvoicesDocumentIDs(){
-    	String query = "select invoice.documentID from Invoice as invoice where invoice.business.id = :businessId and invoice.invoiceYear = :year order by invoice.documentID";
+    	String query = "select invoice.documentID from Invoice as invoice where invoice.business.id = :businessId and invoice.accountingDocumentYear = :year order by invoice.documentID";
     	return entityManager.createQuery(query, Long.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getResultList();
     }
     
     public Invoice getInvoiceByIdInYear(Long documentID, Integer year){
-    	String query = "select invoice from Invoice invoice where invoice.business.id = :businessId and invoice.invoiceYear = :year and invoice.documentID = :id";
+    	String query = "select invoice from Invoice invoice where invoice.business.id = :businessId and invoice.accountingDocumentYear = :year and invoice.documentID = :id";
     	List<Invoice> result =  entityManager().createQuery(query, Invoice.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", year)
@@ -155,7 +155,7 @@ public class Business implements Serializable {
     }
     
     public Long getNextEstimationDocumentID(){
-    	String query = "select max(estimation.documentID) from Estimation as estimation where estimation.business.id = :businessId and estimation.invoiceYear = :year";
+    	String query = "select max(estimation.documentID) from Estimation as estimation where estimation.business.id = :businessId and estimation.accountingDocumentYear = :year";
     	Long id = entityManager.createQuery(query, Long.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getSingleResult();
@@ -177,6 +177,17 @@ public class Business implements Serializable {
     	return ftQuery.getResultList();
     }
     
+    private <T extends AccountingDocument> List<T> getAccountingDocumentForYear(Iterator<T> iter, int year){
+    	List<T> documents = new LinkedList<T>();
+    	T document;
+		while(iter.hasNext()){
+			document = iter.next();
+			if(document.getAccountingDocumentYear().intValue() == year)
+				documents.add(document);
+		}
+		return documents;
+    }
+    
     @Transactional(readOnly = true)
 	public List<Invoice> getInvoicesForYear(int year) {
 		List<Invoice> invoices = new LinkedList<Invoice>();
@@ -184,7 +195,7 @@ public class Business implements Serializable {
 		Invoice inv;
 		while(iter.hasNext()){
 			inv = iter.next();
-			if(inv.getInvoiceYear().intValue() == year)
+			if(inv.getAccountingDocumentYear().intValue() == year)
 				invoices.add(inv);
 		}
 		return invoices;

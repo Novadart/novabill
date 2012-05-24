@@ -10,7 +10,7 @@ public abstract class AccountingDocumentDTOFactory {
 	protected static void copyToDTO(AccountingDocument accountingDocument, AccountingDocumentDTO accountingDocumentDTO) {
 		accountingDocumentDTO.setId(accountingDocument.getId());
 		accountingDocumentDTO.setDocumentID(accountingDocument.getDocumentID());
-		accountingDocumentDTO.setInvoiceDate(accountingDocument.getInvoiceDate());
+		accountingDocumentDTO.setAccountingDocumentDate(accountingDocument.getAccountingDocumentDate());
 		accountingDocumentDTO.setNote(accountingDocument.getNote());
 		List<InvoiceItemDTO> items = new ArrayList<InvoiceItemDTO>(accountingDocument.getInvoiceItems().size());
 		for(InvoiceItem item: accountingDocument.getInvoiceItems())
@@ -23,7 +23,7 @@ public abstract class AccountingDocumentDTOFactory {
 	
 	public static void copyFromDTO(AccountingDocument accountDocument, AccountingDocumentDTO accountingDocumentDTO, boolean copyItems){
 		accountDocument.setDocumentID(accountingDocumentDTO.getDocumentID());
-		accountDocument.setInvoiceDate(accountingDocumentDTO.getInvoiceDate());
+		accountDocument.setAccountingDocumentDate(accountingDocumentDTO.getAccountingDocumentDate());
 		accountDocument.setNote(accountingDocumentDTO.getNote());
 		if(copyItems){
 			for(InvoiceItemDTO itemDTO: accountingDocumentDTO.getItems()){
