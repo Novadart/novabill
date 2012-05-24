@@ -19,6 +19,7 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
@@ -188,6 +189,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 				public void onSuccess(Void result) {
 					Configuration.setBusiness(b);
 					presenter.goTo(new HomePlace());
+					DataWatcher.getInstance().fireBusinessEvent();
 				}
 				
 				@Override

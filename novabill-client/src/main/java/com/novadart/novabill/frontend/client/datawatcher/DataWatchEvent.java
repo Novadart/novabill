@@ -10,7 +10,8 @@ public class DataWatchEvent extends GwtEvent<DataWatchEventHandler> {
 		INVOICE,
 		ESTIMATION,
 		CLIENT,
-		STATS
+		STATS,
+		BUSINESS
 	}
 	
 	private final DATA data;
