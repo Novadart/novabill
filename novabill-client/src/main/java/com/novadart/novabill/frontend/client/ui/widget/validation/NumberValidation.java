@@ -23,7 +23,7 @@ public class NumberValidation implements ValidationBundle<String> {
 
 	@Override
 	public String getErrorMessage() {
-		return I18N.get.numberValidationError();
+		return I18N.INSTANCE.numberValidationError();
 	}
 
 }

@@ -29,7 +29,7 @@ public class ClientActivity extends BasicActivity {
 
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.get.errorServerCommunication());
+				Window.alert(I18N.INSTANCE.errorServerCommunication());
 				goTo(new HomePlace());
 			}
 

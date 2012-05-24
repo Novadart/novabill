@@ -23,7 +23,7 @@ public class VatIdValidation implements ValidationBundle<String> {
 
 	@Override
 	public String getErrorMessage() {
-		return I18N.get.vatidValidationError();
+		return I18N.INSTANCE.vatidValidationError();
 	}
 
 }

@@ -37,7 +37,7 @@ public class EstimationList extends QuickViewList<EstimationDTO> {
 
 			@Override
 			public void onDeleteClicked(EstimationDTO estimation) {
-				if(Window.confirm(I18N.get.confirmEstimationDeletion())){
+				if(Window.confirm(I18N.INSTANCE.confirmEstimationDeletion())){
 					ServerFacade.estimation.remove(estimation.getId(), new AuthAwareAsyncCallback<Void>() {
 						
 						@Override
@@ -47,7 +47,7 @@ public class EstimationList extends QuickViewList<EstimationDTO> {
 						
 						@Override
 						public void onException(Throwable caught) {
-							Window.confirm(I18N.get.errorServerCommunication());		
+							Window.confirm(I18N.INSTANCE.errorServerCommunication());		
 						}
 					});
 				}

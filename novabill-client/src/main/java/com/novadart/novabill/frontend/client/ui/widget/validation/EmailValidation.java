@@ -23,6 +23,6 @@ public class EmailValidation implements ValidationBundle<String> {
 
 	@Override
 	public String getErrorMessage() {
-		return I18N.get.emailValidationError();
+		return I18N.INSTANCE.emailValidationError();
 	}
 }

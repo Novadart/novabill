@@ -23,7 +23,7 @@ public class SsnValidation implements ValidationBundle<String> {
 
 	@Override
 	public String getErrorMessage() {
-		return I18N.get.ssnValidationError();
+		return I18N.INSTANCE.ssnValidationError();
 	}
 
 }

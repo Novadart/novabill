@@ -39,7 +39,7 @@ public class Novabill implements EntryPoint {
 					@Override
 					public void onSuccess(BusinessStatsDTO result) {
 						if(result == null){
-							Window.alert(I18N.get.errorLoadingAppConfiguration());
+							Window.alert(I18N.INSTANCE.errorLoadingAppConfiguration());
 							return;
 						}
 						
@@ -76,7 +76,7 @@ public class Novabill implements EntryPoint {
 
 					@Override
 					public void onException(Throwable caught) {
-						Window.alert(I18N.get.errorLoadingAppConfiguration());
+						Window.alert(I18N.INSTANCE.errorLoadingAppConfiguration());
 					}
 				});
 				
@@ -84,7 +84,7 @@ public class Novabill implements EntryPoint {
 			
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.get.errorLoadingAppConfiguration());
+				Window.alert(I18N.INSTANCE.errorLoadingAppConfiguration());
 			}
 		});
 		

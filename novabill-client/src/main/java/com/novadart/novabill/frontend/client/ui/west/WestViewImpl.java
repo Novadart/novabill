@@ -56,7 +56,7 @@ public class WestViewImpl extends Composite implements WestView {
 	
 	@UiFactory
 	I18N getI18N(){
-		return I18N.get;
+		return I18N.INSTANCE;
 	}
 	
 	private CellList<ClientDTO> createClientList(){

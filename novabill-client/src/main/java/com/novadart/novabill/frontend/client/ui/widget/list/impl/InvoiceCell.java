@@ -52,18 +52,18 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 			sb.appendHtmlConstant("<div class='details'>");
 			
 			sb.appendHtmlConstant("<div class='total'>");
-			sb.appendEscaped(I18N.get.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
+			sb.appendEscaped(I18N.INSTANCE.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
 			sb.appendHtmlConstant("</div>");
 
 			sb.appendHtmlConstant("<div class='tools'>");
 			sb.appendHtmlConstant("<span class='openInvoice'>");
-			sb.appendEscaped(I18N.get.openInvoice());
+			sb.appendEscaped(I18N.INSTANCE.openInvoice());
 			sb.appendHtmlConstant("</span>");
 			sb.appendHtmlConstant("<span class='downloadAsPDF'>");
 			sb.appendHtmlConstant("<img class='pdf' src='"+Image.get.pdf().getSafeUri().asString()+"'>");
 			sb.appendHtmlConstant("</span>");
 			sb.appendHtmlConstant("<span class='delete'>");
-			sb.appendEscaped(I18N.get.delete());
+			sb.appendEscaped(I18N.INSTANCE.delete());
 			sb.appendHtmlConstant("</span>");
 			sb.appendHtmlConstant("</div>");
 			

@@ -37,7 +37,7 @@ public class InvoiceList extends QuickViewList<InvoiceDTO> {
 
 			@Override
 			public void onDeleteClicked(InvoiceDTO invoice) {
-				if(Window.confirm(I18N.get.confirmInvoiceDeletion())){
+				if(Window.confirm(I18N.INSTANCE.confirmInvoiceDeletion())){
 					ServerFacade.invoice.remove(invoice.getId(), new AuthAwareAsyncCallback<Void>() {
 						
 						@Override
@@ -48,7 +48,7 @@ public class InvoiceList extends QuickViewList<InvoiceDTO> {
 						
 						@Override
 						public void onException(Throwable caught) {
-							Window.confirm(I18N.get.errorServerCommunication());		
+							Window.confirm(I18N.INSTANCE.errorServerCommunication());		
 						}
 					});
 				}

@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
@@ -60,6 +61,8 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	@UiField(provided=true) ValidatedTextBox mobile;
 	@UiField(provided=true) ValidatedTextBox fax;
 	@UiField ValidatedTextBox web;
+	
+	private boolean logoUpdateCompleted = true;
 
 	public BusinessViewImpl() {
 		BusinessDTO b = Configuration.getBusiness();
@@ -77,7 +80,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		address.setText(b.getAddress());
 		city = new ValidatedTextBox(nev);
 		city.setText(b.getCity());
-		province = new ValidatedListBox(I18N.get.notEmptyValidationError());
+		province = new ValidatedListBox(I18N.INSTANCE.notEmptyValidationError());
 		
 		Province[] provs = Province.values();
 		for (Province p : provs) {
@@ -102,11 +105,20 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		formPanel.setAction(Const.URL_LOGO);
 		formPanel.setMethod(FormPanel.METHOD_POST);
 		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
-
+		
+		formPanel.addSubmitHandler(new FormPanel.SubmitHandler() {
+			
+			@Override
+			public void onSubmit(SubmitEvent event) {
+				logoUpdateCompleted = false;
+			}
+		});
+		
 		formPanel.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
 
 			@Override
 			public void onSubmitComplete(SubmitCompleteEvent event) {
+				logoUpdateCompleted = true;
 				logo.setUrl(Const.genLogoUrl());
 			}
 		});
@@ -167,6 +179,11 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 
 	@UiHandler("saveData")
 	void onSaveDataClicked(ClickEvent e){
+		if(!logoUpdateCompleted){
+			Window.alert(I18N.INSTANCE.errorLogoNotYetUploaded());
+			return;
+		}
+		
 		if(validate()){
 			final BusinessDTO b = Configuration.getBusiness();
 			b.setName(name.getText());
@@ -194,7 +211,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 				
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert(I18N.get.errorServerCommunication());
+					Window.alert(I18N.INSTANCE.errorServerCommunication());
 				}
 			});
 			

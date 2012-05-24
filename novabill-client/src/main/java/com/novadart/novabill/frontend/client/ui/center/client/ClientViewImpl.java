@@ -159,7 +159,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	@UiHandler("cancelClient")
 	void onCancelClientClicked(ClickEvent e){
-		if(Window.confirm(I18N.get.confirmClientDeletion())){
+		if(Window.confirm(I18N.INSTANCE.confirmClientDeletion())){
 			ServerFacade.client.remove(client.getId(), new AuthAwareAsyncCallback<Void>() {
 
 				@Override
@@ -172,9 +172,9 @@ public class ClientViewImpl extends Composite implements ClientView {
 				@Override
 				public void onException(Throwable caught) {
 					if(caught instanceof DataIntegrityException){
-						Window.alert(I18N.get.errorClientCancelation());
+						Window.alert(I18N.INSTANCE.errorClientCancelation());
 					} else {
-						Window.alert(I18N.get.errorServerCommunication());
+						Window.alert(I18N.INSTANCE.errorServerCommunication());
 					}
 				}
 			});
@@ -211,7 +211,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		sb.appendHtmlConstant("<div class='address-3'>");
 		sb.appendEscaped( ( (hasPhone?"Tel. "+client.getPhone():"") 
 				+ (hasFax?" Fax "+client.getFax():"").trim() 
-				+ " " + I18N.get.vatID()+" "+client.getVatID() ).trim() );
+				+ " " + I18N.INSTANCE.vatID()+" "+client.getVatID() ).trim() );
 		sb.appendHtmlConstant("</div>");
 
 		clientDetails.setHTML(sb.toSafeHtml());
@@ -224,7 +224,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.get.errorServerCommunication());
+				Window.alert(I18N.INSTANCE.errorServerCommunication());
 			}
 
 			@Override
@@ -243,7 +243,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.get.errorServerCommunication());
+				Window.alert(I18N.INSTANCE.errorServerCommunication());
 			}
 
 			@Override

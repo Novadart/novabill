@@ -4,8 +4,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.Constants;
 
 public interface I18N extends Constants {
-	public static final I18N get = GWT.create(I18N.class);
+	public static final I18N INSTANCE = GWT.create(I18N.class);
 
+	public String errorLogoNotYetUploaded();
 	public String cancelModificationsConfirmation();
 	public String missingVatIdAndSSNValidationError();
 	public String notEmptyValidationError();

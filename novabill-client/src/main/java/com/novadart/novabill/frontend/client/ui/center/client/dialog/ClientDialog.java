@@ -76,7 +76,7 @@ public class ClientDialog extends Dialog {
 		
 		email = new ValidatedTextBox(new EmailValidation(true));
 		
-		province = new ValidatedListBox(I18N.get.notEmptyValidationError());
+		province = new ValidatedListBox(I18N.INSTANCE.notEmptyValidationError());
 		for (Province p : Province.values()) {
 			province.addItem(p.name());
 		}
@@ -86,7 +86,7 @@ public class ClientDialog extends Dialog {
 
 	@UiFactory
 	I18N getI18N(){
-		return I18N.get;
+		return I18N.INSTANCE;
 	}
 
 	public void setClient(ClientDTO client) {
@@ -106,7 +106,7 @@ public class ClientDialog extends Dialog {
 		vatID.setText(client.getVatID());
 		ssn.setText(client.getSsn());
 		
-		ok.setText(I18N.get.saveModifications());
+		ok.setText(I18N.INSTANCE.saveModifications());
 	}
 
 
@@ -143,7 +143,7 @@ public class ClientDialog extends Dialog {
 
 				@Override
 				public void onException(Throwable caught) {
-					Window.alert(I18N.get.errorServerCommunication());
+					Window.alert(I18N.INSTANCE.errorServerCommunication());
 				}
 			});
 		} else {
@@ -158,7 +158,7 @@ public class ClientDialog extends Dialog {
 
 				@Override
 				public void onException(Throwable caught) {
-					Window.alert(I18N.get.errorServerCommunication());
+					Window.alert(I18N.INSTANCE.errorServerCommunication());
 				}
 			});
 			
@@ -179,7 +179,7 @@ public class ClientDialog extends Dialog {
 			tb.reset();
 		}
 		province.reset();
-		ok.setText(I18N.get.createClient());
+		ok.setText(I18N.INSTANCE.createClient());
 	}
 
 	private boolean validate(){

@@ -92,7 +92,7 @@ public class MainWidget extends Composite {
 
 	@UiFactory
 	I18N getI18N(){
-		return I18N.get;
+		return I18N.INSTANCE;
 	}
 
 	@UiFactory
@@ -151,7 +151,7 @@ public class MainWidget extends Composite {
 
 		//first row
 		shb.appendHtmlConstant("<span class='clients'>");
-		shb.appendEscaped(I18N.get.totalClients());
+		shb.appendEscaped(I18N.INSTANCE.totalClients());
 		shb.appendHtmlConstant("<span class='value'>");
 		shb.append(statistics.getClientsCount());
 		shb.appendHtmlConstant("</span>");
@@ -159,7 +159,7 @@ public class MainWidget extends Composite {
 
 		//second row
 		shb.appendHtmlConstant("<span class='invoices'>");
-		shb.appendEscaped(I18N.get.totalInvoices());
+		shb.appendEscaped(I18N.INSTANCE.totalInvoices());
 		shb.appendHtmlConstant("<span class='value'>");
 		shb.append(statistics.getInvoicesCountForYear());
 		shb.appendHtmlConstant("</span>");
@@ -167,7 +167,7 @@ public class MainWidget extends Composite {
 
 		//third row
 		shb.appendHtmlConstant("<span class='totalAmount'>");
-		shb.appendEscaped(I18N.get.totalInvoicing());
+		shb.appendEscaped(I18N.INSTANCE.totalInvoicing());
 		shb.appendHtmlConstant("<span class='value'>");
 		shb.appendEscaped(NumberFormat.getCurrencyFormat().format(statistics.getTotalAfterTaxesForYear()));
 		shb.appendHtmlConstant("</span>");

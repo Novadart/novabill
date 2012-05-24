@@ -51,18 +51,18 @@ public class BootstrapDialog extends Dialog {
 	public BootstrapDialog() {
 		NotEmptyValidation nev = new NotEmptyValidation();
 		NumberValidation nuv = new NumberValidation(true);
-		name = new RichTextBox(I18N.get.companyName(), nev);
-		ssn = new RichTextBox(I18N.get.ssn(), new SsnOrVatIdValidation());
-		vatID = new RichTextBox(I18N.get.vatID(), new VatIdValidation());
-		address = new RichTextBox(I18N.get.address(), nev);
-		city = new RichTextBox(I18N.get.city(), nev);
-		province = new RichTextBox(I18N.get.province(), nev);
-		country = new RichTextBox(I18N.get.country(), nev);
-		postcode = new RichTextBox(I18N.get.postcode(), new PostcodeValidation());
-		phone = new RichTextBox(I18N.get.phone(), nuv);
-		email = new RichTextBox(I18N.get.email(), new EmailValidation(true));
-		mobile = new RichTextBox(I18N.get.mobile(), nuv);
-		fax = new RichTextBox(I18N.get.fax(), nuv);
+		name = new RichTextBox(I18N.INSTANCE.companyName(), nev);
+		ssn = new RichTextBox(I18N.INSTANCE.ssn(), new SsnOrVatIdValidation());
+		vatID = new RichTextBox(I18N.INSTANCE.vatID(), new VatIdValidation());
+		address = new RichTextBox(I18N.INSTANCE.address(), nev);
+		city = new RichTextBox(I18N.INSTANCE.city(), nev);
+		province = new RichTextBox(I18N.INSTANCE.province(), nev);
+		country = new RichTextBox(I18N.INSTANCE.country(), nev);
+		postcode = new RichTextBox(I18N.INSTANCE.postcode(), new PostcodeValidation());
+		phone = new RichTextBox(I18N.INSTANCE.phone(), nuv);
+		email = new RichTextBox(I18N.INSTANCE.email(), new EmailValidation(true));
+		mobile = new RichTextBox(I18N.INSTANCE.mobile(), nuv);
+		fax = new RichTextBox(I18N.INSTANCE.fax(), nuv);
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("BootstrapDialog");
 	}
