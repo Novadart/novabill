@@ -218,7 +218,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 
 		inv.setDocumentID(Long.parseLong(number.getText()));
-		inv.setInvoiceDate(date.getValue());
+		inv.setAccountingDocumentDate(date.getValue());
 		List<InvoiceItemDTO> invItems = new ArrayList<InvoiceItemDTO>();
 		for (InvoiceItemDTO invoiceItemDTO : invoiceItems.getList()) {
 			invItems.add(invoiceItemDTO);
@@ -227,7 +227,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		inv.setNote(note.getText());
 		inv.setPaymentType(PaymentType.values()[payment.getSelectedIndex()]);
 		if(payment.getSelectedIndex() > 0){
-			inv.setPaymentDueDate(InvoiceUtils.calculatePaymentDueDate(inv.getInvoiceDate(), inv.getPaymentType()));  
+			inv.setPaymentDueDate(InvoiceUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
 		} else {
 			inv.setPaymentDueDate(null);
 		}
@@ -260,7 +260,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 			es.setClient(client);
 		}
 
-		es.setInvoiceDate(date.getValue());
+		es.setAccountingDocumentDate(date.getValue());
 		List<InvoiceItemDTO> invItems = new ArrayList<InvoiceItemDTO>();
 		for (InvoiceItemDTO invoiceItemDTO : invoiceItems.getList()) {
 			invItems.add(invoiceItemDTO);
@@ -416,7 +416,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		if(invoice.getDocumentID() != null){
 			number.setText(invoice.getDocumentID().toString());
 		} 
-		date.setValue(invoice.getInvoiceDate());
+		date.setValue(invoice.getAccountingDocumentDate());
 		note.setText(invoice.getNote());
 		paymentNote.setText(invoice.getPaymentNote());
 		if(invoice.getPaymentType() != null) { //can be null if the invoice is derived from an estimation
@@ -467,7 +467,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		this.client = estimation.getClient();
 
 		invoiceItems.setList(estimation.getItems());
-		date.setValue(estimation.getInvoiceDate());
+		date.setValue(estimation.getAccountingDocumentDate());
 		note.setText(estimation.getNote());
 		clientName.setText(estimation.getClient().getName());
 

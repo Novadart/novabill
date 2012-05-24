@@ -24,7 +24,7 @@ public class NumberOfInvoicesPerYearQuotaReachedChecker implements QuotaChecker 
 
 	@Override
 	public void check(Business business) throws QuotaException {
-		LOGGER.info("Number of invoices per year quota check - quota: {}, roles: {}", new Object[]{numberOfInvoicesPerYearQuota, business.getGrantedRoles()});
+		LOGGER.debug("Number of invoices per year quota check - quota: {}, roles: {}", new Object[]{numberOfInvoicesPerYearQuota, business.getGrantedRoles()});
 		if(business.getGrantedRoles().contains(RoleTypes.ROLE_BUSINESS_FREE) && 
 				business.getInvoicesForYear(Calendar.getInstance().get(Calendar.YEAR)).size() >= numberOfInvoicesPerYearQuota)
 			throw new QuotaException();

@@ -190,16 +190,13 @@ public class Business implements Serializable {
     
     @Transactional(readOnly = true)
 	public List<Invoice> getInvoicesForYear(int year) {
-		List<Invoice> invoices = new LinkedList<Invoice>();
-		Iterator<Invoice> iter = getInvoices().iterator();
-		Invoice inv;
-		while(iter.hasNext()){
-			inv = iter.next();
-			if(inv.getAccountingDocumentYear().intValue() == year)
-				invoices.add(inv);
-		}
-		return invoices;
+		return getAccountingDocumentForYear(getInvoices().iterator(), year);
 	}
+    
+    @Transactional(readOnly = true)
+    public List<Estimation> getEstimationsForYear(int year){
+    	return getAccountingDocumentForYear(getEstimations().iterator(), year);
+    }
 
 	@Override
 	public int hashCode() {
