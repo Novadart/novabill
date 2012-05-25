@@ -5,14 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.rmi.RemoteException;
-import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -27,7 +21,6 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.service.PDFGenerator.DocumentType;
-import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.PDFGenerator;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -37,7 +30,7 @@ import com.novadart.services.shared.ImageStoreService;
 
 @Controller
 @RequestMapping("/private/pdf")
-public class PDFController {
+public class PDFController extends AbstractXsrfContoller{
 	
 	public static final String TOKENS_SESSION_FIELD = "pdf.generation.tokens";
 	
@@ -50,34 +43,9 @@ public class PDFController {
 	@Autowired
 	private ImageStoreService imageStoreService;
 	
-	@Autowired
-	private TokenGenerator tokenGenerator;
-	
-	@SuppressWarnings("unchecked")
-	private Set<String> getTokensSet(HttpSession session){
-		Set<String> set = (Set<String>)session.getAttribute(TOKENS_SESSION_FIELD);
-		if(set == null){
-			set = Collections.synchronizedSet(new HashSet<String>());
-			session.setAttribute(TOKENS_SESSION_FIELD, set);
-		}
-		return set;
-	}
-	
-	private boolean verifyAndRemoveToken(String token, HttpSession session){
-		Set<String> tokens = getTokensSet(session);
-		if(!tokens.contains(token))
-			return false;
-		tokens.remove(token);
-		return true;
-	}
-	
-	@RequestMapping("/token")
-	@ResponseBody
-	public String generateToken(HttpSession session) throws NoSuchAlgorithmException{
-		String token = tokenGenerator.generateToken();
-		Set<String> tokens = getTokensSet(session);
-		tokens.add(token);
-		return token;
+	@Override
+	protected String getTokensSessionField() {
+		return TOKENS_SESSION_FIELD;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/invoices/{id}")
