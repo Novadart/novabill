@@ -5,13 +5,14 @@ import java.io.StringWriter;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+
 import org.apache.commons.lang.StringUtils;
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.Signature;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import com.novadart.novabill.annotation.MailMixin;
+
 import com.novadart.novabill.service.UtilsService;
 
 public aspect ExceptionTraceAspect extends AbstractLogEventEmailSenderAspect {

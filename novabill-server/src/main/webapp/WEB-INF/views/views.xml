@@ -39,4 +39,6 @@
 			value="/WEB-INF/views/uncaughtException.jspx" />
 	</definition>
 	
+	<definition name="pdfLandingPage" template="/WEB-INF/views/pdfLandingPage.jsp" />
+	
 </tiles-definitions>

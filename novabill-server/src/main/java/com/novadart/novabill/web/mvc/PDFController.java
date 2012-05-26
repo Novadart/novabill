@@ -5,6 +5,8 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.security.NoSuchAlgorithmException;
+
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.apache.commons.io.IOUtils;
@@ -15,6 +17,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.healthmarketscience.rmiio.RemoteInputStreamClient;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
@@ -46,6 +50,14 @@ public class PDFController extends AbstractXsrfContoller{
 	@Override
 	protected String getTokensSessionField() {
 		return TOKENS_SESSION_FIELD;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/landing/{document}/{id}")
+	public ModelAndView getPDFLandingPage(@PathVariable String document, @PathVariable long id) throws NoSuchAlgorithmException{
+		ModelAndView mav = new ModelAndView("pdfLandingPage");
+		mav.addObject("id", id);
+		mav.addObject("document", document);
+		return mav;
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/invoices/{id}")
