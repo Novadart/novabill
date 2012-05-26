@@ -2,10 +2,12 @@ package com.novadart.novabill.frontend.client.place;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
+import com.google.gwt.place.shared.Prefix;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class InvoicePlace extends Place {
 
+	@Prefix(value=HistoryPrefix.INVOICE)
 	public static class Tokenizer implements PlaceTokenizer<InvoicePlace> {
 
 		@Override
