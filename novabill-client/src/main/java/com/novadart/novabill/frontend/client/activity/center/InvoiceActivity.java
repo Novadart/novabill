@@ -2,7 +2,6 @@ package com.novadart.novabill.frontend.client.activity.center;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
@@ -13,6 +12,7 @@ import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
@@ -58,7 +58,7 @@ public class InvoiceActivity extends BasicActivity {
 
 				@Override
 				public void onException(Throwable caught) {
-					Window.alert(I18N.INSTANCE.errorServerCommunication());
+					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 					goTo(new HomePlace());
 				}
 
@@ -95,7 +95,7 @@ public class InvoiceActivity extends BasicActivity {
 
 				@Override
 				public void onException(Throwable caught) {
-					Window.alert(I18N.INSTANCE.errorServerCommunication());
+					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 					goTo(new HomePlace());
 				}
 

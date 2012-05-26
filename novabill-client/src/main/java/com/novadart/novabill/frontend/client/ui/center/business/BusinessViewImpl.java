@@ -7,7 +7,6 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
@@ -26,6 +25,7 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.ui.center.BusinessView;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
@@ -126,12 +126,12 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 				int resultCode = 0;
 				
 				if(! Validation.isPositiveNumber(resultCodeStr)){
-					Window.alert(I18N.INSTANCE.errorLogoIllegalRequest());
+					Notification.showMessage(I18N.INSTANCE.errorLogoIllegalRequest());
 					return;
 				} else {
 					resultCode = Integer.parseInt(resultCodeStr);
 					if(resultCode > LogoUploadStatus.values().length){
-						Window.alert(I18N.INSTANCE.errorLogoIllegalRequest());
+						Notification.showMessage(I18N.INSTANCE.errorLogoIllegalRequest());
 						return;	
 					}
 				}
@@ -139,17 +139,17 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 				LogoUploadStatus status = LogoUploadStatus.values()[resultCode];
 				switch(status){
 				case ILLEGAL_PAYLOAD:
-					Window.alert(I18N.INSTANCE.errorLogoIllegalFile());
+					Notification.showMessage(I18N.INSTANCE.errorLogoIllegalFile());
 					break;
 					
 				case ILLEGAL_SIZE:
-					Window.alert(I18N.INSTANCE.errorLogoSizeTooBig());
+					Notification.showMessage(I18N.INSTANCE.errorLogoSizeTooBig());
 					break;
 					
 					default:
 				case ILLEGAL_REQUEST:
 				case INTERNAL_ERROR:
-					Window.alert(I18N.INSTANCE.errorLogoIllegalRequest());
+					Notification.showMessage(I18N.INSTANCE.errorLogoIllegalRequest());
 					break;
 					
 				case OK:
@@ -217,7 +217,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	@UiHandler("saveData")
 	void onSaveDataClicked(ClickEvent e){
 		if(!logoUpdateCompleted){
-			Window.alert(I18N.INSTANCE.errorLogoNotYetUploaded());
+			Notification.showMessage(I18N.INSTANCE.errorLogoNotYetUploaded());
 			return;
 		}
 		
@@ -248,7 +248,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 				
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert(I18N.INSTANCE.errorServerCommunication());
+					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 				}
 			});
 			

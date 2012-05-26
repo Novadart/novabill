@@ -9,6 +9,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewList;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
 public class InvoiceList extends QuickViewList<InvoiceDTO> {
@@ -37,7 +38,7 @@ public class InvoiceList extends QuickViewList<InvoiceDTO> {
 
 			@Override
 			public void onDeleteClicked(InvoiceDTO invoice) {
-				if(Window.confirm(I18N.INSTANCE.confirmInvoiceDeletion())){
+				if(Notification.showYesNoRequest(I18N.INSTANCE.confirmInvoiceDeletion())){
 					ServerFacade.invoice.remove(invoice.getId(), new AuthAwareAsyncCallback<Void>() {
 						
 						@Override
@@ -48,7 +49,7 @@ public class InvoiceList extends QuickViewList<InvoiceDTO> {
 						
 						@Override
 						public void onException(Throwable caught) {
-							Window.confirm(I18N.INSTANCE.errorServerCommunication());		
+							Notification.showYesNoRequest(I18N.INSTANCE.errorServerCommunication());		
 						}
 					});
 				}

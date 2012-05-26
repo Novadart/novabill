@@ -7,7 +7,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
@@ -18,6 +17,7 @@ import com.novadart.novabill.frontend.client.mvp.CenterActivityMapper;
 import com.novadart.novabill.frontend.client.mvp.WestActivityMapper;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.ui.MainWidget;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 
 public class Novabill implements EntryPoint {
@@ -39,7 +39,7 @@ public class Novabill implements EntryPoint {
 					@Override
 					public void onSuccess(BusinessStatsDTO result) {
 						if(result == null){
-							Window.alert(I18N.INSTANCE.errorLoadingAppConfiguration());
+							Notification.showMessage(I18N.INSTANCE.errorLoadingAppConfiguration());
 							return;
 						}
 						
@@ -76,7 +76,7 @@ public class Novabill implements EntryPoint {
 
 					@Override
 					public void onException(Throwable caught) {
-						Window.alert(I18N.INSTANCE.errorLoadingAppConfiguration());
+						Notification.showMessage(I18N.INSTANCE.errorLoadingAppConfiguration());
 					}
 				});
 				
@@ -84,7 +84,7 @@ public class Novabill implements EntryPoint {
 			
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.INSTANCE.errorLoadingAppConfiguration());
+				Notification.showMessage(I18N.INSTANCE.errorLoadingAppConfiguration());
 			}
 		});
 		

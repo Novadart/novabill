@@ -9,6 +9,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewList;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 
 public class EstimationList extends QuickViewList<EstimationDTO> {
@@ -37,7 +38,7 @@ public class EstimationList extends QuickViewList<EstimationDTO> {
 
 			@Override
 			public void onDeleteClicked(EstimationDTO estimation) {
-				if(Window.confirm(I18N.INSTANCE.confirmEstimationDeletion())){
+				if(Notification.showYesNoRequest(I18N.INSTANCE.confirmEstimationDeletion())){
 					ServerFacade.estimation.remove(estimation.getId(), new AuthAwareAsyncCallback<Void>() {
 						
 						@Override
@@ -47,7 +48,7 @@ public class EstimationList extends QuickViewList<EstimationDTO> {
 						
 						@Override
 						public void onException(Throwable caught) {
-							Window.confirm(I18N.INSTANCE.errorServerCommunication());		
+							Notification.showYesNoRequest(I18N.INSTANCE.errorServerCommunication());		
 						}
 					});
 				}

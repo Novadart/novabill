@@ -28,6 +28,7 @@ import com.novadart.novabill.frontend.client.ui.center.ClientView;
 import com.novadart.novabill.frontend.client.ui.center.client.dialog.ClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.EstimationList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoiceList;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -159,7 +160,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	@UiHandler("cancelClient")
 	void onCancelClientClicked(ClickEvent e){
-		if(Window.confirm(I18N.INSTANCE.confirmClientDeletion())){
+		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmClientDeletion())){
 			ServerFacade.client.remove(client.getId(), new AuthAwareAsyncCallback<Void>() {
 
 				@Override
@@ -172,9 +173,9 @@ public class ClientViewImpl extends Composite implements ClientView {
 				@Override
 				public void onException(Throwable caught) {
 					if(caught instanceof DataIntegrityException){
-						Window.alert(I18N.INSTANCE.errorClientCancelation());
+						Notification.showMessage(I18N.INSTANCE.errorClientCancelation());
 					} else {
-						Window.alert(I18N.INSTANCE.errorServerCommunication());
+						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 					}
 				}
 			});
@@ -224,7 +225,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.INSTANCE.errorServerCommunication());
+				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 			}
 
 			@Override
@@ -243,7 +244,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.INSTANCE.errorServerCommunication());
+				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 			}
 
 			@Override

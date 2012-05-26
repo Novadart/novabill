@@ -6,7 +6,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -17,6 +16,7 @@ import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
@@ -143,7 +143,7 @@ public class ClientDialog extends Dialog {
 
 				@Override
 				public void onException(Throwable caught) {
-					Window.alert(I18N.INSTANCE.errorServerCommunication());
+					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 				}
 			});
 		} else {
@@ -158,7 +158,7 @@ public class ClientDialog extends Dialog {
 
 				@Override
 				public void onException(Throwable caught) {
-					Window.alert(I18N.INSTANCE.errorServerCommunication());
+					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 				}
 			});
 			

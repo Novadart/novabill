@@ -13,7 +13,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
@@ -34,6 +33,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -118,7 +118,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiHandler("createInvoice")
 	void onCreateInvoiceClicked(ClickEvent e){
 		if(!validateInvoice()){
-			Window.alert(I18N.INSTANCE.errorInvoiceData());
+			Notification.showMessage(I18N.INSTANCE.errorInvoiceData());
 			return;
 		}
 
@@ -128,7 +128,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 			@Override
 			public void onSuccess(Long result) {
-				Window.alert(I18N.INSTANCE.invoiceCreationSuccess());
+				Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess());
 
 				DataWatcher.getInstance().fireInvoiceEvent();
 				DataWatcher.getInstance().fireStatsEvent();
@@ -140,7 +140,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.INSTANCE.invoiceCreationFailure());
+				Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
 			}
 		});
 
@@ -149,7 +149,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiHandler("convertToInvoice")
 	void onConvertToInvoice(ClickEvent e){
 		if(!validateEstimation()){
-			Window.alert(I18N.INSTANCE.errorEstimationData());
+			Notification.showMessage(I18N.INSTANCE.errorEstimationData());
 			return;
 		}
 
@@ -168,7 +168,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.INSTANCE.invoiceCreationFailure());
+				Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
 			}
 		});
 	}
@@ -177,7 +177,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiHandler("createEstimate")
 	void onCreateEstimateClicked(ClickEvent e){
 		if(!validateEstimation()){
-			Window.alert(I18N.INSTANCE.errorEstimationData());
+			Notification.showMessage(I18N.INSTANCE.errorEstimationData());
 			return;
 		}
 
@@ -187,7 +187,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 			@Override
 			public void onSuccess(Long result) {
-				Window.alert(I18N.INSTANCE.estimationCreationSuccess());
+				Notification.showMessage(I18N.INSTANCE.estimationCreationSuccess());
 
 				DataWatcher.getInstance().fireEstimationEvent();
 
@@ -198,7 +198,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.INSTANCE.estimationCreationFailure());
+				Notification.showMessage(I18N.INSTANCE.estimationCreationFailure());
 			}
 		});
 
@@ -338,7 +338,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
-		if( Window.confirm(I18N.INSTANCE.cancelModificationsConfirmation()) ){
+		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
 			ClientPlace cp = new ClientPlace();
 			cp.setClientId(client.getId());
 			presenter.goTo(cp);
@@ -350,19 +350,19 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 			return;
 		}
 
-		if( Window.confirm(I18N.INSTANCE.saveModificationsConfirm()) ){
+		if(Notification.showYesNoRequest(I18N.INSTANCE.saveModificationsConfirm()) ){
 			final InvoiceDTO inv = createInvoice(invoice);
 
 			ServerFacade.invoice.update(inv, new AuthAwareAsyncCallback<Void>() {
 
 				@Override
 				public void onException(Throwable caught) {
-					Window.alert(I18N.INSTANCE.invoiceUpdateFailure());
+					Notification.showMessage(I18N.INSTANCE.invoiceUpdateFailure());
 				}
 
 				@Override
 				public void onSuccess(Void result) {
-					Window.alert(I18N.INSTANCE.invoiceUpdateSuccess());
+					Notification.showMessage(I18N.INSTANCE.invoiceUpdateSuccess());
 
 					DataWatcher.getInstance().fireInvoiceEvent();
 					DataWatcher.getInstance().fireStatsEvent();
@@ -381,19 +381,19 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	}
 
 	private void onModifyEstimation(){
-		if( Window.confirm(I18N.INSTANCE.saveModificationsConfirm()) ){
+		if(Notification.showYesNoRequest(I18N.INSTANCE.saveModificationsConfirm()) ){
 			final EstimationDTO es = createEstimation(estimation);
 
 			ServerFacade.estimation.update(es, new AuthAwareAsyncCallback<Void>() {
 
 				@Override
 				public void onException(Throwable caught) {
-					Window.alert(I18N.INSTANCE.estimationUpdateFailure());
+					Notification.showMessage(I18N.INSTANCE.estimationUpdateFailure());
 				}
 
 				@Override
 				public void onSuccess(Void result) {
-					Window.alert(I18N.INSTANCE.estimationUpdateSuccess());
+					Notification.showMessage(I18N.INSTANCE.estimationUpdateSuccess());
 
 					DataWatcher.getInstance().fireEstimationEvent();
 
