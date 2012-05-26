@@ -75,16 +75,16 @@ public class BusinessLogoController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public int uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
+	public String uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
 		if(!ServletFileUpload.isMultipartContent(request))
-			return LogoUploadStatus.ILLEGAL_REQUEST.ordinal();
+			return String.valueOf(LogoUploadStatus.ILLEGAL_REQUEST.ordinal());
 		if(file == null)
-			return LogoUploadStatus.ILLEGAL_REQUEST.ordinal();
+			return String.valueOf(LogoUploadStatus.ILLEGAL_REQUEST.ordinal());
 		if(file.getSize() > LOGO_SIZE_LIMIT)
-			return LogoUploadStatus.ILLEGAL_SIZE.ordinal();
+			return String.valueOf(LogoUploadStatus.ILLEGAL_SIZE.ordinal());
 		String contentType = file.getContentType(); 
 		if(!contentType.startsWith("image"))
-			return LogoUploadStatus.ILLEGAL_PAYLOAD.ordinal();
+			return String.valueOf(LogoUploadStatus.ILLEGAL_PAYLOAD.ordinal());
 		String subtype = contentType.substring(contentType.lastIndexOf('/') + 1);
 		boolean acceptedFormat = false;
 		for(ImageFormat format: ImageFormat.values())
@@ -113,16 +113,16 @@ public class BusinessLogoController {
 			if(oldLogoId != null)//changes to business successful - remove old logo, if any
 				imageStoreService.delete(oldLogoId);
 		} catch (IOException e) {
-			return LogoUploadStatus.INTERNAL_ERROR.ordinal();
+			return String.valueOf(LogoUploadStatus.INTERNAL_ERROR.ordinal());
 		} catch (InterruptedException e) {
-			return LogoUploadStatus.INTERNAL_ERROR.ordinal();
+			return String.valueOf(LogoUploadStatus.INTERNAL_ERROR.ordinal());
 		} catch (IM4JavaException e) {
-			return LogoUploadStatus.INTERNAL_ERROR.ordinal();
+			return String.valueOf(LogoUploadStatus.INTERNAL_ERROR.ordinal());
 		}finally{
 			if(inFile != null) inFile.delete();
 			if(outFile != null) outFile.delete();
 		}
-		return LogoUploadStatus.OK.ordinal();
+		return String.valueOf(LogoUploadStatus.OK.ordinal());
 	}
 
 }
