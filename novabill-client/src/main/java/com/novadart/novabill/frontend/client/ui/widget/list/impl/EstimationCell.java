@@ -10,7 +10,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.resources.Image;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewCell;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 
@@ -60,7 +60,7 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 			sb.appendEscaped(I18N.INSTANCE.openEstimation());
 			sb.appendHtmlConstant("</span>");
 			sb.appendHtmlConstant("<span class='downloadAsPDF'>");
-			sb.appendHtmlConstant("<img class='pdf' src='"+Image.get.pdf().getSafeUri().asString()+"'>");
+			sb.appendHtmlConstant("<img class='pdf' src='"+ImageResources.INSTANCE.pdf().getSafeUri().asString()+"'>");
 			sb.appendHtmlConstant("</span>");
 			sb.appendHtmlConstant("<span class='delete'>");
 			sb.appendEscaped(I18N.INSTANCE.delete());

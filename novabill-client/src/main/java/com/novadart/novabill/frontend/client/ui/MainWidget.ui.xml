@@ -4,7 +4,7 @@
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
-	<ui:with type="com.novadart.novabill.frontend.client.resources.Image"
+	<ui:with type="com.novadart.novabill.frontend.client.resources.ImageResources"
 		field="img"></ui:with>
 
 	<g:DockLayoutPanel styleName="MainWidget" unit='EM'>

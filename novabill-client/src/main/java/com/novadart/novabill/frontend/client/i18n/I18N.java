@@ -110,4 +110,5 @@ public interface I18N extends Constants {
 	public String newEstimation();
 	public String openEstimation();
 	public String errorEstimationData();
+	public String noClientsFound();
 }

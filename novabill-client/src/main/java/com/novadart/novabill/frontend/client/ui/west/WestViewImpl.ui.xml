@@ -5,6 +5,7 @@
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
+	<ui:with type="com.novadart.novabill.frontend.client.resources.ImageResources" field="img"></ui:with>
 
 	<g:FlowPanel styleName="clientListWrapper">
 
@@ -13,8 +14,14 @@
 				<g:Label styleName="clients" text="{i18n.clients}"></g:Label>
 				<g:Button styleName="addClient" ui:field="addClient" text="{i18n.newClient}"></g:Button>
 			</g:HorizontalPanel>
-			<g:TextBox styleName="filterClient" ui:field="filterClient"></g:TextBox>
-			<c:CellList ui:field="clientList"></c:CellList>
+			<g:HorizontalPanel>
+				<g:TextBox styleName="filterClient" ui:field="clientFilter"></g:TextBox>
+				<g:Image styleName="cleanFilterClient" ui:field="cleanClientFilter" url="{img.delete.getSafeUri.asString}" />
+			</g:HorizontalPanel>
+			<g:SimplePanel styleName="clientListContainer" ui:field="clientListContainer">
+				<c:CellList ui:field="clientList"></c:CellList>
+			</g:SimplePanel>
+			
 		</g:FlowPanel>
 
 	</g:FlowPanel>
