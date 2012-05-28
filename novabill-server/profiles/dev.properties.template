@@ -28,3 +28,5 @@ paypal.hostedButtonID.value=QR96B53BDX3FJ
 quota.numberOfClients.value=1
 quota.numberOfInvoicesPerYear.value=1
 quota.numberOfEstimationsPerYear.value=1
+
+path.tmpdir.data_export.value=/tmp/novabill
