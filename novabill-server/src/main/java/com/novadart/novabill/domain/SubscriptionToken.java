@@ -23,7 +23,7 @@ public class SubscriptionToken {
 	private String token;
 	
 	public static List<SubscriptionToken> findByEmail(String email){
-		String query = "select st from SubscriptionToken where st.email = :email";
+		String query = "select st from SubscriptionToken st where st.email = :email";
 		return entityManager().createQuery(query, SubscriptionToken.class).setParameter("email", email).getResultList();
 	}
 	
