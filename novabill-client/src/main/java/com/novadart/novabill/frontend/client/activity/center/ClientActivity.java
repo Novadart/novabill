@@ -24,6 +24,9 @@ public class ClientActivity extends BasicActivity {
 	@Override
 	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
 		final ClientView cv = getClientFactory().getClientView();
+		if(place.getDocumentsListing() != null){
+			cv.setDocumentsListing(place.getDocumentsListing());
+		}
 		
 		ServerFacade.client.get(place.getClientId(), new AuthAwareAsyncCallback<ClientDTO>() {
 
@@ -39,8 +42,6 @@ public class ClientActivity extends BasicActivity {
 				panel.setWidget(cv);
 			}
 		});
-
-
 	}
 
 }

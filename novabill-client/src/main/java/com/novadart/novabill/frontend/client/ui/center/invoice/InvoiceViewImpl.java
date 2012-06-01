@@ -32,6 +32,7 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
+import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
@@ -135,6 +136,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 				ClientPlace cp = new ClientPlace();
 				cp.setClientId(client.getId());
+				cp.setDocumentsListing(DOCUMENTS.invoices);
 				presenter.goTo(cp);
 			}
 
@@ -193,6 +195,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 				ClientPlace cp = new ClientPlace();
 				cp.setClientId(client.getId());
+				cp.setDocumentsListing(DOCUMENTS.estimations);
 				presenter.goTo(cp);
 			}
 
@@ -369,6 +372,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(inv.getClient().getId());
+					cp.setDocumentsListing(DOCUMENTS.invoices);
 					presenter.goTo(cp);
 				}
 			});
@@ -399,6 +403,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(es.getClient().getId());
+					cp.setDocumentsListing(DOCUMENTS.estimations);
 					presenter.goTo(cp);
 				}
 			});

@@ -21,6 +21,7 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
@@ -102,6 +103,20 @@ public class ClientViewImpl extends Composite implements ClientView {
 			}
 		});
 	}
+	
+	@Override
+	public void setDocumentsListing(DOCUMENTS documentsListing) {
+		switch(documentsListing){
+		case estimations:
+			tabPanel.selectTab(1);
+			break;
+			
+			default:
+		case invoices:
+			tabPanel.selectTab(0);
+			break;
+		}
+	}
 
 	@Override
 	public void setPresenter(Presenter presenter) {
@@ -118,7 +133,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		invoiceDataProvider.refresh();
 		estimationDataProvider.getList().clear();
 		estimationDataProvider.refresh();
-		tabPanel.selectTab(0);
+		setDocumentsListing(DOCUMENTS.invoices);
 	}
 	
 	@UiHandler("newInvoice")
