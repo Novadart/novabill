@@ -9,7 +9,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
@@ -39,11 +39,13 @@ public class MainWidget extends Composite {
 	@UiField SimplePanel westContainer;
 	@UiField HTML businessBanner;
 	@UiField HTML stats;
+	@UiField Anchor logout;
 
 	private PlaceController placeController;
 
 	public MainWidget() {
 		initWidget(uiBinder.createAndBindUi(this));
+		logout.setHref(GWT.getHostPageBaseURL()+"resources/j_spring_security_logout");
 
 		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
 
@@ -85,11 +87,6 @@ public class MainWidget extends Composite {
 		this.placeController = placeController;
 	}
 
-	@UiHandler("changeButton")
-	void onChangeBusinessDetailsClicked(ClickEvent e){
-		this.placeController.goTo(new BusinessPlace());
-	}
-
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
@@ -100,14 +97,14 @@ public class MainWidget extends Composite {
 		return ImageResources.INSTANCE;
 	}
 
-	@UiHandler("logout")
-	void onLogoutClicked(ClickEvent e){
-		Window.Location.assign(GWT.getHostPageBaseURL()+"resources/j_spring_security_logout");
-	}
-
 	@UiHandler("home")
 	void onHomeClicked(ClickEvent e){
 		this.placeController.goTo(new HomePlace());
+	}
+	
+	@UiHandler("myData")
+	void onMyDataClicked(ClickEvent e){
+		this.placeController.goTo(new BusinessPlace());
 	}
 
 	private void generateBusinessBanner(){
