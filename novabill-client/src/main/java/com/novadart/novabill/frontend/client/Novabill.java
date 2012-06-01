@@ -9,15 +9,14 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.web.bindery.event.shared.EventBus;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.mvp.AppPlaceHistoryMapper;
 import com.novadart.novabill.frontend.client.mvp.CenterActivityMapper;
 import com.novadart.novabill.frontend.client.mvp.WestActivityMapper;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.ui.MainWidget;
-import com.novadart.novabill.frontend.client.ui.premium.GoPremiumDialog;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 
@@ -74,7 +73,6 @@ public class Novabill implements EntryPoint {
 						// Goes to place represented on URL or default place
 						historyHandler.handleCurrentHistory();
 						
-						GoPremiumDialog.getInstance().showCentered();
 					}
 
 					@Override
