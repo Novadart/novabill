@@ -12,7 +12,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
@@ -132,7 +132,7 @@ public class ClientDialog extends Dialog {
 		client.setWeb(web.getText());
 
 		if(this.client == null) {
-			ServerFacade.client.add(client, new AuthAwareAsyncCallback<Long>() {
+			ServerFacade.client.add(client, new WrappedAsyncCallback<Long>() {
 
 				@Override
 				public void onSuccess(Long result) {
@@ -148,7 +148,7 @@ public class ClientDialog extends Dialog {
 			});
 		} else {
 			
-			ServerFacade.client.update(client, new AuthAwareAsyncCallback<Void>() {
+			ServerFacade.client.update(client, new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {

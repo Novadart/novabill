@@ -5,7 +5,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
-import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
@@ -32,7 +32,7 @@ public class ClientActivity extends BasicActivity {
 					cv.setDocumentsListing(place.getDocumentsListing());
 				}
 				
-				ServerFacade.client.get(place.getClientId(), new AuthAwareAsyncCallback<ClientDTO>() {
+				ServerFacade.client.get(place.getClientId(), new WrappedAsyncCallback<ClientDTO>() {
 
 					@Override
 					public void onException(Throwable caught) {

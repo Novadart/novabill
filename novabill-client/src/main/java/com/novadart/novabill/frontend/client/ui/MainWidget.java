@@ -18,7 +18,7 @@ import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.BusinessPlace;
@@ -53,7 +53,7 @@ public class MainWidget extends Composite {
 			public void onDataUpdated(DATA data) {
 				switch (data) {
 				case STATS:
-					ServerFacade.business.getStats(new AuthAwareAsyncCallback<BusinessStatsDTO>() {
+					ServerFacade.business.getStats(new WrappedAsyncCallback<BusinessStatsDTO>() {
 
 						@Override
 						public void onSuccess(BusinessStatsDTO result) {

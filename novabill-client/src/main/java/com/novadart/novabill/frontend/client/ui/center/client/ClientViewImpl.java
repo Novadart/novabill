@@ -18,7 +18,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
@@ -71,7 +71,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 					
 				case CLIENT:
 					ServerFacade.client.get(ClientViewImpl.this.client.getId(), 
-							new AuthAwareAsyncCallback<ClientDTO>() {
+							new WrappedAsyncCallback<ClientDTO>() {
 
 						@Override
 						public void onSuccess(ClientDTO result) {
@@ -138,7 +138,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	@UiHandler("newInvoice")
 	void onNewInvoiceClicked(ClickEvent e){
-		ServerFacade.invoice.getNextInvoiceDocumentID(new AuthAwareAsyncCallback<Long>() {
+		ServerFacade.invoice.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
 			
 			@Override
 			public void onSuccess(Long result) {
@@ -176,7 +176,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	@UiHandler("cancelClient")
 	void onCancelClientClicked(ClickEvent e){
 		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmClientDeletion())){
-			ServerFacade.client.remove(client.getId(), new AuthAwareAsyncCallback<Void>() {
+			ServerFacade.client.remove(client.getId(), new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {
@@ -236,7 +236,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	
 	private void loadInvoices(){
-		ServerFacade.invoice.getAllForClient(client.getId(), new AuthAwareAsyncCallback<List<InvoiceDTO>>() {
+		ServerFacade.invoice.getAllForClient(client.getId(), new WrappedAsyncCallback<List<InvoiceDTO>>() {
 
 			@Override
 			public void onException(Throwable caught) {
@@ -255,7 +255,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	}
 	
 	private void loadEstimations(){
-		ServerFacade.estimation.getAllForClient(client.getId(), new AuthAwareAsyncCallback<List<EstimationDTO>>() {
+		ServerFacade.estimation.getAllForClient(client.getId(), new WrappedAsyncCallback<List<EstimationDTO>>() {
 
 			@Override
 			public void onException(Throwable caught) {

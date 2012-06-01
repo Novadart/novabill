@@ -27,7 +27,7 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
@@ -125,7 +125,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 		InvoiceDTO invoice = createInvoice(null);
 
-		ServerFacade.invoice.add(invoice, new AuthAwareAsyncCallback<Long>() {
+		ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
@@ -156,7 +156,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		}
 
 		EstimationDTO estimation = createEstimation(this.estimation);
-		ServerFacade.invoice.createFromEstimation(estimation, new AuthAwareAsyncCallback<InvoiceDTO>() {
+		ServerFacade.invoice.createFromEstimation(estimation, new WrappedAsyncCallback<InvoiceDTO>() {
 
 			@Override
 			public void onSuccess(InvoiceDTO result) {
@@ -185,7 +185,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 		EstimationDTO estimation = createEstimation(null);
 
-		ServerFacade.estimation.add(estimation, new AuthAwareAsyncCallback<Long>() {
+		ServerFacade.estimation.add(estimation, new WrappedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
@@ -356,7 +356,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.saveModificationsConfirm()) ){
 			final InvoiceDTO inv = createInvoice(invoice);
 
-			ServerFacade.invoice.update(inv, new AuthAwareAsyncCallback<Void>() {
+			ServerFacade.invoice.update(inv, new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onException(Throwable caught) {
@@ -388,7 +388,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.saveModificationsConfirm()) ){
 			final EstimationDTO es = createEstimation(estimation);
 
-			ServerFacade.estimation.update(es, new AuthAwareAsyncCallback<Void>() {
+			ServerFacade.estimation.update(es, new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onException(Throwable caught) {

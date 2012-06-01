@@ -1,7 +1,7 @@
 package com.novadart.novabill.frontend.client.ui.widget.list.impl;
 
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
@@ -41,7 +41,7 @@ public class InvoiceList extends QuickViewList<InvoiceDTO> {
 			@Override
 			public void onDeleteClicked(InvoiceDTO invoice) {
 				if(Notification.showYesNoRequest(I18N.INSTANCE.confirmInvoiceDeletion())){
-					ServerFacade.invoice.remove(invoice.getId(), new AuthAwareAsyncCallback<Void>() {
+					ServerFacade.invoice.remove(invoice.getId(), new WrappedAsyncCallback<Void>() {
 						
 						@Override
 						public void onSuccess(Void result) {

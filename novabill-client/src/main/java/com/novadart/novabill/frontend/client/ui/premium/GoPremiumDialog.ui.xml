@@ -1,13 +1,35 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder" xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	<ui:style>
-		
-	</ui:style>
 	
-	<g:HTMLPanel>
-		<div>
-			ciao!!
-		</div>
+	<ui:with type="com.novadart.novabill.frontend.client.resources.ImageResources" field="img"></ui:with>
+	
+	<g:HTMLPanel styleName="premiumBody">
+		<g:Image ui:field="closeButton" styleName="closeButton" url="{img.delete.getSafeUri.asString}" />
+		<h2>You have reached the limit of your free account quota</h2>
+		<p class="par1">
+			Thank you very much for using Novabill and for taking a ride with us in the world of invoice making :)
+		</p>
+		
+		<p class="par2">
+			You have reached the quota limit for the free account.
+			<br />
+			Please purchase a premium account to continue using Novabill. It will cost you only 5€ per month.
+		</p>
+		<p class="par3">
+			<a href="javascript:void(0);">Here</a> you can review the benefits of using the premium features.
+			<br />
+			We are looking forward to keep working with you and ease your daily job in invoice management.
+			<br />
+			<br />
+			Thanks!
+			<br />
+			The Novabill Team
+		</p>
+		<br />
+		<g:Label ui:field="goPremium" styleName="goPremium button" text="Activate Premium" />
+		
+		<g:Label ui:field="noThanks" styleName="noThanks" 
+			text="No thanks, I don't want to enable Premium right now" />
 	</g:HTMLPanel>
 	
 </ui:UiBinder>

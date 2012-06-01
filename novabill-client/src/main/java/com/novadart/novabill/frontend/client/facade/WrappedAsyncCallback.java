@@ -2,24 +2,36 @@ package com.novadart.novabill.frontend.client.facade;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.novadart.novabill.frontend.client.ui.premium.GoPremiumDialog;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import com.novadart.novabill.shared.client.exception.QuotaException;
 
-public abstract class AuthAwareAsyncCallback<T> implements AsyncCallback<T> {
+public abstract class WrappedAsyncCallback<T> implements AsyncCallback<T> {
 
 	private static boolean authDialogVisible = false;
 
 	@Override
 	public final void onFailure(Throwable caught) {
 		if(caught instanceof NotAuthenticatedException){
+			
 			if(!authDialogVisible) {
 				showAuthDialog();
 			}
+			
+		} else if(caught instanceof QuotaException){
+			
+			if(!GoPremiumDialog.getInstance().isShowing()) {
+				GoPremiumDialog.getInstance().showCentered();
+			}
+			
 		} else {
+			
 			onException(caught);
+			
 		}
 	}
 
-	private class Callback implements AsyncCallback<Boolean> {
+	private class AuthCallback implements AsyncCallback<Boolean> {
 
 		private AuthDialog dialog;
 
@@ -43,7 +55,7 @@ public abstract class AuthAwareAsyncCallback<T> implements AsyncCallback<T> {
 	}
 
 	private void showAuthDialog(){
-		Callback callback = new Callback();
+		AuthCallback callback = new AuthCallback();
 		AuthDialog dialog = new AuthDialog(callback);
 		callback.setDialog(dialog);
 

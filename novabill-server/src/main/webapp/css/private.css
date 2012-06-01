@@ -774,3 +774,71 @@ td.datePickerMonth {
 	text-align: center;
 	padding: 1em 3em 0;
 }
+
+.GoPremiumDialog {
+	-webkit-transition: all 1s;
+	-moz-transition: all 1s;
+	-ms-transition: all 1s;
+	-o-transition: all 1s;
+	transition: all 1s;
+}
+
+.GoPremiumDialog .premiumBody {
+	background-color: white;
+	width: 35em;
+	padding: 2em;
+}
+
+.GoPremiumDialog .premiumBody .closeButton {
+	width: 1.5em;
+	position: absolute;
+	right: 1em;
+	top: 1em;
+	cursor: pointer;
+}
+
+.GoPremiumDialog h2 {
+	font-size: 1.3em;
+	font-weight: bold;
+	text-align: center;
+	padding: 1em 0;
+}
+
+.GoPremiumDialog p {
+	font-size: 1.2em;
+	text-align: justify;
+}
+
+.GoPremiumDialog p.par1{
+	margin-top: 1em;
+}
+
+.GoPremiumDialog p.par2 {
+	margin-top: 2em;
+}
+
+.GoPremiumDialog p.par3 {
+	margin-top: 2em;
+}
+
+.GoPremiumDialog .goPremium {
+	text-align: center;
+	margin-top: 2em;
+	border: 0.1em solid #B9F2B3;
+	background-color: #66C25B;
+	font-size: 1.2em;
+}
+
+.GoPremiumDialog .noThanks {
+	text-align: center;
+	margin-top: 1em;
+	cursor: pointer;
+	font-size: 1.2em;
+}
+
+.GoPremiumDialog .noThanks:HOVER {
+	text-decoration: underline;
+}
+
+
+

@@ -9,7 +9,7 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.web.bindery.event.shared.EventBus;
-import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.mvp.AppPlaceHistoryMapper;
@@ -30,12 +30,12 @@ public class Novabill implements EntryPoint {
 
 	public void onModuleLoad() {
 		
-		Configuration.init(new AuthAwareAsyncCallback<Void>() {
+		Configuration.init(new WrappedAsyncCallback<Void>() {
 			
 			@Override
 			public void onSuccess(Void result) {
 				
-				ServerFacade.business.getStats(new AuthAwareAsyncCallback<BusinessStatsDTO>() {
+				ServerFacade.business.getStats(new WrappedAsyncCallback<BusinessStatsDTO>() {
 
 					@Override
 					public void onSuccess(BusinessStatsDTO result) {

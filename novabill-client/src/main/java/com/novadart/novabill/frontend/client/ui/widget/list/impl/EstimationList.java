@@ -1,7 +1,7 @@
 package com.novadart.novabill.frontend.client.ui.widget.list.impl;
 
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
@@ -41,7 +41,7 @@ public class EstimationList extends QuickViewList<EstimationDTO> {
 			@Override
 			public void onDeleteClicked(EstimationDTO estimation) {
 				if(Notification.showYesNoRequest(I18N.INSTANCE.confirmEstimationDeletion())){
-					ServerFacade.estimation.remove(estimation.getId(), new AuthAwareAsyncCallback<Void>() {
+					ServerFacade.estimation.remove(estimation.getId(), new WrappedAsyncCallback<Void>() {
 						
 						@Override
 						public void onSuccess(Void result) {
