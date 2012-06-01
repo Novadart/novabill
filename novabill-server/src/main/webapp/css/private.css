@@ -5,7 +5,6 @@ body {
 
 .button,button {
 	padding: 0.5em;
-	color: white;
 	font-size: 1em;
 	cursor: pointer;
 	font-weight: bold;
@@ -73,9 +72,15 @@ textarea:HOVER {
 
 .header .exitButton {
 	float: left;
-	height: 2.5em;
-	width: 6em;
-	margin-left: 0.5em;
+	text-decoration: none;
+	font-size: 1em;
+	cursor: pointer;
+	color: #333;
+	margin: 0.8em 0 0 2em;
+}
+
+.header .exitButton:HOVER {
+	font-weight: bold;
 }
 
 .header .homeButton {
@@ -85,8 +90,11 @@ textarea:HOVER {
 	margin-left: 13em;
 }
 
-.header .homeButton:HOVER {
-	background-color: #EEE;
+.header .myDataButton {
+	height: 2.5em;
+	width: 6em;
+	float: left;
+	margin-left: 0.5em;
 }
 
 .header .productName {

@@ -15,8 +15,10 @@
 				<g:Label styleName="productName" text="Novabill"></g:Label>
 				<g:Button styleName="homeButton" text="{i18n.home}"
 					ui:field="home"></g:Button>
-				<g:Button styleName="exitButton" text="{i18n.logout}"
-					ui:field="logout"></g:Button>
+				<g:Button styleName="myDataButton" text="{i18n.myData}"
+					ui:field="myData"></g:Button>
+				<g:Anchor styleName="exitButton" text="{i18n.logout}"
+					ui:field="logout"></g:Anchor>
 				<g:HTML styleName="stats" ui:field="stats"></g:HTML>
 			</g:FlowPanel>
 		</g:north>
@@ -31,7 +33,6 @@
 
 		<g:south size="2">
 			<g:HorizontalPanel styleName="southContainer">
-				<g:Button ui:field="changeButton" styleName="changeButton" text="{i18n.modify}"></g:Button>
 				<g:HTML styleName="banner" ui:field="businessBanner"></g:HTML>
 			</g:HorizontalPanel>
 		</g:south>
