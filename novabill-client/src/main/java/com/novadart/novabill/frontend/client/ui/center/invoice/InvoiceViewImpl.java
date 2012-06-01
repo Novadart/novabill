@@ -317,7 +317,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	}
 
 	private boolean tableEntryBasicValidation(){
-		for (TextBox tbox : new TextBox[]{item,quantity,unitOfMeasure,price}) {
+		for (TextBox tbox : new TextBox[]{item,quantity,price}) {
 			if(tbox.getText().isEmpty()){
 				return false;
 			}
