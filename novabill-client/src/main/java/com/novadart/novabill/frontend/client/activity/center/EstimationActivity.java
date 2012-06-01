@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.activity.center;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
@@ -25,42 +26,50 @@ public class EstimationActivity extends BasicActivity {
 
 	@Override
 	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
-		final InvoiceView iv = getClientFactory().getInvoiceView();
-		iv.setPresenter(this);
+		getClientFactory().getInvoiceView(new AsyncCallback<InvoiceView>() {
+			
+			@Override
+			public void onSuccess(final InvoiceView iv) {
+				iv.setPresenter(EstimationActivity.this);
 
-		if(estimationPlace.getEstimationId() == 0){ //we're creating a new invoice
+				if(estimationPlace.getEstimationId() == 0){ //we're creating a new invoice
 
-			if(estimationPlace.getClient() == null){
-				
-				goTo(new HomePlace());
-				
-			} else {
-				
-				iv.setDataForNewEstimation(estimationPlace.getClient());
-				panel.setWidget(iv);
+					if(estimationPlace.getClient() == null){
+						
+						goTo(new HomePlace());
+						
+					} else {
+						
+						iv.setDataForNewEstimation(estimationPlace.getClient());
+						panel.setWidget(iv);
+						
+					}
+
+				} else {
+
+					ServerFacade.estimation.get(estimationPlace.getEstimationId(), new AuthAwareAsyncCallback<EstimationDTO>() {
+
+						@Override
+						public void onException(Throwable caught) {
+							Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+							goTo(new HomePlace());
+						}
+
+						@Override
+						public void onSuccess(EstimationDTO result) {
+							iv.setEstimation(result);
+							panel.setWidget(iv);
+						}
+					});
+
+				}
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
 				
 			}
-
-		} else {
-
-			ServerFacade.estimation.get(estimationPlace.getEstimationId(), new AuthAwareAsyncCallback<EstimationDTO>() {
-
-				@Override
-				public void onException(Throwable caught) {
-					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-					goTo(new HomePlace());
-				}
-
-				@Override
-				public void onSuccess(EstimationDTO result) {
-					iv.setEstimation(result);
-					panel.setWidget(iv);
-				}
-			});
-
-		}
-
-		
+		});
 	}
 
 }

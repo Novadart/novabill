@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.activity.west;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
@@ -24,41 +25,50 @@ public class EstimationActivity extends BasicActivity {
 
 	@Override
 	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
-		final WestView cv = getClientFactory().getWestView();
-		cv.setPresenter(this);
+		getClientFactory().getWestView(new AsyncCallback<WestView>() {
 
-		if(place.getEstimationId() == 0){
+			@Override
+			public void onSuccess(final WestView wv) {
+				wv.setPresenter(EstimationActivity.this);
 
-			if(place.getClient() == null){
-			
-				goTo(new HomePlace());
-			
-			} else {
-				
-				cv.setClient(place.getClient());
-				panel.setWidget(cv);
-				
+				if(place.getEstimationId() == 0){
+
+					if(place.getClient() == null){
+
+						goTo(new HomePlace());
+
+					} else {
+
+						wv.setClient(place.getClient());
+						panel.setWidget(wv);
+
+					}
+
+				} else {
+
+					ServerFacade.client.getFromEstimationId(place.getEstimationId(), new AuthAwareAsyncCallback<ClientDTO>() {
+
+						@Override
+						public void onSuccess(ClientDTO result) {
+							wv.setClient(result);
+							panel.setWidget(wv);
+						}
+
+						@Override
+						public void onException(Throwable caught) {
+							Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+							goTo(new HomePlace());
+						}
+					});
+
+				}
 			}
 
-		} else {
+			@Override
+			public void onFailure(Throwable caught) {
 
-			ServerFacade.client.getFromEstimationId(place.getEstimationId(), new AuthAwareAsyncCallback<ClientDTO>() {
-
-				@Override
-				public void onSuccess(ClientDTO result) {
-					cv.setClient(result);
-					panel.setWidget(cv);
-				}
-
-				@Override
-				public void onException(Throwable caught) {
-					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-					goTo(new HomePlace());
-				}
-			});
-
-		}
-
+			}
+		});
 	}
 
 }

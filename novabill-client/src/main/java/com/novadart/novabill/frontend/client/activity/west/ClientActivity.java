@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.activity.west;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
@@ -24,20 +25,29 @@ public class ClientActivity extends BasicActivity {
 
 	@Override
 	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
-		final WestView cv = getClientFactory().getWestView();
-		ServerFacade.client.get(place.getClientId(), new AuthAwareAsyncCallback<ClientDTO>() {
-
+		getClientFactory().getWestView(new AsyncCallback<WestView>() {
+			
 			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-				goTo(new HomePlace());
+			public void onSuccess(final WestView wv) {
+				ServerFacade.client.get(place.getClientId(), new AuthAwareAsyncCallback<ClientDTO>() {
+
+					@Override
+					public void onException(Throwable caught) {
+						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+						goTo(new HomePlace());
+					}
+
+					@Override
+					public void onSuccess(ClientDTO result) {
+						wv.setPresenter(ClientActivity.this);
+						panel.setWidget(wv);
+						
+					}
+				});
 			}
-
+			
 			@Override
-			public void onSuccess(ClientDTO result) {
-				cv.setPresenter(ClientActivity.this);
-				panel.setWidget(cv);
-				
+			public void onFailure(Throwable caught) {
 			}
 		});
 	}

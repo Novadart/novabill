@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client;
 
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.ui.center.BusinessView;
 import com.novadart.novabill.frontend.client.ui.center.ClientView;
@@ -13,11 +14,11 @@ public interface ClientFactory {
 	EventBus getEventBus();
 	
 	//center
-	HomeView getHomeView();
-	InvoiceView getInvoiceView();
-	BusinessView getBusinessView();
-	ClientView getClientView();
+	void getHomeView(AsyncCallback<HomeView> callback);
+	void getInvoiceView(AsyncCallback<InvoiceView> callback);
+	void getBusinessView(AsyncCallback<BusinessView> callback);
+	void getClientView(AsyncCallback<ClientView> callback);
 	
 	//west
-	WestView getWestView();
+	void getWestView(AsyncCallback<WestView> callback);
 }

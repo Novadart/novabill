@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.activity.center;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
@@ -23,23 +24,32 @@ public class ClientActivity extends BasicActivity {
 
 	@Override
 	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
-		final ClientView cv = getClientFactory().getClientView();
-		if(place.getDocumentsListing() != null){
-			cv.setDocumentsListing(place.getDocumentsListing());
-		}
-		
-		ServerFacade.client.get(place.getClientId(), new AuthAwareAsyncCallback<ClientDTO>() {
-
+		getClientFactory().getClientView(new AsyncCallback<ClientView>() {
+			
 			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+			public void onSuccess(final ClientView cv) {
+				if(place.getDocumentsListing() != null){
+					cv.setDocumentsListing(place.getDocumentsListing());
+				}
+				
+				ServerFacade.client.get(place.getClientId(), new AuthAwareAsyncCallback<ClientDTO>() {
+
+					@Override
+					public void onException(Throwable caught) {
+						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+					}
+
+					@Override
+					public void onSuccess(ClientDTO result) {
+						cv.setClient(result);
+						cv.setPresenter(ClientActivity.this);
+						panel.setWidget(cv);
+					}
+				});
 			}
-
+			
 			@Override
-			public void onSuccess(ClientDTO result) {
-				cv.setClient(result);
-				cv.setPresenter(ClientActivity.this);
-				panel.setWidget(cv);
+			public void onFailure(Throwable caught) {
 			}
 		});
 	}
