@@ -1,7 +1,10 @@
 package com.novadart.novabill.domain;
 
+import java.io.IOException;
 import java.io.Serializable;
+import java.io.StringReader;
 import java.math.BigInteger;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -28,8 +31,15 @@ import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.lucene.analysis.Analyzer;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.search.BooleanQuery;
+import org.apache.lucene.search.FuzzyQuery;
+import org.apache.lucene.search.BooleanClause.Occur;
+import org.apache.lucene.search.TermQuery;
 import org.apache.lucene.util.Version;
 import org.hibernate.search.bridge.builtin.LongBridge;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -163,13 +173,22 @@ public class Business implements Serializable {
     }
     
     @SuppressWarnings("unchecked")
-	public List<Client> searchClients(String query) throws ParseException{
+	public List<Client> searchClients(String query) throws ParseException, IOException{
     	FullTextEntityManager ftEntityManager = Search.getFullTextEntityManager(entityManager);
     	Analyzer analyzer = ftEntityManager.getSearchFactory().getAnalyzer(FTSNamespace.DEFAULT_CLIENT_ANALYZER);
-    	MultiFieldQueryParser parser = new MultiFieldQueryParser(Version.LUCENE_32, new String[]{FTSNamespace.NAME, FTSNamespace.ADDRESS, FTSNamespace.POSTCODE, FTSNamespace.CITY,
-    			FTSNamespace.PROVINCE, FTSNamespace.COUNTRY, FTSNamespace.EMAIL}, analyzer);
-    	org.apache.lucene.search.Query luceneQuery = null;
-		luceneQuery = parser.parse(query);
+    	List<String> queryTokens = new ArrayList<String>();
+    	TokenStream tokenStream = analyzer.tokenStream(null, new StringReader(query));
+    	while(tokenStream.incrementToken())
+    		queryTokens.add(tokenStream.getAttribute(CharTermAttribute.class).toString());
+    	BooleanQuery luceneQuery = new BooleanQuery();
+    	for(String queryToken: queryTokens){
+    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.NAME, queryToken), 0.7f, 1), Occur.SHOULD);
+    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.ADDRESS, queryToken), 0.7f, 1), Occur.SHOULD);
+    		luceneQuery.add(new TermQuery(new Term(FTSNamespace.POSTCODE, queryToken)), Occur.SHOULD);
+    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.CITY, queryToken), 0.8f, 1), Occur.SHOULD);
+    		luceneQuery.add(new TermQuery(new Term(FTSNamespace.PROVINCE, queryToken)), Occur.SHOULD);
+    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.EMAIL, queryToken), 0.7f, 1), Occur.SHOULD);
+    	}
     	FullTextQuery ftQuery = ftEntityManager.createFullTextQuery(luceneQuery, Client.class);
     	ftQuery.enableFullTextFilter(FTSNamespace.CLIENT_BY_BUSINESS_ID_FILTER)
     		.setParameter(TermValueFilterFactory.FIELD_NAME, StringUtils.join(new Object[]{FTSNamespace.BUSINESS, FTSNamespace.ID}, "."))
