@@ -12,7 +12,7 @@ public class NotEmptyValidation implements ValidationBundle<String> {
 
 	@Override
 	public String getErrorMessage() {
-		return I18N.get.notEmptyValidationError();
+		return I18N.INSTANCE.notEmptyValidationError();
 	}
 
 }

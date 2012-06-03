@@ -7,22 +7,25 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
+import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.ui.center.BusinessView;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
@@ -31,6 +34,7 @@ import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdVali
 import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
 import com.novadart.novabill.shared.client.data.Province;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
 
 public class BusinessViewImpl extends Composite implements BusinessView {
 
@@ -59,6 +63,8 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	@UiField(provided=true) ValidatedTextBox mobile;
 	@UiField(provided=true) ValidatedTextBox fax;
 	@UiField ValidatedTextBox web;
+	
+	private boolean logoUpdateCompleted = true;
 
 	public BusinessViewImpl() {
 		BusinessDTO b = Configuration.getBusiness();
@@ -76,7 +82,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		address.setText(b.getAddress());
 		city = new ValidatedTextBox(nev);
 		city.setText(b.getCity());
-		province = new ValidatedListBox(I18N.get.notEmptyValidationError());
+		province = new ValidatedListBox(I18N.INSTANCE.notEmptyValidationError());
 		
 		Province[] provs = Province.values();
 		for (Province p : provs) {
@@ -101,15 +107,59 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		formPanel.setAction(Const.URL_LOGO);
 		formPanel.setMethod(FormPanel.METHOD_POST);
 		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
-
+		
+		formPanel.addSubmitHandler(new FormPanel.SubmitHandler() {
+			
+			@Override
+			public void onSubmit(SubmitEvent event) {
+				logoUpdateCompleted = false;
+			}
+		});
+		
 		formPanel.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
 
 			@Override
 			public void onSubmitComplete(SubmitCompleteEvent event) {
-				logo.setUrl(Const.genLogoUrl());
+				String resultCodeStr = event.getResults();
+				logoUpdateCompleted = true;
+				
+				int resultCode = 0;
+				
+				if(! Validation.isPositiveNumber(resultCodeStr)){
+					Notification.showMessage(I18N.INSTANCE.errorLogoIllegalRequest());
+					return;
+				} else {
+					resultCode = Integer.parseInt(resultCodeStr);
+					if(resultCode > LogoUploadStatus.values().length){
+						Notification.showMessage(I18N.INSTANCE.errorLogoIllegalRequest());
+						return;	
+					}
+				}
+				
+				LogoUploadStatus status = LogoUploadStatus.values()[resultCode];
+				switch(status){
+				case ILLEGAL_PAYLOAD:
+					Notification.showMessage(I18N.INSTANCE.errorLogoIllegalFile());
+					break;
+					
+				case ILLEGAL_SIZE:
+					Notification.showMessage(I18N.INSTANCE.errorLogoSizeTooBig());
+					break;
+					
+					default:
+				case ILLEGAL_REQUEST:
+				case INTERNAL_ERROR:
+					Notification.showMessage(I18N.INSTANCE.errorLogoIllegalRequest());
+					break;
+					
+				case OK:
+					logo.setUrl(Const.genLogoUrl());
+					break;
+				
+				}
 			}
 		});
-		logo.setUrl(Const.genLogoUrl());
+		
 	}
 
 
@@ -166,6 +216,11 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 
 	@UiHandler("saveData")
 	void onSaveDataClicked(ClickEvent e){
+		if(!logoUpdateCompleted){
+			Notification.showMessage(I18N.INSTANCE.errorLogoNotYetUploaded());
+			return;
+		}
+		
 		if(validate()){
 			final BusinessDTO b = Configuration.getBusiness();
 			b.setName(name.getText());
@@ -188,11 +243,12 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 				public void onSuccess(Void result) {
 					Configuration.setBusiness(b);
 					presenter.goTo(new HomePlace());
+					DataWatcher.getInstance().fireBusinessEvent();
 				}
 				
 				@Override
 				public void onFailure(Throwable caught) {
-					Window.alert(I18N.get.errorServerCommunication());
+					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 				}
 			});
 			

@@ -225,7 +225,7 @@ public abstract class AccountingDocument {
      * Entity
      * */
     @Id
-    @GeneratedValue(strategy = GenerationType.TABLE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE)
     @Column(name = "id")
     private Long id;
     

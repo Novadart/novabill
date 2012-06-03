@@ -13,7 +13,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
@@ -28,12 +27,14 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
+import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -83,12 +84,12 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	private ClientDTO client;
 
 	public InvoiceViewImpl() {
-		payment = new ValidatedListBox(I18N.get.notEmptyValidationError());
-		for (String item : I18N.get.paymentItems()) {
+		payment = new ValidatedListBox(I18N.INSTANCE.notEmptyValidationError());
+		for (String item : I18N.INSTANCE.paymentItems()) {
 			payment.addItem(item);
 		}
 		tax = new ListBox();
-		for (String item : I18N.get.vatItems()) {
+		for (String item : I18N.INSTANCE.vatItems()) {
 			tax.addItem(item+"%", item);
 		}
 		number = new ValidatedTextBox(new NumberValidation());
@@ -112,35 +113,36 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 	@UiFactory
 	I18N getI18N(){
-		return I18N.get;
+		return I18N.INSTANCE;
 	}
 
 	@UiHandler("createInvoice")
 	void onCreateInvoiceClicked(ClickEvent e){
 		if(!validateInvoice()){
-			Window.alert(I18N.get.errorInvoiceData());
+			Notification.showMessage(I18N.INSTANCE.errorInvoiceData());
 			return;
 		}
 
 		InvoiceDTO invoice = createInvoice(null);
 
-		ServerFacade.invoice.add(invoice, new AuthAwareAsyncCallback<Long>() {
+		ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
-				Window.alert(I18N.get.invoiceCreationSuccess());
+				Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess());
 
 				DataWatcher.getInstance().fireInvoiceEvent();
 				DataWatcher.getInstance().fireStatsEvent();
 
 				ClientPlace cp = new ClientPlace();
 				cp.setClientId(client.getId());
+				cp.setDocumentsListing(DOCUMENTS.invoices);
 				presenter.goTo(cp);
 			}
 
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.get.invoiceCreationFailure());
+				Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
 			}
 		});
 
@@ -149,12 +151,12 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiHandler("convertToInvoice")
 	void onConvertToInvoice(ClickEvent e){
 		if(!validateEstimation()){
-			Window.alert(I18N.get.errorEstimationData());
+			Notification.showMessage(I18N.INSTANCE.errorEstimationData());
 			return;
 		}
 
 		EstimationDTO estimation = createEstimation(this.estimation);
-		ServerFacade.invoice.createFromEstimation(estimation, new AuthAwareAsyncCallback<InvoiceDTO>() {
+		ServerFacade.invoice.createFromEstimation(estimation, new WrappedAsyncCallback<InvoiceDTO>() {
 
 			@Override
 			public void onSuccess(InvoiceDTO result) {
@@ -168,7 +170,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.get.invoiceCreationFailure());
+				Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
 			}
 		});
 	}
@@ -177,28 +179,29 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiHandler("createEstimate")
 	void onCreateEstimateClicked(ClickEvent e){
 		if(!validateEstimation()){
-			Window.alert(I18N.get.errorEstimationData());
+			Notification.showMessage(I18N.INSTANCE.errorEstimationData());
 			return;
 		}
 
 		EstimationDTO estimation = createEstimation(null);
 
-		ServerFacade.estimation.add(estimation, new AuthAwareAsyncCallback<Long>() {
+		ServerFacade.estimation.add(estimation, new WrappedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
-				Window.alert(I18N.get.estimationCreationSuccess());
+				Notification.showMessage(I18N.INSTANCE.estimationCreationSuccess());
 
 				DataWatcher.getInstance().fireEstimationEvent();
 
 				ClientPlace cp = new ClientPlace();
 				cp.setClientId(client.getId());
+				cp.setDocumentsListing(DOCUMENTS.estimations);
 				presenter.goTo(cp);
 			}
 
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.get.estimationCreationFailure());
+				Notification.showMessage(I18N.INSTANCE.estimationCreationFailure());
 			}
 		});
 
@@ -225,7 +228,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		}
 		inv.setItems(invItems);
 		inv.setNote(note.getText());
-		inv.setPaymentType(PaymentType.values()[payment.getSelectedIndex()]);
+		inv.setPaymentType(PaymentType.values()[payment.getSelectedIndex()-1]);
 		if(payment.getSelectedIndex() > 0){
 			inv.setPaymentDueDate(InvoiceUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
 		} else {
@@ -314,7 +317,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	}
 
 	private boolean tableEntryBasicValidation(){
-		for (TextBox tbox : new TextBox[]{item,quantity,unitOfMeasure,price}) {
+		for (TextBox tbox : new TextBox[]{item,quantity,price}) {
 			if(tbox.getText().isEmpty()){
 				return false;
 			}
@@ -338,7 +341,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
-		if( Window.confirm(I18N.get.cancelModificationsConfirmation()) ){
+		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
 			ClientPlace cp = new ClientPlace();
 			cp.setClientId(client.getId());
 			presenter.goTo(cp);
@@ -350,25 +353,26 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 			return;
 		}
 
-		if( Window.confirm(I18N.get.saveModificationsConfirm()) ){
+		if(Notification.showYesNoRequest(I18N.INSTANCE.saveModificationsConfirm()) ){
 			final InvoiceDTO inv = createInvoice(invoice);
 
-			ServerFacade.invoice.update(inv, new AuthAwareAsyncCallback<Void>() {
+			ServerFacade.invoice.update(inv, new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onException(Throwable caught) {
-					Window.alert(I18N.get.invoiceUpdateFailure());
+					Notification.showMessage(I18N.INSTANCE.invoiceUpdateFailure());
 				}
 
 				@Override
 				public void onSuccess(Void result) {
-					Window.alert(I18N.get.invoiceUpdateSuccess());
+					Notification.showMessage(I18N.INSTANCE.invoiceUpdateSuccess());
 
 					DataWatcher.getInstance().fireInvoiceEvent();
 					DataWatcher.getInstance().fireStatsEvent();
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(inv.getClient().getId());
+					cp.setDocumentsListing(DOCUMENTS.invoices);
 					presenter.goTo(cp);
 				}
 			});
@@ -381,24 +385,25 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	}
 
 	private void onModifyEstimation(){
-		if( Window.confirm(I18N.get.saveModificationsConfirm()) ){
+		if(Notification.showYesNoRequest(I18N.INSTANCE.saveModificationsConfirm()) ){
 			final EstimationDTO es = createEstimation(estimation);
 
-			ServerFacade.estimation.update(es, new AuthAwareAsyncCallback<Void>() {
+			ServerFacade.estimation.update(es, new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onException(Throwable caught) {
-					Window.alert(I18N.get.estimationUpdateFailure());
+					Notification.showMessage(I18N.INSTANCE.estimationUpdateFailure());
 				}
 
 				@Override
 				public void onSuccess(Void result) {
-					Window.alert(I18N.get.estimationUpdateSuccess());
+					Notification.showMessage(I18N.INSTANCE.estimationUpdateSuccess());
 
 					DataWatcher.getInstance().fireEstimationEvent();
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(es.getClient().getId());
+					cp.setDocumentsListing(DOCUMENTS.estimations);
 					presenter.goTo(cp);
 				}
 			});
@@ -420,7 +425,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		note.setText(invoice.getNote());
 		paymentNote.setText(invoice.getPaymentNote());
 		if(invoice.getPaymentType() != null) { //can be null if the invoice is derived from an estimation
-			payment.setSelectedIndex(invoice.getPaymentType().ordinal());
+			payment.setSelectedIndex(invoice.getPaymentType().ordinal()+1);
 		}
 		clientName.setText(invoice.getClient().getName());
 		modifyDocument.setVisible(true);

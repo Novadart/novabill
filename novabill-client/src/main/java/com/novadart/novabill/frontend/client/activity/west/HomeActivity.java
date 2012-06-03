@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.activity.west;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
@@ -14,11 +15,19 @@ public class HomeActivity extends BasicActivity {
 	}
 
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		WestView cv = getClientFactory().getWestView();
-		cv.setHome();
-		cv.setPresenter(this);
-		panel.setWidget(cv);
+	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
+		getClientFactory().getWestView(new AsyncCallback<WestView>() {
+			
+			@Override
+			public void onSuccess(WestView wv) {
+				wv.setPresenter(HomeActivity.this);
+				panel.setWidget(wv);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+			}
+		});
 	}
 
 }

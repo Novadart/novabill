@@ -27,6 +27,7 @@ public abstract class AbstractGwtController<RemoteService, RemoteServiceImpl ext
 	}
 
 	public AbstractGwtController(Class<RemoteService> remoteServiceClass, RemoteServiceImpl remoteServiceImpl) {
+		super("JSESSIONID");
 		this.remoteServiceClass = remoteServiceClass;
 		this.remoteServiceImpl = remoteServiceImpl;
 	}

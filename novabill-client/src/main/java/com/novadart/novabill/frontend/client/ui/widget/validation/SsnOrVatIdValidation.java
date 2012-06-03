@@ -14,7 +14,7 @@ public class SsnOrVatIdValidation implements ValidationBundle<String> {
 
 	@Override
 	public String getErrorMessage() {
-		return I18N.get.ssnOrVatIdValidationError();
+		return I18N.INSTANCE.ssnOrVatIdValidationError();
 	}
 
 }

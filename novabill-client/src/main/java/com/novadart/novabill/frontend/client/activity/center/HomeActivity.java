@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.activity.center;
 
 import com.google.gwt.event.shared.EventBus;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
@@ -13,10 +14,20 @@ public class HomeActivity extends BasicActivity {
 	}
 	
 	@Override
-	public void start(AcceptsOneWidget panel, EventBus eventBus) {
-		HomeView hv = getClientFactory().getHomeView();
-		hv.setPresenter(this);
-		panel.setWidget(hv);
+	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
+		getClientFactory().getHomeView(new AsyncCallback<HomeView>() {
+			
+			@Override
+			public void onSuccess(HomeView hv) {
+				hv.setPresenter(HomeActivity.this);
+				panel.setWidget(hv);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				
+			}
+		});
 	}
 
 }

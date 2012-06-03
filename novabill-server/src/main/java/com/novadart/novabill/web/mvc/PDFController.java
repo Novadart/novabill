@@ -5,14 +5,20 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.rmi.RemoteException;
+import java.security.NoSuchAlgorithmException;
+
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
+
 import com.healthmarketscience.rmiio.RemoteInputStreamClient;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
@@ -28,20 +34,38 @@ import com.novadart.services.shared.ImageStoreService;
 
 @Controller
 @RequestMapping("/private/pdf")
-public class PDFController {
+public class PDFController extends AbstractXsrfContoller{
+	
+	public static final String TOKENS_SESSION_FIELD = "pdf.generation.tokens";
 	
 	@Autowired
-	PDFGenerator pdfGenerator;
+	private PDFGenerator pdfGenerator;
 	
 	@Autowired
-	UtilsService utilsService;
+	private UtilsService utilsService;
 	
 	@Autowired
-	ImageStoreService imageStoreService;
+	private ImageStoreService imageStoreService;
+	
+	@Override
+	protected String getTokensSessionField() {
+		return TOKENS_SESSION_FIELD;
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/landing/{document}/{id}")
+	public ModelAndView getPDFLandingPage(@PathVariable String document, @PathVariable long id) throws NoSuchAlgorithmException{
+		ModelAndView mav = new ModelAndView("pdfLandingPage");
+		mav.addObject("id", id);
+		mav.addObject("document", document);
+		return mav;
+	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/invoices/{id}")
 	@ResponseBody
-	public void getInvoicePDF(@PathVariable Long id, final HttpServletResponse response) throws IOException, DataAccessException, NoSuchObjectException{
+	public void getInvoicePDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token,
+			final HttpServletResponse response, HttpSession session) throws IOException, DataAccessException, NoSuchObjectException{
+		if(token == null || !verifyAndRemoveToken(token, session))
+			return;
 		final Invoice invoice = Invoice.findInvoice(id);
 		if(invoice == null)
 			throw new NoSuchObjectException();
@@ -50,7 +74,10 @@ public class PDFController {
 
 	@RequestMapping(method = RequestMethod.GET, value = "/estimations/{id}")
 	@ResponseBody
-	public void getEstimationPDF(@PathVariable Long id, final HttpServletResponse response) throws IOException, DataAccessException, NoSuchObjectException{
+	public void getEstimationPDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token, 
+			final HttpServletResponse response, HttpSession session) throws IOException, DataAccessException, NoSuchObjectException{
+		if(token == null || !verifyAndRemoveToken(token, session))
+			return;
 		final Estimation estimation = Estimation.findEstimation(id);
 		if(estimation == null)
 			throw new NoSuchObjectException();

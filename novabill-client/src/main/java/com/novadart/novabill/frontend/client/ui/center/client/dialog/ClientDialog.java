@@ -6,17 +6,17 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
@@ -76,7 +76,7 @@ public class ClientDialog extends Dialog {
 		
 		email = new ValidatedTextBox(new EmailValidation(true));
 		
-		province = new ValidatedListBox(I18N.get.notEmptyValidationError());
+		province = new ValidatedListBox(I18N.INSTANCE.notEmptyValidationError());
 		for (Province p : Province.values()) {
 			province.addItem(p.name());
 		}
@@ -86,7 +86,7 @@ public class ClientDialog extends Dialog {
 
 	@UiFactory
 	I18N getI18N(){
-		return I18N.get;
+		return I18N.INSTANCE;
 	}
 
 	public void setClient(ClientDTO client) {
@@ -106,7 +106,7 @@ public class ClientDialog extends Dialog {
 		vatID.setText(client.getVatID());
 		ssn.setText(client.getSsn());
 		
-		ok.setText(I18N.get.saveModifications());
+		ok.setText(I18N.INSTANCE.saveModifications());
 	}
 
 
@@ -132,7 +132,7 @@ public class ClientDialog extends Dialog {
 		client.setWeb(web.getText());
 
 		if(this.client == null) {
-			ServerFacade.client.add(client, new AuthAwareAsyncCallback<Long>() {
+			ServerFacade.client.add(client, new WrappedAsyncCallback<Long>() {
 
 				@Override
 				public void onSuccess(Long result) {
@@ -143,12 +143,12 @@ public class ClientDialog extends Dialog {
 
 				@Override
 				public void onException(Throwable caught) {
-					Window.alert(I18N.get.errorServerCommunication());
+					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 				}
 			});
 		} else {
 			
-			ServerFacade.client.update(client, new AuthAwareAsyncCallback<Void>() {
+			ServerFacade.client.update(client, new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {
@@ -158,7 +158,7 @@ public class ClientDialog extends Dialog {
 
 				@Override
 				public void onException(Throwable caught) {
-					Window.alert(I18N.get.errorServerCommunication());
+					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 				}
 			});
 			
@@ -179,7 +179,7 @@ public class ClientDialog extends Dialog {
 			tb.reset();
 		}
 		province.reset();
-		ok.setText(I18N.get.createClient());
+		ok.setText(I18N.INSTANCE.createClient());
 	}
 
 	private boolean validate(){

@@ -40,7 +40,7 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 					}
 
 		};
-		addColumn(nameDescription, I18N.get.nameDescription());
+		addColumn(nameDescription, I18N.INSTANCE.nameDescription());
 
 		
 		
@@ -54,7 +54,7 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 			}
 		};
 	
-		addColumn(quantity, I18N.get.quantity());
+		addColumn(quantity, I18N.INSTANCE.quantity());
 
 
 		//unity of measure
@@ -66,7 +66,7 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 				return object.getUnitOfMeasure();
 			}
 		};
-		addColumn(unityOfMeasure, I18N.get.unityOfMeasure());
+		addColumn(unityOfMeasure, I18N.INSTANCE.unityOfMeasure());
 
 
 
@@ -79,7 +79,7 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 				return String.valueOf(NumberFormat.getCurrencyFormat().format(object.getPrice()));
 			}
 		};
-		addColumn(price, I18N.get.price());
+		addColumn(price, I18N.INSTANCE.price());
 
 
 		//VAT
@@ -91,7 +91,7 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 				return String.valueOf(object.getTax())+"%";
 			}
 		};
-		addColumn(tax, I18N.get.vat());
+		addColumn(tax, I18N.INSTANCE.vat());
 
 
 		//Total Before Taxes
@@ -104,7 +104,7 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 				return NumberFormat.getCurrencyFormat().format(totalPrice.doubleValue());
 			}
 		};
-		addColumn(totalBeforeTaxes, I18N.get.totalBeforeTaxesForItem());
+		addColumn(totalBeforeTaxes, I18N.INSTANCE.totalBeforeTaxesForItem());
 
 		//Total Before Taxes
 		TextColumn<InvoiceItemDTO> totalVat =
@@ -116,7 +116,7 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 				return NumberFormat.getCurrencyFormat().format(totalVat.doubleValue());
 			}
 		};
-		addColumn(totalVat, I18N.get.totalTaxForItem());
+		addColumn(totalVat, I18N.INSTANCE.totalTaxForItem());
 
 
 		//Total Before Taxes
@@ -129,7 +129,7 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 				return NumberFormat.getCurrencyFormat().format(total.doubleValue());
 			}
 		};
-		addColumn(totalAfterTaxes, I18N.get.totalAfterTaxesForItem());
+		addColumn(totalAfterTaxes, I18N.INSTANCE.totalAfterTaxesForItem());
 
 
 		//delete button
@@ -142,7 +142,7 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 		};
 
 		Column<InvoiceItemDTO, InvoiceItemDTO> delete =
-				new Column<InvoiceItemDTO, InvoiceItemDTO>(new ActionCell<InvoiceItemDTO>(I18N.get.delete(), delegate)) {
+				new Column<InvoiceItemDTO, InvoiceItemDTO>(new ActionCell<InvoiceItemDTO>(I18N.INSTANCE.delete(), delegate)) {
 
 			@Override
 			public InvoiceItemDTO getValue(InvoiceItemDTO object) {

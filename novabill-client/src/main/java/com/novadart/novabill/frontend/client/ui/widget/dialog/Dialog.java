@@ -5,11 +5,24 @@ import com.google.gwt.user.client.ui.DialogBox;
 
 
 public class Dialog extends DialogBox {
+	private static final int HEIGHT_DIVISION_VALUE = 2;
+	private static final int WIDTH_DIVISION_VALUE = 2;
 
+	private int heightDivisionValue = HEIGHT_DIVISION_VALUE;
+	private int widthDivisionValue = WIDTH_DIVISION_VALUE;
+	
 	public Dialog() {
 		setModal(true);
 		setGlassEnabled(true);
 		addStyleName("Dialog");
+	}
+	
+	public void setHeightDivisionValue(int heightDivisionValue) {
+		this.heightDivisionValue = heightDivisionValue>0 ? heightDivisionValue : HEIGHT_DIVISION_VALUE;
+	}
+	
+	public void setWidthDivisionValue(int widthDivisionValue) {
+		this.widthDivisionValue = widthDivisionValue>0 ? widthDivisionValue : WIDTH_DIVISION_VALUE;
 	}
 
 	@Override
@@ -27,8 +40,8 @@ public class Dialog extends DialogBox {
 				int windowHeight = Window.getClientHeight();
 				int windowWidth = Window.getClientWidth();
 
-				int x = (windowWidth - offsetWidth) / 2;
-				int y = (windowHeight - offsetHeight) / 2;
+				int x = (windowWidth - offsetWidth) / widthDivisionValue;
+				int y = (windowHeight - offsetHeight) / heightDivisionValue;
 
 				Dialog.this.setPopupPosition(x, y);
 			}

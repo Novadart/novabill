@@ -18,9 +18,10 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
@@ -28,6 +29,7 @@ import com.novadart.novabill.frontend.client.ui.center.ClientView;
 import com.novadart.novabill.frontend.client.ui.center.client.dialog.ClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.EstimationList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoiceList;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -62,8 +64,30 @@ public class ClientViewImpl extends Composite implements ClientView {
 			
 			@Override
 			public void onDataUpdated(DATA data) {
-				if(DATA.INVOICE.equals(data)){
+				switch (data) {
+				case INVOICE:
 					loadInvoices();
+					break;
+					
+				case CLIENT:
+					ServerFacade.client.get(ClientViewImpl.this.client.getId(), 
+							new WrappedAsyncCallback<ClientDTO>() {
+
+						@Override
+						public void onSuccess(ClientDTO result) {
+							setClient(result);
+						}
+
+						@Override
+						public void onException(Throwable caught) {
+							//TODO
+							Window.Location.reload();
+						}
+					});
+					break;
+
+				default:
+					break;
 				}
 				
 			}
@@ -78,6 +102,20 @@ public class ClientViewImpl extends Composite implements ClientView {
 				
 			}
 		});
+	}
+	
+	@Override
+	public void setDocumentsListing(DOCUMENTS documentsListing) {
+		switch(documentsListing){
+		case estimations:
+			tabPanel.selectTab(1);
+			break;
+			
+			default:
+		case invoices:
+			tabPanel.selectTab(0);
+			break;
+		}
 	}
 
 	@Override
@@ -95,12 +133,12 @@ public class ClientViewImpl extends Composite implements ClientView {
 		invoiceDataProvider.refresh();
 		estimationDataProvider.getList().clear();
 		estimationDataProvider.refresh();
-		tabPanel.selectTab(0);
+		setDocumentsListing(DOCUMENTS.invoices);
 	}
 	
 	@UiHandler("newInvoice")
 	void onNewInvoiceClicked(ClickEvent e){
-		ServerFacade.invoice.getNextInvoiceDocumentID(new AuthAwareAsyncCallback<Long>() {
+		ServerFacade.invoice.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
 			
 			@Override
 			public void onSuccess(Long result) {
@@ -137,8 +175,8 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	@UiHandler("cancelClient")
 	void onCancelClientClicked(ClickEvent e){
-		if(Window.confirm(I18N.get.confirmClientDeletion())){
-			ServerFacade.client.remove(client.getId(), new AuthAwareAsyncCallback<Void>() {
+		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmClientDeletion())){
+			ServerFacade.client.remove(client.getId(), new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {
@@ -150,9 +188,9 @@ public class ClientViewImpl extends Composite implements ClientView {
 				@Override
 				public void onException(Throwable caught) {
 					if(caught instanceof DataIntegrityException){
-						Window.alert(I18N.get.errorClientCancelation());
+						Notification.showMessage(I18N.INSTANCE.errorClientCancelation());
 					} else {
-						Window.alert(I18N.get.errorServerCommunication());
+						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 					}
 				}
 			});
@@ -189,7 +227,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		sb.appendHtmlConstant("<div class='address-3'>");
 		sb.appendEscaped( ( (hasPhone?"Tel. "+client.getPhone():"") 
 				+ (hasFax?" Fax "+client.getFax():"").trim() 
-				+ " " + I18N.get.vatID()+" "+client.getVatID() ).trim() );
+				+ " " + I18N.INSTANCE.vatID()+" "+client.getVatID() ).trim() );
 		sb.appendHtmlConstant("</div>");
 
 		clientDetails.setHTML(sb.toSafeHtml());
@@ -198,11 +236,11 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	
 	private void loadInvoices(){
-		ServerFacade.invoice.getAllForClient(client.getId(), new AuthAwareAsyncCallback<List<InvoiceDTO>>() {
+		ServerFacade.invoice.getAllForClient(client.getId(), new WrappedAsyncCallback<List<InvoiceDTO>>() {
 
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.get.errorServerCommunication());
+				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 			}
 
 			@Override
@@ -217,11 +255,11 @@ public class ClientViewImpl extends Composite implements ClientView {
 	}
 	
 	private void loadEstimations(){
-		ServerFacade.estimation.getAllForClient(client.getId(), new AuthAwareAsyncCallback<List<EstimationDTO>>() {
+		ServerFacade.estimation.getAllForClient(client.getId(), new WrappedAsyncCallback<List<EstimationDTO>>() {
 
 			@Override
 			public void onException(Throwable caught) {
-				Window.alert(I18N.get.errorServerCommunication());
+				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 			}
 
 			@Override

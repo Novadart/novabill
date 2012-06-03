@@ -77,16 +77,16 @@ public class UpgradeAccountController {
 		List<SubscriptionToken> subscribtionTokens = SubscriptionToken.findByEmail(email);
 		if(subscribtionTokens.size() == 0){
 			handleError(email, "No associated tokens");
-			return "errorPath";
+			return "premiumUpgradeFailure";
 		}
 		for(SubscriptionToken st: subscribtionTokens){
 			if(st.getToken().equals(returnedNovabillToken)){
 				upgrade(email, subscribtionTokens);
-				return "successPath";
+				return "premiumUpgradeSuccess";
 			}
 		}
 		handleError(email, "Token mismatch");
-		return "errorPath";
+		return "premiumUpgradeFailure";
 	}
 	
 }

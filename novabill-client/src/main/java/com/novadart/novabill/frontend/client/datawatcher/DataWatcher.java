@@ -35,6 +35,10 @@ public class DataWatcher {
 		handlerManager.fireEvent(new DataWatchEvent(DATA.STATS));
 	}
 	
+	public void fireBusinessEvent(){
+		handlerManager.fireEvent(new DataWatchEvent(DATA.BUSINESS));
+	}
+	
 	
 	public HandlerRegistration addDataEventHandler(DataWatchEventHandler handler){
 		return handlerManager.addHandler(DataWatchEvent.TYPE, handler);

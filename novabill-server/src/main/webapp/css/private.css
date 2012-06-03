@@ -3,10 +3,8 @@ body {
 	color: #333;
 }
 
-.button,
-button {
+.button,button {
 	padding: 0.5em;
-	color: white;
 	font-size: 1em;
 	cursor: pointer;
 	font-weight: bold;
@@ -16,8 +14,7 @@ button {
 	margin: 1px;
 }
 
-.button:HOVER,
-button:HOVER {
+.button:HOVER,button:HOVER {
 	background-color: #DDD;
 	border: 0.1em solid #EEE;
 	color: #EEE;
@@ -65,17 +62,39 @@ textarea:HOVER {
 }
 
 .header .stats {
-	float: left;
-	font-size: 1.5em;
+	font-size: 1.2em;
 	padding-bottom: 0.5em;
-	margin-left: 5em;
 	padding-top: 0.5em;
+	position: absolute;
+	right: 0.5em;
+	top: 0.8em;
 }
 
 .header .exitButton {
-	float: right;
+	float: left;
+	text-decoration: none;
+	font-size: 1em;
+	cursor: pointer;
+	color: #333;
+	margin: 0.8em 0 0 2em;
+}
+
+.header .exitButton:HOVER {
+	font-weight: bold;
+}
+
+.header .homeButton {
 	height: 2.5em;
 	width: 6em;
+	float: left;
+	margin-left: 13em;
+}
+
+.header .myDataButton {
+	height: 2.5em;
+	width: 6em;
+	float: left;
+	margin-left: 0.5em;
 }
 
 .header .productName {
@@ -141,8 +160,7 @@ textarea:HOVER {
 	padding: 20px 0;
 }
 
-.ClientView .newInvoice,
-.ClientView .newEstimation {
+.ClientView .newInvoice,.ClientView .newEstimation {
 	border: 1px solid #B9F2B3;
 	background-color: #66C25B;
 	color: white;
@@ -153,8 +171,7 @@ textarea:HOVER {
 	margin-left: 1em;
 }
 
-.ClientView .newEstimation:HOVER,
-.ClientView .newInvoice:HOVER {
+.ClientView .newEstimation:HOVER,.ClientView .newInvoice:HOVER {
 	border: 1px solid #2F9524;
 }
 
@@ -200,7 +217,6 @@ textarea:HOVER {
 	
 }
 
-
 .ClientView .clientMainBody .gwt-TabLayoutPanelTab {
 	padding: 0.5em 1em;
 	background-color: white;
@@ -220,26 +236,18 @@ textarea:HOVER {
 	text-decoration: none;
 }
 
-
 .ClientView .clientMainBody .gwt-TabLayoutPanelTab-selected {
 	background-color: #EEE;
-	font-weight: bold;	
+	font-weight: bold;
 }
 
 .ClientView .clientMainBody .gwt-TabLayoutPanelTabInner {
-	
 	
 }
 
 .ClientView .clientMainBody .tabHeaderLabel {
 	
-	
 }
-
-
-
-
-
 
 .HomeView .homeBody {
 	width: 100%;
@@ -256,6 +264,7 @@ textarea:HOVER {
 }
 
 .ClientView .listWrapper {
+	
 }
 
 .HomeView .listWrapper {
@@ -354,38 +363,6 @@ textarea:HOVER {
 
 .InvoiceList .details {
 	padding: 5px;
-}
-
-.westContainer .homeButton {
-	border-top-width: 0.1em;
-	border-bottom-width: 0.1em;
-	border-left: none;
-	border-right: none;
-	border-color: #EEE;
-	border-style: solid;
-	background-color: transparent;
-	padding: 0.5em 0.1em;
-	font-size: 1.5em;
-	cursor: pointer;
-	font-weight: bold;
-	margin: 2.1em auto 0;
-	width: 100%;
-	text-align: center;
-}
-
-.westContainer .homeButton:HOVER {
-	background-color: #EEE;
-}
-
-.westContainer .homeButton.selected {
-	background-color: #EEE;
-	border-top-width: 0.2em;
-	border-bottom-width: 0.2em;
-	border-color: #DDD;
-	border-style: solid;
-	border-left: none;
-	border-right: none;
-	padding: 0.4em 0.1em;
 }
 
 .westContainer {
@@ -603,11 +580,8 @@ td.datePickerMonth {
 	font-size: 2em;
 }
 
-.InvoiceView .abortButton,
-.InvoiceView .modifyDocument,
-.InvoiceView .createInvoice,
-.InvoiceView .saveAsEstimation,
-.InvoiceView .convertToInvoice {
+.InvoiceView .abortButton,.InvoiceView .modifyDocument,.InvoiceView .createInvoice,.InvoiceView .saveAsEstimation,.InvoiceView .convertToInvoice
+	{
 	margin-left: 2em;
 }
 
@@ -747,7 +721,8 @@ td.datePickerMonth {
 	background-color: #DEFFD8;
 }
 
-..ValidatedWidget-validationError {
+.
+.ValidatedWidget-validationError {
 	border-color: #E32424;
 	background-color: #F9E0E0;
 }
@@ -759,7 +734,6 @@ td.datePickerMonth {
 	padding: 0.3em;
 	margin-left: 5px;
 }
-
 
 .BusinessView .ValidatedTextBox {
 	width: 25em;
@@ -773,10 +747,98 @@ td.datePickerMonth {
 	padding: 1em;
 }
 
-.BusinessView .businessLabel{
+.BusinessView .businessLabel {
 	margin-right: 1em;
 }
 
+.WestView .clientListContainer {
+	width: 100%;
+}
+
+
+.WestView .cleanFilterClient {
+	cursor: pointer;
+	width: 1.5em;
+	position: relative;
+	top: 0.8em;
+	right: 0.5em;
+}
+
+.WestView .clientListContainer .clientLoader {
+	display: block;
+	margin: 2em auto 0;
+}
+
+.WestView .clientListContainer .noClientsFoundMessage {
+	margin: 2em auto 0;
+	text-align: center;
+	padding: 1em 3em 0;
+}
+
+.GoPremiumDialog {
+	-webkit-transition: all 1s;
+	-moz-transition: all 1s;
+	-ms-transition: all 1s;
+	-o-transition: all 1s;
+	transition: all 1s;
+}
+
+.GoPremiumDialog .premiumBody {
+	background-color: white;
+	width: 35em;
+	padding: 2em;
+}
+
+.GoPremiumDialog .premiumBody .closeButton {
+	width: 1.5em;
+	position: absolute;
+	right: 1em;
+	top: 1em;
+	cursor: pointer;
+}
+
+.GoPremiumDialog h2 {
+	font-size: 1.3em;
+	font-weight: bold;
+	text-align: center;
+	padding: 1em 0;
+}
+
+.GoPremiumDialog p {
+	font-size: 1.2em;
+	text-align: justify;
+}
+
+.GoPremiumDialog p.par1{
+	margin-top: 1em;
+}
+
+.GoPremiumDialog p.par2 {
+	margin-top: 2em;
+}
+
+.GoPremiumDialog p.par3 {
+	margin-top: 2em;
+}
+
+.GoPremiumDialog .goPremium {
+	text-align: center;
+	margin-top: 2em;
+	border: 0.1em solid #B9F2B3;
+	background-color: #66C25B;
+	font-size: 1.2em;
+}
+
+.GoPremiumDialog .noThanks {
+	text-align: center;
+	margin-top: 1em;
+	cursor: pointer;
+	font-size: 1.2em;
+}
+
+.GoPremiumDialog .noThanks:HOVER {
+	text-decoration: underline;
+}
 
 
 
