@@ -6,7 +6,6 @@
 	<artifactId>novabill</artifactId>
 	<version>2.0-SNAPSHOT</version>
 	<name>The Novabill Project</name>
-	<url>http://labs.novadart.com:8080</url>
 	<packaging>pom</packaging>
 
 	<properties>
@@ -20,8 +19,8 @@
 	</properties>
 
 	<scm>
-		<connection>scm:git:ssh://gitolite@labs.novadart.com/novadart/novadart-novabill.git</connection>
-		<developerConnection>scm:git:ssh://gitolite@labs.novadart.com/novadart/novadart-novabill.git</developerConnection>
+		<connection>scm:git:ssh://gitolite@scm.dev.novadart.com/novadart/novadart-novabill.git</connection>
+		<developerConnection>scm:git:ssh://gitolite@scm.dev.novadart.com/novadart/novadart-novabill.git</developerConnection>
 	</scm>
 
 	<modules>
@@ -471,12 +470,12 @@
 
 	<distributionManagement>
 		<repository>
-			<id>novadart-labs</id>
-			<url>http://labs.novadart.com:8888/archiva/repository/internal/</url>
+			<id>novadart-build</id>
+			<url>http://build.dev.novadart.com/archiva/repository/internal/</url>
 		</repository>
 		<snapshotRepository>
-			<id>novadart-labs</id>
-			<url>http://labs.novadart.com:8888/archiva/repository/snapshots/</url>
+			<id>novadart-build</id>
+			<url>http://build.dev.novadart.com/archiva/repository/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 </project>
