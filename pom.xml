@@ -19,8 +19,8 @@
 	</properties>
 
 	<scm>
-		<connection>scm:git:ssh://gitolite@scm.dev.novadart.com/novadart/novadart-novabill.git</connection>
-		<developerConnection>scm:git:ssh://gitolite@scm.dev.novadart.com/novadart/novadart-novabill.git</developerConnection>
+		<connection>scm:git:ssh://gitolite@${server.scm}/novadart/novadart-novabill.git</connection>
+		<developerConnection>scm:git:ssh://gitolite@${server.scm}/novadart/novadart-novabill.git</developerConnection>
 	</scm>
 
 	<modules>
@@ -471,11 +471,11 @@
 	<distributionManagement>
 		<repository>
 			<id>novadart-build</id>
-			<url>http://build.dev.novadart.com/archiva/repository/internal/</url>
+			<url>${server.build.releases}</url>
 		</repository>
 		<snapshotRepository>
 			<id>novadart-build</id>
-			<url>http://build.dev.novadart.com/archiva/repository/snapshots/</url>
+			<url>${server.build.snapshots}</url>
 		</snapshotRepository>
 	</distributionManagement>
 </project>
