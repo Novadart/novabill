@@ -421,6 +421,13 @@
 				<filters>
 					<filter>profiles/dev.properties</filter>
 				</filters>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<configuration>
+						<classifier>dev</classifier>
+					</configuration>
+				</plugin>
 			</build>
 		</profile>
 		<profile>
@@ -429,6 +436,13 @@
 				<filters>
 					<filter>profiles/staging.properties</filter>
 				</filters>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<configuration>
+						<classifier>staging</classifier>
+					</configuration>
+				</plugin>
 			</build>
 		</profile>
 		<profile>
@@ -437,6 +451,13 @@
 				<filters>
 					<filter>profiles/production.properties</filter>
 				</filters>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-war-plugin</artifactId>
+					<configuration>
+						<classifier>production</classifier>
+					</configuration>
+				</plugin>
 			</build>
 		</profile>
 	</profiles>
