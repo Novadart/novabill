@@ -27,7 +27,4 @@ public interface InvoiceServiceAsync {
 	void createFromEstimation(EstimationDTO estimationDTO,
 			AsyncCallback<InvoiceDTO> callback);
 
-	void validateInvoiceDocumentID(Long documentID,
-			AsyncCallback<List<Long>> callback);
-
 }

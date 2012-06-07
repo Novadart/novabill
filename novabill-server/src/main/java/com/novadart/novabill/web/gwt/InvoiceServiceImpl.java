@@ -2,7 +2,6 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
 import java.util.BitSet;
-import java.util.Calendar;
 import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,15 +17,16 @@ import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
 import com.novadart.novabill.quota.NumberOfInvoicesPerYearQuotaReachedChecker;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.validator.InvoiceValidator;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
-import com.novadart.novabill.shared.client.exception.InvalidDocumentIDException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.QuotaException;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 
 @SuppressWarnings("serial")
@@ -34,6 +34,9 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 
 	@Autowired
 	private UtilsService utilsService;
+	
+	@Autowired
+	private InvoiceValidator validator;
 
 	public InvoiceServiceImpl() {
 		super(InvoiceService.class);
@@ -76,25 +79,6 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		return gaps;
 	}
 
-	private Long suggestInvoiceDocumentID(Business business){
-		List<Long> invoiceIDs = business.getCurrentYearInvoicesDocumentIDs();
-		if(invoiceIDs.size() == 0) return 1l;
-		if(invoiceIDs.get(0) > 1) return 1l;
-		return computeDocumentIDGaps(invoiceIDs, 1).get(0);
-	}
-	
-	private void checkInvoiceDocumentID(Business business, Long id, Long documentID) throws InvalidDocumentIDException {
-		if(documentID == null) return;
-		if(id == null){
-			if(business.getInvoiceByIdInYear(documentID, Calendar.getInstance().get(Calendar.YEAR)) != null)
-				throw new InvalidDocumentIDException(suggestInvoiceDocumentID(business));
-		}else{
-			Invoice invoice = business.getInvoiceByIdInYear(documentID, Calendar.getInstance().get(Calendar.YEAR));
-			if(invoice != null && !invoice.getId().equals(id))
-				throw new InvalidDocumentIDException(suggestInvoiceDocumentID(business));
-		}
-	}
-	
 	@Override
 	@Transactional(readOnly = true)
 	public List<InvoiceDTO> getAllForClient(long id) throws DataAccessException, NoSuchObjectException {
@@ -128,20 +112,20 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	@Override
 	@Transactional(readOnly = false)
 	@CheckQuotas(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
-	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, InvalidDocumentIDException, QuotaException {
+	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, QuotaException {
 		Client client = Client.findClient(invoiceDTO.getClient().getId());;
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		Business business = Business.findBusiness(invoiceDTO.getBusiness().getId());
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
 			throw new DataAccessException();
-		checkInvoiceDocumentID(business, invoiceDTO.getId(), invoiceDTO.getDocumentID());
 		Invoice invoice = new Invoice();//create new invoice
 		invoice.setClient(client);
 		client.getInvoices().add(invoice);
 		invoice.setBusiness(business);
 		business.getInvoices().add(invoice);
 		InvoiceDTOFactory.copyFromDTO(invoice, invoiceDTO, true);
+		validator.validate(invoice);
 		invoice.persist();
 		invoice.flush();
 		return invoice.getId();
@@ -149,7 +133,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 
 	@Override
 	@Transactional(readOnly = false)
-	public void update(InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, InvalidDocumentIDException {
+	public void update(InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
 		if(invoiceDTO.getId() == null)
 			throw new DataAccessException();
 		Client client = Client.findClient(invoiceDTO.getClient().getId());
@@ -158,11 +142,11 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		Business business = Business.findBusiness(invoiceDTO.getBusiness().getId());
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
 			throw new DataAccessException();
-		checkInvoiceDocumentID(business, invoiceDTO.getId(), invoiceDTO.getDocumentID());
 		Invoice persistedInvoice = Invoice.findInvoice(invoiceDTO.getId());
 		if(persistedInvoice == null)
 			throw new NoSuchObjectException();
 		InvoiceDTOFactory.copyFromDTO(persistedInvoice, invoiceDTO, false);
+		validator.validate(persistedInvoice);
 		persistedInvoice.getInvoiceItems().clear();
 		for(InvoiceItemDTO invoiceItemDTO: invoiceDTO.getItems()){
 			InvoiceItem invoiceItem = new InvoiceItem();
@@ -191,7 +175,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	
 	@Override
 	@Transactional(readOnly = false)
-	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, InvalidDocumentIDException, NoSuchObjectException, ConcurrentAccessException, QuotaException {
+	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, NoSuchObjectException, ConcurrentAccessException, QuotaException {
 		if(estimationDTO.getId() != null){//present in DB
 			Estimation estimation = Estimation.findEstimation(estimationDTO.getId());
 			if(estimation == null)
@@ -203,15 +187,6 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		Long id = add(invoiceDTO);
 		invoiceDTO.setId(id);
 		return invoiceDTO;
-	}
-
-	@Override
-	public List<Long> validateInvoiceDocumentID(Long documentID) throws NotAuthenticatedException, ConcurrentAccessException{
-		List<Long> invoiceIDs = utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getCurrentYearInvoicesDocumentIDs();
-		if(invoiceIDs.size() == 0)//first invoice
-			return new ArrayList<Long>();
-		invoiceIDs.add(documentID);
-		return computeDocumentIDGaps(invoiceIDs, 10);
 	}
 	
 }
