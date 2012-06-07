@@ -1,7 +1,6 @@
 package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
-import java.util.BitSet;
 import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -62,23 +61,6 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		return invoiceDTOs;
 	}
 	
-	private List<Long> computeDocumentIDGaps(List<Long> invoiceIDs, int max){
-		int size = invoiceIDs.size(); 
-		if(size == 0)
-			return new ArrayList<Long>();
-		BitSet invoiceIDsBSet = new BitSet(invoiceIDs.get(size - 1).intValue() - 1);
-		for(Long invoiceID: invoiceIDs)
-			invoiceIDsBSet.flip(invoiceID.intValue() - 1);
-		invoiceIDsBSet.flip(0, invoiceIDs.get(0).intValue() - 1);//flip all bits till the first invoice
-		BitSet mask = new BitSet(invoiceIDsBSet.length());
-		mask.flip(0, invoiceIDsBSet.length());
-		invoiceIDsBSet.xor(mask);
-		List<Long> gaps = new ArrayList<Long>(Math.min(invoiceIDsBSet.cardinality(), max));
-		for(int i=invoiceIDsBSet.nextSetBit(0), c = 0; i >= 0 && c < max; i = invoiceIDsBSet.nextSetBit(i+1), c++)
-			gaps.add(new Long(i + 1));
-		return gaps;
-	}
-
 	@Override
 	@Transactional(readOnly = true)
 	public List<InvoiceDTO> getAllForClient(long id) throws DataAccessException, NoSuchObjectException {
