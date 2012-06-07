@@ -3,6 +3,7 @@ package com.novadart.novabill.shared.client.facade;
 import java.util.List;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.google.gwt.user.server.rpc.XsrfProtect;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
@@ -12,6 +13,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.QuotaException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
+@XsrfProtect
 @RemoteServiceRelativePath("invoice.rpc")
 public interface InvoiceService extends RemoteService {
 

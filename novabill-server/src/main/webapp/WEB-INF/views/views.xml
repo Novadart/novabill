@@ -39,4 +39,12 @@
 			value="/WEB-INF/views/uncaughtException.jspx" />
 	</definition>
 	
+	<definition name="pdfLandingPage" template="/WEB-INF/views/pdfLandingPage.jsp" />
+	
+	<definition name="premiumInfo" template="/WEB-INF/views/premiumInfo.jsp" />
+	
+	<definition name="premiumUpgradeSuccess" template="/WEB-INF/views/premiumUpgradeSuccess.jsp" />
+	
+	<definition name="premiumUpgradeFailure" template="/WEB-INF/views/premiumUpgradeFailure.jsp" />
+	
 </tiles-definitions>

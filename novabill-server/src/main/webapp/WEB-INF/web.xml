@@ -10,6 +10,10 @@
     <param-name>contextConfigLocation</param-name>
     <param-value>classpath*:META-INF/spring/applicationContext*.xml</param-value>
   </context-param>
+  <context-param>
+  	<param-name>gwt.xsrf.session_cookie_name</param-name>
+  	<param-value>JSESSIONID</param-value>
+  </context-param>
   <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -109,8 +113,4 @@
   	<servlet-name>xsrf</servlet-name>
   	<url-pattern>/gwt/xsrf</url-pattern>
   </servlet-mapping>
-  <context-param>
-  	<param-name>gwt.xsrf.session_cookie_name</param-name>
-  	<param-value>JSESSIONID</param-value>
-  </context-param>
 </web-app>

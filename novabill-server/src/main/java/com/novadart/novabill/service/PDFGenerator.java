@@ -7,6 +7,9 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.math.BigDecimal;
 import java.util.Date;
+
+import javax.annotation.PostConstruct;
+
 import jep.Jep;
 import jep.JepException;
 import org.springframework.beans.factory.annotation.Value;
@@ -32,25 +35,27 @@ public class PDFGenerator {
 	
 	@Value("${path.tmpdir.invoice_generation}")
 	private String invOutLocation;
-	
-	private void checkCreateOutputLocation(File file){
-		if(!file.exists())
-			file.mkdir();
+
+	@SuppressWarnings("unused")
+	@PostConstruct
+	private void init(){
+		File outDir = new File(invOutLocation);
+		if(!outDir.exists())
+			outDir.mkdir();
 	}
 	
 	public static interface BeforeWriteEventHandler{
 		public void beforeWriteCallback(File file);
 	};
 	
-	public void createAndWrite(OutputStream out, AccountingDocument invoice, String pathToLogo, Integer logoWidth, Integer logoHeight, 
+	public void createAndWrite(OutputStream out, AccountingDocument accountingDocument, String pathToLogo, Integer logoWidth, Integer logoHeight, 
 			DocumentType docType, BeforeWriteEventHandler bwEvHnld) throws IOException{
 		File outDir = new File(invOutLocation);
-		checkCreateOutputLocation(outDir);
 		File invFile = File.createTempFile("inv", ".pdf", outDir);
 		invFile.deleteOnExit();
 		String json = new JSONSerializer().transform(new DateTransformer("dd/MM/yyyy"), Date.class)
 				.transform(new HtmlEncoderTransformer(), String.class)
-				.transform(new StringTransformer(), BigDecimal.class).include("invoiceItems").serialize(invoice).replace("'", "\\'");
+				.transform(new StringTransformer(), BigDecimal.class).include("invoiceItems").serialize(accountingDocument).replace("'", "\\'");
 		
 		try {
 			Jep jep = new Jep(false, includePath,  Thread.currentThread().getContextClassLoader());
@@ -62,7 +67,8 @@ public class PDFGenerator {
 			else
 				jep.eval(String.format("create_invoice('%s', json.loads('%s'), '%s', %d, %d, %d)", invFile.getAbsolutePath(), json, pathToLogo, logoWidth, logoHeight, docTypeConst));
 			jep.close();
-			bwEvHnld.beforeWriteCallback(invFile);
+			if(bwEvHnld != null)
+				bwEvHnld.beforeWriteCallback(invFile);
 			InputStream in = new FileInputStream(invFile);
 			int length = 0;
 		    byte[] buf = new byte[4096];

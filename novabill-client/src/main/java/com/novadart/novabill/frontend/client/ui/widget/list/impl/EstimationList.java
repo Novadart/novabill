@@ -1,14 +1,14 @@
 package com.novadart.novabill.frontend.client.ui.widget.list.impl;
 
-import com.google.gwt.core.client.GWT;
-import com.google.gwt.user.client.Window;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.AuthAwareAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewList;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.util.PDFUtils;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 
 public class EstimationList extends QuickViewList<EstimationDTO> {
@@ -32,13 +32,16 @@ public class EstimationList extends QuickViewList<EstimationDTO> {
 			
 			@Override
 			public void onPdfClicked(EstimationDTO estimation) {
-				Window.open(GWT.getHostPageBaseURL()+"private/pdf/estimations/"+estimation.getId(), null, null);
+				if(estimation.getId() == null){
+					return;
+				}
+				PDFUtils.generateEstimationPdf(estimation.getId());
 			}
 
 			@Override
 			public void onDeleteClicked(EstimationDTO estimation) {
-				if(Window.confirm(I18N.get.confirmEstimationDeletion())){
-					ServerFacade.estimation.remove(estimation.getId(), new AuthAwareAsyncCallback<Void>() {
+				if(Notification.showYesNoRequest(I18N.INSTANCE.confirmEstimationDeletion())){
+					ServerFacade.estimation.remove(estimation.getId(), new WrappedAsyncCallback<Void>() {
 						
 						@Override
 						public void onSuccess(Void result) {
@@ -47,7 +50,7 @@ public class EstimationList extends QuickViewList<EstimationDTO> {
 						
 						@Override
 						public void onException(Throwable caught) {
-							Window.confirm(I18N.get.errorServerCommunication());		
+							Notification.showYesNoRequest(I18N.INSTANCE.errorServerCommunication());		
 						}
 					});
 				}

@@ -49,7 +49,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 	
 	@UiFactory
 	I18N getI18N(){
-		return I18N.get;
+		return I18N.INSTANCE;
 	}
 
 	public void setClean(){

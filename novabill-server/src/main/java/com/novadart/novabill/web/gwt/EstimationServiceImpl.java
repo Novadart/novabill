@@ -5,12 +5,15 @@ import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.annotation.CheckQuotas;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.EstimationDTOFactory;
 import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
+import com.novadart.novabill.quota.NumberOfEstimationsPerYearQuotaReachedChecker;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
@@ -18,6 +21,7 @@ import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import com.novadart.novabill.shared.client.exception.QuotaException;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 
 public class EstimationServiceImpl extends AbstractGwtController<EstimationService, EstimationServiceImpl> implements EstimationService {
@@ -57,7 +61,8 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 
 	@Override
 	@Transactional(readOnly = false)
-	public Long add(EstimationDTO estimationDTO) throws DataAccessException {
+	@CheckQuotas(checkers = {NumberOfEstimationsPerYearQuotaReachedChecker.class})
+	public Long add(EstimationDTO estimationDTO) throws DataAccessException, QuotaException {
 		Estimation estimation = new Estimation();
 		Client client = Client.findClient(estimationDTO.getClient().getId());
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))

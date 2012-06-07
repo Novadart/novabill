@@ -52,7 +52,7 @@ public class ClientCell extends AbstractCell<ClientDTO> {
 		sb.appendHtmlConstant("<div class='address-3'>");
 		sb.appendEscaped( ( (hasPhone?"Tel. "+value.getPhone():"") 
 				+ (hasFax?" Fax "+value.getFax():"").trim() 
-				+ " " + I18N.get.vatID()+" "+value.getVatID() ).trim() );
+				+ " " + I18N.INSTANCE.vatID()+" "+value.getVatID() ).trim() );
 		sb.appendHtmlConstant("</div>");
 
 		sb.appendHtmlConstant("</div>");

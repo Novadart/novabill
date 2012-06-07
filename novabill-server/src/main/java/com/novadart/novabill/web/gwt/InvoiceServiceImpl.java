@@ -175,6 +175,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	
 	@Override
 	@Transactional(readOnly = false)
+	@CheckQuotas(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
 	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, NoSuchObjectException, ConcurrentAccessException, QuotaException {
 		if(estimationDTO.getId() != null){//present in DB
 			Estimation estimation = Estimation.findEstimation(estimationDTO.getId());

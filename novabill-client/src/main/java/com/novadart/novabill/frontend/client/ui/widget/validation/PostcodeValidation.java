@@ -13,7 +13,7 @@ public class PostcodeValidation implements ValidationBundle<String> {
 
 	@Override
 	public String getErrorMessage() {
-		return I18N.get.postcodeValidationError();
+		return I18N.INSTANCE.postcodeValidationError();
 	}
 
 }

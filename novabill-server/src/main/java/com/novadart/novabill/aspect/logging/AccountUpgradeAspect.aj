@@ -9,10 +9,10 @@ privileged aspect AccountUpgradeAspect extends AbstractLogEventEmailSenderAspect
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccountUpgradeAspect.class);
 	
 	pointcut upgrade(String email):
-		execution(private void com.novadart.novabill.web.mvc.UpgradeAccountController.upgrade(..)) && args(email, ..);
+		call(private void com.novadart.novabill.web.mvc.UpgradeAccountController.upgrade(..)) && args(email, ..);
 	
 	pointcut upgradeError(String email, String message):
-		execution(private void com.novadart.novabill.web.mvc.UpgradeAccountController.handleError(..)) && args(email, message);
+		call(private void com.novadart.novabill.web.mvc.UpgradeAccountController.handleError(..)) && args(email, message);
 	
 	after(String email): upgrade(email){
 		handleEvent(LOGGER, "Account upgrade", email, new Date(System.currentTimeMillis()), null);

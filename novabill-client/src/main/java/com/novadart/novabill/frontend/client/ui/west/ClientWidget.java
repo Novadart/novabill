@@ -42,7 +42,7 @@ public class ClientWidget extends FocusPanel {
 		boolean hasFax = client.getFax()!=null && !client.getFax().isEmpty();
 		address3.setText(( (hasPhone?"Tel. "+client.getPhone():"") 
 				+ (hasFax?" Fax "+client.getFax():"").trim() 
-				+ " " + I18N.get.vatID()+" "+client.getVatID() ).trim());
+				+ " " + I18N.INSTANCE.vatID()+" "+client.getVatID() ).trim());
 		
 		setVisible(true);
 	}
