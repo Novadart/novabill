@@ -171,21 +171,4 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 		});
 	}
 
-	@Override
-	public void validateInvoiceDocumentID(final Long documentID,
-			final AsyncCallback<List<Long>> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate() {
-
-			@Override
-			public void performCall() {
-				invoice.validateInvoiceDocumentID(documentID, callback);
-			}
-
-			@Override
-			public void manageException(final Throwable caught) {
-				callback.onFailure(caught);
-			}
-		});
-	}
-
 }
