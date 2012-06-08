@@ -11,7 +11,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -25,8 +24,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -34,23 +33,22 @@ import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.index.Term;
-import org.apache.lucene.queryParser.MultiFieldQueryParser;
 import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.TermQuery;
-import org.apache.lucene.util.Version;
 import org.hibernate.search.bridge.builtin.LongBridge;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.novadart.novabill.annotation.Hash;
 import com.novadart.novabill.domain.security.RoleTypes;
+import com.novadart.novabill.shared.client.validation.RegularExpressionConstants;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
@@ -69,18 +67,23 @@ public class Business implements Serializable {
 	}
 
 	@Size(max = 255)
+	@NotEmpty
     private String name;
 
     @Size(max = 255)
+    @NotEmpty
     private String address;
 
     @Size(max = 10)
+    @NotEmpty
     private String postcode;
 
     @Size(max = 60)
+    @NotEmpty
     private String city;
 
     @Size(max = 2)
+    @NotEmpty
     private String province;
 
     @Size(max = 200)
@@ -103,9 +106,11 @@ public class Business implements Serializable {
     private String web;
 
     @Size(max = 25)
+    @Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
     private String vatID;
 
     @Size(max = 25)
+    //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
     private String ssn;
 
     private String password;

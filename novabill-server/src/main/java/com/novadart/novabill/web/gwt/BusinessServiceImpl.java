@@ -4,20 +4,20 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.BusinessDTOFactory;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
 
 public class BusinessServiceImpl extends AbstractGwtController<BusinessService, BusinessServiceImpl> implements BusinessService{
@@ -28,6 +28,9 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 	
 	@Autowired
 	private UtilsService utilsService;
+	
+	@Autowired
+	private SimpleValidator validator;
 
 	public BusinessServiceImpl() {
 		super(BusinessService.class);
@@ -81,13 +84,14 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 
 	@Override
 	@Transactional(readOnly = false)
-	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException {
+	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(businessDTO.getId()))
 			throw new DataAccessException();
 		Business business = Business.findBusiness(businessDTO.getId());
 		if(business == null)
 			throw new NoSuchObjectException();
 		BusinessDTOFactory.copyFromDTO(business, businessDTO);
+		validator.validate(business);
 	}
 
 }

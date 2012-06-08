@@ -3,6 +3,7 @@ package com.novadart.novabill.service.validator;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
+import javax.validation.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.novadart.novabill.domain.Invoice;
@@ -14,7 +15,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 
 
 @Service
-public class InvoiceValidator {
+public class InvoiceValidator extends SimpleValidator {
 	
 	@Autowired
 	private UtilsService utilsService;
@@ -52,12 +53,18 @@ public class InvoiceValidator {
 	
 	public void validate(Invoice invoice) throws ValidationException{
 		boolean isValid = true;
-		List<ErrorObject> errors = new ArrayList<ErrorObject>(); 
+		List<ErrorObject> errors = new ArrayList<ErrorObject>();
+		try{
+			super.validate(invoice); //JSR-303 validation
+		}catch (ValidationException e) {
+			errors.addAll(e.getErrors());
+			isValid = false;
+		}
 		//validate documentID
 		List<Long> gapsAccumulator = new ArrayList<Long>();
 		isValid &= validateInvoiceDocumentID(invoice, gapsAccumulator);
 		if(gapsAccumulator.size() > 0)
-			errors.add(new ErrorObject(Field.DOCUMENT_ID, ErrorCode.INVALID_DOCUMENT_ID, gapsAccumulator));
+			errors.add(new ErrorObject(Field.documentID, ErrorCode.INVALID_DOCUMENT_ID, gapsAccumulator));
 		if(!isValid)
 			throw new ValidationException(errors);
 	}

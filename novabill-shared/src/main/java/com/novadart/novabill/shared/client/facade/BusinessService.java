@@ -11,6 +11,7 @@ import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @XsrfProtect
 @RemoteServiceRelativePath("business.rpc")
@@ -26,6 +27,6 @@ public interface BusinessService extends RemoteService {
 	
 	public BusinessStatsDTO getStats() throws NotAuthenticatedException, ConcurrentAccessException;
 	
-	public void update(BusinessDTO businessDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
+	public void update(BusinessDTO businessDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException;
 
 }

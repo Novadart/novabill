@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -39,6 +40,8 @@ import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.shared.client.validation.RegularExpressionConstants;
 import com.novadart.utils.fts.TermValueFilterFactory;
 import java.io.Serializable;
 
@@ -101,9 +104,11 @@ public class Client implements Serializable {
     private String web;
 
     @Size(max = 25)
+    @Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
     private String vatID;
 
     @Size(max = 25)
+    @Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
     private String ssn;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
