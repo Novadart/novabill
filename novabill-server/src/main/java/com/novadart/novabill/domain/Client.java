@@ -38,6 +38,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -64,26 +65,32 @@ public class Client implements Serializable {
 	
 	@Field(name = FTSNamespace.NAME)
 	@Size(max = 255)
+	@NotEmpty
     private String name;
 
 	@Field(name = FTSNamespace.ADDRESS)
     @Size(max = 255)
+	@NotEmpty
     private String address;
 
 	@Field(name = FTSNamespace.POSTCODE)
     @Size(max = 10)
+	@NotEmpty
     private String postcode;
 
 	@Field(name = FTSNamespace.CITY)
     @Size(max = 60)
+	@NotEmpty
     private String city;
 
 	@Field(name = FTSNamespace.PROVINCE)
     @Size(max = 2)
+	@NotEmpty
     private String province;
 
 	@Field(name = FTSNamespace.COUNTRY)
     @Size(max = 200)
+	@NotEmpty
     private String country;
 
 	@Field(name = FTSNamespace.EMAIL)

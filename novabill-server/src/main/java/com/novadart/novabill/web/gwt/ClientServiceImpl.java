@@ -15,6 +15,7 @@ import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.quota.NumberOfClientsQuotaReachedChecker;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -23,6 +24,7 @@ import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.QuotaException;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.ClientService;
 
 public class ClientServiceImpl extends AbstractGwtController<ClientService, ClientServiceImpl> implements ClientService {
@@ -31,6 +33,9 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 
 	@Autowired
 	private UtilsService utilsService;
+	
+	@Autowired
+	private SimpleValidator validator;
 	
 	public ClientServiceImpl() {
 		super(ClientService.class);
@@ -65,9 +70,10 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	@Override
 	@Transactional(readOnly = false)
 	@CheckQuotas(checkers = {NumberOfClientsQuotaReachedChecker.class})
-	public Long add(ClientDTO clientDTO) throws QuotaException {
+	public Long add(ClientDTO clientDTO) throws QuotaException, ValidationException {
 		Client client = new Client(); 
 		ClientDTOFactory.copyFromDTO(client, clientDTO);
+		validator.validate(client);
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
 		client.setBusiness(business);
 		business.getClients().add(client);
@@ -78,13 +84,14 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 
 	@Override
 	@Transactional(readOnly = false)
-	public void update(ClientDTO clientDTO) throws DataAccessException, NoSuchObjectException {
+	public void update(ClientDTO clientDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
 		Client client = Client.findClient(clientDTO.getId());
 		if(client == null)
 			throw new NoSuchObjectException();
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		ClientDTOFactory.copyFromDTO(client, clientDTO);
+		validator.validate(client);
 		client.flush();
 	}
 
