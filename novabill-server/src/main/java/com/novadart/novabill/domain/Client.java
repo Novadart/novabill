@@ -38,13 +38,17 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.novadart.novabill.shared.client.validation.RegularExpressionConstants;
 import com.novadart.utils.fts.TermValueFilterFactory;
 import java.io.Serializable;
+
+/*
+ * Important note!
+ * If fields and validation constraints are modified be sure to update the validation code. 
+ */
 
 @Indexed
 @AnalyzerDef(name = FTSNamespace.DEFAULT_CLIENT_ANALYZER,
@@ -65,32 +69,32 @@ public class Client implements Serializable {
 	
 	@Field(name = FTSNamespace.NAME)
 	@Size(max = 255)
-	@NotEmpty
+	@NotBlank
     private String name;
 
 	@Field(name = FTSNamespace.ADDRESS)
     @Size(max = 255)
-	@NotEmpty
+	@NotBlank
     private String address;
 
 	@Field(name = FTSNamespace.POSTCODE)
     @Size(max = 10)
-	@NotEmpty
+	@NotBlank
     private String postcode;
 
 	@Field(name = FTSNamespace.CITY)
     @Size(max = 60)
-	@NotEmpty
+	@NotBlank
     private String city;
 
 	@Field(name = FTSNamespace.PROVINCE)
     @Size(max = 2)
-	@NotEmpty
+	@NotBlank
     private String province;
 
 	@Field(name = FTSNamespace.COUNTRY)
     @Size(max = 200)
-	@NotEmpty
+	@NotBlank
     private String country;
 
 	@Field(name = FTSNamespace.EMAIL)
@@ -111,11 +115,11 @@ public class Client implements Serializable {
     private String web;
 
     @Size(max = 25)
-    @Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
+    //@Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
     private String vatID;
 
     @Size(max = 25)
-    @Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
+    //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
     private String ssn;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")

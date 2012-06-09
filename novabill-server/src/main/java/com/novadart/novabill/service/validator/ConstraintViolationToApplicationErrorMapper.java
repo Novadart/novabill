@@ -7,11 +7,11 @@ import java.util.Set;
 import javax.validation.ConstraintViolation;
 import javax.validation.Path;
 import javax.validation.Path.Node;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Service;
 import com.novadart.novabill.shared.client.validation.ErrorCode;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
@@ -32,8 +32,10 @@ public class ConstraintViolationToApplicationErrorMapper {
 		List<ErrorObject> errors = new ArrayList<ErrorObject>();
 		for(ConstraintViolation<T> violation: violations){
 			String property = getProperty(violation.getPropertyPath());
-			if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(NotEmpty.class))
-				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.EMPTY, null));
+			if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(NotBlank.class))
+				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.BLANK_OR_NULL, null));
+			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(NotNull.class))
+				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.NULL, null));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(Email.class))
 				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.MALFORMED_EMAIL, null));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(Pattern.class))

@@ -31,6 +31,11 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 
+/*
+ * Important note!
+ * If fields and validation constraints are modified be sure to update the validation code. 
+ */
+
 @Configurable
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)

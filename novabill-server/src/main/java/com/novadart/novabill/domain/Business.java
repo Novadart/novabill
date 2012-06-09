@@ -43,13 +43,18 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotEmpty;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.Hash;
 import com.novadart.novabill.domain.security.RoleTypes;
 import com.novadart.novabill.shared.client.validation.RegularExpressionConstants;
 import com.novadart.utils.fts.TermValueFilterFactory;
+
+/*
+ * Important note!
+ * If fields and validation constraints are modified be sure to update the validation code. 
+ */
 
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 @Configurable
@@ -67,23 +72,23 @@ public class Business implements Serializable {
 	}
 
 	@Size(max = 255)
-	@NotEmpty
+	@NotBlank
     private String name;
 
     @Size(max = 255)
-    @NotEmpty
+    @NotBlank
     private String address;
 
     @Size(max = 10)
-    @NotEmpty
+    @NotBlank
     private String postcode;
 
     @Size(max = 60)
-    @NotEmpty
+    @NotBlank
     private String city;
 
     @Size(max = 2)
-    @NotEmpty
+    @NotBlank
     private String province;
 
     @Size(max = 200)
@@ -106,7 +111,7 @@ public class Business implements Serializable {
     private String web;
 
     @Size(max = 25)
-    @Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
+    //@Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
     private String vatID;
 
     @Size(max = 25)

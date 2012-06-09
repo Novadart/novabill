@@ -19,6 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.shared.client.dto.PaymentType;
 
+/*
+ * Important note!
+ * If fields and validation constraints are modified be sure to update the validation code. 
+ */
+
 @Configurable
 @Entity
 public class Invoice extends AccountingDocument implements Serializable {
@@ -28,6 +33,7 @@ public class Invoice extends AccountingDocument implements Serializable {
     @Type(type = "text")
     private String paymentNote;
     
+    @NotNull
     private PaymentType paymentType;
     
     @Temporal(TemporalType.TIMESTAMP)
