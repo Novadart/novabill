@@ -12,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -25,6 +26,7 @@ public class InvoiceItem implements Serializable {
 	
 	private static final long serialVersionUID = -1072295560395962907L;
 
+	@NotNull
 	private BigDecimal price;
 
     @Type(type = "text")
@@ -33,8 +35,10 @@ public class InvoiceItem implements Serializable {
     @Size(max = 255)
     private String unitOfMeasure;
 
+    @NotNull
     private BigDecimal tax;
     
+    @NotNull
     private BigDecimal quantity;
     
     private BigDecimal totalBeforeTax;

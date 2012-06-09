@@ -15,6 +15,7 @@ import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
 import com.novadart.novabill.quota.NumberOfEstimationsPerYearQuotaReachedChecker;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
@@ -22,6 +23,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.QuotaException;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 
 public class EstimationServiceImpl extends AbstractGwtController<EstimationService, EstimationServiceImpl> implements EstimationService {
@@ -30,6 +32,9 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	
 	@Autowired
 	private UtilsService utilsService;
+	
+	@Autowired
+	private AccountingDocumentValidator validator;
 
 	public EstimationServiceImpl() {
 		super(EstimationService.class);
@@ -62,7 +67,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	@Override
 	@Transactional(readOnly = false)
 	@CheckQuotas(checkers = {NumberOfEstimationsPerYearQuotaReachedChecker.class})
-	public Long add(EstimationDTO estimationDTO) throws DataAccessException, QuotaException {
+	public Long add(EstimationDTO estimationDTO) throws DataAccessException, QuotaException, ValidationException {
 		Estimation estimation = new Estimation();
 		Client client = Client.findClient(estimationDTO.getClient().getId());
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
@@ -76,6 +81,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 		business.getEstimations().add(estimation);
 		EstimationDTOFactory.copyFromDTO(estimation, estimationDTO, true);
 		estimation.setDocumentID(business.getNextEstimationDocumentID());
+		validator.validate(estimation);
 		estimation.persist();
 		estimation.flush();
 		return estimation.getId();
@@ -98,7 +104,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 
 	@Override
 	@Transactional(readOnly = false)
-	public void update(EstimationDTO estimationDTO) throws DataAccessException, NoSuchObjectException {
+	public void update(EstimationDTO estimationDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
 		if(estimationDTO.getId() == null)
 			throw new DataAccessException();
 		Client client = Client.findClient(estimationDTO.getClient().getId());
@@ -118,6 +124,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 			invoiceItem.setInvoice(persistedEstimation);
 			persistedEstimation.getInvoiceItems().add(invoiceItem);
 		}
+		validator.validate(persistedEstimation);
 	}
 
 	@Override

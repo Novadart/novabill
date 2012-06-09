@@ -128,7 +128,6 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		if(persistedInvoice == null)
 			throw new NoSuchObjectException();
 		InvoiceDTOFactory.copyFromDTO(persistedInvoice, invoiceDTO, false);
-		validator.validate(persistedInvoice);
 		persistedInvoice.getInvoiceItems().clear();
 		for(InvoiceItemDTO invoiceItemDTO: invoiceDTO.getItems()){
 			InvoiceItem invoiceItem = new InvoiceItem();
@@ -136,6 +135,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 			invoiceItem.setInvoice(persistedInvoice);
 			persistedInvoice.getInvoiceItems().add(invoiceItem);
 		}
+		validator.validate(persistedInvoice);
 	}
 	
 	@Override

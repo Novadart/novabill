@@ -14,7 +14,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 
 
 @Service
-public class InvoiceValidator extends SimpleValidator {
+public class InvoiceValidator extends AccountingDocumentValidator {
 	
 	@Autowired
 	private UtilsService utilsService;
