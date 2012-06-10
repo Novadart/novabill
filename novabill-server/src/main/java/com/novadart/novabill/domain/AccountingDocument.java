@@ -21,6 +21,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.PersistenceContext;
 import javax.persistence.PrePersist;
 import javax.persistence.PreUpdate;
+import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
@@ -39,6 +40,7 @@ import org.springframework.transaction.annotation.Transactional;
 @Configurable
 @Entity
 @Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
+@SequenceGenerator(name = "document_id_sequence", initialValue = 1, allocationSize = 1, sequenceName = "document_id_sequence")
 public abstract class AccountingDocument {
 	
 	protected Long documentID;
@@ -230,7 +232,7 @@ public abstract class AccountingDocument {
      * Entity
      * */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE)
+    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "document_id_sequence")
     @Column(name = "id")
     private Long id;
     
