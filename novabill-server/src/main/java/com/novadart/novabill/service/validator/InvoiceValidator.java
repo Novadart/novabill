@@ -5,6 +5,7 @@ import java.util.BitSet;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -37,15 +38,21 @@ public class InvoiceValidator extends AccountingDocumentValidator {
 	}
 	
 	private boolean validateInvoiceDocumentID(Invoice invoice, List<Long> gapsAccumulator){
-		List<Long> invoiceIDs = utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getCurrentYearInvoicesDocumentIDs();
-		if(invoiceIDs.size() == 0)//first invoice
-			return true;
-		invoiceIDs.add(invoice.getDocumentID());
-		List<Long> gaps = computeDocumentIDGaps(invoiceIDs, 10);
-		if(gaps.size() > 0){
-			for(Long gap: gaps)
-				gapsAccumulator.add(gap);
-			return false;
+		Business authenticatedBusiness = utilsService.getAuthenticatedPrincipalDetails().getPrincipal();
+		List<Invoice> persistedInvoices  = authenticatedBusiness.getInvoiceByIdInYear(invoice.getDocumentID(), invoice.getAccountingDocumentYear()); 
+		for(Invoice persistedInvoice : persistedInvoices){
+			if(!persistedInvoice.getId().equals(invoice.getId())){//same documentID, but different id: error!
+				List<Long> invoiceIDs = authenticatedBusiness.getCurrentYearInvoicesDocumentIDs();
+				if(invoiceIDs.size() == 1)//there's only one
+					gapsAccumulator.add(invoiceIDs.get(invoiceIDs.size() - 1) + 1); //suggest next id
+				else{
+					List<Long> gaps = computeDocumentIDGaps(invoiceIDs, 10);
+					if(gaps.size() > 0)
+						for(Long gap: gaps)
+							gapsAccumulator.add(gap);
+				}
+				return false;
+			}
 		}
 		return true;
 	}

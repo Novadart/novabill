@@ -165,13 +165,12 @@ public class Business implements Serializable {
     			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getResultList();
     }
     
-    public Invoice getInvoiceByIdInYear(Long documentID, Integer year){
+    public List<Invoice> getInvoiceByIdInYear(Long documentID, Integer year){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :businessId and invoice.accountingDocumentYear = :year and invoice.documentID = :id";
-    	List<Invoice> result =  entityManager().createQuery(query, Invoice.class)
+    	return entityManager().createQuery(query, Invoice.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", year)
     			.setParameter("id", documentID).getResultList();
-    	return result.size() == 0? null: result.get(0);
     }
     
     public Long getNextEstimationDocumentID(){
