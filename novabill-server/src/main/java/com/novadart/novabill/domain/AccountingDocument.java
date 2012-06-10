@@ -70,18 +70,6 @@ public abstract class AccountingDocument {
 		return calendar.get(Calendar.YEAR);
     }
     
-	@PreUpdate
-    protected void onUpdate(){
-    	if(accountingDocumentDate != null)
-    		accountingDocumentYear = getYear(accountingDocumentDate);
-    }
-    
-    @PrePersist
-    protected void onPersist(){
-    	if(accountingDocumentDate != null)
-    		accountingDocumentYear = getYear(accountingDocumentDate);
-    }
-
 	protected void setAccountingDocumentYear(Integer year) {
         this.accountingDocumentYear = year;
     }
@@ -103,8 +91,9 @@ public abstract class AccountingDocument {
         return this.accountingDocumentDate;
     }
     
-    public void setAccountingDocumentDate(Date date) {
-        this.accountingDocumentDate = date;
+    public void setAccountingDocumentDate(Date accountingDocumentDate) {
+        this.accountingDocumentDate = accountingDocumentDate;
+    	accountingDocumentYear = accountingDocumentDate != null? getYear(accountingDocumentDate): null;
     }
     
     public Integer getAccountingDocumentYear() {

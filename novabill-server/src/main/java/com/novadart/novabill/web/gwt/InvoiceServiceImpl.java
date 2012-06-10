@@ -108,7 +108,6 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		business.getInvoices().add(invoice);
 		InvoiceDTOFactory.copyFromDTO(invoice, invoiceDTO, true);
 		validator.validate(invoice);
-		invoice.persist();
 		invoice.flush();
 		return invoice.getId();
 	}
