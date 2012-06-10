@@ -10,7 +10,7 @@
 		<g:HorizontalPanel styleName="homeBody">
 
 			<g:SimplePanel styleName="listWrapper panel">
-				<i:InvoiceList ui:field="invoiceList"></i:InvoiceList>
+				<i:InvoicePreviewList ui:field="invoiceList"></i:InvoicePreviewList>
 			</g:SimplePanel>
 
 		</g:HorizontalPanel>
