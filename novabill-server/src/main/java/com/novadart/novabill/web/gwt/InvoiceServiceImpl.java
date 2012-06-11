@@ -108,7 +108,6 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		business.getInvoices().add(invoice);
 		InvoiceDTOFactory.copyFromDTO(invoice, invoiceDTO, true);
 		validator.validate(invoice);
-		invoice.persist();
 		invoice.flush();
 		return invoice.getId();
 	}
@@ -170,6 +169,17 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		Long id = add(invoiceDTO);
 		invoiceDTO.setId(id);
 		return invoiceDTO;
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	public void setPayed(Long id, Boolean value) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
+		Invoice invoice = Invoice.findInvoice(id);
+		if(invoice == null)
+			throw new NoSuchObjectException();
+		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(invoice.getBusiness().getId()))
+			throw new DataAccessException();
+		invoice.setPayed(value);
 	}
 	
 }

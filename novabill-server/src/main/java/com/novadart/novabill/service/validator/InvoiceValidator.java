@@ -26,7 +26,7 @@ public class InvoiceValidator extends AccountingDocumentValidator {
 			return new ArrayList<Long>();
 		BitSet invoiceIDsBSet = new BitSet(invoiceIDs.get(size - 1).intValue() - 1);
 		for(Long invoiceID: invoiceIDs)
-			invoiceIDsBSet.flip(invoiceID.intValue() - 1);
+			invoiceIDsBSet.set(invoiceID.intValue() - 1);
 		invoiceIDsBSet.flip(0, invoiceIDs.get(0).intValue() - 1);//flip all bits till the first invoice
 		BitSet mask = new BitSet(invoiceIDsBSet.length());
 		mask.flip(0, invoiceIDsBSet.length());
@@ -43,14 +43,12 @@ public class InvoiceValidator extends AccountingDocumentValidator {
 		for(Invoice persistedInvoice : persistedInvoices){
 			if(!persistedInvoice.getId().equals(invoice.getId())){//same documentID, but different id: error!
 				List<Long> invoiceIDs = authenticatedBusiness.getCurrentYearInvoicesDocumentIDs();
-				if(invoiceIDs.size() == 1)//there's only one
-					gapsAccumulator.add(invoiceIDs.get(invoiceIDs.size() - 1) + 1); //suggest next id
-				else{
-					List<Long> gaps = computeDocumentIDGaps(invoiceIDs, 10);
-					if(gaps.size() > 0)
-						for(Long gap: gaps)
-							gapsAccumulator.add(gap);
-				}
+				List<Long> gaps = computeDocumentIDGaps(invoiceIDs, 10);
+				if(gaps.size() > 0){
+					for(Long gap: gaps)
+						gapsAccumulator.add(gap);
+				}else
+					gapsAccumulator.add(authenticatedBusiness.getNextInvoiceDocumentID());
 				return false;
 			}
 		}

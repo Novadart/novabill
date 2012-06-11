@@ -27,4 +27,6 @@ public interface InvoiceServiceAsync {
 	void createFromEstimation(EstimationDTO estimationDTO,
 			AsyncCallback<InvoiceDTO> callback);
 
+	void setPayed(Long id, Boolean value, AsyncCallback<Void> callback);
+
 }
