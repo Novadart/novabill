@@ -33,12 +33,15 @@ public class Invoice extends AccountingDocument implements Serializable {
     @Type(type = "text")
     private String paymentNote;
     
-    @NotNull
+	@NotNull
     private PaymentType paymentType;
     
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "S-")
     private Date paymentDueDate;
+    
+    @NotNull
+    private Boolean payed = false; 
     
     @ManyToOne
     protected Business business;
@@ -74,6 +77,14 @@ public class Invoice extends AccountingDocument implements Serializable {
     public void setPaymentDueDate(Date paymentDueDate) {
         this.paymentDueDate = paymentDueDate;
     }
+    
+    public Boolean getPayed() {
+		return payed;
+	}
+
+	public void setPayed(Boolean payed) {
+		this.payed = payed;
+	}
     
     public Business getBusiness() {
         return this.business;
