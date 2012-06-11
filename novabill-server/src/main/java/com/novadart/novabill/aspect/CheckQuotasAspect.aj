@@ -2,6 +2,7 @@ package com.novadart.novabill.aspect;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.CheckQuotas;
 import com.novadart.novabill.domain.Business;
@@ -13,12 +14,9 @@ privileged aspect CheckQuotasAspect {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(CheckQuotasAspect.class);
 	
-	UtilsService utilsService;
+	@Autowired
+	private UtilsService utilsService;
 	
-	public void setUtilsService(UtilsService utilsService) {
-		this.utilsService = utilsService;
-	}
-
 	pointcut quotaRestrictedMethod(CheckQuotas checkQuotas):
 		execution(@CheckQuotas * *(..)) && @annotation(checkQuotas);
 
