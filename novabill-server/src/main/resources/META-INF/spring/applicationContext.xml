@@ -157,5 +157,17 @@
 	<bean class="com.novadart.novabill.aspect.logging.InvoiceServiceActionsAspect"
 		factory-method="aspectOf">
 	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.logging.BusinessServiceActionsAspect"
+		factory-method="aspectOf">
+	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.logging.ClientServiceActionsAspect"
+		factory-method="aspectOf">
+	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.logging.EstimationServiceActionsAspect"
+		factory-method="aspectOf">
+	</bean>
 
 </beans>
