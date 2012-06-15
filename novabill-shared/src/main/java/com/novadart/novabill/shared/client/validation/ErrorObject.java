@@ -1,7 +1,16 @@
 package com.novadart.novabill.shared.client.validation;
 
-public class ErrorObject {
+import java.io.Serializable;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class ErrorObject implements Serializable, IsSerializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Field field;
 	
 	private ErrorCode errorCode;
