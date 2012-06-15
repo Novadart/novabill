@@ -15,8 +15,6 @@ public class ErrorObject implements Serializable, IsSerializable {
 	
 	private ErrorCode errorCode;
 	
-	private Object parameter;
-
 	public Field getField() {
 		return field;
 	}
@@ -33,20 +31,11 @@ public class ErrorObject implements Serializable, IsSerializable {
 		this.errorCode = errorCode;
 	}
 
-	public Object getParameter() {
-		return parameter;
-	}
-
-	public void setParameter(Object parameter) {
-		this.parameter = parameter;
-	}
-	
 	public ErrorObject(){}
 
-	public ErrorObject(Field field, ErrorCode errorCode, Object parameter) {
+	public ErrorObject(Field field, ErrorCode errorCode) {
 		this.field = field;
 		this.errorCode = errorCode;
-		this.parameter = parameter;
 	}
 	
 

@@ -36,15 +36,15 @@ public class ConstraintViolationToApplicationErrorMapper {
 		for(ConstraintViolation<T> violation: violations){
 			String property = getProperty(violation.getPropertyPath());
 			if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(NotBlank.class))
-				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.BLANK_OR_NULL, null));
+				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.BLANK_OR_NULL));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(NotNull.class))
-				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.NULL, null));
+				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.NULL));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(Email.class))
-				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.MALFORMED_EMAIL, null));
+				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.MALFORMED_EMAIL));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(Pattern.class))
-				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.MALFORMED_REGEX_PATTERN, null));
+				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.MALFORMED_REGEX_PATTERN));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(Size.class))
-				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.LENGTH, null));
+				errors.add(new ErrorObject(Field.valueOf(property), ErrorCode.LENGTH));
 			else
 				throw new RuntimeException("No such constraint violation exception!");
 		}
