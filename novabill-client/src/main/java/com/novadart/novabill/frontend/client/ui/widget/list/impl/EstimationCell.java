@@ -1,38 +1,50 @@
 package com.novadart.novabill.frontend.client.ui.widget.list.impl;
 
-import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
-import com.google.gwt.dom.client.ImageElement;
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.resources.ImageResources;
+import com.novadart.novabill.frontend.client.place.EstimationPlace;
+import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewCell;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.util.PDFUtils;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 
 public class EstimationCell extends QuickViewCell<EstimationDTO> {
 	
-	public static interface Handler {
-		public void onPdfClicked(EstimationDTO invoice);
-		public void onDeleteClicked(EstimationDTO invoice);
-		public void onOpenEstimationClicked(EstimationDTO invoice);
+	private Presenter presenter;
+	
+	@Override
+	protected void renderDetails(
+			com.google.gwt.cell.client.Cell.Context context,
+			EstimationDTO value, SafeHtmlBuilder sb) {
+		sb.appendHtmlConstant("<div class='total'>");
+		sb.appendEscaped(I18N.INSTANCE.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
+		sb.appendHtmlConstant("</div>");
+
+		sb.appendHtmlConstant("<div class='tools'>");
+		sb.appendHtmlConstant("<span class='openEstimation'>");
+		sb.appendEscaped(I18N.INSTANCE.openEstimation());
+		sb.appendHtmlConstant("</span>");
+		sb.appendHtmlConstant("<span class='downloadAsPDF'>");
+		sb.appendEscaped("PDF");
+		sb.appendHtmlConstant("</span>");
+		sb.appendHtmlConstant("<span class='delete'>");
+		sb.appendEscaped(I18N.INSTANCE.delete());
+		sb.appendHtmlConstant("</span>");
+		sb.appendHtmlConstant("</div>");
 	}
 	
-	private Handler handler;
-
 	@Override
-	protected void render(com.google.gwt.cell.client.Cell.Context context,
-			EstimationDTO value, SafeHtmlBuilder sb, boolean isSelected) {
-
-		if(isSelected){
-			sb.appendHtmlConstant("<div class='invoice clicked'>");
-		} else {
-			sb.appendHtmlConstant("<div class='invoice'>");
-		}
+	protected void renderVisible(
+			com.google.gwt.cell.client.Cell.Context context,
+			EstimationDTO value, SafeHtmlBuilder sb) {
 		sb.appendHtmlConstant("<div class='main'>");
 		sb.appendHtmlConstant("<span class='id'>");
 		sb.append(value.getDocumentID());
@@ -48,63 +60,19 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 
 		sb.appendHtmlConstant("</div>");
 
-		if(isSelected){
-			sb.appendHtmlConstant("<div class='details'>");
-			
-			sb.appendHtmlConstant("<div class='total'>");
-			sb.appendEscaped(I18N.INSTANCE.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
-			sb.appendHtmlConstant("</div>");
-
-			sb.appendHtmlConstant("<div class='tools'>");
-			sb.appendHtmlConstant("<span class='openEstimation'>");
-			sb.appendEscaped(I18N.INSTANCE.openEstimation());
-			sb.appendHtmlConstant("</span>");
-			sb.appendHtmlConstant("<span class='downloadAsPDF'>");
-			sb.appendHtmlConstant("<img class='pdf' src='"+ImageResources.INSTANCE.pdf().getSafeUri().asString()+"'>");
-			sb.appendHtmlConstant("</span>");
-			sb.appendHtmlConstant("<span class='delete'>");
-			sb.appendEscaped(I18N.INSTANCE.delete());
-			sb.appendHtmlConstant("</span>");
-			sb.appendHtmlConstant("</div>");
-			
-			sb.appendHtmlConstant("</div>");
-		}
-		
-		sb.appendHtmlConstant("</div>");
-		
 	}
 
 	@Override
-	protected boolean itemsAreEqual(EstimationDTO item1, EstimationDTO item2) {
-		return item1.getId().equals(item2.getId());
+	protected void onClick(EstimationDTO value, EventTarget eventTarget) {
+		if(isPdf(eventTarget)){
+			onPdfClicked(value);
+		} else if(isDelete(eventTarget)){
+			onDeleteClicked(value);
+		} else if(isOpenEstimation(eventTarget)){
+			onOpenEstimationClicked(value);
+		} 
 	}
-	
-	
-	@Override
-	public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
-			Element parent, EstimationDTO value, NativeEvent event,
-			ValueUpdater<EstimationDTO> valueUpdater) {
-		
-		if(value == null){
-			return;
-		}
-		
-		if("click".equals(event.getType())){
-			if(isPdf(event.getEventTarget())){
-				handler.onPdfClicked(value);
-			} else if(isDelete(event.getEventTarget())){
-				handler.onDeleteClicked(value);
-			} else if(isOpenEstimation(event.getEventTarget())){
-				handler.onOpenEstimationClicked(value);
-			} else {
-				super.onBrowserEvent(context, parent, value, event, valueUpdater);
-			}
-			
-		} else {
-			super.onBrowserEvent(context, parent, value, event, valueUpdater);
-		}
-	}
-	
+
 	private boolean isOpenEstimation(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement delete = et.cast();
@@ -116,9 +84,9 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 	}
 
 	private boolean isPdf(EventTarget et){
-		if(ImageElement.is(et)){
-			ImageElement img = et.cast();
-			return "pdf".equals(img.getClassName());
+		if(SpanElement.is(et)){
+			SpanElement img = et.cast();
+			return "downloadAsPDF".equals(img.getClassName());
 			
 		} else {
 			return false;
@@ -134,9 +102,42 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 			return false;
 		}
 	}
-
-
-	public void setHandler(Handler handler) {
-		this.handler = handler;
+	
+	public void onOpenEstimationClicked(EstimationDTO estimation) {
+		if(presenter != null){
+			EstimationPlace ep = new EstimationPlace();
+			ep.setEstimationId(estimation.getId());
+			presenter.goTo(ep);
+		}
 	}
+	
+	public void onPdfClicked(EstimationDTO estimation) {
+		if(estimation.getId() == null){
+			return;
+		}
+		PDFUtils.generateEstimationPdf(estimation.getId());
+	}
+
+	public void onDeleteClicked(EstimationDTO estimation) {
+		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmEstimationDeletion())){
+			ServerFacade.estimation.remove(estimation.getId(), new WrappedAsyncCallback<Void>() {
+				
+				@Override
+				public void onSuccess(Void result) {
+					DataWatcher.getInstance().fireEstimationEvent();
+				}
+				
+				@Override
+				public void onException(Throwable caught) {
+					Notification.showYesNoRequest(I18N.INSTANCE.errorServerCommunication());		
+				}
+			});
+		}
+		
+	}
+	
+	public void setPresenter(Presenter presenter) {
+		this.presenter = presenter;
+	}
+
 }

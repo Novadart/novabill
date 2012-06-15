@@ -58,8 +58,8 @@ public class ClientViewImpl extends Composite implements ClientView {
 	public ClientViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("ClientView");
-		invoiceDataProvider.addDataDisplay(invoiceList.getList());
-		estimationDataProvider.addDataDisplay(estimationList.getList());
+		invoiceDataProvider.addDataDisplay(invoiceList);
+		estimationDataProvider.addDataDisplay(estimationList);
 		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
 			
 			@Override

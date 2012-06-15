@@ -1,38 +1,31 @@
 package com.novadart.novabill.frontend.client.ui.widget.list.impl;
 
-import com.google.gwt.cell.client.ValueUpdater;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
-import com.google.gwt.dom.client.ImageElement;
-import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.resources.ImageResources;
+import com.novadart.novabill.frontend.client.place.InvoicePlace;
+import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewCell;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.util.PDFUtils;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
 public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 	
-	public static interface Handler {
-		public void onPdfClicked(InvoiceDTO invoice);
-		public void onDeleteClicked(InvoiceDTO invoice);
-		public void onOpenInvoiceClicked(InvoiceDTO invoice);
-	}
+	private Presenter presenter;
 	
-	private Handler handler;
-
+	
 	@Override
-	protected void render(com.google.gwt.cell.client.Cell.Context context,
-			InvoiceDTO value, SafeHtmlBuilder sb, boolean isSelected) {
-
-		if(isSelected){
-			sb.appendHtmlConstant("<div class='invoice clicked'>");
-		} else {
-			sb.appendHtmlConstant("<div class='invoice'>");
-		}
+	protected void renderVisible(
+			com.google.gwt.cell.client.Cell.Context context, InvoiceDTO value,
+			SafeHtmlBuilder sb) {
+		
 		sb.appendHtmlConstant("<div class='main'>");
 		sb.appendHtmlConstant("<span class='id'>");
 		sb.append(value.getDocumentID());
@@ -47,62 +40,44 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 		sb.appendHtmlConstant("</span>");
 
 		sb.appendHtmlConstant("</div>");
-
-		if(isSelected){
-			sb.appendHtmlConstant("<div class='details'>");
-			
-			sb.appendHtmlConstant("<div class='total'>");
-			sb.appendEscaped(I18N.INSTANCE.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
-			sb.appendHtmlConstant("</div>");
-
-			sb.appendHtmlConstant("<div class='tools'>");
-			sb.appendHtmlConstant("<span class='openInvoice'>");
-			sb.appendEscaped(I18N.INSTANCE.openInvoice());
-			sb.appendHtmlConstant("</span>");
-			sb.appendHtmlConstant("<span class='downloadAsPDF'>");
-			sb.appendHtmlConstant("<img class='pdf' src='"+ImageResources.INSTANCE.pdf().getSafeUri().asString()+"'>");
-			sb.appendHtmlConstant("</span>");
-			sb.appendHtmlConstant("<span class='delete'>");
-			sb.appendEscaped(I18N.INSTANCE.delete());
-			sb.appendHtmlConstant("</span>");
-			sb.appendHtmlConstant("</div>");
-			
-			sb.appendHtmlConstant("</div>");
-		}
+	}
+	
+	@Override
+	protected void renderDetails(
+			com.google.gwt.cell.client.Cell.Context context, InvoiceDTO value,
+			SafeHtmlBuilder sb) {
 		
+		sb.appendHtmlConstant("<div class='total'>");
+		sb.appendEscaped(I18N.INSTANCE.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
 		sb.appendHtmlConstant("</div>");
-		
-	}
 
-	@Override
-	protected boolean itemsAreEqual(InvoiceDTO item1, InvoiceDTO item2) {
-		return item1.getId().equals(item2.getId());
+		sb.appendHtmlConstant("<div class='tools'>");
+		sb.appendHtmlConstant("<span class='openInvoice'>");
+		sb.appendEscaped(I18N.INSTANCE.open());
+		sb.appendHtmlConstant("</span>");
+		sb.appendHtmlConstant("<span class='downloadAsPDF'>");
+		sb.appendEscaped("PDF");
+		sb.appendHtmlConstant("</span>");
+		sb.appendHtmlConstant("<span class='delete'>");
+		sb.appendEscaped(I18N.INSTANCE.delete());
+		sb.appendHtmlConstant("</span>");
+		sb.appendHtmlConstant("</div>");
 	}
 	
 	
+	public void setPresenter(Presenter presenter) {
+		this.presenter = presenter;
+	}
+	
 	@Override
-	public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
-			Element parent, InvoiceDTO value, NativeEvent event,
-			ValueUpdater<InvoiceDTO> valueUpdater) {
-		
-		if(value == null){
-			return;
-		}
-		
-		if("click".equals(event.getType())){
-			if(isPdf(event.getEventTarget())){
-				handler.onPdfClicked(value);
-			} else if(isDelete(event.getEventTarget())){
-				handler.onDeleteClicked(value);
-			} else if(isOpenInvoice(event.getEventTarget())){
-				handler.onOpenInvoiceClicked(value);
-			} else {
-				super.onBrowserEvent(context, parent, value, event, valueUpdater);
-			}
-			
-		} else {
-			super.onBrowserEvent(context, parent, value, event, valueUpdater);
-		}
+	protected void onClick(InvoiceDTO value, EventTarget eventTarget) {
+		if(isPdf(eventTarget)){
+			onPdfClicked(value);
+		} else if(isDelete(eventTarget)){
+			onDeleteClicked(value);
+		} else if(isOpenInvoice(eventTarget)){
+			onOpenInvoiceClicked(value);
+		} 
 	}
 	
 	private boolean isOpenInvoice(EventTarget et){
@@ -116,9 +91,9 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 	}
 
 	private boolean isPdf(EventTarget et){
-		if(ImageElement.is(et)){
-			ImageElement img = et.cast();
-			return "pdf".equals(img.getClassName());
+		if(SpanElement.is(et)){
+			SpanElement pdf = et.cast();
+			return "downloadAsPDF".equals(pdf.getClassName());
 			
 		} else {
 			return false;
@@ -135,8 +110,38 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 		}
 	}
 
-
-	public void setHandler(Handler handler) {
-		this.handler = handler;
+	private void onOpenInvoiceClicked(InvoiceDTO invoice) {
+		if(presenter != null){
+			InvoicePlace ip = new InvoicePlace();
+			ip.setInvoiceId(invoice.getId());
+			presenter.goTo(ip);
+		}
 	}
+	
+	private void onPdfClicked(InvoiceDTO invoice) {
+		if(invoice.getId() == null){
+			return;
+		}
+		PDFUtils.generateInvoicePdf(invoice.getId());
+	}
+
+	private void onDeleteClicked(InvoiceDTO invoice) {
+		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmInvoiceDeletion())){
+			ServerFacade.invoice.remove(invoice.getId(), new WrappedAsyncCallback<Void>() {
+				
+				@Override
+				public void onSuccess(Void result) {
+					DataWatcher.getInstance().fireInvoiceEvent();
+					DataWatcher.getInstance().fireStatsEvent();
+				}
+				
+				@Override
+				public void onException(Throwable caught) {
+					Notification.showYesNoRequest(I18N.INSTANCE.errorServerCommunication());		
+				}
+			});
+		}
+		
+	}
+	
 }

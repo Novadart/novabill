@@ -220,7 +220,7 @@ textarea:HOVER {
 .ClientView .clientMainBody .gwt-TabLayoutPanelTab {
 	padding: 0.5em 1em;
 	background-color: white;
-	border: 0.2em solid #EEE;
+	border: 0.1em solid #DDD;
 	width: 8em;
 	border-top-right-radius: 1em;
 	border-top-left-radius: 1em;
@@ -254,12 +254,9 @@ textarea:HOVER {
 }
 
 .panel {
-	border: 0.2px solid #DDD;
-	padding: 1em;
+	border: 0.1em solid #DDD;
+	padding: 1.5em 2em;
 	background-color: #EEE;
-	border-bottom-left-radius: 1em;
-	border-bottom-right-radius: 1em;
-	border-top-right-radius: 1em;
 	margin: 0 auto;
 }
 
@@ -327,43 +324,63 @@ textarea:HOVER {
 	margin-left: 0.5em;
 }
 
-.InvoiceList .client,.InvoiceList .invoice {
-	padding: 1px 10px 5px 0;
+.QuickViewList .quickViewCell {
+	padding: 0 1em 0 0;
 	font-size: 1em;
 	border: 1px solid #DDD;
 	background-color: white;
+	margin: 3px 0;
+	   -moz-box-shadow:     2px 2px 2px #CCC;
+   -webkit-box-shadow:  2px 2px 2px #CCC;
+   box-shadow:          2px 2px 2px #CCC;
 }
 
-.InvoiceList .client.clicked,.InvoiceList .invoice.clicked {
-	border: 1px solid #333;
-}
 
-.InvoiceList .pdf {
+.QuickViewList .pdf {
 	width: 2em;
 	height: 2em;
 }
 
-.InvoiceList .details .tools {
+.QuickViewList .details .tools {
 	text-align: right;
 }
 
-.InvoiceList .id {
+.QuickViewList .details .tools span {
+	text-transform: uppercase;
+	font-size: 0.8em;
+	margin-right: 1em;
+}
+
+.QuickViewList .details .tools span:HOVER {
+	text-decoration: underline;
+}
+
+
+.QuickViewList .main {
+	padding: 0.5em 0;
+}
+
+.QuickViewList .id {
 	color: white;
 	background-color: #888;
 	padding: 1px 2px;
+	position: relative;
+	top: -0.4em;
+	left: 0.1em;
 }
 
-.InvoiceList .date {
+.QuickViewList .date {
 	padding: 0 20px;
 }
 
-.InvoiceList .name {
+.QuickViewList .name {
 	font-weight: bold;
 }
 
-.InvoiceList .details {
+.QuickViewList .details {
 	padding: 5px;
 }
+
 
 .westContainer {
 	border-right: 1px solid #EEE;
@@ -755,7 +772,6 @@ td.datePickerMonth {
 	width: 100%;
 }
 
-
 .WestView .cleanFilterClient {
 	cursor: pointer;
 	width: 1.5em;
@@ -809,7 +825,7 @@ td.datePickerMonth {
 	text-align: justify;
 }
 
-.GoPremiumDialog p.par1{
+.GoPremiumDialog p.par1 {
 	margin-top: 1em;
 }
 
@@ -839,6 +855,3 @@ td.datePickerMonth {
 .GoPremiumDialog .noThanks:HOVER {
 	text-decoration: underline;
 }
-
-
-

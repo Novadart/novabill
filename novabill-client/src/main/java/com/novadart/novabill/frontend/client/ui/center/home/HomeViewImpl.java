@@ -12,7 +12,7 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.center.HomeView;
-import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoicePreviewList;
+import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoiceList;
 
 public class HomeViewImpl extends Composite implements HomeView {
 
@@ -24,24 +24,23 @@ public class HomeViewImpl extends Composite implements HomeView {
 
 	private static final Range INVOICE_LIST_RANGE = new Range(0, 20);
 	
-	@UiField InvoicePreviewList invoiceList;
+	@UiField InvoiceList invoiceList;
 
 	private final InvoiceDataProvider invoiceDataProvider = new InvoiceDataProvider();
 	
 	public HomeViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
-		invoiceList.getCellList().setVisibleRange(INVOICE_LIST_RANGE);
+		invoiceList.setVisibleRange(INVOICE_LIST_RANGE);
 		setStyleName("HomeView");
-		invoiceDataProvider.addDataDisplay(invoiceList.getCellList());
+		invoiceDataProvider.addDataDisplay(invoiceList);
 		
 		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
 			
 			@Override
 			public void onDataUpdated(DATA data) {
 				if(data.equals(DATA.INVOICE)){
-					invoiceList.getCellList().setVisibleRangeAndClearData(INVOICE_LIST_RANGE, true);
+					invoiceList.setVisibleRangeAndClearData(INVOICE_LIST_RANGE, true);
 				}
-				
 			}
 		});
 	}
