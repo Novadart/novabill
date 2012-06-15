@@ -330,11 +330,10 @@ textarea:HOVER {
 	border: 1px solid #DDD;
 	background-color: white;
 	margin: 3px 0;
-	   -moz-box-shadow:     2px 2px 2px #CCC;
-   -webkit-box-shadow:  2px 2px 2px #CCC;
-   box-shadow:          2px 2px 2px #CCC;
+	-moz-box-shadow: 2px 2px 2px #CCC;
+	-webkit-box-shadow: 2px 2px 2px #CCC;
+	box-shadow: 2px 2px 2px #CCC;
 }
-
 
 .QuickViewList .pdf {
 	width: 2em;
@@ -356,14 +355,55 @@ textarea:HOVER {
 	text-decoration: underline;
 }
 
+.QuickViewList.InvoiceList .upper {
+	height: 1.8em;
+}
+
+.QuickViewList.InvoiceList .details .payed:HOVER {
+	text-decoration: underline;
+}
+
+.QuickViewList.InvoiceList .details .payed {
+	float: right;
+	padding: 0.2em 0.5em;
+	border-radius: 0.5em;
+	cursor: pointer;
+	text-transform: uppercase;
+	font-size: 0.8em;
+}
+
+.QuickViewList .details .payed.payed-true {
+	background-color: #B9F2B3;
+	border: 0.1em solid #66C25B;
+}
+
+.QuickViewList .details .payed.payed-false {
+	background-color: #EDE700;
+	border: 0.1em solid #D8D308;
+}
 
 .QuickViewList .main {
 	padding: 0.5em 0;
 }
 
-.QuickViewList .id {
-	color: white;
+.QuickViewList.InvoiceList .main.invoice-not-payed .id {
+	background-color: #EDE700;
+	border: 0.1em solid #D8D308;
+	color: black;
+}
+
+.QuickViewList.InvoiceList .main.invoice-payed .id {
+	background-color: #B9F2B3;
+	border: 0.1em solid #66C25B;
+	color: black;
+}
+
+.QuickViewList.EstimationList .id {
 	background-color: #888;
+	color: white;
+}
+
+.QuickViewList .id {
 	padding: 1px 2px;
 	position: relative;
 	top: -0.4em;
@@ -381,7 +421,6 @@ textarea:HOVER {
 .QuickViewList .details {
 	padding: 5px 5px 15px;
 }
-
 
 .westContainer {
 	border-right: 1px solid #EEE;

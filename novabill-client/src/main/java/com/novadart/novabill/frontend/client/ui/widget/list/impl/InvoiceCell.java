@@ -26,7 +26,7 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 			com.google.gwt.cell.client.Cell.Context context, InvoiceDTO value,
 			SafeHtmlBuilder sb) {
 		
-		sb.appendHtmlConstant("<div class='main'>");
+		sb.appendHtmlConstant("<div class='main "+(value.getPayed() ? "invoice-payed" : "invoice-not-payed")+"'>");
 		sb.appendHtmlConstant("<span class='id'>");
 		sb.append(value.getDocumentID());
 		sb.appendHtmlConstant("</span>");
@@ -47,8 +47,13 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 			com.google.gwt.cell.client.Cell.Context context, InvoiceDTO value,
 			SafeHtmlBuilder sb) {
 		
-		sb.appendHtmlConstant("<div class='total'>");
+		sb.appendHtmlConstant("<div class='upper'>");
+		sb.appendHtmlConstant("<span class='total'>");
 		sb.appendEscaped(I18N.INSTANCE.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
+		sb.appendHtmlConstant("</span>");
+		sb.appendHtmlConstant("<span class='payed payed-"+value.getPayed()+"'>");
+		sb.appendEscaped(value.getPayed() ? I18N.INSTANCE.payed() : I18N.INSTANCE.notPayed());
+		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("</div>");
 
 		sb.appendHtmlConstant("<div class='tools'>");
@@ -77,7 +82,9 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 			onDeleteClicked(value);
 		} else if(isOpenInvoice(eventTarget)){
 			onOpenInvoiceClicked(value);
-		} 
+		} else if(isPayedSwitch(eventTarget)){
+			onPayedSwitchClicked(value);
+		}
 	}
 	
 	private boolean isOpenInvoice(EventTarget et){
@@ -104,6 +111,16 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 		if(SpanElement.is(et)){
 			SpanElement delete = et.cast();
 			return "delete".equals(delete.getClassName());
+			
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean isPayedSwitch(EventTarget et){
+		if(SpanElement.is(et)){
+			SpanElement payed = et.cast();
+			return payed.getClassName().contains("payed");
 			
 		} else {
 			return false;
@@ -142,6 +159,21 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 			});
 		}
 		
+	}
+	
+	private void onPayedSwitchClicked(InvoiceDTO invoice) {
+		ServerFacade.invoice.setPayed(invoice.getId(), !invoice.getPayed(), new WrappedAsyncCallback<Void>() {
+
+			@Override
+			public void onSuccess(Void result) {
+				DataWatcher.getInstance().fireClientDataEvent();
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+				
+			}
+		});
 	}
 	
 }

@@ -113,4 +113,6 @@ public interface I18N extends Constants {
 	public String noClientsFound();
 	public String myData();
 	public String open();
+	public String payed();
+	public String notPayed();
 }
