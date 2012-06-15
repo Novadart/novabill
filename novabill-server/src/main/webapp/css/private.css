@@ -349,6 +349,7 @@ textarea:HOVER {
 	text-transform: uppercase;
 	font-size: 0.8em;
 	margin-right: 1em;
+	cursor: pointer;
 }
 
 .QuickViewList .details .tools span:HOVER {
@@ -378,7 +379,7 @@ textarea:HOVER {
 }
 
 .QuickViewList .details {
-	padding: 5px;
+	padding: 5px 5px 15px;
 }
 
 

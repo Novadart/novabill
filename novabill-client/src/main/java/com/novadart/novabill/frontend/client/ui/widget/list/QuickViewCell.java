@@ -7,7 +7,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.novadart.novabill.frontend.client.ui.widget.list.impl.resources.QuickViewListResources;
+import com.novadart.novabill.frontend.client.ui.widget.list.resources.QuickViewListResources;
 
 public abstract class QuickViewCell<T> extends AbstractCell<T> {
 

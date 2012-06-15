@@ -1,4 +1,4 @@
-package com.novadart.novabill.frontend.client.ui.widget.list.impl.resources;
+package com.novadart.novabill.frontend.client.ui.widget.list.resources;
 
 import com.google.gwt.resources.client.CssResource;
 
