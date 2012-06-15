@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
+
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.RoleTypes;
 import com.novadart.novabill.shared.client.exception.QuotaException;

@@ -2,8 +2,10 @@ package com.novadart.novabill.domain;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;

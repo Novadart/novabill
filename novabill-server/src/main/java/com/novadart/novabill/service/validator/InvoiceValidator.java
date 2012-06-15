@@ -3,8 +3,10 @@ package com.novadart.novabill.service.validator;
 import java.util.ArrayList;
 import java.util.BitSet;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.service.UtilsService;

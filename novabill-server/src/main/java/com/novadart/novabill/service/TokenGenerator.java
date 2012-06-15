@@ -3,8 +3,11 @@ package com.novadart.novabill.service;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.SecureRandom;
+
 import javax.annotation.PostConstruct;
+
 import org.springframework.stereotype.Service;
+
 import sun.misc.BASE64Encoder;
 
 @SuppressWarnings("restriction")

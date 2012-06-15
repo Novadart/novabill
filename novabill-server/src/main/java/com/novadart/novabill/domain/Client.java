@@ -1,5 +1,6 @@
 package com.novadart.novabill.domain;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Comparator;
@@ -8,6 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,8 +23,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Transient;
 import javax.persistence.Version;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
@@ -41,9 +43,8 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-import com.novadart.novabill.shared.client.validation.RegularExpressionConstants;
+
 import com.novadart.utils.fts.TermValueFilterFactory;
-import java.io.Serializable;
 
 /*
  * Important note!
