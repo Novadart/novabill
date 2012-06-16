@@ -616,7 +616,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 						sb.append(gaps.get(0));
 					}
 
-					number.showMessage(I18NM.get.invalidDocumentIdError(sb.toString()));
+					number.showErrorMessage(I18NM.get.invalidDocumentIdError(sb.toString()));
 				}
 				break;
 
