@@ -30,6 +30,7 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
@@ -41,6 +42,9 @@ import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
+import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.validation.ErrorObject;
+import com.novadart.novabill.shared.client.validation.InvoiceErrorObject;
 
 public class InvoiceViewImpl extends Composite implements InvoiceView {
 
@@ -142,7 +146,11 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 			@Override
 			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
+				if(caught instanceof ValidationException){
+					handleServerValidationException((ValidationException) caught, true);
+				} else {
+					Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
+				}
 			}
 		});
 
@@ -170,7 +178,11 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 			@Override
 			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
+				if(caught instanceof ValidationException){
+					handleServerValidationException((ValidationException) caught, true);
+				} else {
+					Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
+				}
 			}
 		});
 	}
@@ -201,7 +213,11 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 			@Override
 			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.estimationCreationFailure());
+				if(caught instanceof ValidationException){
+					handleServerValidationException((ValidationException) caught, false);
+				} else {
+					Notification.showMessage(I18N.INSTANCE.estimationCreationFailure());
+				}
 			}
 		});
 
@@ -338,7 +354,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 			onModifyEstimation();
 		}
 	}
-	
+
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
 		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
@@ -360,7 +376,11 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 				@Override
 				public void onException(Throwable caught) {
-					Notification.showMessage(I18N.INSTANCE.invoiceUpdateFailure());
+					if(caught instanceof ValidationException){
+						handleServerValidationException((ValidationException) caught, true);
+					} else {
+						Notification.showMessage(I18N.INSTANCE.invoiceUpdateFailure());
+					}
 				}
 
 				@Override
@@ -392,7 +412,11 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 				@Override
 				public void onException(Throwable caught) {
-					Notification.showMessage(I18N.INSTANCE.estimationUpdateFailure());
+					if(caught instanceof ValidationException){
+						handleServerValidationException((ValidationException) caught, false);
+					} else {
+						Notification.showMessage(I18N.INSTANCE.estimationUpdateFailure());
+					}
 				}
 
 				@Override
@@ -575,5 +599,31 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		resetItemTableForm();
 	}
 
+	private void handleServerValidationException(ValidationException ex, boolean isInvoice){
+		for (ErrorObject eo : ex.getErrors()) {
+			switch(eo.getErrorCode()){
+			case INVALID_DOCUMENT_ID:
+				if(isInvoice){
+					StringBuilder sb = new StringBuilder();
+					List<Long> gaps = ((InvoiceErrorObject) eo).getGaps();
+
+					if(gaps.size() > 1) {
+						for (int i=0; i<gaps.size()-1; i++) {
+							sb.append(gaps.get(i) +", ");
+						}
+						sb.append(gaps.get(gaps.size()-1));
+					} else {
+						sb.append(gaps.get(0));
+					}
+
+					number.showMessage(I18NM.get.invalidDocumentIdError(sb.toString()));
+				}
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
 
 }
