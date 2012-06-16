@@ -115,4 +115,10 @@ public interface I18N extends Constants {
 	public String open();
 	public String payed();
 	public String notPayed();
+	public String companyDataLabel();
+	public String logoLabel();
+	public String exportDataLabel();
+	public String exportClientData();
+	public String exportInvoiceData();
+	public String exportEstimationData();
 }

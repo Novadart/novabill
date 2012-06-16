@@ -8,129 +8,148 @@
 
 	<g:FlowPanel styleName="BusinessView">
 		<g:SimplePanel>
-			<g:Button styleName="saveData" ui:field="saveData" text="{i18n.saveModifications}"></g:Button>
+			<g:Button styleName="saveData" ui:field="saveData"
+				text="{i18n.saveModifications}"></g:Button>
 		</g:SimplePanel>
 
 
-		<g:HorizontalPanel>
+		<g:HorizontalPanel styleName="upperPart">
+			<g:VerticalPanel styleName="businessDataContainer">
+				<g:Label styleName="sectionLabel" text="{i18n.companyDataLabel}"></g:Label>
 
-			<g:SimplePanel styleName="gridContainer">
-				<g:Grid styleName="grid">
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="businessLabel" text="{i18n.companyName}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedTextBox ui:field="name"></v:ValidatedTextBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="businessLabel" text="{i18n.ssn}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedTextBox ui:field="ssn"></v:ValidatedTextBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="businessLabel" text="{i18n.vatID}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedTextBox ui:field="vatID"></v:ValidatedTextBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="businessLabel" text="{i18n.address}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedTextBox ui:field="address"></v:ValidatedTextBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="businessLabel" text="{i18n.city}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedTextBox ui:field="city"></v:ValidatedTextBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="businessLabel" text="{i18n.postcode}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedTextBox ui:field="postcode"></v:ValidatedTextBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="businessLabel" text="{i18n.province}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedListBox styleName="provinceList" ui:field="province"></v:ValidatedListBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="businessLabel" text="{i18n.country}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedTextBox ui:field="country"></v:ValidatedTextBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="businessLabel" text="{i18n.phone}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedTextBox ui:field="phone"></v:ValidatedTextBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="businessLabel" text="{i18n.mobile}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedTextBox ui:field="mobile"></v:ValidatedTextBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="businessLabel" text="{i18n.email}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedTextBox ui:field="email"></v:ValidatedTextBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="businessLabel" text="{i18n.fax}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedTextBox ui:field="fax"></v:ValidatedTextBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="businessLabel" text="{i18n.web}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedTextBox ui:field="web"></v:ValidatedTextBox>
-						</g:customCell>
-					</g:row>
-				</g:Grid>
-			</g:SimplePanel>
+				<g:SimplePanel styleName="gridContainer">
+					<g:Grid styleName="grid">
+						<g:row>
+							<g:customCell>
+								<g:Label styleName="businessLabel" text="{i18n.companyName}"></g:Label>
+							</g:customCell>
+							<g:customCell>
+								<v:ValidatedTextBox ui:field="name"></v:ValidatedTextBox>
+							</g:customCell>
+						</g:row>
+						<g:row>
+							<g:customCell>
+								<g:Label styleName="businessLabel" text="{i18n.ssn}"></g:Label>
+							</g:customCell>
+							<g:customCell>
+								<v:ValidatedTextBox ui:field="ssn"></v:ValidatedTextBox>
+							</g:customCell>
+						</g:row>
+						<g:row>
+							<g:customCell>
+								<g:Label styleName="businessLabel" text="{i18n.vatID}"></g:Label>
+							</g:customCell>
+							<g:customCell>
+								<v:ValidatedTextBox ui:field="vatID"></v:ValidatedTextBox>
+							</g:customCell>
+						</g:row>
+						<g:row>
+							<g:customCell>
+								<g:Label styleName="businessLabel" text="{i18n.address}"></g:Label>
+							</g:customCell>
+							<g:customCell>
+								<v:ValidatedTextBox ui:field="address"></v:ValidatedTextBox>
+							</g:customCell>
+						</g:row>
+						<g:row>
+							<g:customCell>
+								<g:Label styleName="businessLabel" text="{i18n.city}"></g:Label>
+							</g:customCell>
+							<g:customCell>
+								<v:ValidatedTextBox ui:field="city"></v:ValidatedTextBox>
+							</g:customCell>
+						</g:row>
+						<g:row>
+							<g:customCell>
+								<g:Label styleName="businessLabel" text="{i18n.postcode}"></g:Label>
+							</g:customCell>
+							<g:customCell>
+								<v:ValidatedTextBox ui:field="postcode"></v:ValidatedTextBox>
+							</g:customCell>
+						</g:row>
+						<g:row>
+							<g:customCell>
+								<g:Label styleName="businessLabel" text="{i18n.province}"></g:Label>
+							</g:customCell>
+							<g:customCell>
+								<v:ValidatedListBox styleName="provinceList"
+									ui:field="province"></v:ValidatedListBox>
+							</g:customCell>
+						</g:row>
+						<g:row>
+							<g:customCell>
+								<g:Label styleName="businessLabel" text="{i18n.country}"></g:Label>
+							</g:customCell>
+							<g:customCell>
+								<v:ValidatedTextBox ui:field="country"></v:ValidatedTextBox>
+							</g:customCell>
+						</g:row>
+						<g:row>
+							<g:customCell>
+								<g:Label styleName="businessLabel" text="{i18n.phone}"></g:Label>
+							</g:customCell>
+							<g:customCell>
+								<v:ValidatedTextBox ui:field="phone"></v:ValidatedTextBox>
+							</g:customCell>
+						</g:row>
+						<g:row>
+							<g:customCell>
+								<g:Label styleName="businessLabel" text="{i18n.mobile}"></g:Label>
+							</g:customCell>
+							<g:customCell>
+								<v:ValidatedTextBox ui:field="mobile"></v:ValidatedTextBox>
+							</g:customCell>
+						</g:row>
+						<g:row>
+							<g:customCell>
+								<g:Label styleName="businessLabel" text="{i18n.email}"></g:Label>
+							</g:customCell>
+							<g:customCell>
+								<v:ValidatedTextBox ui:field="email"></v:ValidatedTextBox>
+							</g:customCell>
+						</g:row>
+						<g:row>
+							<g:customCell>
+								<g:Label styleName="businessLabel" text="{i18n.fax}"></g:Label>
+							</g:customCell>
+							<g:customCell>
+								<v:ValidatedTextBox ui:field="fax"></v:ValidatedTextBox>
+							</g:customCell>
+						</g:row>
+						<g:row>
+							<g:customCell>
+								<g:Label styleName="businessLabel" text="{i18n.web}"></g:Label>
+							</g:customCell>
+							<g:customCell>
+								<v:ValidatedTextBox ui:field="web"></v:ValidatedTextBox>
+							</g:customCell>
+						</g:row>
+					</g:Grid>
+				</g:SimplePanel>
+			</g:VerticalPanel>
 
-			<g:SimplePanel styleName="logoContainerWrapper">
-				<g:VerticalPanel styleName="logoContainer">
-					<g:Image ui:field="logo" styleName="logo"></g:Image>
-					<g:FormPanel ui:field="formPanel" styleName="formPanel" />
-				</g:VerticalPanel>
-			</g:SimplePanel>
+			<g:VerticalPanel styleName="logoDataContainer">
+				<g:Label styleName="sectionLabel" text="{i18n.logoLabel}"></g:Label>
+
+				<g:SimplePanel styleName="logoContainerWrapper">
+					<g:VerticalPanel styleName="logoContainer">
+						<g:Image ui:field="logo" styleName="logo"></g:Image>
+						<g:FormPanel ui:field="formPanel" styleName="formPanel" />
+					</g:VerticalPanel>
+				</g:SimplePanel>
+
+			</g:VerticalPanel>
 
 		</g:HorizontalPanel>
+
+		<g:VerticalPanel styleName="exportDataContainer">
+			<g:Label styleName="sectionLabel" text="{i18n.exportDataLabel}"></g:Label>
+			<g:HorizontalPanel styleName="exportButtonsContainer">
+				<g:Button styleName="exportButton" ui:field="exportClientData" text="{i18n.exportClientData}"></g:Button>
+				<g:Button styleName="exportButton" ui:field="exportInvoiceData" text="{i18n.exportInvoiceData}"></g:Button>
+				<g:Button styleName="exportButton" ui:field="exportEstimationData" text="{i18n.exportEstimationData}"></g:Button>
+			</g:HorizontalPanel>
+		</g:VerticalPanel>
 
 	</g:FlowPanel>
 

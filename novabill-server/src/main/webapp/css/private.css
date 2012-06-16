@@ -794,6 +794,7 @@ td.datePickerMonth {
 
 .BusinessView .ValidatedTextBox {
 	width: 25em;
+	margin: 0.3em 0;
 }
 
 .BusinessView .logoContainerWrapper {
@@ -806,6 +807,29 @@ td.datePickerMonth {
 
 .BusinessView .businessLabel {
 	margin-right: 1em;
+}
+
+.BusinessView .upperPart {
+	margin-top: 2em;
+}
+
+.BusinessView .exportButtonsContainer {
+	margin-top: 1em;
+}
+
+.BusinessView .exportButtonsContainer .exportButton {
+	margin-right: 1em;
+	text-transform: capitalize;
+}
+
+.BusinessView .exportDataContainer {
+	margin-top: 2em;
+}
+
+.BusinessView .sectionLabel {
+	font-weight: bold;
+	font-size: 1.5em;
+	text-transform: uppercase;
 }
 
 .WestView .clientListContainer {

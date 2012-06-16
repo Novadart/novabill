@@ -32,31 +32,34 @@ import com.novadart.services.shared.ImageStoreService;
 @Controller
 @RequestMapping("/private/export")
 public class ExportController extends AbstractXsrfContoller {
-	
+
 	public static final String TOKENS_SESSION_FIELD = "export.data.tokens";
-	
+
 	@Autowired
 	private ImageStoreService imageStoreService;
-	
+
 	@Autowired
 	private UtilsService utilsService;
-	
+
 	@Autowired
 	private DataExporter dataExporter;
-	
+
 	@Autowired
-    private ReloadableResourceBundleMessageSource messageSource;
+	private ReloadableResourceBundleMessageSource messageSource;
 
 	@Override
 	protected String getTokensSessionField() {
 		return TOKENS_SESSION_FIELD;
 	}
-	
+
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
 	@Transactional(readOnly = true)
-	public void getData(@RequestParam(value = "clients", required = false) boolean clients, @RequestParam(value = "invoices", required = false) boolean invoices,
-			@RequestParam(value = "estimations", required = false) boolean estimations, @RequestParam(value = "token", required = false) String token, 
+	public void getData(
+			@RequestParam(value = "clients", required = false) boolean clients, 
+			@RequestParam(value = "invoices", required = false) boolean invoices,
+			@RequestParam(value = "estimations", required = false) boolean estimations, 
+			@RequestParam(value = "token", required = false) String token, 
 			HttpServletResponse response, Locale locale, HttpSession session) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
 		if(token == null || !verifyAndRemoveToken(token, session))
 			return;
@@ -86,5 +89,5 @@ public class ExportController extends AbstractXsrfContoller {
 				zipFile.delete();
 		}
 	}
-	
+
 }
