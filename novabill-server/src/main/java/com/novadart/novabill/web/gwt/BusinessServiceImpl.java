@@ -83,7 +83,7 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 	}
 
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(businessDTO.getId()))
 			throw new DataAccessException();

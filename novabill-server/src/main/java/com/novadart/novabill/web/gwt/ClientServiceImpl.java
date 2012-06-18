@@ -68,7 +68,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	}
 
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@CheckQuotas(checkers = {NumberOfClientsQuotaReachedChecker.class})
 	public Long add(ClientDTO clientDTO) throws QuotaException, ValidationException {
 		Client client = new Client(); 
@@ -83,7 +83,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	}
 
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	public void update(ClientDTO clientDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
 		Client client = Client.findClient(clientDTO.getId());
 		if(client == null)

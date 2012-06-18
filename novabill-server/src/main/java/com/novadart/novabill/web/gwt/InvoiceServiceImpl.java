@@ -92,7 +92,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	}
 
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@CheckQuotas(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
 	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, QuotaException {
 		Client client = Client.findClient(invoiceDTO.getClient().getId());;
@@ -113,7 +113,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	}
 
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	public void update(InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
 		if(invoiceDTO.getId() == null)
 			throw new DataAccessException();
@@ -155,7 +155,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	}
 	
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@CheckQuotas(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
 	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, NoSuchObjectException, ConcurrentAccessException, QuotaException {
 		if(estimationDTO.getId() != null){//present in DB
