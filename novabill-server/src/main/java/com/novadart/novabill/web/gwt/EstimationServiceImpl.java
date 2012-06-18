@@ -66,7 +66,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	}
 
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@CheckQuotas(checkers = {NumberOfEstimationsPerYearQuotaReachedChecker.class})
 	public Long add(EstimationDTO estimationDTO) throws DataAccessException, QuotaException, ValidationException {
 		Estimation estimation = new Estimation();
@@ -104,7 +104,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	}
 
 	@Override
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	public void update(EstimationDTO estimationDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
 		if(estimationDTO.getId() == null)
 			throw new DataAccessException();
