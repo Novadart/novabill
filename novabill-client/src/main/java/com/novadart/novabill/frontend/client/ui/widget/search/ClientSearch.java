@@ -16,8 +16,7 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
-import com.novadart.novabill.frontend.client.ui.west.ClientDataProvider;
-import com.novadart.novabill.frontend.client.ui.west.ClientDataProvider.Watcher;
+import com.novadart.novabill.frontend.client.ui.widget.search.ClientDataProvider.Watcher;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientSearch implements Watcher {
