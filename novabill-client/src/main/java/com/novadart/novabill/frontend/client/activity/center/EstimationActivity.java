@@ -40,7 +40,12 @@ public class EstimationActivity extends BasicActivity {
 						
 					} else {
 						
-						iv.setDataForNewEstimation(estimationPlace.getClient());
+						if(estimationPlace.getEstimationToClone() != null) {
+							iv.setDataForNewEstimation(estimationPlace.getClient(), estimationPlace.getEstimationToClone());
+						} else {
+							iv.setDataForNewEstimation(estimationPlace.getClient());
+						}
+						
 						panel.setWidget(iv);
 						
 					}

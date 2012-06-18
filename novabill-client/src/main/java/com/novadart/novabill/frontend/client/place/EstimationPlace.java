@@ -4,6 +4,7 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
 
 public class EstimationPlace extends Place {
 	
@@ -32,6 +33,7 @@ public class EstimationPlace extends Place {
 
 	private Long estimationId;
 	private ClientDTO client;
+	private EstimationDTO estimationToClone;
 	
 	public EstimationPlace() {
 		setEstimationId(0L);
@@ -39,6 +41,11 @@ public class EstimationPlace extends Place {
 
 	public void setDataForNewInvoice(ClientDTO client) {
 		this.client = client;
+	}
+	
+	public void setDataForNewInvoice(ClientDTO client, EstimationDTO estimationToClone) {
+		this.client = client;
+		this.setEstimationToClone(estimationToClone);
 	}
 	
 	public ClientDTO getClient() {
@@ -51,6 +58,14 @@ public class EstimationPlace extends Place {
 
 	public void setEstimationId(Long estimationId) {
 		this.estimationId = estimationId;
+	}
+
+	public EstimationDTO getEstimationToClone() {
+		return estimationToClone;
+	}
+
+	public void setEstimationToClone(EstimationDTO estimationToClone) {
+		this.estimationToClone = estimationToClone;
 	}
 
 }

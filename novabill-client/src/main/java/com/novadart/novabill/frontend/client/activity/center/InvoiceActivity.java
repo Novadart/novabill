@@ -51,7 +51,14 @@ public class InvoiceActivity extends BasicActivity {
 
 					} else {
 
-						iv.setDataForNewInvoice(invoicePlace.getClient(), invoicePlace.getInvoiceProgressiveId());
+						if(invoicePlace.getInvoiceToClone() != null){
+							iv.setDataForNewInvoice(invoicePlace.getClient(), invoicePlace.getInvoiceProgressiveId(), invoicePlace.getInvoiceToClone());
+						} else if(invoicePlace.getEstimationSource() != null) {
+							iv.setDataForNewInvoice(invoicePlace.getInvoiceProgressiveId(), invoicePlace.getEstimationSource());
+						} else {
+							iv.setDataForNewInvoice(invoicePlace.getClient(), invoicePlace.getInvoiceProgressiveId());
+						}
+
 						panel.setWidget(iv);
 
 					}
