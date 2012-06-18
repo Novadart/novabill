@@ -32,6 +32,7 @@ import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidati
 import com.novadart.novabill.frontend.client.ui.widget.validation.PostcodeValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
+import com.novadart.novabill.frontend.client.util.ExportUtils;
 import com.novadart.novabill.shared.client.data.Province;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
@@ -254,5 +255,20 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 			
 		} 
 	}
+	
+	@UiHandler("exportClientData")
+	void onExportClientDataClicked(ClickEvent e){
+		ExportUtils.exportData(true, false, false);
+	}
 
+	@UiHandler("exportInvoiceData")
+	void onExportInvoiceDataClicked(ClickEvent e){
+		ExportUtils.exportData(false, true, false);
+	}
+	
+	@UiHandler("exportEstimationData")
+	void onExportEstimationDataClicked(ClickEvent e){
+		ExportUtils.exportData(false, false, true);
+	}
+	
 }

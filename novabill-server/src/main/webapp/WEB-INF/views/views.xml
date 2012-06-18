@@ -41,6 +41,8 @@
 	
 	<definition name="pdfLandingPage" template="/WEB-INF/views/pdfLandingPage.jsp" />
 	
+	<definition name="exportLandingPage" template="/WEB-INF/views/exportLandingPage.jsp" />
+	
 	<definition name="premiumInfo" template="/WEB-INF/views/premiumInfo.jsp" />
 	
 	<definition name="premiumUpgradeSuccess" template="/WEB-INF/views/premiumUpgradeSuccess.jsp" />
