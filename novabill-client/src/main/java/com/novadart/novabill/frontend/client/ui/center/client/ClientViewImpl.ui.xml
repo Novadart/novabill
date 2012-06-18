@@ -8,22 +8,13 @@
 
 	<g:FlowPanel>
 		<g:Label styleName="clientName" ui:field="clientName"></g:Label>
-
-		<g:HorizontalPanel styleName="clientDetailsContainer">
-			<g:HTML styleName="clientDetails" ui:field="clientDetails"></g:HTML>
-			<g:VerticalPanel>
-				<g:Label styleName="modifyClient" ui:field="modifyClient"
-					text="{i18n.modifyClient}"></g:Label>
-				<g:Label styleName="cancelClient" ui:field="cancelClient"
-					text="{i18n.cancelClient}"></g:Label>
-			</g:VerticalPanel>
+		<g:HTML styleName="clientDetails" ui:field="clientDetails"></g:HTML>
+		<g:HorizontalPanel styleName="clientOptions">
+			<g:Label styleName="modifyClient" ui:field="modifyClient"
+				text="{i18n.modifyClient}"></g:Label>
+			<g:Label styleName="cancelClient" ui:field="cancelClient"
+				text="{i18n.cancelClient}"></g:Label>
 		</g:HorizontalPanel>
-
-
-		<g:FlowPanel styleName="centralPanel">
-			<g:Button ui:field="newInvoice" styleName="newInvoice" text="{i18n.newInvoice}"></g:Button>
-			<g:Button ui:field="newEstimation" styleName="newEstimation" text="{i18n.newEstimation}"></g:Button>
-		</g:FlowPanel>
 
 		<g:SimpleLayoutPanel styleName="clientMainBody">
 			<g:TabLayoutPanel ui:field="tabPanel" barHeight="3.5" barUnit='EM'>
@@ -31,17 +22,23 @@
 					<g:customHeader>
 						<g:Label styleName="tabHeaderLabel" text="{i18n.invoices}"></g:Label>
 					</g:customHeader>
-					<g:SimplePanel styleName="listWrapper panel">
+					<g:FlowPanel styleName="listWrapper panel">
+						<g:SimplePanel styleName="actionWrapper">
+							<g:Button ui:field="newInvoice" styleName="newInvoice" text="{i18n.newInvoice}"></g:Button>
+						</g:SimplePanel>
 						<i:InvoiceList ui:field="invoiceList"></i:InvoiceList>
-					</g:SimplePanel>
+					</g:FlowPanel>
 				</g:tab>
 				<g:tab>
 					<g:customHeader>
 						<g:Label styleName="tabHeaderLabel" text="{i18n.estimates}"></g:Label>
 					</g:customHeader>
-					<g:SimplePanel styleName="listWrapper panel">
+					<g:FlowPanel styleName="listWrapper panel">
+						<g:SimplePanel styleName="actionWrapper">
+							<g:Button ui:field="newEstimation" styleName="newEstimation" text="{i18n.newEstimation}"></g:Button>
+						</g:SimplePanel>
 						<i:EstimationList ui:field="estimationList"></i:EstimationList>
-					</g:SimplePanel>
+					</g:FlowPanel>
 				</g:tab>
 
 			</g:TabLayoutPanel>

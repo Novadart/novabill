@@ -204,24 +204,14 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	private void updateClientDetails(ClientDTO client){
 		SafeHtmlBuilder sb = new SafeHtmlBuilder();
-
-		sb.appendHtmlConstant("<div class='address'>");
-		sb.appendEscaped(client.getAddress());
-		sb.appendHtmlConstant("</div>");
-
-		sb.appendHtmlConstant("<div class='address-2'>");
+		sb.appendEscaped(client.getAddress()+ " ");
 		sb.appendEscaped(client.getPostcode() + " " 
-				+ client.getCity() + " (" + client.getProvince() +") " + client.getCountry());
-		sb.appendHtmlConstant("</div>");
-
-
+				+ client.getCity() + " (" + client.getProvince() +") " + client.getCountry() +" ");
 		boolean hasPhone = client.getPhone()!=null && !client.getPhone().isEmpty();
 		boolean hasFax = client.getFax()!=null && !client.getFax().isEmpty();
-		sb.appendHtmlConstant("<div class='address-3'>");
-		sb.appendEscaped( ( (hasPhone?"Tel. "+client.getPhone():"") 
-				+ (hasFax?" Fax "+client.getFax():"").trim() 
+		sb.appendEscaped( ( (hasPhone?"Tel. "+client.getPhone()+" ":"") 
+				+ (hasFax?" Fax "+client.getFax()+" ":"").trim() 
 				+ " " + I18N.INSTANCE.vatID()+" "+client.getVatID() ).trim() );
-		sb.appendHtmlConstant("</div>");
 
 		clientDetails.setHTML(sb.toSafeHtml());
 	}

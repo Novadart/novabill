@@ -155,16 +155,16 @@ textarea:HOVER {
 	margin-top: 20px;
 }
 
-.ClientView .centralPanel {
+.ClientView .actionWrapper {
 	text-align: center;
-	padding: 20px 0;
+	margin-bottom: 1.5em;
 }
 
 .ClientView .newInvoice,.ClientView .newEstimation {
 	border: 1px solid #B9F2B3;
 	background-color: #66C25B;
 	color: white;
-	font-size: 1.5em;
+	font-size: 1.3em;
 }
 
 .ClientView .newEstimation {
@@ -178,31 +178,32 @@ textarea:HOVER {
 .ClientView .clientName {
 	font-size: 2em;
 	font-weight: bold;
-	background-color: #EEE;
-	padding: 0.5em;
+	padding: 0 0.5em;
 	text-align: center;
+	text-shadow: 2px 2px 2px #DDD;
+	filter: dropshadow(color = #DDDDDD, offx = 2, offy=2);
 }
 
-.ClientView .clientDetailsContainer {
-	padding: 1em;
-	background-color: #EEE;
-	margin-left: auto;
-}
 
 .ClientView .clientDetails {
 	min-width: 30em;
-	padding: 0.5em;
-	font-size: 1.2em;
+	padding: 0.2em 0.5em 0.5em;
+	font-size: 1.3em;
+	text-align: center;
 }
 
-.ClientView .clientDetailsContainer .modifyClient,.ClientView .clientDetailsContainer .cancelClient
-	{
+.ClientView .clientOptions {
+	margin-left: auto;
+}
+
+.ClientView .clientOptions .modifyClient,
+.ClientView .clientOptions .cancelClient {
 	padding: 0.5em;
 	font-weight: bold;
 }
 
-.ClientView .clientDetailsContainer .modifyClient:HOVER,.ClientView .clientDetailsContainer .cancelClient:HOVER
-	{
+.ClientView .modifyClient:HOVER,
+.ClientView .cancelClient:HOVER	{
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -261,7 +262,7 @@ textarea:HOVER {
 }
 
 .ClientView .listWrapper {
-	
+	padding: 0.8em 2em;
 }
 
 .HomeView .listWrapper {
