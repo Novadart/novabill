@@ -3,6 +3,7 @@ package com.novadart.novabill.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -14,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Type;

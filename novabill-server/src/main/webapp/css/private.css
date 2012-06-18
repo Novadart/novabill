@@ -220,7 +220,7 @@ textarea:HOVER {
 .ClientView .clientMainBody .gwt-TabLayoutPanelTab {
 	padding: 0.5em 1em;
 	background-color: white;
-	border: 0.2em solid #EEE;
+	border: 0.1em solid #DDD;
 	width: 8em;
 	border-top-right-radius: 1em;
 	border-top-left-radius: 1em;
@@ -254,12 +254,9 @@ textarea:HOVER {
 }
 
 .panel {
-	border: 0.2px solid #DDD;
-	padding: 1em;
+	border: 0.1em solid #DDD;
+	padding: 1.5em 2em;
 	background-color: #EEE;
-	border-bottom-left-radius: 1em;
-	border-bottom-right-radius: 1em;
-	border-top-right-radius: 1em;
 	margin: 0 auto;
 }
 
@@ -327,42 +324,102 @@ textarea:HOVER {
 	margin-left: 0.5em;
 }
 
-.InvoiceList .client,.InvoiceList .invoice {
-	padding: 1px 10px 5px 0;
+.QuickViewList .quickViewCell {
+	padding: 0 1em 0 0;
 	font-size: 1em;
 	border: 1px solid #DDD;
 	background-color: white;
+	margin: 3px 0;
+	-moz-box-shadow: 2px 2px 2px #CCC;
+	-webkit-box-shadow: 2px 2px 2px #CCC;
+	box-shadow: 2px 2px 2px #CCC;
 }
 
-.InvoiceList .client.clicked,.InvoiceList .invoice.clicked {
-	border: 1px solid #333;
-}
-
-.InvoiceList .pdf {
+.QuickViewList .pdf {
 	width: 2em;
 	height: 2em;
 }
 
-.InvoiceList .details .tools {
+.QuickViewList .details .tools {
 	text-align: right;
 }
 
-.InvoiceList .id {
-	color: white;
-	background-color: #888;
-	padding: 1px 2px;
+.QuickViewList .details .tools span {
+	text-transform: uppercase;
+	font-size: 0.8em;
+	margin-right: 1em;
+	cursor: pointer;
 }
 
-.InvoiceList .date {
+.QuickViewList .details .tools span:HOVER {
+	text-decoration: underline;
+}
+
+.QuickViewList.InvoiceList .upper {
+	height: 1.8em;
+}
+
+.QuickViewList.InvoiceList .details .payed:HOVER {
+	text-decoration: underline;
+}
+
+.QuickViewList.InvoiceList .details .payed {
+	float: right;
+	padding: 0.2em 0.5em;
+	border-radius: 0.5em;
+	cursor: pointer;
+	text-transform: uppercase;
+	font-size: 0.8em;
+}
+
+.QuickViewList .details .payed.payed-true {
+	background-color: #B9F2B3;
+	border: 0.1em solid #66C25B;
+}
+
+.QuickViewList .details .payed.payed-false {
+	background-color: #EDE700;
+	border: 0.1em solid #D8D308;
+}
+
+.QuickViewList .main {
+	padding: 0.5em 0;
+}
+
+.QuickViewList.InvoiceList .main.invoice-not-payed .id {
+	background-color: #EDE700;
+	border: 0.1em solid #D8D308;
+	color: black;
+}
+
+.QuickViewList.InvoiceList .main.invoice-payed .id {
+	background-color: #B9F2B3;
+	border: 0.1em solid #66C25B;
+	color: black;
+}
+
+.QuickViewList.EstimationList .id {
+	background-color: #888;
+	color: white;
+}
+
+.QuickViewList .id {
+	padding: 1px 2px;
+	position: relative;
+	top: -0.3em;
+	left: 0.1em;
+}
+
+.QuickViewList .date {
 	padding: 0 20px;
 }
 
-.InvoiceList .name {
+.QuickViewList .name {
 	font-weight: bold;
 }
 
-.InvoiceList .details {
-	padding: 5px;
+.QuickViewList .details {
+	padding: 5px 5px 15px;
 }
 
 .westContainer {
@@ -737,6 +794,7 @@ td.datePickerMonth {
 
 .BusinessView .ValidatedTextBox {
 	width: 25em;
+	margin: 0.3em 0;
 }
 
 .BusinessView .logoContainerWrapper {
@@ -751,10 +809,32 @@ td.datePickerMonth {
 	margin-right: 1em;
 }
 
+.BusinessView .upperPart {
+	margin-top: 2em;
+}
+
+.BusinessView .exportButtonsContainer {
+	margin-top: 1em;
+}
+
+.BusinessView .exportButtonsContainer .exportButton {
+	margin-right: 1em;
+	text-transform: capitalize;
+}
+
+.BusinessView .exportDataContainer {
+	margin-top: 2em;
+}
+
+.BusinessView .sectionLabel {
+	font-weight: bold;
+	font-size: 1.5em;
+	text-transform: uppercase;
+}
+
 .WestView .clientListContainer {
 	width: 100%;
 }
-
 
 .WestView .cleanFilterClient {
 	cursor: pointer;
@@ -809,7 +889,7 @@ td.datePickerMonth {
 	text-align: justify;
 }
 
-.GoPremiumDialog p.par1{
+.GoPremiumDialog p.par1 {
 	margin-top: 1em;
 }
 
@@ -839,6 +919,3 @@ td.datePickerMonth {
 .GoPremiumDialog .noThanks:HOVER {
 	text-decoration: underline;
 }
-
-
-

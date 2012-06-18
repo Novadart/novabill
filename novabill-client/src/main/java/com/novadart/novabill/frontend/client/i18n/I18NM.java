@@ -9,5 +9,6 @@ public interface I18NM extends Messages {
 	public String totalInvoices(int n);
 	public String totalClients(int n);
 	public String totalAmount(String n);
-
+	public String invalidDocumentIdError(String values);
+	public String invalidDocumentIdErrorMultiple(String values);
 }

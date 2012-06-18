@@ -172,9 +172,19 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 	}
 
 	@Override
-	public void setPayed(Long id, Boolean value, AsyncCallback<Void> callback) {
-		// TODO Auto-generated method stub
-		
+	public void setPayed(final Long id, final Boolean value, final AsyncCallback<Void> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate() {
+
+			@Override
+			public void performCall() {
+				invoice.setPayed(id, value, callback);
+			}
+
+			@Override
+			public void manageException(final Throwable caught) {
+				callback.onFailure(caught);
+			}
+		});
 	}
 
 }

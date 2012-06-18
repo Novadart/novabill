@@ -58,8 +58,8 @@ public class ClientViewImpl extends Composite implements ClientView {
 	public ClientViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("ClientView");
-		invoiceDataProvider.addDataDisplay(invoiceList.getList());
-		estimationDataProvider.addDataDisplay(estimationList.getList());
+		invoiceDataProvider.addDataDisplay(invoiceList);
+		estimationDataProvider.addDataDisplay(estimationList);
 		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
 			
 			@Override
@@ -69,7 +69,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 					loadInvoices();
 					break;
 					
-				case CLIENT:
+				case CLIENT_DATA:
 					ServerFacade.client.get(ClientViewImpl.this.client.getId(), 
 							new WrappedAsyncCallback<ClientDTO>() {
 
@@ -80,24 +80,17 @@ public class ClientViewImpl extends Composite implements ClientView {
 
 						@Override
 						public void onException(Throwable caught) {
-							//TODO
 							Window.Location.reload();
 						}
 					});
 					break;
-
+					
+				case ESTIMATION:
+					loadEstimations();
+					break;
+					
 				default:
 					break;
-				}
-				
-			}
-		});
-		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
-			
-			@Override
-			public void onDataUpdated(DATA data) {
-				if(DATA.ESTIMATION.equals(data)){
-					loadEstimations();
 				}
 				
 			}

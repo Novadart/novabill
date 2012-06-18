@@ -11,6 +11,8 @@ public class InvoiceDTO extends AccountingDocumentDTO implements IsSerializable 
     
     private Date paymentDueDate;
     
+    private boolean payed;
+    
 	public Date getPaymentDueDate() {
 		return paymentDueDate;
 	}
@@ -33,6 +35,14 @@ public class InvoiceDTO extends AccountingDocumentDTO implements IsSerializable 
 
 	public void setPaymentType(PaymentType paymentType) {
 		this.paymentType = paymentType;
+	}
+
+	public boolean getPayed() {
+		return payed;
+	}
+
+	public void setPayed(boolean payed) {
+		this.payed = payed;
 	}
 	
 }

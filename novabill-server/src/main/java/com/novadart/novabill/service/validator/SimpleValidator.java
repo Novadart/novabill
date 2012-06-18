@@ -2,9 +2,12 @@ package com.novadart.novabill.service.validator;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import javax.validation.Validator;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 

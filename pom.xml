@@ -45,7 +45,7 @@
 			<dependency>
 				<groupId>com.novadart</groupId>
 				<artifactId>novadart-gwt-shared</artifactId>
-				<version>1.0.4</version>
+				<version>1.0.5-SNAPSHOT</version>
 			</dependency>
 
 			<!-- General dependencies for standard applications -->
@@ -383,6 +383,11 @@
 	<build>
 		<pluginManagement>
 			<plugins>
+				<plugin>
+					<groupId>org.apache.maven.plugins</groupId>
+					<artifactId>maven-clean-plugin</artifactId>
+					<version>2.5</version>
+				</plugin>
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-release-plugin</artifactId>

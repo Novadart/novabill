@@ -14,6 +14,7 @@ public class InvoiceDTOFactory extends AccountingDocumentDTOFactory {
 		invoiceDTO.setPaymentType(invoice.getPaymentType());
 		invoiceDTO.setPaymentNote(invoice.getPaymentNote());
 		invoiceDTO.setPaymentDueDate(invoice.getPaymentDueDate());
+		invoiceDTO.setPayed(invoice.getPayed());
 		return invoiceDTO;
 	}
 	
@@ -22,6 +23,7 @@ public class InvoiceDTOFactory extends AccountingDocumentDTOFactory {
 		invoice.setPaymentType(invoiceDTO.getPaymentType());
 		invoice.setPaymentNote(invoiceDTO.getPaymentNote());
 		invoice.setPaymentDueDate(invoiceDTO.getPaymentDueDate());
+		invoice.setPayed(invoiceDTO.getPayed());
 	}
 
 }

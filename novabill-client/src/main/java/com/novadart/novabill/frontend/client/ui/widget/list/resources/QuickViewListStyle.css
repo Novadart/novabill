@@ -1,0 +1,9 @@
+@external .details, .quickViewCell;
+.quickViewCell .details {
+	display: none;
+}
+
+@external .details, .quickViewCell;
+.quickViewCell:HOVER .details {
+	display: block;
+}

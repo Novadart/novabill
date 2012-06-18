@@ -4,10 +4,13 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.Set;
+
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.novadart.novabill.service.TokenGenerator;
 
 public abstract class AbstractXsrfContoller {

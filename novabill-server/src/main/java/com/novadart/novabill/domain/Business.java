@@ -11,6 +11,7 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -24,8 +25,8 @@ import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
+
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -34,9 +35,9 @@ import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
 import org.apache.lucene.index.Term;
 import org.apache.lucene.queryParser.ParseException;
+import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.FuzzyQuery;
-import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.TermQuery;
 import org.hibernate.search.bridge.builtin.LongBridge;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -46,9 +47,9 @@ import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.annotation.Hash;
 import com.novadart.novabill.domain.security.RoleTypes;
-import com.novadart.novabill.shared.client.validation.RegularExpressionConstants;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
 /*

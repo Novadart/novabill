@@ -9,6 +9,7 @@ import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,9 +25,9 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.service.PDFGenerator;
 import com.novadart.novabill.service.PDFGenerator.DocumentType;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.PDFGenerator;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.services.shared.ImageDTO;

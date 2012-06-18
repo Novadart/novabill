@@ -1,13 +1,20 @@
 package com.novadart.novabill.shared.client.validation;
 
-public class ErrorObject {
+import java.io.Serializable;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class ErrorObject implements Serializable, IsSerializable {
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	private Field field;
 	
 	private ErrorCode errorCode;
 	
-	private Object parameter;
-
 	public Field getField() {
 		return field;
 	}
@@ -24,20 +31,11 @@ public class ErrorObject {
 		this.errorCode = errorCode;
 	}
 
-	public Object getParameter() {
-		return parameter;
-	}
-
-	public void setParameter(Object parameter) {
-		this.parameter = parameter;
-	}
-	
 	public ErrorObject(){}
 
-	public ErrorObject(Field field, ErrorCode errorCode, Object parameter) {
+	public ErrorObject(Field field, ErrorCode errorCode) {
 		this.field = field;
 		this.errorCode = errorCode;
-		this.parameter = parameter;
 	}
 	
 

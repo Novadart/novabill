@@ -7,9 +7,9 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.Range;
+import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.center.HomeView;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoiceList;
@@ -30,18 +30,17 @@ public class HomeViewImpl extends Composite implements HomeView {
 	
 	public HomeViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
-		invoiceList.getList().setVisibleRange(INVOICE_LIST_RANGE);
+		invoiceList.setVisibleRange(INVOICE_LIST_RANGE);
 		setStyleName("HomeView");
-		invoiceDataProvider.addDataDisplay(invoiceList.getList());
+		invoiceDataProvider.addDataDisplay(invoiceList);
 		
 		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
 			
 			@Override
 			public void onDataUpdated(DATA data) {
 				if(data.equals(DATA.INVOICE)){
-					invoiceList.getList().setVisibleRangeAndClearData(INVOICE_LIST_RANGE, true);
+					invoiceList.setVisibleRangeAndClearData(INVOICE_LIST_RANGE, true);
 				}
-				
 			}
 		});
 	}

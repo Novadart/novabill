@@ -1,5 +1,8 @@
 package com.novadart.novabill.domain;
 
+import java.io.Serializable;
+import java.util.List;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -9,6 +12,7 @@ import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.Email;
@@ -17,9 +21,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.Hash;
-
-import java.io.Serializable;
-import java.util.List;
 
 
 @Configurable

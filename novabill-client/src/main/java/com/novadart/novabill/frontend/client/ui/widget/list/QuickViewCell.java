@@ -4,8 +4,10 @@ import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;
 import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.novadart.novabill.frontend.client.ui.widget.list.resources.QuickViewListResources;
 
 public abstract class QuickViewCell<T> extends AbstractCell<T> {
 
@@ -13,29 +15,9 @@ public abstract class QuickViewCell<T> extends AbstractCell<T> {
 		public void onRowSelected(Cell.Context context, ListItem value);
 	}
 
-	private T selected = null;
-	private Handler<T> handler;
-
 	protected QuickViewCell() {
 		super("click");
 	}
-
-	void setHandler(Handler<T> handler) {
-		this.handler = handler;
-	}
-
-	private boolean isSelected(T item){
-		if(selected == null){
-			selected = item;
-			return true;
-		} else {
-			return itemsAreEqual(selected, item);
-		}
-	}
-	
-	protected abstract boolean itemsAreEqual(T item1, T item2);
-	
-	protected abstract void render(Cell.Context context, T value, SafeHtmlBuilder sb, boolean isSelected);
 	
 	@Override
 	public final void render(Cell.Context context, T value, SafeHtmlBuilder sb) {
@@ -43,26 +25,35 @@ public abstract class QuickViewCell<T> extends AbstractCell<T> {
 		if(value == null){
 			return;
 		}
-
-		render(context, value, sb, isSelected(value));
+		
+		sb.appendHtmlConstant("<div class='"+QuickViewListResources.INSTANCE.quickViewListStyle().quickViewCell()+"'>");
+		renderVisible(context, value, sb);
+		sb.appendHtmlConstant("<div class='"+QuickViewListResources.INSTANCE.quickViewListStyle().details()+"'>");
+		renderDetails(context, value, sb);
+		sb.appendHtmlConstant("</div>");
+		sb.appendHtmlConstant("</div>");
 	};
+	
+	protected abstract void renderVisible(Cell.Context context, T value, SafeHtmlBuilder sb);
+	
+	protected abstract void renderDetails(Cell.Context context, T value, SafeHtmlBuilder sb);
 	
 	
 	@Override
 	public void onBrowserEvent(Cell.Context context, Element parent, T value, NativeEvent event,
 			ValueUpdater<T> valueUpdater) {
 		
-		super.onBrowserEvent(context, parent, value, event, valueUpdater);
-
-		if(value == null){
-			return;
+		if("click".equals(event.getType())){
+			
+			onClick(value, event.getEventTarget());
+			
+		} else {
+			
+			super.onBrowserEvent(context, parent, value, event, valueUpdater);
+			
 		}
-		
-		if( "click".equals(event.getType()) || "mouseover".equals(event.getType()) ){
-			selected = value;
-			handler.onRowSelected(context, value);
-		}
-		
 	}
+	
+	protected abstract void onClick(T value, EventTarget eventTarget);
 
 }

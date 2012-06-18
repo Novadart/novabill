@@ -31,6 +31,10 @@ public class DataWatcher {
 		handlerManager.fireEvent(new DataWatchEvent(DATA.CLIENT));
 	}
 	
+	public void fireClientDataEvent(){
+		handlerManager.fireEvent(new DataWatchEvent(DATA.CLIENT_DATA));
+	}
+	
 	public void fireStatsEvent(){
 		handlerManager.fireEvent(new DataWatchEvent(DATA.STATS));
 	}
