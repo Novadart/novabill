@@ -10,22 +10,29 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
+import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewCell;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.util.PDFUtils;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
 public class EstimationCell extends QuickViewCell<EstimationDTO> {
-	
+
 	private Presenter presenter;
-	
+
 	@Override
 	protected void renderDetails(
 			com.google.gwt.cell.client.Cell.Context context,
 			EstimationDTO value, SafeHtmlBuilder sb) {
-		sb.appendHtmlConstant("<div class='total'>");
+		sb.appendHtmlConstant("<div class='upper'>");
+		sb.appendHtmlConstant("<span class='total'>");
 		sb.appendEscaped(I18N.INSTANCE.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
+		sb.appendHtmlConstant("</span>");
+		sb.appendHtmlConstant("<span class='convertToInvoice'>");
+		sb.appendEscaped(I18N.INSTANCE.convertToInvoice());
+		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("</div>");
 
 		sb.appendHtmlConstant("<div class='tools'>");
@@ -40,7 +47,7 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("</div>");
 	}
-	
+
 	@Override
 	protected void renderVisible(
 			com.google.gwt.cell.client.Cell.Context context,
@@ -70,14 +77,16 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 			onDeleteClicked(value);
 		} else if(isOpenEstimation(eventTarget)){
 			onOpenEstimationClicked(value);
-		} 
+		} else if(isConvertToInvoice(eventTarget)){
+			onConvertToInvoiceClicked(value);
+		}
 	}
 
 	private boolean isOpenEstimation(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement delete = et.cast();
 			return "openEstimation".equals(delete.getClassName());
-			
+
 		} else {
 			return false;
 		}
@@ -87,22 +96,32 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 		if(SpanElement.is(et)){
 			SpanElement img = et.cast();
 			return "downloadAsPDF".equals(img.getClassName());
-			
+
 		} else {
 			return false;
 		}
 	}
-	
+
 	private boolean isDelete(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement delete = et.cast();
 			return "delete".equals(delete.getClassName());
-			
+
 		} else {
 			return false;
 		}
 	}
-	
+
+	private boolean isConvertToInvoice(EventTarget et){
+		if(SpanElement.is(et)){
+			SpanElement delete = et.cast();
+			return "convertToInvoice".equals(delete.getClassName());
+
+		} else {
+			return false;
+		}
+	}
+
 	public void onOpenEstimationClicked(EstimationDTO estimation) {
 		if(presenter != null){
 			EstimationPlace ep = new EstimationPlace();
@@ -110,7 +129,7 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 			presenter.goTo(ep);
 		}
 	}
-	
+
 	public void onPdfClicked(EstimationDTO estimation) {
 		if(estimation.getId() == null){
 			return;
@@ -118,24 +137,46 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 		PDFUtils.generateEstimationPdf(estimation.getId());
 	}
 
+	public void onConvertToInvoiceClicked(EstimationDTO estimation) {
+		ServerFacade.invoice.createFromEstimation(estimation, new WrappedAsyncCallback<InvoiceDTO>() {
+
+			@Override
+			public void onSuccess(InvoiceDTO result) {
+				DataWatcher.getInstance().fireInvoiceEvent();
+				DataWatcher.getInstance().fireEstimationEvent();
+				DataWatcher.getInstance().fireClientDataEvent();
+				DataWatcher.getInstance().fireStatsEvent();
+
+				InvoicePlace ip = new InvoicePlace();
+				ip.setInvoiceId(result.getId());
+				presenter.goTo(ip);
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+				Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
+			}
+		});
+	}
+
 	public void onDeleteClicked(EstimationDTO estimation) {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmEstimationDeletion())){
 			ServerFacade.estimation.remove(estimation.getId(), new WrappedAsyncCallback<Void>() {
-				
+
 				@Override
 				public void onSuccess(Void result) {
 					DataWatcher.getInstance().fireEstimationEvent();
 				}
-				
+
 				@Override
 				public void onException(Throwable caught) {
 					Notification.showYesNoRequest(I18N.INSTANCE.errorServerCommunication());		
 				}
 			});
 		}
-		
+
 	}
-	
+
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 	}
