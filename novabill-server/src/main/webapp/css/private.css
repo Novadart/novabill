@@ -181,9 +181,8 @@ textarea:HOVER {
 	padding: 0 0.5em;
 	text-align: center;
 	text-shadow: 2px 2px 2px #DDD;
-	filter: dropshadow(color = #DDDDDD, offx = 2, offy=2);
+	filter: dropshadow(color =   #DDDDDD, offx =   2, offy = 2);
 }
-
 
 .ClientView .clientDetails {
 	min-width: 30em;
@@ -196,14 +195,13 @@ textarea:HOVER {
 	margin-left: auto;
 }
 
-.ClientView .clientOptions .modifyClient,
-.ClientView .clientOptions .cancelClient {
+.ClientView .clientOptions .modifyClient,.ClientView .clientOptions .cancelClient
+	{
 	padding: 0.5em;
 	font-weight: bold;
 }
 
-.ClientView .modifyClient:HOVER,
-.ClientView .cancelClient:HOVER	{
+.ClientView .modifyClient:HOVER,.ClientView .cancelClient:HOVER {
 	text-decoration: underline;
 	cursor: pointer;
 }
@@ -459,13 +457,13 @@ textarea:HOVER {
 }
 
 .westContainer .client-simple {
-	border: 0.1em solid #EEE;
+	border: 0.1em solid #DDD;
 	padding: 1em 0.5em;
 	margin: 0.1em 0;
-	border-top-color: #333;
-	border-left-color: #333;
+	box-shadow: 2px 2px 2px #CCC;
 }
 
+}
 .westContainer .client-simple:HOVER {
 	background-color: #EEE;
 }
