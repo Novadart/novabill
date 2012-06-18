@@ -494,7 +494,7 @@ textarea:HOVER {
 	border: 1px solid #2F9524;
 }
 
-.westContainer .filterClient {
+.westContainer .ClientSearch-filter {
 	margin: 0.5em 1em;
 	width: 20em;
 }
@@ -838,11 +838,11 @@ td.datePickerMonth {
 	text-transform: uppercase;
 }
 
-.WestView .clientListContainer {
+.WestView .ClientSearch-clientListWrapper {
 	width: 100%;
 }
 
-.WestView .cleanFilterClient {
+.WestView .ClientSearch-resetFilter {
 	cursor: pointer;
 	width: 1.5em;
 	position: relative;
@@ -850,12 +850,12 @@ td.datePickerMonth {
 	right: 0.5em;
 }
 
-.WestView .clientListContainer .clientLoader {
+.WestView .ClientSearch-clientListWrapper .ClientSearch-clientLoader {
 	display: block;
 	margin: 2em auto 0;
 }
 
-.WestView .clientListContainer .noClientsFoundMessage {
+.WestView .ClientSearch-clientListWrapper .ClientSearch-noClientsFoundMessage {
 	margin: 2em auto 0;
 	text-align: center;
 	padding: 1em 3em 0;

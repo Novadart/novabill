@@ -6,7 +6,6 @@ import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
-import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientCell extends AbstractCell<ClientDTO> {
@@ -28,32 +27,11 @@ public class ClientCell extends AbstractCell<ClientDTO> {
 	@Override
 	public void render(Cell.Context context, ClientDTO value, SafeHtmlBuilder sb) {
 
-		sb.appendHtmlConstant("<div class='client'>");
-		sb.appendHtmlConstant("<div class='main'>");
+		sb.appendHtmlConstant("<div class='client-simple'>");
 
 		sb.appendHtmlConstant("<span class='name'>");
 		sb.appendEscaped(value.getName());
 		sb.appendHtmlConstant("</span>");
-
-		sb.appendHtmlConstant("</div>");
-
-		sb.appendHtmlConstant("<div class='address'>");
-		sb.appendEscaped(value.getAddress());
-		sb.appendHtmlConstant("</div>");
-
-		sb.appendHtmlConstant("<div class='address-2'>");
-		sb.appendEscaped(value.getPostcode() + " " 
-				+ value.getCity() + " (" + value.getProvince() +") " + value.getCountry());
-		sb.appendHtmlConstant("</div>");
-
-
-		boolean hasPhone = value.getPhone()!=null && !value.getPhone().isEmpty();
-		boolean hasFax = value.getFax()!=null && !value.getFax().isEmpty();
-		sb.appendHtmlConstant("<div class='address-3'>");
-		sb.appendEscaped( ( (hasPhone?"Tel. "+value.getPhone():"") 
-				+ (hasFax?" Fax "+value.getFax():"").trim() 
-				+ " " + I18N.INSTANCE.vatID()+" "+value.getVatID() ).trim() );
-		sb.appendHtmlConstant("</div>");
 
 		sb.appendHtmlConstant("</div>");
 
@@ -71,5 +49,4 @@ public class ClientCell extends AbstractCell<ClientDTO> {
 		
 		handler.onClientSelected(value);
 	}
-
 }
