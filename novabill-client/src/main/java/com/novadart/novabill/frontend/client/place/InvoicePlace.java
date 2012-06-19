@@ -54,6 +54,7 @@ public class InvoicePlace extends Place {
 	}
 	
 	public void setDataForNewInvoice(Long invoiceProgressiveId, EstimationDTO estimationSource) {
+		this.client = estimationSource.getClient();
 		this.invoiceProgressiveId = invoiceProgressiveId;
 		this.estimationSource = estimationSource;
 	}

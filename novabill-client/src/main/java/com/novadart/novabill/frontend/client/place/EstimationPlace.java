@@ -39,11 +39,11 @@ public class EstimationPlace extends Place {
 		setEstimationId(0L);
 	}
 
-	public void setDataForNewInvoice(ClientDTO client) {
+	public void setDataForNewEstimation(ClientDTO client) {
 		this.client = client;
 	}
 	
-	public void setDataForNewInvoice(ClientDTO client, EstimationDTO estimationToClone) {
+	public void setDataForNewEstimation(ClientDTO client, EstimationDTO estimationToClone) {
 		this.client = client;
 		this.setEstimationToClone(estimationToClone);
 	}

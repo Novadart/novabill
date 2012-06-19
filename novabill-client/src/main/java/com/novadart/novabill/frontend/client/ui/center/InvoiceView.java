@@ -9,9 +9,10 @@ public interface InvoiceView extends View {
 
 	public void setDataForNewInvoice(ClientDTO client, Long progressiveId);
 	
+	public void setDataForNewInvoice(ClientDTO client, Long progressiveId, InvoiceDTO invoice);
+	
+	public void setDataForNewInvoice(Long progressiveId, EstimationDTO estimation);
+	
 	public void setInvoice(InvoiceDTO invoice);
-	
-	public void setDataForNewEstimation(ClientDTO client);
-	
-	public void setEstimation(EstimationDTO estimation);
+
 }

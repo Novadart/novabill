@@ -6,7 +6,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.HasRpcToken;
 import com.google.gwt.user.client.rpc.XsrfToken;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 import com.novadart.novabill.shared.client.facade.InvoiceServiceAsync;
@@ -153,15 +152,15 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 			}
 		});
 	}
-
+	
 	@Override
-	public void createFromEstimation(final EstimationDTO estimationDTO,
-			final AsyncCallback<InvoiceDTO> callback) {
+	public void createFromEstimation(final InvoiceDTO invoiceDTO, final Long estimationID,
+			final AsyncCallback<Long> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate() {
 
 			@Override
 			public void performCall() {
-				invoice.createFromEstimation(estimationDTO, callback);
+				invoice.createFromEstimation(invoiceDTO, estimationID, callback);
 			}
 
 			@Override

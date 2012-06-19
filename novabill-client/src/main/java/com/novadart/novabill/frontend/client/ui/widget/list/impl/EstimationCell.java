@@ -12,11 +12,12 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
+import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewCell;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.util.PDFUtils;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
 public class EstimationCell extends QuickViewCell<EstimationDTO> {
 
@@ -36,8 +37,11 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 		sb.appendHtmlConstant("</div>");
 
 		sb.appendHtmlConstant("<div class='tools'>");
-		sb.appendHtmlConstant("<span class='openEstimation'>");
-		sb.appendEscaped(I18N.INSTANCE.openEstimation());
+		sb.appendHtmlConstant("<span class='button openEstimation'>");
+		sb.appendEscaped(I18N.INSTANCE.open());
+		sb.appendHtmlConstant("</span>");
+		sb.appendHtmlConstant("<span class='clone'>");
+		sb.appendEscaped(I18N.INSTANCE.clone());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("<span class='downloadAsPDF'>");
 		sb.appendEscaped("PDF");
@@ -79,13 +83,15 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 			onOpenEstimationClicked(value);
 		} else if(isConvertToInvoice(eventTarget)){
 			onConvertToInvoiceClicked(value);
+		} else if(isClone(eventTarget)){
+			onCloneClicked(value);
 		}
 	}
 
 	private boolean isOpenEstimation(EventTarget et){
 		if(SpanElement.is(et)){
-			SpanElement delete = et.cast();
-			return "openEstimation".equals(delete.getClassName());
+			SpanElement open = et.cast();
+			return open.getClassName().contains("openEstimation");
 
 		} else {
 			return false;
@@ -96,6 +102,16 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 		if(SpanElement.is(et)){
 			SpanElement img = et.cast();
 			return "downloadAsPDF".equals(img.getClassName());
+
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean isClone(EventTarget et){
+		if(SpanElement.is(et)){
+			SpanElement img = et.cast();
+			return "clone".equals(img.getClassName());
 
 		} else {
 			return false;
@@ -129,6 +145,19 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 			presenter.goTo(ep);
 		}
 	}
+	
+	private void onCloneClicked(final EstimationDTO estimation) {
+		SelectClientDialog dia = new SelectClientDialog(new SelectClientDialog.Handler() {
+			
+			@Override
+			public void onClientSelected(ClientDTO client) {
+				EstimationPlace ep = new EstimationPlace();
+				ep.setDataForNewEstimation(client, estimation);
+				presenter.goTo(ep);
+			}
+		});
+		dia.showCentered();
+	}
 
 	public void onPdfClicked(EstimationDTO estimation) {
 		if(estimation.getId() == null){
@@ -137,24 +166,22 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 		PDFUtils.generateEstimationPdf(estimation.getId());
 	}
 
-	public void onConvertToInvoiceClicked(EstimationDTO estimation) {
-		ServerFacade.invoice.createFromEstimation(estimation, new WrappedAsyncCallback<InvoiceDTO>() {
+	public void onConvertToInvoiceClicked(final EstimationDTO estimation) {
+		ServerFacade.invoice.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
 
 			@Override
-			public void onSuccess(InvoiceDTO result) {
-				DataWatcher.getInstance().fireInvoiceEvent();
-				DataWatcher.getInstance().fireEstimationEvent();
-				DataWatcher.getInstance().fireClientDataEvent();
-				DataWatcher.getInstance().fireStatsEvent();
-
+			public void onSuccess(Long result) {
+				if(result == null){
+					return;
+				}
 				InvoicePlace ip = new InvoicePlace();
-				ip.setInvoiceId(result.getId());
+				ip.setDataForNewInvoice(result, estimation);
 				presenter.goTo(ip);
 			}
 
 			@Override
 			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
+				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 			}
 		});
 	}

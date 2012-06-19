@@ -5,12 +5,12 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
-import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
+import com.novadart.novabill.frontend.client.ui.center.EstimationView;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 
@@ -26,11 +26,11 @@ public class EstimationActivity extends BasicActivity {
 
 	@Override
 	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
-		getClientFactory().getInvoiceView(new AsyncCallback<InvoiceView>() {
+		getClientFactory().getEstimationView(new AsyncCallback<EstimationView>() {
 			
 			@Override
-			public void onSuccess(final InvoiceView iv) {
-				iv.setPresenter(EstimationActivity.this);
+			public void onSuccess(final EstimationView ev) {
+				ev.setPresenter(EstimationActivity.this);
 
 				if(estimationPlace.getEstimationId() == 0){ //we're creating a new invoice
 
@@ -41,12 +41,12 @@ public class EstimationActivity extends BasicActivity {
 					} else {
 						
 						if(estimationPlace.getEstimationToClone() != null) {
-							iv.setDataForNewEstimation(estimationPlace.getClient(), estimationPlace.getEstimationToClone());
+							ev.setDataForNewEstimation(estimationPlace.getClient(), estimationPlace.getEstimationToClone());
 						} else {
-							iv.setDataForNewEstimation(estimationPlace.getClient());
+							ev.setDataForNewEstimation(estimationPlace.getClient());
 						}
 						
-						panel.setWidget(iv);
+						panel.setWidget(ev);
 						
 					}
 
@@ -62,8 +62,8 @@ public class EstimationActivity extends BasicActivity {
 
 						@Override
 						public void onSuccess(EstimationDTO result) {
-							iv.setEstimation(result);
-							panel.setWidget(iv);
+							ev.setEstimation(result);
+							panel.setWidget(ev);
 						}
 					});
 
@@ -76,5 +76,5 @@ public class EstimationActivity extends BasicActivity {
 			}
 		});
 	}
-
+	
 }

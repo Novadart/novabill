@@ -11,21 +11,23 @@ import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
+import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewCell;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.util.PDFUtils;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
 public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
-	
+
 	private Presenter presenter;
-	
-	
+
+
 	@Override
 	protected void renderVisible(
 			com.google.gwt.cell.client.Cell.Context context, InvoiceDTO value,
 			SafeHtmlBuilder sb) {
-		
+
 		sb.appendHtmlConstant("<div class='main "+(value.getPayed() ? "invoice-payed" : "invoice-not-payed")+"'>");
 		sb.appendHtmlConstant("<span class='id'>");
 		sb.append(value.getDocumentID());
@@ -41,12 +43,12 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 
 		sb.appendHtmlConstant("</div>");
 	}
-	
+
 	@Override
 	protected void renderDetails(
 			com.google.gwt.cell.client.Cell.Context context, InvoiceDTO value,
 			SafeHtmlBuilder sb) {
-		
+
 		sb.appendHtmlConstant("<div class='upper'>");
 		sb.appendHtmlConstant("<span class='total'>");
 		sb.appendEscaped(I18N.INSTANCE.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
@@ -57,8 +59,11 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 		sb.appendHtmlConstant("</div>");
 
 		sb.appendHtmlConstant("<div class='tools'>");
-		sb.appendHtmlConstant("<span class='openInvoice'>");
+		sb.appendHtmlConstant("<span class='button openInvoice'>");
 		sb.appendEscaped(I18N.INSTANCE.open());
+		sb.appendHtmlConstant("</span>");
+		sb.appendHtmlConstant("<span class='clone'>");
+		sb.appendEscaped(I18N.INSTANCE.clone());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("<span class='downloadAsPDF'>");
 		sb.appendEscaped("PDF");
@@ -68,12 +73,12 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("</div>");
 	}
-	
-	
+
+
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 	}
-	
+
 	@Override
 	protected void onClick(InvoiceDTO value, EventTarget eventTarget) {
 		if(isPdf(eventTarget)){
@@ -84,14 +89,16 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 			onOpenInvoiceClicked(value);
 		} else if(isPayedSwitch(eventTarget)){
 			onPayedSwitchClicked(value);
+		} else if(isClone(eventTarget)) {
+			onCloneClicked(value);
 		}
 	}
-	
+
 	private boolean isOpenInvoice(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement delete = et.cast();
 			return "openInvoice".equals(delete.getClassName());
-			
+
 		} else {
 			return false;
 		}
@@ -101,27 +108,37 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 		if(SpanElement.is(et)){
 			SpanElement pdf = et.cast();
 			return "downloadAsPDF".equals(pdf.getClassName());
-			
+
 		} else {
 			return false;
 		}
 	}
-	
+
 	private boolean isDelete(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement delete = et.cast();
 			return "delete".equals(delete.getClassName());
-			
+
 		} else {
 			return false;
 		}
 	}
-	
+
+	private boolean isClone(EventTarget et){
+		if(SpanElement.is(et)){
+			SpanElement img = et.cast();
+			return "clone".equals(img.getClassName());
+
+		} else {
+			return false;
+		}
+	}
+
 	private boolean isPayedSwitch(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement payed = et.cast();
 			return payed.getClassName().contains("payed");
-			
+
 		} else {
 			return false;
 		}
@@ -134,7 +151,34 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 			presenter.goTo(ip);
 		}
 	}
-	
+
+	private void onCloneClicked(final InvoiceDTO invoice) {
+		ServerFacade.invoice.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
+
+			@Override
+			public void onSuccess(final Long result) {
+				if(result == null){
+					return;
+				}
+				SelectClientDialog dia = new SelectClientDialog(new SelectClientDialog.Handler() {
+					
+					@Override
+					public void onClientSelected(ClientDTO client) {
+						InvoicePlace ip = new InvoicePlace();
+						ip.setDataForNewInvoice(client, result, invoice);
+						presenter.goTo(ip);
+					}
+				});
+				dia.showCentered();
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+			}
+		});
+	}
+
 	private void onPdfClicked(InvoiceDTO invoice) {
 		if(invoice.getId() == null){
 			return;
@@ -145,22 +189,22 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 	private void onDeleteClicked(InvoiceDTO invoice) {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmInvoiceDeletion())){
 			ServerFacade.invoice.remove(invoice.getId(), new WrappedAsyncCallback<Void>() {
-				
+
 				@Override
 				public void onSuccess(Void result) {
 					DataWatcher.getInstance().fireInvoiceEvent();
 					DataWatcher.getInstance().fireStatsEvent();
 				}
-				
+
 				@Override
 				public void onException(Throwable caught) {
 					Notification.showYesNoRequest(I18N.INSTANCE.errorServerCommunication());		
 				}
 			});
 		}
-		
+
 	}
-	
+
 	private void onPayedSwitchClicked(InvoiceDTO invoice) {
 		ServerFacade.invoice.setPayed(invoice.getId(), !invoice.getPayed(), new WrappedAsyncCallback<Void>() {
 
@@ -171,9 +215,9 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 
 			@Override
 			public void onException(Throwable caught) {
-				
+
 			}
 		});
 	}
-	
+
 }

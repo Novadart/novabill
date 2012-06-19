@@ -1,6 +1,5 @@
 package com.novadart.novabill.frontend.client.ui.center.invoice;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -8,7 +7,6 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -27,16 +25,17 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
-import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.ui.widget.table.ItemTable;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
+import com.novadart.novabill.frontend.client.util.InvoiceUtils;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -74,7 +73,6 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiField Button createEstimate;
 	@UiField Button createInvoice;
 	@UiField Button modifyDocument;
-	@UiField Button convertToInvoice;
 
 	@UiField Label totalBeforeTaxes;
 	@UiField Label totalTax;
@@ -128,68 +126,65 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		}
 
 		InvoiceDTO invoice = createInvoice(null);
+		
+		if(this.estimation != null) {
+			ServerFacade.invoice.createFromEstimation(invoice, estimation.getId(), new WrappedAsyncCallback<Long>() {
+			
+						@Override
+						public void onSuccess(Long result) {
+							DataWatcher.getInstance().fireInvoiceEvent();
+							DataWatcher.getInstance().fireEstimationEvent();
+							DataWatcher.getInstance().fireStatsEvent();
+							
+							ClientPlace cp = new ClientPlace();
+							cp.setClientId(client.getId());
+							cp.setDocumentsListing(DOCUMENTS.invoices);
+							presenter.goTo(cp);
+						}
+			
+						@Override
+						public void onException(Throwable caught) {
+							if(caught instanceof ValidationException){
+								handleServerValidationException((ValidationException) caught, true);
+							} else {
+								Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
+							}
+						}
+					});
+		} else {
+		
+			ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
 
-		ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
+				@Override
+				public void onSuccess(Long result) {
+					Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess());
 
-			@Override
-			public void onSuccess(Long result) {
-				Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess());
+					DataWatcher.getInstance().fireInvoiceEvent();
+					DataWatcher.getInstance().fireStatsEvent();
 
-				DataWatcher.getInstance().fireInvoiceEvent();
-				DataWatcher.getInstance().fireStatsEvent();
-
-				ClientPlace cp = new ClientPlace();
-				cp.setClientId(client.getId());
-				cp.setDocumentsListing(DOCUMENTS.invoices);
-				presenter.goTo(cp);
-			}
-
-			@Override
-			public void onException(Throwable caught) {
-				if(caught instanceof ValidationException){
-					handleServerValidationException((ValidationException) caught, true);
-				} else {
-					Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
+					ClientPlace cp = new ClientPlace();
+					cp.setClientId(client.getId());
+					cp.setDocumentsListing(DOCUMENTS.invoices);
+					presenter.goTo(cp);
 				}
-			}
-		});
 
-	}
-
-	@UiHandler("convertToInvoice")
-	void onConvertToInvoice(ClickEvent e){
-		if(!validateEstimation()){
-			Notification.showMessage(I18N.INSTANCE.errorEstimationData());
-			return;
+				@Override
+				public void onException(Throwable caught) {
+					if(caught instanceof ValidationException){
+						handleServerValidationException((ValidationException) caught, true);
+					} else {
+						Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
+					}
+				}
+			});
+			
 		}
-
-		EstimationDTO estimation = createEstimation(this.estimation);
-		ServerFacade.invoice.createFromEstimation(estimation, new WrappedAsyncCallback<InvoiceDTO>() {
-
-			@Override
-			public void onSuccess(InvoiceDTO result) {
-				DataWatcher.getInstance().fireInvoiceEvent();
-				DataWatcher.getInstance().fireStatsEvent();
-
-				InvoicePlace ip = new InvoicePlace();
-				ip.setInvoiceId(result.getId());
-				presenter.goTo(ip);
-			}
-
-			@Override
-			public void onException(Throwable caught) {
-				if(caught instanceof ValidationException){
-					handleServerValidationException((ValidationException) caught, true);
-				} else {
-					Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
-				}
-			}
-		});
 	}
+
 
 
 	@UiHandler("createEstimate")
-	void onCreateEstimateClicked(ClickEvent e){
+	void onCreateEstimationClicked(ClickEvent e){
 		if(!validateEstimation()){
 			Notification.showMessage(I18N.INSTANCE.errorEstimationData());
 			return;
@@ -252,19 +247,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		}
 
 		inv.setPaymentNote(paymentNote.getText());
-
-		BigDecimal totBeforeTaxes = BigDecimal.ZERO;
-		BigDecimal totTaxes = BigDecimal.ZERO;
-		for (InvoiceItemDTO item : invoiceItems.getList()) {
-			totBeforeTaxes = totBeforeTaxes.add(InvoiceUtils.calculateTotalBeforeTaxesForItem(item));
-			totTaxes = totTaxes.add(InvoiceUtils.calculateTaxesForItem(item));
-		}
-		BigDecimal totAfterTaxes = totBeforeTaxes.add(totTaxes);
-
-		inv.setTotalBeforeTax(totBeforeTaxes);
-		inv.setTotalTax(totTaxes);
-		inv.setTotal(totAfterTaxes);
-
+		InvoiceUtils.calculateTotals(invItems, inv);
 		return inv;
 	}
 
@@ -286,85 +269,28 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		}
 		es.setItems(invItems);
 		es.setNote(note.getText());
-
-		BigDecimal totBeforeTaxes = BigDecimal.ZERO;
-		BigDecimal totTaxes = BigDecimal.ZERO;
-		for (InvoiceItemDTO item : invoiceItems.getList()) {
-			totBeforeTaxes = totBeforeTaxes.add(InvoiceUtils.calculateTotalBeforeTaxesForItem(item));
-			totTaxes = totTaxes.add(InvoiceUtils.calculateTaxesForItem(item));
-		}
-		BigDecimal totAfterTaxes = totBeforeTaxes.add(totTaxes);
-
-		es.setTotalBeforeTax(totBeforeTaxes);
-		es.setTotalTax(totTaxes);
-		es.setTotal(totAfterTaxes);
-
+		InvoiceUtils.calculateTotals(invItems, es);
 		return es;
 	}
 
 
 	@UiHandler("add")
 	void onAddClicked(ClickEvent e){
-		if(tableEntryBasicValidation()){
-			InvoiceItemDTO ii = new InvoiceItemDTO();
-			double tmpVal;
-
-			try {
-				ii.setDescription(item.getText());
-				tmpVal = NumberFormat.getDecimalFormat().parse(price.getText());
-				ii.setPrice(new BigDecimal( tmpVal ) );
-				tmpVal = NumberFormat.getDecimalFormat().parse(quantity.getText());
-				ii.setQuantity(new BigDecimal(tmpVal));
-				ii.setUnitOfMeasure(unitOfMeasure.getText());
-				ii.setTax(new BigDecimal(tax.getValue(tax.getSelectedIndex())));
-			} catch (NumberFormatException ex) {
-				return;
-			}
-			BigDecimal totBeforeTaxesForItem = InvoiceUtils.calculateTotalBeforeTaxesForItem(ii);
-			BigDecimal totTaxesForItem = InvoiceUtils.calculateTaxesForItem(ii);
-			ii.setTotal(totBeforeTaxesForItem.add(totTaxesForItem));
-			ii.setTotalTax(totTaxesForItem);
-			ii.setTotalBeforeTax(totBeforeTaxesForItem);
-
-			invoiceItems.getList().add(ii);
-			updateFields();
-			itemTableScroller.scrollToBottom();
+		InvoiceItemDTO ii = InvoiceUtils.createInvoiceItem(item.getText(), price.getText(), 
+				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
+		
+		if(ii == null) {
+			return;
 		}
-	}
-
-	private boolean tableEntryBasicValidation(){
-		for (TextBox tbox : new TextBox[]{item,quantity,price}) {
-			if(tbox.getText().isEmpty()){
-				return false;
-			}
-		}
-
-		return true;
+		
+		invoiceItems.getList().add(ii);
+		updateFields();
+		itemTableScroller.scrollToBottom();
 	}
 
 	@UiHandler("modifyDocument")
 	void onModifyInvoiceClicked(ClickEvent e){
-		if(!validateEstimation()){
-			return;
-		}
 
-		if(invoice != null){
-			onModifyInvoice();
-		} else {
-			onModifyEstimation();
-		}
-	}
-
-	@UiHandler("abort")
-	void onCancelClicked(ClickEvent e){
-		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
-			ClientPlace cp = new ClientPlace();
-			cp.setClientId(client.getId());
-			presenter.goTo(cp);
-		}
-	}
-
-	private void onModifyInvoice(){
 		if(!validateInvoice()){
 			return;
 		}
@@ -398,63 +324,53 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 			});
 
 		} 
-
-
-
-
 	}
 
-	private void onModifyEstimation(){
-		if(Notification.showYesNoRequest(I18N.INSTANCE.saveModificationsConfirm()) ){
-			final EstimationDTO es = createEstimation(estimation);
-
-			ServerFacade.estimation.update(es, new WrappedAsyncCallback<Void>() {
-
-				@Override
-				public void onException(Throwable caught) {
-					if(caught instanceof ValidationException){
-						handleServerValidationException((ValidationException) caught, false);
-					} else {
-						Notification.showMessage(I18N.INSTANCE.estimationUpdateFailure());
-					}
-				}
-
-				@Override
-				public void onSuccess(Void result) {
-					Notification.showMessage(I18N.INSTANCE.estimationUpdateSuccess());
-
-					DataWatcher.getInstance().fireEstimationEvent();
-
-					ClientPlace cp = new ClientPlace();
-					cp.setClientId(es.getClient().getId());
-					cp.setDocumentsListing(DOCUMENTS.estimations);
-					presenter.goTo(cp);
-				}
-			});
-		} 
+	@UiHandler("abort")
+	void onCancelClicked(ClickEvent e){
+		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
+			ClientPlace cp = new ClientPlace();
+			cp.setClientId(client.getId());
+			presenter.goTo(cp);
+		}
 	}
 
+	private void setInvoice(InvoiceDTO invoice, boolean cloning) {
+		if(!cloning) {
+			this.invoice = invoice;
+			this.client = invoice.getClient();
+			date.setValue(invoice.getAccountingDocumentDate());
+			clientName.setText(invoice.getClient().getName());
+			modifyDocument.setVisible(true);
+		}
 
+		List<InvoiceItemDTO> items = null;
+		if(cloning){
+			items = new ArrayList<InvoiceItemDTO>(invoice.getItems().size());
+			for (InvoiceItemDTO i : invoice.getItems()) {
+				items.add(i.clone());
+			}
+		} else {
+			items = invoice.getItems();
+		}
 
-
-	@Override
-	public void setInvoice(InvoiceDTO invoice) {
-		this.invoice = invoice;
-		this.client = invoice.getClient();
-		invoiceItems.setList(invoice.getItems());
-		if(invoice.getDocumentID() != null){
+		invoiceItems.setList(items);
+		if(!cloning && invoice.getDocumentID() != null){
 			number.setText(invoice.getDocumentID().toString());
 		} 
-		date.setValue(invoice.getAccountingDocumentDate());
 		note.setText(invoice.getNote());
 		paymentNote.setText(invoice.getPaymentNote());
 		if(invoice.getPaymentType() != null) { //can be null if the invoice is derived from an estimation
 			payment.setSelectedIndex(invoice.getPaymentType().ordinal()+1);
 		}
-		clientName.setText(invoice.getClient().getName());
-		modifyDocument.setVisible(true);
 
 		updateFields();
+	}
+
+
+	@Override
+	public void setInvoice(InvoiceDTO invoice) {
+		setInvoice(invoice, false);
 	}
 
 
@@ -471,45 +387,25 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	}
 
 	@Override
-	public void setDataForNewEstimation(ClientDTO client) {
-		this.client =client;
-
-		clientName.setText(client.getName());
-		date.setValue(new Date());
-
-		createEstimate.setVisible(true);
-		convertToInvoice.setVisible(true);
-
-		number.setVisible(false);
-		invoiceNumber.setVisible(false);
-		paymentNoteLabel.setVisible(false);
-		paymentNote.setVisible(false);
-		paymentLabel.setVisible(false);
-		payment.setVisible(false);
-
+	public void setDataForNewInvoice(ClientDTO client, Long progressiveId,
+			InvoiceDTO invoice) {
+		setDataForNewInvoice(client, progressiveId);
+		setInvoice(invoice, true);
 	}
 
-
 	@Override
-	public void setEstimation(EstimationDTO estimation) {
+	public void setDataForNewInvoice(Long progressiveId, EstimationDTO estimation) {
+		setDataForNewInvoice(estimation.getClient(), progressiveId);
 		this.estimation = estimation;
-		this.client = estimation.getClient();
 
-		invoiceItems.setList(estimation.getItems());
-		date.setValue(estimation.getAccountingDocumentDate());
+		List<InvoiceItemDTO> items = new ArrayList<InvoiceItemDTO>(estimation.getItems().size());
+		for (InvoiceItemDTO i : estimation.getItems()) {
+			items.add(i.clone());
+		}
+
+		invoiceItems.setList(items);
 		note.setText(estimation.getNote());
-		clientName.setText(estimation.getClient().getName());
 
-		modifyDocument.setVisible(true);
-
-		convertToInvoice.setVisible(true);
-
-		number.setVisible(false);
-		invoiceNumber.setVisible(false);
-		paymentNoteLabel.setVisible(false);
-		paymentNote.setVisible(false);
-		paymentLabel.setVisible(false);
-		payment.setVisible(false);
 		updateFields();
 	}
 
@@ -544,17 +440,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 
 	private void updateFields(){
-		BigDecimal totBeforeTaxes = BigDecimal.ZERO;
-		BigDecimal totTaxes = BigDecimal.ZERO;
-		for (InvoiceItemDTO item : invoiceItems.getList()) {
-			totBeforeTaxes = totBeforeTaxes.add(InvoiceUtils.calculateTotalBeforeTaxesForItem(item));
-			totTaxes = totTaxes.add(InvoiceUtils.calculateTaxesForItem(item));
-		}
-		BigDecimal totAfterTaxes = totBeforeTaxes.add(totTaxes);
-
-		totalTax.setText(NumberFormat.getCurrencyFormat().format(totTaxes.doubleValue()));
-		totalBeforeTaxes.setText(NumberFormat.getCurrencyFormat().format(totBeforeTaxes.doubleValue()));
-		totalAfterTaxes.setText(NumberFormat.getCurrencyFormat().format(totAfterTaxes.doubleValue()));
+		InvoiceUtils.calculateTotals(invoiceItems.getList(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 		resetItemTableForm();
 		invoiceItems.refresh();
 	}
@@ -581,7 +467,6 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		createEstimate.setVisible(false);
 		createInvoice.setVisible(false);
 		modifyDocument.setVisible(false);
-		convertToInvoice.setVisible(false);
 		paymentNote.setVisible(true);
 		invoiceNumber.setVisible(true);
 		paymentNoteLabel.setVisible(true);

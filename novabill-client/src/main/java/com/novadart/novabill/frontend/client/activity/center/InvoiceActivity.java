@@ -1,62 +1,51 @@
 package com.novadart.novabill.frontend.client.activity.center;
 
 import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
 public class InvoiceActivity extends BasicActivity {
 
-	private final Place place;
+	private final InvoicePlace place;
 
 
-	public InvoiceActivity(Place place, ClientFactory clientFactory) {
+	public InvoiceActivity(InvoicePlace place, ClientFactory clientFactory) {
 		super(clientFactory);
 		this.place = place;
 	}
 
 	@Override
 	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
-		if(place instanceof InvoicePlace){
-			start((InvoicePlace)place, panel);
-		} else {
-			start((EstimationPlace)place, panel);
-		}
-	}
-
-	private void start(final InvoicePlace invoicePlace, final AcceptsOneWidget panel){
 		getClientFactory().getInvoiceView(new AsyncCallback<InvoiceView>() {
 
 			@Override
 			public void onSuccess(final InvoiceView iv) {
 				iv.setPresenter(InvoiceActivity.this);
 
-				if(invoicePlace.getInvoiceId() == 0){ //we're creating a new invoice
+				if(place.getInvoiceId() == 0){ //we're creating a new invoice
 
-					if(invoicePlace.getClient() == null){
+					if(place.getClient() == null){
 
 						goTo(new HomePlace());
 
 					} else {
 
-						if(invoicePlace.getInvoiceToClone() != null){
-							iv.setDataForNewInvoice(invoicePlace.getClient(), invoicePlace.getInvoiceProgressiveId(), invoicePlace.getInvoiceToClone());
-						} else if(invoicePlace.getEstimationSource() != null) {
-							iv.setDataForNewInvoice(invoicePlace.getInvoiceProgressiveId(), invoicePlace.getEstimationSource());
+						if(place.getInvoiceToClone() != null){
+							iv.setDataForNewInvoice(place.getClient(), place.getInvoiceProgressiveId(), place.getInvoiceToClone());
+						} else if(place.getEstimationSource() != null) {
+							iv.setDataForNewInvoice(place.getInvoiceProgressiveId(), place.getEstimationSource());
 						} else {
-							iv.setDataForNewInvoice(invoicePlace.getClient(), invoicePlace.getInvoiceProgressiveId());
+							iv.setDataForNewInvoice(place.getClient(), place.getInvoiceProgressiveId());
 						}
 
 						panel.setWidget(iv);
@@ -65,7 +54,7 @@ public class InvoiceActivity extends BasicActivity {
 
 				} else {
 
-					ServerFacade.invoice.get(invoicePlace.getInvoiceId(), new WrappedAsyncCallback<InvoiceDTO>() {
+					ServerFacade.invoice.get(place.getInvoiceId(), new WrappedAsyncCallback<InvoiceDTO>() {
 
 						@Override
 						public void onException(Throwable caught) {
@@ -76,53 +65,6 @@ public class InvoiceActivity extends BasicActivity {
 						@Override
 						public void onSuccess(InvoiceDTO result) {
 							iv.setInvoice(result);
-							panel.setWidget(iv);
-						}
-					});
-
-				}
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-
-			}
-		});
-	}
-
-	private void start(final EstimationPlace estimationPlace, final AcceptsOneWidget panel){
-		getClientFactory().getInvoiceView(new AsyncCallback<InvoiceView>() {
-
-			@Override
-			public void onSuccess(final InvoiceView iv) {
-				iv.setPresenter(InvoiceActivity.this);
-
-				if(estimationPlace.getEstimationId() == 0){ //we're creating a new invoice
-
-					if(estimationPlace.getClient() == null){
-
-						goTo(new HomePlace());
-
-					} else {
-
-						iv.setDataForNewEstimation(estimationPlace.getClient());
-						panel.setWidget(iv);
-
-					}
-
-				} else {
-
-					ServerFacade.estimation.get(estimationPlace.getEstimationId(), new WrappedAsyncCallback<EstimationDTO>() {
-
-						@Override
-						public void onException(Throwable caught) {
-							Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-							goTo(new HomePlace());
-						}
-
-						@Override
-						public void onSuccess(EstimationDTO result) {
-							iv.setEstimation(result);
 							panel.setWidget(iv);
 						}
 					});
