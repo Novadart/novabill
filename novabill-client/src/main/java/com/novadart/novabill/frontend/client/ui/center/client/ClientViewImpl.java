@@ -153,7 +153,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	@UiHandler("newEstimation")
 	void onNewEstimationClicked(ClickEvent e){
 		EstimationPlace ep = new EstimationPlace();
-		ep.setDataForNewInvoice(client);
+		ep.setDataForNewEstimation(client);
 		presenter.goTo(ep);
 	}
 	

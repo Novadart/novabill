@@ -13,10 +13,12 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.novadart.novabill.frontend.client.ui.View;
 import com.novadart.novabill.frontend.client.ui.center.BusinessView;
 import com.novadart.novabill.frontend.client.ui.center.ClientView;
+import com.novadart.novabill.frontend.client.ui.center.EstimationView;
 import com.novadart.novabill.frontend.client.ui.center.HomeView;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
 import com.novadart.novabill.frontend.client.ui.center.business.BusinessViewImpl;
 import com.novadart.novabill.frontend.client.ui.center.client.ClientViewImpl;
+import com.novadart.novabill.frontend.client.ui.center.estimation.EstimationViewImpl;
 import com.novadart.novabill.frontend.client.ui.center.home.HomeViewImpl;
 import com.novadart.novabill.frontend.client.ui.center.invoice.InvoiceViewImpl;
 import com.novadart.novabill.frontend.client.ui.west.WestView;
@@ -74,7 +76,27 @@ public class ClientFactoryImpl implements ClientFactory
 				
 				@Override
 				public void onSuccess() {
-					callback.onSuccess((InvoiceView) getView(BusinessView.class, new InvoiceViewImpl()));
+					callback.onSuccess((InvoiceView) getView(InvoiceView.class, new InvoiceViewImpl()));
+				}
+				
+				@Override
+				public void onFailure(Throwable reason) {
+					Window.Location.reload();
+				}
+			});
+		}
+	}
+	
+	@Override
+	public void getEstimationView(final AsyncCallback<EstimationView> callback) {
+		if(views.containsKey(EstimationView.class)){
+			callback.onSuccess((EstimationView) getView(EstimationView.class));
+		} else {
+			GWT.runAsync(new RunAsyncCallback() {
+				
+				@Override
+				public void onSuccess() {
+					callback.onSuccess((EstimationView) getView(EstimationView.class, new EstimationViewImpl()));
 				}
 				
 				@Override

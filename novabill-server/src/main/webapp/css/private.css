@@ -181,7 +181,7 @@ textarea:HOVER {
 	padding: 0 0.5em;
 	text-align: center;
 	text-shadow: 2px 2px 2px #DDD;
-	filter: dropshadow(color =   #DDDDDD, offx =   2, offy = 2);
+	filter: dropshadow(color =         #DDDDDD, offx =         2, offy =       2);
 }
 
 .ClientView .clientDetails {
@@ -348,16 +348,16 @@ textarea:HOVER {
 	text-align: right;
 }
 
-.QuickViewList.EstimationList .upper span.convertToInvoice,
-.QuickViewList .details .tools span {
+.QuickViewList.EstimationList .upper span.convertToInvoice,.QuickViewList .details .tools span
+	{
 	text-transform: uppercase;
 	font-size: 0.8em;
 	margin-right: 1em;
 	cursor: pointer;
 }
 
-.QuickViewList.EstimationList .upper span.convertToInvoice:HOVER,
-.QuickViewList .details .tools span:HOVER {
+.QuickViewList.EstimationList .upper span.convertToInvoice:HOVER,.QuickViewList .details .tools span:HOVER
+	{
 	text-decoration: underline;
 }
 
@@ -428,6 +428,12 @@ textarea:HOVER {
 	padding: 5px 5px 15px;
 }
 
+.QuickViewList .openEstimation,
+.QuickViewList .openInvoice {
+	position: absolute;
+	left: 48%;
+}
+
 .westContainer {
 	border-right: 1px solid #EEE;
 }
@@ -494,7 +500,7 @@ textarea:HOVER {
 	border: 1px solid #2F9524;
 }
 
-.westContainer .filterClient {
+.westContainer .ClientSearch-filter {
 	margin: 0.5em 1em;
 	width: 20em;
 }
@@ -613,6 +619,73 @@ td.datePickerMonth {
 	outline: none;
 }
 
+.SelectClientDialog {
+	
+}
+
+.SelectClientDialog .body {
+	background-color: white;
+	padding: 1em;
+	border: 1em solid #EEE;
+	border-radius: 0.5em;
+	width: 40em;
+	min-height: 10em;
+}
+
+.SelectClientDialog .title {
+	
+}
+
+.SelectClientDialog .filterContainer {
+	margin: 0 auto;
+}
+
+.SelectClientDialog .ClientSearch-filter {
+	width: 20em;
+	margin-bottom: 1em;
+}
+
+.SelectClientDialog .ClientSearch-resetFilter {
+	cursor: pointer;
+	width: 1.5em;
+	position: relative;
+	top: 0.4em;
+	right: -0.5em;
+}
+
+}
+.SelectClientDialog .listWrapper {
+	width: 100%;
+}
+
+.SelectClientDialog .buttons {
+	margin: 1em auto 0;
+}
+
+.SelectClientDialog .client {
+	text-align: center;
+	padding: 0.5em;
+	font-size: 1.1em;
+	border: 0.1em solid #DDD;
+	margin-bottom: 0.2em;
+}
+
+.SelectClientDialog .ClientSearch-clientLoader {
+	display: block;
+	margin: 1em auto 0;
+}
+
+.SelectClientDialog .ClientSearch-noClientsFoundMessage {
+	margin: 1em auto 0;
+	text-align: center;
+	padding: 1em 1em 0;
+}
+
+.SelectClientDialog .ClientSearch-clientListWrapper {
+	min-height: 5em;
+	max-height: 20em;
+}
+
 .ClientDialog {
 	
 }
@@ -638,31 +711,43 @@ td.datePickerMonth {
 	padding: 1em 0;
 }
 
+.EstimationView .newEstimation,
 .InvoiceView .newInvoice {
 	font-weight: bold;
 	font-size: 2em;
 }
 
-.InvoiceView .abortButton,.InvoiceView .modifyDocument,.InvoiceView .createInvoice,.InvoiceView .saveAsEstimation,.InvoiceView .convertToInvoice
-	{
+.InvoiceView .abortButton,
+.InvoiceView .modifyDocument,
+.InvoiceView .createInvoice,
+.InvoiceView .saveAsEstimation,
+.EstimationView .modifyDocument,
+.EstimationView .convertToInvoice,
+.EstimationView .abortButton {
 	margin-left: 2em;
 }
 
-.InvoiceView .invoiceMainDetails {
+.EstimationView .documentMainDetails,
+.InvoiceView .documentMainDetails {
 	margin-top: 0.5em;
 }
 
+.EstimationView .clientName,
 .InvoiceView .clientName {
 	font-size: 1.5em;
 }
 
+.EstimationView .label,
 .InvoiceView .label {
 	font-weight: bold;
 	font-size: 1.3em;
 	padding: 0.2em 2em 0.7em 0;
 }
 
-.InvoiceView .modifyButton,.InvoiceView .createButton {
+.EstimationView .modifyButton,
+.EstimationView .createButton,
+.InvoiceView .modifyButton,
+.InvoiceView .createButton {
 	margin-left: 2em;
 }
 
@@ -671,70 +756,85 @@ td.datePickerMonth {
 	text-align: center;
 }
 
+.EstimationView .note,
 .InvoiceView .paymentNote,.InvoiceView .note {
 	width: 40em;
 	height: 2em;
 }
 
+.EstimationView .itemTableContainer,
 .InvoiceView .itemTableContainer {
 	margin: 1em 0;
 	border: 0.1em solid #EEE;
 	padding: 2em;
 }
 
+.EstimationView .newItemContainer,
 .InvoiceView .newItemContainer {
 	
 }
 
+.EstimationView .smallLabel,
 .InvoiceView .smallLabel {
 	font-weight: bold;
 	padding: 0.4em 0 0.4em 0;
 }
 
+.EstimationView .tax,
 .InvoiceView .tax {
 	position: relative;
 	top: -0.2em;
 }
 
+.EstimationView .item,
 .InvoiceView .item {
 	width: 25em;
 }
 
+.EstimationView .quantity,
 .InvoiceView .quantity {
 	width: 4em;
 }
 
+.EstimationView .unitOfMeasure,
 .InvoiceView .unitOfMeasure {
 	width: 6em;
 }
 
+.EstimationView .price,
 .InvoiceView .price {
 	width: 6em;
 }
 
+.EstimationView .quantityContainer,.EstimationView .unitOfMeasureContainer,.EstimationView .priceContainer,.EstimationView .taxContainer,
 .InvoiceView .quantityContainer,.InvoiceView .unitOfMeasureContainer,.InvoiceView .priceContainer,.InvoiceView .taxContainer
 	{
 	margin-left: 1em;
 }
 
+.EstimationView .addButtonContainer,
 .InvoiceView .addButtonContainer {
 	padding: 1.6em 0 0 0.5em;
 }
 
+.EstimationView .totalContainer.totalTax,.EstimationView .totalContainer.totalAfterTaxes,
 .InvoiceView .totalContainer.totalTax,.InvoiceView .totalContainer.totalAfterTaxes
 	{
 	margin-left: 4em;
 }
 
+.EstimationView .totalContainer .label,
 .InvoiceView .totalContainer .label {
 	text-align: center;
 	padding: 0.4em;
 }
 
+.EstimationView .itemTableScroller,
 .InvoiceView .itemTableScroller {
 	max-height: 400px;
 }
 
+.EstimationView .totalContainer .total,
 .InvoiceView .totalContainer .total {
 	font-size: 1.5em;
 	font-weight: bold;
@@ -838,11 +938,11 @@ td.datePickerMonth {
 	text-transform: uppercase;
 }
 
-.WestView .clientListContainer {
+.WestView .ClientSearch-clientListWrapper {
 	width: 100%;
 }
 
-.WestView .cleanFilterClient {
+.WestView .ClientSearch-resetFilter {
 	cursor: pointer;
 	width: 1.5em;
 	position: relative;
@@ -850,12 +950,13 @@ td.datePickerMonth {
 	right: 0.5em;
 }
 
-.WestView .clientListContainer .clientLoader {
+.WestView .ClientSearch-clientListWrapper .ClientSearch-clientLoader {
 	display: block;
 	margin: 2em auto 0;
 }
 
-.WestView .clientListContainer .noClientsFoundMessage {
+.WestView .ClientSearch-clientListWrapper .ClientSearch-noClientsFoundMessage
+	{
 	margin: 2em auto 0;
 	text-align: center;
 	padding: 1em 3em 0;

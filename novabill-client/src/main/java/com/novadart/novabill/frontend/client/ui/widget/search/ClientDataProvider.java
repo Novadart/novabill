@@ -1,4 +1,4 @@
-package com.novadart.novabill.frontend.client.ui.west;
+package com.novadart.novabill.frontend.client.ui.widget.search;
 
 import java.util.List;
 

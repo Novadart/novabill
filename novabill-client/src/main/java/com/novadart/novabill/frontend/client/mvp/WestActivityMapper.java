@@ -4,6 +4,7 @@ import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
 import com.novadart.novabill.frontend.client.ClientFactory;
+import com.novadart.novabill.frontend.client.activity.west.BusinessActivity;
 import com.novadart.novabill.frontend.client.activity.west.ClientActivity;
 import com.novadart.novabill.frontend.client.activity.west.HomeActivity;
 import com.novadart.novabill.frontend.client.activity.west.InvoiceActivity;
@@ -22,7 +23,7 @@ private final ClientFactory clientFactory;
 	
 	@Override
 	public Activity getActivity(Place place) {
-		if(place instanceof HomePlace || place instanceof BusinessPlace){
+		if(place instanceof HomePlace){
 			
 			return new HomeActivity(clientFactory);
 		
@@ -33,6 +34,10 @@ private final ClientFactory clientFactory;
 		} else if(place instanceof ClientPlace) {
 		
 			return new ClientActivity((ClientPlace)place, clientFactory);
+	
+		} else if(place instanceof BusinessPlace) {
+		
+			return new BusinessActivity(clientFactory);
 	
 		} else {
 		

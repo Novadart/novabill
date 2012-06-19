@@ -4,6 +4,8 @@ import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
 public class InvoicePlace extends Place {
 
@@ -33,6 +35,8 @@ public class InvoicePlace extends Place {
 	private Long invoiceId;
 	private ClientDTO client;
 	private Long invoiceProgressiveId;
+	private InvoiceDTO invoiceToClone;
+	private EstimationDTO estimationSource;
 	
 	public InvoicePlace() {
 		setInvoiceId(0L);
@@ -41,6 +45,18 @@ public class InvoicePlace extends Place {
 	public void setDataForNewInvoice(ClientDTO client, Long invoiceProgressiveId) {
 		this.client = client;
 		this.invoiceProgressiveId = invoiceProgressiveId;
+	}
+	
+	public void setDataForNewInvoice(ClientDTO client, Long invoiceProgressiveId, InvoiceDTO invoiceToClone) {
+		this.client = client;
+		this.invoiceProgressiveId = invoiceProgressiveId;
+		this.invoiceToClone = invoiceToClone;
+	}
+	
+	public void setDataForNewInvoice(Long invoiceProgressiveId, EstimationDTO estimationSource) {
+		this.client = estimationSource.getClient();
+		this.invoiceProgressiveId = invoiceProgressiveId;
+		this.estimationSource = estimationSource;
 	}
 	
 	public ClientDTO getClient() {
@@ -59,5 +75,20 @@ public class InvoicePlace extends Place {
 		this.invoiceId = invoiceId;
 	}
 
+	public InvoiceDTO getInvoiceToClone() {
+		return invoiceToClone;
+	}
+
+	public void setInvoiceToClone(InvoiceDTO invoiceToClone) {
+		this.invoiceToClone = invoiceToClone;
+	}
+
+	public EstimationDTO getEstimationSource() {
+		return estimationSource;
+	}
+
+	public void setEstimationSource(EstimationDTO estimationSource) {
+		this.estimationSource = estimationSource;
+	}
 
 }

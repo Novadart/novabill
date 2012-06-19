@@ -5,22 +5,16 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.west.WestView;
-import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class InvoiceActivity extends BasicActivity {
 
-	private final InvoicePlace place;
+//	private final InvoicePlace place;
 
 	public InvoiceActivity(InvoicePlace place, ClientFactory clientFactory) {
 		super(clientFactory);
-		this.place = place;
+//		this.place = place;
 	}
 
 	@Override
@@ -31,37 +25,40 @@ public class InvoiceActivity extends BasicActivity {
 			public void onSuccess(final WestView wv) {
 				wv.setPresenter(InvoiceActivity.this);
 
-				if(place.getInvoiceId() == 0){
-
-					if(place.getClient() == null){
-					
-						goTo(new HomePlace());
-					
-					} else {
-						
-						wv.setClient(place.getClient());
-						panel.setWidget(wv);
-						
-					}
-
-				} else {
-
-					ServerFacade.client.getFromInvoiceId(place.getInvoiceId(), new WrappedAsyncCallback<ClientDTO>() {
-
-						@Override
-						public void onSuccess(ClientDTO result) {
-							wv.setClient(result);
-							panel.setWidget(wv);
-						}
-
-						@Override
-						public void onException(Throwable caught) {
-							Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-							goTo(new HomePlace());
-						}
-					});
-
-				}
+				wv.setClient(null);
+				panel.setWidget(wv);
+				
+//				if(place.getInvoiceId() == 0){
+//
+//					if(place.getClient() == null){
+//					
+//						goTo(new HomePlace());
+//					
+//					} else {
+//						
+//						wv.setClient(place.getClient());
+//						panel.setWidget(wv);
+//						
+//					}
+//
+//				} else {
+//
+//					ServerFacade.client.getFromInvoiceId(place.getInvoiceId(), new WrappedAsyncCallback<ClientDTO>() {
+//
+//						@Override
+//						public void onSuccess(ClientDTO result) {
+//							wv.setClient(result);
+//							panel.setWidget(wv);
+//						}
+//
+//						@Override
+//						public void onException(Throwable caught) {
+//							Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+//							goTo(new HomePlace());
+//						}
+//					});
+//
+//				}
 			}
 			
 			@Override

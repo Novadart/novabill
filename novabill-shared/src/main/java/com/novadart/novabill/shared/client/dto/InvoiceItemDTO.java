@@ -95,4 +95,16 @@ public class InvoiceItemDTO implements IsSerializable {
 		this.tax = tax;
 	}
 	
+	public InvoiceItemDTO clone(){
+		InvoiceItemDTO i = new InvoiceItemDTO();
+		i.setDescription(getDescription());
+		i.setPrice(getPrice());
+		i.setQuantity(getQuantity());
+		i.setTax(getTax());
+		i.setTotal(getTotal());
+		i.setTotalBeforeTax(getTotalBeforeTax());
+		i.setTotalTax(getTotalTax());
+		i.setUnitOfMeasure(getUnitOfMeasure());
+		return i;
+	}
 }

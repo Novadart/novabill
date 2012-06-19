@@ -6,6 +6,7 @@ import com.google.gwt.place.shared.Place;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.center.BusinessActivity;
 import com.novadart.novabill.frontend.client.activity.center.ClientActivity;
+import com.novadart.novabill.frontend.client.activity.center.EstimationActivity;
 import com.novadart.novabill.frontend.client.activity.center.HomeActivity;
 import com.novadart.novabill.frontend.client.activity.center.InvoiceActivity;
 import com.novadart.novabill.frontend.client.place.BusinessPlace;
@@ -32,10 +33,14 @@ public class CenterActivityMapper implements ActivityMapper {
 
 			return new BusinessActivity(clientFactory);
 
-		} else if(place instanceof InvoicePlace || place instanceof EstimationPlace){
+		} else if(place instanceof InvoicePlace){
 
-			return new InvoiceActivity(place, clientFactory);
+			return new InvoiceActivity((InvoicePlace) place, clientFactory);
 
+		} else if( place instanceof EstimationPlace) {
+			
+			return new EstimationActivity((EstimationPlace)place, clientFactory);
+			
 		} else if(place instanceof ClientPlace){
 
 			return new ClientActivity((ClientPlace)place, clientFactory);

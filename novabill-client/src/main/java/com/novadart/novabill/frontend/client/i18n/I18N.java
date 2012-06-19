@@ -76,6 +76,7 @@ public interface I18N extends Constants {
 	public String impossibleToLoadInvoice();
 	public String pleaseSelectInvoice();
 	public String newInvoiceCreation();
+	public String newEstimationCreation();
 	public String client();
 	public String addNewClient();
 	public String date();
@@ -121,4 +122,5 @@ public interface I18N extends Constants {
 	public String exportClientData();
 	public String exportInvoiceData();
 	public String exportEstimationData();
+	public String clone();
 }

@@ -1,4 +1,4 @@
-package com.novadart.novabill.frontend.client.ui.center.invoice;
+package com.novadart.novabill.frontend.client.ui.widget.table;
 
 import java.math.BigDecimal;
 
@@ -12,6 +12,7 @@ import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.util.InvoiceUtils;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 
 public class ItemTable extends CellTable<InvoiceItemDTO> {

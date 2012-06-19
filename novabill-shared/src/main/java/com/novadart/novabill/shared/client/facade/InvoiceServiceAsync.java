@@ -1,8 +1,8 @@
 package com.novadart.novabill.shared.client.facade;
 
 import java.util.List;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
 public interface InvoiceServiceAsync {
