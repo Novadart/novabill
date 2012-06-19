@@ -96,8 +96,8 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 
 	private boolean isOpenInvoice(EventTarget et){
 		if(SpanElement.is(et)){
-			SpanElement delete = et.cast();
-			return "openInvoice".equals(delete.getClassName());
+			SpanElement open = et.cast();
+			return open.getClassName().contains("openInvoice");
 
 		} else {
 			return false;
