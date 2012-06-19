@@ -24,8 +24,8 @@ public interface InvoiceServiceAsync {
 	void getAllForClientInRange(long id, int start, int length,
 			AsyncCallback<List<InvoiceDTO>> callback);
 
-	void createFromEstimation(EstimationDTO estimationDTO,
-			AsyncCallback<InvoiceDTO> callback);
+	void createFromEstimation(InvoiceDTO invoiceDTO, Long estimationID,
+			AsyncCallback<Long> callback);
 
 	void setPayed(Long id, Boolean value, AsyncCallback<Void> callback);
 

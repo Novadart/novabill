@@ -2,16 +2,13 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.novadart.novabill.annotation.CheckQuotas;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Estimation;
-import com.novadart.novabill.domain.EstimationDTOFactory;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.InvoiceDTOFactory;
 import com.novadart.novabill.domain.InvoiceItem;
@@ -19,7 +16,6 @@ import com.novadart.novabill.domain.InvoiceItemDTOFactory;
 import com.novadart.novabill.quota.NumberOfInvoicesPerYearQuotaReachedChecker;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.InvoiceValidator;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
@@ -157,20 +153,16 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	}
 	
 	@Override
-	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class, NoSuchObjectException.class})
 	@CheckQuotas(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
-	public InvoiceDTO createFromEstimation(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, NoSuchObjectException, ConcurrentAccessException, QuotaException {
-		if(estimationDTO.getId() != null){//present in DB
-			Estimation estimation = Estimation.findEstimation(estimationDTO.getId());
-			if(estimation == null)
-				throw new NoSuchObjectException();
+	public Long createFromEstimation(InvoiceDTO invoiceDTO, Long estimationID) throws NotAuthenticatedException, DataAccessException, ValidationException, NoSuchObjectException, ConcurrentAccessException, QuotaException {
+		Long invoiceID = add(invoiceDTO);
+		Estimation estimation = null;
+		if(estimationID != null && (estimation = Estimation.findEstimation(estimationID)) != null)//present in DB
 			estimation.remove();
-		}
-		InvoiceDTO invoiceDTO = EstimationDTOFactory.toInvoiceDTO(estimationDTO);
-		invoiceDTO.setDocumentID(getNextInvoiceDocumentID());
-		Long id = add(invoiceDTO);
-		invoiceDTO.setId(id);
-		return invoiceDTO;
+		else
+			throw new NoSuchObjectException();
+		return invoiceID;
 	}
 
 	@Override
