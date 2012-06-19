@@ -128,7 +128,7 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 
 
 	@UiHandler("createEstimation")
-	void onCreateEstimateClicked(ClickEvent e){
+	void onCreateEstimationClicked(ClickEvent e){
 		if(!validateEstimation()){
 			Notification.showMessage(I18N.INSTANCE.errorEstimationData());
 			return;
