@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" 
+	"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+
+	<definition name="index" extends="base">
+		<put-attribute name="pagelinks" value="/WEB-INF/views/public/index-pagelinks.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/public/header.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/public/index.jsp" />
+	</definition>
+	
+	<definition name="register" template="/WEB-INF/views/public/register.jsp" />
+
+	<definition name="activate" template="/WEB-INF/views/public/activate.jsp" />
+
+	<definition name="login" template="/WEB-INF/views/public/login.jsp" />
+
+	<definition name="registrationCompleted" template="/WEB-INF/views/public/registrationCompleted.jsp" />
+	
+	<definition name="paypalSubscriptionRequest" template="/WEB-INF/views/public/paypalSubscriptionRequest.jsp" />
+
+	<definition name="pdfLandingPage" template="/WEB-INF/views/public/pdfLandingPage.jsp" />
+	
+	<definition name="exportLandingPage" template="/WEB-INF/views/public/exportLandingPage.jsp" />
+	
+	<definition name="premiumInfo" template="/WEB-INF/views/public/premiumInfo.jsp" />
+	
+	<definition name="premiumUpgradeSuccess" template="/WEB-INF/views/public/premiumUpgradeSuccess.jsp" />
+	
+	<definition name="premiumUpgradeFailure" template="/WEB-INF/views/public/premiumUpgradeFailure.jsp" />
+	
+</tiles-definitions>
+

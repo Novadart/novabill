@@ -1,12 +1,9 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" "http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" 
+	"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
 
-	<definition name="index" template="/WEB-INF/views/index.jsp" />
-
-	<definition name="novabill" template="/WEB-INF/views/private.jsp" />
-
-	<definition name="concurentAccess" template="/WEB-INF/views/concurrentAccess.jsp" />
+	<definition name="base" template="/WEB-INF/views/base.jsp" />
 
 	<definition name="register" template="/WEB-INF/views/register.jsp" />
 
@@ -14,30 +11,11 @@
 
 	<definition name="login" template="/WEB-INF/views/login.jsp" />
 
-	<definition name="invalidActivationRequest"
-		template="/WEB-INF/views/invalidActivationRequest.jsp" />
-
 	<definition name="registrationCompleted" template="/WEB-INF/views/registrationCompleted.jsp" />
 	
 	<definition name="paypalSubscriptionRequest" template="/WEB-INF/views/paypalSubscriptionRequest.jsp" />
 
-
 	<definition name="error" template="/WEB-INF/views/error.jspx" />
-	
-	<definition extends="error" name="dataAccessFailure">
-		<put-attribute name="body"
-			value="/WEB-INF/views/dataAccessFailure.jspx" />
-	</definition>
-
-	<definition extends="error" name="resourceNotFound">
-		<put-attribute name="body"
-			value="/WEB-INF/views/resourceNotFound.jspx" />
-	</definition>
-
-	<definition extends="error" name="uncaughtException">
-		<put-attribute name="body"
-			value="/WEB-INF/views/uncaughtException.jspx" />
-	</definition>
 	
 	<definition name="pdfLandingPage" template="/WEB-INF/views/pdfLandingPage.jsp" />
 	

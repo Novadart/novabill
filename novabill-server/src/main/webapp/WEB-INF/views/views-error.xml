@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" 
+	"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+
+	<definition extends="error" name="resourceNotFound">
+		<put-attribute name="body"
+			value="/WEB-INF/views/error/resourceNotFound.jspx" />
+	</definition>
+
+	<definition extends="error" name="uncaughtException">
+		<put-attribute name="body"
+			value="/WEB-INF/views/error/uncaughtException.jspx" />
+	</definition>
+	
+	<definition name="concurentAccess" template="/WEB-INF/views/error/concurrentAccess.jsp" />
+	
+	<definition name="invalidActivationRequest"
+		template="/WEB-INF/views/error/invalidActivationRequest.jsp" />
+		
+	<definition extends="error" name="dataAccessFailure">
+		<put-attribute name="body"
+			value="/WEB-INF/views/error/dataAccessFailure.jspx" />
+	</definition>
+</tiles-definitions>

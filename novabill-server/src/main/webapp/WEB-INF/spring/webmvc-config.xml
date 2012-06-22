@@ -102,7 +102,10 @@
 		<property name="definitions">
 			<list>
 				<!-- Scan views directory for Tiles configurations -->
-				<value>/WEB-INF/views/**/views.xml</value>
+				<value>/WEB-INF/views/views-base.xml</value>
+				<value>/WEB-INF/views/views-public.xml</value>
+				<value>/WEB-INF/views/views-private.xml</value>
+				<value>/WEB-INF/views/views-error.xml</value>
 			</list>
 		</property>
 	</bean>

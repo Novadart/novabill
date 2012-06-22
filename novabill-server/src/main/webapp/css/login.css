@@ -152,10 +152,14 @@ fieldset#body {
     padding:7px 0 4px 0;
 }
 
-#loginForm span a {
+#loginForm div a {
     color:#3a454d;
     text-shadow:1px 1px #fff;
     font-size:12px;
+}
+
+#loginForm div {
+	text-align: center;
 }
 
 input:focus {
