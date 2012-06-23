@@ -21,7 +21,7 @@ public class PrivateController {
 	
 	@RequestMapping(value = "/private", method = RequestMethod.GET)
 	public ModelAndView privateArea(){
-		ModelAndView mav = new ModelAndView("novabill");
+		ModelAndView mav = new ModelAndView("private");
 		Business business = ((PrincipalDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getPrincipal();
 		BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
 		StringWriter sw = new StringWriter();
