@@ -13,6 +13,7 @@
 	<input type="hidden" name="hosted_button_id" value="${hostedButtonID}">
 	<input type="hidden" name="rm" value="2">
 	<input type="hidden" name="return" value="${returnUrl}">
+	<input type="hidden" name="custom" value="${email}">
 </form>
 <script type="text/javascript">
 	document.forms["paypalSubscriptionRequestForm"].submit()

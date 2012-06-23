@@ -6,9 +6,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -16,11 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
-
-import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.SubscriptionToken;
-import com.novadart.novabill.domain.security.RoleTypes;
-import com.novadart.novabill.service.PrincipalDetailsService;
 import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
 
@@ -30,9 +24,6 @@ public class UpgradeAccountController {
 	
 	@Autowired
 	private UtilsService utilsService;
-	
-	@Autowired
-	private PrincipalDetailsService principalDetailsService;
 	
 	@Autowired
 	private TokenGenerator tokenGenerator;
@@ -58,33 +49,30 @@ public class UpgradeAccountController {
 		model.addAttribute("paypalAction", paypalAction);
 		model.addAttribute("hostedButtonID", hostedButtonID);
 		model.addAttribute("returnUrl", returnURL);
+		model.addAttribute("email", email);
 		return "paypalSubscriptionRequest";
 	}
 	
-	@Transactional(readOnly = false)
-	private void upgrade(String email, List<SubscriptionToken> subscribtionTokens){
-		Business business = principalDetailsService.loadUserByUsername(email).getPrincipal();
-		business.getGrantedRoles().remove(RoleTypes.ROLE_BUSINESS_FREE);
-		business.getGrantedRoles().add(RoleTypes.ROLE_BUSINESS_PREMIUM);
-		for(SubscriptionToken st: subscribtionTokens)
-			st.remove();
-	}
+	
 	
 	private void handleError(String email, String message){}
 
 	@RequestMapping("/paypal-callback")
+	@Transactional(readOnly = false)
 	public String handlePaypalReturn(@RequestParam("novabillToken") String returnedNovabillToken, @RequestParam("email") String email){
 		List<SubscriptionToken> subscribtionTokens = SubscriptionToken.findByEmail(email);
 		if(subscribtionTokens.size() == 0){
 			handleError(email, "No associated tokens");
 			return "premiumUpgradeFailure";
 		}
+		boolean found = false;
 		for(SubscriptionToken st: subscribtionTokens){
-			if(st.getToken().equals(returnedNovabillToken)){
-				upgrade(email, subscribtionTokens);
-				return "premiumUpgradeSuccess";
-			}
+			if(st.getToken().equals(returnedNovabillToken))
+				found = true;
+			st.remove();
 		}
+		if(found)
+			return "premiumUpgradeSuccess";
 		handleError(email, "Token mismatch");
 		return "premiumUpgradeFailure";
 	}
