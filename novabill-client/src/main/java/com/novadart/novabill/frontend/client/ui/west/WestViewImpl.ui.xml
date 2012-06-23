@@ -12,7 +12,7 @@
 		<g:FlowPanel ui:field="clientContainer" styleName="clientContainer">
 			<g:HorizontalPanel styleName="clientsHeader">
 				<g:Label styleName="clients" text="{i18n.clients}"></g:Label>
-				<g:Button styleName="addClient" ui:field="addClient" text="{i18n.newClient}"></g:Button>
+				<g:Button styleName="action-button addClient" ui:field="addClient" text="{i18n.newClient}"></g:Button>
 			</g:HorizontalPanel>
 			<g:HorizontalPanel>
 				<g:TextBox ui:field="clientFilter" />

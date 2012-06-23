@@ -24,7 +24,7 @@
 					</g:customHeader>
 					<g:FlowPanel styleName="listWrapper panel">
 						<g:SimplePanel styleName="actionWrapper">
-							<g:Button ui:field="newInvoice" styleName="newInvoice" text="{i18n.newInvoice}"></g:Button>
+							<g:Button ui:field="newInvoice" styleName="action-button newInvoice" text="{i18n.newInvoice}"></g:Button>
 						</g:SimplePanel>
 						<i:InvoiceList ui:field="invoiceList"></i:InvoiceList>
 					</g:FlowPanel>
@@ -35,7 +35,7 @@
 					</g:customHeader>
 					<g:FlowPanel styleName="listWrapper panel">
 						<g:SimplePanel styleName="actionWrapper">
-							<g:Button ui:field="newEstimation" styleName="newEstimation" text="{i18n.newEstimation}"></g:Button>
+							<g:Button ui:field="newEstimation" styleName="action-button newEstimation" text="{i18n.newEstimation}"></g:Button>
 						</g:SimplePanel>
 						<i:EstimationList ui:field="estimationList"></i:EstimationList>
 					</g:FlowPanel>

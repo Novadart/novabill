@@ -71,7 +71,6 @@ blockquote:before,blockquote:after,q:before,q:after {
 
 .action-button {
 	display: inline-block;
-	float: left;
 	width: 140px;
 	height: 30px;
 	margin: 12px 10px;

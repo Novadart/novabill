@@ -117,8 +117,8 @@
 
 		<g:SimplePanel styleName="buttonContainer">
 			<g:HorizontalPanel>
-				<g:Button ui:field="ok" text="{i18n.createClient}"></g:Button>
-				<g:Button ui:field="cancel" text="{i18n.cancel}"></g:Button>
+				<g:Button styleName="button" ui:field="ok" text="{i18n.createClient}"></g:Button>
+				<g:Button styleName="button" ui:field="cancel" text="{i18n.cancel}"></g:Button>
 			</g:HorizontalPanel>
 		</g:SimplePanel>
 	</g:FlowPanel>

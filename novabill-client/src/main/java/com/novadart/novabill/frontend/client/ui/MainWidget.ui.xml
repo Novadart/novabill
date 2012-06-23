@@ -13,9 +13,9 @@
 			<g:FlowPanel styleName="header">
 				<g:Image styleName="logo" url="{img.bullet.getSafeUri.asString}"></g:Image>
 				<g:Label styleName="productName" text="Novabill"></g:Label>
-				<g:Button styleName="homeButton" text="{i18n.home}"
+				<g:Button styleName="homeButton button" text="{i18n.home}"
 					ui:field="home"></g:Button>
-				<g:Button styleName="myDataButton" text="{i18n.myData}"
+				<g:Button styleName="myDataButton button" text="{i18n.myData}"
 					ui:field="myData"></g:Button>
 				<g:Anchor styleName="exitButton" text="{i18n.logout}"
 					ui:field="logout"></g:Anchor>

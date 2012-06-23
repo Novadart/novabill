@@ -1,9 +1,14 @@
+html {
+	background: none;
+}
+
 body {
 	font-size: 14px;
 	color: #333;
+	background: none;
 }
 
-.button,button {
+.button {
 	padding: 0.5em;
 	font-size: 1em;
 	cursor: pointer;
@@ -14,7 +19,7 @@ body {
 	margin: 1px;
 }
 
-.button:HOVER,button:HOVER {
+.button:HOVER {
 	background-color: #DDD;
 	border: 0.1em solid #EEE;
 	color: #EEE;
@@ -161,19 +166,10 @@ textarea:HOVER {
 }
 
 .ClientView .newInvoice,.ClientView .newEstimation {
-	border: 1px solid #B9F2B3;
-	background-color: #66C25B;
-	color: white;
-	font-size: 1.3em;
+	cursor: pointer;
 }
 
-.ClientView .newEstimation {
-	margin-left: 1em;
-}
 
-.ClientView .newEstimation:HOVER,.ClientView .newInvoice:HOVER {
-	border: 1px solid #2F9524;
-}
 
 .ClientView .clientName {
 	font-size: 2em;
@@ -486,14 +482,8 @@ textarea:HOVER {
 }
 
 .westContainer .addClient {
-	border: 0.1em solid #B9F2B3;
-	background-color: #66C25B;
-	padding: 5px 10px;
-	color: white;
-	font-size: 1.0em;
+	margin-top: 1.8em;
 	cursor: pointer;
-	font-weight: bold;
-	margin-top: 2.1em;
 }
 
 .westContainer .addClient:HOVER {

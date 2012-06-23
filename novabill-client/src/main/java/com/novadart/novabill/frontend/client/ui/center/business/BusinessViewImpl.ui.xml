@@ -8,7 +8,7 @@
 
 	<g:FlowPanel styleName="BusinessView">
 		<g:SimplePanel>
-			<g:Button styleName="saveData" ui:field="saveData"
+			<g:Button styleName="saveData button" ui:field="saveData"
 				text="{i18n.saveModifications}"></g:Button>
 		</g:SimplePanel>
 
@@ -145,9 +145,9 @@
 		<g:VerticalPanel styleName="exportDataContainer">
 			<g:Label styleName="sectionLabel" text="{i18n.exportDataLabel}"></g:Label>
 			<g:HorizontalPanel styleName="exportButtonsContainer">
-				<g:Button styleName="exportButton" ui:field="exportClientData" text="{i18n.exportClientData}"></g:Button>
-				<g:Button styleName="exportButton" ui:field="exportInvoiceData" text="{i18n.exportInvoiceData}"></g:Button>
-				<g:Button styleName="exportButton" ui:field="exportEstimationData" text="{i18n.exportEstimationData}"></g:Button>
+				<g:Button styleName="exportButton button" ui:field="exportClientData" text="{i18n.exportClientData}"></g:Button>
+				<g:Button styleName="exportButton button" ui:field="exportInvoiceData" text="{i18n.exportInvoiceData}"></g:Button>
+				<g:Button styleName="exportButton button" ui:field="exportEstimationData" text="{i18n.exportEstimationData}"></g:Button>
 			</g:HorizontalPanel>
 		</g:VerticalPanel>
 

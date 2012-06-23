@@ -24,8 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.novadart.novabill.domain.PayPalTransactionID;
 import com.novadart.novabill.service.PayPalSubscriptionIPNHandlerService;
 
-
-@Controller("/paypal-ipn-listener")
+@Controller
+@RequestMapping("/paypal-ipn-listener")
 public class PayPalIPNListenerController {
 	
 	@Value("${paypal.url}")

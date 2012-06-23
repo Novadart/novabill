@@ -13,13 +13,13 @@
 
 		<g:HorizontalPanel>
 			<g:Label styleName="newEstimation" text="{i18n.newEstimationCreation}"></g:Label>
-			<g:Button styleName="modifyButton" ui:field="modifyDocument"
+			<g:Button styleName="modifyButton button" ui:field="modifyDocument"
 				text="{i18n.saveModifications}"></g:Button>
-			<g:Button styleName="createButton" ui:field="createEstimation"
+			<g:Button styleName="createButton button" ui:field="createEstimation"
 				text="{i18n.createEstimate}"></g:Button>
-			<g:Button ui:field="convertToInvoice" styleName="convertToInvoice"
+			<g:Button ui:field="convertToInvoice" styleName="convertToInvoice button"
 				text="{i18n.convertToInvoice}"></g:Button>
-			<g:Button ui:field="abort" styleName="abortButton"
+			<g:Button ui:field="abort" styleName="abortButton button"
 				text="{i18n.cancel}"></g:Button>
 		</g:HorizontalPanel>
 
