@@ -4,16 +4,25 @@
 <tiles-definitions>
 
 	<definition name="index" extends="base">
-		<put-attribute name="pagelinks" value="/WEB-INF/views/public/index-pagelinks.jsp" />
+		<put-attribute name="pagelinks" value="/WEB-INF/views/public/indexPageLinks.jsp" />
 		<put-attribute name="header" value="/WEB-INF/views/public/header.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/public/index.jsp" />
 	</definition>
 	
-	<definition name="register" template="/WEB-INF/views/public/register.jsp" />
+	<definition name="register" extends="base">
+		<put-attribute name="pagelinks" value="/WEB-INF/views/public/registerPageLinks.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/public/register.jsp" />
+	</definition>
 
 	<definition name="activate" template="/WEB-INF/views/public/activate.jsp" />
 
-	<definition name="login" template="/WEB-INF/views/public/login.jsp" />
+	
+	<definition name="login" extends="base">
+		<put-attribute name="pagelinks" value="/WEB-INF/views/public/loginPageLinks.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/public/login.jsp" />
+	</definition>
 
 	<definition name="registrationCompleted" template="/WEB-INF/views/public/registrationCompleted.jsp" />
 	
@@ -23,7 +32,11 @@
 	
 	<definition name="exportLandingPage" template="/WEB-INF/views/public/exportLandingPage.jsp" />
 	
-	<definition name="premiumInfo" template="/WEB-INF/views/public/premiumInfo.jsp" />
+	<definition name="premiumInfo" extends="base">
+		<put-attribute name="pagelinks" value="/WEB-INF/views/public/premiumInfoPageLinks.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/public/premiumInfo.jsp" />
+	</definition>
 	
 	<definition name="premiumUpgradeSuccess" template="/WEB-INF/views/public/premiumUpgradeSuccess.jsp" />
 	

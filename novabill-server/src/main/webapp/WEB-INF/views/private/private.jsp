@@ -2,6 +2,7 @@
 <%@page import="org.codehaus.jackson.map.ObjectMapper"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <!doctype html>
 
 <html>
@@ -11,9 +12,9 @@
 
     <link type="text/css" rel="stylesheet" href="css/reset-min.css">
     <link type="text/css" rel="stylesheet" href="css/common.css">
-    <link type="text/css" rel="stylesheet" href="css/private.css">
+    <link type="text/css" rel="stylesheet" href="css/page/private.css">
 
-    <title>NovaBill</title>
+    <title><spring:message code="application_name"></spring:message></title>
     
     <script type="text/javascript">
     	var business = <%=request.getAttribute("business")%>
