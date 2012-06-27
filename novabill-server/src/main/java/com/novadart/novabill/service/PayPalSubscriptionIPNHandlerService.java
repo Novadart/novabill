@@ -2,12 +2,12 @@ package com.novadart.novabill.service;
 
 import java.util.HashMap;
 import java.util.Map;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.RoleTypes;
@@ -37,7 +37,6 @@ public class PayPalSubscriptionIPNHandlerService {
 	
 	public void handle(String transactionType, Map<String, String> parametersMap){
 		if(transactionType.equals(PAYMENT)){
-			LOGGER.info("Handling IPN: payment");
 			handlePayment(parametersMap);
 		}
 	}
