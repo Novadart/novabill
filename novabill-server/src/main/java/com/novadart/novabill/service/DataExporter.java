@@ -2,6 +2,7 @@ package com.novadart.novabill.service;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -15,9 +16,7 @@ import java.util.Locale;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
-
 import javax.annotation.PostConstruct;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -25,14 +24,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
-
-import com.healthmarketscience.rmiio.RemoteInputStreamClient;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.service.PDFGenerator.DocumentType;
 import com.novadart.novabill.shared.client.data.DataExportClasses;
-import com.novadart.services.shared.ImageDTO;
 
 @Service
 public class DataExporter {
@@ -85,13 +82,13 @@ public class DataExporter {
 	}
 	
 	private List<File> exportAccountingDocumentsData(File outDir, ZipOutputStream zipStream, Business business, File tempLogoFile,
-			ImageDTO logoDTO, DocumentType docType, String entryFormat) throws IOException, FileNotFoundException {
+			Logo logo, DocumentType docType, String entryFormat) throws IOException, FileNotFoundException {
 		List<File> files = new ArrayList<File>();
 		Set<? extends AccountingDocument> docs = docType.equals(DocumentType.INVOICE)? business.getInvoices(): business.getEstimations();
 		for(AccountingDocument doc: docs){
 			File docFile;
 			if(tempLogoFile != null)
-				docFile = exportAccountingDocument(outDir, doc, tempLogoFile.getPath(), logoDTO.getWidth(), logoDTO.getHeight(), docType);
+				docFile = exportAccountingDocument(outDir, doc, tempLogoFile.getPath(), logo.getWidth(), logo.getHeight(), docType);
 			else
 				docFile = exportAccountingDocument(outDir, doc, null, null, null, docType);
 			zipStream.putNextEntry(new ZipEntry(String.format(entryFormat, doc.getAccountingDocumentYear(), doc.getDocumentID())));
@@ -103,7 +100,7 @@ public class DataExporter {
 		return files;
 	}
 	
-	public File exportData(Set<DataExportClasses> classes, Business business, ImageDTO logoDTO,
+	public File exportData(Set<DataExportClasses> classes, Business business, Logo logo,
 			ReloadableResourceBundleMessageSource messageSource, Locale locale) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
 		File outDir = new File(dataOutLocation);
 		File zipFile = File.createTempFile("export", ".zip", outDir);
@@ -120,16 +117,16 @@ public class DataExporter {
 				IOUtils.copy(clientDataStream, zipStream);
 				clientDataStream.close();
 			}
-			if(logoDTO != null){
-				tempLogoFile = File.createTempFile("logo", "." + logoDTO.getFormat().name());
+			if(logo != null){
+				tempLogoFile = File.createTempFile("logo", "." + logo.getFormat().name());
 				tempLogoFile.deleteOnExit();
-				IOUtils.copy(RemoteInputStreamClient.wrap(logoDTO.getRemoteImageDataInputStream()), new FileOutputStream(tempLogoFile));
+				IOUtils.copy(new ByteArrayInputStream(logo.getData()), new FileOutputStream(tempLogoFile));
 			}
 			if(classes.contains(DataExportClasses.INVOICE))
-				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logoDTO, DocumentType.INVOICE,
+				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.INVOICE,
 						messageSource.getMessage("export.invoices.zipentry.pattern", null, "invoices/invoice_%d_%d.pdf", locale));
 			if(classes.contains(DataExportClasses.ESTIMATION))
-				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logoDTO, DocumentType.ESTIMATION,
+				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.ESTIMATION,
 						messageSource.getMessage("export.estimations.zipentry.pattern", null, "estimations/estimation_%d_%d.pdf", locale));
 			zipStream.close();
 			return zipFile;

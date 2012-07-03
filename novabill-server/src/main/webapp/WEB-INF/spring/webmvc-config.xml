@@ -109,11 +109,4 @@
 			</list>
 		</property>
 	</bean>
-
-	<bean id="imageStoreService" class="org.springframework.remoting.rmi.RmiProxyFactoryBean">
-		<property name="serviceUrl" value="${url.store_service.serviceUrl}" />
-		<property name="serviceInterface"
-			value="com.novadart.services.shared.ImageStoreService" />
-		<property name="refreshStubOnConnectFailure" value="true" />
-	</bean>
 </beans>

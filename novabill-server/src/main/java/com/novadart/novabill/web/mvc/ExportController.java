@@ -8,11 +8,9 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -23,22 +21,17 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.service.DataExporter;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.data.DataExportClasses;
-import com.novadart.services.shared.ImageDTO;
-import com.novadart.services.shared.ImageStoreService;
 
 @Controller
 @RequestMapping("/private/export")
 public class ExportController extends AbstractXsrfContoller {
 
 	public static final String TOKENS_SESSION_FIELD = "export.data.tokens";
-
-	@Autowired
-	private ImageStoreService imageStoreService;
 
 	@Autowired
 	private UtilsService utilsService;
@@ -92,12 +85,12 @@ public class ExportController extends AbstractXsrfContoller {
 			fileName.append("_estimations");
 		}
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
-		ImageDTO logoDTO = null;
-		if((classes.contains(DataExportClasses.INVOICE) || classes.contains(DataExportClasses.ESTIMATION)) && business.getLogoId() != null)
-			logoDTO = imageStoreService.get(business.getLogoId());
+		Logo logo = null;
+		if(classes.contains(DataExportClasses.INVOICE) || classes.contains(DataExportClasses.ESTIMATION))
+			logo = business.getLogo();
 		File zipFile = null;
 		try{
-			zipFile = dataExporter.exportData(classes, business, logoDTO, messageSource, locale);
+			zipFile = dataExporter.exportData(classes, business, logo, messageSource, locale);
 			response.setContentType("application/zip");
 			response.setHeader ("Content-Disposition", 
 					String.format("attachment; filename=\"%s\"", fileName.toString()+".zip"));

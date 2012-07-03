@@ -22,6 +22,7 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
@@ -123,9 +124,6 @@ public class Business implements Serializable {
     
     private Long creationTime = System.currentTimeMillis();
     
-    @Column(precision = 29, scale = 0)
-    private BigInteger logoId;
-    
     private Long lastLogin;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
@@ -145,6 +143,9 @@ public class Business implements Serializable {
 
     @ElementCollection
     private Set<RoleTypes> grantedRoles = new HashSet<RoleTypes>();
+    
+    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "business")
+    private Logo logo;
     
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
@@ -391,14 +392,6 @@ public class Business implements Serializable {
         this.creationTime = creationTime;
     }
     
-    public BigInteger getLogoId() {
-        return this.logoId;
-    }
-    
-    public void setLogoId(BigInteger logoId) {
-        this.logoId = logoId;
-    }
-    
     public Long getLastLogin() {
 		return lastLogin;
 	}
@@ -453,6 +446,14 @@ public class Business implements Serializable {
     
     public void setGrantedRoles(Set<RoleTypes> grantedRoles) {
         this.grantedRoles = grantedRoles;
+    }
+    
+    public Logo getLogo(){
+    	return this.logo;
+    }
+    
+    public void setLogo(Logo logo){
+    	this.logo = logo;
     }
     
     /*

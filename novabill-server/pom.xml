@@ -290,10 +290,6 @@
 			<groupId>org.apache.velocity</groupId>
 			<artifactId>velocity</artifactId>
 		</dependency>
-		<dependency>
-			<groupId>com.paypal.sdk.express-checkout</groupId>
-			<artifactId>paypal-express-checkout</artifactId>
-		</dependency>
 	</dependencies>
 
 	<build>

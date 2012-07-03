@@ -377,11 +377,6 @@
 				<artifactId>velocity</artifactId>
 				<version>1.7</version>
 			</dependency>
-			<dependency>
-				<groupId>com.paypal.sdk.express-checkout</groupId>
-				<artifactId>paypal-express-checkout</artifactId>
-				<version>4302012</version>
-			</dependency>
 		</dependencies>
 	</dependencyManagement>
 

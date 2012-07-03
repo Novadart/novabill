@@ -1,15 +1,14 @@
 package com.novadart.novabill.web.mvc;
 
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.security.NoSuchAlgorithmException;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,19 +18,16 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
-
-import com.healthmarketscience.rmiio.RemoteInputStreamClient;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.service.PDFGenerator;
 import com.novadart.novabill.service.PDFGenerator.DocumentType;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.services.shared.ImageDTO;
-import com.novadart.services.shared.ImageStoreService;
 
 @Controller
 @RequestMapping("/private/pdf")
@@ -44,9 +40,6 @@ public class PDFController extends AbstractXsrfContoller{
 	
 	@Autowired
 	private UtilsService utilsService;
-	
-	@Autowired
-	private ImageStoreService imageStoreService;
 	
 	@Override
 	protected String getTokensSessionField() {
@@ -91,14 +84,13 @@ public class PDFController extends AbstractXsrfContoller{
 		if(!business.getId().equals(invoiceOwner.getId()))
 			throw new DataAccessException();
 		File tempLogoFile = null;
-		ImageDTO logoDTO = null;
+		Logo logo = business.getLogo();
 		try {
-			if(business.getLogoId() != null) //business has logo
+			if(logo != null) //business has logo
 			{
-				logoDTO = imageStoreService.get(business.getLogoId());
-				tempLogoFile = File.createTempFile("logo", "." + logoDTO.getFormat().name());
+				tempLogoFile = File.createTempFile("logo", "." + logo.getFormat().name());
 				tempLogoFile.deleteOnExit();
-				IOUtils.copy(RemoteInputStreamClient.wrap(logoDTO.getRemoteImageDataInputStream()), new FileOutputStream(tempLogoFile));
+				IOUtils.copy(new ByteArrayInputStream(logo.getData()), new FileOutputStream(tempLogoFile));
 			}
 			PDFGenerator.BeforeWriteEventHandler bwEvHnld = new PDFGenerator.BeforeWriteEventHandler() {
 				@Override
@@ -113,7 +105,7 @@ public class PDFController extends AbstractXsrfContoller{
 			if(tempLogoFile == null)
 				pdfGenerator.createAndWrite(response.getOutputStream(), invoice, null, null, null, docType, bwEvHnld);
 			else
-				pdfGenerator.createAndWrite(response.getOutputStream(), invoice, tempLogoFile.getPath(), logoDTO.getWidth(), logoDTO.getHeight(), docType, bwEvHnld);
+				pdfGenerator.createAndWrite(response.getOutputStream(), invoice, tempLogoFile.getPath(), logo.getWidth(), logo.getHeight(), docType, bwEvHnld);
 		} finally {
 			if(tempLogoFile != null)
 				tempLogoFile.delete();

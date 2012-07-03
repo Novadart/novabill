@@ -1,15 +1,13 @@
 package com.novadart.novabill.web.mvc;
 
 import java.awt.Dimension;
+import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import java.math.BigInteger;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -17,20 +15,18 @@ import org.im4java.core.IM4JavaException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.healthmarketscience.rmiio.RemoteInputStreamClient;
-import com.healthmarketscience.rmiio.SimpleRemoteInputStream;
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Logo;
+import com.novadart.novabill.domain.Logo.LogoFormat;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
-import com.novadart.services.shared.ImageDTO;
-import com.novadart.services.shared.ImageStoreService;
 import com.novadart.utils.image.ImageFormat;
 import com.novadart.utils.image.ImageUtils;
 
@@ -40,10 +36,7 @@ public class BusinessLogoController {
 	
 	public static final int LOGO_SIZE_LIMIT = 1024 * 1024; // 1MB
 	
-	public static final ImageFormat DEFAULT_FORMAT = ImageFormat.JPEG;
-	
-	@Autowired
-	private ImageStoreService imageStoreService;
+	public static final LogoFormat DEFAULT_FORMAT = LogoFormat.JPEG;
 	
 	@Autowired
 	private UtilsService utilsService;
@@ -58,14 +51,14 @@ public class BusinessLogoController {
 	@ResponseBody
 	public void getLogo(HttpServletResponse response) throws IOException{
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
-		if(business.getLogoId() == null){
+		Logo logo = business.getLogo();
+		if(logo == null){
 			response.setStatus(HttpStatus.NOT_FOUND.value());
 			return;
 		}
-		ImageDTO logoDTO = imageStoreService.get(business.getLogoId());
-		InputStream is = RemoteInputStreamClient.wrap(logoDTO.getRemoteImageDataInputStream());
-		response.setContentType("image/" + logoDTO.getFormat().name().toLowerCase());
-		response.setHeader ("Content-Disposition", String.format("attachment; filename=\"%s\"", logoDTO.getName()));
+		InputStream is = new ByteArrayInputStream(logo.getData());
+		response.setContentType("image/" + logo.getFormat().name().toLowerCase());
+		response.setHeader ("Content-Disposition", String.format("attachment; filename=\"%s\"", logo.getName()));
 		IOUtils.copy(is, response.getOutputStream());
 	}
 	
@@ -78,6 +71,7 @@ public class BusinessLogoController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
+	@Transactional
 	public String uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
 		if(!ServletFileUpload.isMultipartContent(request))
 			return String.valueOf(LogoUploadStatus.ILLEGAL_REQUEST.ordinal());
@@ -97,24 +91,21 @@ public class BusinessLogoController {
 			}
 		if(!acceptedFormat)
 			throw new IllegalArgumentException("Image type not supported");
-		ImageDTO imageDTO = new ImageDTO();
-		imageDTO.setName(FilenameUtils.removeExtension(FilenameUtils.getName(file.getOriginalFilename())) + "." + DEFAULT_FORMAT.name());
-		imageDTO.setFormat(DEFAULT_FORMAT);
+		Logo logo = new Logo();
+		logo.setName(FilenameUtils.removeExtension(FilenameUtils.getName(file.getOriginalFilename())) + "." + DEFAULT_FORMAT.name());
+		logo.setFormat(DEFAULT_FORMAT);
 		File inFile = null, outFile = null;
 		try{
 			inFile = createTempFile("." + subtype, true);
 			file.transferTo(inFile);
 			outFile = createTempFile("." + DEFAULT_FORMAT.name(), true);
 			Dimension imageDim = ImageUtils.resizeConvertImage(inFile, Integer.MAX_VALUE, Integer.MAX_VALUE, outFile);
-			imageDTO.setWidth(imageDim.width);
-			imageDTO.setHeight(imageDim.height);
-			imageDTO.setRemoteImageDataInputStream(new SimpleRemoteInputStream(new FileInputStream(outFile)).export());
+			logo.setWidth(imageDim.width);
+			logo.setHeight(imageDim.height);
+			logo.setData(IOUtils.toByteArray(new FileInputStream(outFile)));
 			Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
-			BigInteger oldLogoId = business.getLogoId();
-			business.setLogoId(imageStoreService.put(imageDTO));
-			business.flush();
-			if(oldLogoId != null)//changes to business successful - remove old logo, if any
-				imageStoreService.delete(oldLogoId);
+			business.setLogo(logo);
+			logo.setBusiness(business);
 		} catch (IOException e) {
 			return String.valueOf(LogoUploadStatus.INTERNAL_ERROR.ordinal());
 		} catch (InterruptedException e) {
