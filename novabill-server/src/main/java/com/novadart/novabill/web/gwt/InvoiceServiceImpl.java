@@ -1,10 +1,14 @@
 package com.novadart.novabill.web.gwt;
 
+import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
+
 import com.novadart.novabill.annotation.CheckQuotas;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -25,6 +29,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.QuotaException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
+import com.novadart.novabill.web.mvc.PDFController;
 
 @SuppressWarnings("serial")
 public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, InvoiceServiceImpl> implements InvoiceService {
@@ -34,6 +39,9 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	
 	@Autowired
 	private InvoiceValidator validator;
+	
+	@Autowired
+	private PDFController pdfController;
 
 	public InvoiceServiceImpl() {
 		super(InvoiceService.class);
@@ -172,6 +180,12 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(invoice.getBusiness().getId()))
 			throw new DataAccessException();
 		invoice.setPayed(value);
+	}
+
+	@Override
+	public String generatePDFToken() throws NotAuthenticatedException, ConcurrentAccessException, NoSuchAlgorithmException {
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		return pdfController.generateToken(attr.getRequest().getSession());
 	}
 	
 }
