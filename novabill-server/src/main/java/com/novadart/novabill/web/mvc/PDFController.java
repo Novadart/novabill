@@ -26,12 +26,13 @@ import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.service.PDFGenerator;
 import com.novadart.novabill.service.PDFGenerator.DocumentType;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.XsrfTokenService;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 
 @Controller
 @RequestMapping("/private/pdf")
-public class PDFController extends AbstractXsrfContoller{
+public class PDFController{
 	
 	public static final String TOKENS_SESSION_FIELD = "pdf.generation.tokens";
 	
@@ -41,10 +42,9 @@ public class PDFController extends AbstractXsrfContoller{
 	@Autowired
 	private UtilsService utilsService;
 	
-	@Override
-	protected String getTokensSessionField() {
-		return TOKENS_SESSION_FIELD;
-	}
+	@Autowired
+	private XsrfTokenService xsrfTokenService;
+	
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/landing/{document}/{id}")
 	public ModelAndView getPDFLandingPage(@PathVariable String document, @PathVariable long id) throws NoSuchAlgorithmException{
@@ -58,7 +58,7 @@ public class PDFController extends AbstractXsrfContoller{
 	@ResponseBody
 	public void getInvoicePDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token,
 			final HttpServletResponse response, HttpSession session) throws IOException, DataAccessException, NoSuchObjectException{
-		if(token == null || !verifyAndRemoveToken(token, session))
+		if(token == null || !xsrfTokenService.verifyAndRemoveToken(token, session, TOKENS_SESSION_FIELD))
 			return;
 		final Invoice invoice = Invoice.findInvoice(id);
 		if(invoice == null)
@@ -70,7 +70,7 @@ public class PDFController extends AbstractXsrfContoller{
 	@ResponseBody
 	public void getEstimationPDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token, 
 			final HttpServletResponse response, HttpSession session) throws IOException, DataAccessException, NoSuchObjectException{
-		if(token == null || !verifyAndRemoveToken(token, session))
+		if(token == null || !xsrfTokenService.verifyAndRemoveToken(token, session, TOKENS_SESSION_FIELD))
 			return;
 		final Estimation estimation = Estimation.findEstimation(id);
 		if(estimation == null)

@@ -8,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import com.novadart.novabill.annotation.CheckQuotas;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -19,6 +18,7 @@ import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
 import com.novadart.novabill.quota.NumberOfInvoicesPerYearQuotaReachedChecker;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.XsrfTokenService;
 import com.novadart.novabill.service.validator.InvoiceValidator;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
@@ -41,7 +41,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	private InvoiceValidator validator;
 	
 	@Autowired
-	private PDFController pdfController;
+	private XsrfTokenService xsrfTokenService;
 
 	public InvoiceServiceImpl() {
 		super(InvoiceService.class);
@@ -185,7 +185,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	@Override
 	public String generatePDFToken() throws NotAuthenticatedException, ConcurrentAccessException, NoSuchAlgorithmException {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-		return pdfController.generateToken(attr.getRequest().getSession());
+		return xsrfTokenService.generateToken(attr.getRequest().getSession(), PDFController.TOKENS_SESSION_FIELD);
 	}
 	
 }

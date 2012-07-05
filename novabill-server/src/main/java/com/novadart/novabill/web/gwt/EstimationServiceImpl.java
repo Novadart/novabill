@@ -19,6 +19,7 @@ import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
 import com.novadart.novabill.quota.NumberOfEstimationsPerYearQuotaReachedChecker;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.XsrfTokenService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
@@ -42,8 +43,8 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	private AccountingDocumentValidator validator;
 	
 	@Autowired
-	private PDFController pdfController;
-
+	private XsrfTokenService xsrfTokenService;
+	
 	public EstimationServiceImpl() {
 		super(EstimationService.class);
 	}
@@ -143,7 +144,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	@Override
 	public String generatePDFToken() throws NotAuthenticatedException, ConcurrentAccessException, NoSuchAlgorithmException {
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-		return pdfController.generateToken(attr.getRequest().getSession());
+		return xsrfTokenService.generateToken(attr.getRequest().getSession(), PDFController.TOKENS_SESSION_FIELD);
 	}
 
 }
