@@ -1,7 +1,6 @@
 package com.novadart.novabill.frontend.client.util;
 
 import com.google.gwt.core.client.GWT;
-
 public class PDFUtils {
 
 	private static final String EXPORT_REQUEST = 

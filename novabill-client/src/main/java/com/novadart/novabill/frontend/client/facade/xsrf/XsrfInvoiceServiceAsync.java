@@ -185,5 +185,21 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 			}
 		});
 	}
+	
+	@Override
+	public void generatePDFToken(final AsyncCallback<String> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate() {
+
+			@Override
+			public void performCall() {
+				invoice.generatePDFToken(callback);
+			}
+
+			@Override
+			public void manageException(final Throwable caught) {
+				callback.onFailure(caught);
+			}
+		});
+	}
 
 }

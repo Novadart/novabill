@@ -112,6 +112,22 @@ EstimationServiceAsync {
 			}
 		});
 	}
+	
+	@Override
+	public void generatePDFToken(final AsyncCallback<String> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate() {
+
+			@Override
+			public void performCall() {
+				estimation.generatePDFToken(callback);
+			}
+
+			@Override
+			public void manageException(final Throwable caught) {
+				callback.onFailure(caught);
+			}
+		});
+	}
 
 	@Override
 	protected void setXsrfToken(final XsrfToken token) {
