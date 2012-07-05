@@ -8,7 +8,7 @@ public class ExportUtils {
 	private static final String EXPORT_REQUEST = 
 			GWT.getHostPageBaseURL()+"private/export/landing?clients={c}&invoices={i}&estimations={e}";
 	
-	private static final String POPUP_PARAMS = "width=380px,height=260px,top=10px,left=10px,status=0,menubar=0,scrollbars=0,location=0";
+	private static final String POPUP_PARAMS = "width=640px,height=480px,top=10px,left=10px,status=0,menubar=0,scrollbars=0,location=0";
 
 	
 	public static void exportData(boolean clients, boolean invoices, boolean estimations){

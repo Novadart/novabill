@@ -6,6 +6,7 @@
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+<link rel="stylesheet" type="text/css" href="<%=request.getContextPath()%>/css/common.css" />
 
 <style type="text/css">
 img#pdfImage {
@@ -16,10 +17,21 @@ img#pdfImage {
 
 div#message {
 	text-align: center;
-	margin-top: 15px;
+	margin-top: 20px;
 	font-family: Arial, serif;
 	font-size: 25px;
 	text-shadow: #CCC 2px 2px;
+}
+
+div#close {
+	margin: 15px auto 0;
+	display: block;
+	cursor: pointer;
+}
+
+body {
+	margin: 0;
+	min-height: 0;
 }
 </style>
 
@@ -30,10 +42,11 @@ div#message {
 			src="<%=request.getContextPath()%>/images/pdf-download.gif">
 	</div>
 	<div id="message">Preparing PDF...</div>
+	<div id="close" class="action-button" style="display:none;">Close</div>
 
 	<script type="text/javascript">
 	var secs = 0;
-	var autocloseSecs = 5;
+	var autocloseSecs = 15;
 	
 	function updateLabel(){
 		if(autocloseSecs-secs <= 0){
@@ -48,10 +61,15 @@ div#message {
 	var contextPath = '<%=request.getContextPath()%>';
 	var id = '<%=request.getAttribute("id")%>';
 	var docType = '<%=request.getAttribute("document")%>';
+	$('div#close').click(function(){
+		window.close();
+	});
+	
 	$.get(contextPath+'/private/pdf/token', function(data){
 		var pdfUrl = contextPath+'/private/pdf/'+docType+'/'+id+'?token='+encodeURIComponent(data);
 		window.location.assign(pdfUrl);
-		setInterval(updateLabel, 1000);
+		$('div#close').removeAttr('style');
+		setInterval(updateLabel, 1000);			
 	});
 	</script>
 
