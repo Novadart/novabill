@@ -15,7 +15,7 @@
 	
 	<definition name="paypalSubscriptionRequest" template="/WEB-INF/views/paypalSubscriptionRequest.jsp" />
 
-	<definition name="error" template="/WEB-INF/views/error.jspx" />
+	<definition name="error" template="/WEB-INF/views/error.jsp" />
 	
 	<definition name="pdfLandingPage" template="/WEB-INF/views/pdfLandingPage.jsp" />
 	
