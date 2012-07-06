@@ -19,6 +19,4 @@ public interface EstimationServiceAsync {
 
 	void getNextEstimationId(AsyncCallback<Long> callback);
 
-	void generatePDFToken(AsyncCallback<String> callback);
-
 }

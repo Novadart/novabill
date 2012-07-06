@@ -1,8 +1,6 @@
 package com.novadart.novabill.shared.client.facade;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.List;
-
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
@@ -29,7 +27,5 @@ public interface EstimationService extends RemoteService {
 	public void update(EstimationDTO estimationDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException, ValidationException;
 	
 	public Long getNextEstimationId() throws NotAuthenticatedException, ConcurrentAccessException;
-	
-	public String generatePDFToken() throws NotAuthenticatedException, ConcurrentAccessException, NoSuchAlgorithmException;
 	
 }

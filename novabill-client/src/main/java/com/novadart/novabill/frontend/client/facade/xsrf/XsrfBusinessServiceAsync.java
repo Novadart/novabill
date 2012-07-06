@@ -113,6 +113,16 @@ BusinessServiceAsync {
 			}
 		});
 	}
+	
+	@Override
+	public void generateExportToken(AsyncCallback<String> callback) {
+		business.generateExportToken(callback);
+	}
+	
+	@Override
+	public void generatePDFToken(AsyncCallback<String> callback) {
+		business.generatePDFToken(callback);
+	}
 
 	@Override
 	protected void setXsrfToken(final XsrfToken token) {

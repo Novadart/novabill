@@ -13,7 +13,7 @@ public class PDFUtils {
 
 
 	public static void generateInvoicePdf(final long id){
-		ServerFacade.invoice.generatePDFToken(new WrappedAsyncCallback<String>() {
+		ServerFacade.business.generatePDFToken(new WrappedAsyncCallback<String>() {
 
 			@Override
 			public void onSuccess(String result) {
@@ -31,7 +31,7 @@ public class PDFUtils {
 	}
 
 	public static void generateEstimationPdf(final long id){
-		ServerFacade.invoice.generatePDFToken(new WrappedAsyncCallback<String>() {
+		ServerFacade.business.generatePDFToken(new WrappedAsyncCallback<String>() {
 
 			@Override
 			public void onSuccess(String result) {

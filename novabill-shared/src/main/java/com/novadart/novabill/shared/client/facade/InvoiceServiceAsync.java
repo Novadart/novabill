@@ -29,6 +29,4 @@ public interface InvoiceServiceAsync {
 
 	void setPayed(Long id, Boolean value, AsyncCallback<Void> callback);
 
-	void generatePDFToken(AsyncCallback<String> callback);
-
 }
