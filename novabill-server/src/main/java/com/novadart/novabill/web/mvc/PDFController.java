@@ -89,7 +89,7 @@ public class PDFController{
 				public void beforeWriteCallback(File file) {
 					String fileName = String.format(docType == DocumentType.INVOICE? "invoice-%s-%s.pdf": "estimation-%s-%s.pdf",
 							invoice.getAccountingDocumentYear().toString(), invoice.getDocumentID().toString());
-					response.setContentType("application/pdf");
+					response.setContentType("application/octet-stream");
 					response.setHeader ("Content-Disposition", String.format("attachment; filename=\"%s\"", fileName));
 					response.setHeader ("Content-Length", String.valueOf(file.length()));
 				}
