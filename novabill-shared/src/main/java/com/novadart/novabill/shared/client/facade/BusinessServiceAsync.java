@@ -20,4 +20,8 @@ public interface BusinessServiceAsync {
 
 	void getStats(AsyncCallback<BusinessStatsDTO> callback);
 
+	void generatePDFToken(AsyncCallback<String> callback);
+
+	void generateExportToken(AsyncCallback<String> callback);
+
 }

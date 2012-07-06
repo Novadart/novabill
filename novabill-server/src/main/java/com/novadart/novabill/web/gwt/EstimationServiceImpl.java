@@ -1,15 +1,10 @@
 package com.novadart.novabill.web.gwt;
 
-import java.security.NoSuchAlgorithmException;
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.context.request.RequestContextHolder;
-import org.springframework.web.context.request.ServletRequestAttributes;
-
 import com.novadart.novabill.annotation.CheckQuotas;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -19,7 +14,6 @@ import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
 import com.novadart.novabill.quota.NumberOfEstimationsPerYearQuotaReachedChecker;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.XsrfTokenService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
@@ -30,7 +24,6 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.QuotaException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.EstimationService;
-import com.novadart.novabill.web.mvc.PDFController;
 
 public class EstimationServiceImpl extends AbstractGwtController<EstimationService, EstimationServiceImpl> implements EstimationService {
 	
@@ -41,9 +34,6 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	
 	@Autowired
 	private AccountingDocumentValidator validator;
-	
-	@Autowired
-	private XsrfTokenService xsrfTokenService;
 	
 	public EstimationServiceImpl() {
 		super(EstimationService.class);
@@ -139,12 +129,6 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	@Override
 	public Long getNextEstimationId() throws NotAuthenticatedException, ConcurrentAccessException {
 		return utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getNextEstimationDocumentID();
-	}
-
-	@Override
-	public String generatePDFToken() throws NotAuthenticatedException, ConcurrentAccessException, NoSuchAlgorithmException {
-		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
-		return xsrfTokenService.generateToken(attr.getRequest().getSession(), PDFController.TOKENS_SESSION_FIELD);
 	}
 
 }
