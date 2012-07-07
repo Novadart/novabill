@@ -259,6 +259,10 @@ textarea:HOVER {
 	padding: 0.8em 2em;
 }
 
+.HomeView .welcomeMessage {
+	width: 60%;
+}
+
 .HomeView .listWrapper {
 	width: 60%;
 }
@@ -270,6 +274,32 @@ textarea:HOVER {
 .HomeView .clientList {
 	
 }
+
+.HomeView .showMore {
+	text-align: center;
+	margin-top: 1em;
+}
+
+.HomeView .showMore .ShowMoreButton-button {
+	width: 25%;
+}
+
+.HomeView .showMore .ShowMoreButton-loader{
+	
+}
+
+.HomeView .currentDate {
+	text-align: right;	
+	color: #333;
+}
+
+.HomeView .currentDate .date {
+	margin-right: 1em;
+}
+
+.HomeView .currentDate .time {
+}
+
 
 .MainWidget .centerContainer {
 	padding: 1em;
@@ -1016,3 +1046,5 @@ td.datePickerMonth {
 .GoPremiumDialog .noThanks:HOVER {
 	text-decoration: underline;
 }
+
+
