@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
-
+import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Registration;
 
 @Service
@@ -24,6 +24,8 @@ public class RegistrationValidator {
 			errors.rejectValue("password", "size.length.password", new Object[]{MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH}, null);
 		if(!registration.getPassword().equals(registration.getConfirmPassword()))
 			errors.rejectValue("confirmPassword", "password.mismatch");
+		if(Business.findByEmail(registration.getEmail()) != null)
+				errors.rejectValue("email", "email.exists");
 	}
 
 }

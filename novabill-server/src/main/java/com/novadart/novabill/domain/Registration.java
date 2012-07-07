@@ -1,6 +1,7 @@
 package com.novadart.novabill.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -38,6 +39,8 @@ public class Registration implements Serializable{
 	
 	private String confirmPassword;
 	
+	private Date expirationDate;
+	
 	private Long creationTime = System.currentTimeMillis();
 	
 	@Size(max = 64)
@@ -58,6 +61,7 @@ public class Registration implements Serializable{
 		registration.setPassword(password);
 		registration.setConfirmPassword(confirmPassword);
 		registration.setActivationToken(activationToken);
+		registration.setExpirationDate(expirationDate);
 		registration.creationTime = creationTime;
 		return registration;
 	}
@@ -93,10 +97,18 @@ public class Registration implements Serializable{
 		this.confirmPassword = confirmPassword;
 	}
 	
+	public Date getExpirationDate() {
+		return expirationDate;
+	}
+	
+	public void setExpirationDate(Date expirationDate){
+		this.expirationDate = expirationDate;
+	}
+	
 	public Long getCreationTime() {
 		return creationTime;
 	}
-	
+
 	public String getActivationToken() {
 		return activationToken;
 	}
