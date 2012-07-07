@@ -42,5 +42,9 @@
 	
 	<definition name="premiumUpgradeFailure" template="/WEB-INF/views/public/premiumUpgradeFailure.jsp" />
 	
+	<definition name="forgotPassword" template="/WEB-INF/views/public/forgotPassword.jsp"/>
+	
+	<definition name="passwordRecoveryCommenced" template="/WEB-INF/views/public/passwordRecoveryCommenced.jsp"/>
+	
 </tiles-definitions>
 
