@@ -464,6 +464,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		number.reset();
 		number.setVisible(true);
 		payment.setVisible(true);
+		payment.reset();
 		createEstimate.setVisible(false);
 		createInvoice.setVisible(false);
 		modifyDocument.setVisible(false);
