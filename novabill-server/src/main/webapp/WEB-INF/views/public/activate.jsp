@@ -12,13 +12,12 @@
 <title>Activate</title>
 </head>
 <body>
-	
-	<c:if test="${not empty error and error}">
-      <p style="color: red;">
-        <spring:message code="incorrect.password" />
-      </p>
-    </c:if>
-	
+
+	<c:if test="${not empty wrongPassword and wrongPassword}">
+		<p style="color: red;">
+			<spring:message code="incorrect.password" />
+		</p>
+	</c:if>
 	<form action="${activateUrl}" method="post">
 		<table>
 			<tr>
@@ -27,13 +26,11 @@
 			</tr>
 			<tr>
 				<td>Password:</td>
-				<td><input name="j_password" type="password" />
-				</td>
+				<td><input name="j_password" type="password" /></td>
 			</tr>
 		</table>
-		<input type="hidden" name="j_username" value="${registration.email}"/>
-		<input type="submit" value="Activate" /> 
+		<input type="hidden" name="j_username" value="${registration.email}" />
+		<input type="submit" value="Activate" />
 	</form>
-
 </body>
 </html>

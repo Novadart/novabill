@@ -1,5 +1,7 @@
 package com.novadart.novabill.web.mvc;
 
+import java.util.Date;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -21,8 +23,16 @@ public class ActivateAccountController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model){
+		if(Business.findByEmail(email) != null) //registered user already exists
+			return "invalidActivationRequest";
 		try {
-			model.addAttribute("registration", Registration.findRegistration(email, token));
+			Registration registration = Registration.findRegistration(email, token);
+			if(registration.getExpirationDate().before(new Date())){ //expired
+				registration.remove();
+				return "invalidActivationRequest";
+			}
+			model.addAttribute("registration", registration);
+			
 		} catch (Exception e) {
 			return "invalidActivationRequest";
 		}
@@ -33,11 +43,10 @@ public class ActivateAccountController {
 	@Transactional(readOnly = false)
 	public String processSubmit(@RequestParam("j_username") String j_username, @RequestParam("j_password") String j_password,
 			@ModelAttribute("registration") Registration registration, Model model, SessionStatus status) throws CloneNotSupportedException{
-		
 		Registration activationRequest = (Registration)registration.clone();
 		activationRequest.setPassword(j_password);
 		if(!activationRequest.getPassword().equals(registration.getPassword())){
-			model.addAttribute("error", true);
+			model.addAttribute("wrongPassword", true);
 			return "activate";
 		}
 		Business business = new Business(registration);

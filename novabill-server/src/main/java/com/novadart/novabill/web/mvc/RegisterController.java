@@ -3,6 +3,7 @@ package com.novadart.novabill.web.mvc;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
@@ -33,6 +34,8 @@ import com.novadart.novabill.service.validator.RegistrationValidator;
 @MailMixin
 public class RegisterController{
 	
+	private static final Long MILLISECS_PER_HOUR = 60 * 1000l;
+	
 	@Autowired
 	private RegistrationValidator validator;
 	
@@ -44,6 +47,9 @@ public class RegisterController{
 	
 	@Value("${activation.url.pattern}")
 	private String activationUrlPattern;
+	
+	@Value("${activation.period}")
+	private Integer activationPeriod;
 	
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -62,6 +68,7 @@ public class RegisterController{
 		String activationLink = String.format(activationUrlPattern,
 				URLEncoder.encode(registration.getEmail(), "UTF-8"), URLEncoder.encode(registration.getActivationToken(), "UTF-8"));
 		templateVars.put("activationLink", activationLink);
+		templateVars.put("activationPeriod", activationPeriod);
 		sendMessage(registration.getEmail(), messageSource.getMessage("activation.notification", null, locale), templateVars, "mail-templates/activation-notification.vm");
 	}
 	
@@ -76,6 +83,7 @@ public class RegisterController{
 			registration.setPassword(rawRassword); //force hashing
 			registration.setConfirmPassword(rawRassword); //force hashing
 			registration.setActivationToken(tokenGenerator.generateToken());
+			registration.setExpirationDate(new Date(System.currentTimeMillis() + activationPeriod * MILLISECS_PER_HOUR));
 			sendActivationMail(registration.merge(), locale);
 			status.setComplete();
 			return "redirect:/registrationCompleted";

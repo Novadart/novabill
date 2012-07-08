@@ -14,6 +14,11 @@ hibernate.search.default.indexBase.value=/var/novabill/lucene.indexBase
 hibernate.show_sql.value=true
 
 activation.url.pattern.value=http://localhost:8080/novabill-server/activate?email=%s&token=%s
+#in hours
+activation.period.value=24
+password.recovery.url.pattern.value=http://localhost:8080/novabill-server/password-recovery?email=%s&token=%s
+#in hours
+password.recovery.period.value=24
 
 smtp.auth.enabled.value=false
 smtp.host.value=localhost

@@ -3,7 +3,6 @@ package com.novadart.novabill.domain;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
-import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashSet;
@@ -11,7 +10,6 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -26,8 +24,8 @@ import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-
 import org.apache.commons.lang.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -45,10 +43,8 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.novadart.novabill.annotation.Hash;
 import com.novadart.novabill.domain.security.RoleTypes;
 import com.novadart.utils.fts.TermValueFilterFactory;
@@ -74,24 +70,24 @@ public class Business implements Serializable {
 	}
 
 	@Size(max = 255)
-	@NotBlank
-    private String name;
+	@NotNull
+    private String name = "";
 
     @Size(max = 255)
-    @NotBlank
-    private String address;
+    @NotNull
+    private String address = "";
 
     @Size(max = 10)
-    @NotBlank
-    private String postcode;
+    @NotNull
+    private String postcode = "";
 
     @Size(max = 60)
-    @NotBlank
-    private String city;
+    @NotNull
+    private String city = "";
 
     @Size(max = 2)
-    @NotBlank
-    private String province;
+    @NotNull
+    private String province = "";
 
     @Size(max = 200)
     private String country;
@@ -226,6 +222,12 @@ public class Business implements Serializable {
     @Transactional(readOnly = true)
     public List<Estimation> getEstimationsForYear(int year){
     	return getAccountingDocumentForYear(getEstimations().iterator(), year);
+    }
+    
+    public static Business findByEmail(String email){
+    	String query = "select b from Business b where b.email = :email";
+    	List<Business> result = entityManager().createQuery(query, Business.class).setParameter("email", email).getResultList();
+    	return result.size() == 0? null: result.get(0);
     }
 
 	@Override

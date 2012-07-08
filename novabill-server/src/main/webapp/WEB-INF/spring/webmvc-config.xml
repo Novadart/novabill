@@ -45,6 +45,7 @@
 	<mvc:view-controller path="/dataAccessFailure" />
 	<mvc:view-controller path="/concurentAccess" />
 	<mvc:view-controller path="/registrationCompleted" />
+	<mvc:view-controller path="/passwordRecoveryCommenced" />
 	<mvc:view-controller path="/premiumInfo"/>
 
 	<!-- Resolves localized messages*.properties and application.properties 
