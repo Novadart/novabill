@@ -7,6 +7,7 @@ import com.google.gwt.view.client.HasData;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
 
 public class ClientDataProvider extends AsyncDataProvider<ClientDTO> {
 	
@@ -51,12 +52,12 @@ public class ClientDataProvider extends AsyncDataProvider<ClientDTO> {
 			
 		} else {
 			
-			ServerFacade.client.searchClients(query, new WrappedAsyncCallback<List<ClientDTO>>() {
+			ServerFacade.client.searchClients(query, 0, 99999, new WrappedAsyncCallback<PageDTO<ClientDTO>>() {
 
 				@Override
-				public void onSuccess(List<ClientDTO> result) {
-					updateRowData(start, result);
-					watcher.onServerCallComplete(result.size()>0);
+				public void onSuccess(PageDTO<ClientDTO> result) {
+					updateRowData(start, result.getItems());
+					watcher.onServerCallComplete(result.getItems().size()>0);
 				}
 
 				@Override

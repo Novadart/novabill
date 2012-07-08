@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.HasRpcToken;
 import com.google.gwt.user.client.rpc.XsrfToken;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 import com.novadart.novabill.shared.client.facade.InvoiceServiceAsync;
 
@@ -138,7 +139,7 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 
 	@Override
 	public void getAllForClientInRange(final long id, final int start, final int length,
-			final AsyncCallback<List<InvoiceDTO>> callback) {
+			final AsyncCallback<PageDTO<InvoiceDTO>> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate() {
 
 			@Override

@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.HasRpcToken;
 import com.google.gwt.user.client.rpc.XsrfToken;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.facade.ClientService;
 import com.novadart.novabill.shared.client.facade.ClientServiceAsync;
 
@@ -113,13 +114,13 @@ ClientServiceAsync {
 	}
 
 	@Override
-	public void searchClients(final String query,
-			final AsyncCallback<List<ClientDTO>> callback) {
+	public void searchClients(final String query, final int start, final int offset,
+			final AsyncCallback<PageDTO<ClientDTO>> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate() {
 
 			@Override
 			public void performCall() {
-				client.searchClients(query, callback);
+				client.searchClients(query, start, offset, callback);
 			}
 
 			@Override
