@@ -15,8 +15,6 @@ public class QuickViewList<T> extends CellList<T> {
 		super(cell, QuickViewListResources.INSTANCE);
 		
 		setSelectionModel(new NoSelectionModel<T>());
-		setPageSize(10);
-		
 		setStyleName("QuickViewList");
 	}
 	

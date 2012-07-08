@@ -5,7 +5,7 @@ import com.google.gwt.user.client.ui.RootPanel;
 
 public class FileDownloadUtils {
 	
-	private static Frame hiddenFrame = new Frame();
+	private static final Frame hiddenFrame = new Frame();
 	
 	static {
 		hiddenFrame.setVisible(false);
