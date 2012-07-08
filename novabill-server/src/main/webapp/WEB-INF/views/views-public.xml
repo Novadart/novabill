@@ -46,5 +46,11 @@
 	
 	<definition name="passwordRecoveryCommenced" template="/WEB-INF/views/public/passwordRecoveryCommenced.jsp"/>
 	
+	<definition name="passwordRecovery" template="/WEB-INF/views/public/passwordRecovery.jsp"/>
+	
+	<definition name="invalidForgotPasswordRequest" template="/WEB-INF/views/public/invalidForgotPasswordRequest.jsp"/>
+	
+	<definition name="passwordRecoverySuccess" template="/WEB-INF/views/public/passwordRecoverySuccess.jsp"/>
+	
 </tiles-definitions>
 

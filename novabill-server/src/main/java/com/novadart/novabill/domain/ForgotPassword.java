@@ -19,6 +19,18 @@ public class ForgotPassword extends EmailPasswordHolder implements Serializable 
 		this.confirmPassword = confirmPassword;
 	}
 	
+	public static ForgotPassword findForgotPassword(String email, String token){
+		String query = "select fp from ForgotPassword fp where fp.email = :email and fp.activationToken = :token";
+		return entityManager().createQuery(query, ForgotPassword.class)
+				.setParameter("email", email)
+				.setParameter("token", token).getSingleResult();
+	}
+	
+	public void clearPasswordFields(){
+		password = "";
+		confirmPassword = "";
+	}
+	
 	/*
 	 * Active record functionality
 	 * */

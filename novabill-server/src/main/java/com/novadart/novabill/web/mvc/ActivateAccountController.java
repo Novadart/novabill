@@ -2,6 +2,8 @@ package com.novadart.novabill.web.mvc;
 
 import java.util.Date;
 
+import javax.persistence.NoResultException;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -33,7 +35,7 @@ public class ActivateAccountController {
 			}
 			model.addAttribute("registration", registration);
 			
-		} catch (Exception e) {
+		} catch (NoResultException e) {
 			return "invalidActivationRequest";
 		}
 		return "activate";
