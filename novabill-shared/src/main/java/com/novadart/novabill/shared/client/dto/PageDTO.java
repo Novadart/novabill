@@ -2,7 +2,9 @@ package com.novadart.novabill.shared.client.dto;
 
 import java.util.List;
 
-public class PageDTO<T> {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class PageDTO<T> implements IsSerializable {
 	
 	private List<T> items;
 	
