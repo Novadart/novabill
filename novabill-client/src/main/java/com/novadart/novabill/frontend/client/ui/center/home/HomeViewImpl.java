@@ -91,7 +91,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 			}
 		};
 		
-		updater.schedule(1000);
+		updater.scheduleRepeating(1000);
 		
 		return dateBox;
 	}
