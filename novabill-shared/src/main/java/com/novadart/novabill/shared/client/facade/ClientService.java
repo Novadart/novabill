@@ -5,6 +5,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
@@ -30,7 +31,7 @@ public interface ClientService extends RemoteService{
 	
 	public ClientDTO getFromInvoiceId(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
 	
-	public List<ClientDTO> searchClients(String query) throws InvalidArgumentException, NotAuthenticatedException, ConcurrentAccessException;
+	public PageDTO<ClientDTO> searchClients(String query, int start, int offset) throws InvalidArgumentException, NotAuthenticatedException, ConcurrentAccessException;
 
 	public ClientDTO getFromEstimationId(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
 	

@@ -47,6 +47,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.Hash;
 import com.novadart.novabill.domain.security.RoleTypes;
+import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
 /*
@@ -180,7 +181,7 @@ public class Business implements Serializable {
     }
     
     @SuppressWarnings("unchecked")
-	public List<Client> searchClients(String query) throws ParseException, IOException{
+	public PageDTO<Client> searchClients(String query, int start, int length) throws ParseException, IOException{
     	FullTextEntityManager ftEntityManager = Search.getFullTextEntityManager(entityManager);
     	Analyzer analyzer = ftEntityManager.getSearchFactory().getAnalyzer(FTSNamespace.DEFAULT_CLIENT_ANALYZER);
     	List<String> queryTokens = new ArrayList<String>();
@@ -200,7 +201,10 @@ public class Business implements Serializable {
     	ftQuery.enableFullTextFilter(FTSNamespace.CLIENT_BY_BUSINESS_ID_FILTER)
     		.setParameter(TermValueFilterFactory.FIELD_NAME, StringUtils.join(new Object[]{FTSNamespace.BUSINESS, FTSNamespace.ID}, "."))
     		.setParameter(TermValueFilterFactory.FIELD_VALUE, new LongBridge().objectToString(getId()));
-    	return ftQuery.getResultList();
+    	PageDTO<Client> pageDTO = new PageDTO<Client>(null, start, length, null);
+    	pageDTO.setTotal(ftQuery.getResultSize());
+    	pageDTO.setItems(ftQuery.setFirstResult(start).setMaxResults(length).getResultList());
+    	return pageDTO;
     }
     
     private <T extends AccountingDocument> List<T> getAccountingDocumentForYear(Iterator<T> iter, int year){

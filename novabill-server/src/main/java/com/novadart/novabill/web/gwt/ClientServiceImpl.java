@@ -18,6 +18,7 @@ import com.novadart.novabill.quota.NumberOfClientsQuotaReachedChecker;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
@@ -119,18 +120,18 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	}
 
 	@Override
-	public List<ClientDTO> searchClients(String query) throws InvalidArgumentException {
+	public PageDTO<ClientDTO> searchClients(String query, int start, int length) throws InvalidArgumentException {
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
-		List<Client> clients = null;
+		PageDTO<Client> clients = null;
 		try{
-			clients = business.searchClients(query);
+			clients = business.searchClients(query, start, length);
 		}catch (Exception e) {
 			throw new InvalidArgumentException();
 		}
 		List<ClientDTO> clientDTOs = new ArrayList<ClientDTO>();
-		for(Client client: clients)
+		for(Client client: clients.getItems())
 			clientDTOs.add(ClientDTOFactory.toDTO(client));
-		return clientDTOs;
+		return new PageDTO<ClientDTO>(clientDTOs, start, length, clients.getTotal());
 	}
 	
 	@Override

@@ -18,6 +18,7 @@ import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.InvoiceValidator;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -141,7 +142,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	}
 
 	@Override
-	public List<InvoiceDTO> getAllForClientInRange(long id, int start, int length) throws DataAccessException, NoSuchObjectException {
+	public PageDTO<InvoiceDTO> getAllForClientInRange(long id, int start, int length) throws DataAccessException, NoSuchObjectException {
 		Client client = Client.findClient(id);
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
@@ -149,7 +150,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<InvoiceDTO>(invoices.size());
 		for(Invoice invoice: invoices)
 			invoiceDTOs.add(InvoiceDTOFactory.toDTO(invoice));
-		return invoiceDTOs;
+		return new PageDTO<InvoiceDTO>(invoiceDTOs, start, length, Invoice.countInvocesForClient(id));
 	}
 	
 	@Override

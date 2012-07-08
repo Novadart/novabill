@@ -17,6 +17,7 @@ import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -129,6 +130,20 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	@Override
 	public Long getNextEstimationId() throws NotAuthenticatedException, ConcurrentAccessException {
 		return utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getNextEstimationDocumentID();
+	}
+
+	@Override
+	public PageDTO<EstimationDTO> getAllForClientInRange(long id, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
+		Client client = Client.findClient(id);
+		if(client == null)
+			throw new NoSuchObjectException();
+		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+			throw new DataAccessException();
+		List<Estimation> estimations = client.getAllEstimationsInRange(start, length);
+		List<EstimationDTO> estimationDTOs = new ArrayList<EstimationDTO>(estimations.size());
+		for(Estimation estimation: estimations)
+			estimationDTOs.add(EstimationDTOFactory.toDTO(estimation));
+		return new PageDTO<EstimationDTO>(estimationDTOs, start, length, Estimation.countEstimationsForClient(id));
 	}
 
 }

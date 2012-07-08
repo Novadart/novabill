@@ -50,6 +50,11 @@ public class Invoice extends AccountingDocument implements Serializable {
     @NotNull
     protected Client client;
     
+    public static Integer countInvocesForClient(Long id){
+    	String query = "select count(o) FROM Invoice o where o.client.id = :clientID"; 
+    	return entityManager().createQuery(query, Integer.class).setParameter("clientID", id).getSingleResult();
+    }
+    
     /*
      * Getters and setters
      * */

@@ -158,6 +158,14 @@ public class Client implements Serializable {
     			.setMaxResults(length).getResultList();
     }
     
+    public List<Estimation> getAllEstimationsInRange(Integer start, Integer length){
+    	String query = "select estimation from Estimation as estimation where estimation.client.id = :clientId order by estimation.accountingDocumentDate desc";
+    	return entityManager.createQuery(query, Estimation.class)
+    			.setParameter("clientId", getId())
+    			.setFirstResult(start)
+    			.setMaxResults(length).getResultList();
+    }
+    
     /*
      * Getters and setters
      * */

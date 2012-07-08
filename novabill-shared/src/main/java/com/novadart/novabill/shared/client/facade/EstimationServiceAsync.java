@@ -3,6 +3,7 @@ package com.novadart.novabill.shared.client.facade;
 import java.util.List;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
 
 public interface EstimationServiceAsync {
 
@@ -12,11 +13,13 @@ public interface EstimationServiceAsync {
 
 	void remove(Long id, AsyncCallback<Void> callback);
 
-	void getAllForClient(long clientId,
-			AsyncCallback<List<EstimationDTO>> callback);
+	void getAllForClient(long id, AsyncCallback<List<EstimationDTO>> callback);
 
 	void update(EstimationDTO estimationDTO, AsyncCallback<Void> callback);
 
 	void getNextEstimationId(AsyncCallback<Long> callback);
+
+	void getAllForClientInRange(long id, int start, int length,
+			AsyncCallback<PageDTO<EstimationDTO>> callback);
 
 }

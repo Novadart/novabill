@@ -28,6 +28,11 @@ public class Estimation extends AccountingDocument implements Serializable {
     @ManyToOne
     protected Client client;
     
+    public static Integer countEstimationsForClient(Long id){
+    	String query = "select count(o) FROM Estimation o where o.client.id = :clientID"; 
+    	return entityManager().createQuery(query, Integer.class).setParameter("clientID", id).getSingleResult();
+    }
+    
     /*
      *Getters and setters 
      * */
