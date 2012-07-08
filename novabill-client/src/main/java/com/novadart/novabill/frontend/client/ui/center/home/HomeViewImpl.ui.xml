@@ -13,7 +13,13 @@
 		
 		<g:HTML ui:field="welcome" styleName="welcomeMessage"></g:HTML>
 		
+		<g:HorizontalPanel styleName="actions">
+			<g:Button ui:field="newInvoice" styleName="action-button newInvoice" text="{i18n.newInvoice}"></g:Button>
+			<g:Button ui:field="newEstimation" styleName="action-button newEstimation" text="{i18n.newEstimation}"></g:Button>
+		</g:HorizontalPanel>
+		
 		<g:FlowPanel styleName="homeBody">
+			<g:Label styleName="invoicesTitle" text="{i18n.invoices}"></g:Label>
 			<g:ScrollPanel styleName="listWrapper panel">
 				<i:InvoiceList ui:field="invoiceList"></i:InvoiceList>
 			</g:ScrollPanel>

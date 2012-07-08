@@ -124,5 +124,7 @@ public interface I18N extends Constants {
 	public String exportEstimationData();
 	public String clone();
 	public String showMore();
-	public String welcomeMessage();
+	public String welcomeMessage1();
+	public String welcomeMessage2();
+	public String welcomeMessage3();
 }

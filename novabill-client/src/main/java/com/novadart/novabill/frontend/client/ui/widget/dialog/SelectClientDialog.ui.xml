@@ -14,8 +14,8 @@
 		<g:SimplePanel ui:field="listWrapper"></g:SimplePanel>
 		
 		<g:HorizontalPanel styleName="buttons">
-			<g:Button ui:field="ok" enabled="false" text="{i18n.submit}"></g:Button>
-			<g:Button ui:field="cancel" text="{i18n.cancel}"></g:Button>
+			<g:Button ui:field="ok" enabled="false" styleName="button" text="{i18n.submit}"></g:Button>
+			<g:Button ui:field="cancel" text="{i18n.cancel}" styleName="button"></g:Button>
 		</g:HorizontalPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 
