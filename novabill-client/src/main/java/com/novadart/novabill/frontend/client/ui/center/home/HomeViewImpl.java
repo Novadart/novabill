@@ -66,8 +66,17 @@ public class HomeViewImpl extends Composite implements HomeView {
 			
 			@Override
 			public void onDataUpdated(DATA data) {
-				if(data.equals(DATA.INVOICE)){
+				switch (data) {
+				case INVOICE:
 					invoiceList.setVisibleRangeAndClearData(INVOICE_LIST_RANGE, true);
+					break;
+
+				case CLIENT_DATA:
+					invoiceList.setVisibleRangeAndClearData(invoiceList.getVisibleRange(), true);
+					break;
+					
+				default:
+					break;
 				}
 			}
 		});
