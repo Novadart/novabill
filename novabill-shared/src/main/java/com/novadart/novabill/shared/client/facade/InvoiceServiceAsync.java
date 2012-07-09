@@ -10,7 +10,8 @@ public interface InvoiceServiceAsync {
 
 	void get(long id, AsyncCallback<InvoiceDTO> callback);
 
-	void getAllInRange(int start, int length, AsyncCallback<List<InvoiceDTO>> callback);
+	void getAllInRange(int start, int length,
+			AsyncCallback<PageDTO<InvoiceDTO>> callback);
 
 	void update(InvoiceDTO invoiceDTO, AsyncCallback<Void> callback);
 

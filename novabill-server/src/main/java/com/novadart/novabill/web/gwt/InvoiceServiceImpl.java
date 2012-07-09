@@ -52,12 +52,12 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<InvoiceDTO> getAllInRange(int start, int length) {
+	public PageDTO<InvoiceDTO> getAllInRange(int start, int length) {
 		List<Invoice> invoices = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId()).getAllInvoicesInRange(start, length); 
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<InvoiceDTO>(invoices.size());
 		for(Invoice invoice: invoices)
 			invoiceDTOs.add(InvoiceDTOFactory.toDTO(invoice));
-		return invoiceDTOs;
+		return new PageDTO<InvoiceDTO>(invoiceDTOs, start, length, (int)Invoice.countInvoices());
 	}
 	
 	@Override

@@ -19,7 +19,7 @@ public interface InvoiceService extends RemoteService {
 
 	public InvoiceDTO get(long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
 
-	public List<InvoiceDTO> getAllInRange(int start, int length) throws NotAuthenticatedException, ConcurrentAccessException;
+	public PageDTO<InvoiceDTO> getAllInRange(int start, int length) throws NotAuthenticatedException, ConcurrentAccessException;
 
 	public List<InvoiceDTO> getAllForClient(long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
 
