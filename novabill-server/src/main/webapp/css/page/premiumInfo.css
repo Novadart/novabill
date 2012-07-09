@@ -1,0 +1,42 @@
+table {
+	margin: 0 auto;
+}
+
+
+table td.premium,
+table td.free,
+table td.header_free,
+table td.header_premium {
+	text-align: center;
+	padding: 0.5em 1em;
+}
+
+
+table td.header_free {
+	font-weight: bold;
+	font-size: 1.5em;
+	
+}
+
+table td.header_premium {
+	font-weight: bold;
+	font-size: 1.5em;
+}
+
+table td.feature {
+	width: 24em;
+	font-size: 1.2em;
+}
+
+.freeButton {
+	width: 200px;
+}
+
+.premiumButton {
+	width: 200px;
+}
+
+.check {
+	width: 1.5em;
+	height: 1.5em;
+}
