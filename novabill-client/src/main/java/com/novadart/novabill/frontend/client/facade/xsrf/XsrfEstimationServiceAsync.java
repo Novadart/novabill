@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.rpc.HasRpcToken;
 import com.google.gwt.user.client.rpc.XsrfToken;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 import com.novadart.novabill.shared.client.facade.EstimationServiceAsync;
 
@@ -116,6 +117,23 @@ EstimationServiceAsync {
 	@Override
 	protected void setXsrfToken(final XsrfToken token) {
 		((HasRpcToken) estimation).setRpcToken(token);
+	}
+
+	@Override
+	public void getAllForClientInRange(final long id, final int start, final int length,
+			final AsyncCallback<PageDTO<EstimationDTO>> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate() {
+
+			@Override
+			public void performCall() {
+				estimation.getAllForClientInRange(id, start, length, callback);
+			}
+
+			@Override
+			public void manageException(final Throwable caught) {
+				callback.onFailure(caught);
+			}
+		});
 	}
 
 }
