@@ -26,7 +26,7 @@ BusinessServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				business.update(businessDTO, callback);
 			}
 
@@ -38,7 +38,7 @@ BusinessServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				business.countClients(callback);
 			}
 
@@ -50,7 +50,7 @@ BusinessServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				business.countInvoices(callback);
 			}
 			
@@ -62,7 +62,7 @@ BusinessServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				business.countInvoicesForYear(year, callback);
 			}
 
@@ -75,7 +75,7 @@ BusinessServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				business.getTotalAfterTaxesForYear(year, callback);
 			}
 
@@ -87,7 +87,7 @@ BusinessServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				business.getStats(callback);
 			}
 

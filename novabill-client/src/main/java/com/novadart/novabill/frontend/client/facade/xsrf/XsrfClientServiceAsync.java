@@ -26,7 +26,7 @@ ClientServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				client.getAll(callback);
 			}
 
@@ -38,7 +38,7 @@ ClientServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				client.remove(id, callback);
 			}
 
@@ -50,7 +50,7 @@ ClientServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				client.add(clientDTO, callback);
 			}
 
@@ -62,7 +62,7 @@ ClientServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				client.update(clientDTO, callback);
 			}
 
@@ -74,7 +74,7 @@ ClientServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				client.get(id, callback);
 			}
 
@@ -86,7 +86,7 @@ ClientServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				client.getFromInvoiceId(id, callback);
 			}
 
@@ -99,7 +99,7 @@ ClientServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				client.searchClients(query, start, offset, callback);
 			}
 
@@ -111,7 +111,7 @@ ClientServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				client.getFromEstimationId(id, callback);
 			}
 

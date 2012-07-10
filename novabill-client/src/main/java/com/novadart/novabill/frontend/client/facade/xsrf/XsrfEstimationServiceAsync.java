@@ -25,7 +25,7 @@ EstimationServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				estimation.get(id, callback);
 			}
 
@@ -37,7 +37,7 @@ EstimationServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				estimation.add(estimationDTO, callback);
 			}
 
@@ -49,7 +49,7 @@ EstimationServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				estimation.remove(id, callback);
 			}
 
@@ -62,7 +62,7 @@ EstimationServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				estimation.getAllForClient(clientId, callback);
 			}
 
@@ -74,7 +74,7 @@ EstimationServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				estimation.update(estimationDTO, callback);
 			}
 
@@ -86,7 +86,7 @@ EstimationServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				estimation.getNextEstimationId(callback);
 			}
 
@@ -99,7 +99,7 @@ EstimationServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				estimation.getAllForClientInRange(id, start, length, callback);
 			}
 
@@ -112,7 +112,7 @@ EstimationServiceAsync {
 		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
 
 			@Override
-			public void performCall() {
+			protected void performCall() {
 				estimation.getAllInRange(start, length, callback);
 			}
 
