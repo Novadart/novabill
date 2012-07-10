@@ -20,9 +20,9 @@ public class EmailPasswordHolderValidator {
 	public void validate(EmailPasswordHolder emailPasswordHolder, Errors errors){
 		validator.validate(emailPasswordHolder, errors);
 		if(emailPasswordHolder.getPassword().length() < MIN_PASSWORD_LENGTH || emailPasswordHolder.getPassword().length() > MAX_PASSWORD_LENGTH)
-			errors.rejectValue("password", "size.length.password", new Object[]{MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH}, null);
+			errors.rejectValue("password", "registration.password.lenght", new Object[]{MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH}, null);
 		if(!emailPasswordHolder.getPassword().equals(emailPasswordHolder.getConfirmPassword()))
-			errors.rejectValue("confirmPassword", "password.mismatch");
+			errors.rejectValue("confirmPassword", "registration.password.mismatch");
 	}
 
 }

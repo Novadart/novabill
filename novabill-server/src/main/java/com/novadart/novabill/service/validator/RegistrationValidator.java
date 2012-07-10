@@ -15,7 +15,7 @@ public class RegistrationValidator {
 	public void validate(Registration registration, Errors errors){
 		validator.validate(registration, errors);
 		if(Business.findByEmail(registration.getEmail()) != null)
-				errors.rejectValue("email", "email.exists");
+				errors.rejectValue("email", "registration.email.exists");
 	}
 
 }

@@ -15,7 +15,7 @@ public class ForgotPasswordValidator {
 	public void validate(ForgotPassword forgotPassword, Errors errors){
 		validator.validate(forgotPassword, errors);
 		if(Business.findByEmail(forgotPassword.getEmail()) == null)
-				errors.rejectValue("email", "email.not.exists");
+				errors.rejectValue("email", "registration.email.notexists");
 	}
 
 }

@@ -1,0 +1,40 @@
+.registrationInput {
+	font-size: 1.2em;
+	padding: 0.3em;
+	width: 20em;
+	margin-left: 2em;
+}
+
+.registrationLabel {
+	padding: 1em;
+	display: block;
+	font-size: 1.2em;
+}
+
+.registrationForm {
+	
+}
+
+.registrationFormTable {
+	margin: 3em auto 4em;
+}
+
+.submit {
+	margin: 2em auto 0;
+	display: block;
+}
+
+.error {
+	color: red;
+	font-size: 1.2em;
+	display: block;
+	margin-left: 2em;
+}
+
+.title {
+	margin: 1em auto 0;
+}
+
+.description {
+	font-size: 1.2em;
+}
