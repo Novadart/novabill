@@ -32,7 +32,7 @@
 							<spring:message code="header.rememberme"></spring:message></label>
 					</fieldset>
 					<div>
-						<a href="#"><spring:message code="header.forgotPassword"></spring:message></a>
+						<a href="<spring:url value="/forgot-password" />"><spring:message code="header.forgotPassword"></spring:message></a>
 					</div>
 				</form>
 			</div>
