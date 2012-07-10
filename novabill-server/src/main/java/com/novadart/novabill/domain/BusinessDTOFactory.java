@@ -1,5 +1,6 @@
 package com.novadart.novabill.domain;
 
+import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
 public class BusinessDTOFactory {
@@ -22,6 +23,7 @@ public class BusinessDTOFactory {
 		businessDTO.setWeb(business.getWeb());
 		businessDTO.setVatID(business.getVatID());
 		businessDTO.setSsn(business.getSsn());
+		businessDTO.setPremium(business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM));
 		return businessDTO;
 	}
 	

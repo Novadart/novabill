@@ -16,7 +16,7 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Registration;
-import com.novadart.novabill.domain.security.RoleTypes;
+import com.novadart.novabill.domain.security.RoleType;
 
 @Controller
 @RequestMapping("/activate")
@@ -52,7 +52,7 @@ public class ActivateAccountController {
 			return "activate";
 		}
 		Business business = new Business(registration);
-		business.getGrantedRoles().add(RoleTypes.ROLE_BUSINESS_FREE);
+		business.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
 		business.persist();
 		registration.remove();
 		status.setComplete();

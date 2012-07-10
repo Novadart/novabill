@@ -32,7 +32,7 @@ public class PrincipalDetails implements UserDetails {
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
 		Collection<GrantedAuthority> authorities = new ArrayList<GrantedAuthority>();
-        for (RoleTypes roleType : principal.getGrantedRoles())
+        for (RoleType roleType : principal.getGrantedRoles())
         	authorities.add(new SimpleGrantedAuthority(roleType.name()));
         return authorities;
 	}

@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.security.RoleTypes;
+import com.novadart.novabill.domain.security.RoleType;
 
 
 @Service
@@ -48,9 +48,9 @@ public class PayPalSubscriptionIPNHandlerService {
 		if(!email.equals(payPalEmail)) return; //email doesn't match
 		//TODO do additional checks here eg amount
 		Business business = principalDetailsService.loadUserByUsername(parametersMap.get(CUSTOM)).getPrincipal();
-		if(!business.getGrantedRoles().contains(RoleTypes.ROLE_BUSINESS_PREMIUM)){
-			business.getGrantedRoles().remove(RoleTypes.ROLE_BUSINESS_FREE);
-			business.getGrantedRoles().add(RoleTypes.ROLE_BUSINESS_PREMIUM);
+		if(!business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM)){
+			business.getGrantedRoles().remove(RoleType.ROLE_BUSINESS_FREE);
+			business.getGrantedRoles().add(RoleType.ROLE_BUSINESS_PREMIUM);
 		}
 		sendMessage(parametersMap.get(CUSTOM), "Account upgraded", new HashMap<String, Object>(), "mail-templates/upgrade-notification.vm");
 	}

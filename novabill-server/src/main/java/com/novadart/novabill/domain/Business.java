@@ -46,7 +46,7 @@ import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.Hash;
-import com.novadart.novabill.domain.security.RoleTypes;
+import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
@@ -139,7 +139,7 @@ public class Business implements Serializable {
     private Set<Client> clients = new HashSet<Client>();
 
     @ElementCollection
-    private Set<RoleTypes> grantedRoles = new HashSet<RoleTypes>();
+    private Set<RoleType> grantedRoles = new HashSet<RoleType>();
     
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "business")
     private Logo logo;
@@ -451,11 +451,11 @@ public class Business implements Serializable {
         this.clients = clients;
     }
     
-    public Set<RoleTypes> getGrantedRoles() {
+    public Set<RoleType> getGrantedRoles() {
         return this.grantedRoles;
     }
     
-    public void setGrantedRoles(Set<RoleTypes> grantedRoles) {
+    public void setGrantedRoles(Set<RoleType> grantedRoles) {
         this.grantedRoles = grantedRoles;
     }
     
