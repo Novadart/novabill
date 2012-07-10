@@ -4,7 +4,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.frontend.client.ui.premium.GoPremiumDialog;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.QuotaException;
+import com.novadart.novabill.shared.client.exception.AuthorizationException;
 
 public abstract class WrappedAsyncCallback<T> implements AsyncCallback<T> {
 
@@ -18,7 +18,7 @@ public abstract class WrappedAsyncCallback<T> implements AsyncCallback<T> {
 				showAuthDialog();
 			}
 			
-		} else if(caught instanceof QuotaException){
+		} else if(caught instanceof AuthorizationException){
 			
 			if(!GoPremiumDialog.getInstance().isShowing()) {
 				GoPremiumDialog.getInstance().showCentered();

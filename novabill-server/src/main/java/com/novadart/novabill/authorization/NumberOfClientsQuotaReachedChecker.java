@@ -1,4 +1,4 @@
-package com.novadart.novabill.quota;
+package com.novadart.novabill.authorization;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -7,10 +7,11 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.RoleTypes;
-import com.novadart.novabill.shared.client.exception.QuotaException;
+import com.novadart.novabill.shared.client.exception.AuthorizationError;
+import com.novadart.novabill.shared.client.exception.AuthorizationException;
 
 @Configurable
-public class NumberOfClientsQuotaReachedChecker implements QuotaChecker {
+public class NumberOfClientsQuotaReachedChecker implements RestricionChecker {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(NumberOfClientsQuotaReachedChecker.class);
 
@@ -22,10 +23,10 @@ public class NumberOfClientsQuotaReachedChecker implements QuotaChecker {
 	}
 
 	@Override
-	public void check(Business business) throws QuotaException {
+	public void check(Business business) throws AuthorizationException {
 		LOGGER.debug("Number of clients quota check - quota: {}, roles: {}", new Object[]{numberOfClientsQuota, business.getGrantedRoles()});
 		if(business.getGrantedRoles().contains(RoleTypes.ROLE_BUSINESS_FREE) && business.getClients().size() >= numberOfClientsQuota)
-			throw new QuotaException();
+			throw new AuthorizationException(AuthorizationError.NUMBER_OF_CLIENTS_QUOTA_REACHED);
 	}
 
 }

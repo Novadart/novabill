@@ -12,7 +12,7 @@ import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.QuotaException;
+import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @XsrfProtect
@@ -23,7 +23,7 @@ public interface ClientService extends RemoteService{
 	
 	public void remove(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, ConcurrentAccessException;
 	
-	public Long add(ClientDTO clientDTO) throws NotAuthenticatedException, ConcurrentAccessException, QuotaException, ValidationException;
+	public Long add(ClientDTO clientDTO) throws NotAuthenticatedException, ConcurrentAccessException, AuthorizationException, ValidationException;
 	
 	public void update(ClientDTO clientDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException, ValidationException;
 	

@@ -3,11 +3,11 @@ package com.novadart.novabill.annotation;
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;
 
-import com.novadart.novabill.quota.QuotaChecker;
+import com.novadart.novabill.authorization.RestricionChecker;
 
 @Retention(RetentionPolicy.RUNTIME)
-public @interface CheckQuotas {
+public @interface Restrictions {
 	
-	Class<? extends QuotaChecker>[] checkers();
+	Class<? extends RestricionChecker>[] checkers();
 
 }

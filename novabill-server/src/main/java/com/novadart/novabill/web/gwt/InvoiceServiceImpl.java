@@ -5,7 +5,9 @@ import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import com.novadart.novabill.annotation.CheckQuotas;
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.NumberOfInvoicesPerYearQuotaReachedChecker;
+import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Estimation;
@@ -13,7 +15,6 @@ import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.InvoiceDTOFactory;
 import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
-import com.novadart.novabill.quota.NumberOfInvoicesPerYearQuotaReachedChecker;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.InvoiceValidator;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -23,7 +24,7 @@ import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.QuotaException;
+import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 
@@ -92,8 +93,8 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	@CheckQuotas(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
-	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, QuotaException {
+	@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
+	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, AuthorizationException {
 		Client client = Client.findClient(invoiceDTO.getClient().getId());;
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
@@ -155,8 +156,8 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	@CheckQuotas(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
-	public Long createFromEstimation(InvoiceDTO invoiceDTO, Long estimationID) throws NotAuthenticatedException, DataAccessException, ValidationException, NoSuchObjectException, ConcurrentAccessException, QuotaException {
+	@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
+	public Long createFromEstimation(InvoiceDTO invoiceDTO, Long estimationID) throws NotAuthenticatedException, DataAccessException, ValidationException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException {
 		Long invoiceID = add(invoiceDTO);
 		Estimation estimation = null;
 		if(estimationID != null && (estimation = Estimation.findEstimation(estimationID)) != null)//present in DB
@@ -166,7 +167,8 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 
 	@Override
 	@Transactional(readOnly = false)
-	public void setPayed(Long id, Boolean value) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
+	@Restrictions(checkers = {PremiumChecker.class})
+	public void setPayed(Long id, Boolean value) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException {
 		Invoice invoice = Invoice.findInvoice(id);
 		if(invoice == null)
 			throw new NoSuchObjectException();

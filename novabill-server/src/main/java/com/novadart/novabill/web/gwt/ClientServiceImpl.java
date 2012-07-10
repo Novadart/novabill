@@ -8,13 +8,13 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.annotation.CheckQuotas;
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.NumberOfClientsQuotaReachedChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.ClientDTOFactory;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.quota.NumberOfClientsQuotaReachedChecker;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -25,7 +25,7 @@ import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.exception.QuotaException;
+import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.ClientService;
 
@@ -71,8 +71,8 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	@CheckQuotas(checkers = {NumberOfClientsQuotaReachedChecker.class})
-	public Long add(ClientDTO clientDTO) throws QuotaException, ValidationException {
+	@Restrictions(checkers = {NumberOfClientsQuotaReachedChecker.class})
+	public Long add(ClientDTO clientDTO) throws AuthorizationException, ValidationException {
 		Client client = new Client(); 
 		ClientDTOFactory.copyFromDTO(client, clientDTO);
 		validator.validate(client);

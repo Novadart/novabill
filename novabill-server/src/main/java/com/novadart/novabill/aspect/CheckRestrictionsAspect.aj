@@ -5,27 +5,27 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.annotation.CheckQuotas;
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.RestricionChecker;
 import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.quota.QuotaChecker;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.shared.client.exception.QuotaException;
+import com.novadart.novabill.shared.client.exception.AuthorizationException;
 
-privileged aspect CheckQuotasAspect {
+privileged aspect CheckRestrictionsAspect {
 	
-	private static final Logger LOGGER = LoggerFactory.getLogger(CheckQuotasAspect.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(CheckRestrictionsAspect.class);
 	
 	@Autowired
 	private UtilsService utilsService;
 	
-	pointcut quotaRestrictedMethod(CheckQuotas checkQuotas):
-		execution(@CheckQuotas * *(..)) && @annotation(checkQuotas);
+	pointcut quotaRestrictedMethod(Restrictions checkQuotas):
+		execution(@Restrictions * *(..)) && @annotation(checkQuotas);
 
 	@Transactional(readOnly = true)
-	before(CheckQuotas checkQuotas) throws QuotaException : quotaRestrictedMethod(checkQuotas){
+	before(Restrictions checkQuotas) throws AuthorizationException : quotaRestrictedMethod(checkQuotas){
 		LOGGER.debug("Checking quotas for method {}", new Object[]{thisJoinPoint.getSignature().toShortString()});
 		Business authenticatedBusiness = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
-		for(Class<? extends QuotaChecker> checkerClass: checkQuotas.checkers())
+		for(Class<? extends RestricionChecker> checkerClass: checkQuotas.checkers())
 			try {
 				checkerClass.newInstance().check(authenticatedBusiness);
 			} catch (InstantiationException e) {

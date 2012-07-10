@@ -1,4 +1,4 @@
-package com.novadart.novabill.quota;
+package com.novadart.novabill.authorization;
 
 import java.util.Calendar;
 
@@ -9,10 +9,11 @@ import org.springframework.beans.factory.annotation.Value;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.RoleTypes;
-import com.novadart.novabill.shared.client.exception.QuotaException;
+import com.novadart.novabill.shared.client.exception.AuthorizationError;
+import com.novadart.novabill.shared.client.exception.AuthorizationException;
 
 @Configurable
-public class NumberOfEstimationsPerYearQuotaReachedChecker implements QuotaChecker {
+public class NumberOfEstimationsPerYearQuotaReachedChecker implements RestricionChecker {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(NumberOfEstimationsPerYearQuotaReachedChecker.class);
 	
@@ -24,11 +25,11 @@ public class NumberOfEstimationsPerYearQuotaReachedChecker implements QuotaCheck
 	}
 
 	@Override
-	public void check(Business business) throws QuotaException {
+	public void check(Business business) throws AuthorizationException {
 		LOGGER.debug("Number of estimations per year quota check - quota: {}, roles: {}", new Object[]{numberOfEstimationsPerYearQuota, business.getGrantedRoles()});
 		if(business.getGrantedRoles().contains(RoleTypes.ROLE_BUSINESS_FREE) && 
 				business.getEstimationsForYear(Calendar.getInstance().get(Calendar.YEAR)).size() >= numberOfEstimationsPerYearQuota)
-			throw new QuotaException();
+			throw new AuthorizationException(AuthorizationError.NUMBER_OF_ESTIMATIONS_QUOTA_REACHED);
 	}
 
 }
