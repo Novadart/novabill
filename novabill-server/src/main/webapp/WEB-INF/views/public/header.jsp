@@ -3,11 +3,9 @@
 <%@page import="com.novadart.novabill.domain.Business"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
-<c:url value="/resources/j_spring_security_check" var="login_url" />
 
 <div class="header">
 
@@ -17,7 +15,7 @@
 						code="header.login"></spring:message></span><em></em></a>
 			<div style="clear: both"></div>
 			<div id="loginBox">
-				<form id="loginForm" action="${login_url}" method="post">
+				<form id="loginForm" action='<spring:url value="/resources/j_spring_security_check"/>' method="post">
 					<fieldset id="body">
 						<fieldset>
 							<label for="email"><spring:message code="shared.email"></spring:message></label>
@@ -28,7 +26,7 @@
 									code="shared.password"></spring:message></label> <input type="password"
 								name="j_password" id="password" />
 						</fieldset>
-						<input type="submit" id="login"
+						<input type="submit" id="login" class="action2-button"
 							value="<spring:message code="header.signin"></spring:message>" />
 						<label for="checkbox"><input type="checkbox" id="checkbox" />
 							<spring:message code="header.rememberme"></spring:message></label>
@@ -66,3 +64,5 @@
 	
 
 </div>
+
+<script type="text/javascript" src="js/login.js"></script>

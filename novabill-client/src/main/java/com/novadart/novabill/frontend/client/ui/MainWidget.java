@@ -40,13 +40,15 @@ public class MainWidget extends Composite {
 	@UiField HTML businessBanner;
 	@UiField HTML stats;
 	@UiField Anchor logout;
+	@UiField Anchor logoAnchor;
 
 	private PlaceController placeController;
 
 	public MainWidget() {
 		initWidget(uiBinder.createAndBindUi(this));
 		logout.setHref(GWT.getHostPageBaseURL()+"resources/j_spring_security_logout");
-
+		logoAnchor.setHref(GWT.getHostPageBaseURL());
+		
 		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
 
 			@Override

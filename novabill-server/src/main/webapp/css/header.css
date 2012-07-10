@@ -1,6 +1,6 @@
 .header {
 	width: 100%;
-	height: 4em;
+	height: 4.5em;
 	background: url('../images/divider-1.png') no-repeat bottom;
 	padding-top: 1em;
 }
@@ -39,7 +39,6 @@
 #loginContainer {
 	position: relative;
 	float: right;
-	font-size: 12px;
 	z-index: 5001;
 	display: inline-block;
 }
@@ -48,10 +47,6 @@
 #loginButton {
 	display: inline-block;
 	float: right;
-	background: #d2e0ea url(../images/login/buttonbg.png) repeat-x;
-	border: 1px solid #899caa;
-	border-radius: 3px;
-	-moz-border-radius: 3px;
 	position: relative;
 	z-index: 30;
 	cursor: pointer;
@@ -59,17 +54,14 @@
 
 /* Login Button Text */
 #loginButton span {
-	color: #445058;
-	font-size: 14px;
-	font-weight: bold;
-	text-shadow: 1px 1px #fff;
-	padding: 7px 29px 9px 10px;
+	padding: 7px 29px 9px 4px;
 	background: url(../images/login/loginArrow.png) no-repeat 60px 7px;
-	display: block
+	display: block;
+	font-size: 1.2em;
 }
 
 #loginButton:hover {
-	background: url(../images/login/buttonbgHover.png) repeat-x;
+	
 }
 
 /* Login Box */
@@ -106,7 +98,7 @@
 	border-radius: 3px 0 3px 3px;
 	-moz-border-radius: 3px 0 3px 3px;
 	margin-top: -1px;
-	background: #d2e0ea;
+	background: #52a8e8;
 	padding: 6px;
 }
 
@@ -148,7 +140,8 @@ fieldset#body {
 }
 
 /* Default Input */
-#loginForm input {
+#loginForm input[type=text],
+#loginForm input[type=password] {
 	width: 92%;
 	border: 1px solid #899caa;
 	border-radius: 3px;
@@ -164,19 +157,9 @@ fieldset#body {
 
 /* Sign In Button */
 #loginForm #login {
-	width: auto;
-	float: left;
-	background: #339cdf url(../images/login/loginbuttonbg.png) repeat-x;
-	color: #fff;
-	padding: 7px 10px 8px 10px;
-	text-shadow: 0px -1px #278db8;
-	border: 1px solid #339cdf;
-	box-shadow: none;
-	-moz-box-shadow: none;
-	-webkit-box-shadow: none;
-	margin: 0 12px 0 0;
+	display: block;
+	margin: 0 auto;
 	cursor: pointer;
-	*padding: 7px 2px 8px 2px; /* IE7 Fix */
 }
 
 /* Forgot your password */
@@ -187,9 +170,11 @@ fieldset#body {
 }
 
 #loginForm div a {
-	color: #3a454d;
-	text-shadow: 1px 1px #fff;
-	font-size: 12px;
+	color: white;
+	font-size: 1em;
+	text-shadow: none;
+	padding-top: 0.5em;
+	display: block;
 }
 
 #loginForm div {
@@ -198,4 +183,8 @@ fieldset#body {
 
 input:focus {
 	outline: none;
+}
+
+.logo {
+	font-size: 3em;
 }

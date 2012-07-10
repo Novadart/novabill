@@ -19,6 +19,7 @@ strong {
 body {
 	background: url('../images/header-bg.png') repeat-x;
 	min-height: 400px;
+	font-size: 14px;
 }
 
 body {

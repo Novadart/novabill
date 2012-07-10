@@ -12,7 +12,7 @@
 		<g:north size="3">
 			<g:FlowPanel styleName="header">
 				<g:Image styleName="logo" url="{img.bullet.getSafeUri.asString}"></g:Image>
-				<g:Label styleName="productName" text="Novabill"></g:Label>
+				<g:Anchor ui:field="logoAnchor" styleName="productName" text="Novabill"></g:Anchor>
 				<g:Button styleName="homeButton button" text="{i18n.home}"
 					ui:field="home"></g:Button>
 				<g:Button styleName="myDataButton button" text="{i18n.myData}"

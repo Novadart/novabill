@@ -189,11 +189,6 @@
 
 </div>
 
-
-
-
-<script type="text/javascript"
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 <script type="text/javascript"
 	src="js/nivoslider/jquery.nivo.slider.pack.js"></script>
 <script type="text/javascript"
@@ -202,7 +197,6 @@
 	src="js/fancybox/jquery.easing-1.3.pack.js"></script>
 <script type="text/javascript"
 	src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-<script type="text/javascript" src="js/login.js"></script>
 
 <script type="text/javascript">
 		$(window).load(function() {
