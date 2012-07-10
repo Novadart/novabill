@@ -126,7 +126,7 @@
 		factory-method="aspectOf">
 	</bean>
 
-	<bean class="com.novadart.novabill.aspect.CheckQuotasAspect"
+	<bean class="com.novadart.novabill.aspect.CheckRestrictionsAspect"
 		factory-method="aspectOf">
 	</bean>
 
