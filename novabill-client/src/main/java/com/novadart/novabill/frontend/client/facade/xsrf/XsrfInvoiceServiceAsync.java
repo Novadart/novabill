@@ -40,7 +40,7 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 
 	@Override
 	public void getAllInRange(final int start, final int length,
-			final AsyncCallback<List<InvoiceDTO>> callback) {
+			final AsyncCallback<PageDTO<InvoiceDTO>> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate() {
 
 			@Override

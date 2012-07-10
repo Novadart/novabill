@@ -1,12 +1,11 @@
 package com.novadart.novabill.frontend.client.ui.center.home;
 
-import java.util.List;
-
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
 
 public class InvoiceDataProvider extends AsyncDataProvider<InvoiceDTO> {
 
@@ -15,11 +14,11 @@ public class InvoiceDataProvider extends AsyncDataProvider<InvoiceDTO> {
 		final int start = 0;
 		final int length = display.getVisibleRange().getLength();
 		
-		ServerFacade.invoice.getAllInRange(start, length, new WrappedAsyncCallback<List<InvoiceDTO>>() {
+		ServerFacade.invoice.getAllInRange(start, length, new WrappedAsyncCallback<PageDTO<InvoiceDTO>>() {
 
 			@Override
-			public void onSuccess(List<InvoiceDTO> result) {
-				updateRowData(start, result);
+			public void onSuccess(PageDTO<InvoiceDTO> result) {
+				updateRowData(start, result.getItems());
 			}
 
 			@Override

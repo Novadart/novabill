@@ -11,7 +11,7 @@ public class BusinessPlace extends Place {
 
 		@Override
 		public BusinessPlace getPlace(String token) {
-			return null;
+			return new BusinessPlace();
 		}
 
 		@Override

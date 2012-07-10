@@ -1,15 +1,19 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"	pageEncoding="UTF-8"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jstl/core_rt"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
 <div class="intro">
 	<h2>
 		<spring:message code="application_name"></spring:message>
 	</h2>
-	<p>Promote your products or apps in style with this free template
-		from MediaLoot</p>
+	<p><spring:message code="index.promotion" /> </p>
 
-
+	<sec:authorize access="isAnonymous()">
+		<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/premiumInfo">
+			<spring:message code="header.signupForFree"></spring:message>
+		</a>
+	</sec:authorize>
 	<div class="slider-wrapper theme-default mask-container-large">
 		<div id="slider" class="nivoSlider">
 			<img src="images/image-large-1.jpg" alt="" /> <img
