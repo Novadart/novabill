@@ -9,9 +9,9 @@ import com.google.gwt.user.client.rpc.XsrfTokenService;
 import com.google.gwt.user.client.rpc.XsrfTokenServiceAsync;
 import com.novadart.novabill.frontend.client.Const;
 
-abstract class XsrfProtectedService {
+abstract class XsrfProtectedService<Service> {
 	
-	static abstract class XsrfServerCallDelegate {
+	static abstract class XsrfServerCallDelegate<Service> {
 		
 		private final AsyncCallback<?> callback;
 		
@@ -19,7 +19,7 @@ abstract class XsrfProtectedService {
 			this.callback = callback;
 		}
 		
-		protected abstract void performCall();
+		protected abstract void performCall(Service service);
 		
 		private void manageException(Throwable caught) {
 			callback.onFailure(caught);
@@ -33,19 +33,23 @@ abstract class XsrfProtectedService {
 		((ServiceDefTarget)xsrf).setServiceEntryPoint(Const.XSRF_URL);
 	}
 	
-	private final HasRpcToken service;
+	private final Service service;
 	
-	XsrfProtectedService(HasRpcToken service) {
+	XsrfProtectedService(Service service) {
 		this.service = service;
 	}
 	
-	protected final void performXsrfProtectedCall(final XsrfServerCallDelegate serverCall) {
+	protected Service getService() {
+		return service;
+	}
+	
+	protected final void performXsrfProtectedCall(final XsrfServerCallDelegate<Service> serverCall) {
 		xsrf.getNewXsrfToken(new AsyncCallback<XsrfToken>() {
 			
 			@Override
 			public void onSuccess(XsrfToken result) {
-				service.setRpcToken(result);
-				serverCall.performCall();
+				((HasRpcToken) service).setRpcToken(result);
+				serverCall.performCall(service);
 			}
 			
 			@Override

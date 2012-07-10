@@ -4,30 +4,26 @@ import java.math.BigDecimal;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.HasRpcToken;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.BusinessServiceAsync;
 
-public class XsrfBusinessServiceAsync extends XsrfProtectedService implements
+public class XsrfBusinessServiceAsync extends XsrfProtectedService<BusinessServiceAsync> implements
 BusinessServiceAsync {
-
-	private static final BusinessServiceAsync business = 
-			(BusinessServiceAsync)GWT.create(BusinessService.class);
 
 	
 	public XsrfBusinessServiceAsync() {
-		super((HasRpcToken) business);
+		super((BusinessServiceAsync)GWT.create(BusinessService.class));
 	}
 	
 	@Override
 	public void update(final BusinessDTO businessDTO, final AsyncCallback<Void> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				business.update(businessDTO, callback);
+			protected void performCall(BusinessServiceAsync service) {
+				service.update(businessDTO, callback);
 			}
 
 		});
@@ -35,11 +31,11 @@ BusinessServiceAsync {
 
 	@Override
 	public void countClients(final AsyncCallback<Long> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				business.countClients(callback);
+			protected void performCall(BusinessServiceAsync service) {
+				service.countClients(callback);
 			}
 
 		});
@@ -47,11 +43,11 @@ BusinessServiceAsync {
 
 	@Override
 	public void countInvoices(final AsyncCallback<Long> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				business.countInvoices(callback);
+			protected void performCall(BusinessServiceAsync service) {
+				service.countInvoices(callback);
 			}
 			
 		});
@@ -59,11 +55,11 @@ BusinessServiceAsync {
 
 	@Override
 	public void countInvoicesForYear(final int year, final AsyncCallback<Long> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				business.countInvoicesForYear(year, callback);
+			protected void performCall(BusinessServiceAsync service) {
+				service.countInvoicesForYear(year, callback);
 			}
 
 		});
@@ -72,11 +68,11 @@ BusinessServiceAsync {
 	@Override
 	public void getTotalAfterTaxesForYear(final int year,
 			final AsyncCallback<BigDecimal> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				business.getTotalAfterTaxesForYear(year, callback);
+			protected void performCall(BusinessServiceAsync service) {
+				service.getTotalAfterTaxesForYear(year, callback);
 			}
 
 		});
@@ -84,11 +80,11 @@ BusinessServiceAsync {
 
 	@Override
 	public void getStats(final AsyncCallback<BusinessStatsDTO> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				business.getStats(callback);
+			protected void performCall(BusinessServiceAsync service) {
+				service.getStats(callback);
 			}
 
 		});
@@ -96,12 +92,12 @@ BusinessServiceAsync {
 	
 	@Override
 	public void generateExportToken(AsyncCallback<String> callback) {
-		business.generateExportToken(callback);
+		getService().generateExportToken(callback);
 	}
 	
 	@Override
 	public void generatePDFToken(AsyncCallback<String> callback) {
-		business.generatePDFToken(callback);
+		getService().generatePDFToken(callback);
 	}
 
 }

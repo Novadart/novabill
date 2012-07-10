@@ -4,28 +4,24 @@ import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.google.gwt.user.client.rpc.HasRpcToken;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 import com.novadart.novabill.shared.client.facade.InvoiceServiceAsync;
 
-public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements InvoiceServiceAsync {
-
-	private static final InvoiceServiceAsync invoice = 
-			(InvoiceServiceAsync)GWT.create(InvoiceService.class);
+public class XsrfInvoiceServiceAsync extends XsrfProtectedService<InvoiceServiceAsync> implements InvoiceServiceAsync {
 
 	public XsrfInvoiceServiceAsync() {
-		super((HasRpcToken) invoice);
+		super((InvoiceServiceAsync) GWT.create(InvoiceService.class));
 	}
 
 	@Override
 	public void get(final long id, final AsyncCallback<InvoiceDTO> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<InvoiceServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				invoice.get(id, callback);
+			protected void performCall(InvoiceServiceAsync service) {
+				service.get(id, callback);
 			}
 
 		});
@@ -34,11 +30,11 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 	@Override
 	public void getAllInRange(final int start, final int length,
 			final AsyncCallback<PageDTO<InvoiceDTO>> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<InvoiceServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				invoice.getAllInRange(start, length, callback);
+			protected void performCall(InvoiceServiceAsync service) {
+				service.getAllInRange(start, length, callback);
 			}
 
 		});
@@ -46,11 +42,11 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 
 	@Override
 	public void update(final InvoiceDTO invoiceDTO, final AsyncCallback<Void> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<InvoiceServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				invoice.update(invoiceDTO, callback);
+			protected void performCall(InvoiceServiceAsync service) {
+				service.update(invoiceDTO, callback);
 			}
 
 		});
@@ -59,11 +55,11 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 	@Override
 	public void getAllForClient(final long id,
 			final AsyncCallback<List<InvoiceDTO>> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<InvoiceServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				invoice.getAllForClient(id, callback);
+			protected void performCall(InvoiceServiceAsync service) {
+				service.getAllForClient(id, callback);
 			}
 
 		});
@@ -71,11 +67,11 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 
 	@Override
 	public void add(final InvoiceDTO invoiceDTO, final AsyncCallback<Long> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<InvoiceServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				invoice.add(invoiceDTO, callback);
+			protected void performCall(InvoiceServiceAsync service) {
+				service.add(invoiceDTO, callback);
 			}
 
 		});
@@ -83,11 +79,11 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 
 	@Override
 	public void getNextInvoiceDocumentID(final AsyncCallback<Long> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<InvoiceServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				invoice.getNextInvoiceDocumentID(callback);
+			protected void performCall(InvoiceServiceAsync service) {
+				service.getNextInvoiceDocumentID(callback);
 			}
 
 		});
@@ -95,11 +91,11 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 
 	@Override
 	public void remove(final Long id, final AsyncCallback<Void> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<InvoiceServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				invoice.remove(id, callback);
+			protected void performCall(InvoiceServiceAsync service) {
+				service.remove(id, callback);
 			}
 
 		});
@@ -108,11 +104,11 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 	@Override
 	public void getAllForClientInRange(final long id, final int start, final int length,
 			final AsyncCallback<PageDTO<InvoiceDTO>> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<InvoiceServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				invoice.getAllForClientInRange(id, start, length, callback);
+			protected void performCall(InvoiceServiceAsync service) {
+				service.getAllForClientInRange(id, start, length, callback);
 			}
 
 		});
@@ -121,11 +117,11 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 	@Override
 	public void createFromEstimation(final InvoiceDTO invoiceDTO, final Long estimationID,
 			final AsyncCallback<Long> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<InvoiceServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				invoice.createFromEstimation(invoiceDTO, estimationID, callback);
+			protected void performCall(InvoiceServiceAsync service) {
+				service.createFromEstimation(invoiceDTO, estimationID, callback);
 			}
 
 		});
@@ -133,11 +129,11 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService implements Inv
 
 	@Override
 	public void setPayed(final Long id, final Boolean value, final AsyncCallback<Void> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate(callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<InvoiceServiceAsync>(callback) {
 
 			@Override
-			protected void performCall() {
-				invoice.setPayed(id, value, callback);
+			protected void performCall(InvoiceServiceAsync service) {
+				service.setPayed(id, value, callback);
 			}
 
 		});
