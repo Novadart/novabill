@@ -11,15 +11,15 @@ import com.novadart.novabill.frontend.client.Const;
 
 abstract class XsrfProtectedService {
 	
-	public static abstract class XsrfServerCallDelegate {
+	static abstract class XsrfServerCallDelegate {
 		
 		private final AsyncCallback<?> callback;
 		
-		public XsrfServerCallDelegate(AsyncCallback<?> callback) {
+		XsrfServerCallDelegate(AsyncCallback<?> callback) {
 			this.callback = callback;
 		}
 		
-		public abstract void performCall();
+		protected abstract void performCall();
 		
 		private void manageException(Throwable caught) {
 			callback.onFailure(caught);
@@ -35,7 +35,7 @@ abstract class XsrfProtectedService {
 	
 	private final HasRpcToken service;
 	
-	public XsrfProtectedService(HasRpcToken service) {
+	XsrfProtectedService(HasRpcToken service) {
 		this.service = service;
 	}
 	
