@@ -1,0 +1,33 @@
+.loginInput {
+	font-size: 1.2em;
+	padding: 0.3em;
+	width: 20em;
+	margin-left: 2em;
+}
+
+.loginLabel {
+	padding: 1em;
+	display: block;
+	font-size: 1.2em;
+}
+
+.loginForm {
+	
+}
+
+.loginFormTable {
+	margin: 7em auto;
+}
+
+.submit {
+	margin: 2em auto 0;
+	display: block;
+}
+
+#loginContainer {
+	display: none !important;
+}
+
+.forgottenPassword {
+	float: right;
+}
