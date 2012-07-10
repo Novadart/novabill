@@ -28,10 +28,6 @@
 	
 	<definition name="paypalSubscriptionRequest" template="/WEB-INF/views/public/paypalSubscriptionRequest.jsp" />
 
-	<definition name="pdfLandingPage" template="/WEB-INF/views/public/pdfLandingPage.jsp" />
-	
-	<definition name="exportLandingPage" template="/WEB-INF/views/public/exportLandingPage.jsp" />
-	
 	<definition name="premiumInfo" extends="base">
 		<put-attribute name="pagelinks" value="/WEB-INF/views/public/premiumInfoPageLinks.jsp" />
 		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />

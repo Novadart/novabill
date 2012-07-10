@@ -27,7 +27,7 @@
 			</g:VerticalPanel>
 		</g:SimplePanel>
 
-		<g:Button styleName="submit" ui:field="confirm" text="{i18n.submit}"></g:Button>
+		<g:Button styleName="action-button submit" ui:field="confirm" text="{i18n.submit}"></g:Button>
 
 	</g:FlowPanel>
 
