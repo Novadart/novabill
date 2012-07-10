@@ -22,4 +22,7 @@ public interface EstimationServiceAsync {
 	void getAllForClientInRange(long id, int start, int length,
 			AsyncCallback<PageDTO<EstimationDTO>> callback);
 
+	void getAllInRange(int start, int length,
+			AsyncCallback<PageDTO<EstimationDTO>> callback);
+
 }

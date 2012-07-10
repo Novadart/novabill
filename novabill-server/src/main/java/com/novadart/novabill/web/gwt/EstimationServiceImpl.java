@@ -146,4 +146,13 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 		return new PageDTO<EstimationDTO>(estimationDTOs, start, length, Estimation.countEstimationsForClient(id));
 	}
 
+	@Override
+	public PageDTO<EstimationDTO> getAllInRange(int start, int length) throws NotAuthenticatedException, ConcurrentAccessException {
+		List<Estimation> estimations = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId()).getAllEstimationsInRange(start, length);
+		List<EstimationDTO> estimationDTOs = new ArrayList<EstimationDTO>(estimations.size());
+		for(Estimation estimation: estimations)
+			estimationDTOs.add(EstimationDTOFactory.toDTO(estimation));
+		return new PageDTO<EstimationDTO>(estimationDTOs, start, length, (int)Estimation.countEstimations());
+	}
+
 }

@@ -31,4 +31,6 @@ public interface EstimationService extends RemoteService {
 	
 	public PageDTO<EstimationDTO> getAllForClientInRange(long id, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
 	
+	public PageDTO<EstimationDTO> getAllInRange(int start, int length) throws NotAuthenticatedException, ConcurrentAccessException;
+	
 }

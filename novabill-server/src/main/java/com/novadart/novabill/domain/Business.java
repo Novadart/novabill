@@ -149,6 +149,11 @@ public class Business implements Serializable {
     	return entityManager().createQuery(query, Invoice.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
     }
     
+    public List<Estimation> getAllEstimationsInRange(int start, int length){
+    	String query = "select estimation from Estimation estimation where estimation.business.id = :id order by estimation.accountingDocumentDate desc";
+    	return entityManager().createQuery(query, Estimation.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
+    }
+    
     public Long getNextInvoiceDocumentID(){
     	String query = "select max(invoice.documentID) from Invoice as invoice where invoice.business.id = :businessId and invoice.accountingDocumentYear = :year";
     	Long id = entityManager.createQuery(query, Long.class)
