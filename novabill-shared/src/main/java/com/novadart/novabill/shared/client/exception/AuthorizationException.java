@@ -17,4 +17,7 @@ public class AuthorizationException extends Exception implements IsSerializable 
 		this.error = error;
 	}
 	
+	public AuthorizationException() {
+	}
+	
 }

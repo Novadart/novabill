@@ -17,23 +17,21 @@ import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 
 public class Configuration {
 
-	private final static Dictionary configuration = Dictionary.getDictionary("business");
+	private final static Dictionary businessJS = Dictionary.getDictionary("business");
 
 	private static BusinessDTO business;
 	private static BusinessStatsDTO stats;
 
-
 	public static final void init(final WrappedAsyncCallback<Void> callback){
 		try {
-			
 			Map<String, String> values = new HashMap<String, String>();
 			
 			BusinessDTO business = new BusinessDTO();
 			setBusiness(business);
 			
-			business.setId( Long.parseLong(configuration.get("id")) );
+			business.setId( Long.parseLong(businessJS.get("id")) );
 			
-			if(loadValues(values)){
+			if(loadBusinessValues(values)){
 				
 				business.setAddress(values.get("address"));
 				business.setCity(values.get("city"));
@@ -48,6 +46,7 @@ public class Configuration {
 				business.setSsn(values.get("ssn"));
 				business.setVatID(values.get("vatID"));
 				business.setWeb(values.get("web"));
+				business.setPremium(Boolean.valueOf(values.get("premium")));
 				
 				callback.onSuccess(null);
 				
@@ -99,6 +98,10 @@ public class Configuration {
 		}
 	}
 
+	public static boolean isPremium() {
+		return business.isPremium();
+	}
+	
 	public static BusinessDTO getBusiness() {
 		return business;
 	}
@@ -115,13 +118,13 @@ public class Configuration {
 		Configuration.stats = stats;
 	}
 	
-	private static boolean loadValues(Map<String, String> vals){
+	private static boolean loadBusinessValues(Map<String, String> vals){
 		boolean valuesLoaded = true;
 		
 		for(String key : new String[]{"address","city","country","email","fax","mobile","name",
-				"phone","postcode","province","ssn","vatID","web"}){
+				"phone","postcode","province","premium","ssn","vatID","web"}){
 			try {
-				vals.put(key, configuration.get(key));
+				vals.put(key, businessJS.get(key));
 			} catch(MissingResourceException e) {
 				vals.put(key, "");
 				valuesLoaded = false;

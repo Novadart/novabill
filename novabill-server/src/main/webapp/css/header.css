@@ -1,21 +1,33 @@
 .header {
-	width: 960px;
-	height: 50px;
+	width: 100%;
+	height: 4em;
 	background: url('../images/divider-1.png') no-repeat bottom;
-	padding-top: 20px;
+	padding-top: 1em;
 }
 
 .welcomeMessage {
-	
+	top: 1.2em;
+	position: relative;
 }
 
 #goPremium {
-	margin: 0 0 0 2em;
+	
 }
 
 .logoutLink {
-	float: right;
 	font-size: 1em;
+}
+
+.private  {
+	font-size: 1em;
+}
+
+.authLinks {
+	float: right;
+}
+
+.authLinks * {
+	margin-left: 1em;
 }
 
 .businessName {
