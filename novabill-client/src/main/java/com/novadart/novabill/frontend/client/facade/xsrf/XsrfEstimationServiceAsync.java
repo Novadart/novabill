@@ -136,4 +136,21 @@ EstimationServiceAsync {
 		});
 	}
 
+	@Override
+	public void getAllInRange(final int start, final int length,
+			final AsyncCallback<PageDTO<EstimationDTO>> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate() {
+
+			@Override
+			public void performCall() {
+				estimation.getAllInRange(start, length, callback);
+			}
+
+			@Override
+			public void manageException(final Throwable caught) {
+				callback.onFailure(caught);
+			}
+		});
+	}
+
 }
