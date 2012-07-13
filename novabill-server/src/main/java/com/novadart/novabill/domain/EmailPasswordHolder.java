@@ -34,6 +34,7 @@ public class EmailPasswordHolder {
 	@NotEmpty(message = "{required.password}")
 	protected String password;
 	
+	@NotEmpty(message = "{required.password}")
 	protected String confirmPassword;
 	
 	protected Date expirationDate;
