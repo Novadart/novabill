@@ -37,3 +37,7 @@ quota.numberOfInvoicesPerYear.value=1
 quota.numberOfEstimationsPerYear.value=1
 
 path.tmpdir.data_export.value=/tmp/novabill
+
+rememberme.key=novabillRME
+#in seconds
+rememberme.expiration=345600

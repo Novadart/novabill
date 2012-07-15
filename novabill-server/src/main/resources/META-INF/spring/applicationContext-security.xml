@@ -19,6 +19,7 @@
         <session-management session-fixation-protection="migrateSession">
         	<concurrency-control max-sessions="1" expired-url="/max-sessions-exceeded"/>
         </session-management>
+        <remember-me key="${rememberme.key}" token-validity-seconds="345600" data-source-ref="dataSource"/>
     </http>
     <!-- Configure Authentication mechanism -->
     <authentication-manager alias="authenticationManager">

@@ -28,7 +28,7 @@
 						</fieldset>
 						<input type="submit" id="login" class="action2-button"
 							value="<spring:message code="header.signin"></spring:message>" />
-						<label for="checkbox"><input type="checkbox" id="checkbox" />
+						<label for="checkbox"><input type="checkbox" id="checkbox" name="_spring_security_remember_me"/>
 							<spring:message code="header.rememberme"></spring:message></label>
 					</fieldset>
 					<div>

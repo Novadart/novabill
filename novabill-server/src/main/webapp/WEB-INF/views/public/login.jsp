@@ -35,4 +35,6 @@
 			</td>
 		</tr>
 	</table>
+	<label for="checkbox"><input type="checkbox" id="checkbox" name="_spring_security_remember_me"/>
+							<spring:message code="header.rememberme"></spring:message></label>
 </form>
