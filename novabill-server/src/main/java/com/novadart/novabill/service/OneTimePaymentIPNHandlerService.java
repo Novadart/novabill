@@ -5,17 +5,15 @@ import org.springframework.stereotype.Service;
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.domain.Business;
 
-//@Service
+@Service
 @MailMixin
-public class PayPalSubscriptionIPNHandlerService extends PayPalIPNHandlerService{
+public class OneTimePaymentIPNHandlerService extends PayPalIPNHandlerService {
 	
-	public static final String SIGNUP = "subscr_signup";
-	
-	public static final String SUBSCRIPTION_PAYMENT = "subscr_payment";
+	public static final String WEB_ACCEPT = "web_accept";
 
 	@Override
 	protected boolean check(String transactionType, Map<String, String> parametersMap) {
-		if(!transactionType.equals(SUBSCRIPTION_PAYMENT))
+		if(!transactionType.equals(WEB_ACCEPT))
 			return false;
 		if(!parametersMap.get(PAYMENT_STATUS).equals(COMPLETED)) //not completed ignore
 			return false;

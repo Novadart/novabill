@@ -123,6 +123,8 @@ public class Business implements Serializable {
     
     private Long lastLogin;
     
+    private Long nonFreeAccountExpirationTime; 
+    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Item> items = new HashSet<Item>();
 
@@ -409,6 +411,14 @@ public class Business implements Serializable {
 
 	public void setLastLogin(Long lastLogin) {
 		this.lastLogin = lastLogin;
+	}
+	
+	public Long getNonFreeAccountExpirationTime() {
+		return nonFreeAccountExpirationTime;
+	}
+
+	public void setNonFreeAccountExpirationTime(Long nonFreeAccountExpirationTime) {
+		this.nonFreeAccountExpirationTime = nonFreeAccountExpirationTime;
 	}
 
 	public Set<Item> getItems() {

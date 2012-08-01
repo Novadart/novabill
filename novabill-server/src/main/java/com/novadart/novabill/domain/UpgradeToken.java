@@ -18,15 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Configurable
-public class SubscriptionToken {
+public class UpgradeToken {
 
 	private String email;
 	
 	private String token;
 	
-	public static List<SubscriptionToken> findByEmail(String email){
-		String query = "select st from SubscriptionToken st where st.email = :email";
-		return entityManager().createQuery(query, SubscriptionToken.class).setParameter("email", email).getResultList();
+	public static List<UpgradeToken> findByEmail(String email){
+		String query = "select st from UpgradeToken st where st.email = :email";
+		return entityManager().createQuery(query, UpgradeToken.class).setParameter("email", email).getResultList();
 	}
 	
 	/**
@@ -61,26 +61,26 @@ public class SubscriptionToken {
     transient EntityManager entityManager;
     
     public static final EntityManager entityManager() {
-        EntityManager em = new SubscriptionToken().entityManager;
+        EntityManager em = new UpgradeToken().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
     
-    public static long countSubscriptionTokens() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM SubscriptionToken o", Long.class).getSingleResult();
+    public static long countUpgradeTokens() {
+        return entityManager().createQuery("SELECT COUNT(o) FROM UpgradeToken o", Long.class).getSingleResult();
     }
     
-    public static List<SubscriptionToken> findAllSubscriptionTokens() {
-        return entityManager().createQuery("SELECT o FROM SubscriptionToken o", SubscriptionToken.class).getResultList();
+    public static List<UpgradeToken> findAllUpgradeTokens() {
+        return entityManager().createQuery("SELECT o FROM UpgradeToken o", UpgradeToken.class).getResultList();
     }
     
-    public static SubscriptionToken findSubscriptionToken(Long id) {
+    public static UpgradeToken findUpgradeToken(Long id) {
         if (id == null) return null;
-        return entityManager().find(SubscriptionToken.class, id);
+        return entityManager().find(UpgradeToken.class, id);
     }
     
-    public static List<SubscriptionToken> findSubscriptionTokenEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM SubscriptionToken o", SubscriptionToken.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+    public static List<UpgradeToken> findUpgradeTokenEntries(int firstResult, int maxResults) {
+        return entityManager().createQuery("SELECT o FROM UpgradeToken o", UpgradeToken.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
     
     @Transactional
@@ -95,7 +95,7 @@ public class SubscriptionToken {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            SubscriptionToken attached = SubscriptionToken.findSubscriptionToken(this.id);
+            UpgradeToken attached = UpgradeToken.findUpgradeToken(this.id);
             this.entityManager.remove(attached);
         }
     }
@@ -113,9 +113,9 @@ public class SubscriptionToken {
     }
     
     @Transactional
-    public SubscriptionToken merge() {
+    public UpgradeToken merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
-        SubscriptionToken merged = this.entityManager.merge(this);
+        UpgradeToken merged = this.entityManager.merge(this);
         this.entityManager.flush();
         return merged;
     }

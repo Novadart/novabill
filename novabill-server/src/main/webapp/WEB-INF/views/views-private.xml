@@ -7,4 +7,6 @@
 	
 	<definition name="changePassword" template="/WEB-INF/views/private/changePassword.jsp"/>
 	
+	<definition name="upgrade" template="/WEB-INF/views/private/upgrade.jsp"/>
+	
 </tiles-definitions>

@@ -10,9 +10,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.http.NameValuePair;
 import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
@@ -20,35 +18,39 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.novadart.novabill.domain.PayPalTransactionID;
-import com.novadart.novabill.service.PayPalSubscriptionIPNHandlerService;
+import com.novadart.novabill.service.PayPalIPNHandlerService;
 
 @Controller
 @RequestMapping("/paypal-ipn-listener")
 public class PayPalIPNListenerController {
 	
+	private static final Logger LOGGER = LoggerFactory.getLogger(PayPalIPNListenerController.class);
+	
 	@Value("${paypal.url}")
 	private String payPalUrl;
 	
+	@Value("${paypal.email}")
+	private String payPalEmail;
+	
 	@Autowired
-	private PayPalSubscriptionIPNHandlerService subscriptionHandler;
+	private List<PayPalIPNHandlerService> ipnHandlers;
 	
-	private final static String CONTENT_TYPE = "Content-Type";
-	
-    private final static String MIME_APP_URLENC = "application/x-www-form-urlencoded";
-    
     private final static String PARAM_NAME_CMD = "cmd";
     
     private final static String PARAM_VAL_CMD = "_notify-validate";
 
     private final static String RESP_VERIFIED = "VERIFIED";
+    
+    private final static String RECEIVER_EMAIL = "receiver_email";
     
 	@SuppressWarnings("unchecked")
 	private boolean verifyIPN(HttpServletRequest request) throws URISyntaxException, ClientProtocolException, IOException{
@@ -84,15 +86,21 @@ public class PayPalIPNListenerController {
     @RequestMapping
     public @ResponseBody void processIPN(@RequestParam("txn_type") String transactionType, @RequestParam(value = "txn_id", required = false) String transactionID,
     		HttpServletRequest request) throws URISyntaxException, ClientProtocolException, IOException{
+    	
+    	LOGGER.error(transactionType);
+    	
     	Map<String, String> parametersMap = extractParameters(request);
     	if(!verifyIPN(request)) return;
+    	String email = parametersMap.get(RECEIVER_EMAIL);
+    	if(email!= null && !email.equals(payPalEmail)) return; //email doesn't match
     	if(transactionID != null){
     		if(PayPalTransactionID.findByTransactionID(transactionID).size() > 0)
     			return; //already processed thus ignore
     		else
     			new PayPalTransactionID(transactionID).merge(); //store transaction id
     	}
-    	subscriptionHandler.handle(transactionType, parametersMap);
+    	for(PayPalIPNHandlerService ipnHandler: ipnHandlers)
+    		ipnHandler.handle(transactionType, parametersMap);
     }
 
 }

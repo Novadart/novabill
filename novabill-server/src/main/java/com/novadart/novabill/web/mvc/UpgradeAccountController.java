@@ -15,9 +15,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.novadart.novabill.domain.SubscriptionToken;
+import com.novadart.novabill.domain.UpgradeToken;
 import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
 
@@ -36,16 +37,17 @@ public class UpgradeAccountController {
 	
 	@Value("${paypal.hostedButtonID}")
 	private String hostedButtonID;
-
-	@RequestMapping("/send-paypal-supscription-request")
+	
+	
+	@RequestMapping(method = RequestMethod.GET)
 	@Transactional(readOnly = false)
-	public String sendPaypalSubscriptionRequest(Model model, HttpServletRequest request) throws MalformedURLException, UnsupportedEncodingException, NoSuchAlgorithmException{
+	public String display(Model model, HttpServletRequest request) throws MalformedURLException, UnsupportedEncodingException, NoSuchAlgorithmException{
 		String email = utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getEmail();
 		String token = tokenGenerator.generateToken();
-		SubscriptionToken subcriptionToken = new SubscriptionToken();
-		subcriptionToken.setEmail(email);
-		subcriptionToken.setToken(token);
-		subcriptionToken.persist();
+		UpgradeToken upgradeToken = new UpgradeToken();
+		upgradeToken.setEmail(email);
+		upgradeToken.setToken(token);
+		upgradeToken.persist();
 		String returnURL = new URL(request.getScheme(), request.getServerName(), request.getServerPort(),
 				request.getContextPath() + String.format("/private/upgrade/paypal-callback?email=%s&novabillToken=%s", 
 						URLEncoder.encode(email, "UTF-8"), URLEncoder.encode(token, "UTF-8"))).toString();
@@ -53,23 +55,21 @@ public class UpgradeAccountController {
 		model.addAttribute("hostedButtonID", hostedButtonID);
 		model.addAttribute("returnUrl", returnURL);
 		model.addAttribute("email", email);
-		return "paypalSubscriptionRequest";
+		return "upgrade";
 	}
-	
-	
 	
 	private void handleError(String email, String message){}
 
 	@RequestMapping("/paypal-callback")
 	@Transactional(readOnly = false)
 	public String handlePaypalReturn(@RequestParam("novabillToken") String returnedNovabillToken, @RequestParam("email") String email){
-		List<SubscriptionToken> subscribtionTokens = SubscriptionToken.findByEmail(email);
+		List<UpgradeToken> subscribtionTokens = UpgradeToken.findByEmail(email);
 		if(subscribtionTokens.size() == 0){
 			handleError(email, "No associated tokens");
 			return "premiumUpgradeFailure";
 		}
 		boolean found = false;
-		for(SubscriptionToken st: subscribtionTokens){
+		for(UpgradeToken st: subscribtionTokens){
 			if(st.getToken().equals(returnedNovabillToken))
 				found = true;
 			st.remove();
