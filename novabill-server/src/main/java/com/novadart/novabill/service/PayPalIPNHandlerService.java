@@ -20,6 +20,7 @@ public abstract class PayPalIPNHandlerService {
 	@Autowired
 	private PrincipalDetailsService principalDetailsService;
 
+	@Transactional(readOnly = false)
 	public void handle(String transactionType, Map<String, String> parametersMap){
 		preProcess(parametersMap);
 		if(!check(transactionType, parametersMap))
@@ -39,7 +40,6 @@ public abstract class PayPalIPNHandlerService {
 	
 	protected void postProcess(Map<String, String> parametersMap){}
 	
-	@Transactional(readOnly = false)
 	protected void makePremium(Business business){
 		if(!business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM)){
 			business.getGrantedRoles().remove(RoleType.ROLE_BUSINESS_FREE);

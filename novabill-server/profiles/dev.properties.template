@@ -31,6 +31,8 @@ paypal.action.value=https://www.sandbox.paypal.com/cgi-bin/webscr
 paypal.hostedButtonID.value=QR96B53BDX3FJ
 paypal.url.value=https://www.sandbox.paypal.com/cgi-bin/webscr
 paypal.email.value=nova_1337536969_biz@gmail.com
+paypal.premiumOneYearItemName.value=Novadart premium membership - 1 Year
+paypal.premiumOneYearMCGross.value=40.00
 
 quota.numberOfClients.value=1
 quota.numberOfInvoicesPerYear.value=1
