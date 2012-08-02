@@ -25,7 +25,7 @@ public class UtilsService {
 	
 	public boolean isAuthenticated(){
 		Authentication authentication = getAuthentication();
-		return !(authentication instanceof AnonymousAuthenticationToken); 
+		return authentication != null && !(authentication instanceof AnonymousAuthenticationToken); 
 	}
 	
 	public PrincipalDetails getAuthenticatedPrincipalDetails(){

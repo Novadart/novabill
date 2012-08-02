@@ -1,6 +1,11 @@
 <html>
 <body>
-<h3>Dear customer, your premuim membership has been revoked. You can continue using our service as free user or you can upgrade.</h3>
-</body>
 
+#if($expired)
+	<h3>Dear customer, your premuim membership has been revoked. You can continue using our service as free user or you can upgrade.</h3>
+#else
+	<h3>Dear customer, your premuim membership will expire in ${days} days.</h3>
+#end
+
+</body>
 </html>
