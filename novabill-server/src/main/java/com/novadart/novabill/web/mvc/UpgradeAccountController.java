@@ -63,16 +63,16 @@ public class UpgradeAccountController {
 	@RequestMapping("/paypal-callback")
 	@Transactional(readOnly = false)
 	public String handlePaypalReturn(@RequestParam("novabillToken") String returnedNovabillToken, @RequestParam("email") String email){
-		List<UpgradeToken> subscribtionTokens = UpgradeToken.findByEmail(email);
-		if(subscribtionTokens.size() == 0){
+		List<UpgradeToken> upgradeTokens = UpgradeToken.findByEmail(email);
+		if(upgradeTokens.size() == 0){
 			handleError(email, "No associated tokens");
 			return "premiumUpgradeFailure";
 		}
 		boolean found = false;
-		for(UpgradeToken st: subscribtionTokens){
-			if(st.getToken().equals(returnedNovabillToken))
+		for(UpgradeToken ut: upgradeTokens){
+			if(ut.getToken().equals(returnedNovabillToken))
 				found = true;
-			st.remove();
+			ut.remove();
 		}
 		if(found)
 			return "premiumUpgradeSuccess";
