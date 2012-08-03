@@ -24,8 +24,7 @@ public class AccountStatusManagerService {
 	@PersistenceContext
 	private EntityManager entityManager; 
 	
-	//@Scheduled(cron = "* 0 14 * * *") //run once a day at midnight
-	@Scheduled(fixedDelay = 10000)
+	@Scheduled(cron = "* 0 0 3 * *") //run once a day at 3 AM
 	public void runTasks(){
 		disableExpiredAccounts();
 		notifySoonToExpireAccounts(30);
