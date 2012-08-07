@@ -18,6 +18,7 @@
     
     <script type="text/javascript">
     	var business = <%=request.getAttribute("business")%>
+    	var daysToExpiration = <%=request.getAttribute("daysToExpiration")%>
     </script>
     
     <script type="text/javascript" language="javascript" src="rpc/rpc.nocache.js"></script>

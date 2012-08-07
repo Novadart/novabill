@@ -1,6 +1,7 @@
 package com.novadart.novabill.web.mvc;
 
 import java.io.StringWriter;
+import java.util.concurrent.TimeUnit;
 
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -31,6 +32,7 @@ public class PrivateController {
 			return null;
 		}
 		mav.addObject("business", sw.toString());
+		mav.addObject("daysToExpiration", business.getNonFreeExpirationDelta(TimeUnit.DAYS));
 		return mav;
 	}
 

@@ -10,6 +10,8 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.ElementCollection;
@@ -239,6 +241,13 @@ public class Business implements Serializable {
     	String query = "select b from Business b where b.email = :email";
     	List<Business> result = entityManager().createQuery(query, Business.class).setParameter("email", email).getResultList();
     	return result.size() == 0? null: result.get(0);
+    }
+    
+    public Long getNonFreeExpirationDelta(TimeUnit timeUnit){
+    	Long now = System.currentTimeMillis();
+    	if(nonFreeAccountExpirationTime == null || nonFreeAccountExpirationTime < now)
+    		return null;
+    	return timeUnit.convert(nonFreeAccountExpirationTime, TimeUnit.MILLISECONDS);
     }
 
 	@Override
