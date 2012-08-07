@@ -5,18 +5,20 @@ import java.util.Date;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.novadart.novabill.domain.Business;
+
 privileged aspect AccountUpgradeAspect extends AbstractLogEventEmailSenderAspect {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccountUpgradeAspect.class);
 	
-	pointcut upgrade(String email):
-		call(private void com.novadart.novabill.web.mvc.UpgradeAccountController.upgrade(..)) && args(email, ..);
+	pointcut upgrade(Business business):
+		execution(protected void com.novadart.novabill.service.OneTimePaymentIPNHandlerService.extendNonFreeAccountExpirationTime(..)) && args(business, ..);
 	
 	pointcut upgradeError(String email, String message):
-		call(private void com.novadart.novabill.web.mvc.UpgradeAccountController.handleError(..)) && args(email, message);
+		call(private void com.novadart.novabill.service.OneTimePaymentIPNHandlerService.handleError(..)) && args(email, message);
 	
-	after(String email): upgrade(email){
-		handleEvent(LOGGER, "Account upgrade", email, new Date(System.currentTimeMillis()), null);
+	after(Business business): upgrade(business){
+		handleEvent(LOGGER, "Account upgrade", business.getEmail(), new Date(System.currentTimeMillis()), null);
 	}
 	
 	after(String email, String message): upgradeError(email, message){

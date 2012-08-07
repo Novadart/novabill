@@ -5,11 +5,9 @@ import java.util.Calendar;
 import java.util.Map;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.domain.Business;
 
 @Service
-@MailMixin
 public class OneTimePaymentIPNHandlerService extends PayPalIPNHandlerService {
 	
 	private static final String WEB_ACCEPT = "web_accept";
@@ -26,11 +24,17 @@ public class OneTimePaymentIPNHandlerService extends PayPalIPNHandlerService {
 	@Value("${paypal.premiumOneYearMCGross}")
 	private BigDecimal premiumOneYearMCGross;
 	
+	private void handleError(String email, String message){}
+	
 	private boolean checkPremiumOneYear(Map<String, String> parametersMap){
-		if(new BigDecimal(parametersMap.get(MC_GROSS)).compareTo(premiumOneYearMCGross) != 0)
+		if(new BigDecimal(parametersMap.get(MC_GROSS)).compareTo(premiumOneYearMCGross) != 0){
+			handleError(parametersMap.get(CUSTOM), "Amount doesn't match");
 			return false;
-		if(!parametersMap.get(MC_CURRENCY).equalsIgnoreCase("EUR"))
+		}
+		if(!parametersMap.get(MC_CURRENCY).equalsIgnoreCase("EUR")){
+			handleError(parametersMap.get(CUSTOM), "Currency doesn't match");
 			return false;
+		}
 		return true;
 	}
 

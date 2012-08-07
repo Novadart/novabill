@@ -18,8 +18,6 @@ import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
@@ -32,8 +30,6 @@ import com.novadart.novabill.service.PayPalIPNHandlerService;
 @Controller
 @RequestMapping("/paypal-ipn-listener")
 public class PayPalIPNListenerController {
-	
-	private static final Logger LOGGER = LoggerFactory.getLogger(PayPalIPNListenerController.class);
 	
 	@Value("${paypal.url}")
 	private String payPalUrl;
@@ -86,13 +82,11 @@ public class PayPalIPNListenerController {
     @RequestMapping
     public @ResponseBody void processIPN(@RequestParam("txn_type") String transactionType, @RequestParam(value = "txn_id", required = false) String transactionID,
     		HttpServletRequest request) throws URISyntaxException, ClientProtocolException, IOException{
-    	
-    	LOGGER.error(transactionType);
-    	
     	Map<String, String> parametersMap = extractParameters(request);
     	if(!verifyIPN(request)) return;
     	String email = parametersMap.get(RECEIVER_EMAIL);
-    	if(email!= null && !email.equals(payPalEmail)) return; //email doesn't match
+    	if(email!= null && !email.equals(payPalEmail))//email doesn't match
+    		return; 
     	if(transactionID != null){
     		if(PayPalTransactionID.findByTransactionID(transactionID).size() > 0)
     			return; //already processed thus ignore
