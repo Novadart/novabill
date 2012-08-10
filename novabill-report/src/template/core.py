@@ -1,0 +1,78 @@
+# coding: utf-8
+
+from reportlab.platypus.tables import Table
+from reportlab.lib.units import inch
+
+class AbstractDirector(object):
+    
+    def __init__(self, builder, dataObject):
+        self.__builder = builder
+        self.__data = dataObject
+    
+    def getBuilder(self):
+        return self.__builder
+        
+    def getData(self):
+        return self.__data;
+    
+    def construct(self):
+        pass
+
+
+class DefaultDirector(AbstractDirector):
+    
+    def construct(self):
+        builder = self.getBuilder()
+        doc, data = builder.getDocument(), self.getData()
+        story = []
+        if data.getBusiness().getLogo():
+            story.append(builder.getLogoFlowable(inch, inch)) #place logo at the top
+        else:
+            story.append(builder.getNoLogoFlowable(inch, inch))
+        
+        story.append(Table([[builder.getBusinessFlowable(data.getBusiness(), doc.width / 2),
+                             builder.getCustomerFlowable(data.getClient(), doc.width / 2)]],
+                           colWidths=[doc.width / 2] * 2))
+        story.append(builder.getVerticalSpacerFlowable(5))
+        story.append(builder.getDocumentDetailsFlowable(data, doc.width, 0.3))
+        story.append(builder.getVerticalSpacerFlowable(10))
+        story.append(builder.getDocumentItemsFlowable(data.getInvoiceItems(), doc.width))
+        story.append(builder.getFooterFlowable(data, doc.width))
+        doc.build(story)
+        
+class AbstractDefaultBuilder(object):
+    
+    def getDocument(self): pass
+    
+    def getLogoFlowable(self, width, height): pass
+    
+    def getNoLogoFlowable(self, width , height): pass
+    
+    def getBusinessFlowable(self, businessData, width): pass
+    
+    def getCustomerFlowable(self, customerData, width): pass
+    
+    def getVerticalSpacerFlowable(self, height): pass
+    
+    def getDocumentDetailsFlowable(self, data, width, ratio): pass
+    
+    def getDocumentItemsFlowable(self, itemsData, width): pass
+    
+    def getFooterFlowable(self, data, width): pass
+    
+    
+class DocumentType(object):
+    
+    INVOICE = 0
+    
+    ESTIMATION = 1
+
+
+class DirectorType(object):
+    
+    DEFAULT = 0
+    
+class BuilderType(object):
+    
+    DEFAULT = 0;
+

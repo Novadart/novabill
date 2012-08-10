@@ -55,6 +55,9 @@ class BusinessData(object):
     def getWeb(self):
         return self.__data["web"]
     
+    def getLogo(self):
+        return self.__data["logo"]
+    
 """
     CLIENT DATA
 """
@@ -148,16 +151,16 @@ class InvoiceItem(object):
     
     def getVersion(self):
         return self.__data["version"]
-        
-        
-"""
-    INVOICE DATA
-"""
-class InvoiceData(object):
+    
 
+"""
+    ACCOUNTING DOCUMENT DATA
+"""
+class AccountingDocumentData(object):
+    
     def __init__(self, jsonData):
         self.__data = jsonData
-        
+    
     def getBusiness(self):
         return BusinessData(self.__data["business"])
     
@@ -170,17 +173,48 @@ class InvoiceData(object):
             items.append(InvoiceItem(item))
         return items
     
-    def getId(self):
-        return self.__data["id"]
-    
     def getInvoiceDate(self):
         return self.__data["accountingDocumentDate"]
     
+    def getId(self):
+        return self.__data["id"]
+    
     def getInvoiceID(self):
         return self.__data["documentID"]
-    
+
     def getInvoiceYear(self):
         return self.__data["accountingDocumentYear"]
+    
+    def getTotal(self):
+        return self.__data["total"]
+    
+    def getTotalBeforeTax(self):
+        return self.__data["totalBeforeTax"]
+    
+    def getTotalTax(self):
+        return self.__data["totalTax"]
+    
+    def getVersion(self):
+        return self.__data["version"]
+
+"""
+    ESTIMATION DATA
+"""
+class EstimationData(AccountingDocumentData):
+    
+    def __init__(self, jsonData):
+        super(EstimationData, self).__init__(jsonData)
+        self.__data = jsonData
+
+        
+"""
+    INVOICE DATA
+"""
+class InvoiceData(AccountingDocumentData):
+
+    def __init__(self, jsonData):
+        super(InvoiceData, self).__init__(jsonData)
+        self.__data = jsonData
     
     def getNote(self):
         return self.__data["note"]
@@ -239,31 +273,3 @@ class InvoiceData(object):
         
         else: return ""
     
-    def getTotal(self):
-        return self.__data["total"]
-    
-    def getTotalBeforeTax(self):
-        return self.__data["totalBeforeTax"]
-    
-    def getTotalTax(self):
-        return self.__data["totalTax"]
-    
-    def getVersion(self):
-        return self.__data["version"]
-    
-        
-
-class InvoiceTemplate(object):
-    
-    def __init__(self, jsonData, outputFilePath):
-        self.__data = InvoiceData(jsonData)
-        self.__outputFilePath = outputFilePath
-        
-    def _getData(self):
-        return self.__data;
-    
-    def _getOutputFilePath(self):
-        return self.__outputFilePath;
-    
-    def build(self):
-        pass
