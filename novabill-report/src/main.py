@@ -26,9 +26,10 @@ class Factory(object):
 
 
 def create_invoice(out, invoice, pathToLogo=None, logoWidth=None, logoHeight=None, docType=DocumentType.INVOICE, tempType=DirectorType.DEFAULT):
-    displayParams = dict(logo=dict(path=pathToLogo, width=logoWidth, height=logoWidth))
-    builder = Factory.createBuilder(BuilderType.DEFAULT, docType, out, displayParams)
-    director = Factory.createDirector(tempType, builder, InvoiceData(invoice)) 
+    builderDisplayParams = dict(logo=dict(path=pathToLogo, width=logoWidth, height=logoWidth))
+    builder = Factory.createBuilder(BuilderType.DEFAULT, docType, out, dispParams=builderDisplayParams)
+    directorDisplayParams = dict(pagenumbers=True, watermark=True)
+    director = Factory.createDirector(tempType, builder, InvoiceData(invoice), dispParams=directorDisplayParams) 
     director.construct()
 
 

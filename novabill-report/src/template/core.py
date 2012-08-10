@@ -2,18 +2,23 @@
 
 from reportlab.platypus.tables import Table
 from reportlab.lib.units import inch
+from template.utils import instatiateCanvasMaker
 
 class AbstractDirector(object):
     
-    def __init__(self, builder, dataObject):
+    def __init__(self, builder, dataObject, dispParams=dict):
         self.__builder = builder
         self.__data = dataObject
+        self.__displayParams = dispParams
     
     def getBuilder(self):
         return self.__builder
         
     def getData(self):
         return self.__data;
+    
+    def getDispParams(self):
+        return self.__displayParams
     
     def construct(self):
         pass
@@ -38,7 +43,8 @@ class DefaultDirector(AbstractDirector):
         story.append(builder.getVerticalSpacerFlowable(10))
         story.append(builder.getDocumentItemsFlowable(data.getInvoiceItems(), doc.width))
         story.append(builder.getFooterFlowable(data, doc.width))
-        doc.build(story)
+        doc.build(story, canvasmaker=instatiateCanvasMaker(pagenumbers=self.getDispParams()["pagenumbers"] if "pagenumbers" in self.getDispParams() else None,
+                                                           watermark=self.getDispParams()["watermark"] if "watermark" in self.getDispParams() else None))
         
 class AbstractDefaultBuilder(object):
     

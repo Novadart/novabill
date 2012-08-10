@@ -56,9 +56,9 @@ class CustomerBoxFlowable(Flowable):
         
 class DefaultDocumentBuilder(AbstractDefaultBuilder):
     
-    def __init__(self, outputFilePath, displayParams):
+    def __init__(self, outputFilePath, dispParams=dict()):
         self.__doc = SimpleDocTemplate(outputFilePath)
-        self.__displayParams = displayParams
+        self.__displayParams = dispParams
     
     def getDocument(self):
         return self.__doc
