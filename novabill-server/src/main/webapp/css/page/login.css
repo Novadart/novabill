@@ -31,3 +31,8 @@
 .forgottenPassword {
 	float: right;
 }
+
+#rememberMe {
+	margin-left: 2em;
+	cursor: pointer;
+}

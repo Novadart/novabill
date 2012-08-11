@@ -29,12 +29,19 @@
 			</td>
 		</tr>
 		<tr>
+			<td> </td>
+			<td>
+				<label id="rememberMe" for="rememberMeCheckBox">
+					<input type="checkbox" id="rememberMeCheckBox" name="_spring_security_remember_me"/>
+							<spring:message code="header.rememberme"></spring:message></label>
+			</td>
+		</tr>
+		<tr>
 			<td colspan="2">
 				<input id="proceed" class="action2-button submit" type="submit"
 					value='<spring:message code="header.login" />' />	
 			</td>
 		</tr>
 	</table>
-	<label for="checkbox"><input type="checkbox" id="checkbox" name="_spring_security_remember_me"/>
-							<spring:message code="header.rememberme"></spring:message></label>
+	
 </form>
