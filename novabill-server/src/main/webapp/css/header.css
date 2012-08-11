@@ -8,6 +8,7 @@
 .welcomeMessage {
 	top: 1.2em;
 	position: relative;
+	font-size: 1.2em;
 }
 
 #goPremium {
