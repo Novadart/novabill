@@ -5,7 +5,11 @@
 
 	<definition name="private" template="/WEB-INF/views/private/private.jsp" />
 	
-	<definition name="changePassword" template="/WEB-INF/views/private/changePassword.jsp"/>
+	<definition name="changePassword" extends="basePrivate">
+		<put-attribute name="pagelinks" value="/WEB-INF/views/private/changePasswordPageLinks.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/private/headerSimple.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/private/changePassword.jsp" />
+	</definition>
 	
 	<definition name="upgrade" template="/WEB-INF/views/private/upgrade.jsp"/>
 	

@@ -4,23 +4,11 @@
 <tiles-definitions>
 
 	<definition name="base" template="/WEB-INF/views/base.jsp" />
+	
+	<definition name="basePrivate" template="/WEB-INF/views/basePrivate.jsp" />
 
 	<definition name="register" template="/WEB-INF/views/register.jsp" />
 
-	<definition name="activate" template="/WEB-INF/views/activate.jsp" />
-
-	<definition name="login" template="/WEB-INF/views/login.jsp" />
-
-	<definition name="registrationCompleted" template="/WEB-INF/views/registrationCompleted.jsp" />
-	
-	<definition name="paypalSubscriptionRequest" template="/WEB-INF/views/paypalSubscriptionRequest.jsp" />
-
 	<definition name="error" template="/WEB-INF/views/error.jsp" />
-	
-	<definition name="premiumInfo" template="/WEB-INF/views/premiumInfo.jsp" />
-	
-	<definition name="premiumUpgradeSuccess" template="/WEB-INF/views/premiumUpgradeSuccess.jsp" />
-	
-	<definition name="premiumUpgradeFailure" template="/WEB-INF/views/premiumUpgradeFailure.jsp" />
 	
 </tiles-definitions>
