@@ -57,66 +57,6 @@ textarea:HOVER {
 	border: 0.1em solid #000;
 }
 
-.header {
-	border-bottom: 0.2em solid #EEE;
-}
-
-.header .logo {
-	height: 2.5em;
-	float: left;
-}
-
-.header .stats {
-	font-size: 1.2em;
-	padding-bottom: 0.5em;
-	padding-top: 0.5em;
-	position: absolute;
-	right: 0.5em;
-	top: 0.8em;
-}
-
-.header .exitButton {
-	float: left;
-	text-decoration: none;
-	font-size: 1em;
-	cursor: pointer;
-	color: #333;
-	margin: 0.8em 0 0 2em;
-}
-
-.header .exitButton:HOVER {
-	font-weight: bold;
-}
-
-.header .homeButton {
-	height: 2.5em;
-	width: 6em;
-	float: left;
-	margin-left: 13em;
-}
-
-.header .myDataButton {
-	height: 2.5em;
-	width: 8em;
-	float: left;
-	margin-left: 0.5em;
-}
-
-.header .productName {
-	float: left;
-	font-size: 2.5em;
-	font-weight: bold;
-	cursor: pointer;
-}
-
-.header .clients,.header .invoices,.header .totalAmount {
-	margin-left: 2.5em;
-}
-
-.header .value {
-	margin-left: 0.7em;
-	font-weight: bold;
-}
 
 .AuthDialog {
 	background-color: white;
@@ -348,6 +288,83 @@ textarea:HOVER {
 	background-color: #EEE;
 	border: 0.1em solid #DDD;
 	color: #333;
+}
+
+.MainWidget .header {
+	border-bottom: 0.2em solid #EEE;
+}
+
+.MainWidget .header .logo {
+	height: 2.5em;
+}
+
+.MainWidget .header .stats {
+	font-size: 1.2em;
+	padding-bottom: 0.5em;
+	padding-top: 0.5em;
+	position: absolute;
+	right: 0.5em;
+	top: 0.8em;
+}
+
+.MainWidget .header .menuBar {
+	float: left;
+	width: 70em;
+}
+
+.MainWidget .header .logoBar {
+	float: left;
+	width: 25em;
+}
+
+.MainWidget .changePassword {
+	text-decoration: none;
+	font-size: 1em;
+	cursor: pointer;
+	color: #333;
+	margin: 0.8em 0 0 2em;
+}
+
+.MainWidget .changePassword:HOVER {
+	font-weight: bold;
+}
+
+.MainWidget .header .exitButton {
+	text-decoration: none;
+	font-size: 1em;
+	cursor: pointer;
+	color: #333;
+	margin: 0.8em 0 0 2em;
+}
+
+.MainWidget .header .exitButton:HOVER {
+	font-weight: bold;
+}
+
+.MainWidget .header .homeButton {
+	height: 2.5em;
+	width: 6em;
+}
+
+.MainWidget .header .myDataButton {
+	height: 2.5em;
+	width: 8em;
+	margin-left: 0.5em;
+}
+
+.MainWidget .header .productName {
+	font-size: 2.5em;
+	font-weight: bold;
+	cursor: pointer;
+}
+
+.MainWidget .header .clients,.MainWidget .header .invoices,.MainWidget .header .totalAmount {
+	margin-left: 2.5em;
+}
+
+.MainWidget .header .value {
+	margin-left: 0.7em;
+	font-weight: bold;
 }
 
 .MainWidget .banner {

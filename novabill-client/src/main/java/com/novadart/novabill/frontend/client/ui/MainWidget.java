@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.Const;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
@@ -41,10 +42,13 @@ public class MainWidget extends Composite {
 	@UiField HTML stats;
 	@UiField Anchor logout;
 	@UiField Anchor logoAnchor;
+	@UiField(provided=true) Anchor changePasswordAnchor;
 
 	private PlaceController placeController;
 
 	public MainWidget() {
+		changePasswordAnchor = new Anchor(I18N.INSTANCE.changePassword(), Const.CHANGE_PASSWORD_URL);
+		
 		initWidget(uiBinder.createAndBindUi(this));
 		logout.setHref(GWT.getHostPageBaseURL()+"resources/j_spring_security_logout");
 		logoAnchor.setHref(GWT.getHostPageBaseURL());

@@ -4,21 +4,28 @@
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
-	<ui:with type="com.novadart.novabill.frontend.client.resources.ImageResources"
+	<ui:with
+		type="com.novadart.novabill.frontend.client.resources.ImageResources"
 		field="img"></ui:with>
 
 	<g:DockLayoutPanel styleName="MainWidget" unit='EM'>
 
 		<g:north size="3">
 			<g:FlowPanel styleName="header">
-				<g:Image styleName="logo" url="{img.bullet.getSafeUri.asString}"></g:Image>
-				<g:Anchor ui:field="logoAnchor" styleName="productName" text="Novabill"></g:Anchor>
-				<g:Button styleName="homeButton button" text="{i18n.home}"
-					ui:field="home"></g:Button>
-				<g:Button styleName="myDataButton button" text="{i18n.myData}"
-					ui:field="myData"></g:Button>
-				<g:Anchor styleName="exitButton" text="{i18n.logout}"
-					ui:field="logout"></g:Anchor>
+				<g:FlowPanel styleName="logoBar">
+					<g:Image styleName="logo" url="{img.bullet.getSafeUri.asString}"></g:Image>
+					<g:Anchor ui:field="logoAnchor" styleName="productName"
+						text="Novabill"></g:Anchor>
+				</g:FlowPanel>
+				<g:FlowPanel styleName="menuBar">
+					<g:Button styleName="homeButton button" text="{i18n.home}"
+						ui:field="home"></g:Button>
+					<g:Button styleName="myDataButton button" text="{i18n.myData}"
+						ui:field="myData"></g:Button>
+					<g:Anchor ui:field="changePasswordAnchor" styleName="changePassword" />
+					<g:Anchor styleName="exitButton" text="{i18n.logout}"
+						ui:field="logout"></g:Anchor>
+				</g:FlowPanel>
 				<g:HTML styleName="stats" ui:field="stats"></g:HTML>
 			</g:FlowPanel>
 		</g:north>

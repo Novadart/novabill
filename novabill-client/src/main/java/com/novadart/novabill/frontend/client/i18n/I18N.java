@@ -127,4 +127,5 @@ public interface I18N extends Constants {
 	public String welcomeMessage1();
 	public String welcomeMessage2();
 	public String welcomeMessage3();
+	public String changePassword();
 }
