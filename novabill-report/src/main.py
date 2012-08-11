@@ -25,18 +25,15 @@ class Factory(object):
 
 
 
-def create_invoice(out, invoice, pathToLogo=None, logoWidth=None, logoHeight=None, docType=DocumentType.INVOICE, tempType=DirectorType.DEFAULT):
+def create_invoice(out, invoice, pathToLogo=None, logoWidth=None, logoHeight=None, docType=DocumentType.INVOICE, tempType=DirectorType.DEFAULT, watermark=True):
     builderDisplayParams = dict(logo=dict(path=pathToLogo, width=logoWidth, height=logoWidth))
     builder = Factory.createBuilder(BuilderType.DEFAULT, docType, out, dispParams=builderDisplayParams)
-    directorDisplayParams = dict(pagenumbers=True, watermark=True)
+    directorDisplayParams = dict(pagenumbers=True, watermark=watermark)
     director = Factory.createDirector(tempType, builder, InvoiceData(invoice), dispParams=directorDisplayParams) 
     director.construct()
-
-
-
         
         
-if __name__ == '__main__':
+if False and __name__ == '__main__':
     testInvoiceJSON  = """
         {
             "class":"com.novadart.novabill.domain.Invoice",
@@ -117,6 +114,5 @@ if __name__ == '__main__':
         remove(outputFile)
     import json
     create_invoice("/tmp/testInvoice.pdf", json.loads(testInvoiceJSON))
-    print "done..."
     
     

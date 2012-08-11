@@ -28,6 +28,7 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Logo;
+import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.service.PDFGenerator.DocumentType;
 import com.novadart.novabill.shared.client.data.DataExportClasses;
 
@@ -74,23 +75,23 @@ public class DataExporter {
 	}
 	
 	private File exportAccountingDocument(File outDir, AccountingDocument accountingDocument, String pathToLogo, Integer logoWidth,
-			Integer logoHeight, DocumentType docType) throws IOException{
+			Integer logoHeight, DocumentType docType, Boolean putWatermark) throws IOException{
 		File docFile = File.createTempFile("doc", ".pdf", outDir);
 		docFile.deleteOnExit();
-		pdfGenerator.createAndWrite(new FileOutputStream(docFile), accountingDocument, pathToLogo, logoWidth, logoHeight, docType, null);
+		pdfGenerator.createAndWrite(new FileOutputStream(docFile), accountingDocument, pathToLogo, logoWidth, logoHeight, docType, putWatermark, null);
 		return docFile;
 	}
 	
 	private List<File> exportAccountingDocumentsData(File outDir, ZipOutputStream zipStream, Business business, File tempLogoFile,
-			Logo logo, DocumentType docType, String entryFormat) throws IOException, FileNotFoundException {
+			Logo logo, DocumentType docType, Boolean putWatermark, String entryFormat) throws IOException, FileNotFoundException {
 		List<File> files = new ArrayList<File>();
 		Set<? extends AccountingDocument> docs = docType.equals(DocumentType.INVOICE)? business.getInvoices(): business.getEstimations();
 		for(AccountingDocument doc: docs){
 			File docFile;
 			if(tempLogoFile != null)
-				docFile = exportAccountingDocument(outDir, doc, tempLogoFile.getPath(), logo.getWidth(), logo.getHeight(), docType);
+				docFile = exportAccountingDocument(outDir, doc, tempLogoFile.getPath(), logo.getWidth(), logo.getHeight(), docType, putWatermark);
 			else
-				docFile = exportAccountingDocument(outDir, doc, null, null, null, docType);
+				docFile = exportAccountingDocument(outDir, doc, null, null, null, docType, putWatermark);
 			zipStream.putNextEntry(new ZipEntry(String.format(entryFormat, doc.getAccountingDocumentYear(), doc.getDocumentID())));
 			FileInputStream invStream = new FileInputStream(docFile);
 			IOUtils.copy(invStream, zipStream);
@@ -124,9 +125,11 @@ public class DataExporter {
 			}
 			if(classes.contains(DataExportClasses.INVOICE))
 				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.INVOICE,
+						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
 						messageSource.getMessage("export.invoices.zipentry.pattern", null, "invoices/invoice_%d_%d.pdf", locale));
 			if(classes.contains(DataExportClasses.ESTIMATION))
 				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.ESTIMATION,
+						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
 						messageSource.getMessage("export.estimations.zipentry.pattern", null, "estimations/estimation_%d_%d.pdf", locale));
 			zipStream.close();
 			return zipFile;

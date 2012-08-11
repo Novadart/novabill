@@ -52,7 +52,7 @@ public class PDFGenerator {
 	};
 	
 	public void createAndWrite(OutputStream out, AccountingDocument accountingDocument, String pathToLogo, Integer logoWidth, Integer logoHeight, 
-			DocumentType docType, BeforeWriteEventHandler bwEvHnld) throws IOException{
+			DocumentType docType, Boolean putWatermark, BeforeWriteEventHandler bwEvHnld) throws IOException{
 		File outDir = new File(invOutLocation);
 		File invFile = File.createTempFile("inv", ".pdf", outDir);
 		invFile.deleteOnExit();
@@ -66,9 +66,9 @@ public class PDFGenerator {
 			jep.eval("import json");
 			int docTypeConst = docType == DocumentType.INVOICE? 0: 1;
 			if(pathToLogo == null)
-				jep.eval(String.format("create_invoice('%s', json.loads('%s'), docType=%d)", invFile.getAbsolutePath(), json, docTypeConst));
+				jep.eval(String.format("create_invoice('%s', json.loads('%s'), docType=%d, watermark=%s)", invFile.getAbsolutePath(), json, docTypeConst, putWatermark? "True": "False"));
 			else
-				jep.eval(String.format("create_invoice('%s', json.loads('%s'), '%s', %d, %d, %d)", invFile.getAbsolutePath(), json, pathToLogo, logoWidth, logoHeight, docTypeConst));
+				jep.eval(String.format("create_invoice('%s', json.loads('%s'), '%s', %d, %d, docType=%d, watermark=%s)", invFile.getAbsolutePath(), json, pathToLogo, logoWidth, logoHeight, docTypeConst, putWatermark? "True": "False"));
 			jep.close();
 			if(bwEvHnld != null)
 				bwEvHnld.beforeWriteCallback(invFile);

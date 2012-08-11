@@ -24,6 +24,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.Logo;
+import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.service.PDFGenerator;
 import com.novadart.novabill.service.PDFGenerator.DocumentType;
 import com.novadart.novabill.service.UtilsService;
@@ -95,9 +96,9 @@ public class PDFController{
 				}
 			};
 			if(tempLogoFile == null)
-				pdfGenerator.createAndWrite(response.getOutputStream(), invoice, null, null, null, docType, bwEvHnld);
+				pdfGenerator.createAndWrite(response.getOutputStream(), invoice, null, null, null, docType, business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),bwEvHnld);
 			else
-				pdfGenerator.createAndWrite(response.getOutputStream(), invoice, tempLogoFile.getPath(), logo.getWidth(), logo.getHeight(), docType, bwEvHnld);
+				pdfGenerator.createAndWrite(response.getOutputStream(), invoice, tempLogoFile.getPath(), logo.getWidth(), logo.getHeight(), docType, business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE), bwEvHnld);
 		} finally {
 			if(tempLogoFile != null)
 				tempLogoFile.delete();
