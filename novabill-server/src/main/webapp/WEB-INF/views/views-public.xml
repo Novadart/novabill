@@ -34,9 +34,17 @@
 		<put-attribute name="body" value="/WEB-INF/views/public/premiumInfo.jsp" />
 	</definition>
 	
-	<definition name="premiumUpgradeSuccess" template="/WEB-INF/views/public/premiumUpgradeSuccess.jsp" />
+	<definition name="premiumUpgradeSuccess" extends="base">
+		<put-attribute name="pagelinks" value="/WEB-INF/views/public/premiumInfoPageLinks.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/public/premiumUpgradeSuccess.jsp" />
+	</definition>
 	
-	<definition name="premiumUpgradeFailure" template="/WEB-INF/views/public/premiumUpgradeFailure.jsp" />
+	<definition name="premiumUpgradeFailure" extends="base">
+		<put-attribute name="pagelinks" value="/WEB-INF/views/public/premiumInfoPageLinks.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/public/premiumUpgradeFailure.jsp" />
+	</definition>
 	
 	<definition name="forgotPassword" template="/WEB-INF/views/public/forgotPassword.jsp"/>
 	
