@@ -184,3 +184,22 @@ blockquote:before,blockquote:after,q:before,q:after {
 		endColorstr='#2a60b4', GradientType=0 );
 	background: linear-gradient(top, #4596df 0%, #2a60b4 100%);
 }
+
+.textbox {
+	font-size: 1.2em;
+	padding: 0.3em;
+}
+
+.textboxLabel {
+	padding: 1em;
+	display: block;
+	font-size: 1.2em;
+}
+
+.error {
+	padding: 1em;
+	display: block;
+	font-size: 1.2em;
+	color: red;
+	font-style: italic;
+}
