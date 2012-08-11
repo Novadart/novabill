@@ -95,7 +95,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
 	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, AuthorizationException {
-		Client client = Client.findClient(invoiceDTO.getClient().getId());;
+		Client client = Client.findClient(invoiceDTO.getClient().getId());
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		Business business = Business.findBusiness(invoiceDTO.getBusiness().getId());

@@ -5,6 +5,7 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
@@ -27,8 +28,12 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 	protected void renderVisible(
 			com.google.gwt.cell.client.Cell.Context context, InvoiceDTO value,
 			SafeHtmlBuilder sb) {
-
-		sb.appendHtmlConstant("<div class='main "+(value.getPayed() ? "invoice-payed" : "invoice-not-payed")+"'>");
+		
+		if(Configuration.isPremium()) {
+			sb.appendHtmlConstant("<div class='main "+(value.getPayed() ? "invoice-payed" : "invoice-not-payed")+"'>");
+		} else {
+			sb.appendHtmlConstant("<div class='main '>");
+		}
 		sb.appendHtmlConstant("<span class='id'>");
 		sb.append(value.getDocumentID());
 		sb.appendHtmlConstant("</span>");
@@ -53,9 +58,11 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 		sb.appendHtmlConstant("<span class='total'>");
 		sb.appendEscaped(I18N.INSTANCE.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
 		sb.appendHtmlConstant("</span>");
-		sb.appendHtmlConstant("<span class='payed payed-"+value.getPayed()+"'>");
-		sb.appendEscaped(value.getPayed() ? I18N.INSTANCE.payed() : I18N.INSTANCE.notPayed());
-		sb.appendHtmlConstant("</span>");
+		if(Configuration.isPremium()) {
+			sb.appendHtmlConstant("<span class='payed payed-"+value.getPayed()+"'>");
+			sb.appendEscaped(value.getPayed() ? I18N.INSTANCE.payed() : I18N.INSTANCE.notPayed());
+			sb.appendHtmlConstant("</span>");
+		}
 		sb.appendHtmlConstant("</div>");
 
 		sb.appendHtmlConstant("<div class='tools'>");
