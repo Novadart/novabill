@@ -52,13 +52,21 @@
 		<put-attribute name="body" value="/WEB-INF/views/public/forgotPassword.jsp" />
 	</definition>
 
-	<definition name="passwordRecoveryCommenced" template="/WEB-INF/views/public/passwordRecoveryCommenced.jsp"/>
+	<definition name="passwordRecoveryCommenced" extends="baseFeedback">
+		<put-attribute name="feedbackMessage" value="/WEB-INF/views/public/passwordRecoveryCommenced.jsp" />
+	</definition>
 	
-	<definition name="passwordRecovery" template="/WEB-INF/views/public/passwordRecovery.jsp"/>
+	<definition name="passwordRecovery" extends="base">
+		<put-attribute name="pagelinks" value="/WEB-INF/views/public/passwordRecoveryPageLinks.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/public/passwordRecovery.jsp" />
+	</definition>
 	
 	<definition name="invalidForgotPasswordRequest" template="/WEB-INF/views/public/invalidForgotPasswordRequest.jsp"/>
 	
-	<definition name="passwordRecoverySuccess" template="/WEB-INF/views/public/passwordRecoverySuccess.jsp"/>
+	<definition name="passwordRecoverySuccess" extends="baseFeedback">
+		<put-attribute name="feedbackMessage" value="/WEB-INF/views/public/passwordRecoverySuccess.jsp" />
+	</definition>
 	
 </tiles-definitions>
 
