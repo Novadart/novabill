@@ -1,8 +1,8 @@
 package com.novadart.novabill.web.mvc;
 
 import java.util.Date;
-import javax.persistence.NoResultException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.ForgotPassword;
 import com.novadart.novabill.service.validator.ForgotPasswordValidator;
@@ -36,7 +35,7 @@ public class PasswordRecoveryController {
 			}
 			forgotPassword.clearPasswordFields();
 			model.addAttribute("forgotPassword", forgotPassword);
-		}catch (NoResultException e) {
+		}catch (EmptyResultDataAccessException e) {
 			return "invalidForgotPasswordRequest";
 		}
 		return "passwordRecovery";

@@ -4,6 +4,7 @@ import java.util.Date;
 
 import javax.persistence.NoResultException;
 
+import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -35,7 +36,7 @@ public class ActivateAccountController {
 			}
 			model.addAttribute("registration", registration);
 			
-		} catch (NoResultException e) {
+		} catch (EmptyResultDataAccessException e) {
 			return "invalidActivationRequest";
 		}
 		return "activate";
