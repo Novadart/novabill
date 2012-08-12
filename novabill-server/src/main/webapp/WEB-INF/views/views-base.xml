@@ -6,6 +6,8 @@
 	<definition name="base" template="/WEB-INF/views/base.jsp" />
 	
 	<definition name="basePrivate" template="/WEB-INF/views/basePrivate.jsp" />
+	
+	<definition name="baseFeedback" template="/WEB-INF/views/baseFeedback.jsp" />
 
 	<definition name="register" template="/WEB-INF/views/register.jsp" />
 
