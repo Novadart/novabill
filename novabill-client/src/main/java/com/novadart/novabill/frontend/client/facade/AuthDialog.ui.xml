@@ -26,7 +26,7 @@
 		</g:Grid>
 		
 		<g:SimplePanel styleName="submitContainer">
-			<g:Button ui:field="submit" styleName="submit" text="{i18n.submit}"></g:Button>
+			<g:Button ui:field="submit" styleName="submit action2-button" text="{i18n.submit}"></g:Button>
 		</g:SimplePanel>	
 	</g:FlowPanel>
 	
