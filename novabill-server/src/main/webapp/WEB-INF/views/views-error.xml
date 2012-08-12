@@ -15,9 +15,14 @@
 	
 	<definition name="concurentAccess" template="/WEB-INF/views/error/concurrentAccess.jsp" />
 	
-	<definition name="invalidActivationRequest"
-		template="/WEB-INF/views/error/invalidActivationRequest.jsp" />
-		
+	<definition name="invalidActivationRequest" extends="baseFeedback">
+		<put-attribute name="feedbackMessage" value="/WEB-INF/views/error/invalidActivationRequest.jsp" />
+	</definition>
+	
+	<definition name="invalidForgotPasswordRequest" extends="baseFeedback">
+		<put-attribute name="feedbackMessage" value="/WEB-INF/views/error/invalidForgotPasswordRequest.jsp" />
+	</definition>
+	
 	<definition extends="error" name="dataAccessFailure">
 		<put-attribute name="body"
 			value="/WEB-INF/views/error/dataAccessFailure.jspx" />

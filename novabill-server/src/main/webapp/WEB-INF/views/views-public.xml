@@ -15,16 +15,22 @@
 		<put-attribute name="body" value="/WEB-INF/views/public/register.jsp" />
 	</definition>
 
-	<definition name="activate" template="/WEB-INF/views/public/activate.jsp" />
+	<definition name="activate" extends="base">
+		<put-attribute name="pagelinks" value="/WEB-INF/views/public/activatePageLinks.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/public/activate.jsp" />
+	</definition>
 
-	
 	<definition name="login" extends="base">
 		<put-attribute name="pagelinks" value="/WEB-INF/views/public/loginPageLinks.jsp" />
 		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/public/login.jsp" />
 	</definition>
 
-	<definition name="registrationCompleted" template="/WEB-INF/views/public/registrationCompleted.jsp" />
+	<definition name="registrationCompleted" extends="baseFeedback">
+		<put-attribute name="feedbackMessage" value="/WEB-INF/views/public/registrationCompleted.jsp" />
+	</definition>
+
 	
 	<definition name="paypalSubscriptionRequest" template="/WEB-INF/views/public/paypalSubscriptionRequest.jsp" />
 
@@ -61,8 +67,6 @@
 		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/public/passwordRecovery.jsp" />
 	</definition>
-	
-	<definition name="invalidForgotPasswordRequest" template="/WEB-INF/views/public/invalidForgotPasswordRequest.jsp"/>
 	
 	<definition name="passwordRecoverySuccess" extends="baseFeedback">
 		<put-attribute name="feedbackMessage" value="/WEB-INF/views/public/passwordRecoverySuccess.jsp" />
