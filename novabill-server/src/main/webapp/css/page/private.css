@@ -102,8 +102,13 @@ textarea:HOVER {
 	margin-bottom: 1.5em;
 }
 
-.ClientView .newInvoice,.ClientView .newEstimation {
+.ClientView .newInvoice,
+.ClientView .newEstimation {
 	cursor: pointer;
+}
+
+.HomeView .newEstimation {
+	width: 10em;
 }
 
 .ClientView .clientName {
