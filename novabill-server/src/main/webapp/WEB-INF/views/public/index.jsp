@@ -16,10 +16,10 @@
 	</sec:authorize>
 	<div class="slider-wrapper theme-default mask-container-large">
 		<div id="slider" class="nivoSlider">
-			<img src="images/image-large-1.jpg" alt="" /> <img
-				src="images/image-large-2.jpg" alt="" /> <img
-				src="images/image-large-3.jpg" alt="" /> <img
-				src="images/image-large-4.jpg" alt="" />
+			<img src="images/slider/slider-3.jpg" alt="" /> 
+			<img src="images/slider/slider-1.jpg" alt="" /> 
+			<img src="images/slider/slider-2.jpg" alt="" /> 
+			<img src="images/slider/slider-3.jpg" alt="" />
 		</div>
 		<div class="mask-gloss-large"></div>
 	</div>
@@ -148,11 +148,11 @@
 	<div class="inset-btm"></div>
 </div>
 
-<div class="testimonials">
+<!-- <div class="testimonials">
 	<h3>Testimonials</h3>
 
 	<div class="quote">
-		<!--Start of Quote-->
+		Start of Quote
 		<img src="images/quotation-mark.png" alt="quotation mark"
 			class="quotation-mark" />
 		<p>Cum sociis natoque penatibus et magnis dis parturient montes,
@@ -166,10 +166,10 @@
 			<strong>Full Name</strong>
 		</p>
 	</div>
-	<!--End of Quote-->
+	End of Quote
 
 	<div class="quote">
-		<!--Start of Quote-->
+		Start of Quote
 		<img src="images/quotation-mark.png" alt="quotation mark"
 			class="quotation-mark" />
 		<p>Cum sociis natoque penatibus et magnis dis parturient montes,
@@ -183,11 +183,11 @@
 			<strong>Full Name</strong>
 		</p>
 	</div>
-	<!--End of Quote-->
+	End of Quote
 
 	<br class="clear" />
 
-</div>
+</div> -->
 
 <script type="text/javascript"
 	src="js/nivoslider/jquery.nivo.slider.pack.js"></script>
@@ -200,7 +200,9 @@
 
 <script type="text/javascript">
 		$(window).load(function() {
-		    $('#slider').nivoSlider();
+		    $('#slider').nivoSlider({
+		    	pauseTime: 6000
+		    });
 		});
 		</script>
 

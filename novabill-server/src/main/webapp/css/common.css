@@ -1,5 +1,6 @@
 html {
 	background: #F7F6F6 url('../images/background.png') repeat;
+	height: 100%;
 }
 
 p {
@@ -17,14 +18,12 @@ strong {
 }
 
 body {
-	background: url('../images/header-bg.png') repeat-x;
+	
 	min-height: 400px;
 	font-size: 14px;
-}
-
-body {
 	line-height: 1;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+	background: url('../images/pattern.png');
 }
 
 h1 {
@@ -64,6 +63,10 @@ blockquote:before,blockquote:after,q:before,q:after {
 .container {
 	width: 960px;
 	margin: 0 auto;
+	background: url('../images/header-bg.png') repeat-x;
+	background-color: white;
+	padding: 0 10em;
+	box-shadow: 3px 1px 3px #CCC;
 }
 
 .clear {

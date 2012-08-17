@@ -57,7 +57,6 @@ textarea:HOVER {
 	border: 0.1em solid #000;
 }
 
-
 .AuthDialog {
 	background-color: white;
 	padding: 2em;
@@ -106,16 +105,17 @@ textarea:HOVER {
 	cursor: pointer;
 }
 
+.HomeView .newEstimation {
+	width: 10em;
+}
+
 .ClientView .clientName {
 	font-size: 2em;
 	font-weight: bold;
 	padding: 0 0.5em;
 	text-align: center;
 	text-shadow: 2px 2px 2px #DDD;
-	filter: dropshadow(color =               #DDDDDD, offx =               2, offy =
-		
-		        
-		  2);
+	filter: dropshadow(color = #DDDDDD, offx = 2, offy = 2);
 }
 
 .ClientView .clientDetails {
@@ -358,7 +358,8 @@ textarea:HOVER {
 	cursor: pointer;
 }
 
-.MainWidget .header .clients,.MainWidget .header .invoices,.MainWidget .header .totalAmount {
+.MainWidget .header .clients,.MainWidget .header .invoices,.MainWidget .header .totalAmount
+	{
 	margin-left: 2.5em;
 }
 
