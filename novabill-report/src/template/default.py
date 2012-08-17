@@ -64,9 +64,10 @@ class DefaultDocumentBuilder(AbstractDefaultBuilder):
         return self.__doc
     
     def getLogoFlowable(self, height, width):
-        logoParams = self.__displayParams.logo
-        r = min(width / logoParams.width, height / logoParams.height)
-        im = Image(logoParams.path, self.logoWidth * r, self.logoHeight * r)
+        logoParams = self.__displayParams["logo"]
+        logoPath, logoWidth, logoHeight = logoParams["path"], logoParams["width"], logoParams["height"]  
+        r = min(width / logoWidth, height / logoHeight)
+        im = Image(logoPath, logoWidth * r, logoHeight * r)
         im.hAlign = 'LEFT'
         return im
         
