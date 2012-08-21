@@ -1,10 +1,10 @@
 html {
-	background: #F7F6F6 url('../images/background.png') repeat;
 	height: 100%;
+	background: url('../images/pattern.png');
 }
 
 p {
-	color: #ADACAC;
+	color: #8C8C8C;
 	font-size: 14px;
 	margin: 10px 0;
 	line-height: 120%;
@@ -18,12 +18,11 @@ strong {
 }
 
 body {
-	
+	padding-bottom: 10em;
 	min-height: 400px;
 	font-size: 14px;
 	line-height: 1;
 	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
-	background: url('../images/pattern.png');
 }
 
 h1 {
@@ -63,9 +62,9 @@ blockquote:before,blockquote:after,q:before,q:after {
 .container {
 	width: 960px;
 	margin: 0 auto;
-	background: url('../images/header-bg.png') repeat-x;
-	background-color: white;
-	padding: 0 10em;
+	/* background: url('../images/header-bg.png') repeat-x; */
+	background-color: #FFFFFE;
+	padding: 0 10em 5em;
 	box-shadow: 3px 1px 3px #CCC;
 }
 

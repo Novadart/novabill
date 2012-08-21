@@ -17,9 +17,9 @@
 	<div class="slider-wrapper theme-default mask-container-large">
 		<div id="slider" class="nivoSlider">
 			<img src="images/slider/slider-3.jpg" alt="" /> 
-			<img src="images/slider/slider-1.jpg" alt="" /> 
 			<img src="images/slider/slider-2.jpg" alt="" /> 
-			<img src="images/slider/slider-3.jpg" alt="" />
+			<img src="images/slider/slider-1.jpg" alt="" /> 
+			<img src="images/slider/slider-4.jpg" alt="" />
 		</div>
 		<div class="mask-gloss-large"></div>
 	</div>
@@ -35,24 +35,20 @@
 			<div class="col">
 				<!--Start of Feature-->
 				<div class="feature-image">
-					<a rel="fancybox" href="images/image-large-1.jpg">
+					<a rel="fancybox" href="images/slider/slider-3.jpg">
 						<div class="mask-container-thumbnail">
-							<img src="images/image-thumbnail-1.jpg" alt="" />
+							<img src="images/image-thumbnail-4.jpg" alt="" />
 							<div class="mask-gloss-thumbnail"></div>
 						</div>
 					</a>
 				</div>
 				<div class="description">
-					<h4>Lorem Ipsum</h4>
-					<p>Integer posuere erat a ante venenatis dapibus posuere velit
-						aliquet. Etiam porta sem malesuada magna mollis euismod.</p>
+					<h4><spring:message code="home.topfeatures.n1.title" /> </h4>
+					<p><spring:message code="home.topfeatures.n1.par1" /></p>
 
-					<p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus
-						dolor auctor.</p>
+					<p><spring:message code="home.topfeatures.n1.par2" /></p>
 
-					<p>Praesent commodo cursus magna, vel scelerisque nisl
-						consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum
-						faucibus dolor.</p>
+					<p><spring:message code="home.topfeatures.n1.par3" /></p>
 				</div>
 			</div>
 			<!--End of Feature-->
@@ -60,24 +56,20 @@
 			<div class="col">
 				<!--Start of Feature-->
 				<div class="feature-image">
-					<a rel="fancybox" href="images/image-large-2.jpg">
+					<a rel="fancybox" href="images/slider/slider-2.jpg">
 						<div class="mask-container-thumbnail">
-							<img src="images/image-thumbnail-2.jpg" alt="" />
+							<img src="images/image-thumbnail-3.jpg" alt="" />
 							<div class="mask-gloss-thumbnail"></div>
 						</div>
 					</a>
 				</div>
 				<div class="description">
-					<h4>Lorem Ipsum</h4>
-					<p>Integer posuere erat a ante venenatis dapibus posuere velit
-						aliquet. Etiam porta sem malesuada magna mollis euismod.</p>
+					<h4><spring:message code="home.topfeatures.n2.title" /></h4>
+					<p><spring:message code="home.topfeatures.n2.par1" /></p>
 
-					<p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus
-						dolor auctor.</p>
+					<p><spring:message code="home.topfeatures.n2.par2" /></p>
 
-					<p>Praesent commodo cursus magna, vel scelerisque nisl
-						consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum
-						faucibus dolor.</p>
+					<p><spring:message code="home.topfeatures.n2.par3" /></p>
 				</div>
 			</div>
 			<!--End of Feature-->
@@ -92,24 +84,20 @@
 			<div class="col">
 				<!--Start of Feature-->
 				<div class="feature-image">
-					<a rel="fancybox" href="images/image-large-3.jpg">
+					<a rel="fancybox" href="images/slider/slider-1.jpg">
 						<div class="mask-container-thumbnail">
-							<img src="images/image-thumbnail-3.jpg" alt="" />
+							<img src="images/image-thumbnail-1.jpg" alt="" />
 							<div class="mask-gloss-thumbnail"></div>
 						</div>
 					</a>
 				</div>
 				<div class="description">
-					<h4>Lorem Ipsum</h4>
-					<p>Integer posuere erat a ante venenatis dapibus posuere velit
-						aliquet. Etiam porta sem malesuada magna mollis euismod.</p>
+					<h4><spring:message code="home.topfeatures.n3.title" /> </h4>
+					<p><spring:message code="home.topfeatures.n3.par1" /></p>
 
-					<p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus
-						dolor auctor.</p>
+					<p><spring:message code="home.topfeatures.n3.par2" /></p>
 
-					<p>Praesent commodo cursus magna, vel scelerisque nisl
-						consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum
-						faucibus dolor.</p>
+					<p><spring:message code="home.topfeatures.n3.par3" /></p>
 				</div>
 			</div>
 			<!--End of Feature-->
@@ -117,24 +105,20 @@
 			<div class="col">
 				<!--Start of Feature-->
 				<div class="feature-image">
-					<a rel="fancybox" href="images/image-large-4.jpg">
+					<a rel="fancybox" href="images/slider/slider-4.jpg">
 						<div class="mask-container-thumbnail">
-							<img src="images/image-thumbnail-4.jpg" alt="" />
+							<img src="images/image-thumbnail-2.jpg" alt="" />
 							<div class="mask-gloss-thumbnail"></div>
 						</div>
 					</a>
 				</div>
 				<div class="description">
-					<h4>Lorem Ipsum</h4>
-					<p>Integer posuere erat a ante venenatis dapibus posuere velit
-						aliquet. Etiam porta sem malesuada magna mollis euismod.</p>
+					<h4><spring:message code="home.topfeatures.n4.title" /> </h4>
+					<p><spring:message code="home.topfeatures.n4.par1" /></p>
 
-					<p>Vivamus sagittis lacus vel augue laoreet rutrum faucibus
-						dolor auctor.</p>
+					<p><spring:message code="home.topfeatures.n4.par2" /></p>
 
-					<p>Praesent commodo cursus magna, vel scelerisque nisl
-						consectetur et. Vivamus sagittis lacus vel augue laoreet rutrum
-						faucibus dolor.</p>
+					<p><spring:message code="home.topfeatures.n4.par3" /></p>
 				</div>
 			</div>
 			<!--End of Feature-->
@@ -146,6 +130,12 @@
 
 	</div>
 	<div class="inset-btm"></div>
+	
+	<sec:authorize access="isAnonymous()">
+		<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/premiumInfo">
+			<spring:message code="header.signupForFree"></spring:message>
+		</a>
+	</sec:authorize>
 </div>
 
 <!-- <div class="testimonials">
