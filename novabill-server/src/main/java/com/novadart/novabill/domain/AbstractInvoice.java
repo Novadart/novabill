@@ -65,6 +65,8 @@ public abstract class AbstractInvoice extends AccountingDocument {
 		this.payed = payed;
 	}
 	
+	public abstract Business getBusiness();
+	
 	/**
 	 * End of getters and setters section
 	 */

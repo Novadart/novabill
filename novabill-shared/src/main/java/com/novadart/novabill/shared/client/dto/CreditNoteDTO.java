@@ -1,5 +1,7 @@
 package com.novadart.novabill.shared.client.dto;
 
-public class CreditNoteDTO extends AbstractInvoiceDTO {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class CreditNoteDTO extends AbstractInvoiceDTO implements IsSerializable{
 
 }

@@ -129,6 +129,9 @@ public class Client implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
     private Set<Estimation> estimations = new HashSet<Estimation>();
     
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
+    private Set<CreditNote> creditNotes = new HashSet<CreditNote>();
+    
     @ManyToOne
     @IndexedEmbedded
     private Business business;
@@ -148,6 +151,10 @@ public class Client implements Serializable {
 	
     public List<Estimation> getSortedEstimations(){
     	return sortAccountingDocuments(getEstimations());
+    }
+    
+    public List<CreditNote> getSortedCreditNotes(){
+    	return sortAccountingDocuments(getCreditNotes());
     }
     
     public List<Invoice> getAllInvoicesInRange(Integer start, Integer length){
@@ -290,7 +297,15 @@ public class Client implements Serializable {
         this.estimations = estimations;
     }
     
-    public Business getBusiness() {
+    public Set<CreditNote> getCreditNotes() {
+		return creditNotes;
+	}
+
+	public void setCreditNotes(Set<CreditNote> creditNotes) {
+		this.creditNotes = creditNotes;
+	}
+
+	public Business getBusiness() {
         return this.business;
     }
     

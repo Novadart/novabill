@@ -161,12 +161,26 @@ public class Business implements Serializable {
     	return entityManager().createQuery(query, Estimation.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
     }
     
-    public Long getNextInvoiceDocumentID(){
-    	String query = "select max(invoice.documentID) from Invoice as invoice where invoice.business.id = :businessId and invoice.accountingDocumentYear = :year";
+    public List<CreditNote> getAllCreditNotesInRange(int start, int length){
+    	String query = "select creditNote from CreditNote creditNote where creditNote.business.id = :id order by creditNote.accountingDocumentYear desc, creditNote.documentID desc";
+    	return entityManager().createQuery(query, CreditNote.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
+    }
+    
+    private <T extends AbstractInvoice> Long getNextAbstractInvoiceDocumentID(Class<T> cls){
+    	String query = String.format("select max(o.documentID) from %s o where o.business.id = :businessId and o.accountingDocumentYear = :year",
+    									cls.getSimpleName());
     	Long id = entityManager.createQuery(query, Long.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getSingleResult(); 
     	return (id == null)? 1: id + 1;
+    }
+    
+    public Long getNextInvoiceDocumentID(){
+    	return getNextAbstractInvoiceDocumentID(Invoice.class);
+    }
+    
+    public Long getNextCreditNoteDocumentID(){
+    	return getNextAbstractInvoiceDocumentID(CreditNote.class);
     }
     
     public List<Long> getCurrentYearInvoicesDocumentIDs(){
@@ -238,6 +252,11 @@ public class Business implements Serializable {
     @Transactional(readOnly = true)
     public List<Estimation> getEstimationsForYear(int year){
     	return getAccountingDocumentForYear(getEstimations().iterator(), year);
+    }
+    
+    @Transactional(readOnly = true)
+    public List<CreditNote> getCreditNotesForYear(int year){
+    	return getAccountingDocumentForYear(getCreditNotes().iterator(), year);
     }
     
     public static Business findByEmail(String email){
