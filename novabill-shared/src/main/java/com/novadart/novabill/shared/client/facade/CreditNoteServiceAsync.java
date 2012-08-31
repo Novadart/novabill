@@ -23,4 +23,7 @@ public interface CreditNoteServiceAsync {
 
 	void update(CreditNoteDTO creditNoteDTO, AsyncCallback<Void> callback);
 
+	void getAllForClientInRange(long id, int start, int length,
+			AsyncCallback<PageDTO<CreditNoteDTO>> callback);
+
 }

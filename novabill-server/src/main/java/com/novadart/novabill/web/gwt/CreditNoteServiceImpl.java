@@ -11,6 +11,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.CreditNoteDTOFactory;
+import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.domain.InvoiceItemDTOFactory;
 import com.novadart.novabill.service.UtilsService;
@@ -136,6 +137,18 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	@Override
 	public Long getNextInvoiceDocumentID() throws NotAuthenticatedException, ConcurrentAccessException {
 		return utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getNextCreditNoteDocumentID();
+	}
+
+	@Override
+	public PageDTO<CreditNoteDTO> getAllForClientInRange(long id, int start, int length) throws NotAuthenticatedException, DataAccessException,	NoSuchObjectException, ConcurrentAccessException {
+		Client client = Client.findClient(id);
+		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+			throw new DataAccessException();
+		List<CreditNote> creditNotes = client.getAllCreditNotesInRange(start, length);
+		List<CreditNoteDTO> creditNoteDTOs = new ArrayList<CreditNoteDTO>(creditNotes.size());
+		for(CreditNote creditNote: creditNotes)
+			creditNoteDTOs.add(CreditNoteDTOFactory.toDTO(creditNote));
+		return new PageDTO<CreditNoteDTO>(creditNoteDTOs, start, length, Invoice.countInvocesForClient(id));
 	}
 
 }

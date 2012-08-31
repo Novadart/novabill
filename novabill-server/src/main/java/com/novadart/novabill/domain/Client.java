@@ -173,6 +173,14 @@ public class Client implements Serializable {
     			.setMaxResults(length).getResultList();
     }
     
+    public List<CreditNote> getAllCreditNotesInRange(Integer start, Integer length){
+    	String query = "select creditNote from CreditNote creditNote where creditNote.client.id = :clientId order by creditNote.accountingDocumentYear desc, creditNote.documentID desc";
+    	return entityManager.createQuery(query, CreditNote.class)
+    			.setParameter("clientId", getId())
+    			.setFirstResult(start)
+    			.setMaxResults(length).getResultList();
+    }
+    
     /*
      * Getters and setters
      * */
