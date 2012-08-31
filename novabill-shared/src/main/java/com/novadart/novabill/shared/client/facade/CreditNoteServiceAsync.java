@@ -19,4 +19,8 @@ public interface CreditNoteServiceAsync {
 
 	void add(CreditNoteDTO creditNoteDTO, AsyncCallback<Long> callback);
 
+	void remove(Long id, AsyncCallback<Void> callback);
+
+	void update(CreditNoteDTO creditNoteDTO, AsyncCallback<Void> callback);
+
 }

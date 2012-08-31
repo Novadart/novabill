@@ -2,17 +2,21 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
 import java.util.List;
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
-
+import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.authorization.NumberOfInvoicesPerYearQuotaReachedChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.CreditNoteDTOFactory;
+import com.novadart.novabill.domain.InvoiceItem;
+import com.novadart.novabill.domain.InvoiceItemDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.InvoiceValidator;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
@@ -77,7 +81,7 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 		Business business = Business.findBusiness(creditNoteDTO.getBusiness().getId());
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
 			throw new DataAccessException();
-		CreditNote creditNote = new CreditNote();//create new invoice
+		CreditNote creditNote = new CreditNote();//create new credit note
 		creditNote.setClient(client);
 		client.getCreditNotes().add(creditNote);
 		creditNote.setBusiness(business);
@@ -86,6 +90,47 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 		validator.validate(creditNote);
 		creditNote.flush();
 		return creditNote.getId();
+	}
+	
+	@Override
+	@Transactional(readOnly = false)
+	public void remove(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
+		CreditNote creditNote = CreditNote.findCreditNote(id);
+		if(creditNote == null)
+			throw new NoSuchObjectException();
+		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(creditNote.getBusiness().getId()))
+			throw new DataAccessException();
+		creditNote.remove(); //removing credit note
+		if(Hibernate.isInitialized(creditNote.getBusiness().getCreditNotes()))
+			creditNote.getBusiness().getCreditNotes().remove(creditNote);
+		if(Hibernate.isInitialized(creditNote.getClient().getCreditNotes()))
+			creditNote.getClient().getCreditNotes().remove(creditNote);
+	}
+	
+	@Override
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
+	public void update(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, ConcurrentAccessException {
+		if(creditNoteDTO.getId() == null)
+			throw new DataAccessException();
+		Client client = Client.findClient(creditNoteDTO.getClient().getId());
+		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+			throw new DataAccessException();
+		Business business = Business.findBusiness(creditNoteDTO.getBusiness().getId());
+		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
+			throw new DataAccessException();
+		CreditNote persistedCreditNote = CreditNote.findCreditNote(creditNoteDTO.getId());
+		if(persistedCreditNote == null)
+			throw new NoSuchObjectException();
+		CreditNoteDTOFactory.copyFromDTO(persistedCreditNote, creditNoteDTO, false);
+		persistedCreditNote.getInvoiceItems().clear();
+		for(InvoiceItemDTO itemDTO: creditNoteDTO.getItems()){
+			InvoiceItem item = new InvoiceItem();
+			InvoiceItemDTOFactory.copyFromDTO(item, itemDTO);
+			item.setInvoice(persistedCreditNote);
+			persistedCreditNote.getInvoiceItems().add(item);
+		}
+		validator.validate(persistedCreditNote);
+		
 	}
 
 	@Override
