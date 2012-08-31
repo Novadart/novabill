@@ -6,7 +6,6 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,11 +19,9 @@ import javax.persistence.InheritanceType;
 import javax.persistence.OneToMany;
 import javax.persistence.OrderBy;
 import javax.persistence.PersistenceContext;
-import javax.persistence.SequenceGenerator;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
-
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Type;
@@ -39,8 +36,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
-@Inheritance(strategy = InheritanceType.TABLE_PER_CLASS)
-@SequenceGenerator(name = "document_id_sequence", initialValue = 1, allocationSize = 1, sequenceName = "document_id_sequence")
+@Inheritance(strategy = InheritanceType.JOINED)
 public abstract class AccountingDocument {
 	
 	protected Long documentID;
@@ -73,6 +69,12 @@ public abstract class AccountingDocument {
 	protected void setAccountingDocumentYear(Integer year) {
         this.accountingDocumentYear = year;
     }
+	
+	protected static <T> Integer countForClient(Class<T> cls, Long id){
+		String query = String.format("select count(o) FROM %s o where o.client.id = :clientID", cls.getSimpleName()); 
+    	return entityManager().createQuery(query, Integer.class).setParameter("clientID", id).getSingleResult();
+	}
+	
 	
 	/*
 	 * Getters and setters
@@ -159,21 +161,40 @@ public abstract class AccountingDocument {
         return em;
     }
     
+    protected static <T> long count(Class<T> cls){
+    	String query = String.format("SELECT COUNT(o) FROM %s o", cls.getSimpleName());
+    	return entityManager().createQuery(query, Long.class).getSingleResult();
+    }
+    
     public static long countAccountingDocuments() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM AccountingDocument o", Long.class).getSingleResult();
+        return count(AccountingDocument.class);
+    }
+    
+    protected static <T> List<T> findAll(Class<T> cls){
+    	String query = String.format("SELECT o FROM %s o", cls.getSimpleName());
+    	return entityManager().createQuery(query, cls).getResultList();
     }
     
     public static List<AccountingDocument> findAllAccountingDocuments() {
-        return entityManager().createQuery("SELECT o FROM AccountingDocument o", AccountingDocument.class).getResultList();
+        return findAll(AccountingDocument.class);
+    }
+    
+    protected static <T> T find(Class<T> cls, Long id){
+    	if (id == null) return null;
+        return entityManager().find(cls, id);
     }
     
     public static AccountingDocument findAccountingDocument(Long id) {
-        if (id == null) return null;
-        return entityManager().find(AccountingDocument.class, id);
+        return find(AccountingDocument.class, id);
+    }
+    
+    protected static <T> List<T> findInRange(Class<T> cls, int  firstResult, int maxResults){
+    	String query = String.format("SELECT o FROM %s o", cls.getSimpleName());
+    	return entityManager().createQuery(query, cls).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
     
     public static List<AccountingDocument> findAccountingDocumentEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM AccountingDocument o", AccountingDocument.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+        return findInRange(AccountingDocument.class, firstResult, maxResults);
     }
     
     @Transactional
@@ -206,11 +227,16 @@ public abstract class AccountingDocument {
     }
     
     @Transactional
-    public AccountingDocument merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        AccountingDocument merged = this.entityManager.merge(this);
+    protected <T> T merge(T o){
+    	if (this.entityManager == null) this.entityManager = entityManager();
+        T merged = this.entityManager.merge(o);
         this.entityManager.flush();
         return merged;
+    }
+    
+    @Transactional
+    public AccountingDocument merge() {
+        return merge(this);
     }
     
     /*
@@ -221,7 +247,7 @@ public abstract class AccountingDocument {
      * Entity
      * */
     @Id
-    @GeneratedValue(strategy = GenerationType.SEQUENCE, generator = "document_id_sequence")
+    @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
     private Long id;
     

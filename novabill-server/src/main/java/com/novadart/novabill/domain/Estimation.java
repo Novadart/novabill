@@ -2,12 +2,8 @@ package com.novadart.novabill.domain;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -29,8 +25,7 @@ public class Estimation extends AccountingDocument implements Serializable {
     protected Client client;
     
     public static Integer countEstimationsForClient(Long id){
-    	String query = "select count(o) FROM Estimation o where o.client.id = :clientID"; 
-    	return entityManager().createQuery(query, Integer.class).setParameter("clientID", id).getSingleResult();
+    	return countForClient(Estimation.class, id);
     }
     
     /*
@@ -62,36 +57,28 @@ public class Estimation extends AccountingDocument implements Serializable {
      * */
     
     public static long countEstimations() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM Estimation o", Long.class).getSingleResult();
+        return count(Estimation.class);
     }
     
     public static List<Estimation> findAllEstimations() {
-        return entityManager().createQuery("SELECT o FROM Estimation o", Estimation.class).getResultList();
+        return findAll(Estimation.class);
     }
     
     public static Estimation findEstimation(Long id) {
-        if (id == null) return null;
-        return entityManager().find(Estimation.class, id);
+        return find(Estimation.class, id);
     }
     
     public static List<Estimation> findEstimationEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM Estimation o", Estimation.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+        return findInRange(Estimation.class, firstResult, maxResults);
     }
     
     @Transactional
     public Estimation merge() {
-        if (this.entityManager == null) this.entityManager = entityManager();
-        Estimation merged = this.entityManager.merge(this);
-        this.entityManager.flush();
-        return merged;
+        return merge(this);
     }
 	
     /*
      * End of active record functionality
      * */
-    
-    public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
-    }
     
 }

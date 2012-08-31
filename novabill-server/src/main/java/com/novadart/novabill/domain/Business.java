@@ -138,6 +138,9 @@ public class Business implements Serializable {
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Estimation> estimations = new HashSet<Estimation>();
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+    private Set<CreditNote> creditNotes = new HashSet<CreditNote>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Client> clients = new HashSet<Client>();
@@ -462,7 +465,15 @@ public class Business implements Serializable {
         this.estimations = estimations;
     }
     
-    public Set<Client> getClients() {
+    public Set<CreditNote> getCreditNotes() {
+		return creditNotes;
+	}
+
+	public void setCreditNotes(Set<CreditNote> creditNotes) {
+		this.creditNotes = creditNotes;
+	}
+
+	public Set<Client> getClients() {
         return this.clients;
     }
     

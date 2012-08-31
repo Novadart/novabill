@@ -2,33 +2,23 @@ package com.novadart.novabill.domain;
 
 import java.io.Serializable;
 import java.util.List;
-import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
-import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+public class CreditNote extends AbstractInvoice implements Serializable {
 
-/*
- * Important note!
- * If fields and validation constraints are modified be sure to update the validation code. 
- */
-
-@Configurable
-@Entity
-public class Invoice extends AbstractInvoice implements Serializable {
+	private static final long serialVersionUID = -6394611948337345685L;
 	
-	private static final long serialVersionUID = 3369941491294470750L;
-
-    @ManyToOne
+	@ManyToOne
     protected Business business;
 
     @ManyToOne
     @NotNull
     protected Client client;
     
-    public static Integer countInvocesForClient(Long id){
-    	return countForClient(Invoice.class, id);
+    public static Integer countCreditNotesForClient(Long id){
+    	return countForClient(CreditNote.class, id);
     }
     
     /*
@@ -59,29 +49,29 @@ public class Invoice extends AbstractInvoice implements Serializable {
      * Active record functionality
      * */
     
-    public static long countInvoices() {
-        return count(Invoice.class);
+    public static long countCreditNotes() {
+        return count(CreditNote.class);
     }
     
-    public static List<Invoice> findAllInvoices() {
-        return findAll(Invoice.class);
+    public static List<CreditNote> findAllCreditNotes() {
+        return findAll(CreditNote.class);
     }
     
-    public static Invoice findInvoice(Long id) {
-        return find(Invoice.class, id);
+    public static CreditNote findCreditNote(Long id) {
+        return find(CreditNote.class, id);
     }
     
-    public static List<Invoice> findInvoiceEntries(int firstResult, int maxResults) {
-        return findInRange(Invoice.class, firstResult, maxResults);
+    public static List<CreditNote> findCreditNoteEntries(int firstResult, int maxResults) {
+        return findInRange(CreditNote.class, firstResult, maxResults);
     }
     
     @Transactional
-    public Invoice merge() {
+    public CreditNote merge() {
         return merge(this);
     }
     
     /*
      * End of active record functionality section
      * */
-    
+
 }
