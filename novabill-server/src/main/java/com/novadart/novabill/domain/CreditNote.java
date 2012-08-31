@@ -2,10 +2,16 @@ package com.novadart.novabill.domain;
 
 import java.io.Serializable;
 import java.util.List;
+
+import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.constraints.NotNull;
+
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+@Entity
+@Configurable
 public class CreditNote extends AbstractInvoice implements Serializable {
 
 	private static final long serialVersionUID = -6394611948337345685L;
