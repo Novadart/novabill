@@ -1,8 +1,10 @@
-package com.novadart.novabill.domain;
+package com.novadart.novabill.domain.dto.factory;
 
 import java.util.ArrayList;
 import java.util.List;
 
+import com.novadart.novabill.domain.AccountingDocument;
+import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 

@@ -1,5 +1,6 @@
-package com.novadart.novabill.domain;
+package com.novadart.novabill.domain.dto.factory;
 
+import com.novadart.novabill.domain.InvoiceItem;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 
 

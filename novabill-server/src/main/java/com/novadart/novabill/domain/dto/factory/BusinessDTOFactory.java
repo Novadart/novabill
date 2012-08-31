@@ -1,5 +1,6 @@
-package com.novadart.novabill.domain;
+package com.novadart.novabill.domain.dto.factory;
 
+import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 

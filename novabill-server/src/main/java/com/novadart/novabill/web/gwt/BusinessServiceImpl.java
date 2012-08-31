@@ -14,8 +14,8 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.BusinessDTOFactory;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.XsrfTokenService;
 import com.novadart.novabill.service.validator.SimpleValidator;

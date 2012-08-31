@@ -11,7 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.BusinessDTOFactory;
+import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.security.PrincipalDetails;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 

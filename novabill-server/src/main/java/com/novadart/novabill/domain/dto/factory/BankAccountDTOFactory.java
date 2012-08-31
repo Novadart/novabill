@@ -1,5 +1,6 @@
-package com.novadart.novabill.domain;
+package com.novadart.novabill.domain.dto.factory;
 
+import com.novadart.novabill.domain.BankAccount;
 import com.novadart.novabill.shared.client.dto.BankAccountDTO;
 
 public class BankAccountDTOFactory {

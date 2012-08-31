@@ -10,10 +10,10 @@ import com.novadart.novabill.authorization.NumberOfInvoicesPerYearQuotaReachedCh
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
-import com.novadart.novabill.domain.CreditNoteDTOFactory;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.InvoiceItem;
-import com.novadart.novabill.domain.InvoiceItemDTOFactory;
+import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
+import com.novadart.novabill.domain.dto.factory.InvoiceItemDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.InvoiceValidator;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;

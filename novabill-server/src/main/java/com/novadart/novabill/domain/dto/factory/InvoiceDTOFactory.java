@@ -1,5 +1,6 @@
-package com.novadart.novabill.domain;
+package com.novadart.novabill.domain.dto.factory;
 
+import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
 public class InvoiceDTOFactory extends AbstractInvoiceDTOFactory {

@@ -10,9 +10,9 @@ import com.novadart.novabill.authorization.NumberOfEstimationsPerYearQuotaReache
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Estimation;
-import com.novadart.novabill.domain.EstimationDTOFactory;
 import com.novadart.novabill.domain.InvoiceItem;
-import com.novadart.novabill.domain.InvoiceItemDTOFactory;
+import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
+import com.novadart.novabill.domain.dto.factory.InvoiceItemDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
