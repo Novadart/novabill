@@ -35,7 +35,7 @@ import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.table.ItemTable;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
-import com.novadart.novabill.frontend.client.util.InvoiceUtils;
+import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -121,7 +121,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiHandler("createInvoice")
 	void onCreateInvoiceClicked(ClickEvent e){
 		if(!validateInvoice()){
-			Notification.showMessage(I18N.INSTANCE.errorInvoiceData());
+			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
 
@@ -186,7 +186,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	@UiHandler("createEstimate")
 	void onCreateEstimationClicked(ClickEvent e){
 		if(!validateEstimation()){
-			Notification.showMessage(I18N.INSTANCE.errorEstimationData());
+			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
 
@@ -241,13 +241,13 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		inv.setNote(note.getText());
 		inv.setPaymentType(PaymentType.values()[payment.getSelectedIndex()-1]);
 		if(payment.getSelectedIndex() > 0){
-			inv.setPaymentDueDate(InvoiceUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
+			inv.setPaymentDueDate(CalcUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
 		} else {
 			inv.setPaymentDueDate(null);
 		}
 
 		inv.setPaymentNote(paymentNote.getText());
-		InvoiceUtils.calculateTotals(invItems, inv);
+		CalcUtils.calculateTotals(invItems, inv);
 		return inv;
 	}
 
@@ -269,14 +269,14 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		}
 		es.setItems(invItems);
 		es.setNote(note.getText());
-		InvoiceUtils.calculateTotals(invItems, es);
+		CalcUtils.calculateTotals(invItems, es);
 		return es;
 	}
 
 
 	@UiHandler("add")
 	void onAddClicked(ClickEvent e){
-		InvoiceItemDTO ii = InvoiceUtils.createInvoiceItem(item.getText(), price.getText(), 
+		InvoiceItemDTO ii = CalcUtils.createInvoiceItem(item.getText(), price.getText(), 
 				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
 		
 		if(ii == null) {
@@ -440,7 +440,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 
 	private void updateFields(){
-		InvoiceUtils.calculateTotals(invoiceItems.getList(), totalTax, totalBeforeTaxes, totalAfterTaxes);
+		CalcUtils.calculateTotals(invoiceItems.getList(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 		resetItemTableForm();
 		invoiceItems.refresh();
 	}

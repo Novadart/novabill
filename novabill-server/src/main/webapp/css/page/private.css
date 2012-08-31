@@ -101,12 +101,20 @@ textarea:HOVER {
 	margin-bottom: 1.5em;
 }
 
-.ClientView .newInvoice,.ClientView .newEstimation {
+.ClientView .newInvoice,.ClientView .newEstimation,.ClientView .newCreditNote {
 	cursor: pointer;
+}
+
+.ClientView .newCreditNote {
+	width: 12em;
 }
 
 .HomeView .newEstimation {
 	width: 10em;
+}
+
+.HomeView .newCreditNote {
+	width: 12em;
 }
 
 .ClientView .clientName {
@@ -309,7 +317,7 @@ textarea:HOVER {
 
 .MainWidget .header .menuBar {
 	float: left;
-	width: 70em;
+	width: 50em;
 }
 
 .MainWidget .header .logoBar {
@@ -500,7 +508,7 @@ textarea:HOVER {
 	padding: 5px 5px 15px;
 }
 
-.QuickViewList .openEstimation,.QuickViewList .openInvoice {
+.QuickViewList .openEstimation,.QuickViewList .openInvoice,.QuickViewList .openCreditNote {
 	position: absolute;
 	left: 48%;
 }

@@ -10,10 +10,12 @@ import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfBusinessServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfClientServiceAsync;
+import com.novadart.novabill.frontend.client.facade.xsrf.XsrfCreditNoteServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfEstimationServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfInvoiceServiceAsync;
 import com.novadart.novabill.shared.client.facade.BusinessServiceAsync;
 import com.novadart.novabill.shared.client.facade.ClientServiceAsync;
+import com.novadart.novabill.shared.client.facade.CreditNoteServiceAsync;
 import com.novadart.novabill.shared.client.facade.EstimationServiceAsync;
 import com.novadart.novabill.shared.client.facade.InvoiceServiceAsync;
 
@@ -26,6 +28,8 @@ public class ServerFacade {
 	public static final BusinessServiceAsync business = new XsrfBusinessServiceAsync();
 
 	public static final EstimationServiceAsync estimation = new XsrfEstimationServiceAsync();
+	
+	public static final CreditNoteServiceAsync creditNote = new XsrfCreditNoteServiceAsync();
 	
 	
 	private static final RequestBuilder AUTH_REQUEST =

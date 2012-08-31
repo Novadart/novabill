@@ -23,6 +23,14 @@ public class DataWatcher {
 		handlerManager.fireEvent(new DataWatchEvent(DATA.INVOICE));
 	}
 	
+	public void fireCreditNoteEvent(){
+		handlerManager.fireEvent(new DataWatchEvent(DATA.CREDIT_NOTE));
+	}
+	
+	public void fireTransportDocumentEvent(){
+		handlerManager.fireEvent(new DataWatchEvent(DATA.TRANSPORT_DOCUMENT));
+	}
+	
 	public void fireEstimationEvent(){
 		handlerManager.fireEvent(new DataWatchEvent(DATA.ESTIMATION));
 	}

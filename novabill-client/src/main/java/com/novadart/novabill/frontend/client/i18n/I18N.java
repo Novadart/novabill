@@ -32,6 +32,7 @@ public interface I18N extends Constants {
 	public String errorServerCommunication();
 	public String confirmInvoiceDeletion();
 	public String confirmEstimationDeletion();
+	public String confirmCreditNoteDeletion();
 	public String errorClientData();
 	public String cancel();
 	public String createClient();
@@ -52,13 +53,17 @@ public interface I18N extends Constants {
 	public String errorLoadingAppConfiguration();
 	public String invoiceCreationFailure();
 	public String invoiceCreationSuccess();
+	public String creditNoteCreationFailure();
+	public String creditNoteCreationSuccess();
 	public String estimationCreationSuccess();
 	public String estimationCreationFailure();
 	public String invoiceUpdateFailure();
 	public String invoiceUpdateSuccess();
 	public String estimationUpdateFailure();
 	public String estimationUpdateSuccess();
-	public String errorInvoiceData();
+	public String creditNoteUpdateFailure();
+	public String creditNoteUpdateSuccess();
+	public String errorDocumentData();
 	public String createInvoice();
 	public String createEstimate();
 	public String clients();
@@ -110,7 +115,6 @@ public interface I18N extends Constants {
 	public String convertToInvoice();
 	public String newEstimation();
 	public String openEstimation();
-	public String errorEstimationData();
 	public String noClientsFound();
 	public String myData();
 	public String open();
@@ -128,4 +132,11 @@ public interface I18N extends Constants {
 	public String welcomeMessage2();
 	public String welcomeMessage3();
 	public String changePassword();
+	public String creditNotes();
+	public String creditNote();
+	public String newCreditNote();
+	public String newCreditNoteCreation();
+	public String createCreditNote();
+	public String modifyCreditNote();
+	public String creditNoteNumber();
 }

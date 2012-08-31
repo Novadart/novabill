@@ -49,4 +49,9 @@ public class PDFUtils {
 				
 	}
 
+	public static void generateCreditNotePdf(Long id) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }

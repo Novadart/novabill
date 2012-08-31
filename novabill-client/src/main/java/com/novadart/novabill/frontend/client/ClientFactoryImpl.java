@@ -13,11 +13,13 @@ import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.novadart.novabill.frontend.client.ui.View;
 import com.novadart.novabill.frontend.client.ui.center.BusinessView;
 import com.novadart.novabill.frontend.client.ui.center.ClientView;
+import com.novadart.novabill.frontend.client.ui.center.CreditNoteView;
 import com.novadart.novabill.frontend.client.ui.center.EstimationView;
 import com.novadart.novabill.frontend.client.ui.center.HomeView;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
 import com.novadart.novabill.frontend.client.ui.center.business.BusinessViewImpl;
 import com.novadart.novabill.frontend.client.ui.center.client.ClientViewImpl;
+import com.novadart.novabill.frontend.client.ui.center.creditnote.CreditNoteViewImpl;
 import com.novadart.novabill.frontend.client.ui.center.estimation.EstimationViewImpl;
 import com.novadart.novabill.frontend.client.ui.center.home.HomeViewImpl;
 import com.novadart.novabill.frontend.client.ui.center.invoice.InvoiceViewImpl;
@@ -137,6 +139,26 @@ public class ClientFactoryImpl implements ClientFactory
 				@Override
 				public void onSuccess() {
 					callback.onSuccess((ClientView) getView(ClientView.class, new ClientViewImpl()));
+				}
+				
+				@Override
+				public void onFailure(Throwable reason) {
+					Window.Location.reload();
+				}
+			});
+		}
+	}
+	
+	@Override
+	public void getCreditNoteView(final AsyncCallback<CreditNoteView> callback) {
+		if(views.containsKey(CreditNoteView.class)){
+			callback.onSuccess((CreditNoteView) getView(CreditNoteView.class));
+		} else {
+			GWT.runAsync(new RunAsyncCallback() {
+				
+				@Override
+				public void onSuccess() {
+					callback.onSuccess((CreditNoteView) getView(CreditNoteView.class, new CreditNoteViewImpl()));
 				}
 				
 				@Override

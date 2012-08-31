@@ -5,6 +5,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.ui.center.BusinessView;
 import com.novadart.novabill.frontend.client.ui.center.ClientView;
+import com.novadart.novabill.frontend.client.ui.center.CreditNoteView;
 import com.novadart.novabill.frontend.client.ui.center.EstimationView;
 import com.novadart.novabill.frontend.client.ui.center.HomeView;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
@@ -20,6 +21,7 @@ public interface ClientFactory {
 	void getEstimationView(AsyncCallback<EstimationView> callback);
 	void getBusinessView(AsyncCallback<BusinessView> callback);
 	void getClientView(AsyncCallback<ClientView> callback);
+	void getCreditNoteView(AsyncCallback<CreditNoteView> callback);
 	
 	//west
 	void getWestView(AsyncCallback<WestView> callback);

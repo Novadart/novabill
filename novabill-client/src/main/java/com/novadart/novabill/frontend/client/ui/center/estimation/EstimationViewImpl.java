@@ -32,7 +32,7 @@ import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.EstimationView;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.table.ItemTable;
-import com.novadart.novabill.frontend.client.util.InvoiceUtils;
+import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
@@ -105,7 +105,7 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 	@UiHandler("convertToInvoice")
 	void onConvertToInvoice(ClickEvent e){
 		if(!validateEstimation()){
-			Notification.showMessage(I18N.INSTANCE.errorEstimationData());
+			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
 
@@ -130,7 +130,7 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 	@UiHandler("createEstimation")
 	void onCreateEstimationClicked(ClickEvent e){
 		if(!validateEstimation()){
-			Notification.showMessage(I18N.INSTANCE.errorEstimationData());
+			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
 
@@ -182,14 +182,14 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 		}
 		es.setItems(invItems);
 		es.setNote(note.getText());
-		InvoiceUtils.calculateTotals(invItems, es);
+		CalcUtils.calculateTotals(invItems, es);
 		return es;
 	}
 
 
 	@UiHandler("add")
 	void onAddClicked(ClickEvent e){
-		InvoiceItemDTO ii = InvoiceUtils.createInvoiceItem(item.getText(), price.getText(), 
+		InvoiceItemDTO ii = CalcUtils.createInvoiceItem(item.getText(), price.getText(), 
 				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
 		
 		if(ii == null) {
@@ -318,7 +318,7 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 
 
 	private void updateFields(){
-		InvoiceUtils.calculateTotals(invoiceItems.getList(), totalTax, totalBeforeTaxes, totalAfterTaxes);
+		CalcUtils.calculateTotals(invoiceItems.getList(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 		resetItemTableForm();
 		invoiceItems.refresh();
 	}

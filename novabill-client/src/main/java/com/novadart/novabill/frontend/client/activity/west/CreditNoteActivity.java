@@ -5,15 +5,15 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
+import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
-import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.west.WestView;
 
-public class InvoiceActivity extends BasicActivity {
+public class CreditNoteActivity extends BasicActivity {
 
-	private final InvoicePlace place;
+	private final CreditNotePlace place;
 
-	public InvoiceActivity(InvoicePlace place, ClientFactory clientFactory) {
+	public CreditNoteActivity(CreditNotePlace place, ClientFactory clientFactory) {
 		super(clientFactory);
 		this.place = place;
 	}
@@ -24,9 +24,9 @@ public class InvoiceActivity extends BasicActivity {
 			
 			@Override
 			public void onSuccess(final WestView wv) {
-				wv.setPresenter(InvoiceActivity.this);
+				wv.setPresenter(CreditNoteActivity.this);
 
-				if(place.getInvoiceId() == 0){
+				if(place.getCreditNoteId() == 0){
 
 					if(place.getClient() == null){
 					
@@ -44,7 +44,7 @@ public class InvoiceActivity extends BasicActivity {
 					panel.setWidget(wv);
 					
 				}
-
+				
 			}
 			
 			@Override

@@ -18,19 +18,22 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
+import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.ClientView;
 import com.novadart.novabill.frontend.client.ui.center.client.dialog.ClientDialog;
+import com.novadart.novabill.frontend.client.ui.widget.list.impl.CreditNoteList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.EstimationList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
@@ -47,9 +50,11 @@ public class ClientViewImpl extends Composite implements ClientView {
 	private ClientDTO client;
 	private final ListDataProvider<InvoiceDTO> invoiceDataProvider = new ListDataProvider<InvoiceDTO>();
 	private final ListDataProvider<EstimationDTO> estimationDataProvider = new ListDataProvider<EstimationDTO>();
+	private final ListDataProvider<CreditNoteDTO> creditNoteDataProvider = new ListDataProvider<CreditNoteDTO>();
 	
 	@UiField InvoiceList invoiceList;
 	@UiField EstimationList estimationList;
+	@UiField CreditNoteList creditNoteList;
 	@UiField Label clientName;
 	@UiField HTML clientDetails;
 	@UiField TabLayoutPanel tabPanel;
@@ -60,6 +65,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		setStyleName("ClientView");
 		invoiceDataProvider.addDataDisplay(invoiceList);
 		estimationDataProvider.addDataDisplay(estimationList);
+		creditNoteDataProvider.addDataDisplay(creditNoteList);
 		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
 			
 			@Override
@@ -89,6 +95,10 @@ public class ClientViewImpl extends Composite implements ClientView {
 					loadEstimations();
 					break;
 					
+				case CREDIT_NOTE:
+					loadCreditNotes();
+					break;
+					
 				default:
 					break;
 				}
@@ -104,6 +114,10 @@ public class ClientViewImpl extends Composite implements ClientView {
 			tabPanel.selectTab(1);
 			break;
 			
+		case creditNotes:
+			tabPanel.selectTab(2);
+			break;
+			
 			default:
 		case invoices:
 			tabPanel.selectTab(0);
@@ -116,6 +130,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		this.presenter = presenter;
 		invoiceList.setPresenter(presenter);
 		estimationList.setPresenter(presenter);
+		creditNoteList.setPresenter(presenter);
 	}
 
 	@Override
@@ -126,6 +141,8 @@ public class ClientViewImpl extends Composite implements ClientView {
 		invoiceDataProvider.refresh();
 		estimationDataProvider.getList().clear();
 		estimationDataProvider.refresh();
+		creditNoteDataProvider.getList().clear();
+		creditNoteDataProvider.refresh();
 		setDocumentsListing(DOCUMENTS.invoices);
 	}
 	
@@ -155,6 +172,28 @@ public class ClientViewImpl extends Composite implements ClientView {
 		EstimationPlace ep = new EstimationPlace();
 		ep.setDataForNewEstimation(client);
 		presenter.goTo(ep);
+	}
+	
+	
+	@UiHandler("newCreditNote")
+	void onNewCreditNoteClicked(ClickEvent e){
+		ServerFacade.creditNote.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
+
+			@Override
+			public void onSuccess(Long result) {
+				if(result == null){
+					return;
+				}
+				CreditNotePlace cnp = new CreditNotePlace();
+				cnp.setDataForNewCreditNote(client, result);
+				presenter.goTo(cnp);
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+				
+			}
+		});
 	}
 	
 	
@@ -200,6 +239,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		updateClientDetails(client);
 		loadInvoices();
 		loadEstimations();
+		loadCreditNotes();
 	}
 	
 	private void updateClientDetails(ClientDTO client){
@@ -233,6 +273,25 @@ public class ClientViewImpl extends Composite implements ClientView {
 				}
 				invoiceDataProvider.setList(result);
 				invoiceDataProvider.refresh();
+			}
+		});
+	}
+	
+	private void loadCreditNotes(){
+		ServerFacade.creditNote.getAllForClient(client.getId(), new WrappedAsyncCallback<List<CreditNoteDTO>>() {
+
+			@Override
+			public void onSuccess(List<CreditNoteDTO> result) {
+				if(result == null){
+					return;
+				}
+				creditNoteDataProvider.setList(result);
+				creditNoteDataProvider.refresh();
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 			}
 		});
 	}

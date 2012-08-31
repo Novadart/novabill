@@ -10,6 +10,7 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog;
@@ -72,6 +73,9 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 		sb.appendHtmlConstant("<span class='clone'>");
 		sb.appendEscaped(I18N.INSTANCE.clone());
 		sb.appendHtmlConstant("</span>");
+		sb.appendHtmlConstant("<span class='creditNote'>");
+		sb.appendEscaped(I18N.INSTANCE.creditNote());
+		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("<span class='downloadAsPDF'>");
 		sb.appendEscaped("PDF");
 		sb.appendHtmlConstant("</span>");
@@ -98,6 +102,8 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 			onPayedSwitchClicked(value);
 		} else if(isClone(eventTarget)) {
 			onCloneClicked(value);
+		} else if(isCreditNote(eventTarget)) {
+			onCreditNoteClicked(value);
 		}
 	}
 
@@ -130,7 +136,17 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 			return false;
 		}
 	}
+	
+	private boolean isCreditNote(EventTarget et){
+		if(SpanElement.is(et)){
+			SpanElement pdf = et.cast();
+			return "creditNote".equals(pdf.getClassName());
 
+		} else {
+			return false;
+		}
+	}
+	
 	private boolean isClone(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement img = et.cast();
@@ -182,6 +198,23 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 			@Override
 			public void onException(Throwable caught) {
 				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+			}
+		});
+	}
+	
+	private void onCreditNoteClicked(final InvoiceDTO invoice) {
+		ServerFacade.creditNote.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
+
+			@Override
+			public void onSuccess(Long result) {
+				CreditNotePlace cnp = new CreditNotePlace();
+				cnp.setDataForNewCreditNote(result, invoice);
+				presenter.goTo(cnp);
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+				Notification.showYesNoRequest(I18N.INSTANCE.errorServerCommunication());
 			}
 		});
 	}

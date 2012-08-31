@@ -21,6 +21,7 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.HomeView;
@@ -144,6 +145,32 @@ public class HomeViewImpl extends Composite implements HomeView {
 						InvoicePlace ip = new InvoicePlace();
 						ip.setDataForNewInvoice(client, result);
 						presenter.goTo(ip);
+					}
+
+					@Override
+					public void onException(Throwable caught) {
+						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+					}
+				});
+			}
+		});
+		scd.showCentered();
+	}
+	
+	
+	@UiHandler("newCreditNote")
+	void onNewCreditNoteClicked(ClickEvent e) {
+		SelectClientDialog scd = new SelectClientDialog(new SelectClientDialog.Handler() {
+			
+			@Override
+			public void onClientSelected(final ClientDTO client) {
+				ServerFacade.creditNote.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
+
+					@Override
+					public void onSuccess(Long result) {
+						CreditNotePlace cnp = new CreditNotePlace();
+						cnp.setDataForNewCreditNote(client, result);
+						presenter.goTo(cnp);
 					}
 
 					@Override

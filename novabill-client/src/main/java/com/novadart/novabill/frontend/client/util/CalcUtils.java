@@ -10,7 +10,7 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
 
-public class InvoiceUtils {
+public class CalcUtils {
 	
 	private static final long ONE_DAY_MS = 1000 * 60 * 60 * 24;
 	
@@ -67,8 +67,8 @@ public class InvoiceUtils {
 		} catch (NumberFormatException ex) {
 			return null;
 		}
-		BigDecimal totBeforeTaxesForItem = InvoiceUtils.calculateTotalBeforeTaxesForItem(ii);
-		BigDecimal totTaxesForItem = InvoiceUtils.calculateTaxesForItem(ii);
+		BigDecimal totBeforeTaxesForItem = CalcUtils.calculateTotalBeforeTaxesForItem(ii);
+		BigDecimal totTaxesForItem = CalcUtils.calculateTaxesForItem(ii);
 		ii.setTotal(totBeforeTaxesForItem.add(totTaxesForItem));
 		ii.setTotalTax(totTaxesForItem);
 		ii.setTotalBeforeTax(totBeforeTaxesForItem);
@@ -82,8 +82,8 @@ public class InvoiceUtils {
 		BigDecimal totBeforeTaxes = BigDecimal.ZERO;
 		BigDecimal totTaxes = BigDecimal.ZERO;
 		for (InvoiceItemDTO item : invoiceItems) {
-			totBeforeTaxes = totBeforeTaxes.add(InvoiceUtils.calculateTotalBeforeTaxesForItem(item));
-			totTaxes = totTaxes.add(InvoiceUtils.calculateTaxesForItem(item));
+			totBeforeTaxes = totBeforeTaxes.add(CalcUtils.calculateTotalBeforeTaxesForItem(item));
+			totTaxes = totTaxes.add(CalcUtils.calculateTaxesForItem(item));
 		}
 		BigDecimal totAfterTaxes = totBeforeTaxes.add(totTaxes);
 
@@ -96,8 +96,8 @@ public class InvoiceUtils {
 		BigDecimal totBeforeTaxes = BigDecimal.ZERO;
 		BigDecimal totTaxes = BigDecimal.ZERO;
 		for (InvoiceItemDTO item : invoiceItems) {
-			totBeforeTaxes = totBeforeTaxes.add(InvoiceUtils.calculateTotalBeforeTaxesForItem(item));
-			totTaxes = totTaxes.add(InvoiceUtils.calculateTaxesForItem(item));
+			totBeforeTaxes = totBeforeTaxes.add(CalcUtils.calculateTotalBeforeTaxesForItem(item));
+			totTaxes = totTaxes.add(CalcUtils.calculateTaxesForItem(item));
 		}
 		BigDecimal totAfterTaxes = totBeforeTaxes.add(totTaxes);
 

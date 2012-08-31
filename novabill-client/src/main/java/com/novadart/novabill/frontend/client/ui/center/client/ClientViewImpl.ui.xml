@@ -40,7 +40,17 @@
 						<i:EstimationList ui:field="estimationList"></i:EstimationList>
 					</g:FlowPanel>
 				</g:tab>
-
+				<g:tab>
+					<g:customHeader>
+						<g:Label styleName="tabHeaderLabel" text="{i18n.creditNotes}"></g:Label>
+					</g:customHeader>
+					<g:FlowPanel styleName="listWrapper panel">
+						<g:SimplePanel styleName="actionWrapper">
+							<g:Button ui:field="newCreditNote" styleName="action-button newCreditNote" text="{i18n.newCreditNote}"></g:Button>
+						</g:SimplePanel>
+						<i:CreditNoteList ui:field="creditNoteList"></i:CreditNoteList>
+					</g:FlowPanel>
+				</g:tab>
 			</g:TabLayoutPanel>
 		</g:SimpleLayoutPanel>
 
