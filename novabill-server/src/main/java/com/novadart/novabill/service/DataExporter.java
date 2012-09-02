@@ -11,6 +11,7 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
@@ -85,7 +86,13 @@ public class DataExporter {
 	private List<File> exportAccountingDocumentsData(File outDir, ZipOutputStream zipStream, Business business, File tempLogoFile,
 			Logo logo, DocumentType docType, Boolean putWatermark, String entryFormat) throws IOException, FileNotFoundException {
 		List<File> files = new ArrayList<File>();
-		Set<? extends AccountingDocument> docs = docType.equals(DocumentType.INVOICE)? business.getInvoices(): business.getEstimations();
+		Set<? extends AccountingDocument> docs = new HashSet<AccountingDocument>();
+		if(docType.equals(DocumentType.INVOICE))
+			docs = business.getInvoices();
+		else if(docType.equals(DocumentType.ESTIMATION))
+			docs = business.getEstimations();
+		else if(docType.equals(DocumentType.CREDIT_NOTE))
+			docs = business.getCreditNotes();
 		for(AccountingDocument doc: docs){
 			File docFile;
 			if(tempLogoFile != null)
@@ -110,6 +117,7 @@ public class DataExporter {
 		File tempLogoFile = null;
 		List<File> invoicesFiles = null;
 		List<File> estimationFiles = null;
+		List<File> creditNoteFiles = null;
 		try {
 			if(classes.contains(DataExportClasses.CLIENT)){
 				clientsData = exportClientData(outDir, business.getClients(), messageSource, locale);
@@ -131,6 +139,11 @@ public class DataExporter {
 				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.ESTIMATION,
 						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
 						messageSource.getMessage("export.estimations.zipentry.pattern", null, "estimations/estimation_%d_%d.pdf", locale));
+			if(classes.contains(DataExportClasses.CREDIT_NOTE))
+				creditNoteFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.CREDIT_NOTE,
+						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
+						messageSource.getMessage("export.creditnotes.zipentry.pattern", null, "creditnotes/creditnotes_%d_%d.pdf", locale));
+				
 			zipStream.close();
 			return zipFile;
 		} finally {
@@ -145,6 +158,9 @@ public class DataExporter {
 				for(File file: estimationFiles)
 					file.delete();
 			}
+			if(creditNoteFiles != null)
+				for(File file: creditNoteFiles)
+					file.delete();
 		}
 	}
 
