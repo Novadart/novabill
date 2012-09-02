@@ -26,8 +26,10 @@ import flexjson.transformer.HtmlEncoderTransformer;
 @Service
 public class PDFGenerator {
 	
+	//Important!!!
+	//The DocumentType enum must be aligned with values from  DocumentType class in novabill-report/src/core.py
 	public enum DocumentType{
-		INVOICE, ESTIMATION
+		INVOICE, ESTIMATION, CREDIT_NOTE
 	}
 
 	@Value("${path.jep}")
@@ -64,11 +66,12 @@ public class PDFGenerator {
 			Jep jep = new Jep(false, includePath,  Thread.currentThread().getContextClassLoader());
 			jep.runScript(pyInvGenScript, Thread.currentThread().getContextClassLoader());
 			jep.eval("import json");
-			int docTypeConst = docType == DocumentType.INVOICE? 0: 1;
+			//int docTypeConst = docType == DocumentType.INVOICE? 0: 1;
+			int docTypeConst = docType.ordinal();
 			if(pathToLogo == null)
-				jep.eval(String.format("create_invoice('%s', json.loads('%s'), docType=%d, watermark=%s)", invFile.getAbsolutePath(), json, docTypeConst, putWatermark? "True": "False"));
+				jep.eval(String.format("create_doc('%s', json.loads('%s'), docType=%d, watermark=%s)", invFile.getAbsolutePath(), json, docTypeConst, putWatermark? "True": "False"));
 			else
-				jep.eval(String.format("create_invoice('%s', json.loads('%s'), '%s', %d, %d, docType=%d, watermark=%s)", invFile.getAbsolutePath(), json, pathToLogo, logoWidth, logoHeight, docTypeConst, putWatermark? "True": "False"));
+				jep.eval(String.format("create_doc('%s', json.loads('%s'), '%s', %d, %d, docType=%d, watermark=%s)", invFile.getAbsolutePath(), json, pathToLogo, logoWidth, logoHeight, docTypeConst, putWatermark? "True": "False"));
 			jep.close();
 			if(bwEvHnld != null)
 				bwEvHnld.beforeWriteCallback(invFile);

@@ -72,6 +72,8 @@ class DocumentType(object):
     INVOICE = 0
     
     ESTIMATION = 1
+    
+    CREDIT_NOTE = 2
 
 
 class DirectorType(object):

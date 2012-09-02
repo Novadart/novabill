@@ -3,7 +3,7 @@ from os import remove
 from os.path import exists
 from template.core import DefaultDirector, DocumentType, DirectorType,\
     BuilderType
-from template.default import DefaultInvoiceBuilder, DefaultEstimationBuilder
+from template.default import DefaultInvoiceBuilder, DefaultEstimationBuilder, DefaultCreditNoteBuilder
 from lib.data import InvoiceData
 
 class Factory(object):
@@ -21,11 +21,13 @@ class Factory(object):
                 return DefaultInvoiceBuilder(*args, **kw)
             if(docType == DocumentType.ESTIMATION):
                 return DefaultEstimationBuilder(*args, **kw)
+            if(docType == DocumentType.CREDIT_NOTE):
+                return DefaultCreditNoteBuilder(*args, **kw)
         raise Exception("No such builder type!")
 
 
 
-def create_invoice(out, invoice, pathToLogo=None, logoWidth=None, logoHeight=None, docType=DocumentType.INVOICE, tempType=DirectorType.DEFAULT, watermark=True):
+def create_doc(out, invoice, pathToLogo=None, logoWidth=None, logoHeight=None, docType=DocumentType.INVOICE, tempType=DirectorType.DEFAULT, watermark=True):
     builderDisplayParams = dict(logo=dict(path=pathToLogo, width=logoWidth, height=logoWidth))
     builder = Factory.createBuilder(BuilderType.DEFAULT, docType, out, dispParams=builderDisplayParams)
     directorDisplayParams = dict(pagenumbers=True, watermark=watermark)
@@ -113,6 +115,6 @@ if False and __name__ == '__main__':
     if exists(outputFile):
         remove(outputFile)
     import json
-    create_invoice("/tmp/testInvoice.pdf", json.loads(testInvoiceJSON))
+    create_doc("/tmp/testInvoice.pdf", json.loads(testInvoiceJSON))
     
     

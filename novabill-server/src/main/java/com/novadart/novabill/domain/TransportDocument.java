@@ -5,35 +5,28 @@ import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
 
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
-/*
- * Important note!
- * If fields and validation constraints are modified be sure to update the validation code. 
- */
-
-@Entity
 @Configurable
-public class CreditNote extends AbstractInvoice implements Serializable {
+@Entity
+public class TransportDocument extends AccountingDocument implements Serializable {
 
-	private static final long serialVersionUID = -6394611948337345685L;
+	private static final long serialVersionUID = 9178463460405596881L;
 	
 	@ManyToOne
     protected Business business;
 
     @ManyToOne
-    @NotNull
     protected Client client;
     
-    public static Integer countCreditNotesForClient(Long id){
-    	return countForClient(CreditNote.class, id);
+    public static Integer countTransportDocumentsForClient(Long id){
+    	return countForClient(TransportDocument.class, id);
     }
     
     /*
-     * Getters and setters
+     *Getters and setters 
      * */
     
     public Business getBusiness() {
@@ -56,33 +49,34 @@ public class CreditNote extends AbstractInvoice implements Serializable {
      * End of getters and setters section
      * */
     
+
     /*
      * Active record functionality
      * */
     
-    public static long countCreditNotes() {
-        return count(CreditNote.class);
+    public static long countTransportDocuments() {
+        return count(TransportDocument.class);
     }
     
-    public static List<CreditNote> findAllCreditNotes() {
-        return findAll(CreditNote.class);
+    public static List<TransportDocument> findAllTransportDocuments() {
+        return findAll(TransportDocument.class);
     }
     
-    public static CreditNote findCreditNote(Long id) {
-        return find(CreditNote.class, id);
+    public static TransportDocument findTransportDocument(Long id) {
+        return find(TransportDocument.class, id);
     }
     
-    public static List<CreditNote> findCreditNoteEntries(int firstResult, int maxResults) {
-        return findInRange(CreditNote.class, firstResult, maxResults);
+    public static List<TransportDocument> findTransportDocumentEntries(int firstResult, int maxResults) {
+        return findInRange(TransportDocument.class, firstResult, maxResults);
     }
     
     @Transactional
-    public CreditNote merge() {
+    public TransportDocument merge() {
         return merge(this);
     }
-    
+	
     /*
-     * End of active record functionality section
+     * End of active record functionality
      * */
 
 }
