@@ -38,6 +38,7 @@ quota.numberOfClients.value=1
 quota.numberOfInvoicesPerYear.value=1
 quota.numberOfEstimationsPerYear.value=1
 quota.numberOfCreditNotesPerYear.value=1
+quota.numberOfTransportDocsPerYear.value=1
 
 path.tmpdir.data_export.value=/tmp/novabill
 

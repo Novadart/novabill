@@ -66,7 +66,6 @@ public class PDFGenerator {
 			Jep jep = new Jep(false, includePath,  Thread.currentThread().getContextClassLoader());
 			jep.runScript(pyInvGenScript, Thread.currentThread().getContextClassLoader());
 			jep.eval("import json");
-			//int docTypeConst = docType == DocumentType.INVOICE? 0: 1;
 			int docTypeConst = docType.ordinal();
 			if(pathToLogo == null)
 				jep.eval(String.format("create_doc('%s', json.loads('%s'), docType=%d, watermark=%s)", invFile.getAbsolutePath(), json, docTypeConst, putWatermark? "True": "False"));

@@ -160,6 +160,10 @@ public class Client implements Serializable {
     	return sortAccountingDocuments(getCreditNotes());
     }
     
+    public List<TransportDocument> getSortedTransportDocuments(){
+    	return sortAccountingDocuments(getTransportDocuments());
+    }
+    
     public List<Invoice> getAllInvoicesInRange(Integer start, Integer length){
     	String query = "select invoice from Invoice as invoice where invoice.client.id = :clientId order by invoice.accountingDocumentYear desc, invoice.documentID desc";
     	return entityManager.createQuery(query, Invoice.class)
@@ -179,6 +183,14 @@ public class Client implements Serializable {
     public List<CreditNote> getAllCreditNotesInRange(Integer start, Integer length){
     	String query = "select creditNote from CreditNote creditNote where creditNote.client.id = :clientId order by creditNote.accountingDocumentYear desc, creditNote.documentID desc";
     	return entityManager.createQuery(query, CreditNote.class)
+    			.setParameter("clientId", getId())
+    			.setFirstResult(start)
+    			.setMaxResults(length).getResultList();
+    }
+    
+    public List<TransportDocument> getAllTransportDocsInRange(Integer start, Integer length){
+    	String query = "select tranDoc from TransportDocument tranDoc where tranDoc.client.id = :clientId order by tranDoc.accountingDocumentDate desc";
+    	return entityManager.createQuery(query, TransportDocument.class)
     			.setParameter("clientId", getId())
     			.setFirstResult(start)
     			.setMaxResults(length).getResultList();

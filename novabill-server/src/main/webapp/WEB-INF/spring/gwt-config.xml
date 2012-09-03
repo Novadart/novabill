@@ -13,6 +13,8 @@
 	<bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationServiceImpl" />
 	
 	<bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteServiceImpl" />
+	
+	<bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentServiceImpl" />
 
 	<bean id="client" class="com.novadart.novabill.web.gwt.ClientServiceImpl" />
 
@@ -26,6 +28,7 @@
 				/**/business.rpc=business
 				/**/estimation.rpc=estimation
 				/**/creditnote.rpc=creditnote
+				/**/transportdoc.rpc=transportdoc
 			</value>
 		</property>
 	</bean>

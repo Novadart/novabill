@@ -26,9 +26,8 @@ import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 
+@SuppressWarnings("serial")
 public class EstimationServiceImpl extends AbstractGwtController<EstimationService, EstimationServiceImpl> implements EstimationService {
-	
-	private static final long serialVersionUID = -6918867132306850872L;
 	
 	@Autowired
 	private UtilsService utilsService;
@@ -96,10 +95,10 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(estimation.getBusiness().getId()))
 			throw new DataAccessException();
 		estimation.remove();
-		if(Hibernate.isInitialized(estimation.getBusiness().getInvoices()))
-			estimation.getBusiness().getInvoices().remove(estimation);
-		if(Hibernate.isInitialized(estimation.getClient().getInvoices()))
-			estimation.getClient().getInvoices().remove(estimation);
+		if(Hibernate.isInitialized(estimation.getBusiness().getEstimations()))
+			estimation.getBusiness().getEstimations().remove(estimation);
+		if(Hibernate.isInitialized(estimation.getClient().getEstimations()))
+			estimation.getClient().getEstimations().remove(estimation);
 	}
 
 	@Override

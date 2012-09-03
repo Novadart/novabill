@@ -169,7 +169,12 @@ public class Business implements Serializable {
     	return entityManager().createQuery(query, CreditNote.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
     }
     
-    private <T extends AbstractInvoice> Long getNextAbstractInvoiceDocumentID(Class<T> cls){
+    public List<TransportDocument> getAllTransportDocsInRange(int start, int length){
+    	String query = "select tranDoc from TransportDocument tranDoc where tranDoc.business.id = :id order by tranDoc.accountingDocumentDate desc";
+    	return entityManager().createQuery(query, TransportDocument.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
+    }
+    
+    private <T extends AccountingDocument> Long getNextAccountingDocDocumentID(Class<T> cls){
     	String query = String.format("select max(o.documentID) from %s o where o.business.id = :businessId and o.accountingDocumentYear = :year",
     									cls.getSimpleName());
     	Long id = entityManager.createQuery(query, Long.class)
@@ -179,12 +184,21 @@ public class Business implements Serializable {
     }
     
     public Long getNextInvoiceDocumentID(){
-    	return getNextAbstractInvoiceDocumentID(Invoice.class);
+    	return getNextAccountingDocDocumentID(Invoice.class);
     }
     
     public Long getNextCreditNoteDocumentID(){
-    	return getNextAbstractInvoiceDocumentID(CreditNote.class);
+    	return getNextAccountingDocDocumentID(CreditNote.class);
     }
+    
+    public Long getNextEstimationDocumentID(){
+    	return getNextAccountingDocDocumentID(Estimation.class);
+    }
+    
+    public Long getNextTransportDocDocumentID(){
+    	return getNextAccountingDocDocumentID(TransportDocument.class);
+    }
+    
     
     public List<Long> getCurrentYearInvoicesDocumentIDs(){
     	String query = "select invoice.documentID from Invoice as invoice where invoice.business.id = :businessId and invoice.accountingDocumentYear = :year order by invoice.documentID";
@@ -199,14 +213,6 @@ public class Business implements Serializable {
     			.setParameter("businessId", getId())
     			.setParameter("year", year)
     			.setParameter("id", documentID).getResultList();
-    }
-    
-    public Long getNextEstimationDocumentID(){
-    	String query = "select max(estimation.documentID) from Estimation as estimation where estimation.business.id = :businessId and estimation.accountingDocumentYear = :year";
-    	Long id = entityManager.createQuery(query, Long.class)
-    			.setParameter("businessId", getId())
-    			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getSingleResult();
-    	return (id == null)? 1: id + 1;
     }
     
     @SuppressWarnings("unchecked")
@@ -260,6 +266,11 @@ public class Business implements Serializable {
     @Transactional(readOnly = true)
     public List<CreditNote> getCreditNotesForYear(int year){
     	return getAccountingDocumentForYear(getCreditNotes().iterator(), year);
+    }
+    
+    @Transactional(readOnly = true)
+    public List<TransportDocument> getTransportDocsForYear(int year){
+    	return getAccountingDocumentForYear(getTransportDocuments().iterator(), year);
     }
     
     public static Business findByEmail(String email){
