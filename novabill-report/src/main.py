@@ -3,7 +3,8 @@ from os import remove
 from os.path import exists
 from template.core import DefaultDirector, DocumentType, DirectorType,\
     BuilderType
-from template.default import DefaultInvoiceBuilder, DefaultEstimationBuilder, DefaultCreditNoteBuilder
+from template.default import DefaultInvoiceBuilder, DefaultEstimationBuilder,\
+    DefaultCreditNoteBuilder, DefaultTransportDocumentBuilder
 from lib.data import InvoiceData
 
 class Factory(object):
@@ -23,6 +24,8 @@ class Factory(object):
                 return DefaultEstimationBuilder(*args, **kw)
             if(docType == DocumentType.CREDIT_NOTE):
                 return DefaultCreditNoteBuilder(*args, **kw)
+            if(docType == DocumentType.TRANSPORT_DOCUMENT):
+                return DefaultTransportDocumentBuilder(*args, **kw)
         raise Exception("No such builder type!")
 
 

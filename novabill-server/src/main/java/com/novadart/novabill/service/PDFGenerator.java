@@ -29,7 +29,7 @@ public class PDFGenerator {
 	//Important!!!
 	//The DocumentType enum must be aligned with values from  DocumentType class in novabill-report/src/core.py
 	public enum DocumentType{
-		INVOICE, ESTIMATION, CREDIT_NOTE
+		INVOICE, ESTIMATION, CREDIT_NOTE, TRANSPORT_DOCUMENT
 	}
 
 	@Value("${path.jep}")

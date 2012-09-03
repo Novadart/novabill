@@ -27,6 +27,7 @@ import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.Logo;
+import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.service.PDFGenerator;
 import com.novadart.novabill.service.PDFGenerator.DocumentType;
@@ -81,12 +82,24 @@ public class PDFController{
 	@ResponseBody
 	public void getCreditNotePDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token, 
 			final HttpServletResponse response, HttpSession session, Locale locale) throws IOException, DataAccessException, NoSuchObjectException{
-//		if(token == null || !xsrfTokenService.verifyAndRemoveToken(token, session, TOKENS_SESSION_FIELD))
-//			return;
+		if(token == null || !xsrfTokenService.verifyAndRemoveToken(token, session, TOKENS_SESSION_FIELD))
+			return;
 		final CreditNote creditNote = CreditNote.findCreditNote(id);
 		if(creditNote == null)
 			throw new NoSuchObjectException();
 		generatePDF(response, creditNote, creditNote.getBusiness(), PDFGenerator.DocumentType.CREDIT_NOTE, locale);
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/transportdocs/{id}")
+	@ResponseBody
+	public void getTransportDocumentPDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token, 
+			final HttpServletResponse response, HttpSession session, Locale locale) throws IOException, DataAccessException, NoSuchObjectException{
+//		if(token == null || !xsrfTokenService.verifyAndRemoveToken(token, session, TOKENS_SESSION_FIELD))
+//			return;
+		final TransportDocument transportDocument = TransportDocument.findTransportDocument(id);
+		if(transportDocument == null)
+			throw new NoSuchObjectException();
+		generatePDF(response, transportDocument, transportDocument.getBusiness(), PDFGenerator.DocumentType.TRANSPORT_DOCUMENT, locale);
 	}
 	
 	private void generatePDF(final HttpServletResponse response, final AccountingDocument accountingDocument, Business invoiceOwner,
@@ -114,6 +127,8 @@ public class PDFController{
 						fileNamePattern = messageSource.getMessage("export.estimations.name.pattern", null, "estimation_%d_%d.pdf", locale);
 					else if(docType.equals(DocumentType.CREDIT_NOTE))
 						fileNamePattern = messageSource.getMessage("export.creditnotes.name.pattern", null, "creditnote_%d_%d.pdf", locale);
+					else if(docType.equals(DocumentType.TRANSPORT_DOCUMENT))
+						fileNamePattern = messageSource.getMessage("export.transportdocs.name.pattern", null, "transportdoc_%d_%d.pdf", locale);
 					String fileName = String.format(fileNamePattern, accountingDocument.getAccountingDocumentYear(), accountingDocument.getDocumentID());
 					response.setContentType("application/octet-stream");
 					response.setHeader ("Content-Disposition", String.format("attachment; filename=\"%s\"", fileName));

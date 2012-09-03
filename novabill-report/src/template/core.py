@@ -74,6 +74,8 @@ class DocumentType(object):
     ESTIMATION = 1
     
     CREDIT_NOTE = 2
+    
+    TRANSPORT_DOCUMENT = 3
 
 
 class DirectorType(object):
