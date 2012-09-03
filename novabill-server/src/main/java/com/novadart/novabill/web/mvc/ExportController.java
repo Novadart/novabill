@@ -53,7 +53,9 @@ public class ExportController {
 	public void getData(
 			@RequestParam(value = "clients", required = false) boolean clients, 
 			@RequestParam(value = "invoices", required = false) boolean invoices,
-			@RequestParam(value = "estimations", required = false) boolean estimations, 
+			@RequestParam(value = "estimations", required = false) boolean estimations,
+			@RequestParam(value = "creditnotes", required = false) boolean creditnotes,
+			@RequestParam(value = "transportdocs", required = false) boolean transportdocs,
 			@RequestParam(value = "token", required = false) String token, 
 			HttpServletResponse response, Locale locale, HttpSession session) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
 		if(token == null || !xsrfTokenService.verifyAndRemoveToken(token, session, TOKENS_SESSION_FIELD))
@@ -71,6 +73,14 @@ public class ExportController {
 		if(estimations) {
 			classes.add(DataExportClasses.ESTIMATION);
 			fileName.append("_estimations");
+		}
+		if(creditnotes){
+			classes.add(DataExportClasses.CREDIT_NOTE);
+			fileName.append("_creditnotes");
+		}
+		if(transportdocs){
+			classes.add(DataExportClasses.TRANSPORT_DOCUMENT);
+			fileName.append("_transportdocs");
 		}
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
 		Logo logo = null;

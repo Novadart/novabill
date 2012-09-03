@@ -93,6 +93,8 @@ public class DataExporter {
 			docs = business.getEstimations();
 		else if(docType.equals(DocumentType.CREDIT_NOTE))
 			docs = business.getCreditNotes();
+		else if(docType.equals(DocumentType.TRANSPORT_DOCUMENT))
+			docs = business.getTransportDocuments();
 		for(AccountingDocument doc: docs){
 			File docFile;
 			if(tempLogoFile != null)
@@ -118,6 +120,7 @@ public class DataExporter {
 		List<File> invoicesFiles = null;
 		List<File> estimationFiles = null;
 		List<File> creditNoteFiles = null;
+		List<File> transportDocsFiles = null;
 		try {
 			if(classes.contains(DataExportClasses.CLIENT)){
 				clientsData = exportClientData(outDir, business.getClients(), messageSource, locale);
@@ -143,6 +146,10 @@ public class DataExporter {
 				creditNoteFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.CREDIT_NOTE,
 						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
 						messageSource.getMessage("export.creditnotes.zipentry.pattern", null, "creditnotes/creditnotes_%d_%d.pdf", locale));
+			if(classes.contains(DataExportClasses.TRANSPORT_DOCUMENT))
+				transportDocsFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.TRANSPORT_DOCUMENT,
+						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
+						messageSource.getMessage("export.transportdoc.zipentry.pattern", null, "transportdocs/transportdocs_%d_%d.pdf", locale));
 				
 			zipStream.close();
 			return zipFile;
