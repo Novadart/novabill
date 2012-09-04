@@ -89,9 +89,9 @@ if False and __name__ == '__main__':
             },
             "documentID":1,
             "id":1,
-            "invoiceItems":[
+            "accountingDocumentItems":[
                 {
-                    "class":"com.novadart.novabill.domain.InvoiceItem",
+                    "class":"com.novadart.novabill.domain.AccountingDocumentItem",
                     "description":"1",
                     "id":7,
                     "price":"1.00",

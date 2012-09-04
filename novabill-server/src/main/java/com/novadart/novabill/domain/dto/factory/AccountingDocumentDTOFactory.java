@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.novadart.novabill.domain.AccountingDocument;
-import com.novadart.novabill.domain.InvoiceItem;
+import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
 public abstract class AccountingDocumentDTOFactory {
 	
@@ -15,30 +15,30 @@ public abstract class AccountingDocumentDTOFactory {
 		accountingDocumentDTO.setDocumentID(accountingDocument.getDocumentID());
 		accountingDocumentDTO.setAccountingDocumentDate(accountingDocument.getAccountingDocumentDate());
 		accountingDocumentDTO.setNote(accountingDocument.getNote());
-		List<InvoiceItemDTO> items = new ArrayList<InvoiceItemDTO>(accountingDocument.getInvoiceItems().size());
-		for(InvoiceItem item: accountingDocument.getInvoiceItems())
-			items.add(InvoiceItemDTOFactory.toDTO(item));
+		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(accountingDocument.getAccountingDocumentItems().size());
+		for(AccountingDocumentItem item: accountingDocument.getAccountingDocumentItems())
+			items.add(AccountingDocumentItemDTOFactory.toDTO(item));
 		accountingDocumentDTO.setItems(items);
 		accountingDocumentDTO.setTotal(accountingDocument.getTotal());
 		accountingDocumentDTO.setTotalTax(accountingDocument.getTotalTax());
 		accountingDocumentDTO.setTotalBeforeTax(accountingDocument.getTotalBeforeTax());
 	}
 	
-	public static void copyFromDTO(AccountingDocument accountDocument, AccountingDocumentDTO accountingDocumentDTO, boolean copyItems){
-		accountDocument.setDocumentID(accountingDocumentDTO.getDocumentID());
-		accountDocument.setAccountingDocumentDate(accountingDocumentDTO.getAccountingDocumentDate());
-		accountDocument.setNote(accountingDocumentDTO.getNote());
+	public static void copyFromDTO(AccountingDocument accountingDocument, AccountingDocumentDTO accountingDocumentDTO, boolean copyItems){
+		accountingDocument.setDocumentID(accountingDocumentDTO.getDocumentID());
+		accountingDocument.setAccountingDocumentDate(accountingDocumentDTO.getAccountingDocumentDate());
+		accountingDocument.setNote(accountingDocumentDTO.getNote());
 		if(copyItems){
-			for(InvoiceItemDTO itemDTO: accountingDocumentDTO.getItems()){
-				InvoiceItem invoiceItem = new InvoiceItem();
-				InvoiceItemDTOFactory.copyFromDTO(invoiceItem, itemDTO);
-				invoiceItem.setInvoice(accountDocument);
-				accountDocument.getInvoiceItems().add(invoiceItem);
+			for(AccountingDocumentItemDTO itemDTO: accountingDocumentDTO.getItems()){
+				AccountingDocumentItem item = new AccountingDocumentItem();
+				AccountingDocumentItemDTOFactory.copyFromDTO(item, itemDTO);
+				item.setAccountingDocument(accountingDocument);
+				accountingDocument.getAccountingDocumentItems().add(item);
 			}
 		}
-		accountDocument.setTotal(accountingDocumentDTO.getTotal());
-		accountDocument.setTotalTax(accountingDocumentDTO.getTotalTax());
-		accountDocument.setTotalBeforeTax(accountingDocumentDTO.getTotalBeforeTax());
+		accountingDocument.setTotal(accountingDocumentDTO.getTotal());
+		accountingDocument.setTotalTax(accountingDocumentDTO.getTotalTax());
+		accountingDocument.setTotalBeforeTax(accountingDocumentDTO.getTotalBeforeTax());
 	}
 
 }

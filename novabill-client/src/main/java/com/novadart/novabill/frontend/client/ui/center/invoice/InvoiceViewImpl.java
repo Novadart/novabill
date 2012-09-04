@@ -39,7 +39,7 @@ import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
@@ -82,7 +82,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	private Presenter presenter;
 	private InvoiceDTO invoice;
 	private EstimationDTO estimation;
-	private ListDataProvider<InvoiceItemDTO> invoiceItems = new ListDataProvider<InvoiceItemDTO>();
+	private ListDataProvider<AccountingDocumentItemDTO> accountingDocumentItems = new ListDataProvider<AccountingDocumentItemDTO>();
 	private ClientDTO client;
 
 	public InvoiceViewImpl() {
@@ -98,13 +98,13 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		itemTable = new ItemTable(new ItemTable.Handler() {
 
 			@Override
-			public void delete(InvoiceItemDTO item) {
-				invoiceItems.getList().remove(item);
-				invoiceItems.refresh();
+			public void delete(AccountingDocumentItemDTO item) {
+				accountingDocumentItems.getList().remove(item);
+				accountingDocumentItems.refresh();
 				updateFields();
 			}
 		});
-		invoiceItems.addDataDisplay(itemTable);
+		accountingDocumentItems.addDataDisplay(itemTable);
 
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat
@@ -233,9 +233,9 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 		inv.setDocumentID(Long.parseLong(number.getText()));
 		inv.setAccountingDocumentDate(date.getValue());
-		List<InvoiceItemDTO> invItems = new ArrayList<InvoiceItemDTO>();
-		for (InvoiceItemDTO invoiceItemDTO : invoiceItems.getList()) {
-			invItems.add(invoiceItemDTO);
+		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
+		for (AccountingDocumentItemDTO itemDTO : accountingDocumentItems.getList()) {
+			invItems.add(itemDTO);
 		}
 		inv.setItems(invItems);
 		inv.setNote(note.getText());
@@ -263,9 +263,9 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		}
 
 		es.setAccountingDocumentDate(date.getValue());
-		List<InvoiceItemDTO> invItems = new ArrayList<InvoiceItemDTO>();
-		for (InvoiceItemDTO invoiceItemDTO : invoiceItems.getList()) {
-			invItems.add(invoiceItemDTO);
+		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
+		for (AccountingDocumentItemDTO itemDTO : accountingDocumentItems.getList()) {
+			invItems.add(itemDTO);
 		}
 		es.setItems(invItems);
 		es.setNote(note.getText());
@@ -276,14 +276,14 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 	@UiHandler("add")
 	void onAddClicked(ClickEvent e){
-		InvoiceItemDTO ii = CalcUtils.createInvoiceItem(item.getText(), price.getText(), 
+		AccountingDocumentItemDTO ii = CalcUtils.createAccountingDocumentItem(item.getText(), price.getText(), 
 				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
 		
 		if(ii == null) {
 			return;
 		}
 		
-		invoiceItems.getList().add(ii);
+		accountingDocumentItems.getList().add(ii);
 		updateFields();
 		itemTableScroller.scrollToBottom();
 	}
@@ -344,17 +344,17 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 			modifyDocument.setVisible(true);
 		}
 
-		List<InvoiceItemDTO> items = null;
+		List<AccountingDocumentItemDTO> items = null;
 		if(cloning){
-			items = new ArrayList<InvoiceItemDTO>(invoice.getItems().size());
-			for (InvoiceItemDTO i : invoice.getItems()) {
+			items = new ArrayList<AccountingDocumentItemDTO>(invoice.getItems().size());
+			for (AccountingDocumentItemDTO i : invoice.getItems()) {
 				items.add(i.clone());
 			}
 		} else {
 			items = invoice.getItems();
 		}
 
-		invoiceItems.setList(items);
+		accountingDocumentItems.setList(items);
 		if(!cloning && invoice.getDocumentID() != null){
 			number.setText(invoice.getDocumentID().toString());
 		} 
@@ -398,12 +398,12 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		setDataForNewInvoice(estimation.getClient(), progressiveId);
 		this.estimation = estimation;
 
-		List<InvoiceItemDTO> items = new ArrayList<InvoiceItemDTO>(estimation.getItems().size());
-		for (InvoiceItemDTO i : estimation.getItems()) {
+		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(estimation.getItems().size());
+		for (AccountingDocumentItemDTO i : estimation.getItems()) {
 			items.add(i.clone());
 		}
 
-		invoiceItems.setList(items);
+		accountingDocumentItems.setList(items);
 		note.setText(estimation.getNote());
 
 		updateFields();
@@ -432,7 +432,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	private boolean validateEstimation(){
 		if(date.getTextBox().getText().isEmpty() || date.getValue() == null){
 			return false;
-		} else if(invoiceItems.getList().isEmpty()){
+		} else if(accountingDocumentItems.getList().isEmpty()){
 			return false;
 		}
 		return true;
@@ -440,9 +440,9 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 
 
 	private void updateFields(){
-		CalcUtils.calculateTotals(invoiceItems.getList(), totalTax, totalBeforeTaxes, totalAfterTaxes);
+		CalcUtils.calculateTotals(accountingDocumentItems.getList(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 		resetItemTableForm();
-		invoiceItems.refresh();
+		accountingDocumentItems.refresh();
 	}
 
 	private void resetItemTableForm(){
@@ -477,8 +477,8 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		payment.setSelectedIndex(0);
 		paymentNote.setText("");
 		note.setText("");
-		invoiceItems.getList().clear();
-		invoiceItems.refresh();
+		accountingDocumentItems.getList().clear();
+		accountingDocumentItems.refresh();
 		totalTax.setText("");
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");

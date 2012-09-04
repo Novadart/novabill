@@ -56,9 +56,9 @@ public abstract class AccountingDocument {
     
     protected BigDecimal totalBeforeTax;
 
-    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "invoice", orphanRemoval = true)
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "accountingDocument", orphanRemoval = true)
     @OrderBy("id")
-    protected List<InvoiceItem> invoiceItems = new LinkedList<InvoiceItem>();
+    protected List<AccountingDocumentItem> accountingDocumentItems = new LinkedList<AccountingDocumentItem>();
     
     protected static int getYear(Date date){
     	Calendar calendar = new GregorianCalendar();
@@ -134,12 +134,12 @@ public abstract class AccountingDocument {
         this.totalBeforeTax = totalBeforeTax;
     }
     
-    public List<InvoiceItem> getInvoiceItems() {
-        return this.invoiceItems;
+    public List<AccountingDocumentItem> getAccountingDocumentItems() {
+        return this.accountingDocumentItems;
     }
     
-    public void setInvoiceItems(List<InvoiceItem> invoiceItems) {
-        this.invoiceItems = invoiceItems;
+    public void setAccountingDocumentItems(List<AccountingDocumentItem> accountingDocumentItems) {
+        this.accountingDocumentItems = accountingDocumentItems;
     }
     
     /*

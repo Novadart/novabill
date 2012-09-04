@@ -3,7 +3,7 @@ package com.novadart.novabill.shared.client.dto;
 import java.math.BigDecimal;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class InvoiceItemDTO implements IsSerializable {
+public class AccountingDocumentItemDTO implements IsSerializable {
 	
 	private Long id;
 	
@@ -95,8 +95,8 @@ public class InvoiceItemDTO implements IsSerializable {
 		this.tax = tax;
 	}
 	
-	public InvoiceItemDTO clone(){
-		InvoiceItemDTO i = new InvoiceItemDTO();
+	public AccountingDocumentItemDTO clone(){
+		AccountingDocumentItemDTO i = new AccountingDocumentItemDTO();
 		i.setDescription(getDescription());
 		i.setPrice(getPrice());
 		i.setQuantity(getQuantity());

@@ -9,13 +9,13 @@ import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.authorization.NumberOfTransportDocsPerYearQuotaReachedChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.InvoiceItem;
+import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.TransportDocument;
-import com.novadart.novabill.domain.dto.factory.InvoiceItemDTOFactory;
+import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
 import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
-import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -118,12 +118,12 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 		if(persistedTransportDoc == null)
 			throw new NoSuchObjectException();
 		TransportDocumentDTOFactory.copyFromDTO(persistedTransportDoc, transportDocDTO, false);
-		persistedTransportDoc.getInvoiceItems().clear();
-		for(InvoiceItemDTO invoiceItemDTO: transportDocDTO.getItems()){
-			InvoiceItem item = new InvoiceItem();
-			InvoiceItemDTOFactory.copyFromDTO(item, invoiceItemDTO);
-			item.setInvoice(persistedTransportDoc);
-			persistedTransportDoc.getInvoiceItems().add(item);
+		persistedTransportDoc.getAccountingDocumentItems().clear();
+		for(AccountingDocumentItemDTO itemDTO: transportDocDTO.getItems()){
+			AccountingDocumentItem item = new AccountingDocumentItem();
+			AccountingDocumentItemDTOFactory.copyFromDTO(item, itemDTO);
+			item.setAccountingDocument(persistedTransportDoc);
+			persistedTransportDoc.getAccountingDocumentItems().add(item);
 		}
 		validator.validate(persistedTransportDoc);
 		

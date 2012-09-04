@@ -10,13 +10,13 @@ import com.novadart.novabill.authorization.NumberOfEstimationsPerYearQuotaReache
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Estimation;
-import com.novadart.novabill.domain.InvoiceItem;
+import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
-import com.novadart.novabill.domain.dto.factory.InvoiceItemDTOFactory;
+import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -116,12 +116,12 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 		if(persistedEstimation == null)
 			throw new NoSuchObjectException();
 		EstimationDTOFactory.copyFromDTO(persistedEstimation, estimationDTO, false);
-		persistedEstimation.getInvoiceItems().clear();
-		for(InvoiceItemDTO invoiceItemDTO: estimationDTO.getItems()){
-			InvoiceItem invoiceItem = new InvoiceItem();
-			InvoiceItemDTOFactory.copyFromDTO(invoiceItem, invoiceItemDTO);
-			invoiceItem.setInvoice(persistedEstimation);
-			persistedEstimation.getInvoiceItems().add(invoiceItem);
+		persistedEstimation.getAccountingDocumentItems().clear();
+		for(AccountingDocumentItemDTO itemDTO: estimationDTO.getItems()){
+			AccountingDocumentItem item = new AccountingDocumentItem();
+			AccountingDocumentItemDTOFactory.copyFromDTO(item, itemDTO);
+			item.setAccountingDocument(persistedEstimation);
+			persistedEstimation.getAccountingDocumentItems().add(item);
 		}
 		validator.validate(persistedEstimation);
 	}

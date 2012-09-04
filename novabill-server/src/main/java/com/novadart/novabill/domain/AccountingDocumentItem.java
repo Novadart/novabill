@@ -24,7 +24,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
-public class InvoiceItem implements Serializable {
+public class AccountingDocumentItem implements Serializable {
 	
 	private static final long serialVersionUID = -1072295560395962907L;
 
@@ -50,7 +50,7 @@ public class InvoiceItem implements Serializable {
     private BigDecimal total;
     
     @ManyToOne
-    private AccountingDocument invoice;
+    private AccountingDocument accountingDocument;
     
     /*
      * Getters and setters
@@ -120,12 +120,12 @@ public class InvoiceItem implements Serializable {
         this.total = total;
     }
     
-    public AccountingDocument getInvoice() {
-        return this.invoice;
+    public AccountingDocument getAccountingDocument() {
+        return this.accountingDocument;
     }
     
-    public void setInvoice(AccountingDocument invoice) {
-        this.invoice = invoice;
+    public void setAccountingDocument(AccountingDocument accountingDocument) {
+        this.accountingDocument = accountingDocument;
     }
     
     /*
@@ -140,26 +140,26 @@ public class InvoiceItem implements Serializable {
     transient EntityManager entityManager;
     
     public static final EntityManager entityManager() {
-        EntityManager em = new InvoiceItem().entityManager;
+        EntityManager em = new AccountingDocumentItem().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
     
-    public static long countInvoiceItems() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM InvoiceItem o", Long.class).getSingleResult();
+    public static long countAccountingDocumentItems() {
+        return entityManager().createQuery("SELECT COUNT(o) FROM AccountingDocumentItem o", Long.class).getSingleResult();
     }
     
-    public static List<InvoiceItem> findAllInvoiceItems() {
-        return entityManager().createQuery("SELECT o FROM InvoiceItem o", InvoiceItem.class).getResultList();
+    public static List<AccountingDocumentItem> findAllAccountingDocumentItems() {
+        return entityManager().createQuery("SELECT o FROM AccountingDocumentItem o", AccountingDocumentItem.class).getResultList();
     }
     
-    public static InvoiceItem findInvoiceItem(Long id) {
+    public static AccountingDocumentItem findAccountingDocumentItem(Long id) {
         if (id == null) return null;
-        return entityManager().find(InvoiceItem.class, id);
+        return entityManager().find(AccountingDocumentItem.class, id);
     }
     
-    public static List<InvoiceItem> findInvoiceItemEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM InvoiceItem o", InvoiceItem.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+    public static List<AccountingDocumentItem> findAccountingDocumentItemEntries(int firstResult, int maxResults) {
+        return entityManager().createQuery("SELECT o FROM AccountingDocumentItem o", AccountingDocumentItem.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
     
     @Transactional
@@ -174,7 +174,7 @@ public class InvoiceItem implements Serializable {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            InvoiceItem attached = InvoiceItem.findInvoiceItem(this.id);
+            AccountingDocumentItem attached = AccountingDocumentItem.findAccountingDocumentItem(this.id);
             this.entityManager.remove(attached);
         }
     }
@@ -192,9 +192,9 @@ public class InvoiceItem implements Serializable {
     }
     
     @Transactional
-    public InvoiceItem merge() {
+    public AccountingDocumentItem merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
-        InvoiceItem merged = this.entityManager.merge(this);
+        AccountingDocumentItem merged = this.entityManager.merge(this);
         this.entityManager.flush();
         return merged;
     }

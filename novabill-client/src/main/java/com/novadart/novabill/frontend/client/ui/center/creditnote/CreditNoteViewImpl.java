@@ -39,7 +39,7 @@ import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
@@ -80,7 +80,7 @@ public class CreditNoteViewImpl extends Composite implements CreditNoteView {
 
 	private Presenter presenter;
 	private CreditNoteDTO creditNote;
-	private ListDataProvider<InvoiceItemDTO> creditNoteItems = new ListDataProvider<InvoiceItemDTO>();
+	private ListDataProvider<AccountingDocumentItemDTO> creditNoteItems = new ListDataProvider<AccountingDocumentItemDTO>();
 	private ClientDTO client;
 
 	public CreditNoteViewImpl() {
@@ -96,7 +96,7 @@ public class CreditNoteViewImpl extends Composite implements CreditNoteView {
 		itemTable = new ItemTable(new ItemTable.Handler() {
 
 			@Override
-			public void delete(InvoiceItemDTO item) {
+			public void delete(AccountingDocumentItemDTO item) {
 				creditNoteItems.getList().remove(item);
 				creditNoteItems.refresh();
 				updateFields();
@@ -167,9 +167,9 @@ public class CreditNoteViewImpl extends Composite implements CreditNoteView {
 
 		cn.setDocumentID(Long.parseLong(number.getText()));
 		cn.setAccountingDocumentDate(date.getValue());
-		List<InvoiceItemDTO> invItems = new ArrayList<InvoiceItemDTO>();
-		for (InvoiceItemDTO invoiceItemDTO : creditNoteItems.getList()) {
-			invItems.add(invoiceItemDTO);
+		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
+		for (AccountingDocumentItemDTO itemDTO : creditNoteItems.getList()) {
+			invItems.add(itemDTO);
 		}
 		cn.setItems(invItems);
 		cn.setNote(note.getText());
@@ -188,7 +188,7 @@ public class CreditNoteViewImpl extends Composite implements CreditNoteView {
 
 	@UiHandler("add")
 	void onAddClicked(ClickEvent e){
-		InvoiceItemDTO ii = CalcUtils.createInvoiceItem(item.getText(), price.getText(), 
+		AccountingDocumentItemDTO ii = CalcUtils.createAccountingDocumentItem(item.getText(), price.getText(), 
 				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
 		
 		if(ii == null) {
@@ -255,7 +255,7 @@ public class CreditNoteViewImpl extends Composite implements CreditNoteView {
 		clientName.setText(creditNote.getClient().getName());
 		modifyDocument.setVisible(true);
 
-		List<InvoiceItemDTO> items = null;
+		List<AccountingDocumentItemDTO> items = null;
 		items = creditNote.getItems();
 
 		creditNoteItems.setList(items);
@@ -283,9 +283,9 @@ public class CreditNoteViewImpl extends Composite implements CreditNoteView {
 	public void setDataForNewCreditNote(Long progressiveId, InvoiceDTO invoice) {
 		setDataForNewCreditNote(invoice.getClient(), progressiveId);
 		
-		List<InvoiceItemDTO> items = null;
-		items = new ArrayList<InvoiceItemDTO>(invoice.getItems().size());
-		for (InvoiceItemDTO i : invoice.getItems()) {
+		List<AccountingDocumentItemDTO> items = null;
+		items = new ArrayList<AccountingDocumentItemDTO>(invoice.getItems().size());
+		for (AccountingDocumentItemDTO i : invoice.getItems()) {
 			items.add(i.clone());
 		}
 		creditNoteItems.setList(items);

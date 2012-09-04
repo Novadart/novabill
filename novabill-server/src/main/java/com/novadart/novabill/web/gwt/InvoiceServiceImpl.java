@@ -12,13 +12,13 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.InvoiceItem;
+import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
-import com.novadart.novabill.domain.dto.factory.InvoiceItemDTOFactory;
+import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.InvoiceValidator;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -127,12 +127,12 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		if(persistedInvoice == null)
 			throw new NoSuchObjectException();
 		InvoiceDTOFactory.copyFromDTO(persistedInvoice, invoiceDTO, false);
-		persistedInvoice.getInvoiceItems().clear();
-		for(InvoiceItemDTO invoiceItemDTO: invoiceDTO.getItems()){
-			InvoiceItem invoiceItem = new InvoiceItem();
-			InvoiceItemDTOFactory.copyFromDTO(invoiceItem, invoiceItemDTO);
-			invoiceItem.setInvoice(persistedInvoice);
-			persistedInvoice.getInvoiceItems().add(invoiceItem);
+		persistedInvoice.getAccountingDocumentItems().clear();
+		for(AccountingDocumentItemDTO itemDTO: invoiceDTO.getItems()){
+			AccountingDocumentItem item = new AccountingDocumentItem();
+			AccountingDocumentItemDTOFactory.copyFromDTO(item, itemDTO);
+			item.setAccountingDocument(persistedInvoice);
+			persistedInvoice.getAccountingDocumentItems().add(item);
 		}
 		validator.validate(persistedInvoice);
 	}

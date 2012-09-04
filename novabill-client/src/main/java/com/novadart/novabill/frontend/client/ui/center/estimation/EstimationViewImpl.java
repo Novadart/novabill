@@ -35,7 +35,7 @@ import com.novadart.novabill.frontend.client.ui.widget.table.ItemTable;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 
@@ -69,7 +69,7 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 
 	private Presenter presenter;
 	private EstimationDTO estimation;
-	private ListDataProvider<InvoiceItemDTO> invoiceItems = new ListDataProvider<InvoiceItemDTO>();
+	private ListDataProvider<AccountingDocumentItemDTO> accountingDocumentItems = new ListDataProvider<AccountingDocumentItemDTO>();
 	private ClientDTO client;
 
 	public EstimationViewImpl() {
@@ -80,13 +80,13 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 		itemTable = new ItemTable(new ItemTable.Handler() {
 
 			@Override
-			public void delete(InvoiceItemDTO item) {
-				invoiceItems.getList().remove(item);
-				invoiceItems.refresh();
+			public void delete(AccountingDocumentItemDTO item) {
+				accountingDocumentItems.getList().remove(item);
+				accountingDocumentItems.refresh();
 				updateFields();
 			}
 		});
-		invoiceItems.addDataDisplay(itemTable);
+		accountingDocumentItems.addDataDisplay(itemTable);
 
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat
@@ -176,9 +176,9 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 		}
 
 		es.setAccountingDocumentDate(date.getValue());
-		List<InvoiceItemDTO> invItems = new ArrayList<InvoiceItemDTO>();
-		for (InvoiceItemDTO invoiceItemDTO : invoiceItems.getList()) {
-			invItems.add(invoiceItemDTO);
+		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
+		for (AccountingDocumentItemDTO itemDTO : accountingDocumentItems.getList()) {
+			invItems.add(itemDTO);
 		}
 		es.setItems(invItems);
 		es.setNote(note.getText());
@@ -189,14 +189,14 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 
 	@UiHandler("add")
 	void onAddClicked(ClickEvent e){
-		InvoiceItemDTO ii = CalcUtils.createInvoiceItem(item.getText(), price.getText(), 
+		AccountingDocumentItemDTO ii = CalcUtils.createAccountingDocumentItem(item.getText(), price.getText(), 
 				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
 		
 		if(ii == null) {
 			return;
 		}
 		
-		invoiceItems.getList().add(ii);
+		accountingDocumentItems.getList().add(ii);
 		updateFields();
 		itemTableScroller.scrollToBottom();
 	}
@@ -277,17 +277,17 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 			convertToInvoice.setVisible(true);
 		}
 
-		List<InvoiceItemDTO> items = null;
+		List<AccountingDocumentItemDTO> items = null;
 		if(cloning) {
-			items = new ArrayList<InvoiceItemDTO>(estimation.getItems().size());
-			for (InvoiceItemDTO i : estimation.getItems()) {
+			items = new ArrayList<AccountingDocumentItemDTO>(estimation.getItems().size());
+			for (AccountingDocumentItemDTO i : estimation.getItems()) {
 				items.add(i.clone());
 			}
 		} else {
 			items = estimation.getItems();
 		}
 
-		invoiceItems.setList(items);
+		accountingDocumentItems.setList(items);
 		note.setText(estimation.getNote());
 
 		updateFields();
@@ -310,7 +310,7 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 	private boolean validateEstimation(){
 		if(date.getTextBox().getText().isEmpty() || date.getValue() == null){
 			return false;
-		} else if(invoiceItems.getList().isEmpty()){
+		} else if(accountingDocumentItems.getList().isEmpty()){
 			return false;
 		}
 		return true;
@@ -318,9 +318,9 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 
 
 	private void updateFields(){
-		CalcUtils.calculateTotals(invoiceItems.getList(), totalTax, totalBeforeTaxes, totalAfterTaxes);
+		CalcUtils.calculateTotals(accountingDocumentItems.getList(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 		resetItemTableForm();
-		invoiceItems.refresh();
+		accountingDocumentItems.refresh();
 	}
 
 	private void resetItemTableForm(){
@@ -344,8 +344,8 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 
 		//reset widget contents		
 		note.setText("");
-		invoiceItems.getList().clear();
-		invoiceItems.refresh();
+		accountingDocumentItems.getList().clear();
+		accountingDocumentItems.refresh();
 		totalTax.setText("");
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");

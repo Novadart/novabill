@@ -8,7 +8,7 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 
 import com.novadart.novabill.domain.AccountingDocument;
-import com.novadart.novabill.domain.InvoiceItem;
+import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 
@@ -28,7 +28,7 @@ public class AccountingDocumentValidator{
 			errors.addAll(e.getErrors());
 			isValid = false;
 		}
-		for(InvoiceItem item: accountingDocument.getInvoiceItems()){
+		for(AccountingDocumentItem item: accountingDocument.getAccountingDocumentItems()){
 			try{
 				simpleValidator.validate(item); //JSR-303 validation
 			}catch (ValidationException e) {

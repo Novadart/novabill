@@ -7,14 +7,14 @@ import java.util.List;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Label;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
 
 public class CalcUtils {
 	
 	private static final long ONE_DAY_MS = 1000 * 60 * 60 * 24;
 	
-	public static BigDecimal calculateTaxesForItem(InvoiceItemDTO item){
+	public static BigDecimal calculateTaxesForItem(AccountingDocumentItemDTO item){
 		return item.getPrice()
 				.multiply(item.getQuantity())
 				.multiply(item.getTax())
@@ -22,13 +22,13 @@ public class CalcUtils {
 	}
 	
 	
-	public static BigDecimal calculateTotalBeforeTaxesForItem(InvoiceItemDTO item){
+	public static BigDecimal calculateTotalBeforeTaxesForItem(AccountingDocumentItemDTO item){
 		return item.getPrice()
 				.multiply(item.getQuantity());
 	}
 	
 	
-	public static BigDecimal calculateTotalAfterTaxesForItem(InvoiceItemDTO item){
+	public static BigDecimal calculateTotalAfterTaxesForItem(AccountingDocumentItemDTO item){
 		return item.getPrice()
 				.multiply(item.getQuantity())
 				.multiply(item.getTax().add(new BigDecimal(100)))
@@ -45,7 +45,7 @@ public class CalcUtils {
 		}
 	}
 	
-	public static InvoiceItemDTO createInvoiceItem(String description, String price, 
+	public static AccountingDocumentItemDTO createAccountingDocumentItem(String description, String price, 
 			String quantity, String unitOfMeasure, String tax){
 		for (String txt : new String[]{description,quantity,price}) {
 			if(txt.isEmpty()){
@@ -53,7 +53,7 @@ public class CalcUtils {
 			}
 		}
 		
-		InvoiceItemDTO ii = new InvoiceItemDTO();
+		AccountingDocumentItemDTO ii = new AccountingDocumentItemDTO();
 		double tmpVal;
 
 		try {
@@ -76,12 +76,12 @@ public class CalcUtils {
 		return ii;
 	}
 	
-	public static void calculateTotals(List<InvoiceItemDTO> invoiceItems, Label totalTax, 
+	public static void calculateTotals(List<AccountingDocumentItemDTO> accountingDocumentItems, Label totalTax, 
 			Label totalBeforeTaxes, Label totalAfterTaxes){
 		
 		BigDecimal totBeforeTaxes = BigDecimal.ZERO;
 		BigDecimal totTaxes = BigDecimal.ZERO;
-		for (InvoiceItemDTO item : invoiceItems) {
+		for (AccountingDocumentItemDTO item : accountingDocumentItems) {
 			totBeforeTaxes = totBeforeTaxes.add(CalcUtils.calculateTotalBeforeTaxesForItem(item));
 			totTaxes = totTaxes.add(CalcUtils.calculateTaxesForItem(item));
 		}
@@ -92,10 +92,10 @@ public class CalcUtils {
 		totalAfterTaxes.setText(NumberFormat.getCurrencyFormat().format(totAfterTaxes.doubleValue()));
 	}
 	
-	public static void calculateTotals(List<InvoiceItemDTO> invoiceItems, AccountingDocumentDTO doc) {
+	public static void calculateTotals(List<AccountingDocumentItemDTO> accountingDocumentItems, AccountingDocumentDTO doc) {
 		BigDecimal totBeforeTaxes = BigDecimal.ZERO;
 		BigDecimal totTaxes = BigDecimal.ZERO;
-		for (InvoiceItemDTO item : invoiceItems) {
+		for (AccountingDocumentItemDTO item : accountingDocumentItems) {
 			totBeforeTaxes = totBeforeTaxes.add(CalcUtils.calculateTotalBeforeTaxesForItem(item));
 			totTaxes = totTaxes.add(CalcUtils.calculateTaxesForItem(item));
 		}

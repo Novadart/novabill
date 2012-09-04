@@ -60,7 +60,7 @@ public class PDFGenerator {
 		invFile.deleteOnExit();
 		String json = new JSONSerializer().transform(new DateTransformer("dd/MM/yyyy"), Date.class)
 				.transform(new HtmlEncoderTransformer(), String.class)
-				.transform(new StringTransformer(), BigDecimal.class).include("invoiceItems").serialize(accountingDocument).replace("'", "\\'");
+				.transform(new StringTransformer(), BigDecimal.class).include("accountingDocumentItems").serialize(accountingDocument).replace("'", "\\'");
 		
 		try {
 			Jep jep = new Jep(false, includePath,  Thread.currentThread().getContextClassLoader());

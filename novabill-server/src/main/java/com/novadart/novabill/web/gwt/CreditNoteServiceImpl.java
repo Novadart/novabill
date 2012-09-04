@@ -6,18 +6,19 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.NumberOfCreditNotesPerYearQuotaReachedChecker;
 import com.novadart.novabill.authorization.NumberOfInvoicesPerYearQuotaReachedChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.InvoiceItem;
+import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
-import com.novadart.novabill.domain.dto.factory.InvoiceItemDTOFactory;
+import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.InvoiceValidator;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
@@ -74,7 +75,7 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	}
 	
 	@Override
-	@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
+	@Restrictions(checkers = {NumberOfCreditNotesPerYearQuotaReachedChecker.class})
 	public Long add(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException {
 		Client client = Client.findClient(creditNoteDTO.getClient().getId());
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
@@ -123,12 +124,12 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 		if(persistedCreditNote == null)
 			throw new NoSuchObjectException();
 		CreditNoteDTOFactory.copyFromDTO(persistedCreditNote, creditNoteDTO, false);
-		persistedCreditNote.getInvoiceItems().clear();
-		for(InvoiceItemDTO itemDTO: creditNoteDTO.getItems()){
-			InvoiceItem item = new InvoiceItem();
-			InvoiceItemDTOFactory.copyFromDTO(item, itemDTO);
-			item.setInvoice(persistedCreditNote);
-			persistedCreditNote.getInvoiceItems().add(item);
+		persistedCreditNote.getAccountingDocumentItems().clear();
+		for(AccountingDocumentItemDTO itemDTO: creditNoteDTO.getItems()){
+			AccountingDocumentItem item = new AccountingDocumentItem();
+			AccountingDocumentItemDTOFactory.copyFromDTO(item, itemDTO);
+			item.setAccountingDocument(persistedCreditNote);
+			persistedCreditNote.getAccountingDocumentItems().add(item);
 		}
 		validator.validate(persistedCreditNote);
 		

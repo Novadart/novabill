@@ -4,6 +4,7 @@ import java.util.Calendar;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 
 import com.novadart.novabill.domain.Business;
@@ -11,6 +12,7 @@ import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.shared.client.exception.AuthorizationError;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 
+@Configurable
 public class NumberOfCreditNotesPerYearQuotaReachedChecker implements RestricionChecker {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(NumberOfCreditNotesPerYearQuotaReachedChecker.class);

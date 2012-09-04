@@ -112,9 +112,9 @@ class ClientData(object):
         return self.__data["web"]
 
 """
-    INVOICE ITEM DATA
+    ACCOUNTING DOCUMENT ITEM DATA
 """
-class InvoiceItem(object):
+class AccountingDocumentItem(object):
     
     def __init__(self, jsonData):
         self.__data = jsonData
@@ -167,10 +167,10 @@ class AccountingDocumentData(object):
     def getClient(self):
         return ClientData(self.__data["client"])
     
-    def getInvoiceItems(self):
+    def getAccountingDocumentItems(self):
         items = []
-        for item in self.__data["invoiceItems"]:
-            items.append(InvoiceItem(item))
+        for item in self.__data["accountingDocumentItems"]:
+            items.append(AccountingDocumentItem(item))
         return items
     
     def getInvoiceDate(self):

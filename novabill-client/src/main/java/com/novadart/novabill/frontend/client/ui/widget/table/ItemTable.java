@@ -13,13 +13,13 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
-import com.novadart.novabill.shared.client.dto.InvoiceItemDTO;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
-public class ItemTable extends CellTable<InvoiceItemDTO> {
+public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 	
 	
 	public static interface Handler{
-		public void delete(InvoiceItemDTO item);
+		public void delete(AccountingDocumentItemDTO item);
 	}
 
 	private final Handler handler;
@@ -30,11 +30,11 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 		this.handler = handler;
 		
 		//Name & Description
-		Column<InvoiceItemDTO, SafeHtml> nameDescription = 
-				new Column<InvoiceItemDTO, SafeHtml>(new SafeHtmlCell()) {
+		Column<AccountingDocumentItemDTO, SafeHtml> nameDescription = 
+				new Column<AccountingDocumentItemDTO, SafeHtml>(new SafeHtmlCell()) {
 
 					@Override
-					public SafeHtml getValue(InvoiceItemDTO object) {
+					public SafeHtml getValue(AccountingDocumentItemDTO object) {
 						SafeHtmlBuilder shb = new SafeHtmlBuilder();
 						shb.appendEscaped(object.getDescription());
 						return shb.toSafeHtml();
@@ -46,11 +46,11 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 		
 		
 		//quantity
-		Column<InvoiceItemDTO, String> quantity =
-				new Column<InvoiceItemDTO, String>(new TextCell()) {
+		Column<AccountingDocumentItemDTO, String> quantity =
+				new Column<AccountingDocumentItemDTO, String>(new TextCell()) {
 
 			@Override
-			public String getValue(InvoiceItemDTO object) {
+			public String getValue(AccountingDocumentItemDTO object) {
 				return NumberFormat.getDecimalFormat().format(object.getQuantity());
 			}
 		};
@@ -59,11 +59,11 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 
 
 		//unity of measure
-		Column<InvoiceItemDTO, String> unityOfMeasure =
-				new Column<InvoiceItemDTO, String>(new TextCell()) {
+		Column<AccountingDocumentItemDTO, String> unityOfMeasure =
+				new Column<AccountingDocumentItemDTO, String>(new TextCell()) {
 
 			@Override
-			public String getValue(InvoiceItemDTO object) {
+			public String getValue(AccountingDocumentItemDTO object) {
 				return object.getUnitOfMeasure();
 			}
 		};
@@ -72,11 +72,11 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 
 
 		//price
-		Column<InvoiceItemDTO, String> price =
-				new Column<InvoiceItemDTO, String>(new TextCell()) {
+		Column<AccountingDocumentItemDTO, String> price =
+				new Column<AccountingDocumentItemDTO, String>(new TextCell()) {
 
 			@Override
-			public String getValue(InvoiceItemDTO object) {
+			public String getValue(AccountingDocumentItemDTO object) {
 				return String.valueOf(NumberFormat.getCurrencyFormat().format(object.getPrice()));
 			}
 		};
@@ -84,11 +84,11 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 
 
 		//VAT
-		Column<InvoiceItemDTO, String> tax =
-				new Column<InvoiceItemDTO, String>(new TextCell()) {
+		Column<AccountingDocumentItemDTO, String> tax =
+				new Column<AccountingDocumentItemDTO, String>(new TextCell()) {
 
 			@Override
-			public String getValue(InvoiceItemDTO object) {
+			public String getValue(AccountingDocumentItemDTO object) {
 				return String.valueOf(object.getTax())+"%";
 			}
 		};
@@ -96,11 +96,11 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 
 
 		//Total Before Taxes
-		TextColumn<InvoiceItemDTO> totalBeforeTaxes =
-				new TextColumn<InvoiceItemDTO>() {
+		TextColumn<AccountingDocumentItemDTO> totalBeforeTaxes =
+				new TextColumn<AccountingDocumentItemDTO>() {
 
 			@Override
-			public String getValue(InvoiceItemDTO object) {
+			public String getValue(AccountingDocumentItemDTO object) {
 				BigDecimal totalPrice = CalcUtils.calculateTotalBeforeTaxesForItem(object);
 				return NumberFormat.getCurrencyFormat().format(totalPrice.doubleValue());
 			}
@@ -108,11 +108,11 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 		addColumn(totalBeforeTaxes, I18N.INSTANCE.totalBeforeTaxesForItem());
 
 		//Total Before Taxes
-		TextColumn<InvoiceItemDTO> totalVat =
-				new TextColumn<InvoiceItemDTO>() {
+		TextColumn<AccountingDocumentItemDTO> totalVat =
+				new TextColumn<AccountingDocumentItemDTO>() {
 
 			@Override
-			public String getValue(InvoiceItemDTO object) {
+			public String getValue(AccountingDocumentItemDTO object) {
 				BigDecimal totalVat = CalcUtils.calculateTaxesForItem(object);
 				return NumberFormat.getCurrencyFormat().format(totalVat.doubleValue());
 			}
@@ -121,11 +121,11 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 
 
 		//Total Before Taxes
-		TextColumn<InvoiceItemDTO> totalAfterTaxes =
-				new TextColumn<InvoiceItemDTO>() {
+		TextColumn<AccountingDocumentItemDTO> totalAfterTaxes =
+				new TextColumn<AccountingDocumentItemDTO>() {
 
 			@Override
-			public String getValue(InvoiceItemDTO object) {
+			public String getValue(AccountingDocumentItemDTO object) {
 				BigDecimal total = CalcUtils.calculateTotalAfterTaxesForItem(object); 
 				return NumberFormat.getCurrencyFormat().format(total.doubleValue());
 			}
@@ -134,19 +134,19 @@ public class ItemTable extends CellTable<InvoiceItemDTO> {
 
 
 		//delete button
-		ActionCell.Delegate<InvoiceItemDTO> delegate = new ActionCell.Delegate<InvoiceItemDTO>() {
+		ActionCell.Delegate<AccountingDocumentItemDTO> delegate = new ActionCell.Delegate<AccountingDocumentItemDTO>() {
 
 			@Override
-			public void execute(InvoiceItemDTO object) {
+			public void execute(AccountingDocumentItemDTO object) {
 				ItemTable.this.handler.delete(object);
 			}
 		};
 
-		Column<InvoiceItemDTO, InvoiceItemDTO> delete =
-				new Column<InvoiceItemDTO, InvoiceItemDTO>(new ActionCell<InvoiceItemDTO>(I18N.INSTANCE.delete(), delegate)) {
+		Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO> delete =
+				new Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO>(new ActionCell<AccountingDocumentItemDTO>(I18N.INSTANCE.delete(), delegate)) {
 
 			@Override
-			public InvoiceItemDTO getValue(InvoiceItemDTO object) {
+			public AccountingDocumentItemDTO getValue(AccountingDocumentItemDTO object) {
 				return object;
 			}
 		};

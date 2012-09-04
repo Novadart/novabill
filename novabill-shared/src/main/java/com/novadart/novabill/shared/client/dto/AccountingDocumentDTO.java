@@ -26,7 +26,7 @@ public class AccountingDocumentDTO implements IsSerializable{
 
     protected ClientDTO client;
 
-    protected List<InvoiceItemDTO> items = new ArrayList<InvoiceItemDTO>();
+    protected List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>();
     
     public Long getId() {
 		return id;
@@ -100,11 +100,11 @@ public class AccountingDocumentDTO implements IsSerializable{
 		this.client = client;
 	}
 
-	public List<InvoiceItemDTO> getItems() {
+	public List<AccountingDocumentItemDTO> getItems() {
 		return items;
 	}
 
-	public void setItems(List<InvoiceItemDTO> items) {
+	public void setItems(List<AccountingDocumentItemDTO> items) {
 		this.items = items;
 	}
 
