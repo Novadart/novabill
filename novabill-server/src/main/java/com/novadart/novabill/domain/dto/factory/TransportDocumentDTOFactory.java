@@ -12,7 +12,17 @@ public class TransportDocumentDTOFactory extends AccountingDocumentDTOFactory {
 		AccountingDocumentDTOFactory.copyToDTO(transportDocument, transportDocumentDTO);
 		transportDocumentDTO.setBusiness(BusinessDTOFactory.toDTO(transportDocument.getBusiness()));
 		transportDocumentDTO.setClient(ClientDTOFactory.toDTO(transportDocument.getClient()));
+		transportDocumentDTO.setNumberOfPackages(transportDocument.getNumberOfPackages());
+		transportDocumentDTO.setFromLocation(AddressDTOFactory.toDTO(transportDocument.getFromLocation()));
+		transportDocumentDTO.setToLocation(AddressDTOFactory.toDTO(transportDocument.getToLocation()));
 		return transportDocumentDTO; 
+	}
+	
+	public static void copyFromDTO(TransportDocument transportDocument, TransportDocumentDTO transportDocumentDTO, boolean addItems){
+		AccountingDocumentDTOFactory.copyFromDTO(transportDocument, transportDocumentDTO, addItems);
+		transportDocument.setNumberOfPackages(transportDocumentDTO.getNumberOfPackages());
+		AddressDTOFactory.copyFromDTO(transportDocument.getFromLocation(), transportDocumentDTO.getFromLocation());
+		AddressDTOFactory.copyFromDTO(transportDocument.getToLocation(), transportDocumentDTO.getToLocation());
 	}
 
 }

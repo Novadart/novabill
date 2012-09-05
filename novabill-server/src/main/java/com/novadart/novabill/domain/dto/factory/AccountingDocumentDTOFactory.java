@@ -24,11 +24,11 @@ public abstract class AccountingDocumentDTOFactory {
 		accountingDocumentDTO.setTotalBeforeTax(accountingDocument.getTotalBeforeTax());
 	}
 	
-	public static void copyFromDTO(AccountingDocument accountingDocument, AccountingDocumentDTO accountingDocumentDTO, boolean copyItems){
+	public static void copyFromDTO(AccountingDocument accountingDocument, AccountingDocumentDTO accountingDocumentDTO, boolean addItems){
 		accountingDocument.setDocumentID(accountingDocumentDTO.getDocumentID());
 		accountingDocument.setAccountingDocumentDate(accountingDocumentDTO.getAccountingDocumentDate());
 		accountingDocument.setNote(accountingDocumentDTO.getNote());
-		if(copyItems){
+		if(addItems){
 			for(AccountingDocumentItemDTO itemDTO: accountingDocumentDTO.getItems()){
 				AccountingDocumentItem item = new AccountingDocumentItem();
 				AccountingDocumentItemDTOFactory.copyFromDTO(item, itemDTO);

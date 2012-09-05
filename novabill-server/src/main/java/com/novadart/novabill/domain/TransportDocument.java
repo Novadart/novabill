@@ -3,6 +3,10 @@ package com.novadart.novabill.domain;
 import java.io.Serializable;
 import java.util.List;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
+import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 
@@ -14,6 +18,26 @@ import org.springframework.transaction.annotation.Transactional;
 public class TransportDocument extends AccountingDocument implements Serializable {
 
 	private static final long serialVersionUID = 9178463460405596881L;
+	
+	private Integer numberOfPackages;
+	
+	@AttributeOverrides({
+		@AttributeOverride(name = "street", column = @Column(name = "from_street")),
+		@AttributeOverride(name = "postcode", column = @Column(name = "from_postcode")),
+		@AttributeOverride(name = "city", column = @Column(name = "from_city")),
+		@AttributeOverride(name = "province", column = @Column(name = "from_province"))
+	})
+	@Embedded
+	private Address fromLocation;
+	
+	@AttributeOverrides({
+		@AttributeOverride(name = "street", column = @Column(name = "to_street")),
+		@AttributeOverride(name = "postcode", column = @Column(name = "to_postcode")),
+		@AttributeOverride(name = "city", column = @Column(name = "to_city")),
+		@AttributeOverride(name = "province", column = @Column(name = "to_province"))
+	})
+	@Embedded
+	private Address toLocation;
 	
 	@ManyToOne
     protected Business business;
@@ -44,6 +68,30 @@ public class TransportDocument extends AccountingDocument implements Serializabl
     public void setClient(Client client) {
         this.client = client;
     }
+
+    public Integer getNumberOfPackages() {
+		return numberOfPackages;
+	}
+
+	public void setNumberOfPackages(Integer numberOfPackages) {
+		this.numberOfPackages = numberOfPackages;
+	}
+    
+    public Address getFromLocation() {
+		return fromLocation;
+	}
+
+	public void setFromLocation(Address fromLocation) {
+		this.fromLocation = fromLocation;
+	}
+	
+	public Address getToLocation() {
+		return toLocation;
+	}
+
+	public void setToLocation(Address toLocation) {
+		this.toLocation = toLocation;
+	}
     
     /*
      * End of getters and setters section
@@ -54,7 +102,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
      * Active record functionality
      * */
     
-    public static long countTransportDocuments() {
+	public static long countTransportDocuments() {
         return count(TransportDocument.class);
     }
     

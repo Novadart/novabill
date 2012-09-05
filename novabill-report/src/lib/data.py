@@ -206,14 +206,23 @@ class EstimationData(AccountingDocumentData):
         super(EstimationData, self).__init__(jsonData)
         self.__data = jsonData
 
+"""
+    CREDIT NOTE DATA
+"""
+class CreditNoteData(AccountingDocumentData):
+    
+    def __init__(self, jsonData):
+        super(CreditNoteData, self).__init__(jsonData)
+        self.__data = jsonData
+
         
 """
-    INVOICE DATA
+    ABSTRACT INVOICE DATA
 """
-class InvoiceData(AccountingDocumentData):
-
+class AbstractInvoiceData(AccountingDocumentData):
+    
     def __init__(self, jsonData):
-        super(InvoiceData, self).__init__(jsonData)
+        super(AbstractInvoiceData, self).__init__(jsonData)
         self.__data = jsonData
     
     def getNote(self):
@@ -272,4 +281,51 @@ class InvoiceData(AccountingDocumentData):
         elif(pt == "RIBA_180_FM"): return "Ri.Ba 180GG fine mese"
         
         else: return ""
+
+"""
+    INVOICE DATA
+"""
+class InvoiceData(AbstractInvoiceData):
     
+    def __init__(self, jsonData):
+        super(InvoiceData, self).__init__(jsonData)
+        self.__data = jsonData
+        
+"""
+    ADDRESS DATA
+"""
+class AddressData(object):
+    
+    def __init__(self, jsonData):
+        self.__data = jsonData
+        
+    def getStreet(self):
+        return self.__data["street"]
+    
+    def getPostcode(self):
+        return self.__data["postcode"]
+    
+    def getCity(self):
+        return self.__data["city"]
+    
+    def getProvince(self):
+        return self.__data["province"]
+
+
+"""
+    TRANSPORT DOCUMENT DATA
+"""      
+class TransportDocument(AbstractInvoiceData):
+    
+    def __init__(self, jsonData):
+        super(TransportDocument, self).__init__(jsonData)
+        self.__data = jsonData
+        
+    def getNumberOfPackages(self):
+        return self.__data["numberOfPackages"]
+    
+    def getFromLocation(self):
+        return AddressData(self.__data["fromLocation"])
+    
+    def getToLocation(self):
+        return AddressData(self.__data["toLocation"])
