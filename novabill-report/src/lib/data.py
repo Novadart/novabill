@@ -329,3 +329,13 @@ class TransportDocument(AbstractInvoiceData):
     
     def getToLocation(self):
         return AddressData(self.__data["toLocation"])
+    
+    def getTransporter(self):
+        return self.__data["transporter"]
+    
+    def getTransportationResponsibility(self):
+        return self.__data["transportationResponsibility"]
+    
+    def getTradeZone(self):
+        return self.__data["tradeZone"]
+    

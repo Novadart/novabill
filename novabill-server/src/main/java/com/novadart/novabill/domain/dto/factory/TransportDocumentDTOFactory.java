@@ -15,6 +15,9 @@ public class TransportDocumentDTOFactory extends AccountingDocumentDTOFactory {
 		transportDocumentDTO.setNumberOfPackages(transportDocument.getNumberOfPackages());
 		transportDocumentDTO.setFromLocation(AddressDTOFactory.toDTO(transportDocument.getFromLocation()));
 		transportDocumentDTO.setToLocation(AddressDTOFactory.toDTO(transportDocument.getToLocation()));
+		transportDocumentDTO.setTransporter(transportDocument.getTransporter());
+		transportDocumentDTO.setTransportationResponsibility(transportDocument.getTransportationResponsibility());
+		transportDocumentDTO.setTradeZone(transportDocument.getTradeZone());
 		return transportDocumentDTO; 
 	}
 	
@@ -23,6 +26,9 @@ public class TransportDocumentDTOFactory extends AccountingDocumentDTOFactory {
 		transportDocument.setNumberOfPackages(transportDocumentDTO.getNumberOfPackages());
 		AddressDTOFactory.copyFromDTO(transportDocument.getFromLocation(), transportDocumentDTO.getFromLocation());
 		AddressDTOFactory.copyFromDTO(transportDocument.getToLocation(), transportDocumentDTO.getToLocation());
+		transportDocument.setTransporter(transportDocumentDTO.getTransporter());
+		transportDocument.setTransportationResponsibility(transportDocumentDTO.getTransportationResponsibility());
+		transportDocument.setTradeZone(transportDocumentDTO.getTradeZone());
 	}
 
 }

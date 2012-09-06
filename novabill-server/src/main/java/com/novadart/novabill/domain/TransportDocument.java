@@ -39,6 +39,12 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	@Embedded
 	private Address toLocation;
 	
+	private String transporter;
+	
+	private String transportationResponsibility;
+	
+	private String tradeZone;
+	
 	@ManyToOne
     protected Business business;
 
@@ -92,6 +98,30 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	public void setToLocation(Address toLocation) {
 		this.toLocation = toLocation;
 	}
+	
+	public String getTransporter() {
+		return transporter;
+	}
+
+	public void setTransporter(String transporter) {
+		this.transporter = transporter;
+	}
+
+	public String getTransportationResponsibility() {
+		return transportationResponsibility;
+	}
+
+	public void setTransportationResponsibility(String transportationResponsibility) {
+		this.transportationResponsibility = transportationResponsibility;
+	}
+
+	public String getTradeZone() {
+		return tradeZone;
+	}
+
+	public void setTradeZone(String tradeZone) {
+		this.tradeZone = tradeZone;
+	}
     
     /*
      * End of getters and setters section
@@ -102,6 +132,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
      * Active record functionality
      * */
     
+
 	public static long countTransportDocuments() {
         return count(TransportDocument.class);
     }
