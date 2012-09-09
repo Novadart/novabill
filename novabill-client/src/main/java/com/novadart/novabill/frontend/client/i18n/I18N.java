@@ -139,4 +139,23 @@ public interface I18N extends Constants {
 	public String createCreditNote();
 	public String modifyCreditNote();
 	public String creditNoteNumber();
+	public String confirmTransportDocumentDeletion();
+	public String transportDocumentCreationSuccess();
+	public String transportDocumentCreationFailure();
+	public String transportDocumentUpdateFailure();
+	public String transportDocumentUpdateSuccess();
+	public String transportDocuments();
+	public String transportDocumentsTab();
+	public String newTransportDocument();
+	public String createTransportDocument();
+	public String fromAddress();
+	public String toAddress();
+	public String loadFromAddress();
+	public String loadToAddress();
+	public String tradeZone();
+	public String transportationResponsibility();
+	public String transporter();
+	public String numberOfPackages();
+	public String transportStartDate();
+	public String time();
 }

@@ -16,6 +16,7 @@
 		<g:HorizontalPanel styleName="actions">
 			<g:Button ui:field="newInvoice" styleName="action-button newInvoice" text="{i18n.newInvoice}"></g:Button>
 			<g:Button ui:field="newEstimation" styleName="action-button newEstimation" text="{i18n.newEstimation}"></g:Button>
+			<g:Button ui:field="newTransportDocument" styleName="action-button newTransportDocument" text="{i18n.newTransportDocument}"></g:Button>
 			<g:Button ui:field="newCreditNote" styleName="action-button newCreditNote" text="{i18n.newCreditNote}"></g:Button>
 		</g:HorizontalPanel>
 		

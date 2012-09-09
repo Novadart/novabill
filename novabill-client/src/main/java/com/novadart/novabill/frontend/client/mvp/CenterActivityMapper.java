@@ -10,12 +10,14 @@ import com.novadart.novabill.frontend.client.activity.center.CreditNoteActivity;
 import com.novadart.novabill.frontend.client.activity.center.EstimationActivity;
 import com.novadart.novabill.frontend.client.activity.center.HomeActivity;
 import com.novadart.novabill.frontend.client.activity.center.InvoiceActivity;
+import com.novadart.novabill.frontend.client.activity.center.TransportDocumentActivity;
 import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
+import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
 
 public class CenterActivityMapper implements ActivityMapper {
 
@@ -42,6 +44,10 @@ public class CenterActivityMapper implements ActivityMapper {
 		} else if(place instanceof CreditNotePlace){
 
 			return new CreditNoteActivity((CreditNotePlace)place, clientFactory);
+
+		} else if(place instanceof TransportDocumentPlace){
+
+			return new TransportDocumentActivity((TransportDocumentPlace)place, clientFactory);
 
 		} else if( place instanceof EstimationPlace) {
 			

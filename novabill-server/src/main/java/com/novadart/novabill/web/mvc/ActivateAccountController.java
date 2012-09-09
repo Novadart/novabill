@@ -2,8 +2,6 @@ package com.novadart.novabill.web.mvc;
 
 import java.util.Date;
 
-import javax.persistence.NoResultException;
-
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;

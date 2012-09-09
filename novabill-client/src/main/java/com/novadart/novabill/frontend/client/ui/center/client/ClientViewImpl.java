@@ -26,16 +26,19 @@ import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
+import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
 import com.novadart.novabill.frontend.client.ui.center.ClientView;
 import com.novadart.novabill.frontend.client.ui.center.client.dialog.ClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.CreditNoteList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.EstimationList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoiceList;
+import com.novadart.novabill.frontend.client.ui.widget.list.impl.TransportDocumentList;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 
 public class ClientViewImpl extends Composite implements ClientView {
@@ -51,10 +54,12 @@ public class ClientViewImpl extends Composite implements ClientView {
 	private final ListDataProvider<InvoiceDTO> invoiceDataProvider = new ListDataProvider<InvoiceDTO>();
 	private final ListDataProvider<EstimationDTO> estimationDataProvider = new ListDataProvider<EstimationDTO>();
 	private final ListDataProvider<CreditNoteDTO> creditNoteDataProvider = new ListDataProvider<CreditNoteDTO>();
+	private final ListDataProvider<TransportDocumentDTO> transportDocumentDataProvider = new ListDataProvider<TransportDocumentDTO>();
 	
 	@UiField InvoiceList invoiceList;
 	@UiField EstimationList estimationList;
 	@UiField CreditNoteList creditNoteList;
+	@UiField TransportDocumentList transportDocumentList;
 	@UiField Label clientName;
 	@UiField HTML clientDetails;
 	@UiField TabLayoutPanel tabPanel;
@@ -66,6 +71,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		invoiceDataProvider.addDataDisplay(invoiceList);
 		estimationDataProvider.addDataDisplay(estimationList);
 		creditNoteDataProvider.addDataDisplay(creditNoteList);
+		transportDocumentDataProvider.addDataDisplay(transportDocumentList);
 		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
 			
 			@Override
@@ -99,6 +105,10 @@ public class ClientViewImpl extends Composite implements ClientView {
 					loadCreditNotes();
 					break;
 					
+				case TRANSPORT_DOCUMENT:
+					loadTransportDocuments();
+					break;
+					
 				default:
 					break;
 				}
@@ -113,11 +123,12 @@ public class ClientViewImpl extends Composite implements ClientView {
 		case estimations:
 			tabPanel.selectTab(1);
 			break;
-			
-		case creditNotes:
+		case transportDocuments:
 			tabPanel.selectTab(2);
 			break;
-			
+		case creditNotes:
+			tabPanel.selectTab(3);
+			break;
 			default:
 		case invoices:
 			tabPanel.selectTab(0);
@@ -131,6 +142,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		invoiceList.setPresenter(presenter);
 		estimationList.setPresenter(presenter);
 		creditNoteList.setPresenter(presenter);
+		transportDocumentList.setPresenter(presenter);
 	}
 
 	@Override
@@ -143,6 +155,8 @@ public class ClientViewImpl extends Composite implements ClientView {
 		estimationDataProvider.refresh();
 		creditNoteDataProvider.getList().clear();
 		creditNoteDataProvider.refresh();
+		transportDocumentDataProvider.getList().clear();
+		transportDocumentDataProvider.refresh();
 		setDocumentsListing(DOCUMENTS.invoices);
 	}
 	
@@ -174,6 +188,12 @@ public class ClientViewImpl extends Composite implements ClientView {
 		presenter.goTo(ep);
 	}
 	
+	@UiHandler("newTransportDocument")
+	void onNewTransportDocumentClicked(ClickEvent e){
+		TransportDocumentPlace tdp = new TransportDocumentPlace();
+		tdp.setDataForNewTransportDocument(client);
+		presenter.goTo(tdp);
+	}
 	
 	@UiHandler("newCreditNote")
 	void onNewCreditNoteClicked(ClickEvent e){
@@ -276,6 +296,27 @@ public class ClientViewImpl extends Composite implements ClientView {
 			}
 		});
 	}
+	
+	
+	private void loadTransportDocuments(){
+		ServerFacade.transportDocument.getAllForClient(client.getId(), new WrappedAsyncCallback<List<TransportDocumentDTO>>() {
+
+			@Override
+			public void onSuccess(List<TransportDocumentDTO> result) {
+				if(result == null){
+					return;
+				}
+				transportDocumentDataProvider.setList(result);
+				transportDocumentDataProvider.refresh();
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+			}
+		});
+	}
+	
 	
 	private void loadCreditNotes(){
 		ServerFacade.creditNote.getAllForClient(client.getId(), new WrappedAsyncCallback<List<CreditNoteDTO>>() {

@@ -101,12 +101,16 @@ textarea:HOVER {
 	margin-bottom: 1.5em;
 }
 
-.ClientView .newInvoice,.ClientView .newEstimation,.ClientView .newCreditNote {
+.ClientView .newInvoice,.ClientView .newEstimation,.ClientView .newCreditNote,.ClientView .newTransportDocument {
 	cursor: pointer;
 }
 
 .ClientView .newCreditNote {
 	width: 12em;
+}
+
+.ClientView .newTransportDocument {
+	width: 16em;
 }
 
 .HomeView .newEstimation {
@@ -115,6 +119,10 @@ textarea:HOVER {
 
 .HomeView .newCreditNote {
 	width: 12em;
+}
+
+.HomeView .newTransportDocument {
+	width: 16em;
 }
 
 .ClientView .clientName {
@@ -162,7 +170,7 @@ textarea:HOVER {
 	padding: 0.5em 1em;
 	background-color: white;
 	border: 0.1em solid #DDD;
-	width: 8em;
+	width: 9em;
 	border-top-right-radius: 1em;
 	border-top-left-radius: 1em;
 	font-size: 1.2em;
@@ -784,107 +792,104 @@ td.datePickerMonth {
 	padding: 1em 0;
 }
 
-.EstimationView .newEstimation,.InvoiceView .newInvoice {
+.AccountDocumentView .newEstimation,.AccountDocumentView .newInvoice, 
+.AccountDocumentView .newTransportDocument, .AccountDocumentView .newCreditNote  {
 	font-weight: bold;
 	font-size: 2em;
 }
 
-.InvoiceView .abortButton,.InvoiceView .modifyDocument,.InvoiceView .createInvoice,.InvoiceView .saveAsEstimation,.EstimationView .modifyDocument,.EstimationView .convertToInvoice,.EstimationView .abortButton
-	{
+.AccountDocumentView .abortButton,.AccountDocumentView .modifyDocument,.AccountDocumentView .createInvoice,
+.AccountDocumentView .saveAsEstimation,.AccountDocumentView .convertToInvoice {
 	margin-left: 2em;
 }
 
-.EstimationView .documentMainDetails,.InvoiceView .documentMainDetails {
+.AccountDocumentView .documentMainDetails {
 	margin-top: 0.5em;
 }
 
-.EstimationView .clientName,.InvoiceView .clientName {
+.AccountDocumentView .clientName {
 	font-size: 1.5em;
 }
 
-.EstimationView .label,.InvoiceView .label {
+.AccountDocumentView .label {
 	font-weight: bold;
 	font-size: 1.3em;
 	padding: 0.2em 2em 0.7em 0;
 }
 
-.EstimationView .modifyButton,.EstimationView .createButton,.InvoiceView .modifyButton,.InvoiceView .createButton
+.AccountDocumentView .modifyButton,.AccountDocumentView .createButton
 	{
 	margin-left: 2em;
 }
 
-.InvoiceView .number {
+.AccountDocumentView .number {
 	width: 2em;
 	text-align: center;
 }
 
-.EstimationView .note,.InvoiceView .paymentNote,.InvoiceView .note {
+.AccountDocumentView .note,.AccountDocumentView .paymentNote {
 	width: 40em;
 	height: 2em;
 }
 
-.EstimationView .itemTableContainer,.InvoiceView .itemTableContainer {
+.AccountDocumentView .itemTableContainer {
 	margin: 1em 0;
 	border: 0.1em solid #EEE;
 	padding: 2em;
 }
 
-.EstimationView .newItemContainer,.InvoiceView .newItemContainer {
+.AccountDocumentView .newItemContainer {
 	
 }
 
-.EstimationView .smallLabel,.InvoiceView .smallLabel {
+.AccountDocumentView .smallLabel {
 	font-weight: bold;
 	padding: 0.4em 0 0.4em 0;
 }
 
-.EstimationView .tax,.InvoiceView .tax {
+.AccountDocumentView .tax {
 	position: relative;
 	top: -0.2em;
 }
 
-.EstimationView .item,.InvoiceView .item {
+.AccountDocumentView .item {
 	width: 25em;
 }
 
-.EstimationView .quantity,.InvoiceView .quantity {
+.AccountDocumentView .quantity {
 	width: 4em;
 }
 
-.EstimationView .unitOfMeasure,.InvoiceView .unitOfMeasure {
+.AccountDocumentView .unitOfMeasure {
 	width: 6em;
 }
 
-.EstimationView .price,.InvoiceView .price {
+.AccountDocumentView .price {
 	width: 6em;
 }
 
-.EstimationView .quantityContainer,.EstimationView .unitOfMeasureContainer,.EstimationView .priceContainer,.EstimationView .taxContainer,.InvoiceView .quantityContainer,.InvoiceView .unitOfMeasureContainer,.InvoiceView .priceContainer,.InvoiceView .taxContainer
-	{
+.AccountDocumentView .quantityContainer,.AccountDocumentView .unitOfMeasureContainer,.AccountDocumentView .priceContainer,.AccountDocumentView .taxContainer {
 	margin-left: 1em;
 }
 
-.EstimationView .addButtonContainer,.InvoiceView .addButtonContainer {
+.AccountDocumentView .addButtonContainer {
 	padding: 1.6em 0 0 0.5em;
 }
 
-.EstimationView .totalContainer.totalTax,.EstimationView .totalContainer.totalAfterTaxes,.InvoiceView .totalContainer.totalTax,.InvoiceView .totalContainer.totalAfterTaxes
-	{
+.AccountDocumentView .totalContainer.totalTax,.AccountDocumentView .totalContainer.totalAfterTaxes {
 	margin-left: 4em;
 }
 
-.EstimationView .totalContainer .label,.InvoiceView .totalContainer .label
-	{
+.AccountDocumentView .totalContainer .label	{
 	text-align: center;
 	padding: 0.4em;
 }
 
-.EstimationView .itemTableScroller,.InvoiceView .itemTableScroller {
+.AccountDocumentView .itemTableScroller {
 	max-height: 400px;
 }
 
-.EstimationView .totalContainer .total,.InvoiceView .totalContainer .total
-	{
+.AccountDocumentView .totalContainer .total	{
 	font-size: 1.5em;
 	font-weight: bold;
 	color: white;

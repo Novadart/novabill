@@ -92,7 +92,7 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		initWidget(uiBinder.createAndBindUi(this));
-		setStyleName("EstimationView");
+		setStyleName("AccountDocumentView");
 	}
 
 	@UiFactory

@@ -17,12 +17,14 @@ import com.novadart.novabill.frontend.client.ui.center.CreditNoteView;
 import com.novadart.novabill.frontend.client.ui.center.EstimationView;
 import com.novadart.novabill.frontend.client.ui.center.HomeView;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
+import com.novadart.novabill.frontend.client.ui.center.TransportDocumentView;
 import com.novadart.novabill.frontend.client.ui.center.business.BusinessViewImpl;
 import com.novadart.novabill.frontend.client.ui.center.client.ClientViewImpl;
 import com.novadart.novabill.frontend.client.ui.center.creditnote.CreditNoteViewImpl;
 import com.novadart.novabill.frontend.client.ui.center.estimation.EstimationViewImpl;
 import com.novadart.novabill.frontend.client.ui.center.home.HomeViewImpl;
 import com.novadart.novabill.frontend.client.ui.center.invoice.InvoiceViewImpl;
+import com.novadart.novabill.frontend.client.ui.center.transportdocument.TransportDocumentViewImpl;
 import com.novadart.novabill.frontend.client.ui.west.WestView;
 import com.novadart.novabill.frontend.client.ui.west.WestViewImpl;
 
@@ -159,6 +161,26 @@ public class ClientFactoryImpl implements ClientFactory
 				@Override
 				public void onSuccess() {
 					callback.onSuccess((CreditNoteView) getView(CreditNoteView.class, new CreditNoteViewImpl()));
+				}
+				
+				@Override
+				public void onFailure(Throwable reason) {
+					Window.Location.reload();
+				}
+			});
+		}
+	}
+	
+	@Override
+	public void getTransportDocumentView(final AsyncCallback<TransportDocumentView> callback) {
+		if(views.containsKey(TransportDocumentView.class)){
+			callback.onSuccess((TransportDocumentView) getView(TransportDocumentView.class));
+		} else {
+			GWT.runAsync(new RunAsyncCallback() {
+				
+				@Override
+				public void onSuccess() {
+					callback.onSuccess((TransportDocumentView) getView(TransportDocumentView.class, new TransportDocumentViewImpl()));
 				}
 				
 				@Override

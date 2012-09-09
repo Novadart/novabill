@@ -24,6 +24,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
+import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
 import com.novadart.novabill.frontend.client.ui.center.HomeView;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.ShowMoreButton;
@@ -71,7 +72,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 				case INVOICE:
 					invoiceList.setVisibleRangeAndClearData(INVOICE_LIST_RANGE, true);
 					break;
-
+					
 				case CLIENT_DATA:
 					invoiceList.setVisibleRangeAndClearData(invoiceList.getVisibleRange(), true);
 					break;
@@ -193,6 +194,21 @@ public class HomeViewImpl extends Composite implements HomeView {
 				EstimationPlace ep = new EstimationPlace();
 				ep.setDataForNewEstimation(client);
 				presenter.goTo(ep);
+			}
+		});
+		scd.showCentered();
+	}
+	
+	
+	@UiHandler("newTransportDocument")
+	void onNewTransportDocumentClicked(ClickEvent e) {
+		SelectClientDialog scd = new SelectClientDialog(new SelectClientDialog.Handler() {
+			
+			@Override
+			public void onClientSelected(final ClientDTO client) {
+				TransportDocumentPlace tdp = new TransportDocumentPlace();
+				tdp.setDataForNewTransportDocument(client);
+				presenter.goTo(tdp);
 			}
 		});
 		scd.showCentered();

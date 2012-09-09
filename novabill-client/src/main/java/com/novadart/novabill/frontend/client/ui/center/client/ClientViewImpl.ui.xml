@@ -42,6 +42,18 @@
 				</g:tab>
 				<g:tab>
 					<g:customHeader>
+						<g:Label styleName="tabHeaderLabel" text="{i18n.transportDocumentsTab}"></g:Label>
+					</g:customHeader>
+					<g:FlowPanel styleName="listWrapper panel">
+						<g:SimplePanel styleName="actionWrapper">
+							<g:Button ui:field="newTransportDocument" styleName="action-button newTransportDocument" 
+							text="{i18n.newTransportDocument}"></g:Button>
+						</g:SimplePanel>
+						<i:TransportDocumentList ui:field="transportDocumentList"></i:TransportDocumentList>
+					</g:FlowPanel>
+				</g:tab>
+				<g:tab>
+					<g:customHeader>
 						<g:Label styleName="tabHeaderLabel" text="{i18n.creditNotes}"></g:Label>
 					</g:customHeader>
 					<g:FlowPanel styleName="listWrapper panel">

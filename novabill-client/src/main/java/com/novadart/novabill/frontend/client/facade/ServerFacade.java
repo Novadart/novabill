@@ -13,11 +13,13 @@ import com.novadart.novabill.frontend.client.facade.xsrf.XsrfClientServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfCreditNoteServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfEstimationServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfInvoiceServiceAsync;
+import com.novadart.novabill.frontend.client.facade.xsrf.XsrfTransportDocumentServiceAsync;
 import com.novadart.novabill.shared.client.facade.BusinessServiceAsync;
 import com.novadart.novabill.shared.client.facade.ClientServiceAsync;
 import com.novadart.novabill.shared.client.facade.CreditNoteServiceAsync;
 import com.novadart.novabill.shared.client.facade.EstimationServiceAsync;
 import com.novadart.novabill.shared.client.facade.InvoiceServiceAsync;
+import com.novadart.novabill.shared.client.facade.TransportDocumentServiceAsync;
 
 public class ServerFacade {
 	
@@ -30,6 +32,8 @@ public class ServerFacade {
 	public static final EstimationServiceAsync estimation = new XsrfEstimationServiceAsync();
 	
 	public static final CreditNoteServiceAsync creditNote = new XsrfCreditNoteServiceAsync();
+	
+	public static final TransportDocumentServiceAsync transportDocument = new XsrfTransportDocumentServiceAsync();
 	
 	
 	private static final RequestBuilder AUTH_REQUEST =

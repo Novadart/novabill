@@ -1,0 +1,223 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui"
+	xmlns:i="urn:import:com.novadart.novabill.frontend.client.ui.center.invoice"
+	xmlns:d="urn:import:com.google.gwt.user.datepicker.client" 
+	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget" 
+	xmlns:t="urn:import:com.novadart.novabill.frontend.client.ui.widget.table" xmlns:textbox="urn:import:com.novadart.gwtshared.client.textbox">
+
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
+		field="i18n"></ui:with>
+
+	<g:VerticalPanel>
+
+		<g:HorizontalPanel>
+			<g:Label styleName="newTransportDocument" text="{i18n.newTransportDocument}"></g:Label>
+			<g:Button styleName="modifyButton button" ui:field="modifyDocument"
+				text="{i18n.saveModifications}"></g:Button>
+			<g:Button styleName="createButton button" ui:field="createTransportDocument"
+				text="{i18n.createTransportDocument}"></g:Button>
+			<g:Button ui:field="abort" styleName="abortButton button"
+				text="{i18n.cancel}"></g:Button>
+		</g:HorizontalPanel>
+
+
+		<g:Grid styleName="documentMainDetails">
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.client}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="box clientName" ui:field="clientName"></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.date}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<d:DateBox styleName="box date" ui:field="date"></d:DateBox>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.note}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextArea styleName="box note" ui:field="note"></g:TextArea>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.numberOfPackages}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<v:ValidatedTextBox styleName="box numberOfPackages" ui:field="numberOfPackages" />
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.transporter}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<v:ValidatedTextBox styleName="box transporter" ui:field="transporter" />
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.transportationResponsibility}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="box transportationResponsibility" ui:field="transportationResponsibility"></g:TextBox>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.tradeZone}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:TextBox styleName="box tradeZone" ui:field="tradeZone"></g:TextBox>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.transportStartDate}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:HorizontalPanel>
+						<g:Label styleName="label" text="{i18n.date}"></g:Label>
+						<d:DateBox styleName="box date" ui:field="transportStartDate"></d:DateBox>
+						<g:Label styleName="label" text="{i18n.time}"></g:Label>
+						<v:ValidatedListBox styleName="box time hour" ui:field="hour"></v:ValidatedListBox>
+						<v:ValidatedListBox styleName="box time minute" ui:field="minute"></v:ValidatedListBox>
+					</g:HorizontalPanel>
+					
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.fromAddress}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:HorizontalPanel styleName="addressBox">
+						<g:Grid styleName="addressGrid">
+							<g:row>
+								<g:customCell>
+									<textbox:RichTextBox styleName="box companyName"	ui:field="fromAddrCompanyName" />
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<textbox:RichTextBox styleName="box streetName"	ui:field="fromAddrStreetName" />
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<textbox:RichTextBox styleName="box postcode" ui:field="fromAddrPostCode" />
+								</g:customCell>
+								<g:customCell>
+									<textbox:RichTextBox styleName="box city" ui:field="fromAddrCity" />
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedListBox styleName="box province" ui:field="fromAddrProvince" />
+								</g:customCell>
+							</g:row>		
+						</g:Grid>
+						<g:Button ui:field="fromAddrButtonDefault" text="{i18n.loadFromAddress}"></g:Button>
+					</g:HorizontalPanel>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="label" text="{i18n.toAddress}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:HorizontalPanel styleName="addressBox">
+						<g:Grid styleName="addressGrid">
+							<g:row>
+								<g:customCell>
+									<textbox:RichTextBox styleName="box companyName"	ui:field="toAddrCompanyName" />
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<textbox:RichTextBox styleName="box streetName"	ui:field="toAddrStreetName" />
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<textbox:RichTextBox styleName="box postcode" ui:field="toAddrPostCode" />
+								</g:customCell>
+								<g:customCell>
+									<textbox:RichTextBox styleName="box city" ui:field="toAddrCity" />
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedListBox styleName="box province" ui:field="toAddrProvince" />
+								</g:customCell>
+							</g:row>		
+						</g:Grid>
+						<g:Button ui:field="toAddrButtonDefault" text="{i18n.loadToAddress}"></g:Button>
+					</g:HorizontalPanel>
+				</g:customCell>
+			</g:row>
+		</g:Grid>
+
+
+		<g:SimplePanel styleName="itemTableContainer">
+			<g:VerticalPanel>
+				<g:ScrollPanel ui:field="itemTableScroller" styleName="itemTableScroller">
+					<t:ItemTable ui:field="itemTable" styleName="itemTable"></t:ItemTable>
+				</g:ScrollPanel>
+
+				<g:SimplePanel styleName="newItemContainer" ui:field="newItemContainer">
+					<g:HorizontalPanel>
+						<g:VerticalPanel styleName="itemContainer">
+							<g:Label styleName="smallLabel" text="{i18n.nameDescription}"></g:Label>
+							<g:TextBox ui:field="item" styleName="item invoiceEntry"></g:TextBox>
+						</g:VerticalPanel>
+						<g:VerticalPanel styleName="quantityContainer">
+							<g:Label styleName="smallLabel" text="{i18n.quantity}"></g:Label>
+							<g:TextBox ui:field="quantity" styleName="quantity invoiceEntry"></g:TextBox>
+						</g:VerticalPanel>
+						<g:VerticalPanel styleName="unitOfMeasureContainer">
+							<g:Label styleName="smallLabel" text="{i18n.unityOfMeasure}"></g:Label>
+							<g:TextBox ui:field="unitOfMeasure" styleName="unitOfMeasure invoiceEntry"></g:TextBox>
+						</g:VerticalPanel>
+						<g:VerticalPanel styleName="priceContainer">
+							<g:Label styleName="smallLabel" text="{i18n.price}"></g:Label>
+							<g:TextBox ui:field="price" styleName="price invoiceEntry"></g:TextBox>
+						</g:VerticalPanel>
+						<g:VerticalPanel styleName="taxContainer">
+							<g:Label styleName="smallLabel" text="{i18n.vat}"></g:Label>
+							<g:ListBox styleName="tax invoiceEntry" ui:field="tax"></g:ListBox>
+						</g:VerticalPanel>
+						<g:SimplePanel styleName="addButtonContainer">
+							<g:Button ui:field="add" text="{i18n.add}"></g:Button>
+						</g:SimplePanel>
+					</g:HorizontalPanel>
+				</g:SimplePanel>
+			</g:VerticalPanel>
+
+		</g:SimplePanel>
+
+		<g:SimplePanel>
+			<g:HorizontalPanel>
+				<g:VerticalPanel styleName="totalContainer totalBeforeTaxes">
+					<g:Label styleName="label" text="{i18n.totalBeforeTaxes}"></g:Label>
+					<g:Label styleName="total" ui:field="totalBeforeTaxes"></g:Label>
+				</g:VerticalPanel>
+				<g:VerticalPanel styleName="totalContainer totalTax">
+					<g:Label styleName="label" text="{i18n.totalTax}"></g:Label>
+					<g:Label styleName="total" ui:field="totalTax"></g:Label>
+				</g:VerticalPanel>
+				<g:VerticalPanel styleName="totalContainer totalAfterTaxes">
+					<g:Label styleName="label" text="{i18n.totalAfterTaxes}"></g:Label>
+					<g:Label styleName="total" ui:field="totalAfterTaxes"></g:Label>
+				</g:VerticalPanel>
+			</g:HorizontalPanel>
+		</g:SimplePanel>
+
+	</g:VerticalPanel>
+
+
+</ui:UiBinder> 

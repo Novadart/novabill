@@ -1,7 +1,7 @@
 package com.novadart.novabill.service;
 
 import java.util.Map;
-import org.springframework.stereotype.Service;
+
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.domain.Business;
 

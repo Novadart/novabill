@@ -110,7 +110,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		initWidget(uiBinder.createAndBindUi(this));
-		setStyleName("InvoiceView");
+		setStyleName("AccountDocumentView");
 	}
 
 	@UiFactory

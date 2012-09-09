@@ -4,6 +4,7 @@ import com.google.gwt.activity.shared.Activity;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.place.shared.Place;
 import com.novadart.novabill.frontend.client.ClientFactory;
+import com.novadart.novabill.frontend.client.activity.west.TransportDocumentActivity;
 import com.novadart.novabill.frontend.client.activity.west.BusinessActivity;
 import com.novadart.novabill.frontend.client.activity.west.ClientActivity;
 import com.novadart.novabill.frontend.client.activity.west.CreditNoteActivity;
@@ -14,6 +15,7 @@ import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
+import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
 
 public class WestActivityMapper implements ActivityMapper {
 
@@ -36,6 +38,10 @@ private final ClientFactory clientFactory;
 		} else if(place instanceof CreditNotePlace) {
 			
 			return new CreditNoteActivity((CreditNotePlace)place, clientFactory);
+		
+		} else if(place instanceof TransportDocumentPlace) {
+			
+			return new TransportDocumentActivity((TransportDocumentPlace)place, clientFactory);
 		
 		} else if(place instanceof ClientPlace) {
 		

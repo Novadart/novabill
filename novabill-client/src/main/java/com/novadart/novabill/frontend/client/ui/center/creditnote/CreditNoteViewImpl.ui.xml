@@ -13,7 +13,7 @@
 	<g:VerticalPanel>
 
 		<g:HorizontalPanel>
-			<g:Label styleName="newInvoice" text="{i18n.newCreditNoteCreation}"></g:Label>
+			<g:Label styleName="newCreditNote" text="{i18n.newCreditNoteCreation}"></g:Label>
 			<g:Button styleName="modifyButton button" ui:field="modifyDocument"
 				text="{i18n.saveModifications}"></g:Button>
 			<g:Button styleName="createButton button" ui:field="createCreditNote"

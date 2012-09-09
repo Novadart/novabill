@@ -9,6 +9,7 @@ import com.novadart.novabill.frontend.client.ui.center.CreditNoteView;
 import com.novadart.novabill.frontend.client.ui.center.EstimationView;
 import com.novadart.novabill.frontend.client.ui.center.HomeView;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
+import com.novadart.novabill.frontend.client.ui.center.TransportDocumentView;
 import com.novadart.novabill.frontend.client.ui.west.WestView;
 
 public interface ClientFactory {
@@ -22,6 +23,7 @@ public interface ClientFactory {
 	void getBusinessView(AsyncCallback<BusinessView> callback);
 	void getClientView(AsyncCallback<ClientView> callback);
 	void getCreditNoteView(AsyncCallback<CreditNoteView> callback);
+	void getTransportDocumentView(AsyncCallback<TransportDocumentView> asyncCallback);
 	
 	//west
 	void getWestView(AsyncCallback<WestView> callback);

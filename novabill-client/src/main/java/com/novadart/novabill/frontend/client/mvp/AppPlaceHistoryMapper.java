@@ -8,6 +8,7 @@ import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
+import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
 
 @WithTokenizers({
 	HomePlace.Tokenizer.class,
@@ -15,7 +16,8 @@ import com.novadart.novabill.frontend.client.place.InvoicePlace;
 	BusinessPlace.Tokenizer.class,
 	ClientPlace.Tokenizer.class,
 	EstimationPlace.Tokenizer.class,
-	CreditNotePlace.Tokenizer.class
+	CreditNotePlace.Tokenizer.class,
+	TransportDocumentPlace.Tokenizer.class
 })
 public interface AppPlaceHistoryMapper extends PlaceHistoryMapper {
 

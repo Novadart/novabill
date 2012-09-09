@@ -2,13 +2,13 @@ package com.novadart.novabill.frontend.client.ui.center;
 
 import com.novadart.novabill.frontend.client.ui.View;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public interface TransportDocumentView extends View {
 	
-	public void setDataForNewEstimation(ClientDTO client);
+	public void setDataForNewTransportDocument(ClientDTO client);
 	
-	public void setDataForNewEstimation(ClientDTO client, EstimationDTO estimation);
+	public void setDataForNewTransportDocument(ClientDTO client, TransportDocumentDTO document);
 	
-	public void setEstimation(EstimationDTO estimation);
+	public void setTransportDocument(TransportDocumentDTO document);
 }

@@ -9,7 +9,8 @@ public class ClientPlace extends Place {
 	public static enum DOCUMENTS {
 		invoices,
 		estimations,
-		creditNotes
+		creditNotes,
+		transportDocuments
 	}
 
 	@Prefix(value=HistoryPrefix.CLIENT)
