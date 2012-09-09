@@ -1,6 +1,8 @@
 package com.novadart.novabill.shared.client.dto;
 
-public class AddressDTO {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class AddressDTO implements IsSerializable {
 	
 	private String street;
 	
