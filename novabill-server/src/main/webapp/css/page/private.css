@@ -42,6 +42,7 @@ select {
 	padding: 0.4em;
 	background-color: white;
 	border: 0.1em solid #CCC;
+	cursor: pointer;
 }
 
 select:HOVER {
@@ -516,7 +517,10 @@ textarea:HOVER {
 	padding: 5px 5px 15px;
 }
 
-.QuickViewList .openEstimation,.QuickViewList .openInvoice,.QuickViewList .openCreditNote {
+.QuickViewList .openEstimation,
+.QuickViewList .openInvoice,
+.QuickViewList .openCreditNote,
+.QuickViewList .openTransportDocument {
 	position: absolute;
 	left: 48%;
 }
@@ -815,6 +819,29 @@ td.datePickerMonth {
 	font-weight: bold;
 	font-size: 1.3em;
 	padding: 0.2em 2em 0.7em 0;
+	width: 12em;
+}
+
+.AccountDocumentView .sublabel {
+	font-weight: bold;
+	font-size: 1.3em;
+	padding: 0.3em 0.6em 0.2em 0;
+}
+
+.AccountDocumentView .sublabel.date {
+
+}
+
+.AccountDocumentView .addressBox td + td {
+	vertical-align: middle;
+}
+
+.AccountDocumentView select {
+	padding: 0.2em;
+}
+
+.AccountDocumentView .sublabel.time {
+	margin-left: 2em;
 }
 
 .AccountDocumentView .modifyButton,.AccountDocumentView .createButton

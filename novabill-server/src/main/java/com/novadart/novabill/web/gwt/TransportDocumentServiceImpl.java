@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.authorization.NumberOfTransportDocsPerYearQuotaReachedChecker;
+import com.novadart.novabill.domain.Address;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.AccountingDocumentItem;
@@ -69,6 +70,8 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 	@Restrictions(checkers = {NumberOfTransportDocsPerYearQuotaReachedChecker.class})
 	public Long add(TransportDocumentDTO transportDocDTO) throws NotAuthenticatedException, DataAccessException, ConcurrentAccessException, AuthorizationException, ValidationException {
 		TransportDocument transportDoc = new TransportDocument();
+		transportDoc.setFromLocation(new Address());
+		transportDoc.setToLocation(new Address());
 		Client client = Client.findClient(transportDocDTO.getClient().getId());
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
