@@ -258,6 +258,7 @@ public class TransportDocumentViewImpl extends Composite implements TransportDoc
 		loc.setPostcode(toAddrPostCode.getText());
 		loc.setProvince(toAddrProvince.getSelectedItemText());
 		loc.setStreet(toAddrStreetName.getText());
+		td.setToLocation(loc);
 		
 		td.setNumberOfPackages(Integer.valueOf(numberOfPackages.getText()));
 		td.setTradeZone(tradeZone.getText());

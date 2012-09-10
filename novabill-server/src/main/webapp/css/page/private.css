@@ -428,6 +428,7 @@ textarea:HOVER {
 	height: 2em;
 }
 
+.QuickViewList.TransportDocumentList .upper span.createInvoice,
 .QuickViewList.EstimationList .upper span.convertToInvoice {
 	position: absolute;
 	right: 4.3em;
@@ -437,7 +438,9 @@ textarea:HOVER {
 	text-align: right;
 }
 
-.QuickViewList.EstimationList .upper span.convertToInvoice,.QuickViewList .details .tools span
+.QuickViewList.TransportDocumentList .upper span.createInvoice,
+.QuickViewList.EstimationList .upper span.convertToInvoice,
+.QuickViewList .details .tools span
 	{
 	text-transform: uppercase;
 	font-size: 0.8em;
@@ -445,7 +448,9 @@ textarea:HOVER {
 	cursor: pointer;
 }
 
-.QuickViewList.EstimationList .upper span.convertToInvoice:HOVER,.QuickViewList .details .tools span:HOVER
+.QuickViewList.TransportDocumentList .upper span.createInvoice:HOVER,
+.QuickViewList.EstimationList .upper span.convertToInvoice:HOVER,
+.QuickViewList .details .tools span:HOVER
 	{
 	text-decoration: underline;
 }

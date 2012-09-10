@@ -85,9 +85,9 @@
 				</g:customCell>
 				<g:customCell>
 					<g:HorizontalPanel>
-						<g:Label styleName="label" text="{i18n.date}"></g:Label>
+						<g:Label styleName="sublabel date" text="{i18n.date}"></g:Label>
 						<d:DateBox styleName="box date" ui:field="transportStartDate"></d:DateBox>
-						<g:Label styleName="label" text="{i18n.time}"></g:Label>
+						<g:Label styleName="sublabel time" text="{i18n.time}"></g:Label>
 						<v:ValidatedListBox styleName="box time hour" ui:field="hour"></v:ValidatedListBox>
 						<v:ValidatedListBox styleName="box time minute" ui:field="minute"></v:ValidatedListBox>
 					</g:HorizontalPanel>
@@ -123,7 +123,7 @@
 								</g:customCell>
 							</g:row>		
 						</g:Grid>
-						<g:Button ui:field="fromAddrButtonDefault" text="{i18n.loadFromAddress}"></g:Button>
+						<g:Button styleName="button" ui:field="fromAddrButtonDefault" text="{i18n.loadFromAddress}"></g:Button>
 					</g:HorizontalPanel>
 				</g:customCell>
 			</g:row>
@@ -156,7 +156,7 @@
 								</g:customCell>
 							</g:row>		
 						</g:Grid>
-						<g:Button ui:field="toAddrButtonDefault" text="{i18n.loadToAddress}"></g:Button>
+						<g:Button styleName="button" ui:field="toAddrButtonDefault" text="{i18n.loadToAddress}"></g:Button>
 					</g:HorizontalPanel>
 				</g:customCell>
 			</g:row>
