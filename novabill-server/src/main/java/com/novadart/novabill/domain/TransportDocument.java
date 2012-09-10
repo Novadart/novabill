@@ -1,6 +1,7 @@
 package com.novadart.novabill.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.AttributeOverride;
@@ -45,6 +46,8 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	
 	private String tradeZone;
 	
+	private Date transportStartDate;
+	
 	@ManyToOne
     protected Business business;
 
@@ -83,20 +86,20 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		this.numberOfPackages = numberOfPackages;
 	}
     
-    public Endpoint getFromLocation() {
+    public Endpoint getFromEndpoint() {
 		return fromEndpoint;
 	}
 
-	public void setFromLocation(Endpoint fromLocation) {
-		this.fromEndpoint = fromLocation;
+	public void setFromEndpoint(Endpoint fromEndpoint) {
+		this.fromEndpoint = fromEndpoint;
 	}
 	
-	public Endpoint getToLocation() {
+	public Endpoint getToEndpoint() {
 		return toEndpoint;
 	}
 
-	public void setToLocation(Endpoint toLocation) {
-		this.toEndpoint = toLocation;
+	public void setToEndpoint(Endpoint toEndpoint) {
+		this.toEndpoint = toEndpoint;
 	}
 	
 	public String getTransporter() {
@@ -122,6 +125,14 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	public void setTradeZone(String tradeZone) {
 		this.tradeZone = tradeZone;
 	}
+	
+	public Date getTransportStartDate() {
+		return transportStartDate;
+	}
+
+	public void setTransportStartDate(Date transportStartDate) {
+		this.transportStartDate = transportStartDate;
+	}
     
     /*
      * End of getters and setters section
@@ -132,7 +143,6 @@ public class TransportDocument extends AccountingDocument implements Serializabl
      * Active record functionality
      * */
     
-
 	public static long countTransportDocuments() {
         return count(TransportDocument.class);
     }

@@ -250,7 +250,7 @@ public class TransportDocumentViewImpl extends Composite implements TransportDoc
 		loc.setPostcode(fromAddrPostCode.getText());
 		loc.setProvince(fromAddrProvince.getSelectedItemText());
 		loc.setStreet(fromAddrStreetName.getText());
-		td.setFromLocation(loc);
+		td.setFromEndpoint(loc);
 		
 		loc = new EndpointDTO();
 //TODO issue #310 loc.setCompanyName()
@@ -385,7 +385,7 @@ public class TransportDocumentViewImpl extends Composite implements TransportDoc
 		
 		numberOfPackages.setText(String.valueOf(transportDocument.getNumberOfPackages()));
 		
-		EndpointDTO loc = transportDocument.getFromLocation();
+		EndpointDTO loc = transportDocument.getFromEndpoint();
 		fromAddrCity.setText(loc.getCity());
 		fromAddrCompanyName.setText("");//TODO issue #309
 		fromAddrPostCode.setText(loc.getPostcode());

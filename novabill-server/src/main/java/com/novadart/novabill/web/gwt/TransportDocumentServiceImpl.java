@@ -70,8 +70,8 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 	@Restrictions(checkers = {NumberOfTransportDocsPerYearQuotaReachedChecker.class})
 	public Long add(TransportDocumentDTO transportDocDTO) throws NotAuthenticatedException, DataAccessException, ConcurrentAccessException, AuthorizationException, ValidationException {
 		TransportDocument transportDoc = new TransportDocument();
-		transportDoc.setFromLocation(new Address());
-		transportDoc.setToLocation(new Address());
+		transportDoc.setFromEndpoint(new Address());
+		transportDoc.setToEndpoint(new Address());
 		Client client = Client.findClient(transportDocDTO.getClient().getId());
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
