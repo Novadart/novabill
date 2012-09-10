@@ -2,23 +2,24 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.authorization.NumberOfCreditNotesPerYearQuotaReachedChecker;
-import com.novadart.novabill.authorization.NumberOfInvoicesPerYearQuotaReachedChecker;
+import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.AccountingDocumentItem;
-import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
 import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
+import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.InvoiceValidator;
-import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
+import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
