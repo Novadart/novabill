@@ -9,7 +9,7 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.EstimationPlace;
+import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog;
@@ -31,8 +31,8 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 		sb.appendHtmlConstant("<span class='total'>");
 		sb.appendEscaped(I18N.INSTANCE.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
 		sb.appendHtmlConstant("</span>");
-		sb.appendHtmlConstant("<span class='convertToInvoice'>");
-		sb.appendEscaped(I18N.INSTANCE.convertToInvoice());
+		sb.appendHtmlConstant("<span class='createInvoice'>");
+		sb.appendEscaped(I18N.INSTANCE.createInvoice());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("</div>");
 
@@ -76,17 +76,29 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 			onPdfClicked(value);
 		} else if(isDelete(eventTarget)){
 			onDeleteClicked(value);
-		} else if(isOpenEstimation(eventTarget)){
-			onOpenEstimationClicked(value);
+		} else if(isOpenTransportDocument(eventTarget)){
+			onOpenTransportDocumentClicked(value);
 		} else if(isClone(eventTarget)){
 			onCloneClicked(value);
+		} else if (isCreateInvoice(eventTarget)){
+			onCreateInvoiceClicked(value);
 		}
 	}
 
-	private boolean isOpenEstimation(EventTarget et){
+	private boolean isCreateInvoice(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement open = et.cast();
-			return open.getClassName().contains("openEstimation");
+			return open.getClassName().contains("createInvoice");
+
+		} else {
+			return false;
+		}
+	}
+	
+	private boolean isOpenTransportDocument(EventTarget et){
+		if(SpanElement.is(et)){
+			SpanElement open = et.cast();
+			return open.getClassName().contains("openTransportDocument");
 
 		} else {
 			return false;
@@ -123,11 +135,11 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 		}
 	}
 
-	public void onOpenEstimationClicked(TransportDocumentDTO estimation) {
+	public void onOpenTransportDocumentClicked(TransportDocumentDTO transportDocument) {
 		if(presenter != null){
-			EstimationPlace ep = new EstimationPlace();
-			ep.setEstimationId(estimation.getId());
-			presenter.goTo(ep);
+			TransportDocumentPlace tdp = new TransportDocumentPlace();
+			tdp.setTransportDocumentId(transportDocument.getId());
+			presenter.goTo(tdp);
 		}
 	}
 	
@@ -151,7 +163,30 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 		PDFUtils.generateTransportDocumentPdf(transportDocument.getId());
 	}
 
-	
+	public void onCreateInvoiceClicked(final TransportDocumentDTO transportDocument) {
+		if(transportDocument.getId() == null){
+			return;
+		}
+		if(presenter != null){
+			ServerFacade.invoice.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
+
+				@Override
+				public void onSuccess(Long result) {
+					if(result == null){
+						return;
+					}
+					InvoicePlace ip = new InvoicePlace();
+					ip.setDataForNewInvoice(result, transportDocument);
+					presenter.goTo(ip);
+				}
+
+				@Override
+				public void onException(Throwable caught) {
+					
+				}
+			});
+		}
+	}
 
 	public void onDeleteClicked(TransportDocumentDTO transportDocument) {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmTransportDocumentDeletion())){

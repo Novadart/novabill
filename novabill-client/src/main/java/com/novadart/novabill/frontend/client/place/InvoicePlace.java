@@ -6,6 +6,7 @@ import com.google.gwt.place.shared.Prefix;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public class InvoicePlace extends Place {
 
@@ -37,6 +38,7 @@ public class InvoicePlace extends Place {
 	private Long invoiceProgressiveId;
 	private InvoiceDTO invoiceToClone;
 	private EstimationDTO estimationSource;
+	private TransportDocumentDTO transportDocumentSource;
 	
 	public InvoicePlace() {
 		setInvoiceId(0L);
@@ -57,6 +59,12 @@ public class InvoicePlace extends Place {
 		this.client = estimationSource.getClient();
 		this.invoiceProgressiveId = invoiceProgressiveId;
 		this.estimationSource = estimationSource;
+	}
+	
+	public void setDataForNewInvoice(Long invoiceProgressiveId, TransportDocumentDTO transportDocumentSource) {
+		this.client = transportDocumentSource.getClient();
+		this.invoiceProgressiveId = invoiceProgressiveId;
+		this.transportDocumentSource = transportDocumentSource;
 	}
 	
 	public ClientDTO getClient() {
@@ -91,4 +99,12 @@ public class InvoicePlace extends Place {
 		this.estimationSource = estimationSource;
 	}
 
+	public TransportDocumentDTO getTransportDocumentSource() {
+		return transportDocumentSource;
+	}
+	
+	public void setTransportDocumentSource(
+			TransportDocumentDTO transportDocumentSource) {
+		this.transportDocumentSource = transportDocumentSource;
+	}
 }

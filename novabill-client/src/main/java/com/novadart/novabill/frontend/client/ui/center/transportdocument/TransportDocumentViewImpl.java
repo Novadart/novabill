@@ -245,7 +245,7 @@ public class TransportDocumentViewImpl extends Composite implements TransportDoc
 		}
 		
 		EndpointDTO loc = new EndpointDTO();
-//TODO issue #310 loc.setCompanyName()
+		loc.setCompanyName(fromAddrCompanyName.getText());
 		loc.setCity(fromAddrCity.getText());
 		loc.setPostcode(fromAddrPostCode.getText());
 		loc.setProvince(fromAddrProvince.getSelectedItemText());
@@ -253,11 +253,18 @@ public class TransportDocumentViewImpl extends Composite implements TransportDoc
 		td.setFromEndpoint(loc);
 		
 		loc = new EndpointDTO();
-//TODO issue #310 loc.setCompanyName()
+		loc.setCompanyName(toAddrCompanyName.getText());
 		loc.setCity(toAddrCity.getText());
 		loc.setPostcode(toAddrPostCode.getText());
 		loc.setProvince(toAddrProvince.getSelectedItemText());
 		loc.setStreet(toAddrStreetName.getText());
+		td.setToEndpoint(loc);
+		
+		Date tsd = transportStartDate.getValue();
+		String dateTime = DateTimeFormat.getFormat("dd MMMM yyyy").format(tsd);
+		dateTime += " "+hour.getSelectedItemText()+":"+minute.getSelectedItemText();
+		tsd = DateTimeFormat.getFormat("dd MMMM yyyy HH:mm").parse(dateTime);		
+		td.setTransportStartDate(tsd);
 		
 		td.setNumberOfPackages(Integer.valueOf(numberOfPackages.getText()));
 		td.setTradeZone(tradeZone.getText());
@@ -365,8 +372,13 @@ public class TransportDocumentViewImpl extends Composite implements TransportDoc
 			this.client = transportDocument.getClient();
 			date.setValue(transportDocument.getAccountingDocumentDate());
 			clientName.setText(transportDocument.getClient().getName());
-//TODO issue #310			transportStartDate.setValue(null); 
-//TODO issue #310			set date and hour
+			
+			Date d = transportDocument.getTransportStartDate();
+			transportStartDate.setValue(d);
+			String hourStr = DateTimeFormat.getFormat("HH").format(d);
+			String minuteStr = DateTimeFormat.getFormat("mm").format(d);
+			hour.setSelectedItem(hourStr);
+			minute.setSelectedItem(minuteStr);
 			modifyDocument.setVisible(true);
 		}
 
@@ -387,14 +399,14 @@ public class TransportDocumentViewImpl extends Composite implements TransportDoc
 		
 		EndpointDTO loc = transportDocument.getFromEndpoint();
 		fromAddrCity.setText(loc.getCity());
-		fromAddrCompanyName.setText("");//TODO issue #309
+		fromAddrCompanyName.setText(loc.getCompanyName());
 		fromAddrPostCode.setText(loc.getPostcode());
 		fromAddrProvince.setSelectedItem(loc.getProvince());
 		fromAddrStreetName.setText(loc.getStreet());
 		
-		loc = transportDocument.getToLocation();
+		loc = transportDocument.getToEndpoint();
 		toAddrCity.setText(loc.getCity());
-		toAddrCompanyName.setText("");//TODO issue #309
+		toAddrCompanyName.setText(loc.getCompanyName());
 		toAddrPostCode.setText(loc.getPostcode());
 		toAddrProvince.setSelectedItem(loc.getProvince());
 		toAddrStreetName.setText(loc.getStreet());

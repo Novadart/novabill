@@ -60,6 +60,12 @@ public class ClientPlace extends Place {
 				case estimations:
 					return HistoryPrefix.CLIENT_ESTIMATIONS.replace("{clientId}", clientId);
 					
+				case creditNotes:
+					return HistoryPrefix.CLIENT_CREDIT_NOTES.replace("{clientId}", clientId);
+					
+				case transportDocuments:
+					return HistoryPrefix.CLIENT_TRANSPORT_DOCUMENTS.replace("{clientId}", clientId);
+					
 					default:
 				case invoices:
 					return HistoryPrefix.CLIENT_INVOICES.replace("{clientId}", clientId);

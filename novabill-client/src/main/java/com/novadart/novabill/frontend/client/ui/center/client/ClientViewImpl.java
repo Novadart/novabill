@@ -260,6 +260,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		loadInvoices();
 		loadEstimations();
 		loadCreditNotes();
+		loadTransportDocuments();
 	}
 	
 	private void updateClientDetails(ClientDTO client){

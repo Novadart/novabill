@@ -44,6 +44,8 @@ public class InvoiceActivity extends BasicActivity {
 							iv.setDataForNewInvoice(place.getClient(), place.getInvoiceProgressiveId(), place.getInvoiceToClone());
 						} else if(place.getEstimationSource() != null) {
 							iv.setDataForNewInvoice(place.getInvoiceProgressiveId(), place.getEstimationSource());
+						} else if(place.getTransportDocumentSource() != null) {
+							iv.setDataForNewInvoice(place.getInvoiceProgressiveId(), place.getTransportDocumentSource());
 						} else {
 							iv.setDataForNewInvoice(place.getClient(), place.getInvoiceProgressiveId());
 						}

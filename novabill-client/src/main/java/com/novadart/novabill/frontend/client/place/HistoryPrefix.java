@@ -11,6 +11,7 @@ public class HistoryPrefix {
 	public static final String CLIENT_INVOICES  = "{clientId}/"+DOCUMENTS.invoices;
 	public static final String CLIENT_ESTIMATIONS  = "{clientId}/"+DOCUMENTS.estimations;
 	public static final String CLIENT_CREDIT_NOTES  = "{clientId}/"+DOCUMENTS.creditNotes;
+	public static final String CLIENT_TRANSPORT_DOCUMENTS  = "{clientId}/"+DOCUMENTS.transportDocuments;
 	public static final String BUSINESS = "business";
 	public static final String HOME = "home";
 	public static final String ESTIMATION = "estimation";

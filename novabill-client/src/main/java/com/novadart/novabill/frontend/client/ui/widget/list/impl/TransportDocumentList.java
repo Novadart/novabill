@@ -8,7 +8,7 @@ public class TransportDocumentList extends QuickViewList<TransportDocumentDTO> {
 
 	public TransportDocumentList() {
 		super(new TransportDocumentCell());
-		addStyleName("EstimationList");
+		addStyleName("TransportDocumentList");
 	}
 
 	public void setPresenter(Presenter presenter) {

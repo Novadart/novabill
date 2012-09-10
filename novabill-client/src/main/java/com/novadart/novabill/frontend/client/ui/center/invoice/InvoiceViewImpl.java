@@ -41,6 +41,7 @@ import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.InvoiceErrorObject;
@@ -82,6 +83,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 	private Presenter presenter;
 	private InvoiceDTO invoice;
 	private EstimationDTO estimation;
+	private TransportDocumentDTO transportDocument;
 	private ListDataProvider<AccountingDocumentItemDTO> accountingDocumentItems = new ListDataProvider<AccountingDocumentItemDTO>();
 	private ClientDTO client;
 
@@ -151,6 +153,31 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 							}
 						}
 					});
+		} else if(this.transportDocument != null) {
+			//TODO enable after resolution of ticket #312
+			
+			ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
+				
+				@Override
+				public void onSuccess(Long result) {
+					DataWatcher.getInstance().fireInvoiceEvent();
+					DataWatcher.getInstance().fireStatsEvent();
+					
+					ClientPlace cp = new ClientPlace();
+					cp.setClientId(client.getId());
+					cp.setDocumentsListing(DOCUMENTS.invoices);
+					presenter.goTo(cp);
+				}
+	
+				@Override
+				public void onException(Throwable caught) {
+					if(caught instanceof ValidationException){
+						handleServerValidationException((ValidationException) caught, true);
+					} else {
+						Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
+					}
+				}
+			});
 		} else {
 		
 			ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
@@ -409,6 +436,22 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		updateFields();
 	}
 
+	@Override
+	public void setDataForNewInvoice(Long progressiveId,
+			TransportDocumentDTO transportDocument) {
+		setDataForNewInvoice(transportDocument.getClient(), progressiveId);
+		this.transportDocument = transportDocument;
+
+		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(transportDocument.getItems().size());
+		for (AccountingDocumentItemDTO i : transportDocument.getItems()) {
+			items.add(i.clone());
+		}
+
+		accountingDocumentItems.setList(items);
+		note.setText(transportDocument.getNote());
+
+		updateFields();
+	}
 
 	@Override
 	public void setPresenter(Presenter presenter) {
@@ -459,6 +502,7 @@ public class InvoiceViewImpl extends Composite implements InvoiceView {
 		this.invoice = null;
 		this.client = null;
 		this.estimation = null;
+		this.transportDocument = null;
 
 		//reset widget statuses
 		number.reset();
