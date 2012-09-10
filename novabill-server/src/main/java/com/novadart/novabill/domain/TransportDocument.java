@@ -23,6 +23,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	private Integer numberOfPackages;
 	
 	@AttributeOverrides({
+		@AttributeOverride(name = "companyName", column = @Column(name = "from_company_name")),
 		@AttributeOverride(name = "street", column = @Column(name = "from_street")),
 		@AttributeOverride(name = "postcode", column = @Column(name = "from_postcode")),
 		@AttributeOverride(name = "city", column = @Column(name = "from_city")),
@@ -32,6 +33,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	private Endpoint fromEndpoint;
 	
 	@AttributeOverrides({
+		@AttributeOverride(name = "companyName", column = @Column(name = "to_company_name")),
 		@AttributeOverride(name = "street", column = @Column(name = "to_street")),
 		@AttributeOverride(name = "postcode", column = @Column(name = "to_postcode")),
 		@AttributeOverride(name = "city", column = @Column(name = "to_city")),
