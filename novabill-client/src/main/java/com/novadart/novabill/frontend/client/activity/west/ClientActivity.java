@@ -10,11 +10,9 @@ import com.novadart.novabill.frontend.client.ui.west.WestView;
 
 public class ClientActivity extends BasicActivity {
 
-//	private final ClientPlace place;
 	
 	public ClientActivity(ClientPlace place, ClientFactory clientFactory) {
 		super(clientFactory);
-//		this.place = place;
 	}
 
 	@Override
@@ -25,22 +23,6 @@ public class ClientActivity extends BasicActivity {
 			public void onSuccess(final WestView wv) {
 				wv.setPresenter(ClientActivity.this);
 				panel.setWidget(wv);
-				
-//				ServerFacade.client.get(place.getClientId(), new WrappedAsyncCallback<ClientDTO>() {
-//
-//					@Override
-//					public void onException(Throwable caught) {
-//						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-//						goTo(new HomePlace());
-//					}
-//
-//					@Override
-//					public void onSuccess(ClientDTO result) {
-//						wv.setPresenter(ClientActivity.this);
-//						panel.setWidget(wv);
-//						
-//					}
-//				});
 			}
 			
 			@Override

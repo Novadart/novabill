@@ -837,8 +837,20 @@ td.datePickerMonth {
 
 }
 
-.AccountDocumentView .addressBox td + td {
-	vertical-align: middle;
+.AccountDocumentView input[type=text].box {
+	width: 15em;
+}
+
+.AccountDocumentView .addressBox .loadDefaultsButton {
+	margin: 0 0 0 3em;
+}
+
+.AccountDocumentView .addressBox {
+	margin: 1.5em 0 0;	
+}
+
+.AccountDocumentView .addressBox .box {
+	margin: 0.2em 0.5em 0.2em 0.2em;
 }
 
 .AccountDocumentView select {

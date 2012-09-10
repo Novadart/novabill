@@ -41,6 +41,7 @@ public class InvoiceActivity extends BasicActivity {
 
 				} else {
 					
+					wv.setClient(place.getClient());
 					panel.setWidget(wv);
 					
 				}

@@ -40,7 +40,7 @@ public class TransportDocumentActivity extends BasicActivity {
 					}
 
 				} else {
-					
+					wv.setClient(place.getClient());
 					panel.setWidget(wv);
 					
 				}

@@ -41,6 +41,7 @@ public class CreditNoteActivity extends BasicActivity {
 
 				} else {
 					
+					wv.setClient(place.getClient());
 					panel.setWidget(wv);
 					
 				}

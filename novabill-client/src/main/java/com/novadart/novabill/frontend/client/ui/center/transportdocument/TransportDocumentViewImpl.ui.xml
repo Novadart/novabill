@@ -123,7 +123,7 @@
 								</g:customCell>
 							</g:row>		
 						</g:Grid>
-						<g:Button styleName="button" ui:field="fromAddrButtonDefault" text="{i18n.loadFromAddress}"></g:Button>
+						<g:Button styleName="button loadDefaultsButton" ui:field="fromAddrButtonDefault" text="{i18n.loadFromAddress}"></g:Button>
 					</g:HorizontalPanel>
 				</g:customCell>
 			</g:row>
@@ -156,7 +156,7 @@
 								</g:customCell>
 							</g:row>		
 						</g:Grid>
-						<g:Button styleName="button" ui:field="toAddrButtonDefault" text="{i18n.loadToAddress}"></g:Button>
+						<g:Button styleName="button loadDefaultsButton" ui:field="toAddrButtonDefault" text="{i18n.loadToAddress}"></g:Button>
 					</g:HorizontalPanel>
 				</g:customCell>
 			</g:row>
