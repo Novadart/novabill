@@ -13,8 +13,8 @@ public class TransportDocumentDTOFactory extends AccountingDocumentDTOFactory {
 		transportDocumentDTO.setBusiness(BusinessDTOFactory.toDTO(transportDocument.getBusiness()));
 		transportDocumentDTO.setClient(ClientDTOFactory.toDTO(transportDocument.getClient()));
 		transportDocumentDTO.setNumberOfPackages(transportDocument.getNumberOfPackages());
-		transportDocumentDTO.setFromLocation(AddressDTOFactory.toDTO(transportDocument.getFromLocation()));
-		transportDocumentDTO.setToLocation(AddressDTOFactory.toDTO(transportDocument.getToLocation()));
+		transportDocumentDTO.setFromLocation(EndpointDTOFactory.toDTO(transportDocument.getFromLocation()));
+		transportDocumentDTO.setToLocation(EndpointDTOFactory.toDTO(transportDocument.getToLocation()));
 		transportDocumentDTO.setTransporter(transportDocument.getTransporter());
 		transportDocumentDTO.setTransportationResponsibility(transportDocument.getTransportationResponsibility());
 		transportDocumentDTO.setTradeZone(transportDocument.getTradeZone());
@@ -24,8 +24,8 @@ public class TransportDocumentDTOFactory extends AccountingDocumentDTOFactory {
 	public static void copyFromDTO(TransportDocument transportDocument, TransportDocumentDTO transportDocumentDTO, boolean addItems){
 		AccountingDocumentDTOFactory.copyFromDTO(transportDocument, transportDocumentDTO, addItems);
 		transportDocument.setNumberOfPackages(transportDocumentDTO.getNumberOfPackages());
-		AddressDTOFactory.copyFromDTO(transportDocument.getFromLocation(), transportDocumentDTO.getFromLocation());
-		AddressDTOFactory.copyFromDTO(transportDocument.getToLocation(), transportDocumentDTO.getToLocation());
+		EndpointDTOFactory.copyFromDTO(transportDocument.getFromLocation(), transportDocumentDTO.getFromLocation());
+		EndpointDTOFactory.copyFromDTO(transportDocument.getToLocation(), transportDocumentDTO.getToLocation());
 		transportDocument.setTransporter(transportDocumentDTO.getTransporter());
 		transportDocument.setTransportationResponsibility(transportDocumentDTO.getTransportationResponsibility());
 		transportDocument.setTradeZone(transportDocumentDTO.getTradeZone());

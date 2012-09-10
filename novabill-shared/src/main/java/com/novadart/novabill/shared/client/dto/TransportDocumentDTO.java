@@ -4,9 +4,9 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 	
 	private Integer numberOfPackages;
 	
-	private AddressDTO fromLocation;
+	private EndpointDTO fromLocation;
 	
-	private AddressDTO toLocation;
+	private EndpointDTO toLocation;
 	
 	private String transporter;
 	
@@ -22,19 +22,19 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 		this.numberOfPackages = numberOfPackages;
 	}
 
-	public AddressDTO getFromLocation() {
+	public EndpointDTO getFromLocation() {
 		return fromLocation;
 	}
 
-	public void setFromLocation(AddressDTO fromLocation) {
+	public void setFromLocation(EndpointDTO fromLocation) {
 		this.fromLocation = fromLocation;
 	}
 
-	public AddressDTO getToLocation() {
+	public EndpointDTO getToLocation() {
 		return toLocation;
 	}
 
-	public void setToLocation(AddressDTO toLocation) {
+	public void setToLocation(EndpointDTO toLocation) {
 		this.toLocation = toLocation;
 	}
 

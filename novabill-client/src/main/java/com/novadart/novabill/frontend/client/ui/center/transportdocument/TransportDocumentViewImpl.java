@@ -40,7 +40,7 @@ import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidati
 import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.data.Province;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-import com.novadart.novabill.shared.client.dto.AddressDTO;
+import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
@@ -244,7 +244,7 @@ public class TransportDocumentViewImpl extends Composite implements TransportDoc
 			td.setClient(client);
 		}
 		
-		AddressDTO loc = new AddressDTO();
+		EndpointDTO loc = new EndpointDTO();
 //TODO issue #310 loc.setCompanyName()
 		loc.setCity(fromAddrCity.getText());
 		loc.setPostcode(fromAddrPostCode.getText());
@@ -252,7 +252,7 @@ public class TransportDocumentViewImpl extends Composite implements TransportDoc
 		loc.setStreet(fromAddrStreetName.getText());
 		td.setFromLocation(loc);
 		
-		loc = new AddressDTO();
+		loc = new EndpointDTO();
 //TODO issue #310 loc.setCompanyName()
 		loc.setCity(toAddrCity.getText());
 		loc.setPostcode(toAddrPostCode.getText());
@@ -385,7 +385,7 @@ public class TransportDocumentViewImpl extends Composite implements TransportDoc
 		
 		numberOfPackages.setText(String.valueOf(transportDocument.getNumberOfPackages()));
 		
-		AddressDTO loc = transportDocument.getFromLocation();
+		EndpointDTO loc = transportDocument.getFromLocation();
 		fromAddrCity.setText(loc.getCity());
 		fromAddrCompanyName.setText("");//TODO issue #309
 		fromAddrPostCode.setText(loc.getPostcode());

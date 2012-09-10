@@ -1,10 +1,10 @@
-package com.novadart.novabill.domain;
+package com.novadart.novabill.shared.client.dto;
 
-import javax.persistence.Embeddable;
+import com.google.gwt.user.client.rpc.IsSerializable;
 
-
-@Embeddable
-public class Address {
+public class EndpointDTO implements IsSerializable {
+	
+	private String companyName;
 	
 	private String street;
 	
@@ -13,6 +13,14 @@ public class Address {
 	private String city;
 	
 	private String province;
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
 
 	public String getStreet() {
 		return street;
@@ -46,4 +54,6 @@ public class Address {
 		this.province = province;
 	}
 	
+	
+
 }

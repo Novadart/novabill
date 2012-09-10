@@ -28,7 +28,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		@AttributeOverride(name = "province", column = @Column(name = "from_province"))
 	})
 	@Embedded
-	private Address fromLocation;
+	private Endpoint fromEndpoint;
 	
 	@AttributeOverrides({
 		@AttributeOverride(name = "street", column = @Column(name = "to_street")),
@@ -37,7 +37,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		@AttributeOverride(name = "province", column = @Column(name = "to_province"))
 	})
 	@Embedded
-	private Address toLocation;
+	private Endpoint toEndpoint;
 	
 	private String transporter;
 	
@@ -83,20 +83,20 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		this.numberOfPackages = numberOfPackages;
 	}
     
-    public Address getFromLocation() {
-		return fromLocation;
+    public Endpoint getFromLocation() {
+		return fromEndpoint;
 	}
 
-	public void setFromLocation(Address fromLocation) {
-		this.fromLocation = fromLocation;
+	public void setFromLocation(Endpoint fromLocation) {
+		this.fromEndpoint = fromLocation;
 	}
 	
-	public Address getToLocation() {
-		return toLocation;
+	public Endpoint getToLocation() {
+		return toEndpoint;
 	}
 
-	public void setToLocation(Address toLocation) {
-		this.toLocation = toLocation;
+	public void setToLocation(Endpoint toLocation) {
+		this.toEndpoint = toLocation;
 	}
 	
 	public String getTransporter() {
