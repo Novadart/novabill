@@ -12,13 +12,14 @@ public class PDFUtils {
 			GWT.getHostPageBaseURL()+"private/pdf/{document}/{id}?token={token}";
 
 
-	public static void generateInvoicePdf(final long id){
+	private static void generatePdf(final String documentClass, final String documentId) {
 		ServerFacade.business.generatePDFToken(new WrappedAsyncCallback<String>() {
 
 			@Override
 			public void onSuccess(String result) {
 				FileDownloadUtils.downloadUrl(
-						EXPORT_REQUEST.replace("{document}","invoices").replace("{id}", String.valueOf(id))
+						EXPORT_REQUEST.replace("{document}", documentClass)
+							.replace("{id}", documentId)
 							.replace("{token}", result)
 						);
 			}
@@ -29,35 +30,21 @@ public class PDFUtils {
 			}
 		});
 	}
-
-	public static void generateEstimationPdf(final long id){
-		ServerFacade.business.generatePDFToken(new WrappedAsyncCallback<String>() {
-
-			@Override
-			public void onSuccess(String result) {
-				FileDownloadUtils.downloadUrl(
-						EXPORT_REQUEST.replace("{document}","estimations").replace("{id}", String.valueOf(id))
-							.replace("{token}", result)
-						);
-			}
-
-			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-			}
-		});
-				
+	
+	public static void generateInvoicePdf(long id){
+		generatePdf("invoices", String.valueOf(id));
 	}
 
-	public static void generateCreditNotePdf(Long id) {
-		// TODO Auto-generated method stub
-		
+	public static void generateEstimationPdf(long id){
+		generatePdf("estimations", String.valueOf(id));
+	}
+
+	public static void generateCreditNotePdf(long id) {
+		generatePdf("creditnotes", String.valueOf(id));
 	}
 	
-	public static void generateTransportDocumentPdf(Long id) {
-		// TODO Auto-generated method stub
-		
+	public static void generateTransportDocumentPdf(long id) {
+		generatePdf("transportdocs", String.valueOf(id));
 	}
-	
 
 }
