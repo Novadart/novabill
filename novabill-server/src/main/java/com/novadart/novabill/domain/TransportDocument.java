@@ -1,6 +1,7 @@
 package com.novadart.novabill.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.AttributeOverride;
@@ -28,7 +29,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		@AttributeOverride(name = "province", column = @Column(name = "from_province"))
 	})
 	@Embedded
-	private Address fromLocation;
+	private Endpoint fromEndpoint;
 	
 	@AttributeOverrides({
 		@AttributeOverride(name = "street", column = @Column(name = "to_street")),
@@ -37,13 +38,15 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		@AttributeOverride(name = "province", column = @Column(name = "to_province"))
 	})
 	@Embedded
-	private Address toLocation;
+	private Endpoint toEndpoint;
 	
 	private String transporter;
 	
 	private String transportationResponsibility;
 	
 	private String tradeZone;
+	
+	private Date transportStartDate;
 	
 	@ManyToOne
     protected Business business;
@@ -83,20 +86,20 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		this.numberOfPackages = numberOfPackages;
 	}
     
-    public Address getFromLocation() {
-		return fromLocation;
+    public Endpoint getFromEndpoint() {
+		return fromEndpoint;
 	}
 
-	public void setFromLocation(Address fromLocation) {
-		this.fromLocation = fromLocation;
+	public void setFromEndpoint(Endpoint fromEndpoint) {
+		this.fromEndpoint = fromEndpoint;
 	}
 	
-	public Address getToLocation() {
-		return toLocation;
+	public Endpoint getToEndpoint() {
+		return toEndpoint;
 	}
 
-	public void setToLocation(Address toLocation) {
-		this.toLocation = toLocation;
+	public void setToEndpoint(Endpoint toEndpoint) {
+		this.toEndpoint = toEndpoint;
 	}
 	
 	public String getTransporter() {
@@ -122,6 +125,14 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	public void setTradeZone(String tradeZone) {
 		this.tradeZone = tradeZone;
 	}
+	
+	public Date getTransportStartDate() {
+		return transportStartDate;
+	}
+
+	public void setTransportStartDate(Date transportStartDate) {
+		this.transportStartDate = transportStartDate;
+	}
     
     /*
      * End of getters and setters section
@@ -132,7 +143,6 @@ public class TransportDocument extends AccountingDocument implements Serializabl
      * Active record functionality
      * */
     
-
 	public static long countTransportDocuments() {
         return count(TransportDocument.class);
     }

@@ -1,18 +1,22 @@
 package com.novadart.novabill.shared.client.dto;
 
+import java.util.Date;
+
 public class TransportDocumentDTO extends AccountingDocumentDTO {
 	
 	private Integer numberOfPackages;
 	
-	private AddressDTO fromLocation;
+	private EndpointDTO fromEndpoint;
 	
-	private AddressDTO toLocation;
+	private EndpointDTO toEndpoint;
 	
 	private String transporter;
 	
 	private String transportationResponsibility;
 	
 	private String tradeZone;
+	
+	private Date transportStartDate;
 	
 	public Integer getNumberOfPackages() {
 		return numberOfPackages;
@@ -22,20 +26,20 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 		this.numberOfPackages = numberOfPackages;
 	}
 
-	public AddressDTO getFromLocation() {
-		return fromLocation;
+	public EndpointDTO getFromEndpoint() {
+		return fromEndpoint;
 	}
 
-	public void setFromLocation(AddressDTO fromLocation) {
-		this.fromLocation = fromLocation;
+	public void setFromEndpoint(EndpointDTO fromEndpoint) {
+		this.fromEndpoint = fromEndpoint;
 	}
 
-	public AddressDTO getToLocation() {
-		return toLocation;
+	public EndpointDTO getToEndpoint() {
+		return toEndpoint;
 	}
 
-	public void setToLocation(AddressDTO toLocation) {
-		this.toLocation = toLocation;
+	public void setToEndpoint(EndpointDTO toEndpoint) {
+		this.toEndpoint = toEndpoint;
 	}
 
 	public String getTransporter() {
@@ -60,6 +64,14 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 
 	public void setTradeZone(String tradeZone) {
 		this.tradeZone = tradeZone;
+	}
+
+	public Date getTransportStartDate() {
+		return transportStartDate;
+	}
+
+	public void setTransportStartDate(Date transportStartDate) {
+		this.transportStartDate = transportStartDate;
 	}
 
 }
