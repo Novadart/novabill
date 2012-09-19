@@ -5,3 +5,4 @@ gwt-unitCache
 .settings
 log.roo
 novabill-server/src/main/webapp/rpc
+/.pydevproject
