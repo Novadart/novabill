@@ -1,4 +1,5 @@
 # coding: utf-8
+from reportlab.lib.colors import gray
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import inch
 from reportlab.platypus.doctemplate import SimpleDocTemplate
@@ -6,55 +7,41 @@ from reportlab.platypus.flowables import Spacer, Flowable, Image
 from reportlab.platypus.paragraph import Paragraph
 from reportlab.platypus.tables import Table, TableStyle
 from reportlab.rl_config import defaultPageSize
-from reportlab.lib.colors import gray
-from template.core import AbstractDefaultBuilder
-from template.utils import FloatToEnd
+from template.core import AbstractDirector
+from template.default.shared_components import CustomerBoxFlowable
+from template.utils import FloatToEnd, instatiateCanvasMaker
 
 
 BORDER_SIZE = 0.5
 BORDER_COLOR = gray
 
 
-class CustomerBoxFlowable(Flowable):
-    '''
-        Flowable for customer box
-    '''
+class DefaultDirector(AbstractDirector):
     
-    def __init__(self, width, clientData):
-        self.__clientData = clientData
-        self.flowable = self.__assamble_flowable(width)
+    def construct(self):
+        builder = self.getBuilder()
+        doc, data = builder.getDocument(), self.getData()
+        story = []
+        if data.getBusiness().getLogo():
+            story.append(builder.getLogoFlowable(inch, inch)) #place logo at the top
+        else:
+            story.append(builder.getNoLogoFlowable(inch, inch))
         
-        
-    def __assamble_flowable(self, width):
-        style = getSampleStyleSheet()["Normal"]
-        cl = self.__clientData
-        flowables = []
-        flowables.append(Paragraph("<b><i>Cliente</i></b>", style)) #label
-        flowables.append(Paragraph("<para leftIndent='10'>%s</para>" % cl.getName(), style)) #name
-        flowables.append(Paragraph("<para leftIndent='10'>%s</para>" % cl.getAddress(), style)) #address
-        postcodeCityProvince = "%(postcode)s %(city)s (%(province)s)" % dict(postcode=cl.getPostcode(),
-                city=cl.getCity(), province=cl.getProvince())
-        flowables.append(Paragraph("<para leftIndent='10'>%s</para>" % postcodeCityProvince, style)) # postcode, city, and province
-        flowables.append(Paragraph("<para leftIndent='10'>P.IVA %s</para>"% cl.getVatID(), style))
-        return Table([[flowables]], colWidths=[width])
+        story.append(Table([[builder.getBusinessFlowable(data.getBusiness(), doc.width / 2),
+                             builder.getCustomerFlowable(data.getClient(), doc.width / 2)]],
+                           colWidths=[doc.width / 2] * 2))
+        story.append(builder.getVerticalSpacerFlowable(5))
+        story.append(builder.getDocumentDetailsFlowable(data, doc.width, 0.3))
+        story.append(builder.getVerticalSpacerFlowable(10))
+        story.append(builder.getDocumentItemsFlowable(data.getAccountingDocumentItems(), doc.width))
+        story.append(builder.getFooterFlowable(data, doc.width))
+        doc.build(story, canvasmaker=instatiateCanvasMaker(pagenumbers=self.getDispParams()["pagenumbers"] \
+                                                           if "pagenumbers" in self.getDispParams() else None,
+                                                           watermark=self.getDispParams()["watermark"] \
+                                                           if "watermark" in self.getDispParams() else None))
 
 
-    def wrap(self, *args):
-        return self.flowable.wrap(*args)
-
-    def draw(self):
-        canvas = self.canv
-        self.flowable.canv = canvas
-        self.flowable.draw()
-        #drawing the box
-        canvas.saveState()
-        canvas.setStrokeColor(gray)
-        width, height = self.flowable.wrap(defaultPageSize[0], defaultPageSize[1])
-        canvas.roundRect(0, 0, width, height, 3)
-        canvas.restoreState()
-
-        
-class DefaultDocumentBuilder(AbstractDefaultBuilder):
+class DefaultDocumentBuilder(object):
     
     def __init__(self, outputFilePath, dispParams=dict()):
         self.__doc = SimpleDocTemplate(outputFilePath)
@@ -96,6 +83,9 @@ class DefaultDocumentBuilder(AbstractDefaultBuilder):
     
     def getVerticalSpacerFlowable(self, height):
         return Spacer(1, height)
+    
+    def getDocumentDetailsFlowable(self, data, width, ratio): 
+        pass
     
     def getDocumentItemsFlowable(self, itemsData, width):
         style = getSampleStyleSheet()["Normal"]

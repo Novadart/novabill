@@ -2,8 +2,8 @@
 from lib.data import InvoiceData
 from os import remove
 from os.path import exists
-from template.core import DefaultDirector, DocumentType, DirectorType, \
-    BuilderType
+from template.core import DocumentType, DirectorType, BuilderType
+from template.default import DefaultDirector
 from template.default.credit_note import DefaultCreditNoteBuilder
 from template.default.estimation import DefaultEstimationBuilder
 from template.default.invoice import DefaultInvoiceBuilder
@@ -32,7 +32,8 @@ class Factory(object):
 
 
 
-def create_doc(out, invoice, pathToLogo=None, logoWidth=None, logoHeight=None, docType=DocumentType.INVOICE, tempType=DirectorType.DEFAULT, watermark=True):
+def create_doc(out, invoice, pathToLogo=None, logoWidth=None, logoHeight=None, docType=DocumentType.INVOICE, \
+               tempType=DirectorType.DEFAULT, watermark=True):
     builderDisplayParams = dict(logo=dict(path=pathToLogo, width=logoWidth, height=logoWidth))
     builder = Factory.createBuilder(BuilderType.DEFAULT, docType, out, dispParams=builderDisplayParams)
     directorDisplayParams = dict(pagenumbers=True, watermark=watermark)
