@@ -6,22 +6,23 @@ from template.core import DocumentType, DirectorType, BuilderType
 from template.default import DefaultDirector
 from template.default.credit_note import DefaultCreditNoteBuilder
 from template.default.estimation import DefaultEstimationBuilder
-from template.default.invoice import DefaultInvoiceBuilder
 from template.default.transport_document import DefaultTransportDocumentBuilder
+from template.tidy import TidyDirector
+from template.tidy.invoice import TidyInvoiceBuilder
 
 class Factory(object):
     
     @classmethod
     def createDirector(cls, dirType, *args, **kw):
         if(dirType == DirectorType.DEFAULT):
-            return DefaultDirector(*args, **kw)
+            return TidyDirector(*args, **kw)
         raise Exception("No such layout type!")
     
     @classmethod
     def createBuilder(cls, buildType, docType, *args, **kw):
         if buildType == BuilderType.DEFAULT:
             if(docType == DocumentType.INVOICE):
-                return DefaultInvoiceBuilder(*args, **kw)
+                return TidyInvoiceBuilder(*args, **kw)
             if(docType == DocumentType.ESTIMATION):
                 return DefaultEstimationBuilder(*args, **kw)
             if(docType == DocumentType.CREDIT_NOTE):
