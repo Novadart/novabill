@@ -46,6 +46,11 @@
 	
 </form>
 
-<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/register">
+
+<div class="registerBox">
+	<span class=""><spring:message code="login.notregistered" /> </span>
+	<a id="registerButton" class="action-button" href="<%=request.getContextPath()%>/register">
 	<spring:message code="header.signupForFree"></spring:message>
 </a>
+</div>
+
