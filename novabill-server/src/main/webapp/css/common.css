@@ -89,8 +89,8 @@ blockquote:before,blockquote:after,q:before,q:after {
 	margin-right: 0.5em;
 }
 
-.browser-alert td {
-	
+.browser-alert table {
+	margin: 0 auto;
 }
 
 .action-button {
