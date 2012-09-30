@@ -52,11 +52,11 @@
 		<span class="authLinks">
 			<a class="private" href='<spring:url value="/private"></spring:url>'><spring:message code="header.private"/></a>
 		
-			<sec:authorize access="hasRole('ROLE_BUSINESS_FREE')">
+			<%-- <sec:authorize access="hasRole('ROLE_BUSINESS_FREE')">
 				<a id="goPremium" class="action-button" href='<spring:url value="/premiumInfo"></spring:url>'>
 					<spring:message code="header.goPremium"></spring:message>
 				</a>
-			</sec:authorize>
+			</sec:authorize> --%>
 			
 			<a class="logoutLink" href='<spring:url value="/resources/j_spring_security_logout"></spring:url>'><spring:message code="header.logout"/></a>
 		</span>

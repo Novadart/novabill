@@ -46,7 +46,7 @@
 	<mvc:view-controller path="/concurentAccess" />
 	<mvc:view-controller path="/registrationCompleted" />
 	<mvc:view-controller path="/passwordRecoveryCommenced" />
-	<mvc:view-controller path="/premiumInfo"/>
+	<!-- <mvc:view-controller path="/premiumInfo"/> -->
 
 	<!-- Resolves localized messages*.properties and application.properties 
 		files in the application to allow for internationalization. The messages*.properties 

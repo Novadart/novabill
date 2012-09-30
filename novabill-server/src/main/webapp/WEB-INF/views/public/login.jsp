@@ -45,3 +45,7 @@
 	</table>
 	
 </form>
+
+<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/register">
+	<spring:message code="header.signupForFree"></spring:message>
+</a>

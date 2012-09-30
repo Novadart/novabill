@@ -10,7 +10,7 @@
 	<p><spring:message code="index.promotion" /> </p>
 
 	<sec:authorize access="isAnonymous()">
-		<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/premiumInfo">
+		<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/register">
 			<spring:message code="header.signupForFree"></spring:message>
 		</a>
 	</sec:authorize>
@@ -26,7 +26,7 @@
 </div>
 <div class="divider-2"></div>
 <div class="top-features">
-	<h3>Top Features</h3>
+	<h3><spring:message code="home.topfeatures" /></h3>
 	<div class="inset-top"></div>
 	<div class="inset">
 		<div class="row">
@@ -132,7 +132,7 @@
 	<div class="inset-btm"></div>
 	
 	<sec:authorize access="isAnonymous()">
-		<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/premiumInfo">
+		<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/register">
 			<spring:message code="header.signupForFree"></spring:message>
 		</a>
 	</sec:authorize>
