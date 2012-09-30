@@ -3,13 +3,13 @@
 	"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
 
-	<definition extends="error" name="resourceNotFound">
+	<definition extends="baseError" name="resourceNotFound">
 		<put-attribute name="pagelinks" value="/WEB-INF/views/error/errorPageLinks.jsp" />
 		<put-attribute name="body"
 			value="/WEB-INF/views/error/resourceNotFound.jsp" />
 	</definition>
 
-	<definition extends="error" name="uncaughtException">
+	<definition extends="baseError" name="uncaughtException">
 		<put-attribute name="pagelinks" value="/WEB-INF/views/error/errorPageLinks.jsp" />
 		<put-attribute name="body"	value="/WEB-INF/views/error/uncaughtException.jsp" />
 	</definition>
@@ -24,7 +24,7 @@
 		<put-attribute name="feedbackMessage" value="/WEB-INF/views/error/invalidForgotPasswordRequest.jsp" />
 	</definition>
 	
-	<definition extends="error" name="dataAccessFailure">
+	<definition extends="baseError" name="dataAccessFailure">
 		<put-attribute name="pagelinks" value="/WEB-INF/views/error/errorPageLinks.jsp" />
 		<put-attribute name="body"	value="/WEB-INF/views/error/uncaughtException.jsp" />
 	</definition>
