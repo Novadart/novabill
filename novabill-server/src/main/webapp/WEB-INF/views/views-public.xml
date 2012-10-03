@@ -32,7 +32,7 @@
 	</definition>
 
 	
-	<definition name="paypalSubscriptionRequest" template="/WEB-INF/views/public/paypalSubscriptionRequest.jsp" />
+<!-- 	<definition name="paypalSubscriptionRequest" template="/WEB-INF/views/public/paypalSubscriptionRequest.jsp" />
 
 	<definition name="premiumInfo" extends="base">
 		<put-attribute name="pagelinks" value="/WEB-INF/views/public/premiumInfoPageLinks.jsp" />
@@ -50,7 +50,7 @@
 		<put-attribute name="pagelinks" value="/WEB-INF/views/public/premiumInfoPageLinks.jsp" />
 		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/public/premiumUpgradeFailure.jsp" />
-	</definition>
+	</definition> -->
 	
 	<definition name="forgotPassword" extends="base">
 		<put-attribute name="pagelinks" value="/WEB-INF/views/public/forgotPasswordPageLinks.jsp" />

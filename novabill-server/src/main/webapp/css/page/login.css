@@ -36,3 +36,16 @@
 	margin-left: 2em;
 	cursor: pointer;
 }
+
+#registerButton {
+	width: 14em;
+}
+
+.registerBox {
+	text-align: center;
+	font-size: 1.2em;
+	border-top: 1px solid #CCC;
+	padding: 2em 0;
+	width: 80%;
+	margin: 0 auto;
+}

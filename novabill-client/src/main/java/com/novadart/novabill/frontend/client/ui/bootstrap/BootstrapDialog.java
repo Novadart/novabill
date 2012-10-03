@@ -7,6 +7,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
+import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
@@ -16,6 +17,7 @@ import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidati
 import com.novadart.novabill.frontend.client.ui.widget.validation.PostcodeValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
+import com.novadart.novabill.shared.client.data.Province;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
 public class BootstrapDialog extends Dialog {
@@ -36,7 +38,7 @@ public class BootstrapDialog extends Dialog {
 	@UiField(provided=true) RichTextBox vatID;
 	@UiField(provided=true) RichTextBox address;
 	@UiField(provided=true) RichTextBox city;
-	@UiField(provided=true) RichTextBox province;
+	@UiField(provided=true) ValidatedListBox province;
 	@UiField(provided=true) RichTextBox country;
 	@UiField(provided=true) RichTextBox postcode;
 	@UiField(provided=true) RichTextBox phone;
@@ -56,7 +58,10 @@ public class BootstrapDialog extends Dialog {
 		vatID = new RichTextBox(I18N.INSTANCE.vatID(), new VatIdValidation());
 		address = new RichTextBox(I18N.INSTANCE.address(), nev);
 		city = new RichTextBox(I18N.INSTANCE.city(), nev);
-		province = new RichTextBox(I18N.INSTANCE.province(), nev);
+		province = new ValidatedListBox(I18N.INSTANCE.province(), I18N.INSTANCE.notEmptyValidationError());
+		for (Province p : Province.values()) {
+			province.addItem(p.name());
+		}
 		country = new RichTextBox(I18N.INSTANCE.country(), nev);
 		postcode = new RichTextBox(I18N.INSTANCE.postcode(), new PostcodeValidation());
 		phone = new RichTextBox(I18N.INSTANCE.phone(), nuv);
@@ -69,11 +74,15 @@ public class BootstrapDialog extends Dialog {
 	
 	private boolean validate(){
 		boolean valid = true;
-		for (RichTextBox r : new RichTextBox[]{name, ssn, vatID, address, city, province, country, 
+		for (RichTextBox r : new RichTextBox[]{name, ssn, vatID, address, city, country, 
 				postcode, phone, email, mobile, fax, web}) {
 			r.validate();
 			valid &= r.isValid();
 		}
+		
+		province.validate();
+		valid &= province.isValid();
+		
 		return valid;
 	}
 
@@ -91,7 +100,7 @@ public class BootstrapDialog extends Dialog {
 			b.setSsn(ssn.getText());
 			b.setVatID(vatID.getText());
 			b.setCity(city.getText());
-			b.setProvince(province.getText());
+			b.setProvince(province.getSelectedItemText());
 			b.setCountry(country.getText());
 			b.setPostcode(postcode.getText());
 			b.setPhone(phone.getText());

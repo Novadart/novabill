@@ -72,6 +72,27 @@ blockquote:before,blockquote:after,q:before,q:after {
 	clear: both;
 }
 
+.browser-alert {
+	padding: 0.2em 1em;
+	background-color: #EFF17D;
+	margin-bottom: 0.5em;
+}
+
+.browser-alert .browserMessage {
+	color: #333;
+}
+
+.browser-alert img {
+	width: 32px;
+	height: 32px;
+	margin-left: 2em;
+	margin-right: 0.5em;
+}
+
+.browser-alert table {
+	margin: 0 auto;
+}
+
 .action-button {
 	cursor: pointer;
 	display: inline-block;

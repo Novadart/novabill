@@ -8,8 +8,8 @@
 
 <head>
 <title><spring:message code="application_name"></spring:message></title>
-<link rel="stylesheet" type="text/css" href="../css/reset-min.css" />
-<link rel="stylesheet" type="text/css" href="../css/common.css" />
+<link rel="stylesheet" type="text/css" href="css/reset-min.css" />
+<link rel="stylesheet" type="text/css" href="css/common.css" />
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 	
@@ -40,7 +40,7 @@
 		})
 	</script>
 	<div class="container">
-		<tiles:insertAttribute name="header" />
+		<tiles:insertTemplate template="/WEB-INF/views/public/headerSimple.jsp"></tiles:insertTemplate>
 		
 		<tiles:insertAttribute name="body" />
 

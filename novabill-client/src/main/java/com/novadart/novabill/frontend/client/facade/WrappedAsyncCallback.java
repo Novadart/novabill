@@ -2,7 +2,6 @@ package com.novadart.novabill.frontend.client.facade;
 
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.novadart.novabill.frontend.client.ui.premium.GoPremiumDialog;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
@@ -19,10 +18,10 @@ public abstract class WrappedAsyncCallback<T> implements AsyncCallback<T> {
 			}
 			
 		} else if(caught instanceof AuthorizationException){
-			
-			if(!GoPremiumDialog.getInstance().isShowing()) {
-				GoPremiumDialog.getInstance().showCentered();
-			}
+//			TODO reenable when premium is enabled
+//			if(!GoPremiumDialog.getInstance().isShowing()) {
+//				GoPremiumDialog.getInstance().showCentered();
+//			}
 			
 		} else {
 			

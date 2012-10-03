@@ -966,14 +966,21 @@ td.datePickerMonth {
 	display: block;
 }
 
+.BootstrapDialog .ValidatedListBox,
 .BootstrapDialog .RichTextBox {
 	width: 20em;
 	margin: 0.3em;
 }
 
+.BootstrapDialog .ValidatedListBox,
 .BootstrapDialog .RichTextBox.RichTextBox-labelStyle {
 	color: #666;
 	font-style: italic;
+}
+
+.BootstrapDialog .ValidatedListBox.ValidatedWidget-validationOk {
+	font-style: normal;
+	color: inherit;
 }
 
 .ValidatedWidget-validationOk {

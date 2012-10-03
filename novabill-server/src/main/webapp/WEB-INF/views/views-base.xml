@@ -9,8 +9,6 @@
 	
 	<definition name="baseFeedback" template="/WEB-INF/views/baseFeedback.jsp" />
 
-	<definition name="register" template="/WEB-INF/views/register.jsp" />
-
-	<definition name="error" template="/WEB-INF/views/error.jsp" />
+	<definition name="baseError" template="/WEB-INF/views/baseError.jsp" />
 	
 </tiles-definitions>

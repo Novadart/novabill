@@ -1,6 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:t="urn:import:com.novadart.gwtshared.client.textbox">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:t="urn:import:com.novadart.gwtshared.client.textbox" xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
@@ -17,7 +17,7 @@
 				<t:RichTextBox ui:field="address"></t:RichTextBox>
 				<t:RichTextBox ui:field="city"></t:RichTextBox>
 				<t:RichTextBox ui:field="postcode"></t:RichTextBox>
-				<t:RichTextBox ui:field="province"></t:RichTextBox>
+				<v:ValidatedListBox ui:field="province"></v:ValidatedListBox>
 				<t:RichTextBox ui:field="country"></t:RichTextBox>
 				<t:RichTextBox ui:field="phone"></t:RichTextBox>
 				<t:RichTextBox ui:field="mobile"></t:RichTextBox>
