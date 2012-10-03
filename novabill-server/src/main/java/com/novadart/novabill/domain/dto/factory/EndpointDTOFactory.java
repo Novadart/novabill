@@ -14,6 +14,7 @@ public class EndpointDTOFactory {
 		endpointDTO.setPostcode(endpoint.getPostcode());
 		endpointDTO.setCity(endpoint.getCity());
 		endpointDTO.setProvince(endpoint.getProvince());
+		endpointDTO.setCountry(endpoint.getCountry());
 		return endpointDTO;
 	}
 	
@@ -23,6 +24,7 @@ public class EndpointDTOFactory {
 		endpoint.setPostcode(endpointDTO.getPostcode());
 		endpoint.setCity(endpointDTO.getCity());
 		endpoint.setProvince(endpointDTO.getProvince());
+		endpoint.setCountry(endpointDTO.getCountry());
 	}
 
 }

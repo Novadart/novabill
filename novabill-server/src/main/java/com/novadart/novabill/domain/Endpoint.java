@@ -15,6 +15,8 @@ public class Endpoint {
 	private String city;
 	
 	private String province;
+	
+	private String country;
 
 	public String getCompanyName() {
 		return companyName;
@@ -54,6 +56,14 @@ public class Endpoint {
 
 	public void setProvince(String province) {
 		this.province = province;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 	
 }

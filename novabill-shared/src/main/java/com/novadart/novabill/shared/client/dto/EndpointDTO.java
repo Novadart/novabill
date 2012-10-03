@@ -13,6 +13,8 @@ public class EndpointDTO implements IsSerializable {
 	private String city;
 	
 	private String province;
+	
+	private String country;
 
 	public String getCompanyName() {
 		return companyName;
@@ -52,6 +54,14 @@ public class EndpointDTO implements IsSerializable {
 
 	public void setProvince(String province) {
 		this.province = province;
+	}
+
+	public String getCountry() {
+		return country;
+	}
+
+	public void setCountry(String country) {
+		this.country = country;
 	}
 	
 	

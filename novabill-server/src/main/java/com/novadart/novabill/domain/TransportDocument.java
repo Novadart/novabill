@@ -27,7 +27,8 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		@AttributeOverride(name = "street", column = @Column(name = "from_street")),
 		@AttributeOverride(name = "postcode", column = @Column(name = "from_postcode")),
 		@AttributeOverride(name = "city", column = @Column(name = "from_city")),
-		@AttributeOverride(name = "province", column = @Column(name = "from_province"))
+		@AttributeOverride(name = "province", column = @Column(name = "from_province")),
+		@AttributeOverride(name = "country", column = @Column(name = "from_country"))
 	})
 	@Embedded
 	private Endpoint fromEndpoint;
@@ -37,7 +38,8 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		@AttributeOverride(name = "street", column = @Column(name = "to_street")),
 		@AttributeOverride(name = "postcode", column = @Column(name = "to_postcode")),
 		@AttributeOverride(name = "city", column = @Column(name = "to_city")),
-		@AttributeOverride(name = "province", column = @Column(name = "to_province"))
+		@AttributeOverride(name = "province", column = @Column(name = "to_province")),
+		@AttributeOverride(name = "country", column = @Column(name = "to_country"))
 	})
 	@Embedded
 	private Endpoint toEndpoint;
