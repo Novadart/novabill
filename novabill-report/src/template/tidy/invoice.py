@@ -1,8 +1,5 @@
-'''
-Created on 20/set/2012
+# coding: utf-8
 
-@author: gio
-'''
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus.para import Paragraph
 from reportlab.platypus.tables import Table, TableStyle

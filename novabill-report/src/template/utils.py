@@ -1,3 +1,4 @@
+# coding: utf-8
 from reportlab.platypus.flowables import KeepTogether, PageBreak, _listWrapOn, _flowableSublist
 from reportlab.platypus.doctemplate import FrameBreak
 from reportlab.platypus.tables import Table

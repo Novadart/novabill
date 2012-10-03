@@ -1,3 +1,4 @@
+# coding: utf-8
 from reportlab.lib.colors import gray
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.platypus.flowables import Flowable

@@ -106,10 +106,10 @@ class TidyDocumentBuilder(object):
         return itemsFlowable
     
     def getDocumentTotals(self, data, width):
-        totals = Table([["Total before tax:", "%s €" % data.getTotalBeforeTax()],
-                        ["Total tax:", "%s €" % data.getTotalTax()],
-                        ["", ""],
-                        ["Total:", "%s €" % data.getTotal()]], colWidths=[0.5*width, 0.5*width])
+        totals = Table([[u"Total before tax:", u"%s €" % data.getTotalBeforeTax()],
+                        [u"Total tax:", u"%s €" % data.getTotalTax()],
+                        [u"", u""],
+                        [u"Total:", u"%s €" % data.getTotal()]], colWidths=[0.5*width, 0.5*width])
         totals.setStyle(TableStyle([("ALIGN", (-1,0), (-1,-1), "RIGHT"),
                                     ("FONTSIZE", (0,0), (-1,-2), 16),
                                     ("FONTSIZE", (0,-1), (-1,-1), 18)]))
