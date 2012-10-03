@@ -71,7 +71,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	@Restrictions(checkers = {NumberOfClientsQuotaReachedChecker.class})
+	//@Restrictions(checkers = {NumberOfClientsQuotaReachedChecker.class})
 	public Long add(ClientDTO clientDTO) throws AuthorizationException, ValidationException {
 		Client client = new Client(); 
 		ClientDTOFactory.copyFromDTO(client, clientDTO);

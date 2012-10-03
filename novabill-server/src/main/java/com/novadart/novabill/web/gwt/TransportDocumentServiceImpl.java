@@ -67,7 +67,7 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	@Restrictions(checkers = {NumberOfTransportDocsPerYearQuotaReachedChecker.class})
+	//@Restrictions(checkers = {NumberOfTransportDocsPerYearQuotaReachedChecker.class})
 	public Long add(TransportDocumentDTO transportDocDTO) throws NotAuthenticatedException, DataAccessException, ConcurrentAccessException, AuthorizationException, ValidationException {
 		TransportDocument transportDoc = new TransportDocument();
 		transportDoc.setFromEndpoint(new Endpoint());

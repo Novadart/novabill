@@ -65,7 +65,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	@Restrictions(checkers = {NumberOfEstimationsPerYearQuotaReachedChecker.class})
+	//@Restrictions(checkers = {NumberOfEstimationsPerYearQuotaReachedChecker.class})
 	public Long add(EstimationDTO estimationDTO) throws DataAccessException, AuthorizationException, ValidationException {
 		Estimation estimation = new Estimation();
 		Client client = Client.findClient(estimationDTO.getClient().getId());

@@ -76,7 +76,7 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	}
 	
 	@Override
-	@Restrictions(checkers = {NumberOfCreditNotesPerYearQuotaReachedChecker.class})
+	//@Restrictions(checkers = {NumberOfCreditNotesPerYearQuotaReachedChecker.class})
 	public Long add(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException {
 		Client client = Client.findClient(creditNoteDTO.getClient().getId());
 		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
