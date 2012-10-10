@@ -173,16 +173,16 @@ class AccountingDocumentData(object):
             items.append(AccountingDocumentItem(item))
         return items
     
-    def getInvoiceDate(self):
+    def getAccountingDocumentDate(self):
         return self.__data["accountingDocumentDate"]
     
     def getId(self):
         return self.__data["id"]
     
-    def getInvoiceID(self):
+    def getAccountingDocumentID(self):
         return self.__data["documentID"]
 
-    def getInvoiceYear(self):
+    def getAccountingDocumentYear(self):
         return self.__data["accountingDocumentYear"]
     
     def getTotal(self):

@@ -11,8 +11,8 @@ class DefaultInvoiceBuilder(DefaultDocumentBuilder):
     def getDocumentDetailsFlowable(self, data, width, ratio):
         style = getSampleStyleSheet()["Normal"]
         tableFlowables = [
-            [Paragraph("<b>FATTURA</b>", style), Paragraph("" if data.getInvoiceID() is None else str(data.getInvoiceID()), style)],
-            [Paragraph("<b>DATA</b>", style), Paragraph("" if data.getInvoiceDate() is None else data.getInvoiceDate(), style)],
+            [Paragraph("<b>FATTURA</b>", style), Paragraph("" if data.getAccountingDocumentID() is None else str(data.getAccountingDocumentID()), style)],
+            [Paragraph("<b>DATA</b>", style), Paragraph("" if data.getAccountingDocumentDate() is None else data.getAccountingDocumentDate(), style)],
             [Paragraph("<b>Pagamento</b>", style), Paragraph(data.getHumanReadablePaymentType(), style)],
             [Paragraph("<b>Note Pagamento</b>", style), Paragraph("" if data.getPaymentNote() is None else data.getPaymentNote(), style)],
             [Paragraph("<b>Scadenza Pagamento</b>", style), Paragraph("" if data.getPaymentDueDate() is None else data.getPaymentDueDate(), style)],

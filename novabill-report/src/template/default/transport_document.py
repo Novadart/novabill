@@ -10,8 +10,8 @@ class DefaultTransportDocumentBuilder(DefaultDocumentBuilder):
     def getDocumentDetailsFlowable(self, data, width, ratio):
         style = getSampleStyleSheet()["Normal"]
         tableFlowables = [
-            [Paragraph("<b>TRANSPORT DOCUMENT</b>", style), Paragraph("" if data.getInvoiceID() is None else str(data.getInvoiceID()), style)],
-            [Paragraph("<b>DATA</b>", style), Paragraph("" if data.getInvoiceDate() is None else data.getInvoiceDate(), style)],
+            [Paragraph("<b>TRANSPORT DOCUMENT</b>", style), Paragraph("" if data.getAccountingDocumentID() is None else str(data.getAccountingDocumentID()), style)],
+            [Paragraph("<b>DATA</b>", style), Paragraph("" if data.getAccountingDocumentDate() is None else data.getAccountingDocumentDate(), style)],
             [Paragraph("<b>Note</b>", style), Paragraph("" if data.getNote() is None else data.getNote(), style)]
         ]
         t = Table(tableFlowables, colWidths=[width * ratio, width * (1 - ratio)])
