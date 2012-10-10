@@ -47,6 +47,9 @@
 	<mvc:view-controller path="/registrationCompleted" />
 	<mvc:view-controller path="/passwordRecoveryCommenced" />
 	<!-- <mvc:view-controller path="/premiumInfo"/> -->
+	
+	<!-- TEST view -->
+	<mvc:view-controller path="/resolutionTest" />
 
 	<!-- Resolves localized messages*.properties and application.properties 
 		files in the application to allow for internationalization. The messages*.properties 
@@ -107,6 +110,7 @@
 				<value>/WEB-INF/views/views-public.xml</value>
 				<value>/WEB-INF/views/views-private.xml</value>
 				<value>/WEB-INF/views/views-error.xml</value>
+				<value>/WEB-INF/views/views-test.xml</value>
 			</list>
 		</property>
 	</bean>
