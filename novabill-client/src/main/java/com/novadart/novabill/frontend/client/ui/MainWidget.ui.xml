@@ -34,7 +34,7 @@
 		</g:west>
 
 		<g:center>
-			<g:ScrollPanel styleName="centerContainer" ui:field="centerContainer"></g:ScrollPanel>
+			<g:SimplePanel styleName="centerContainer" ui:field="centerContainer"></g:SimplePanel>
 		</g:center>
 
 		<g:south size="2">

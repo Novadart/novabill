@@ -159,7 +159,7 @@ textarea:HOVER {
 
 .ClientView .clientMainBody {
 	margin: 0 auto 2em;
-	width: 70%;
+	width: 90%;
 	height: 40em;
 }
 
@@ -799,6 +799,25 @@ td.datePickerMonth {
 
 .ClientDialog .buttonContainer {
 	padding: 1em 0;
+}
+
+.AccountDocumentView {
+	width: 100%;
+	height: 100%;
+}
+
+.AccountDocumentView .docControls {
+}
+.AccountDocumentView .docBody {
+	
+}
+
+.AccountDocumentView .docScroll {
+	width: 100%;
+}
+
+.AccountDocumentView .docScrollBody {
+	
 }
 
 .AccountDocumentView .newEstimation,.AccountDocumentView .newInvoice, 

@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -12,7 +13,7 @@ import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -29,23 +30,27 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
+import com.novadart.novabill.frontend.client.ui.center.AccountDocument;
 import com.novadart.novabill.frontend.client.ui.center.EstimationView;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.table.ItemTable;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 
-public class EstimationViewImpl extends Composite implements EstimationView {
+public class EstimationViewImpl extends AccountDocument implements EstimationView {
 
 	private static EstimationViewImplUiBinder uiBinder = GWT
 			.create(EstimationViewImplUiBinder.class);
 
 	interface EstimationViewImplUiBinder extends UiBinder<Widget, EstimationViewImpl> {
 	}
+	
+	@UiField HorizontalPanel docControls;
+	@UiField ScrollPanel docScroll;
 
 	@UiField(provided=true) ListBox tax;
 	@UiField(provided=true) ItemTable itemTable;
@@ -93,6 +98,16 @@ public class EstimationViewImpl extends Composite implements EstimationView {
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("AccountDocumentView");
+	}
+	
+	@Override
+	protected Element getBody() {
+		return docScroll.getElement();
+	}
+	
+	@Override
+	protected Element getHeader() {
+		return docControls.getElement();
 	}
 
 	@UiFactory
