@@ -9,7 +9,7 @@ from template.tidy import TidyDocumentBuilder, BORDER_SIZE, \
 
 class TidyInvoiceBuilder(TidyDocumentBuilder):
     
-    def getDocumentDetailsFlowable(self, data, width):
+    def getDocumentDetailsHeaderFlowable(self, data, width):
         style = getSampleStyleSheet()["Normal"]
         t = Table([["", Paragraph("<b><font size=\"%d\">Invoice %d</font></b>" % (LARGE_FONT_SIZE, data.getAccountingDocumentID()), style)],
                    ["Date of Invoice:", data.getAccountingDocumentDate()],

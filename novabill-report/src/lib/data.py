@@ -294,10 +294,13 @@ class InvoiceData(AbstractInvoiceData):
 """
     ADDRESS DATA
 """
-class AddressData(object):
+class EndpointData(object):
     
     def __init__(self, jsonData):
         self.__data = jsonData
+        
+    def getCompanyName(self):
+        return self.__data["companyName"]
         
     def getStreet(self):
         return self.__data["street"]
@@ -310,25 +313,28 @@ class AddressData(object):
     
     def getProvince(self):
         return self.__data["province"]
+    
+    def getCountry(self):
+        return self.__data["country"]
 
 
 """
     TRANSPORT DOCUMENT DATA
 """      
-class TransportDocument(AbstractInvoiceData):
+class TransportDocumentData(AbstractInvoiceData):
     
     def __init__(self, jsonData):
-        super(TransportDocument, self).__init__(jsonData)
+        super(TransportDocumentData, self).__init__(jsonData)
         self.__data = jsonData
         
     def getNumberOfPackages(self):
         return self.__data["numberOfPackages"]
     
     def getFromLocation(self):
-        return AddressData(self.__data["fromLocation"])
+        return EndpointData(self.__data["fromEndpoint"])
     
     def getToLocation(self):
-        return AddressData(self.__data["toLocation"])
+        return EndpointData(self.__data["toEndpoint"])
     
     def getTransporter(self):
         return self.__data["transporter"]

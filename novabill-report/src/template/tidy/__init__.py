@@ -21,6 +21,15 @@ SMALL_FONT_SIZE = 10
 
 class TidyDirector(AbstractDirector):
     
+    def getDocumentDetailsBodyFlowables(self, builder, data, docWidth):
+        toFrom = Table([[builder.getToBusinessEntityDetailsFlowable(data), builder.getFromBusinessEntityDetailsFlowable(data)]],
+                       colWidths=[docWidth*0.5, docWidth*0.5])
+        toFrom.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"),
+                                    ("ALIGN", (0, 0), (-1, -1), "LEFT"),
+                                    ("LEFTPADDING", (0, 0), (-1, -1), 1.75*cm)]))
+        return [toFrom]
+        
+    
     def construct(self):
         builder = self.getBuilder()
         doc, data = builder.getDocument(), self.getData()
@@ -31,16 +40,12 @@ class TidyDirector(AbstractDirector):
 #            story.append(builder.getNoLogoFlowable(2.5*cm, 2.5*cm))
         
         header = Table([[builder.getBusinessNameFlowable(data.getBusiness()),
-                         builder.getDocumentDetailsFlowable(data, doc.width*0.4)]], colWidths=[doc.width*0.6, doc.width*0.4])
+                         builder.getDocumentDetailsHeaderFlowable(data, doc.width*0.4)]], colWidths=[doc.width*0.6, doc.width*0.4])
         header.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP")]))
         story.append(header)
         story.append(Spacer(1, 2*cm))
-        toFrom = Table([[builder.getToEndpointFlowable(data), builder.getFromEndpointFlowable(data)]],
-                       colWidths=[doc.width*0.5, doc.width*0.5])
-        toFrom.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"),
-                                    ("ALIGN", (0, 0), (-1, -1), "LEFT"),
-                                    ("LEFTPADDING", (0, 0), (-1, -1), 1.75*cm)]))
-        story.append(toFrom)
+        for flowable in self.getDocumentDetailsBodyFlowables(builder, data, doc.width): 
+            story.append(flowable)
         story.append(Spacer(1, 2*cm))
         story.append(builder.getDocumentItemsFlowable(data.getAccountingDocumentItems(), doc.width))
         story.append(Spacer(1, cm))
@@ -79,21 +84,21 @@ class TidyDocumentBuilder(object):
         style = getSampleStyleSheet()["Normal"]
         return Paragraph("<b><font size=\"%d\">%s</font></b>" % (LARGE_FONT_SIZE, business.getName()), style)
     
-    def getDocumentDetailsFlowable(self, data, width):
+    def getDocumentDetailsHeaderFlowable(self, data, width):
         pass
     
-    def __getEndPointFlowable(self, data, label):
+    def __getBusinessEntityDetailsFlowable(self, data, label):
         style = getSampleStyleSheet()["Normal"]
         return Paragraph("<b><font size=\"%(size)d\">%(label)s</font></b><br/>%(name)s<br/>%(address)s<br/>%(city)s (%(province)s)<br/>%(country)s" %
                          dict(size=MEDIUM_FONT_SIZE, name=data.getName(), label=label,
                               address=data.getAddress(), city=data.getCity(),
                               province=data.getProvince(), country=data.getCountry()), style)
     
-    def getToEndpointFlowable(self, data):
-        return self.__getEndPointFlowable(data.getClient(), "To")
+    def getToBusinessEntityDetailsFlowable(self, data):
+        return self.__getBusinessEntityDetailsFlowable(data.getClient(), "To")
     
-    def getFromEndpointFlowable(self, data):
-        return self.__getEndPointFlowable(data.getBusiness(), "From")
+    def getFromBusinessEntityDetailsFlowable(self, data):
+        return self.__getBusinessEntityDetailsFlowable(data.getBusiness(), "From")
     
     def getDocumentItemsFlowable(self, itemsData, width):
         data = [["Price", "Qty", "Description", "Tax", "Total"]]
