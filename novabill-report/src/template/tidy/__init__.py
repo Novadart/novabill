@@ -101,11 +101,13 @@ class TidyDocumentBuilder(object):
         return self.__getBusinessEntityDetailsFlowable(data.getBusiness(), "From")
     
     def getDocumentItemsFlowable(self, itemsData, width):
+        style = getSampleStyleSheet()["Normal"]
         data = [["Price", "Qty", "Description", "Tax", "Total"]]
         for item in itemsData:
-            data.append([item.getPrice(), item.getQuantity(), item.getDescription(), item.getTax(), item.getTotal()])
+            data.append([item.getPrice(), item.getQuantity(), Paragraph(item.getDescription(), style), item.getTax(), item.getTotal()])
         itemsFlowable = Table(data, colWidths=[0.2*width, 0.1*width, 0.4*width, 0.1*width, 0.2*width])
-        itemsFlowable.setStyle(TableStyle([("ALIGN", (-1,0), (-1,-1), "RIGHT"),
+        itemsFlowable.setStyle(TableStyle([("ALIGN", (1,0), (1,-1), "RIGHT"),
+                                           ("ALIGN", (-2,0), (-1,-1), "RIGHT"),
                                            ("BACKGROUND", (0,0), (-1,0), gray),
                                            ("LINEBELOW", (0,1), (-1,-1), BORDER_SIZE, BORDER_COLOR)]))
         return itemsFlowable
