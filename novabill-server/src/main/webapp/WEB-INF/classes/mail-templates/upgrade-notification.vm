@@ -1,6 +1,27 @@
 <html>
+<head>
+<style>
+* {
+    font-family: Arial, sans-serif, serif;
+    font-size: 14px;
+}
+
+.logo{
+    color: #445058;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 1px 1px white;
+    text-decoration: none;
+}
+</style>
+</head>
 <body>
-<h3>Your account has been successfully upgraded.</h3>
+<h2 class="logo">Novabill</h2>
+
+<p>Il tuo account è stato aggiornato con successo!</p>
+<br>
+<p>Grazie :)<br> Il team di Novabill</p>
+
 </body>
 
 </html>

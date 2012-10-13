@@ -1,6 +1,30 @@
 <html>
+<head>
+<style>
+* {
+    font-family: Arial, sans-serif, serif;
+    font-size: 14px;
+}
+
+.logo{
+    color: #445058;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 1px 1px white;
+    text-decoration: none;
+}
+</style>
+</head>
 <body>
-<h3>To successfully finish the registration procedure press <a href="${activationLink}">here</a>. You ought to do this in the next ${activationPeriod} hours.</h3>
+<h2 class="logo">Novabill</h2>
+
+<p>Per concludere la procedura di registrazione per favore premi su <a href="${activationLink}">questo link.</a><br>
+Alternativamente copia e incolla questa url nel tuo browser ${activationLink}</p>
+<br>
+<p>Nota: dovrai attivare il tuo account entro le prossime ${activationPeriod} ore.</p>
+<br>
+<p>Grazie :)<br> Il team di Novabill</p>
+
 </body>
 
 </html>
