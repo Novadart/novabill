@@ -13,7 +13,7 @@ import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.HorizontalPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -56,7 +56,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	interface InvoiceViewImplUiBinder extends UiBinder<Widget, InvoiceViewImpl> {
 	}
 	
-	@UiField HorizontalPanel docControls;
+	@UiField FlowPanel docControls;
 	@UiField ScrollPanel docScroll;
 
 	@UiField Label paymentLabel;

@@ -807,6 +807,8 @@ td.datePickerMonth {
 }
 
 .AccountDocumentView .docControls {
+	padding: 0.5em;
+	border-bottom: 0.1em solid #DDD;
 }
 .AccountDocumentView .docBody {
 	
@@ -824,6 +826,7 @@ td.datePickerMonth {
 .AccountDocumentView .newTransportDocument, .AccountDocumentView .newCreditNote  {
 	font-weight: bold;
 	font-size: 2em;
+	display: inline;
 }
 
 .AccountDocumentView .abortButton,.AccountDocumentView .modifyDocument,.AccountDocumentView .createInvoice,
