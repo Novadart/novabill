@@ -11,7 +11,7 @@
 
 	<g:FlowPanel>
 
-		<g:HorizontalPanel styleName="docControls" ui:field="docControls">
+		<g:FlowPanel styleName="docControls" ui:field="docControls">
 			<g:Label styleName="newTransportDocument" text="{i18n.newTransportDocument}"></g:Label>
 			<g:Button styleName="modifyButton button" ui:field="modifyDocument"
 				text="{i18n.saveModifications}"></g:Button>
@@ -19,7 +19,7 @@
 				text="{i18n.createTransportDocument}"></g:Button>
 			<g:Button ui:field="abort" styleName="abortButton button"
 				text="{i18n.cancel}"></g:Button>
-		</g:HorizontalPanel>
+		</g:FlowPanel>
 
 		<g:ScrollPanel styleName="docScroll" ui:field="docScroll">
 			<g:FlowPanel styleName="docScrollBody">
