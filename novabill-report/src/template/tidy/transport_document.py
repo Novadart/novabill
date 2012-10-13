@@ -19,9 +19,9 @@ class TidyTransportDocumentDirector(TidyDirector):
         toFrom.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"),
                                     ("ALIGN", (0, 0), (-1, -1), "LEFT"),
                                     ("LEFTPADDING", (0, 0), (-1, -1), 1.75*cm)]))
-        transDetFlow = builder.getTransportDetailsFlowable(data, docWidth*0.5)
+        transDetFlow = builder.getTransportDetailsFlowable(data, docWidth*0.45)
         transDetFlow.hAlign = "RIGHT"
-        return [toFrom, Spacer(1, cm), transDetFlow]
+        return [toFrom, Spacer(1, 0.5*cm), transDetFlow]
 
 class TidyTransportDocumentBuilder(TidyDocumentBuilder):
     
@@ -30,7 +30,7 @@ class TidyTransportDocumentBuilder(TidyDocumentBuilder):
             t = Table([["", Paragraph("<b><font size=\"%d\">Transport document</font></b>" % MEDIUM_FONT_SIZE, style)],
                        ["Number:", data.getAccountingDocumentID()],
                        ["Date:", data.getAccountingDocumentDate()]],
-                  colWidths=[width * 0.3, width * 0.7])
+                  colWidths=[width * 0.3, width * 0.6])
             t.setStyle(TableStyle([("ALIGN", (0, 0), (0, -1), "RIGHT"),
                                    ("ALIGN", (1, 0), (1, -1), "LEFT"),
                                    ("BOTTOMPADDING", (0, 0), (-1, -1), 0),

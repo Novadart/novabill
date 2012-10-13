@@ -7,6 +7,7 @@ from template.tidy import TidyDocumentBuilder, MEDIUM_FONT_SIZE, TidyDirector,\
     BORDER_SIZE, BORDER_COLOR
 from reportlab.lib.units import cm
 from reportlab.platypus.flowables import Spacer
+from reportlab.lib.colors import lightgrey
 
 class TidyInvoiceDirector(TidyDirector):
     
@@ -18,7 +19,7 @@ class TidyInvoiceDirector(TidyDirector):
                                     ("LEFTPADDING", (0, 0), (-1, -1), 1.75*cm)]))
         invDetailsF = builder.getInvoiceDetailsFlowable(data, docWidth*0.4)
         invDetailsF.hAlign = "RIGHT"
-        return [invDetailsF, Spacer(1, cm), toFrom]
+        return [invDetailsF, Spacer(1, 0.25*cm), toFrom]
 
 
 class TidyInvoiceBuilder(TidyDocumentBuilder):
@@ -38,13 +39,18 @@ class TidyInvoiceBuilder(TidyDocumentBuilder):
     
     def getInvoiceDetailsFlowable(self, data, width):
         style = getSampleStyleSheet()["Normal"]
-        tbl = Table([[Paragraph("Payment date:", style), Paragraph(data.getPaymentDueDate() if data.getPaymentDueDate() else "", style)],
-                     [Paragraph("Payment type:", style), Paragraph(data.getHumanReadablePaymentType(), style)],
-                     [Paragraph("Payment note:", style), Paragraph(data.getPaymentNote() if data.getPaymentNote() else "", style)],
-                    ], colWidths=[width * 0.4, width * 0.6])
-        tbl.setStyle(TableStyle([('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),
+        tbl = Table([["Payment details", ""],
+                     [Paragraph("Date:", style), Paragraph(data.getPaymentDueDate() if data.getPaymentDueDate() else "", style)],
+                     [Paragraph("Type:", style), Paragraph(data.getHumanReadablePaymentType(), style)],
+                     [Paragraph("Note:", style), Paragraph(data.getPaymentNote() if data.getPaymentNote() else "", style)],
+                    ], colWidths=[width * 0.3, width * 0.7])
+        tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), lightgrey),
+                                 ('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),
                                  ("LINEABOVE", (0, 0), (-1, 0), BORDER_SIZE, BORDER_COLOR),
-                                 ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))
+                                 ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR),
+                                 ("SPAN", (0, 0), (1, 0)),
+                                 ("BOX", (0, 0), (1, 0), BORDER_SIZE, BORDER_COLOR),
+                                 ("BOX", (0, 1), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))
         return tbl
     
     
