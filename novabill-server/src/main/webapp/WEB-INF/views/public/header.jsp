@@ -45,8 +45,21 @@
 			((PrincipalDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal());%>
 		
 		<span class="welcomeMessage">
-			<spring:message code="header.welcomeMessage"/> 
-			<a href='<spring:url value="/private#business:"></spring:url>' class="businessName"><%=pd.getPrincipal().getName() %></a>
+			<%
+			String principalName = pd.getPrincipal().getName();
+			if(principalName != null && !principalName.isEmpty()){
+			%>
+				<spring:message code="header.welcomeMessage"/>
+				<a href='<spring:url value="/private#business:"></spring:url>' class="businessName"><%=principalName%></a>
+			<%
+			} else {
+			%>
+				<span class="thanksForSignup"><spring:message code="header.thanksForSignup"/></span>
+				<a href='<spring:url value="/private"></spring:url>' class="action-button noBusinessName"><spring:message code="header.noBusinessName"/></a>
+			<%	
+			}
+			%>
+			
 		</span>
 		
 		<span class="authLinks">

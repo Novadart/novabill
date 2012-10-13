@@ -36,6 +36,16 @@
 	font-size: 1em;
 }
 
+.thanksForSignup {
+	font-size: 0.9em;
+}
+
+.noBusinessName {
+	width: 15em;
+	margin: 0;
+	font-size: 0.9em;
+}
+
 /* Login Container (default to float:right) */
 #loginContainer {
 	position: relative;
