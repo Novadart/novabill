@@ -472,34 +472,14 @@
 		</pluginManagement>
 
 	</build>
-	
-	<repositories>
-		<repository>
-			<id>novadart-build-releases</id>
-			<url>${server.build.releases}</url>
-			<snapshots>
-				<enabled>false</enabled>
-			</snapshots>
-		</repository>
-		<repository>
-			<id>novadart-build-snapshots</id>
-			<url>${server.build.snapshots}</url>
-			<snapshots>
-				<updatePolicy>always</updatePolicy>
-			</snapshots>
-			<releases>
-				<enabled>true</enabled>
-			</releases>
-		</repository>
-	</repositories>
 
 	<distributionManagement>
 		<repository>
-			<id>novadart-build-releases</id>
+			<id>novadart-build</id>
 			<url>${server.build.releases}</url>
 		</repository>
 		<snapshotRepository>
-			<id>novadart-build-snapshots</id>
+			<id>novadart-build</id>
 			<url>${server.build.snapshots}</url>
 		</snapshotRepository>
 	</distributionManagement>
