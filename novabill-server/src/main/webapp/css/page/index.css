@@ -116,6 +116,7 @@ h3 {
 .description {
 	float: left;
 	width: 300px;
+	text-align: justify;
 }
 
 .quote {
