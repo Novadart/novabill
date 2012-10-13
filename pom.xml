@@ -477,14 +477,19 @@
 		<repository>
 			<id>novadart-build-releases</id>
 			<url>${server.build.releases}</url>
+			<snapshots>
+				<enabled>false</enabled>
+			</snapshots>
 		</repository>
 		<repository>
 			<id>novadart-build-snapshots</id>
 			<url>${server.build.snapshots}</url>
 			<snapshots>
-				<enabled>true</enabled>
 				<updatePolicy>always</updatePolicy>
 			</snapshots>
+			<releases>
+				<enabled>true</enabled>
+			</releases>
 		</repository>
 	</repositories>
 
