@@ -322,6 +322,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
 		
 		if(ii == null) {
+			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
 		
