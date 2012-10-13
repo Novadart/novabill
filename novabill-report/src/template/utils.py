@@ -81,8 +81,9 @@ def instatiateCanvasMaker(pagenumbers=True, watermark=True):
             
         def draw_watermark(self):
             self.setFont("Helvetica", 7)
-            self.setFillColor(lightgrey)
+            self.setFillColorRGB(0.45, 0.45, 0.45)
+            #self.setFillColor(lightgrey)
             w, _ = A4
-            self.drawCentredString(w/2, 20*mm, "Powered by Novabill - www.novadart.com/novabill")
+            self.drawCentredString(w/2, 20*mm, "Powered by Novabill - http://novabill.it")
         
     return CanvasProcessor

@@ -1,5 +1,5 @@
 # coding: utf-8
-from reportlab.lib.colors import gray
+from reportlab.lib.colors import gray, lightgrey
 from reportlab.lib.styles import getSampleStyleSheet
 from reportlab.lib.units import cm
 from reportlab.platypus.doctemplate import BaseDocTemplate, SimpleDocTemplate
@@ -41,12 +41,13 @@ class TidyDirector(AbstractDirector):
         
         header = Table([[builder.getBusinessNameFlowable(data.getBusiness()),
                          builder.getDocumentDetailsHeaderFlowable(data, doc.width*0.4)]], colWidths=[doc.width*0.6, doc.width*0.4])
-        header.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP")]))
+        header.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"),
+                                    ("ALIGN", (1, 0), (1, 0), "RIGHT")]))
         story.append(header)
-        story.append(Spacer(1, 2*cm))
+        story.append(Spacer(1, 0.5*cm))
         for flowable in self.getDocumentDetailsBodyFlowables(builder, data, doc.width): 
             story.append(flowable)
-        story.append(Spacer(1, 2*cm))
+        story.append(Spacer(1, 1*cm))
         story.append(builder.getDocumentItemsFlowable(data.getAccountingDocumentItems(), doc.width))
         story.append(Spacer(1, cm))
         totals = Table([["", builder.getDocumentTotals(data, doc.width*0.4)], ["",""]], colWidths=[doc.width*0.6, doc.width*0.4])
@@ -82,7 +83,7 @@ class TidyDocumentBuilder(object):
     
     def getBusinessNameFlowable(self, business):
         style = getSampleStyleSheet()["Normal"]
-        return Paragraph("<b><font size=\"%d\">%s</font></b>" % (LARGE_FONT_SIZE, business.getName()), style)
+        return Paragraph("<b><font size=\"%d\">%s</font></b>" % (MEDIUM_FONT_SIZE, business.getName()), style)
     
     def getDocumentDetailsHeaderFlowable(self, data, width):
         pass
@@ -108,7 +109,7 @@ class TidyDocumentBuilder(object):
         itemsFlowable = Table(data, colWidths=[0.2*width, 0.1*width, 0.4*width, 0.1*width, 0.2*width])
         itemsFlowable.setStyle(TableStyle([("ALIGN", (1,0), (1,-1), "RIGHT"),
                                            ("ALIGN", (-2,0), (-1,-1), "RIGHT"),
-                                           ("BACKGROUND", (0,0), (-1,0), gray),
+                                           ("BACKGROUND", (0,0), (-1,0), lightgrey),
                                            ("LINEBELOW", (0,1), (-1,-1), BORDER_SIZE, BORDER_COLOR)]))
         return itemsFlowable
     
@@ -118,8 +119,8 @@ class TidyDocumentBuilder(object):
                         [u"", u""],
                         [u"Total:", u"%s €" % data.getTotal()]], colWidths=[0.5*width, 0.5*width])
         totals.setStyle(TableStyle([("ALIGN", (-1,0), (-1,-1), "RIGHT"),
-                                    ("FONTSIZE", (0,0), (-1,-2), 16),
-                                    ("FONTSIZE", (0,-1), (-1,-1), 18)]))
+                                    ("FONTSIZE", (0,0), (-1,-2), 12),
+                                    ("FONTSIZE", (0,-1), (-1,-1), 12)]))
         return totals
         
     

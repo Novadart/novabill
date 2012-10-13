@@ -2,9 +2,9 @@
 from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
 from reportlab.platypus.para import Paragraph
 from reportlab.platypus.tables import Table, TableStyle
-from template.tidy import TidyDocumentBuilder, LARGE_FONT_SIZE, TidyDirector
+from template.tidy import TidyDocumentBuilder, MEDIUM_FONT_SIZE, TidyDirector
 from reportlab.lib.units import cm
-from reportlab.lib.colors import gray
+from reportlab.lib.colors import lightgrey
 from template.tidy import BORDER_SIZE, BORDER_COLOR
 from reportlab.platypus.flowables import Spacer
 
@@ -27,12 +27,14 @@ class TidyTransportDocumentBuilder(TidyDocumentBuilder):
     
         def getDocumentDetailsHeaderFlowable(self, data, width):
             style = getSampleStyleSheet()["Normal"]
-            t = Table([["", Paragraph("<b><font size=\"%d\">Transport document %d</font></b>" % (LARGE_FONT_SIZE, data.getAccountingDocumentID()), style)],
-                   ["Date of Invoice:", data.getAccountingDocumentDate()],
-                   ["P.O Number:", ""]],
-                  colWidths=[width * 0.5, width * 0.5])
+            t = Table([["", Paragraph("<b><font size=\"%d\">Transport document</font></b>" % MEDIUM_FONT_SIZE, style)],
+                       ["Number:", data.getAccountingDocumentID()],
+                       ["Date:", data.getAccountingDocumentDate()]],
+                  colWidths=[width * 0.3, width * 0.7])
             t.setStyle(TableStyle([("ALIGN", (0, 0), (0, -1), "RIGHT"),
-                               ("ALIGN", (1, 0), (1, -1), "LEFT")]))
+                                   ("ALIGN", (1, 0), (1, -1), "LEFT"),
+                                   ("BOTTOMPADDING", (0, 0), (-1, -1), 0),
+                                   ("TOPPADDING", (0, 0), (-1, -1), 0)]))
             return t
         
         def __getEndPointFlowable(self, data, width, label):
@@ -43,7 +45,7 @@ class TidyTransportDocumentBuilder(TidyDocumentBuilder):
                          [Paragraph("%s (%s)" % (data.getCity(), data.getProvince()), style)],
                          #[Paragraph(data.getCountry(), style)]
                          ], colWidths=[width])
-            tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), gray),
+            tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), lightgrey),
                                      ("LEFTPADDING", (0, 0), (-1, -1), 3),
                                      ("TOPPADDING", (0, 1), (-1, -1), 0),
                                      ("BOTTOMPADDING", (0, 1), (0, -2), 0),
@@ -52,10 +54,10 @@ class TidyTransportDocumentBuilder(TidyDocumentBuilder):
             return tbl
         
         def getToEndpointFlowable(self, data, width):
-            return self.__getEndPointFlowable(data.getToLocation(), width, "Receiving address:")
+            return self.__getEndPointFlowable(data.getToLocation(), width, "Receiving address")
         
         def getFromEndpointFlowable(self, data, width):
-            return self.__getEndPointFlowable(data.getFromLocation(), width, "Sending address:")
+            return self.__getEndPointFlowable(data.getFromLocation(), width, "Sending address")
         
         def getTransportDetailsFlowable(self, data, width):
             style = getSampleStyleSheet()["Normal"]

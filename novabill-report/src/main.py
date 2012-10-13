@@ -67,7 +67,7 @@ if __name__ == '__main__':
     if exists(outputFile):
         remove(outputFile)
     import json
-#    create_doc("/tmp/testInvoice.pdf", json.loads(testInvoiceJSON))
-    create_doc("/tmp/testInvoice.pdf", json.loads(testTransportDocumentJSON), docType=DocumentType.TRANSPORT_DOCUMENT)
+    create_doc("/tmp/testInvoice.pdf", json.loads(testInvoiceJSON))
+#    create_doc("/tmp/testInvoice.pdf", json.loads(testTransportDocumentJSON), docType=DocumentType.TRANSPORT_DOCUMENT)
     
     
