@@ -43,7 +43,7 @@ class TidyInvoiceBuilder(TidyDocumentBuilder):
                      [Paragraph("Date:", style), Paragraph(data.getPaymentDueDate() if data.getPaymentDueDate() else "", style)],
                      [Paragraph("Type:", style), Paragraph(data.getHumanReadablePaymentType(), style)],
                      [Paragraph("Note:", style), Paragraph(data.getPaymentNote() if data.getPaymentNote() else "", style)],
-                    ], colWidths=[width * 0.3, width * 0.7])
+                    ], colWidths=[width * 0.2, width * 0.8])
         tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), lightgrey),
                                  ('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),
                                  ("LINEABOVE", (0, 0), (-1, 0), BORDER_SIZE, BORDER_COLOR),
