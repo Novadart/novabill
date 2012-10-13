@@ -5,7 +5,7 @@ from os import remove
 from os.path import exists
 from template.core import DocumentType, DirectorType, BuilderType
 from template.tidy import TidyDirector
-from template.tidy.invoice import TidyInvoiceBuilder
+from template.tidy.invoice import TidyInvoiceBuilder, TidyInvoiceDirector
 from template.tidy.estimation import TidyEstimationBuilder
 from template.tidy.credit_note import TidyCreditNoteBuilder
 from template.tidy.transport_document import TidyTransportDocumentBuilder,\
@@ -16,6 +16,8 @@ class Factory(object):
     @classmethod
     def createDirector(cls, dirType, docType, *args, **kw):
         if(dirType == DirectorType.DEFAULT):
+            if docType == DocumentType.INVOICE:
+                return TidyInvoiceDirector(*args, **kw)
             if docType == DocumentType.TRANSPORT_DOCUMENT:
                 return TidyTransportDocumentDirector(*args, **kw)
             return TidyDirector(*args, **kw)
