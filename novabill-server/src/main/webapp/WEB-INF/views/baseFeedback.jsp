@@ -12,6 +12,7 @@
 <link rel="stylesheet" type="text/css" href="css/common.css" />
 <link rel="stylesheet" type="text/css" href="css/header.css" />
 <link rel="stylesheet" type="text/css" href="css/page/feedback.css" />
+
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
 
@@ -46,6 +47,7 @@
 			<tiles:insertAttribute name="feedbackMessage" />
 		</div>
 		
+		<a class="errorGotohome" href="<spring:url value="/" />"><spring:message code="error.gotohome"></spring:message></a>
 
 		<div class="footer">
 			<p>	Copyright 2011 <strong><spring:message code="application_name"></spring:message></strong>. All Rights Reserved. </p>
