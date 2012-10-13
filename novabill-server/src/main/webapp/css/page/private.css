@@ -902,9 +902,14 @@ td.datePickerMonth {
 }
 
 .AccountDocumentView .newItemContainer {
-	
+	margin-top: 2em;
+	background-color: #EEE;
+	padding: 1em;
+	border: 0.1em solid #CCC;
 }
-
+.AccountDocumentView .itemTable {
+	margin: 0 auto;
+}
 .AccountDocumentView .smallLabel {
 	font-weight: bold;
 	padding: 0.4em 0 0.4em 0;
@@ -957,10 +962,9 @@ td.datePickerMonth {
 	font-weight: bold;
 	color: white;
 	background-color: #888;
-	padding: 0.4em 1em;
+	padding: 0.5em;
 	text-align: center;
 	border-radius: 0.5em;
-	height: 1.2em;
 }
 
 .BootstrapDialog .welcomeMessage {

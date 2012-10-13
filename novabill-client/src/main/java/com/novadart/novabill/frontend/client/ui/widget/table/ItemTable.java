@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.SafeHtmlCell;
 import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -42,7 +43,6 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 		};
 		addColumn(nameDescription, I18N.INSTANCE.nameDescription());
-
 		
 		
 		//quantity
@@ -151,6 +151,17 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			}
 		};
 		addColumn(delete);
+		
+		setWidth("99%");
+		setColumnWidth(nameDescription, 40, Unit.PCT);
+		setColumnWidth(quantity, 6, Unit.PCT);
+		setColumnWidth(unityOfMeasure, 7, Unit.PCT);
+		setColumnWidth(price, 7, Unit.PCT);
+		setColumnWidth(tax, 6, Unit.PCT);
+		setColumnWidth(totalBeforeTaxes, 8, Unit.PCT);
+		setColumnWidth(totalVat, 8, Unit.PCT);
+		setColumnWidth(totalAfterTaxes, 8, Unit.PCT);
+		setColumnWidth(delete, 10, Unit.PCT);
 
 		setLoadingIndicator(null);
 	}

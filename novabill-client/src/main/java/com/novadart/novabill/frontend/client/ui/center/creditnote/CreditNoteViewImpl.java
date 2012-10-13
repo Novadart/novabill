@@ -207,6 +207,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
 		
 		if(ii == null) {
+			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
 		

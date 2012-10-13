@@ -208,6 +208,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
 		
 		if(ii == null) {
+			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
 		
