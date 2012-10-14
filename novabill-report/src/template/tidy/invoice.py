@@ -8,6 +8,9 @@ from template.tidy import TidyDocumentBuilder, MEDIUM_FONT_SIZE, TidyDirector,\
 from reportlab.lib.units import cm
 from reportlab.platypus.flowables import Spacer
 from reportlab.lib.colors import lightgrey
+import i18n
+
+_ = i18n.language.ugettext
 
 class TidyInvoiceDirector(TidyDirector):
     
@@ -26,9 +29,9 @@ class TidyInvoiceBuilder(TidyDocumentBuilder):
     
     def getDocumentDetailsHeaderFlowable(self, data, width):
         style = getSampleStyleSheet()["Normal"]
-        t = Table([["", Paragraph("<b><font size=\"%d\">Invoice</font></b>" % MEDIUM_FONT_SIZE, style)],
-                   ["Number:", data.getAccountingDocumentID()],
-                   ["Date:", data.getAccountingDocumentDate()]],
+        t = Table([["", Paragraph("<b><font size=\"%d\">%s</font></b>" % (MEDIUM_FONT_SIZE, _("Invoice")), style)],
+                   ["%s:" % _("Number"), data.getAccountingDocumentID()],
+                   ["%s:" % _("Date"), data.getAccountingDocumentDate()]],
                   colWidths=[width*0.2, width*0.3]
                   )
         t.setStyle(TableStyle([("ALIGN", (0, 0), (0, -1), "RIGHT"),
@@ -39,10 +42,10 @@ class TidyInvoiceBuilder(TidyDocumentBuilder):
     
     def getInvoiceDetailsFlowable(self, data, width):
         style = getSampleStyleSheet()["Normal"]
-        tbl = Table([["Payment details", ""],
-                     [Paragraph("Date:", style), Paragraph(data.getPaymentDueDate() if data.getPaymentDueDate() else "", style)],
-                     [Paragraph("Type:", style), Paragraph(data.getHumanReadablePaymentType(), style)],
-                     [Paragraph("Note:", style), Paragraph(data.getPaymentNote() if data.getPaymentNote() else "", style)],
+        tbl = Table([["%s" % _("Payment details"), ""],
+                     [Paragraph("%s:" % _("Date"), style), Paragraph(data.getPaymentDueDate() if data.getPaymentDueDate() else "", style)],
+                     [Paragraph("%s:" % _("Type"), style), Paragraph(data.getHumanReadablePaymentType(), style)],
+                     [Paragraph("%s:" % _("Note"), style), Paragraph(data.getPaymentNote() if data.getPaymentNote() else "", style)],
                     ], colWidths=[width * 0.2, width * 0.8])
         tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), lightgrey),
                                  ('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),

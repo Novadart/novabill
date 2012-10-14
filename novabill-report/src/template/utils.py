@@ -6,6 +6,9 @@ from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
 from reportlab.lib.colors import lightgrey
 from reportlab.lib.pagesizes import A4
+import i18n
+
+_ = i18n.language.ugettext
 
 
 class FloatToEnd(KeepTogether):
@@ -78,14 +81,14 @@ def instatiateCanvasMaker(pagenumbers=True, watermark=True, metadata=dict()):
         def draw_page_number(self, page_count):
             self.setFont("Helvetica", 7)
             self.drawRightString(200*mm, 20*mm,
-                "Page %d of %d" % (self._pageNumber, page_count))
+                ("%s" % _("Page %(pNum)d of %(tNum)d")) % dict(pNum=self._pageNumber, tNum=page_count))
             
         def draw_watermark(self):
             self.setFont("Helvetica", 7)
             self.setFillColorRGB(0.45, 0.45, 0.45)
             #self.setFillColor(lightgrey)
-            w, _ = A4
-            self.drawCentredString(w/2, 20*mm, "Powered by Novabill - http://novabill.it")
+            w, _h = A4
+            self.drawCentredString(w/2, 20*mm,  "%s - http://novabill.it" % _("Powered by Novabill"))
         
         def add_annotations(self):
             self.setTitle(metadata["title"] if "title" in metadata else "")

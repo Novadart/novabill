@@ -7,6 +7,9 @@ from reportlab.lib.units import cm
 from reportlab.lib.colors import lightgrey
 from template.tidy import BORDER_SIZE, BORDER_COLOR
 from reportlab.platypus.flowables import Spacer
+import i18n
+
+_ = i18n.language.ugettext
 
 
 class TidyTransportDocumentDirector(TidyDirector):
@@ -27,9 +30,9 @@ class TidyTransportDocumentBuilder(TidyDocumentBuilder):
     
         def getDocumentDetailsHeaderFlowable(self, data, width):
             style = getSampleStyleSheet()["Normal"]
-            t = Table([["", Paragraph("<b><font size=\"%d\">Transport document</font></b>" % MEDIUM_FONT_SIZE, style)],
-                       ["Number:", data.getAccountingDocumentID()],
-                       ["Date:", data.getAccountingDocumentDate()]],
+            t = Table([["", Paragraph("<b><font size=\"%d\">%s</font></b>" % (MEDIUM_FONT_SIZE, _("Transport document")), style)],
+                       ["%s:" % _("Number"), data.getAccountingDocumentID()],
+                       ["%s:" % _("Date"), data.getAccountingDocumentDate()]],
                   colWidths=[width * 0.3, width * 0.6])
             t.setStyle(TableStyle([("ALIGN", (0, 0), (0, -1), "RIGHT"),
                                    ("ALIGN", (1, 0), (1, -1), "LEFT"),
@@ -54,17 +57,17 @@ class TidyTransportDocumentBuilder(TidyDocumentBuilder):
             return tbl
         
         def getToEndpointFlowable(self, data, width):
-            return self.__getEndPointFlowable(data.getToLocation(), width, "Receiving address")
+            return self.__getEndPointFlowable(data.getToLocation(), width, _("Receiving address"))
         
         def getFromEndpointFlowable(self, data, width):
-            return self.__getEndPointFlowable(data.getFromLocation(), width, "Sending address")
+            return self.__getEndPointFlowable(data.getFromLocation(), width, _("Sending address"))
         
         def getTransportDetailsFlowable(self, data, width):
             style = getSampleStyleSheet()["Normal"]
-            tbl = Table([[Paragraph("Transporter:", style), Paragraph(data.getTransporter(), style)],
-                         [Paragraph("Transportation responsibility:", style), Paragraph(data.getTransportationResponsibility(), style)],
-                         [Paragraph("Num. of packages:", style), Paragraph(str(data.getNumberOfPackages()), style)],
-                         [Paragraph("Trade zone:", style), Paragraph(data.getTradeZone(), style)]
+            tbl = Table([[Paragraph("%s:" % _("Transporter"), style), Paragraph(data.getTransporter(), style)],
+                         [Paragraph("%s:" % _("Transportation responsibility"), style), Paragraph(data.getTransportationResponsibility(), style)],
+                         [Paragraph("%s:" % _("Num. of packages"), style), Paragraph(str(data.getNumberOfPackages()), style)],
+                         [Paragraph("%s:" % _("Trade zone"), style), Paragraph(data.getTradeZone(), style)]
                          ], colWidths=[width*0.3, width*0.7])
             tbl.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'BOTTOM'),
                                      ("LINEABOVE", (0, 0), (-1, 0), BORDER_SIZE, BORDER_COLOR),
