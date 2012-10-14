@@ -29,6 +29,18 @@ class DocumentType(object):
     CREDIT_NOTE = 2
     
     TRANSPORT_DOCUMENT = 3
+    
+    @classmethod
+    def toString(cls, docType):
+        if cls.INVOICE == docType:
+            return "Invoice"
+        if cls.ESTIMATION == docType:
+            return "Estimation"
+        if cls.CREDIT_NOTE == docType:
+            return "Credit note"
+        if cls.TRANSPORT_DOCUMENT == docType:
+            return "Transport document"
+        raise Exception("No such document type")
 
 
 class DirectorType(object):

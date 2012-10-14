@@ -58,7 +58,8 @@ class TidyDirector(AbstractDirector):
         doc.build(story, canvasmaker=instatiateCanvasMaker(pagenumbers=self.getDispParams()["pagenumbers"] \
                                                            if "pagenumbers" in self.getDispParams() else None,
                                                            watermark=self.getDispParams()["watermark"] \
-                                                           if "watermark" in self.getDispParams() else None))
+                                                           if "watermark" in self.getDispParams() else None,
+                                                           metadata=self.getDispParams()["metadata"]))
 
 
 class TidyDocumentBuilder(object):

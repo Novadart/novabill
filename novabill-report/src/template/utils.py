@@ -50,7 +50,7 @@ class FloatToEnd(KeepTogether):
             t = Table([[""]], colWidths=[self._W], rowHeights=[aH - H], style=[])
             return [t] + self._content
 
-def instatiateCanvasMaker(pagenumbers=True, watermark=True):
+def instatiateCanvasMaker(pagenumbers=True, watermark=True, metadata=dict()):
     class CanvasProcessor(canvas.Canvas):
         def __init__(self, *args, **kwargs):
             canvas.Canvas.__init__(self, *args, **kwargs)
@@ -72,6 +72,7 @@ def instatiateCanvasMaker(pagenumbers=True, watermark=True):
                 if self.__watermark:
                     self.draw_watermark()
                 canvas.Canvas.showPage(self)
+            self.add_annotations()
             canvas.Canvas.save(self)
     
         def draw_page_number(self, page_count):
@@ -85,5 +86,11 @@ def instatiateCanvasMaker(pagenumbers=True, watermark=True):
             #self.setFillColor(lightgrey)
             w, _ = A4
             self.drawCentredString(w/2, 20*mm, "Powered by Novabill - http://novabill.it")
+        
+        def add_annotations(self):
+            self.setTitle(metadata["title"] if "title" in metadata else "")
+            self.setSubject(metadata["subject"] if "subject" in metadata else "")
+            self.setAuthor(metadata["author"] if "author" in metadata else "")
+            self.setCreator(metadata["creator"] if "creator" in metadata else "")
         
     return CanvasProcessor

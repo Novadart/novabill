@@ -37,7 +37,7 @@ class Factory(object):
         raise Exception("No such builder type!")
 
     @classmethod
-    def createDataWrapper(self, data, docType):
+    def createDataWrapper(cls, data, docType):
         if docType == DocumentType.INVOICE:
             return InvoiceData(data)
         elif docType == DocumentType.ESTIMATION:
@@ -53,8 +53,11 @@ def create_doc(out, docData, pathToLogo=None, logoWidth=None, logoHeight=None, d
                tempType=DirectorType.DEFAULT, watermark=True):
     builderDisplayParams = dict(logo=dict(path=pathToLogo, width=logoWidth, height=logoWidth))
     builder = Factory.createBuilder(BuilderType.DEFAULT, docType, out, dispParams=builderDisplayParams)
-    directorDisplayParams = dict(pagenumbers=True, watermark=watermark)
-    director = Factory.createDirector(tempType, docType, builder, Factory.createDataWrapper(docData, docType), dispParams=directorDisplayParams) 
+    dataWrapper = Factory.createDataWrapper(docData, docType)
+    docMetadata = dict(title=DocumentType.toString(docType), author=dataWrapper.getBusiness().getName(),
+                       creator="Novabill - http://novabill.it", subject="%s for %s" % (DocumentType.toString(docType), dataWrapper.getClient().getName()))
+    directorDisplayParams = dict(pagenumbers=True, watermark=watermark, metadata=docMetadata)
+    director = Factory.createDirector(tempType, docType, builder, dataWrapper, dispParams=directorDisplayParams) 
     director.construct()
         
         
