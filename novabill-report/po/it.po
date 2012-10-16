@@ -20,125 +20,125 @@ msgstr ""
 #: src/template/utils.py:84
 #, python-format
 msgid "Page %(pNum)d of %(tNum)d"
-msgstr ""
+msgstr "Pagina %(pNum)d di %(tNum)d"
 
 #: src/template/utils.py:91
 msgid "Powered by Novabill"
-msgstr ""
+msgstr "Generato con Novabill"
 
 #: src/template/tidy/transport_document.py:33
 msgid "Transport document"
-msgstr ""
+msgstr "Documento di Trasporto"
 
 #: src/template/tidy/transport_document.py:34
 #: src/template/tidy/credit_note.py:16 src/template/tidy/estimation.py:15
 #: src/template/tidy/invoice.py:33
 msgid "Number"
-msgstr ""
+msgstr "Numero"
 
 #: src/template/tidy/transport_document.py:35
 #: src/template/tidy/credit_note.py:17 src/template/tidy/estimation.py:16
 #: src/template/tidy/invoice.py:34 src/template/tidy/invoice.py:46
 msgid "Date"
-msgstr ""
+msgstr "Data"
 
 #: src/template/tidy/transport_document.py:60
 msgid "Receiving address"
-msgstr ""
+msgstr "Indirizzo di Destinazione"
 
 #: src/template/tidy/transport_document.py:63
 msgid "Sending address"
-msgstr ""
+msgstr "Indirizzo del Mittente"
 
 #: src/template/tidy/transport_document.py:67
 msgid "Transporter"
-msgstr ""
+msgstr "Vettore"
 
 #: src/template/tidy/transport_document.py:68
 msgid "Transportation responsibility"
-msgstr ""
+msgstr "Trasporto a carico"
 
 #: src/template/tidy/transport_document.py:69
 msgid "Num. of packages"
-msgstr ""
+msgstr "Colli"
 
 #: src/template/tidy/transport_document.py:70
 msgid "Trade zone"
-msgstr ""
+msgstr "Porto"
 
 #: src/template/tidy/__init__.py:102
 msgid "To"
-msgstr ""
+msgstr "A"
 
 #: src/template/tidy/__init__.py:105
 msgid "From"
-msgstr ""
+msgstr "Da"
 
 #: src/template/tidy/__init__.py:109
 msgid "Price"
-msgstr ""
+msgstr "Prezzo"
 
 #: src/template/tidy/__init__.py:109
 msgid "Qty"
-msgstr ""
+msgstr "Qtà"
 
 #: src/template/tidy/__init__.py:109
 msgid "Description"
-msgstr ""
+msgstr "Descrizione"
 
 #: src/template/tidy/__init__.py:109
 msgid "Tax"
-msgstr ""
+msgstr "Tasse"
 
 #: src/template/tidy/__init__.py:109 src/template/tidy/__init__.py:123
 msgid "Total"
-msgstr ""
+msgstr "Totale"
 
 #: src/template/tidy/__init__.py:120
 msgid "Total before tax"
-msgstr ""
+msgstr "Totale Imponibile"
 
 #: src/template/tidy/__init__.py:121
 msgid "Total tax"
-msgstr ""
+msgstr "Totale IVA"
 
 #: src/template/tidy/__init__.py:132
 msgid "Invoice notes"
-msgstr ""
+msgstr "Note"
 
 #: src/template/tidy/__init__.py:132
 msgid "No notes"
-msgstr ""
+msgstr "Nessuna nota"
 
 #: src/template/tidy/credit_note.py:15
 msgid "Credit note"
-msgstr ""
+msgstr "Nota di Credito"
 
 #: src/template/tidy/credit_note.py:18
 msgid "Payment date"
-msgstr ""
+msgstr "Scadenza Pagamento"
 
 #: src/template/tidy/estimation.py:14
 msgid "Estimation"
-msgstr ""
+msgstr "Preventivo"
 
 #: src/template/tidy/invoice.py:32
 msgid "Invoice"
-msgstr ""
+msgstr "Fattura"
 
 #: src/template/tidy/invoice.py:45
 msgid "Payment details"
-msgstr ""
+msgstr "Note Pagamento"
 
 #: src/template/tidy/invoice.py:47
 msgid "Type"
-msgstr ""
+msgstr "Pagamento"
 
 #: src/template/tidy/invoice.py:48
 msgid "Note"
-msgstr ""
+msgstr "Note"
 
 #: src/main.py:64
 #, python-format
 msgid "%(docType)s for %(client)s"
-msgstr ""
+msgstr "%(docType)s per %(client)s"
