@@ -12,9 +12,10 @@ import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.ui.util.LocalizedWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
@@ -23,7 +24,7 @@ import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidati
 import com.novadart.novabill.frontend.client.ui.widget.validation.PostcodeValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
-import com.novadart.novabill.shared.client.data.Province;
+import com.novadart.novabill.frontend.client.util.CountryUtils;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientDialog extends Dialog {
@@ -45,7 +46,7 @@ public class ClientDialog extends Dialog {
 	@UiField(provided=true) ValidatedTextBox address;
 	@UiField(provided=true) ValidatedTextBox city;
 	@UiField(provided=true) ValidatedListBox province;
-	@UiField(provided=true) ValidatedTextBox country;
+	@UiField(provided=true) ValidatedListBox country;
 	@UiField(provided=true) ValidatedTextBox postcode;
 	@UiField(provided=true) ValidatedTextBox phone;
 	@UiField(provided=true) ValidatedTextBox mobile;
@@ -67,7 +68,7 @@ public class ClientDialog extends Dialog {
 		postcode = new ValidatedTextBox(new PostcodeValidation());
 		address = new ValidatedTextBox(ne);
 		city = new ValidatedTextBox(ne);
-		country = new ValidatedTextBox(ne);
+		country = LocalizedWidgets.createCountryListBox("");
 		
 		NumberValidation nv = new NumberValidation(true);
 		phone = new ValidatedTextBox(nv);
@@ -76,10 +77,7 @@ public class ClientDialog extends Dialog {
 		
 		email = new ValidatedTextBox(new EmailValidation(true));
 		
-		province = new ValidatedListBox(I18N.INSTANCE.notEmptyValidationError());
-		for (Province p : Province.values()) {
-			province.addItem(p.name());
-		}
+		province = LocalizedWidgets.createProvinceListBox("");
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("ClientDialog panel");
 	}
@@ -96,7 +94,7 @@ public class ClientDialog extends Dialog {
 		address.setText(client.getAddress());
 		city.setText(client.getCity());
 		province.setSelectedItem(client.getProvince());
-		country.setText(client.getCountry());
+		country.setSelectedItem(client.getCountry());
 		postcode.setText(client.getPostcode());
 		phone.setText(client.getPhone());
 		mobile.setText(client.getMobile());
@@ -119,7 +117,7 @@ public class ClientDialog extends Dialog {
 		ClientDTO client = this.client==null ? new ClientDTO() : this.client;
 		client.setAddress(address.getText());
 		client.setCity(city.getText());
-		client.setCountry(country.getText());
+		client.setCountry(country.getSelectedItemText());
 		client.setEmail(email.getText());
 		client.setFax(fax.getText());
 		client.setMobile(mobile.getText());
@@ -175,22 +173,26 @@ public class ClientDialog extends Dialog {
 		province.reset();
 		web.setText("");
 		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, 
-				ssn, postcode, phone, mobile, fax, email, address, city, country}){
+				ssn, postcode, phone, mobile, fax, email, address, city}){
 			tb.reset();
 		}
 		province.reset();
+		country.reset();
+		country.setSelectedItem(CountryUtils.getRegionName("IT"));
 		ok.setText(I18N.INSTANCE.createClient());
 	}
 
 	private boolean validate(){
 		boolean isValid = true;
 		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, 
-				ssn, postcode, phone, mobile, fax, email, address, city, country}){
+				ssn, postcode, phone, mobile, fax, email, address, city}){
 			tb.validate();
 			isValid = isValid && tb.isValid();
 		}
 		province.validate();
 		isValid = isValid && province.isValid();
+		country.validate();
+		isValid = isValid && country.isValid();
 		return isValid;
 	}
 

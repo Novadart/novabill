@@ -10,6 +10,7 @@ import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.ui.util.LocalizedWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
@@ -17,7 +18,7 @@ import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidati
 import com.novadart.novabill.frontend.client.ui.widget.validation.PostcodeValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
-import com.novadart.novabill.shared.client.data.Province;
+import com.novadart.novabill.frontend.client.util.CountryUtils;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
 public class BootstrapDialog extends Dialog {
@@ -39,7 +40,7 @@ public class BootstrapDialog extends Dialog {
 	@UiField(provided=true) RichTextBox address;
 	@UiField(provided=true) RichTextBox city;
 	@UiField(provided=true) ValidatedListBox province;
-	@UiField(provided=true) RichTextBox country;
+	@UiField(provided=true) ValidatedListBox country;
 	@UiField(provided=true) RichTextBox postcode;
 	@UiField(provided=true) RichTextBox phone;
 	@UiField(provided=true) RichTextBox email;
@@ -58,11 +59,9 @@ public class BootstrapDialog extends Dialog {
 		vatID = new RichTextBox(I18N.INSTANCE.vatID(), new VatIdValidation());
 		address = new RichTextBox(I18N.INSTANCE.address(), nev);
 		city = new RichTextBox(I18N.INSTANCE.city(), nev);
-		province = new ValidatedListBox(I18N.INSTANCE.province(), I18N.INSTANCE.notEmptyValidationError());
-		for (Province p : Province.values()) {
-			province.addItem(p.name());
-		}
-		country = new RichTextBox(I18N.INSTANCE.country(), nev);
+		province = LocalizedWidgets.createProvinceListBox(I18N.INSTANCE.province()); 
+		country = LocalizedWidgets.createCountryListBox(I18N.INSTANCE.country());
+		country.setSelectedItem(CountryUtils.getRegionName("IT"));
 		postcode = new RichTextBox(I18N.INSTANCE.postcode(), new PostcodeValidation());
 		phone = new RichTextBox(I18N.INSTANCE.phone(), nuv);
 		email = new RichTextBox(I18N.INSTANCE.email(), new EmailValidation(true));
@@ -74,11 +73,14 @@ public class BootstrapDialog extends Dialog {
 	
 	private boolean validate(){
 		boolean valid = true;
-		for (RichTextBox r : new RichTextBox[]{name, ssn, vatID, address, city, country, 
+		for (RichTextBox r : new RichTextBox[]{name, ssn, vatID, address, city, 
 				postcode, phone, email, mobile, fax, web}) {
 			r.validate();
 			valid &= r.isValid();
 		}
+		
+		country.validate();
+		valid &= country.isValid();
 		
 		province.validate();
 		valid &= province.isValid();
@@ -101,7 +103,7 @@ public class BootstrapDialog extends Dialog {
 			b.setVatID(vatID.getText());
 			b.setCity(city.getText());
 			b.setProvince(province.getSelectedItemText());
-			b.setCountry(country.getText());
+			b.setCountry(country.getSelectedItemText());
 			b.setPostcode(postcode.getText());
 			b.setPhone(phone.getText());
 			b.setEmail(email.getText());

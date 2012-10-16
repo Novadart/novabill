@@ -25,6 +25,7 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.ui.center.BusinessView;
+import com.novadart.novabill.frontend.client.ui.util.LocalizedWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
@@ -33,7 +34,6 @@ import com.novadart.novabill.frontend.client.ui.widget.validation.PostcodeValida
 import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
 import com.novadart.novabill.frontend.client.util.ExportUtils;
-import com.novadart.novabill.shared.client.data.Province;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
 
@@ -57,7 +57,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	@UiField(provided=true) ValidatedTextBox address;
 	@UiField(provided=true) ValidatedTextBox city;
 	@UiField(provided=true) ValidatedListBox province;
-	@UiField(provided=true) ValidatedTextBox country;
+	@UiField(provided=true) ValidatedListBox country;
 	@UiField(provided=true) ValidatedTextBox postcode;
 	@UiField(provided=true) ValidatedTextBox phone;
 	@UiField(provided=true) ValidatedTextBox email;
@@ -83,15 +83,10 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		address.setText(b.getAddress());
 		city = new ValidatedTextBox(nev);
 		city.setText(b.getCity());
-		province = new ValidatedListBox(I18N.INSTANCE.notEmptyValidationError());
-		
-		Province[] provs = Province.values();
-		for (Province p : provs) {
-			province.addItem(p.name());
-		}
+		province = LocalizedWidgets.createProvinceListBox("");
 		province.setSelectedItem(b.getProvince());
-		country = new ValidatedTextBox(nev);
-		country.setText(b.getCountry());
+		country = LocalizedWidgets.createCountryListBox("");
+		country.setSelectedItem(b.getCountry());
 		postcode = new ValidatedTextBox(new PostcodeValidation());
 		postcode.setText(b.getPostcode());
 		phone = new ValidatedTextBox(nuv);
@@ -178,7 +173,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		});
 		formPanel.setWidget(fileUpload);
 		for (ValidatedTextBox v : new ValidatedTextBox[]{name,	ssn, vatID, address, city, 
-				country, postcode, phone, email, mobile, fax, web}) {
+				postcode, phone, email, mobile, fax, web}) {
 			v.reset();
 		}
 		
@@ -189,8 +184,10 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		vatID.setText(b.getVatID());
 		address.setText(b.getAddress());
 		city.setText(b.getCity());
+		province.reset();
 		province.setSelectedItem(b.getProvince());
-		country.setText(b.getCountry());
+		country.reset();
+		country.setSelectedItem(b.getCountry());
 		postcode.setText(b.getPostcode());
 		phone.setText(b.getPostcode());
 		email.setText(b.getEmail());
@@ -206,12 +203,14 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	private boolean validate(){
 		boolean validationOk = true;
 		for (ValidatedTextBox v : new ValidatedTextBox[]{name,	ssn, vatID, address, city, 
-				country, postcode, phone, email, mobile, fax, web}) {
+				postcode, phone, email, mobile, fax, web}) {
 			v.validate();
 			validationOk = validationOk && v.isValid();
 		}
 		province.validate();
 		validationOk = validationOk && province.isValid();
+		country.validate();
+		validationOk = validationOk && country.isValid();
 		return validationOk;
 	}
 
@@ -230,7 +229,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 			b.setVatID(vatID.getText());
 			b.setCity(city.getText());
 			b.setProvince(province.getSelectedItemText());
-			b.setCountry(country.getText());
+			b.setCountry(country.getSelectedItemText());
 			b.setPostcode(postcode.getText());
 			b.setPhone(phone.getText());
 			b.setEmail(email.getText());

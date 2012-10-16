@@ -15,7 +15,7 @@ public class BusinessDTOFactory {
 		businessDTO.setAddress(business.getAddress());
 		businessDTO.setCity(business.getCity());
 		businessDTO.setProvince(business.getProvince());
-		businessDTO.setCountry(business.getProvince());
+		businessDTO.setCountry(business.getCountry());
 		businessDTO.setPostcode(business.getPostcode());
 		businessDTO.setPhone(business.getPhone());
 		businessDTO.setMobile(business.getMobile());

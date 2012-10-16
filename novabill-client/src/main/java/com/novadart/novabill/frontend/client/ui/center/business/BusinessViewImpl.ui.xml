@@ -81,7 +81,7 @@
 								<g:Label styleName="businessLabel" text="{i18n.country}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedTextBox ui:field="country"></v:ValidatedTextBox>
+								<v:ValidatedListBox ui:field="country"></v:ValidatedListBox>
 							</g:customCell>
 						</g:row>
 						<g:row>

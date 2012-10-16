@@ -18,7 +18,7 @@
 				<t:RichTextBox ui:field="city"></t:RichTextBox>
 				<t:RichTextBox ui:field="postcode"></t:RichTextBox>
 				<v:ValidatedListBox ui:field="province"></v:ValidatedListBox>
-				<t:RichTextBox ui:field="country"></t:RichTextBox>
+				<v:ValidatedListBox ui:field="country"></v:ValidatedListBox>
 				<t:RichTextBox ui:field="phone"></t:RichTextBox>
 				<t:RichTextBox ui:field="mobile"></t:RichTextBox>
 				<t:RichTextBox ui:field="email"></t:RichTextBox>
