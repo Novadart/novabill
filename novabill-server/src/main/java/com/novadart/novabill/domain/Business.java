@@ -89,7 +89,7 @@ public class Business implements Serializable {
     private String city = "";
 
     @Size(max = 2)
-    @NotNull
+    //@NotNull
     private String province = "";
 
     @Size(max = 200)
