@@ -23,7 +23,7 @@ public class PrivateController {
 	@RequestMapping(value = "/private", method = RequestMethod.GET)
 	public ModelAndView privateArea(){
 		ModelAndView mav = new ModelAndView("private");
-		Business business = ((PrincipalDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getPrincipal();
+		Business business = Business.findBusiness(((PrincipalDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal()).getPrincipal().getId());
 		BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
 		StringWriter sw = new StringWriter();
 		try {

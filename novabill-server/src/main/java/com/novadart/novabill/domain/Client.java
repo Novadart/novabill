@@ -90,7 +90,7 @@ public class Client implements Serializable {
 
 	@Field(name = FTSNamespace.PROVINCE)
     @Size(max = 2)
-	@NotBlank
+	//@NotBlank
     private String province;
 
 	@Field(name = FTSNamespace.COUNTRY)
