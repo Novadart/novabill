@@ -42,7 +42,7 @@ class TidyTransportDocumentBuilder(TidyDocumentBuilder):
             tbl = Table([[Paragraph(label, style)],
                          [Paragraph(data.getCompanyName(), style)],
                          [Paragraph(data.getStreet(), style)],
-                         [Paragraph("%s (%s)" % (data.getCity(), data.getProvince()), style)],
+                         [Paragraph(self._("city pattern") % dict(city=data.getCity(), province=data.getProvince()), style)],
                          #[Paragraph(data.getCountry(), style)]
                          ], colWidths=[width])
             tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), lightgrey),

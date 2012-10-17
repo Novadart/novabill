@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-17 18:23+0200\n"
+"POT-Creation-Date: 2012-10-17 21:20+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -42,6 +42,10 @@ msgstr ""
 msgid "Date"
 msgstr ""
 
+#: src/template/tidy/transport_document.py:45
+msgid "city pattern"
+msgstr ""
+
 #: src/template/tidy/transport_document.py:57
 msgid "Receiving address"
 msgstr ""
@@ -66,56 +70,56 @@ msgstr ""
 msgid "Trade zone"
 msgstr ""
 
-#: src/template/tidy/__init__.py:105
+#: src/template/tidy/__init__.py:99
+msgid "entity pattern"
+msgstr ""
+
+#: src/template/tidy/__init__.py:104
 msgid "To"
 msgstr ""
 
-#: src/template/tidy/__init__.py:108
+#: src/template/tidy/__init__.py:107
 msgid "From"
 msgstr ""
 
-#: src/template/tidy/__init__.py:112
+#: src/template/tidy/__init__.py:111
 msgid "Price"
 msgstr ""
 
-#: src/template/tidy/__init__.py:112
+#: src/template/tidy/__init__.py:111
 msgid "Qty"
 msgstr ""
 
-#: src/template/tidy/__init__.py:112
+#: src/template/tidy/__init__.py:111
 msgid "Description"
 msgstr ""
 
-#: src/template/tidy/__init__.py:112
+#: src/template/tidy/__init__.py:111
 msgid "Tax"
 msgstr ""
 
-#: src/template/tidy/__init__.py:112 src/template/tidy/__init__.py:126
+#: src/template/tidy/__init__.py:111 src/template/tidy/__init__.py:125
 msgid "Total"
 msgstr ""
 
-#: src/template/tidy/__init__.py:123
+#: src/template/tidy/__init__.py:122
 msgid "Total before tax"
 msgstr ""
 
-#: src/template/tidy/__init__.py:124
+#: src/template/tidy/__init__.py:123
 msgid "Total tax"
 msgstr ""
 
-#: src/template/tidy/__init__.py:134
+#: src/template/tidy/__init__.py:133
 msgid "Invoice notes"
 msgstr ""
 
-#: src/template/tidy/__init__.py:134
+#: src/template/tidy/__init__.py:133
 msgid "No notes"
 msgstr ""
 
 #: src/template/tidy/credit_note.py:12
 msgid "Credit note"
-msgstr ""
-
-#: src/template/tidy/credit_note.py:15
-msgid "Payment date"
 msgstr ""
 
 #: src/template/tidy/estimation.py:24

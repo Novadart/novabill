@@ -96,10 +96,9 @@ class TidyDocumentBuilder(object):
     
     def __getBusinessEntityDetailsFlowable(self, data, label):
         style = getSampleStyleSheet()["Normal"]
-        return Paragraph("<b><font size=\"%(size)d\">%(label)s</font></b><br/>%(name)s<br/>%(address)s<br/>%(city)s (%(province)s)<br/>%(country)s" %
-                         dict(size=MEDIUM_FONT_SIZE, name=data.getName(), label=label,
-                              address=data.getAddress(), city=data.getCity(),
-                              province=data.getProvince(), country=data.getCountry()), style)
+        return Paragraph(self._("entity pattern") % dict(size=MEDIUM_FONT_SIZE, name=data.getName(), label=label, 
+                                                        address=data.getAddress(), city=data.getCity(),
+                                                        province=data.getProvince(), country=data.getCountry()), style)
     
     def getToBusinessEntityDetailsFlowable(self, data):
         return self.__getBusinessEntityDetailsFlowable(data.getClient(), self._("To"))
