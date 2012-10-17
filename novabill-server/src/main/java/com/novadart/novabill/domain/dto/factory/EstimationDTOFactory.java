@@ -12,9 +12,15 @@ public class EstimationDTOFactory extends AccountingDocumentDTOFactory {
 			return null;
 		EstimationDTO estimationDTO = new EstimationDTO();
 		AccountingDocumentDTOFactory.copyToDTO(estimation, estimationDTO);
+		estimationDTO.setLimitations(estimation.getLimitations());
 		estimationDTO.setBusiness(BusinessDTOFactory.toDTO(estimation.getBusiness()));
 		estimationDTO.setClient(ClientDTOFactory.toDTO(estimation.getClient()));
 		return estimationDTO; 
+	}
+	
+	public static void copyFromDTO(Estimation estimation, EstimationDTO estimationDTO, boolean addItems){
+		AccountingDocumentDTOFactory.copyFromDTO(estimation, estimationDTO, addItems);
+		estimation.setLimitations(estimationDTO.getLimitations());
 	}
 	
 	public static InvoiceDTO toInvoiceDTO(EstimationDTO estimationDTO){

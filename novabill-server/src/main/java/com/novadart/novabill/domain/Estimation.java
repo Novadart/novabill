@@ -17,6 +17,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class Estimation extends AccountingDocument implements Serializable {
 	
 	private static final long serialVersionUID = 8020837636815686509L;
+	
+	private String limitations;
 
 	@ManyToOne
     protected Business business;
@@ -24,7 +26,7 @@ public class Estimation extends AccountingDocument implements Serializable {
     @ManyToOne
     protected Client client;
     
-    public static Integer countEstimationsForClient(Long id){
+	public static Integer countEstimationsForClient(Long id){
     	return countForClient(Estimation.class, id);
     }
     
@@ -32,6 +34,14 @@ public class Estimation extends AccountingDocument implements Serializable {
      *Getters and setters 
      * */
     
+	public String getLimitations() {
+		return limitations;
+	}
+
+	public void setLimitations(String limitations) {
+		this.limitations = limitations;
+	}
+	
     public Business getBusiness() {
         return this.business;
     }
