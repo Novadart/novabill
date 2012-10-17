@@ -8,7 +8,6 @@ public class AbstractInvoiceDTOFactory extends AccountingDocumentDTOFactory {
 	protected static void copyToDTO(AbstractInvoice abstractInvoice, AbstractInvoiceDTO abstractInvoiceDTO){
 		AccountingDocumentDTOFactory.copyToDTO(abstractInvoice, abstractInvoiceDTO);
 		abstractInvoiceDTO.setPaymentType(abstractInvoice.getPaymentType());
-		abstractInvoiceDTO.setPaymentNote(abstractInvoice.getPaymentNote());
 		abstractInvoiceDTO.setPaymentDueDate(abstractInvoice.getPaymentDueDate());
 		abstractInvoiceDTO.setPayed(abstractInvoice.getPayed());
 	}
@@ -16,7 +15,6 @@ public class AbstractInvoiceDTOFactory extends AccountingDocumentDTOFactory {
 	public static void copyFromDTO(AbstractInvoice abstractInvoice, AbstractInvoiceDTO abstractInvoiceDTO, boolean addItems){
 		AccountingDocumentDTOFactory.copyFromDTO(abstractInvoice, abstractInvoiceDTO, addItems);
 		abstractInvoice.setPaymentType(abstractInvoiceDTO.getPaymentType());
-		abstractInvoice.setPaymentNote(abstractInvoiceDTO.getPaymentNote());
 		abstractInvoice.setPaymentDueDate(abstractInvoiceDTO.getPaymentDueDate());
 		abstractInvoice.setPayed(abstractInvoiceDTO.getPayed());
 	}

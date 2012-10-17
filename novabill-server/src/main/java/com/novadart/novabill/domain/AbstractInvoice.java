@@ -16,8 +16,7 @@ import com.novadart.novabill.shared.client.dto.PaymentType;
 
 public abstract class AbstractInvoice extends AccountingDocument {
 
-	@Type(type = "text")
-    protected String paymentNote;
+	
     
 	@NotNull
     protected PaymentType paymentType;
@@ -32,14 +31,6 @@ public abstract class AbstractInvoice extends AccountingDocument {
     /**
      * Getters and setters  
      */
-    
-    public String getPaymentNote() {
-        return this.paymentNote;
-    }
-    
-    public void setPaymentNote(String paymentNote) {
-        this.paymentNote = paymentNote;
-    }
     
     public PaymentType getPaymentType() {
         return this.paymentType;

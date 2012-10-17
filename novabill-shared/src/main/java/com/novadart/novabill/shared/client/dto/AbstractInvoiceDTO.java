@@ -4,8 +4,6 @@ import java.util.Date;
 
 public class AbstractInvoiceDTO extends AccountingDocumentDTO {
 	
-	private String paymentNote;
-    
     private PaymentType paymentType;
     
     private Date paymentDueDate;
@@ -18,14 +16,6 @@ public class AbstractInvoiceDTO extends AccountingDocumentDTO {
 
 	public void setPaymentDueDate(Date paymentDueDate) {
 		this.paymentDueDate = paymentDueDate;
-	}
-
-	public String getPaymentNote() {
-		return paymentNote;
-	}
-
-	public void setPaymentNote(String paymentNote) {
-		this.paymentNote = paymentNote;
 	}
 
 	public PaymentType getPaymentType() {

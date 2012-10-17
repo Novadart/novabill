@@ -55,6 +55,9 @@ public abstract class AccountingDocument {
     protected BigDecimal totalTax;
     
     protected BigDecimal totalBeforeTax;
+    
+    @Type(type = "text")
+    protected String paymentNote;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "accountingDocument", orphanRemoval = true)
     @OrderBy("id")
@@ -132,6 +135,14 @@ public abstract class AccountingDocument {
     
     public void setTotalBeforeTax(BigDecimal totalBeforeTax) {
         this.totalBeforeTax = totalBeforeTax;
+    }
+    
+    public String getPaymentNote() {
+        return this.paymentNote;
+    }
+    
+    public void setPaymentNote(String paymentNote) {
+        this.paymentNote = paymentNote;
     }
     
     public List<AccountingDocumentItem> getAccountingDocumentItems() {

@@ -22,6 +22,7 @@ public abstract class AccountingDocumentDTOFactory {
 		accountingDocumentDTO.setTotal(accountingDocument.getTotal());
 		accountingDocumentDTO.setTotalTax(accountingDocument.getTotalTax());
 		accountingDocumentDTO.setTotalBeforeTax(accountingDocument.getTotalBeforeTax());
+		accountingDocumentDTO.setPaymentNote(accountingDocument.getPaymentNote());
 	}
 	
 	public static void copyFromDTO(AccountingDocument accountingDocument, AccountingDocumentDTO accountingDocumentDTO, boolean addItems){
@@ -39,6 +40,7 @@ public abstract class AccountingDocumentDTOFactory {
 		accountingDocument.setTotal(accountingDocumentDTO.getTotal());
 		accountingDocument.setTotalTax(accountingDocumentDTO.getTotalTax());
 		accountingDocument.setTotalBeforeTax(accountingDocumentDTO.getTotalBeforeTax());
+		accountingDocument.setPaymentNote(accountingDocumentDTO.getPaymentNote());
 	}
 
 }

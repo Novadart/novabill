@@ -21,8 +21,10 @@ public class AccountingDocumentDTO implements IsSerializable{
     protected BigDecimal totalTax;
     
     protected BigDecimal totalBeforeTax;
-
+    
     protected BusinessDTO business;
+    
+    protected String paymentNote;
 
     protected ClientDTO client;
 
@@ -82,6 +84,14 @@ public class AccountingDocumentDTO implements IsSerializable{
 
 	public void setTotalBeforeTax(BigDecimal totalBeforeTax) {
 		this.totalBeforeTax = totalBeforeTax;
+	}
+	
+	public String getPaymentNote() {
+		return paymentNote;
+	}
+
+	public void setPaymentNote(String paymentNote) {
+		this.paymentNote = paymentNote;
 	}
 
 	public BusinessDTO getBusiness() {
