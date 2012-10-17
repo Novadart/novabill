@@ -2,10 +2,11 @@
 
 class AbstractDirector(object):
     
-    def __init__(self, builder, dataObject, dispParams=dict):
+    def __init__(self, builder, dataObject, dispParams=dict(), translator=None):
         self.__builder = builder
         self.__data = dataObject
         self.__displayParams = dispParams
+        self._ = translator
     
     def getBuilder(self):
         return self.__builder

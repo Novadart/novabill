@@ -8,9 +8,6 @@ from template.tidy import TidyDocumentBuilder, MEDIUM_FONT_SIZE, TidyDirector,\
 from reportlab.lib.units import cm
 from reportlab.platypus.flowables import Spacer
 from reportlab.lib.colors import lightgrey
-import i18n
-
-_ = i18n.language.ugettext
 
 class TidyInvoiceDirector(TidyDirector):
     
@@ -20,18 +17,21 @@ class TidyInvoiceDirector(TidyDirector):
         toFrom.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"),
                                     ("ALIGN", (0, 0), (-1, -1), "LEFT"),
                                     ("LEFTPADDING", (0, 0), (-1, -1), 1.75*cm)]))
-        invDetailsF = builder.getInvoiceDetailsFlowable(data, docWidth*0.4)
+        return [toFrom]
+    
+    def getDocumentDetailsBottomFlowables(self, builder, data, docWidth):
+        invDetailsF = builder.getInvoicePaymentDetailsFlowable(data, docWidth*0.4)
         invDetailsF.hAlign = "RIGHT"
-        return [invDetailsF, Spacer(1, 0.25*cm), toFrom]
+        return [invDetailsF, Spacer(1, 0.25*cm), builder.getNotesFlowable(data)]
 
 
 class TidyInvoiceBuilder(TidyDocumentBuilder):
     
     def getDocumentDetailsHeaderFlowable(self, data, width):
         style = getSampleStyleSheet()["Normal"]
-        t = Table([["", Paragraph("<b><font size=\"%d\">%s</font></b>" % (MEDIUM_FONT_SIZE, _("Invoice")), style)],
-                   ["%s:" % _("Number"), data.getAccountingDocumentID()],
-                   ["%s:" % _("Date"), data.getAccountingDocumentDate()]],
+        t = Table([["", Paragraph("<b><font size=\"%d\">%s</font></b>" % (MEDIUM_FONT_SIZE, self._("Invoice")), style)],
+                   ["%s:" % self._("Number"), data.getAccountingDocumentID()],
+                   ["%s:" % self._("Date"), data.getAccountingDocumentDate()]],
                   colWidths=[width*0.2, width*0.3]
                   )
         t.setStyle(TableStyle([("ALIGN", (0, 0), (0, -1), "RIGHT"),
@@ -40,12 +40,12 @@ class TidyInvoiceBuilder(TidyDocumentBuilder):
                                ("TOPPADDING", (0, 0), (-1, -1), 1)]))
         return t
     
-    def getInvoiceDetailsFlowable(self, data, width):
+    def getInvoicePaymentDetailsFlowable(self, data, width):
         style = getSampleStyleSheet()["Normal"]
-        tbl = Table([["%s" % _("Payment details"), ""],
-                     [Paragraph("%s:" % _("Date"), style), Paragraph(data.getPaymentDueDate() if data.getPaymentDueDate() else "", style)],
-                     [Paragraph("%s:" % _("Type"), style), Paragraph(data.getHumanReadablePaymentType(), style)],
-                     [Paragraph("%s:" % _("Note"), style), Paragraph(data.getPaymentNote() if data.getPaymentNote() else "", style)],
+        tbl = Table([["%s" % self._("Payment details"), ""],
+                     [Paragraph("%s:" % self._("Date"), style), Paragraph(data.getPaymentDueDate() if data.getPaymentDueDate() else "", style)],
+                     [Paragraph("%s:" % self._("Type"), style), Paragraph(data.getHumanReadablePaymentType(), style)],
+                     [Paragraph("%s:" % self._("Note"), style), Paragraph(data.getPaymentNote() if data.getPaymentNote() else "", style)],
                     ], colWidths=[width * 0.2, width * 0.8])
         tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), lightgrey),
                                  ('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),

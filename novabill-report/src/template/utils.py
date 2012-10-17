@@ -4,11 +4,7 @@ from reportlab.platypus.doctemplate import FrameBreak
 from reportlab.platypus.tables import Table
 from reportlab.pdfgen import canvas
 from reportlab.lib.units import mm
-from reportlab.lib.colors import lightgrey
 from reportlab.lib.pagesizes import A4
-import i18n
-
-_ = i18n.language.ugettext
 
 
 class FloatToEnd(KeepTogether):
@@ -53,7 +49,7 @@ class FloatToEnd(KeepTogether):
             t = Table([[""]], colWidths=[self._W], rowHeights=[aH - H], style=[])
             return [t] + self._content
 
-def instatiateCanvasMaker(pagenumbers=True, watermark=True, metadata=dict()):
+def instatiateCanvasMaker(pagenumbers=True, watermark=True, metadata=dict(), translator=None):
     class CanvasProcessor(canvas.Canvas):
         def __init__(self, *args, **kwargs):
             canvas.Canvas.__init__(self, *args, **kwargs)

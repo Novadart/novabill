@@ -11,9 +11,6 @@ from template.core import AbstractDirector
 from template.default.shared_components import CustomerBoxFlowable
 from template.utils import FloatToEnd, instatiateCanvasMaker
 from reportlab.lib.pagesizes import A4
-import i18n
-
-_ = i18n.language.ugettext
 
 BORDER_SIZE = 0.5
 BORDER_COLOR = gray
@@ -30,6 +27,9 @@ class TidyDirector(AbstractDirector):
                                     ("ALIGN", (0, 0), (-1, -1), "LEFT"),
                                     ("LEFTPADDING", (0, 0), (-1, -1), 1.75*cm)]))
         return [toFrom]
+        
+    def getDocumentDetailsBottomFlowables(self, builder, data, docWidth):
+        return [builder.getNotesFlowable(data)]
         
     
     def construct(self):
@@ -56,19 +56,22 @@ class TidyDirector(AbstractDirector):
         totals.setStyle(TableStyle([("LINEBELOW", (0,-1), (-1,-1), BORDER_SIZE, BORDER_COLOR)]))
         story.append(totals)
         story.append(Spacer(1, cm))
-        story.append(builder.getNotesFlowable(data))
+        for flowable in self.getDocumentDetailsBottomFlowables(builder, data, doc.width):
+            story.append(flowable)
         doc.build(story, canvasmaker=instatiateCanvasMaker(pagenumbers=self.getDispParams()["pagenumbers"] \
                                                            if "pagenumbers" in self.getDispParams() else None,
                                                            watermark=self.getDispParams()["watermark"] \
                                                            if "watermark" in self.getDispParams() else None,
                                                            metadata=self.getDispParams()["metadata"]))
+        
 
 
 class TidyDocumentBuilder(object):
     
-    def __init__(self, outputFilePath, dispParams=dict()):
+    def __init__(self, outputFilePath, dispParams=dict(), translator=None):
         self.__doc = SimpleDocTemplate(outputFilePath, pagesize=A4, rightMargin=18,leftMargin=18, topMargin=18,bottomMargin=100)
         self.__displayParams = dispParams
+        self._ = translator
         
     def getDocument(self):
         return self.__doc
@@ -99,14 +102,14 @@ class TidyDocumentBuilder(object):
                               province=data.getProvince(), country=data.getCountry()), style)
     
     def getToBusinessEntityDetailsFlowable(self, data):
-        return self.__getBusinessEntityDetailsFlowable(data.getClient(), _("To"))
+        return self.__getBusinessEntityDetailsFlowable(data.getClient(), self._("To"))
     
     def getFromBusinessEntityDetailsFlowable(self, data):
-        return self.__getBusinessEntityDetailsFlowable(data.getBusiness(), _("From"))
+        return self.__getBusinessEntityDetailsFlowable(data.getBusiness(), self._("From"))
     
     def getDocumentItemsFlowable(self, itemsData, width):
         style = getSampleStyleSheet()["Normal"]
-        data = [[_("Price"), _("Qty"), _("Description"), _("Tax"), _("Total")]]
+        data = [[self._("Price"), self._("Qty"), self._("Description"), self._("Tax"), self._("Total")]]
         for item in itemsData:
             data.append([item.getPrice(), item.getQuantity(), Paragraph(item.getDescription(), style), item.getTax(), item.getTotal()])
         itemsFlowable = Table(data, colWidths=[0.2*width, 0.1*width, 0.4*width, 0.1*width, 0.2*width])
@@ -117,17 +120,16 @@ class TidyDocumentBuilder(object):
         return itemsFlowable
     
     def getDocumentTotals(self, data, width):
-        totals = Table([["%s:" % _("Total before tax"), u"%s €" % data.getTotalBeforeTax()],
-                        ["%s:" % _("Total tax"), u"%s €" % data.getTotalTax()],
+        totals = Table([["%s:" % self._("Total before tax"), u"%s €" % data.getTotalBeforeTax()],
+                        ["%s:" % self._("Total tax"), u"%s €" % data.getTotalTax()],
                         ["", ""],
-                        ["%s:" % _("Total"), u"%s €" % data.getTotal()]], colWidths=[0.5*width, 0.5*width])
+                        ["%s:" % self._("Total"), u"%s €" % data.getTotal()]], colWidths=[0.5*width, 0.5*width])
         totals.setStyle(TableStyle([("ALIGN", (-1,0), (-1,-1), "RIGHT"),
                                     ("FONTSIZE", (0,0), (-1,-2), 12),
                                     ("FONTSIZE", (0,-1), (-1,-1), 12)]))
         return totals
-        
     
     def getNotesFlowable(self, data):
         style = getSampleStyleSheet()["Normal"]
-        return Paragraph("<b>%s:</b><br/>%s" %  (_("Invoice notes"), data.getNote()) if data.getNote() else "<i>%s</i>" % _("No notes"), style)
+        return Paragraph("<b>%s:</b><br/>%s" %  (self._("Invoice notes"), data.getNote()) if data.getNote() else "<i>%s</i>" % self._("No notes"), style)
     
