@@ -49,8 +49,6 @@ class TidyInvoiceBuilder(TidyDocumentBuilder):
                     ], colWidths=[width * 0.2, width * 0.8])
         tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), lightgrey),
                                  ('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),
-                                 ("LINEABOVE", (0, 0), (-1, 0), BORDER_SIZE, BORDER_COLOR),
-                                 ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR),
                                  ("SPAN", (0, 0), (1, 0)),
                                  ("BOX", (0, 0), (1, 0), BORDER_SIZE, BORDER_COLOR),
                                  ("BOX", (0, 1), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))

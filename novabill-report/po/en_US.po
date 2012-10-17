@@ -122,6 +122,19 @@ msgstr "Payment date"
 msgid "Estimation"
 msgstr "Estimation"
 
+#: src/template/tidy/estimation.py:35
+msgid "Limitations"
+msgstr "Limitations"
+
+#: src/template/tidy/estimation.py:35
+msgid "No limitations"
+msgstr "No limitations"
+
+#: src/template/tidy/estimation.py:41
+msgid "Payment note"
+msgstr "Payment note"
+
+
 #: src/template/tidy/invoice.py:32
 msgid "Invoice"
 msgstr "Invoice"

@@ -194,6 +194,12 @@ class AccountingDocumentData(object):
     def getTotalTax(self):
         return self.__data["totalTax"]
     
+    def getNote(self):
+        return self.__data["note"]
+    
+    def getPaymentNote(self):
+        return self.__data["paymentNote"]
+    
     def getVersion(self):
         return self.__data["version"]
 
@@ -205,6 +211,9 @@ class EstimationData(AccountingDocumentData):
     def __init__(self, jsonData):
         super(EstimationData, self).__init__(jsonData)
         self.__data = jsonData
+        
+    def getLimitations(self):
+        return self.__data["limitations"]
 
 """
     CREDIT NOTE DATA
@@ -225,14 +234,8 @@ class AbstractInvoiceData(AccountingDocumentData):
         super(AbstractInvoiceData, self).__init__(jsonData)
         self.__data = jsonData
     
-    def getNote(self):
-        return self.__data["note"]
-    
     def getPaymentDueDate(self):
         return self.__data["paymentDueDate"]
-    
-    def getPaymentNote(self):
-        return self.__data["paymentNote"]
     
     def getPaymentType(self):
         return self.__data["paymentType"]

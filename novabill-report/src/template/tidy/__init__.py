@@ -131,5 +131,5 @@ class TidyDocumentBuilder(object):
     
     def getNotesFlowable(self, data):
         style = getSampleStyleSheet()["Normal"]
-        return Paragraph("<b>%s:</b><br/>%s" %  (self._("Invoice notes"), data.getNote()) if data.getNote() else "<i>%s</i>" % self._("No notes"), style)
+        return Paragraph("<b>%s:</b><br/>%s" %  (self._("Invoice notes"), data.getNote() if data.getNote() else "<i>%s</i>" % self._("No notes")), style)
     
