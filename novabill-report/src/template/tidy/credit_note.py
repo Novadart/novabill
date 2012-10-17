@@ -7,12 +7,11 @@ from template.tidy import TidyDocumentBuilder, MEDIUM_FONT_SIZE
 
 class TidyCreditNoteBuilder(TidyDocumentBuilder):
     
-    def getDocumentDetailsHeaderFlowable(self, data, width, ratio):
+    def getDocumentDetailsHeaderFlowable(self, data, width):
         style = getSampleStyleSheet()["Normal"]
         t = Table([["", Paragraph("<b><font size=\"%d\">%s</font></b>" % (MEDIUM_FONT_SIZE, self._("Credit note")), style)],
-                   ["%s:" % self._("Number"), data.getAccountingDocumentID()]
-                   ["%s:" % self._("Date"), data.getAccountingDocumentDate()],
-                   ["%s:" % self._("Payment date"), data.getPaymentDueDate() if data.getPaymentDueDate() else ""]],
+                   ["%s:" % self._("Number"), data.getAccountingDocumentID()],
+                   ["%s:" % self._("Date"), data.getAccountingDocumentDate()]],
                   colWidths=[width * 0.5, width * 0.5])
         t.setStyle(TableStyle([("ALIGN", (0, 0), (0, -1), "RIGHT"),
                                ("ALIGN", (1, 0), (1, -1), "LEFT"),
