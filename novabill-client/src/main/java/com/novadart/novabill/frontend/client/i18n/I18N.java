@@ -6,6 +6,10 @@ import com.google.gwt.i18n.client.Constants;
 public interface I18N extends Constants {
 	public static final I18N INSTANCE = GWT.create(I18N.class);
 	
+	public String addNewClientTitle();
+	public String selectClient();
+	public String helpClearFilter();
+	public String helpSearchClient();
 	public String productName();
 	public String errorLogoIllegalFile(); 
 	public String errorLogoSizeTooBig();
@@ -40,6 +44,7 @@ public interface I18N extends Constants {
 	public String ssn();
 	public String web();
 	public String email();
+	public String companyEmail();
 	public String fax();
 	public String mobile();
 	public String phone();

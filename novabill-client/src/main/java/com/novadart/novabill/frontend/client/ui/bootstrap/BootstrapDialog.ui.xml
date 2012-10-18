@@ -12,13 +12,13 @@
 		<g:SimplePanel styleName="gridContainer">
 			<g:VerticalPanel styleName="grid">
 				<t:RichTextBox ui:field="name"></t:RichTextBox>
-				<t:RichTextBox ui:field="ssn"></t:RichTextBox>
-				<t:RichTextBox ui:field="vatID"></t:RichTextBox>
 				<t:RichTextBox ui:field="address"></t:RichTextBox>
-				<t:RichTextBox ui:field="city"></t:RichTextBox>
 				<t:RichTextBox ui:field="postcode"></t:RichTextBox>
+				<t:RichTextBox ui:field="city"></t:RichTextBox>
 				<v:ValidatedListBox ui:field="province"></v:ValidatedListBox>
 				<v:ValidatedListBox ui:field="country"></v:ValidatedListBox>
+				<t:RichTextBox ui:field="ssn"></t:RichTextBox>
+				<t:RichTextBox ui:field="vatID"></t:RichTextBox>
 				<t:RichTextBox ui:field="phone"></t:RichTextBox>
 				<t:RichTextBox ui:field="mobile"></t:RichTextBox>
 				<t:RichTextBox ui:field="email"></t:RichTextBox>

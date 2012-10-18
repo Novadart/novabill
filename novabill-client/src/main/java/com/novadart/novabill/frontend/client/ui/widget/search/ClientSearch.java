@@ -9,8 +9,8 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.view.client.Range;
+import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
@@ -25,13 +25,13 @@ public class ClientSearch implements Watcher {
 	private static final int MIN_WAIT_BEFORE_FIRING_SEARCH = 1200;
 	private static final Range CLIENT_LIST_RANGE = new Range(0, 20000);
 	
-	private final Image resetFilter = new Image(ImageResources.INSTANCE.delete().getSafeUri().asString());
+	private final Image resetFilter = new Image(ImageResources.INSTANCE.clear_left().getSafeUri().asString());
 	private final Image loader = new Image(ImageResources.INSTANCE.loader().getSafeUri().asString());
 	private final Label noClientsFound = new Label(I18N.INSTANCE.noClientsFound());
 	
 	private final ClientDataProvider clientDataProvider = new ClientDataProvider();
 	private final CellList<ClientDTO> dataDisplay;
-	private final TextBox filter = new TextBox();
+	private final RichTextBox filter = new RichTextBox(I18N.INSTANCE.helpSearchClient());
 	
 	private final SimplePanel clientListWrapper = new SimplePanel();
 	
@@ -48,12 +48,14 @@ public class ClientSearch implements Watcher {
 		clientListWrapper.setStyleName("ClientSearch-clientListWrapper");
 		clientListWrapper.setWidget(loader);
 		
-		filter.setStyleName("ClientSearch-filter");
+		filter.addStyleName("ClientSearch-filter");
 		filter.addKeyUpHandler(new KeyUpHandler() {
 			
 			@Override
 			public void onKeyUp(KeyUpEvent event) {
 				lastTimeKeyWasPressedInFilter = System.currentTimeMillis();
+				
+				resetFilter.setVisible(filter.getText().length() > 0);
 				
 				if(!searchQueryComplete){
 					return;
@@ -63,12 +65,15 @@ public class ClientSearch implements Watcher {
 			}
 		});
 		
-		resetFilter.setStyleName("ClientSearch-resetFilter");
+		resetFilter.addStyleName("ClientSearch-resetFilter");
+		resetFilter.setVisible(false);
+		resetFilter.setTitle(I18N.INSTANCE.helpClearFilter());
 		resetFilter.addClickHandler(new ClickHandler() {
 			
 			@Override
 			public void onClick(ClickEvent event) {
 				filter.setText("");
+				resetFilter.setVisible(false);
 				filter.setFocus(true);
 				updateClientList(false);
 			}
@@ -94,7 +99,7 @@ public class ClientSearch implements Watcher {
 		return resetFilter;
 	}
 	
-	public TextBox getSearchInput(){
+	public RichTextBox getSearchInput(){
 		return filter;
 	}
 	

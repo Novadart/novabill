@@ -1,126 +1,141 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" 
-	xmlns:validation="urn:import:com.novadart.gwtshared.client.validation.widget">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:validation="urn:import:com.novadart.gwtshared.client.validation.widget">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
+		
+	<g:FlowPanel styleName="wrapper">
+		<g:Label styleName="title" text="{i18n.addNewClientTitle}"></g:Label>
+		<g:FlowPanel styleName="gridWrapper">
+			<g:Grid styleName="grid">
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="label" text="{i18n.companyName}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<validation:ValidatedTextBox
+							styleName="value" ui:field="companyName"></validation:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="label" text="{i18n.address}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<validation:ValidatedTextBox
+							styleName="value" ui:field="address"></validation:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="label" text="{i18n.postcode}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<validation:ValidatedTextBox
+							styleName="value" ui:field="postcode"></validation:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="label" text="{i18n.city}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<validation:ValidatedTextBox
+							styleName="value" ui:field="city"></validation:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="label" text="{i18n.province}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<validation:ValidatedListBox
+							styleName="value" ui:field="province"></validation:ValidatedListBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="label" text="{i18n.country}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<validation:ValidatedListBox
+							styleName="value" ui:field="country"></validation:ValidatedListBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="label" text="{i18n.ssn}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<validation:ValidatedTextBox
+							styleName="value" ui:field="ssn"></validation:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="label" text="{i18n.vatID}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<validation:ValidatedTextBox
+							styleName="value" ui:field="vatID"></validation:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="label" text="{i18n.phone}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<validation:ValidatedTextBox
+							styleName="value" ui:field="phone"></validation:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="label" text="{i18n.mobile}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<validation:ValidatedTextBox
+							styleName="value" ui:field="mobile"></validation:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="label" text="{i18n.fax}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<validation:ValidatedTextBox
+							styleName="value" ui:field="fax"></validation:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="label" text="{i18n.email}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<validation:ValidatedTextBox
+							styleName="value" ui:field="email"></validation:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="label" text="{i18n.web}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<validation:ValidatedTextBox styleName="value" ui:field="web"></validation:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+			</g:Grid>
 
-	<g:FlowPanel styleName="gridWrapper">
-		<g:Grid styleName="grid">
-			<g:row>
-				<g:customCell>
-					<g:Label styleName="label" text="{i18n.companyName}"></g:Label>
-				</g:customCell>
-				<g:customCell>
-					<validation:ValidatedTextBox styleName="value" ui:field="companyName"></validation:ValidatedTextBox>
-				</g:customCell>
-			</g:row>
-			<g:row>
-				<g:customCell>
-					<g:Label styleName="label" text="{i18n.address}"></g:Label>
-				</g:customCell>
-				<g:customCell>
-					<validation:ValidatedTextBox styleName="value" ui:field="address"></validation:ValidatedTextBox>
-				</g:customCell>
-			</g:row>
-			<g:row>
-				<g:customCell>
-					<g:Label styleName="label" text="{i18n.city}"></g:Label>
-				</g:customCell>
-				<g:customCell>
-					<validation:ValidatedTextBox styleName="value" ui:field="city"></validation:ValidatedTextBox>
-				</g:customCell>
-			</g:row>
-			<g:row>
-				<g:customCell>
-					<g:Label styleName="label" text="{i18n.province}"></g:Label>
-				</g:customCell>
-				<g:customCell>
-					<validation:ValidatedListBox styleName="value" ui:field="province"></validation:ValidatedListBox>
-				</g:customCell>
-			</g:row>
-			<g:row>
-				<g:customCell>
-					<g:Label styleName="label" text="{i18n.country}"></g:Label>
-				</g:customCell>
-				<g:customCell>
-					<validation:ValidatedListBox styleName="value" ui:field="country"></validation:ValidatedListBox>
-				</g:customCell>
-			</g:row>
-			<g:row>
-				<g:customCell>
-					<g:Label styleName="label" text="{i18n.postcode}"></g:Label>
-				</g:customCell>
-				<g:customCell>
-					<validation:ValidatedTextBox styleName="value" ui:field="postcode"></validation:ValidatedTextBox>
-				</g:customCell>
-			</g:row>
-			<g:row>
-				<g:customCell>
-					<g:Label styleName="label" text="{i18n.phone}"></g:Label>
-				</g:customCell>
-				<g:customCell>
-					<validation:ValidatedTextBox styleName="value" ui:field="phone"></validation:ValidatedTextBox>
-				</g:customCell>
-			</g:row>
-			<g:row>
-				<g:customCell>
-					<g:Label styleName="label" text="{i18n.mobile}"></g:Label>
-				</g:customCell>
-				<g:customCell>
-					<validation:ValidatedTextBox styleName="value" ui:field="mobile"></validation:ValidatedTextBox>
-				</g:customCell>
-			</g:row>
-			<g:row>
-				<g:customCell>
-					<g:Label styleName="label" text="{i18n.fax}"></g:Label>
-				</g:customCell>
-				<g:customCell>
-					<validation:ValidatedTextBox styleName="value" ui:field="fax"></validation:ValidatedTextBox>
-				</g:customCell>
-			</g:row>
-			<g:row>
-				<g:customCell>
-					<g:Label styleName="label" text="{i18n.email}"></g:Label>
-				</g:customCell>
-				<g:customCell>
-					<validation:ValidatedTextBox styleName="value" ui:field="email"></validation:ValidatedTextBox>
-				</g:customCell>
-			</g:row>
-			<g:row>
-				<g:customCell>
-					<g:Label styleName="label" text="{i18n.web}"></g:Label>
-				</g:customCell>
-				<g:customCell>
-					<g:TextBox styleName="value" ui:field="web"></g:TextBox>
-				</g:customCell>
-			</g:row>
-			<g:row>
-				<g:customCell>
-					<g:Label styleName="label" text="{i18n.vatID}"></g:Label>
-				</g:customCell>
-				<g:customCell>
-					<validation:ValidatedTextBox styleName="value" ui:field="vatID"></validation:ValidatedTextBox>
-				</g:customCell>
-			</g:row>
-			<g:row>
-				<g:customCell>
-					<g:Label styleName="label" text="{i18n.ssn}"></g:Label>
-				</g:customCell>
-				<g:customCell>
-					<validation:ValidatedTextBox styleName="value" ui:field="ssn"></validation:ValidatedTextBox>
-				</g:customCell>
-			</g:row>
-
-		</g:Grid>
-
-		<g:SimplePanel styleName="buttonContainer">
-			<g:HorizontalPanel>
-				<g:Button styleName="button" ui:field="ok" text="{i18n.createClient}"></g:Button>
-				<g:Button styleName="button" ui:field="cancel" text="{i18n.cancel}"></g:Button>
-			</g:HorizontalPanel>
-		</g:SimplePanel>
+			<g:SimplePanel styleName="buttonContainer">
+				<g:HorizontalPanel>
+					<g:Button styleName="button submit" ui:field="ok"
+						text="{i18n.submit}"></g:Button>
+					<g:Button styleName="button" ui:field="cancel" text="{i18n.cancel}"></g:Button>
+				</g:HorizontalPanel>
+			</g:SimplePanel>
+		</g:FlowPanel>
 	</g:FlowPanel>
+
 
 </ui:UiBinder> 

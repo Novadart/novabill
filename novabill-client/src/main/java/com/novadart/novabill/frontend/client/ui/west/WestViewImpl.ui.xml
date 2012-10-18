@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-	xmlns:w="urn:import:com.novadart.novabill.frontend.client.ui.west">
+	xmlns:w="urn:import:com.novadart.novabill.frontend.client.ui.west" xmlns:t="urn:import:com.novadart.gwtshared.client.textbox">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
@@ -15,7 +15,7 @@
 				<g:Button styleName="action-button addClient" ui:field="addClient" text="{i18n.newClient}"></g:Button>
 			</g:HorizontalPanel>
 			<g:HorizontalPanel>
-				<g:TextBox ui:field="clientFilter" />
+				<t:RichTextBox ui:field="clientFilter"></t:RichTextBox>
 				<g:Image ui:field="cleanClientFilter" />
 			</g:HorizontalPanel>
 			<g:SimplePanel ui:field="clientListContainer"/>

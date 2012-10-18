@@ -111,14 +111,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 				updateFields();
 			}
 			
-//			@Override
-//			public void onUpdate(AccountingDocumentItemDTO item) {
-//				int oldItemIndex = accountingDocumentItems.getList().indexOf(item);
-//				accountingDocumentItems.getList().set(oldItemIndex, item);
-//				accountingDocumentItems.refresh();
-//				updateFields();
-//				
-//			}
 		});
 		accountingDocumentItems.addDataDisplay(itemTable);
 

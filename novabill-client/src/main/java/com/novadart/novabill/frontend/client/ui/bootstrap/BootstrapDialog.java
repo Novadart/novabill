@@ -64,7 +64,7 @@ public class BootstrapDialog extends Dialog {
 		country.setSelectedItem(CountryUtils.getRegionName("IT"));
 		postcode = new RichTextBox(I18N.INSTANCE.postcode(), new PostcodeValidation());
 		phone = new RichTextBox(I18N.INSTANCE.phone(), nuv);
-		email = new RichTextBox(I18N.INSTANCE.email(), new EmailValidation(true));
+		email = new RichTextBox(I18N.INSTANCE.companyEmail(), new EmailValidation(true));
 		mobile = new RichTextBox(I18N.INSTANCE.mobile(), nuv);
 		fax = new RichTextBox(I18N.INSTANCE.fax(), nuv);
 		setWidget(uiBinder.createAndBindUi(this));
