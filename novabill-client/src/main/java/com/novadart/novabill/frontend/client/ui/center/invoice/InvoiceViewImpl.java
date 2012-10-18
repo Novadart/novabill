@@ -34,8 +34,8 @@ import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.ui.center.AccountDocument;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
+import com.novadart.novabill.frontend.client.ui.center.ItemTable;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
-import com.novadart.novabill.frontend.client.ui.widget.table.ItemTable;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
@@ -105,11 +105,20 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		itemTable = new ItemTable(new ItemTable.Handler() {
 
 			@Override
-			public void delete(AccountingDocumentItemDTO item) {
+			public void onDelete(AccountingDocumentItemDTO item) {
 				accountingDocumentItems.getList().remove(item);
 				accountingDocumentItems.refresh();
 				updateFields();
 			}
+			
+//			@Override
+//			public void onUpdate(AccountingDocumentItemDTO item) {
+//				int oldItemIndex = accountingDocumentItems.getList().indexOf(item);
+//				accountingDocumentItems.getList().set(oldItemIndex, item);
+//				accountingDocumentItems.refresh();
+//				updateFields();
+//				
+//			}
 		});
 		accountingDocumentItems.addDataDisplay(itemTable);
 

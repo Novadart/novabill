@@ -1,66 +1,95 @@
-package com.novadart.novabill.frontend.client.ui.widget.table;
+package com.novadart.novabill.frontend.client.ui.center;
 
 import java.math.BigDecimal;
 
 import com.google.gwt.cell.client.ActionCell;
-import com.google.gwt.cell.client.SafeHtmlCell;
-import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.cell.client.EditTextCell;
+import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.NumberFormat;
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
 public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
-	
-	
+
+
 	public static interface Handler{
-		public void delete(AccountingDocumentItemDTO item);
+		public void onDelete(AccountingDocumentItemDTO item);
 	}
 
 	private final Handler handler;
-	
+
+
 	public ItemTable(Handler handler) {
 		super(2000);
-		
-		this.handler = handler;
-		
-		//Name & Description
-		Column<AccountingDocumentItemDTO, SafeHtml> nameDescription = 
-				new Column<AccountingDocumentItemDTO, SafeHtml>(new SafeHtmlCell()) {
 
-					@Override
-					public SafeHtml getValue(AccountingDocumentItemDTO object) {
-						SafeHtmlBuilder shb = new SafeHtmlBuilder();
-						shb.appendEscaped(object.getDescription());
-						return shb.toSafeHtml();
-					}
+		this.handler = handler;
+
+		final EditTextCell editCell = new EditTextCell();
+
+
+		//Name & Description
+		final Column<AccountingDocumentItemDTO, String> nameDescription = 
+				new Column<AccountingDocumentItemDTO, String>(editCell) {
+
+			@Override
+			public String getValue(AccountingDocumentItemDTO object) {
+				return object.getDescription();
+			}
 
 		};
+		nameDescription.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+
+			@Override
+			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				if(Validation.isEmpty(value)){
+					Notification.showMessage(I18N.INSTANCE.errorClientData());
+					editCell.clearViewData(object);
+					redraw();
+				} else {
+					object.setDescription(value);
+					redraw();
+				}
+			}
+		});
 		addColumn(nameDescription, I18N.INSTANCE.nameDescription());
-		
-		
+
+
 		//quantity
 		Column<AccountingDocumentItemDTO, String> quantity =
-				new Column<AccountingDocumentItemDTO, String>(new TextCell()) {
+				new Column<AccountingDocumentItemDTO, String>(editCell) {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
 				return NumberFormat.getDecimalFormat().format(object.getQuantity());
 			}
 		};
-	
+		quantity.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+
+			@Override
+			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				if(!Validation.isDouble(value)){
+					Notification.showMessage(I18N.INSTANCE.errorClientData());
+					editCell.clearViewData(object);
+					redraw();
+				} else {
+					object.setQuantity(CalcUtils.parseValue(value));
+					redraw();
+				}
+			}
+		});
 		addColumn(quantity, I18N.INSTANCE.quantity());
 
 
 		//unity of measure
 		Column<AccountingDocumentItemDTO, String> unityOfMeasure =
-				new Column<AccountingDocumentItemDTO, String>(new TextCell()) {
+				new Column<AccountingDocumentItemDTO, String>(editCell) {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
@@ -73,25 +102,53 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 		//price
 		Column<AccountingDocumentItemDTO, String> price =
-				new Column<AccountingDocumentItemDTO, String>(new TextCell()) {
+				new Column<AccountingDocumentItemDTO, String>(editCell) {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
 				return String.valueOf(NumberFormat.getCurrencyFormat().format(object.getPrice()));
 			}
 		};
+		price.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+
+			@Override
+			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				if(!Validation.isDouble(value)){
+					Notification.showMessage(I18N.INSTANCE.errorClientData());
+					editCell.clearViewData(object);
+					redraw();
+				} else {
+					object.setPrice(CalcUtils.parseValue(value));
+					redraw();
+				}
+			}
+		});
 		addColumn(price, I18N.INSTANCE.price());
 
 
 		//VAT
 		Column<AccountingDocumentItemDTO, String> tax =
-				new Column<AccountingDocumentItemDTO, String>(new TextCell()) {
+				new Column<AccountingDocumentItemDTO, String>(editCell) {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
 				return String.valueOf(object.getTax())+"%";
 			}
 		};
+		tax.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+
+			@Override
+			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				if(!Validation.isDouble(value)){
+					Notification.showMessage(I18N.INSTANCE.errorClientData());
+					editCell.clearViewData(object);
+					redraw();
+				} else {
+					object.setTax(CalcUtils.parseValue(value));
+					redraw();
+				}
+			}
+		});
 		addColumn(tax, I18N.INSTANCE.vat());
 
 
@@ -138,7 +195,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void execute(AccountingDocumentItemDTO object) {
-				ItemTable.this.handler.delete(object);
+				ItemTable.this.handler.onDelete(object);
 			}
 		};
 
@@ -151,7 +208,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			}
 		};
 		addColumn(delete);
-		
+
 		setWidth("99%");
 		setColumnWidth(nameDescription, 40, Unit.PCT);
 		setColumnWidth(quantity, 6, Unit.PCT);

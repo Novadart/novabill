@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:i="urn:import:com.novadart.novabill.frontend.client.ui.center.invoice"
 	xmlns:d="urn:import:com.google.gwt.user.datepicker.client" xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget"
-	xmlns:t="urn:import:com.novadart.novabill.frontend.client.ui.widget.table">
+	xmlns:t="urn:import:com.novadart.novabill.frontend.client.ui.center">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>

@@ -14,6 +14,11 @@ public class CalcUtils {
 	
 	private static final long ONE_DAY_MS = 1000 * 60 * 60 * 24;
 	
+	public static BigDecimal parseValue(String value) throws NumberFormatException {
+		return new BigDecimal( NumberFormat.getDecimalFormat().parse(value) );
+	}
+	
+	
 	public static BigDecimal calculateTaxesForItem(AccountingDocumentItemDTO item){
 		return item.getPrice()
 				.multiply(item.getQuantity())
@@ -36,15 +41,6 @@ public class CalcUtils {
 	}
 	
 	
-	public static boolean isNumber(String value){
-		try {
-			Double.parseDouble(value);
-			return true;
-		} catch(NumberFormatException e){
-			return false;
-		}
-	}
-	
 	public static AccountingDocumentItemDTO createAccountingDocumentItem(String description, String price, 
 			String quantity, String unitOfMeasure, String tax){
 		for (String txt : new String[]{description,quantity,price}) {
@@ -54,14 +50,11 @@ public class CalcUtils {
 		}
 		
 		AccountingDocumentItemDTO ii = new AccountingDocumentItemDTO();
-		double tmpVal;
 
 		try {
 			ii.setDescription(description);
-			tmpVal = NumberFormat.getDecimalFormat().parse(price);
-			ii.setPrice(new BigDecimal( tmpVal ) );
-			tmpVal = NumberFormat.getDecimalFormat().parse(quantity);
-			ii.setQuantity(new BigDecimal(tmpVal));
+			ii.setPrice(parseValue(price));
+			ii.setQuantity(parseValue(quantity));
 			ii.setUnitOfMeasure(unitOfMeasure);
 			ii.setTax(new BigDecimal(tax));
 		} catch (NumberFormatException ex) {

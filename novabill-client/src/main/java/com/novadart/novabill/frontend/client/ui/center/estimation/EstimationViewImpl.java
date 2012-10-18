@@ -32,8 +32,8 @@ import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.AccountDocument;
 import com.novadart.novabill.frontend.client.ui.center.EstimationView;
+import com.novadart.novabill.frontend.client.ui.center.ItemTable;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
-import com.novadart.novabill.frontend.client.ui.widget.table.ItemTable;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -85,7 +85,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		itemTable = new ItemTable(new ItemTable.Handler() {
 
 			@Override
-			public void delete(AccountingDocumentItemDTO item) {
+			public void onDelete(AccountingDocumentItemDTO item) {
 				accountingDocumentItems.getList().remove(item);
 				accountingDocumentItems.refresh();
 				updateFields();

@@ -34,8 +34,8 @@ import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.ui.center.AccountDocument;
 import com.novadart.novabill.frontend.client.ui.center.CreditNoteView;
+import com.novadart.novabill.frontend.client.ui.center.ItemTable;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
-import com.novadart.novabill.frontend.client.ui.widget.table.ItemTable;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
@@ -101,7 +101,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		itemTable = new ItemTable(new ItemTable.Handler() {
 
 			@Override
-			public void delete(AccountingDocumentItemDTO item) {
+			public void onDelete(AccountingDocumentItemDTO item) {
 				creditNoteItems.getList().remove(item);
 				creditNoteItems.refresh();
 				updateFields();
