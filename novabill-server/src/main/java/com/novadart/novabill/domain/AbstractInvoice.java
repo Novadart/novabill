@@ -1,10 +1,12 @@
 package com.novadart.novabill.domain;
 
 import java.util.Date;
+
+import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import org.hibernate.annotations.Type;
+import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import com.novadart.novabill.shared.client.dto.PaymentType;
@@ -14,6 +16,8 @@ import com.novadart.novabill.shared.client.dto.PaymentType;
  * If fields and validation constraints are modified be sure to update the validation code. 
  */
 
+@Configurable
+@Entity
 public abstract class AbstractInvoice extends AccountingDocument {
 
 	
