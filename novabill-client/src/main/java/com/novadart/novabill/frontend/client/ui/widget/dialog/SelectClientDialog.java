@@ -10,11 +10,11 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.widget.search.ClientSearch;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -35,7 +35,7 @@ public class SelectClientDialog extends Dialog {
 	private final Handler handler;
 
 	@UiField(provided=true) SimplePanel listWrapper;
-	@UiField(provided=true) TextBox filter;
+	@UiField(provided=true) RichTextBox filter;
 	@UiField(provided=true) Image clearFilter;
 	@UiField Button ok;
 

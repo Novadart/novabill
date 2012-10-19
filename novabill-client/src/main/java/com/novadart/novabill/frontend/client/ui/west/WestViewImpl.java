@@ -11,8 +11,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.ui.center.client.dialog.ClientDialog;
@@ -29,7 +29,7 @@ public class WestViewImpl extends Composite implements WestView  {
 	
 	@UiField FlowPanel clientContainer;
 	@UiField(provided=true) SimplePanel clientListContainer;
-	@UiField(provided=true) TextBox clientFilter;
+	@UiField(provided=true) RichTextBox clientFilter;
 	@UiField(provided=true) Image cleanClientFilter;
 	
 	private Presenter presenter;

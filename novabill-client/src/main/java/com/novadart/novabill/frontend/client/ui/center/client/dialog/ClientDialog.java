@@ -7,7 +7,6 @@ import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
@@ -18,6 +17,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.util.LocalizedWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.ui.widget.validation.DefaultValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
@@ -52,7 +52,7 @@ public class ClientDialog extends Dialog {
 	@UiField(provided=true) ValidatedTextBox mobile;
 	@UiField(provided=true) ValidatedTextBox fax;
 	@UiField(provided=true) ValidatedTextBox email;
-	@UiField TextBox web;
+	@UiField(provided=true) ValidatedTextBox web;
 	@UiField(provided=true) ValidatedTextBox vatID;
 	@UiField(provided=true) ValidatedTextBox ssn;
 
@@ -75,6 +75,8 @@ public class ClientDialog extends Dialog {
 		mobile = new ValidatedTextBox(nv);
 		fax = new ValidatedTextBox(nv);
 		
+		web = new ValidatedTextBox(new DefaultValidation<String>());
+
 		email = new ValidatedTextBox(new EmailValidation(true));
 		
 		province = LocalizedWidgets.createProvinceListBox("");
@@ -173,19 +175,19 @@ public class ClientDialog extends Dialog {
 		province.reset();
 		web.setText("");
 		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, 
-				ssn, postcode, phone, mobile, fax, email, address, city}){
+				ssn, postcode, phone, mobile, fax, email, address, city, web}){
 			tb.reset();
 		}
 		province.reset();
 		country.reset();
 		country.setSelectedItem(CountryUtils.getRegionName("IT"));
-		ok.setText(I18N.INSTANCE.createClient());
+		ok.setText(I18N.INSTANCE.submit());
 	}
 
 	private boolean validate(){
 		boolean isValid = true;
 		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, 
-				ssn, postcode, phone, mobile, fax, email, address, city}){
+				ssn, postcode, phone, mobile, fax, email, address, city, web}){
 			tb.validate();
 			isValid = isValid && tb.isValid();
 		}

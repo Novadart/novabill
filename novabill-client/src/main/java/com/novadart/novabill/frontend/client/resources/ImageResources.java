@@ -13,6 +13,8 @@ public interface ImageResources extends ClientBundle {
 
 	ImageResource loader();
 
+	ImageResource clear_left();
+	
 	ImageResource delete();
 
 }

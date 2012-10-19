@@ -102,7 +102,8 @@ textarea:HOVER {
 	margin-bottom: 1.5em;
 }
 
-.ClientView .newInvoice,.ClientView .newEstimation,.ClientView .newCreditNote,.ClientView .newTransportDocument {
+.ClientView .newInvoice,.ClientView .newEstimation,.ClientView .newCreditNote,.ClientView .newTransportDocument
+	{
 	cursor: pointer;
 }
 
@@ -132,7 +133,7 @@ textarea:HOVER {
 	padding: 0 0.5em;
 	text-align: center;
 	text-shadow: 2px 2px 2px #DDD;
-	filter: dropshadow(color = #DDDDDD, offx = 2, offy = 2);
+	filter: dropshadow(color =   #DDDDDD, offx =   2, offy =   2);
 }
 
 .ClientView .clientDetails {
@@ -307,8 +308,15 @@ textarea:HOVER {
 	color: #333;
 }
 
-.MainWidget .header {
-	border-bottom: 0.2em solid #EEE;
+.MainWidget .header { 
+	background: rgb(255,255,255); /* Old browsers */
+	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(239,239,239,1) 100%); /* FF3.6+ */
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(239,239,239,1))); /* Chrome,Safari4+ */
+	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(239,239,239,1) 100%); /* Chrome10+,Safari5.1+ */
+	background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(239,239,239,1) 100%); /* Opera 11.10+ */
+	background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(239,239,239,1) 100%); /* IE10+ */
+	background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(239,239,239,1) 100%); /* W3C */
+	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#efefef',GradientType=0 ); /* IE6-9 */
 }
 
 .MainWidget .header .logo {
@@ -428,8 +436,8 @@ textarea:HOVER {
 	height: 2em;
 }
 
-.QuickViewList.TransportDocumentList .upper span.createInvoice,
-.QuickViewList.EstimationList .upper span.convertToInvoice {
+.QuickViewList.TransportDocumentList .upper span.createInvoice,.QuickViewList.EstimationList .upper span.convertToInvoice
+	{
 	position: absolute;
 	right: 4.3em;
 }
@@ -438,9 +446,7 @@ textarea:HOVER {
 	text-align: right;
 }
 
-.QuickViewList.TransportDocumentList .upper span.createInvoice,
-.QuickViewList.EstimationList .upper span.convertToInvoice,
-.QuickViewList .details .tools span
+.QuickViewList.TransportDocumentList .upper span.createInvoice,.QuickViewList.EstimationList .upper span.convertToInvoice,.QuickViewList .details .tools span
 	{
 	text-transform: uppercase;
 	font-size: 0.8em;
@@ -448,9 +454,7 @@ textarea:HOVER {
 	cursor: pointer;
 }
 
-.QuickViewList.TransportDocumentList .upper span.createInvoice:HOVER,
-.QuickViewList.EstimationList .upper span.convertToInvoice:HOVER,
-.QuickViewList .details .tools span:HOVER
+.QuickViewList.TransportDocumentList .upper span.createInvoice:HOVER,.QuickViewList.EstimationList .upper span.convertToInvoice:HOVER,.QuickViewList .details .tools span:HOVER
 	{
 	text-decoration: underline;
 }
@@ -522,10 +526,8 @@ textarea:HOVER {
 	padding: 5px 5px 15px;
 }
 
-.QuickViewList .openEstimation,
-.QuickViewList .openInvoice,
-.QuickViewList .openCreditNote,
-.QuickViewList .openTransportDocument {
+.QuickViewList .openEstimation,.QuickViewList .openInvoice,.QuickViewList .openCreditNote,.QuickViewList .openTransportDocument
+	{
 	position: absolute;
 	left: 48%;
 }
@@ -593,6 +595,11 @@ textarea:HOVER {
 .westContainer .ClientSearch-filter {
 	margin: 0.5em 1em;
 	width: 20em;
+}
+
+.westContainer .ClientSearch-filter.RichTextBox-labelStyle {
+	color: #666;
+	font-style: italic;
 }
 
 .Dialog {
@@ -723,7 +730,11 @@ td.datePickerMonth {
 }
 
 .SelectClientDialog .title {
-	
+	text-align: center;
+	padding: 0.2em;
+	font-size: 1.4em;
+	font-weight: bold;
+	margin-bottom: 1em;
 }
 
 .SelectClientDialog .filterContainer {
@@ -735,6 +746,11 @@ td.datePickerMonth {
 	margin-bottom: 1em;
 }
 
+.SelectClientDialog .ClientSearch-filter.RichTextBox-labelStyle {
+	color: #666;
+	font-style: italic;
+}
+
 .SelectClientDialog .ClientSearch-resetFilter {
 	cursor: pointer;
 	width: 1.5em;
@@ -743,13 +759,20 @@ td.datePickerMonth {
 	right: -0.5em;
 }
 
-}
 .SelectClientDialog .listWrapper {
 	width: 100%;
 }
 
 .SelectClientDialog .buttons {
 	margin: 1em auto 0;
+}
+
+.SelectClientDialog .buttons .button {
+	width: 7em;
+}
+
+.SelectClientDialog .buttons .button.submit {
+	margin-right: 1em;
 }
 
 .SelectClientDialog .client {
@@ -776,8 +799,16 @@ td.datePickerMonth {
 	max-height: 20em;
 }
 
-.ClientDialog {
-	
+.ClientDialog .wrapper {
+	background-color: white;
+}
+
+.ClientDialog .title {
+	text-align: center;
+	padding: 0.2em;
+	font-size: 1.4em;
+	font-weight: bold;
+	margin-bottom: 1em;
 }
 
 .ClientDialog .gridWrapper {
@@ -789,7 +820,7 @@ td.datePickerMonth {
 }
 
 .ClientDialog .value {
-	margin: 0.5em;
+	margin: 0.3em 0.5em;
 	width: 15em;
 }
 
@@ -801,6 +832,14 @@ td.datePickerMonth {
 	padding: 1em 0;
 }
 
+.ClientDialog .buttonContainer .button {
+	width: 7em;
+}
+
+.ClientDialog .buttonContainer .button.submit {
+	margin-right: 1em;
+}
+
 .AccountDocumentView {
 	width: 100%;
 	height: 100%;
@@ -810,6 +849,7 @@ td.datePickerMonth {
 	padding: 0.5em;
 	border-bottom: 0.1em solid #DDD;
 }
+
 .AccountDocumentView .docBody {
 	
 }
@@ -822,15 +862,15 @@ td.datePickerMonth {
 	
 }
 
-.AccountDocumentView .newEstimation,.AccountDocumentView .newInvoice, 
-.AccountDocumentView .newTransportDocument, .AccountDocumentView .newCreditNote  {
+.AccountDocumentView .newEstimation,.AccountDocumentView .newInvoice,.AccountDocumentView .newTransportDocument,.AccountDocumentView .newCreditNote
+	{
 	font-weight: bold;
 	font-size: 2em;
 	display: inline;
 }
 
-.AccountDocumentView .abortButton,.AccountDocumentView .modifyDocument,.AccountDocumentView .createInvoice,
-.AccountDocumentView .saveAsEstimation,.AccountDocumentView .convertToInvoice {
+.AccountDocumentView .abortButton,.AccountDocumentView .modifyDocument,.AccountDocumentView .createInvoice,.AccountDocumentView .saveAsEstimation,.AccountDocumentView .convertToInvoice
+	{
 	margin-left: 2em;
 }
 
@@ -856,7 +896,7 @@ td.datePickerMonth {
 }
 
 .AccountDocumentView .sublabel.date {
-
+	
 }
 
 .AccountDocumentView input[type=text].box {
@@ -868,7 +908,7 @@ td.datePickerMonth {
 }
 
 .AccountDocumentView .addressBox {
-	margin: 1.5em 0 0;	
+	margin: 1.5em 0 0;
 }
 
 .AccountDocumentView .addressBox .box {
@@ -883,8 +923,7 @@ td.datePickerMonth {
 	margin-left: 2em;
 }
 
-.AccountDocumentView .modifyButton,.AccountDocumentView .createButton
-	{
+.AccountDocumentView .modifyButton,.AccountDocumentView .createButton {
 	margin-left: 2em;
 }
 
@@ -910,9 +949,11 @@ td.datePickerMonth {
 	padding: 1em;
 	border: 0.1em solid #CCC;
 }
+
 .AccountDocumentView .itemTable {
 	margin: 0 auto;
 }
+
 .AccountDocumentView .smallLabel {
 	font-weight: bold;
 	padding: 0.4em 0 0.4em 0;
@@ -939,7 +980,8 @@ td.datePickerMonth {
 	width: 6em;
 }
 
-.AccountDocumentView .quantityContainer,.AccountDocumentView .unitOfMeasureContainer,.AccountDocumentView .priceContainer,.AccountDocumentView .taxContainer {
+.AccountDocumentView .quantityContainer,.AccountDocumentView .unitOfMeasureContainer,.AccountDocumentView .priceContainer,.AccountDocumentView .taxContainer
+	{
 	margin-left: 1em;
 }
 
@@ -947,11 +989,12 @@ td.datePickerMonth {
 	padding: 1.6em 0 0 0.5em;
 }
 
-.AccountDocumentView .totalContainer.totalTax,.AccountDocumentView .totalContainer.totalAfterTaxes {
+.AccountDocumentView .totalContainer.totalTax,.AccountDocumentView .totalContainer.totalAfterTaxes
+	{
 	margin-left: 4em;
 }
 
-.AccountDocumentView .totalContainer .label	{
+.AccountDocumentView .totalContainer .label {
 	text-align: center;
 	padding: 0.4em;
 }
@@ -960,7 +1003,7 @@ td.datePickerMonth {
 	max-height: 400px;
 }
 
-.AccountDocumentView .totalContainer .total	{
+.AccountDocumentView .totalContainer .total {
 	font-size: 1.5em;
 	font-weight: bold;
 	color: white;
@@ -992,14 +1035,13 @@ td.datePickerMonth {
 	display: block;
 }
 
-.BootstrapDialog .ValidatedListBox,
-.BootstrapDialog .RichTextBox {
+.BootstrapDialog .ValidatedListBox,.BootstrapDialog .RichTextBox {
 	width: 20em;
 	margin: 0.3em;
 }
 
-.BootstrapDialog .ValidatedListBox,
-.BootstrapDialog .RichTextBox.RichTextBox-labelStyle {
+.BootstrapDialog .ValidatedListBox,.BootstrapDialog .RichTextBox.RichTextBox-labelStyle
+	{
 	color: #666;
 	font-style: italic;
 }
