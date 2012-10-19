@@ -1,6 +1,7 @@
 package com.novadart.novabill.domain;
 
 import java.io.Serializable;
+import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
@@ -19,6 +20,8 @@ public class Estimation extends AccountingDocument implements Serializable {
 	private static final long serialVersionUID = 8020837636815686509L;
 	
 	private String limitations;
+	
+	private Date validTill;
 
 	@ManyToOne
     protected Business business;
@@ -42,7 +45,15 @@ public class Estimation extends AccountingDocument implements Serializable {
 		this.limitations = limitations;
 	}
 	
-    public Business getBusiness() {
+    public Date getValidTill() {
+		return validTill;
+	}
+
+	public void setValidTill(Date validTill) {
+		this.validTill = validTill;
+	}
+
+	public Business getBusiness() {
         return this.business;
     }
     
