@@ -123,6 +123,8 @@ public class Client implements Serializable {
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
     private String ssn;
     
+    private Contact contact;
+    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
     private Set<Invoice> invoices = new HashSet<Invoice>();
     
@@ -304,7 +306,15 @@ public class Client implements Serializable {
         this.ssn = ssn;
     }
     
-    public Set<Invoice> getInvoices() {
+    public Contact getContact() {
+		return contact;
+	}
+
+	public void setContact(Contact contact) {
+		this.contact = contact;
+	}
+
+	public Set<Invoice> getInvoices() {
         return this.invoices;
     }
     

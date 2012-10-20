@@ -62,7 +62,11 @@ def instatiateCanvasMaker(pagenumbers=True, watermark=True, metadata=dict(), tra
             self._startPage()
     
         def save(self):
-            """add page info to each page (page x of y)"""
+            """
+                add page info to each page (page x of y)
+                add watermark to each page
+                add annotations to document
+            """
             num_pages = len(self._saved_page_states)
             for state in self._saved_page_states:
                 self.__dict__.update(state)

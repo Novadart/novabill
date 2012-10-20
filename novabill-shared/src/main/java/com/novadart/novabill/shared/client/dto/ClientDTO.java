@@ -31,6 +31,8 @@ public class ClientDTO implements IsSerializable {
 	private String vatID;
 	
 	private String ssn;
+	
+	private ContactDTO contact;
 
 	public Long getId() {
 		return id;
@@ -142,6 +144,14 @@ public class ClientDTO implements IsSerializable {
 
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
+	}
+
+	public ContactDTO getContact() {
+		return contact;
+	}
+
+	public void setContact(ContactDTO contact) {
+		this.contact = contact;
 	}
 	
 }

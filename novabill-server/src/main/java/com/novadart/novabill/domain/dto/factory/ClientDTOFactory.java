@@ -1,6 +1,7 @@
 package com.novadart.novabill.domain.dto.factory;
 
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Contact;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientDTOFactory {
@@ -23,6 +24,7 @@ public class ClientDTOFactory {
 		clientDTO.setWeb(client.getWeb());
 		clientDTO.setVatID(client.getVatID());
 		clientDTO.setSsn(client.getSsn());
+		clientDTO.setContact(ContactDTOFactory.toDTO(client.getContact()));
 		return clientDTO;
 	}
 	
@@ -42,6 +44,8 @@ public class ClientDTOFactory {
 		client.setWeb(clientDTO.getWeb());
 		client.setVatID(clientDTO.getVatID());
 		client.setSsn(clientDTO.getSsn());
+		client.setContact(new Contact());
+		ContactDTOFactory.copyFromDTO(client.getContact(), clientDTO.getContact());
 	}
 
 }
