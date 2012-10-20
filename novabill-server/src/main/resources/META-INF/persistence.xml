@@ -10,6 +10,7 @@
             <property name="hibernate.connection.charSet" value="UTF-8"/>
             <property name="hibernate.show_sql" value="${hibernate.show_sql.value}"/>
             <property name="hibernate.search.default.indexBase" value="${hibernate.search.default.indexBase.value}"/>
+            <property name="hibernate.hbm2ddl.import_files" value="${hibernate.hbm2ddl.import_files.value}"/>
             <!-- Uncomment the following two properties for JBoss only -->
             <!-- property name="hibernate.validator.apply_to_ddl" value="false" /-->
             <!-- property name="hibernate.validator.autoregister_listeners" value="false" /-->

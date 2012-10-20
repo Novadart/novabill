@@ -135,7 +135,7 @@ public class Client implements Serializable {
     	@AttributeOverride(name = "mobile", column = @Column(name = "contact_mobile"))
     })
     @Embedded
-    private Contact contact;
+    private Contact contact = new Contact();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
     private Set<Invoice> invoices = new HashSet<Invoice>();
