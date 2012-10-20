@@ -10,8 +10,11 @@ import java.util.Set;
 import java.util.SortedSet;
 import java.util.TreeSet;
 
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
@@ -123,6 +126,15 @@ public class Client implements Serializable {
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
     private String ssn;
     
+    @AttributeOverrides({
+    	@AttributeOverride(name = "firstName", column = @Column(name = "contact_first_name")),
+    	@AttributeOverride(name = "lastName", column = @Column(name = "contact_last_name")),
+    	@AttributeOverride(name = "email", column = @Column(name = "contact_email")),
+    	@AttributeOverride(name = "phone", column = @Column(name = "contact_phone")),
+    	@AttributeOverride(name = "fax", column = @Column(name = "contact_fax")),
+    	@AttributeOverride(name = "mobile", column = @Column(name = "contact_mobile"))
+    })
+    @Embedded
     private Contact contact;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
