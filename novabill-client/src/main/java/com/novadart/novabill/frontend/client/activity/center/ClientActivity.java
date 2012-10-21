@@ -9,6 +9,7 @@ import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
+import com.novadart.novabill.frontend.client.ui.MainWidget;
 import com.novadart.novabill.frontend.client.ui.center.ClientView;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -43,6 +44,7 @@ public class ClientActivity extends BasicActivity {
 					public void onSuccess(ClientDTO result) {
 						cv.setClient(result);
 						cv.setPresenter(ClientActivity.this);
+						MainWidget.getInstance().setStandardView();
 						panel.setWidget(cv);
 					}
 				});

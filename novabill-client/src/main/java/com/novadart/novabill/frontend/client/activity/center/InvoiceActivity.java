@@ -10,6 +10,7 @@ import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
+import com.novadart.novabill.frontend.client.ui.MainWidget;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -49,7 +50,8 @@ public class InvoiceActivity extends BasicActivity {
 						} else {
 							iv.setDataForNewInvoice(place.getClient(), place.getInvoiceProgressiveId());
 						}
-
+							
+						MainWidget.getInstance().setLargeView();
 						panel.setWidget(iv);
 
 					}
@@ -67,6 +69,7 @@ public class InvoiceActivity extends BasicActivity {
 						@Override
 						public void onSuccess(InvoiceDTO result) {
 							iv.setInvoice(result);
+							MainWidget.getInstance().setLargeView();
 							panel.setWidget(iv);
 						}
 					});

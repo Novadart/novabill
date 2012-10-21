@@ -10,6 +10,7 @@ import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
+import com.novadart.novabill.frontend.client.ui.MainWidget;
 import com.novadart.novabill.frontend.client.ui.center.TransportDocumentView;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
@@ -46,6 +47,7 @@ public class TransportDocumentActivity extends BasicActivity {
 							tdv.setDataForNewTransportDocument(transportDocumentPlace.getClient());
 						}
 						
+						MainWidget.getInstance().setLargeView();
 						panel.setWidget(tdv);
 
 					}
@@ -63,6 +65,7 @@ public class TransportDocumentActivity extends BasicActivity {
 						@Override
 						public void onSuccess(TransportDocumentDTO result) {
 							tdv.setTransportDocument(result);
+							MainWidget.getInstance().setLargeView();
 							panel.setWidget(tdv);
 						}
 					});

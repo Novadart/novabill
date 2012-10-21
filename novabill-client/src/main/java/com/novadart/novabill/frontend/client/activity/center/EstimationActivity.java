@@ -10,6 +10,7 @@ import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
+import com.novadart.novabill.frontend.client.ui.MainWidget;
 import com.novadart.novabill.frontend.client.ui.center.EstimationView;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -46,6 +47,7 @@ public class EstimationActivity extends BasicActivity {
 							ev.setDataForNewEstimation(estimationPlace.getClient());
 						}
 						
+						MainWidget.getInstance().setLargeView();
 						panel.setWidget(ev);
 						
 					}
@@ -63,6 +65,7 @@ public class EstimationActivity extends BasicActivity {
 						@Override
 						public void onSuccess(EstimationDTO result) {
 							ev.setEstimation(result);
+							MainWidget.getInstance().setLargeView();
 							panel.setWidget(ev);
 						}
 					});
