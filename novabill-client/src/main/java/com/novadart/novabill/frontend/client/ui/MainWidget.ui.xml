@@ -8,7 +8,7 @@
 		type="com.novadart.novabill.frontend.client.resources.ImageResources"
 		field="img"></ui:with>
 
-	<g:DockLayoutPanel styleName="MainWidget" unit='EM'>
+	<g:DockLayoutPanel ui:field="dockWidget" styleName="MainWidget" unit='EM'>
 
 		<g:north size="3">
 			<g:FlowPanel styleName="header">

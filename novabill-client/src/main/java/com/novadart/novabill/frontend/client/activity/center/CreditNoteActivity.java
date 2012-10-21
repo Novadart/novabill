@@ -10,6 +10,7 @@ import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
+import com.novadart.novabill.frontend.client.ui.MainWidget;
 import com.novadart.novabill.frontend.client.ui.center.CreditNoteView;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
@@ -45,7 +46,8 @@ public class CreditNoteActivity extends BasicActivity {
 						} else {
 							cnv.setDataForNewCreditNote(place.getClient(), place.getCreditNoteProgressiveId());
 						}
-
+						
+						MainWidget.getInstance().setLargeView();
 						panel.setWidget(cnv);
 
 					}
@@ -63,6 +65,7 @@ public class CreditNoteActivity extends BasicActivity {
 						@Override
 						public void onSuccess(CreditNoteDTO result) {
 							cnv.setCreditNote(result);
+							MainWidget.getInstance().setLargeView();
 							panel.setWidget(cnv);
 						}
 					});

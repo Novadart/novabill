@@ -5,6 +5,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
+import com.novadart.novabill.frontend.client.ui.MainWidget;
 import com.novadart.novabill.frontend.client.ui.center.BusinessView;
 
 public class BusinessActivity extends BasicActivity {
@@ -20,6 +21,7 @@ public class BusinessActivity extends BasicActivity {
 			@Override
 			public void onSuccess(BusinessView bv) {
 				bv.setPresenter(BusinessActivity.this);
+				MainWidget.getInstance().setStandardView();
 				panel.setWidget(bv);
 			}
 			

@@ -11,6 +11,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -36,6 +37,13 @@ public class MainWidget extends Composite {
 	interface MainWidgetUiBinder extends UiBinder<Widget, MainWidget> {
 	}
 
+	private static MainWidget instance;
+	
+	public static MainWidget getInstance() {
+		return instance;
+	}
+	@UiField DockLayoutPanel dockWidget;
+	
 	@UiField SimplePanel centerContainer;
 	@UiField SimplePanel westContainer;
 	@UiField HTML businessBanner;
@@ -87,6 +95,16 @@ public class MainWidget extends Composite {
 
 		generateBusinessBanner();
 		generateStats(Configuration.getStats());
+		
+		instance = this;
+	}
+	
+	public void setLargeView(){
+		dockWidget.setWidgetSize(westContainer, 15);
+	}
+	
+	public void setStandardView(){
+		dockWidget.setWidgetSize(westContainer, 25);
 	}
 
 	public void setPlaceController(PlaceController placeController) {
