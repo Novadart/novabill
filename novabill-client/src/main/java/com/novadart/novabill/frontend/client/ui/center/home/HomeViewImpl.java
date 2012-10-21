@@ -3,6 +3,7 @@ package com.novadart.novabill.frontend.client.ui.center.home;
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -13,6 +14,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.Range;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
@@ -30,11 +32,12 @@ import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog
 import com.novadart.novabill.frontend.client.ui.widget.list.ShowMoreButton;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.util.WidgetUtils;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class HomeViewImpl extends Composite implements HomeView {
 	
-	private static final int INVOICELIST_PAGE_SIZE = 30;
+	private static final int INVOICELIST_PAGE_SIZE = 10;
 	
 
 	private static HomeViewUiBinder uiBinder = GWT
@@ -49,6 +52,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 	@UiField(provided=true) HTML date;
 	@UiField(provided=true) HTML welcome;
 	@UiField(provided=true) ShowMoreButton showMore;
+	
+	@UiField ScrollPanel scrollHome;
+	
 	private Presenter presenter;
 	
 	private final InvoiceDataProvider invoiceDataProvider = new InvoiceDataProvider();
@@ -84,6 +90,21 @@ public class HomeViewImpl extends Composite implements HomeView {
 		});
 	}
 
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		
+		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				WidgetUtils.setElementHeightToFillSpace(scrollHome.getElement(), getElement(), 
+						date.getElement());
+				
+				
+			}
+		});
+	}
 	
 	private HTML setupDate() {
 		final HTML dateBox = new HTML();

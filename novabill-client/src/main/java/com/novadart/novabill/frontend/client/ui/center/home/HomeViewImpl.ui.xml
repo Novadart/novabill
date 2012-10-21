@@ -10,23 +10,32 @@
 	<g:FlowPanel>
 
 		<g:HTML ui:field="date" styleName="currentDate"></g:HTML>
-		
-		<g:HTML ui:field="welcome" styleName="welcomeMessage"></g:HTML>
-		
-		<g:HorizontalPanel styleName="actions">
-			<g:Button ui:field="newInvoice" styleName="action-button newInvoice" text="{i18n.newInvoice}"></g:Button>
-			<g:Button ui:field="newEstimation" styleName="action-button newEstimation" text="{i18n.newEstimation}"></g:Button>
-			<g:Button ui:field="newTransportDocument" styleName="action-button newTransportDocument" text="{i18n.newTransportDocument}"></g:Button>
-			<g:Button ui:field="newCreditNote" styleName="action-button newCreditNote" text="{i18n.newCreditNote}"></g:Button>
-		</g:HorizontalPanel>
-		
-		<g:FlowPanel styleName="homeBody">
-			<g:Label styleName="invoicesTitle" text="{i18n.invoices}"></g:Label>
-			<g:ScrollPanel styleName="listWrapper panel">
-				<i:InvoiceList ui:field="invoiceList"></i:InvoiceList>
-			</g:ScrollPanel>
-			<l:ShowMoreButton ui:field="showMore" styleName="showMore"></l:ShowMoreButton>
-		</g:FlowPanel>
+
+		<g:ScrollPanel ui:field="scrollHome" styleName="scrollHome">
+			<g:FlowPanel styleName="scrollHomeBody">
+				<g:HTML ui:field="welcome" styleName="welcomeMessage"></g:HTML>
+
+				<g:HorizontalPanel ui:field="actions" styleName="actions">
+					<g:Button ui:field="newInvoice" styleName="action-button newInvoice"
+						text="{i18n.newInvoice}"></g:Button>
+					<g:Button ui:field="newEstimation" styleName="action-button newEstimation"
+						text="{i18n.newEstimation}"></g:Button>
+					<g:Button ui:field="newTransportDocument" styleName="action-button newTransportDocument"
+						text="{i18n.newTransportDocument}"></g:Button>
+					<g:Button ui:field="newCreditNote" styleName="action-button newCreditNote"
+						text="{i18n.newCreditNote}"></g:Button>
+				</g:HorizontalPanel>
+
+				<g:FlowPanel ui:field="homeBody" styleName="homeBody">
+					<g:Label ui:field="invoicesTitle" styleName="invoicesTitle"
+						text="{i18n.invoices}"></g:Label>
+					<g:ScrollPanel ui:field="listWrapper" styleName="listWrapper panel">
+						<i:InvoiceList ui:field="invoiceList"></i:InvoiceList>
+					</g:ScrollPanel>
+					<l:ShowMoreButton ui:field="showMore" styleName="showMore"></l:ShowMoreButton>
+				</g:FlowPanel>
+			</g:FlowPanel>
+		</g:ScrollPanel>
 
 	</g:FlowPanel>
 
