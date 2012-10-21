@@ -74,6 +74,7 @@ public class SelectClientDialog extends Dialog {
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("SelectClientDialog");
 	}
+	
 
 	@UiHandler("ok")
 	void onOkClicked(ClickEvent e){

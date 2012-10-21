@@ -1,6 +1,8 @@
 package com.novadart.novabill.frontend.client.ui.west;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -9,7 +11,9 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
+import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
@@ -17,6 +21,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.ui.center.client.dialog.ClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.search.ClientSearch;
+import com.novadart.novabill.frontend.client.util.WidgetUtils;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class WestViewImpl extends Composite implements WestView  {
@@ -32,6 +37,10 @@ public class WestViewImpl extends Composite implements WestView  {
 	@UiField(provided=true) RichTextBox clientFilter;
 	@UiField(provided=true) Image cleanClientFilter;
 	
+	@UiField HorizontalPanel clientsHeader;
+	@UiField HorizontalPanel clientFilterContainer;
+	@UiField ScrollPanel clientListContainerWrapper;
+	
 	private Presenter presenter;
 	private final ClientSearch clientSearch;
 	
@@ -42,6 +51,20 @@ public class WestViewImpl extends Composite implements WestView  {
 		cleanClientFilter = clientSearch.getResetButton();
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("WestView");
+	}
+	
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+		    @Override
+		    public void execute() {
+		    	WidgetUtils.setElementHeightToFillSpace(clientListContainerWrapper.getElement(), 
+						clientContainer.getElement(), 
+						clientsHeader.getElement(), clientFilterContainer.getElement());
+		    }
+		  });
 	}
 	
 	@UiFactory

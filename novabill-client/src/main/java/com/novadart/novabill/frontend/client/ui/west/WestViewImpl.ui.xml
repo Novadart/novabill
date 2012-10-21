@@ -10,15 +10,17 @@
 	<g:FlowPanel styleName="clientListWrapper">
 
 		<g:FlowPanel ui:field="clientContainer" styleName="clientContainer">
-			<g:HorizontalPanel styleName="clientsHeader">
+			<g:HorizontalPanel ui:field="clientsHeader" styleName="clientsHeader">
 				<g:Label styleName="clients" text="{i18n.clients}"></g:Label>
 				<g:Button styleName="action-button addClient" ui:field="addClient" text="{i18n.newClient}"></g:Button>
 			</g:HorizontalPanel>
-			<g:HorizontalPanel>
+			<g:HorizontalPanel ui:field="clientFilterContainer">
 				<t:RichTextBox ui:field="clientFilter"></t:RichTextBox>
 				<g:Image ui:field="cleanClientFilter" />
 			</g:HorizontalPanel>
-			<g:SimplePanel ui:field="clientListContainer"/>
+			<g:ScrollPanel ui:field="clientListContainerWrapper" styleName="clientListContainerWrapper">
+				<g:SimplePanel ui:field="clientListContainer"/>
+			</g:ScrollPanel>
 		</g:FlowPanel>
 
 	</g:FlowPanel>

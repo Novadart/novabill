@@ -795,9 +795,8 @@ td.datePickerMonth {
 	padding: 1em 1em 0;
 }
 
-.SelectClientDialog .ClientSearch-clientListWrapper {
-	min-height: 5em;
-	max-height: 20em;
+.SelectClientDialog .listWrapperScroll {
+	height: 30em;
 }
 
 .ClientDialog .wrapper {
@@ -1118,10 +1117,22 @@ td.datePickerMonth {
 	text-transform: uppercase;
 }
 
-.WestView .ClientSearch-clientListWrapper {
-	width: 100%;
+.WestView {
+	height: 100%;
 }
 
+.WestView .clientContainer {
+	height: 100%;
+}
+
+.WestView .ClientSearch-clientListWrapper {
+	width: 100%;
+	height: 100%;
+}
+
+.WestView .clientListContainerWrapper {
+	height: 100%;
+}
 .WestView .ClientSearch-resetFilter {
 	cursor: pointer;
 	width: 1.5em;
