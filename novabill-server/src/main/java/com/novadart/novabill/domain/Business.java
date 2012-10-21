@@ -231,6 +231,8 @@ public class Business implements Serializable {
     		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.CITY, queryToken), 0.8f, 1), Occur.SHOULD);
     		luceneQuery.add(new TermQuery(new Term(FTSNamespace.PROVINCE, queryToken)), Occur.SHOULD);
     		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.EMAIL, queryToken), 0.7f, 1), Occur.SHOULD);
+    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.CONTACT_PREFIX + FTSNamespace.FIRST_NAME, queryToken), 0.7f, 1), Occur.SHOULD);
+    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.CONTACT_PREFIX + FTSNamespace.LAST_NAME, queryToken), 0.7f, 1), Occur.SHOULD);
     	}
     	FullTextQuery ftQuery = ftEntityManager.createFullTextQuery(luceneQuery, Client.class);
     	ftQuery.enableFullTextFilter(FTSNamespace.CLIENT_BY_BUSINESS_ID_FILTER)

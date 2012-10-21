@@ -24,4 +24,12 @@ public interface FTSNamespace {
 	
 	public static final String BUSINESS = "business";
 	
+	public static final String FIRST_NAME = "firstName";
+	
+	public static final String LAST_NAME = "lastName";
+	
+	public static final String CONTACT_PREFIX = "contact_";
+	
+	public static final String DEFAULT_CONTACT_ANALYZER = "defaultContactAnalyzer";
+	
 }

@@ -135,6 +135,7 @@ public class Client implements Serializable {
     	@AttributeOverride(name = "mobile", column = @Column(name = "contact_mobile"))
     })
     @Embedded
+    @IndexedEmbedded(prefix = FTSNamespace.CONTACT_PREFIX)
     private Contact contact = new Contact();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")

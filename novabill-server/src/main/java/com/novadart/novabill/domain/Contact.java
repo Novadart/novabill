@@ -2,12 +2,30 @@ package com.novadart.novabill.domain;
 
 import javax.persistence.Embeddable;
 
+import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
+import org.apache.solr.analysis.LowerCaseFilterFactory;
+import org.apache.solr.analysis.StandardTokenizerFactory;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.TokenizerDef;
+
 
 @Embeddable
+@AnalyzerDef(name = FTSNamespace.DEFAULT_CONTACT_ANALYZER,
+	tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+	filters = {
+		@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
+		@TokenFilterDef(factory = LowerCaseFilterFactory.class)
+	})
+@Analyzer(definition = FTSNamespace.DEFAULT_CONTACT_ANALYZER)
 public class Contact {
 	
+	@Field(name = FTSNamespace.FIRST_NAME)
 	private String firstName;
 	
+	@Field(name = FTSNamespace.LAST_NAME)
 	private String lastName;
 	
 	private String email;
