@@ -46,6 +46,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	interface EstimationViewImplUiBinder extends UiBinder<Widget, EstimationViewImpl> {
 	}
 	
+	@UiField Label titleLabel;
 	@UiField FlowPanel docControls;
 	@UiField ScrollPanel docScroll;
 
@@ -89,8 +90,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	}
 	
 	@Override
-	protected Element getHeader() {
-		return docControls.getElement();
+	protected Element[] getNonBodyElements() {
+		return new Element[]{titleLabel.getElement(), docControls.getElement()};
 	}
 
 	@UiFactory

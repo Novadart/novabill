@@ -55,6 +55,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	interface TransportDocumentViewImplUiBinder extends UiBinder<Widget, TransportDocumentViewImpl> {
 	}
 	
+	@UiField Label titleLabel;
 	@UiField FlowPanel docControls;
 	@UiField ScrollPanel docScroll;
 
@@ -166,8 +167,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	}
 	
 	@Override
-	protected Element getHeader() {
-		return docControls.getElement();
+	protected Element[] getNonBodyElements() {
+		return new Element[]{titleLabel.getElement(), docControls.getElement()};
 	}
 	
 	@UiFactory
