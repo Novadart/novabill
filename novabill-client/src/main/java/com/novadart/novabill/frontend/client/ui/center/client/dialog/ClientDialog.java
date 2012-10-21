@@ -14,7 +14,7 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.ui.util.LocalizedWidgets;
+import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.DefaultValidation;
@@ -76,7 +76,7 @@ public class ClientDialog extends Dialog {
 		postcode = new ValidatedTextBox(new PostcodeValidation());
 		address = new ValidatedTextBox(ne);
 		city = new ValidatedTextBox(ne);
-		country = LocalizedWidgets.createCountryListBox("");
+		country = LocaleWidgets.createCountryListBox("");
 		
 		NumberValidation nv = new NumberValidation(true);
 		phone = new ValidatedTextBox(nv);
@@ -94,7 +94,7 @@ public class ClientDialog extends Dialog {
 		email = new ValidatedTextBox(new EmailValidation(true));
 		contactEmail = new ValidatedTextBox(new EmailValidation(true));
 		
-		province = LocalizedWidgets.createProvinceListBox("");
+		province = LocaleWidgets.createProvinceListBox("");
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("ClientDialog panel");
 	}
@@ -111,7 +111,7 @@ public class ClientDialog extends Dialog {
 		address.setText(client.getAddress());
 		city.setText(client.getCity());
 		province.setSelectedItem(client.getProvince());
-		country.setSelectedItem(client.getCountry());
+		country.setSelectedItemByValue(client.getCountry());
 		postcode.setText(client.getPostcode());
 		phone.setText(client.getPhone());
 		mobile.setText(client.getMobile());
@@ -153,7 +153,7 @@ public class ClientDialog extends Dialog {
 		
 		client.setAddress(address.getText());
 		client.setCity(city.getText());
-		client.setCountry(country.getSelectedItemText());
+		client.setCountry(country.getSelectedItemValue());
 		client.setEmail(email.getText());
 		client.setFax(fax.getText());
 		client.setMobile(mobile.getText());

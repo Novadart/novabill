@@ -5,7 +5,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.util.CountryUtils;
 import com.novadart.novabill.shared.client.data.Province;
 
-public class LocalizedWidgets {
+public class LocaleWidgets {
 	
 	public static ValidatedListBox createProvinceListBox(String defaultItem) {
 		ValidatedListBox listBox = new ValidatedListBox(defaultItem, I18N.INSTANCE.notEmptyValidationError());
