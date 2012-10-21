@@ -26,8 +26,8 @@ insert into client (address, city, country, email, fax, mobile, name, phone, pos
 insert into client (address, city, country, email, fax, mobile, name, phone, postcode, province, ssn, vatid, version, web, business, id, contact_first_name, contact_last_name, contact_email, contact_phone, contact_fax, contact_mobile) values ('via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', 'Italia', '', '', '', 'The mighty company from this Young Entrepreneur', '', '42837', 'PD', '', 'IT04235756211', 1, '', 1, 30, '', '', '', '', '', '');
 
 --creating invoice with many items
-insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (31, '10-20-2012', 2012, 1, '', '', 6050.0, 5000.0, 1050.0, 1);
-insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '11-20-2012', 0, 31);
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (31, '2012-10-20', 2012, 1, '', '', 6050.0, 5000.0, 1050.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 31);
 insert into invoice (id, business, client) values (31, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (32, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 31);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (33, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 31);
