@@ -848,7 +848,9 @@ td.datePickerMonth {
 
 .AccountDocumentView .docControls {
 	padding: 0.5em;
-	border-bottom: 0.1em solid #DDD;
+	border-top: 1px solid;
+	background-color: #CCC;
+	text-align: center;
 }
 
 .AccountDocumentView .docBody {
@@ -863,11 +865,15 @@ td.datePickerMonth {
 	
 }
 
-.AccountDocumentView .newEstimation,.AccountDocumentView .newInvoice,.AccountDocumentView .newTransportDocument,.AccountDocumentView .newCreditNote
+.AccountDocumentView .newEstimation,.AccountDocumentView .newInvoice,.AccountDocumentView .newTransportDocument,
+.AccountDocumentView .newCreditNote
 	{
-	font-weight: bold;
+		font-weight: bold;
 	font-size: 2em;
-	display: inline;
+	border-bottom: 1px solid;
+	text-align: center;
+	background-color: #CCC;
+	padding: 0.2em;
 }
 
 .AccountDocumentView .abortButton,.AccountDocumentView .modifyDocument,.AccountDocumentView .createInvoice,.AccountDocumentView .saveAsEstimation,.AccountDocumentView .convertToInvoice

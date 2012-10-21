@@ -11,11 +11,14 @@ public abstract class AccountDocument extends Composite {
 		super.onLoad();
 		
 		int myHeight = getElement().getOffsetHeight();
-		int headerHeight = getHeader().getOffsetHeight();
-		getBody().getStyle().setHeight(myHeight - headerHeight, Unit.PX);
+		int nonBodySize = 0;
+		for (Element elm : getNonBodyElements()) {
+			nonBodySize += elm.getOffsetHeight();
+		}
+		getBody().getStyle().setHeight(myHeight - nonBodySize, Unit.PX);
 	}
 	
-	protected abstract Element getHeader();
+	protected abstract Element[] getNonBodyElements();
 	
 	protected abstract Element getBody();
 }

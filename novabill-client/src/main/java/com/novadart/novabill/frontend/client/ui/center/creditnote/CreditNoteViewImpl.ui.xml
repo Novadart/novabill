@@ -10,17 +10,8 @@
 
 
 	<g:FlowPanel>
-
-		<g:FlowPanel styleName="docControls" ui:field="docControls">
-			<g:Label styleName="newCreditNote" text="{i18n.newCreditNoteCreation}"></g:Label>
-			<g:Button styleName="modifyButton button" ui:field="modifyDocument"
-				text="{i18n.saveModifications}"></g:Button>
-			<g:Button styleName="createButton button" ui:field="createCreditNote"
-				text="{i18n.createCreditNote}"></g:Button>
-			<g:Button ui:field="abort" styleName="abortButton button"
-				text="{i18n.cancel}"></g:Button>
-		</g:FlowPanel>
-
+		<g:Label ui:field="titleLabel" styleName="newCreditNote" text="{i18n.newCreditNoteCreation}"></g:Label>
+	
 		<g:ScrollPanel styleName="docScroll" ui:field="docScroll">
 			<g:FlowPanel styleName="docScrollBody">
 				<g:Grid styleName="documentMainDetails">
@@ -102,6 +93,15 @@
 				</g:SimplePanel>
 			</g:FlowPanel>
 		</g:ScrollPanel>
+		
+		<g:FlowPanel styleName="docControls" ui:field="docControls">
+			<g:Button styleName="modifyButton button" ui:field="modifyDocument"
+				text="{i18n.saveModifications}"></g:Button>
+			<g:Button styleName="createButton button" ui:field="createCreditNote"
+				text="{i18n.createCreditNote}"></g:Button>
+			<g:Button ui:field="abort" styleName="abortButton button"
+				text="{i18n.cancel}"></g:Button>
+		</g:FlowPanel>
 
 	</g:FlowPanel>
 

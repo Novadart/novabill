@@ -56,6 +56,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiField FlowPanel docControls;
 	@UiField ScrollPanel docScroll;
 
+	@UiField Label titleLabel;
 	@UiField Label paymentLabel;
 	@UiField(provided=true) ValidatedListBox payment;
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
@@ -110,10 +111,10 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 	
 	@Override
-	protected Element getHeader() {
-		return docControls.getElement();
+	protected Element[] getNonBodyElements() {
+		return new Element[]{titleLabel.getElement(), docControls.getElement()};
 	}
-
+	
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;

@@ -52,6 +52,8 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	interface CreditNoteViewImplUiBinder extends UiBinder<Widget, CreditNoteViewImpl> {
 	}
 
+	@UiField Label titleLabel;
+	
 	@UiField FlowPanel docControls;
 	@UiField ScrollPanel docScroll;
 	
@@ -105,8 +107,8 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	}
 	
 	@Override
-	protected Element getHeader() {
-		return docControls.getElement();
+	protected Element[] getNonBodyElements() {
+		return new Element[]{titleLabel.getElement(), docControls.getElement()};
 	}
 	
 	@UiFactory
