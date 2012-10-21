@@ -3,6 +3,7 @@ package com.novadart.novabill.frontend.client.ui.center.client;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -10,8 +11,13 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimpleLayoutPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -34,6 +40,7 @@ import com.novadart.novabill.frontend.client.ui.widget.list.impl.EstimationList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.TransportDocumentList;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.util.WidgetUtils;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -63,7 +70,22 @@ public class ClientViewImpl extends Composite implements ClientView {
 	@UiField Label clientName;
 	@UiField HTML clientDetails;
 	@UiField TabLayoutPanel tabPanel;
+	
+	@UiField FlowPanel listWrapperInvoice;
+	@UiField SimplePanel actionWrapperInvoice;
+	@UiField ScrollPanel scrollInvoice;
+	@UiField FlowPanel listWrapperEstimation;
+	@UiField SimplePanel actionWrapperEstimation;
+	@UiField ScrollPanel scrollEstimation;
+	@UiField FlowPanel listWrapperCredit;
+	@UiField SimplePanel actionWrapperCredit;
+	@UiField ScrollPanel scrollCredit;
+	@UiField FlowPanel listWrapperTransport;
+	@UiField SimplePanel actionWrapperTransport;
+	@UiField ScrollPanel scrollTransport;
 
+	@UiField HorizontalPanel clientOptions;
+	@UiField SimpleLayoutPanel clientMainBody;
 	
 	public ClientViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
@@ -112,6 +134,30 @@ public class ClientViewImpl extends Composite implements ClientView {
 				default:
 					break;
 				}
+				
+			}
+		});
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		
+		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				WidgetUtils.setElementHeightToFillSpace(clientMainBody.getElement(), getElement(), 
+						clientName.getElement(), clientDetails.getElement(), clientOptions.getElement());
+				
+				WidgetUtils.setElementHeightToFillSpace(scrollInvoice.getElement(), listWrapperInvoice.getElement(), 
+						40, actionWrapperInvoice.getElement());
+				WidgetUtils.setElementHeightToFillSpace(scrollEstimation.getElement(), listWrapperEstimation.getElement(), 
+						40, actionWrapperEstimation.getElement());
+				WidgetUtils.setElementHeightToFillSpace(scrollTransport.getElement(), listWrapperTransport.getElement(), 
+						40, actionWrapperTransport.getElement());
+				WidgetUtils.setElementHeightToFillSpace(scrollCredit.getElement(), listWrapperCredit.getElement(), 
+						40, actionWrapperCredit.getElement());
 				
 			}
 		});

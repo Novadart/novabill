@@ -96,10 +96,12 @@ textarea:HOVER {
 	border-top: 1px solid #DDD;
 	border-right: 1px solid #AAA;
 }
+.ClientView {
+	height: 100%;
+}
 
 .ClientView .actionWrapper {
 	text-align: center;
-	margin-bottom: 1.5em;
 }
 
 .ClientView .newInvoice,.ClientView .newEstimation,.ClientView .newCreditNote,.ClientView .newTransportDocument
@@ -161,11 +163,14 @@ textarea:HOVER {
 .ClientView .clientMainBody {
 	margin: 0 auto 2em;
 	width: 90%;
-	height: 40em;
 }
 
 .ClientView .clientMainBody .gwt-TabLayoutPanelTabs {
 	
+}
+
+.ClientView .listWrapper {
+	padding: 0.8em 2em;
 }
 
 .ClientView .clientMainBody .gwt-TabLayoutPanelTab {
@@ -217,9 +222,6 @@ textarea:HOVER {
 	margin: 0 auto;
 }
 
-.ClientView .listWrapper {
-	padding: 0.8em 2em;
-}
 
 .HomeView .welcomeMessage {
 	width: 75%;

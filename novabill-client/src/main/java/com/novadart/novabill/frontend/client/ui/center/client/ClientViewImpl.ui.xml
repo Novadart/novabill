@@ -9,58 +9,66 @@
 	<g:FlowPanel>
 		<g:Label styleName="clientName" ui:field="clientName"></g:Label>
 		<g:HTML styleName="clientDetails" ui:field="clientDetails"></g:HTML>
-		<g:HorizontalPanel styleName="clientOptions">
+		<g:HorizontalPanel ui:field="clientOptions" styleName="clientOptions">
 			<g:Label styleName="modifyClient" ui:field="modifyClient"
 				text="{i18n.modifyClient}"></g:Label>
 			<g:Label styleName="cancelClient" ui:field="cancelClient"
 				text="{i18n.cancelClient}"></g:Label>
 		</g:HorizontalPanel>
 
-		<g:SimpleLayoutPanel styleName="clientMainBody">
+		<g:SimpleLayoutPanel ui:field="clientMainBody" styleName="clientMainBody">
 			<g:TabLayoutPanel ui:field="tabPanel" barHeight="3.5" barUnit='EM'>
 				<g:tab>
 					<g:customHeader>
 						<g:Label styleName="tabHeaderLabel" text="{i18n.invoices}"></g:Label>
 					</g:customHeader>
-					<g:FlowPanel styleName="listWrapper panel">
-						<g:SimplePanel styleName="actionWrapper">
+					<g:FlowPanel ui:field="listWrapperInvoice" styleName="listWrapper panel">
+						<g:SimplePanel ui:field="actionWrapperInvoice" styleName="actionWrapper">
 							<g:Button ui:field="newInvoice" styleName="action-button newInvoice" text="{i18n.newInvoice}"></g:Button>
 						</g:SimplePanel>
-						<i:InvoiceList ui:field="invoiceList"></i:InvoiceList>
+						<g:ScrollPanel ui:field="scrollInvoice">
+							<i:InvoiceList ui:field="invoiceList"></i:InvoiceList>
+						</g:ScrollPanel>
 					</g:FlowPanel>
 				</g:tab>
 				<g:tab>
 					<g:customHeader>
 						<g:Label styleName="tabHeaderLabel" text="{i18n.estimates}"></g:Label>
 					</g:customHeader>
-					<g:FlowPanel styleName="listWrapper panel">
-						<g:SimplePanel styleName="actionWrapper">
+					<g:FlowPanel ui:field="listWrapperEstimation" styleName="listWrapper panel">
+						<g:SimplePanel ui:field="actionWrapperEstimation" styleName="actionWrapper">
 							<g:Button ui:field="newEstimation" styleName="action-button newEstimation" text="{i18n.newEstimation}"></g:Button>
 						</g:SimplePanel>
-						<i:EstimationList ui:field="estimationList"></i:EstimationList>
+						<g:ScrollPanel ui:field="scrollEstimation">
+							<i:EstimationList ui:field="estimationList"></i:EstimationList>
+						</g:ScrollPanel>
 					</g:FlowPanel>
 				</g:tab>
 				<g:tab>
 					<g:customHeader>
 						<g:Label styleName="tabHeaderLabel" text="{i18n.transportDocumentsTab}"></g:Label>
 					</g:customHeader>
-					<g:FlowPanel styleName="listWrapper panel">
-						<g:SimplePanel styleName="actionWrapper">
+					<g:FlowPanel ui:field="listWrapperTransport" styleName="listWrapper panel">
+						<g:SimplePanel ui:field="actionWrapperTransport" styleName="actionWrapper">
 							<g:Button ui:field="newTransportDocument" styleName="action-button newTransportDocument" 
 							text="{i18n.newTransportDocument}"></g:Button>
 						</g:SimplePanel>
-						<i:TransportDocumentList ui:field="transportDocumentList"></i:TransportDocumentList>
+						<g:ScrollPanel ui:field="scrollTransport">
+							<i:TransportDocumentList ui:field="transportDocumentList"></i:TransportDocumentList>						
+						</g:ScrollPanel>
 					</g:FlowPanel>
 				</g:tab>
 				<g:tab>
 					<g:customHeader>
 						<g:Label styleName="tabHeaderLabel" text="{i18n.creditNotes}"></g:Label>
 					</g:customHeader>
-					<g:FlowPanel styleName="listWrapper panel">
-						<g:SimplePanel styleName="actionWrapper">
+					<g:FlowPanel ui:field="listWrapperCredit" styleName="listWrapper panel">
+						<g:SimplePanel ui:field="actionWrapperCredit" styleName="actionWrapper">
 							<g:Button ui:field="newCreditNote" styleName="action-button newCreditNote" text="{i18n.newCreditNote}"></g:Button>
 						</g:SimplePanel>
-						<i:CreditNoteList ui:field="creditNoteList"></i:CreditNoteList>
+						<g:ScrollPanel ui:field="scrollCredit">
+							<i:CreditNoteList ui:field="creditNoteList"></i:CreditNoteList>						
+						</g:ScrollPanel>
 					</g:FlowPanel>
 				</g:tab>
 			</g:TabLayoutPanel>
