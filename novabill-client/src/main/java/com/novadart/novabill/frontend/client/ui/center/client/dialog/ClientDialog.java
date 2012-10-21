@@ -26,6 +26,7 @@ import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdVali
 import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
 import com.novadart.novabill.frontend.client.util.CountryUtils;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.ContactDTO;
 
 public class ClientDialog extends Dialog {
 
@@ -56,6 +57,13 @@ public class ClientDialog extends Dialog {
 	@UiField(provided=true) ValidatedTextBox vatID;
 	@UiField(provided=true) ValidatedTextBox ssn;
 
+	@UiField(provided=true) ValidatedTextBox contactMobile;
+	@UiField(provided=true) ValidatedTextBox contactFax;
+	@UiField(provided=true) ValidatedTextBox contactEmail;
+	@UiField(provided=true) ValidatedTextBox contactPhone;
+	@UiField(provided=true) ValidatedTextBox contactName;
+	@UiField(provided=true) ValidatedTextBox contactSurname;
+	
 	@UiField Button ok;
 	
 	private ClientDTO client = null;
@@ -74,10 +82,17 @@ public class ClientDialog extends Dialog {
 		phone = new ValidatedTextBox(nv);
 		mobile = new ValidatedTextBox(nv);
 		fax = new ValidatedTextBox(nv);
+		contactPhone = new ValidatedTextBox(nv);
+		contactMobile = new ValidatedTextBox(nv);
+		contactFax = new ValidatedTextBox(nv);
 		
-		web = new ValidatedTextBox(new DefaultValidation<String>());
+		DefaultValidation<String> dv = new DefaultValidation<String>();
+		web = new ValidatedTextBox(dv);
+		contactName = new ValidatedTextBox(dv);
+		contactSurname = new ValidatedTextBox(dv);
 
 		email = new ValidatedTextBox(new EmailValidation(true));
+		contactEmail = new ValidatedTextBox(new EmailValidation(true));
 		
 		province = LocalizedWidgets.createProvinceListBox("");
 		setWidget(uiBinder.createAndBindUi(this));
@@ -106,6 +121,14 @@ public class ClientDialog extends Dialog {
 		vatID.setText(client.getVatID());
 		ssn.setText(client.getSsn());
 		
+		ContactDTO ct = client.getContact();
+		contactEmail.setText(ct.getEmail());
+		contactFax.setText(ct.getFax());
+		contactMobile.setText(ct.getMobile());
+		contactName.setText(ct.getFirstName());
+		contactPhone.setText(ct.getPhone());
+		contactSurname.setText(ct.getLastName());
+		
 		ok.setText(I18N.INSTANCE.saveModifications());
 	}
 
@@ -116,7 +139,18 @@ public class ClientDialog extends Dialog {
 			return;
 		}
 
-		ClientDTO client = this.client==null ? new ClientDTO() : this.client;
+		ContactDTO contact;
+		ClientDTO client;
+
+		if(this.client == null){
+			client = new ClientDTO();
+			contact = new ContactDTO();
+			client.setContact(contact);
+		} else {
+			client = this.client;
+			contact = this.client.getContact();
+		}
+		
 		client.setAddress(address.getText());
 		client.setCity(city.getText());
 		client.setCountry(country.getSelectedItemText());
@@ -131,6 +165,13 @@ public class ClientDialog extends Dialog {
 		client.setVatID(vatID.getText());
 		client.setWeb(web.getText());
 
+		contact.setEmail(contactEmail.getText());
+		contact.setFax(contactFax.getText());
+		contact.setFirstName(contactName.getText());
+		contact.setLastName(contactSurname.getText());
+		contact.setMobile(contactMobile.getText());
+		contact.setPhone(contactPhone.getText());
+		
 		if(this.client == null) {
 			ServerFacade.client.add(client, new WrappedAsyncCallback<Long>() {
 
@@ -175,7 +216,9 @@ public class ClientDialog extends Dialog {
 		province.reset();
 		web.setText("");
 		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, 
-				ssn, postcode, phone, mobile, fax, email, address, city, web}){
+				ssn, postcode, phone, mobile, fax, email, address, city, web,
+				contactEmail, contactFax, contactMobile, contactName, contactPhone,
+				contactSurname}){
 			tb.reset();
 		}
 		province.reset();
@@ -187,7 +230,9 @@ public class ClientDialog extends Dialog {
 	private boolean validate(){
 		boolean isValid = true;
 		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, 
-				ssn, postcode, phone, mobile, fax, email, address, city, web}){
+				ssn, postcode, phone, mobile, fax, email, address, city, web,
+				contactEmail, contactFax, contactMobile, contactName, contactPhone,
+				contactSurname}){
 			tb.validate();
 			isValid = isValid && tb.isValid();
 		}

@@ -818,6 +818,18 @@ td.datePickerMonth {
 	margin-bottom: 1em;
 }
 
+.ClientDialog .title2 {
+	text-align: center;
+	padding: 0.2em;
+	font-size: 1.1em;
+	font-weight: bold;
+	margin-bottom: 0.5em;
+}
+
+.ClientDialog .rightBox {
+	margin-left: 2em;
+}
+
 .ClientDialog .gridWrapper {
 	background-color: white;
 }
@@ -1070,7 +1082,7 @@ td.datePickerMonth {
 	background-color: #DEFFD8;
 }
 
-.
+
 .ValidatedWidget-validationError {
 	border-color: #E32424;
 	background-color: #F9E0E0;
