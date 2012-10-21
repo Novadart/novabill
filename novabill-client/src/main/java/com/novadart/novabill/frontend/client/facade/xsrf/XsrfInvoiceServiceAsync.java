@@ -113,19 +113,6 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService<InvoiceService
 
 		});
 	}
-	
-	@Override
-	public void createFromEstimation(final InvoiceDTO invoiceDTO, final Long estimationID,
-			final AsyncCallback<Long> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<InvoiceServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(InvoiceServiceAsync service) {
-				service.createFromEstimation(invoiceDTO, estimationID, callback);
-			}
-
-		});
-	}
 
 	@Override
 	public void setPayed(final Long id, final Boolean value, final AsyncCallback<Void> callback) {

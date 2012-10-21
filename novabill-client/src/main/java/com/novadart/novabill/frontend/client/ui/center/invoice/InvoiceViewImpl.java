@@ -130,12 +130,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		InvoiceDTO invoice = createInvoice(null);
 		
 		if(this.estimation != null) {
-			ServerFacade.invoice.createFromEstimation(invoice, estimation.getId(), new WrappedAsyncCallback<Long>() {
+			ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
 			
 						@Override
 						public void onSuccess(Long result) {
 							DataWatcher.getInstance().fireInvoiceEvent();
-							DataWatcher.getInstance().fireEstimationEvent();
 							DataWatcher.getInstance().fireStatsEvent();
 							
 							ClientPlace cp = new ClientPlace();
