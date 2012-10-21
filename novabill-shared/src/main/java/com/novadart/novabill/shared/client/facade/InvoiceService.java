@@ -33,8 +33,6 @@ public interface InvoiceService extends RemoteService {
 
 	public PageDTO<InvoiceDTO> getAllForClientInRange(long id, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
 	
-	public Long createFromEstimation(InvoiceDTO invoiceDTO, Long estimationID) throws NotAuthenticatedException, DataAccessException, ValidationException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException;
-	
 	public void setPayed(Long id, Boolean value) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException;
 	
 }

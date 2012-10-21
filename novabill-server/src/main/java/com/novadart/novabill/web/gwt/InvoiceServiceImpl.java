@@ -155,17 +155,6 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	}
 	
 	@Override
-	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	//@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
-	public Long createFromEstimation(InvoiceDTO invoiceDTO, Long estimationID) throws NotAuthenticatedException, DataAccessException, ValidationException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException {
-		Long invoiceID = add(invoiceDTO);
-		Estimation estimation = null;
-		if(estimationID != null && (estimation = Estimation.findEstimation(estimationID)) != null)//present in DB
-			estimation.remove();
-		return invoiceID;
-	}
-
-	@Override
 	@Transactional(readOnly = false)
 	//@Restrictions(checkers = {PremiumChecker.class})
 	public void setPayed(Long id, Boolean value) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException {
