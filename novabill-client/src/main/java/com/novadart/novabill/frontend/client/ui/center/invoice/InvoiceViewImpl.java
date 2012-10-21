@@ -15,13 +15,10 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
@@ -34,7 +31,7 @@ import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.ui.center.AccountDocument;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
-import com.novadart.novabill.frontend.client.ui.center.ItemTable;
+import com.novadart.novabill.frontend.client.ui.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
@@ -61,14 +58,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 	@UiField Label paymentLabel;
 	@UiField(provided=true) ValidatedListBox payment;
-	@UiField(provided=true) ListBox tax;
-	@UiField(provided=true) ItemTable itemTable;
-	@UiField ScrollPanel itemTableScroller;
-
-	@UiField TextBox item;
-	@UiField TextBox quantity;
-	@UiField TextBox unitOfMeasure;
-	@UiField TextBox price;
+	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 	@UiField Label clientName;
 	@UiField(provided=true) DateBox date;
 	@UiField Label invoiceNumber;
@@ -89,7 +79,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	private InvoiceDTO invoice;
 	private EstimationDTO estimation;
 	private TransportDocumentDTO transportDocument;
-	private ListDataProvider<AccountingDocumentItemDTO> accountingDocumentItems = new ListDataProvider<AccountingDocumentItemDTO>();
 	private ClientDTO client;
 
 	public InvoiceViewImpl() {
@@ -97,23 +86,17 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		for (String item : I18N.INSTANCE.paymentItems()) {
 			payment.addItem(item);
 		}
-		tax = new ListBox();
-		for (String item : I18N.INSTANCE.vatItems()) {
-			tax.addItem(item+"%", item);
-		}
+		
 		number = new ValidatedTextBox(new NumberValidation());
-		itemTable = new ItemTable(new ItemTable.Handler() {
-
-			@Override
-			public void onDelete(AccountingDocumentItemDTO item) {
-				accountingDocumentItems.getList().remove(item);
-				accountingDocumentItems.refresh();
-				updateFields();
-			}
+		
+		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
 			
+			@Override
+			public void onItemAdded(List<AccountingDocumentItemDTO> items) {
+				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
+			}
 		});
-		accountingDocumentItems.addDataDisplay(itemTable);
-
+		
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
@@ -170,7 +153,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 						}
 					});
 		} else if(this.transportDocument != null) {
-			//TODO enable after resolution of ticket #312
 			
 			ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
 				
@@ -277,7 +259,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		inv.setDocumentID(Long.parseLong(number.getText()));
 		inv.setAccountingDocumentDate(date.getValue());
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
-		for (AccountingDocumentItemDTO itemDTO : accountingDocumentItems.getList()) {
+		for (AccountingDocumentItemDTO itemDTO : itemInsertionForm.getItems()) {
 			invItems.add(itemDTO);
 		}
 		inv.setItems(invItems);
@@ -307,7 +289,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 		es.setAccountingDocumentDate(date.getValue());
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
-		for (AccountingDocumentItemDTO itemDTO : accountingDocumentItems.getList()) {
+		for (AccountingDocumentItemDTO itemDTO : itemInsertionForm.getItems()) {
 			invItems.add(itemDTO);
 		}
 		es.setItems(invItems);
@@ -316,21 +298,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		return es;
 	}
 
-
-	@UiHandler("add")
-	void onAddClicked(ClickEvent e){
-		AccountingDocumentItemDTO ii = CalcUtils.createAccountingDocumentItem(item.getText(), price.getText(), 
-				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
-		
-		if(ii == null) {
-			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
-			return;
-		}
-		
-		accountingDocumentItems.getList().add(ii);
-		updateFields();
-		itemTableScroller.scrollToBottom();
-	}
 
 	@UiHandler("modifyDocument")
 	void onModifyInvoiceClicked(ClickEvent e){
@@ -398,7 +365,8 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 			items = invoice.getItems();
 		}
 
-		accountingDocumentItems.setList(items);
+		
+		itemInsertionForm.setItems(items);
 		if(!cloning && invoice.getDocumentID() != null){
 			number.setText(invoice.getDocumentID().toString());
 		} 
@@ -408,7 +376,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 			payment.setSelectedIndex(invoice.getPaymentType().ordinal()+1);
 		}
 
-		updateFields();
 	}
 
 
@@ -447,10 +414,8 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 			items.add(i.clone());
 		}
 
-		accountingDocumentItems.setList(items);
+		itemInsertionForm.setItems(items);
 		note.setText(estimation.getNote());
-
-		updateFields();
 	}
 
 	@Override
@@ -464,10 +429,8 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 			items.add(i.clone());
 		}
 
-		accountingDocumentItems.setList(items);
+		itemInsertionForm.setItems(items);
 		note.setText(transportDocument.getNote());
-
-		updateFields();
 	}
 
 	@Override
@@ -492,25 +455,10 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	private boolean validateEstimation(){
 		if(date.getTextBox().getText().isEmpty() || date.getValue() == null){
 			return false;
-		} else if(accountingDocumentItems.getList().isEmpty()){
+		} else if(itemInsertionForm.getItems().isEmpty()){
 			return false;
 		}
 		return true;
-	}
-
-
-	private void updateFields(){
-		CalcUtils.calculateTotals(accountingDocumentItems.getList(), totalTax, totalBeforeTaxes, totalAfterTaxes);
-		resetItemTableForm();
-		accountingDocumentItems.refresh();
-	}
-
-	private void resetItemTableForm(){
-		item.setText("");
-		quantity.setText("");
-		unitOfMeasure.setText("");
-		price.setText("");
-		tax.setSelectedIndex(0);
 	}
 
 	@Override
@@ -538,12 +486,10 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		payment.setSelectedIndex(0);
 		paymentNote.setText("");
 		note.setText("");
-		accountingDocumentItems.getList().clear();
-		accountingDocumentItems.refresh();
 		totalTax.setText("");
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
-		resetItemTableForm();
+		itemInsertionForm.reset();
 	}
 
 	private void handleServerValidationException(ValidationException ex, boolean isInvoice){

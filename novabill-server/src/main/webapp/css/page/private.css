@@ -381,6 +381,7 @@ textarea:HOVER {
 	font-size: 2.5em;
 	font-weight: bold;
 	cursor: pointer;
+	margin-left: 0.5em;
 }
 
 .MainWidget .header .clients,.MainWidget .header .invoices,.MainWidget .header .totalAmount
@@ -966,6 +967,7 @@ td.datePickerMonth {
 
 .AccountDocumentView .item {
 	width: 25em;
+	min-height: 5em;
 }
 
 .AccountDocumentView .quantity {

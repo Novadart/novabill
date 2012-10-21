@@ -15,13 +15,11 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.ValidationBundle;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
@@ -35,7 +33,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.ui.center.AccountDocument;
-import com.novadart.novabill.frontend.client.ui.center.ItemTable;
+import com.novadart.novabill.frontend.client.ui.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.ui.center.TransportDocumentView;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
@@ -79,14 +77,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) ValidatedListBox hour;
 	@UiField(provided=true) ValidatedListBox minute;
 	
-	@UiField(provided=true) ListBox tax;
-	@UiField(provided=true) ItemTable itemTable;
-	@UiField ScrollPanel itemTableScroller;
-
-	@UiField TextBox item;
-	@UiField TextBox quantity;
-	@UiField TextBox unitOfMeasure;
-	@UiField TextBox price;
+	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 	
 	@UiField TextBox transportationResponsibility;
 	@UiField TextBox tradeZone;
@@ -104,7 +95,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	private Presenter presenter;
 	private TransportDocumentDTO transportDocument;
-	private ListDataProvider<AccountingDocumentItemDTO> accountingDocumentItems = new ListDataProvider<AccountingDocumentItemDTO>();
 	private ClientDTO client;
 
 	public TransportDocumentViewImpl() {
@@ -155,21 +145,14 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		
-		tax = new ListBox();
-		for (String item : I18N.INSTANCE.vatItems()) {
-			tax.addItem(item+"%", item);
-		}
-		itemTable = new ItemTable(new ItemTable.Handler() {
-
+		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
+			
 			@Override
-			public void onDelete(AccountingDocumentItemDTO item) {
-				accountingDocumentItems.getList().remove(item);
-				accountingDocumentItems.refresh();
-				updateFields();
+			public void onItemAdded(List<AccountingDocumentItemDTO> items) {
+				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
 		});
-		accountingDocumentItems.addDataDisplay(itemTable);
-
+		
 		transportStartDate = new DateBox();
 		transportStartDate.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
@@ -288,7 +271,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		
 		td.setAccountingDocumentDate(date.getValue());
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
-		for (AccountingDocumentItemDTO itemDTO : accountingDocumentItems.getList()) {
+		for (AccountingDocumentItemDTO itemDTO : itemInsertionForm.getItems()) {
 			invItems.add(itemDTO);
 		}
 		td.setItems(invItems);
@@ -297,21 +280,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return td;
 	}
 
-
-	@UiHandler("add")
-	void onAddClicked(ClickEvent e){
-		AccountingDocumentItemDTO ii = CalcUtils.createAccountingDocumentItem(item.getText(), price.getText(), 
-				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
-		
-		if(ii == null) {
-			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
-			return;
-		}
-		
-		accountingDocumentItems.getList().add(ii);
-		updateFields();
-		itemTableScroller.scrollToBottom();
-	}
 
 	@UiHandler("modifyDocument")
 	void onModifyTransportDocumentClicked(ClickEvent e){
@@ -408,7 +376,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			items = transportDocument.getItems();
 		}
 
-		accountingDocumentItems.setList(items);
+		itemInsertionForm.setItems(items);
 		note.setText(transportDocument.getNote());
 		
 		numberOfPackages.setText(String.valueOf(transportDocument.getNumberOfPackages()));
@@ -426,7 +394,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddrPostCode.setText(loc.getPostcode());
 		toAddrProvince.setSelectedItem(loc.getProvince());
 		toAddrStreetName.setText(loc.getStreet());
-		updateFields();
 	}
 
 
@@ -445,7 +412,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		if(date.getTextBox().getText().isEmpty() || date.getValue() == null 
 				|| transportStartDate.getTextBox().getText().isEmpty() || transportStartDate.getValue() == null){
 			return false;
-		} else if(accountingDocumentItems.getList().isEmpty()){
+		} else if(itemInsertionForm.getItems().isEmpty()){
 			return false;
 		} else {
 			boolean validation = true;
@@ -462,20 +429,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return true;
 	}
 
-
-	private void updateFields(){
-		CalcUtils.calculateTotals(accountingDocumentItems.getList(), totalTax, totalBeforeTaxes, totalAfterTaxes);
-		resetItemTableForm();
-		accountingDocumentItems.refresh();
-	}
-
-	private void resetItemTableForm(){
-		item.setText("");
-		quantity.setText("");
-		unitOfMeasure.setText("");
-		price.setText("");
-		tax.setSelectedIndex(0);
-	}
 
 	@Override
 	public void setClean() {
@@ -509,12 +462,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddrStreetName.reset();
 		toAddrProvince.reset();
 		
-		accountingDocumentItems.getList().clear();
-		accountingDocumentItems.refresh();
+		itemInsertionForm.reset();
+		
 		totalTax.setText("");
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
-		resetItemTableForm();
 	}
 
 	private void handleServerValidationException(ValidationException ex, boolean isInvoice){

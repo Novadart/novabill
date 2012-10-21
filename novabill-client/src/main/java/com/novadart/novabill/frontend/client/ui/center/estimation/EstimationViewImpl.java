@@ -15,13 +15,10 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
@@ -32,7 +29,7 @@ import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.AccountDocument;
 import com.novadart.novabill.frontend.client.ui.center.EstimationView;
-import com.novadart.novabill.frontend.client.ui.center.ItemTable;
+import com.novadart.novabill.frontend.client.ui.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
@@ -52,46 +49,32 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiField FlowPanel docControls;
 	@UiField ScrollPanel docScroll;
 
-	@UiField(provided=true) ListBox tax;
-	@UiField(provided=true) ItemTable itemTable;
-	@UiField ScrollPanel itemTableScroller;
-
-	@UiField TextBox item;
-	@UiField TextBox quantity;
-	@UiField TextBox unitOfMeasure;
-	@UiField TextBox price;
 	@UiField Label clientName;
 	@UiField(provided=true) DateBox date;
 	@UiField TextArea note;
 	@UiField Button createEstimation;
 	@UiField Button modifyDocument;
 	@UiField Button convertToInvoice;
-
+	
+	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
+	
 	@UiField Label totalBeforeTaxes;
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
-
+	
 
 	private Presenter presenter;
 	private EstimationDTO estimation;
-	private ListDataProvider<AccountingDocumentItemDTO> accountingDocumentItems = new ListDataProvider<AccountingDocumentItemDTO>();
 	private ClientDTO client;
 
 	public EstimationViewImpl() {
-		tax = new ListBox();
-		for (String item : I18N.INSTANCE.vatItems()) {
-			tax.addItem(item+"%", item);
-		}
-		itemTable = new ItemTable(new ItemTable.Handler() {
-
+		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
+			
 			@Override
-			public void onDelete(AccountingDocumentItemDTO item) {
-				accountingDocumentItems.getList().remove(item);
-				accountingDocumentItems.refresh();
-				updateFields();
+			public void onItemAdded(List<AccountingDocumentItemDTO> items) {
+				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
 		});
-		accountingDocumentItems.addDataDisplay(itemTable);
 
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat
@@ -192,7 +175,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 		es.setAccountingDocumentDate(date.getValue());
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
-		for (AccountingDocumentItemDTO itemDTO : accountingDocumentItems.getList()) {
+		for (AccountingDocumentItemDTO itemDTO : itemInsertionForm.getItems()) {
 			invItems.add(itemDTO);
 		}
 		es.setItems(invItems);
@@ -202,20 +185,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	}
 
 
-	@UiHandler("add")
-	void onAddClicked(ClickEvent e){
-		AccountingDocumentItemDTO ii = CalcUtils.createAccountingDocumentItem(item.getText(), price.getText(), 
-				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
-		
-		if(ii == null) {
-			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
-			return;
-		}
-		
-		accountingDocumentItems.getList().add(ii);
-		updateFields();
-		itemTableScroller.scrollToBottom();
-	}
+	
 
 	@UiHandler("modifyDocument")
 	void onModifyEstimationClicked(ClickEvent e){
@@ -303,10 +273,9 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			items = estimation.getItems();
 		}
 
-		accountingDocumentItems.setList(items);
+		itemInsertionForm.setItems(items);
 		note.setText(estimation.getNote());
 
-		updateFields();
 	}
 
 
@@ -326,26 +295,12 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	private boolean validateEstimation(){
 		if(date.getTextBox().getText().isEmpty() || date.getValue() == null){
 			return false;
-		} else if(accountingDocumentItems.getList().isEmpty()){
+		} else if(itemInsertionForm.getItems().isEmpty()){
 			return false;
 		}
 		return true;
 	}
 
-
-	private void updateFields(){
-		CalcUtils.calculateTotals(accountingDocumentItems.getList(), totalTax, totalBeforeTaxes, totalAfterTaxes);
-		resetItemTableForm();
-		accountingDocumentItems.refresh();
-	}
-
-	private void resetItemTableForm(){
-		item.setText("");
-		quantity.setText("");
-		unitOfMeasure.setText("");
-		price.setText("");
-		tax.setSelectedIndex(0);
-	}
 
 	@Override
 	public void setClean() {
@@ -360,12 +315,10 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 		//reset widget contents		
 		note.setText("");
-		accountingDocumentItems.getList().clear();
-		accountingDocumentItems.refresh();
 		totalTax.setText("");
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
-		resetItemTableForm();
+		itemInsertionForm.reset();
 	}
 
 	private void handleServerValidationException(ValidationException ex, boolean isInvoice){

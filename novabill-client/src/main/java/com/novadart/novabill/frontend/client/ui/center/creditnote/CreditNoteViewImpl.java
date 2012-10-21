@@ -15,13 +15,10 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextArea;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
-import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
@@ -34,7 +31,7 @@ import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.ui.center.AccountDocument;
 import com.novadart.novabill.frontend.client.ui.center.CreditNoteView;
-import com.novadart.novabill.frontend.client.ui.center.ItemTable;
+import com.novadart.novabill.frontend.client.ui.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
@@ -60,14 +57,8 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	
 	@UiField Label paymentLabel;
 	@UiField(provided=true) ValidatedListBox payment;
-	@UiField(provided=true) ListBox tax;
-	@UiField(provided=true) ItemTable itemTable;
-	@UiField ScrollPanel itemTableScroller;
+	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 
-	@UiField TextBox item;
-	@UiField TextBox quantity;
-	@UiField TextBox unitOfMeasure;
-	@UiField TextBox price;
 	@UiField Label clientName;
 	@UiField(provided=true) DateBox date;
 	@UiField Label creditNoteNumber;
@@ -85,7 +76,6 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 
 	private Presenter presenter;
 	private CreditNoteDTO creditNote;
-	private ListDataProvider<AccountingDocumentItemDTO> creditNoteItems = new ListDataProvider<AccountingDocumentItemDTO>();
 	private ClientDTO client;
 
 	public CreditNoteViewImpl() {
@@ -93,22 +83,15 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		for (String item : I18N.INSTANCE.paymentItems()) {
 			payment.addItem(item);
 		}
-		tax = new ListBox();
-		for (String item : I18N.INSTANCE.vatItems()) {
-			tax.addItem(item+"%", item);
-		}
 		number = new ValidatedTextBox(new NumberValidation());
-		itemTable = new ItemTable(new ItemTable.Handler() {
 
+		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
+			
 			@Override
-			public void onDelete(AccountingDocumentItemDTO item) {
-				creditNoteItems.getList().remove(item);
-				creditNoteItems.refresh();
-				updateFields();
+			public void onItemAdded(List<AccountingDocumentItemDTO> items) {
+				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
 		});
-		creditNoteItems.addDataDisplay(itemTable);
-
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
@@ -183,7 +166,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		cn.setDocumentID(Long.parseLong(number.getText()));
 		cn.setAccountingDocumentDate(date.getValue());
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
-		for (AccountingDocumentItemDTO itemDTO : creditNoteItems.getList()) {
+		for (AccountingDocumentItemDTO itemDTO : itemInsertionForm.getItems()) {
 			invItems.add(itemDTO);
 		}
 		cn.setItems(invItems);
@@ -200,21 +183,6 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		return cn;
 	}
 
-
-	@UiHandler("add")
-	void onAddClicked(ClickEvent e){
-		AccountingDocumentItemDTO ii = CalcUtils.createAccountingDocumentItem(item.getText(), price.getText(), 
-				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
-		
-		if(ii == null) {
-			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
-			return;
-		}
-		
-		creditNoteItems.getList().add(ii);
-		updateFields();
-		itemTableScroller.scrollToBottom();
-	}
 
 	@UiHandler("modifyDocument")
 	void onModifyCreditNoteClicked(ClickEvent e){
@@ -274,13 +242,11 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		List<AccountingDocumentItemDTO> items = null;
 		items = creditNote.getItems();
 
-		creditNoteItems.setList(items);
+		itemInsertionForm.setItems(items);
 		number.setText(creditNote.getDocumentID().toString());
 		note.setText(creditNote.getNote());
 		paymentNote.setText(creditNote.getPaymentNote());
 		payment.setSelectedIndex(creditNote.getPaymentType().ordinal()+1);
-
-		updateFields();
 	};
 	
 	@Override
@@ -304,8 +270,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		for (AccountingDocumentItemDTO i : invoice.getItems()) {
 			items.add(i.clone());
 		}
-		creditNoteItems.setList(items);
-		updateFields();
+		itemInsertionForm.setItems(items);
 	}
 
 	@Override
@@ -316,7 +281,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	private boolean validateCreditNote(){
 		if(date.getTextBox().getText().isEmpty() || date.getValue() == null){
 			return false;
-		} else if(creditNoteItems.getList().isEmpty()){
+		} else if(itemInsertionForm.getItems().isEmpty()){
 			return false;
 		}
 		number.validate();
@@ -328,20 +293,6 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		return true;
 	}
 
-
-	private void updateFields(){
-		CalcUtils.calculateTotals(creditNoteItems.getList(), totalTax, totalBeforeTaxes, totalAfterTaxes);
-		resetItemTableForm();
-		creditNoteItems.refresh();
-	}
-
-	private void resetItemTableForm(){
-		item.setText("");
-		quantity.setText("");
-		unitOfMeasure.setText("");
-		price.setText("");
-		tax.setSelectedIndex(0);
-	}
 
 	@Override
 	public void setClean() {
@@ -365,12 +316,10 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		payment.setSelectedIndex(0);
 		paymentNote.setText("");
 		note.setText("");
-		creditNoteItems.getList().clear();
-		creditNoteItems.refresh();
 		totalTax.setText("");
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
-		resetItemTableForm();
+		itemInsertionForm.reset();
 	}
 
 	private void handleServerValidationException(ValidationException ex, boolean isInvoice){
