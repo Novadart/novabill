@@ -1,10 +1,12 @@
 package com.novadart.novabill.frontend.client.ui.center;
 
 import java.math.BigDecimal;
+import java.util.Arrays;
 
 import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.cellview.client.CellTable;
@@ -127,8 +129,9 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 
 		//VAT
+		SelectionCell selectionCell = new SelectionCell(Arrays.asList(I18N.INSTANCE.vatItems()));
 		Column<AccountingDocumentItemDTO, String> tax =
-				new Column<AccountingDocumentItemDTO, String>(editCell) {
+				new Column<AccountingDocumentItemDTO, String>(selectionCell) {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
@@ -139,14 +142,8 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				if(!Validation.isDouble(value)){
-					Notification.showMessage(I18N.INSTANCE.errorClientData());
-					editCell.clearViewData(object);
-					redraw();
-				} else {
-					object.setTax(CalcUtils.parseValue(value));
-					redraw();
-				}
+				object.setTax(CalcUtils.parseValue(value));
+				redraw();
 			}
 		});
 		addColumn(tax, I18N.INSTANCE.vat());
