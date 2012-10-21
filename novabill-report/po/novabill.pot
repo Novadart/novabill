@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-17 21:20+0200\n"
+"POT-Creation-Date: 2012-10-21 18:09+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -17,12 +17,12 @@ msgstr ""
 "Content-Type: text/plain; charset=CHARSET\n"
 "Content-Transfer-Encoding: 8bit\n"
 
-#: src/template/utils.py:80
+#: src/template/utils.py:84
 #, python-format
 msgid "Page %(pNum)d of %(tNum)d"
 msgstr ""
 
-#: src/template/utils.py:87
+#: src/template/utils.py:91
 msgid "Powered by Novabill"
 msgstr ""
 
@@ -126,15 +126,19 @@ msgstr ""
 msgid "Estimation"
 msgstr ""
 
-#: src/template/tidy/estimation.py:36
-msgid "Limitations"
+#: src/template/tidy/estimation.py:27
+msgid "Valid until"
 msgstr ""
 
 #: src/template/tidy/estimation.py:37
+msgid "Limitations"
+msgstr ""
+
+#: src/template/tidy/estimation.py:38
 msgid "No limitations"
 msgstr ""
 
-#: src/template/tidy/estimation.py:41
+#: src/template/tidy/estimation.py:42
 msgid "Payment note"
 msgstr ""
 

@@ -214,6 +214,10 @@ class EstimationData(AccountingDocumentData):
         
     def getLimitations(self):
         return self.__data["limitations"]
+    
+    def getValidTill(self):
+        return self.__data["validTill"]
+    
 
 """
     CREDIT NOTE DATA
