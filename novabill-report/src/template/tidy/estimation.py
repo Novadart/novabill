@@ -23,7 +23,8 @@ class TidyEstimationBuilder(TidyDocumentBuilder):
         style = getSampleStyleSheet()["Normal"]
         t = Table([["", Paragraph("<b><font size=\"%d\">%s</font></b>" % (MEDIUM_FONT_SIZE, self._("Estimation")), style)],
                    ["%s:" % self._("Number"), data.getAccountingDocumentID()],
-                   ["%s:" % self._("Date"), data.getAccountingDocumentDate()]],
+                   ["%s:" % self._("Date"), data.getAccountingDocumentDate()],
+                   ["%s:" % self._("Valid until"), data.getValidTill()]],
                   colWidths=[width*0.2, width*0.3])
         t.setStyle(TableStyle([("ALIGN", (0, 0), (0, -1), "RIGHT"),
                                ("ALIGN", (1, 0), (1, -1), "LEFT"),

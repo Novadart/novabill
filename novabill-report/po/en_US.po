@@ -130,6 +130,10 @@ msgstr "Payment date"
 msgid "Estimation"
 msgstr "Estimation"
 
+#: src/template/tidy/estimation.py:27
+msgid "Valid until"
+msgstr "Valid until"
+
 #: src/template/tidy/estimation.py:35
 msgid "Limitations"
 msgstr "Limitations"

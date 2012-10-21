@@ -80,5 +80,122 @@ insert into accounting_document_item (id, description, price, quantity, tax, tot
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (80, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 31);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (81, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 31);
 
-select setval('hibernate_sequence', 82);
+-- creating many invoices
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (82, '2012-10-20', 2012, 3, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 82);
+insert into invoice (id, business, client) values (82, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (83, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 82);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (84, '2012-10-20', 2012, 4, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 84);
+insert into invoice (id, business, client) values (84, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (85, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 84);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (86, '2012-10-20', 2012, 5, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 86);
+insert into invoice (id, business, client) values (86, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (87, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 86);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (88, '2012-10-20', 2012, 6, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 88);
+insert into invoice (id, business, client) values (88, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (89, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 88);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (90, '2012-10-20', 2012, 7, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 90);
+insert into invoice (id, business, client) values (90, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (91, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 90);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (92, '2012-10-20', 2012, 8, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 92);
+insert into invoice (id, business, client) values (92, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (93, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 92);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (94, '2012-10-20', 2012, 9, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 94);
+insert into invoice (id, business, client) values (94, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (95, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 94);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (96, '2012-10-20', 2012, 10, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 96);
+insert into invoice (id, business, client) values (96, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (97, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 96);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (98, '2012-10-20', 2012, 11, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 98);
+insert into invoice (id, business, client) values (98, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (99, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 98);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (100, '2012-10-20', 2012, 12, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 100);
+insert into invoice (id, business, client) values (100, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (101, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 100);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (102, '2012-10-20', 2012, 13, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 102);
+insert into invoice (id, business, client) values (102, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (103, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 102);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (104, '2012-10-20', 2012, 14, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 104);
+insert into invoice (id, business, client) values (104, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (105, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 104);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (106, '2012-10-20', 2012, 15, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 106);
+insert into invoice (id, business, client) values (106, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (107, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 106);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (108, '2012-10-20', 2012, 16, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 108);
+insert into invoice (id, business, client) values (108, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (109, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 108);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (110, '2012-10-20', 2012, 17, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 110);
+insert into invoice (id, business, client) values (110, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (111, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 110);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (112, '2012-10-20', 2012, 18, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 112);
+insert into invoice (id, business, client) values (112, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (113, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 112);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (114, '2012-10-20', 2012, 19, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 114);
+insert into invoice (id, business, client) values (114, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (115, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 114);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (116, '2012-10-20', 2012, 20, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 116);
+insert into invoice (id, business, client) values (116, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (117, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 116);
+
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (118, '2012-10-20', 2012, 21, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 118);
+insert into invoice (id, business, client) values (118, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (119, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 118);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (120, '2012-10-20', 2012, 22, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 120);
+insert into invoice (id, business, client) values (120, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (121, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 120);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (122, '2012-10-20', 2012, 23, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 122);
+insert into invoice (id, business, client) values (122, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (123, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 122);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (124, '2012-10-20', 2012, 24, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 124);
+insert into invoice (id, business, client) values (124, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (125, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 124);
+
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (126, '2012-10-20', 2012, 25, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 126);
+insert into invoice (id, business, client) values (126, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (127, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 126);
+
+select setval('hibernate_sequence', 128);
 
