@@ -39,6 +39,8 @@ import org.apache.lucene.queryParser.ParseException;
 import org.apache.lucene.search.BooleanClause.Occur;
 import org.apache.lucene.search.BooleanQuery;
 import org.apache.lucene.search.FuzzyQuery;
+import org.apache.lucene.search.PrefixQuery;
+import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.hibernate.search.bridge.builtin.LongBridge;
 import org.hibernate.search.jpa.FullTextEntityManager;
@@ -215,26 +217,55 @@ public class Business implements Serializable {
     			.setParameter("id", documentID).getResultList();
     }
     
+    private static interface ClientQueryPreparator{
+    	Query prepareQuery(List<String> queryTokens);
+    }
+    
+    private ClientQueryPreparator fuzzyQueryPreparator = new ClientQueryPreparator() {
+		@Override
+		public Query prepareQuery(List<String> queryTokens) {
+			BooleanQuery luceneQuery = new BooleanQuery();
+	    	for(String queryToken: queryTokens){
+	    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.NAME, queryToken), 0.7f, 1), Occur.SHOULD);
+	    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.ADDRESS, queryToken), 0.7f, 1), Occur.SHOULD);
+	    		luceneQuery.add(new TermQuery(new Term(FTSNamespace.POSTCODE, queryToken)), Occur.SHOULD);
+	    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.CITY, queryToken), 0.8f, 1), Occur.SHOULD);
+	    		luceneQuery.add(new TermQuery(new Term(FTSNamespace.PROVINCE, queryToken)), Occur.SHOULD);
+	    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.EMAIL, queryToken), 0.7f, 1), Occur.SHOULD);
+	    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.CONTACT_PREFIX + FTSNamespace.FIRST_NAME, queryToken), 0.7f, 1), Occur.SHOULD);
+	    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.CONTACT_PREFIX + FTSNamespace.LAST_NAME, queryToken), 0.7f, 1), Occur.SHOULD);
+	    	}
+	    	return luceneQuery;
+		}
+	};
+	
+	private ClientQueryPreparator prefixQueryPreparator = new ClientQueryPreparator() {
+		@Override
+		public Query prepareQuery(List<String> queryTokens) {
+			BooleanQuery luceneQuery = new BooleanQuery();
+	    	for(String queryToken: queryTokens){
+	    		luceneQuery.add(new PrefixQuery(new Term(FTSNamespace.NAME, queryToken)), Occur.SHOULD);
+	    		luceneQuery.add(new PrefixQuery(new Term(FTSNamespace.ADDRESS, queryToken)), Occur.SHOULD);
+	    		luceneQuery.add(new PrefixQuery(new Term(FTSNamespace.POSTCODE, queryToken)), Occur.SHOULD);
+	    		luceneQuery.add(new PrefixQuery(new Term(FTSNamespace.CITY, queryToken)), Occur.SHOULD);
+	    		luceneQuery.add(new PrefixQuery(new Term(FTSNamespace.PROVINCE, queryToken)), Occur.SHOULD);
+	    		luceneQuery.add(new PrefixQuery(new Term(FTSNamespace.EMAIL, queryToken)), Occur.SHOULD);
+	    		luceneQuery.add(new PrefixQuery(new Term(FTSNamespace.CONTACT_PREFIX + FTSNamespace.FIRST_NAME, queryToken)), Occur.SHOULD);
+	    		luceneQuery.add(new PrefixQuery(new Term(FTSNamespace.CONTACT_PREFIX + FTSNamespace.LAST_NAME, queryToken)), Occur.SHOULD);
+	    	}
+	    	return luceneQuery;
+		}
+	};
+    
     @SuppressWarnings("unchecked")
-	public PageDTO<Client> searchClients(String query, int start, int length) throws ParseException, IOException{
+	private PageDTO<Client> searchClients(String query, int start, int length, ClientQueryPreparator queryPreparator) throws ParseException, IOException{
     	FullTextEntityManager ftEntityManager = Search.getFullTextEntityManager(entityManager);
     	Analyzer analyzer = ftEntityManager.getSearchFactory().getAnalyzer(FTSNamespace.DEFAULT_CLIENT_ANALYZER);
     	List<String> queryTokens = new ArrayList<String>();
     	TokenStream tokenStream = analyzer.tokenStream(null, new StringReader(query));
     	while(tokenStream.incrementToken())
     		queryTokens.add(tokenStream.getAttribute(CharTermAttribute.class).toString());
-    	BooleanQuery luceneQuery = new BooleanQuery();
-    	for(String queryToken: queryTokens){
-    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.NAME, queryToken), 0.7f, 1), Occur.SHOULD);
-    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.ADDRESS, queryToken), 0.7f, 1), Occur.SHOULD);
-    		luceneQuery.add(new TermQuery(new Term(FTSNamespace.POSTCODE, queryToken)), Occur.SHOULD);
-    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.CITY, queryToken), 0.8f, 1), Occur.SHOULD);
-    		luceneQuery.add(new TermQuery(new Term(FTSNamespace.PROVINCE, queryToken)), Occur.SHOULD);
-    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.EMAIL, queryToken), 0.7f, 1), Occur.SHOULD);
-    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.CONTACT_PREFIX + FTSNamespace.FIRST_NAME, queryToken), 0.7f, 1), Occur.SHOULD);
-    		luceneQuery.add(new FuzzyQuery(new Term(FTSNamespace.CONTACT_PREFIX + FTSNamespace.LAST_NAME, queryToken), 0.7f, 1), Occur.SHOULD);
-    	}
-    	FullTextQuery ftQuery = ftEntityManager.createFullTextQuery(luceneQuery, Client.class);
+    	FullTextQuery ftQuery = ftEntityManager.createFullTextQuery(queryPreparator.prepareQuery(queryTokens), Client.class);
     	ftQuery.enableFullTextFilter(FTSNamespace.CLIENT_BY_BUSINESS_ID_FILTER)
     		.setParameter(TermValueFilterFactory.FIELD_NAME, StringUtils.join(new Object[]{FTSNamespace.BUSINESS, FTSNamespace.ID}, "."))
     		.setParameter(TermValueFilterFactory.FIELD_VALUE, new LongBridge().objectToString(getId()));
@@ -242,6 +273,14 @@ public class Business implements Serializable {
     	pageDTO.setTotal(ftQuery.getResultSize());
     	pageDTO.setItems(ftQuery.setFirstResult(start).setMaxResults(length).getResultList());
     	return pageDTO;
+    }
+    
+    public PageDTO<Client> fuzzyClientSearch(String query, int start, int length)  throws ParseException, IOException{
+    	return searchClients(query, start, length, fuzzyQueryPreparator);
+    }
+    
+    public PageDTO<Client> prefixClientSearch(String query, int start, int length)  throws ParseException, IOException{
+    	return searchClients(query, start, length, prefixQueryPreparator);
     }
     
     private <T extends AccountingDocument> List<T> getAccountingDocumentForYear(Iterator<T> iter, int year){

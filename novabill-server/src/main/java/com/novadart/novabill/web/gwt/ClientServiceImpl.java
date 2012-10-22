@@ -124,7 +124,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
 		PageDTO<Client> clients = null;
 		try{
-			clients = business.searchClients(query, start, length);
+			clients = business.prefixClientSearch(query, start, length);
 		}catch (Exception e) {
 			throw new InvalidArgumentException();
 		}
