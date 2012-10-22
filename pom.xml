@@ -294,6 +294,11 @@
 				<version>2.4</version>
 			</dependency>
 			<dependency>
+				<groupId>org.im4java</groupId>
+				<artifactId>im4java</artifactId>
+				<version>1.3.2</version>
+			</dependency>
+			<dependency>
 				<groupId>org.springframework.security</groupId>
 				<artifactId>spring-security-core</artifactId>
 				<version>${spring-security.version}</version>
@@ -475,12 +480,14 @@
 
 	<distributionManagement>
 		<repository>
-			<id>internal</id>
-			<url>http://build.dev.novadart.com/archiva/repository/internal/</url>
+			<id>nexus</id>
+			<name>Releases repo</name>
+			<url>http://build.dev.novadart.com:8081/nexus/content/repositories/releases</url>
 		</repository>
 		<snapshotRepository>
-			<id>snapshots</id>
-			<url>http://build.dev.novadart.com/archiva/repository/snapshots/</url>
+			<id>nexus</id>
+			<name>Snapshots repo</name>
+			<url>http://build.dev.novadart.com:8081/nexus/content/repositories/snapshots/</url>
 		</snapshotRepository>
 	</distributionManagement>
 </project>
