@@ -58,6 +58,12 @@ textarea:HOVER {
 	border: 0.1em solid #000;
 }
 
+.RichTextBox-labelStyle {
+	color: #666;
+	font-style: italic;
+}
+
+
 .AuthDialog {
 	background-color: white;
 	padding: 2em;
@@ -605,10 +611,7 @@ textarea:HOVER {
 	width: 20em;
 }
 
-.westContainer .ClientSearch-filter.RichTextBox-labelStyle {
-	color: #666;
-	font-style: italic;
-}
+
 
 .Dialog {
 	z-index: 2;
@@ -754,10 +757,6 @@ td.datePickerMonth {
 	margin-bottom: 1em;
 }
 
-.SelectClientDialog .ClientSearch-filter.RichTextBox-labelStyle {
-	color: #666;
-	font-style: italic;
-}
 
 .SelectClientDialog .ClientSearch-resetFilter {
 	cursor: pointer;
@@ -818,6 +817,18 @@ td.datePickerMonth {
 	margin-bottom: 1em;
 }
 
+.ClientDialog .title2 {
+	text-align: center;
+	padding: 0.2em;
+	font-size: 1.1em;
+	font-weight: bold;
+	margin-bottom: 0.5em;
+}
+
+.ClientDialog .rightBox {
+	margin-left: 2em;
+}
+
 .ClientDialog .gridWrapper {
 	background-color: white;
 }
@@ -840,7 +851,7 @@ td.datePickerMonth {
 }
 
 .ClientDialog .buttonContainer .button {
-	width: 7em;
+	width: 9em;
 }
 
 .ClientDialog .buttonContainer .button.submit {
@@ -1054,12 +1065,6 @@ td.datePickerMonth {
 	margin: 0.3em;
 }
 
-.BootstrapDialog .ValidatedListBox,.BootstrapDialog .RichTextBox.RichTextBox-labelStyle
-	{
-	color: #666;
-	font-style: italic;
-}
-
 .BootstrapDialog .ValidatedListBox.ValidatedWidget-validationOk {
 	font-style: normal;
 	color: inherit;
@@ -1070,7 +1075,7 @@ td.datePickerMonth {
 	background-color: #DEFFD8;
 }
 
-.
+
 .ValidatedWidget-validationError {
 	border-color: #E32424;
 	background-color: #F9E0E0;

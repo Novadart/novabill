@@ -100,28 +100,33 @@
 								<g:Grid styleName="addressGrid">
 									<g:row>
 										<g:customCell>
-											<textbox:RichTextBox styleName="box companyName"
+											<textbox:RichTextBox styleName="box companyName RichTextBox-labelStyle"
 												ui:field="fromAddrCompanyName" />
 										</g:customCell>
 									</g:row>
 									<g:row>
 										<g:customCell>
-											<textbox:RichTextBox styleName="box streetName"
+											<textbox:RichTextBox styleName="box streetName RichTextBox-labelStyle"
 												ui:field="fromAddrStreetName" />
 										</g:customCell>
 									</g:row>
 									<g:row>
 										<g:customCell>
-											<textbox:RichTextBox styleName="box postcode"
+											<textbox:RichTextBox styleName="box postcode RichTextBox-labelStyle"
 												ui:field="fromAddrPostCode" />
 										</g:customCell>
 										<g:customCell>
-											<textbox:RichTextBox styleName="box city"
+											<textbox:RichTextBox styleName="box city RichTextBox-labelStyle"
 												ui:field="fromAddrCity" />
 										</g:customCell>
 										<g:customCell>
 											<v:ValidatedListBox styleName="box province"
 												ui:field="fromAddrProvince" />
+										</g:customCell>
+									</g:row>
+									<g:row>
+										<g:customCell>
+											<v:ValidatedListBox stylename="box" ui:field="fromAddrCountry" />
 										</g:customCell>
 									</g:row>
 								</g:Grid>
@@ -139,28 +144,33 @@
 								<g:Grid styleName="addressGrid">
 									<g:row>
 										<g:customCell>
-											<textbox:RichTextBox styleName="box companyName"
+											<textbox:RichTextBox styleName="box companyName RichTextBox-labelStyle"
 												ui:field="toAddrCompanyName" />
 										</g:customCell>
 									</g:row>
 									<g:row>
 										<g:customCell>
-											<textbox:RichTextBox styleName="box streetName"
+											<textbox:RichTextBox styleName="box streetName RichTextBox-labelStyle" 
 												ui:field="toAddrStreetName" />
 										</g:customCell>
 									</g:row>
 									<g:row>
 										<g:customCell>
-											<textbox:RichTextBox styleName="box postcode"
+											<textbox:RichTextBox styleName="box postcode RichTextBox-labelStyle"
 												ui:field="toAddrPostCode" />
 										</g:customCell>
 										<g:customCell>
-											<textbox:RichTextBox styleName="box city"
+											<textbox:RichTextBox styleName="box city RichTextBox-labelStyle"
 												ui:field="toAddrCity" />
 										</g:customCell>
 										<g:customCell>
 											<v:ValidatedListBox styleName="box province"
 												ui:field="toAddrProvince" />
+										</g:customCell>
+									</g:row>
+									<g:row>
+										<g:customCell>
+											<v:ValidatedListBox stylename="box" ui:field="toAddrCountry" />
 										</g:customCell>
 									</g:row>
 								</g:Grid>

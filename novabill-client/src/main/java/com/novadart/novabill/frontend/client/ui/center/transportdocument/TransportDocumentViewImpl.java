@@ -35,10 +35,10 @@ import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.ui.center.AccountDocument;
 import com.novadart.novabill.frontend.client.ui.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.ui.center.TransportDocumentView;
+import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
-import com.novadart.novabill.shared.client.data.Province;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -64,12 +64,14 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) RichTextBox fromAddrPostCode;
 	@UiField(provided=true) RichTextBox fromAddrCity;
 	@UiField(provided=true) ValidatedListBox fromAddrProvince;
+	@UiField(provided=true) ValidatedListBox fromAddrCountry;
 	
 	@UiField(provided=true) RichTextBox toAddrCompanyName;
 	@UiField(provided=true) RichTextBox toAddrStreetName;
 	@UiField(provided=true) RichTextBox toAddrPostCode;
 	@UiField(provided=true) RichTextBox toAddrCity;
 	@UiField(provided=true) ValidatedListBox toAddrProvince;
+	@UiField(provided=true) ValidatedListBox toAddrCountry;
 	
 	@UiField(provided=true) ValidatedTextBox numberOfPackages;
 	@UiField(provided=true) ValidatedTextBox transporter;
@@ -115,19 +117,15 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrCompanyName = new RichTextBox(I18N.INSTANCE.companyName(),nev);
 		fromAddrPostCode = new RichTextBox(I18N.INSTANCE.postcode(), nev);
 		fromAddrStreetName = new RichTextBox(I18N.INSTANCE.address(),nev);
-		fromAddrProvince = new ValidatedListBox();
-		for (Province p : Province.values()) {
-			fromAddrProvince.addItem(p.name());
-		}
+		fromAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
+		fromAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 		
 		toAddrCity = new RichTextBox(I18N.INSTANCE.city(),nev);
 		toAddrCompanyName = new RichTextBox(I18N.INSTANCE.companyName(), nev);
 		toAddrPostCode = new RichTextBox(I18N.INSTANCE.postcode(),nev);
 		toAddrStreetName = new RichTextBox(I18N.INSTANCE.address(),nev);
-		toAddrProvince = new ValidatedListBox();
-		for (Province p : Province.values()) {
-			toAddrProvince.addItem(p.name());
-		}
+		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
+		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 		
 		String str;
 		hour = new ValidatedListBox();
@@ -184,6 +182,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrPostCode.setText(b.getPostcode());
 		fromAddrProvince.setSelectedItem(b.getProvince());
 		fromAddrStreetName.setText(b.getAddress());
+		fromAddrCountry.setSelectedItemByValue(b.getCountry());
 	}
 
 	@UiHandler("toAddrButtonDefault")
@@ -193,6 +192,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddrPostCode.setText(client.getPostcode());
 		toAddrProvince.setSelectedItem(client.getProvince());
 		toAddrStreetName.setText(client.getAddress());
+		toAddrCountry.setSelectedItemByValue(client.getCountry());
 	}
 	
 
@@ -249,6 +249,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		loc.setPostcode(fromAddrPostCode.getText());
 		loc.setProvince(fromAddrProvince.getSelectedItemText());
 		loc.setStreet(fromAddrStreetName.getText());
+		loc.setCountry(fromAddrCountry.getSelectedItemValue());
 		td.setFromEndpoint(loc);
 		
 		loc = new EndpointDTO();
@@ -257,6 +258,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		loc.setPostcode(toAddrPostCode.getText());
 		loc.setProvince(toAddrProvince.getSelectedItemText());
 		loc.setStreet(toAddrStreetName.getText());
+		loc.setCountry(toAddrCountry.getSelectedItemValue());
 		td.setToEndpoint(loc);
 		
 		Date tsd = transportStartDate.getValue();
@@ -388,6 +390,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrPostCode.setText(loc.getPostcode());
 		fromAddrProvince.setSelectedItem(loc.getProvince());
 		fromAddrStreetName.setText(loc.getStreet());
+		fromAddrCountry.setSelectedItemByValue(loc.getCountry());
 		
 		loc = transportDocument.getToEndpoint();
 		toAddrCity.setText(loc.getCity());
@@ -395,6 +398,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddrPostCode.setText(loc.getPostcode());
 		toAddrProvince.setSelectedItem(loc.getProvince());
 		toAddrStreetName.setText(loc.getStreet());
+		toAddrCountry.setSelectedItemByValue(loc.getCountry());
 	}
 
 
@@ -418,7 +422,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		} else {
 			boolean validation = true;
 			for (ValidatedWidget<?, ?> vw : new ValidatedWidget<?, ?>[]{fromAddrCity, fromAddrCompanyName, fromAddrPostCode,
-					fromAddrProvince, fromAddrStreetName, toAddrCity, toAddrCompanyName, toAddrPostCode, toAddrProvince, toAddrStreetName,
+					fromAddrProvince, fromAddrStreetName, fromAddrCountry, 
+					toAddrCity, toAddrCompanyName, toAddrPostCode, toAddrProvince, toAddrStreetName, toAddrCountry,
 					numberOfPackages, hour, minute}) {
 				vw.validate();
 				validation = validation && vw.isValid();
@@ -456,12 +461,14 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrPostCode.reset();
 		fromAddrStreetName.reset();
 		fromAddrProvince.reset();
+		fromAddrCountry.reset();
 		
 		toAddrCity.reset();
 		toAddrCompanyName.reset();
 		toAddrPostCode.reset();
 		toAddrStreetName.reset();
 		toAddrProvince.reset();
+		toAddrCountry.reset();
 		
 		itemInsertionForm.reset();
 		
