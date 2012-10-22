@@ -38,26 +38,26 @@ def gen_invoices(num, start, docIdStart, business, clients, numItems):
     abs_inv_ins_pattern = "insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, %(id)d);"
     inv_ins_pattern = "insert into invoice (id, business, client) values (%(id)d, %(business)d, %(client)d);"
     ins_lines = []
-    id = start
+    dbid = start
     for i in range(num):
         ins_lines.append(acc_doc_ins_pattern % dict(
-            id=id,  docId=docIdStart+i, total=121.0 * numItems[i], totalBefTax=100.0 * numItems[i], tax=21.0 * numItems[i],
+            id=dbid,  docId=docIdStart+i, total=121.0 * numItems[i], totalBefTax=100.0 * numItems[i], tax=21.0 * numItems[i],
             note=gen_alpha_str(random.randint(10, 100))
         ))
-        ins_lines.append(abs_inv_ins_pattern % dict(id=id))
-        ins_lines.append(inv_ins_pattern % dict(id=id, business=business, client=random.sample(clients,1)[0]))
-        id += 1
-        items_ins_lines, id = gen_acc_doc_items(numItems[i], id, id-1) 
+        ins_lines.append(abs_inv_ins_pattern % dict(id=dbid))
+        ins_lines.append(inv_ins_pattern % dict(id=dbid, business=business, client=random.sample(clients,1)[0]))
+        dbid += 1
+        items_ins_lines, dbid = gen_acc_doc_items(numItems[i], dbid, dbid-1) 
         ins_lines += items_ins_lines
-    return (ins_lines, id)
+    return (ins_lines, dbid)
 
 def gen_sql_script(script_path, business, numClients, numInvs, numInvItems, start, docIdStart):
-    client_inv_lines, id = gen_clients(numClients, start)
-    clients = range(start, id)
-    inv_ins_lines, id = gen_invoices(numInvs, id, docIdStart, business, clients, numInvItems)
+    client_inv_lines, dbid = gen_clients(numClients, start)
+    clients = range(start, dbid)
+    inv_ins_lines, dbid = gen_invoices(numInvs, dbid, docIdStart, business, clients, numInvItems)
     f = open(script_path, "w")
     f.write("\n".join(client_inv_lines + inv_ins_lines))
-    inv_ins_lines, id = gen_invoices(1, id, docIdStart + numInvs, business, clients, [100]) #invoice with many items
+    inv_ins_lines, dbid = gen_invoices(1, dbid, docIdStart + numInvs, business, clients, [100]) #invoice with many items
     f.write("\n".join(inv_ins_lines))
-    f.write("select setval('hibernate_sequence', %d);\n" % id)
+    f.write("select setval('hibernate_sequence', %d);\n" % dbid)
     f.close()
