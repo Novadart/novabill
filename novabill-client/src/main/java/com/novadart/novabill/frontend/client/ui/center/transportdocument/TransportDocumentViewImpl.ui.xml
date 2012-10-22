@@ -2,7 +2,8 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:i="urn:import:com.novadart.novabill.frontend.client.ui.center.invoice"
-	xmlns:d="urn:import:com.google.gwt.user.datepicker.client" xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget"
+	xmlns:d="urn:import:com.google.gwt.user.datepicker.client" 
+	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget"
 	xmlns:t="urn:import:com.novadart.novabill.frontend.client.ui.center"
 	xmlns:textbox="urn:import:com.novadart.gwtshared.client.textbox">
 
@@ -126,7 +127,7 @@
 									</g:row>
 									<g:row>
 										<g:customCell>
-											<v:ValidatedListBox stylename="box" ui:field="fromAddrCountry" />
+											<v:ValidatedListBox styleName="box" ui:field="fromAddrCountry" />
 										</g:customCell>
 									</g:row>
 								</g:Grid>
@@ -170,7 +171,7 @@
 									</g:row>
 									<g:row>
 										<g:customCell>
-											<v:ValidatedListBox stylename="box" ui:field="toAddrCountry" />
+											<v:ValidatedListBox styleName="box" ui:field="toAddrCountry" />
 										</g:customCell>
 									</g:row>
 								</g:Grid>
