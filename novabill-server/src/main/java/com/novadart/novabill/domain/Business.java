@@ -25,6 +25,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
+import javax.persistence.Transient;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -221,7 +222,8 @@ public class Business implements Serializable {
     	Query prepareQuery(List<String> queryTokens);
     }
     
-    private ClientQueryPreparator fuzzyQueryPreparator = new ClientQueryPreparator() {
+    @Transient
+    private static ClientQueryPreparator fuzzyQueryPreparator = new ClientQueryPreparator() {
 		@Override
 		public Query prepareQuery(List<String> queryTokens) {
 			BooleanQuery luceneQuery = new BooleanQuery();
@@ -239,7 +241,8 @@ public class Business implements Serializable {
 		}
 	};
 	
-	private ClientQueryPreparator prefixQueryPreparator = new ClientQueryPreparator() {
+	@Transient
+	private static ClientQueryPreparator prefixQueryPreparator = new ClientQueryPreparator() {
 		@Override
 		public Query prepareQuery(List<String> queryTokens) {
 			BooleanQuery luceneQuery = new BooleanQuery();
