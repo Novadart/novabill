@@ -35,7 +35,7 @@ input[type="text"],input[type="password"] {
 }
 
 input[type="text"]:HOVER,input[type="password"]:HOVER {
-	border: 0.1em solid #000;
+	background-color: #EEE;
 }
 
 select {
