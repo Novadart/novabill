@@ -5,10 +5,13 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
@@ -62,6 +65,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	private final ListDataProvider<EstimationDTO> estimationDataProvider = new ListDataProvider<EstimationDTO>();
 	private final ListDataProvider<CreditNoteDTO> creditNoteDataProvider = new ListDataProvider<CreditNoteDTO>();
 	private final ListDataProvider<TransportDocumentDTO> transportDocumentDataProvider = new ListDataProvider<TransportDocumentDTO>();
+	private final ContactPopup contactPopup = new ContactPopup();
 	
 	@UiField InvoiceList invoiceList;
 	@UiField EstimationList estimationList;
@@ -87,6 +91,18 @@ public class ClientViewImpl extends Composite implements ClientView {
 	@UiField HorizontalPanel clientOptions;
 	@UiField SimpleLayoutPanel clientMainBody;
 	
+	@UiField Label contact;
+	
+	private static final int HIDE_TIMEOUT = 6000;
+	private Timer hideContactPopup = new Timer() {
+		
+		@Override
+		public void run() {
+			contactPopup.hide();
+		}
+	};
+	
+	
 	public ClientViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("ClientView");
@@ -103,6 +119,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 					loadInvoices();
 					break;
 					
+				case CLIENT:
 				case CLIENT_DATA:
 					ServerFacade.client.get(ClientViewImpl.this.client.getId(), 
 							new WrappedAsyncCallback<ClientDTO>() {
@@ -204,6 +221,19 @@ public class ClientViewImpl extends Composite implements ClientView {
 		transportDocumentDataProvider.getList().clear();
 		transportDocumentDataProvider.refresh();
 		setDocumentsListing(DOCUMENTS.invoices);
+		contactPopup.reset();
+		contact.setVisible(false);
+	}
+	
+	@UiHandler("contact")
+	void onContactMouseOver(MouseOverEvent event) {
+		contactPopup.showRelativeTo(contact);
+		hideContactPopup.cancel();
+	}
+	
+	@UiHandler("contact")
+	void onContactMouseOut(MouseOutEvent event) {
+		hideContactPopup.schedule(HIDE_TIMEOUT);
 	}
 	
 	@UiHandler("newInvoice")
@@ -303,6 +333,10 @@ public class ClientViewImpl extends Composite implements ClientView {
 		this.client = client;
 		clientName.setText(client.getName());
 		updateClientDetails(client);
+		contactPopup.setContact(client.getContact());
+		if(!contactPopup.isEmpty()) {
+			contact.setVisible(true);
+		}
 		loadInvoices();
 		loadEstimations();
 		loadCreditNotes();
