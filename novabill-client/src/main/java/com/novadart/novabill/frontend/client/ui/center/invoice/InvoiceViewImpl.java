@@ -415,7 +415,8 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		}
 
 		itemInsertionForm.setItems(items);
-		note.setText(estimation.getNote());
+		note.setText(I18NM.get.generatedFromEstimation(estimation.getDocumentID(), 
+				DateTimeFormat.getFormat("dd MMMM yyyy").format(estimation.getAccountingDocumentDate())));
 	}
 
 	@Override

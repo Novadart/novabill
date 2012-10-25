@@ -51,10 +51,12 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiField ScrollPanel docScroll;
 
 	@UiField Label clientName;
+	@UiField Label number;
 	@UiField(provided=true) DateBox date;
 	@UiField(provided=true) DateBox validTill;
 	@UiField TextArea note;
 	@UiField TextArea paymentNote;
+	@UiField TextArea limitations;
 	@UiField Button createEstimation;
 	@UiField Button modifyDocument;
 	@UiField Button convertToInvoice;
@@ -177,6 +179,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			es = new EstimationDTO();
 			es.setBusiness(Configuration.getBusiness());
 			es.setClient(client);
+			es.setDocumentID(Long.parseLong(number.getText()));
 		}
 
 		es.setAccountingDocumentDate(date.getValue());
@@ -188,6 +191,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		es.setItems(invItems);
 		es.setNote(note.getText());
 		es.setPaymentNote(paymentNote.getText());
+		es.setLimitations(limitations.getText());
 		CalcUtils.calculateTotals(invItems, es);
 		return es;
 	}
@@ -241,11 +245,11 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 
 	@Override
-	public void setDataForNewEstimation(ClientDTO client) {
+	public void setDataForNewEstimation(ClientDTO client, Long progressiveId) {
 		this.client =client;
 
 		clientName.setText(client.getName());
-		
+		number.setText(progressiveId.toString());
 		Date now = new Date();
 		date.setValue(now);
 		validTill.setValue(new Date(now.getTime() + 2592000000L));
@@ -255,9 +259,9 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	}
 
 	@Override
-	public void setDataForNewEstimation(ClientDTO client,
+	public void setDataForNewEstimation(ClientDTO client, Long progressiveId,
 			EstimationDTO estimation) {
-		setDataForNewEstimation(client);
+		setDataForNewEstimation(client, progressiveId);
 		setEstimation(estimation, true);
 	}
 
@@ -269,7 +273,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			date.setValue(estimation.getAccountingDocumentDate());
 			validTill.setValue(estimation.getValidTill());
 			clientName.setText(estimation.getClient().getName());
-
+			number.setText(estimation.getDocumentID().toString());
 			modifyDocument.setVisible(true);
 
 			convertToInvoice.setVisible(true);
@@ -288,6 +292,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		itemInsertionForm.setItems(items);
 		note.setText(estimation.getNote());
 		paymentNote.setText(estimation.getPaymentNote());
+		limitations.setText(estimation.getLimitations());
 	}
 
 
@@ -320,6 +325,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		//clean internal data		
 		this.client = null;
 		this.estimation = null;
+		
+		number.setText("");
 
 		//reset widget statuses
 		createEstimation.setVisible(false);
@@ -329,6 +336,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		//reset widget contents		
 		note.setText("");
 		paymentNote.setText("");
+		limitations.setText("");
 		totalTax.setText("");
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");

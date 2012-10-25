@@ -6,9 +6,9 @@ import com.novadart.novabill.shared.client.dto.EstimationDTO;
 
 public interface EstimationView extends View {
 	
-	public void setDataForNewEstimation(ClientDTO client);
+	public void setDataForNewEstimation(ClientDTO client, Long progressiveId);
 	
-	public void setDataForNewEstimation(ClientDTO client, EstimationDTO estimation);
+	public void setDataForNewEstimation(ClientDTO client, Long progressiveId, EstimationDTO estimation);
 	
 	public void setEstimation(EstimationDTO estimation);
 }

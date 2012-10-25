@@ -147,16 +147,30 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 	}
 	
 	private void onCloneClicked(final EstimationDTO estimation) {
-		SelectClientDialog dia = new SelectClientDialog(new SelectClientDialog.Handler() {
-			
+		ServerFacade.estimation.getNextEstimationId(new WrappedAsyncCallback<Long>() {
+
 			@Override
-			public void onClientSelected(ClientDTO client) {
-				EstimationPlace ep = new EstimationPlace();
-				ep.setDataForNewEstimation(client, estimation);
-				presenter.goTo(ep);
+			public void onSuccess(final Long result) {
+				if(result == null){
+					return;
+				}
+				SelectClientDialog dia = new SelectClientDialog(new SelectClientDialog.Handler() {
+					
+					@Override
+					public void onClientSelected(ClientDTO client) {
+						EstimationPlace ep = new EstimationPlace();
+						ep.setDataForNewEstimation(client, result, estimation);
+						presenter.goTo(ep);
+					}
+				});
+				dia.showCentered();
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 			}
 		});
-		dia.showCentered();
 	}
 
 	public void onPdfClicked(EstimationDTO estimation) {

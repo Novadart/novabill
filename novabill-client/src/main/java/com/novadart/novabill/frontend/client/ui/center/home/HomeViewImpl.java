@@ -212,9 +212,21 @@ public class HomeViewImpl extends Composite implements HomeView {
 			
 			@Override
 			public void onClientSelected(final ClientDTO client) {
-				EstimationPlace ep = new EstimationPlace();
-				ep.setDataForNewEstimation(client);
-				presenter.goTo(ep);
+				ServerFacade.estimation.getNextEstimationId(new WrappedAsyncCallback<Long>() {
+
+					@Override
+					public void onSuccess(Long result) {
+						EstimationPlace ep = new EstimationPlace();
+						ep.setDataForNewEstimation(client, result);
+						presenter.goTo(ep);
+					}
+
+					@Override
+					public void onException(Throwable caught) {
+						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+					}
+				});
+				
 			}
 		});
 		scd.showCentered();

@@ -42,9 +42,12 @@ public class EstimationActivity extends BasicActivity {
 					} else {
 						
 						if(estimationPlace.getEstimationToClone() != null) {
-							ev.setDataForNewEstimation(estimationPlace.getClient(), estimationPlace.getEstimationToClone());
+							ev.setDataForNewEstimation(estimationPlace.getClient(), 
+									estimationPlace.getEstimationProgressiveId(),
+									estimationPlace.getEstimationToClone());
 						} else {
-							ev.setDataForNewEstimation(estimationPlace.getClient());
+							ev.setDataForNewEstimation(estimationPlace.getClient(),
+									estimationPlace.getEstimationProgressiveId());
 						}
 						
 						MainWidget.getInstance().setLargeView();

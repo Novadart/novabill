@@ -11,4 +11,5 @@ public interface I18NM extends Messages {
 	public String totalAmount(String n);
 	public String invalidDocumentIdError(String values);
 	public String invalidDocumentIdErrorMultiple(String values);
+	public String generatedFromEstimation(long id, String date);
 }

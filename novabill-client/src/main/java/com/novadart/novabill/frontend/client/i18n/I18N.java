@@ -99,6 +99,7 @@ public interface I18N extends Constants {
 	public String addNewClient();
 	public String date();
 	public String invoiceNumber();
+	public String estimationNumber();
 	public String dueDate();
 	public String[] dueDateItems();
 	public String payment();

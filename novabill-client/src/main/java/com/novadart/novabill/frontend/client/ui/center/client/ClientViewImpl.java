@@ -265,9 +265,23 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	@UiHandler("newEstimation")
 	void onNewEstimationClicked(ClickEvent e){
-		EstimationPlace ep = new EstimationPlace();
-		ep.setDataForNewEstimation(client);
-		presenter.goTo(ep);
+		ServerFacade.estimation.getNextEstimationId(new WrappedAsyncCallback<Long>() {
+
+			@Override
+			public void onSuccess(Long result) {
+				if(result == null){
+					return;
+				}
+				EstimationPlace ep = new EstimationPlace();
+				ep.setDataForNewEstimation(client, result);
+				presenter.goTo(ep);
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+				
+			}
+		});
 	}
 	
 	@UiHandler("newTransportDocument")

@@ -34,17 +34,20 @@ public class EstimationPlace extends Place {
 	private Long estimationId;
 	private ClientDTO client;
 	private EstimationDTO estimationToClone;
+	private Long estimationProgressiveId;
 	
 	public EstimationPlace() {
 		setEstimationId(0L);
 	}
 
-	public void setDataForNewEstimation(ClientDTO client) {
+	public void setDataForNewEstimation(ClientDTO client, Long estimationProgressiveId) {
 		this.client = client;
+		this.estimationProgressiveId = estimationProgressiveId;
 	}
 	
-	public void setDataForNewEstimation(ClientDTO client, EstimationDTO estimationToClone) {
+	public void setDataForNewEstimation(ClientDTO client, Long estimationProgressiveId, EstimationDTO estimationToClone) {
 		this.client = client;
+		this.estimationProgressiveId = estimationProgressiveId;
 		this.setEstimationToClone(estimationToClone);
 	}
 	
@@ -66,6 +69,14 @@ public class EstimationPlace extends Place {
 
 	public void setEstimationToClone(EstimationDTO estimationToClone) {
 		this.estimationToClone = estimationToClone;
+	}
+
+	public Long getEstimationProgressiveId() {
+		return estimationProgressiveId;
+	}
+
+	public void setEstimationProgressiveId(Long estimationProgressiveId) {
+		this.estimationProgressiveId = estimationProgressiveId;
 	}
 
 }
