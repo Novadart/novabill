@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.ui.center.client.dialog;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -24,7 +25,6 @@ import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidati
 import com.novadart.novabill.frontend.client.ui.widget.validation.PostcodeValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
-import com.novadart.novabill.frontend.client.util.CountryUtils;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
 
@@ -160,7 +160,12 @@ public class ClientDialog extends Dialog {
 		client.setName(companyName.getText());
 		client.setPhone(phone.getText());
 		client.setPostcode(postcode.getText());
-		client.setProvince(province.getItemText(province.getSelectedIndex()));
+		if(country.getSelectedItemValue().equalsIgnoreCase("IT")){
+			client.setProvince(province.getItemText(province.getSelectedIndex()));
+		} else {
+			client.setProvince("");
+		}
+		
 		client.setSsn(ssn.getText());
 		client.setVatID(vatID.getText());
 		client.setWeb(web.getText());
@@ -210,6 +215,12 @@ public class ClientDialog extends Dialog {
 	void onCancelClicked(ClickEvent e){
 		hide();
 	}
+	
+	@UiHandler("country")
+	void onCountryChange(ChangeEvent event){
+		province.setEnabled(country.getSelectedItemValue().equalsIgnoreCase("IT"));
+		province.reset();
+	}
 
 	private void clearData(){
 		client = null;
@@ -221,9 +232,10 @@ public class ClientDialog extends Dialog {
 				contactSurname}){
 			tb.reset();
 		}
+		province.setEnabled(true);
 		province.reset();
 		country.reset();
-		country.setSelectedItem(CountryUtils.getRegionName("IT"));
+		country.setSelectedItemByValue("IT");
 		ok.setText(I18N.INSTANCE.submit());
 	}
 
@@ -236,10 +248,12 @@ public class ClientDialog extends Dialog {
 			tb.validate();
 			isValid = isValid && tb.isValid();
 		}
-		province.validate();
-		isValid = isValid && province.isValid();
 		country.validate();
 		isValid = isValid && country.isValid();
+		if(country.getSelectedItemValue().equalsIgnoreCase("IT")){
+			province.validate();
+			isValid = isValid && province.isValid();
+		}
 		return isValid;
 	}
 

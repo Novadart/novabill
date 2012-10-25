@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -169,6 +170,18 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return new Element[]{titleLabel.getElement(), docControls.getElement()};
 	}
 	
+	@UiHandler("fromAddrCountry")
+	void onFromCountryChange(ChangeEvent event){
+		fromAddrProvince.setEnabled(fromAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT"));
+		fromAddrProvince.reset();
+	}
+	
+	@UiHandler("toAddrCountry")
+	void onToCountryChange(ChangeEvent event){
+		toAddrProvince.setEnabled(toAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT"));
+		toAddrProvince.reset();
+	}
+	
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
@@ -190,7 +203,12 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddrCity.setText(client.getCity());
 		toAddrCompanyName.setText(client.getName());
 		toAddrPostCode.setText(client.getPostcode());
-		toAddrProvince.setSelectedItem(client.getProvince());
+		if(client.getCountry().equalsIgnoreCase("IT")){
+			toAddrProvince.setSelectedItem(client.getProvince());
+		} else {
+			toAddrProvince.setEnabled(false);
+			toAddrProvince.setSelectedIndex(0);
+		}
 		toAddrStreetName.setText(client.getAddress());
 		toAddrCountry.setSelectedItemByValue(client.getCountry());
 	}
@@ -247,7 +265,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		loc.setCompanyName(fromAddrCompanyName.getText());
 		loc.setCity(fromAddrCity.getText());
 		loc.setPostcode(fromAddrPostCode.getText());
-		loc.setProvince(fromAddrProvince.getSelectedItemText());
+		if(fromAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT")){
+			loc.setProvince(fromAddrProvince.getSelectedItemText());
+		} else {
+			loc.setProvince("");
+		}
 		loc.setStreet(fromAddrStreetName.getText());
 		loc.setCountry(fromAddrCountry.getSelectedItemValue());
 		td.setFromEndpoint(loc);
@@ -256,7 +278,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		loc.setCompanyName(toAddrCompanyName.getText());
 		loc.setCity(toAddrCity.getText());
 		loc.setPostcode(toAddrPostCode.getText());
-		loc.setProvince(toAddrProvince.getSelectedItemText());
+		if(toAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT")){
+			loc.setProvince(toAddrProvince.getSelectedItemText());
+		} else {
+			loc.setProvince("");
+		}
 		loc.setStreet(toAddrStreetName.getText());
 		loc.setCountry(toAddrCountry.getSelectedItemValue());
 		td.setToEndpoint(loc);
@@ -422,12 +448,23 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		} else {
 			boolean validation = true;
 			for (ValidatedWidget<?, ?> vw : new ValidatedWidget<?, ?>[]{fromAddrCity, fromAddrCompanyName, fromAddrPostCode,
-					fromAddrProvince, fromAddrStreetName, fromAddrCountry, 
-					toAddrCity, toAddrCompanyName, toAddrPostCode, toAddrProvince, toAddrStreetName, toAddrCountry,
-					numberOfPackages, hour, minute}) {
+					fromAddrStreetName, fromAddrCountry, toAddrCountry, toAddrCity, toAddrCompanyName, toAddrPostCode, 
+					toAddrStreetName, numberOfPackages, hour, minute}) {
 				vw.validate();
 				validation = validation && vw.isValid();
 			}
+			
+			if(fromAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT")){
+				fromAddrProvince.validate();
+				validation = validation && fromAddrProvince.isValid();
+			}
+			
+			if(toAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT")){
+				toAddrProvince.validate();
+				validation = validation && toAddrProvince.isValid();
+			}
+			
+			
 			if(!validation){
 				return false;
 			}
@@ -460,6 +497,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrCompanyName.reset();
 		fromAddrPostCode.reset();
 		fromAddrStreetName.reset();
+		fromAddrProvince.setEnabled(true);
 		fromAddrProvince.reset();
 		fromAddrCountry.reset();
 		
@@ -467,6 +505,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddrCompanyName.reset();
 		toAddrPostCode.reset();
 		toAddrStreetName.reset();
+		toAddrProvince.setEnabled(true);
 		toAddrProvince.reset();
 		toAddrCountry.reset();
 		
