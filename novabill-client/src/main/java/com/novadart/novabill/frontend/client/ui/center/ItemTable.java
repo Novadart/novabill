@@ -33,12 +33,10 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 		this.handler = handler;
 
-		final EditTextCell editCell = new EditTextCell();
-
-
 		//Name & Description
+		final EditTextCell descEditCell = new EditTextCell();
 		final Column<AccountingDocumentItemDTO, String> nameDescription = 
-				new Column<AccountingDocumentItemDTO, String>(editCell) {
+				new Column<AccountingDocumentItemDTO, String>(descEditCell) {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
@@ -52,7 +50,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
 				if(Validation.isEmpty(value)){
 					Notification.showMessage(I18N.INSTANCE.errorClientData());
-					editCell.clearViewData(object);
+					descEditCell.clearViewData(object);
 					redraw();
 				} else {
 					object.setDescription(value);
@@ -64,8 +62,9 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 
 		//quantity
+		final EditTextCell qtyEditCell = new EditTextCell();
 		Column<AccountingDocumentItemDTO, String> quantity =
-				new Column<AccountingDocumentItemDTO, String>(editCell) {
+				new Column<AccountingDocumentItemDTO, String>(qtyEditCell) {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
@@ -78,7 +77,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
 				if(!Validation.isDouble(value)){
 					Notification.showMessage(I18N.INSTANCE.errorClientData());
-					editCell.clearViewData(object);
+					qtyEditCell.clearViewData(object);
 					redraw();
 				} else {
 					object.setQuantity(CalcUtils.parseValue(value));
@@ -90,8 +89,9 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 
 		//unity of measure
+		final EditTextCell unitEditCell = new EditTextCell();
 		Column<AccountingDocumentItemDTO, String> unityOfMeasure =
-				new Column<AccountingDocumentItemDTO, String>(editCell) {
+				new Column<AccountingDocumentItemDTO, String>(unitEditCell) {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
@@ -103,8 +103,9 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 
 		//price
+		final EditTextCell priceEditCell = new EditTextCell();
 		Column<AccountingDocumentItemDTO, String> price =
-				new Column<AccountingDocumentItemDTO, String>(editCell) {
+				new Column<AccountingDocumentItemDTO, String>(priceEditCell) {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
@@ -115,12 +116,13 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				if(!Validation.isDouble(value)){
-					Notification.showMessage(I18N.INSTANCE.errorClientData());
-					editCell.clearViewData(object);
+				try{
+					double newPrice = NumberFormat.getCurrencyFormat().parse(value);
+					object.setPrice(new BigDecimal(newPrice));
 					redraw();
-				} else {
-					object.setPrice(CalcUtils.parseValue(value));
+				} catch(NumberFormatException e){
+					Notification.showMessage(I18N.INSTANCE.errorClientData());
+					priceEditCell.clearViewData(object);
 					redraw();
 				}
 			}
