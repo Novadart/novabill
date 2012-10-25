@@ -34,8 +34,9 @@ input[type="text"],input[type="password"] {
 	padding: 0.4em;
 }
 
-input[type="text"]:HOVER,input[type="password"]:HOVER {
-	border: 0.1em solid #000;
+input[type="text"]:HOVER,input[type="password"]:HOVER,
+textarea:HOVER {
+	background-color: #EEE;
 }
 
 select {
@@ -102,8 +103,53 @@ textarea:HOVER {
 	border-top: 1px solid #DDD;
 	border-right: 1px solid #AAA;
 }
+
 .ClientView {
 	height: 100%;
+}
+
+.ContactPopup {
+	-moz-box-shadow: 2px 2px 2px #AAA;
+	-webkit-box-shadow: 2px 2px 2px #AAA;
+	box-shadow: 2px 2px 2px #AAA;
+}
+
+.ContactPopup .wrapper {
+	padding: 1em;
+	border: 1px solid #DDD;
+	background-color: white;
+}
+
+.ContactPopup .grid {
+
+}
+
+.ContactPopup .grid .label {
+	padding: 0.2em 0;
+	font-size: 1.1em;
+	font-weight: bold;
+	width: 8em;
+}
+
+.ContactPopup .grid .value {
+	padding: 0.2em 0;
+	font-size: 1.1em;
+	min-width: 6em;
+}
+
+.ClientView .contact {
+	font-size: 1.2em;
+	font-weight: bold;
+	border: 1px solid #CCC;
+	float: left;
+	padding: 0.2em 0.5em;
+	-moz-box-shadow: 2px 2px 2px #AAA;
+	-webkit-box-shadow: 2px 2px 2px #AAA;
+	box-shadow: 2px 2px 2px #AAA;
+}
+
+.ClientView .contact:HOVER {
+	background-color: #DDD;
 }
 
 .ClientView .actionWrapper {
@@ -698,7 +744,7 @@ textarea:HOVER {
 .datePickerDayIsToday {
 	padding: 3px;
 	color: #fff;
-	background: url(images/hborder.png) repeat-x 0px -2607px;
+	background: url(../../images/hborder.png) repeat-x 0px -2607px;
 }
 
 .datePickerMonthSelector {

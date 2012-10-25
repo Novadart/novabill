@@ -9,6 +9,7 @@
 	<g:FlowPanel>
 		<g:Label styleName="clientName" ui:field="clientName"></g:Label>
 		<g:HTML styleName="clientDetails" ui:field="clientDetails"></g:HTML>
+		<g:Label styleName="contact" ui:field="contact" text="{i18n.contact}"></g:Label>
 		<g:HorizontalPanel ui:field="clientOptions" styleName="clientOptions">
 			<g:Label styleName="modifyClient" ui:field="modifyClient"
 				text="{i18n.modifyClient}"></g:Label>
