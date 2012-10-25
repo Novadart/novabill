@@ -32,10 +32,34 @@
 					</g:row>
 					<g:row>
 						<g:customCell>
+							<g:Label styleName="label" text="{i18n.validTill}"></g:Label>
+						</g:customCell>
+						<g:customCell>
+							<d:DateBox styleName="box date" ui:field="validTill"></d:DateBox>
+						</g:customCell>
+					</g:row>
+					<g:row>
+						<g:customCell>
+							<g:Label styleName="label" text="{i18n.paymentNote}"></g:Label>
+						</g:customCell>
+						<g:customCell>
+							<g:TextArea styleName="box note" ui:field="paymentNote"></g:TextArea>
+						</g:customCell>
+					</g:row>
+					<g:row>
+						<g:customCell>
 							<g:Label styleName="label" text="{i18n.note}"></g:Label>
 						</g:customCell>
 						<g:customCell>
 							<g:TextArea styleName="box note" ui:field="note"></g:TextArea>
+						</g:customCell>
+					</g:row>
+					<g:row>
+						<g:customCell>
+							<g:Label styleName="label" text="{i18n.limitations}"></g:Label>
+						</g:customCell>
+						<g:customCell>
+							<g:TextArea styleName="box note" ui:field="limitations"></g:TextArea>
 						</g:customCell>
 					</g:row>
 				</g:Grid>

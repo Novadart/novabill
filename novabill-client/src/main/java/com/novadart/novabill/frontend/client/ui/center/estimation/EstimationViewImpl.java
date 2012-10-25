@@ -52,7 +52,9 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 	@UiField Label clientName;
 	@UiField(provided=true) DateBox date;
+	@UiField(provided=true) DateBox validTill;
 	@UiField TextArea note;
+	@UiField TextArea paymentNote;
 	@UiField Button createEstimation;
 	@UiField Button modifyDocument;
 	@UiField Button convertToInvoice;
@@ -79,6 +81,9 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat
+				(DateTimeFormat.getFormat("dd MMMM yyyy")));
+		validTill = new DateBox();
+		validTill.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("AccountDocumentView");
@@ -175,12 +180,14 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		}
 
 		es.setAccountingDocumentDate(date.getValue());
+		es.setValidTill(validTill.getValue());
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
 		for (AccountingDocumentItemDTO itemDTO : itemInsertionForm.getItems()) {
 			invItems.add(itemDTO);
 		}
 		es.setItems(invItems);
 		es.setNote(note.getText());
+		es.setPaymentNote(paymentNote.getText());
 		CalcUtils.calculateTotals(invItems, es);
 		return es;
 	}
@@ -238,7 +245,10 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		this.client =client;
 
 		clientName.setText(client.getName());
-		date.setValue(new Date());
+		
+		Date now = new Date();
+		date.setValue(now);
+		validTill.setValue(new Date(now.getTime() + 2592000000L));
 
 		createEstimation.setVisible(true);
 		convertToInvoice.setVisible(true);
@@ -257,6 +267,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			this.estimation = estimation;
 			this.client = estimation.getClient();
 			date.setValue(estimation.getAccountingDocumentDate());
+			validTill.setValue(estimation.getValidTill());
 			clientName.setText(estimation.getClient().getName());
 
 			modifyDocument.setVisible(true);
@@ -276,7 +287,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 		itemInsertionForm.setItems(items);
 		note.setText(estimation.getNote());
-
+		paymentNote.setText(estimation.getPaymentNote());
 	}
 
 
@@ -294,7 +305,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 
 	private boolean validateEstimation(){
-		if(date.getTextBox().getText().isEmpty() || date.getValue() == null){
+		if(date.getTextBox().getText().isEmpty() || date.getValue() == null 
+				|| validTill.getTextBox().getText().isEmpty() || validTill.getValue() == null){
 			return false;
 		} else if(itemInsertionForm.getItems().isEmpty()){
 			return false;
@@ -316,6 +328,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 		//reset widget contents		
 		note.setText("");
+		paymentNote.setText("");
 		totalTax.setText("");
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
