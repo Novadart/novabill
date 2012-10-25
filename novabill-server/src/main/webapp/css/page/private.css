@@ -143,7 +143,6 @@ textarea:HOVER {
 	border: 1px solid #CCC;
 	float: left;
 	padding: 0.2em 0.5em;
-	cursor: pointer;
 	-moz-box-shadow: 2px 2px 2px #AAA;
 	-webkit-box-shadow: 2px 2px 2px #AAA;
 	box-shadow: 2px 2px 2px #AAA;
