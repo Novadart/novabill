@@ -93,7 +93,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	@UiField Label contact;
 	
-	private static final int HIDE_TIMEOUT = 6000;
+	private static final int HIDE_TIMEOUT = 3000;
 	private Timer hideContactPopup = new Timer() {
 		
 		@Override
@@ -154,6 +154,12 @@ public class ClientViewImpl extends Composite implements ClientView {
 				
 			}
 		});
+	}
+	
+	@Override
+	protected void onUnload() {
+		super.onUnload();
+		contactPopup.hide();
 	}
 	
 	@Override
