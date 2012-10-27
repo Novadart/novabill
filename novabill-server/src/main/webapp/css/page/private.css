@@ -489,6 +489,7 @@ textarea:HOVER {
 	-moz-box-shadow: 2px 2px 2px #CCC;
 	-webkit-box-shadow: 2px 2px 2px #CCC;
 	box-shadow: 2px 2px 2px #CCC;
+	height: 4.5em;
 }
 
 .QuickViewList .pdf {
@@ -498,12 +499,11 @@ textarea:HOVER {
 
 .QuickViewList.TransportDocumentList .upper span.createInvoice,.QuickViewList.EstimationList .upper span.convertToInvoice
 	{
-	position: absolute;
-	right: 4.3em;
 }
 
 .QuickViewList .details .tools {
 	text-align: right;
+	position: relative;
 }
 
 .QuickViewList.TransportDocumentList .upper span.createInvoice,.QuickViewList.EstimationList .upper span.convertToInvoice,.QuickViewList .details .tools span
@@ -519,9 +519,23 @@ textarea:HOVER {
 	text-decoration: underline;
 }
 
-.QuickViewList.InvoiceList .upper {
-	height: 1.8em;
+.QuickViewList .quickViewCell  .upper {
+	height: 1em;
 }
+
+.QuickViewList .quickViewCell .details .total {
+	float: left;
+}
+
+.QuickViewList .quickViewCell .details .total {
+	float: left;
+}
+
+.QuickViewList .quickViewCell .details .convertToInvoice,
+.QuickViewList .quickViewCell .details .createInvoice {
+	float: right;
+}
+
 
 .QuickViewList.InvoiceList .details .payed:HOVER {
 	text-decoration: underline;
@@ -583,13 +597,14 @@ textarea:HOVER {
 }
 
 .QuickViewList .details {
-	padding: 5px 5px 15px;
+	padding: 0.2em;
 }
 
 .QuickViewList .openEstimation,.QuickViewList .openInvoice,.QuickViewList .openCreditNote,.QuickViewList .openTransportDocument
-	{
+{
 	position: absolute;
-	left: 48%;
+	right: 48%;
+	bottom: -4px;
 }
 
 .westContainer {
