@@ -6,9 +6,9 @@ import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public interface TransportDocumentView extends View {
 	
-	public void setDataForNewTransportDocument(ClientDTO client);
+	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId);
 	
-	public void setDataForNewTransportDocument(ClientDTO client, TransportDocumentDTO document);
+	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId, TransportDocumentDTO document);
 	
 	public void setTransportDocument(TransportDocumentDTO document);
 }

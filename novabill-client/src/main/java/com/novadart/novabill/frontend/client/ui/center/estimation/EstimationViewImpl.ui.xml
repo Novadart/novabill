@@ -24,8 +24,7 @@
 					</g:row>
 					<g:row>
 						<g:customCell>
-							<g:Label ui:field="estimationNumber" styleName="label"
-								text="{i18n.estimationNumber}"></g:Label>
+							<g:Label styleName="label" text="{i18n.estimationNumber}"></g:Label>
 						</g:customCell>
 						<g:customCell>
 							<g:Label styleName="box number"	ui:field="number"></g:Label>

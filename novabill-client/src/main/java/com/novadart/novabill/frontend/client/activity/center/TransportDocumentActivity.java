@@ -41,10 +41,12 @@ public class TransportDocumentActivity extends BasicActivity {
 					} else {
 						
 						if(transportDocumentPlace.getTransportDocumentToClone() != null) {
-							tdv.setDataForNewTransportDocument(transportDocumentPlace.getClient(), 
+							tdv.setDataForNewTransportDocument(transportDocumentPlace.getClient(),
+									transportDocumentPlace.getTransportDocumentProgressiveId(),
 									transportDocumentPlace.getTransportDocumentToClone());
 						} else {
-							tdv.setDataForNewTransportDocument(transportDocumentPlace.getClient());
+							tdv.setDataForNewTransportDocument(transportDocumentPlace.getClient(),
+									transportDocumentPlace.getTransportDocumentProgressiveId());
 						}
 						
 						MainWidget.getInstance().setLargeView();

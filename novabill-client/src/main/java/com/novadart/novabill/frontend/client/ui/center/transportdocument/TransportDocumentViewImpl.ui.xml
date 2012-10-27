@@ -26,6 +26,14 @@
 					</g:row>
 					<g:row>
 						<g:customCell>
+							<g:Label styleName="label" text="{i18n.transportDocumentNumber}"></g:Label>
+						</g:customCell>
+						<g:customCell>
+							<g:Label styleName="box number"	ui:field="number"></g:Label>
+						</g:customCell>
+					</g:row>
+					<g:row>
+						<g:customCell>
 							<g:Label styleName="label" text="{i18n.date}"></g:Label>
 						</g:customCell>
 						<g:customCell>

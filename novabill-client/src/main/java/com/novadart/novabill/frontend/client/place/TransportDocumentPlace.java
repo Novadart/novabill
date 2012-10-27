@@ -34,18 +34,21 @@ public class TransportDocumentPlace extends Place {
 	private Long transportDocumentId;
 	private ClientDTO client;
 	private TransportDocumentDTO transportDocumentToClone;
+	private Long transportDocumentProgressiveId;
 
 	public TransportDocumentPlace() {
 		setTransportDocumentId(0L);
 	}
 
-	public void setDataForNewTransportDocument(ClientDTO client) {
+	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId) {
 		this.client = client;
+		this.transportDocumentProgressiveId = transportDocumentProgressiveId;
 	}
 
-	public void setDataForNewTransportDocument(ClientDTO client, TransportDocumentDTO transportDocumentToClone) {
+	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId, TransportDocumentDTO transportDocumentToClone) {
 		this.client = client;
 		this.transportDocumentToClone = transportDocumentToClone;
+		this.transportDocumentProgressiveId = transportDocumentProgressiveId;
 	}
 
 	public ClientDTO getClient() {
@@ -70,6 +73,15 @@ public class TransportDocumentPlace extends Place {
 
 	public void setTransportDocumentToClone(TransportDocumentDTO transportDocumentToClone) {
 		this.transportDocumentToClone = transportDocumentToClone;
+	}
+
+	public Long getTransportDocumentProgressiveId() {
+		return transportDocumentProgressiveId;
+	}
+
+	public void setTransportDocumentProgressiveId(
+			Long transportDocumentProgressiveId) {
+		this.transportDocumentProgressiveId = transportDocumentProgressiveId;
 	}
 
 }

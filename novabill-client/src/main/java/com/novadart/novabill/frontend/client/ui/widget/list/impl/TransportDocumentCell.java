@@ -147,10 +147,24 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 		SelectClientDialog dia = new SelectClientDialog(new SelectClientDialog.Handler() {
 			
 			@Override
-			public void onClientSelected(ClientDTO client) {
-				TransportDocumentPlace tdp = new TransportDocumentPlace();
-				tdp.setDataForNewTransportDocument(client, transportDocument);
-				presenter.goTo(tdp);
+			public void onClientSelected(final ClientDTO client) {
+				ServerFacade.transportDocument.getNextTransportDocId(new WrappedAsyncCallback<Long>() {
+
+					@Override
+					public void onSuccess(Long result) {
+						if(result == null){
+							return;
+						}
+						TransportDocumentPlace tdp = new TransportDocumentPlace();
+						tdp.setDataForNewTransportDocument(client, result, transportDocument);
+						presenter.goTo(tdp);
+					}
+
+					@Override
+					public void onException(Throwable caught) {
+						
+					}
+				});
 			}
 		});
 		dia.showCentered();

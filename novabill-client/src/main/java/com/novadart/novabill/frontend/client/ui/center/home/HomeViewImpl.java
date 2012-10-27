@@ -239,9 +239,23 @@ public class HomeViewImpl extends Composite implements HomeView {
 			
 			@Override
 			public void onClientSelected(final ClientDTO client) {
-				TransportDocumentPlace tdp = new TransportDocumentPlace();
-				tdp.setDataForNewTransportDocument(client);
-				presenter.goTo(tdp);
+				ServerFacade.transportDocument.getNextTransportDocId(new WrappedAsyncCallback<Long>() {
+
+					@Override
+					public void onSuccess(Long result) {
+						if(result == null){
+							return;
+						}
+						TransportDocumentPlace tdp = new TransportDocumentPlace();
+						tdp.setDataForNewTransportDocument(client, result);
+						presenter.goTo(tdp);
+					}
+
+					@Override
+					public void onException(Throwable caught) {
+						
+					}
+				});
 			}
 		});
 		scd.showCentered();

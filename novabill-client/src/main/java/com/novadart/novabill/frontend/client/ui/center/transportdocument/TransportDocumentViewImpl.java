@@ -87,6 +87,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField TextBox tradeZone;
 	
 	@UiField Label clientName;
+	@UiField Label number;
 	@UiField(provided=true) DateBox date;
 	@UiField TextArea note;
 	@UiField Button createTransportDocument;
@@ -221,7 +222,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			return;
 		}
 
-		TransportDocumentDTO transportDocument = createtransportDocument(null);
+		TransportDocumentDTO transportDocument = createTransportDocument(null);
 
 		ServerFacade.transportDocument.add(transportDocument, new WrappedAsyncCallback<Long>() {
 
@@ -250,7 +251,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 
 
-	private TransportDocumentDTO createtransportDocument(TransportDocumentDTO transportDocument){
+	private TransportDocumentDTO createTransportDocument(TransportDocumentDTO transportDocument){
 		TransportDocumentDTO td;
 
 		if(transportDocument != null){
@@ -259,6 +260,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			td = new TransportDocumentDTO();
 			td.setBusiness(Configuration.getBusiness());
 			td.setClient(client);
+			td.setDocumentID(Long.parseLong(number.getText()));
 		}
 		
 		EndpointDTO loc = new EndpointDTO();
@@ -317,7 +319,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		}
 
 		if(Notification.showYesNoRequest(I18N.INSTANCE.saveModificationsConfirm()) ){
-			final TransportDocumentDTO td = createtransportDocument(transportDocument);
+			final TransportDocumentDTO td = createTransportDocument(transportDocument);
 
 			ServerFacade.transportDocument.update(td, new WrappedAsyncCallback<Void>() {
 
@@ -355,9 +357,10 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	}
 
 	@Override
-	public void setDataForNewTransportDocument(ClientDTO client) {
+	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId) {
 		this.client =client;
-
+		
+		number.setText(transportDocumentProgressiveId.toString());
 		clientName.setText(client.getName());
 		Date d = new Date();
 		String hourStr = DateTimeFormat.getFormat("HH").format(d);
@@ -373,9 +376,9 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	
 	
 	@Override
-	public void setDataForNewTransportDocument(ClientDTO client,
+	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId,
 			TransportDocumentDTO document) {
-		setDataForNewTransportDocument(client);
+		setDataForNewTransportDocument(client,transportDocumentProgressiveId);
 		setTransportDocument(document, true);
 	}
 
@@ -385,6 +388,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			this.client = transportDocument.getClient();
 			date.setValue(transportDocument.getAccountingDocumentDate());
 			clientName.setText(transportDocument.getClient().getName());
+			number.setText(transportDocument.getDocumentID().toString());
 			
 			Date d = transportDocument.getTransportStartDate();
 			transportStartDate.setValue(d);
@@ -479,6 +483,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		this.client = null;
 		this.transportDocument = null;
 
+		number.setText("");
+		
 		//reset widget statuses
 		createTransportDocument.setVisible(false);
 		modifyDocument.setVisible(false);

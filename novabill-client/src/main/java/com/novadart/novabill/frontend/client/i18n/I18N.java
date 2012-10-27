@@ -172,4 +172,5 @@ public interface I18N extends Constants {
 	public String numberOfPackages();
 	public String transportStartDate();
 	public String time();
+	public String transportDocumentNumber();
 }

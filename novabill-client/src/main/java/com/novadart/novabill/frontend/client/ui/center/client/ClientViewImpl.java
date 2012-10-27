@@ -286,9 +286,23 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	@UiHandler("newTransportDocument")
 	void onNewTransportDocumentClicked(ClickEvent e){
-		TransportDocumentPlace tdp = new TransportDocumentPlace();
-		tdp.setDataForNewTransportDocument(client);
-		presenter.goTo(tdp);
+		ServerFacade.transportDocument.getNextTransportDocId(new WrappedAsyncCallback<Long>() {
+
+			@Override
+			public void onSuccess(Long result) {
+				if(result == null){
+					return;
+				}
+				TransportDocumentPlace tdp = new TransportDocumentPlace();
+				tdp.setDataForNewTransportDocument(client, result);
+				presenter.goTo(tdp);
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+				
+			}
+		});
 	}
 	
 	@UiHandler("newCreditNote")
