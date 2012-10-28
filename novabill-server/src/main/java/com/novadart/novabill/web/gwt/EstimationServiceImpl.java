@@ -79,7 +79,6 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 		estimation.setBusiness(business);
 		business.getEstimations().add(estimation);
 		EstimationDTOFactory.copyFromDTO(estimation, estimationDTO, true);
-		estimation.setDocumentID(business.getNextEstimationDocumentID());
 		validator.validate(estimation);
 		estimation.persist();
 		estimation.flush();
