@@ -10,6 +10,7 @@ import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
@@ -31,6 +32,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		@AttributeOverride(name = "country", column = @Column(name = "from_country"))
 	})
 	@Embedded
+	@Valid
 	private Endpoint fromEndpoint;
 	
 	@AttributeOverrides({
@@ -42,6 +44,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		@AttributeOverride(name = "country", column = @Column(name = "to_country"))
 	})
 	@Embedded
+	@Valid
 	private Endpoint toEndpoint;
 	
 	private String transporter;
