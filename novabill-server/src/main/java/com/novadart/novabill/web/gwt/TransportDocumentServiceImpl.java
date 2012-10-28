@@ -83,7 +83,6 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 		transportDoc.setBusiness(business);
 		business.getTransportDocuments().add(transportDoc);
 		TransportDocumentDTOFactory.copyFromDTO(transportDoc, transportDocDTO, true);
-		transportDoc.setDocumentID(business.getNextTransportDocDocumentID());
 		validator.validate(transportDoc);
 		transportDoc.persist();
 		transportDoc.flush();
