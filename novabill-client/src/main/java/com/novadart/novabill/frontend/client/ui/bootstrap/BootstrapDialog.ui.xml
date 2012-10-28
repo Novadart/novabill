@@ -23,7 +23,7 @@
 				<t:RichTextBox ui:field="mobile"></t:RichTextBox>
 				<t:RichTextBox ui:field="email"></t:RichTextBox>
 				<t:RichTextBox ui:field="fax"></t:RichTextBox>
-				<t:RichTextBox ui:field="web" label="{i18n.web}"></t:RichTextBox>
+				<t:RichTextBox ui:field="web"></t:RichTextBox>
 			</g:VerticalPanel>
 		</g:SimplePanel>
 

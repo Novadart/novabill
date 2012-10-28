@@ -12,6 +12,7 @@ import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
+import com.novadart.novabill.frontend.client.ui.widget.validation.DefaultValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
@@ -46,7 +47,7 @@ public class BootstrapDialog extends Dialog {
 	@UiField(provided=true) RichTextBox email;
 	@UiField(provided=true) RichTextBox mobile;
 	@UiField(provided=true) RichTextBox fax;
-	@UiField RichTextBox web;
+	@UiField(provided=true) RichTextBox web;
 	
 	
 	private Handler handler;
@@ -67,6 +68,7 @@ public class BootstrapDialog extends Dialog {
 		email = new RichTextBox(I18N.INSTANCE.companyEmail(), new EmailValidation(true));
 		mobile = new RichTextBox(I18N.INSTANCE.mobile(), nuv);
 		fax = new RichTextBox(I18N.INSTANCE.fax(), nuv);
+		web = new RichTextBox(I18N.INSTANCE.web(), new DefaultValidation<String>());
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("BootstrapDialog");
 	}
