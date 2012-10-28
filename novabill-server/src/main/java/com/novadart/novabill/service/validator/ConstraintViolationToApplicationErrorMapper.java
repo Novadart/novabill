@@ -1,21 +1,17 @@
 package com.novadart.novabill.service.validator;
 
 import java.util.ArrayList;
-import java.util.Iterator;
 import java.util.List;
 import java.util.Set;
-
 import javax.validation.ConstraintViolation;
 import javax.validation.Path;
-import javax.validation.Path.Node;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Pattern;
 import javax.validation.constraints.Size;
-
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Service;
-
 import com.novadart.novabill.shared.client.validation.ErrorCode;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
@@ -24,11 +20,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 public class ConstraintViolationToApplicationErrorMapper {
 	
 	private String getProperty(Path path){
-		Iterator<Node> iter = path.iterator();
-		Node node = null;
-		while(iter.hasNext())
-			node = iter.next();
-		return node.getName();
+		return StringUtils.join(path.iterator(), "_");
 	}
 	
 	public <T> List<ErrorObject> convert(Set<ConstraintViolation<T>> violations){

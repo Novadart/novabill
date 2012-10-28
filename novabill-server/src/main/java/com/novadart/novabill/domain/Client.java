@@ -26,6 +26,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Transient;
 import javax.persistence.Version;
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -136,6 +137,7 @@ public class Client implements Serializable {
     })
     @Embedded
     @IndexedEmbedded(prefix = FTSNamespace.CONTACT_PREFIX)
+    @Valid
     private Contact contact = new Contact();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
