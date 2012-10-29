@@ -67,7 +67,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiField Label paymentNoteLabel;
 	@UiField TextArea paymentNote;
 	@UiField TextArea note;
-	@UiField Button createEstimate;
 	@UiField Button createInvoice;
 	@UiField Button modifyDocument;
 
@@ -206,44 +205,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		}
 	}
 
-
-
-	@UiHandler("createEstimate")
-	void onCreateEstimationClicked(ClickEvent e){
-		if(!validateEstimation()){
-			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
-			return;
-		}
-
-		EstimationDTO estimation = createEstimation(null);
-
-		ServerFacade.estimation.add(estimation, new WrappedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(Long result) {
-				Notification.showMessage(I18N.INSTANCE.estimationCreationSuccess());
-
-				DataWatcher.getInstance().fireEstimationEvent();
-
-				ClientPlace cp = new ClientPlace();
-				cp.setClientId(client.getId());
-				cp.setDocumentsListing(DOCUMENTS.estimations);
-				presenter.goTo(cp);
-			}
-
-			@Override
-			public void onException(Throwable caught) {
-				if(caught instanceof ValidationException){
-					handleServerValidationException((ValidationException) caught, false);
-				} else {
-					Notification.showMessage(I18N.INSTANCE.estimationCreationFailure());
-				}
-			}
-		});
-
-	}
-
-
 	private InvoiceDTO createInvoice(InvoiceDTO invoice){
 		InvoiceDTO inv;
 
@@ -275,29 +236,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		CalcUtils.calculateTotals(invItems, inv);
 		return inv;
 	}
-
-	private EstimationDTO createEstimation(EstimationDTO estimation){
-		EstimationDTO es;
-
-		if(estimation != null){
-			es = estimation;
-		} else {
-			es = new EstimationDTO();
-			es.setBusiness(Configuration.getBusiness());
-			es.setClient(client);
-		}
-
-		es.setAccountingDocumentDate(date.getValue());
-		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
-		for (AccountingDocumentItemDTO itemDTO : itemInsertionForm.getItems()) {
-			invItems.add(itemDTO);
-		}
-		es.setItems(invItems);
-		es.setNote(note.getText());
-		CalcUtils.calculateTotals(invItems, es);
-		return es;
-	}
-
 
 	@UiHandler("modifyDocument")
 	void onModifyInvoiceClicked(ClickEvent e){
@@ -394,7 +332,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		number.setText(progressiveId.toString());
 
 		createInvoice.setVisible(true);
-		createEstimate.setVisible(true);
 	}
 
 	@Override
@@ -440,9 +377,12 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 
 	private boolean validateInvoice(){
-		if(!validateEstimation()){
+		if(date.getTextBox().getText().isEmpty() || date.getValue() == null){
+			return false;
+		} else if(itemInsertionForm.getItems().isEmpty()){
 			return false;
 		}
+		
 		number.validate();
 		payment.validate();
 		if(!number.isValid() || !payment.isValid()){
@@ -452,15 +392,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		return true;
 	}
 
-
-	private boolean validateEstimation(){
-		if(date.getTextBox().getText().isEmpty() || date.getValue() == null){
-			return false;
-		} else if(itemInsertionForm.getItems().isEmpty()){
-			return false;
-		}
-		return true;
-	}
 
 	@Override
 	public void setClean() {
@@ -475,7 +406,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		number.setVisible(true);
 		payment.setVisible(true);
 		payment.reset();
-		createEstimate.setVisible(false);
 		createInvoice.setVisible(false);
 		modifyDocument.setVisible(false);
 		paymentNote.setVisible(true);
