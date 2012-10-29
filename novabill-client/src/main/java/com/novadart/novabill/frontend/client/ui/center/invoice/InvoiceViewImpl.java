@@ -95,6 +95,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 			public void onItemAdded(List<AccountingDocumentItemDTO> items) {
 				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
+			
+			@Override
+			public void onItemUpdated(List<AccountingDocumentItemDTO> items) {
+				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
+			}
 		});
 		
 		date = new DateBox();

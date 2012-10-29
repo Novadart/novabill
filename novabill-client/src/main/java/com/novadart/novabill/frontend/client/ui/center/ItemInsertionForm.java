@@ -33,6 +33,7 @@ public class ItemInsertionForm extends Composite {
 	
 	public static interface Handler {
 		public void onItemAdded(List<AccountingDocumentItemDTO> items);
+		public void onItemUpdated(List<AccountingDocumentItemDTO> items);
 	}
 
 	@UiField ScrollPanel itemTableScroller;
@@ -60,6 +61,11 @@ public class ItemInsertionForm extends Composite {
 				accountingDocumentItems.getList().remove(item);
 				accountingDocumentItems.refresh();
 				updateFields();
+			}
+			
+			@Override
+			public void onUpdate(AccountingDocumentItemDTO item) {
+				ItemInsertionForm.this.handler.onItemUpdated(getItems());
 			}
 			
 		});
