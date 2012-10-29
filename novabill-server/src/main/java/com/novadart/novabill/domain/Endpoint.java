@@ -3,6 +3,10 @@ package com.novadart.novabill.domain;
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Size;
 
+/*
+ * Important note!
+ * If fields and validation constraints are modified be sure to update the validation code. 
+ */
 
 @Embeddable
 public class Endpoint {

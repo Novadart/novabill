@@ -22,6 +22,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -69,6 +70,7 @@ public abstract class AccountingDocument {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "accountingDocument", orphanRemoval = true)
     @OrderBy("id")
+    @Valid
     protected List<AccountingDocumentItem> accountingDocumentItems = new LinkedList<AccountingDocumentItem>();
     
     protected static int getYear(Date date){

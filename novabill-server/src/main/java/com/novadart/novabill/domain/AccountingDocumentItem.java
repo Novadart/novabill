@@ -22,6 +22,11 @@ import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+/*
+ * Important note!
+ * If fields and validation constraints are modified be sure to update the validation code. 
+ */
+
 @Configurable
 @Entity
 public class AccountingDocumentItem implements Serializable {
@@ -32,6 +37,7 @@ public class AccountingDocumentItem implements Serializable {
 	private BigDecimal price;
 
     @Type(type = "text")
+    @Size(max = 255)
     private String description;
 
     @Size(max = 255)
@@ -43,10 +49,13 @@ public class AccountingDocumentItem implements Serializable {
     @NotNull
     private BigDecimal quantity;
     
+    @NotNull
     private BigDecimal totalBeforeTax;
     
+    @NotNull
     private BigDecimal totalTax;
     
+    @NotNull
     private BigDecimal total;
     
     @ManyToOne
