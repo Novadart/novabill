@@ -22,6 +22,9 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Type;
@@ -48,15 +51,20 @@ public abstract class AccountingDocument {
     protected Integer accountingDocumentYear;
     
     @Type(type = "text")
+    @Size(max = 1500)
     protected String note;
     
+    @NotNull
     protected BigDecimal total;
     
+    @NotNull
     protected BigDecimal totalTax;
     
+    @NotNull
     protected BigDecimal totalBeforeTax;
     
     @Type(type = "text")
+    @Size(max = 1500)
     protected String paymentNote;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "accountingDocument", orphanRemoval = true)
