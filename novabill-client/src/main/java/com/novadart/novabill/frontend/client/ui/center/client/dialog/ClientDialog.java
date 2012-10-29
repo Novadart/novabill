@@ -71,8 +71,8 @@ public class ClientDialog extends Dialog {
 	private ClientDialog() {
 		NotEmptyValidation ne = new NotEmptyValidation();
 		companyName = new ValidatedTextBox(ne);
-		vatID =  new ValidatedTextBox(new VatIdValidation());
-		ssn =  new ValidatedTextBox(new SsnOrVatIdValidation());
+		vatID =  new ValidatedTextBox(new VatIdValidation(true));
+		ssn =  new ValidatedTextBox(new SsnOrVatIdValidation(true));
 		postcode = new ValidatedTextBox(new PostcodeValidation());
 		address = new ValidatedTextBox(ne);
 		city = new ValidatedTextBox(ne);
@@ -248,6 +248,9 @@ public class ClientDialog extends Dialog {
 			tb.validate();
 			isValid = isValid && tb.isValid();
 		}
+		
+		isValid &= (!vatID.getText().isEmpty() || !ssn.getText().isEmpty());
+		
 		country.validate();
 		isValid = isValid && country.isValid();
 		if(country.getSelectedItemValue().equalsIgnoreCase("IT")){

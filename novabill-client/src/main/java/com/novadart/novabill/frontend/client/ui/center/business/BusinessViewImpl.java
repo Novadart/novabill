@@ -75,9 +75,9 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 
 		name = new ValidatedTextBox(nev);
 		name.setText(b.getName());
-		ssn = new ValidatedTextBox(new SsnOrVatIdValidation());
+		ssn = new ValidatedTextBox(new SsnOrVatIdValidation(true));
 		ssn.setText(b.getSsn());
-		vatID = new ValidatedTextBox(new VatIdValidation());
+		vatID = new ValidatedTextBox(new VatIdValidation(true));
 		vatID.setText(b.getVatID());
 		address = new ValidatedTextBox(nev);
 		address.setText(b.getAddress());
@@ -207,6 +207,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 			v.validate();
 			validationOk = validationOk && v.isValid();
 		}
+		validationOk &= (!vatID.getText().isEmpty() || !ssn.getText().isEmpty());
 		province.validate();
 		validationOk = validationOk && province.isValid();
 		country.validate();

@@ -56,8 +56,8 @@ public class BootstrapDialog extends Dialog {
 		NotEmptyValidation nev = new NotEmptyValidation();
 		NumberValidation nuv = new NumberValidation(true);
 		name = new RichTextBox(I18N.INSTANCE.companyName(), nev);
-		ssn = new RichTextBox(I18N.INSTANCE.ssn(), new SsnOrVatIdValidation());
-		vatID = new RichTextBox(I18N.INSTANCE.vatID(), new VatIdValidation());
+		ssn = new RichTextBox(I18N.INSTANCE.ssn(), new SsnOrVatIdValidation(true));
+		vatID = new RichTextBox(I18N.INSTANCE.vatID(), new VatIdValidation(true));
 		address = new RichTextBox(I18N.INSTANCE.address(), nev);
 		city = new RichTextBox(I18N.INSTANCE.city(), nev);
 		province = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province()); 
@@ -80,6 +80,8 @@ public class BootstrapDialog extends Dialog {
 			r.validate();
 			valid &= r.isValid();
 		}
+		
+		valid &= (!vatID.getText().isEmpty() || !ssn.getText().isEmpty());
 		
 		country.validate();
 		valid &= country.isValid();
