@@ -2,7 +2,11 @@ package com.novadart.novabill.shared.client.validation;
 
 public enum Field {
 	//Accounting document fields
-	documentID, accountingDocumentDate, accountingDocumentYear, note, paymentNote, total, totalTax, totalBeforeTax, 
+	documentID, accountingDocumentDate, accountingDocumentYear, note, paymentNote, total, totalTax, totalBeforeTax,
+	
+	//Accounting document item fields
+	accountingDocumentItems_description, accountingDocumentItems_unitOfMeasure, accountingDocumentItems_tax, accountingDocumentItems_quantity,
+	accountingDocumentItems_totalBeforeTax, accountingDocumentItems_totalTax, accountingDocumentItems_total, accountingDocumentItems_price,
 	
 	//Invoice fields
 	paymentType, paymentDueDate, payed,

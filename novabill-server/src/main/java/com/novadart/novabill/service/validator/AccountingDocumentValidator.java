@@ -2,13 +2,10 @@ package com.novadart.novabill.service.validator;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
-
 import com.novadart.novabill.domain.AccountingDocument;
-import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 
@@ -27,14 +24,6 @@ public class AccountingDocumentValidator{
 		}catch (ValidationException e) {
 			errors.addAll(e.getErrors());
 			isValid = false;
-		}
-		for(AccountingDocumentItem item: accountingDocument.getAccountingDocumentItems()){
-			try{
-				simpleValidator.validate(item); //JSR-303 validation
-			}catch (ValidationException e) {
-				errors.addAll(e.getErrors());
-				isValid = false;
-			}
 		}
 		if(!isValid)
 			throw new ValidationException(errors);
