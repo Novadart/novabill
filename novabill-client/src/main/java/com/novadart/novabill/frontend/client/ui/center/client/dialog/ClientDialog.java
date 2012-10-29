@@ -18,6 +18,7 @@ import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
+import com.novadart.novabill.frontend.client.ui.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
@@ -42,6 +43,8 @@ public class ClientDialog extends Dialog {
 		instance.clearData();
 		return instance;
 	}
+	
+	@UiField InlineNotification inlineNotification;
 
 	@UiField(provided=true) ValidatedTextBox companyName;
 	@UiField(provided=true) ValidatedTextBox address;
@@ -237,10 +240,12 @@ public class ClientDialog extends Dialog {
 		country.reset();
 		country.setSelectedItemByValue("IT");
 		ok.setText(I18N.INSTANCE.submit());
+		inlineNotification.hide();
 	}
 
 	private boolean validate(){
 		boolean isValid = true;
+		inlineNotification.hide();
 		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, 
 				ssn, postcode, phone, mobile, fax, email, address, city, web,
 				contactEmail, contactFax, contactMobile, contactName, contactPhone,
@@ -249,7 +254,12 @@ public class ClientDialog extends Dialog {
 			isValid = isValid && tb.isValid();
 		}
 		
-		isValid &= (!vatID.getText().isEmpty() || !ssn.getText().isEmpty());
+		if(vatID.getText().isEmpty() && ssn.getText().isEmpty()){
+			inlineNotification.showMessage(I18N.INSTANCE.fillVatIdOrSsn());
+			ssn.setValidationErrorStyle();
+			vatID.setValidationErrorStyle();
+			isValid = false;
+		}
 		
 		country.validate();
 		isValid = isValid && country.isValid();

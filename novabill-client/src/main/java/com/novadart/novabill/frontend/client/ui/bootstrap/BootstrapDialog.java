@@ -13,6 +13,7 @@ import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
+import com.novadart.novabill.frontend.client.ui.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
@@ -49,6 +50,7 @@ public class BootstrapDialog extends Dialog {
 	@UiField(provided=true) RichTextBox fax;
 	@UiField(provided=true) RichTextBox web;
 	
+	@UiField InlineNotification inlineNotification;
 	
 	private Handler handler;
 	
@@ -75,13 +77,19 @@ public class BootstrapDialog extends Dialog {
 	
 	private boolean validate(){
 		boolean valid = true;
+		inlineNotification.hide();
 		for (RichTextBox r : new RichTextBox[]{name, ssn, vatID, address, city, 
 				postcode, phone, email, mobile, fax, web}) {
 			r.validate();
 			valid &= r.isValid();
 		}
 		
-		valid &= (!vatID.getText().isEmpty() || !ssn.getText().isEmpty());
+		if(vatID.getText().isEmpty() && ssn.getText().isEmpty()){
+			inlineNotification.showMessage(I18N.INSTANCE.fillVatIdOrSsn());
+			ssn.setValidationErrorStyle();
+			vatID.setValidationErrorStyle();
+			valid = false;
+		}
 		
 		country.validate();
 		valid &= country.isValid();

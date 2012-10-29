@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:t="urn:import:com.novadart.gwtshared.client.textbox"
-	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget">
+	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget" xmlns:n="urn:import:com.novadart.novabill.frontend.client.ui.widget.notification">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n" />
@@ -17,6 +17,8 @@
 			<g:VerticalPanel styleName="businessDataContainer">
 				<g:Label styleName="sectionLabel" text="{i18n.companyDataLabel}"></g:Label>
 
+				<n:InlineNotification ui:field="inlineNotification"></n:InlineNotification>
+				
 				<g:SimplePanel styleName="gridContainer">
 					<g:Grid styleName="grid">
 						<g:row>

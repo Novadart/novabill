@@ -26,6 +26,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.ui.center.BusinessView;
 import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
+import com.novadart.novabill.frontend.client.ui.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
@@ -50,6 +51,8 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 
 	@UiField FormPanel formPanel;
 	@UiField Image logo;
+	
+	@UiField InlineNotification inlineNotification;
 
 	@UiField(provided=true) ValidatedTextBox name;
 	@UiField(provided=true) ValidatedTextBox ssn;
@@ -193,6 +196,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		email.setText(b.getEmail());
 		mobile.setText(b.getMobile());
 		fax.setText(b.getFax());
+		inlineNotification.hide();
 	}
 
 	@Override
@@ -202,12 +206,20 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 
 	private boolean validate(){
 		boolean validationOk = true;
+		inlineNotification.hide();
 		for (ValidatedTextBox v : new ValidatedTextBox[]{name,	ssn, vatID, address, city, 
 				postcode, phone, email, mobile, fax, web}) {
 			v.validate();
 			validationOk = validationOk && v.isValid();
 		}
-		validationOk &= (!vatID.getText().isEmpty() || !ssn.getText().isEmpty());
+		
+		if(vatID.getText().isEmpty() && ssn.getText().isEmpty()){
+			inlineNotification.showMessage(I18N.INSTANCE.fillVatIdOrSsn());
+			ssn.setValidationErrorStyle();
+			vatID.setValidationErrorStyle();
+			validationOk = false;
+		}
+
 		province.validate();
 		validationOk = validationOk && province.isValid();
 		country.validate();
