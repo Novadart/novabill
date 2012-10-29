@@ -100,8 +100,6 @@
 				text="{i18n.saveModifications}"></g:Button>
 			<g:Button styleName="createButton button" ui:field="createInvoice"
 				text="{i18n.createInvoice}"></g:Button>
-			<g:Button styleName="saveAsEstimation button" ui:field="createEstimate"
-				text="{i18n.createEstimate}"></g:Button>
 			<g:Button ui:field="abort" styleName="abortButton button"
 				text="{i18n.cancel}"></g:Button>
 		</g:FlowPanel>

@@ -23,6 +23,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 	public static interface Handler{
 		public void onDelete(AccountingDocumentItemDTO item);
+		public void onUpdate(AccountingDocumentItemDTO item);
 	}
 
 	private final Handler handler;
@@ -54,6 +55,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 					redraw();
 				} else {
 					object.setDescription(value);
+					ItemTable.this.handler.onUpdate(object);
 					redraw();
 				}
 			}
@@ -81,6 +83,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 					redraw();
 				} else {
 					object.setQuantity(CalcUtils.parseValue(value));
+					ItemTable.this.handler.onUpdate(object);
 					redraw();
 				}
 			}
@@ -119,6 +122,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 				try{
 					double newPrice = NumberFormat.getCurrencyFormat().parse(value);
 					object.setPrice(new BigDecimal(newPrice));
+					ItemTable.this.handler.onUpdate(object);
 					redraw();
 				} catch(NumberFormatException e){
 					Notification.showMessage(I18N.INSTANCE.errorClientData());
@@ -137,7 +141,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
-				return String.valueOf(object.getTax())+"%";
+				return String.valueOf(object.getTax());
 			}
 		};
 		tax.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
@@ -145,6 +149,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
 				object.setTax(CalcUtils.parseValue(value));
+				ItemTable.this.handler.onUpdate(object);
 				redraw();
 			}
 		});

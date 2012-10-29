@@ -93,6 +93,11 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 			public void onItemAdded(List<AccountingDocumentItemDTO> items) {
 				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
+			
+			@Override
+			public void onItemUpdated(List<AccountingDocumentItemDTO> items) {
+				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
+			}
 		});
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat

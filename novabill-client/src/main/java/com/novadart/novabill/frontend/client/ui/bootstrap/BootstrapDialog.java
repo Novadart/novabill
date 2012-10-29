@@ -12,6 +12,7 @@ import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
+import com.novadart.novabill.frontend.client.ui.widget.validation.DefaultValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
@@ -46,7 +47,7 @@ public class BootstrapDialog extends Dialog {
 	@UiField(provided=true) RichTextBox email;
 	@UiField(provided=true) RichTextBox mobile;
 	@UiField(provided=true) RichTextBox fax;
-	@UiField RichTextBox web;
+	@UiField(provided=true) RichTextBox web;
 	
 	
 	private Handler handler;
@@ -55,8 +56,8 @@ public class BootstrapDialog extends Dialog {
 		NotEmptyValidation nev = new NotEmptyValidation();
 		NumberValidation nuv = new NumberValidation(true);
 		name = new RichTextBox(I18N.INSTANCE.companyName(), nev);
-		ssn = new RichTextBox(I18N.INSTANCE.ssn(), new SsnOrVatIdValidation());
-		vatID = new RichTextBox(I18N.INSTANCE.vatID(), new VatIdValidation());
+		ssn = new RichTextBox(I18N.INSTANCE.ssn(), new SsnOrVatIdValidation(true));
+		vatID = new RichTextBox(I18N.INSTANCE.vatID(), new VatIdValidation(true));
 		address = new RichTextBox(I18N.INSTANCE.address(), nev);
 		city = new RichTextBox(I18N.INSTANCE.city(), nev);
 		province = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province()); 
@@ -67,6 +68,7 @@ public class BootstrapDialog extends Dialog {
 		email = new RichTextBox(I18N.INSTANCE.companyEmail(), new EmailValidation(true));
 		mobile = new RichTextBox(I18N.INSTANCE.mobile(), nuv);
 		fax = new RichTextBox(I18N.INSTANCE.fax(), nuv);
+		web = new RichTextBox(I18N.INSTANCE.web(), new DefaultValidation<String>());
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("BootstrapDialog");
 	}
@@ -78,6 +80,8 @@ public class BootstrapDialog extends Dialog {
 			r.validate();
 			valid &= r.isValid();
 		}
+		
+		valid &= (!vatID.getText().isEmpty() || !ssn.getText().isEmpty());
 		
 		country.validate();
 		valid &= country.isValid();

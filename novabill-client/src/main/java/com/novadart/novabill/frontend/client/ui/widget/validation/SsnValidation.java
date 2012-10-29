@@ -1,28 +1,26 @@
 package com.novadart.novabill.frontend.client.ui.widget.validation;
 
 import com.google.gwt.regexp.shared.RegExp;
-import com.novadart.gwtshared.client.validation.ValidationBundle;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.shared.client.validation.RegularExpressionConstants;
 
-public class SsnValidation implements ValidationBundle<String> {
+public class SsnValidation extends OptionalFieldValidation<String> {
 	
 	private static final RegExp SSN_REGEXP = 
 			RegExp.compile(RegularExpressionConstants.SSN_REGEX);
 
-	private final boolean canBeEmpty;
 	
 	public SsnValidation() {
-		this(false);
+		super(false);
 	}
 	
-	public SsnValidation(boolean canbeEmpty) {
-		this.canBeEmpty = canbeEmpty;
+	public SsnValidation(boolean optional) {
+		super(optional);
 	}
 
 	@Override
 	public boolean isValid(String text) {
-		return canBeEmpty ? (text.isEmpty() || isSSN(text)) : isSSN(text);
+		return isOptional() ? (text.isEmpty() || isSSN(text)) : isSSN(text);
 	}
 
 	@Override
