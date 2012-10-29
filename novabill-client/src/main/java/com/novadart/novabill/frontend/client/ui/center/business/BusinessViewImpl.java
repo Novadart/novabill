@@ -207,11 +207,6 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	private boolean validate(){
 		boolean validationOk = true;
 		inlineNotification.hide();
-		for (ValidatedTextBox v : new ValidatedTextBox[]{name,	ssn, vatID, address, city, 
-				postcode, phone, email, mobile, fax, web}) {
-			v.validate();
-			validationOk = validationOk && v.isValid();
-		}
 		
 		if(vatID.getText().isEmpty() && ssn.getText().isEmpty()){
 			inlineNotification.showMessage(I18N.INSTANCE.fillVatIdOrSsn());
@@ -219,7 +214,13 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 			vatID.setValidationErrorStyle();
 			validationOk = false;
 		}
-
+		
+		for (ValidatedTextBox v : new ValidatedTextBox[]{name,	ssn, vatID, address, city, 
+				postcode, phone, email, mobile, fax, web}) {
+			v.validate();
+			validationOk = validationOk && v.isValid();
+		}
+		
 		province.validate();
 		validationOk = validationOk && province.isValid();
 		country.validate();

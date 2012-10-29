@@ -246,19 +246,20 @@ public class ClientDialog extends Dialog {
 	private boolean validate(){
 		boolean isValid = true;
 		inlineNotification.hide();
-		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, 
-				ssn, postcode, phone, mobile, fax, email, address, city, web,
-				contactEmail, contactFax, contactMobile, contactName, contactPhone,
-				contactSurname}){
-			tb.validate();
-			isValid = isValid && tb.isValid();
-		}
 		
 		if(vatID.getText().isEmpty() && ssn.getText().isEmpty()){
 			inlineNotification.showMessage(I18N.INSTANCE.fillVatIdOrSsn());
 			ssn.setValidationErrorStyle();
 			vatID.setValidationErrorStyle();
 			isValid = false;
+		}
+		
+		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, 
+				ssn, postcode, phone, mobile, fax, email, address, city, web,
+				contactEmail, contactFax, contactMobile, contactName, contactPhone,
+				contactSurname}){
+			tb.validate();
+			isValid = isValid && tb.isValid();
 		}
 		
 		country.validate();
