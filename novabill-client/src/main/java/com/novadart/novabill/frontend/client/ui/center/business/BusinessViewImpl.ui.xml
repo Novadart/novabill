@@ -24,7 +24,7 @@
 								<g:Label styleName="businessLabel" text="{i18n.companyName}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedTextBox ui:field="name"></v:ValidatedTextBox>
+								<v:ValidatedTextBox ui:field="name" maxLength="255"></v:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -32,7 +32,7 @@
 								<g:Label styleName="businessLabel" text="{i18n.ssn}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedTextBox ui:field="ssn"></v:ValidatedTextBox>
+								<v:ValidatedTextBox ui:field="ssn" maxLength="25"></v:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -40,7 +40,7 @@
 								<g:Label styleName="businessLabel" text="{i18n.vatID}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedTextBox ui:field="vatID"></v:ValidatedTextBox>
+								<v:ValidatedTextBox ui:field="vatID" maxLength="25"></v:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -48,7 +48,7 @@
 								<g:Label styleName="businessLabel" text="{i18n.address}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedTextBox ui:field="address"></v:ValidatedTextBox>
+								<v:ValidatedTextBox ui:field="address" maxLength="255"></v:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -56,7 +56,7 @@
 								<g:Label styleName="businessLabel" text="{i18n.city}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedTextBox ui:field="city"></v:ValidatedTextBox>
+								<v:ValidatedTextBox ui:field="city" maxLength="60"></v:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -64,7 +64,7 @@
 								<g:Label styleName="businessLabel" text="{i18n.postcode}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedTextBox ui:field="postcode"></v:ValidatedTextBox>
+								<v:ValidatedTextBox ui:field="postcode" maxLength="10"></v:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -73,7 +73,7 @@
 							</g:customCell>
 							<g:customCell>
 								<v:ValidatedListBox styleName="provinceList"
-									ui:field="province"></v:ValidatedListBox>
+									ui:field="province" ></v:ValidatedListBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -81,7 +81,7 @@
 								<g:Label styleName="businessLabel" text="{i18n.country}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedListBox ui:field="country"></v:ValidatedListBox>
+								<v:ValidatedListBox ui:field="country" ></v:ValidatedListBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -89,7 +89,7 @@
 								<g:Label styleName="businessLabel" text="{i18n.phone}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedTextBox ui:field="phone"></v:ValidatedTextBox>
+								<v:ValidatedTextBox ui:field="phone" maxLength="25"></v:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -97,7 +97,7 @@
 								<g:Label styleName="businessLabel" text="{i18n.mobile}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedTextBox ui:field="mobile"></v:ValidatedTextBox>
+								<v:ValidatedTextBox ui:field="mobile" maxLength="25"></v:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -105,7 +105,7 @@
 								<g:Label styleName="businessLabel" text="{i18n.email}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedTextBox ui:field="email"></v:ValidatedTextBox>
+								<v:ValidatedTextBox ui:field="email" maxLength="255"></v:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -113,7 +113,7 @@
 								<g:Label styleName="businessLabel" text="{i18n.fax}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedTextBox ui:field="fax"></v:ValidatedTextBox>
+								<v:ValidatedTextBox ui:field="fax" maxLength="25"></v:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -121,7 +121,7 @@
 								<g:Label styleName="businessLabel" text="{i18n.web}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedTextBox ui:field="web"></v:ValidatedTextBox>
+								<v:ValidatedTextBox ui:field="web" maxLength="255"></v:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 					</g:Grid>

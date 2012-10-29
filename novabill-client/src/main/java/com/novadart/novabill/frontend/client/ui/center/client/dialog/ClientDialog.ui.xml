@@ -17,7 +17,7 @@
 								<g:Label styleName="label" text="{i18n.companyName}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<validation:ValidatedTextBox
+								<validation:ValidatedTextBox maxLength="255"
 									styleName="value" ui:field="companyName"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
@@ -27,7 +27,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="value" ui:field="address"></validation:ValidatedTextBox>
+									styleName="value" ui:field="address" maxLength="255"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -36,7 +36,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="value" ui:field="postcode"></validation:ValidatedTextBox>
+									styleName="value" ui:field="postcode" maxLength="10"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -45,7 +45,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="value" ui:field="city"></validation:ValidatedTextBox>
+									styleName="value" ui:field="city" maxLength="60"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -54,7 +54,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedListBox
-									styleName="value" ui:field="province"></validation:ValidatedListBox>
+									styleName="value" ui:field="province" ></validation:ValidatedListBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -63,7 +63,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedListBox
-									styleName="value" ui:field="country"></validation:ValidatedListBox>
+									styleName="value" ui:field="country" ></validation:ValidatedListBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -72,7 +72,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="value" ui:field="ssn"></validation:ValidatedTextBox>
+									styleName="value" ui:field="ssn" maxLength="25"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -81,7 +81,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="value" ui:field="vatID"></validation:ValidatedTextBox>
+									styleName="value" ui:field="vatID" maxLength="25"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -90,7 +90,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="value" ui:field="phone"></validation:ValidatedTextBox>
+									styleName="value" ui:field="phone" maxLength="25"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -99,7 +99,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="value" ui:field="mobile"></validation:ValidatedTextBox>
+									styleName="value" ui:field="mobile" maxLength="25"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -108,7 +108,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="value" ui:field="fax"></validation:ValidatedTextBox>
+									styleName="value" ui:field="fax" maxLength="25"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -117,7 +117,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="value" ui:field="email"></validation:ValidatedTextBox>
+									styleName="value" ui:field="email" maxLength="255"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>
@@ -126,7 +126,7 @@
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
-									styleName="value" ui:field="web"></validation:ValidatedTextBox>
+									styleName="value" ui:field="web" maxLength="255"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 					</g:Grid>

@@ -45,7 +45,7 @@
 							<g:Label styleName="label" text="{i18n.note}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<g:TextArea styleName="box note" ui:field="note"></g:TextArea>
+							<g:TextArea styleName="box note" ui:field="note"  ></g:TextArea>
 						</g:customCell>
 					</g:row>
 					<g:row>

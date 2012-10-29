@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.ui.widget.validation;
 
+import com.novadart.gwtshared.client.validation.OptionalFieldValidation;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 
 public class SsnOrVatIdValidation extends OptionalFieldValidation<String> {
