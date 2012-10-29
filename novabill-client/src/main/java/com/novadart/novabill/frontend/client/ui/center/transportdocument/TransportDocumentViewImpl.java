@@ -357,6 +357,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
 			ClientPlace cp = new ClientPlace();
 			cp.setClientId(client.getId());
+			cp.setDocumentsListing(DOCUMENTS.transportDocuments);
 			presenter.goTo(cp);
 		}
 	}

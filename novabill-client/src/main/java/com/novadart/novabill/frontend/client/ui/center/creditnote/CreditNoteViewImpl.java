@@ -234,6 +234,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
 			ClientPlace cp = new ClientPlace();
 			cp.setClientId(client.getId());
+			cp.setDocumentsListing(DOCUMENTS.creditNotes);
 			presenter.goTo(cp);
 		}
 	}

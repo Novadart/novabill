@@ -244,6 +244,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
 			ClientPlace cp = new ClientPlace();
 			cp.setClientId(client.getId());
+			cp.setDocumentsListing(DOCUMENTS.estimations);
 			presenter.goTo(cp);
 		}
 	}
