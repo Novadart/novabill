@@ -22,7 +22,7 @@ public class Endpoint {
 	@Size(max = 2)
 	private String province;
 	
-	@Size(max = 255)
+	@Size(max = 3)
 	private String country;
 
 	public String getCompanyName() {

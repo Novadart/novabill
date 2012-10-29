@@ -98,7 +98,7 @@ public class Client implements Serializable {
     private String province;
 
 	@Field(name = FTSNamespace.COUNTRY)
-    @Size(max = 200)
+    @Size(max = 3)
 	@NotBlank
     private String country;
 

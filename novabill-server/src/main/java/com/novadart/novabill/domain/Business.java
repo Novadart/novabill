@@ -95,7 +95,7 @@ public class Business implements Serializable {
     //@NotNull
     private String province = "";
 
-    @Size(max = 200)
+    @Size(max = 3)
     private String country;
 
     @Size(max = 255)
