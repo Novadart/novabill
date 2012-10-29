@@ -1,14 +1,8 @@
 package com.novadart.novabill.frontend.client.ui.widget.validation;
 
-import com.novadart.gwtshared.client.validation.ValidationBundle;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 
-public class NotEmptyValidation implements ValidationBundle<String> {
-
-	@Override
-	public boolean isValid(String text) {
-		return !text.isEmpty();
-	}
+public class NotEmptyValidation extends com.novadart.gwtshared.client.validation.NotEmptyValidation {
 
 	@Override
 	public String getErrorMessage() {

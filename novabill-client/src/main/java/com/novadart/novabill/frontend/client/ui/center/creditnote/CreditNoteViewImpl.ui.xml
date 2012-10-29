@@ -3,7 +3,7 @@
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
 	xmlns:i="urn:import:com.novadart.novabill.frontend.client.ui.center.invoice"
 	xmlns:d="urn:import:com.google.gwt.user.datepicker.client" xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget"
-	xmlns:t="urn:import:com.novadart.novabill.frontend.client.ui.center">
+	xmlns:t="urn:import:com.novadart.novabill.frontend.client.ui.center" xmlns:f="urn:import:com.novadart.novabill.frontend.client.ui.widget">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
@@ -57,7 +57,7 @@
 								text="{i18n.paymentNote}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<g:TextArea styleName="box paymentNote" ui:field="paymentNote"></g:TextArea>
+							<f:ValidatedTextArea styleName="box paymentNote" ui:field="paymentNote"></f:ValidatedTextArea>
 						</g:customCell>
 					</g:row>
 					<g:row>
@@ -65,7 +65,7 @@
 							<g:Label styleName="label" text="{i18n.note}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<g:TextArea styleName="box note" ui:field="note"></g:TextArea>
+							<f:ValidatedTextArea styleName="box note" ui:field="note"></f:ValidatedTextArea>
 						</g:customCell>
 					</g:row>
 				</g:Grid>

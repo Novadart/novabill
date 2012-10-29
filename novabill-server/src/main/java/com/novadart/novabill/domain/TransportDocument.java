@@ -10,6 +10,7 @@ import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -50,10 +51,13 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	@Valid
 	private Endpoint toEndpoint;
 	
+	@Size(max = 255)
 	private String transporter;
 	
+	@Size(max = 255)
 	private String transportationResponsibility;
 	
+	@Size(max = 255)
 	private String tradeZone;
 	
 	private Date transportStartDate;
