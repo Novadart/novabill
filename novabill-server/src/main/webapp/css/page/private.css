@@ -1142,6 +1142,15 @@ td.datePickerMonth {
 	background-color: #F9E0E0;
 }
 
+.InlineNotification {
+	width: 80%;
+	background-color: #F9E0E0;
+	border: 0.1em solid red;
+	padding: 0.3em;
+	margin: 0.2em auto;
+	text-align: center;
+}
+
 .ValidationBaloonMessage-validationMessage {
 	background-color: #F9E0E0;
 	border: 0.1em solid red;

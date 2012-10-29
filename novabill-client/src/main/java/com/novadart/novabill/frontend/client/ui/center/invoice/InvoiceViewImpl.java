@@ -285,6 +285,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
 			ClientPlace cp = new ClientPlace();
 			cp.setClientId(client.getId());
+			cp.setDocumentsListing(DOCUMENTS.invoices);
 			presenter.goTo(cp);
 		}
 	}
