@@ -141,7 +141,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
-				return String.valueOf(object.getTax())+"%";
+				return String.valueOf(object.getTax());
 			}
 		};
 		tax.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
