@@ -1,9 +1,11 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.novadart.novabill.frontend.client.ui.center">
-	
-	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N" field="i18n"></ui:with>
-	
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.novadart.novabill.frontend.client.ui.center"
+	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget">
+
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
+		field="i18n"></ui:with>
+
 	<g:FlowPanel>
 		<g:ScrollPanel ui:field="itemTableScroller" styleName="itemTableScroller">
 			<c:ItemTable ui:field="itemTable" styleName="itemTable"></c:ItemTable>
@@ -13,7 +15,7 @@
 			<g:HorizontalPanel>
 				<g:VerticalPanel styleName="itemContainer">
 					<g:Label styleName="smallLabel" text="{i18n.nameDescription}"></g:Label>
-					<g:TextArea ui:field="item" styleName="item invoiceEntry"></g:TextArea>
+					<v:ValidatedTextArea ui:field="item" styleName="item invoiceEntry"></v:ValidatedTextArea>
 				</g:VerticalPanel>
 				<g:VerticalPanel styleName="quantityContainer">
 					<g:Label styleName="smallLabel" text="{i18n.quantity}"></g:Label>
@@ -21,7 +23,7 @@
 				</g:VerticalPanel>
 				<g:VerticalPanel styleName="unitOfMeasureContainer">
 					<g:Label styleName="smallLabel" text="{i18n.unityOfMeasure}"></g:Label>
-					<g:TextBox ui:field="unitOfMeasure" styleName="unitOfMeasure invoiceEntry"></g:TextBox>
+					<g:TextBox ui:field="unitOfMeasure" styleName="unitOfMeasure invoiceEntry" maxLength="255"></g:TextBox>
 				</g:VerticalPanel>
 				<g:VerticalPanel styleName="priceContainer">
 					<g:Label styleName="smallLabel" text="{i18n.price}"></g:Label>

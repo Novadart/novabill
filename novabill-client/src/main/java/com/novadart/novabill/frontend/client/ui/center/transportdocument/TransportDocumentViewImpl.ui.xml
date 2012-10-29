@@ -5,7 +5,7 @@
 	xmlns:d="urn:import:com.google.gwt.user.datepicker.client" 
 	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget"
 	xmlns:t="urn:import:com.novadart.novabill.frontend.client.ui.center"
-	xmlns:textbox="urn:import:com.novadart.gwtshared.client.textbox">
+	xmlns:textbox="urn:import:com.novadart.gwtshared.client.textbox" xmlns:f="urn:import:com.novadart.novabill.frontend.client.ui.widget">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
@@ -45,7 +45,7 @@
 							<g:Label styleName="label" text="{i18n.note}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<g:TextArea styleName="box note" ui:field="note"  ></g:TextArea>
+							<f:ValidatedTextArea styleName="box note" ui:field="note"></f:ValidatedTextArea>
 						</g:customCell>
 					</g:row>
 					<g:row>
@@ -63,7 +63,7 @@
 						</g:customCell>
 						<g:customCell>
 							<v:ValidatedTextBox styleName="box transporter"
-								ui:field="transporter" />
+								ui:field="transporter" maxLength="255" />
 						</g:customCell>
 					</g:row>
 					<g:row>
@@ -72,7 +72,7 @@
 						</g:customCell>
 						<g:customCell>
 							<g:TextBox styleName="box transportationResponsibility"
-								ui:field="transportationResponsibility"></g:TextBox>
+								ui:field="transportationResponsibility" maxLength="255"></g:TextBox>
 						</g:customCell>
 					</g:row>
 					<g:row>
@@ -80,7 +80,7 @@
 							<g:Label styleName="label" text="{i18n.tradeZone}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<g:TextBox styleName="box tradeZone" ui:field="tradeZone"></g:TextBox>
+							<g:TextBox styleName="box tradeZone" ui:field="tradeZone" maxLength="255"></g:TextBox>
 						</g:customCell>
 					</g:row>
 					<g:row>
@@ -110,23 +110,23 @@
 									<g:row>
 										<g:customCell>
 											<textbox:RichTextBox styleName="box companyName RichTextBox-labelStyle"
-												ui:field="fromAddrCompanyName" />
+												ui:field="fromAddrCompanyName" maxLength="255"/>
 										</g:customCell>
 									</g:row>
 									<g:row>
 										<g:customCell>
 											<textbox:RichTextBox styleName="box streetName RichTextBox-labelStyle"
-												ui:field="fromAddrStreetName" />
+												ui:field="fromAddrStreetName" maxLength="255" />
 										</g:customCell>
 									</g:row>
 									<g:row>
 										<g:customCell>
 											<textbox:RichTextBox styleName="box postcode RichTextBox-labelStyle"
-												ui:field="fromAddrPostCode" />
+												ui:field="fromAddrPostCode" maxLength="10" />
 										</g:customCell>
 										<g:customCell>
 											<textbox:RichTextBox styleName="box city RichTextBox-labelStyle"
-												ui:field="fromAddrCity" />
+												ui:field="fromAddrCity" maxLength="60" />
 										</g:customCell>
 										<g:customCell>
 											<v:ValidatedListBox styleName="box province"
@@ -154,23 +154,23 @@
 									<g:row>
 										<g:customCell>
 											<textbox:RichTextBox styleName="box companyName RichTextBox-labelStyle"
-												ui:field="toAddrCompanyName" />
+												ui:field="toAddrCompanyName" maxLength="255" />
 										</g:customCell>
 									</g:row>
 									<g:row>
 										<g:customCell>
 											<textbox:RichTextBox styleName="box streetName RichTextBox-labelStyle" 
-												ui:field="toAddrStreetName" />
+												ui:field="toAddrStreetName" maxLength="255" />
 										</g:customCell>
 									</g:row>
 									<g:row>
 										<g:customCell>
 											<textbox:RichTextBox styleName="box postcode RichTextBox-labelStyle"
-												ui:field="toAddrPostCode" />
+												ui:field="toAddrPostCode" maxLength="10" />
 										</g:customCell>
 										<g:customCell>
 											<textbox:RichTextBox styleName="box city RichTextBox-labelStyle"
-												ui:field="toAddrCity" />
+												ui:field="toAddrCity" maxLength="60" />
 										</g:customCell>
 										<g:customCell>
 											<v:ValidatedListBox styleName="box province"

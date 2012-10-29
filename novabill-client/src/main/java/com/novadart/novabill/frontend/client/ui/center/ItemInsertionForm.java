@@ -11,11 +11,13 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
+import com.novadart.gwtshared.client.validation.TextLengthValidation;
+import com.novadart.gwtshared.client.validation.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
@@ -37,7 +39,7 @@ public class ItemInsertionForm extends Composite {
 	}
 
 	@UiField ScrollPanel itemTableScroller;
-	@UiField TextArea item;
+	@UiField(provided=true) ValidatedTextArea item;
 	@UiField TextBox quantity;
 	@UiField TextBox unitOfMeasure;
 	@UiField TextBox price;
@@ -48,6 +50,14 @@ public class ItemInsertionForm extends Composite {
 	
 	public ItemInsertionForm(Handler handler) {
 		this.handler = handler;
+		
+		item = new ValidatedTextArea(new TextLengthValidation(255) {
+			
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(255);
+			}
+		});
 		
 		tax = new ListBox();
 		for (String item : I18N.INSTANCE.vatItems()) {

@@ -16,7 +16,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
@@ -32,6 +31,7 @@ import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.ui.center.AccountDocument;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
 import com.novadart.novabill.frontend.client.ui.center.ItemInsertionForm;
+import com.novadart.novabill.frontend.client.ui.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
@@ -65,8 +65,8 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiField Label invoiceNumber;
 	@UiField(provided=true) ValidatedTextBox number;
 	@UiField Label paymentNoteLabel;
-	@UiField TextArea paymentNote;
-	@UiField TextArea note;
+	@UiField ValidatedTextArea paymentNote;
+	@UiField ValidatedTextArea note;
 	@UiField Button createInvoice;
 	@UiField Button modifyDocument;
 

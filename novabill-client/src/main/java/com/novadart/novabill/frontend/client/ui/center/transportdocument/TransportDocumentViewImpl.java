@@ -17,7 +17,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.TextArea;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -37,6 +36,7 @@ import com.novadart.novabill.frontend.client.ui.center.AccountDocument;
 import com.novadart.novabill.frontend.client.ui.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.ui.center.TransportDocumentView;
 import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
+import com.novadart.novabill.frontend.client.ui.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
@@ -89,7 +89,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField Label clientName;
 	@UiField Label number;
 	@UiField(provided=true) DateBox date;
-	@UiField TextArea note;
+	@UiField ValidatedTextArea note;
 	@UiField Button createTransportDocument;
 	@UiField Button modifyDocument;
 
