@@ -97,8 +97,38 @@
 								<phase>compile</phase>
 								<configuration>
 									<module>com.novadart.novabill.frontend.Novabill</module>
-									<draftCompile>false</draftCompile>
+								</configuration>
+								<goals>
+									<goal>clean</goal>
+									<goal>compile</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
+			<id>gwt-max-optimization</id>
+			<build>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-clean-plugin</artifactId>
+						<configuration>
+							<skip>false</skip>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.codehaus.mojo</groupId>
+						<artifactId>gwt-maven-plugin</artifactId>
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<configuration>
+									<module>com.novadart.novabill.frontend.Novabill</module>
 									<optimizationLevel>9</optimizationLevel>
+									<enableClosureCompiler>true</enableClosureCompiler>
 								</configuration>
 								<goals>
 									<goal>clean</goal>

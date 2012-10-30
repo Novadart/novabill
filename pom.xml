@@ -15,7 +15,7 @@
 		<slf4j.version>1.6.2</slf4j.version>
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<spring-security.version>3.1.0.RELEASE</spring-security.version>
-		<gwtVersion>2.4.0</gwtVersion>
+		<gwtVersion>2.5.0-rc2</gwtVersion>
 	</properties>
 
 	<scm>
@@ -286,7 +286,7 @@
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-servlet</artifactId>
-				<version>2.4.0</version>
+				<version>${gwtVersion}</version>
 			</dependency>
 			<dependency>
 				<groupId>jep</groupId>
@@ -466,7 +466,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>gwt-maven-plugin</artifactId>
-					<version>2.4.0</version>
+					<version>${gwtVersion}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
