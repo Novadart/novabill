@@ -6,13 +6,13 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Widget;
+import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.DefaultValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
-import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
 import com.novadart.novabill.frontend.client.ui.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
@@ -55,6 +55,7 @@ public class BootstrapDialog extends Dialog {
 	private Handler handler;
 	
 	public BootstrapDialog() {
+		super(false);
 		NotEmptyValidation nev = new NotEmptyValidation();
 		NumberValidation nuv = new NumberValidation(true);
 		name = new RichTextBox(I18N.INSTANCE.companyName(), nev);

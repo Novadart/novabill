@@ -6,8 +6,8 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Widget;
+import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
-import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
 
 public class GoPremiumDialog extends Dialog {
 

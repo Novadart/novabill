@@ -678,6 +678,10 @@ textarea:HOVER {
 	z-index: 2;
 }
 
+.Dialog-focusableBody {
+	outline: none;
+}
+
 .gwt-PopupPanelGlass {
 	background-color: #000;
 	opacity: 0.3;

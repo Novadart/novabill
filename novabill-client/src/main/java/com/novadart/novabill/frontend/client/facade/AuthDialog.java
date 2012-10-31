@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.PasswordTextBox;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.novadart.novabill.frontend.client.ui.widget.dialog.Dialog;
+import com.novadart.gwtshared.client.dialog.Dialog;
 
 public class AuthDialog extends Dialog {
 
