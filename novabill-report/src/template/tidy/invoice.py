@@ -11,7 +11,7 @@ from reportlab.lib.colors import lightgrey
 class TidyInvoiceDirector(TidyDirector):
     
     def getDocumentDetailsBodyFlowables(self, builder, data, docWidth):
-        toFrom = Table([[builder.getToBusinessEntityDetailsFlowable(data), builder.getFromBusinessEntityDetailsFlowable(data)]],
+        toFrom = Table([[builder.getFromBusinessEntityDetailsFlowable(data), builder.getToBusinessEntityDetailsFlowable(data)]],
                        colWidths=[docWidth*0.5, docWidth*0.5])
         toFrom.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"),
                                     ("ALIGN", (0, 0), (-1, -1), "LEFT"),
