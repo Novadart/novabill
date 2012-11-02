@@ -54,7 +54,7 @@ class Factory(object):
 
 
 def create_doc(out, docData, pathToLogo=None, logoWidth=None, logoHeight=None, docType=DocumentType.INVOICE, \
-               tempType=DirectorType.DEFAULT, watermark=True, locale="en_US"):
+               tempType=DirectorType.DEFAULT, watermark=True, locale="it_IT"):
     _ = instantiate_translator([locale])
     builderDisplayParams = dict(logo=dict(path=pathToLogo, width=logoWidth, height=logoWidth))
     builder = Factory.createBuilder(BuilderType.DEFAULT, docType, out, dispParams=builderDisplayParams, translator=_)
