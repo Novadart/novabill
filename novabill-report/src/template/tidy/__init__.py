@@ -51,8 +51,7 @@ class TidyDirector(AbstractDirector):
             story.append(flowable)
         story.append(Spacer(1, 1*cm))
         story.append(builder.getDocumentItemsFlowable(data.getAccountingDocumentItems(), doc.width))
-        story.append(Spacer(1, cm))
-        totals = Table([["", builder.getDocumentTotals(data, doc.width*0.4)], ["",""]], colWidths=[doc.width*0.6, doc.width*0.4])
+        totals = Table([["", builder.getDocumentTotals(data, doc.width*0.4)]], colWidths=[doc.width*0.6, doc.width*0.4])
         totals.setStyle(TableStyle([("LINEBELOW", (0,-1), (-1,-1), BORDER_SIZE, BORDER_COLOR)]))
         story.append(totals)
         story.append(Spacer(1, cm))
@@ -119,13 +118,14 @@ class TidyDocumentBuilder(object):
         return itemsFlowable
     
     def getDocumentTotals(self, data, width):
-        totals = Table([["%s:" % self._("Total before tax"), u"%s €" % data.getTotalBeforeTax()],
-                        ["%s:" % self._("Total tax"), u"%s €" % data.getTotalTax()],
-                        ["", ""],
-                        ["%s:" % self._("Total"), u"%s €" % data.getTotal()]], colWidths=[0.5*width, 0.5*width])
+        totals = Table([["%s" % self._("Total before tax"), u"%s €" % data.getTotalBeforeTax()],
+                        ["%s" % self._("Total tax"), u"%s €" % data.getTotalTax()],
+                        ["%s" % self._("Total"), u"%s €" % data.getTotal()]], colWidths=[0.5*width, 0.5*width])
         totals.setStyle(TableStyle([("ALIGN", (-1,0), (-1,-1), "RIGHT"),
                                     ("FONTSIZE", (0,0), (-1,-2), 12),
-                                    ("FONTSIZE", (0,-1), (-1,-1), 12)]))
+                                    ("FONTSIZE", (0,-1), (-1,-1), 12),
+                                    ("TOPPADDING", (0,-1), (-1,-1), 10),
+                                    ("BOTTOMPADDING", (0,-1), (-1,-1), 10)]))
         return totals
     
     def getNotesFlowable(self, data):
