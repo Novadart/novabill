@@ -18,7 +18,7 @@
 		</g:HorizontalPanel>
 
 		<g:SimpleLayoutPanel ui:field="clientMainBody" styleName="clientMainBody">
-			<g:TabLayoutPanel ui:field="tabPanel" barHeight="3.5" barUnit='EM'>
+			<g:TabLayoutPanel ui:field="tabPanel" barHeight="36" barUnit='PX'> <!-- TODO use PX because of a GWT bug http://code.google.com/p/google-web-toolkit/issues/detail?id=4694&can=5 To replace with 3.5 EM -->
 				<g:tab>
 					<g:customHeader>
 						<g:Label styleName="tabHeaderLabel" text="{i18n.invoices}"></g:Label>
