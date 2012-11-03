@@ -54,7 +54,7 @@ class Factory(object):
 
 
 def create_doc(out, docData, pathToLogo=None, logoWidth=None, logoHeight=None, docType=DocumentType.INVOICE, \
-               tempType=DirectorType.DEFAULT, watermark=True, locale="en_US"):
+               tempType=DirectorType.DEFAULT, watermark=True, locale="it_IT"):
     _ = instantiate_translator([locale])
     builderDisplayParams = dict(logo=dict(path=pathToLogo, width=logoWidth, height=logoWidth))
     builder = Factory.createBuilder(BuilderType.DEFAULT, docType, out, dispParams=builderDisplayParams, translator=_)
@@ -86,9 +86,9 @@ if __name__ == '__main__':
     if exists(outputFile):
         remove(outputFile)
     import json
-#    create_doc("/tmp/testInvoice.pdf", json.loads(testInvoiceJSON))
+    create_doc("/tmp/testInvoice.pdf", json.loads(testInvoiceJSON))
 #    create_doc("/tmp/testInvoice.pdf", json.loads(testTransportDocumentJSON), docType=DocumentType.TRANSPORT_DOCUMENT)
-    create_doc("/tmp/testInvoice.pdf", json.loads(testEstimationJSON), docType=DocumentType.ESTIMATION)
+#    create_doc("/tmp/testInvoice.pdf", json.loads(testEstimationJSON), docType=DocumentType.ESTIMATION)
 #    create_doc("/tmp/testInvoice.pdf", json.loads(testInvoiceJSON), docType=DocumentType.CREDIT_NOTE)
     
     
