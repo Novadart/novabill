@@ -262,9 +262,48 @@ textarea:HOVER {
 }
 
 
+.HomeView .tabPanel {
+	width: 80%;
+	margin: 1em auto;
+}
+
+.HomeView .listWrapper {
+	padding: 0.8em 2em;
+}
+
+.HomeView .gwt-TabBarItem {
+	padding: 0.5em 1em;
+	background-color: white;
+	border: 0.1em solid #DDD;
+	width: 9em;
+	border-top-right-radius: 1em;
+	border-top-left-radius: 1em;
+	font-size: 1.2em;
+	cursor: pointer;
+}
+
+.HomeView .gwt-TabBarItem:HOVER {
+	text-decoration: underline;
+}
+
+.HomeView .gwt-TabBarItem-selected:HOVER {
+	text-decoration: none;
+}
+
+.HomeView .gwt-TabBarItem-selected {
+	background-color: #EEE;
+	font-weight: bold;
+}
+
+
+
 .HomeView .homeBody {
 	width: 80%;
 	margin: 1em auto 0;
+}
+
+.HomeView .scrollHome {
+	height: 100%;
 }
 
 .panel {
@@ -319,17 +358,25 @@ textarea:HOVER {
 	margin: 0 0 0.5em
 }
 
-.HomeView .showMore {
+.HomeView .ShowMoreButton {
 	text-align: center;
 	margin-top: 0.5em;
 }
 
-.HomeView .showMore .ShowMoreButton-button {
+.HomeView .ShowMoreButton .ShowMoreButton-button {
 	width: 40%;
 }
 
-.HomeView .showMore .ShowMoreButton-loader {
+.HomeView .ShowMoreButton .ShowMoreButton-loader {
 	
+}
+
+.HomeView .yourDocsLabel {
+	width: 80%;
+	margin: 2em auto 0;
+	font-size: 1.2em;
+	text-transform: uppercase;
+	font-weight: bold;
 }
 
 .HomeView .currentDate {

@@ -11,10 +11,10 @@
 
 		<g:HTML ui:field="date" styleName="currentDate"></g:HTML>
 
-		<g:ScrollPanel ui:field="scrollHome" styleName="scrollHome">
+		<g:ScrollPanel styleName="scrollHome">
 			<g:FlowPanel styleName="scrollHomeBody">
 				<g:HTML ui:field="welcome" styleName="welcomeMessage"></g:HTML>
-
+	
 				<g:HorizontalPanel ui:field="actions" styleName="actions">
 					<g:Button ui:field="newInvoice" styleName="action-button newInvoice"
 						text="{i18n.newInvoice}"></g:Button>
@@ -25,18 +25,16 @@
 					<g:Button ui:field="newCreditNote" styleName="action-button newCreditNote"
 						text="{i18n.newCreditNote}"></g:Button>
 				</g:HorizontalPanel>
-
-				<g:FlowPanel ui:field="homeBody" styleName="homeBody">
-					<g:Label ui:field="invoicesTitle" styleName="invoicesTitle"
-						text="{i18n.invoices}"></g:Label>
-					<g:ScrollPanel ui:field="listWrapper" styleName="listWrapper panel">
-						<i:InvoiceList ui:field="invoiceList"></i:InvoiceList>
-					</g:ScrollPanel>
-					<l:ShowMoreButton ui:field="showMore" styleName="showMore"></l:ShowMoreButton>
+				
+				<g:Label styleName="yourDocsLabel" text="{i18n.yourDocs}"></g:Label>
+				
+				<g:FlowPanel styleName="tabPanel">
+					<g:TabBar ui:field="tabBar" styleName="tabBar" />
+					<g:SimplePanel ui:field="tabBody" styleName="tabBody" />				
 				</g:FlowPanel>
+				
 			</g:FlowPanel>
 		</g:ScrollPanel>
-
 	</g:FlowPanel>
 
 </ui:UiBinder> 
