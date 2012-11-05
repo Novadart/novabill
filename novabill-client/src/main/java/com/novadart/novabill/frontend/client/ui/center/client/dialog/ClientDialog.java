@@ -23,9 +23,6 @@ import com.novadart.novabill.frontend.client.ui.widget.notification.Notification
 import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
-import com.novadart.novabill.frontend.client.ui.widget.validation.PostcodeValidation;
-import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdValidation;
-import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
 
@@ -74,9 +71,15 @@ public class ClientDialog extends Dialog {
 	private ClientDialog() {
 		NotEmptyValidation ne = new NotEmptyValidation();
 		companyName = new ValidatedTextBox(ne);
-		vatID =  new ValidatedTextBox(new VatIdValidation(true));
-		ssn =  new ValidatedTextBox(new SsnOrVatIdValidation(true));
-		postcode = new ValidatedTextBox(new PostcodeValidation());
+		
+//		TODO see ticket #363
+//		vatID =  new ValidatedTextBox(new VatIdValidation(true));
+//		ssn =  new ValidatedTextBox(new SsnOrVatIdValidation(true));
+//		postcode = new ValidatedTextBox(new PostcodeValidation());
+		vatID =  new ValidatedTextBox(ne);
+		ssn =  new ValidatedTextBox(ne);
+		postcode = new ValidatedTextBox(new NumberValidation());
+		
 		address = new ValidatedTextBox(ne);
 		city = new ValidatedTextBox(ne);
 		country = LocaleWidgets.createCountryListBox("");
@@ -246,16 +249,22 @@ public class ClientDialog extends Dialog {
 	private boolean validate(){
 		boolean isValid = true;
 		inlineNotification.hide();
-		
-		if(vatID.getText().isEmpty() && ssn.getText().isEmpty()){
+		ssn.validate();
+		vatID.validate();
+		if(!vatID.isValid() && !ssn.isValid()){
 			inlineNotification.showMessage(I18N.INSTANCE.fillVatIdOrSsn());
 			ssn.setValidationErrorStyle();
 			vatID.setValidationErrorStyle();
 			isValid = false;
+		} else {
+			ssn.setValidationOkStyle();
+			vatID.setValidationOkStyle();
 		}
+		ssn.hideMessage();
+		vatID.hideMessage();
 		
-		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, 
-				ssn, postcode, phone, mobile, fax, email, address, city, web,
+		for (ValidatedTextBox tb: new ValidatedTextBox[]{companyName, 
+				postcode, phone, mobile, fax, email, address, city, web,
 				contactEmail, contactFax, contactMobile, contactName, contactPhone,
 				contactSurname}){
 			tb.validate();

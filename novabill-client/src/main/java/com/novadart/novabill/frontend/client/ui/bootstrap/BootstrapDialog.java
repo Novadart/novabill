@@ -80,14 +80,22 @@ public class BootstrapDialog extends Dialog {
 		boolean valid = true;
 		inlineNotification.hide();
 		
-		if(vatID.getText().isEmpty() && ssn.getText().isEmpty()){
+		
+		ssn.validate();
+		vatID.validate();
+		if(!vatID.isValid() && !ssn.isValid()){
 			inlineNotification.showMessage(I18N.INSTANCE.fillVatIdOrSsn());
 			ssn.setValidationErrorStyle();
 			vatID.setValidationErrorStyle();
 			valid = false;
+		} else {
+			ssn.setValidationOkStyle();
+			vatID.setValidationOkStyle();
 		}
+		ssn.hideMessage();
+		vatID.hideMessage();
 		
-		for (RichTextBox r : new RichTextBox[]{name, ssn, vatID, address, city, 
+		for (RichTextBox r : new RichTextBox[]{name, address, city, 
 				postcode, phone, email, mobile, fax, web}) {
 			r.validate();
 			valid &= r.isValid();
