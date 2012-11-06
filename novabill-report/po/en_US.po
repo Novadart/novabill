@@ -70,10 +70,6 @@ msgstr "Num. of packages"
 msgid "Trade zone"
 msgstr "Trade zone"
 
-#: src/template/tidy/__init__.py:99
-msgid "entity pattern"
-msgstr "<b><font size='%(size)d'>%(label)s</font></b><br/>%(name)s<br/>%(address)s<br/>%(city)s<br/>%(country)s"
-
 #: src/template/tidy/__init__.py:102
 msgid "To"
 msgstr "To"

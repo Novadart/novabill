@@ -70,10 +70,6 @@ msgstr ""
 msgid "Trade zone"
 msgstr ""
 
-#: src/template/tidy/__init__.py:98
-msgid "entity pattern"
-msgstr ""
-
 #: src/template/tidy/__init__.py:103
 msgid "To"
 msgstr ""
