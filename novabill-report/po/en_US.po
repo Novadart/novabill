@@ -155,6 +155,10 @@ msgstr "Invoice"
 msgid "Payment details"
 msgstr "Payment details"
 
+#: src/template/tidy/invoice.py:52
+msgid "Deadline"
+msgstr "Deadline"
+
 #: src/template/tidy/invoice.py:47
 msgid "Type"
 msgstr "Type"

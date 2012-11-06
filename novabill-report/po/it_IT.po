@@ -150,6 +150,10 @@ msgstr "Fattura"
 msgid "Payment details"
 msgstr "Note Pagamento"
 
+#: src/template/tidy/invoice.py:52
+msgid "Deadline"
+msgstr "Scadenza"
+
 #: src/template/tidy/invoice.py:47
 msgid "Type"
 msgstr "Pagamento"
