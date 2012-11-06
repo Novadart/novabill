@@ -70,9 +70,13 @@ msgstr "Num. of packages"
 msgid "Trade zone"
 msgstr "Trade zone"
 
+#: src/template/tidy/__init__.py:104
+msgid "VAT ID"
+msgstr "VAT ID %s"
+
 #: src/template/tidy/__init__.py:102
-msgid "To"
-msgstr "To"
+msgid "Client"
+msgstr "Client"
 
 #: src/template/tidy/__init__.py:105
 msgid "From"

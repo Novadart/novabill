@@ -100,11 +100,12 @@ class TidyDocumentBuilder(object):
                           ("%(postcode)s %(city)s" + (" (%(province)s)" if data.getProvince() else "")) % dict(postcode=data.getPostcode(),
                                                                                                                 city=data.getCity(),
                                                                                                                 province=data.getProvince()),
-                          data.getCountry()]
+                          data.getCountry(),
+                          self._("VAT ID") % data.getVatID()]
         return Paragraph("<br/>".join(entity_str_lns), style)
     
     def getToBusinessEntityDetailsFlowable(self, data):
-        return self.__getBusinessEntityDetailsFlowable(data.getClient(), self._("To"))
+        return self.__getBusinessEntityDetailsFlowable(data.getClient(), self._("Client"))
     
     def getFromBusinessEntityDetailsFlowable(self, data):
         return self.__getBusinessEntityDetailsFlowable(data.getBusiness(), self._("From"))

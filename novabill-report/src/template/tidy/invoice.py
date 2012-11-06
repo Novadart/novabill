@@ -21,7 +21,7 @@ class TidyInvoiceDirector(TidyDirector):
     def getDocumentDetailsBottomFlowables(self, builder, data, docWidth):
         tbl = Table([[
                       builder.getNotesFlowable(data),
-                      builder.getInvoicePaymentDetailsFlowable(data, docWidth*0.4)
+                      builder.getInvoicePaymentDetailsFlowable(data, docWidth*0.5)
                       ]], colWidths=[docWidth * 0.5, docWidth * 0.5])
         tbl.setStyle(TableStyle([("ALIGN", (0,0), (0,0), "LEFT"),
                                  ("ALIGN", (1,0), (1,0), "RIGHT"),

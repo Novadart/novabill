@@ -70,9 +70,13 @@ msgstr "Colli"
 msgid "Trade zone"
 msgstr "Porto"
 
-#: src/template/tidy/__init__.py:102
-msgid "To"
-msgstr "A"
+#: src/template/tidy/__init__.py:104
+msgid "VAT ID"
+msgstr "P.IVA %s"
+
+#: src/template/tidy/__init__.py:108
+msgid "Client"
+msgstr "Cliente"
 
 #: src/template/tidy/__init__.py:105
 msgid "From"
