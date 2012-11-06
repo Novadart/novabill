@@ -34,8 +34,7 @@ public class ItemInsertionForm extends Composite {
 			new ListDataProvider<AccountingDocumentItemDTO>();
 	
 	public static interface Handler {
-		public void onItemAdded(List<AccountingDocumentItemDTO> items);
-		public void onItemUpdated(List<AccountingDocumentItemDTO> items);
+		public void onItemListUpdated(List<AccountingDocumentItemDTO> items);
 	}
 
 	@UiField ScrollPanel itemTableScroller;
@@ -69,13 +68,13 @@ public class ItemInsertionForm extends Composite {
 			@Override
 			public void onDelete(AccountingDocumentItemDTO item) {
 				accountingDocumentItems.getList().remove(item);
-				accountingDocumentItems.refresh();
 				updateFields();
 			}
 			
 			@Override
 			public void onUpdate(AccountingDocumentItemDTO item) {
-				ItemInsertionForm.this.handler.onItemUpdated(getItems());
+				CalcUtils.updateTotals(item);
+				ItemInsertionForm.this.handler.onItemListUpdated(getItems());
 			}
 			
 		});
@@ -102,7 +101,7 @@ public class ItemInsertionForm extends Composite {
 	private void updateFields(){
 		resetItemTableForm();
 		accountingDocumentItems.refresh();
-		handler.onItemAdded(getItems());
+		handler.onItemListUpdated(getItems());
 	}
 	
 	private void resetItemTableForm(){
@@ -114,9 +113,8 @@ public class ItemInsertionForm extends Composite {
 	}
 
 	public void reset(){
-		resetItemTableForm();
 		accountingDocumentItems.getList().clear();
-		accountingDocumentItems.refresh();
+		updateFields();
 	}
 	
 	public List<AccountingDocumentItemDTO> getItems() {

@@ -60,13 +60,18 @@ public class CalcUtils {
 		} catch (NumberFormatException ex) {
 			return null;
 		}
-		BigDecimal totBeforeTaxesForItem = CalcUtils.calculateTotalBeforeTaxesForItem(ii);
-		BigDecimal totTaxesForItem = CalcUtils.calculateTaxesForItem(ii);
-		ii.setTotal(totBeforeTaxesForItem.add(totTaxesForItem));
-		ii.setTotalTax(totTaxesForItem);
-		ii.setTotalBeforeTax(totBeforeTaxesForItem);
 		
+		CalcUtils.updateTotals(ii);
 		return ii;
+	}
+	
+	
+	public static void updateTotals(AccountingDocumentItemDTO item){
+		BigDecimal totBeforeTaxesForItem = CalcUtils.calculateTotalBeforeTaxesForItem(item);
+		BigDecimal totTaxesForItem = CalcUtils.calculateTaxesForItem(item);
+		item.setTotal(totBeforeTaxesForItem.add(totTaxesForItem));
+		item.setTotalTax(totTaxesForItem);
+		item.setTotalBeforeTax(totBeforeTaxesForItem);
 	}
 	
 	public static void calculateTotals(List<AccountingDocumentItemDTO> accountingDocumentItems, Label totalTax, 

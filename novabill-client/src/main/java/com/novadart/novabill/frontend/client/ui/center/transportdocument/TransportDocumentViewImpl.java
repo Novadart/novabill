@@ -149,12 +149,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
 			
 			@Override
-			public void onItemAdded(List<AccountingDocumentItemDTO> items) {
-				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
-			}
-			
-			@Override
-			public void onItemUpdated(List<AccountingDocumentItemDTO> items) {
+			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
 				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
 		});
