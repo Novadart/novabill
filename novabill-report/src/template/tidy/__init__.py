@@ -114,7 +114,7 @@ class TidyDocumentBuilder(object):
         data = [[self._("Description"), self._("Qty"), self._("U.M."), self._("Price"), self._("% Tax"), self._("Total")]]
         for item in itemsData:
             data.append([Paragraph(item.getDescription(), style), item.getQuantity(), Paragraph(item.getUnitOfMeasure(), style),
-                         u"%s €" % item.getPrice(), u"%s €" % item.getTax(), u"%s €" % item.getTotal()])
+                         u"%s €" % item.getPrice(), u"%s" % item.getTax(), u"%s €" % item.getTotal()])
         itemsFlowable = Table(data, colWidths=[0.5*width, 0.1*width, 0.1*width, 0.1*width, 0.1*width, 0.1*width])
         itemsFlowable.setStyle(TableStyle([("ALIGN", (1,0), (-1,-1), "RIGHT"),
                                            #("ALIGN", (-2,0), (-1,-1), "RIGHT"),
