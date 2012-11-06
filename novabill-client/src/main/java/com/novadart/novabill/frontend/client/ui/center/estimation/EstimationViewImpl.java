@@ -76,14 +76,10 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
 			
 			@Override
-			public void onItemAdded(List<AccountingDocumentItemDTO> items) {
+			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
 				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
 			
-			@Override
-			public void onItemUpdated(List<AccountingDocumentItemDTO> items) {
-				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
-			}
 		});
 
 		date = new DateBox();
