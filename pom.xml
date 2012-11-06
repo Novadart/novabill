@@ -15,7 +15,7 @@
 		<slf4j.version>1.6.2</slf4j.version>
 		<spring.version>3.1.0.RELEASE</spring.version>
 		<spring-security.version>3.1.0.RELEASE</spring-security.version>
-		<gwtVersion>2.5.0-rc2</gwtVersion>
+		<gwt.version>2.5.0</gwt.version>
 	</properties>
 
 	<scm>
@@ -57,7 +57,7 @@
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
-				<version>${gwtVersion}</version>
+				<version>${gwt.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>org.aspectj</groupId>
@@ -286,7 +286,7 @@
 			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-servlet</artifactId>
-				<version>${gwtVersion}</version>
+				<version>${gwt.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>jep</groupId>
@@ -466,7 +466,7 @@
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>
 					<artifactId>gwt-maven-plugin</artifactId>
-					<version>${gwtVersion}</version>
+					<version>${gwt.version}</version>
 				</plugin>
 			</plugins>
 		</pluginManagement>
