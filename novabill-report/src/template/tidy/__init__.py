@@ -116,7 +116,7 @@ class TidyDocumentBuilder(object):
             data.append([Paragraph(item.getDescription(), style), item.getQuantity(), Paragraph(item.getUnitOfMeasure(), style),
                          u"%s €" % item.getPrice(), u"%s" % item.getTax(), u"%s €" % item.getTotal()])
         itemsFlowable = Table(data, colWidths=[0.5*width, 0.1*width, 0.1*width, 0.1*width, 0.1*width, 0.1*width])
-        itemsFlowable.setStyle(TableStyle([("ALIGN", (1,0), (-1,-1), "RIGHT"),
+        itemsFlowable.setStyle(TableStyle([#("ALIGN", (1,0), (-1,-1), "RIGHT"),
                                            #("ALIGN", (-2,0), (-1,-1), "RIGHT"),
                                            ("BACKGROUND", (0,0), (-1,0), lightgrey),
                                            ("LINEBELOW", (0,1), (-1,-1), BORDER_SIZE, BORDER_COLOR)]))
