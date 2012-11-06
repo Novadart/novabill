@@ -54,7 +54,7 @@ class TidyInvoiceBuilder(TidyDocumentBuilder):
                      [Paragraph("%s:" % self._("Note"), style), Paragraph(data.getPaymentNote() if data.getPaymentNote() else "", style)],
                     ], colWidths=[width * 0.2, width * 0.8])
         tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), lightgrey),
-                                 ('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),
+                                 ('VALIGN', (0, 0), (-1, -1), 'TOP'),
                                  ("SPAN", (0, 0), (1, 0)),
                                  ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))
         return tbl

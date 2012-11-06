@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-06 16:00+0100\n"
+"POT-Creation-Date: 2012-11-06 21:48+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -70,47 +70,51 @@ msgstr ""
 msgid "Trade zone"
 msgstr ""
 
-#: src/template/tidy/__init__.py:103
+#: src/template/tidy/__init__.py:107
 msgid "To"
 msgstr ""
 
-#: src/template/tidy/__init__.py:106
+#: src/template/tidy/__init__.py:110
 msgid "From"
 msgstr ""
 
-#: src/template/tidy/__init__.py:110
+#: src/template/tidy/__init__.py:114
 msgid "Description"
 msgstr ""
 
-#: src/template/tidy/__init__.py:110
+#: src/template/tidy/__init__.py:114
 msgid "Qty"
 msgstr ""
 
-#: src/template/tidy/__init__.py:110
+#: src/template/tidy/__init__.py:114
+msgid "U.M."
+msgstr ""
+
+#: src/template/tidy/__init__.py:114
 msgid "Price"
 msgstr ""
 
-#: src/template/tidy/__init__.py:110
-msgid "Tax"
+#: src/template/tidy/__init__.py:114
+msgid "% Tax"
 msgstr ""
 
-#: src/template/tidy/__init__.py:110 src/template/tidy/__init__.py:123
+#: src/template/tidy/__init__.py:114 src/template/tidy/__init__.py:128
 msgid "Total"
 msgstr ""
 
-#: src/template/tidy/__init__.py:121
+#: src/template/tidy/__init__.py:126
 msgid "Total before tax"
 msgstr ""
 
-#: src/template/tidy/__init__.py:122
+#: src/template/tidy/__init__.py:127
 msgid "Total tax"
 msgstr ""
 
-#: src/template/tidy/__init__.py:133
+#: src/template/tidy/__init__.py:138
 msgid "Invoice notes"
 msgstr ""
 
-#: src/template/tidy/__init__.py:133
+#: src/template/tidy/__init__.py:138
 msgid "No notes"
 msgstr ""
 

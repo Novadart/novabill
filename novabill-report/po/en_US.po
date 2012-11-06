@@ -82,9 +82,17 @@ msgstr "From"
 msgid "Price"
 msgstr "Price"
 
+#: src/template/tidy/__init__.py:114
+msgid "% Tax"
+msgstr "% Tax"
+
 #: src/template/tidy/__init__.py:109
 msgid "Qty"
 msgstr "Qty"
+
+#: src/template/tidy/__init__.py:114
+msgid "U.M."
+msgstr ""
 
 #: src/template/tidy/__init__.py:109
 msgid "Description"
