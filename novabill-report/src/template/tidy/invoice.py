@@ -49,7 +49,7 @@ class TidyInvoiceBuilder(TidyDocumentBuilder):
     def getInvoicePaymentDetailsFlowable(self, data, width):
         style = getSampleStyleSheet()["Normal"]
         tbl = Table([["%s" % self._("Payment details"), ""],
-                     [Paragraph("%s:" % self._("Date"), style), Paragraph(data.getPaymentDueDate() if data.getPaymentDueDate() else "", style)],
+                     [Paragraph("%s:" % self._("Deadline"), style), Paragraph(data.getPaymentDueDate() if data.getPaymentDueDate() else "", style)],
                      [Paragraph("%s:" % self._("Type"), style), Paragraph(data.getHumanReadablePaymentType(), style)],
                      [Paragraph("%s:" % self._("Note"), style), Paragraph(data.getPaymentNote() if data.getPaymentNote() else "", style)],
                     ], colWidths=[width * 0.3, width * 0.7])
