@@ -29,7 +29,6 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Logo;
-import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.service.PDFGenerator.DocumentType;
 import com.novadart.novabill.shared.client.data.DataExportClasses;
 
@@ -44,7 +43,6 @@ public class DataExporter {
 	@Autowired
 	private PDFGenerator pdfGenerator;
 	
-	@SuppressWarnings("unused")
 	@PostConstruct
 	private void init(){
 		File outDir = new File(dataOutLocation);
@@ -134,21 +132,18 @@ public class DataExporter {
 				tempLogoFile.deleteOnExit();
 				IOUtils.copy(new ByteArrayInputStream(logo.getData()), new FileOutputStream(tempLogoFile));
 			}
+			boolean putWatermark = true;
 			if(classes.contains(DataExportClasses.INVOICE))
-				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.INVOICE,
-						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
+				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.INVOICE, putWatermark,
 						messageSource.getMessage("export.invoices.zipentry.pattern", null, "invoices/invoice_%d_%d.pdf", locale));
 			if(classes.contains(DataExportClasses.ESTIMATION))
-				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.ESTIMATION,
-						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
+				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.ESTIMATION, putWatermark,
 						messageSource.getMessage("export.estimations.zipentry.pattern", null, "estimations/estimation_%d_%d.pdf", locale));
 			if(classes.contains(DataExportClasses.CREDIT_NOTE))
-				creditNoteFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.CREDIT_NOTE,
-						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
+				creditNoteFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.CREDIT_NOTE, putWatermark,
 						messageSource.getMessage("export.creditnotes.zipentry.pattern", null, "creditnotes/creditnotes_%d_%d.pdf", locale));
 			if(classes.contains(DataExportClasses.TRANSPORT_DOCUMENT))
-				transportDocsFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.TRANSPORT_DOCUMENT,
-						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
+				transportDocsFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.TRANSPORT_DOCUMENT, putWatermark,
 						messageSource.getMessage("export.transportdoc.zipentry.pattern", null, "transportdocs/transportdocs_%d_%d.pdf", locale));
 				
 			zipStream.close();
@@ -158,16 +153,22 @@ public class DataExporter {
 				clientsData.delete();
 			if(tempLogoFile != null)
 				tempLogoFile.delete();
-			if(invoicesFiles != null)
+			if(invoicesFiles != null){
 				for(File file: invoicesFiles)
 					file.delete();
+			}
 			if(estimationFiles != null){
 				for(File file: estimationFiles)
 					file.delete();
 			}
-			if(creditNoteFiles != null)
+			if(creditNoteFiles != null){
 				for(File file: creditNoteFiles)
 					file.delete();
+			}
+			if(transportDocsFiles != null){
+				for(File file: transportDocsFiles)
+					file.delete();
+			}
 		}
 	}
 

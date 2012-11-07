@@ -14,7 +14,7 @@ import org.springframework.stereotype.Service;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RPC;
-import com.novadart.novabill.domain.security.PrincipalDetails;
+import com.novadart.novabill.domain.security.Principal;
 
 @Service("utilsService")
 public class UtilsService {
@@ -28,8 +28,8 @@ public class UtilsService {
 		return authentication != null && !(authentication instanceof AnonymousAuthenticationToken); 
 	}
 	
-	public PrincipalDetails getAuthenticatedPrincipalDetails(){
-		return (PrincipalDetails)getAuthentication().getPrincipal();
+	public Principal getAuthenticatedPrincipalDetails(){
+		return (Principal)getAuthentication().getPrincipal();
 	}
 	
 	public boolean isGWTRPCCall(HttpServletRequest request){

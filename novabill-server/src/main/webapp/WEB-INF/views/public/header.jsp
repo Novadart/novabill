@@ -1,4 +1,4 @@
-<%@page import="com.novadart.novabill.domain.security.PrincipalDetails"%>
+<%@page import="com.novadart.novabill.domain.security.Principal"%>
 <%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
 <%@page import="com.novadart.novabill.domain.Business"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -41,12 +41,14 @@
 	
 	
 	<sec:authorize access="isAuthenticated()">
-		<%PrincipalDetails pd = 
-			((PrincipalDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal());%>
+		<%
+			Principal pd = 
+			((Principal)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		%>
 		
 		<span class="welcomeMessage">
 			<%
-			String principalName = pd.getPrincipal().getName();
+			String principalName = pd.getBusiness().getName();
 			if(principalName != null && !principalName.isEmpty()){
 			%>
 				<spring:message code="header.welcomeMessage"/>

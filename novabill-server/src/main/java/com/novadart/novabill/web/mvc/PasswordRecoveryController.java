@@ -13,8 +13,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.ForgotPassword;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.validator.ForgotPasswordValidator;
 
 @Controller
@@ -48,8 +48,8 @@ public class PasswordRecoveryController {
 		if(result.hasErrors())
 			return "passwordRecovery";
 		else{
-			Business business = Business.findByEmail(forgotPassword.getEmail());
-			business.setPassword(forgotPassword.getPassword());
+			Principal principal = Principal.findByUsername(forgotPassword.getEmail());
+			principal.setPassword(forgotPassword.getPassword());
 			forgotPassword.remove();
 			status.setComplete();
 			return "passwordRecoverySuccess";

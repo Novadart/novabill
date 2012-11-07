@@ -53,7 +53,7 @@ public class BusinessLogoController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public void getLogo(HttpServletResponse response) throws IOException{
-		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
+		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		Logo logo = business.getLogo();
 		if(logo == null){
 			response.setStatus(HttpStatus.NOT_FOUND.value());
@@ -106,7 +106,7 @@ public class BusinessLogoController {
 			logo.setWidth(imageDim.width);
 			logo.setHeight(imageDim.height);
 			logo.setData(IOUtils.toByteArray(new FileInputStream(outFile)));
-			Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
+			Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 			business.setLogo(logo);
 			logo.setBusiness(business);
 		} catch (IOException e) {

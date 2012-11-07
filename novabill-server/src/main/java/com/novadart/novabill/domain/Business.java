@@ -11,10 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
@@ -24,9 +22,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang.StringUtils;
@@ -50,8 +46,8 @@ import org.hibernate.search.jpa.Search;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-import com.novadart.novabill.annotation.Hash;
-import com.novadart.novabill.domain.security.RoleType;
+
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
@@ -60,21 +56,12 @@ import com.novadart.utils.fts.TermValueFilterFactory;
  * If fields and validation constraints are modified be sure to update the validation code. 
  */
 
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 @Configurable
 @Entity
 public class Business implements Serializable {
 
 	private static final long serialVersionUID = 261999997691744944L;
 	
-	public Business(){}
-	
-	public Business(Registration registration){
-		email = registration.getEmail();
-		password = registration.getPassword();
-		creationTime = registration.getCreationTime();
-	}
-
 	@Size(max = 255)
 	@NotNull
     private String name = "";
@@ -122,12 +109,6 @@ public class Business implements Serializable {
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
     private String ssn;
 
-    private String password;
-    
-    private Long creationTime = System.currentTimeMillis();
-    
-    private Long lastLogin;
-    
     private Long nonFreeAccountExpirationTime; 
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
@@ -151,11 +132,11 @@ public class Business implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Client> clients = new HashSet<Client>();
 
-    @ElementCollection
-    private Set<RoleType> grantedRoles = new HashSet<RoleType>();
-    
     @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "business")
     private Logo logo;
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+    private Set<Principal> principals = new HashSet<Principal>();
     
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
@@ -317,12 +298,6 @@ public class Business implements Serializable {
     	return getAccountingDocumentForYear(getTransportDocuments().iterator(), year);
     }
     
-    public static Business findByEmail(String email){
-    	String query = "select b from Business b where b.email = :email";
-    	List<Business> result = entityManager().createQuery(query, Business.class).setParameter("email", email).getResultList();
-    	return result.size() == 0? null: result.get(0);
-    }
-    
     public Long getNonFreeExpirationDelta(TimeUnit timeUnit){
     	Long now = System.currentTimeMillis();
     	if(nonFreeAccountExpirationTime == null || nonFreeAccountExpirationTime < now)
@@ -330,45 +305,6 @@ public class Business implements Serializable {
     	return timeUnit.convert(nonFreeAccountExpirationTime, TimeUnit.MILLISECONDS);
     }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((creationTime == null) ? 0 : creationTime.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Business other = (Business) obj;
-		if (creationTime == null) {
-			if (other.creationTime != null)
-				return false;
-		} else if (!creationTime.equals(other.creationTime))
-			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		return true;
-	}
-	
 	/*
 	 * Getters and setters
 	 * */
@@ -477,31 +413,6 @@ public class Business implements Serializable {
         this.ssn = ssn;
     }
     
-    public String getPassword() {
-        return this.password;
-    }
-    
-    @Hash(saltMethod = "getCreationTime")
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    public Long getCreationTime() {
-        return this.creationTime;
-    }
-    
-    public void setCreationTime(Long creationTime) {
-        this.creationTime = creationTime;
-    }
-    
-    public Long getLastLogin() {
-		return lastLogin;
-	}
-
-	public void setLastLogin(Long lastLogin) {
-		this.lastLogin = lastLogin;
-	}
-	
 	public Long getNonFreeAccountExpirationTime() {
 		return nonFreeAccountExpirationTime;
 	}
@@ -566,13 +477,6 @@ public class Business implements Serializable {
         this.clients = clients;
     }
     
-    public Set<RoleType> getGrantedRoles() {
-        return this.grantedRoles;
-    }
-    
-    public void setGrantedRoles(Set<RoleType> grantedRoles) {
-        this.grantedRoles = grantedRoles;
-    }
     
     public Logo getLogo(){
     	return this.logo;
@@ -590,7 +494,15 @@ public class Business implements Serializable {
      * Active record functionality
      * */
     
-    @PersistenceContext
+    public Set<Principal> getPrincipals() {
+		return principals;
+	}
+
+	public void setPrincipals(Set<Principal> principals) {
+		this.principals = principals;
+	}
+
+	@PersistenceContext
     transient EntityManager entityManager;
     
     public static final EntityManager entityManager() {

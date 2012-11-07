@@ -82,7 +82,7 @@ public class ExportController {
 			classes.add(DataExportClasses.TRANSPORT_DOCUMENT);
 			fileName.append("_transportdocs");
 		}
-		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
+		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		Logo logo = null;
 		if(classes.contains(DataExportClasses.INVOICE) || classes.contains(DataExportClasses.ESTIMATION))
 			logo = business.getLogo();

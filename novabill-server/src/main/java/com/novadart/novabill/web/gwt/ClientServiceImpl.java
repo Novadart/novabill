@@ -3,11 +3,9 @@ package com.novadart.novabill.web.gwt;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
-
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.authorization.NumberOfClientsQuotaReachedChecker;
 import com.novadart.novabill.domain.Business;
@@ -46,7 +44,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	@Override
 	@Transactional(readOnly = true)
 	public List<ClientDTO> getAll() {
-		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId()); 
+		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()); 
 		Set<Client> clients = business.getClients();
 		List<ClientDTO> clientDTOs = new ArrayList<ClientDTO>(clients.size());
 		for(Client client: clients)
@@ -60,7 +58,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 		Client client = Client.findClient(id);
 		if(client == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		if(client.getInvoices().size() > 0)
 			throw new DataIntegrityException();
@@ -76,7 +74,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 		Client client = new Client(); 
 		ClientDTOFactory.copyFromDTO(client, clientDTO);
 		validator.validate(client);
-		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
+		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		client.setBusiness(business);
 		business.getClients().add(client);
 		client.persist();
@@ -90,7 +88,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 		Client client = Client.findClient(clientDTO.getId());
 		if(client == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		ClientDTOFactory.copyFromDTO(client, clientDTO);
 		validator.validate(client);
@@ -103,7 +101,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 		Client client = Client.findClient(id);
 		if(client == null) 
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		return ClientDTOFactory.toDTO(client);
 	}
@@ -114,14 +112,14 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 		Client client = Invoice.findInvoice(id).getClient();
 		if(client == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		return ClientDTOFactory.toDTO(client);
 	}
 
 	@Override
 	public PageDTO<ClientDTO> searchClients(String query, int start, int length) throws InvalidArgumentException {
-		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
+		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		PageDTO<Client> clients = null;
 		try{
 			clients = business.prefixClientSearch(query, start, length);
@@ -140,7 +138,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 		Client client = Estimation.findEstimation(id).getClient();
 		if(client == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		return ClientDTOFactory.toDTO(client);
 	}

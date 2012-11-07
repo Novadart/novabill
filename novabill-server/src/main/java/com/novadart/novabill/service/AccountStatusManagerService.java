@@ -67,9 +67,9 @@ public class AccountStatusManagerService {
 	}
 	
 	private void disableExpiredAccount(Business business){
-		business.getGrantedRoles().remove(RoleType.ROLE_BUSINESS_PREMIUM);
-		business.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
-		business.setNonFreeAccountExpirationTime(null);
+//		business.getGrantedRoles().remove(RoleType.ROLE_BUSINESS_PREMIUM);
+//		business.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
+//		business.setNonFreeAccountExpirationTime(null);
 	}
 
 }

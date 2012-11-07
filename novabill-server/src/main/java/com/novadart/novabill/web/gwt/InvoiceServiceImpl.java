@@ -46,7 +46,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		Invoice invoice = Invoice.findInvoice(id);
 		if(invoice == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(invoice.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(invoice.getBusiness().getId()))
 			throw new DataAccessException();
 		return InvoiceDTOFactory.toDTO(invoice);
 	}
@@ -54,7 +54,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	@Override
 	@Transactional(readOnly = true)
 	public PageDTO<InvoiceDTO> getAllInRange(int start, int length) {
-		List<Invoice> invoices = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId()).getAllInvoicesInRange(start, length); 
+		List<Invoice> invoices = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()).getAllInvoicesInRange(start, length); 
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<InvoiceDTO>(invoices.size());
 		for(Invoice invoice: invoices)
 			invoiceDTOs.add(InvoiceDTOFactory.toDTO(invoice));
@@ -67,7 +67,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		Client client = Client.findClient(id);
 		if(client == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		List<Invoice> invoices = client.getSortedInvoices();
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<InvoiceDTO>(invoices.size());
@@ -82,7 +82,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		Invoice invoice = Invoice.findInvoice(id);
 		if(invoice == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(invoice.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(invoice.getBusiness().getId()))
 			throw new DataAccessException();
 		invoice.remove(); //removing invoice
 		if(Hibernate.isInitialized(invoice.getBusiness().getInvoices()))
@@ -96,10 +96,10 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	//@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
 	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, AuthorizationException {
 		Client client = Client.findClient(invoiceDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		Business business = Business.findBusiness(invoiceDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
 			throw new DataAccessException();
 		Invoice invoice = new Invoice();//create new invoice
 		invoice.setClient(client);
@@ -118,10 +118,10 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		if(invoiceDTO.getId() == null)
 			throw new DataAccessException();
 		Client client = Client.findClient(invoiceDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		Business business = Business.findBusiness(invoiceDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
 			throw new DataAccessException();
 		Invoice persistedInvoice = Invoice.findInvoice(invoiceDTO.getId());
 		if(persistedInvoice == null)
@@ -139,13 +139,13 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	
 	@Override
 	public Long getNextInvoiceDocumentID() {
-		return utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getNextInvoiceDocumentID();
+		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextInvoiceDocumentID();
 	}
 
 	@Override
 	public PageDTO<InvoiceDTO> getAllForClientInRange(long id, int start, int length) throws DataAccessException, NoSuchObjectException {
 		Client client = Client.findClient(id);
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		List<Invoice> invoices = client.getAllInvoicesInRange(start, length);
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<InvoiceDTO>(invoices.size());
@@ -161,7 +161,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 		Invoice invoice = Invoice.findInvoice(id);
 		if(invoice == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(invoice.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(invoice.getBusiness().getId()))
 			throw new DataAccessException();
 		invoice.setPayed(value);
 	}

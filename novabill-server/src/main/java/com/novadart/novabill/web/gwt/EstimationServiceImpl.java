@@ -44,7 +44,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 		Estimation estimation = Estimation.findEstimation(id);
 		if(estimation == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(estimation.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(estimation.getBusiness().getId()))
 			throw new DataAccessException();
 		return EstimationDTOFactory.toDTO(estimation);
 	}
@@ -54,7 +54,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 		Client client = Client.findClient(id);
 		if(client == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		List<Estimation> estimations = client.getSortedEstimations();
 		List<EstimationDTO> estimationDTOs = new ArrayList<EstimationDTO>(estimations.size());
@@ -69,12 +69,12 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	public Long add(EstimationDTO estimationDTO) throws DataAccessException, AuthorizationException, ValidationException {
 		Estimation estimation = new Estimation();
 		Client client = Client.findClient(estimationDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		estimation.setClient(client);
 		client.getEstimations().add(estimation);
 		Business business = Business.findBusiness(estimationDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
 			throw new DataAccessException();
 		estimation.setBusiness(business);
 		business.getEstimations().add(estimation);
@@ -91,7 +91,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 		Estimation estimation = Estimation.findEstimation(id);
 		if(estimation == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(estimation.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(estimation.getBusiness().getId()))
 			throw new DataAccessException();
 		estimation.remove();
 		if(Hibernate.isInitialized(estimation.getBusiness().getEstimations()))
@@ -106,10 +106,10 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 		if(estimationDTO.getId() == null)
 			throw new DataAccessException();
 		Client client = Client.findClient(estimationDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		Business business = Business.findBusiness(estimationDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
 			throw new DataAccessException();
 		Estimation persistedEstimation = Estimation.findEstimation(estimationDTO.getId());
 		if(persistedEstimation == null)
@@ -127,7 +127,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 
 	@Override
 	public Long getNextEstimationId() throws NotAuthenticatedException, ConcurrentAccessException {
-		return utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getNextEstimationDocumentID();
+		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextEstimationDocumentID();
 	}
 
 	@Override
@@ -135,7 +135,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 		Client client = Client.findClient(id);
 		if(client == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		List<Estimation> estimations = client.getAllEstimationsInRange(start, length);
 		List<EstimationDTO> estimationDTOs = new ArrayList<EstimationDTO>(estimations.size());
@@ -146,7 +146,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 
 	@Override
 	public PageDTO<EstimationDTO> getAllInRange(int start, int length) throws NotAuthenticatedException, ConcurrentAccessException {
-		List<Estimation> estimations = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId()).getAllEstimationsInRange(start, length);
+		List<Estimation> estimations = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()).getAllEstimationsInRange(start, length);
 		List<EstimationDTO> estimationDTOs = new ArrayList<EstimationDTO>(estimations.size());
 		for(Estimation estimation: estimations)
 			estimationDTOs.add(EstimationDTOFactory.toDTO(estimation));

@@ -21,8 +21,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import com.novadart.novabill.annotation.MailMixin;
-import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.ForgotPassword;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.validator.ForgotPasswordValidator;
 
@@ -80,7 +80,7 @@ public class ForgotPasswordController {
 			return "forgotPassword";
 		else{
 			forgotPassword.setActivationToken(tokenGenerator.generateToken());
-			forgotPassword.setCreationTime(Business.findByEmail(forgotPassword.getEmail()).getCreationTime());
+			forgotPassword.setCreationTime(Principal.findByUsername(forgotPassword.getEmail()).getCreationTime());
 			forgotPassword.setPassword(DEFAULT_PASSWORD); //force hashing
 			forgotPassword.setConfirmPassword(DEFAULT_PASSWORD); //force hashing
 			forgotPassword.setExpirationDate(new Date(System.currentTimeMillis() + passwordRecoveryPeriod * MILLISECS_PER_HOUR));

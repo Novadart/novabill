@@ -1,7 +1,6 @@
 package com.novadart.novabill.web.mvc;
 
 import java.util.Date;
-
 import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -12,9 +11,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Registration;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
 
 @Controller
@@ -24,7 +23,7 @@ public class ActivateAccountController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model){
-		if(Business.findByEmail(email) != null) //registered user already exists
+		if(Principal.findByUsername(email) != null) //registered user already exists
 			return "invalidActivationRequest";
 		try {
 			Registration registration = Registration.findRegistration(email, token);
@@ -50,8 +49,11 @@ public class ActivateAccountController {
 			model.addAttribute("wrongPassword", true);
 			return "activate";
 		}
-		Business business = new Business(registration);
-		business.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
+		Principal principal = new Principal(registration);
+		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
+		Business business = new Business();
+		principal.setBusiness(business);
+		business.getPrincipals().add(principal);
 		business.persist();
 		registration.remove();
 		status.setComplete();

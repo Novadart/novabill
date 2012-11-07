@@ -64,7 +64,7 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 	@Override
 	@Transactional(readOnly = true)
 	public long countClients() {
-		Long id = utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId();
+		Long id = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
 		Business business = Business.findBusiness(id);
 		return business.getClients().size();
 	}
@@ -72,21 +72,21 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 	@Override
 	@Transactional(readOnly = true)
 	public long countInvoices() {
-		Long id = utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId();
+		Long id = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
 		Business business = Business.findBusiness(id);
 		return business.getInvoices().size();
 	}
 
 	@Override
 	public long countInvoicesForYear(int year) {
-		Long id = utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId();
+		Long id = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
 		Business business = Business.findBusiness(id);
 		return business.getInvoicesForYear(year).size();
 	}
 
 	@Override
 	public BigDecimal getTotalAfterTaxesForYear(int year) {
-		Long id = utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId();
+		Long id = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
 		Business business = Business.findBusiness(id);
 		BigDecimal totalAfterTaxes = new BigDecimal("0.0");
 		Iterator<Invoice> iter = business.getInvoicesForYear(year).iterator();
@@ -98,7 +98,7 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(businessDTO.getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(businessDTO.getId()))
 			throw new DataAccessException();
 		Business business = Business.findBusiness(businessDTO.getId());
 		if(business == null)

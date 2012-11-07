@@ -7,10 +7,8 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.rmi.RemoteException;
 import java.util.Locale;
-
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -20,7 +18,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.CreditNote;
@@ -28,7 +25,6 @@ import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.domain.TransportDocument;
-import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.service.PDFGenerator;
 import com.novadart.novabill.service.PDFGenerator.DocumentType;
 import com.novadart.novabill.service.UtilsService;
@@ -105,7 +101,7 @@ public class PDFController{
 	private void generatePDF(final HttpServletResponse response, final AccountingDocument accountingDocument, Business invoiceOwner,
 			final PDFGenerator.DocumentType docType, final Locale locale) throws DataAccessException,
 			FileNotFoundException, RemoteException, IOException {
-		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
+		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		if(!business.getId().equals(invoiceOwner.getId()))
 			throw new DataAccessException();
 		File tempLogoFile = null;
@@ -135,10 +131,11 @@ public class PDFController{
 					response.setHeader ("Content-Length", String.valueOf(file.length()));
 				}
 			};
+			boolean putWatermark = true;
 			if(tempLogoFile == null)
-				pdfGenerator.createAndWrite(response.getOutputStream(), accountingDocument, null, null, null, docType, business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),bwEvHnld);
+				pdfGenerator.createAndWrite(response.getOutputStream(), accountingDocument, null, null, null, docType, putWatermark, bwEvHnld);
 			else
-				pdfGenerator.createAndWrite(response.getOutputStream(), accountingDocument, tempLogoFile.getPath(), logo.getWidth(), logo.getHeight(), docType, business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE), bwEvHnld);
+				pdfGenerator.createAndWrite(response.getOutputStream(), accountingDocument, tempLogoFile.getPath(), logo.getWidth(), logo.getHeight(), docType, putWatermark, bwEvHnld);
 		} finally {
 			if(tempLogoFile != null)
 				tempLogoFile.delete();

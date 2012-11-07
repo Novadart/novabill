@@ -41,7 +41,7 @@ public class InvoiceValidator extends AccountingDocumentValidator {
 	}
 	
 	private boolean validateInvoiceDocumentID(Invoice invoice, List<Long> gapsAccumulator){
-		Business authenticatedBusiness = utilsService.getAuthenticatedPrincipalDetails().getPrincipal();
+		Business authenticatedBusiness = utilsService.getAuthenticatedPrincipalDetails().getBusiness();
 		List<Invoice> persistedInvoices  = authenticatedBusiness.getInvoiceByIdInYear(invoice.getDocumentID(), invoice.getAccountingDocumentYear()); 
 		for(Invoice persistedInvoice : persistedInvoices){
 			if(!persistedInvoice.getId().equals(invoice.getId())){//same documentID, but different id: error!

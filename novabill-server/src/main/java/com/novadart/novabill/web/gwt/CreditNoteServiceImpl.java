@@ -47,14 +47,14 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 		CreditNote creditNote = CreditNote.findCreditNote(id);
 		if(creditNote == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(creditNote.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(creditNote.getBusiness().getId()))
 			throw new DataAccessException();
 		return CreditNoteDTOFactory.toDTO(creditNote);
 	}
 
 	@Override
 	public PageDTO<CreditNoteDTO> getAllInRange(int start, int length) throws NotAuthenticatedException, ConcurrentAccessException {
-		List<CreditNote> creditNotes = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId()).getAllCreditNotesInRange(start, length); 
+		List<CreditNote> creditNotes = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()).getAllCreditNotesInRange(start, length); 
 		List<CreditNoteDTO> creditNoteDTOs = new ArrayList<CreditNoteDTO>(creditNotes.size());
 		for(CreditNote creditNote: creditNotes)
 			creditNoteDTOs.add(CreditNoteDTOFactory.toDTO(creditNote));
@@ -66,7 +66,7 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 		Client client = Client.findClient(id);
 		if(client == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		List<CreditNote> creditNotes = client.getSortedCreditNotes();
 		List<CreditNoteDTO> creditNoteDTOs = new ArrayList<CreditNoteDTO>(creditNotes.size());
@@ -79,10 +79,10 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	//@Restrictions(checkers = {NumberOfCreditNotesPerYearQuotaReachedChecker.class})
 	public Long add(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException {
 		Client client = Client.findClient(creditNoteDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		Business business = Business.findBusiness(creditNoteDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
 			throw new DataAccessException();
 		CreditNote creditNote = new CreditNote();//create new credit note
 		creditNote.setClient(client);
@@ -101,7 +101,7 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 		CreditNote creditNote = CreditNote.findCreditNote(id);
 		if(creditNote == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(creditNote.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(creditNote.getBusiness().getId()))
 			throw new DataAccessException();
 		creditNote.remove(); //removing credit note
 		if(Hibernate.isInitialized(creditNote.getBusiness().getCreditNotes()))
@@ -116,10 +116,10 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 		if(creditNoteDTO.getId() == null)
 			throw new DataAccessException();
 		Client client = Client.findClient(creditNoteDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		Business business = Business.findBusiness(creditNoteDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
 			throw new DataAccessException();
 		CreditNote persistedCreditNote = CreditNote.findCreditNote(creditNoteDTO.getId());
 		if(persistedCreditNote == null)
@@ -138,13 +138,13 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 
 	@Override
 	public Long getNextInvoiceDocumentID() throws NotAuthenticatedException, ConcurrentAccessException {
-		return utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getNextCreditNoteDocumentID();
+		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextCreditNoteDocumentID();
 	}
 
 	@Override
 	public PageDTO<CreditNoteDTO> getAllForClientInRange(long id, int start, int length) throws NotAuthenticatedException, DataAccessException,	NoSuchObjectException, ConcurrentAccessException {
 		Client client = Client.findClient(id);
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		List<CreditNote> creditNotes = client.getAllCreditNotesInRange(start, length);
 		List<CreditNoteDTO> creditNoteDTOs = new ArrayList<CreditNoteDTO>(creditNotes.size());

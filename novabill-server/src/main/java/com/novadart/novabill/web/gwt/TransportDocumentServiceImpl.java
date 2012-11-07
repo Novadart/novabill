@@ -46,7 +46,7 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 		TransportDocument estimation = TransportDocument.findTransportDocument(id);
 		if(estimation == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(estimation.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(estimation.getBusiness().getId()))
 			throw new DataAccessException();
 		return TransportDocumentDTOFactory.toDTO(estimation);
 	}
@@ -56,7 +56,7 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 		Client client = Client.findClient(id);
 		if(client == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		List<TransportDocument> transportDocs = client.getSortedTransportDocuments();
 		List<TransportDocumentDTO> transportDocDTOs = new ArrayList<TransportDocumentDTO>(transportDocs.size());
@@ -73,12 +73,12 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 		transportDoc.setFromEndpoint(new Endpoint());
 		transportDoc.setToEndpoint(new Endpoint());
 		Client client = Client.findClient(transportDocDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		transportDoc.setClient(client);
 		client.getTransportDocuments().add(transportDoc);
 		Business business = Business.findBusiness(transportDocDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
 			throw new DataAccessException();
 		transportDoc.setBusiness(business);
 		business.getTransportDocuments().add(transportDoc);
@@ -94,7 +94,7 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 		TransportDocument transportDoc = TransportDocument.findTransportDocument(id);
 		if(transportDoc == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(transportDoc.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(transportDoc.getBusiness().getId()))
 			throw new DataAccessException();
 		transportDoc.remove();
 		if(Hibernate.isInitialized(transportDoc.getBusiness().getTransportDocuments()))
@@ -111,10 +111,10 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 		if(transportDocDTO.getId() == null)
 			throw new DataAccessException();
 		Client client = Client.findClient(transportDocDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		Business business = Business.findBusiness(transportDocDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
 			throw new DataAccessException();
 		TransportDocument persistedTransportDoc = TransportDocument.findTransportDocument(transportDocDTO.getId());
 		if(persistedTransportDoc == null)
@@ -133,7 +133,7 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 
 	@Override
 	public Long getNextTransportDocId() throws NotAuthenticatedException, ConcurrentAccessException {
-		return utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getNextTransportDocDocumentID();
+		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextTransportDocDocumentID();
 	}
 
 	@Override
@@ -142,7 +142,7 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 		Client client = Client.findClient(id);
 		if(client == null)
 			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
+		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
 			throw new DataAccessException();
 		List<TransportDocument> transportDocs = client.getAllTransportDocsInRange(start, length);
 		List<TransportDocumentDTO> transportDocDTOs = new ArrayList<TransportDocumentDTO>(transportDocs.size());
@@ -153,7 +153,7 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 
 	@Override
 	public PageDTO<TransportDocumentDTO> getAllInRange(int start, int length) throws NotAuthenticatedException, ConcurrentAccessException {
-		List<TransportDocument> transportDocs = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId()).getAllTransportDocsInRange(start, length);
+		List<TransportDocument> transportDocs = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()).getAllTransportDocsInRange(start, length);
 		List<TransportDocumentDTO> transportDocDTOs = new ArrayList<TransportDocumentDTO>(transportDocs.size());
 		for(TransportDocument transportDoc: transportDocs)
 			transportDocDTOs.add(TransportDocumentDTOFactory.toDTO(transportDoc));

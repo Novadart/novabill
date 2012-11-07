@@ -42,7 +42,7 @@ public class UpgradeAccountController {
 	@RequestMapping(method = RequestMethod.GET)
 	@Transactional(readOnly = false)
 	public String display(Model model, HttpServletRequest request) throws MalformedURLException, UnsupportedEncodingException, NoSuchAlgorithmException{
-		String email = utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getEmail();
+		String email = utilsService.getAuthenticatedPrincipalDetails().getUsername();
 		String token = tokenGenerator.generateToken();
 		UpgradeToken upgradeToken = new UpgradeToken();
 		upgradeToken.setEmail(email);

@@ -6,8 +6,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
-
-import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 
 privileged aspect LoginLogoutAspect {
@@ -23,10 +22,10 @@ privileged aspect LoginLogoutAspect {
 		execution(public void org.springframework.security.web.authentication.logout.SimpleUrlLogoutSuccessHandler.onLogoutSuccess(..)) && args(.., authentication);
 	
 	after() returning: login(){
-		Business business = utilsService.getAuthenticatedPrincipalDetails().getPrincipal();
+		Principal business = utilsService.getAuthenticatedPrincipalDetails();
 		business.setLastLogin(System.currentTimeMillis());
 		business.merge();
-		LOGGER.info("[{}, login, {}]", new Object[]{business.getEmail(), new Date(business.getLastLogin())});
+		LOGGER.info("[{}, login, {}]", new Object[]{business.getUsername(), new Date(business.getLastLogin())});
 	}
 	
 	after(Authentication authentication) returning: logout(authentication){
