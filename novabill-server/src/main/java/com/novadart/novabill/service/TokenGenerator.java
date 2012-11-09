@@ -6,21 +6,16 @@ import java.security.SecureRandom;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.codec.binary.Base64;
 import org.springframework.stereotype.Service;
 
-import sun.misc.BASE64Encoder;
-
-@SuppressWarnings("restriction")
 @Service
 public class TokenGenerator {
-	
-	private BASE64Encoder base64Encoder;
 	
 	private SecureRandom random;
 	
 	@PostConstruct
 	public void init() throws NoSuchAlgorithmException{
-		base64Encoder = new BASE64Encoder();
 		random = SecureRandom.getInstance("SHA1PRNG");
 	}
 	
@@ -32,7 +27,7 @@ public class TokenGenerator {
 		digest.update(salt);
 		byte[] tokenBytes = new byte[64];
 		random.nextBytes(tokenBytes);
-		return base64Encoder.encode(digest.digest(tokenBytes));
+		return Base64.encodeBase64String(digest.digest(tokenBytes));
 	}
 
 }
