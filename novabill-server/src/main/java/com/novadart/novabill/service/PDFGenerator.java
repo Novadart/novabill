@@ -41,9 +41,8 @@ public class PDFGenerator {
 	@Value("${path.tmpdir.invoice_generation}")
 	private String invOutLocation;
 
-	@SuppressWarnings("unused")
 	@PostConstruct
-	private void init(){
+	protected void init(){
 		File outDir = new File(invOutLocation);
 		if(!outDir.exists())
 			outDir.mkdir();

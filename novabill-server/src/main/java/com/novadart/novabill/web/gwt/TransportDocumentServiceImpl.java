@@ -2,14 +2,14 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
-import com.novadart.novabill.annotation.Restrictions;
-import com.novadart.novabill.authorization.NumberOfTransportDocsPerYearQuotaReachedChecker;
+
+import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;

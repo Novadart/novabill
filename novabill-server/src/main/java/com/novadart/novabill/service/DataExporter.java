@@ -44,7 +44,7 @@ public class DataExporter {
 	private PDFGenerator pdfGenerator;
 	
 	@PostConstruct
-	private void init(){
+	protected void init(){
 		File outDir = new File(dataOutLocation);
 		if(!outDir.exists())
 			outDir.mkdir();
