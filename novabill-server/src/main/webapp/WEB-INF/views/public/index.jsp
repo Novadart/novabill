@@ -14,15 +14,6 @@
 			<spring:message code="header.signupForFree"></spring:message>
 		</a>
 	</sec:authorize>
-	<div class="slider-wrapper theme-default mask-container-large">
-		<div id="slider" class="nivoSlider">
-			<img src="images/slider/slider-3.jpg" alt="" /> 
-			<img src="images/slider/slider-2.jpg" alt="" /> 
-			<img src="images/slider/slider-1.jpg" alt="" /> 
-			<img src="images/slider/slider-4.jpg" alt="" />
-		</div>
-		<div class="mask-gloss-large"></div>
-	</div>
 </div>
 <div class="divider-2"></div>
 <div class="top-features">

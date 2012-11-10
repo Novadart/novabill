@@ -14,6 +14,8 @@
 			<td>
 				<form:input id="email" path="email" class="registrationInput" />
 				<br>
+			</td>
+			<td>
 				<form:errors path="email" cssClass="error" />
 			</td>
 		</tr>
@@ -21,7 +23,8 @@
 			<td><label for="email" class="registrationLabel"><spring:message code="shared.password" /></label></td>
 			<td>
 				<form:input id="password" path="password" type="password" class="registrationInput"/>
-				<br>
+			</td>
+			<td>
 				<form:errors path="password" cssClass="error" />
 			</td>
 		</tr>
@@ -29,7 +32,8 @@
 			<td><label for="email" class="registrationLabel"><spring:message code="shared.password.confirm" /></label></td>
 			<td><form:input id="confirmPassword" path="confirmPassword"
 					type="password" class="registrationInput" />
-					<br>
+			</td>
+			<td>
 				<form:errors path="confirmPassword" cssClass="error" />
 			</td>
 		</tr>
