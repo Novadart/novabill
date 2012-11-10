@@ -6,7 +6,6 @@ from template.tidy import TidyDocumentBuilder, MEDIUM_FONT_SIZE, TidyDirector
 from reportlab.lib.units import cm
 from reportlab.lib.colors import lightgrey
 from template.tidy import BORDER_SIZE, BORDER_COLOR
-from reportlab.platypus.flowables import Spacer
 
 
 class TidyTransportDocumentDirector(TidyDirector):
