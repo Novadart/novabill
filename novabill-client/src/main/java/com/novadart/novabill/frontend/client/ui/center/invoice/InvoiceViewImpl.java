@@ -33,7 +33,7 @@ import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
 import com.novadart.novabill.frontend.client.ui.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.ui.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
-import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
+import com.novadart.novabill.frontend.client.ui.widget.validation.ValidationKit;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -87,7 +87,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 			payment.addItem(item);
 		}
 		
-		number = new ValidatedTextBox(new NumberValidation());
+		number = new ValidatedTextBox(ValidationKit.NUMBER);
 		
 		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
 			

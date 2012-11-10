@@ -38,7 +38,7 @@ import com.novadart.novabill.frontend.client.ui.center.TransportDocumentView;
 import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
-import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
+import com.novadart.novabill.frontend.client.ui.widget.validation.ValidationKit;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
@@ -112,7 +112,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			public String getErrorMessage() {	return null; }
 		};
 		
-		numberOfPackages = new ValidatedTextBox(new NumberValidation());
+		numberOfPackages = new ValidatedTextBox(ValidationKit.NUMBER);
 		transporter = new ValidatedTextBox(nev);
 		
 		fromAddrCity = new RichTextBox(I18N.INSTANCE.city(), nev);
