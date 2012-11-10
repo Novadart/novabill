@@ -124,7 +124,7 @@ public class BootstrapDialog extends Dialog {
 			b.setVatID(vatID.getText());
 			b.setCity(city.getText());
 			b.setProvince(province.getSelectedItemText());
-			b.setCountry(country.getSelectedItemText());
+			b.setCountry(country.getSelectedItemValue());
 			b.setPostcode(postcode.getText());
 			b.setPhone(phone.getText());
 			b.setEmail(email.getText());
