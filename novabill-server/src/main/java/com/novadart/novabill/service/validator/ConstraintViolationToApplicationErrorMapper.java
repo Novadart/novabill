@@ -25,19 +25,19 @@ public class ConstraintViolationToApplicationErrorMapper {
 		
 		private String propertyName;
 		
-		private Object[] arguments;
+		private Integer[] indexes;
 		
-		public PropertyMappingPair(String propertyName, Object[] arguments){
+		public PropertyMappingPair(String propertyName, Integer[] indexes){
 			this.propertyName = propertyName;
-			this.arguments = arguments;
+			this.indexes = indexes;
 		}
 
 		public String getPropertyName() {
 			return propertyName;
 		}
 
-		public Object[] getArguments() {
-			return arguments;
+		public Integer[] getIndexes() {
+			return indexes;
 		}
 		
 		
@@ -53,7 +53,7 @@ public class ConstraintViolationToApplicationErrorMapper {
 				indexes.add(node.getIndex());
 			propertyChain.add(node.getName());
 		}
-		return new PropertyMappingPair(StringUtils.join(propertyChain, "_"), indexes.size() == 0? null: indexes.toArray());
+		return new PropertyMappingPair(StringUtils.join(propertyChain, "_"), indexes.size() == 0? null: indexes.toArray(new Integer[indexes.size()]));
 	}
 	
 	public <T> List<ErrorObject> convert(Set<ConstraintViolation<T>> violations){
@@ -61,15 +61,15 @@ public class ConstraintViolationToApplicationErrorMapper {
 		for(ConstraintViolation<T> violation: violations){
 			PropertyMappingPair pair = getProperty(violation.getPropertyPath());
 			if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(NotBlank.class))
-				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.BLANK_OR_NULL, pair.getArguments()));
+				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.BLANK_OR_NULL, pair.getIndexes()));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(NotNull.class))
-				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.NULL, pair.getArguments()));
+				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.NULL, pair.getIndexes()));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(Email.class))
-				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.MALFORMED_EMAIL, pair.getArguments()));
+				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.MALFORMED_EMAIL, pair.getIndexes()));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(Pattern.class))
-				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.MALFORMED_REGEX_PATTERN, pair.getArguments()));
+				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.MALFORMED_REGEX_PATTERN, pair.getIndexes()));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(Size.class))
-				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.LENGTH, pair.getArguments()));
+				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.LENGTH, pair.getIndexes()));
 			else
 				throw new RuntimeException("No such constraint violation exception!");
 		}
