@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-11-06 23:37+0100\n"
+"POT-Creation-Date: 2012-11-10 19:05+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -31,13 +31,13 @@ msgid "Transport document"
 msgstr ""
 
 #: src/template/tidy/transport_document.py:31
-#: src/template/tidy/credit_note.py:13 src/template/tidy/estimation.py:25
+#: src/template/tidy/credit_note.py:13 src/template/tidy/estimation.py:28
 #: src/template/tidy/invoice.py:39
 msgid "Number"
 msgstr ""
 
 #: src/template/tidy/transport_document.py:32
-#: src/template/tidy/credit_note.py:14 src/template/tidy/estimation.py:26
+#: src/template/tidy/credit_note.py:14 src/template/tidy/estimation.py:29
 #: src/template/tidy/invoice.py:40
 msgid "Date"
 msgstr ""
@@ -76,7 +76,7 @@ msgstr ""
 
 #: src/template/tidy/__init__.py:108
 msgid "Client"
-msgstr "VAT ID %s"
+msgstr ""
 
 #: src/template/tidy/__init__.py:111
 msgid "From"
@@ -126,23 +126,23 @@ msgstr ""
 msgid "Credit note"
 msgstr ""
 
-#: src/template/tidy/estimation.py:24
+#: src/template/tidy/estimation.py:27
 msgid "Estimation"
 msgstr ""
 
-#: src/template/tidy/estimation.py:27
+#: src/template/tidy/estimation.py:30
 msgid "Valid until"
 msgstr ""
 
-#: src/template/tidy/estimation.py:37
+#: src/template/tidy/estimation.py:40
 msgid "Limitations"
 msgstr ""
 
-#: src/template/tidy/estimation.py:38
+#: src/template/tidy/estimation.py:41
 msgid "No limitations"
 msgstr ""
 
-#: src/template/tidy/estimation.py:42
+#: src/template/tidy/estimation.py:45
 msgid "Payment note"
 msgstr ""
 
@@ -166,7 +166,7 @@ msgstr ""
 msgid "Note"
 msgstr ""
 
-#: src/main.py:64
+#: src/core.py:62
 #, python-format
 msgid "%(docType)s for %(client)s"
 msgstr ""
