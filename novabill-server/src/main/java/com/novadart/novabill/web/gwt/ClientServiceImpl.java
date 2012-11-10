@@ -14,7 +14,7 @@ import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.validator.SimpleValidator;
+import com.novadart.novabill.service.validator.TaxableEntityValidator;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -35,7 +35,7 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	private UtilsService utilsService;
 	
 	@Autowired
-	private SimpleValidator validator;
+	private TaxableEntityValidator validator;
 	
 	public ClientServiceImpl() {
 		super(ClientService.class);

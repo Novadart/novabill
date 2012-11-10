@@ -5,20 +5,18 @@ import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.XsrfTokenService;
-import com.novadart.novabill.service.validator.SimpleValidator;
+import com.novadart.novabill.service.validator.TaxableEntityValidator;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
@@ -40,7 +38,7 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 	private UtilsService utilsService;
 	
 	@Autowired
-	private SimpleValidator validator;
+	private TaxableEntityValidator validator;
 	
 	@Autowired
 	private XsrfTokenService xsrfTokenService;

@@ -58,7 +58,7 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 
 @Configurable
 @Entity
-public class Business implements Serializable {
+public class Business implements Serializable, Taxable {
 
 	private static final long serialVersionUID = 261999997691744944L;
 	
