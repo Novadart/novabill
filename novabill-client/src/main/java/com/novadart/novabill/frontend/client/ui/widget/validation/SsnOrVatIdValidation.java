@@ -3,22 +3,20 @@ package com.novadart.novabill.frontend.client.ui.widget.validation;
 import com.novadart.gwtshared.client.validation.OptionalFieldValidation;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 
-public class SsnOrVatIdValidation extends OptionalFieldValidation<String> {
-	private static final SsnValidation SSN_VALIDATION = new SsnValidation();
-	private static final VatIdValidation VAT_ID_VALIDATION = new VatIdValidation();
-
-	public SsnOrVatIdValidation() {
+class SsnOrVatIdValidation extends OptionalFieldValidation<String> {
+	
+	SsnOrVatIdValidation() {
 		super(false);
 	}
 	
-	public SsnOrVatIdValidation(boolean optional) {
+	SsnOrVatIdValidation(boolean optional) {
 		super(optional);
 	}
 	
 	@Override
 	public boolean isValid(String text) {
-		return isOptional() ? (text.isEmpty() || SSN_VALIDATION.isValid(text) || VAT_ID_VALIDATION.isValid(text))
-				: SSN_VALIDATION.isValid(text) || VAT_ID_VALIDATION.isValid(text);
+		return isOptional() ? (text.isEmpty() || ValidationKit.SSN.isValid(text) || ValidationKit.VAT_ID.isValid(text))
+				: ValidationKit.SSN.isValid(text) || ValidationKit.VAT_ID.isValid(text);
 	}
 
 	@Override

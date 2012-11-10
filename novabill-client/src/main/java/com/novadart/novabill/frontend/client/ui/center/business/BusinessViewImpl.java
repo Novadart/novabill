@@ -28,12 +28,7 @@ import com.novadart.novabill.frontend.client.ui.center.BusinessView;
 import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
-import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
-import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
-import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
-import com.novadart.novabill.frontend.client.ui.widget.validation.PostcodeValidation;
-import com.novadart.novabill.frontend.client.ui.widget.validation.SsnOrVatIdValidation;
-import com.novadart.novabill.frontend.client.ui.widget.validation.VatIdValidation;
+import com.novadart.novabill.frontend.client.ui.widget.validation.ValidationKit;
 import com.novadart.novabill.frontend.client.util.ExportUtils;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
@@ -73,32 +68,30 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	public BusinessViewImpl() {
 		BusinessDTO b = Configuration.getBusiness();
 
-		NotEmptyValidation nev = new NotEmptyValidation();
-		NumberValidation nuv = new NumberValidation(true);
 
-		name = new ValidatedTextBox(nev);
+		name = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
 		name.setText(b.getName());
-		ssn = new ValidatedTextBox(new SsnOrVatIdValidation(true));
+		ssn = new ValidatedTextBox(ValidationKit.OPTIONAL_SSN_OR_VAT_ID);
 		ssn.setText(b.getSsn());
-		vatID = new ValidatedTextBox(new VatIdValidation(true));
+		vatID = new ValidatedTextBox(ValidationKit.OPTIONAL_VAT_ID);
 		vatID.setText(b.getVatID());
-		address = new ValidatedTextBox(nev);
+		address = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
 		address.setText(b.getAddress());
-		city = new ValidatedTextBox(nev);
+		city = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
 		city.setText(b.getCity());
 		province = LocaleWidgets.createProvinceListBox("");
 		province.setSelectedItem(b.getProvince());
 		country = LocaleWidgets.createCountryListBox("");
 		country.setSelectedItemByValue(b.getCountry());
-		postcode = new ValidatedTextBox(new PostcodeValidation());
+		postcode = new ValidatedTextBox(ValidationKit.POSTCODE);
 		postcode.setText(b.getPostcode());
-		phone = new ValidatedTextBox(nuv);
+		phone = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
 		phone.setText(b.getPostcode());
-		email = new ValidatedTextBox(new EmailValidation(true));
+		email = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
 		email.setText(b.getEmail());
-		mobile = new ValidatedTextBox(nuv);
+		mobile = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
 		mobile.setText(b.getMobile());
-		fax = new ValidatedTextBox(nuv);
+		fax = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
 		fax.setText(b.getFax());
 
 		initWidget(uiBinder.createAndBindUi(this));
@@ -210,15 +203,23 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		
 		ssn.validate();
 		vatID.validate();
-		if(!vatID.isValid() && !ssn.isValid()){
+		boolean ssnVatIdValid = true;
+		if(ssn.getText().isEmpty() && vatID.getText().isEmpty()){
+			ssnVatIdValid = false;
+		} else {
+			ssnVatIdValid = vatID.isValid() && ssn.isValid();
+		}
+		
+		if(ssnVatIdValid){
+			ssn.setValidationOkStyle();
+			vatID.setValidationOkStyle();
+		} else {
 			inlineNotification.showMessage(I18N.INSTANCE.fillVatIdOrSsn());
 			ssn.setValidationErrorStyle();
 			vatID.setValidationErrorStyle();
 			validationOk = false;
-		} else {
-			ssn.setValidationOkStyle();
-			vatID.setValidationOkStyle();
 		}
+		
 		ssn.hideMessage();
 		vatID.hideMessage();
 		

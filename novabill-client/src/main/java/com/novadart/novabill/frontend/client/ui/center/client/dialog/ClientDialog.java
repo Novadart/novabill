@@ -20,9 +20,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
-import com.novadart.novabill.frontend.client.ui.widget.validation.EmailValidation;
-import com.novadart.novabill.frontend.client.ui.widget.validation.NotEmptyValidation;
-import com.novadart.novabill.frontend.client.ui.widget.validation.NumberValidation;
+import com.novadart.novabill.frontend.client.ui.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
 
@@ -69,36 +67,34 @@ public class ClientDialog extends Dialog {
 	private ClientDTO client = null;
 
 	private ClientDialog() {
-		NotEmptyValidation ne = new NotEmptyValidation();
-		companyName = new ValidatedTextBox(ne);
+		companyName = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
 		
 //		TODO see ticket #363
 //		vatID =  new ValidatedTextBox(new VatIdValidation(true));
 //		ssn =  new ValidatedTextBox(new SsnOrVatIdValidation(true));
 //		postcode = new ValidatedTextBox(new PostcodeValidation());
-		vatID =  new ValidatedTextBox(ne);
-		ssn =  new ValidatedTextBox(ne);
-		postcode = new ValidatedTextBox(new NumberValidation());
+		vatID =  new ValidatedTextBox(ValidationKit.NOT_EMPTY);
+		ssn =  new ValidatedTextBox(ValidationKit.NOT_EMPTY);
+		postcode = new ValidatedTextBox(ValidationKit.NUMBER);
 		
-		address = new ValidatedTextBox(ne);
-		city = new ValidatedTextBox(ne);
+		address = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
+		city = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
 		country = LocaleWidgets.createCountryListBox("");
 		
-		NumberValidation nv = new NumberValidation(true);
-		phone = new ValidatedTextBox(nv);
-		mobile = new ValidatedTextBox(nv);
-		fax = new ValidatedTextBox(nv);
-		contactPhone = new ValidatedTextBox(nv);
-		contactMobile = new ValidatedTextBox(nv);
-		contactFax = new ValidatedTextBox(nv);
+		phone = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
+		mobile = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
+		fax = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
+		contactPhone = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
+		contactMobile = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
+		contactFax = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
 		
 		DefaultValidation<String> dv = new DefaultValidation<String>();
 		web = new ValidatedTextBox(dv);
 		contactName = new ValidatedTextBox(dv);
 		contactSurname = new ValidatedTextBox(dv);
 
-		email = new ValidatedTextBox(new EmailValidation(true));
-		contactEmail = new ValidatedTextBox(new EmailValidation(true));
+		email = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
+		contactEmail = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
 		
 		province = LocaleWidgets.createProvinceListBox("");
 		setWidget(uiBinder.createAndBindUi(this));
@@ -249,6 +245,8 @@ public class ClientDialog extends Dialog {
 	private boolean validate(){
 		boolean isValid = true;
 		inlineNotification.hide();
+		
+		//TODO fix validation, ticket #367
 		ssn.validate();
 		vatID.validate();
 		if(!vatID.isValid() && !ssn.isValid()){
