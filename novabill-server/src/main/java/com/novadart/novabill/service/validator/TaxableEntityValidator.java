@@ -3,6 +3,7 @@ package com.novadart.novabill.service.validator;
 import java.util.ArrayList;
 import java.util.List;
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import com.novadart.novabill.domain.Taxable;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -13,6 +14,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 @Service
 public class TaxableEntityValidator {
 	
+	@Autowired
 	private SimpleValidator simpleValidator;
 	
 	public void validate(Taxable taxableEntity) throws ValidationException{

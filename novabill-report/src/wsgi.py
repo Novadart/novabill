@@ -2,6 +2,7 @@ import json
 import tempfile
 import os
 import webob
+import legacy
 import base64
 from core import create_doc
 
@@ -44,7 +45,10 @@ def application(environ, start_response):
     request = webob.Request(environ)
     params = process_input_parameters(request)
     _, out = tempfile.mkstemp()
-    create_doc(out, **params)
+    if params["docData"]["client"]["vatID"] == legacy.ENNOVA_VATID:
+        legacy.create_invoice(out, **params)
+    else:
+        create_doc(out, **params)
     if "pathToLogo" in params:
         os.remove(params["pathToLogo"])
     size = os.path.getsize(out)
