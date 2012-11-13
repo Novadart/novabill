@@ -109,7 +109,7 @@
 			</build>
 		</profile>
 		<profile>
-			<id>gwtMaxOptimization</id>
+			<id>gwt-best</id>
 			<build>
 				<plugins>
 					<plugin>
