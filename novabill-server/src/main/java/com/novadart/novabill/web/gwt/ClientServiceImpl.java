@@ -6,6 +6,7 @@ import java.util.Set;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
@@ -43,9 +44,9 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 
 	@Override
 	@Transactional(readOnly = true)
-	public List<ClientDTO> getAll() {
-		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()); 
-		Set<Client> clients = business.getClients();
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<ClientDTO> getAll(Long businessID) {
+		Set<Client> clients = Business.findBusiness(businessID).getClients();
 		List<ClientDTO> clientDTOs = new ArrayList<ClientDTO>(clients.size());
 		for(Client client: clients)
 			clientDTOs.add(ClientDTOFactory.toDTO(client));
@@ -54,13 +55,10 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 
 	@Override
 	@Transactional(readOnly = false)
-	public void remove(Long id) throws DataAccessException, NoSuchObjectException, DataIntegrityException {
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id and principal.business.id == #businessID")
+	public void remove(Long businessID, Long id) throws DataAccessException, NoSuchObjectException, DataIntegrityException {
 		Client client = Client.findClient(id);
-		if(client == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		if(client.getInvoices().size() > 0)
+		if(client.hasAccountingDocs())
 			throw new DataIntegrityException();
 		client.remove();
 		if(Hibernate.isInitialized(client.getBusiness().getClients()))
@@ -70,11 +68,12 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	//@Restrictions(checkers = {NumberOfClientsQuotaReachedChecker.class})
-	public Long add(ClientDTO clientDTO) throws AuthorizationException, ValidationException {
+	@PreAuthorize("#businessID == principal.business.id")
+	public Long add(Long businessID, ClientDTO clientDTO) throws AuthorizationException, ValidationException {
 		Client client = new Client(); 
 		ClientDTOFactory.copyFromDTO(client, clientDTO);
 		validator.validate(client);
-		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
+		Business business = Business.findBusiness(businessID);
 		client.setBusiness(business);
 		business.getClients().add(client);
 		client.persist();
@@ -84,12 +83,9 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	public void update(ClientDTO clientDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientDTO?.id)?.business?.id == principal.business.id and principal.business.id == #businessID")
+	public void update(Long businessID, ClientDTO clientDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
 		Client client = Client.findClient(clientDTO.getId());
-		if(client == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
 		ClientDTOFactory.copyFromDTO(client, clientDTO);
 		validator.validate(client);
 		client.flush();
@@ -97,7 +93,8 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 
 	@Override
 	@Transactional(readOnly = true)
-	public ClientDTO get(Long id) throws DataAccessException, NoSuchObjectException {
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id and principal.business.id == #businessID")
+	public ClientDTO get(Long businessID, Long id) throws DataAccessException, NoSuchObjectException {
 		Client client = Client.findClient(id);
 		if(client == null) 
 			throw new NoSuchObjectException();
@@ -118,8 +115,9 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	}
 
 	@Override
-	public PageDTO<ClientDTO> searchClients(String query, int start, int length) throws InvalidArgumentException {
-		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
+	@PreAuthorize("#businessID == principal.business.id")
+	public PageDTO<ClientDTO> searchClients(Long businessID, String query, int start, int length) throws InvalidArgumentException {
+		Business business = Business.findBusiness(businessID);
 		PageDTO<Client> clients = null;
 		try{
 			clients = business.prefixClientSearch(query, start, length);

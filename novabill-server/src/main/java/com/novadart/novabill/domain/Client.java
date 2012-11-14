@@ -213,6 +213,15 @@ public class Client implements Serializable, Taxable {
     			.setMaxResults(length).getResultList();
     }
     
+    public boolean hasAccountingDocs(){
+    	String queryTemplate = "select count(o) from %s o where o.client.id = :clientId";
+    	Long clientID = getId();
+    	return entityManager.createQuery(String.format(queryTemplate, "Invoice"), Long.class).setParameter("clientId", clientID).getSingleResult() != 0 ||
+    			entityManager.createQuery(String.format(queryTemplate, "CreditNote"), Long.class).setParameter("clientId", clientID).getSingleResult() != 0 ||
+    			entityManager.createQuery(String.format(queryTemplate, "Estimation"), Long.class).setParameter("clientId", clientID).getSingleResult() != 0 ||
+    			entityManager.createQuery(String.format(queryTemplate, "TransportDocument"), Long.class).setParameter("clientId", clientID).getSingleResult() != 0;
+    }
+    
     /*
      * Getters and setters
      * */

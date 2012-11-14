@@ -19,19 +19,19 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 @RemoteServiceRelativePath("client.rpc")
 public interface ClientService extends RemoteService{
 
-	public List<ClientDTO> getAll() throws NotAuthenticatedException, ConcurrentAccessException;
+	public List<ClientDTO> getAll(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException;
 	
-	public void remove(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, ConcurrentAccessException;
+	public void remove(Long businessID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, ConcurrentAccessException;
 	
-	public Long add(ClientDTO clientDTO) throws NotAuthenticatedException, ConcurrentAccessException, AuthorizationException, ValidationException;
+	public Long add(Long businessID, ClientDTO clientDTO) throws NotAuthenticatedException, ConcurrentAccessException, AuthorizationException, ValidationException;
 	
-	public void update(ClientDTO clientDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException, ValidationException;
+	public void update(Long businessID, ClientDTO clientDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException, ValidationException;
 	
-	public ClientDTO get(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
+	public ClientDTO get(Long businessID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
 	
 	public ClientDTO getFromInvoiceId(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
 	
-	public PageDTO<ClientDTO> searchClients(String query, int start, int offset) throws InvalidArgumentException, NotAuthenticatedException, ConcurrentAccessException;
+	public PageDTO<ClientDTO> searchClients(Long businessID, String query, int start, int offset) throws InvalidArgumentException, NotAuthenticatedException, ConcurrentAccessException;
 
 	public ClientDTO getFromEstimationId(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
 	
