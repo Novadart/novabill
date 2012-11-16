@@ -48,7 +48,6 @@
 				<version>1.0.6-SNAPSHOT</version>
 			</dependency>
 
-			<!-- General dependencies for standard applications -->
 			<dependency>
 				<groupId>com.google.gwt.google-apis</groupId>
 				<artifactId>gwt-maps</artifactId>
@@ -70,11 +69,6 @@
 				<version>${aspectj.version}</version>
 			</dependency>
 			<dependency>
-				<groupId>junit</groupId>
-				<artifactId>junit</artifactId>
-				<version>4.9</version>
-			</dependency>
- 			<dependency>
 				<groupId>org.apache.httpcomponents</groupId>
 				<artifactId>httpclient</artifactId>
 				<version>4.2</version>
@@ -89,7 +83,7 @@
 				<artifactId>servlet-api</artifactId>
 				<version>2.5</version>
 			</dependency>
-			
+
 			<!-- Spring dependencies -->
 			<dependency>
 				<groupId>org.springframework</groupId>
@@ -153,7 +147,6 @@
 			</dependency>
 			<!--  -->
 			
-			
 			<!-- Logging -->
 			<dependency>
 				<groupId>log4j</groupId>
@@ -175,9 +168,9 @@
 				<artifactId>slf4j-log4j12</artifactId>
 				<version>${slf4j.version}</version>
 			</dependency>
-			<!--  -->
-			
-			
+			<!-- -->
+
+
 			<!-- Persistence -->
 			<dependency>
 				<groupId>postgresql</groupId>
@@ -231,7 +224,7 @@
 				<artifactId>hibernate-entitymanager</artifactId>
 				<version>3.6.7.Final</version>
 			</dependency>
-			<!--  -->
+			<!-- -->
 
 			<dependency>
 				<groupId>org.apache.commons</groupId>
@@ -329,6 +322,15 @@
 				<artifactId>velocity</artifactId>
 				<version>1.7</version>
 			</dependency>
+
+			<!-- Libraries for testing -->
+			<dependency>
+				<groupId>junit</groupId>
+				<artifactId>junit</artifactId>
+				<version>4.11</version>
+			</dependency>
+
+
 		</dependencies>
 	</dependencyManagement>
 
