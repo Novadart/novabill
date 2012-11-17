@@ -26,6 +26,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.Hash;
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Registration;
 
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
@@ -72,6 +73,10 @@ public class Principal implements UserDetails {
     	List<Principal> result = entityManager().createQuery(query, Principal.class).setParameter("username", username).getResultList();
     	return result.size() == 0? null: result.get(0);
     }
+	
+	public static List<Principal> findAllPrincipals(){
+		return entityManager().createQuery("SELECT o FROM Principal o", Principal.class).getResultList();
+	}
 
 	/*
 	 * Getters and setters

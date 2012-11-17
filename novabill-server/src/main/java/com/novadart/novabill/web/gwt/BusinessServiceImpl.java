@@ -15,7 +15,6 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
-import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.XsrfTokenService;
 import com.novadart.novabill.service.validator.TaxableEntityValidator;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
@@ -34,9 +33,6 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 	private static final long serialVersionUID = -8341228475620801759L;
 
 	private static final Logger LOGGER = LoggerFactory.getLogger(BusinessServiceImpl.class);
-	
-	@Autowired
-	private UtilsService utilsService;
 	
 	@Autowired
 	private TaxableEntityValidator validator;
@@ -94,12 +90,9 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
+	@PreAuthorize("#businessDTO?.id == principal.business.id")
 	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(businessDTO.getId()))
-			throw new DataAccessException();
 		Business business = Business.findBusiness(businessDTO.getId());
-		if(business == null)
-			throw new NoSuchObjectException();
 		BusinessDTOFactory.copyFromDTO(business, businessDTO);
 		validator.validate(business);
 	}
