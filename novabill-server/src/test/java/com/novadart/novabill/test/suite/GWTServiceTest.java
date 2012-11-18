@@ -25,16 +25,31 @@ public class GWTServiceTest {
 	
 	protected Principal authenticatedPrincipal;
 	
-	private Principal fetchRandomPrincipal(){
+	/**
+	 * There has to be at least two businesses
+	 * @return
+	 */
+	protected Long getUnathorizedBusinessID(){
+		for(Principal principal: Principal.findAllPrincipals())
+			if(principal.getBusiness().getId() != authenticatedPrincipal.getBusiness().getId())
+				return principal.getBusiness().getId();
+		return -1l;
+	}
+	
+	protected Principal fetchRandomPrincipal(){
 		List<Principal> allPrincipals = Principal.findAllPrincipals();
 		return allPrincipals.get(new Random().nextInt(allPrincipals.size()));
+	}
+	
+	protected void authenticatePrincipal(Principal principal){
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal.getUsername(), userPasswordMap.get(principal.getUsername()));
+		SecurityContextHolder.getContext().setAuthentication(token);
 	}
 	
 	@Before
 	public void authenticate(){
 		authenticatedPrincipal = fetchRandomPrincipal();
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(authenticatedPrincipal.getUsername(), userPasswordMap.get(authenticatedPrincipal.getUsername()));
-		SecurityContextHolder.getContext().setAuthentication(token);
+		authenticatePrincipal(authenticatedPrincipal);
 	}
 	
 	@After

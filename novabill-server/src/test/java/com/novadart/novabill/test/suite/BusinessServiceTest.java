@@ -54,6 +54,11 @@ public class BusinessServiceTest extends GWTServiceTest {
 	}};
 	
 	@Test
+	public void businessServiceWiringTest(){
+		assertNotNull(businessService);
+	}
+	
+	@Test
 	public void getStatsAuthorizedTest() throws NotAuthenticatedException, ConcurrentAccessException{
 		BusinessStatsDTO stats = businessService.getStats(authenticatedPrincipal.getBusiness().getId());
 		assertEquals(new Long(authenticatedPrincipal.getBusiness().getClients().size()), stats.getClientsCount());
@@ -63,7 +68,7 @@ public class BusinessServiceTest extends GWTServiceTest {
 	
 	@Test(expected = AccessDeniedException.class)
 	public void getStatsUnauthorizedIDTest() throws NotAuthenticatedException, ConcurrentAccessException{
-		businessService.getStats(authenticatedPrincipal.getBusiness().getId() + 1);
+		businessService.getStats(getUnathorizedBusinessID());
 	}
 	
 	@Test(expected = AccessDeniedException.class)
@@ -78,7 +83,7 @@ public class BusinessServiceTest extends GWTServiceTest {
 	
 	@Test(expected = AccessDeniedException.class)
 	public void countClientsUnauthorizedTest() throws NotAuthenticatedException, ConcurrentAccessException{
-		businessService.countClients(authenticatedPrincipal.getId() + 1);
+		businessService.countClients(getUnathorizedBusinessID());
 	}
 	
 	@Test(expected = AccessDeniedException.class)
@@ -93,7 +98,7 @@ public class BusinessServiceTest extends GWTServiceTest {
 	
 	@Test(expected = AccessDeniedException.class)
 	public void countInvoicesUnauthorizedTest() throws NotAuthenticatedException, ConcurrentAccessException{
-		businessService.countInvoices(authenticatedPrincipal.getId() + 1);
+		businessService.countInvoices(getUnathorizedBusinessID());
 	}
 	
 	@Test(expected = AccessDeniedException.class)
@@ -112,7 +117,7 @@ public class BusinessServiceTest extends GWTServiceTest {
 	@Test(expected = AccessDeniedException.class)
 	public void countInvoicesForYearUnauthorizedTest() throws NotAuthenticatedException, ConcurrentAccessException{
 		int year = Calendar.getInstance().get(Calendar.YEAR);
-		businessService.countInvoicesForYear(authenticatedPrincipal.getId() + 1, year);
+		businessService.countInvoicesForYear(getUnathorizedBusinessID(), year);
 	}
 	
 	@Test(expected = AccessDeniedException.class)
@@ -137,7 +142,7 @@ public class BusinessServiceTest extends GWTServiceTest {
 	
 	@Test(expected = AccessDeniedException.class)
 	public void getTotalAfterTaxesForYearUnauthorizedTest() throws NotAuthenticatedException, ConcurrentAccessException{
-		businessService.getTotalAfterTaxesForYear(authenticatedPrincipal.getId() + 1, Calendar.getInstance().get(Calendar.YEAR));
+		businessService.getTotalAfterTaxesForYear(getUnathorizedBusinessID(), Calendar.getInstance().get(Calendar.YEAR));
 	}
 	
 	@Test(expected = AccessDeniedException.class)

@@ -197,5 +197,4 @@ insert into abstract_invoice (payed, payment_due_date, payment_type, id) values 
 insert into invoice (id, business, client) values (126, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (127, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 126);
 
-select setval('hibernate_sequence', 128);
-
+alter sequence hibernate_sequence restart with 128
