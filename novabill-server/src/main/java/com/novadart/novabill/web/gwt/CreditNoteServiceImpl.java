@@ -2,11 +2,10 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -41,32 +40,25 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	}
 
 	@Override
-	public CreditNoteDTO get(long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
-		CreditNote creditNote = CreditNote.findCreditNote(id);
-		if(creditNote == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(creditNote.getBusiness().getId()))
-			throw new DataAccessException();
-		return CreditNoteDTOFactory.toDTO(creditNote);
+	@PreAuthorize("T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.business?.id == principal.business.id")
+	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
+		return CreditNoteDTOFactory.toDTO(CreditNote.findCreditNote(id));
 	}
 
 	@Override
-	public PageDTO<CreditNoteDTO> getAllInRange(int start, int length) throws NotAuthenticatedException, ConcurrentAccessException {
-		List<CreditNote> creditNotes = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()).getAllCreditNotesInRange(start, length); 
+	@PreAuthorize("#businessID == principal.business.id")
+	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException, ConcurrentAccessException {
+		List<CreditNote> creditNotes = Business.findBusiness(businessID).getAllCreditNotesInRange(start, length); 
 		List<CreditNoteDTO> creditNoteDTOs = new ArrayList<CreditNoteDTO>(creditNotes.size());
 		for(CreditNote creditNote: creditNotes)
 			creditNoteDTOs.add(CreditNoteDTOFactory.toDTO(creditNote));
-		return new PageDTO<CreditNoteDTO>(creditNoteDTOs, start, length, (int)CreditNote.countCreditNotes());
+		return new PageDTO<CreditNoteDTO>(creditNoteDTOs, start, length, CreditNote.countCreditNotes());
 	}
 	
 	@Override
-	public List<CreditNoteDTO> getAllForClient(long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
-		Client client = Client.findClient(id);
-		if(client == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		List<CreditNote> creditNotes = client.getSortedCreditNotes();
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
+	public List<CreditNoteDTO> getAllForClient(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
+		List<CreditNote> creditNotes = Client.findClient(clientID).getSortedCreditNotes();
 		List<CreditNoteDTO> creditNoteDTOs = new ArrayList<CreditNoteDTO>(creditNotes.size());
 		for(CreditNote invoice: creditNotes)
 			creditNoteDTOs.add(CreditNoteDTOFactory.toDTO(invoice));
@@ -75,32 +67,30 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	
 	@Override
 	//@Restrictions(checkers = {NumberOfCreditNotesPerYearQuotaReachedChecker.class})
+	@PreAuthorize("#creditNoteDTO?.business?.id == principal.business.id and " +
+				  "T(com.novadart.novabill.domain.Client).findClient(#creditNoteDTO?.client?.id)?.business?.id == principal.business.id and " +
+				  "#creditNoteDTO != null and #creditNoteDTO.id == null")
 	public Long add(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException {
-		Client client = Client.findClient(creditNoteDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		Business business = Business.findBusiness(creditNoteDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
-			throw new DataAccessException();
 		CreditNote creditNote = new CreditNote();//create new credit note
+		CreditNoteDTOFactory.copyFromDTO(creditNote, creditNoteDTO, true);
+		validator.validate(creditNote);
+		Client client = Client.findClient(creditNoteDTO.getClient().getId());
+		Business business = Business.findBusiness(creditNoteDTO.getBusiness().getId());
 		creditNote.setClient(client);
 		client.getCreditNotes().add(creditNote);
 		creditNote.setBusiness(business);
 		business.getCreditNotes().add(creditNote);
-		CreditNoteDTOFactory.copyFromDTO(creditNote, creditNoteDTO, true);
-		validator.validate(creditNote);
 		creditNote.flush();
 		return creditNote.getId();
 	}
 	
 	@Override
 	@Transactional(readOnly = false)
-	public void remove(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
-		CreditNote creditNote = CreditNote.findCreditNote(id);
-		if(creditNote == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(creditNote.getBusiness().getId()))
-			throw new DataAccessException();
+	@PreAuthorize("#businessID == principal.business.id and " +
+				  "T(com.novadart.novabill.domain.CreditNote).findCreditNote(#creditNoteID)?.business?.id == #businessID and " +
+				  "T(com.novadart.novabill.domain.CreditNote).findCreditNote(#creditNoteID)?.client?.id == #clientID")
+	public void remove(Long businessID, Long clientID, Long creditNoteID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
+		CreditNote creditNote = CreditNote.findCreditNote(creditNoteID);
 		creditNote.remove(); //removing credit note
 		if(Hibernate.isInitialized(creditNote.getBusiness().getCreditNotes()))
 			creditNote.getBusiness().getCreditNotes().remove(creditNote);
@@ -110,15 +100,10 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
+	@PreAuthorize("#creditNoteDTO?.business?.id == principal.business.id and " +
+			  	  "T(com.novadart.novabill.domain.Client).findClient(#creditNoteDTO?.client?.id)?.business?.id == principal.business.id and " +
+			  	  "#creditNoteDTO?.id != null")
 	public void update(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, ConcurrentAccessException {
-		if(creditNoteDTO.getId() == null)
-			throw new DataAccessException();
-		Client client = Client.findClient(creditNoteDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		Business business = Business.findBusiness(creditNoteDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
-			throw new DataAccessException();
 		CreditNote persistedCreditNote = CreditNote.findCreditNote(creditNoteDTO.getId());
 		if(persistedCreditNote == null)
 			throw new NoSuchObjectException();
@@ -140,15 +125,13 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	}
 
 	@Override
-	public PageDTO<CreditNoteDTO> getAllForClientInRange(long id, int start, int length) throws NotAuthenticatedException, DataAccessException,	NoSuchObjectException, ConcurrentAccessException {
-		Client client = Client.findClient(id);
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		List<CreditNote> creditNotes = client.getAllCreditNotesInRange(start, length);
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
+	public PageDTO<CreditNoteDTO> getAllForClientInRange(Long clientID, int start, int length) throws NotAuthenticatedException, DataAccessException,	NoSuchObjectException, ConcurrentAccessException {
+		List<CreditNote> creditNotes = Client.findClient(clientID).getAllCreditNotesInRange(start, length);
 		List<CreditNoteDTO> creditNoteDTOs = new ArrayList<CreditNoteDTO>(creditNotes.size());
 		for(CreditNote creditNote: creditNotes)
 			creditNoteDTOs.add(CreditNoteDTOFactory.toDTO(creditNote));
-		return new PageDTO<CreditNoteDTO>(creditNoteDTOs, start, length, Invoice.countInvocesForClient(id));
+		return new PageDTO<CreditNoteDTO>(creditNoteDTOs, start, length, Invoice.countInvocesForClient(clientID));
 	}
 
 }

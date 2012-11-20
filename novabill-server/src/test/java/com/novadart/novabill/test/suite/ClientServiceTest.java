@@ -7,6 +7,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
+import javax.annotation.Resource;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -42,6 +45,9 @@ public class ClientServiceTest extends GWTServiceTest {
 	
 	@Autowired
 	private ClientService clientService;
+	
+	@Resource(name = "testProps")
+	private HashMap<String, String> testProps;
 	
 	@SuppressWarnings("serial")
 	private static Map<String, Field> validationFieldsMap = new HashMap<String, Field>(){{
@@ -92,11 +98,19 @@ public class ClientServiceTest extends GWTServiceTest {
 	
 	@Test
 	public void removeAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, ConcurrentAccessException{
-		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
+		Long clientID = new Long(testProps.get("clientWithoutInvoicesID"));
 		clientService.remove(authenticatedPrincipal.getBusiness().getId(), clientID);
 		Client.entityManager().flush();
 		assertNull(Client.findClient(clientID));
 	}
+	
+	@Test(expected = DataIntegrityException.class)
+	public void removeAuthenticatedDataIntegrityViolationTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, ConcurrentAccessException{
+		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
+		clientService.remove(authenticatedPrincipal.getBusiness().getId(), clientID);
+		Client.entityManager().flush();
+	}
+	
 	
 	@Test(expected = AccessDeniedException.class)
 	public void removeUnauthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, ConcurrentAccessException{

@@ -2,11 +2,8 @@ package com.novadart.novabill.domain;
 
 import java.io.Serializable;
 import java.util.List;
-
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-import javax.validation.constraints.NotNull;
-
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -25,7 +22,6 @@ public class CreditNote extends AbstractInvoice implements Serializable {
     protected Business business;
 
     @ManyToOne
-    @NotNull
     protected Client client;
     
     public static Long countCreditNotesForClient(Long id){

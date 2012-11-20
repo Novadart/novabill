@@ -4,7 +4,7 @@ package com.novadart.novabill.test.suite;
 import static org.junit.Assert.*;
 
 import java.lang.reflect.InvocationTargetException;
-import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -12,9 +12,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import javax.annotation.Resource;
-import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -23,7 +21,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -32,9 +29,9 @@ import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.dto.PaymentType;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -57,26 +54,6 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	@Resource(name = "testProps")
 	private HashMap<String, String> testProps;
 	
-	@SuppressWarnings("serial")
-	private static Map<String, Field> validationFieldsMap = new HashMap<String, Field>(){{
-		//Accounting doc
-		put("documentID", Field.documentID); put("accountingDocumentDate", Field.accountingDocumentDate);
-		put("accountingDocumentYear", Field.accountingDocumentYear); put("note", Field.note); put("paymentNote", Field.paymentNote);
-		put("total", Field.total); put("totalTax", Field.totalTax); put("totalBeforeTax", Field.totalBeforeTax);
-		
-		//Accounting doc item
-		put("accountingDocumentItems_description", Field.accountingDocumentItems_description); 
-		put("accountingDocumentItems_unitOfMeasure", Field.accountingDocumentItems_unitOfMeasure); 
-		put("accountingDocumentItems_tax", Field.accountingDocumentItems_tax);
-		put("accountingDocumentItems_quantity", Field.accountingDocumentItems_quantity);
-		put("accountingDocumentItems_totalBeforeTax", Field.accountingDocumentItems_totalBeforeTax);
-		put("accountingDocumentItems_totalTax", Field.accountingDocumentItems_totalTax);
-		put("accountingDocumentItems_total", Field.accountingDocumentItems_total);
-		put("accountingDocumentItems_price", Field.accountingDocumentItems_price);
-		
-		//Invoice
-		put("paymentType", Field.paymentType); put("paymentDueDate", Field.paymentDueDate); put("payed", Field.payed);
-	}};
 	
 	@Override
 	@Before
@@ -90,30 +67,12 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		assertNotNull(invoiceService);
 	}
 
-	private boolean equalInvoiceDTOs(InvoiceDTO lhs, InvoiceDTO rhs, boolean ignoreid){
-		if(lhs.getItems().size() != rhs.getItems().size())
-			return false;
-		boolean itemsEqual = true;
-		for(int i = 0; i < lhs.getItems().size(); ++i){
-			if(ignoreid && !EqualsBuilder.reflectionEquals(lhs.getItems().get(i), rhs.getItems().get(i), "id")){
-				itemsEqual = false;
-				break;
-			}
-			if(!ignoreid && !EqualsBuilder.reflectionEquals(lhs.getItems().get(i), rhs.getItems().get(i), false)){
-				itemsEqual = false;
-				break;
-			}
-		}
-		return (ignoreid? EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "id"):
-						  EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business"))&& itemsEqual;
-	}
-	
 	@Test
 	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		Long invoiceID = authenticatedPrincipal.getBusiness().getInvoices().iterator().next().getId();
 		InvoiceDTO expectedDTO = InvoiceDTOFactory.toDTO(Invoice.findInvoice(invoiceID));
 		InvoiceDTO actualDTO = invoiceService.get(invoiceID);
-		assertTrue(equalInvoiceDTOs(expectedDTO, actualDTO, false));
+		assertTrue(TestUtils.abstractInvoicesComparator.equal(actualDTO, expectedDTO));
 	}
 	
 	@Test(expected = AccessDeniedException.class)
@@ -123,7 +82,7 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = AccessDeniedException.class)
-	public void getAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
+	public void getAuthorizedInvoiceIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		invoiceService.get(null);
 	}
 	
@@ -146,17 +105,9 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	@Test
 	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
-		List<InvoiceDTO> invoiceDTOs = invoiceService.getAllForClient(clientID);
-		boolean contained = true;
-		outer: for(Invoice invoice: Client.findClient(clientID).getInvoices()){
-			InvoiceDTO idto1 = InvoiceDTOFactory.toDTO(invoice);
-			for(InvoiceDTO idto2: invoiceDTOs)
-				if(equalInvoiceDTOs(idto1, idto2, false))
-					continue outer;
-			contained = false;
-			break outer;
-		}
-		assertTrue(contained && Client.findClient(clientID).getInvoices().size() == invoiceDTOs.size());
+		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(invoiceService.getAllForClient(clientID));
+		List<AccountingDocumentDTO> expected = TestUtils.toDTOList(new ArrayList(Client.findClient(clientID).getInvoices()), TestUtils.invoiceDTOConverter); 
+		assertTrue(TestUtils.equal(expected, actual, TestUtils.abstractInvoicesComparator));
 	}
 	
 	@Test(expected = AccessDeniedException.class)
@@ -199,13 +150,13 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = AccessDeniedException.class)
-	public void removeUnauthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
+	public void removeAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		Long invoiceID = authenticatedPrincipal.getBusiness().getInvoices().iterator().next().getId();
 		invoiceService.remove(authenticatedPrincipal.getBusiness().getId(), null, invoiceID);
 	}
 	
 	@Test(expected = AccessDeniedException.class)
-	public void removeUnauthorizedInvoiceIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
+	public void removeAauthorizedInvoiceIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		invoiceService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, null);
 	}
@@ -286,48 +237,22 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		invoiceService.update(invDTO);
 	}
 	
-	private Invoice createInvoice(Long documentID){
-		Invoice inv = new Invoice();
-		inv.setAccountingDocumentDate(new Date());
-		inv.setDocumentID(documentID);
-		inv.setNote("");
-		inv.setPaymentNote("");
-		inv.setTotal(new BigDecimal("121.0"));
-		inv.setTotalBeforeTax(new BigDecimal("100.0"));
-		inv.setTotalTax(new BigDecimal("21.0"));
-		inv.setPayed(false);
-		inv.setPaymentDueDate(new Date());
-		inv.setPaymentType(PaymentType.CASH);
-		AccountingDocumentItem item = new AccountingDocumentItem();
-		item.setDescription("description");
-		item.setPrice(new BigDecimal("100.0"));
-		item.setQuantity(new BigDecimal("1.0"));
-		item.setTax(new BigDecimal("21.0"));
-		item.setTotal(new BigDecimal("121.0"));
-		item.setTotalBeforeTax(new BigDecimal("100.0"));
-		item.setTotalTax(new BigDecimal("21.0"));
-		item.setUnitOfMeasure("piece");
-		item.setAccountingDocument(inv);
-		inv.getAccountingDocumentItems().add(item);
-		return inv;
-	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(createInvoice(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID()));
+		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createDoc(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class));
 		invDTO.setClient(ClientDTOFactory.toDTO(client));
 		invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = invoiceService.add(invDTO);
-		invDTO.setId(id);
 		Invoice.entityManager().flush();
-		assertTrue(equalInvoiceDTOs(invDTO, InvoiceDTOFactory.toDTO(Invoice.findInvoice(id)), true));
+		assertTrue(TestUtils.abstractInvoicesComparatorIgnoreID.equal(invDTO, InvoiceDTOFactory.toDTO(Invoice.findInvoice(id))));
 	}
 	
 	@Test(expected = AccessDeniedException.class)
-	public void addUnathorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException{
+	public void addUnathorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(createInvoice(Business.findBusiness(getUnathorizedBusinessID()).getNextInvoiceDocumentID()));
+		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createDoc(Business.findBusiness(getUnathorizedBusinessID()).getNextInvoiceDocumentID(), Invoice.class));
 		invDTO.setClient(ClientDTOFactory.toDTO(client));
 		invDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		invoiceService.add(invDTO);
@@ -339,50 +264,24 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = AccessDeniedException.class)
-	public void addAuthorizedInvoiceDTOIDNotNull() throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException{
+	public void addAuthorizedInvoiceDTOIDNotNull() throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(createInvoice(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID()));
+		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createDoc(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class));
 		invDTO.setClient(ClientDTOFactory.toDTO(client));
 		invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		invDTO.setId(1l);
 		invoiceService.add(invDTO);
 	}
 	
-	private Invoice createInvalidInvoice(Long documentID){
-		Invoice inv = new Invoice();
-		inv.setAccountingDocumentDate(new Date());
-		inv.setDocumentID(documentID);
-		inv.setNote(StringUtils.leftPad("1", 2000, '1'));
-		inv.setPaymentNote(StringUtils.leftPad("1", 2000, '1'));
-		inv.setTotal(null);
-		inv.setTotalBeforeTax(null);
-		inv.setTotalTax(null);
-		inv.setPayed(false);
-		inv.setPaymentDueDate(null);
-		inv.setPaymentType(null);
-		AccountingDocumentItem item = new AccountingDocumentItem();
-		item.setDescription(StringUtils.leftPad("1", 1000, '1'));
-		item.setPrice(null);
-		item.setQuantity(null);
-		item.setTax(null);
-		item.setTotal(null);
-		item.setTotalBeforeTax(null);
-		item.setTotalTax(null);
-		item.setUnitOfMeasure(StringUtils.leftPad("1", 1000, '1'));
-		item.setAccountingDocument(inv);
-		inv.getAccountingDocumentItems().add(item);
-		return inv;
-	}
-	
 	@Test
-	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException{
+	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException, InstantiationException{
 		try{
-			InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(createInvalidInvoice(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID()));
+			InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvalidDoc(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class));
 			invDTO.setClient(ClientDTOFactory.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
 			invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 			invoiceService.add(invDTO);
 		}catch(ValidationException e){
-			Set<Field> expected = new HashSet<Field>(validationFieldsMap.values());
+			Set<Field> expected = new HashSet<Field>(TestUtils.abstractInvoiceValidationFieldsMap.values());
 			expected.remove(Field.accountingDocumentYear);
 			expected.remove(Field.accountingDocumentDate);
 			expected.remove(Field.documentID);
