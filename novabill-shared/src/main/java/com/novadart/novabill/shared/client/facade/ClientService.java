@@ -27,7 +27,7 @@ public interface ClientService extends RemoteService{
 	
 	public void update(Long businessID, ClientDTO clientDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException, ValidationException;
 	
-	public ClientDTO get(Long businessID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
+	public ClientDTO get(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException;
 	
 	public PageDTO<ClientDTO> searchClients(Long businessID, String query, int start, int offset) throws InvalidArgumentException, NotAuthenticatedException, ConcurrentAccessException;
 

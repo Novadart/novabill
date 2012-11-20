@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -22,16 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
-import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -128,30 +124,24 @@ public class ClientServiceTest extends GWTServiceTest {
 	public void getAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException{
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
 		ClientDTO expectedDTO = ClientDTOFactory.toDTO(Client.findClient(clientID));
-		ClientDTO actualDTO = clientService.get(authenticatedPrincipal.getBusiness().getId(), clientID);
+		ClientDTO actualDTO = clientService.get(clientID);
 		assertTrue(EqualsBuilder.reflectionEquals(expectedDTO, actualDTO, "contact") && EqualsBuilder.reflectionEquals(expectedDTO.getContact(), actualDTO.getContact(), false));
 	}
 	
 	@Test(expected = AccessDeniedException.class)
 	public void getUnauthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException{
-		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
-		clientService.get(getUnathorizedBusinessID(), clientID);
-	}
-	
-	@Test(expected = AccessDeniedException.class)
-	public void getUnauthenticatedBusinessIDNullTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException{
-		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
-		clientService.get(null, clientID);
+		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId(); 
+		clientService.get(clientID);
 	}
 	
 	@Test(expected = AccessDeniedException.class)
 	public void getUnauthenticatedClientIDNullTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException{
-		clientService.get(authenticatedPrincipal.getBusiness().getId(), null);
+		clientService.get(null);
 	}
 	
 	@Test(expected = AccessDeniedException.class)
 	public void getAuthenticatedNonExistingClientTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException{
-		clientService.get(authenticatedPrincipal.getBusiness().getId(), -1l);
+		clientService.get(-1l);
 	}
 	
 	private Client createClient(){

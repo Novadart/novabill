@@ -83,9 +83,9 @@ public abstract class AccountingDocument {
         this.accountingDocumentYear = year;
     }
 	
-	protected static <T> Integer countForClient(Class<T> cls, Long id){
+	protected static <T> Long countForClient(Class<T> cls, Long id){
 		String query = String.format("select count(o) FROM %s o where o.client.id = :clientID", cls.getSimpleName()); 
-    	return entityManager().createQuery(query, Integer.class).setParameter("clientID", id).getSingleResult();
+    	return entityManager().createQuery(query, Long.class).setParameter("clientID", id).getSingleResult();
 	}
 	
 	

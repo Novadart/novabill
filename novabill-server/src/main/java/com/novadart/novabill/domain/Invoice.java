@@ -24,10 +24,9 @@ public class Invoice extends AbstractInvoice implements Serializable {
     protected Business business;
 
     @ManyToOne
-    @NotNull
     protected Client client;
     
-    public static Integer countInvocesForClient(Long id){
+    public static Long countInvocesForClient(Long id){
     	return countForClient(Invoice.class, id);
     }
     

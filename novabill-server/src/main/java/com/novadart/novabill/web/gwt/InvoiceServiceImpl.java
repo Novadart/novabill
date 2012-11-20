@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.AccountingDocumentItem;
@@ -40,34 +41,27 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	}
 	
 	@Override
-	public InvoiceDTO get(long id) throws DataAccessException, NoSuchObjectException {
-		Invoice invoice = Invoice.findInvoice(id);
-		if(invoice == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(invoice.getBusiness().getId()))
-			throw new DataAccessException();
-		return InvoiceDTOFactory.toDTO(invoice);
+	@PreAuthorize("T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == principal.business.id")
+	public InvoiceDTO get(Long id) throws DataAccessException, NoSuchObjectException {
+		return InvoiceDTOFactory.toDTO(Invoice.findInvoice(id));
 	}
 
 	@Override
 	@Transactional(readOnly = true)
-	public PageDTO<InvoiceDTO> getAllInRange(int start, int length) {
-		List<Invoice> invoices = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()).getAllInvoicesInRange(start, length); 
+	@PreAuthorize("#businessID == principal.business.id")
+	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, int start, int length) {
+		List<Invoice> invoices = Business.findBusiness(businessID).getAllInvoicesInRange(start, length); 
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<InvoiceDTO>(invoices.size());
 		for(Invoice invoice: invoices)
 			invoiceDTOs.add(InvoiceDTOFactory.toDTO(invoice));
-		return new PageDTO<InvoiceDTO>(invoiceDTOs, start, length, (int)Invoice.countInvoices());
+		return new PageDTO<InvoiceDTO>(invoiceDTOs, start, length, Invoice.countInvoices());
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
-	public List<InvoiceDTO> getAllForClient(long id) throws DataAccessException, NoSuchObjectException {
-		Client client = Client.findClient(id);
-		if(client == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		List<Invoice> invoices = client.getSortedInvoices();
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
+	public List<InvoiceDTO> getAllForClient(Long clientID) throws DataAccessException, NoSuchObjectException {
+		List<Invoice> invoices = Client.findClient(clientID).getSortedInvoices();
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<InvoiceDTO>(invoices.size());
 		for(Invoice invoice: invoices)
 			invoiceDTOs.add(InvoiceDTOFactory.toDTO(invoice));
@@ -76,12 +70,11 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	
 	@Override
 	@Transactional(readOnly = false)
-	public void remove(Long id) throws DataAccessException, NoSuchObjectException {
+	@PreAuthorize("#businessID == principal.business.id and " +
+		  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == #businessID and " +
+		  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.client?.id == #clientID")
+	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NoSuchObjectException {
 		Invoice invoice = Invoice.findInvoice(id);
-		if(invoice == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(invoice.getBusiness().getId()))
-			throw new DataAccessException();
 		invoice.remove(); //removing invoice
 		if(Hibernate.isInitialized(invoice.getBusiness().getInvoices()))
 			invoice.getBusiness().getInvoices().remove(invoice);
@@ -92,35 +85,29 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	//@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
+	@PreAuthorize("#invoiceDTO?.business?.id == principal.business.id and " +
+		  	  	 "T(com.novadart.novabill.domain.Client).findClient(#invoiceDTO?.client?.id)?.business?.id == principal.business.id and " +
+		  	  	 "#invoiceDTO != null and #invoiceDTO.id == null")
 	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, AuthorizationException {
-		Client client = Client.findClient(invoiceDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		Business business = Business.findBusiness(invoiceDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
-			throw new DataAccessException();
 		Invoice invoice = new Invoice();//create new invoice
+		InvoiceDTOFactory.copyFromDTO(invoice, invoiceDTO, true);
+		validator.validate(invoice);
+		Client client = Client.findClient(invoiceDTO.getClient().getId());
+		Business business = Business.findBusiness(invoiceDTO.getBusiness().getId());
 		invoice.setClient(client);
 		client.getInvoices().add(invoice);
 		invoice.setBusiness(business);
 		business.getInvoices().add(invoice);
-		InvoiceDTOFactory.copyFromDTO(invoice, invoiceDTO, true);
-		validator.validate(invoice);
 		invoice.flush();
 		return invoice.getId();
 	}
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
+	@PreAuthorize("#invoiceDTO?.business?.id == principal.business.id and " +
+	  	  	  	 "T(com.novadart.novabill.domain.Client).findClient(#invoiceDTO?.client?.id)?.business?.id == principal.business.id and " +
+	  	  	  	 "#invoiceDTO?.id != null")
 	public void update(InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
-		if(invoiceDTO.getId() == null)
-			throw new DataAccessException();
-		Client client = Client.findClient(invoiceDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		Business business = Business.findBusiness(invoiceDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
-			throw new DataAccessException();
 		Invoice persistedInvoice = Invoice.findInvoice(invoiceDTO.getId());
 		if(persistedInvoice == null)
 			throw new NoSuchObjectException();
@@ -141,27 +128,23 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	}
 
 	@Override
-	public PageDTO<InvoiceDTO> getAllForClientInRange(long id, int start, int length) throws DataAccessException, NoSuchObjectException {
-		Client client = Client.findClient(id);
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		List<Invoice> invoices = client.getAllInvoicesInRange(start, length);
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
+	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, int start, int length) throws DataAccessException, NoSuchObjectException {
+		List<Invoice> invoices = Client.findClient(clientID).getAllInvoicesInRange(start, length);
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<InvoiceDTO>(invoices.size());
 		for(Invoice invoice: invoices)
 			invoiceDTOs.add(InvoiceDTOFactory.toDTO(invoice));
-		return new PageDTO<InvoiceDTO>(invoiceDTOs, start, length, Invoice.countInvocesForClient(id));
+		return new PageDTO<InvoiceDTO>(invoiceDTOs, start, length, Invoice.countInvocesForClient(clientID));
 	}
 	
 	@Override
 	@Transactional(readOnly = false)
 	//@Restrictions(checkers = {PremiumChecker.class})
-	public void setPayed(Long id, Boolean value) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException {
-		Invoice invoice = Invoice.findInvoice(id);
-		if(invoice == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(invoice.getBusiness().getId()))
-			throw new DataAccessException();
-		invoice.setPayed(value);
+	@PreAuthorize("principal.business.id == #businessID and " +
+	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == #businessID and " +
+	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.client?.id == #clientID")
+	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException {
+		Invoice.findInvoice(id).setPayed(value);
 	}
 	
 }

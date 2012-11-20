@@ -14,7 +14,7 @@
     
     <util:map map-class="java.util.HashMap" id="totalsAfterTax" key-type="java.lang.String" value-type="java.lang.String">
     	<entry key="giordano.battilana@novadart.com" value="8833.00"/>
-    	<entry key="risto.gligorov@novadart.com" value="0.00"/>
+    	<entry key="risto.gligorov@novadart.com" value="121.00"/>
     </util:map>
     
 </beans>

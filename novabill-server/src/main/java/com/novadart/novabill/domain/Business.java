@@ -254,7 +254,7 @@ public class Business implements Serializable, Taxable {
     		.setParameter(TermValueFilterFactory.FIELD_NAME, StringUtils.join(new Object[]{FTSNamespace.BUSINESS, FTSNamespace.ID}, "."))
     		.setParameter(TermValueFilterFactory.FIELD_VALUE, new LongBridge().objectToString(getId()));
     	PageDTO<Client> pageDTO = new PageDTO<Client>(null, start, length, null);
-    	pageDTO.setTotal(ftQuery.getResultSize());
+    	pageDTO.setTotal(new Long(ftQuery.getResultSize()));
     	pageDTO.setItems(ftQuery.setFirstResult(start).setMaxResults(length).getResultList());
     	return pageDTO;
     }

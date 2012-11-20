@@ -86,9 +86,8 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 
 	@Override
 	@Transactional(readOnly = true)
-	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id and " +
-				  "principal.business.id == #businessID")
-	public ClientDTO get(Long businessID, Long id) throws DataAccessException, NoSuchObjectException {
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id")
+	public ClientDTO get(Long id) throws DataAccessException, NoSuchObjectException {
 		return ClientDTOFactory.toDTO(Client.findClient(id));
 	}
 

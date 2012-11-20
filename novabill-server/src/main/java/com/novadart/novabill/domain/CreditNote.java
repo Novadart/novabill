@@ -28,7 +28,7 @@ public class CreditNote extends AbstractInvoice implements Serializable {
     @NotNull
     protected Client client;
     
-    public static Integer countCreditNotesForClient(Long id){
+    public static Long countCreditNotesForClient(Long id){
     	return countForClient(CreditNote.class, id);
     }
     
