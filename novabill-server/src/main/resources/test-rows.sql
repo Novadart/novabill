@@ -218,4 +218,14 @@ insert into abstract_invoice (payed, payment_due_date, payment_type, id) values 
 insert into credit_note (id, business, client) values (132, 2, 128);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (133, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 132);
 
-alter sequence hibernate_sequence restart with 134;
+--creating estimation for first registered business
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (134, '2012-10-20', 2012, 1, '', '', 121.0, 100.0, 21.0, 1);
+insert into estimation (limitations, valid_till, id, business, client) values ('', '2012-11-20', 134, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (135, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 134);
+
+--creating estimation for second retistered business
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (136, '2012-10-20', 2012, 1, '', '', 121.0, 100.0, 21.0, 1);
+insert into estimation (limitations, valid_till, id, business, client) values ('', '2012-11-20', 136, 2, 128);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (137, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 136);
+
+alter sequence hibernate_sequence restart with 138;

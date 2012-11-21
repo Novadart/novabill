@@ -67,7 +67,7 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		Long creditNoteID = authenticatedPrincipal.getBusiness().getCreditNotes().iterator().next().getId();
 		CreditNoteDTO expectedDTO = CreditNoteDTOFactory.toDTO(CreditNote.findCreditNote(creditNoteID));
 		CreditNoteDTO actualDTO = creditNoteService.get(creditNoteID);
-		assertTrue(TestUtils.abstractInvoicesComparator.equal(expectedDTO, actualDTO));
+		assertTrue(TestUtils.accountingDocumentComparator.equal(expectedDTO, actualDTO));
 	}
 	
 	@Test(expected = AccessDeniedException.class)
@@ -102,7 +102,7 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		Long clientID = new Long(testProps.get("clientWithCreditNoteID"));
 		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(creditNoteService.getAllForClient(clientID));
 		List<AccountingDocumentDTO> expected = TestUtils.toDTOList(new ArrayList(Client.findClient(clientID).getCreditNotes()), TestUtils.creditNoteDTOConverter); 
-		assertTrue(TestUtils.equal(expected, actual, TestUtils.abstractInvoicesComparator));
+		assertTrue(TestUtils.equal(expected, actual, TestUtils.accountingDocumentComparator));
 	}
 	
 	@Test(expected = AccessDeniedException.class)
@@ -178,18 +178,18 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 	@Test
 	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		CreditNoteDTO creditNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createDoc(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class));
+		CreditNoteDTO creditNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class));
 		creditNoteDTO.setClient(ClientDTOFactory.toDTO(client));
 		creditNoteDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = creditNoteService.add(creditNoteDTO);
 		CreditNote.entityManager().flush();
-		assertTrue(TestUtils.abstractInvoicesComparatorIgnoreID.equal(creditNoteDTO, CreditNoteDTOFactory.toDTO(CreditNote.findCreditNote(id))));
+		assertTrue(TestUtils.accountingDocumentComparatorIgnoreID.equal(creditNoteDTO, CreditNoteDTOFactory.toDTO(CreditNote.findCreditNote(id))));
 	}
 	
 	@Test(expected = AccessDeniedException.class)
 	public void addUnathorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		CreditNoteDTO creditNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createDoc(Business.findBusiness(getUnathorizedBusinessID()).getNextCreditNoteDocumentID(), CreditNote.class));
+		CreditNoteDTO creditNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvOrCredNote(Business.findBusiness(getUnathorizedBusinessID()).getNextCreditNoteDocumentID(), CreditNote.class));
 		creditNoteDTO.setClient(ClientDTOFactory.toDTO(client));
 		creditNoteDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		creditNoteService.add(creditNoteDTO);
@@ -203,7 +203,7 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 	@Test(expected = AccessDeniedException.class)
 	public void addAuthorizedCreditNoteDTOIDNotNull() throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		CreditNoteDTO creditNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createDoc(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class));
+		CreditNoteDTO creditNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class));
 		creditNoteDTO.setClient(ClientDTOFactory.toDTO(client));
 		creditNoteDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		creditNoteDTO.setId(1l);
@@ -237,7 +237,7 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 	@Test
 	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException, InstantiationException{
 		try{
-			CreditNoteDTO creditNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvalidDoc(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class));
+			CreditNoteDTO creditNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvalidIngOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class));
 			creditNoteDTO.setClient(ClientDTOFactory.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
 			creditNoteDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 			creditNoteService.add(creditNoteDTO);

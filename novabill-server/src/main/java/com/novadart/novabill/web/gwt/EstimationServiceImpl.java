@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.AccountingDocumentItem;
@@ -40,23 +41,15 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	}
 	
 	@Override
-	public EstimationDTO get(long id) throws DataAccessException, NoSuchObjectException {
-		Estimation estimation = Estimation.findEstimation(id);
-		if(estimation == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(estimation.getBusiness().getId()))
-			throw new DataAccessException();
-		return EstimationDTOFactory.toDTO(estimation);
+	@PreAuthorize("T(com.novadart.novabill.domain.Estimation).findEstimation(#id)?.business?.id == principal.business.id")
+	public EstimationDTO get(Long id) throws DataAccessException, NoSuchObjectException {
+		return EstimationDTOFactory.toDTO(Estimation.findEstimation(id));
 	}
 	
 	@Override
-	public List<EstimationDTO> getAllForClient(long id) throws DataAccessException, NoSuchObjectException {
-		Client client = Client.findClient(id);
-		if(client == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		List<Estimation> estimations = client.getSortedEstimations();
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
+	public List<EstimationDTO> getAllForClient(Long clientID) throws DataAccessException, NoSuchObjectException {
+		List<Estimation> estimations = Client.findClient(clientID).getSortedEstimations();
 		List<EstimationDTO> estimationDTOs = new ArrayList<EstimationDTO>(estimations.size());
 		for(Estimation estimation: estimations)
 			estimationDTOs.add(EstimationDTOFactory.toDTO(estimation));
@@ -66,20 +59,19 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	//@Restrictions(checkers = {NumberOfEstimationsPerYearQuotaReachedChecker.class})
+	@PreAuthorize("#estimationDTO?.business?.id == principal.business.id and " +
+			  	  "T(com.novadart.novabill.domain.Client).findClient(#estimationDTO?.client?.id)?.business?.id == principal.business.id and " +
+			  	  "#estimationDTO != null and #estimationDTO.id == null")
 	public Long add(EstimationDTO estimationDTO) throws DataAccessException, AuthorizationException, ValidationException {
 		Estimation estimation = new Estimation();
+		EstimationDTOFactory.copyFromDTO(estimation, estimationDTO, true);
+		validator.validate(estimation);
 		Client client = Client.findClient(estimationDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
 		estimation.setClient(client);
 		client.getEstimations().add(estimation);
 		Business business = Business.findBusiness(estimationDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
-			throw new DataAccessException();
 		estimation.setBusiness(business);
 		business.getEstimations().add(estimation);
-		EstimationDTOFactory.copyFromDTO(estimation, estimationDTO, true);
-		validator.validate(estimation);
 		estimation.persist();
 		estimation.flush();
 		return estimation.getId();
@@ -87,12 +79,11 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 
 	@Override
 	@Transactional(readOnly = false)
-	public void remove(Long id) throws DataAccessException, NoSuchObjectException {
+	@PreAuthorize("#businessID == principal.business.id and " +
+			  	  "T(com.novadart.novabill.domain.Estimation).findEstimation(#id)?.business?.id == #businessID and " +
+			  	  "T(com.novadart.novabill.domain.Estimation).findEstimation(#id)?.client?.id == #clientID")
+	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NoSuchObjectException {
 		Estimation estimation = Estimation.findEstimation(id);
-		if(estimation == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(estimation.getBusiness().getId()))
-			throw new DataAccessException();
 		estimation.remove();
 		if(Hibernate.isInitialized(estimation.getBusiness().getEstimations()))
 			estimation.getBusiness().getEstimations().remove(estimation);
@@ -102,15 +93,10 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
+	@PreAuthorize("#estimationDTO?.business?.id == principal.business.id and " +
+		  	  	  "T(com.novadart.novabill.domain.Client).findClient(#estimationDTO?.client?.id)?.business?.id == principal.business.id and " +
+		  	  	  "#estimationDTO?.id != null")
 	public void update(EstimationDTO estimationDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
-		if(estimationDTO.getId() == null)
-			throw new DataAccessException();
-		Client client = Client.findClient(estimationDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		Business business = Business.findBusiness(estimationDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(business.getId()))
-			throw new DataAccessException();
 		Estimation persistedEstimation = Estimation.findEstimation(estimationDTO.getId());
 		if(persistedEstimation == null)
 			throw new NoSuchObjectException();
@@ -131,26 +117,23 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	}
 
 	@Override
-	public PageDTO<EstimationDTO> getAllForClientInRange(long id, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
-		Client client = Client.findClient(id);
-		if(client == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		List<Estimation> estimations = client.getAllEstimationsInRange(start, length);
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
+	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
+		List<Estimation> estimations = Client.findClient(clientID).getAllEstimationsInRange(start, length);
 		List<EstimationDTO> estimationDTOs = new ArrayList<EstimationDTO>(estimations.size());
 		for(Estimation estimation: estimations)
 			estimationDTOs.add(EstimationDTOFactory.toDTO(estimation));
-		return new PageDTO<EstimationDTO>(estimationDTOs, start, length, Estimation.countEstimationsForClient(id));
+		return new PageDTO<EstimationDTO>(estimationDTOs, start, length, Estimation.countEstimationsForClient(clientID));
 	}
 
 	@Override
-	public PageDTO<EstimationDTO> getAllInRange(int start, int length) throws NotAuthenticatedException, ConcurrentAccessException {
-		List<Estimation> estimations = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()).getAllEstimationsInRange(start, length);
+	@PreAuthorize("#businessID == principal.business.id")
+	public PageDTO<EstimationDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException, ConcurrentAccessException {
+		List<Estimation> estimations = Business.findBusiness(businessID).getAllEstimationsInRange(start, length);
 		List<EstimationDTO> estimationDTOs = new ArrayList<EstimationDTO>(estimations.size());
 		for(Estimation estimation: estimations)
 			estimationDTOs.add(EstimationDTOFactory.toDTO(estimation));
-		return new PageDTO<EstimationDTO>(estimationDTOs, start, length, (int)Estimation.countEstimations());
+		return new PageDTO<EstimationDTO>(estimationDTOs, start, length, Estimation.countEstimations());
 	}
 
 }

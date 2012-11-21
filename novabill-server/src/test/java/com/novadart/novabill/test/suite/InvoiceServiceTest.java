@@ -5,14 +5,11 @@ import static org.junit.Assert.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 import java.util.Set;
 import javax.annotation.Resource;
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -21,7 +18,6 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
-import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Invoice;
@@ -72,7 +68,7 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		Long invoiceID = authenticatedPrincipal.getBusiness().getInvoices().iterator().next().getId();
 		InvoiceDTO expectedDTO = InvoiceDTOFactory.toDTO(Invoice.findInvoice(invoiceID));
 		InvoiceDTO actualDTO = invoiceService.get(invoiceID);
-		assertTrue(TestUtils.abstractInvoicesComparator.equal(actualDTO, expectedDTO));
+		assertTrue(TestUtils.accountingDocumentComparator.equal(actualDTO, expectedDTO));
 	}
 	
 	@Test(expected = AccessDeniedException.class)
@@ -107,7 +103,7 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(invoiceService.getAllForClient(clientID));
 		List<AccountingDocumentDTO> expected = TestUtils.toDTOList(new ArrayList(Client.findClient(clientID).getInvoices()), TestUtils.invoiceDTOConverter); 
-		assertTrue(TestUtils.equal(expected, actual, TestUtils.abstractInvoicesComparator));
+		assertTrue(TestUtils.equal(expected, actual, TestUtils.accountingDocumentComparator));
 	}
 	
 	@Test(expected = AccessDeniedException.class)
@@ -241,18 +237,18 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	@Test
 	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createDoc(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class));
+		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class));
 		invDTO.setClient(ClientDTOFactory.toDTO(client));
 		invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = invoiceService.add(invDTO);
 		Invoice.entityManager().flush();
-		assertTrue(TestUtils.abstractInvoicesComparatorIgnoreID.equal(invDTO, InvoiceDTOFactory.toDTO(Invoice.findInvoice(id))));
+		assertTrue(TestUtils.accountingDocumentComparatorIgnoreID.equal(invDTO, InvoiceDTOFactory.toDTO(Invoice.findInvoice(id))));
 	}
 	
 	@Test(expected = AccessDeniedException.class)
 	public void addUnathorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createDoc(Business.findBusiness(getUnathorizedBusinessID()).getNextInvoiceDocumentID(), Invoice.class));
+		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvOrCredNote(Business.findBusiness(getUnathorizedBusinessID()).getNextInvoiceDocumentID(), Invoice.class));
 		invDTO.setClient(ClientDTOFactory.toDTO(client));
 		invDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		invoiceService.add(invDTO);
@@ -266,7 +262,7 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	@Test(expected = AccessDeniedException.class)
 	public void addAuthorizedInvoiceDTOIDNotNull() throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createDoc(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class));
+		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class));
 		invDTO.setClient(ClientDTOFactory.toDTO(client));
 		invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		invDTO.setId(1l);
@@ -276,7 +272,7 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	@Test
 	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException, InstantiationException{
 		try{
-			InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvalidDoc(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class));
+			InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvalidIngOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class));
 			invDTO.setClient(ClientDTOFactory.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
 			invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 			invoiceService.add(invDTO);
