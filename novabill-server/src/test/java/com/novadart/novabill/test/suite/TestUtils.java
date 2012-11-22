@@ -12,13 +12,17 @@ import com.novadart.novabill.domain.AbstractInvoice;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.CreditNote;
+import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
 import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
+import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.validation.Field;
 
 public class TestUtils {
@@ -28,6 +32,8 @@ public class TestUtils {
 	public static Map<String, Field> abstractInvoiceValidationFieldsMap;
 	
 	public static Map<String, Field> estimationValidationFieldsMap;
+	
+	public static Map<String, Field> transportDocValidationFieldsMap;
 	
 	static{
 		accountingDocumentValidationFieldsMap = new HashMap<String, Field>(){{
@@ -55,6 +61,22 @@ public class TestUtils {
 		estimationValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);
 		estimationValidationFieldsMap.putAll(new HashMap<String, Field>(){{
 			put("limitations", Field.limitations); put("validTill", Field.validTill);
+		}});
+		
+		transportDocValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);
+		transportDocValidationFieldsMap.putAll(new HashMap<String, Field>(){{
+			put("fromEndpoint_companyName", Field.fromEndpoint_companyName);
+			put("fromEndpoint_street", Field.fromEndpoint_street);
+			put("fromEndpoint_postcode", Field.fromEndpoint_postcode);
+			put("fromEndpoint_city", Field.fromEndpoint_city);
+			put("fromEndpoint_province", Field.fromEndpoint_province);
+			put("fromEndpoint_country", Field.fromEndpoint_country);
+			put("toEndpoint_companyName", Field.toEndpoint_companyName);
+			put("toEndpoint_street", Field.toEndpoint_street);
+			put("toEndpoint_postcode", Field.toEndpoint_postcode);
+			put("toEndpoint_city", Field.toEndpoint_city);
+			put("toEndpoint_province", Field.toEndpoint_province);
+			put("toEndpoint_country", Field.toEndpoint_country);
 		}});
 	}
 	
@@ -88,6 +110,28 @@ public class TestUtils {
 		public boolean equal(AccountingDocumentDTO lhs, AccountingDocumentDTO rhs) {
 			boolean itemsEqual = compareItems(lhs, rhs, true);
 			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "id") && itemsEqual;
+		}
+	};
+	
+	public static Comparator transportDocumentComparator = new Comparator() {
+		@Override
+		public boolean equal(AccountingDocumentDTO doc1, AccountingDocumentDTO doc2) {
+			TransportDocumentDTO lhs = (TransportDocumentDTO)doc1, rhs = (TransportDocumentDTO)doc2;
+			boolean itemsEqual = compareItems(lhs, rhs, false);
+			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "fromEndpoint", "toEndpoint") &&
+					EqualsBuilder.reflectionEquals(lhs.getFromEndpoint(), rhs.getFromEndpoint(), false) &&
+					EqualsBuilder.reflectionEquals(lhs.getToEndpoint(), rhs.getToEndpoint(), false) && itemsEqual;
+		}
+	};
+	
+	public static Comparator transportDocumentComparatorIgnoreID = new Comparator() {
+		@Override
+		public boolean equal(AccountingDocumentDTO doc1, AccountingDocumentDTO doc2) {
+			TransportDocumentDTO lhs = (TransportDocumentDTO)doc1, rhs = (TransportDocumentDTO)doc2;
+			boolean itemsEqual = compareItems(lhs, rhs, true);
+			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "fromEndpoint", "toEndpoint", "id") &&
+					EqualsBuilder.reflectionEquals(lhs.getFromEndpoint(), rhs.getFromEndpoint(), false) &&
+					EqualsBuilder.reflectionEquals(lhs.getToEndpoint(), rhs.getToEndpoint(), false) && itemsEqual;
 		}
 	};
 	
@@ -139,6 +183,13 @@ public class TestUtils {
 		}
 	};
 	
+	public static ToDTOConverter transportDocDTOConverter = new ToDTOConverter() {
+		@Override
+		public AccountingDocumentDTO toDTO(AccountingDocument doc) {
+			return TransportDocumentDTOFactory.toDTO((TransportDocument)doc);
+		}
+	};
+	
 	public static <T extends AccountingDocument> T createDoc(Long documentID, Class<T> cls) throws InstantiationException, IllegalAccessException{
 		T doc = cls.newInstance();
 		doc.setAccountingDocumentDate(new Date());
@@ -177,6 +228,27 @@ public class TestUtils {
 		return doc;
 	}
 	
+	public static TransportDocument createTransportDocument(Long documentID) throws InstantiationException, IllegalAccessException{
+		TransportDocument doc = createDoc(documentID, TransportDocument.class);
+		Endpoint toEndpoint = new Endpoint();
+		toEndpoint.setCompanyName("The mighty company from this Young Entrepreneur");
+		toEndpoint.setStreet("via Qualche Strada con Nome Lungo, 12");
+		toEndpoint.setCity("Nervesa della Battaglia");
+		toEndpoint.setPostcode("42837");
+		toEndpoint.setProvince("PD");
+		toEndpoint.setCountry("IT");
+		doc.setToEndpoint(toEndpoint);
+		Endpoint fromEndpoint = new Endpoint();
+		fromEndpoint.setCompanyName("The mighty company from this Young Entrepreneur");
+		fromEndpoint.setStreet("via Qualche Strada con Nome Lungo, 12");
+		fromEndpoint.setCity("Nervesa della Battaglia");
+		fromEndpoint.setPostcode("42837");
+		fromEndpoint.setProvince("PD");
+		fromEndpoint.setCountry("IT");
+		doc.setFromEndpoint(fromEndpoint);
+		return doc;
+	}
+	
 	public static <T extends AccountingDocument> T createInvalidDoc(Long documentID, Class<T> cls) throws InstantiationException, IllegalAccessException{
 		T doc = cls.newInstance();
 		doc.setAccountingDocumentDate(new Date());
@@ -212,6 +284,27 @@ public class TestUtils {
 		Estimation doc = createInvalidDoc(documentID, Estimation.class);
 		doc.setLimitations(StringUtils.leftPad("1", 2000, '1'));
 		doc.setValidTill(new Date());
+		return doc;
+	}
+	
+	public static TransportDocument createInvalidTransportDocument(Long documentID) throws InstantiationException, IllegalAccessException{
+		TransportDocument doc = createInvalidDoc(documentID, TransportDocument.class);
+		Endpoint toEndpoint = new Endpoint();
+		toEndpoint.setCompanyName(StringUtils.leftPad("1", 1000, '1'));
+		toEndpoint.setStreet(StringUtils.leftPad("1", 1000, '1'));
+		toEndpoint.setCity(StringUtils.leftPad("1", 1000, '1'));
+		toEndpoint.setPostcode(StringUtils.leftPad("1", 1000, '1'));
+		toEndpoint.setProvince(StringUtils.leftPad("1", 1000, '1'));
+		toEndpoint.setCountry(StringUtils.leftPad("1", 1000, '1'));
+		doc.setToEndpoint(toEndpoint);
+		Endpoint fromEndpoint = new Endpoint();
+		fromEndpoint.setCompanyName(StringUtils.leftPad("1", 1000, '1'));
+		fromEndpoint.setStreet(StringUtils.leftPad("1", 1000, '1'));
+		fromEndpoint.setCity(StringUtils.leftPad("1", 1000, '1'));
+		fromEndpoint.setPostcode(StringUtils.leftPad("1", 1000, '1'));
+		fromEndpoint.setProvince(StringUtils.leftPad("1", 1000, '1'));
+		fromEndpoint.setCountry(StringUtils.leftPad("1", 1000, '1'));
+		doc.setFromEndpoint(fromEndpoint);
 		return doc;
 	}
 	
