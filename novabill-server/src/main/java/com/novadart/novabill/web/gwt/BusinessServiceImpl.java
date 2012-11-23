@@ -73,13 +73,13 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public long countInvoicesForYear(Long businessID, int year) {
+	public long countInvoicesForYear(Long businessID, Integer year) {
 		return Business.findBusiness(businessID).getInvoicesForYear(year).size();
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public BigDecimal getTotalAfterTaxesForYear(Long businessID, int year) {
+	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) {
 		Business business = Business.findBusiness(businessID);
 		BigDecimal totalAfterTaxes = new BigDecimal("0.0");
 		Iterator<Invoice> iter = business.getInvoicesForYear(year).iterator();

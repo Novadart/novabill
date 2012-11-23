@@ -22,9 +22,9 @@ public interface BusinessService extends RemoteService {
 	
 	public long countInvoices(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException;
 	
-	public long countInvoicesForYear(Long BusinessID, int year) throws NotAuthenticatedException, ConcurrentAccessException;
+	public long countInvoicesForYear(Long BusinessID, Integer year) throws NotAuthenticatedException, ConcurrentAccessException;
 	
-	public BigDecimal getTotalAfterTaxesForYear(Long businessID, int year) throws NotAuthenticatedException, ConcurrentAccessException;
+	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, ConcurrentAccessException;
 	
 	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException;
 	
