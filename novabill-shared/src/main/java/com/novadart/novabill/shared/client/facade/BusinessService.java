@@ -18,11 +18,11 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 @RemoteServiceRelativePath("business.rpc")
 public interface BusinessService extends RemoteService {
 	
-	public long countClients(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException;
+	public Long countClients(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException;
 	
-	public long countInvoices(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException;
+	public Long countInvoices(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException;
 	
-	public long countInvoicesForYear(Long BusinessID, Integer year) throws NotAuthenticatedException, ConcurrentAccessException;
+	public Long countInvoicesForYear(Long BusinessID, Integer year) throws NotAuthenticatedException, ConcurrentAccessException;
 	
 	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, ConcurrentAccessException;
 	

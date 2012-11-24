@@ -49,7 +49,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, int start, int length) {
+	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer start, Integer length) {
 		List<Invoice> invoices = Business.findBusiness(businessID).getAllInvoicesInRange(start, length); 
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<InvoiceDTO>(invoices.size());
 		for(Invoice invoice: invoices)
@@ -129,7 +129,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, int start, int length) throws DataAccessException, NoSuchObjectException {
+	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer start, Integer length) throws DataAccessException, NoSuchObjectException {
 		List<Invoice> invoices = Client.findClient(clientID).getAllInvoicesInRange(start, length);
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<InvoiceDTO>(invoices.size());
 		for(Invoice invoice: invoices)

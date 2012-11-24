@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+    xmlns:security="http://www.springframework.org/schema/security"
+    xmlns:util="http://www.springframework.org/schema/util"
+    xmlns:context="http://www.springframework.org/schema/context"
+    xmlns:cache="http://www.springframework.org/schema/cache"
+    xsi:schemaLocation="http://www.springframework.org/schema/beans
+    					http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+    					http://www.springframework.org/schema/security
+						http://www.springframework.org/schema/security/spring-security-3.1.xsd
+						http://www.springframework.org/schema/util
+						http://www.springframework.org/schema/util/spring-util-3.1.xsd
+						http://www.springframework.org/schema/context
+						http://www.springframework.org/schema/context/spring-context-3.1.xsd
+						http://www.springframework.org/schema/cache
+						http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
+
+	<cache:annotation-driven cache-manager="cacheManager" mode="proxy" order="1" />
+	
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager" ref="ehcache" />
+	</bean>
+
+	<!-- Ehcache library setup -->
+	<bean id="ehcache"
+		class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean">
+		<property name="configLocation" value="classpath:ehcache.xml" />
+	</bean>
+	
+	<bean id="invoice" class="com.novadart.novabill.web.gwt.InvoiceServiceImpl" />
+
+	<bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationServiceImpl" />
+	
+	<bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteServiceImpl" />
+	
+	<bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentServiceImpl" />
+
+	<bean id="client" class="com.novadart.novabill.web.gwt.ClientServiceImpl" />
+
+	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessServiceImpl" />
+    
+</beans>

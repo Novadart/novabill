@@ -60,21 +60,21 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
-	public long countClients(Long businessID) {
-		return Business.findBusiness(businessID).getClients().size();
+	public Long countClients(Long businessID) {
+		return new Long(Business.findBusiness(businessID).getClients().size());
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
-	public long countInvoices(Long businessID) {
-		return Business.findBusiness(businessID).getInvoices().size();
+	public Long countInvoices(Long businessID) {
+		return new Long(Business.findBusiness(businessID).getInvoices().size());
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public long countInvoicesForYear(Long businessID, Integer year) {
-		return Business.findBusiness(businessID).getInvoicesForYear(year).size();
+	public Long countInvoicesForYear(Long businessID, Integer year) {
+		return new Long(Business.findBusiness(businessID).getInvoicesForYear(year).size());
 	}
 
 	@Override
