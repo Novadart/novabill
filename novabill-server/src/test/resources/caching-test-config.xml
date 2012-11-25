@@ -39,5 +39,9 @@
 	<bean id="client" class="com.novadart.novabill.web.gwt.ClientServiceImpl" />
 
 	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessServiceImpl" />
+	
+	<util:map map-class="java.util.HashMap" id="testProps" key-type="java.lang.String" value-type="java.lang.String">
+    	<entry key="clientWithoutDocsID" value="6"/>
+    </util:map>
     
 </beans>

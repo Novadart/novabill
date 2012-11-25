@@ -45,7 +45,6 @@ public privileged aspect CachingAspect {
 		});
 	declare @method : public void com.novadart.novabill.web.gwt.ClientServiceImpl.update(Long, ClientDTO):
 		@Caching(evict = {
-				@CacheEvict(value = BUSINESS_CLIENT_COUNT_CACHE, key = "#businessID"),
 				@CacheEvict(value = CLIENT_BUSINESS_CLIENTS_CACHE, key = "#businessID")
 		});
 	declare @method : public void com.novadart.novabill.web.gwt.ClientServiceImpl.remove(Long, Long):

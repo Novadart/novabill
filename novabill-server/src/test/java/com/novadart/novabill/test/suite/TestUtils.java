@@ -11,6 +11,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import com.novadart.novabill.domain.AbstractInvoice;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
+import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
@@ -306,6 +307,24 @@ public class TestUtils {
 		fromEndpoint.setCountry(StringUtils.leftPad("1", 1000, '1'));
 		doc.setFromEndpoint(fromEndpoint);
 		return doc;
+	}
+	
+	public static Client createClient(){
+		Client client = new Client();
+		client.setName("The mighty company from this Young Entrepreneur");
+		client.setAddress("via Qualche Strada con Nome Lungo, 12");
+		client.setCity("Nervesa della Battaglia");
+		client.setPostcode("42837");
+		client.setProvince("PD");
+		client.setCountry("IT");
+		client.setVatID("IT04235756211");
+		client.setEmail("");
+		client.setFax("");
+		client.setMobile("");
+		client.setPhone("");
+		client.setWeb("");
+		client.setSsn("");
+		return client;
 	}
 	
 }

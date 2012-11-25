@@ -158,27 +158,9 @@ public class ClientServiceTest extends GWTServiceTest {
 		clientService.get(-1l);
 	}
 	
-	private Client createClient(){
-		Client client = new Client();
-		client.setName("The mighty company from this Young Entrepreneur");
-		client.setAddress("via Qualche Strada con Nome Lungo, 12");
-		client.setCity("Nervesa della Battaglia");
-		client.setPostcode("42837");
-		client.setProvince("PD");
-		client.setCountry("IT");
-		client.setVatID("IT04235756211");
-		client.setEmail("");
-		client.setFax("");
-		client.setMobile("");
-		client.setPhone("");
-		client.setWeb("");
-		client.setSsn("");
-		return client;
-	}
-	
 	@Test
 	public void addAuthenticatedTest() throws NotAuthenticatedException, ConcurrentAccessException, AuthorizationException, ValidationException{
-		Client expectedClient = createClient();
+		Client expectedClient = TestUtils.createClient();
 		expectedClient.setBusiness(authenticatedPrincipal.getBusiness());
 		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(expectedClient));
 		expectedClient.setId(clientID);
@@ -194,14 +176,14 @@ public class ClientServiceTest extends GWTServiceTest {
 	
 	@Test(expected = AccessDeniedException.class)
 	public void addAuthenticatedNotNullClientID() throws NotAuthenticatedException, ConcurrentAccessException, AuthorizationException, ValidationException{
-		Client client = createClient();
+		Client client = TestUtils.createClient();
 		client.setId(100l);
 		clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(client));
 	}
 	
 	@Test
 	public void addAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException{
-		Client client = createClient();
+		Client client = TestUtils.createClient();
 		for(String key: validationFieldsMap.keySet()){
 			BeanUtils.setProperty(client, key, StringUtils.leftPad("1", 1000, '1'));
 		}
@@ -229,7 +211,7 @@ public class ClientServiceTest extends GWTServiceTest {
 	
 	@Test(expected = AccessDeniedException.class)
 	public void updateAuthenticatedClientIDNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException, ValidationException{
-		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(createClient()));
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(TestUtils.createClient()));
 	}
 	
 	@Test(expected = AccessDeniedException.class)
