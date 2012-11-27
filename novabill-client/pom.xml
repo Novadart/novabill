@@ -36,6 +36,13 @@
 			<groupId>com.novadart</groupId>
 			<artifactId>novadart-gwt-shared</artifactId>
 		</dependency>
+
+		<!-- Libraries for testing -->
+		<dependency>
+			<groupId>junit</groupId>
+			<artifactId>junit</artifactId>
+			<scope>test</scope>
+		</dependency>
 	</dependencies>
 
 	<build>
