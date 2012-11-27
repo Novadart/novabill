@@ -18,13 +18,16 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
+import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
@@ -35,6 +38,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.ClientService;
+import com.novadart.novabill.shared.client.facade.CreditNoteService;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 
 
@@ -51,6 +55,9 @@ public class CachingTest extends GWTServiceTest {
 	
 	@Autowired
 	private InvoiceService invoiceService;
+	
+	@Autowired
+	private CreditNoteService creditNoteService;
 	
 	@Resource(name = "testProps")
 	private HashMap<String, String> testProps;
@@ -270,6 +277,54 @@ public class CachingTest extends GWTServiceTest {
 		assertTrue(countClients == nonCachedCountClients);
 		assertTrue(countInvsYear == nonCachedCountInvsYear);
 		assertTrue(totals == nonCachedTotals);
+	}
+	
+	@Test
+	public void creditNoteGetAllCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
+		List<CreditNoteDTO> result = creditNoteService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<CreditNoteDTO> cachedResult = creditNoteService.getAll(authenticatedPrincipal.getBusiness().getId());
+		assertTrue(result == cachedResult);
+	}
+	
+	@Test
+	public void creditNoteRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<CreditNoteDTO> result = creditNoteService.getAll(businessID);
+		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
+		Long id = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
+		creditNoteService.remove(businessID, clientID, id);
+		List<CreditNoteDTO> nonCachedResult = creditNoteService.getAll(businessID);
+		assertTrue(result != nonCachedResult);
+	}
+	
+	@Test
+	public void creditNoteAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<CreditNoteDTO> result = creditNoteService.getAll(businessID);
+		
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		CreditNoteDTO credNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class));
+		credNoteDTO.setClient(ClientDTOFactory.toDTO(client));
+		credNoteDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		creditNoteService.add(credNoteDTO);
+		CreditNote.entityManager().flush();
+		
+		List<CreditNoteDTO> nonCachedResult = creditNoteService.getAll(businessID);
+		assertTrue(result != nonCachedResult);
+	}
+	
+	@Test
+	public void creditNoteUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<CreditNoteDTO> result = creditNoteService.getAll(businessID);
+		
+		CreditNote credNote = authenticatedPrincipal.getBusiness().getCreditNotes().iterator().next();
+		credNote.setNote("Temporary note for this invoice");
+		creditNoteService.update(CreditNoteDTOFactory.toDTO(credNote));
+		CreditNote.entityManager().flush();
+		
+		List<CreditNoteDTO> nonCachedResult = creditNoteService.getAll(businessID);
+		assertTrue(result != nonCachedResult);
 	}
 	
 

@@ -90,6 +90,10 @@ public class DTOUtils {
 				filtered.add(doc);
 		return filtered;
 	}
+	
+	public static <E> List<E> range(List<E> list, Integer start, Integer length){
+		return list.subList(start, Math.min(start + length, list.size()));
+	}
 
 
 }

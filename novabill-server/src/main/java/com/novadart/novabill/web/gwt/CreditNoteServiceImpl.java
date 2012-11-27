@@ -6,11 +6,13 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
+import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
-import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.dto.DTOUtils;
+import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
 import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
 import com.novadart.novabill.service.UtilsService;
@@ -38,31 +40,45 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	public CreditNoteServiceImpl() {
 		super(CreditNoteService.class);
 	}
+	
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<CreditNoteDTO> getAll(Long businessID){
+		return DTOUtils.toDTOList( AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).getCreditNotes()), DTOUtils.creditNoteDTOConverter); 
+	}
 
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.business?.id == principal.business.id")
 	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
-		return CreditNoteDTOFactory.toDTO(CreditNote.findCreditNote(id));
+		return DTOUtils.findDocumentInCollection(getAll(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), id);
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException, ConcurrentAccessException {
-		List<CreditNote> creditNotes = Business.findBusiness(businessID).getAllCreditNotesInRange(start, length); 
-		List<CreditNoteDTO> creditNoteDTOs = new ArrayList<CreditNoteDTO>(creditNotes.size());
-		for(CreditNote creditNote: creditNotes)
-			creditNoteDTOs.add(CreditNoteDTOFactory.toDTO(creditNote));
-		return new PageDTO<CreditNoteDTO>(creditNoteDTOs, start, length, CreditNote.countCreditNotes());
+	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, ConcurrentAccessException {
+		List<CreditNoteDTO> allCreditNotes = getAll(businessID);
+		return new PageDTO<CreditNoteDTO>(DTOUtils.range(allCreditNotes, start, length), start, length, new Long(allCreditNotes.size()));
+	}
+	
+	private static class EqualsClientIDPredicate implements Predicate<CreditNoteDTO>{
+		
+		private Long id;
+		
+		public EqualsClientIDPredicate(Long id) {
+			this.id = id;
+		}
+		
+		@Override
+		public boolean isTrue(CreditNoteDTO doc) {
+			return doc.getClient().getId().equals(id);
+		}
+		
 	}
 	
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
 	public List<CreditNoteDTO> getAllForClient(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
-		List<CreditNote> creditNotes = Client.findClient(clientID).getSortedCreditNotes();
-		List<CreditNoteDTO> creditNoteDTOs = new ArrayList<CreditNoteDTO>(creditNotes.size());
-		for(CreditNote invoice: creditNotes)
-			creditNoteDTOs.add(CreditNoteDTOFactory.toDTO(invoice));
-		return creditNoteDTOs;
+		return new ArrayList<CreditNoteDTO>(DTOUtils.filter(getAll(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), new EqualsClientIDPredicate(clientID)));
 	}
 	
 	@Override
@@ -127,11 +143,8 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
 	public PageDTO<CreditNoteDTO> getAllForClientInRange(Long clientID, int start, int length) throws NotAuthenticatedException, DataAccessException,	NoSuchObjectException, ConcurrentAccessException {
-		List<CreditNote> creditNotes = Client.findClient(clientID).getAllCreditNotesInRange(start, length);
-		List<CreditNoteDTO> creditNoteDTOs = new ArrayList<CreditNoteDTO>(creditNotes.size());
-		for(CreditNote creditNote: creditNotes)
-			creditNoteDTOs.add(CreditNoteDTOFactory.toDTO(creditNote));
-		return new PageDTO<CreditNoteDTO>(creditNoteDTOs, start, length, Invoice.countInvocesForClient(clientID));
+		List<CreditNoteDTO> allCreditNotes = getAllForClient(clientID);
+		return new PageDTO<CreditNoteDTO>(DTOUtils.range(allCreditNotes, start, length), start, length, new Long(allCreditNotes.size()));
 	}
 
 }

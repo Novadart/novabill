@@ -21,7 +21,7 @@ public interface CreditNoteService extends RemoteService {
 	
 	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
 	
-	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException, ConcurrentAccessException;
+	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, ConcurrentAccessException;
 	
 	public List<CreditNoteDTO> getAllForClient(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException;
 	
@@ -34,5 +34,7 @@ public interface CreditNoteService extends RemoteService {
 	public void update(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, ConcurrentAccessException;
 
 	public Long getNextInvoiceDocumentID() throws NotAuthenticatedException, ConcurrentAccessException;
+	
+	public List<CreditNoteDTO> getAll(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException;
 	
 }

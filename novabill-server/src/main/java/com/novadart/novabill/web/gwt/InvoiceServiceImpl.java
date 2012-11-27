@@ -42,6 +42,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	}
 	
 	@Override
+	@PreAuthorize("#businessID == principal.business.id")
 	public List<InvoiceDTO> getAll(Long businessID){
 		return DTOUtils.toDTOList( AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).getInvoices()), DTOUtils.invoiceDTOConverter); 
 	}
@@ -57,7 +58,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	@PreAuthorize("#businessID == principal.business.id")
 	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer start, Integer length) {
 		List<InvoiceDTO> allInvoices = getAll(businessID);
-		return new PageDTO<InvoiceDTO>(allInvoices.subList(start, start + length), start, length, new Long(allInvoices.size()));
+		return new PageDTO<InvoiceDTO>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
 	}
 	
 	private static class EqualsClientIDPredicate implements Predicate<InvoiceDTO>{
@@ -145,7 +146,7 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
 	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer start, Integer length) throws DataAccessException, NoSuchObjectException {
 		List<InvoiceDTO> allInvoices = getAllForClient(clientID);
-		return new PageDTO<InvoiceDTO>(allInvoices.subList(start, start + length), start, length, new Long(allInvoices.size()));
+		return new PageDTO<InvoiceDTO>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
 	}
 	
 	@Override

@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.List;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 
 public privileged aspect CachingAspect {
 
@@ -86,5 +87,31 @@ public privileged aspect CachingAspect {
 				@CacheEvict(value = BUSINESS_TOTAL_AFTER_TAXES_YEAR_CACHE, key = "#invoiceDTO.business.id"),
 				@CacheEvict(value = INVOICE_CACHE, key = "#invoiceDTO.business.id"),
 		});
+	
+	/*
+	 * CreditNote caching
+	 * Dependencies None
+	 */
+	
+	public static final String CREDITNOTE_CACHE = "creditnote-cache";
+	
+	declare @method : public List<CreditNoteDTO> com.novadart.novabill.web.gwt.CreditNoteServiceImpl.getAll(Long): @Cacheable(value = CREDITNOTE_CACHE, key = "#businessID");
+	
+	declare @method : public void com.novadart.novabill.web.gwt.CreditNoteServiceImpl.remove(Long, Long, Long):
+		@Caching(evict = {
+				@CacheEvict(value = CREDITNOTE_CACHE, key = "#businessID"),
+		});
+	
+	declare @method : public Long com.novadart.novabill.web.gwt.CreditNoteServiceImpl.add(CreditNoteDTO):
+		@Caching(evict = {
+				@CacheEvict(value = CREDITNOTE_CACHE, key = "#creditNoteDTO.business.id"),
+		});
+	
+	declare @method : public void com.novadart.novabill.web.gwt.CreditNoteServiceImpl.update(CreditNoteDTO):
+		@Caching(evict = {
+				@CacheEvict(value = CREDITNOTE_CACHE, key = "#creditNoteDTO.business.id"),
+		});
+	
+	
 	
 }
