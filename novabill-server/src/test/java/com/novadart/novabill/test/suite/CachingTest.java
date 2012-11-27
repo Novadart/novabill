@@ -19,15 +19,18 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
+import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
+import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
@@ -39,6 +42,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.ClientService;
 import com.novadart.novabill.shared.client.facade.CreditNoteService;
+import com.novadart.novabill.shared.client.facade.EstimationService;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 
 
@@ -58,6 +62,9 @@ public class CachingTest extends GWTServiceTest {
 	
 	@Autowired
 	private CreditNoteService creditNoteService;
+	
+	@Autowired
+	private EstimationService estimationService;
 	
 	@Resource(name = "testProps")
 	private HashMap<String, String> testProps;
@@ -319,7 +326,7 @@ public class CachingTest extends GWTServiceTest {
 		List<CreditNoteDTO> result = creditNoteService.getAll(businessID);
 		
 		CreditNote credNote = authenticatedPrincipal.getBusiness().getCreditNotes().iterator().next();
-		credNote.setNote("Temporary note for this invoice");
+		credNote.setNote("Temporary note for this credit note");
 		creditNoteService.update(CreditNoteDTOFactory.toDTO(credNote));
 		CreditNote.entityManager().flush();
 		
@@ -327,5 +334,52 @@ public class CachingTest extends GWTServiceTest {
 		assertTrue(result != nonCachedResult);
 	}
 	
+	@Test
+	public void estimationGetAllCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
+		List<EstimationDTO> result = estimationService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<EstimationDTO> cachedResult = estimationService.getAll(authenticatedPrincipal.getBusiness().getId());
+		assertTrue(result == cachedResult);
+	}
+	
+	@Test
+	public void estimationRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<EstimationDTO> result = estimationService.getAll(businessID);
+		Long clientID = new Long(testProps.get("clientWithEstimationsID"));
+		Long id = Client.findClient(clientID).getEstimations().iterator().next().getId();
+		estimationService.remove(businessID, clientID, id);
+		List<EstimationDTO> nonCachedResult = estimationService.getAll(businessID);
+		assertTrue(result != nonCachedResult);
+	} 
+	
+	@Test
+	public void estimationAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<EstimationDTO> result = estimationService.getAll(businessID);
+		
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		EstimationDTO estimationDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()));
+		estimationDTO.setClient(ClientDTOFactory.toDTO(client));
+		estimationDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		estimationService.add(estimationDTO);
+		Estimation.entityManager().flush();
+		
+		List<EstimationDTO> nonCachedResult = estimationService.getAll(businessID);
+		assertTrue(result != nonCachedResult);
+	}
+	
+	@Test
+	public void estimationUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<EstimationDTO> result = estimationService.getAll(businessID);
+		
+		Estimation estimation = authenticatedPrincipal.getBusiness().getEstimations().iterator().next();
+		estimation.setNote("Temporary note for this estimation");
+		estimationService.update(EstimationDTOFactory.toDTO(estimation));
+		Estimation.entityManager().flush();
+		
+		List<EstimationDTO> nonCachedResult = estimationService.getAll(businessID);
+		assertTrue(result != nonCachedResult);
+	}
 
 }

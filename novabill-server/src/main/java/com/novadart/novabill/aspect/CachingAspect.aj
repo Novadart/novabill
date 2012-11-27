@@ -9,6 +9,7 @@ import java.util.List;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
 
 public privileged aspect CachingAspect {
 
@@ -90,7 +91,7 @@ public privileged aspect CachingAspect {
 	
 	/*
 	 * CreditNote caching
-	 * Dependencies None
+	 * Dependencies: None
 	 */
 	
 	public static final String CREDITNOTE_CACHE = "creditnote-cache";
@@ -112,6 +113,29 @@ public privileged aspect CachingAspect {
 				@CacheEvict(value = CREDITNOTE_CACHE, key = "#creditNoteDTO.business.id"),
 		});
 	
+	
+	/*
+	 * Estimation caching
+	 * Dependencies: None
+	 */
+	
+	public static final String ESTIMATION_CACHE = "estimation-cache";
+	
+	declare @method : public List<EstimationDTO> com.novadart.novabill.web.gwt.EstimationServiceImpl.getAll(Long): @Cacheable(value = ESTIMATION_CACHE, key = "#businessID");
+	
+	declare @method : public void com.novadart.novabill.web.gwt.EstimationServiceImpl.remove(Long, Long, Long):
+		@Caching(evict = {
+				@CacheEvict(value = ESTIMATION_CACHE, key = "#businessID"),
+		});
+	declare @method : public Long com.novadart.novabill.web.gwt.EstimationServiceImpl.add(EstimationDTO):
+		@Caching(evict = {
+				@CacheEvict(value = ESTIMATION_CACHE, key = "#estimationDTO.business.id"),
+		});
+	
+	declare @method : public void com.novadart.novabill.web.gwt.EstimationServiceImpl.update(EstimationDTO):
+		@Caching(evict = {
+				@CacheEvict(value = ESTIMATION_CACHE, key = "#estimationDTO.business.id"),
+		});
 	
 	
 }
