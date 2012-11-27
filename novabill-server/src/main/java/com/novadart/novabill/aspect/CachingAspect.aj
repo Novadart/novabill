@@ -10,6 +10,7 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public privileged aspect CachingAspect {
 
@@ -135,6 +136,28 @@ public privileged aspect CachingAspect {
 	declare @method : public void com.novadart.novabill.web.gwt.EstimationServiceImpl.update(EstimationDTO):
 		@Caching(evict = {
 				@CacheEvict(value = ESTIMATION_CACHE, key = "#estimationDTO.business.id"),
+		});
+	
+	/*
+	 * TransportDocument caching
+	 * Dependencies: None
+	 */
+	
+	public static final String TRANSPORTDOCUMENT_CACHE = "transportdocument-cache";
+	
+	declare @method : public List<TransportDocumentDTO> com.novadart.novabill.web.gwt.TransportDocumentServiceImpl.getAll(Long):
+		@Cacheable(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID");
+	declare @method : public void com.novadart.novabill.web.gwt.TransportDocumentServiceImpl.remove(Long, Long, Long):
+		@Caching(evict = {
+				@CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID"),
+		});
+	declare @method : public Long com.novadart.novabill.web.gwt.TransportDocumentServiceImpl.add(TransportDocumentDTO):
+		@Caching(evict = {
+				@CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#transportDocDTO.business.id"),
+		});
+	declare @method : public void com.novadart.novabill.web.gwt.TransportDocumentServiceImpl.update(TransportDocumentDTO):
+		@Caching(evict = {
+				@CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#transportDocDTO.business.id"),
 		});
 	
 	

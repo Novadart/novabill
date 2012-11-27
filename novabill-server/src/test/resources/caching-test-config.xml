@@ -45,6 +45,7 @@
     	<entry key="clientWithInvoicesID" value="3"/>
     	<entry key="clientWithCreditNotesID" value="3"/>
     	<entry key="clientWithEstimationsID" value="3"/>
+    	<entry key="clientWithTransportDocsID" value="3"/>
     	<entry key="year" value="2012"/>
     </util:map>
     

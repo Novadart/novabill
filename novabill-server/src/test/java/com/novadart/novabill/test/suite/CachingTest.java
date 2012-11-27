@@ -21,17 +21,20 @@ import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
 import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
+import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -44,6 +47,7 @@ import com.novadart.novabill.shared.client.facade.ClientService;
 import com.novadart.novabill.shared.client.facade.CreditNoteService;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
+import com.novadart.novabill.shared.client.facade.TransportDocumentService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -65,6 +69,9 @@ public class CachingTest extends GWTServiceTest {
 	
 	@Autowired
 	private EstimationService estimationService;
+	
+	@Autowired
+	private TransportDocumentService transDocService;
 	
 	@Resource(name = "testProps")
 	private HashMap<String, String> testProps;
@@ -379,6 +386,54 @@ public class CachingTest extends GWTServiceTest {
 		Estimation.entityManager().flush();
 		
 		List<EstimationDTO> nonCachedResult = estimationService.getAll(businessID);
+		assertTrue(result != nonCachedResult);
+	}
+	
+	@Test
+	public void transDocGetAllCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
+		List<TransportDocumentDTO> result = transDocService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<TransportDocumentDTO> cachedResult = transDocService.getAll(authenticatedPrincipal.getBusiness().getId());
+		assertTrue(result == cachedResult);
+	}
+	
+	@Test
+	public void transDocRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<TransportDocumentDTO> result = transDocService.getAll(businessID);
+		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
+		Long id = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
+		transDocService.remove(businessID, clientID, id);
+		List<TransportDocumentDTO> nonCachedResult = transDocService.getAll(businessID);
+		assertTrue(result != nonCachedResult);
+	}
+	
+	@Test
+	public void transDocAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<TransportDocumentDTO> result = transDocService.getAll(businessID);
+		
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()));
+		transDocDTO.setClient(ClientDTOFactory.toDTO(client));
+		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		transDocService.add(transDocDTO);
+		TransportDocument.entityManager().flush();
+		
+		List<TransportDocumentDTO> nonCachedResult = transDocService.getAll(businessID);
+		assertTrue(result != nonCachedResult);
+	}
+	
+	@Test
+	public void transDocUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<TransportDocumentDTO> result = transDocService.getAll(businessID);
+		
+		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
+		transDoc.setNote("Temporary note for this transport document");
+		transDocService.update(TransportDocumentDTOFactory.toDTO(transDoc));
+		TransportDocument.entityManager().flush();
+		
+		List<TransportDocumentDTO> nonCachedResult = transDocService.getAll(businessID);
 		assertTrue(result != nonCachedResult);
 	}
 
