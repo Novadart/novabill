@@ -35,4 +35,6 @@ public interface InvoiceService extends RemoteService {
 	
 	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException;
 	
+	public List<InvoiceDTO> getAll(Long businessID);
+	
 }

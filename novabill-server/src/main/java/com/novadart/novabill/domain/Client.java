@@ -156,29 +156,20 @@ public class Client implements Serializable, Taxable {
     @IndexedEmbedded
     private Business business;
     
-    @Transient
-    private static final Comparator<AccountingDocument> ACCOUNTING_DOCUMENT_COMPARATOR = new AccountingDocumentComparator();
-    
-    private <T extends AccountingDocument> List<T> sortAccountingDocuments(Collection<T> collection){
-    	SortedSet<T> sortedSet = new TreeSet<T>(ACCOUNTING_DOCUMENT_COMPARATOR);
-    	sortedSet.addAll(collection);
-    	return new ArrayList<T>(sortedSet);
-    }
-    
     public List<Invoice> getSortedInvoices(){
-    	return sortAccountingDocuments(getInvoices()); 
+    	return AccountingDocument.sortAccountingDocuments(getInvoices()); 
     }
 	
     public List<Estimation> getSortedEstimations(){
-    	return sortAccountingDocuments(getEstimations());
+    	return AccountingDocument.sortAccountingDocuments(getEstimations());
     }
     
     public List<CreditNote> getSortedCreditNotes(){
-    	return sortAccountingDocuments(getCreditNotes());
+    	return AccountingDocument.sortAccountingDocuments(getCreditNotes());
     }
     
     public List<TransportDocument> getSortedTransportDocuments(){
-    	return sortAccountingDocuments(getTransportDocuments());
+    	return AccountingDocument.sortAccountingDocuments(getTransportDocuments());
     }
     
     public List<Invoice> getAllInvoicesInRange(Integer start, Integer length){

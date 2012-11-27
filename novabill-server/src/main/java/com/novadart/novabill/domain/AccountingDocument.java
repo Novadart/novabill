@@ -1,11 +1,18 @@
 package com.novadart.novabill.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,6 +28,7 @@ import javax.persistence.OrderBy;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -32,6 +40,9 @@ import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.domain.AccountingDocument;
+import com.novadart.novabill.domain.AccountingDocumentComparator;
 
 /*
  * Important note!
@@ -87,6 +98,15 @@ public abstract class AccountingDocument {
 		String query = String.format("select count(o) FROM %s o where o.client.id = :clientID", cls.getSimpleName()); 
     	return entityManager().createQuery(query, Long.class).setParameter("clientID", id).getSingleResult();
 	}
+	
+	@Transient
+    private static final Comparator<AccountingDocument> ACCOUNTING_DOCUMENT_COMPARATOR = new AccountingDocumentComparator();
+	
+	public static <T extends AccountingDocument> List<T> sortAccountingDocuments(Collection<T> collection){
+    	SortedSet<T> sortedSet = new TreeSet<T>(ACCOUNTING_DOCUMENT_COMPARATOR);
+    	sortedSet.addAll(collection);
+    	return new ArrayList<T>(sortedSet);
+    }
 	
 	
 	/*

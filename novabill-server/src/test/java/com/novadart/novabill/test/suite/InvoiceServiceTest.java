@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
@@ -102,7 +103,7 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(invoiceService.getAllForClient(clientID));
-		List<AccountingDocumentDTO> expected = TestUtils.toDTOList(new ArrayList(Client.findClient(clientID).getInvoices()), TestUtils.invoiceDTOConverter); 
+		List<AccountingDocumentDTO> expected = DTOUtils.toDTOList(new ArrayList(Client.findClient(clientID).getInvoices()), DTOUtils.invoiceDTOConverter); 
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.accountingDocumentComparator));
 	}
 	

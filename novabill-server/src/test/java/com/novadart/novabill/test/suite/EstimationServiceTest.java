@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Estimation;
+import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
@@ -101,7 +102,7 @@ public class EstimationServiceTest extends GWTServiceTest {
 	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		Long clientID = new Long(testProps.get("clientWithEstimationsID"));
 		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(estimationService.getAllForClient(clientID));
-		List<AccountingDocumentDTO> expected = TestUtils.toDTOList(new ArrayList(Client.findClient(clientID).getEstimations()), TestUtils.estimationDTOConverter); 
+		List<AccountingDocumentDTO> expected = DTOUtils.toDTOList(new ArrayList(Client.findClient(clientID).getEstimations()), DTOUtils.estimationDTOConverter); 
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.accountingDocumentComparator));
 	}
 	

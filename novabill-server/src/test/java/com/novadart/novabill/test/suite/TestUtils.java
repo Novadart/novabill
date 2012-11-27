@@ -148,48 +148,6 @@ public class TestUtils {
 		return contained && lhs.size() == rhs.size();
 	}
 	
-	/**
-	 *	Conversion 
-	 */
-	
-	public static List<AccountingDocumentDTO> toDTOList(List<AccountingDocument> docs, ToDTOConverter converter){
-		List<AccountingDocumentDTO> docDTOs = new ArrayList<AccountingDocumentDTO>();
-		for(AccountingDocument doc: docs)
-			docDTOs.add(converter.toDTO(doc));
-		return docDTOs;
-	}
-	
-	public interface ToDTOConverter{
-		public AccountingDocumentDTO toDTO(AccountingDocument doc);
-	}
-	
-	public static ToDTOConverter invoiceDTOConverter = new ToDTOConverter(){
-		@Override
-		public AccountingDocumentDTO toDTO(AccountingDocument doc){
-			return InvoiceDTOFactory.toDTO((Invoice)doc);
-		}
-	};
-	
-	public static ToDTOConverter creditNoteDTOConverter = new ToDTOConverter(){
-		@Override
-		public AccountingDocumentDTO toDTO(AccountingDocument doc){
-			return CreditNoteDTOFactory.toDTO((CreditNote)doc);
-		}
-	};
-	
-	public static ToDTOConverter estimationDTOConverter = new ToDTOConverter() {
-		@Override
-		public AccountingDocumentDTO toDTO(AccountingDocument doc) {
-			return EstimationDTOFactory.toDTO((Estimation)doc);
-		}
-	};
-	
-	public static ToDTOConverter transportDocDTOConverter = new ToDTOConverter() {
-		@Override
-		public AccountingDocumentDTO toDTO(AccountingDocument doc) {
-			return TransportDocumentDTOFactory.toDTO((TransportDocument)doc);
-		}
-	};
 	
 	public static <T extends AccountingDocument> T createDoc(Long documentID, Class<T> cls) throws InstantiationException, IllegalAccessException{
 		T doc = cls.newInstance();

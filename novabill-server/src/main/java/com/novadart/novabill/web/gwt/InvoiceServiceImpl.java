@@ -2,16 +2,17 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
 import java.util.List;
-
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-
+import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.dto.DTOUtils;
+import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
 import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.service.UtilsService;
@@ -41,31 +42,44 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	}
 	
 	@Override
+	public List<InvoiceDTO> getAll(Long businessID){
+		return DTOUtils.toDTOList( AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).getInvoices()), DTOUtils.invoiceDTOConverter); 
+	}
+	
+	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == principal.business.id")
 	public InvoiceDTO get(Long id) throws DataAccessException, NoSuchObjectException {
-		return InvoiceDTOFactory.toDTO(Invoice.findInvoice(id));
+		return DTOUtils.findDocumentInCollection(getAll(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
 	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer start, Integer length) {
-		List<Invoice> invoices = Business.findBusiness(businessID).getAllInvoicesInRange(start, length); 
-		List<InvoiceDTO> invoiceDTOs = new ArrayList<InvoiceDTO>(invoices.size());
-		for(Invoice invoice: invoices)
-			invoiceDTOs.add(InvoiceDTOFactory.toDTO(invoice));
-		return new PageDTO<InvoiceDTO>(invoiceDTOs, start, length, Invoice.countInvoices());
+		List<InvoiceDTO> allInvoices = getAll(businessID);
+		return new PageDTO<InvoiceDTO>(allInvoices.subList(start, start + length), start, length, new Long(allInvoices.size()));
+	}
+	
+	private static class EqualsClientIDPredicate implements Predicate<InvoiceDTO>{
+		
+		private Long id;
+		
+		public EqualsClientIDPredicate(Long id) {
+			this.id = id;
+		}
+		
+		@Override
+		public boolean isTrue(InvoiceDTO doc) {
+			return doc.getClient().getId().equals(id);
+		}
+		
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
 	public List<InvoiceDTO> getAllForClient(Long clientID) throws DataAccessException, NoSuchObjectException {
-		List<Invoice> invoices = Client.findClient(clientID).getSortedInvoices();
-		List<InvoiceDTO> invoiceDTOs = new ArrayList<InvoiceDTO>(invoices.size());
-		for(Invoice invoice: invoices)
-			invoiceDTOs.add(InvoiceDTOFactory.toDTO(invoice));
-		return invoiceDTOs;
+		return new ArrayList<InvoiceDTO>(DTOUtils.filter(getAll(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), new EqualsClientIDPredicate(clientID)));
 	}
 	
 	@Override
@@ -130,11 +144,8 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
 	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer start, Integer length) throws DataAccessException, NoSuchObjectException {
-		List<Invoice> invoices = Client.findClient(clientID).getAllInvoicesInRange(start, length);
-		List<InvoiceDTO> invoiceDTOs = new ArrayList<InvoiceDTO>(invoices.size());
-		for(Invoice invoice: invoices)
-			invoiceDTOs.add(InvoiceDTOFactory.toDTO(invoice));
-		return new PageDTO<InvoiceDTO>(invoiceDTOs, start, length, Invoice.countInvocesForClient(clientID));
+		List<InvoiceDTO> allInvoices = getAllForClient(clientID);
+		return new PageDTO<InvoiceDTO>(allInvoices.subList(start, start + length), start, length, new Long(allInvoices.size()));
 	}
 	
 	@Override
