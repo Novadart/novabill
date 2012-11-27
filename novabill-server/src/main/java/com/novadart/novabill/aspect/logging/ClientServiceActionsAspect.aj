@@ -18,29 +18,29 @@ public aspect ClientServiceActionsAspect {
 	@Autowired
 	private UtilsService utilsService;
 	
-	pointcut add(ClientDTO clientDTO) :
-		execution(public Long com.novadart.novabill.web.gwt.ClientServiceImpl.add(..)) && args(clientDTO);
+	pointcut add(Long businessID, ClientDTO clientDTO) :
+		execution(public Long com.novadart.novabill.web.gwt.ClientServiceImpl.add(..)) && args(businessID, clientDTO);
 	
-	pointcut remove(Long id) :
-		execution(public void com.novadart.novabill.web.gwt.ClientServiceImpl.remove(..)) && args(id);
+	pointcut remove(Long businessID, Long id) :
+		execution(public void com.novadart.novabill.web.gwt.ClientServiceImpl.remove(..)) && args(businessID, id);
 	
-	pointcut update(ClientDTO clientDTO) :
-		execution(public void com.novadart.novabill.web.gwt.ClientServiceImpl.update(..)) && args(clientDTO);
+	pointcut update(Long businessID, ClientDTO clientDTO) :
+		execution(public void com.novadart.novabill.web.gwt.ClientServiceImpl.update(..)) && args(businessID, clientDTO);
 	
-	after(ClientDTO clientDTO) returning (Long id) : add(clientDTO){
-		LOGGER.info("[{}, addClient, {}, id: {}, dto: {}]",
-				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(System.currentTimeMillis()), id,
+	after(Long businessID, ClientDTO clientDTO) returning (Long id) : add(businessID, clientDTO){
+		LOGGER.info("[{}, addClient, {}, businessID: {}, id: {}, dto: {}]",
+				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(System.currentTimeMillis()), businessID, id,
 							ReflectionToStringBuilder.toString(clientDTO, ToStringStyle.SHORT_PREFIX_STYLE)});
 	}
 	
-	after(Long id) returning : remove(id){
-		LOGGER.info("[{}, removeClient, {}, id: {}]",
-				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(System.currentTimeMillis()), id});
+	after(Long businessID, Long id) returning : remove(businessID, id){
+		LOGGER.info("[{}, removeClient, {}, businessID: {}, id: {}]",
+				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(System.currentTimeMillis()), businessID, id});
 	}
 	
-	after(ClientDTO clientDTO) : update(clientDTO){
-		LOGGER.info("[{}, updateClient, {}, dto: {}]",
-				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(System.currentTimeMillis()),
+	after(Long businessID, ClientDTO clientDTO) : update(businessID, clientDTO){
+		LOGGER.info("[{}, updateClient, {}, businessID: {}, dto: {}]",
+				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(System.currentTimeMillis()), businessID,
 							ReflectionToStringBuilder.toString(clientDTO, ToStringStyle.SHORT_PREFIX_STYLE)});
 	}
 
