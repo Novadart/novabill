@@ -105,6 +105,10 @@ public class Configuration {
 	public static BusinessDTO getBusiness() {
 		return business;
 	}
+	
+	public static Long getBusinessId() {
+		return business.getId();
+	}
 
 	public static void setBusiness(BusinessDTO business) {
 		Configuration.business = business;

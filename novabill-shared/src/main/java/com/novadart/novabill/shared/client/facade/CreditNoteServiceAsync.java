@@ -8,22 +8,26 @@ import com.novadart.novabill.shared.client.dto.PageDTO;
 
 public interface CreditNoteServiceAsync {
 
-	void getNextInvoiceDocumentID(AsyncCallback<Long> callback);
-
-	void get(long id, AsyncCallback<CreditNoteDTO> callback);
-
-	void getAllInRange(int start, int length,
-			AsyncCallback<PageDTO<CreditNoteDTO>> callback);
-
-	void getAllForClient(long id, AsyncCallback<List<CreditNoteDTO>> callback);
-
 	void add(CreditNoteDTO creditNoteDTO, AsyncCallback<Long> callback);
 
-	void remove(Long id, AsyncCallback<Void> callback);
+	void get(Long id, AsyncCallback<CreditNoteDTO> callback);
 
-	void update(CreditNoteDTO creditNoteDTO, AsyncCallback<Void> callback);
+	void getAll(Long businessID, AsyncCallback<List<CreditNoteDTO>> callback);
 
-	void getAllForClientInRange(long id, int start, int length,
+	void getAllForClient(Long clientID,
+			AsyncCallback<List<CreditNoteDTO>> callback);
+
+	void getAllForClientInRange(Long id, int start, int length,
 			AsyncCallback<PageDTO<CreditNoteDTO>> callback);
 
+	void getAllInRange(Long businessID, Integer start, Integer length,
+			AsyncCallback<PageDTO<CreditNoteDTO>> callback);
+
+	void getNextInvoiceDocumentID(AsyncCallback<Long> callback);
+
+	void remove(Long businessID, Long clientID, Long creditNoteID,
+			AsyncCallback<Void> callback);
+
+	void update(CreditNoteDTO creditNoteDTO, AsyncCallback<Void> callback);
+	
 }

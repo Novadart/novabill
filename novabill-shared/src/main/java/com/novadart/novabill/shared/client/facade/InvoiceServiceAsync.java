@@ -8,24 +8,28 @@ import com.novadart.novabill.shared.client.dto.PageDTO;
 
 public interface InvoiceServiceAsync {
 
-	void get(long id, AsyncCallback<InvoiceDTO> callback);
+	void add(InvoiceDTO invoiceDTO, AsyncCallback<Long> callback);
 
-	void getAllInRange(int start, int length,
+	void get(Long id, AsyncCallback<InvoiceDTO> callback);
+
+	void getAll(Long businessID, AsyncCallback<List<InvoiceDTO>> callback);
+
+	void getAllForClient(Long clientID, AsyncCallback<List<InvoiceDTO>> callback);
+
+	void getAllForClientInRange(Long clientID, Integer start, Integer length,
 			AsyncCallback<PageDTO<InvoiceDTO>> callback);
 
-	void update(InvoiceDTO invoiceDTO, AsyncCallback<Void> callback);
-
-	void getAllForClient(long id, AsyncCallback<List<InvoiceDTO>> callback);
-
-	void add(InvoiceDTO invoiceDTO, AsyncCallback<Long> callback);
+	void getAllInRange(Long businessID, Integer start, Integer length,
+			AsyncCallback<PageDTO<InvoiceDTO>> callback);
 
 	void getNextInvoiceDocumentID(AsyncCallback<Long> callback);
 
-	void remove(Long id, AsyncCallback<Void> callback);
+	void remove(Long businessID, Long clientID, Long id,
+			AsyncCallback<Void> callback);
 
-	void getAllForClientInRange(long id, int start, int length,
-			AsyncCallback<PageDTO<InvoiceDTO>> callback);
+	void setPayed(Long businessID, Long clientID, Long id, Boolean value,
+			AsyncCallback<Void> callback);
 
-	void setPayed(Long id, Boolean value, AsyncCallback<Void> callback);
+	void update(InvoiceDTO invoiceDTO, AsyncCallback<Void> callback);
 
 }

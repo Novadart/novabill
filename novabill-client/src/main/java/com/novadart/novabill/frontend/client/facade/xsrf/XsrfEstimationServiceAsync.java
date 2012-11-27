@@ -17,49 +17,12 @@ EstimationServiceAsync {
 	}
 	
 	@Override
-	public void get(final long id, final AsyncCallback<EstimationDTO> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<EstimationServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(EstimationServiceAsync service) {
-				service.get(id, callback);
-			}
-
-		});
-	}
-
-	@Override
 	public void add(final EstimationDTO estimationDTO, final AsyncCallback<Long> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate<EstimationServiceAsync>(callback) {
 
 			@Override
 			protected void performCall(EstimationServiceAsync service) {
 				service.add(estimationDTO, callback);
-			}
-
-		});
-	}
-
-	@Override
-	public void remove(final Long id, final AsyncCallback<Void> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<EstimationServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(EstimationServiceAsync service) {
-				service.remove(id, callback);
-			}
-
-		});
-	}
-
-	@Override
-	public void getAllForClient(final long clientId,
-			final AsyncCallback<List<EstimationDTO>> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<EstimationServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(EstimationServiceAsync service) {
-				service.getAllForClient(clientId, callback);
 			}
 
 		});
@@ -90,29 +53,80 @@ EstimationServiceAsync {
 	}
 	
 	@Override
-	public void getAllForClientInRange(final long id, final int start, final int length,
-			final AsyncCallback<PageDTO<EstimationDTO>> callback) {
+	public void get(final Long id, final AsyncCallback<EstimationDTO> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate<EstimationServiceAsync>(callback) {
 
 			@Override
 			protected void performCall(EstimationServiceAsync service) {
-				service.getAllForClientInRange(id, start, length, callback);
+				service.get(id, callback);
 			}
 
 		});
 	}
-
+	
 	@Override
-	public void getAllInRange(final int start, final int length,
+	public void getAll(final Long businessID,
+			final AsyncCallback<List<EstimationDTO>> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<EstimationServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(EstimationServiceAsync service) {
+				service.getAll(businessID, callback);
+			}
+
+		});
+	}
+	
+	@Override
+	public void getAllForClient(final Long clientID,
+			final AsyncCallback<List<EstimationDTO>> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<EstimationServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(EstimationServiceAsync service) {
+				service.getAllForClient(clientID, callback);
+			}
+
+		});
+	}
+	
+	@Override
+	public void getAllForClientInRange(final Long clientID, final int start, final int length,
 			final AsyncCallback<PageDTO<EstimationDTO>> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate<EstimationServiceAsync>(callback) {
 
 			@Override
 			protected void performCall(EstimationServiceAsync service) {
-				service.getAllInRange(start, length, callback);
+				service.getAllForClientInRange(clientID, start, length, callback);
 			}
 
 		});
 	}
+	
+	@Override
+	public void getAllInRange(final Long businessID, final int start, final int length,
+			final AsyncCallback<PageDTO<EstimationDTO>> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<EstimationServiceAsync>(callback) {
 
+			@Override
+			protected void performCall(EstimationServiceAsync service) {
+				service.getAllInRange(businessID, start, length, callback);
+			}
+
+		});
+	}
+	
+	@Override
+	public void remove(final Long businessID, final Long clientID, final Long id,
+			final AsyncCallback<Void> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<EstimationServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(EstimationServiceAsync service) {
+				service.remove(businessID, clientID, id, callback);
+			}
+
+		});
+	}
+	
 }

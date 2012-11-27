@@ -30,67 +30,6 @@ BusinessServiceAsync {
 	}
 
 	@Override
-	public void countClients(final AsyncCallback<Long> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(BusinessServiceAsync service) {
-				service.countClients(callback);
-			}
-
-		});
-	}
-
-	@Override
-	public void countInvoices(final AsyncCallback<Long> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(BusinessServiceAsync service) {
-				service.countInvoices(callback);
-			}
-			
-		});
-	}
-
-	@Override
-	public void countInvoicesForYear(final int year, final AsyncCallback<Long> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(BusinessServiceAsync service) {
-				service.countInvoicesForYear(year, callback);
-			}
-
-		});
-	}
-
-	@Override
-	public void getTotalAfterTaxesForYear(final int year,
-			final AsyncCallback<BigDecimal> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(BusinessServiceAsync service) {
-				service.getTotalAfterTaxesForYear(year, callback);
-			}
-
-		});
-	}
-
-	@Override
-	public void getStats(final AsyncCallback<BusinessStatsDTO> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(BusinessServiceAsync service) {
-				service.getStats(callback);
-			}
-
-		});
-	}
-	
-	@Override
 	public void generateExportToken(AsyncCallback<String> callback) {
 		getService().generateExportToken(callback);
 	}
@@ -100,4 +39,66 @@ BusinessServiceAsync {
 		getService().generatePDFToken(callback);
 	}
 
+	@Override
+	public void countClients(final Long businessID, final AsyncCallback<Long> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.countClients(businessID, callback);
+			}
+
+		});
+	}
+	
+	@Override
+	public void countInvoices(final Long businessID, final AsyncCallback<Long> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.countInvoices(businessID, callback);
+			}
+
+		});
+	}
+	
+	@Override
+	public void countInvoicesForYear(final Long BusinessID, final Integer year,
+			final AsyncCallback<Long> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.countInvoicesForYear(BusinessID, year, callback);
+			}
+
+		});
+	}
+	
+	@Override
+	public void getStats(final Long businessID,
+			final AsyncCallback<BusinessStatsDTO> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.getStats(businessID, callback);
+			}
+
+		});
+	}
+	
+	@Override
+	public void getTotalAfterTaxesForYear(final Long businessID, final Integer year,
+			final AsyncCallback<BigDecimal> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.getTotalAfterTaxesForYear(businessID, year, callback);
+			}
+
+		});
+	}
 }

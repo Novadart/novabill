@@ -24,6 +24,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
@@ -338,7 +339,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	@UiHandler("cancelClient")
 	void onCancelClientClicked(ClickEvent e){
 		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmClientDeletion())){
-			ServerFacade.client.remove(client.getId(), new WrappedAsyncCallback<Void>() {
+			ServerFacade.client.remove(Configuration.getBusinessId(), client.getId(), new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {

@@ -34,7 +34,7 @@ public class Novabill implements EntryPoint {
 			@Override
 			public void onSuccess(Void result) {
 				
-				ServerFacade.business.getStats(new WrappedAsyncCallback<BusinessStatsDTO>() {
+				ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
 
 					@Override
 					public void onSuccess(BusinessStatsDTO result) {

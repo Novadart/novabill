@@ -38,12 +38,12 @@ public class MainWidget extends Composite {
 	}
 
 	private static MainWidget instance;
-	
+
 	public static MainWidget getInstance() {
 		return instance;
 	}
 	@UiField DockLayoutPanel dockWidget;
-	
+
 	@UiField SimplePanel centerContainer;
 	@UiField SimplePanel westContainer;
 	@UiField HTML businessBanner;
@@ -56,18 +56,18 @@ public class MainWidget extends Composite {
 
 	public MainWidget() {
 		changePasswordAnchor = new Anchor(I18N.INSTANCE.changePassword(), Const.CHANGE_PASSWORD_URL);
-		
+
 		initWidget(uiBinder.createAndBindUi(this));
 		logout.setHref(GWT.getHostPageBaseURL()+"resources/j_spring_security_logout");
 		logoAnchor.setHref(GWT.getHostPageBaseURL());
-		
+
 		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
 
 			@Override
 			public void onDataUpdated(DATA data) {
 				switch (data) {
 				case STATS:
-					ServerFacade.business.getStats(new WrappedAsyncCallback<BusinessStatsDTO>() {
+					ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
 
 						@Override
 						public void onSuccess(BusinessStatsDTO result) {
@@ -82,11 +82,11 @@ public class MainWidget extends Composite {
 						}
 					});
 					break;
-					
+
 				case BUSINESS:
 					generateBusinessBanner();
 					break;
-					
+
 				default:
 					break;
 				}
@@ -95,14 +95,14 @@ public class MainWidget extends Composite {
 
 		generateBusinessBanner();
 		generateStats(Configuration.getStats());
-		
+
 		instance = this;
 	}
-	
+
 	public void setLargeView(){
 		dockWidget.setWidgetSize(westContainer, 15);
 	}
-	
+
 	public void setStandardView(){
 		dockWidget.setWidgetSize(westContainer, 25);
 	}
@@ -125,7 +125,7 @@ public class MainWidget extends Composite {
 	void onHomeClicked(ClickEvent e){
 		this.placeController.goTo(new HomePlace());
 	}
-	
+
 	@UiHandler("myData")
 	void onMyDataClicked(ClickEvent e){
 		this.placeController.goTo(new BusinessPlace());

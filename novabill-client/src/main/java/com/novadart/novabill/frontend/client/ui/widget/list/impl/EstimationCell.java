@@ -5,6 +5,7 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
@@ -107,7 +108,7 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 			return false;
 		}
 	}
-	
+
 	private boolean isClone(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement img = et.cast();
@@ -145,7 +146,7 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 			presenter.goTo(ep);
 		}
 	}
-	
+
 	private void onCloneClicked(final EstimationDTO estimation) {
 		ServerFacade.estimation.getNextEstimationId(new WrappedAsyncCallback<Long>() {
 
@@ -155,7 +156,7 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 					return;
 				}
 				SelectClientDialog dia = new SelectClientDialog(new SelectClientDialog.Handler() {
-					
+
 					@Override
 					public void onClientSelected(ClientDTO client) {
 						EstimationPlace ep = new EstimationPlace();
@@ -202,7 +203,7 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 
 	public void onDeleteClicked(EstimationDTO estimation) {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmEstimationDeletion())){
-			ServerFacade.estimation.remove(estimation.getId(), new WrappedAsyncCallback<Void>() {
+			ServerFacade.estimation.remove(Configuration.getBusinessId(), estimation.getClient().getId(), estimation.getId(), new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {

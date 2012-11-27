@@ -5,6 +5,7 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
@@ -25,7 +26,7 @@ public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
 	protected void renderVisible(
 			com.google.gwt.cell.client.Cell.Context context, CreditNoteDTO value,
 			SafeHtmlBuilder sb) {
-		
+
 		sb.appendHtmlConstant("<div class='main '>");
 		sb.appendHtmlConstant("<span class='id'>");
 		sb.append(value.getDocumentID());
@@ -132,7 +133,7 @@ public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
 
 	private void onDeleteClicked(CreditNoteDTO creditNote) {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmCreditNoteDeletion())){
-			ServerFacade.creditNote.remove(creditNote.getId(), new WrappedAsyncCallback<Void>() {
+			ServerFacade.creditNote.remove(Configuration.getBusinessId(), creditNote.getClient().getId(), creditNote.getId(), new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {
@@ -144,7 +145,7 @@ public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
 					Notification.showYesNoRequest(I18N.INSTANCE.errorServerCommunication());
 				}
 			});
-			
+
 		}
 
 	}

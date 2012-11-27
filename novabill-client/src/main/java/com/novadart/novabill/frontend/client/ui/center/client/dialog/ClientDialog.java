@@ -13,6 +13,7 @@ import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.gwtshared.client.validation.DefaultValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
@@ -180,7 +181,7 @@ public class ClientDialog extends Dialog {
 		contact.setPhone(contactPhone.getText());
 		
 		if(this.client == null) {
-			ServerFacade.client.add(client, new WrappedAsyncCallback<Long>() {
+			ServerFacade.client.add(Configuration.getBusinessId(), client, new WrappedAsyncCallback<Long>() {
 
 				@Override
 				public void onSuccess(Long result) {
@@ -196,7 +197,7 @@ public class ClientDialog extends Dialog {
 			});
 		} else {
 			
-			ServerFacade.client.update(client, new WrappedAsyncCallback<Void>() {
+			ServerFacade.client.update(Configuration.getBusinessId(), client, new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {

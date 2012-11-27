@@ -2,6 +2,7 @@ package com.novadart.novabill.frontend.client.ui.center.home;
 
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -14,7 +15,7 @@ public class EstimationDataProvider extends AsyncDataProvider<EstimationDTO> {
 		final int start = 0;
 		final int length = display.getVisibleRange().getLength();
 		
-		ServerFacade.estimation.getAllInRange(start, length, new WrappedAsyncCallback<PageDTO<EstimationDTO>>() {
+		ServerFacade.estimation.getAllInRange(Configuration.getBusinessId(), start, length, new WrappedAsyncCallback<PageDTO<EstimationDTO>>() {
 
 			@Override
 			public void onSuccess(PageDTO<EstimationDTO> result) {
