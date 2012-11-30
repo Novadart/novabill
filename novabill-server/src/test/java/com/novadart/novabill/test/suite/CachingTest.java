@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -435,6 +436,19 @@ public class CachingTest extends GWTServiceTest {
 		
 		List<TransportDocumentDTO> nonCachedResult = transDocService.getAll(businessID);
 		assertTrue(result != nonCachedResult);
+	}
+	
+	@Test
+	public void invoiceGetAllUnauthorizedTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		List<InvoiceDTO> result = invoiceService.getAll(authenticatedPrincipal.getBusiness().getId());
+		boolean accessDeniedException = false;
+		try {
+			invoiceService.getAll(getUnathorizedBusinessID());
+		} catch (Exception e) {
+			accessDeniedException = true;
+		}
+		List<InvoiceDTO> cachedResult = invoiceService.getAll(authenticatedPrincipal.getBusiness().getId());
+		assertTrue(accessDeniedException && result == cachedResult);
 	}
 
 }
