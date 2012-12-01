@@ -175,5 +175,13 @@
 	<bean class="com.novadart.novabill.aspect.logging.EstimationServiceActionsAspect"
 		factory-method="aspectOf">
 	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.logging.CreditNoteServiceActionsAspect"
+		factory-method="aspectOf">
+	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.logging.TransportDocumentServiceActionsAspect"
+		factory-method="aspectOf">
+	</bean>
 
 </beans>
