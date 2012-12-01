@@ -259,8 +259,11 @@
 		
 		<testResources>
 			<testResource>
-				<directory>src/main/resources</directory>
+				<directory>src/main/resources/META-INF/</directory>
 				<filtering>true</filtering>
+			</testResource>
+			<testResource>
+				<directory>src/test/resources/</directory>
 			</testResource>
 		</testResources>
 
