@@ -5,6 +5,7 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
@@ -204,7 +205,7 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 
 	public void onDeleteClicked(TransportDocumentDTO transportDocument) {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmTransportDocumentDeletion())){
-			ServerFacade.transportDocument.remove(transportDocument.getId(), new WrappedAsyncCallback<Void>() {
+			ServerFacade.transportDocument.remove(Configuration.getBusinessId(), transportDocument.getClient().getId(), transportDocument.getId(), new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {

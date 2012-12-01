@@ -228,7 +228,7 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 
 	private void onDeleteClicked(InvoiceDTO invoice) {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmInvoiceDeletion())){
-			ServerFacade.invoice.remove(invoice.getId(), new WrappedAsyncCallback<Void>() {
+			ServerFacade.invoice.remove(Configuration.getBusinessId(), invoice.getClient().getId(), invoice.getId(), new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {
@@ -246,7 +246,7 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 	}
 
 	private void onPayedSwitchClicked(InvoiceDTO invoice) {
-		ServerFacade.invoice.setPayed(invoice.getId(), !invoice.getPayed(), new WrappedAsyncCallback<Void>() {
+		ServerFacade.invoice.setPayed(Configuration.getBusinessId(), invoice.getClient().getId(), invoice.getId(), !invoice.getPayed(), new WrappedAsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {

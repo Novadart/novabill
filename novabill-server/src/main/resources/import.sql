@@ -6,4 +6,4 @@ insert into principal (id, username, password, version, business) values (2, 'ri
 insert into principal_granted_roles (principal, granted_roles) values (2, 0);
 insert into client (address, city, country, email, fax, mobile, name, phone, postcode, province, ssn, vatid, version, web, business, id, contact_first_name, contact_last_name, contact_email, contact_phone, contact_fax, contact_mobile) values ('via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', 'IT', '', '', '', 'The mighty company from this Young Entrepreneur', '', '42837', 'PD', '', 'IT04235756211', 1, '', 1, 3, '', '', '', '', '', '');
 --insert into client (address, city, country, email, fax, mobile, name, phone, postcode, province, ssn, vatid, version, web, business, id) values ('via Oca, 22', 'La Grande Città', 'Francia', '', '', '', 'Perin S.r.l.', '', '31040', 'PD', '', '0408523132', 1, '', 1, 3);
-select setval('hibernate_sequence', 6);
+alter sequence hibernate_sequence restart with 6;

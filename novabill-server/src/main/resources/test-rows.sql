@@ -197,5 +197,45 @@ insert into abstract_invoice (payed, payment_due_date, payment_type, id) values 
 insert into invoice (id, business, client) values (126, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (127, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 126);
 
-select setval('hibernate_sequence', 128);
+--creating one client for second registered business
+insert into client (address, city, country, email, fax, mobile, name, phone, postcode, province, ssn, vatid, version, web, business, id, contact_first_name, contact_last_name, contact_email, contact_phone, contact_fax, contact_mobile) values ('via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', 'IT', '', '', '', 'The mighty company from this Young Entrepreneur', '', '42837', 'PD', '', 'IT04235756211', 1, '', 2, 128, '', '', '', '', '', '');
 
+--creating one invoice for second registered business
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (129, '2012-10-20', 2012, 25, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 129);
+insert into invoice (id, business, client) values (129, 2, 128);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (129, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 126);
+
+--creating creditnote for first registered business
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (130, '2012-10-20', 2012, 1, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 130);
+insert into credit_note (id, business, client) values (130, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (131, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 130);
+
+--creating creditnote for second registered business
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (132, '2012-10-20', 2012, 1, '', '', 121.0, 100.0, 21.0, 1);
+insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 132);
+insert into credit_note (id, business, client) values (132, 2, 128);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (133, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 132);
+
+--creating estimation for first registered business
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (134, '2012-10-20', 2012, 1, '', '', 121.0, 100.0, 21.0, 1);
+insert into estimation (limitations, valid_till, id, business, client) values ('', '2012-11-20', 134, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (135, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 134);
+
+--creating estimation for second registered business
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (136, '2012-10-20', 2012, 1, '', '', 121.0, 100.0, 21.0, 1);
+insert into estimation (limitations, valid_till, id, business, client) values ('', '2012-11-20', 136, 2, 128);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (137, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 136);
+
+--creating transport document for first registered business
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (138, '2012-10-20', 2012, 1, '', '', 121.0, 100.0, 21.0, 1);
+insert into transport_document (from_company_name, from_street, from_city, from_postcode, from_province, from_country, to_company_name, to_street, to_city, to_postcode, to_province, to_country, number_of_packages, trade_zone, transport_start_date, transportation_responsibility, transporter, id, business, client) values ('Novadart S.n.c. di Giordano Battilana & C.', 'via Stradone, 51', 'Campo San Martino', '35010', 'PD', 'IT', 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT', 1 , '', '2012-10-20', '', '', 138, 1, 3);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (139, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 138);
+
+--creating transport document for the second registered business
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (140, '2012-10-20', 2012, 1, '', '', 121.0, 100.0, 21.0, 1);
+insert into transport_document (from_company_name, from_street, from_city, from_postcode, from_province, from_country, to_company_name, to_street, to_city, to_postcode, to_province, to_country, number_of_packages, trade_zone, transport_start_date, transportation_responsibility, transporter, id, business, client) values ('Novadart S.n.c. di Giordano Battilana & C.', 'via Stradone, 51', 'Campo San Martino', '35010', 'PD', 'IT', 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT', 1 , '', '2012-10-20', '', '', 140, 2, 128);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (141, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 140);
+
+alter sequence hibernate_sequence restart with 142;

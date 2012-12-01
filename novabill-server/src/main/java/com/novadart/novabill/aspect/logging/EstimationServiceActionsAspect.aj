@@ -21,8 +21,8 @@ public aspect EstimationServiceActionsAspect {
 	pointcut add(EstimationDTO estimationDTO) : 
 		execution(public Long com.novadart.novabill.web.gwt.EstimationServiceImpl.add(..)) && args(estimationDTO);
 	
-	pointcut remove(Long id) : 
-		execution(public void com.novadart.novabill.web.gwt.EstimationServiceImpl.remove(..)) && args(id);
+	pointcut remove(Long businessID, Long clientID, Long id) : 
+		execution(public void com.novadart.novabill.web.gwt.EstimationServiceImpl.remove(..)) && args(businessID, clientID, id);
 	
 	pointcut update(EstimationDTO estimationDTO) : 
 		execution(public void com.novadart.novabill.web.gwt.EstimationServiceImpl.update(..)) && args(estimationDTO);
@@ -34,9 +34,9 @@ public aspect EstimationServiceActionsAspect {
 							ReflectionToStringBuilder.toString(estimationDTO, ToStringStyle.SHORT_PREFIX_STYLE)});
 	}
 	
-	after(Long id) : remove(id){
-		LOGGER.info("[{}, removeEstimation, {}, id: {}]",
-				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(System.currentTimeMillis()), id});
+	after(Long businessID, Long clientID, Long id) : remove(businessID, clientID, id){
+		LOGGER.info("[{}, removeEstimation, {}, businessID: {}, clientID: {}, id: {}]",
+				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(System.currentTimeMillis()), businessID, clientID, id});
 	}
 	
 	after(EstimationDTO estimationDTO) returning : update(estimationDTO){

@@ -11,11 +11,17 @@ public enum Field {
 	//Invoice fields
 	paymentType, paymentDueDate, payed,
 	
+	//Estimation
+	limitations, validTill,
+	
 	//TransportDocument fromEndpoint fields
 	fromEndpoint_companyName, fromEndpoint_street, fromEndpoint_postcode, fromEndpoint_city, fromEndpoint_province, fromEndpoint_country,
 	
 	//TransportDocument toEndpoint fields
 	toEndpoint_companyName, toEndpoint_street, toEndpoint_postcode, toEndpoint_city, toEndpoint_province, toEndpoint_country,
+	
+	//Transport document fields
+	transporter, transportationResponsibility, tradeZone, transportStartDate, numberOfPackages,
 	
 	//Business and Client fields
 	name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatID, ssn, 

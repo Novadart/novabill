@@ -2,6 +2,7 @@ package com.novadart.novabill.frontend.client.ui.center.home;
 
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -14,7 +15,7 @@ public class InvoiceDataProvider extends AsyncDataProvider<InvoiceDTO> {
 		final int start = 0;
 		final int length = display.getVisibleRange().getLength();
 		
-		ServerFacade.invoice.getAllInRange(start, length, new WrappedAsyncCallback<PageDTO<InvoiceDTO>>() {
+		ServerFacade.invoice.getAllInRange(Configuration.getBusinessId(), start, length, new WrappedAsyncCallback<PageDTO<InvoiceDTO>>() {
 
 			@Override
 			public void onSuccess(PageDTO<InvoiceDTO> result) {

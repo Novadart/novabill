@@ -68,7 +68,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
     @ManyToOne
     protected Client client;
     
-    public static Integer countTransportDocumentsForClient(Long id){
+    public static Long countTransportDocumentsForClient(Long id){
     	return countForClient(TransportDocument.class, id);
     }
     

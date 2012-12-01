@@ -21,14 +21,14 @@ public aspect InvoiceServiceActionsAspect {
 	pointcut add(InvoiceDTO invoiceDTO) : 
 		execution(public Long com.novadart.novabill.web.gwt.InvoiceServiceImpl.add(..)) && args(invoiceDTO);
 	
-	pointcut remove(Long id) : 
-		execution(public void com.novadart.novabill.web.gwt.InvoiceServiceImpl.remove(..)) && args(id);
+	pointcut remove(Long businessID, Long clientID, Long id) : 
+		execution(public void com.novadart.novabill.web.gwt.InvoiceServiceImpl.remove(..)) && args(businessID, clientID, id);
 	
 	pointcut update(InvoiceDTO invoiceDTO) : 
 		execution(public void com.novadart.novabill.web.gwt.InvoiceServiceImpl.update(..)) && args(invoiceDTO);
 	
-	pointcut setPayed(Long id, Boolean value) : 
-		execution(public void com.novadart.novabill.web.gwt.InvoiceServiceImpl.setPayed(..)) && args(id, value);
+	pointcut setPayed(Long businessID, Long clientID, Long id, Boolean value) : 
+		execution(public void com.novadart.novabill.web.gwt.InvoiceServiceImpl.setPayed(..)) && args(businessID, clientID, id, value);
 	
 	after(InvoiceDTO invoiceDTO) returning (Long id) : add(invoiceDTO){
 		LOGGER.info("[{}, addInvoice, {}, id: {}, dto: {}]",
@@ -36,9 +36,9 @@ public aspect InvoiceServiceActionsAspect {
 							ReflectionToStringBuilder.toString(invoiceDTO, ToStringStyle.SHORT_PREFIX_STYLE)});
 	}
 	
-	after(Long id) : remove(id){
-		LOGGER.info("[{}, removeInvoice, {}, id: {}]",
-				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(System.currentTimeMillis()), id});
+	after(Long businessID, Long clientID, Long id) : remove(businessID, clientID, id){
+		LOGGER.info("[{}, removeInvoice, {}, businessID: {}, clientID: {}, id: {}]",
+				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(System.currentTimeMillis()), businessID, clientID, id});
 	}
 	
 	after(InvoiceDTO invoiceDTO) returning : update(invoiceDTO){
@@ -47,9 +47,9 @@ public aspect InvoiceServiceActionsAspect {
 				ReflectionToStringBuilder.toString(invoiceDTO, ToStringStyle.SHORT_PREFIX_STYLE)});
 	}
 	
-	after(Long id, Boolean value) returning : setPayed(id, value){
-		LOGGER.info("[{}, setPayed, {}, id: {}, value: {}]",
-				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(System.currentTimeMillis()), id, value});
+	after(Long businessID, Long clientID, Long id, Boolean value) returning : setPayed(businessID, clientID, id, value){
+		LOGGER.info("[{}, setPayed, {}, businessID: {}, clientID: {}, id: {}, value: {}]",
+				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(System.currentTimeMillis()), businessID, clientID, id, value});
 	}
 
 }

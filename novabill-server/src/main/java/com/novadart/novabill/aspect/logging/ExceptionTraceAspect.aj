@@ -24,7 +24,17 @@ public aspect ExceptionTraceAspect extends AbstractLogEventEmailSenderAspect {
 	@Autowired
 	private UtilsService utilsService;
 	
-	pointcut exceptionTraced(): execution(* *.*(..)) && within(com.novadart.novabill..*) && !within(ExceptionTraceAspect);
+	private boolean loggingOn;
+	
+	public boolean isLoggingOn() {
+		return loggingOn;
+	}
+
+	public void setLoggingOn(boolean turnOnLogging) {
+		this.loggingOn = turnOnLogging;
+	}
+
+	pointcut exceptionTraced(): execution(* *.*(..)) && within(com.novadart.novabill..*) && !within(ExceptionTraceAspect) && !within(com.novadart.novabill.test..*);
 	
 	private String getArgsMesssage(JoinPoint joinPoint){
 		Object[] args = joinPoint.getArgs();
@@ -42,7 +52,7 @@ public aspect ExceptionTraceAspect extends AbstractLogEventEmailSenderAspect {
 	}
 	
 	after() throwing(Throwable ex): exceptionTraced(){
-		if(lastLoggedException.get() != ex){
+		if(loggingOn && lastLoggedException.get() != ex){
 			lastLoggedException.set(ex);
 			Signature signature = thisJoinPointStaticPart.getSignature();
 			String principal = utilsService.isAuthenticated()? utilsService.getAuthenticatedPrincipalDetails().getUsername(): "anonymous";

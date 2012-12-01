@@ -37,7 +37,7 @@ public class Estimation extends AccountingDocument implements Serializable {
     @ManyToOne
     protected Client client;
     
-	public static Integer countEstimationsForClient(Long id){
+	public static Long countEstimationsForClient(Long id){
     	return countForClient(Estimation.class, id);
     }
     

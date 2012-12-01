@@ -12,11 +12,11 @@ public class PageDTO<T> implements IsSerializable {
 	
 	private Integer length;
 	
-	private Integer total;
+	private Long total;
 	
 	public PageDTO(){}
 	
-	public PageDTO(List<T> items, Integer offset, Integer length, Integer total) {
+	public PageDTO(List<T> items, Integer offset, Integer length, Long total) {
 		this.items = items;
 		this.offset = offset;
 		this.length = length;
@@ -47,11 +47,11 @@ public class PageDTO<T> implements IsSerializable {
 		this.length = length;
 	}
 
-	public Integer getTotal() {
+	public Long getTotal() {
 		return total;
 	}
 
-	public void setTotal(Integer total) {
+	public void setTotal(Long total) {
 		this.total = total;
 	}
 
