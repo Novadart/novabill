@@ -1,6 +1,7 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;

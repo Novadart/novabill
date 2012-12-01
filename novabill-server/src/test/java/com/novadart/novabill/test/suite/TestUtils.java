@@ -1,26 +1,21 @@
 package com.novadart.novabill.test.suite;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import com.novadart.novabill.domain.AbstractInvoice;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
-import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.TransportDocument;
-import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
-import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
-import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
-import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
