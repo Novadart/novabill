@@ -9,7 +9,7 @@ import com.novadart.novabill.domain.Business;
 @MailMixin
 public class PayPalSubscriptionIPNHandlerService extends PayPalIPNHandlerService{
 	
-	private static final String SIGNUP = "subscr_signup";
+//	private static final String SIGNUP = "subscr_signup";
 	
 	private static final String SUBSCRIPTION_PAYMENT = "subscr_payment";
 

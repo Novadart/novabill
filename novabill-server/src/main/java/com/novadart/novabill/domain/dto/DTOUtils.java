@@ -92,7 +92,7 @@ public class DTOUtils {
 	}
 	
 	public static <E> List<E> range(List<E> list, Integer start, Integer length){
-		return list.subList(start, Math.min(start + length, list.size()));
+		return new ArrayList<E>(list.subList(start, Math.min(start + length, list.size())));
 	}
 
 
