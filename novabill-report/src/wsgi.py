@@ -9,7 +9,7 @@ from core import create_doc
 def process_input_parameters(request):
     form = request.POST
     params = dict()
-    params["docData"] = json.loads(form["docData"]) #decode json
+    params["docData"] = json.loads(form["docData"].decode("unicode-escape")) #decode json
     if "logoData" in form:
         _, logoFPath = tempfile.mkstemp()
         with open(logoFPath) as f:
