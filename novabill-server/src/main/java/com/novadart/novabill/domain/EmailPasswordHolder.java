@@ -21,6 +21,10 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.Hash;
 
+/*
+ * EmailPasswordHolder class is a superclass of entities that need to store
+ * email, password, confirmPassord, and expiration data.
+ */
 @Configurable
 @Entity
 @Inheritance(strategy = InheritanceType.SINGLE_TABLE)

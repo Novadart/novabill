@@ -11,6 +11,10 @@ import org.springframework.stereotype.Service;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 
+/*
+ * SimpleValidator service class is responsible for checking if the passed object adheres
+ * to the constraints specified by javax.validation annotations --- JSR-303 validation.
+ */
 @Service
 public class SimpleValidator {
 	

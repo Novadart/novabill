@@ -1,7 +1,6 @@
 package com.novadart.novabill.web.mvc;
 
 import java.util.Date;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -16,6 +15,14 @@ import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
 
+/*
+ * ActivateAccountController controller method handles the activation of previously made
+ * registration request. The registration data is identified by the email address and the
+ * activation token. In order to activate the account the user click on a link sent via email
+ * that leads to the activation page where the password needs to be re-entered. Upon
+ * submitting the activation request data is validated for correctness and principal and 
+ * associated business objects are created. 
+ */
 @Controller
 @RequestMapping("/activate")
 @SessionAttributes({"registration"})
@@ -25,18 +32,15 @@ public class ActivateAccountController {
 	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model){
 		if(Principal.findByUsername(email) != null) //registered user already exists
 			return "invalidActivationRequest";
-		try {
-			Registration registration = Registration.findRegistration(email, token);
+		for(Registration registration: Registration.findRegistrations(email, token)){
 			if(registration.getExpirationDate().before(new Date())){ //expired
 				registration.remove();
-				return "invalidActivationRequest";
+				continue;
 			}
 			model.addAttribute("registration", registration);
-			
-		} catch (EmptyResultDataAccessException e) {
-			return "invalidActivationRequest";
+			return "activate";
 		}
-		return "activate";
+		return "invalidActivationRequest";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -48,7 +52,7 @@ public class ActivateAccountController {
 		if(!activationRequest.getPassword().equals(registration.getPassword())){
 			model.addAttribute("wrongPassword", true);
 			return "activate";
-		}
+ 		}
 		Principal principal = new Principal(registration);
 		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
 		Business business = new Business();

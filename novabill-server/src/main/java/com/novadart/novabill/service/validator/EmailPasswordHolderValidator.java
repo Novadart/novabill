@@ -6,6 +6,11 @@ import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
 import com.novadart.novabill.domain.EmailPasswordHolder;
 
+/*
+ * EmailPasswordHolderValidator service class validates EmailPasswordHolder entities.
+ * Validation amounts to checking the min/max requirements for password length and
+ * equality between password field and confirmPassword field.
+ */
 @Service
 public class EmailPasswordHolderValidator {
 	

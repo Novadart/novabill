@@ -6,6 +6,11 @@ import org.springframework.validation.Errors;
 import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
 
+/*
+ * RegistrationValidator service class validates Registration entities. Registration
+ * entity must be a valid EmailPasswordHolder entity and it should not hold the email
+ * of an existing user.
+ */
 @Service
 public class RegistrationValidator {
 	

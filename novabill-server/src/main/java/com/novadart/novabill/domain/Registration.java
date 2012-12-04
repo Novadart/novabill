@@ -8,17 +8,21 @@ import javax.persistence.PersistenceContext;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+
+/*
+ * Registration class holds the data of a account registration request.
+ */
 @Configurable
 @Entity
 public class Registration extends EmailPasswordHolder implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
-	public static Registration findRegistration(String email, String token){
+	public static List<Registration> findRegistrations(String email, String token){
 		String query = "select registration from Registration registration where registration.email = :email and registration.activationToken = :token";
 		return entityManager().createQuery(query, Registration.class)
 				.setParameter("email", email)
-				.setParameter("token", token).getSingleResult();
+				.setParameter("token", token).getResultList();
 	}
 	
 	@Override
