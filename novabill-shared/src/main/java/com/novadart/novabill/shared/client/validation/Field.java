@@ -1,5 +1,9 @@
 package com.novadart.novabill.shared.client.validation;
 
+/*
+ * Field enumeration is the shared vocabulary of field identifiers between the server and the GWT client.
+ * Field identifiers denote the fields whose values violate the validation constraints.
+ */
 public enum Field {
 	//Accounting document fields
 	documentID, accountingDocumentDate, accountingDocumentYear, note, paymentNote, total, totalTax, totalBeforeTax,

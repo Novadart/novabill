@@ -18,10 +18,10 @@ import com.novadart.novabill.domain.security.RoleType;
 /*
  * ActivateAccountController controller method handles the activation of previously made
  * registration request. The registration data is identified by the email address and the
- * activation token. In order to activate the account the user click on a link sent via email
+ * activation token. In order to activate the account the user clicks on a link sent via email
  * that leads to the activation page where the password needs to be re-entered. Upon
- * submitting the activation request data is validated for correctness and principal and 
- * associated business objects are created. 
+ * submitting the activation request data is validated for correctness and a principal and 
+ * an associated business objects are created. 
  */
 @Controller
 @RequestMapping("/activate")

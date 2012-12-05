@@ -18,6 +18,20 @@ import com.novadart.novabill.shared.client.validation.ErrorCode;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
 
+/*
+ * ConstraintViolationToApplicationErrorMapper service class maps validation errors
+ * to error codes ({@link com.novadart.novabill.shared.client.validation.ErrorCode})
+ * that are understood by the GWT client. Care must be taken to ensure that property
+ * paths of offending fields are known to the ConstraintViolationToApplicationErrorMapper
+ * (specified in {@link com.novadart.novabill.shared.client.validation.Field}). The
+ * translation from property path to {@link com.novadart.novabill.shared.client.validation.ErrorCode}
+ * is straight forward: each doth '.' along the path is replaced with '_'. For example,
+ * 'contact.name' field from TransportDocument is mapped to 'contact_name'. In case of
+ * validation error in accounting document item field additional information, namely the index,
+ * is provided.  For example if the offending field is 'accountingDocumentItems[0].description'
+ * this path is mapped to 'accountingDocumentItems_description' and the index 0 is passed
+ * as additional parameter.
+ */
 @Service
 public class ConstraintViolationToApplicationErrorMapper {
 	

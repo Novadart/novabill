@@ -4,6 +4,13 @@ import java.io.Serializable;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
+/*
+ * ErrorObject object holds the information for a single validation error
+ * ({@link ErrorCode}) of a field ({@link Field}). In case the field belongs
+ * to an object placed in an array(s) the index(es) is also provided - for
+ * example, this can happen for accounting document items. 
+ * 
+ */
 public class ErrorObject implements Serializable, IsSerializable {
 	
 	/**

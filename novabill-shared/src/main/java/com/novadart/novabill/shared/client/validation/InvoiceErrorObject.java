@@ -2,6 +2,10 @@ package com.novadart.novabill.shared.client.validation;
 
 import java.util.List;
 
+/*
+ * InvoiceErrorObject is a subclass of {@link ErrorObject} that holds some
+ * validation errors specific for Invoices. 
+ */
 public class InvoiceErrorObject extends ErrorObject {
 
 	/**
