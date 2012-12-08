@@ -7,6 +7,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
+<link rel="shortcut icon" type="image/png" href="images/favicon.png"></link>
 <title><spring:message code="application_name"></spring:message></title>
 <link rel="stylesheet" type="text/css" href="css/reset-min.css" />
 <link rel="stylesheet" type="text/css" href="css/common.css" />
