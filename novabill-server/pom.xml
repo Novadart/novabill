@@ -400,6 +400,23 @@
 			</build>
 		</profile>
 		<profile>
+			<id>autobuild</id>
+			<build>
+				<filters>
+					<filter>profiles/autobuild.properties</filter>
+				</filters>
+				<plugins>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-war-plugin</artifactId>
+						<configuration>
+							<classifier>staging</classifier>
+						</configuration>
+					</plugin>
+				</plugins>
+			</build>
+		</profile>
+		<profile>
 			<id>production</id>
 			<build>
 				<filters>
