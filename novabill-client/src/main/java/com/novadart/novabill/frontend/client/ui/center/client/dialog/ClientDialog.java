@@ -10,7 +10,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.dialog.Dialog;
-import com.novadart.gwtshared.client.validation.DefaultValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
@@ -21,6 +20,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.ui.widget.validation.AlternativeSsnVatIdValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
@@ -65,17 +65,20 @@ public class ClientDialog extends Dialog {
 	
 	@UiField Button ok;
 	
+	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation(); 
+	
 	private ClientDTO client = null;
 
 	private ClientDialog() {
 		companyName = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
 		
-//		TODO see ticket #363
-//		vatID =  new ValidatedTextBox(new VatIdValidation(true));
-//		ssn =  new ValidatedTextBox(new SsnOrVatIdValidation(true));
-//		postcode = new ValidatedTextBox(new PostcodeValidation());
-		vatID =  new ValidatedTextBox(ValidationKit.NOT_EMPTY);
-		ssn =  new ValidatedTextBox(ValidationKit.NOT_EMPTY);
+		vatID =  new ValidatedTextBox(ValidationKit.VAT_ID);
+		vatID.setShowMessageOnError(false);
+		ssn =  new ValidatedTextBox(ValidationKit.SSN_OR_VAT_ID);
+		ssn.setShowMessageOnError(false);
+		ssnOrVatIdValidation.addWidget(vatID);
+		ssnOrVatIdValidation.addWidget(ssn);
+		
 		postcode = new ValidatedTextBox(ValidationKit.NUMBER);
 		
 		address = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
@@ -89,10 +92,9 @@ public class ClientDialog extends Dialog {
 		contactMobile = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
 		contactFax = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
 		
-		DefaultValidation<String> dv = new DefaultValidation<String>();
-		web = new ValidatedTextBox(dv);
-		contactName = new ValidatedTextBox(dv);
-		contactSurname = new ValidatedTextBox(dv);
+		web = new ValidatedTextBox(ValidationKit.DEFAULT);
+		contactName = new ValidatedTextBox(ValidationKit.DEFAULT);
+		contactSurname = new ValidatedTextBox(ValidationKit.DEFAULT);
 
 		email = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
 		contactEmail = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
@@ -221,20 +223,35 @@ public class ClientDialog extends Dialog {
 	
 	@UiHandler("country")
 	void onCountryChange(ChangeEvent event){
-		province.setEnabled(country.getSelectedItemValue().equalsIgnoreCase("IT"));
+		boolean isIT = country.getSelectedItemValue().equalsIgnoreCase("IT");
+		province.setEnabled(isIT);
 		province.reset();
+		setVatIdSsnValidation(isIT);
+	}
+	
+	private void setVatIdSsnValidation(boolean activate){
+		if(activate){
+			ssn.setValidationBundle(ValidationKit.SSN_OR_VAT_ID);
+			vatID.setValidationBundle(ValidationKit.VAT_ID);
+		} else {
+			ssn.setValidationBundle(ValidationKit.NOT_EMPTY);
+			vatID.setValidationBundle(ValidationKit.NOT_EMPTY);
+		}
 	}
 
 	private void clearData(){
 		client = null;
+		setVatIdSsnValidation(true);
 		province.reset();
 		web.setText("");
-		for (ValidatedTextBox tb: new ValidatedTextBox[]{vatID, companyName, 
-				ssn, postcode, phone, mobile, fax, email, address, city, web,
+		for (ValidatedTextBox tb: new ValidatedTextBox[]{companyName, 
+				postcode, phone, mobile, fax, email, address, city, web,
 				contactEmail, contactFax, contactMobile, contactName, contactPhone,
 				contactSurname}){
 			tb.reset();
 		}
+		ssnOrVatIdValidation.reset();
+		
 		province.setEnabled(true);
 		province.reset();
 		country.reset();
@@ -248,19 +265,11 @@ public class ClientDialog extends Dialog {
 		inlineNotification.hide();
 		
 		//TODO fix validation, ticket #367
-		ssn.validate();
-		vatID.validate();
-		if(!vatID.isValid() && !ssn.isValid()){
-			inlineNotification.showMessage(I18N.INSTANCE.fillVatIdOrSsn());
-			ssn.setValidationErrorStyle();
-			vatID.setValidationErrorStyle();
+		ssnOrVatIdValidation.validate();
+		if(!ssnOrVatIdValidation.isValid()){
+			inlineNotification.showMessage(ssnOrVatIdValidation.getErrorMessage());
 			isValid = false;
-		} else {
-			ssn.setValidationOkStyle();
-			vatID.setValidationOkStyle();
 		}
-		ssn.hideMessage();
-		vatID.hideMessage();
 		
 		for (ValidatedTextBox tb: new ValidatedTextBox[]{companyName, 
 				postcode, phone, mobile, fax, email, address, city, web,

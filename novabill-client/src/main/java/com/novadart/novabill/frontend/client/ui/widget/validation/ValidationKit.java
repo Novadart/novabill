@@ -65,8 +65,6 @@ public class ValidationKit {
 
 	public static final SsnOrVatIdValidation SSN_OR_VAT_ID = new SsnOrVatIdValidation();
 
-	public static final SsnOrVatIdValidation OPTIONAL_SSN_OR_VAT_ID = new SsnOrVatIdValidation(true);
-
 	public static final SsnValidation SSN = new SsnValidation() {
 
 		@Override

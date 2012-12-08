@@ -13,6 +13,7 @@ import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.notification.InlineNotification;
+import com.novadart.novabill.frontend.client.ui.widget.validation.AlternativeSsnVatIdValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.ValidationKit;
 import com.novadart.novabill.frontend.client.util.CountryUtils;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
@@ -45,14 +46,21 @@ public class BootstrapDialog extends Dialog {
 	@UiField(provided=true) RichTextBox web;
 
 	@UiField InlineNotification inlineNotification;
-
+	
+	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation(); 
 	private Handler handler;
 
 	public BootstrapDialog() {
 		super(false);
 		name = new RichTextBox(I18N.INSTANCE.companyName(), ValidationKit.NOT_EMPTY);
-		ssn = new RichTextBox(I18N.INSTANCE.ssn(), ValidationKit.OPTIONAL_SSN_OR_VAT_ID);
+		
+		ssn = new RichTextBox(I18N.INSTANCE.ssn(), ValidationKit.SSN_OR_VAT_ID);
+		ssn.setShowMessageOnError(false);
 		vatID = new RichTextBox(I18N.INSTANCE.vatID(), ValidationKit.OPTIONAL_VAT_ID);
+		vatID.setShowMessageOnError(false);
+		ssnOrVatIdValidation.addWidget(ssn);
+		ssnOrVatIdValidation.addWidget(vatID);
+		
 		address = new RichTextBox(I18N.INSTANCE.address(), ValidationKit.NOT_EMPTY);
 		city = new RichTextBox(I18N.INSTANCE.city(), ValidationKit.NOT_EMPTY);
 		province = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province()); 
@@ -72,27 +80,11 @@ public class BootstrapDialog extends Dialog {
 		boolean valid = true;
 		inlineNotification.hide();
 
-		ssn.validate();
-		vatID.validate();
-		boolean ssnVatIdValid = true;
-		if(ssn.getText().isEmpty() && vatID.getText().isEmpty()){
-			ssnVatIdValid = false;
-		} else {
-			ssnVatIdValid = vatID.isValid() && ssn.isValid();
-		}
-		
-		if(ssnVatIdValid){
-			ssn.setValidationOkStyle();
-			vatID.setValidationOkStyle();
-		} else {
-			inlineNotification.showMessage(I18N.INSTANCE.fillVatIdOrSsn());
-			ssn.setValidationErrorStyle();
-			vatID.setValidationErrorStyle();
+		ssnOrVatIdValidation.validate();
+		if(!ssnOrVatIdValidation.isValid()){
+			inlineNotification.showMessage(ssnOrVatIdValidation.getErrorMessage());
 			valid = false;
 		}
-		
-		ssn.hideMessage();
-		vatID.hideMessage();
 
 		for (RichTextBox r : new RichTextBox[]{name, address, city, 
 				postcode, phone, email, mobile, fax, web}) {

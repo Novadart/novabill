@@ -28,6 +28,7 @@ import com.novadart.novabill.frontend.client.ui.center.BusinessView;
 import com.novadart.novabill.frontend.client.ui.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.ui.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.ui.widget.validation.AlternativeSsnVatIdValidation;
 import com.novadart.novabill.frontend.client.ui.widget.validation.ValidationKit;
 import com.novadart.novabill.frontend.client.util.ExportUtils;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
@@ -64,6 +65,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	@UiField ValidatedTextBox web;
 	
 	private boolean logoUpdateCompleted = true;
+	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation();
 
 	public BusinessViewImpl() {
 		BusinessDTO b = Configuration.getBusiness();
@@ -71,10 +73,15 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 
 		name = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
 		name.setText(b.getName());
-		ssn = new ValidatedTextBox(ValidationKit.OPTIONAL_SSN_OR_VAT_ID);
+		ssn = new ValidatedTextBox(ValidationKit.SSN_OR_VAT_ID);
+		ssn.setShowMessageOnError(false);
 		ssn.setText(b.getSsn());
-		vatID = new ValidatedTextBox(ValidationKit.OPTIONAL_VAT_ID);
+		vatID = new ValidatedTextBox(ValidationKit.VAT_ID);
+		vatID.setShowMessageOnError(false);
 		vatID.setText(b.getVatID());
+		ssnOrVatIdValidation.addWidget(ssn);
+		ssnOrVatIdValidation.addWidget(vatID);
+		
 		address = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
 		address.setText(b.getAddress());
 		city = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
@@ -172,6 +179,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 				postcode, phone, email, mobile, fax, web}) {
 			v.reset();
 		}
+		ssnOrVatIdValidation.reset();
 		
 		BusinessDTO b = Configuration.getBusiness();
 		
@@ -201,27 +209,11 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		boolean validationOk = true;
 		inlineNotification.hide();
 		
-		ssn.validate();
-		vatID.validate();
-		boolean ssnVatIdValid = true;
-		if(ssn.getText().isEmpty() && vatID.getText().isEmpty()){
-			ssnVatIdValid = false;
-		} else {
-			ssnVatIdValid = vatID.isValid() && ssn.isValid();
-		}
-		
-		if(ssnVatIdValid){
-			ssn.setValidationOkStyle();
-			vatID.setValidationOkStyle();
-		} else {
-			inlineNotification.showMessage(I18N.INSTANCE.fillVatIdOrSsn());
-			ssn.setValidationErrorStyle();
-			vatID.setValidationErrorStyle();
+		ssnOrVatIdValidation.validate();
+		if(!ssnOrVatIdValidation.isValid()){
+			inlineNotification.showMessage(ssnOrVatIdValidation.getErrorMessage());
 			validationOk = false;
 		}
-		
-		ssn.hideMessage();
-		vatID.hideMessage();
 		
 		for (ValidatedTextBox v : new ValidatedTextBox[]{name, address, city, 
 				postcode, phone, email, mobile, fax, web}) {
