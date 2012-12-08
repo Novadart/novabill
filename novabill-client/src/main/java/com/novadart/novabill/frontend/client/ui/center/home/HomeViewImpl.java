@@ -17,6 +17,7 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabBar;
 import com.google.gwt.user.client.ui.Widget;
@@ -63,6 +64,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 	@UiField(provided=true) HTML date;
 	@UiField(provided=true) HTML welcome;
 	@UiField(provided=true) SimplePanel tabBody;
+	@UiField Label welcomeMessage;
 	
 	private final Map<Integer, FlowPanel> lists = new HashMap<Integer, FlowPanel>();
 	
@@ -117,11 +119,41 @@ public class HomeViewImpl extends Composite implements HomeView {
 					transportDocumentList.setVisibleRangeAndClearData(transportDocumentList.getVisibleRange(), true);
 					break;
 					
+//				case STATS:
+//					ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
+//
+//						@Override
+//						public void onSuccess(BusinessStatsDTO result) {
+//							if(result == null){
+//								return;
+//							}
+//							if(result.getClientsCount() > 0){
+//								welcomeMessage.setVisible(false);
+//								tabBody.setVisible(true);
+//							}
+//						}
+//
+//						@Override
+//						public void onException(Throwable caught) {
+//						}
+//					});
+//					break;
+					
 				default:
 					break;
 				}
 			}
 		});
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+//		TODO
+//		if(Configuration.getStats().getInvoicesCountForYear() > 0){
+//			welcomeMessage.setVisible(false);
+//			tabBody.setVisible(true);
+//		}
 	}
 	
 	private HTML setupDate() {

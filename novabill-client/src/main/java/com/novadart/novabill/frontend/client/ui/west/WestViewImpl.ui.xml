@@ -18,6 +18,7 @@
 				<t:RichTextBox ui:field="clientFilter"></t:RichTextBox>
 				<g:Image ui:field="cleanClientFilter" />
 			</g:HorizontalPanel>
+			<g:Label styleName="welcomeMessage" ui:field="welcomeMessage" visible="false" text="{i18n.welcomeMessageClients}"></g:Label>
 			<g:ScrollPanel ui:field="clientListContainerWrapper" styleName="clientListContainerWrapper">
 				<g:SimplePanel ui:field="clientListContainer"/>
 			</g:ScrollPanel>

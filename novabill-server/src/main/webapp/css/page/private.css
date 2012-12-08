@@ -314,17 +314,6 @@ textarea:HOVER {
 }
 
 
-.HomeView .welcomeMessage {
-	width: 75%;
-	margin: 2em auto 0;
-	background-color: #FFFDB3;
-	padding: 1em;
-	border: 0.1em solid #DDD;
-	-moz-box-shadow: 2px 2px 2px #CCC;
-	-webkit-box-shadow: 2px 2px 2px #CCC;
-	box-shadow: 2px 2px 2px #CCC;
-}
-
 .HomeView .welcomeMessage p {
 	color: #333;
 	font-size: 1.1em;
@@ -1252,6 +1241,17 @@ td.datePickerMonth {
 
 .WestView {
 	height: 100%;
+}
+
+.welcomeMessage {
+	width: 80%;
+	margin: 2em auto 0;
+	background-color: #FFFDB3;
+	padding: 1em;
+	border: 0.1em solid #DDD;
+	-moz-box-shadow: 2px 2px 2px #CCC;
+	-webkit-box-shadow: 2px 2px 2px #CCC;
+	box-shadow: 2px 2px 2px #CCC;
 }
 
 .WestView .clientContainer {
