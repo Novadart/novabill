@@ -420,6 +420,7 @@
 					<configuration>
 						<printSummary>false</printSummary>
 						<redirectTestOutputToFile>true</redirectTestOutputToFile>
+						<skipTests>true</skipTests>
 					</configuration>
 				</plugin>
 				<plugin>

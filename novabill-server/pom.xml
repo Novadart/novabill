@@ -302,7 +302,7 @@
 
 				<executions>
 					<execution>
-					<phase>process-sources</phase>
+						<phase>process-sources</phase>
 						<goals>
 							<goal>compile</goal>
 						</goals>
@@ -411,6 +411,13 @@
 						<artifactId>maven-war-plugin</artifactId>
 						<configuration>
 							<classifier>staging</classifier>
+						</configuration>
+					</plugin>
+					<plugin>
+						<groupId>org.apache.maven.plugins</groupId>
+						<artifactId>maven-surefire-plugin</artifactId>
+						<configuration>
+							<skipTests>false</skipTests>
 						</configuration>
 					</plugin>
 				</plugins>
