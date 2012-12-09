@@ -22,7 +22,7 @@ public class RegistrationValidator {
 		if(Principal.findByUsername(registration.getEmail()) != null)
 				errors.rejectValue("email", "registration.email.exists");
 		if(!registration.isAgreementAccepted())
-			errors.reject("agreementAccepted", "registration.agreementAccepted.error");
+			errors.rejectValue("agreementAccepted", "registration.agreementAccepted.error");
 	}
 
 }

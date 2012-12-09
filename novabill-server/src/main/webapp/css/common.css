@@ -253,9 +253,12 @@ blockquote:before,blockquote:after,q:before,q:after {
 }
 
 .error {
-	padding: 1em;
-	display: block;
-	font-size: 1.2em;
 	color: red;
-	font-style: italic;
+	font-size: 1em;
+	display: block;
+	margin-left: 0.9em;
+	padding: 0.2em;
+	position: absolute;
+	width: 210px;
 }
+

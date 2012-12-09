@@ -24,13 +24,6 @@
 	display: block;
 }
 
-.error {
-	color: red;
-	font-size: 1.2em;
-	display: block;
-	margin-left: 2em;
-}
-
 .title {
 	margin: 1em auto 0;
 }
