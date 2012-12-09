@@ -38,6 +38,21 @@
 			</td>
 		</tr>
 		<tr>
+			<td>
+				<div class="acceptAgreementWrapper">
+					<form:checkbox path="agreementAccepted" id="acceptAgreement" class="accept-agreement" />
+					<label for="acceptAgreement">
+						<spring:message code="registration.privacyPolicy" var="pp"/>
+						<spring:message code="registration.termsAndConditions" var="tec"/>
+						<spring:message code="registration.agreement" arguments="${pp},${tec}" htmlEscape="false"/>
+					</label>
+				</div>
+			</td>
+			<td>
+				<form:errors path="agreementAccepted" cssClass="error" />
+			</td>
+		</tr>
+		<tr>
 			<td colspan="2"><input type="submit" class="action2-button submit" value='<spring:message code="registration.register" />' /></td>
 		</tr>
 	</table>

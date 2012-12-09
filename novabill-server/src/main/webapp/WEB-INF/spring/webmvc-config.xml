@@ -46,6 +46,8 @@
 	<mvc:view-controller path="/concurrentAccess" />
 	<mvc:view-controller path="/registrationCompleted" />
 	<mvc:view-controller path="/passwordRecoveryCommenced" />
+	<mvc:view-controller path="/termsAndConditions" />
+	<mvc:view-controller path="/privacyPolicy" />
 	<!-- <mvc:view-controller path="/premiumInfo"/> -->
 	
 	<!-- TEST view -->

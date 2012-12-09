@@ -14,6 +14,18 @@
 		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/public/register.jsp" />
 	</definition>
+	
+	<definition name="termsAndConditions" extends="base">
+		<put-attribute name="pagelinks" value="/WEB-INF/views/public/termsAndConditionsPageLinks.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/public/termsAndConditions.jsp" />
+	</definition>
+	
+	<definition name="privacyPolicy" extends="base">
+		<put-attribute name="pagelinks" value="/WEB-INF/views/public/privacyPolicyPageLinks.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/public/headerSimple.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/public/privacyPolicy.jsp" />
+	</definition>
 
 	<definition name="activate" extends="base">
 		<put-attribute name="pagelinks" value="/WEB-INF/views/public/activatePageLinks.jsp" />

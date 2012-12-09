@@ -38,3 +38,11 @@
 .description {
 	font-size: 1.2em;
 }
+
+.acceptAgreementWrapper {
+	margin-top: 2.5em;
+}
+
+.acceptAgreementWrapper input {
+	cursor: pointer;
+}

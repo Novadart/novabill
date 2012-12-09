@@ -2,9 +2,11 @@ package com.novadart.novabill.domain;
 
 import java.io.Serializable;
 import java.util.List;
+
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,6 +20,8 @@ public class Registration extends EmailPasswordHolder implements Serializable {
 	
 	private static final long serialVersionUID = 1L;
 
+	private boolean agreementAccepted;
+	
 	public static List<Registration> findRegistrations(String email, String token){
 		String query = "select registration from Registration registration where registration.email = :email and registration.activationToken = :token";
 		return entityManager().createQuery(query, Registration.class)
@@ -35,9 +39,17 @@ public class Registration extends EmailPasswordHolder implements Serializable {
 		registration.setActivationToken(getActivationToken());
 		registration.setExpirationDate(getExpirationDate());
 		registration.setCreationTime(getCreationTime());
+		registration.setAgreementAccepted(isAgreementAccepted());
 		return registration;
 	}
 	
+	public boolean isAgreementAccepted() {
+		return agreementAccepted;
+	}
+	
+	public void setAgreementAccepted(boolean agreementAccepted) {
+		this.agreementAccepted = agreementAccepted;
+	}
 	
 	/*
 	 * Active record functionality
