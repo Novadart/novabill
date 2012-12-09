@@ -68,6 +68,39 @@ blockquote:before,blockquote:after,q:before,q:after {
 	box-shadow: 3px 1px 3px #CCC;
 }
 
+
+.footer * {
+	color: inherit;
+}
+
+.footer:HOVER {
+	color: #FFF;
+}
+
+.footer {
+	padding: 1.5em 10em 2em;
+	margin: 0 auto;
+	color: #777;
+	
+	-webkit-transition: all 1s ;
+	-moz-transition: all 1s ;
+	-ms-transition: all 1s ;
+	-o-transition: all 1s ;
+	transition: all 1s ;
+}
+
+.footer strong {
+}
+
+.footer span {
+	
+}
+
+.footer a {
+	text-shadow: none;
+	margin-left: 1em;
+}
+
 .clear {
 	clear: both;
 }

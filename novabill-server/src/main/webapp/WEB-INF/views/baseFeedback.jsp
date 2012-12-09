@@ -31,10 +31,9 @@
 		
 		<a class="errorGotohome" href="<spring:url value="/" />"><spring:message code="error.gotohome"></spring:message></a>
 
-		<div class="footer">
-			<p>	Copyright 2011 <strong><spring:message code="application_name"></spring:message></strong>. All Rights Reserved. </p>
-		</div>
 	</div>
+	
+	<tiles:insertAttribute name="footer" />
 
 </body>
 

@@ -137,24 +137,6 @@ h3 {
 	margin: 0 10px 0 5px;
 }
 
-.footer {
-	width: 960px;
-	height: 80px;
-	background: url('../../images/divider-1.png') no-repeat top;
-	padding: 1px 0 0 0;
-}
-
-.footer p {
-	margin: 40px 0 0 0;
-	width: 400px;
-	float: left;
-}
-
-.footer .free-trial-button, .footer .buy-it-button {
-	margin: 32px 10px 0 10px;
-}
-
-
 #registerForFree {
 	width: 18em;
 	height: 2em;

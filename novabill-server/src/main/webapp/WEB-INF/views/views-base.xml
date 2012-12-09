@@ -3,12 +3,22 @@
 	"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
 
-	<definition name="base" template="/WEB-INF/views/base.jsp" />
+	<definition name="footer" template="/WEB-INF/views/footer.jsp" />
 	
-	<definition name="basePrivate" template="/WEB-INF/views/basePrivate.jsp" />
+	<definition name="base" template="/WEB-INF/views/base.jsp">
+		<put-attribute name="footer" value="footer" />
+	</definition>
 	
-	<definition name="baseFeedback" template="/WEB-INF/views/baseFeedback.jsp" />
+	<definition name="basePrivate" template="/WEB-INF/views/basePrivate.jsp" >
+		<put-attribute name="footer" value="footer" />
+	</definition>
+	
+	<definition name="baseFeedback" template="/WEB-INF/views/baseFeedback.jsp" >
+		<put-attribute name="footer" value="footer" />
+	</definition>
 
-	<definition name="baseError" template="/WEB-INF/views/baseError.jsp" />
+	<definition name="baseError" template="/WEB-INF/views/baseError.jsp" >
+		<put-attribute name="footer" value="footer" />
+	</definition>
 	
 </tiles-definitions>
