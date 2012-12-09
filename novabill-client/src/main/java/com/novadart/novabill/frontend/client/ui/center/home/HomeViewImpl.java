@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabBar;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.Range;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
 import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
@@ -40,12 +41,13 @@ import com.novadart.novabill.frontend.client.ui.widget.list.impl.EstimationList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.TransportDocumentList;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
+import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class HomeViewImpl extends Composite implements HomeView {
-	
+
 	private static final int DOCS_PAGE_SIZE = 10;
-	
+
 
 	private static HomeViewUiBinder uiBinder = GWT
 			.create(HomeViewUiBinder.class);
@@ -54,9 +56,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 	}
 
 	private static final Range DOCS_LIST_RANGE = new Range(0, DOCS_PAGE_SIZE);
-	
+
 	@UiField TabBar tabBar;
-	
+
 	private final InvoiceList invoiceList = new InvoiceList();
 	private final EstimationList estimationList = new EstimationList();
 	private final CreditNoteList creditNoteList = new CreditNoteList();
@@ -65,104 +67,103 @@ public class HomeViewImpl extends Composite implements HomeView {
 	@UiField(provided=true) HTML welcome;
 	@UiField(provided=true) SimplePanel tabBody;
 	@UiField Label welcomeMessage;
-	
+
 	private final Map<Integer, FlowPanel> lists = new HashMap<Integer, FlowPanel>();
-	
+
 	private Presenter presenter;
-	
+
 	private final InvoiceDataProvider invoiceDataProvider = new InvoiceDataProvider();
 	private final EstimationDataProvider estimationDataProvider = new EstimationDataProvider();
 	private final CreditNoteDataProvider creditNoteDataProvider = new CreditNoteDataProvider();
 	private final TransportDocumentDataProvider transportDocumentDataProvider = new TransportDocumentDataProvider();
-	
+
 	public HomeViewImpl() {
 		date = setupDate();
 		welcome = setupWelcomeMessage();
 		tabBody = new SimplePanel();
 		setupLists();
-		
+
 		initWidget(uiBinder.createAndBindUi(this));
-		
+
 		tabBar.addTab(I18N.INSTANCE.invoices());
 		tabBar.addTab(I18N.INSTANCE.estimates());
 		tabBar.addTab(I18N.INSTANCE.creditNote());
 		tabBar.addTab(I18N.INSTANCE.transportDocumentsTab());
 		tabBar.selectTab(0);
-		
+
 		setStyleName("HomeView");
-		
+
 		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
-			
+
 			@Override
 			public void onDataUpdated(DATA data) {
 				switch (data) {
 				case INVOICE:
 					invoiceList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
 					break;
-					
+
 				case ESTIMATION:
 					estimationList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
 					break;
-					
+
 				case CREDIT_NOTE:
 					creditNoteList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
 					break;
-					 
+
 				case TRANSPORT_DOCUMENT:
 					transportDocumentList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
 					break;
-					
+
 				case CLIENT_DATA:
 					invoiceList.setVisibleRangeAndClearData(invoiceList.getVisibleRange(), true);
 					estimationList.setVisibleRangeAndClearData(estimationList.getVisibleRange(), true);
 					creditNoteList.setVisibleRangeAndClearData(creditNoteList.getVisibleRange(), true);
 					transportDocumentList.setVisibleRangeAndClearData(transportDocumentList.getVisibleRange(), true);
 					break;
-					
-//				case STATS:
-//					ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
-//
-//						@Override
-//						public void onSuccess(BusinessStatsDTO result) {
-//							if(result == null){
-//								return;
-//							}
-//							if(result.getClientsCount() > 0){
-//								welcomeMessage.setVisible(false);
-//								tabBody.setVisible(true);
-//							}
-//						}
-//
-//						@Override
-//						public void onException(Throwable caught) {
-//						}
-//					});
-//					break;
-					
+
+				case STATS:
+					ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
+
+						@Override
+						public void onSuccess(BusinessStatsDTO result) {
+							if(result == null){
+								return;
+							}
+							if(result.getInvoicesCountForYear() > 0){
+								welcomeMessage.setVisible(false);
+								tabBody.setVisible(true);
+							}
+						}
+
+						@Override
+						public void onException(Throwable caught) {
+						}
+					});
+					break;
+
 				default:
 					break;
 				}
 			}
 		});
 	}
-	
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-//		TODO
-//		if(Configuration.getStats().getInvoicesCountForYear() > 0){
-//			welcomeMessage.setVisible(false);
-//			tabBody.setVisible(true);
-//		}
+		welcomeMessage.setVisible(invoiceList.getVisibleItemCount()
+				+estimationList.getVisibleItemCount()
+				+transportDocumentList.getVisibleItemCount()
+				+creditNoteList.getVisibleItemCount() == 0);
 	}
-	
+
 	private HTML setupDate() {
 		final HTML dateBox = new HTML();
 		final DateTimeFormat date = DateTimeFormat.getFormat("EEEE, dd MMMM yyyy");
 		final DateTimeFormat time = DateTimeFormat.getFormat("HH:mm");
-		
+
 		Timer updater = new Timer() {
-			
+
 			@Override
 			public void run() {
 				SafeHtmlBuilder shb = new SafeHtmlBuilder();
@@ -172,13 +173,13 @@ public class HomeViewImpl extends Composite implements HomeView {
 				dateBox.setHTML(shb.toSafeHtml());
 			}
 		};
-		
+
 		updater.scheduleRepeating(1000);
-		
+
 		return dateBox;
 	}
-	
-	
+
+
 	private HTML setupWelcomeMessage() {
 		HTML welcomeMessage = new HTML();
 		SafeHtmlBuilder shb = new SafeHtmlBuilder();
@@ -188,8 +189,8 @@ public class HomeViewImpl extends Composite implements HomeView {
 		welcomeMessage.setHTML(shb.toSafeHtml());
 		return welcomeMessage;
 	}
-	
-	
+
+
 	private void setupLists() {
 		FlowPanel fp = new FlowPanel();
 		fp.setStyleName("listWrapper panel");
@@ -201,7 +202,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 		invoiceList.setVisibleRange(DOCS_LIST_RANGE);
 		invoiceDataProvider.addDataDisplay(invoiceList);
 		lists.put(0, fp);
-		
+
 		fp = new FlowPanel();
 		fp.setStyleName("listWrapper panel");
 		sb = new ShowMoreButton(DOCS_PAGE_SIZE);
@@ -212,7 +213,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 		estimationList.setVisibleRange(DOCS_LIST_RANGE);
 		estimationDataProvider.addDataDisplay(estimationList);
 		lists.put(1, fp);
-		
+
 		fp = new FlowPanel();
 		fp.setStyleName("listWrapper panel");
 		sb = new ShowMoreButton(DOCS_PAGE_SIZE);
@@ -223,7 +224,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 		creditNoteList.setVisibleRange(DOCS_LIST_RANGE);
 		creditNoteDataProvider.addDataDisplay(creditNoteList);
 		lists.put(2, fp);
-		
+
 		fp = new FlowPanel();
 		fp.setStyleName("listWrapper panel");
 		sb = new ShowMoreButton(DOCS_PAGE_SIZE);
@@ -241,7 +242,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 	I18N getI18N(){
 		return I18N.INSTANCE;
 	}
-	
+
 	@Override
 	public void setClean(){
 	}
@@ -251,16 +252,22 @@ public class HomeViewImpl extends Composite implements HomeView {
 		this.presenter = presenter;
 		invoiceList.setPresenter(presenter);
 	}
-	
+
 	@UiHandler("tabBar")
 	void onTabBarSelected(SelectionEvent<Integer> event) {
-		tabBody.setWidget(lists.get(event.getSelectedItem()));
+		int selectedTab = event.getSelectedItem();
+
+		welcomeMessage.setVisible(invoiceList.getVisibleItemCount()
+				+estimationList.getVisibleItemCount()
+				+transportDocumentList.getVisibleItemCount()
+				+creditNoteList.getVisibleItemCount() == 0);
+		tabBody.setWidget(lists.get(selectedTab));
 	}
-	
+
 	@UiHandler("newInvoice")
 	void onNewInvoiceClicked(ClickEvent e) {
 		SelectClientDialog scd = new SelectClientDialog(new SelectClientDialog.Handler() {
-			
+
 			@Override
 			public void onClientSelected(final ClientDTO client) {
 				ServerFacade.invoice.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
@@ -281,12 +288,12 @@ public class HomeViewImpl extends Composite implements HomeView {
 		});
 		scd.showCentered();
 	}
-	
-	
+
+
 	@UiHandler("newCreditNote")
 	void onNewCreditNoteClicked(ClickEvent e) {
 		SelectClientDialog scd = new SelectClientDialog(new SelectClientDialog.Handler() {
-			
+
 			@Override
 			public void onClientSelected(final ClientDTO client) {
 				ServerFacade.creditNote.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
@@ -307,12 +314,12 @@ public class HomeViewImpl extends Composite implements HomeView {
 		});
 		scd.showCentered();
 	}
-	
-	
+
+
 	@UiHandler("newEstimation")
 	void onNewEstimationClicked(ClickEvent e) {
 		SelectClientDialog scd = new SelectClientDialog(new SelectClientDialog.Handler() {
-			
+
 			@Override
 			public void onClientSelected(final ClientDTO client) {
 				ServerFacade.estimation.getNextEstimationId(new WrappedAsyncCallback<Long>() {
@@ -329,17 +336,17 @@ public class HomeViewImpl extends Composite implements HomeView {
 						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 					}
 				});
-				
+
 			}
 		});
 		scd.showCentered();
 	}
-	
-	
+
+
 	@UiHandler("newTransportDocument")
 	void onNewTransportDocumentClicked(ClickEvent e) {
 		SelectClientDialog scd = new SelectClientDialog(new SelectClientDialog.Handler() {
-			
+
 			@Override
 			public void onClientSelected(final ClientDTO client) {
 				ServerFacade.transportDocument.getNextTransportDocId(new WrappedAsyncCallback<Long>() {
@@ -356,12 +363,12 @@ public class HomeViewImpl extends Composite implements HomeView {
 
 					@Override
 					public void onException(Throwable caught) {
-						
+
 					}
 				});
 			}
 		});
 		scd.showCentered();
 	}
-	
+
 }

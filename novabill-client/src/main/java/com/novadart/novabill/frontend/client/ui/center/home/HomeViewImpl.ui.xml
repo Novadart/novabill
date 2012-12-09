@@ -27,10 +27,9 @@
 				</g:HorizontalPanel>
 				
 				<g:Label styleName="yourDocsLabel" text="{i18n.yourDocs}"></g:Label>
-				
+				<g:Label ui:field="welcomeMessage" styleName="welcomeMessage" text="{i18n.welcomeMessageDocuments}" visible="false"></g:Label>
 				<g:FlowPanel styleName="tabPanel">
 					<g:TabBar ui:field="tabBar" styleName="tabBar" />
-					<g:Label ui:field="welcomeMessage" styleName="welcomeMessage" visible="false"></g:Label>
 					<g:SimplePanel ui:field="tabBody" styleName="tabBody" />				
 				</g:FlowPanel>
 				

@@ -176,4 +176,5 @@ public interface I18N extends Constants {
 	public String time();
 	public String transportDocumentNumber();
 	public String welcomeMessageClients();
+	public String welcomeMessageDocuments();
 }
