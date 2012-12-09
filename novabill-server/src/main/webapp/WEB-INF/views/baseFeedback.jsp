@@ -21,26 +21,7 @@
 
 
 <body>
-	<div class="browser-alert" style="display: none;">
-		<table>
-			<tr>
-				<td><span class="browserMessage"><spring:message code="header.browsermessage" /> </span></td>
-				<td><a target="_blank" href="http://www.google.com/chrome"><img src='<spring:url value="images/chrome.png" />' /></a></td>
-				<td><a target="_blank" href="http://www.google.com/chrome">Google Chrome</a></td>
-				<td><a target="_blank" href="http://www.mozilla.org/firefox/"><img src='<spring:url value="images/firefox.png" />' /></a></td>
-				<td><a target="_blank" href="http://www.mozilla.org/firefox/">Mozilla Firefox</a></td>
-				<td><a target="_blank" href="http://www.opera.com/browser/download/"><img src='<spring:url value="images/opera.png" />' /></a></td>
-				<td><a target="_blank" href="http://www.opera.com/browser/download/">Opera</a></td>
-			</tr>
-		</table>
-	</div>
-	<script>
-		$(function(){
-			if($.browser.msie){
-				$('div.browser-alert').show();
-			}	
-		})
-	</script>
+
 	<div class="container">
 		<tiles:insertTemplate template="/WEB-INF/views/public/headerSimple.jsp"></tiles:insertTemplate>
 		
