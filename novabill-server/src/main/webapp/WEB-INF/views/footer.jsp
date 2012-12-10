@@ -1,6 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 	
 <div class="footer">
 	<span>Copyright 2012 <strong><spring:message code="application_name" /></strong>. <spring:message code="shared.allRightsReserved" />. </span>
@@ -9,12 +10,13 @@
 	<a target="_blank" href="http://www.novadart.com"><spring:message code="shared.about"></spring:message></a>
 </div>
 
+<sec:authorize access="isAuthenticated()">
 <div id="contactable"></div>
 <script>
 	$(function() {
 		$('#contactable').contactable({
 			subject: location.href,
-			url: '',
+			url: '<spring:url value="/private/feedback" />',
 			name:  '<spring:message code="feedback.name" />',
 			email: '<spring:message code="feedback.email" />',
 			dropdownTitle: '<spring:message code="feedback.dropdownTitle" />', 
@@ -28,3 +30,4 @@
 		});
 	});
 </script>
+</sec:authorize>
