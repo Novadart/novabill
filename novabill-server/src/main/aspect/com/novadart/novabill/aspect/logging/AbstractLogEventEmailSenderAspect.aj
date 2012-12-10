@@ -30,7 +30,7 @@ public abstract aspect AbstractLogEventEmailSenderAspect {
 			templateVars.put("principal", principal);
 			templateVars.put("time", time);
 			if(otherTemplateVars != null)
-				templateVars.putAll(otherTemplateVars);
+				templateVars.put("otherVars", otherTemplateVars);
 			sendMessage(emailAddresses, eventType, templateVars, templatePath);
 		}
 	}

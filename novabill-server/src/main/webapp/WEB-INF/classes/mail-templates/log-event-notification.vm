@@ -3,5 +3,10 @@
 	<p>New ${eventType}!</p>
 	<p>Principal: ${principal}</p>
 	<p>Time: ${time}</p>
+	#if( $otherVars )
+		#foreach( $key in $otherVars.keySet() )
+			<p>${key}: $otherVars.get($key)</p>
+		#end
+	#end
 </body>
 </html>

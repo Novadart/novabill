@@ -19,7 +19,7 @@ public class TokenGenerator {
 		random = SecureRandom.getInstance("SHA1PRNG");
 	}
 	
-	public String generateToken() throws NoSuchAlgorithmException{
+	public synchronized String generateToken() throws NoSuchAlgorithmException{
 		byte[] salt = new byte[8];
 		random.nextBytes(salt);
 		MessageDigest digest = MessageDigest.getInstance("SHA-1");
