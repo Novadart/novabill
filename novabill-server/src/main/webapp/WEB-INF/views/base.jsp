@@ -17,7 +17,7 @@
 
 <sec:authorize access="isAuthenticated()">
 <link rel="stylesheet" href="js/contactable/contactable.css" type="text/css"></link>
-<script type="text/javascript" src="js/contactable/jquery.contactable.min.js"></script>
+<script type="text/javascript" src="js/contactable/jquery.contactable.js"></script>
 </sec:authorize>
 
 <tiles:insertAttribute name="pagelinks" />

@@ -25,6 +25,22 @@ body {
 	color: #EEE;
 }
 
+.feedbackButton {
+	color: #DDD;
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 2px 10px;
+	background-color: #445058;
+	cursor: pointer;
+	font-style: italic;
+	font-size: 0.9em;
+}
+
+.feedbackButton:HOVER {
+	color: #FFF;
+}
+
 * {
 	font-family: Arial, sans-serif, serif;
 }

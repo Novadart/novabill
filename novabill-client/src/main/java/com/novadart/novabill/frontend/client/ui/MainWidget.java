@@ -26,6 +26,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
+import com.novadart.novabill.frontend.client.ui.feedback.FeedbackDialog;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 
@@ -124,6 +125,12 @@ public class MainWidget extends Composite {
 	@UiHandler("home")
 	void onHomeClicked(ClickEvent e){
 		this.placeController.goTo(new HomePlace());
+	}
+	
+	@UiHandler("feedback")
+	void onFeedbackClicked(ClickEvent e){
+		FeedbackDialog feedbackDialog = new FeedbackDialog();
+		feedbackDialog.showCentered();
 	}
 
 	@UiHandler("myData")

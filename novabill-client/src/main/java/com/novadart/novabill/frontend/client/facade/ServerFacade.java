@@ -38,9 +38,13 @@ public class ServerFacade {
 	
 	private static final RequestBuilder AUTH_REQUEST =
 			new RequestBuilder(RequestBuilder.POST, GWT.getHostPageBaseURL()+"resources/j_spring_security_check");
+	
+	private static final RequestBuilder FEEDBACK_REQUEST =
+			new RequestBuilder(RequestBuilder.POST, GWT.getHostPageBaseURL()+"private/feedback");
 
 	static {
 		AUTH_REQUEST.setHeader("Content-type", "application/x-www-form-urlencoded");
+		FEEDBACK_REQUEST.setHeader("Content-type", "application/x-www-form-urlencoded");
 	}
 
 	
@@ -56,6 +60,34 @@ public class ServerFacade {
 				@Override
 				public void onResponseReceived(Request request, Response response) {
 					callback.onSuccess(response.getStatusCode() == 200);
+				}
+				
+				@Override
+				public void onError(Request request, Throwable exception) {
+					callback.onFailure(exception);
+				}
+			});
+			
+		} catch (RequestException e) {
+			callback.onFailure(e);
+		}
+
+	}
+	
+	public static void sendFeedback(String subject, String name, String email, String message, String category, final AsyncCallback<Boolean> callback){
+
+		String payload = "name="+URL.encodeQueryString(name)
+				+"&email="+URL.encodeQueryString(email)
+				+"&message="+URL.encodeQueryString(message)
+				+"&subject="+URL.encodeQueryString(subject)
+				+"&issue="+URL.encodeQueryString(category);
+		
+		try {
+			FEEDBACK_REQUEST.sendRequest(payload, new RequestCallback() {
+				
+				@Override
+				public void onResponseReceived(Request request, Response response) {
+					callback.onSuccess(response.getStatusCode() == 200 && response.getText().contains("success"));
 				}
 				
 				@Override

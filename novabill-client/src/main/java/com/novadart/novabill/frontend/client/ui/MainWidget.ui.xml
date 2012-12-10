@@ -15,6 +15,7 @@
 				<g:FlowPanel styleName="logoBar">
 					<g:Anchor ui:field="logoAnchor" styleName="productName"
 						text="{i18n.productName}"></g:Anchor>
+					<g:Label ui:field="feedback" styleName="feedbackButton" text="{i18n.feedback}"></g:Label>
 				</g:FlowPanel>
 				<g:FlowPanel styleName="menuBar">
 					<g:Button styleName="homeButton button" text="{i18n.home}"

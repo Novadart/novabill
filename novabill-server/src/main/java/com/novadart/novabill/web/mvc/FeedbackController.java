@@ -16,10 +16,10 @@ import com.novadart.novabill.service.UtilsService;
 @Controller
 @RequestMapping("/private/feedback")
 public class FeedbackController {
-	
+
 	@Autowired
 	private UtilsService utilsService;
-	
+
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public Map<String, String> processSubmit(@RequestParam String name, @RequestParam String email, @RequestParam("issue") String category,

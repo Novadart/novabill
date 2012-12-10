@@ -13,6 +13,7 @@
     <link type="text/css" rel="stylesheet" href="css/reset-min.css">
     <link type="text/css" rel="stylesheet" href="css/common.css">
     <link type="text/css" rel="stylesheet" href="css/page/private.css">
+    <link type="text/css" rel="stylesheet" href="js/contactable/contactable-private.css">
 
     <title><spring:message code="application_name"></spring:message></title>
     

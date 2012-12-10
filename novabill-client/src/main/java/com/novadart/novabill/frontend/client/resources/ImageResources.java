@@ -17,4 +17,6 @@ public interface ImageResources extends ClientBundle {
 	
 	ImageResource delete();
 
+	ImageResource fancy_close();
+
 }
