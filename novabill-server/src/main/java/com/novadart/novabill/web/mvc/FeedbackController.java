@@ -1,5 +1,8 @@
 package com.novadart.novabill.web.mvc;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -19,9 +22,9 @@ public class FeedbackController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	public String processSubmit(@RequestParam String name, @RequestParam String email, @RequestParam("issue") String category,
+	public Map<String, String> processSubmit(@RequestParam String name, @RequestParam String email, @RequestParam("issue") String category,
 			@RequestParam String message, @RequestParam String subject){
-		String responsePattern = "{'response': '%s'}";
+		Map<String, String> response = new HashMap<String, String>();
 		try {
 			Feedback feedback = new Feedback();
 			feedback.setName(name);
@@ -30,9 +33,11 @@ public class FeedbackController {
 			feedback.setMessage(message);
 			feedback.setUsername(utilsService.getAuthenticatedPrincipalDetails().getUsername());
 			feedback.merge();
-			return String.format(responsePattern, "success");
+			response.put("response", "success");
+			return response;
 		} catch (Exception e) {
-			return String.format(responsePattern, "failure");  
+			response.put("response", "failure");
+			return response;
 		}
 	}
 
