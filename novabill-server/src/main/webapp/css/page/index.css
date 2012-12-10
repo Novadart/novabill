@@ -112,11 +112,14 @@ h3 {
 
 .fancybox-title-over{
 	background: rgba(0, 0, 0, .7);
+	padding: 0.5em 0;
 }
 
 .fancybox-title-over p{
 	color: white;
-	padding-left: 10px;
+	padding: 0 10px;
+	font-size: 1.2em;
+	line-height: 140%;
 }
 
 .feature-image {
