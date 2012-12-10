@@ -15,10 +15,10 @@ public privileged aspect FeedbackAspect extends AbstractLogEventEmailSenderAspec
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(FeedbackAspect.class);
 	
-	pointcut feedback(String name, String email, String category, String message) :
-		execution(public String com.novadart.novabill.web.mvc.FeedbackController.processSubmit(..)) && args(name, email, category, message);
+	pointcut feedback(String name, String email, String category, String message, String subject) :
+		execution(public String com.novadart.novabill.web.mvc.FeedbackController.processSubmit(..)) && args(name, email, category, message, subject);
 	
-	after(String name, String email, String category, String message) returning: feedback(name, email, category, message){
+	after(String name, String email, String category, String message, String subject) returning: feedback(name, email, category, message, subject){
 		Map<String, Object> vars = new HashMap<String, Object>();
 		vars.put("name", name);
 		vars.put("category", category);

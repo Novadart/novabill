@@ -20,7 +20,8 @@ public class FeedbackController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	public String processSubmit(@RequestParam String name, @RequestParam String email, @RequestParam("issue") String category,
-			@RequestParam("messsage") String message, @RequestParam String subject){
+			@RequestParam String message, @RequestParam String subject){
+		String responsePattern = "{'response': '%s'}";
 		try {
 			Feedback feedback = new Feedback();
 			feedback.setName(name);
@@ -29,9 +30,9 @@ public class FeedbackController {
 			feedback.setMessage(message);
 			feedback.setUsername(utilsService.getAuthenticatedPrincipalDetails().getUsername());
 			feedback.merge();
-			return "success";
+			return String.format(responsePattern, "success");
 		} catch (Exception e) {
-			return "failure";  
+			return String.format(responsePattern, "failure");  
 		}
 	}
 

@@ -51,9 +51,9 @@ public class Feedback implements Serializable{
 	@PreUpdate
 	public void onUpdate(){
 		name = StringUtils.abbreviate(name, NAME_MAX_SIZE);
-		email = StringUtils.abbreviate(name, EMAIL_MAX_SIZE);
-		category = StringUtils.abbreviate(name, CATEGORY_MAX_SIZE);
-		message = StringUtils.abbreviate(name, MESSAGE_MAX_SIZE);
+		email = StringUtils.abbreviate(email, EMAIL_MAX_SIZE);
+		category = StringUtils.abbreviate(category, CATEGORY_MAX_SIZE);
+		message = StringUtils.abbreviate(message, MESSAGE_MAX_SIZE);
 	}
 
 	/*
