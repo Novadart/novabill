@@ -11,6 +11,11 @@
 <link rel="shortcut icon" type="image/png" href="images/favicon.png"></link>
 <link rel="stylesheet" type="text/css" href="../css/reset-min.css" />
 <link rel="stylesheet" type="text/css" href="../css/common.css" />
+
+<script type="text/javascript"
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+<link rel="stylesheet" href="js/contactable/contactable.css" type="text/css"></link>
+<script type="text/javascript" src="js/contactable/jquery.contactable.min.js"></script>
 	
 <tiles:insertAttribute name="pagelinks" />
 

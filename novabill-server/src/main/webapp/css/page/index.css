@@ -154,3 +154,11 @@ h3 {
 	margin: 2em auto;
 	display: block;
 }
+
+.top-features p {
+	color: #8C8C8C;
+	font-size: 14px;
+	margin: 10px 0;
+	line-height: 120%;
+}
+
