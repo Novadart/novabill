@@ -93,6 +93,7 @@ h3 {
 	width: 100px;
 	height: 100px;
 	padding: 2px 3px 4px 3px;
+	display: block;
 }
 
 .mask-gloss-thumbnail {
@@ -102,10 +103,20 @@ h3 {
 	background: url('../../images/gloss-thumbnail.png');
 	top: 0;
 	left: 0;
+	display: block;
 }
 
 .mask-gloss-thumbnail:hover {
 	background: url('../../images/gloss-thumbnail-hover.png');
+}
+
+.fancybox-title-over{
+	background: rgba(0, 0, 0, .7);
+}
+
+.fancybox-title-over p{
+	color: white;
+	padding-left: 10px;
 }
 
 .feature-image {

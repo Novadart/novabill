@@ -26,20 +26,22 @@
 			<div class="col">
 				<!--Start of Feature-->
 				<div class="feature-image">
-					<a rel="fancybox" href="images/slider/slider-3.jpg">
-						<div class="mask-container-thumbnail">
+					<spring:message code="home.topfeatures.n1.par1" var="n1_1" />
+					<spring:message code="home.topfeatures.n1.par2" var="n1_2" />
+					<spring:message code="home.topfeatures.n1.par3" var="n1_3" />
+				
+					<a rel="fancybox" href="images/slider/slider-3.jpg" title="<spring:message text="${n1_1}|${n1_2}|${n1_3}" />">
+						<span class="mask-container-thumbnail">
 							<img src="images/image-thumbnail-4.jpg" alt="" />
-							<div class="mask-gloss-thumbnail"></div>
-						</div>
+							<span class="mask-gloss-thumbnail"></span>
+						</span>
 					</a>
 				</div>
 				<div class="description">
-					<h4><spring:message code="home.topfeatures.n1.title" /> </h4>
-					<p><spring:message code="home.topfeatures.n1.par1" /></p>
-
-					<p><spring:message code="home.topfeatures.n1.par2" /></p>
-
-					<p><spring:message code="home.topfeatures.n1.par3" /></p>
+					<h4><spring:message code="home.topfeatures.n1.title" /></h4>
+					<p><spring:message text="${n1_1}" htmlEscape="false" /></p>
+					<p><spring:message text="${n1_2}" htmlEscape="false" /></p>
+					<p><spring:message text="${n1_3}" htmlEscape="false" /></p>
 				</div>
 			</div>
 			<!--End of Feature-->
@@ -47,20 +49,22 @@
 			<div class="col">
 				<!--Start of Feature-->
 				<div class="feature-image">
-					<a rel="fancybox" href="images/slider/slider-2.jpg">
-						<div class="mask-container-thumbnail">
+					<spring:message code="home.topfeatures.n2.par1" var="n2_1" />
+					<spring:message code="home.topfeatures.n2.par2" var="n2_2" />
+					<spring:message code="home.topfeatures.n2.par3" var="n2_3" />
+				
+					<a rel="fancybox" href="images/slider/slider-2.jpg" title="<spring:message text="${n2_1}|${n2_2}|${n2_3}" />">
+						<span class="mask-container-thumbnail">
 							<img src="images/image-thumbnail-3.jpg" alt="" />
-							<div class="mask-gloss-thumbnail"></div>
-						</div>
+							<span class="mask-gloss-thumbnail"></span>
+						</span>
 					</a>
 				</div>
 				<div class="description">
 					<h4><spring:message code="home.topfeatures.n2.title" /></h4>
-					<p><spring:message code="home.topfeatures.n2.par1" /></p>
-
-					<p><spring:message code="home.topfeatures.n2.par2" /></p>
-
-					<p><spring:message code="home.topfeatures.n2.par3" /></p>
+					<p><spring:message text="${n2_1}" htmlEscape="false" /></p>
+					<p><spring:message text="${n2_2}" htmlEscape="false" /></p>
+					<p><spring:message text="${n2_3}" htmlEscape="false" /></p>
 				</div>
 			</div>
 			<!--End of Feature-->
@@ -75,41 +79,46 @@
 			<div class="col">
 				<!--Start of Feature-->
 				<div class="feature-image">
-					<a rel="fancybox" href="images/slider/slider-1.jpg">
-						<div class="mask-container-thumbnail">
+					<spring:message code="home.topfeatures.n3.par1" var="n3_1" />
+					<spring:message code="home.topfeatures.n3.par2" var="n3_2" />
+					<spring:message code="home.topfeatures.n3.par3" var="n3_3" />
+				
+					<a rel="fancybox" href="images/slider/slider-1.jpg" title="<spring:message text="${n3_1}|${n3_2}|${n3_3}" />">
+						<span class="mask-container-thumbnail">
 							<img src="images/image-thumbnail-1.jpg" alt="" />
-							<div class="mask-gloss-thumbnail"></div>
-						</div>
+							<span class="mask-gloss-thumbnail"></span>
+						</span>
 					</a>
 				</div>
 				<div class="description">
-					<h4><spring:message code="home.topfeatures.n3.title" /> </h4>
-					<p><spring:message code="home.topfeatures.n3.par1" /></p>
-
-					<p><spring:message code="home.topfeatures.n3.par2" /></p>
-
-					<p><spring:message code="home.topfeatures.n3.par3" /></p>
+					<h4><spring:message code="home.topfeatures.n3.title" /></h4>
+					<p><spring:message text="${n3_1}" htmlEscape="false" /></p>
+					<p><spring:message text="${n3_2}" htmlEscape="false" /></p>
+					<p><spring:message text="${n3_3}" htmlEscape="false" /></p>
 				</div>
 			</div>
 			<!--End of Feature-->
 
+	
 			<div class="col">
 				<!--Start of Feature-->
 				<div class="feature-image">
-					<a rel="fancybox" href="images/slider/slider-4.jpg">
-						<div class="mask-container-thumbnail">
+					<spring:message code="home.topfeatures.n4.par1" var="n4_1" />
+					<spring:message code="home.topfeatures.n4.par2" var="n4_2" />
+					<spring:message code="home.topfeatures.n4.par3" var="n4_3" />
+				
+					<a rel="fancybox" href="images/slider/slider-4.jpg" title="<spring:message text="${n4_1}|${n4_2}|${n4_3}" />">
+						<span class="mask-container-thumbnail">
 							<img src="images/image-thumbnail-2.jpg" alt="" />
-							<div class="mask-gloss-thumbnail"></div>
-						</div>
+							<span class="mask-gloss-thumbnail"></span>
+						</span>
 					</a>
 				</div>
 				<div class="description">
-					<h4><spring:message code="home.topfeatures.n4.title" /> </h4>
-					<p><spring:message code="home.topfeatures.n4.par1" /></p>
-
-					<p><spring:message code="home.topfeatures.n4.par2" /></p>
-
-					<p><spring:message code="home.topfeatures.n4.par3" /></p>
+					<h4><spring:message code="home.topfeatures.n4.title" /></h4>
+					<p><spring:message text="${n4_1}" htmlEscape="false" /></p>
+					<p><spring:message text="${n4_2}" htmlEscape="false" /></p>
+					<p><spring:message text="${n4_3}" htmlEscape="false" /></p>
 				</div>
 			</div>
 			<!--End of Feature-->
@@ -129,67 +138,24 @@
 	</sec:authorize>
 </div>
 
-<!-- <div class="testimonials">
-	<h3>Testimonials</h3>
 
-	<div class="quote">
-		Start of Quote
-		<img src="images/quotation-mark.png" alt="quotation mark"
-			class="quotation-mark" />
-		<p>Cum sociis natoque penatibus et magnis dis parturient montes,
-			nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
 
-		<p>Nulla vitae elit libero, a pharetra augue. Vestibulum id ligula
-			porta felis euismod semper. Curabitur blandit tempus porttitor. Etiam
-			porta sem malesuada magna mollis euismod.</p>
-
-		<p>
-			<strong>Full Name</strong>
-		</p>
-	</div>
-	End of Quote
-
-	<div class="quote">
-		Start of Quote
-		<img src="images/quotation-mark.png" alt="quotation mark"
-			class="quotation-mark" />
-		<p>Cum sociis natoque penatibus et magnis dis parturient montes,
-			nascetur ridiculus mus. Nulla vitae elit libero, a pharetra augue.</p>
-
-		<p>Nulla vitae elit libero, a pharetra augue. Vestibulum id ligula
-			porta felis euismod semper. Curabitur blandit tempus porttitor. Etiam
-			porta sem malesuada magna mollis euismod.</p>
-
-		<p>
-			<strong>Full Name</strong>
-		</p>
-	</div>
-	End of Quote
-
-	<br class="clear" />
-
-</div> -->
-
-<script type="text/javascript"
-	src="js/nivoslider/jquery.nivo.slider.pack.js"></script>
 <script type="text/javascript"
 	src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
 <script type="text/javascript"
 	src="js/fancybox/jquery.easing-1.3.pack.js"></script>
 <script type="text/javascript"
 	src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-
 <script type="text/javascript">
 		$(window).load(function() {
-		    $('#slider').nivoSlider({
-		    	pauseTime: 6000
+		    $("*[rel=fancybox]").fancybox({
+		    	'titleFormat': function(title, currentArray, currentIndex, currentOpts){
+		    		temp=title.split('|');
+		    		if(!temp[2]){temp[2]=""};
+		    		return '<p>'+temp[0]+'</p><p>'+temp[1]+'</p><p>'+temp[2]+'</p>'
+		    		},
+		    	'titlePosition' : 'over'
 		    });
 		});
-		</script>
-
-<script type="text/javascript">
-				$(window).load(function() {
-				    $("*[rel=fancybox]").fancybox();
-				});
-		</script>
+</script>
 

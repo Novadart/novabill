@@ -15,7 +15,7 @@
 <link rel="stylesheet" type="text/css" href="css/page/feedback.css" />
 
 <script type="text/javascript"
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 
 </head>
 

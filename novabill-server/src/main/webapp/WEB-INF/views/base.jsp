@@ -12,7 +12,7 @@
 <link rel="stylesheet" type="text/css" href="css/reset-min.css" />
 <link rel="stylesheet" type="text/css" href="css/common.css" />
 <script type="text/javascript"
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
 	
 <tiles:insertAttribute name="pagelinks" />
 
