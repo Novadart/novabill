@@ -1,5 +1,6 @@
 package com.novadart.novabill.service.validator;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
@@ -21,8 +22,11 @@ public class ChangePasswordValidator {
 		temp.setPassword(changePassword.getPassword()); //force hashing;
 		if(!temp.getPassword().equals(principal.getPassword()))
 			errors.rejectValue("password", "changePassword.wrong.password");
-		if(!changePassword.getNewPassword().equals(changePassword.getConfirmNewPassword()))
+		if(!StringUtils.equals(changePassword.getNewPassword(), changePassword.getConfirmNewPassword()))
 			errors.rejectValue("confirmNewPassword", "changePassword.password.mismatch");
+		if(EmailPasswordHolderValidator.isLengthInvalid(changePassword.getNewPassword()))
+			errors.rejectValue("password", "changePassword.password.lenght",
+					new Object[]{EmailPasswordHolderValidator.MIN_PASSWORD_LENGTH, EmailPasswordHolderValidator.MAX_PASSWORD_LENGTH}, null);
 	}
 
 }
