@@ -46,6 +46,7 @@ public class FeedbackDialog extends Dialog {
 	public FeedbackDialog() {
 		setAutoHideEnabled(true);
 		setWidget(uiBinder.createAndBindUi(this));
+		contactableMessage.setVisibleLines(5);
 	}
 	
 	@Override
