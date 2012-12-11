@@ -61,6 +61,8 @@ public class RegisterController{
 	@Value("${activation.period}")
 	private Integer activationPeriod;
 	
+	private String emailTemplateLocation = "mail-templates/activation-notification.vm";
+	
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
@@ -79,7 +81,7 @@ public class RegisterController{
 				URLEncoder.encode(registration.getEmail(), "UTF-8"), URLEncoder.encode(registration.getActivationToken(), "UTF-8"));
 		templateVars.put("activationLink", activationLink);
 		templateVars.put("activationPeriod", activationPeriod);
-		sendMessage(registration.getEmail(), messageSource.getMessage("activation.notification", null, locale), templateVars, "mail-templates/activation-notification.vm");
+		sendMessage(registration.getEmail(), messageSource.getMessage("activation.notification", null, locale), templateVars, emailTemplateLocation);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

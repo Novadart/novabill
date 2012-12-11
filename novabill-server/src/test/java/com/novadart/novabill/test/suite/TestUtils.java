@@ -280,4 +280,10 @@ public class TestUtils {
 		return client;
 	}
 	
+	public static <T1, T2 extends T1> void setPrivateField(Class<T1> cls, T2 target, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+		java.lang.reflect.Field field = cls.getDeclaredField(fieldName);
+		field.setAccessible(true);
+		field.set(target, value);
+	}
+	
 }
