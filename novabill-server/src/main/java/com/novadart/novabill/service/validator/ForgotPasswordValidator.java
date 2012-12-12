@@ -9,11 +9,16 @@ import com.novadart.novabill.domain.security.Principal;
 @Service
 public class ForgotPasswordValidator {
 	
+	public static enum ValidationType{
+		FULL_VALIDATION, VALIDATE_ONLY_IF_EMAIL_IN_DB
+	}
+	
 	@Autowired
 	private EmailPasswordHolderValidator validator;
 	
-	public void validate(ForgotPassword forgotPassword, Errors errors){
-		validator.validate(forgotPassword, errors);
+	public void validate(ForgotPassword forgotPassword, Errors errors, ValidationType validationType){
+		if(validationType == ValidationType.FULL_VALIDATION)
+			validator.validate(forgotPassword, errors);
 		if(Principal.findByUsername(forgotPassword.getEmail()) == null)
 				errors.rejectValue("email", "registration.email.notexists");
 	}

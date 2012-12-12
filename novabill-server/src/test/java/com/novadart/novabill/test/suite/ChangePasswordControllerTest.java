@@ -20,7 +20,7 @@ import com.novadart.novabill.web.mvc.ChangePasswordController;
 import com.novadart.novabill.web.mvc.command.ChangePassword;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath*:mvc-registration-activation-test-config.xml")
+@ContextConfiguration(locations = "classpath*:mvc-test-config.xml")
 @Transactional
 public class ChangePasswordControllerTest {
 	
@@ -62,7 +62,7 @@ public class ChangePasswordControllerTest {
 		Principal tempPrincipal = new Principal();
 		tempPrincipal.setCreationTime(persistedPrincipal.getCreationTime());
 		tempPrincipal.setPassword(newPassword); //force hashing
-		assertEquals(persistedPrincipal.getPassword(), tempPrincipal.getPassword());
+		assertEquals(tempPrincipal.getPassword(), persistedPrincipal.getPassword());
 	}
 	
 	@Test

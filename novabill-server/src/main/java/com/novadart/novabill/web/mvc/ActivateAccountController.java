@@ -1,6 +1,8 @@
 package com.novadart.novabill.web.mvc;
 
 import java.util.Date;
+
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -29,7 +31,7 @@ import com.novadart.novabill.domain.security.RoleType;
 public class ActivateAccountController {
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model){
+	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model) throws CloneNotSupportedException{
 		if(Principal.findByUsername(email) != null) //registered user already exists
 			return "invalidActivationRequest";
 		for(Registration registration: Registration.findRegistrations(email, token)){
@@ -37,7 +39,7 @@ public class ActivateAccountController {
 				registration.remove();
 				continue;
 			}
-			model.addAttribute("registration", registration);
+			model.addAttribute("registration", registration.clone());
 			return "activate";
 		}
 		return "invalidActivationRequest";
@@ -49,7 +51,7 @@ public class ActivateAccountController {
 			@ModelAttribute("registration") Registration registration, Model model, SessionStatus status) throws CloneNotSupportedException{
 		Registration activationRequest = (Registration)registration.clone();
 		activationRequest.setPassword(j_password);
-		if(!activationRequest.getPassword().equals(registration.getPassword())){
+		if(!StringUtils.equals(activationRequest.getPassword(), registration.getPassword())){
 			model.addAttribute("wrongPassword", true);
 			return "activate";
  		}

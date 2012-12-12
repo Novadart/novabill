@@ -25,6 +25,7 @@ import com.novadart.novabill.domain.ForgotPassword;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.validator.ForgotPasswordValidator;
+import com.novadart.novabill.service.validator.ForgotPasswordValidator.ValidationType;
 
 @Controller
 @RequestMapping("/forgot-password")
@@ -75,7 +76,7 @@ public class ForgotPasswordController {
 	@RequestMapping(method = RequestMethod.POST)
 	public String processSubmit(@ModelAttribute("forgotPassword") ForgotPassword forgotPassword, BindingResult result, SessionStatus status, Locale locale)
 			throws NoSuchAlgorithmException, UnsupportedEncodingException{
-		validator.validate(forgotPassword, result);
+		validator.validate(forgotPassword, result, ValidationType.VALIDATE_ONLY_IF_EMAIL_IN_DB);
 		if(result.hasErrors())
 			return "forgotPassword";
 		else{

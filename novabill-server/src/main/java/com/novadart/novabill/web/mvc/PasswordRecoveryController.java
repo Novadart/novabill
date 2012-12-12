@@ -2,7 +2,6 @@ package com.novadart.novabill.web.mvc;
 
 import java.util.Date;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.EmptyResultDataAccessException;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -16,6 +15,7 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.novadart.novabill.domain.ForgotPassword;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.validator.ForgotPasswordValidator;
+import com.novadart.novabill.service.validator.ForgotPasswordValidator.ValidationType;
 
 @Controller
 @RequestMapping("/password-recovery")
@@ -26,25 +26,22 @@ public class PasswordRecoveryController {
 	private ForgotPasswordValidator validator;
 
 	@RequestMapping(method = RequestMethod.GET)
-	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model){
-		try{
-			ForgotPassword forgotPassword = ForgotPassword.findForgotPassword(email, token);
+	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model) throws CloneNotSupportedException{
+		for(ForgotPassword forgotPassword : ForgotPassword.findForgotPasswords(email, token)){
 			if(forgotPassword.getExpirationDate().before(new Date())){ //expired
 				forgotPassword.remove();
-				return "invalidActivationRequest";
+				continue;
 			}
-			forgotPassword.clearPasswordFields();
-			model.addAttribute("forgotPassword", forgotPassword);
-		}catch (EmptyResultDataAccessException e) {
-			return "invalidForgotPasswordRequest";
+			model.addAttribute("forgotPassword", ((ForgotPassword)forgotPassword.clone()).clearPasswordFields());
+			return "passwordRecovery";
 		}
-		return "passwordRecovery";
+		return "invalidForgotPasswordRequest";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional(readOnly = false)
 	public String processSubmit(@ModelAttribute("forgotPassword") ForgotPassword forgotPassword, BindingResult result, SessionStatus status){
-		validator.validate(forgotPassword, result);
+		validator.validate(forgotPassword, result, ValidationType.FULL_VALIDATION);
 		if(result.hasErrors())
 			return "passwordRecovery";
 		else{
