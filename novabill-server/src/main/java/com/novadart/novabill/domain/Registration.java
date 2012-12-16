@@ -31,14 +31,7 @@ public class Registration extends EmailPasswordHolder implements Serializable {
 	
 	@Override
 	public Object clone() throws CloneNotSupportedException {
-		Registration registration = new Registration();
-		registration.setId(getId());
-		registration.setEmail(getEmail());
-		registration.setPassword(getPassword());
-		registration.setConfirmPassword(getConfirmPassword());
-		registration.setActivationToken(getActivationToken());
-		registration.setExpirationDate(getExpirationDate());
-		registration.setCreationTime(getCreationTime());
+		Registration registration = copy(new Registration()); 
 		registration.setAgreementAccepted(isAgreementAccepted());
 		return registration;
 	}

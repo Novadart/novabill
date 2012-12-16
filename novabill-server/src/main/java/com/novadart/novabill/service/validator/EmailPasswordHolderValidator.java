@@ -23,10 +23,13 @@ public class EmailPasswordHolderValidator {
 	public static final int MAX_PASSWORD_LENGTH = 20; 
 	
 	
+	public static boolean isLengthInvalid(String password){
+		return password == null || (password.length() < MIN_PASSWORD_LENGTH || password.length() > MAX_PASSWORD_LENGTH);
+	}
+	
 	public void validate(EmailPasswordHolder emailPasswordHolder, Errors errors){
 		validator.validate(emailPasswordHolder, errors);
-		if(emailPasswordHolder.getPassword() != null && 
-				(emailPasswordHolder.getPassword().length() < MIN_PASSWORD_LENGTH || emailPasswordHolder.getPassword().length() > MAX_PASSWORD_LENGTH))
+		if(isLengthInvalid(emailPasswordHolder.getPassword()))
 			errors.rejectValue("password", "registration.password.lenght", new Object[]{MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH}, null);
 		if(!StringUtils.equals(emailPasswordHolder.getPassword(), emailPasswordHolder.getConfirmPassword()))				
 			errors.rejectValue("confirmPassword", "registration.password.mismatch");

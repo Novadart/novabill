@@ -1,11 +1,12 @@
 package com.novadart.novabill.web.gwt;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Iterator;
-
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,7 +14,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
@@ -105,13 +105,13 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 	}
 	
 	@Override
-	public String generatePDFToken() throws NotAuthenticatedException, ConcurrentAccessException, NoSuchAlgorithmException {
-		return generateToken(PDFController.TOKENS_SESSION_FIELD);
+	public String generatePDFToken() throws NotAuthenticatedException, ConcurrentAccessException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		return URLEncoder.encode(generateToken(PDFController.TOKENS_SESSION_FIELD), "UTF-8");
 	}
 
 	@Override
-	public String generateExportToken() throws NotAuthenticatedException, ConcurrentAccessException, NoSuchAlgorithmException {
-		return generateToken(ExportController.TOKENS_SESSION_FIELD);
+	public String generateExportToken() throws NotAuthenticatedException, ConcurrentAccessException, NoSuchAlgorithmException, UnsupportedEncodingException {
+		return URLEncoder.encode(generateToken(ExportController.TOKENS_SESSION_FIELD), "UTF-8");
 	}
 
 }
