@@ -8,7 +8,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.i18n.client.Dictionary;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.ui.bootstrap.BootstrapDialog;
@@ -62,7 +61,7 @@ public class Configuration {
 							@Override
 							public void businessData(final BusinessDTO business) {
 								
-								ServerFacade.business.update(business, new AsyncCallback<Void>() {
+								ServerFacade.business.update(business, new WrappedAsyncCallback<Void>() {
 									
 									@Override
 									public void onSuccess(Void result) {
@@ -72,7 +71,7 @@ public class Configuration {
 									}
 									
 									@Override
-									public void onFailure(Throwable caught) {
+									public void onException(Throwable caught) {
 										callback.onException(caught);
 									}
 								});

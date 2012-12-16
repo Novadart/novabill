@@ -9,7 +9,8 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="gwt:property" content="locale=it_IT">
-
+    
+	<link rel="shortcut icon" type="image/png" href="images/favicon.png"></link>
     <link type="text/css" rel="stylesheet" href="css/reset-min.css">
     <link type="text/css" rel="stylesheet" href="css/common.css">
     <link type="text/css" rel="stylesheet" href="css/page/private.css">
