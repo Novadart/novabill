@@ -4,20 +4,25 @@
 <tiles-definitions>
 
 	<definition name="footer" template="/WEB-INF/views/footer.jsp" />
+	<definition name="commonlinks" template="/WEB-INF/views/commonLinks.jsp" />
 	
 	<definition name="base" template="/WEB-INF/views/base.jsp">
+		<put-attribute name="commonlinks" value="commonlinks" />
 		<put-attribute name="footer" value="footer" />
 	</definition>
 	
 	<definition name="basePrivate" template="/WEB-INF/views/basePrivate.jsp" >
+		<put-attribute name="commonlinks" value="commonlinks" />
 		<put-attribute name="footer" value="footer" />
 	</definition>
 	
 	<definition name="baseFeedback" template="/WEB-INF/views/baseFeedback.jsp" >
+		<put-attribute name="commonlinks" value="commonlinks" />
 		<put-attribute name="footer" value="footer" />
 	</definition>
 
 	<definition name="baseError" template="/WEB-INF/views/baseError.jsp" >
+		<put-attribute name="commonlinks" value="commonlinks" />
 		<put-attribute name="footer" value="footer" />
 	</definition>
 	

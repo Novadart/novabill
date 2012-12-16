@@ -7,24 +7,8 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
-<title><spring:message code="application_name"></spring:message></title>
-<link rel="shortcut icon" type="image/png" href="images/favicon.png"></link>
-<link rel="stylesheet" type="text/css" href="../css/reset-min.css" />
-<link rel="stylesheet" type="text/css" href="../css/common.css" />
 
-<script type="text/javascript"
-	src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
-	
-<script type="text/javascript"
-	src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-<script type="text/javascript"
-	src="js/fancybox/jquery.easing-1.3.pack.js"></script>
-<script type="text/javascript"
-	src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
-<link rel="stylesheet" href="js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
-	
-<link rel="stylesheet" href="js/contactable/contactable.css" type="text/css"></link>
-<script type="text/javascript" src="js/contactable/jquery.contactable.min.js"></script>
+<tiles:insertAttribute name="commonlinks" />
 	
 <tiles:insertAttribute name="pagelinks" />
 

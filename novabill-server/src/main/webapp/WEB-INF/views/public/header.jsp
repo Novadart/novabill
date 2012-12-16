@@ -37,6 +37,13 @@
 				</form>
 			</div>
 		</div>
+		<script>
+			var remMe = $('#checkbox');
+			remMe.attr('checked', $.cookie("com.novadart.novabill.rememberMeChecked")!=null);
+			remMe.change(function(e){
+				$.cookie("com.novadart.novabill.rememberMeChecked", this.checked ? true : null, { expires : 365 });
+			});
+		</script>
 	</sec:authorize>
 	
 	
