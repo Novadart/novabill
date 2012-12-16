@@ -41,7 +41,7 @@
 			<td>
 				<div class="acceptAgreementWrapper">
 					<form:checkbox path="agreementAccepted" id="acceptAgreement" class="accept-agreement" />
-					<label for="acceptAgreement">
+					<label class="acceptAgreementLabel" for="acceptAgreement">
 						<spring:message code="registration.privacyPolicy" var="pp"/>
 						<spring:message code="registration.termsAndConditions" var="tec"/>
 						<spring:message code="registration.agreement" arguments="${pp},${tec}" htmlEscape="false"/>
@@ -58,3 +58,12 @@
 	</table>
 	
 </form:form>
+
+<script type="text/javascript">
+$(function() {
+	$("a.iframe").fancybox({
+		width: '70%',
+		height: '90%'
+	});
+});
+</script>

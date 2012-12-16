@@ -14,6 +14,15 @@
 
 <script type="text/javascript"
 	src="https://ajax.googleapis.com/ajax/libs/jquery/1.8.2/jquery.min.js"></script>
+	
+<script type="text/javascript"
+	src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
+<script type="text/javascript"
+	src="js/fancybox/jquery.easing-1.3.pack.js"></script>
+<script type="text/javascript"
+	src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
+<link rel="stylesheet" href="js/fancybox/jquery.fancybox-1.3.4.css" type="text/css" media="screen" />
+	
 <link rel="stylesheet" href="js/contactable/contactable.css" type="text/css"></link>
 <script type="text/javascript" src="js/contactable/jquery.contactable.min.js"></script>
 	

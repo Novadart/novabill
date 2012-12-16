@@ -14,6 +14,9 @@
 			<spring:message code="header.signupForFree"></spring:message>
 		</a>
 	</sec:authorize>
+	<sec:authorize access="isAuthenticated()">
+		<a class="action2-button goToPrivate" href='<spring:url value="/private"></spring:url>'><spring:message code="shared.private"/></a>
+	</sec:authorize>
 </div>
 <div class="divider-2"></div>
 <div class="top-features">
@@ -138,14 +141,6 @@
 	</sec:authorize>
 </div>
 
-
-
-<script type="text/javascript"
-	src="js/fancybox/jquery.fancybox-1.3.4.pack.js"></script>
-<script type="text/javascript"
-	src="js/fancybox/jquery.easing-1.3.pack.js"></script>
-<script type="text/javascript"
-	src="js/fancybox/jquery.mousewheel-3.0.4.pack.js"></script>
 <script type="text/javascript">
 		$(window).load(function() {
 		    $("*[rel=fancybox]").fancybox({

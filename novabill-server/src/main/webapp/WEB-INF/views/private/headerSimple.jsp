@@ -14,7 +14,7 @@
 
 		<span class="authLinks"> <a class="private"
 			href='<spring:url value="/private"></spring:url>'><spring:message
-					code="header.private" /></a> <sec:authorize
+					code="shared.private" /></a> <sec:authorize
 				access="hasRole('ROLE_BUSINESS_FREE')">
 				<%-- <a id="goPremium" class="action-button"
 					href='<spring:url value="/premiumInfo"></spring:url>'> <spring:message
