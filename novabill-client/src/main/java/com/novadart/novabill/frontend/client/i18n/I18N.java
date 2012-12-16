@@ -178,4 +178,7 @@ public interface I18N extends Constants {
 	public String transportDocumentNumber();
 	public String welcomeMessageClients();
 	public String welcomeMessageDocuments();
+	public String sessionExpiredError();
+	public String sessionExpiredError2();
+	public String reloadPage();
 }

@@ -48,31 +48,31 @@ public class ServerFacade {
 	}
 
 	
-	public static void authenticate(String username, String password, final AsyncCallback<Boolean> callback){
-
-		String payload = "j_username="+URL.encodeQueryString(username)
-				+"&j_password="+URL.encodeQueryString(password)
-				+"&gwt=1";
-		
-		try {
-			AUTH_REQUEST.sendRequest(payload, new RequestCallback() {
-				
-				@Override
-				public void onResponseReceived(Request request, Response response) {
-					callback.onSuccess(response.getStatusCode() == 200);
-				}
-				
-				@Override
-				public void onError(Request request, Throwable exception) {
-					callback.onFailure(exception);
-				}
-			});
-			
-		} catch (RequestException e) {
-			callback.onFailure(e);
-		}
-
-	}
+//	public static void authenticate(String username, String password, final AsyncCallback<Boolean> callback){
+//
+//		String payload = "j_username="+URL.encodeQueryString(username)
+//				+"&j_password="+URL.encodeQueryString(password)
+//				+"&gwt=1";
+//		
+//		try {
+//			AUTH_REQUEST.sendRequest(payload, new RequestCallback() {
+//				
+//				@Override
+//				public void onResponseReceived(Request request, Response response) {
+//					callback.onSuccess(response.getStatusCode() == 200);
+//				}
+//				
+//				@Override
+//				public void onError(Request request, Throwable exception) {
+//					callback.onFailure(exception);
+//				}
+//			});
+//			
+//		} catch (RequestException e) {
+//			callback.onFailure(e);
+//		}
+//
+//	}
 	
 	public static void sendFeedback(String subject, String name, String email, String message, String category, final AsyncCallback<Boolean> callback){
 

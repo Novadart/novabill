@@ -90,26 +90,16 @@ textarea:HOVER {
 	
 }
 
-.AuthDialog .username,.AuthDialog .password {
-	width: 15em;
-	margin-left: 2em;
+.AuthDialog .authDialog .reloadButton {
+	margin: 2em auto 0;
+	display: block;
+	width: 45%;
 }
 
-.AuthDialog .password,.AuthDialog .passwordLabel {
-	margin-top: 1em;
+.AuthDialog .authDialog .reloadMessage {
+	padding: 0.5em 0;
 }
 
-.AuthDialog .submit {
-	margin-top: 2em;
-	text-align: center;
-	width: 100%;
-}
-
-.AuthDialog .submitContainer {
-	margin-left: auto;
-	margin-right: auto;
-	width: 8em;
-}
 
 .Novabill {
 	margin: 0 auto;

@@ -1,6 +1,5 @@
 package com.novadart.novabill.frontend.client.facade;
 
-import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -30,34 +29,10 @@ public abstract class WrappedAsyncCallback<T> implements AsyncCallback<T> {
 		}
 	}
 
-	private class AuthCallback implements AsyncCallback<Boolean> {
 
-		private AuthDialog dialog;
-
-		public void setDialog(AuthDialog dialog) {
-			this.dialog = dialog;
-		}
-
-		@Override
-		public void onFailure(Throwable caught) {
-			dialog.hide();
-			dialog.removeFromParent();
-
-			showAuthDialog();
-		}
-
-		@Override
-		public void onSuccess(Boolean result) {
-			Window.Location.reload();
-		}
-
-	}
 
 	private void showAuthDialog(){
-		AuthCallback callback = new AuthCallback();
-		AuthDialog dialog = new AuthDialog(callback);
-		callback.setDialog(dialog);
-
+		ReloadWorkspaceDialog dialog = new ReloadWorkspaceDialog();
 		dialog.showCentered();
 		authDialogVisible = true;
 	}
