@@ -1,9 +1,8 @@
 package com.novadart.novabill.service;
 
 import java.security.NoSuchAlgorithmException;
-import java.util.Collections;
-import java.util.HashSet;
 import java.util.Set;
+import java.util.concurrent.ConcurrentSkipListSet;
 import javax.servlet.http.HttpSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -21,7 +20,7 @@ public class XsrfTokenService {
 		synchronized (WebUtils.getSessionMutex(session)) {
 			set = (Set<String>) session.getAttribute(tokensSessionField);
 			if (set == null) {
-				set = Collections.synchronizedSet(new HashSet<String>());
+				set = new ConcurrentSkipListSet<String>();
 				session.setAttribute(tokensSessionField, set);
 			}
 		}
