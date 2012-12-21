@@ -61,7 +61,7 @@ public privileged aspect CachingAspect {
 	 */
 	public static final String INVOICE_CACHE = "invoice-cache";
 	
-	declare @method : public List<InvoiceDTO> com.novadart.novabill.web.gwt.InvoiceServiceImpl.getAll(Long): @Cacheable(value = INVOICE_CACHE, key = "#businessID");
+	declare @method : public List<InvoiceDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getInvoices(Long): @Cacheable(value = INVOICE_CACHE, key = "#businessID");
 	
 	declare @method : public void com.novadart.novabill.web.gwt.InvoiceServiceImpl.remove(Long, Long, Long):
 		@Caching(evict = {
