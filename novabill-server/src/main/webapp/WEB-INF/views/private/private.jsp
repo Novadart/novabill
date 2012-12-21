@@ -3,6 +3,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<spring:url value="/" var="root"></spring:url>
+
 <!doctype html>
 
 <html>
@@ -10,11 +13,11 @@
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="gwt:property" content="locale=it_IT">
     
-	<link rel="shortcut icon" type="image/png" href="images/favicon.png"></link>
-    <link type="text/css" rel="stylesheet" href="css/reset-min.css">
-    <link type="text/css" rel="stylesheet" href="css/common.css">
-    <link type="text/css" rel="stylesheet" href="css/page/private.css">
-    <link type="text/css" rel="stylesheet" href="js/contactable/contactable-private.css">
+	<link rel="shortcut icon" type="image/png" href="${root}images/favicon.png"></link>
+    <link type="text/css" rel="stylesheet" href="${root}css/reset-min.css">
+    <link type="text/css" rel="stylesheet" href="${root}css/common.css">
+    <link type="text/css" rel="stylesheet" href="${root}css/page/private.css">
+    <link type="text/css" rel="stylesheet" href="${root}js/contactable/contactable-private.css">
 
     <title><spring:message code="application_name"></spring:message></title>
     
@@ -23,7 +26,7 @@
     	var daysToExpiration = <%=request.getAttribute("daysToExpiration")%>
     </script>
     
-    <script type="text/javascript" language="javascript" src="rpc/rpc.nocache.js"></script>
+    <script type="text/javascript" language="javascript" src="${root}rpc/rpc.nocache.js"></script>
     
   </head>
 
