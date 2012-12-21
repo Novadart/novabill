@@ -35,6 +35,4 @@ public interface CreditNoteService extends RemoteService {
 
 	public Long getNextInvoiceDocumentID() throws NotAuthenticatedException, ConcurrentAccessException;
 	
-	public List<CreditNoteDTO> getAll(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException;
-	
 }

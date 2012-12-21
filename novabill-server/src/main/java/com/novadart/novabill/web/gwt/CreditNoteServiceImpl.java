@@ -6,7 +6,6 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -26,6 +25,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.CreditNoteService;
 
 @SuppressWarnings("serial")
@@ -35,6 +35,9 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	private UtilsService utilsService;
 	
 	@Autowired
+	private BusinessService businessService;
+	
+	@Autowired
 	private InvoiceValidator validator;
 
 	public CreditNoteServiceImpl() {
@@ -42,21 +45,15 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	}
 	
 	@Override
-	@PreAuthorize("#businessID == principal.business.id")
-	public List<CreditNoteDTO> getAll(Long businessID){
-		return DTOUtils.toDTOList( AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).getCreditNotes()), DTOUtils.creditNoteDTOConverter); 
-	}
-
-	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.business?.id == principal.business.id")
 	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
-		return DTOUtils.findDocumentInCollection(getAll(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), id);
+		return DTOUtils.findDocumentInCollection(businessService.getCreditNotes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), id);
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, ConcurrentAccessException {
-		List<CreditNoteDTO> allCreditNotes = getAll(businessID);
+		List<CreditNoteDTO> allCreditNotes = businessService.getCreditNotes(businessID);
 		return new PageDTO<CreditNoteDTO>(DTOUtils.range(allCreditNotes, start, length), start, length, new Long(allCreditNotes.size()));
 	}
 	
@@ -78,7 +75,7 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
 	public List<CreditNoteDTO> getAllForClient(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
-		return new ArrayList<CreditNoteDTO>(DTOUtils.filter(getAll(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), new EqualsClientIDPredicate(clientID)));
+		return new ArrayList<CreditNoteDTO>(DTOUtils.filter(businessService.getCreditNotes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), new EqualsClientIDPredicate(clientID)));
 	}
 	
 	@Override

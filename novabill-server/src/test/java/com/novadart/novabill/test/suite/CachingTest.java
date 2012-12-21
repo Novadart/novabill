@@ -297,26 +297,26 @@ public class CachingTest extends GWTServiceTest {
 	
 	@Test
 	public void creditNoteGetAllCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
-		List<CreditNoteDTO> result = creditNoteService.getAll(authenticatedPrincipal.getBusiness().getId());
-		List<CreditNoteDTO> cachedResult = creditNoteService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<CreditNoteDTO> result = businessService.getCreditNotes(authenticatedPrincipal.getBusiness().getId());
+		List<CreditNoteDTO> cachedResult = businessService.getCreditNotes(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(result == cachedResult);
 	}
 	
 	@Test
 	public void creditNoteRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<CreditNoteDTO> result = creditNoteService.getAll(businessID);
+		List<CreditNoteDTO> result = businessService.getCreditNotes(businessID);
 		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		Long id = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(businessID, clientID, id);
-		List<CreditNoteDTO> nonCachedResult = creditNoteService.getAll(businessID);
+		List<CreditNoteDTO> nonCachedResult = businessService.getCreditNotes(businessID);
 		assertTrue(result != nonCachedResult);
 	}
 	
 	@Test
 	public void creditNoteAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<CreditNoteDTO> result = creditNoteService.getAll(businessID);
+		List<CreditNoteDTO> result = businessService.getCreditNotes(businessID);
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		CreditNoteDTO credNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class));
@@ -325,21 +325,21 @@ public class CachingTest extends GWTServiceTest {
 		creditNoteService.add(credNoteDTO);
 		CreditNote.entityManager().flush();
 		
-		List<CreditNoteDTO> nonCachedResult = creditNoteService.getAll(businessID);
+		List<CreditNoteDTO> nonCachedResult = businessService.getCreditNotes(businessID);
 		assertTrue(result != nonCachedResult);
 	}
 	
 	@Test
 	public void creditNoteUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<CreditNoteDTO> result = creditNoteService.getAll(businessID);
+		List<CreditNoteDTO> result = businessService.getCreditNotes(businessID);
 		
 		CreditNote credNote = authenticatedPrincipal.getBusiness().getCreditNotes().iterator().next();
 		credNote.setNote("Temporary note for this credit note");
 		creditNoteService.update(CreditNoteDTOFactory.toDTO(credNote));
 		CreditNote.entityManager().flush();
 		
-		List<CreditNoteDTO> nonCachedResult = creditNoteService.getAll(businessID);
+		List<CreditNoteDTO> nonCachedResult = businessService.getCreditNotes(businessID);
 		assertTrue(result != nonCachedResult);
 	}
 	

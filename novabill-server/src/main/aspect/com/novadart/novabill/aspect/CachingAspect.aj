@@ -97,7 +97,7 @@ public privileged aspect CachingAspect {
 	
 	public static final String CREDITNOTE_CACHE = "creditnote-cache";
 	
-	declare @method : public List<CreditNoteDTO> com.novadart.novabill.web.gwt.CreditNoteServiceImpl.getAll(Long): @Cacheable(value = CREDITNOTE_CACHE, key = "#businessID");
+	declare @method : public List<CreditNoteDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getCreditNotes(Long): @Cacheable(value = CREDITNOTE_CACHE, key = "#businessID");
 	
 	declare @method : public void com.novadart.novabill.web.gwt.CreditNoteServiceImpl.remove(Long, Long, Long):
 		@Caching(evict = {
