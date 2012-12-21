@@ -145,7 +145,7 @@ public privileged aspect CachingAspect {
 	
 	public static final String TRANSPORTDOCUMENT_CACHE = "transportdocument-cache";
 	
-	declare @method : public List<TransportDocumentDTO> com.novadart.novabill.web.gwt.TransportDocumentServiceImpl.getAll(Long):
+	declare @method : public List<TransportDocumentDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getTransportDocuments(Long):
 		@Cacheable(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID");
 	declare @method : public void com.novadart.novabill.web.gwt.TransportDocumentServiceImpl.remove(Long, Long, Long):
 		@Caching(evict = {

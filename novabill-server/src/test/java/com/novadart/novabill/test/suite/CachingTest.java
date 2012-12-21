@@ -393,26 +393,26 @@ public class CachingTest extends GWTServiceTest {
 	
 	@Test
 	public void transDocGetAllCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
-		List<TransportDocumentDTO> result = transDocService.getAll(authenticatedPrincipal.getBusiness().getId());
-		List<TransportDocumentDTO> cachedResult = transDocService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<TransportDocumentDTO> result = businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId());
+		List<TransportDocumentDTO> cachedResult = businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(result == cachedResult);
 	}
 	
 	@Test
 	public void transDocRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<TransportDocumentDTO> result = transDocService.getAll(businessID);
+		List<TransportDocumentDTO> result = businessService.getTransportDocuments(businessID);
 		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		Long id = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transDocService.remove(businessID, clientID, id);
-		List<TransportDocumentDTO> nonCachedResult = transDocService.getAll(businessID);
+		List<TransportDocumentDTO> nonCachedResult = businessService.getTransportDocuments(businessID);
 		assertTrue(result != nonCachedResult);
 	}
 	
 	@Test
 	public void transDocAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<TransportDocumentDTO> result = transDocService.getAll(businessID);
+		List<TransportDocumentDTO> result = businessService.getTransportDocuments(businessID);
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()));
@@ -421,21 +421,21 @@ public class CachingTest extends GWTServiceTest {
 		transDocService.add(transDocDTO);
 		TransportDocument.entityManager().flush();
 		
-		List<TransportDocumentDTO> nonCachedResult = transDocService.getAll(businessID);
+		List<TransportDocumentDTO> nonCachedResult = businessService.getTransportDocuments(businessID);
 		assertTrue(result != nonCachedResult);
 	}
 	
 	@Test
 	public void transDocUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<TransportDocumentDTO> result = transDocService.getAll(businessID);
+		List<TransportDocumentDTO> result = businessService.getTransportDocuments(businessID);
 		
 		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		transDoc.setNote("Temporary note for this transport document");
 		transDocService.update(TransportDocumentDTOFactory.toDTO(transDoc));
 		TransportDocument.entityManager().flush();
 		
-		List<TransportDocumentDTO> nonCachedResult = transDocService.getAll(businessID);
+		List<TransportDocumentDTO> nonCachedResult = businessService.getTransportDocuments(businessID);
 		assertTrue(result != nonCachedResult);
 	}
 	

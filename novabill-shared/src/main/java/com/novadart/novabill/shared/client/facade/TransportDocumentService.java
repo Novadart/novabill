@@ -34,6 +34,4 @@ public interface TransportDocumentService extends RemoteService {
 	
 	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, ConcurrentAccessException;
 	
-	public List<TransportDocumentDTO> getAll(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException;
-
 }
