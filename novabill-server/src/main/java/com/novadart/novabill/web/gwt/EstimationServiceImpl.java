@@ -6,7 +6,6 @@ import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -26,6 +25,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 
 @SuppressWarnings("serial")
@@ -35,6 +35,9 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	private UtilsService utilsService;
 	
 	@Autowired
+	private BusinessService businessService;
+	
+	@Autowired
 	private AccountingDocumentValidator validator;
 	
 	public EstimationServiceImpl() {
@@ -42,15 +45,9 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	}
 	
 	@Override
-	@PreAuthorize("#businessID == principal.business.id")
-	public List<EstimationDTO> getAll(Long businessID){
-		return DTOUtils.toDTOList( AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).getEstimations()), DTOUtils.estimationDTOConverter); 
-	}
-	
-	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Estimation).findEstimation(#id)?.business?.id == principal.business.id")
-	public EstimationDTO get(Long id) throws DataAccessException, NoSuchObjectException {
-		return DTOUtils.findDocumentInCollection(getAll(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), id);
+	public EstimationDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, ConcurrentAccessException {
+		return DTOUtils.findDocumentInCollection(businessService.getEstimations(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), id);
 	}
 	
 	private static class EqualsClientIDPredicate implements Predicate<EstimationDTO>{
@@ -70,8 +67,8 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public List<EstimationDTO> getAllForClient(Long clientID) throws DataAccessException, NoSuchObjectException {
-		return new ArrayList<EstimationDTO>(DTOUtils.filter(getAll(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), new EqualsClientIDPredicate(clientID)));
+	public List<EstimationDTO> getAllForClient(Long clientID) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, ConcurrentAccessException {
+		return new ArrayList<EstimationDTO>(DTOUtils.filter(businessService.getEstimations(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), new EqualsClientIDPredicate(clientID)));
 	}
 
 	@Override
@@ -144,7 +141,7 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public PageDTO<EstimationDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException, ConcurrentAccessException {
-		List<EstimationDTO> allEstimations = getAll(businessID);
+		List<EstimationDTO> allEstimations = businessService.getEstimations(businessID);
 		return new PageDTO<EstimationDTO>(DTOUtils.range(allEstimations, start, length), start, length, new Long(allEstimations.size()));
 	}
 

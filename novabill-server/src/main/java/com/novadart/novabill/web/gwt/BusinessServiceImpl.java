@@ -26,6 +26,7 @@ import com.novadart.novabill.service.validator.TaxableEntityValidator;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -130,6 +131,12 @@ public class BusinessServiceImpl extends AbstractGwtController<BusinessService, 
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<CreditNoteDTO> getCreditNotes(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
 		return DTOUtils.toDTOList( AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).getCreditNotes()), DTOUtils.creditNoteDTOConverter);
+	}
+
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<EstimationDTO> getEstimations(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+		return DTOUtils.toDTOList( AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).getEstimations()), DTOUtils.estimationDTOConverter);
 	}
 	
 	

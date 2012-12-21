@@ -213,5 +213,20 @@ public class BusinessServiceTest extends GWTServiceTest {
 	public void getCreditNotesUnauthorizedNullTest() throws NotAuthenticatedException, ConcurrentAccessException{
 		businessService.getCreditNotes(null);
 	}
+	
+	@Test
+	public void getEstimationsAuthorizedTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getEstimations(authenticatedPrincipal.getBusiness().getId());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void getEstimationsUnauthorizedIDTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getEstimations(getUnathorizedBusinessID());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void getEstimationsUnauthorizedNullTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getEstimations(null);
+	}
 
 }

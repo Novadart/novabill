@@ -345,26 +345,26 @@ public class CachingTest extends GWTServiceTest {
 	
 	@Test
 	public void estimationGetAllCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
-		List<EstimationDTO> result = estimationService.getAll(authenticatedPrincipal.getBusiness().getId());
-		List<EstimationDTO> cachedResult = estimationService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<EstimationDTO> result = businessService.getEstimations(authenticatedPrincipal.getBusiness().getId());
+		List<EstimationDTO> cachedResult = businessService.getEstimations(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(result == cachedResult);
 	}
 	
 	@Test
 	public void estimationRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<EstimationDTO> result = estimationService.getAll(businessID);
+		List<EstimationDTO> result = businessService.getEstimations(businessID);
 		Long clientID = new Long(testProps.get("clientWithEstimationsID"));
 		Long id = Client.findClient(clientID).getEstimations().iterator().next().getId();
 		estimationService.remove(businessID, clientID, id);
-		List<EstimationDTO> nonCachedResult = estimationService.getAll(businessID);
+		List<EstimationDTO> nonCachedResult = businessService.getEstimations(businessID);
 		assertTrue(result != nonCachedResult);
 	} 
 	
 	@Test
 	public void estimationAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<EstimationDTO> result = estimationService.getAll(businessID);
+		List<EstimationDTO> result = businessService.getEstimations(businessID);
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		EstimationDTO estimationDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()));
@@ -373,21 +373,21 @@ public class CachingTest extends GWTServiceTest {
 		estimationService.add(estimationDTO);
 		Estimation.entityManager().flush();
 		
-		List<EstimationDTO> nonCachedResult = estimationService.getAll(businessID);
+		List<EstimationDTO> nonCachedResult = businessService.getEstimations(businessID);
 		assertTrue(result != nonCachedResult);
 	}
 	
 	@Test
 	public void estimationUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<EstimationDTO> result = estimationService.getAll(businessID);
+		List<EstimationDTO> result = businessService.getEstimations(businessID);
 		
 		Estimation estimation = authenticatedPrincipal.getBusiness().getEstimations().iterator().next();
 		estimation.setNote("Temporary note for this estimation");
 		estimationService.update(EstimationDTOFactory.toDTO(estimation));
 		Estimation.entityManager().flush();
 		
-		List<EstimationDTO> nonCachedResult = estimationService.getAll(businessID);
+		List<EstimationDTO> nonCachedResult = businessService.getEstimations(businessID);
 		assertTrue(result != nonCachedResult);
 	}
 	

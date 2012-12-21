@@ -122,7 +122,7 @@ public privileged aspect CachingAspect {
 	
 	public static final String ESTIMATION_CACHE = "estimation-cache";
 	
-	declare @method : public List<EstimationDTO> com.novadart.novabill.web.gwt.EstimationServiceImpl.getAll(Long): @Cacheable(value = ESTIMATION_CACHE, key = "#businessID");
+	declare @method : public List<EstimationDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getEstimations(Long): @Cacheable(value = ESTIMATION_CACHE, key = "#businessID");
 	
 	declare @method : public void com.novadart.novabill.web.gwt.EstimationServiceImpl.remove(Long, Long, Long):
 		@Caching(evict = {
