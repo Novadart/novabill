@@ -12,8 +12,6 @@ public interface CreditNoteServiceAsync {
 
 	void get(Long id, AsyncCallback<CreditNoteDTO> callback);
 
-	void getAll(Long businessID, AsyncCallback<List<CreditNoteDTO>> callback);
-
 	void getAllForClient(Long clientID,
 			AsyncCallback<List<CreditNoteDTO>> callback);
 

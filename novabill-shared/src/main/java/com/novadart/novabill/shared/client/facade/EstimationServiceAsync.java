@@ -11,8 +11,6 @@ public interface EstimationServiceAsync {
 
 	void get(Long id, AsyncCallback<EstimationDTO> callback);
 
-	void getAll(Long businessID, AsyncCallback<List<EstimationDTO>> callback);
-
 	void getAllForClient(Long clientID,
 			AsyncCallback<List<EstimationDTO>> callback);
 
