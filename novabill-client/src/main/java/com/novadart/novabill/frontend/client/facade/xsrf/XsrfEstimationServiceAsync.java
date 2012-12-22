@@ -65,19 +65,6 @@ EstimationServiceAsync {
 	}
 	
 	@Override
-	public void getAll(final Long businessID,
-			final AsyncCallback<List<EstimationDTO>> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<EstimationServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(EstimationServiceAsync service) {
-				service.getAll(businessID, callback);
-			}
-
-		});
-	}
-	
-	@Override
 	public void getAllForClient(final Long clientID,
 			final AsyncCallback<List<EstimationDTO>> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate<EstimationServiceAsync>(callback) {

@@ -59,17 +59,6 @@ public class XsrfCreditNoteServiceAsync extends XsrfProtectedService<CreditNoteS
 		});
 	}
 	
-	@Override
-	public void getAll(final Long businessID,
-			final AsyncCallback<List<CreditNoteDTO>> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<CreditNoteServiceAsync>(callback) {
-			
-			@Override
-			protected void performCall(CreditNoteServiceAsync service) {
-				service.getAll(businessID, callback);
-			}
-		});
-	}
 	
 	@Override
 	public void getAllForClient(final Long clientID,
