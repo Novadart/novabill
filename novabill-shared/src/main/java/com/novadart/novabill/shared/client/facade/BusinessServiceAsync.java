@@ -6,6 +6,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -41,5 +42,7 @@ public interface BusinessServiceAsync {
 
 	void getTransportDocuments(Long businessID,
 			AsyncCallback<List<TransportDocumentDTO>> callback);
+
+	void getClients(Long businessID, AsyncCallback<List<ClientDTO>> callback);
 
 }

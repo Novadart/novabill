@@ -1,7 +1,9 @@
 package com.novadart.novabill.domain.dto;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import com.novadart.novabill.domain.AccountingDocument;
@@ -81,6 +83,23 @@ public class DTOUtils {
 		public boolean isTrue(T doc);
 	}
 	
+	public static class EqualsYearPredicate<T extends AccountingDocumentDTO> implements Predicate<T>{
+		
+		private int year;
+		
+		public EqualsYearPredicate(int year) {
+			this.year = year;
+		}
+
+		@Override
+		public boolean isTrue(T doc) {
+			Calendar calendar = new GregorianCalendar();
+			calendar.setTime(doc.getAccountingDocumentDate());
+			return year == calendar.get(Calendar.YEAR);
+		}
+		
+	}
+	
 	public static <T extends AccountingDocumentDTO> Collection<T> filter(Collection<T> collection, Predicate<T> pred){
 		ArrayList<T> filtered = new ArrayList<T>();
 		Iterator<T> iter = collection.iterator();
@@ -94,6 +113,5 @@ public class DTOUtils {
 	public static <E> List<E> range(List<E> list, Integer start, Integer length){
 		return new ArrayList<E>(list.subList(start, Math.min(start + length, list.size())));
 	}
-
-
+	
 }

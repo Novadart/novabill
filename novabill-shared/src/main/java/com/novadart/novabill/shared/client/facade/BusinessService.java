@@ -10,6 +10,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -47,5 +48,7 @@ public interface BusinessService extends RemoteService {
 	public List<EstimationDTO> getEstimations(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException;
 	
 	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException;
+	
+	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException;
 
 }
