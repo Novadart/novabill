@@ -28,8 +28,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 
-@SuppressWarnings("serial")
-public class EstimationServiceImpl extends AbstractGwtController<EstimationService, EstimationServiceImpl> implements EstimationService {
+public class EstimationServiceImpl implements EstimationService {
 	
 	@Autowired
 	private UtilsService utilsService;
@@ -39,10 +38,6 @@ public class EstimationServiceImpl extends AbstractGwtController<EstimationServi
 	
 	@Autowired
 	private AccountingDocumentValidator validator;
-	
-	public EstimationServiceImpl() {
-		super(EstimationService.class);
-	}
 	
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Estimation).findEstimation(#id)?.business?.id == principal.business.id")

@@ -13,7 +13,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.CreditNoteService;
 
-public class CreditNoteServiceProxy extends AbstractGwtController<CreditNoteService, CreditNoteServiceImpl> {
+public class CreditNoteServiceProxy extends AbstractGwtController<CreditNoteService, CreditNoteServiceProxy> implements CreditNoteService {
 	
 	private static final long serialVersionUID = 1L;
 	
