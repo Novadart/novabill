@@ -31,7 +31,7 @@ import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentService;
 
 @SuppressWarnings("serial")
-public class TransportDocumentServiceImpl extends AbstractGwtController<TransportDocumentService, TransportDocumentServiceImpl> implements TransportDocumentService {
+public class TransportDocumentServiceImpl implements TransportDocumentService {
 
 
 	@Autowired
@@ -43,10 +43,6 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 	@Autowired
 	private AccountingDocumentValidator validator;
 	
-	public TransportDocumentServiceImpl() {
-		super(TransportDocumentService.class);
-	}
-
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#id)?.business?.id == principal.business.id")
 	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {

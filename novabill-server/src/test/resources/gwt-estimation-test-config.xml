@@ -17,7 +17,7 @@
 	<bean id="businessServiceImpl" class="com.novadart.novabill.web.gwt.BusinessServiceImpl">
 		<lookup-method name="self" bean="businessServiceImpl"/>
 	</bean>
-    
+	
     <util:map map-class="java.util.HashMap" id="testProps" key-type="java.lang.String" value-type="java.lang.String">
     	<entry key="clientWithEstimationsID" value="3"/>
     </util:map>
