@@ -21,11 +21,11 @@ public interface CreditNoteServiceAsync {
 	void getAllInRange(Long businessID, Integer start, Integer length,
 			AsyncCallback<PageDTO<CreditNoteDTO>> callback);
 
-	void getNextInvoiceDocumentID(AsyncCallback<Long> callback);
-
 	void remove(Long businessID, Long clientID, Long creditNoteID,
 			AsyncCallback<Void> callback);
 
 	void update(CreditNoteDTO creditNoteDTO, AsyncCallback<Void> callback);
+
+	void getNextCreditNoteDocumentID(AsyncCallback<Long> callback);
 	
 }

@@ -28,8 +28,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.CreditNoteService;
 
-@SuppressWarnings("serial")
-public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteService, CreditNoteServiceImpl> implements CreditNoteService {
+public class CreditNoteServiceImpl implements CreditNoteService {
 	
 	@Autowired
 	private UtilsService utilsService;
@@ -40,10 +39,6 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	@Autowired
 	private InvoiceValidator validator;
 
-	public CreditNoteServiceImpl() {
-		super(CreditNoteService.class);
-	}
-	
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.business?.id == principal.business.id")
 	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
@@ -133,7 +128,7 @@ public class CreditNoteServiceImpl extends AbstractGwtController<CreditNoteServi
 	}
 
 	@Override
-	public Long getNextInvoiceDocumentID() throws NotAuthenticatedException, ConcurrentAccessException {
+	public Long getNextCreditNoteDocumentID() throws NotAuthenticatedException, ConcurrentAccessException {
 		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextCreditNoteDocumentID();
 	}
 

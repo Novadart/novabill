@@ -33,6 +33,6 @@ public interface CreditNoteService extends RemoteService {
 	
 	public void update(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, ConcurrentAccessException;
 
-	public Long getNextInvoiceDocumentID() throws NotAuthenticatedException, ConcurrentAccessException;
+	public Long getNextCreditNoteDocumentID() throws NotAuthenticatedException, ConcurrentAccessException;
 	
 }
