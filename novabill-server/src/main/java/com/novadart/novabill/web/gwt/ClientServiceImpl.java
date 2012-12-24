@@ -2,7 +2,6 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,28 +20,11 @@ import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.ClientService;
 
-public class ClientServiceImpl extends AbstractGwtController<ClientService, ClientServiceImpl> implements ClientService {
-
-	private static final long serialVersionUID = -5418569389456426364L;
+public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	private TaxableEntityValidator validator;
 	
-	public ClientServiceImpl() {
-		super(ClientService.class);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	@PreAuthorize("#businessID == principal.business.id")
-	public List<ClientDTO> getAll(Long businessID) {
-		Set<Client> clients = Business.findBusiness(businessID).getClients();
-		List<ClientDTO> clientDTOs = new ArrayList<ClientDTO>(clients.size());
-		for(Client client: clients)
-			clientDTOs.add(ClientDTOFactory.toDTO(client));
-		return clientDTOs;
-	}
-
 	@Override
 	@Transactional(readOnly = false)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id and " +

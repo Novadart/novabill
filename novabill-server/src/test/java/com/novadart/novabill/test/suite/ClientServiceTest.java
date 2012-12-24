@@ -37,6 +37,7 @@ import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.ClientService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
@@ -48,6 +49,9 @@ public class ClientServiceTest extends GWTServiceTest {
 	
 	@Autowired
 	private ClientService clientService;
+	
+	@Autowired
+	private BusinessService businessService;
 	
 	@Resource(name = "testProps")
 	private HashMap<String, String> testProps;
@@ -78,7 +82,7 @@ public class ClientServiceTest extends GWTServiceTest {
 		for(Client client: authenticatedPrincipal.getBusiness().getClients())
 			expected.add(ClientDTOFactory.toDTO(client));
 		boolean contained = true;
-		Set<ClientDTO> actual = new HashSet<ClientDTO>(clientService.getAll(authenticatedPrincipal.getBusiness().getId()));
+		Set<ClientDTO> actual = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		outer: for (ClientDTO cdto1 : actual) {
 			for(ClientDTO cdto2: expected)
 				if(EqualsBuilder.reflectionEquals(cdto1, cdto2, "contact") && EqualsBuilder.reflectionEquals(cdto1.getContact(), cdto2.getContact(), false))
@@ -91,12 +95,12 @@ public class ClientServiceTest extends GWTServiceTest {
 	
 	@Test(expected = AccessDeniedException.class)
 	public void getAllUnauthenticatedTest() throws NotAuthenticatedException, ConcurrentAccessException{
-		clientService.getAll(getUnathorizedBusinessID());
+		businessService.getClients(getUnathorizedBusinessID());
 	}
 	
 	@Test(expected = AccessDeniedException.class)
 	public void getAllUnauthenticatedNullTest() throws NotAuthenticatedException, ConcurrentAccessException{
-		clientService.getAll(null);
+		businessService.getClients(null);
 	}
 	
 	@Test
