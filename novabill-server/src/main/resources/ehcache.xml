@@ -26,32 +26,7 @@
         overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
         timeToLiveSeconds="600" memoryStoreEvictionPolicy="LRU" statistics="true" />
 
-    <cache name="business-stats-cache" eternal="false"
-        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
-        timeToIdleSeconds="0" timeToLiveSeconds="300"
-        memoryStoreEvictionPolicy="LRU" statistics="true" />
-        
-    <cache name="business-client-count-cache" eternal="false"
-        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
-        timeToIdleSeconds="0" timeToLiveSeconds="300"
-        memoryStoreEvictionPolicy="LRU" statistics="true" />    
-     
-    <cache name="business-invoice-count-cache" eternal="false"
-        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
-        timeToIdleSeconds="0" timeToLiveSeconds="300"
-        memoryStoreEvictionPolicy="LRU" statistics="true" />
-        
-    <cache name="business-invoice-year-count-cache" eternal="false"
-        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
-        timeToIdleSeconds="0" timeToLiveSeconds="300"
-        memoryStoreEvictionPolicy="LRU" statistics="true" />
-    
-    <cache name="business-total-after-taxes-year-cache" eternal="false"
-        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
-        timeToIdleSeconds="0" timeToLiveSeconds="300"
-        memoryStoreEvictionPolicy="LRU" statistics="true" />
-        
-    <cache name="client-business-clients-cache" eternal="false"
+    <cache name="client-cache" eternal="false"
         maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
         timeToIdleSeconds="0" timeToLiveSeconds="300"
         memoryStoreEvictionPolicy="LRU" statistics="true" />

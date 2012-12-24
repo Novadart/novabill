@@ -9,8 +9,11 @@
 						http://www.springframework.org/schema/security/spring-security-3.1.xsd
 						http://www.springframework.org/schema/util
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd">
-
-    <bean id="business" class="com.novadart.novabill.web.gwt.BusinessServiceImpl" />
+						
+    <bean id="business" class="com.novadart.novabill.web.gwt.BusinessServiceProxy" primary="true"/>
+    <bean id="businessServiceImpl" class="com.novadart.novabill.web.gwt.BusinessServiceImpl">
+		<lookup-method name="self" bean="businessServiceImpl"/>
+	</bean>
     
     <util:map map-class="java.util.HashMap" id="totalsAfterTax" key-type="java.lang.String" value-type="java.lang.String">
     	<entry key="giordano.battilana@novadart.com" value="8833.00"/>
