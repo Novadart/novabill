@@ -4,7 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
@@ -28,8 +30,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 
-@SuppressWarnings("serial")
-public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, InvoiceServiceImpl> implements InvoiceService {
+public class InvoiceServiceImpl implements InvoiceService {
 
 	@Autowired
 	private UtilsService utilsService;
@@ -39,10 +40,6 @@ public class InvoiceServiceImpl extends AbstractGwtController<InvoiceService, In
 	
 	@Autowired
 	private BusinessService businessService;
-	
-	public InvoiceServiceImpl() {
-		super(InvoiceService.class);
-	}
 	
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == principal.business.id")
