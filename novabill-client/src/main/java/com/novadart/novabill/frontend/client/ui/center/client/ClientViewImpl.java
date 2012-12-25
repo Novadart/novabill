@@ -308,7 +308,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	@UiHandler("newCreditNote")
 	void onNewCreditNoteClicked(ClickEvent e){
-		ServerFacade.creditNote.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
+		ServerFacade.creditNote.getNextCreditNoteDocumentID(new WrappedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {

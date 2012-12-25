@@ -203,7 +203,7 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 	}
 	
 	private void onCreditNoteClicked(final InvoiceDTO invoice) {
-		ServerFacade.creditNote.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
+		ServerFacade.creditNote.getNextCreditNoteDocumentID(new WrappedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {

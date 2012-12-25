@@ -37,7 +37,7 @@ public class ClientDataProvider extends AsyncDataProvider<ClientDTO> {
 		
 		if(query == null || query.isEmpty()){
 			
-			ServerFacade.client.getAll(Configuration.getBusinessId(), new WrappedAsyncCallback<List<ClientDTO>>() {
+			ServerFacade.business.getClients(Configuration.getBusinessId(), new WrappedAsyncCallback<List<ClientDTO>>() {
 				
 				@Override
 				public void onSuccess(List<ClientDTO> result) {

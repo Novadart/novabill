@@ -7,6 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -155,6 +156,19 @@ BusinessServiceAsync {
 			@Override
 			protected void performCall(BusinessServiceAsync service) {
 				service.getTransportDocuments(businessID, callback);
+			}
+
+		});
+	}
+
+	@Override
+	public void getClients(final Long businessID,
+			final AsyncCallback<List<ClientDTO>> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.getClients(businessID, callback);
 			}
 
 		});
