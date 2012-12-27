@@ -20,6 +20,7 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 
 public class DTOUtils {
 
@@ -70,13 +71,13 @@ public class DTOUtils {
 	 * 
 	 */
 	
-	public static <T extends AccountingDocumentDTO> T findDocumentInCollection(Collection<T> collection, Long id){
+	public static <T extends AccountingDocumentDTO> T findDocumentInCollection(Collection<T> collection, Long id) throws NoSuchObjectException{
 		Iterator<T> iter = collection.iterator();
 		T doc;
 		while(iter.hasNext())
 			if((doc = iter.next()).getId().equals(id))
 				return doc;
-		return null;
+		throw new NoSuchObjectException();
 	}
 	
 	public static interface Predicate<T extends AccountingDocumentDTO>{

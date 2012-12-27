@@ -9,21 +9,31 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.TaxableEntityValidator;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.ClientService;
 
 public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	private TaxableEntityValidator validator;
+	
+	@Autowired
+	private BusinessService businessService;
+	
+	@Autowired
+	private UtilsService utilsService;
 	
 	@Override
 	@Transactional(readOnly = false)
@@ -69,8 +79,11 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id")
-	public ClientDTO get(Long id) throws DataAccessException, NoSuchObjectException {
-		return ClientDTOFactory.toDTO(Client.findClient(id));
+	public ClientDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, ConcurrentAccessException {
+		for(ClientDTO clientDTO: businessService.getClients(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()))
+			if(clientDTO.getId().equals(id))
+				return clientDTO;
+		throw new NoSuchObjectException();
 	}
 
 	@Override
