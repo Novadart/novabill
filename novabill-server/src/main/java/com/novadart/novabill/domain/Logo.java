@@ -10,6 +10,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.Lob;
 import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
@@ -36,6 +37,7 @@ public class Logo {
     
     private LogoFormat format;
     
+    @Lob
     @Basic(fetch = FetchType.LAZY, optional = false)
     @NotNull
     private byte[] data;
