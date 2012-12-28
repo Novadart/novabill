@@ -65,18 +65,6 @@ public class XsrfInvoiceServiceAsync extends XsrfProtectedService<InvoiceService
 	}
 	
 	@Override
-	public void getAll(final Long businessID, final AsyncCallback<List<InvoiceDTO>> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<InvoiceServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(InvoiceServiceAsync service) {
-				service.getAll(businessID, callback);
-			}
-
-		});
-	}
-	
-	@Override
 	public void getAllForClient(final Long clientID,
 			final AsyncCallback<List<InvoiceDTO>> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate<InvoiceServiceAsync>(callback) {

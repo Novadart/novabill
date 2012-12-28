@@ -1,11 +1,17 @@
 package com.novadart.novabill.frontend.client.facade.xsrf;
 
 import java.math.BigDecimal;
+import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.BusinessServiceAsync;
 
@@ -97,6 +103,72 @@ BusinessServiceAsync {
 			@Override
 			protected void performCall(BusinessServiceAsync service) {
 				service.getTotalAfterTaxesForYear(businessID, year, callback);
+			}
+
+		});
+	}
+
+	@Override
+	public void getCreditNotes(final Long businessID,
+			final AsyncCallback<List<CreditNoteDTO>> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.getCreditNotes(businessID, callback);
+			}
+
+		});
+		
+	}
+
+	@Override
+	public void getEstimations(final Long businessID,
+			final AsyncCallback<List<EstimationDTO>> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.getEstimations(businessID, callback);
+			}
+
+		});
+	}
+
+	@Override
+	public void getInvoices(final Long businessID,
+			final AsyncCallback<List<InvoiceDTO>> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.getInvoices(businessID, callback);
+			}
+
+		});
+	}
+
+	@Override
+	public void getTransportDocuments(final Long businessID,
+			final AsyncCallback<List<TransportDocumentDTO>> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.getTransportDocuments(businessID, callback);
+			}
+
+		});
+	}
+
+	@Override
+	public void getClients(final Long businessID,
+			final AsyncCallback<List<ClientDTO>> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.getClients(businessID, callback);
 			}
 
 		});

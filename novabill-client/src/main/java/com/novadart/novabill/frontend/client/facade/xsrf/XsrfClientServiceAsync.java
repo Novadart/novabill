@@ -1,7 +1,5 @@
 package com.novadart.novabill.frontend.client.facade.xsrf;
 
-import java.util.List;
-
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -37,18 +35,6 @@ ClientServiceAsync {
 			@Override
 			protected void performCall(ClientServiceAsync service) {
 				service.add(businessID, clientDTO, callback);
-			}
-
-		});
-	}
-	
-	@Override
-	public void getAll(final Long businessID, final AsyncCallback<List<ClientDTO>> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<ClientServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(ClientServiceAsync service) {
-				service.getAll(businessID, callback);
 			}
 
 		});

@@ -28,17 +28,25 @@
 		<property name="configLocation" value="classpath:ehcache.xml" />
 	</bean>
 	
-	<bean id="invoice" class="com.novadart.novabill.web.gwt.InvoiceServiceImpl" />
+	<bean id="invoice" class="com.novadart.novabill.web.gwt.InvoiceServiceProxy" primary="true"/>
+	<bean id="invoiceServiceImpl" class="com.novadart.novabill.web.gwt.InvoiceServiceImpl"/>
 
-	<bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationServiceImpl" />
+	<bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationServiceProxy" primary="true"/>
+	<bean id="estimationServiceImpl" class="com.novadart.novabill.web.gwt.EstimationServiceImpl" />
 	
-	<bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteServiceImpl" />
+	<bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteServiceProxy" primary="true"/>
+	<bean id="creditnoteServiceImpl" class="com.novadart.novabill.web.gwt.CreditNoteServiceImpl" />
 	
-	<bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentServiceImpl" />
+	<bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentServiceProxy" primary="true"/>
+	<bean id="transportdocImpl" class="com.novadart.novabill.web.gwt.TransportDocumentServiceImpl" />
 
-	<bean id="client" class="com.novadart.novabill.web.gwt.ClientServiceImpl" />
+	<bean id="client" class="com.novadart.novabill.web.gwt.ClientServiceProxy" primary="true"/>
+	<bean id="clientServiceImpl" class="com.novadart.novabill.web.gwt.ClientServiceImpl" />
 
-	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessServiceImpl" />
+	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessServiceProxy" primary="true"/>
+	<bean id="businessServiceImpl" class="com.novadart.novabill.web.gwt.BusinessServiceImpl">
+		<lookup-method name="self" bean="businessServiceImpl"/>
+	</bean>
 	
 	<util:map map-class="java.util.HashMap" id="testProps" key-type="java.lang.String" value-type="java.lang.String">
     	<entry key="clientWithoutDocsID" value="6"/>

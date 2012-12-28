@@ -11,9 +11,6 @@ public interface TransportDocumentServiceAsync {
 
 	void get(Long id, AsyncCallback<TransportDocumentDTO> callback);
 
-	void getAll(Long businessID,
-			AsyncCallback<List<TransportDocumentDTO>> callback);
-
 	void getAllForClient(Long clientID,
 			AsyncCallback<List<TransportDocumentDTO>> callback);
 

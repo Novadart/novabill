@@ -10,7 +10,13 @@
 						http://www.springframework.org/schema/util
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-    <bean id="client" class="com.novadart.novabill.web.gwt.ClientServiceImpl" />
+    <bean id="client" class="com.novadart.novabill.web.gwt.ClientServiceProxy" primary="true"/>
+    <bean id="clientServiceImpl" class="com.novadart.novabill.web.gwt.ClientServiceImpl"/>
+    
+    <bean id="business" class="com.novadart.novabill.web.gwt.BusinessServiceProxy" primary="true"/>
+    <bean id="businessServiceImpl" class="com.novadart.novabill.web.gwt.BusinessServiceImpl">
+		<lookup-method name="self" bean="businessServiceImpl"/>
+	</bean>
     
     <util:map map-class="java.util.HashMap" id="testProps" key-type="java.lang.String" value-type="java.lang.String">
     	<entry key="clientWithInvoicesID" value="3"/>

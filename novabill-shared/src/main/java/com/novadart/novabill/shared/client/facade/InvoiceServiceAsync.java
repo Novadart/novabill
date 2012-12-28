@@ -12,8 +12,6 @@ public interface InvoiceServiceAsync {
 
 	void get(Long id, AsyncCallback<InvoiceDTO> callback);
 
-	void getAll(Long businessID, AsyncCallback<List<InvoiceDTO>> callback);
-
 	void getAllForClient(Long clientID, AsyncCallback<List<InvoiceDTO>> callback);
 
 	void getAllForClientInRange(Long clientID, Integer start, Integer length,

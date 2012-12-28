@@ -2,7 +2,6 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Set;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -10,39 +9,32 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.TaxableEntityValidator;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.ClientService;
 
-public class ClientServiceImpl extends AbstractGwtController<ClientService, ClientServiceImpl> implements ClientService {
-
-	private static final long serialVersionUID = -5418569389456426364L;
+public class ClientServiceImpl implements ClientService {
 
 	@Autowired
 	private TaxableEntityValidator validator;
 	
-	public ClientServiceImpl() {
-		super(ClientService.class);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	@PreAuthorize("#businessID == principal.business.id")
-	public List<ClientDTO> getAll(Long businessID) {
-		Set<Client> clients = Business.findBusiness(businessID).getClients();
-		List<ClientDTO> clientDTOs = new ArrayList<ClientDTO>(clients.size());
-		for(Client client: clients)
-			clientDTOs.add(ClientDTOFactory.toDTO(client));
-		return clientDTOs;
-	}
-
+	@Autowired
+	private BusinessService businessService;
+	
+	@Autowired
+	private UtilsService utilsService;
+	
 	@Override
 	@Transactional(readOnly = false)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id and " +
@@ -87,8 +79,11 @@ public class ClientServiceImpl extends AbstractGwtController<ClientService, Clie
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id")
-	public ClientDTO get(Long id) throws DataAccessException, NoSuchObjectException {
-		return ClientDTOFactory.toDTO(Client.findClient(id));
+	public ClientDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, ConcurrentAccessException {
+		for(ClientDTO clientDTO: businessService.getClients(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()))
+			if(clientDTO.getId().equals(id))
+				return clientDTO;
+		throw new NoSuchObjectException();
 	}
 
 	@Override

@@ -1,7 +1,9 @@
 package com.novadart.novabill.domain.dto;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Collection;
+import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
 import com.novadart.novabill.domain.AccountingDocument;
@@ -18,6 +20,7 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 
 public class DTOUtils {
 
@@ -68,17 +71,34 @@ public class DTOUtils {
 	 * 
 	 */
 	
-	public static <T extends AccountingDocumentDTO> T findDocumentInCollection(Collection<T> collection, Long id){
+	public static <T extends AccountingDocumentDTO> T findDocumentInCollection(Collection<T> collection, Long id) throws NoSuchObjectException{
 		Iterator<T> iter = collection.iterator();
 		T doc;
 		while(iter.hasNext())
 			if((doc = iter.next()).getId().equals(id))
 				return doc;
-		return null;
+		throw new NoSuchObjectException();
 	}
 	
 	public static interface Predicate<T extends AccountingDocumentDTO>{
 		public boolean isTrue(T doc);
+	}
+	
+	public static class EqualsYearPredicate<T extends AccountingDocumentDTO> implements Predicate<T>{
+		
+		private int year;
+		
+		public EqualsYearPredicate(int year) {
+			this.year = year;
+		}
+
+		@Override
+		public boolean isTrue(T doc) {
+			Calendar calendar = new GregorianCalendar();
+			calendar.setTime(doc.getAccountingDocumentDate());
+			return year == calendar.get(Calendar.YEAR);
+		}
+		
 	}
 	
 	public static <T extends AccountingDocumentDTO> Collection<T> filter(Collection<T> collection, Predicate<T> pred){
@@ -94,6 +114,5 @@ public class DTOUtils {
 	public static <E> List<E> range(List<E> list, Integer start, Integer length){
 		return new ArrayList<E>(list.subList(start, Math.min(start + length, list.size())));
 	}
-
-
+	
 }

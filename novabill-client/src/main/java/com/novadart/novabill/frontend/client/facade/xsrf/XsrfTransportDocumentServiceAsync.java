@@ -65,18 +65,6 @@ public class XsrfTransportDocumentServiceAsync extends XsrfProtectedService<Tran
 	}
 
 	@Override
-	public void getAll(final Long businessID,
-			final AsyncCallback<List<TransportDocumentDTO>> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<TransportDocumentServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(TransportDocumentServiceAsync service) {
-				service.getAll(businessID, callback);
-			}
-		});
-	}
-
-	@Override
 	public void getAllForClient(final Long clientID,
 			final AsyncCallback<List<TransportDocumentDTO>> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate<TransportDocumentServiceAsync>(callback) {

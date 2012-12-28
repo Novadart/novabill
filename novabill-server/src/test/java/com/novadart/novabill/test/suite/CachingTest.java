@@ -10,6 +10,8 @@ import java.util.Set;
 
 import javax.annotation.Resource;
 
+import net.sf.ehcache.CacheManager;
+
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -19,6 +21,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.aspect.CachingAspect;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Estimation;
@@ -75,6 +78,9 @@ public class CachingTest extends GWTServiceTest {
 	@Autowired
 	private TransportDocumentService transDocService;
 	
+	@Autowired
+	private CacheManager cacheManager;
+	
 	@Resource(name = "testProps")
 	private HashMap<String, String> testProps;
 	
@@ -83,116 +89,88 @@ public class CachingTest extends GWTServiceTest {
 	public void authenticate() {
 		authenticatedPrincipal = Principal.findByUsername("giordano.battilana@novadart.com");
 		authenticatePrincipal(authenticatedPrincipal);
-	}
-	
-	@Test
-	public void businessGetStatsCacheTest() throws NotAuthenticatedException, ConcurrentAccessException{
-		BusinessStatsDTO stats = businessService.getStats(authenticatedPrincipal.getBusiness().getId());
-		BusinessStatsDTO cachedStats = businessService.getStats(authenticatedPrincipal.getBusiness().getId());
-		assertTrue(stats == cachedStats); //needs to be the same object fetched from the cache
-	}
-	
-	@Test
-	public void businessCountClientsCacheTest() throws NotAuthenticatedException, ConcurrentAccessException{
-		Long count = businessService.countClients(authenticatedPrincipal.getBusiness().getId());
-		Long cachedCount = businessService.countClients(authenticatedPrincipal.getBusiness().getId());
-		assertTrue(count == cachedCount); //needs to be the same object fetched from the cache
-	}
-	
-	@Test
-	public void businessCountInvoicesCacheTest() throws NotAuthenticatedException, ConcurrentAccessException{
-		Long count = businessService.countInvoices(authenticatedPrincipal.getBusiness().getId());
-		Long cachedCount = businessService.countInvoices(authenticatedPrincipal.getBusiness().getId());
-		assertTrue(count == cachedCount); //needs to be the same object fetched from the cache
-	}
-	
-	@Test
-	public void businessCountInvoicesForYearCacheTest() throws NotAuthenticatedException, ConcurrentAccessException{
-		Long count = businessService.countInvoicesForYear(authenticatedPrincipal.getBusiness().getId(), 2012);
-		Long cachedCount = businessService.countInvoicesForYear(authenticatedPrincipal.getBusiness().getId(), 2012);
-		assertTrue(count == cachedCount); //needs to be the same object fetched from the cache
+		cacheManager.getCache(CachingAspect.CLIENT_CACHE).flush();
+		cacheManager.getCache(CachingAspect.INVOICE_CACHE).flush();
+		cacheManager.getCache(CachingAspect.ESTIMATION_CACHE).flush();
+		cacheManager.getCache(CachingAspect.CREDITNOTE_CACHE).flush();
+		cacheManager.getCache(CachingAspect.TRANSPORTDOCUMENT_CACHE).flush();
 	}
 	
 	@Test
 	public void clientGetAllCacheTest() throws NotAuthenticatedException, ConcurrentAccessException{
-		Set<ClientDTO> clients = new HashSet<ClientDTO>(clientService.getAll(authenticatedPrincipal.getBusiness().getId()));
-		Set<ClientDTO> cachedClients = new HashSet<ClientDTO>(clientService.getAll(authenticatedPrincipal.getBusiness().getId()));
+		Set<ClientDTO> clients = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
+		Set<ClientDTO> cachedClients = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(clients.equals(cachedClients));
 	}
 	
 	@Test
 	public void clientRemoveCacheTest() throws NotAuthenticatedException, ConcurrentAccessException, DataAccessException, NoSuchObjectException, DataIntegrityException{
-		Set<ClientDTO> clients = new HashSet<ClientDTO>(clientService.getAll(authenticatedPrincipal.getBusiness().getId()));
+		Set<ClientDTO> clients = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		Long count = businessService.countClients(authenticatedPrincipal.getBusiness().getId());
 		clientService.remove(authenticatedPrincipal.getBusiness().getId(), new Long(testProps.get("clientWithoutDocsID")));
-		Set<ClientDTO> notCachedClients = new HashSet<ClientDTO>(clientService.getAll(authenticatedPrincipal.getBusiness().getId()));
+		Set<ClientDTO> notCachedClients = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!clients.equals(notCachedClients));
 		Long notCachedCount = businessService.countClients(authenticatedPrincipal.getBusiness().getId());
-		assertTrue(count != notCachedCount);
+		assertTrue(count.equals(notCachedCount + 1));
 	}
 	
 	@Test
 	public void  clientAddCacheTest() throws NotAuthenticatedException, ConcurrentAccessException, AuthorizationException, ValidationException{
-		Set<ClientDTO> clients = new HashSet<ClientDTO>(clientService.getAll(authenticatedPrincipal.getBusiness().getId()));
+		Set<ClientDTO> clients = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		Long count = businessService.countClients(authenticatedPrincipal.getBusiness().getId());
 		Client client = TestUtils.createClient();
-		client.setBusiness(authenticatedPrincipal.getBusiness());
 		clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(client));
-		Set<ClientDTO> notCachedClients = new HashSet<ClientDTO>(clientService.getAll(authenticatedPrincipal.getBusiness().getId()));
-		assertTrue(!clients.equals(notCachedClients));
+		HashSet<ClientDTO> notCachedClients = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		Long notCachedCount = businessService.countClients(authenticatedPrincipal.getBusiness().getId());
-		assertTrue(count != notCachedCount);
+		assertTrue(notCachedCount.equals(count + 1));
+		assertTrue(!clients.equals(notCachedClients));
 	}
 	
 	@Test
 	public void  clientUpdateCacheTest() throws NotAuthenticatedException, ConcurrentAccessException, AuthorizationException, ValidationException, DataAccessException, NoSuchObjectException{
-		Set<ClientDTO> clients = new HashSet<ClientDTO>(clientService.getAll(authenticatedPrincipal.getBusiness().getId()));
+		Set<ClientDTO> clients = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		Long count = businessService.countClients(authenticatedPrincipal.getBusiness().getId());
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		client.setName("The new name for this client");
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(client));
-		Set<ClientDTO> notCachedClients = new HashSet<ClientDTO>(clientService.getAll(authenticatedPrincipal.getBusiness().getId()));
+		Set<ClientDTO> notCachedClients = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!clients.equals(notCachedClients));
 		Long cachedCount = businessService.countClients(authenticatedPrincipal.getBusiness().getId());
-		assertTrue(count == cachedCount);
+		assertTrue(count.equals(cachedCount));
 	}
 	
 	@Test
-	public void invoiceGetAllCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
-		List<InvoiceDTO> result = invoiceService.getAll(authenticatedPrincipal.getBusiness().getId());
-		List<InvoiceDTO> cachedResult = invoiceService.getAll(authenticatedPrincipal.getBusiness().getId());
+	public void businessGetInvoicesCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
+		List<InvoiceDTO> result = businessService.getInvoices(authenticatedPrincipal.getBusiness().getId());
+		List<InvoiceDTO> cachedResult = businessService.getInvoices(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(result == cachedResult);
 	}
 	
 	@Test
 	public void invoiceRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<InvoiceDTO> result = invoiceService.getAll(businessID);
+		Set<InvoiceDTO> result = new HashSet<InvoiceDTO>(businessService.getInvoices(businessID));
 		Long countInvs = businessService.countInvoices(businessID);
-		Long countClients = businessService.countClients(businessID);
 		Long countInvsYear = businessService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		BigDecimal totals = businessService.getTotalAfterTaxesForYear(businessID, new Integer(testProps.get("year")));
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		Long id = Client.findClient(clientID).getInvoices().iterator().next().getId();
 		invoiceService.remove(businessID, clientID, id);
-		List<InvoiceDTO> nonCachedResult = invoiceService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<InvoiceDTO> nonCachedResult = businessService.getInvoices(authenticatedPrincipal.getBusiness().getId());
 		Long nonCachedCountInvs = businessService.countInvoices(businessID);
-		Long nonCachedCountClients = businessService.countClients(businessID);
 		Long nonCachedCountInvsYear = businessService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		BigDecimal nonCachedTotals = businessService.getTotalAfterTaxesForYear(businessID, new Integer(testProps.get("year")));
 		assertTrue(result != nonCachedResult);
-		assertTrue(countInvs != nonCachedCountInvs);
-		assertTrue(countClients != nonCachedCountClients);
-		assertTrue(countInvsYear != nonCachedCountInvsYear);
-		assertTrue(totals != nonCachedTotals);
+		assertTrue(countInvs.equals(nonCachedCountInvs + 1));
+		assertTrue(countInvsYear.equals(nonCachedCountInvsYear + 1));
+		assertTrue(!totals.equals(nonCachedTotals));
 	}
 	
 	@Test
 	public void invoiceAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<InvoiceDTO> result = invoiceService.getAll(businessID);
+		Set<InvoiceDTO> result = new HashSet<InvoiceDTO>(businessService.getInvoices(businessID));
 		Long countInvs = businessService.countInvoices(businessID);
-		Long countClients = businessService.countClients(businessID);
 		Long countInvsYear = businessService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		BigDecimal totals = businessService.getTotalAfterTaxesForYear(businessID, new Integer(testProps.get("year")));
 		
@@ -202,24 +180,22 @@ public class CachingTest extends GWTServiceTest {
 		invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		invoiceService.add(invDTO);
 		
-		List<InvoiceDTO> nonCachedResult = invoiceService.getAll(authenticatedPrincipal.getBusiness().getId());
+		Set<InvoiceDTO> nonCachedResult = new HashSet<InvoiceDTO>(businessService.getInvoices(authenticatedPrincipal.getBusiness().getId()));
 		Long nonCachedCountInvs = businessService.countInvoices(businessID);
-		Long nonCachedCountClients = businessService.countClients(businessID);
 		Long nonCachedCountInvsYear = businessService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		BigDecimal nonCachedTotals = businessService.getTotalAfterTaxesForYear(businessID, new Integer(testProps.get("year")));
-		assertTrue(result != nonCachedResult);
-		assertTrue(countInvs != nonCachedCountInvs);
-		assertTrue(countClients != nonCachedCountClients);
-		assertTrue(countInvsYear != nonCachedCountInvsYear);
-		assertTrue(totals != nonCachedTotals);
+		assertTrue(countInvs.equals(nonCachedCountInvs - 1));
+		assertTrue(countInvsYear.equals(nonCachedCountInvsYear - 1));
+		assertTrue(!totals.equals(nonCachedTotals));
+		assertTrue(result.size() + 1 == nonCachedResult.size());
+		assertTrue(!result.equals(nonCachedResult));
 	}
 	
 	@Test
 	public void invoiceUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<InvoiceDTO> result = invoiceService.getAll(businessID);
+		Set<InvoiceDTO> result = new HashSet<InvoiceDTO>(businessService.getInvoices(businessID));
 		Long countInvs = businessService.countInvoices(businessID);
-		Long countClients = businessService.countClients(businessID);
 		Long countInvsYear = businessService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		BigDecimal totals = businessService.getTotalAfterTaxesForYear(businessID, new Integer(testProps.get("year")));
 		
@@ -228,47 +204,42 @@ public class CachingTest extends GWTServiceTest {
 		invoiceService.update(InvoiceDTOFactory.toDTO(inv));
 		Invoice.entityManager().flush();
 		
-		List<InvoiceDTO> nonCachedResult = invoiceService.getAll(authenticatedPrincipal.getBusiness().getId());
+		Set<InvoiceDTO> nonCachedResult = new HashSet<InvoiceDTO>(businessService.getInvoices(authenticatedPrincipal.getBusiness().getId()));
 		Long nonCachedCountInvs = businessService.countInvoices(businessID);
-		Long nonCachedCountClients = businessService.countClients(businessID);
 		Long nonCachedCountInvsYear = businessService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		BigDecimal nonCachedTotals = businessService.getTotalAfterTaxesForYear(businessID, new Integer(testProps.get("year")));
-		assertTrue(result != nonCachedResult);
-		assertTrue(countInvs != nonCachedCountInvs);
-		assertTrue(countClients != nonCachedCountClients);
-		assertTrue(countInvsYear != nonCachedCountInvsYear);
-		assertTrue(totals != nonCachedTotals);
+		assertTrue(!result.equals(nonCachedResult));
+		assertTrue(countInvs.equals(nonCachedCountInvs));
+		assertTrue(countInvsYear.equals(nonCachedCountInvsYear));
+		assertTrue(totals.equals(nonCachedTotals));
 	}
 	
 	@Test
 	public void invoiceSetPayedCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<InvoiceDTO> result = invoiceService.getAll(businessID);
+		List<InvoiceDTO> result = businessService.getInvoices(businessID);
 		Long countInvs = businessService.countInvoices(businessID);
 		Long countClients = businessService.countClients(businessID);
 		Long countInvsYear = businessService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
-		BigDecimal totals = businessService.getTotalAfterTaxesForYear(businessID, new Integer(testProps.get("year")));
 		
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		Long id = Client.findClient(clientID).getInvoices().iterator().next().getId();
-		invoiceService.remove(businessID, clientID, id);
+		invoiceService.setPayed(businessID, clientID, id, true);
 		
-		List<InvoiceDTO> nonCachedResult = invoiceService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<InvoiceDTO> nonCachedResult = businessService.getInvoices(authenticatedPrincipal.getBusiness().getId());
 		Long nonCachedCountInvs = businessService.countInvoices(businessID);
 		Long nonCachedCountClients = businessService.countClients(businessID);
 		Long nonCachedCountInvsYear = businessService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
-		BigDecimal nonCachedTotals = businessService.getTotalAfterTaxesForYear(businessID, new Integer(testProps.get("year")));
 		assertTrue(result != nonCachedResult);
-		assertTrue(countInvs != nonCachedCountInvs);
-		assertTrue(countClients != nonCachedCountClients);
-		assertTrue(countInvsYear != nonCachedCountInvsYear);
-		assertTrue(totals != nonCachedTotals);
+		assertTrue(countInvs.equals(nonCachedCountInvs));
+		assertTrue(countClients.equals(nonCachedCountClients));
+		assertTrue(countInvsYear.equals(nonCachedCountInvsYear));
 	}
 	
 	@Test
 	public void invoiceUpdateFailCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<InvoiceDTO> result = invoiceService.getAll(businessID);
+		List<InvoiceDTO> result = businessService.getInvoices(businessID);
 		Long countInvs = businessService.countInvoices(businessID);
 		Long countClients = businessService.countClients(businessID);
 		Long countInvsYear = businessService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
@@ -283,40 +254,41 @@ public class CachingTest extends GWTServiceTest {
 			e.printStackTrace();
 		}
 		
-		List<InvoiceDTO> nonCachedResult = invoiceService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<InvoiceDTO> nonCachedResult = businessService.getInvoices(authenticatedPrincipal.getBusiness().getId());
 		Long nonCachedCountInvs = businessService.countInvoices(businessID);
 		Long nonCachedCountClients = businessService.countClients(businessID);
 		Long nonCachedCountInvsYear = businessService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		BigDecimal nonCachedTotals = businessService.getTotalAfterTaxesForYear(businessID, new Integer(testProps.get("year")));
 		assertTrue(result == nonCachedResult);
-		assertTrue(countInvs == nonCachedCountInvs);
-		assertTrue(countClients == nonCachedCountClients);
-		assertTrue(countInvsYear == nonCachedCountInvsYear);
-		assertTrue(totals == nonCachedTotals);
+		assertTrue(countInvs.equals(nonCachedCountInvs));
+		assertTrue(countClients.equals(nonCachedCountClients));
+		assertTrue(countInvsYear.equals(nonCachedCountInvsYear));
+		assertTrue(totals.equals(nonCachedTotals));
 	}
 	
 	@Test
 	public void creditNoteGetAllCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
-		List<CreditNoteDTO> result = creditNoteService.getAll(authenticatedPrincipal.getBusiness().getId());
-		List<CreditNoteDTO> cachedResult = creditNoteService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<CreditNoteDTO> result = businessService.getCreditNotes(authenticatedPrincipal.getBusiness().getId());
+		List<CreditNoteDTO> cachedResult = businessService.getCreditNotes(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(result == cachedResult);
 	}
 	
 	@Test
 	public void creditNoteRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<CreditNoteDTO> result = creditNoteService.getAll(businessID);
+		List<CreditNoteDTO> result = businessService.getCreditNotes(businessID);
 		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		Long id = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(businessID, clientID, id);
-		List<CreditNoteDTO> nonCachedResult = creditNoteService.getAll(businessID);
+		List<CreditNoteDTO> nonCachedResult = businessService.getCreditNotes(businessID);
 		assertTrue(result != nonCachedResult);
+		assertTrue(result.size() == nonCachedResult.size() + 1);
 	}
 	
 	@Test
 	public void creditNoteAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<CreditNoteDTO> result = creditNoteService.getAll(businessID);
+		List<CreditNoteDTO> result = businessService.getCreditNotes(businessID);
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		CreditNoteDTO credNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class));
@@ -325,94 +297,99 @@ public class CachingTest extends GWTServiceTest {
 		creditNoteService.add(credNoteDTO);
 		CreditNote.entityManager().flush();
 		
-		List<CreditNoteDTO> nonCachedResult = creditNoteService.getAll(businessID);
+		List<CreditNoteDTO> nonCachedResult = businessService.getCreditNotes(businessID);
 		assertTrue(result != nonCachedResult);
+		assertTrue(result.size() + 1 == nonCachedResult.size());
 	}
 	
 	@Test
 	public void creditNoteUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<CreditNoteDTO> result = creditNoteService.getAll(businessID);
+		List<CreditNoteDTO> result = businessService.getCreditNotes(businessID);
 		
 		CreditNote credNote = authenticatedPrincipal.getBusiness().getCreditNotes().iterator().next();
 		credNote.setNote("Temporary note for this credit note");
 		creditNoteService.update(CreditNoteDTOFactory.toDTO(credNote));
 		CreditNote.entityManager().flush();
 		
-		List<CreditNoteDTO> nonCachedResult = creditNoteService.getAll(businessID);
+		List<CreditNoteDTO> nonCachedResult = businessService.getCreditNotes(businessID);
 		assertTrue(result != nonCachedResult);
+		assertTrue(result.size() == nonCachedResult.size());
 	}
 	
 	@Test
 	public void estimationGetAllCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
-		List<EstimationDTO> result = estimationService.getAll(authenticatedPrincipal.getBusiness().getId());
-		List<EstimationDTO> cachedResult = estimationService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<EstimationDTO> result = businessService.getEstimations(authenticatedPrincipal.getBusiness().getId());
+		List<EstimationDTO> cachedResult = businessService.getEstimations(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(result == cachedResult);
 	}
 	
 	@Test
 	public void estimationRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<EstimationDTO> result = estimationService.getAll(businessID);
+		List<EstimationDTO> result = businessService.getEstimations(businessID);
 		Long clientID = new Long(testProps.get("clientWithEstimationsID"));
 		Long id = Client.findClient(clientID).getEstimations().iterator().next().getId();
 		estimationService.remove(businessID, clientID, id);
-		List<EstimationDTO> nonCachedResult = estimationService.getAll(businessID);
+		List<EstimationDTO> nonCachedResult = businessService.getEstimations(businessID);
 		assertTrue(result != nonCachedResult);
+		assertTrue(result.size() == nonCachedResult.size() + 1);
 	} 
 	
 	@Test
 	public void estimationAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<EstimationDTO> result = estimationService.getAll(businessID);
+		List<EstimationDTO> result = businessService.getEstimations(businessID);
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		EstimationDTO estimationDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()));
 		estimationDTO.setClient(ClientDTOFactory.toDTO(client));
 		estimationDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		estimationService.add(estimationDTO);
-		Estimation.entityManager().flush();
 		
-		List<EstimationDTO> nonCachedResult = estimationService.getAll(businessID);
+		List<EstimationDTO> nonCachedResult = businessService.getEstimations(businessID);
 		assertTrue(result != nonCachedResult);
+		assertTrue(result.size() + 1 == nonCachedResult.size());
 	}
 	
 	@Test
 	public void estimationUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<EstimationDTO> result = estimationService.getAll(businessID);
+		List<EstimationDTO> result = businessService.getEstimations(businessID);
 		
 		Estimation estimation = authenticatedPrincipal.getBusiness().getEstimations().iterator().next();
 		estimation.setNote("Temporary note for this estimation");
 		estimationService.update(EstimationDTOFactory.toDTO(estimation));
 		Estimation.entityManager().flush();
 		
-		List<EstimationDTO> nonCachedResult = estimationService.getAll(businessID);
+		List<EstimationDTO> nonCachedResult = businessService.getEstimations(businessID);
 		assertTrue(result != nonCachedResult);
+		assertTrue(result.size() == nonCachedResult.size());
 	}
 	
 	@Test
 	public void transDocGetAllCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
-		List<TransportDocumentDTO> result = transDocService.getAll(authenticatedPrincipal.getBusiness().getId());
-		List<TransportDocumentDTO> cachedResult = transDocService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<TransportDocumentDTO> result = businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId());
+		List<TransportDocumentDTO> cachedResult = businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(result == cachedResult);
 	}
 	
 	@Test
 	public void transDocRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<TransportDocumentDTO> result = transDocService.getAll(businessID);
+		List<TransportDocumentDTO> result = businessService.getTransportDocuments(businessID);
 		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		Long id = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transDocService.remove(businessID, clientID, id);
-		List<TransportDocumentDTO> nonCachedResult = transDocService.getAll(businessID);
+		List<TransportDocumentDTO> nonCachedResult = businessService.getTransportDocuments(businessID);
 		assertTrue(result != nonCachedResult);
+		assertTrue(result.size() == nonCachedResult.size() + 1);
 	}
 	
 	@Test
 	public void transDocAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<TransportDocumentDTO> result = transDocService.getAll(businessID);
+		List<TransportDocumentDTO> result = businessService.getTransportDocuments(businessID);
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()));
@@ -421,34 +398,36 @@ public class CachingTest extends GWTServiceTest {
 		transDocService.add(transDocDTO);
 		TransportDocument.entityManager().flush();
 		
-		List<TransportDocumentDTO> nonCachedResult = transDocService.getAll(businessID);
+		List<TransportDocumentDTO> nonCachedResult = businessService.getTransportDocuments(businessID);
 		assertTrue(result != nonCachedResult);
+		assertTrue(result.size() + 1 == nonCachedResult.size());
 	}
 	
 	@Test
 	public void transDocUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
-		List<TransportDocumentDTO> result = transDocService.getAll(businessID);
+		List<TransportDocumentDTO> result = businessService.getTransportDocuments(businessID);
 		
 		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		transDoc.setNote("Temporary note for this transport document");
 		transDocService.update(TransportDocumentDTOFactory.toDTO(transDoc));
 		TransportDocument.entityManager().flush();
 		
-		List<TransportDocumentDTO> nonCachedResult = transDocService.getAll(businessID);
+		List<TransportDocumentDTO> nonCachedResult = businessService.getTransportDocuments(businessID);
 		assertTrue(result != nonCachedResult);
+		assertTrue(result.size() == nonCachedResult.size());
 	}
 	
 	@Test
 	public void invoiceGetAllUnauthorizedTest() throws NotAuthenticatedException, ConcurrentAccessException{
-		List<InvoiceDTO> result = invoiceService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<InvoiceDTO> result = businessService.getInvoices(authenticatedPrincipal.getBusiness().getId());
 		boolean accessDeniedException = false;
 		try {
-			invoiceService.getAll(getUnathorizedBusinessID());
+			businessService.getInvoices(getUnathorizedBusinessID());
 		} catch (Exception e) {
 			accessDeniedException = true;
 		}
-		List<InvoiceDTO> cachedResult = invoiceService.getAll(authenticatedPrincipal.getBusiness().getId());
+		List<InvoiceDTO> cachedResult = businessService.getInvoices(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(accessDeniedException && result == cachedResult);
 	}
 

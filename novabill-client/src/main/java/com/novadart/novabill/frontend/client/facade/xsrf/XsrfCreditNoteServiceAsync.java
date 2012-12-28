@@ -16,17 +16,6 @@ public class XsrfCreditNoteServiceAsync extends XsrfProtectedService<CreditNoteS
 	}
 
 	@Override
-	public void getNextInvoiceDocumentID(final AsyncCallback<Long> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<CreditNoteServiceAsync>(callback) {
-
-			@Override
-			protected void performCall(CreditNoteServiceAsync service) {
-				service.getNextInvoiceDocumentID(callback);
-			}
-		});
-	}
-
-	@Override
 	public void add(final CreditNoteDTO creditNoteDTO, final AsyncCallback<Long> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate<CreditNoteServiceAsync>(callback) {
 
@@ -59,17 +48,6 @@ public class XsrfCreditNoteServiceAsync extends XsrfProtectedService<CreditNoteS
 		});
 	}
 	
-	@Override
-	public void getAll(final Long businessID,
-			final AsyncCallback<List<CreditNoteDTO>> callback) {
-		performXsrfProtectedCall(new XsrfServerCallDelegate<CreditNoteServiceAsync>(callback) {
-			
-			@Override
-			protected void performCall(CreditNoteServiceAsync service) {
-				service.getAll(businessID, callback);
-			}
-		});
-	}
 	
 	@Override
 	public void getAllForClient(final Long clientID,
@@ -115,6 +93,17 @@ public class XsrfCreditNoteServiceAsync extends XsrfProtectedService<CreditNoteS
 			@Override
 			protected void performCall(CreditNoteServiceAsync service) {
 				service.remove(businessID, clientID, creditNoteID, callback);
+			}
+		});
+	}
+
+	@Override
+	public void getNextCreditNoteDocumentID(final AsyncCallback<Long> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<CreditNoteServiceAsync>(callback) {
+			
+			@Override
+			protected void performCall(CreditNoteServiceAsync service) {
+				service.getNextCreditNoteDocumentID(callback);
 			}
 		});
 	}

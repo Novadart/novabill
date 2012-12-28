@@ -12,8 +12,6 @@ public interface ClientServiceAsync {
 
 	void get(Long id, AsyncCallback<ClientDTO> callback);
 
-	void getAll(Long businessID, AsyncCallback<List<ClientDTO>> callback);
-
 	void remove(Long businessID, Long id, AsyncCallback<Void> callback);
 
 	void searchClients(Long businessID, String query, int start, int offset,

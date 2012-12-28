@@ -12,8 +12,6 @@ public interface CreditNoteServiceAsync {
 
 	void get(Long id, AsyncCallback<CreditNoteDTO> callback);
 
-	void getAll(Long businessID, AsyncCallback<List<CreditNoteDTO>> callback);
-
 	void getAllForClient(Long clientID,
 			AsyncCallback<List<CreditNoteDTO>> callback);
 
@@ -23,11 +21,11 @@ public interface CreditNoteServiceAsync {
 	void getAllInRange(Long businessID, Integer start, Integer length,
 			AsyncCallback<PageDTO<CreditNoteDTO>> callback);
 
-	void getNextInvoiceDocumentID(AsyncCallback<Long> callback);
-
 	void remove(Long businessID, Long clientID, Long creditNoteID,
 			AsyncCallback<Void> callback);
 
 	void update(CreditNoteDTO creditNoteDTO, AsyncCallback<Void> callback);
+
+	void getNextCreditNoteDocumentID(AsyncCallback<Long> callback);
 	
 }

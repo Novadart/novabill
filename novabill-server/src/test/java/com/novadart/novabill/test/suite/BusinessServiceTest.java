@@ -8,6 +8,7 @@ import java.math.BigDecimal;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -24,8 +25,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -179,6 +182,81 @@ public class BusinessServiceTest extends GWTServiceTest {
 	public void updateAuthorizedValidationErrorTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, ValidationException{
 		authenticatedPrincipal.getBusiness().setName(StringUtils.leftPad("1", 1000, '1'));
 		businessService.update(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+	}
+	
+	@Test
+	public void getInvoicesAuthorizedTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getInvoices(authenticatedPrincipal.getBusiness().getId());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void getInvoicesUnauthorizedIDTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getInvoices(getUnathorizedBusinessID());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void getInvoicesUnauthorizedNullTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getInvoices(null);
+	}
+	
+	@Test
+	public void getCreditNotesAuthorizedTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getCreditNotes(authenticatedPrincipal.getBusiness().getId());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void getCreditNotesUnauthorizedIDTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getCreditNotes(getUnathorizedBusinessID());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void getCreditNotesUnauthorizedNullTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getCreditNotes(null);
+	}
+	
+	@Test
+	public void getEstimationsAuthorizedTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getEstimations(authenticatedPrincipal.getBusiness().getId());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void getEstimationsUnauthorizedIDTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getEstimations(getUnathorizedBusinessID());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void getEstimationsUnauthorizedNullTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getEstimations(null);
+	}
+	
+	@Test
+	public void getTransportDocumentsAuthorizedTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void getTransportDocumentsUnauthorizedIDTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getTransportDocuments(getUnathorizedBusinessID());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void getTransportDocumentsUnauthorizedNullTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getTransportDocuments(null);
+	}
+	
+	@Test
+	public void getClientsAuthorizedTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getClients(authenticatedPrincipal.getBusiness().getId());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void getClientsUnauthorizedIDTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getClients(getUnathorizedBusinessID());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void getClientsUnauthorizedNullTest() throws NotAuthenticatedException, ConcurrentAccessException{
+		businessService.getClients(null);
 	}
 
 }

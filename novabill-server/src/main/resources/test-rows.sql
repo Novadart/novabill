@@ -204,7 +204,7 @@ insert into client (address, city, country, email, fax, mobile, name, phone, pos
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (129, '2012-10-20', 2012, 25, '', '', 121.0, 100.0, 21.0, 1);
 insert into abstract_invoice (payed, payment_due_date, payment_type, id) values ('f', '2012-11-20', 0, 129);
 insert into invoice (id, business, client) values (129, 2, 128);
-insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (129, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 126);
+insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (129, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 129);
 
 --creating creditnote for first registered business
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, version) values (130, '2012-10-20', 2012, 1, '', '', 121.0, 100.0, 21.0, 1);
