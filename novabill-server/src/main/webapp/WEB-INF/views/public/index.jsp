@@ -8,8 +8,27 @@
 		<spring:message code="application_name"></spring:message>
 	</h2>
 	<p><spring:message code="index.promotion" /> </p>
-
+	
 	<sec:authorize access="isAnonymous()">
+		<script type="text/javascript" src="${root}js/jquery.cycle.all.js"></script>
+		
+		<div id="shuffle">
+			<div class="doc">Gestione Clienti</div>
+			<div class="doc">Fatture</div>
+			<div class="doc">Preventivi</div>
+			<div class="doc">Note di Credito</div>
+			<div class="doc">Documenti di Trasporto</div>
+		</div>
+		
+		<script type="text/javascript">
+			$('#shuffle').cycle({
+				fx:      'scrollRight', 
+			    next:   '#shuffle', 
+			    delay:  -4000, 
+			    easing: 'easeOutBack', 
+			});
+		</script>
+	
 		<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/register">
 			<spring:message code="header.signupForFree"></spring:message>
 		</a>
