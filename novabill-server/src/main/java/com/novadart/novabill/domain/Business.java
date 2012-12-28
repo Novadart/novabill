@@ -132,7 +132,7 @@ public class Business implements Serializable, Taxable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Client> clients = new HashSet<Client>();
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "business")
+    @OneToOne(fetch = FetchType.EAGER, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "business")
     private Logo logo;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
@@ -183,6 +183,26 @@ public class Business implements Serializable, Taxable {
     	return getNextAccountingDocDocumentID(TransportDocument.class);
     }
     
+    private <T extends AccountingDocument> List<T> fetchAccountingDocsEagerly(Class<T> cls){
+    	String query = String.format("select doc from %s doc join fetch doc.accountingDocumentItems where doc.business.id = :id", cls.getSimpleName());
+    	return entityManager.createQuery(query, cls).setParameter("id", getId()).getResultList();
+    }
+    
+    public List<Invoice> fetchInvoicesEagerly(){
+    	return fetchAccountingDocsEagerly(Invoice.class);
+    }
+    
+    public List<CreditNote> fetchCreditNotesEagerly(){
+    	return fetchAccountingDocsEagerly(CreditNote.class);
+    }
+    
+    public List<Estimation> fetchEstimationsEagerly(){
+    	return fetchAccountingDocsEagerly(Estimation.class);
+    }
+    
+    public List<TransportDocument> fetchTransportDocumentsEagerly(){
+    	return fetchAccountingDocsEagerly(TransportDocument.class);
+    }
     
     public List<Long> getCurrentYearInvoicesDocumentIDs(){
     	String query = "select invoice.documentID from Invoice as invoice where invoice.business.id = :businessId and invoice.accountingDocumentYear = :year order by invoice.documentID";

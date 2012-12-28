@@ -1,5 +1,7 @@
 package com.novadart.novabill.domain;
 
+import java.io.Serializable;
+
 import javax.persistence.Embeddable;
 import javax.validation.constraints.Size;
 
@@ -27,8 +29,10 @@ import org.hibernate.validator.constraints.Email;
 		@TokenFilterDef(factory = LowerCaseFilterFactory.class)
 	})
 @Analyzer(definition = FTSNamespace.DEFAULT_CONTACT_ANALYZER)
-public class Contact {
+public class Contact implements Serializable{
 	
+	private static final long serialVersionUID = 1L;
+
 	@Field(name = FTSNamespace.FIRST_NAME)
 	@Size(max = 50)
 	private String firstName;

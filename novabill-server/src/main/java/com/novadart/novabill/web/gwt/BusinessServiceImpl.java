@@ -114,25 +114,25 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<InvoiceDTO> getInvoices(Long businessID){
-		return DTOUtils.toDTOList( AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).getInvoices()), DTOUtils.invoiceDTOConverter);
+		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchInvoicesEagerly()), DTOUtils.invoiceDTOConverter);
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<CreditNoteDTO> getCreditNotes(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
-		return DTOUtils.toDTOList( AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).getCreditNotes()), DTOUtils.creditNoteDTOConverter);
+		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchCreditNotesEagerly()), DTOUtils.creditNoteDTOConverter);
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<EstimationDTO> getEstimations(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
-		return DTOUtils.toDTOList( AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).getEstimations()), DTOUtils.estimationDTOConverter);
+		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchEstimationsEagerly()), DTOUtils.estimationDTOConverter);
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
-		return DTOUtils.toDTOList( AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).getTransportDocuments()), DTOUtils.transportDocDTOConverter);
+		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchTransportDocumentsEagerly()), DTOUtils.transportDocDTOConverter);
 	}
 	
 	@Override
