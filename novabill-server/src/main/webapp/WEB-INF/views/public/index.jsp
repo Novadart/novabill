@@ -13,11 +13,11 @@
 		<script type="text/javascript" src="${root}js/jquery.cycle.all.js"></script>
 		
 		<div id="shuffle">
-			<div class="doc">Gestione Clienti</div>
-			<div class="doc">Fatture</div>
-			<div class="doc">Preventivi</div>
-			<div class="doc">Note di Credito</div>
-			<div class="doc">Documenti di Trasporto</div>
+			<div class="doc"><spring:message code="shared.clientManagement"></spring:message> </div>
+			<div class="doc"><spring:message code="shared.invoices"></spring:message></div>
+			<div class="doc"><spring:message code="shared.estimations"></spring:message></div>
+			<div class="doc"><spring:message code="shared.creditNotes"></spring:message></div>
+			<div class="doc"><spring:message code="shared.transportDocument"></spring:message></div>
 		</div>
 		
 		<script type="text/javascript">
