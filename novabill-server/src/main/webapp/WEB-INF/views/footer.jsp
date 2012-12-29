@@ -10,6 +10,12 @@
 	<a class="iframe" href="${root}termsAndConditions"><spring:message code="registration.termsAndConditions"></spring:message></a>
 	<a class="iframe" href="${root}privacyPolicy"><spring:message code="registration.privacyPolicy"></spring:message></a>
 	<a target="_blank" href="http://www.novadart.com"><spring:message code="shared.about"></spring:message></a>
+	
+	<span class="browsers">We ♥ 
+		<a target="_blank" title="Chrome" href="http://www.google.com/chrome"><img src='<spring:url value="images/chrome.png" />' /></a>
+		<a target="_blank" title="Firefox" href="http://www.mozilla.org/firefox/"><img src='<spring:url value="images/firefox.png" />' /></a>
+		<a target="_blank" title="Opera" href="http://www.opera.com/browser/download/"><img src='<spring:url value="images/opera.png" />' /></a>
+	</span>
 </div>
 
 <script type="text/javascript">
