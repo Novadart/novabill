@@ -7,8 +7,26 @@
 	
 <div class="footer">
 	<span>Copyright 2012 <strong><spring:message code="application_name" /></strong>. <spring:message code="shared.allRightsReserved" />. </span>
-	<a class="iframe" href="${root}termsAndConditions"><spring:message code="registration.termsAndConditions"></spring:message></a>
-	<a class="iframe" href="${root}privacyPolicy"><spring:message code="registration.privacyPolicy"></spring:message></a>
+	<a class="iframe tec" href="${root}termsAndConditions"><spring:message code="registration.termsAndConditions"></spring:message></a>
+	<%-- <a class="iframe" href="${root}privacyPolicy"><spring:message code="registration.privacyPolicy"></spring:message></a> --%>
+	<a href="https://www.iubenda.com/privacy-policy/257554" class="iubenda-black iubenda-embed" title="Privacy Policy">Privacy Policy</a>
+	<script type="text/javascript">
+		(function(w, d) {
+			var loader = function() {
+				var s = d.createElement("script"), tag = d
+						.getElementsByTagName("script")[0];
+				s.src = "https://cdn.iubenda.com/iubenda.js";
+				tag.parentNode.insertBefore(s, tag);
+			};
+			if (w.addEventListener) {
+				w.addEventListener("load", loader, false);
+			} else if (w.attachEvent) {
+				w.attachEvent("onload", loader);
+			} else {
+				w.onload = loader;
+			}
+		})(window, document);
+	</script>
 	<a target="_blank" href="http://www.novadart.com"><spring:message code="shared.about"></spring:message></a>
 </div>
 

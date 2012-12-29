@@ -67,14 +67,17 @@ blockquote:before,blockquote:after,q:before,q:after {
 }
 
 .footer:HOVER {
-	color: #FFF;
+	/* color: #FFF; */
+	opacity: 1;
 }
 
 .footer {
 	padding: 1.5em 10em 2em;
 	margin: 0 auto;
-	color: #777;
-	
+	/* color: #777; */
+	color: #FFF;
+	opacity: 0.4;
+		
 	-webkit-transition: all 1s ;
 	-moz-transition: all 1s ;
 	-ms-transition: all 1s ;
@@ -82,20 +85,46 @@ blockquote:before,blockquote:after,q:before,q:after {
 	transition: all 1s ;
 }
 
-.footer strong {
-}
-
-.footer span {
-	
-}
-
 .footer a {
 	text-shadow: none;
 	margin-left: 1em;
 }
 
+.footer .iubenda-ibadge {
+	margin-left: 1em;
+	position: relative;
+	top: 8px;
+}
+
 .clear {
 	clear: both;
+}
+
+.footer .tec {
+	background: #383838 no-repeat;
+	background-position: 7px 3px;
+	background-position-x: 6px;
+	background-position-y: 2px;
+	padding-left: 20px;
+	text-decoration: none;
+	color: white;
+	-webkit-box-shadow: 0 1px 0 #5B5C5C;
+	-moz-box-shadow: 0 1px 0 #5B5C5C;
+	box-shadow: 0 1px 0 #5B5C5C;
+	-webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+	-moz-box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+	border-color: transparent;
+	
+	display: inline-block;
+	padding: 0 8px;
+	border-style: solid;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	font-size: 11px;
+	line-height: 16px;
+	font-weight: bold;
 }
 
 .browser-alert {

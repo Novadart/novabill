@@ -42,9 +42,9 @@
 				<div class="acceptAgreementWrapper">
 					<form:checkbox path="agreementAccepted" id="acceptAgreement" class="accept-agreement" />
 					<label class="acceptAgreementLabel" for="acceptAgreement">
-						<spring:message code="registration.privacyPolicy" var="pp"/>
-						<spring:message code="registration.termsAndConditions" var="tec"/>
-						<spring:message code="registration.agreement" arguments="${pp},${tec}" htmlEscape="false"/>
+						<spring:message code="registration.agreement"/>
+						<a class="iframe tec" href="${root}termsAndConditions"><spring:message code="registration.termsAndConditions"></spring:message></a>
+						<a href="https://www.iubenda.com/privacy-policy/257554" class="iubenda-white iubenda-embed" title="Privacy Policy">Privacy Policy</a>
 					</label>
 				</div>
 			</td>
@@ -58,6 +58,24 @@
 	</table>
 	
 </form:form>
+
+<script type="text/javascript">
+	(function(w, d) {
+		var loader = function() {
+			var s = d.createElement("script"), tag = d
+					.getElementsByTagName("script")[0];
+			s.src = "https://cdn.iubenda.com/iubenda.js";
+			tag.parentNode.insertBefore(s, tag);
+		};
+		if (w.addEventListener) {
+			w.addEventListener("load", loader, false);
+		} else if (w.attachEvent) {
+			w.attachEvent("onload", loader);
+		} else {
+			w.onload = loader;
+		}
+	})(window, document);
+</script>
 
 <script type="text/javascript">
 $(function() {
