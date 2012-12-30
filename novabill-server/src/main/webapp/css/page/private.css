@@ -207,10 +207,8 @@ textarea:HOVER {
 	margin-left: auto;
 }
 
-.ClientView .clientOptions .modifyClient,.ClientView .clientOptions .cancelClient
-	{
-	padding: 0.5em;
-	font-weight: bold;
+.ClientView .clientOptions .modifyClient {
+	margin-right: 0.5em;
 }
 
 .ClientView .modifyClient:HOVER,.ClientView .cancelClient:HOVER {
