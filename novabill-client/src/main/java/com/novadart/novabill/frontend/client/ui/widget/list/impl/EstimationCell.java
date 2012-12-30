@@ -39,7 +39,7 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 
 		sb.appendHtmlConstant("<div class='tools'>");
 		sb.appendHtmlConstant("<span class='button openEstimation'>");
-		sb.appendEscaped(I18N.INSTANCE.open());
+		sb.appendEscaped(I18N.INSTANCE.modify());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("<span class='clone'>");
 		sb.appendEscaped(I18N.INSTANCE.clone());

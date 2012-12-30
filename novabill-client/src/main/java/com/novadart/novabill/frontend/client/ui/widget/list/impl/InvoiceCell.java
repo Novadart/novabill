@@ -68,7 +68,7 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 
 		sb.appendHtmlConstant("<div class='tools'>");
 		sb.appendHtmlConstant("<span class='button openInvoice'>");
-		sb.appendEscaped(I18N.INSTANCE.open());
+		sb.appendEscaped(I18N.INSTANCE.modify());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("<span class='clone'>");
 		sb.appendEscaped(I18N.INSTANCE.clone());

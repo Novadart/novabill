@@ -39,7 +39,7 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 
 		sb.appendHtmlConstant("<div class='tools'>");
 		sb.appendHtmlConstant("<span class='button openTransportDocument'>");
-		sb.appendEscaped(I18N.INSTANCE.open());
+		sb.appendEscaped(I18N.INSTANCE.modify());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("<span class='downloadAsPDF'>");
 		sb.appendEscaped("PDF");
