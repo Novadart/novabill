@@ -7,7 +7,7 @@
 	
 <div class="footer">
 	<span>Copyright 2012 <strong><spring:message code="application_name" /></strong>. <spring:message code="shared.allRightsReserved" />. </span>
-	<a class="iframe tec" href="${root}termsAndConditions"><spring:message code="registration.termsAndConditions"></spring:message></a>
+	<a class="iframe tec" href="${root}tos"><spring:message code="registration.termsAndConditions"></spring:message></a>
 	<%-- <a class="iframe" href="${root}privacyPolicy"><spring:message code="registration.privacyPolicy"></spring:message></a> --%>
 	<a href="https://www.iubenda.com/privacy-policy/257554" class="iubenda-black iubenda-embed" title="Privacy Policy">Privacy Policy</a>
 	<script type="text/javascript">

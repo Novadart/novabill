@@ -46,7 +46,7 @@
 	<mvc:view-controller path="/concurrentAccess" />
 	<mvc:view-controller path="/registrationCompleted" />
 	<mvc:view-controller path="/passwordRecoveryCommenced" />
-	<mvc:view-controller path="/termsAndConditions" />
+	<mvc:view-controller path="/tos" />
 	<!-- <mvc:view-controller path="/privacyPolicy" /> --> <!-- Not needed, currently we're using iubenda.com -->
 	<!-- <mvc:view-controller path="/premiumInfo"/> -->
 	
