@@ -93,7 +93,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 		//unity of measure
 		final EditTextCell unitEditCell = new EditTextCell();
-		Column<AccountingDocumentItemDTO, String> unityOfMeasure =
+		Column<AccountingDocumentItemDTO, String> unitOfMeasure =
 				new Column<AccountingDocumentItemDTO, String>(unitEditCell) {
 
 			@Override
@@ -101,7 +101,16 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 				return object.getUnitOfMeasure();
 			}
 		};
-		addColumn(unityOfMeasure, I18N.INSTANCE.unityOfMeasure());
+		unitOfMeasure.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+			
+			@Override
+			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				object.setUnitOfMeasure(value);
+				ItemTable.this.handler.onUpdate(object);
+				redraw();
+			}
+		});
+		addColumn(unitOfMeasure, I18N.INSTANCE.unityOfMeasure());
 
 
 
@@ -216,7 +225,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		setWidth("99%");
 		setColumnWidth(nameDescription, 40, Unit.PCT);
 		setColumnWidth(quantity, 6, Unit.PCT);
-		setColumnWidth(unityOfMeasure, 7, Unit.PCT);
+		setColumnWidth(unitOfMeasure, 7, Unit.PCT);
 		setColumnWidth(price, 7, Unit.PCT);
 		setColumnWidth(tax, 6, Unit.PCT);
 		setColumnWidth(totalBeforeTaxes, 8, Unit.PCT);
