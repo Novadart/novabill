@@ -5,12 +5,11 @@
 <html>
 <head>
 <link rel="shortcut icon" type="image/png"
-	href="${root}images/favicon.png"></link>
+	href="<spring:url value="/images/favicon.png" />"></link>
 <title><spring:message code="application_name"></spring:message></title>
-<link rel="stylesheet" type="text/css" href="${root}css/reset-min.css" />
-<spring:url value="/" var="root"></spring:url>
+<link rel="stylesheet" type="text/css" href="<spring:url value="/css/reset-min.css" />" />
 <link rel="stylesheet" type="text/css"
-	href="${root}css/page/termsAndConditions.css" />
+	href="<spring:url value="/css/page/termsAndConditions.css" />" />
 </head>
 <body>
 	<h1>Termini di Servizio di Novabill</h1>

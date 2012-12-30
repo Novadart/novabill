@@ -5,14 +5,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
-<spring:url value="/" var="root"></spring:url>
-
 <html xmlns="http://www.w3.org/1999/xhtml">
 
 <head>
 
-<link rel="stylesheet" type="text/css" href="${root}css/header.css" />
-<link rel="stylesheet" type="text/css" href="${root}css/page/feedback.css" />
+<link rel="stylesheet" type="text/css" href="<spring:url value="/css/header.css" />" />
+<link rel="stylesheet" type="text/css" href="<spring:url value="/css/page/feedback.css" />" />
 
 <tiles:insertAttribute name="commonlinks" />
 

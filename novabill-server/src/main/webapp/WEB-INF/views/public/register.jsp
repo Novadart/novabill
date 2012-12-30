@@ -43,7 +43,7 @@
 					<form:checkbox path="agreementAccepted" id="acceptAgreement" class="accept-agreement" />
 					<label class="acceptAgreementLabel" for="acceptAgreement">
 						<spring:message code="registration.agreement"/>
-						<a class="iframe tec" href="${root}tos"><spring:message code="registration.termsAndConditions"></spring:message></a>
+						<a class="iframe tec" href="<spring:url value="/tos" />"><spring:message code="registration.termsAndConditions"></spring:message></a>
 						<a href="https://www.iubenda.com/privacy-policy/257554" class="iubenda-white iubenda-embed" title="Privacy Policy">Privacy Policy</a>
 					</label>
 				</div>

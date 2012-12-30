@@ -71,7 +71,8 @@ blockquote:before,blockquote:after,q:before,q:after {
 }
 
 .footer {
-	padding: 1.5em 10em 2em;
+	width: 1240px;
+	padding: 1.5em 0 2em;
 	margin: 0 auto;
 	/* color: #777; */
 	color: #FFF;

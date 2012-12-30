@@ -10,7 +10,7 @@
 	<p><spring:message code="index.promotion" /> </p>
 	
 	<sec:authorize access="isAnonymous()">
-		<script type="text/javascript" src="${root}js/jquery.cycle.all.js"></script>
+		<script type="text/javascript" src="<spring:url value="/js/jquery.cycle.all.js" />"></script>
 		
 		<div id="shuffle">
 			<div class="doc"><spring:message code="shared.clientManagement"></spring:message> </div>
