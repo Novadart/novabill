@@ -133,9 +133,6 @@ public class Business implements Serializable, Taxable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Client> clients = new HashSet<Client>();
 
-    //@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "business")
-    //private Logo logo;
-    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Principal> principals = new HashSet<Principal>();
     
@@ -497,15 +494,6 @@ public class Business implements Serializable, Taxable {
     public void setClients(Set<Client> clients) {
         this.clients = clients;
     }
-    
-    
-//    public Logo getLogo(){
-//    	return this.logo;
-//    }
-//    
-//    public void setLogo(Logo logo){
-//    	this.logo = logo;
-//    }
     
     /*
      * End of getters and setters section
