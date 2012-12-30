@@ -102,7 +102,7 @@ public class PDFController{
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		if(!business.getId().equals(invoiceOwner.getId()))
 			throw new DataAccessException();
-		Logo logo = business.getLogo();
+		Logo logo = Logo.getLogoByBusinessID(business.getId());
 		PDFGenerator.BeforeWriteEventHandler bwEvHnld = new PDFGenerator.BeforeWriteEventHandler() {
 			@Override
 			public void beforeWriteCallback(Map<PDFGenerationCtxFields, Object> ctx) {

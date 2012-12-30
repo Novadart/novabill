@@ -6,10 +6,8 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
@@ -24,8 +22,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
-
-import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.domain.Logo.LogoFormat;
 import com.novadart.novabill.service.UtilsService;
@@ -53,8 +49,7 @@ public class BusinessLogoController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public void getLogo(HttpServletResponse response) throws IOException{
-		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
-		Logo logo = business.getLogo();
+		Logo logo = Logo.getLogoByBusinessID(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		if(logo == null){
 			response.setStatus(HttpStatus.NOT_FOUND.value());
 			return;
@@ -106,9 +101,8 @@ public class BusinessLogoController {
 			logo.setWidth(imageDim.width);
 			logo.setHeight(imageDim.height);
 			logo.setData(IOUtils.toByteArray(new FileInputStream(outFile)));
-			Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
-			business.setLogo(logo);
-			logo.setBusiness(business);
+			logo.setBusinessID(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
+			logo.persist();
 		} catch (IOException e) {
 			return String.valueOf(LogoUploadStatus.INTERNAL_ERROR.ordinal());
 		} catch (InterruptedException e) {

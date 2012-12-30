@@ -85,7 +85,7 @@ public class ExportController {
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		Logo logo = null;
 		if(classes.contains(DataExportClasses.INVOICE) || classes.contains(DataExportClasses.ESTIMATION))
-			logo = business.getLogo();
+			logo = Logo.getLogoByBusinessID(business.getId()); 
 		File zipFile = null;
 		try{
 			zipFile = dataExporter.exportData(classes, business, logo, messageSource, locale);

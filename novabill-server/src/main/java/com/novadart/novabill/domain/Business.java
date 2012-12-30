@@ -20,7 +20,6 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
@@ -39,6 +38,8 @@ import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.search.bridge.builtin.LongBridge;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
@@ -46,7 +47,6 @@ import org.hibernate.search.jpa.Search;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
@@ -58,6 +58,7 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 
 @Configurable
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Business implements Serializable, Taxable {
 
 	private static final long serialVersionUID = 261999997691744944L;
@@ -132,8 +133,8 @@ public class Business implements Serializable, Taxable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Client> clients = new HashSet<Client>();
 
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "business")
-    private Logo logo;
+    //@OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "business")
+    //private Logo logo;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Principal> principals = new HashSet<Principal>();
@@ -498,13 +499,13 @@ public class Business implements Serializable, Taxable {
     }
     
     
-    public Logo getLogo(){
-    	return this.logo;
-    }
-    
-    public void setLogo(Logo logo){
-    	this.logo = logo;
-    }
+//    public Logo getLogo(){
+//    	return this.logo;
+//    }
+//    
+//    public void setLogo(Logo logo){
+//    	this.logo = logo;
+//    }
     
     /*
      * End of getters and setters section

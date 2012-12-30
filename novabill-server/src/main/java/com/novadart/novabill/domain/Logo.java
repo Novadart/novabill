@@ -1,7 +1,6 @@
 package com.novadart.novabill.domain;
 
 import java.util.List;
-
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,8 +9,6 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.Lob;
-import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
@@ -37,14 +34,18 @@ public class Logo {
     
     private LogoFormat format;
     
-    @Lob
     @Basic(fetch = FetchType.LAZY, optional = false)
     @NotNull
     private byte[] data;
     
-    @OneToOne(fetch = FetchType.LAZY)
     @NotNull
-    private Business business;
+    private Long businessID;
+
+    public static Logo getLogoByBusinessID(Long businessID){
+		String query = "select logo from Logo logo where logo.businessID = :id";
+		List<Logo> result = entityManager().createQuery(query, Logo.class).setParameter("id", businessID).getResultList();
+		return result.size() > 0? result.get(0): null;
+	}
     
     /*
 	 * Getters and setters
@@ -90,14 +91,14 @@ public class Logo {
 		this.data = data;
 	}
 
-	public Business getBusiness() {
-		return business;
+	public Long getBusinessID() {
+		return businessID;
 	}
 
-	public void setBusiness(Business business) {
-		this.business = business;
+	public void setBusinessID(Long businessID) {
+		this.businessID = businessID;
 	}
-    
+	
     /*
      * End of getters and setters section
      * */
