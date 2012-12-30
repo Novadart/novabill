@@ -89,6 +89,10 @@ public class BusinessLogoController {
 			}
 		if(!acceptedFormat)
 			throw new IllegalArgumentException("Image type not supported");
+		Long businessID = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
+		Logo oldLogo = Logo.getLogoByBusinessID(businessID);
+		if(oldLogo != null)
+			oldLogo.remove();
 		Logo logo = new Logo();
 		logo.setName(FilenameUtils.removeExtension(FilenameUtils.getName(file.getOriginalFilename())) + "." + DEFAULT_FORMAT.name());
 		logo.setFormat(DEFAULT_FORMAT);
@@ -101,7 +105,7 @@ public class BusinessLogoController {
 			logo.setWidth(imageDim.width);
 			logo.setHeight(imageDim.height);
 			logo.setData(IOUtils.toByteArray(new FileInputStream(outFile)));
-			logo.setBusinessID(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
+			logo.setBusinessID(businessID);
 			logo.persist();
 		} catch (IOException e) {
 			return String.valueOf(LogoUploadStatus.INTERNAL_ERROR.ordinal());
