@@ -251,6 +251,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		note.setText(creditNote.getNote());
 		paymentNote.setText(creditNote.getPaymentNote());
 		payment.setSelectedIndex(creditNote.getPaymentType().ordinal()+1);
+		titleLabel.setText(I18N.INSTANCE.modifyCreditNote());
 	};
 	
 	@Override
@@ -324,6 +325,8 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
+		
+		titleLabel.setText(I18N.INSTANCE.newCreditNoteCreation());
 	}
 
 	private void handleServerValidationException(ValidationException ex, boolean isInvoice){

@@ -398,6 +398,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			hour.setSelectedItem(hourStr);
 			minute.setSelectedItem(minuteStr);
 			modifyDocument.setVisible(true);
+			
+			titleLabel.setText(I18N.INSTANCE.modifyTransportDocument());
 		}
 
 		List<AccountingDocumentItemDTO> items = null;
@@ -521,6 +523,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		totalTax.setText("");
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
+		
+		titleLabel.setText(I18N.INSTANCE.newTransportDocumentCreation());
 	}
 
 	private void handleServerValidationException(ValidationException ex, boolean isInvoice){

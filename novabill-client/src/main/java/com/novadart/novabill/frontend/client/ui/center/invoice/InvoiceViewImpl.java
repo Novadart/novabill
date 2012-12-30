@@ -293,6 +293,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 			date.setValue(invoice.getAccountingDocumentDate());
 			clientName.setText(invoice.getClient().getName());
 			modifyDocument.setVisible(true);
+			titleLabel.setText(I18N.INSTANCE.modifyInvoice());
 		}
 
 		List<AccountingDocumentItemDTO> items = null;
@@ -423,6 +424,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
+		titleLabel.setText(I18N.INSTANCE.newInvoiceCreation());
 	}
 
 	private void handleServerValidationException(ValidationException ex, boolean isInvoice){

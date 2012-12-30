@@ -279,6 +279,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			modifyDocument.setVisible(true);
 
 			convertToInvoice.setVisible(true);
+			
+			titleLabel.setText(I18N.INSTANCE.modifyEstimation());
 		}
 
 		List<AccountingDocumentItemDTO> items = null;
@@ -343,6 +345,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
+		
+		titleLabel.setText(I18N.INSTANCE.newEstimationCreation());
 	}
 
 	private void handleServerValidationException(ValidationException ex, boolean isInvoice){

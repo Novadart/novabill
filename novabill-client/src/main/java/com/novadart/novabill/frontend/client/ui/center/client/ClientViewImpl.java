@@ -382,12 +382,16 @@ public class ClientViewImpl extends Composite implements ClientView {
 		SafeHtmlBuilder sb = new SafeHtmlBuilder();
 		sb.appendEscaped(client.getAddress()+ " ");
 		sb.appendEscaped(client.getPostcode() + " " 
-				+ client.getCity() + " (" + client.getProvince() +") " + client.getCountry() +" ");
+				+ client.getCity() + client.getProvince()!=null&&!client.getProvince().isEmpty() ? 
+						" (" + client.getProvince() +") " : " " + client.getCountry() +" ");
 		boolean hasPhone = client.getPhone()!=null && !client.getPhone().isEmpty();
 		boolean hasFax = client.getFax()!=null && !client.getFax().isEmpty();
+		boolean hasVatID = client.getVatID()!=null && !client.getVatID().isEmpty();
+		boolean hasSSN = client.getSsn()!=null && !client.getSsn().isEmpty();
 		sb.appendEscaped( ( (hasPhone?"Tel. "+client.getPhone()+" ":"") 
-				+ (hasFax?" Fax "+client.getFax()+" ":"").trim() 
-				+ " " + I18N.INSTANCE.vatID()+" "+client.getVatID() ).trim() );
+				+ (hasFax?" Fax "+client.getFax()+" ":"")
+				+ (hasVatID ? " " + I18N.INSTANCE.vatID()+" "+client.getVatID() + " " : " ") 
+				+ (hasSSN ? " " + I18N.INSTANCE.ssn()+" "+client.getSsn() : "") ).trim() );
 
 		clientDetails.setHTML(sb.toSafeHtml());
 	}

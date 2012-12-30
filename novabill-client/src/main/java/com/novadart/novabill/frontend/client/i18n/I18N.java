@@ -17,6 +17,7 @@ public interface I18N extends Constants {
 	public String clientData();
 	public String clientContactData();
 	public String addNewClientTitle();
+	public String modifyClientTitle();
 	public String selectClient();
 	public String helpClearFilter();
 	public String helpSearchClient();
@@ -41,6 +42,7 @@ public interface I18N extends Constants {
 	public String saveModifications();
 	public String saveModificationsConfirm();
 	public String modifyInvoice();
+	public String modifyCreditNote();
 	public String modifyEstimation();
 	public String errorSessionExpired();
 	public String openInvoice();
@@ -96,8 +98,6 @@ public interface I18N extends Constants {
 	public String remove();
 	public String impossibleToLoadInvoice();
 	public String pleaseSelectInvoice();
-	public String newInvoiceCreation();
-	public String newEstimationCreation();
 	public String client();
 	public String addNewClient();
 	public String date();
@@ -153,8 +153,11 @@ public interface I18N extends Constants {
 	public String creditNote();
 	public String newCreditNote();
 	public String newCreditNoteCreation();
+	public String newTransportDocumentCreation();
+	public String newInvoiceCreation();
+	public String newEstimationCreation();
+	public String modifyTransportDocument();
 	public String createCreditNote();
-	public String modifyCreditNote();
 	public String creditNoteNumber();
 	public String confirmTransportDocumentDeletion();
 	public String transportDocumentCreationSuccess();

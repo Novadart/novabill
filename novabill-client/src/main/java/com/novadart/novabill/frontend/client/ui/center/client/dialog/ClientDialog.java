@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
@@ -41,6 +42,8 @@ public class ClientDialog extends Dialog {
 	}
 	
 	@UiField InlineNotification inlineNotification;
+	
+	@UiField Label clientDialogTitle;
 
 	@UiField(provided=true) ValidatedTextBox companyName;
 	@UiField(provided=true) ValidatedTextBox address;
@@ -111,6 +114,7 @@ public class ClientDialog extends Dialog {
 
 	public void setClient(ClientDTO client) {
 		this.client = client;
+		clientDialogTitle.setText(I18N.INSTANCE.modifyClientTitle());
 		
 		boolean isIT = switchValidationByCountry(client.getCountry());
 
@@ -269,6 +273,7 @@ public class ClientDialog extends Dialog {
 		country.setSelectedItemByValue("IT");
 		ok.setText(I18N.INSTANCE.submit());
 		inlineNotification.hide();
+		clientDialogTitle.setText(I18N.INSTANCE.addNewClientTitle());
 	}
 
 	private boolean validate(){

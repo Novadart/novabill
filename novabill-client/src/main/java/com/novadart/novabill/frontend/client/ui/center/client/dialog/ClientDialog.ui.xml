@@ -6,7 +6,7 @@
 		field="i18n"></ui:with>
 
 	<g:FlowPanel styleName="wrapper">
-		<g:Label styleName="title" text="{i18n.addNewClientTitle}"></g:Label>
+		<g:Label ui:field="clientDialogTitle" styleName="title" text="{i18n.addNewClientTitle}"></g:Label>
 		
 		<n:InlineNotification ui:field="inlineNotification"></n:InlineNotification>
 		
