@@ -28,6 +28,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
 import org.apache.solr.analysis.LowerCaseFilterFactory;
 import org.apache.solr.analysis.StandardTokenizerFactory;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Field;
@@ -62,6 +64,7 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 })
 @Configurable
 @Entity
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class Client implements Serializable, Taxable {
 	
 	private static final long serialVersionUID = 8383909226336873374L;

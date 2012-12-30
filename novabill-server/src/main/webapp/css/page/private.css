@@ -1212,6 +1212,11 @@ td.datePickerMonth {
 	padding: 1em;
 }
 
+.BusinessView .logoContainerWrapper .logo {
+	max-width: 300px;
+	max-height: 300px;
+}
+
 .BusinessView .gridContainer {
 	padding: 1em;
 }
