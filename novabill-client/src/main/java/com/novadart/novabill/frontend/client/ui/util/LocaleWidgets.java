@@ -25,4 +25,9 @@ public class LocaleWidgets {
 		return listBox;
 	}
 	
+	public static ValidatedListBox createCountryListBoxItalyOnly(String defaultText){
+		ValidatedListBox listBox = new ValidatedListBox(defaultText, I18N.INSTANCE.notEmptyValidationError());
+		listBox.addItem(CountryUtils.getRegionName("IT"), "IT");
+		return listBox;
+	}
 }

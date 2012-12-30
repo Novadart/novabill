@@ -88,7 +88,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		city.setText(b.getCity());
 		province = LocaleWidgets.createProvinceListBox("");
 		province.setSelectedItem(b.getProvince());
-		country = LocaleWidgets.createCountryListBox("");
+		country = LocaleWidgets.createCountryListBoxItalyOnly("");
 		country.setSelectedItemByValue(b.getCountry());
 		postcode = new ValidatedTextBox(ValidationKit.POSTCODE);
 		postcode.setText(b.getPostcode());

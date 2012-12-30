@@ -64,7 +64,7 @@ public class BootstrapDialog extends Dialog {
 		address = new RichTextBox(I18N.INSTANCE.address(), ValidationKit.NOT_EMPTY);
 		city = new RichTextBox(I18N.INSTANCE.city(), ValidationKit.NOT_EMPTY);
 		province = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province()); 
-		country = generateItalyOnlyCountryListBox();
+		country = LocaleWidgets.createCountryListBoxItalyOnly(I18N.INSTANCE.country());
 		country.setSelectedItem(CountryUtils.getRegionName("IT"));
 		postcode = new RichTextBox(I18N.INSTANCE.postcode(), ValidationKit.POSTCODE);
 		phone = new RichTextBox(I18N.INSTANCE.phone(), ValidationKit.OPTIONAL_NUMBER);
@@ -99,15 +99,6 @@ public class BootstrapDialog extends Dialog {
 		valid &= province.isValid();
 
 		return valid;
-	}
-	
-	/**
-	 * TODO remove this when we'll support more countries
-	 */
-	private ValidatedListBox generateItalyOnlyCountryListBox(){
-		ValidatedListBox listBox = new ValidatedListBox(I18N.INSTANCE.country(), I18N.INSTANCE.notEmptyValidationError());
-		listBox.addItem(CountryUtils.getRegionName("IT"), "IT");
-		return listBox;
 	}
 
 	public void setHandler(Handler handler) {
