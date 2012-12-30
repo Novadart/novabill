@@ -1,7 +1,8 @@
 package com.novadart.novabill.frontend.client.ui.center;
 
 import java.math.BigDecimal;
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
 import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.EditTextCell;
@@ -144,20 +145,24 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 
 		//VAT
-		SelectionCell selectionCell = new SelectionCell(Arrays.asList(I18N.INSTANCE.vatItems()));
+		List<String> vats = new ArrayList<String>();
+		for (String v : I18N.INSTANCE.vatItems()) {
+			vats.add(v+"%");
+		}
+		SelectionCell selectionCell = new SelectionCell(vats);
 		Column<AccountingDocumentItemDTO, String> tax =
 				new Column<AccountingDocumentItemDTO, String>(selectionCell) {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
-				return String.valueOf(object.getTax());
+				return String.valueOf(object.getTax().intValue())+"%";
 			}
 		};
 		tax.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				object.setTax(CalcUtils.parseValue(value));
+				object.setTax(CalcUtils.parseValue(value.split("%")[0]));
 				ItemTable.this.handler.onUpdate(object);
 				redraw();
 			}
