@@ -111,11 +111,15 @@ public class ClientDialog extends Dialog {
 
 	public void setClient(ClientDTO client) {
 		this.client = client;
+		
+		boolean isIT = switchValidationByCountry(client.getCountry());
 
 		companyName.setText(client.getName());
 		address.setText(client.getAddress());
 		city.setText(client.getCity());
-		province.setSelectedItem(client.getProvince());
+		if(isIT){
+			province.setSelectedItem(client.getProvince());
+		}
 		country.setSelectedItemByValue(client.getCountry());
 		postcode.setText(client.getPostcode());
 		phone.setText(client.getPhone());
@@ -223,10 +227,17 @@ public class ClientDialog extends Dialog {
 	
 	@UiHandler("country")
 	void onCountryChange(ChangeEvent event){
-		boolean isIT = country.getSelectedItemValue().equalsIgnoreCase("IT");
+		switchValidationByCountry(country.getSelectedItemValue());
+	}
+	
+	private boolean switchValidationByCountry(String country){
+		boolean isIT = "IT".equalsIgnoreCase(country);
 		province.setEnabled(isIT);
 		province.reset();
 		setVatIdSsnValidation(isIT);
+		vatID.reset();
+		ssn.reset();
+		return isIT;
 	}
 	
 	private void setVatIdSsnValidation(boolean activate){
@@ -264,7 +275,6 @@ public class ClientDialog extends Dialog {
 		boolean isValid = true;
 		inlineNotification.hide();
 		
-		//TODO fix validation, ticket #367
 		ssnOrVatIdValidation.validate();
 		if(!ssnOrVatIdValidation.isValid()){
 			inlineNotification.showMessage(ssnOrVatIdValidation.getErrorMessage());
