@@ -73,7 +73,7 @@ public class BusinessLogoController {
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
-	@Transactional
+	@Transactional(readOnly = false)
 	public String uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
 		if(!ServletFileUpload.isMultipartContent(request))
 			return String.valueOf(LogoUploadStatus.ILLEGAL_REQUEST.ordinal());
@@ -94,9 +94,7 @@ public class BusinessLogoController {
 		if(!acceptedFormat)
 			throw new IllegalArgumentException("Image type not supported");
 		Long businessID = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
-		Logo oldLogo = Logo.getLogoByBusinessID(businessID);
-		if(oldLogo != null)
-			oldLogo.remove();
+		clearLogo(businessID);
 		Logo logo = new Logo();
 		logo.setName(FilenameUtils.removeExtension(FilenameUtils.getName(file.getOriginalFilename())) + "." + DEFAULT_FORMAT.name());
 		logo.setFormat(DEFAULT_FORMAT);
@@ -122,6 +120,19 @@ public class BusinessLogoController {
 			if(outFile != null) outFile.delete();
 		}
 		return String.valueOf(LogoUploadStatus.OK.ordinal());
+	}
+	
+	private void clearLogo(Long businessID){
+		Logo oldLogo = Logo.getLogoByBusinessID(businessID);
+		if(oldLogo != null)
+			oldLogo.remove();
+	}
+	
+	@RequestMapping(method = RequestMethod.DELETE)
+	@ResponseBody
+	@Transactional(readOnly = false)
+	public void deleteLogo(){
+		clearLogo(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 	}
 
 }
