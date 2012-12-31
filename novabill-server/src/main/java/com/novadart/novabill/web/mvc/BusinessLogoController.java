@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -13,6 +14,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.im4java.core.IM4JavaException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -40,6 +42,12 @@ public class BusinessLogoController {
 	@Autowired
 	private UtilsService utilsService;
 	
+	@Autowired
+	private ServletContext servletContext;
+	
+	@Value("${nologo.path}")
+	private String noLogoPath;
+	
 	@ExceptionHandler(Exception.class)
 	public String handleException(Exception ex, HttpServletRequest request, HttpServletResponse response){
 		response.setStatus(HttpStatus.BAD_REQUEST.value());
@@ -50,13 +58,9 @@ public class BusinessLogoController {
 	@ResponseBody
 	public void getLogo(HttpServletResponse response) throws IOException{
 		Logo logo = Logo.getLogoByBusinessID(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
-		if(logo == null){
-			response.setStatus(HttpStatus.NOT_FOUND.value());
-			return;
-		}
-		InputStream is = new ByteArrayInputStream(logo.getData());
-		response.setContentType("image/" + logo.getFormat().name().toLowerCase());
-		response.setHeader ("Content-Disposition", String.format("attachment; filename=\"%s\"", logo.getName()));
+		InputStream is = logo == null? servletContext.getResourceAsStream(noLogoPath): new ByteArrayInputStream(logo.getData());
+		response.setContentType("image/" + (logo == null? FilenameUtils.getExtension(noLogoPath): logo.getFormat().name().toLowerCase()));
+		response.setHeader ("Content-Disposition", String.format("attachment; filename=\"%s\"", logo == null? FilenameUtils.getName(noLogoPath): logo.getName()));
 		IOUtils.copy(is, response.getOutputStream());
 	}
 	
