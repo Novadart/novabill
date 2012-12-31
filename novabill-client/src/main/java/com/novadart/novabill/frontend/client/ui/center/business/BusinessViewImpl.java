@@ -103,6 +103,8 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 
 		initWidget(uiBinder.createAndBindUi(this));
 
+		logo.setUrl(Const.genLogoUrl());
+		
 		formPanel.setAction(Const.URL_LOGO);
 		formPanel.setMethod(FormPanel.METHOD_POST);
 		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
