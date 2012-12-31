@@ -32,9 +32,17 @@ public class UtilsService {
 		return (Principal)getAuthentication().getPrincipal();
 	}
 	
-	public boolean isGWTRPCCall(HttpServletRequest request){
+	private boolean isGWTContentType(HttpServletRequest request){
 		String contentType = request.getContentType();
 		return contentType != null && contentType.trim().toLowerCase().startsWith("text/x-gwt-rpc");
+	}
+	
+	private boolean containsGWTHeaders(HttpServletRequest request){
+		return (request.getHeader("x-gwt-module-base") != null) || (request.getHeader("x-gwt-permutation") != null);
+	}
+	
+	public boolean isGWTRPCCall(HttpServletRequest request){
+		return isGWTContentType(request) || containsGWTHeaders(request); 
 	}
 	
 	
