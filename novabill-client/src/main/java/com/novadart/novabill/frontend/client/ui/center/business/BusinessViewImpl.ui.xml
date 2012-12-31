@@ -6,7 +6,7 @@
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n" />
 
-	<g:ScrollPanel styleName="BusinessView">
+	<g:ScrollPanel styleName="BusinessView" height="100%">
 		<g:FlowPanel>
 			<g:SimplePanel>
 				<g:Button styleName="saveData button" ui:field="saveData"
