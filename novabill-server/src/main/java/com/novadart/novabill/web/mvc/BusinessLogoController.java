@@ -6,15 +6,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
-import javax.servlet.ServletContext;
+
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.im4java.core.IM4JavaException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +25,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
+
 import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.domain.Logo.LogoFormat;
 import com.novadart.novabill.service.UtilsService;
@@ -42,11 +44,10 @@ public class BusinessLogoController {
 	@Autowired
 	private UtilsService utilsService;
 	
-	@Autowired
-	private ServletContext servletContext;
+//	@Autowired
+//	private ServletContext servletContext;
 	
-	@Value("${nologo.path}")
-	private String noLogoPath;
+	private ClassPathResource noLogoImage = new ClassPathResource("/image/no_logo.gif");
 	
 	@ExceptionHandler(Exception.class)
 	public String handleException(Exception ex, HttpServletRequest request, HttpServletResponse response){
@@ -58,9 +59,9 @@ public class BusinessLogoController {
 	@ResponseBody
 	public void getLogo(HttpServletResponse response) throws IOException{
 		Logo logo = Logo.getLogoByBusinessID(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
-		InputStream is = logo == null? servletContext.getResourceAsStream(noLogoPath): new ByteArrayInputStream(logo.getData());
-		response.setContentType("image/" + (logo == null? FilenameUtils.getExtension(noLogoPath): logo.getFormat().name().toLowerCase()));
-		response.setHeader ("Content-Disposition", String.format("attachment; filename=\"%s\"", logo == null? FilenameUtils.getName(noLogoPath): logo.getName()));
+		InputStream is = logo == null? noLogoImage.getInputStream() : new ByteArrayInputStream(logo.getData());
+		response.setContentType("image/" + (logo == null? FilenameUtils.getExtension(noLogoImage.getPath()): logo.getFormat().name().toLowerCase()));
+		response.setHeader ("Content-Disposition", String.format("attachment; filename=\"%s\"", logo == null? FilenameUtils.getName(noLogoImage.getPath()): logo.getName()));
 		IOUtils.copy(is, response.getOutputStream());
 	}
 	
