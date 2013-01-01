@@ -1,7 +1,11 @@
 package com.novadart.novabill.frontend.client.facade;
 
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
 public abstract class WrappedAsyncCallback<T> implements AsyncCallback<T> {
@@ -21,6 +25,11 @@ public abstract class WrappedAsyncCallback<T> implements AsyncCallback<T> {
 //			if(!GoPremiumDialog.getInstance().isShowing()) {
 //				GoPremiumDialog.getInstance().showCentered();
 //			}
+			
+		} else if(caught instanceof ConcurrentAccessException) {
+			
+			Notification.showMessage(I18N.INSTANCE.errorConcurrentAccess());
+			Window.Location.reload();
 			
 		} else {
 			
