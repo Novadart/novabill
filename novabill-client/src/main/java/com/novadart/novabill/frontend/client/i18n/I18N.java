@@ -6,6 +6,8 @@ import com.google.gwt.i18n.client.Constants;
 public interface I18N extends Constants {
 	public static final I18N INSTANCE = GWT.create(I18N.class);
 	
+	public String updateLogo();
+	public String deleteLogo();
 	public String feedback(); 
 	public String yourDocs(); 
 	public String fillVatIdOrSsn();

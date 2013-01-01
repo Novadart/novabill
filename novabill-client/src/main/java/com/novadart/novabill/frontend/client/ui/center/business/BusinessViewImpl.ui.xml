@@ -137,7 +137,11 @@
 					<g:SimplePanel styleName="logoContainerWrapper">
 						<g:VerticalPanel styleName="logoContainer">
 							<g:Image ui:field="logo" styleName="logo"></g:Image>
-							<g:FormPanel ui:field="formPanel" styleName="formPanel" />
+							<g:HorizontalPanel>
+								<g:FormPanel visible="false" ui:field="formPanel" styleName="formPanel" />
+								<g:Button ui:field="updateLogo" text="{i18n.updateLogo}" styleName="button"></g:Button>
+								<g:Button ui:field="removeLogo" text="{i18n.deleteLogo}" styleName="removeLogo button"></g:Button>
+							</g:HorizontalPanel>
 						</g:VerticalPanel>
 					</g:SimplePanel>
 	

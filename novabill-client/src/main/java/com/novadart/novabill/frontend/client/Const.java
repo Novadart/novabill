@@ -7,9 +7,11 @@ import com.google.gwt.core.client.GWT;
 public class Const {
 	
 	public static final String URL_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo";
+	public static final String DELETE_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo";
 	public static final String CHANGE_PASSWORD_URL = GWT.getHostPageBaseURL()+"private/change-password";
 	public static final String XSRF_URL = GWT.getHostPageBaseURL() + "gwt/xsrf";
-
+	public static final String POST_FEEDBACK_URL = GWT.getHostPageBaseURL()+"private/feedback";
+	
 	public static String genLogoUrl(){
 		return URL_LOGO + "?v=" + new Date().getTime();
 	}

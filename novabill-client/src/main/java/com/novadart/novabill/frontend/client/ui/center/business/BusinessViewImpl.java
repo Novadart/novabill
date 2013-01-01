@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
@@ -45,6 +46,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 
 	private Presenter presenter;
 
+	@UiField Button updateLogo;
 	@UiField FormPanel formPanel;
 	@UiField Image logo;
 	
@@ -155,12 +157,41 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 					
 				case OK:
 					logo.setUrl(Const.genLogoUrl());
+					formPanel.setVisible(false);
+					formPanel.reset();
+					updateLogo.setVisible(true);
 					break;
 				
 				}
 			}
 		});
 		
+	}
+	
+	
+	@UiHandler("removeLogo")
+	void onRemoveLogoClicked(ClickEvent e){
+		ServerFacade.deleteLogo(new AsyncCallback<Boolean>() {
+			
+			@Override
+			public void onSuccess(Boolean result) {
+				formPanel.setVisible(false);
+				formPanel.reset();
+				updateLogo.setVisible(true);
+				logo.setUrl(Const.genLogoUrl());
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+			}
+		});
+	}
+	
+	@UiHandler("updateLogo")
+	void onUpdateLogoClicked(ClickEvent e){
+		updateLogo.setVisible(false);
+		formPanel.setVisible(true);
 	}
 
 

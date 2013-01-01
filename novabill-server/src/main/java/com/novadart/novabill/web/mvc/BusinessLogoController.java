@@ -44,9 +44,6 @@ public class BusinessLogoController {
 	@Autowired
 	private UtilsService utilsService;
 	
-//	@Autowired
-//	private ServletContext servletContext;
-	
 	private ClassPathResource noLogoImage = new ClassPathResource("/resources/no_logo.gif");
 	
 	@ExceptionHandler(Exception.class)
