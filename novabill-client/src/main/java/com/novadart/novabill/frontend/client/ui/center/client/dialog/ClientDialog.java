@@ -7,9 +7,9 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
+import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
@@ -66,7 +66,7 @@ public class ClientDialog extends Dialog {
 	@UiField(provided=true) ValidatedTextBox contactName;
 	@UiField(provided=true) ValidatedTextBox contactSurname;
 	
-	@UiField Button ok;
+	@UiField LoaderButton ok;
 	
 	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation(); 
 	
@@ -103,8 +103,12 @@ public class ClientDialog extends Dialog {
 		contactEmail = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
 		
 		province = LocaleWidgets.createProvinceListBox("");
+		
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("ClientDialog panel");
+		
+		ok.addStyleName("submit");
+		ok.getButton().addStyleName("button");
 	}
 
 	@UiFactory
@@ -190,11 +194,14 @@ public class ClientDialog extends Dialog {
 		contact.setMobile(contactMobile.getText());
 		contact.setPhone(contactPhone.getText());
 		
+		ok.showLoader(true);
+		
 		if(this.client == null) {
 			ServerFacade.client.add(Configuration.getBusinessId(), client, new WrappedAsyncCallback<Long>() {
 
 				@Override
 				public void onSuccess(Long result) {
+					ok.showLoader(false);
 					DataWatcher.getInstance().fireClientEvent();
 					DataWatcher.getInstance().fireStatsEvent();
 					hide();
@@ -202,6 +209,7 @@ public class ClientDialog extends Dialog {
 
 				@Override
 				public void onException(Throwable caught) {
+					ok.showLoader(false);
 					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 				}
 			});
@@ -211,12 +219,14 @@ public class ClientDialog extends Dialog {
 
 				@Override
 				public void onSuccess(Void result) {
+					ok.showLoader(false);
 					DataWatcher.getInstance().fireClientEvent();
 					hide();
 				}
 
 				@Override
 				public void onException(Throwable caught) {
+					ok.showLoader(false);
 					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 				}
 			});
@@ -274,6 +284,7 @@ public class ClientDialog extends Dialog {
 		ok.setText(I18N.INSTANCE.submit());
 		inlineNotification.hide();
 		clientDialogTitle.setText(I18N.INSTANCE.addNewClientTitle());
+		ok.reset();
 	}
 
 	private boolean validate(){

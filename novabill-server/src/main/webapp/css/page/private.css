@@ -959,8 +959,18 @@ td.datePickerMonth {
 	width: 9em;
 }
 
-.ClientDialog .buttonContainer .button.submit {
+.ClientDialog .buttonContainer .submit {
 	margin-right: 1em;
+	width: 9em;
+}
+
+
+.LoaderButton {
+}
+
+.LoaderButton .LoaderButton-loader {
+	margin: 0 auto;
+	display: block;
 }
 
 .AccountDocumentView {
