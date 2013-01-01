@@ -2,11 +2,12 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import com.novadart.novabill.domain.AccountingDocument;
+
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -30,7 +31,6 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentService;
 
-@SuppressWarnings("serial")
 public class TransportDocumentServiceImpl implements TransportDocumentService {
 
 
