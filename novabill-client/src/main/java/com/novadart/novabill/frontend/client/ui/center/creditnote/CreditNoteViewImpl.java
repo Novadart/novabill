@@ -144,7 +144,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 			@Override
 			public void onException(Throwable caught) {
 				if(caught instanceof ValidationException){
-					handleServerValidationException((ValidationException) caught, true);
+					handleServerValidationException((ValidationException) caught);
 				} else {
 					Notification.showMessage(I18N.INSTANCE.creditNoteCreationFailure());
 				}
@@ -215,7 +215,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 				@Override
 				public void onException(Throwable caught) {
 					if(caught instanceof ValidationException){
-						handleServerValidationException((ValidationException) caught, true);
+						handleServerValidationException((ValidationException) caught);
 					} else {
 						Notification.showMessage(I18N.INSTANCE.creditNoteUpdateFailure());
 					}
@@ -329,25 +329,23 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		titleLabel.setText(I18N.INSTANCE.newCreditNoteCreation());
 	}
 
-	private void handleServerValidationException(ValidationException ex, boolean isInvoice){
+	private void handleServerValidationException(ValidationException ex){
 		for (ErrorObject eo : ex.getErrors()) {
 			switch(eo.getErrorCode()){
 			case INVALID_DOCUMENT_ID:
-				if(isInvoice){
-					StringBuilder sb = new StringBuilder();
-					List<Long> gaps = ((InvoiceErrorObject) eo).getGaps();
+				StringBuilder sb = new StringBuilder();
+				List<Long> gaps = ((InvoiceErrorObject) eo).getGaps();
 
-					if(gaps.size() > 1) {
-						for (int i=0; i<gaps.size()-1; i++) {
-							sb.append(gaps.get(i) +", ");
-						}
-						sb.append(gaps.get(gaps.size()-1));
-					} else {
-						sb.append(gaps.get(0));
+				if(gaps.size() > 1) {
+					for (int i=0; i<gaps.size()-1; i++) {
+						sb.append(gaps.get(i) +", ");
 					}
-
-					number.showErrorMessage(I18NM.get.invalidDocumentIdError(sb.toString()));
+					sb.append(gaps.get(gaps.size()-1));
+				} else {
+					sb.append(gaps.get(0));
 				}
+
+				number.showErrorMessage(I18NM.get.invalidDocumentIdError(sb.toString()));
 				break;
 
 			default:

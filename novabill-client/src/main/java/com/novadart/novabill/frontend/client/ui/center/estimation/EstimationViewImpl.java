@@ -160,7 +160,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			@Override
 			public void onException(Throwable caught) {
 				if(caught instanceof ValidationException){
-					handleServerValidationException((ValidationException) caught, false);
+					handleServerValidationException((ValidationException) caught);
 				} else {
 					Notification.showMessage(I18N.INSTANCE.estimationCreationFailure());
 				}
@@ -214,7 +214,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 				@Override
 				public void onException(Throwable caught) {
 					if(caught instanceof ValidationException){
-						handleServerValidationException((ValidationException) caught, false);
+						handleServerValidationException((ValidationException) caught);
 					} else {
 						Notification.showMessage(I18N.INSTANCE.estimationUpdateFailure());
 					}
@@ -349,7 +349,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		titleLabel.setText(I18N.INSTANCE.newEstimationCreation());
 	}
 
-	private void handleServerValidationException(ValidationException ex, boolean isInvoice){
+	private void handleServerValidationException(ValidationException ex){
 		for (ErrorObject eo : ex.getErrors()) {
 			switch(eo.getErrorCode()){
 

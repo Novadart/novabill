@@ -366,7 +366,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 
 					@Override
 					public void onException(Throwable caught) {
-
+						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 					}
 				});
 			}

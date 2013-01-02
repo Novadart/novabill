@@ -241,7 +241,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			@Override
 			public void onException(Throwable caught) {
 				if(caught instanceof ValidationException){
-					handleServerValidationException((ValidationException) caught, false);
+					handleServerValidationException((ValidationException) caught);
 				} else {
 					Notification.showMessage(I18N.INSTANCE.transportDocumentCreationFailure());
 				}
@@ -326,7 +326,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 				@Override
 				public void onException(Throwable caught) {
 					if(caught instanceof ValidationException){
-						handleServerValidationException((ValidationException) caught, false);
+						handleServerValidationException((ValidationException) caught);
 					} else {
 						Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateFailure());
 					}
@@ -527,7 +527,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		titleLabel.setText(I18N.INSTANCE.newTransportDocumentCreation());
 	}
 
-	private void handleServerValidationException(ValidationException ex, boolean isInvoice){
+	private void handleServerValidationException(ValidationException ex){
 		for (ErrorObject eo : ex.getErrors()) {
 			switch(eo.getErrorCode()){
 
