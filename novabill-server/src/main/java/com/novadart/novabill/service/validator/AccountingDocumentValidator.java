@@ -7,7 +7,9 @@ import org.springframework.context.annotation.Primary;
 import org.springframework.stereotype.Service;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.validation.ErrorCode;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
+import com.novadart.novabill.shared.client.validation.Field;
 
 @Service
 @Primary
@@ -23,6 +25,10 @@ public class AccountingDocumentValidator{
 			simpleValidator.validate(accountingDocument); //JSR-303 validation
 		}catch (ValidationException e) {
 			errors.addAll(e.getErrors());
+			isValid = false;
+		}
+		if(AccountingDocument.getAccountingDocument(accountingDocument.getClass(), accountingDocument.getDocumentID(), accountingDocument.getAccountingDocumentYear()) != null){
+			errors.add(new ErrorObject(Field.documentID, ErrorCode.DUPLICATE_DOCUMENT_ID));
 			isValid = false;
 		}
 		if(!isValid)
