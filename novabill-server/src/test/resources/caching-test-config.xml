@@ -54,7 +54,7 @@
     	<entry key="clientWithCreditNotesID" value="3"/>
     	<entry key="clientWithEstimationsID" value="3"/>
     	<entry key="clientWithTransportDocsID" value="3"/>
-    	<entry key="year" value="2012"/>
+    	<entry key="year" value="2013"/>
     </util:map>
     
 </beans>
