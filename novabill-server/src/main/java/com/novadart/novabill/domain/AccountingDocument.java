@@ -102,6 +102,11 @@ public abstract class AccountingDocument {
     	return new ArrayList<T>(sortedSet);
     }
 	
+	public static <T extends AccountingDocument> T getAccountingDocument(Class<T> cls, Long documentID, int year){
+		String query = String.format("select o from %s o where o.documentID = :docID and o.accountingDocumentYear = :year", cls.getSimpleName());
+		List<T> result = entityManager().createQuery(query, cls).setParameter("docID", documentID).setParameter("year", year).getResultList();
+		return result.size() > 0? result.get(0): null;
+	}
 	
 	/*
 	 * Getters and setters
