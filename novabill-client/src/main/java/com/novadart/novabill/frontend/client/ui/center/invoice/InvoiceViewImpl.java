@@ -43,7 +43,6 @@ import com.novadart.novabill.shared.client.dto.PaymentType;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
-import com.novadart.novabill.shared.client.validation.InvoiceErrorObject;
 
 public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
@@ -432,7 +431,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 			switch(eo.getErrorCode()){
 			case INVALID_DOCUMENT_ID:
 				StringBuilder sb = new StringBuilder();
-				List<Long> gaps = ((InvoiceErrorObject) eo).getGaps();
+				List<Long> gaps = eo.getGaps();
 
 				if(gaps.size() > 1) {
 					for (int i=0; i<gaps.size()-1; i++) {
@@ -446,9 +445,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 				number.showErrorMessage(I18NM.get.invalidDocumentIdError(sb.toString()));
 				break;
 			
-			case DUPLICATE_DOCUMENT_ID:
-				break;
-				
 			case NULL:
 			case BLANK_OR_NULL:
 				break;

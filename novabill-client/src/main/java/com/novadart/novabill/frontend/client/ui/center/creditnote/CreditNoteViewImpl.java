@@ -42,7 +42,6 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
-import com.novadart.novabill.shared.client.validation.InvoiceErrorObject;
 
 public class CreditNoteViewImpl extends AccountDocument implements CreditNoteView {
 
@@ -334,7 +333,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 			switch(eo.getErrorCode()){
 			case INVALID_DOCUMENT_ID:
 				StringBuilder sb = new StringBuilder();
-				List<Long> gaps = ((InvoiceErrorObject) eo).getGaps();
+				List<Long> gaps = eo.getGaps();
 
 				if(gaps.size() > 1) {
 					for (int i=0; i<gaps.size()-1; i++) {
