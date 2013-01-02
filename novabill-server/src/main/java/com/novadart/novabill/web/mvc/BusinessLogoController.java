@@ -7,6 +7,7 @@ import java.io.FileInputStream;
 import java.io.IOException;
 import java.io.InputStream;
 
+import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
@@ -15,7 +16,6 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.im4java.core.IM4JavaException;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.core.io.ClassPathResource;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -24,6 +24,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.multipart.MultipartFile;
 
 import com.novadart.novabill.domain.Logo;
@@ -44,7 +45,12 @@ public class BusinessLogoController {
 	@Autowired
 	private UtilsService utilsService;
 	
-	private ClassPathResource noLogoImage = new ClassPathResource("/resources/no_logo.gif");
+	private ServletContextResource noLogoImage;
+	
+	@Autowired
+	public void setServletContext(ServletContext servletContext){
+		noLogoImage = new ServletContextResource(servletContext, "/images/no_logo.gif");
+	}
 	
 	@ExceptionHandler(Exception.class)
 	public String handleException(Exception ex, HttpServletRequest request, HttpServletResponse response){
