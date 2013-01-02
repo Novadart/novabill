@@ -442,10 +442,26 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 				} else {
 					sb.append(gaps.get(0));
 				}
-
+					
 				number.showErrorMessage(I18NM.get.invalidDocumentIdError(sb.toString()));
 				break;
-
+			
+			case DUPLICATE_DOCUMENT_ID:
+				break;
+				
+			case NULL:
+			case BLANK_OR_NULL:
+				break;
+				
+			case LENGTH:
+				break;
+				
+			case MALFORMED_EMAIL:
+				break;
+				
+			case MALFORMED_REGEX_PATTERN:
+				break;
+			
 			default:
 				break;
 			}
