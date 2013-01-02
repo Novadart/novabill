@@ -251,6 +251,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 		invoiceList.setPresenter(presenter);
+		estimationList.setPresenter(presenter);
+		creditNoteList.setPresenter(presenter);
+		transportDocumentList.setPresenter(presenter);
 	}
 
 	@UiHandler("tabBar")
