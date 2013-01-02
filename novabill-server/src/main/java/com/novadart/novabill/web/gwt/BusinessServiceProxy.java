@@ -21,14 +21,10 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
 
-public class BusinessServiceProxy extends AbstractGwtController<BusinessService, BusinessServiceProxy> implements BusinessService {
+public class BusinessServiceProxy extends AbstractGwtController implements BusinessService {
 	
 	private static final long serialVersionUID = 1L;
 
-	public BusinessServiceProxy() {
-		super(BusinessService.class);
-	}
-	
 	@Autowired
 	@Qualifier("businessServiceImpl")
 	private BusinessService businessService;

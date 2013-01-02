@@ -15,7 +15,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.TransportDocumentService;
 
-public class TransportDocumentServiceProxy extends AbstractGwtController<TransportDocumentService, TransportDocumentServiceProxy> implements TransportDocumentService {
+public class TransportDocumentServiceProxy extends AbstractGwtController implements TransportDocumentService {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -23,10 +23,6 @@ public class TransportDocumentServiceProxy extends AbstractGwtController<Transpo
 	@Qualifier("transportdocImpl")
 	private TransportDocumentService transportDocService;
 	
-	public TransportDocumentServiceProxy() {
-		super(TransportDocumentService.class);
-	}
-
 	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
 		return transportDocService.get(id);
 	}

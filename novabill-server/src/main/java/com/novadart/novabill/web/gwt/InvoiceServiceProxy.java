@@ -15,7 +15,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 
-public class InvoiceServiceProxy extends AbstractGwtController<InvoiceService, InvoiceServiceProxy> implements InvoiceService {
+public class InvoiceServiceProxy extends AbstractGwtController implements InvoiceService {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -23,10 +23,6 @@ public class InvoiceServiceProxy extends AbstractGwtController<InvoiceService, I
 	@Qualifier("invoiceServiceImpl")
 	private InvoiceService invoiceService;
 	
-	public InvoiceServiceProxy() {
-		super(InvoiceService.class);
-	}
-
 	public InvoiceDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
 		return invoiceService.get(id);
 	}

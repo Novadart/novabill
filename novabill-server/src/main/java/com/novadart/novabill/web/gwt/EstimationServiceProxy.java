@@ -15,7 +15,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 
-public class EstimationServiceProxy extends AbstractGwtController<EstimationService, EstimationServiceProxy> implements EstimationService {
+public class EstimationServiceProxy extends AbstractGwtController implements EstimationService {
 	
 	private static final long serialVersionUID = 1L;
 	
@@ -23,10 +23,6 @@ public class EstimationServiceProxy extends AbstractGwtController<EstimationServ
 	@Qualifier("estimationServiceImpl")
 	private EstimationService estimationService;
 	
-	public EstimationServiceProxy() {
-		super(EstimationService.class);
-	}
-
 	public EstimationDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
 		return estimationService.get(id);
 	}

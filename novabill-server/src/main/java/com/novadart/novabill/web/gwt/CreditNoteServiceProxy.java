@@ -13,17 +13,13 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.CreditNoteService;
 
-public class CreditNoteServiceProxy extends AbstractGwtController<CreditNoteService, CreditNoteServiceProxy> implements CreditNoteService {
+public class CreditNoteServiceProxy extends AbstractGwtController implements CreditNoteService {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
 	@Qualifier("creditnoteServiceImpl")
 	private CreditNoteService creditNoteService;
-
-	public CreditNoteServiceProxy() {
-		super(CreditNoteService.class);
-	}
 
 	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
 		return creditNoteService.get(id);
