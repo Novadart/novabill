@@ -1,6 +1,7 @@
 package com.novadart.novabill.shared.client.validation;
 
 import java.io.Serializable;
+import java.util.List;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -23,6 +24,8 @@ public class ErrorObject implements Serializable, IsSerializable {
 	private ErrorCode errorCode;
 	
 	private Integer[] indexes;
+	
+	private List<Long> gaps;
 	
 	public Field getField() {
 		return field;
@@ -47,17 +50,30 @@ public class ErrorObject implements Serializable, IsSerializable {
 	public void setIndexes(Integer[] indexes) {
 		this.indexes = indexes;
 	}
+	
+	public List<Long> getGaps() {
+		return gaps;
+	}
+
+	public void setGaps(List<Long> gaps) {
+		this.gaps = gaps;
+	}
 
 	public ErrorObject(){}
 	
 	public ErrorObject(Field field, ErrorCode errorCode) {
-		this(field, errorCode, null);
+		this.field = field;
+		this.errorCode = errorCode;
 	}
 	
 	public ErrorObject(Field field, ErrorCode errorCode, Integer[] indexes){
-		this.field = field;
-		this.errorCode = errorCode;
+		this(field, errorCode);
 		this.indexes = indexes;
+	}
+	
+	public ErrorObject(Field field, ErrorCode errorCode, List<Long> gaps){
+		this(field, errorCode);
+		this.gaps = gaps;
 	}
 	
 

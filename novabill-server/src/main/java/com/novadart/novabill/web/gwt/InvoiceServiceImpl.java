@@ -15,7 +15,7 @@ import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
 import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.validator.InvoiceValidator;
+import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
@@ -34,7 +34,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	private UtilsService utilsService;
 	
 	@Autowired
-	private InvoiceValidator validator;
+	private AccountingDocumentValidator validator;
 	
 	@Autowired
 	private BusinessService businessService;
@@ -98,7 +98,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, AuthorizationException {
 		Invoice invoice = new Invoice();//create new invoice
 		InvoiceDTOFactory.copyFromDTO(invoice, invoiceDTO, true);
-		validator.validate(invoice);
+		validator.validate(Invoice.class, invoice);
 		Client client = Client.findClient(invoiceDTO.getClient().getId());
 		Business business = Business.findBusiness(invoiceDTO.getBusiness().getId());
 		invoice.setClient(client);
@@ -126,7 +126,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 			item.setAccountingDocument(persistedInvoice);
 			persistedInvoice.getAccountingDocumentItems().add(item);
 		}
-		validator.validate(persistedInvoice);
+		validator.validate(Invoice.class, persistedInvoice);
 	}
 	
 	@Override

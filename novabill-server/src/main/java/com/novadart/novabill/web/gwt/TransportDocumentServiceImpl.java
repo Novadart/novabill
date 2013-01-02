@@ -81,7 +81,7 @@ public class TransportDocumentServiceImpl implements TransportDocumentService {
 		transportDoc.setFromEndpoint(new Endpoint());
 		transportDoc.setToEndpoint(new Endpoint());
 		TransportDocumentDTOFactory.copyFromDTO(transportDoc, transportDocDTO, true);
-		validator.validate(transportDoc);
+		validator.validate(TransportDocument.class, transportDoc);
 		Client client = Client.findClient(transportDocDTO.getClient().getId());
 		transportDoc.setClient(client);
 		client.getTransportDocuments().add(transportDoc);
@@ -125,7 +125,7 @@ public class TransportDocumentServiceImpl implements TransportDocumentService {
 			item.setAccountingDocument(persistedTransportDoc);
 			persistedTransportDoc.getAccountingDocumentItems().add(item);
 		}
-		validator.validate(persistedTransportDoc);
+		validator.validate(TransportDocument.class, persistedTransportDoc);
 		
 	}
 

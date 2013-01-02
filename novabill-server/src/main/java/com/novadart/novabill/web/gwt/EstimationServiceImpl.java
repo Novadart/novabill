@@ -75,7 +75,7 @@ public class EstimationServiceImpl implements EstimationService {
 	public Long add(EstimationDTO estimationDTO) throws DataAccessException, AuthorizationException, ValidationException {
 		Estimation estimation = new Estimation();
 		EstimationDTOFactory.copyFromDTO(estimation, estimationDTO, true);
-		validator.validate(estimation);
+		validator.validate(Estimation.class, estimation);
 		Client client = Client.findClient(estimationDTO.getClient().getId());
 		estimation.setClient(client);
 		client.getEstimations().add(estimation);
@@ -118,7 +118,7 @@ public class EstimationServiceImpl implements EstimationService {
 			item.setAccountingDocument(persistedEstimation);
 			persistedEstimation.getAccountingDocumentItems().add(item);
 		}
-		validator.validate(persistedEstimation);
+		validator.validate(Estimation.class, persistedEstimation);
 	}
 
 	@Override

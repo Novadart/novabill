@@ -15,7 +15,7 @@ import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
 import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.validator.InvoiceValidator;
+import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
@@ -37,7 +37,7 @@ public class CreditNoteServiceImpl implements CreditNoteService {
 	private BusinessService businessService;
 	
 	@Autowired
-	private InvoiceValidator validator;
+	private AccountingDocumentValidator validator;
 
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.business?.id == principal.business.id")
@@ -81,7 +81,7 @@ public class CreditNoteServiceImpl implements CreditNoteService {
 	public Long add(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException {
 		CreditNote creditNote = new CreditNote();//create new credit note
 		CreditNoteDTOFactory.copyFromDTO(creditNote, creditNoteDTO, true);
-		validator.validate(creditNote);
+		validator.validate(CreditNote.class, creditNote);
 		Client client = Client.findClient(creditNoteDTO.getClient().getId());
 		Business business = Business.findBusiness(creditNoteDTO.getBusiness().getId());
 		creditNote.setClient(client);
@@ -123,7 +123,7 @@ public class CreditNoteServiceImpl implements CreditNoteService {
 			item.setAccountingDocument(persistedCreditNote);
 			persistedCreditNote.getAccountingDocumentItems().add(item);
 		}
-		validator.validate(persistedCreditNote);
+		validator.validate(CreditNote.class, persistedCreditNote);
 		
 	}
 

@@ -156,7 +156,7 @@ public class Business implements Serializable, Taxable {
     	return entityManager().createQuery(query, TransportDocument.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
     }
     
-    private <T extends AccountingDocument> Long getNextAccountingDocDocumentID(Class<T> cls){
+    public <T extends AccountingDocument> Long getNextAccountingDocDocumentID(Class<T> cls){
     	String query = String.format("select max(o.documentID) from %s o where o.business.id = :businessId and o.accountingDocumentYear = :year",
     									cls.getSimpleName());
     	Long id = entityManager.createQuery(query, Long.class)
@@ -203,15 +203,19 @@ public class Business implements Serializable, Taxable {
     }
     
     public List<Long> getCurrentYearInvoicesDocumentIDs(){
-    	String query = "select invoice.documentID from Invoice as invoice where invoice.business.id = :businessId and invoice.accountingDocumentYear = :year order by invoice.documentID";
+    	return getCurrentYearDocumentsIDs(Invoice.class);
+    }
+    
+    public <T extends AccountingDocument> List<Long> getCurrentYearDocumentsIDs(Class<T> cls){
+    	String query = String.format("select o.documentID from %s as o where o.business.id = :businessId and o.accountingDocumentYear = :year order by o.documentID", cls.getSimpleName());
     	return entityManager.createQuery(query, Long.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getResultList();
     }
     
-    public List<Invoice> getInvoiceByIdInYear(Long documentID, Integer year){
-    	String query = "select invoice from Invoice invoice where invoice.business.id = :businessId and invoice.accountingDocumentYear = :year and invoice.documentID = :id";
-    	return entityManager().createQuery(query, Invoice.class)
+    public <T extends AccountingDocument> List<T> getDocsByIdInYear(Class<T> cls, Long documentID, Integer year){
+    	String query = String.format("select o from %s o where o.business.id = :businessId and o.accountingDocumentYear = :year and o.documentID = :id", cls.getSimpleName());
+    	return entityManager().createQuery(query, cls)
     			.setParameter("businessId", getId())
     			.setParameter("year", year)
     			.setParameter("id", documentID).getResultList();
