@@ -143,5 +143,11 @@ public abstract class BusinessServiceImpl implements BusinessService {
 			clientDTOs.add(ClientDTOFactory.toDTO(client));
 		return clientDTOs;
 	}
+	
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return BusinessDTOFactory.toDTO(Business.findBusiness(businessID));
+	}
 
 }

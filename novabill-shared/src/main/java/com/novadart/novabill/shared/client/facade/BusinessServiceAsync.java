@@ -45,4 +45,6 @@ public interface BusinessServiceAsync {
 
 	void getClients(Long businessID, AsyncCallback<List<ClientDTO>> callback);
 
+	void get(Long businessID, AsyncCallback<BusinessDTO> callback);
+
 }

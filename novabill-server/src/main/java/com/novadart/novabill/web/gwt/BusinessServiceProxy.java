@@ -94,4 +94,8 @@ public class BusinessServiceProxy extends AbstractGwtController implements Busin
 		return businessService.getClients(businessID);
 	}
 
+	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return businessService.get(businessID);
+	}
+
 }

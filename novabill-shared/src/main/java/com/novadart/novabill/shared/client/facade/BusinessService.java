@@ -48,5 +48,7 @@ public interface BusinessService extends RemoteService {
 	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
 	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	
+	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException;
 
 }

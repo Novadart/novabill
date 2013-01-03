@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
+import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -249,6 +250,26 @@ public class BusinessServiceTest extends GWTServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void getClientsUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getClients(null);
+	}
+	
+	@Test
+	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
+		BusinessDTO businessDTO = businessService.get(authenticatedPrincipal.getBusiness().getId());
+		Business business = authenticatedPrincipal.getBusiness();
+		assertEquals(business.getName(), businessDTO.getName());
+		assertEquals(business.getAddress(), businessDTO.getAddress());
+		assertEquals(business.getSsn(), businessDTO.getSsn());
+		assertEquals(business.getVatID(), businessDTO.getVatID());
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void getUnauthorizedIDTest() throws NotAuthenticatedException, DataAccessException{
+		businessService.get(getUnathorizedBusinessID());
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void getUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
+		businessService.get(null);
 	}
 
 }

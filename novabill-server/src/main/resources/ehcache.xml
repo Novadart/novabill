@@ -26,6 +26,11 @@
         overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
         timeToLiveSeconds="${ehcache.default.timeToLiveSeconds.value}" memoryStoreEvictionPolicy="LRU" statistics="true" />
 
+	<cache name="business-cache" eternal="false"
+        maxElementsInMemory="${ehcache.business-cache.maxElementsInMemory.value}" overflowToDisk="false" diskPersistent="false"
+        timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.business-cache.timeToLiveSeconds.value}"
+        memoryStoreEvictionPolicy="LRU" statistics="true" />
+
     <cache name="client-cache" eternal="false"
         maxElementsInMemory="${ehcache.client-cache.maxElementsInMemory.value}" overflowToDisk="false" diskPersistent="false"
         timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.client-cache.timeToLiveSeconds.value}"

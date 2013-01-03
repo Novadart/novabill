@@ -18,6 +18,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.aspect.CachingAspect;
+import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Estimation;
@@ -30,6 +31,7 @@ import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -88,6 +90,24 @@ public class CachingTest extends GWTServiceTest {
 		cacheManager.getCache(CachingAspect.ESTIMATION_CACHE).flush();
 		cacheManager.getCache(CachingAspect.CREDITNOTE_CACHE).flush();
 		cacheManager.getCache(CachingAspect.TRANSPORTDOCUMENT_CACHE).flush();
+		cacheManager.getCache(CachingAspect.BUSINESS_CACHE).flush();
+	}
+	
+	@Test
+	public void businessGetTest() throws NotAuthenticatedException, DataAccessException{
+		BusinessDTO business = businessService.get(authenticatedPrincipal.getBusiness().getId());
+		BusinessDTO cachedBusiness = businessService.get(authenticatedPrincipal.getBusiness().getId());
+		assertTrue(business == cachedBusiness);
+	}
+	
+	@Test
+	public void businessUpdateTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+		BusinessDTO business1 = businessService.get(authenticatedPrincipal.getBusiness().getId());
+		Business biz = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
+		biz.setName("Test name");
+		businessService.update(BusinessDTOFactory.toDTO(biz));
+		BusinessDTO business2 = businessService.get(authenticatedPrincipal.getBusiness().getId());
+		assertTrue(business1 != business2);
 	}
 	
 	@Test
