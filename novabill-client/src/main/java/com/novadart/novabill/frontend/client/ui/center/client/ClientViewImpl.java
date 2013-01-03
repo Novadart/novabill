@@ -117,36 +117,46 @@ public class ClientViewImpl extends Composite implements ClientView {
 			public void onDataUpdated(DATA data) {
 				switch (data) {
 				case INVOICE:
-					loadInvoices();
+					if(ClientViewImpl.this.isAttached()){
+						loadInvoices();
+					}
 					break;
 					
 				case CLIENT:
 				case CLIENT_DATA:
-					ServerFacade.client.get(ClientViewImpl.this.client.getId(), 
-							new WrappedAsyncCallback<ClientDTO>() {
-
-						@Override
-						public void onSuccess(ClientDTO result) {
-							setClient(result);
-						}
-
-						@Override
-						public void onException(Throwable caught) {
-							Window.Location.reload();
-						}
-					});
+					if(ClientViewImpl.this.isAttached()){
+						ServerFacade.client.get(ClientViewImpl.this.client.getId(), 
+								new WrappedAsyncCallback<ClientDTO>() {
+	
+							@Override
+							public void onSuccess(ClientDTO result) {
+								setClient(result);
+							}
+	
+							@Override
+							public void onException(Throwable caught) {
+								Window.Location.reload();
+							}
+						});
+					}
 					break;
 					
 				case ESTIMATION:
-					loadEstimations();
+					if(ClientViewImpl.this.isAttached()){
+						loadEstimations();
+					}
 					break;
 					
 				case CREDIT_NOTE:
-					loadCreditNotes();
+					if(ClientViewImpl.this.isAttached()){
+						loadCreditNotes();
+					}
 					break;
 					
 				case TRANSPORT_DOCUMENT:
-					loadTransportDocuments();
+					if(ClientViewImpl.this.isAttached()){
+						loadTransportDocuments();
+					}
 					break;
 					
 				default:

@@ -75,6 +75,8 @@ public class HomeViewImpl extends Composite implements HomeView {
 	private final EstimationDataProvider estimationDataProvider = new EstimationDataProvider();
 	private final CreditNoteDataProvider creditNoteDataProvider = new CreditNoteDataProvider();
 	private final TransportDocumentDataProvider transportDocumentDataProvider = new TransportDocumentDataProvider();
+	
+	private boolean isInitialSetup = true;
 
 	public HomeViewImpl() {
 		date = setupDate();
@@ -97,27 +99,14 @@ public class HomeViewImpl extends Composite implements HomeView {
 			@Override
 			public void onDataUpdated(DATA data) {
 				switch (data) {
-				case INVOICE:
-					invoiceList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
-					break;
-
-				case ESTIMATION:
-					estimationList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
-					break;
-
-				case CREDIT_NOTE:
-					creditNoteList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
-					break;
-
-				case TRANSPORT_DOCUMENT:
-					transportDocumentList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
-					break;
 
 				case CLIENT_DATA:
-					invoiceList.setVisibleRangeAndClearData(invoiceList.getVisibleRange(), true);
-					estimationList.setVisibleRangeAndClearData(estimationList.getVisibleRange(), true);
-					creditNoteList.setVisibleRangeAndClearData(creditNoteList.getVisibleRange(), true);
-					transportDocumentList.setVisibleRangeAndClearData(transportDocumentList.getVisibleRange(), true);
+					if(HomeViewImpl.this.isAttached()){
+						invoiceList.setVisibleRangeAndClearData(invoiceList.getVisibleRange(), true);
+						estimationList.setVisibleRangeAndClearData(estimationList.getVisibleRange(), true);
+						creditNoteList.setVisibleRangeAndClearData(creditNoteList.getVisibleRange(), true);
+						transportDocumentList.setVisibleRangeAndClearData(transportDocumentList.getVisibleRange(), true);
+					}
 					break;
 
 				case STATS:
@@ -154,6 +143,15 @@ public class HomeViewImpl extends Composite implements HomeView {
 				+estimationList.getVisibleItemCount()
 				+transportDocumentList.getVisibleItemCount()
 				+creditNoteList.getVisibleItemCount() == 0);
+		
+		if(isInitialSetup){
+			isInitialSetup = false;
+		} else {
+			invoiceList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
+			estimationList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
+			creditNoteList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
+			transportDocumentList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
+		}
 	}
 
 	private HTML setupDate() {
