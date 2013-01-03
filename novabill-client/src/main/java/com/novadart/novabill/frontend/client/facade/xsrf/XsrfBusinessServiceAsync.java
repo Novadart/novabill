@@ -23,6 +23,19 @@ BusinessServiceAsync {
 		super((BusinessServiceAsync)GWT.create(BusinessService.class));
 	}
 	
+	
+	@Override
+	public void get(final Long businessID, final AsyncCallback<BusinessDTO> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.get(businessID, callback);
+			}
+
+		});
+	}
+	
 	@Override
 	public void update(final BusinessDTO businessDTO, final AsyncCallback<Void> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
@@ -173,4 +186,5 @@ BusinessServiceAsync {
 
 		});
 	}
+	
 }

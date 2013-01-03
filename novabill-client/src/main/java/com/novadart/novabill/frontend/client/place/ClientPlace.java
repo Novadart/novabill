@@ -1,10 +1,16 @@
 package com.novadart.novabill.frontend.client.place;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceTokenizer;
 import com.google.gwt.place.shared.Prefix;
 
 public class ClientPlace extends Place {
+	
+	public static String ARG_ID = "id";
+	public static String ARG_DOCS = "docs";
 	
 	public static enum DOCUMENTS {
 		invoices,
@@ -18,66 +24,51 @@ public class ClientPlace extends Place {
 
 		@Override
 		public ClientPlace getPlace(String token) {
-			ClientPlace place = new ClientPlace();
-			long placeId = 0;
-			String id = "";
+			Map<String, String> args = HistoryUtils.parseArguments(token);
 			
-			String[] toks = token.split("/");
-			if(toks.length > 1) {
-				id = toks[0];
-				DOCUMENTS docs = null;
-				try{
-					docs = DOCUMENTS.valueOf(toks[1].toLowerCase());
-				} catch (Exception e) {
-					docs = DOCUMENTS.invoices;
-				}
-				place.setDocumentsListing(docs);				
+			if(args.containsKey(ARG_ID)){
 				
-			} else{
-				id = token;
+				Long clientId = null;
+				try{
+					clientId = Long.parseLong(args.get(ARG_ID));
+				} catch(NumberFormatException e){
+					return null;
+				}
+				
+				ClientPlace p = new ClientPlace();
+				p.setClientId(clientId);
+				
+				if(args.containsKey(ARG_DOCS)){
+					int docId = 0;
+					
+					try{
+						docId = Integer.parseInt(args.get(ARG_DOCS));
+						docId = docId > DOCUMENTS.values().length || docId < 0 ? 0 : docId;
+					} catch(NumberFormatException e){
+						docId = 0;
+					}
+					p.setDocs(DOCUMENTS.values()[docId]);
+				}
+				
+				return p;
+				
 			}
 			
-			
-			try {
-				placeId = Integer.parseInt(id);
-			} catch (NumberFormatException e) {
-			}
-			place.setClientId(placeId);
-			return place;
+			return null;
 		}
 
 		@Override
 		public String getToken(ClientPlace place) {
-			String clientId = String.valueOf(place.getClientId());
-			
-			if(place.getDocumentsListing() == null){
-
-				return clientId;
-			
-			} else {
-				
-				switch(place.getDocumentsListing()){
-				case estimations:
-					return HistoryPrefix.CLIENT_ESTIMATIONS.replace("{clientId}", clientId);
-					
-				case creditNotes:
-					return HistoryPrefix.CLIENT_CREDIT_NOTES.replace("{clientId}", clientId);
-					
-				case transportDocuments:
-					return HistoryPrefix.CLIENT_TRANSPORT_DOCUMENTS.replace("{clientId}", clientId);
-					
-					default:
-				case invoices:
-					return HistoryPrefix.CLIENT_INVOICES.replace("{clientId}", clientId);
-				}
-				
-			}
+			Map<String, String> args = new HashMap<String, String>();
+			args.put(ARG_ID, String.valueOf(place.getClientId()));
+			args.put(ARG_DOCS, String.valueOf(place.getDocs().ordinal()));
+			return HistoryUtils.serialize(args);
 		}
 
 	}
 
 	private long clientId;
-	private DOCUMENTS documentsListing;
+	private DOCUMENTS docs = DOCUMENTS.invoices;
 
 	public long getClientId() {
 		return clientId;
@@ -87,11 +78,11 @@ public class ClientPlace extends Place {
 		this.clientId = clientId;
 	}
 
-	public DOCUMENTS getDocumentsListing() {
-		return documentsListing;
+	public DOCUMENTS getDocs() {
+		return docs;
 	}
 
-	public void setDocumentsListing(DOCUMENTS documentsListing) {
-		this.documentsListing = documentsListing;
+	public void setDocs(DOCUMENTS docs) {
+		this.docs = docs;
 	}
 }

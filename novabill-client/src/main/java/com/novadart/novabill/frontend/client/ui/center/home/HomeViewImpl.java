@@ -29,10 +29,10 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.CreditNotePlace;
-import com.novadart.novabill.frontend.client.place.EstimationPlace;
-import com.novadart.novabill.frontend.client.place.InvoicePlace;
-import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
+import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
+import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
+import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
+import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.ui.center.HomeView;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.ShowMoreButton;
@@ -40,7 +40,6 @@ import com.novadart.novabill.frontend.client.ui.widget.list.impl.CreditNoteList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.EstimationList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.TransportDocumentList;
-import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
@@ -76,6 +75,8 @@ public class HomeViewImpl extends Composite implements HomeView {
 	private final EstimationDataProvider estimationDataProvider = new EstimationDataProvider();
 	private final CreditNoteDataProvider creditNoteDataProvider = new CreditNoteDataProvider();
 	private final TransportDocumentDataProvider transportDocumentDataProvider = new TransportDocumentDataProvider();
+	
+	private boolean isInitialSetup = true;
 
 	public HomeViewImpl() {
 		date = setupDate();
@@ -98,27 +99,14 @@ public class HomeViewImpl extends Composite implements HomeView {
 			@Override
 			public void onDataUpdated(DATA data) {
 				switch (data) {
-				case INVOICE:
-					invoiceList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
-					break;
-
-				case ESTIMATION:
-					estimationList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
-					break;
-
-				case CREDIT_NOTE:
-					creditNoteList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
-					break;
-
-				case TRANSPORT_DOCUMENT:
-					transportDocumentList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
-					break;
 
 				case CLIENT_DATA:
-					invoiceList.setVisibleRangeAndClearData(invoiceList.getVisibleRange(), true);
-					estimationList.setVisibleRangeAndClearData(estimationList.getVisibleRange(), true);
-					creditNoteList.setVisibleRangeAndClearData(creditNoteList.getVisibleRange(), true);
-					transportDocumentList.setVisibleRangeAndClearData(transportDocumentList.getVisibleRange(), true);
+					if(HomeViewImpl.this.isAttached()){
+						invoiceList.setVisibleRangeAndClearData(invoiceList.getVisibleRange(), true);
+						estimationList.setVisibleRangeAndClearData(estimationList.getVisibleRange(), true);
+						creditNoteList.setVisibleRangeAndClearData(creditNoteList.getVisibleRange(), true);
+						transportDocumentList.setVisibleRangeAndClearData(transportDocumentList.getVisibleRange(), true);
+					}
 					break;
 
 				case STATS:
@@ -155,6 +143,15 @@ public class HomeViewImpl extends Composite implements HomeView {
 				+estimationList.getVisibleItemCount()
 				+transportDocumentList.getVisibleItemCount()
 				+creditNoteList.getVisibleItemCount() == 0);
+		
+		if(isInitialSetup){
+			isInitialSetup = false;
+		} else {
+			invoiceList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
+			estimationList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
+			creditNoteList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
+			transportDocumentList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
+		}
 	}
 
 	private HTML setupDate() {
@@ -273,20 +270,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 
 			@Override
 			public void onClientSelected(final ClientDTO client) {
-				ServerFacade.invoice.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
-
-					@Override
-					public void onSuccess(Long result) {
-						InvoicePlace ip = new InvoicePlace();
-						ip.setDataForNewInvoice(client, result);
-						presenter.goTo(ip);
-					}
-
-					@Override
-					public void onException(Throwable caught) {
-						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-					}
-				});
+				NewInvoicePlace p = new NewInvoicePlace();
+				p.setClientId(client.getId());
+				presenter.goTo(p);
 			}
 		});
 		scd.showCentered();
@@ -299,20 +285,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 
 			@Override
 			public void onClientSelected(final ClientDTO client) {
-				ServerFacade.creditNote.getNextCreditNoteDocumentID(new WrappedAsyncCallback<Long>() {
-
-					@Override
-					public void onSuccess(Long result) {
-						CreditNotePlace cnp = new CreditNotePlace();
-						cnp.setDataForNewCreditNote(client, result);
-						presenter.goTo(cnp);
-					}
-
-					@Override
-					public void onException(Throwable caught) {
-						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-					}
-				});
+				NewCreditNotePlace p = new NewCreditNotePlace();
+				p.setClientId(client.getId());
+				presenter.goTo(p);
 			}
 		});
 		scd.showCentered();
@@ -325,21 +300,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 
 			@Override
 			public void onClientSelected(final ClientDTO client) {
-				ServerFacade.estimation.getNextEstimationId(new WrappedAsyncCallback<Long>() {
-
-					@Override
-					public void onSuccess(Long result) {
-						EstimationPlace ep = new EstimationPlace();
-						ep.setDataForNewEstimation(client, result);
-						presenter.goTo(ep);
-					}
-
-					@Override
-					public void onException(Throwable caught) {
-						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-					}
-				});
-
+				NewEstimationPlace p = new NewEstimationPlace();
+				p.setClientId(client.getId());
+				presenter.goTo(p);
 			}
 		});
 		scd.showCentered();
@@ -352,23 +315,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 
 			@Override
 			public void onClientSelected(final ClientDTO client) {
-				ServerFacade.transportDocument.getNextTransportDocId(new WrappedAsyncCallback<Long>() {
-
-					@Override
-					public void onSuccess(Long result) {
-						if(result == null){
-							return;
-						}
-						TransportDocumentPlace tdp = new TransportDocumentPlace();
-						tdp.setDataForNewTransportDocument(client, result);
-						presenter.goTo(tdp);
-					}
-
-					@Override
-					public void onException(Throwable caught) {
-						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-					}
-				});
+				NewTransportDocumentPlace p = new NewTransportDocumentPlace();
+				p.setClientId(client.getId());
+				presenter.goTo(p);
 			}
 		});
 		scd.showCentered();

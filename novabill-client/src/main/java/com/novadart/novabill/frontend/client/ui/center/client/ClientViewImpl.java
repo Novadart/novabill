@@ -32,11 +32,11 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
-import com.novadart.novabill.frontend.client.place.CreditNotePlace;
-import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
-import com.novadart.novabill.frontend.client.place.InvoicePlace;
-import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
+import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
+import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
+import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
+import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.ui.center.ClientView;
 import com.novadart.novabill.frontend.client.ui.center.client.dialog.ClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.CreditNoteList;
@@ -117,36 +117,46 @@ public class ClientViewImpl extends Composite implements ClientView {
 			public void onDataUpdated(DATA data) {
 				switch (data) {
 				case INVOICE:
-					loadInvoices();
+					if(ClientViewImpl.this.isAttached()){
+						loadInvoices();
+					}
 					break;
 					
 				case CLIENT:
 				case CLIENT_DATA:
-					ServerFacade.client.get(ClientViewImpl.this.client.getId(), 
-							new WrappedAsyncCallback<ClientDTO>() {
-
-						@Override
-						public void onSuccess(ClientDTO result) {
-							setClient(result);
-						}
-
-						@Override
-						public void onException(Throwable caught) {
-							Window.Location.reload();
-						}
-					});
+					if(ClientViewImpl.this.isAttached()){
+						ServerFacade.client.get(ClientViewImpl.this.client.getId(), 
+								new WrappedAsyncCallback<ClientDTO>() {
+	
+							@Override
+							public void onSuccess(ClientDTO result) {
+								setClient(result);
+							}
+	
+							@Override
+							public void onException(Throwable caught) {
+								Window.Location.reload();
+							}
+						});
+					}
 					break;
 					
 				case ESTIMATION:
-					loadEstimations();
+					if(ClientViewImpl.this.isAttached()){
+						loadEstimations();
+					}
 					break;
 					
 				case CREDIT_NOTE:
-					loadCreditNotes();
+					if(ClientViewImpl.this.isAttached()){
+						loadCreditNotes();
+					}
 					break;
 					
 				case TRANSPORT_DOCUMENT:
-					loadTransportDocuments();
+					if(ClientViewImpl.this.isAttached()){
+						loadTransportDocuments();
+					}
 					break;
 					
 				default:
@@ -245,86 +255,30 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	@UiHandler("newInvoice")
 	void onNewInvoiceClicked(ClickEvent e){
-		ServerFacade.invoice.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
-			
-			@Override
-			public void onSuccess(Long result) {
-				if(result == null){
-					return;
-				}
-				InvoicePlace ip = new InvoicePlace();
-				ip.setDataForNewInvoice(client, result);
-				presenter.goTo(ip);
-			}
-			
-			@Override
-			public void onException(Throwable caught) {
-				
-			}
-		});
+		NewInvoicePlace nip = new NewInvoicePlace();
+		nip.setClientId(client.getId());
+		presenter.goTo(nip);
 	}
 	
 	@UiHandler("newEstimation")
 	void onNewEstimationClicked(ClickEvent e){
-		ServerFacade.estimation.getNextEstimationId(new WrappedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(Long result) {
-				if(result == null){
-					return;
-				}
-				EstimationPlace ep = new EstimationPlace();
-				ep.setDataForNewEstimation(client, result);
-				presenter.goTo(ep);
-			}
-
-			@Override
-			public void onException(Throwable caught) {
-				
-			}
-		});
+		NewEstimationPlace p = new NewEstimationPlace();
+		p.setClientId(client.getId());
+		presenter.goTo(p);
 	}
 	
 	@UiHandler("newTransportDocument")
 	void onNewTransportDocumentClicked(ClickEvent e){
-		ServerFacade.transportDocument.getNextTransportDocId(new WrappedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(Long result) {
-				if(result == null){
-					return;
-				}
-				TransportDocumentPlace tdp = new TransportDocumentPlace();
-				tdp.setDataForNewTransportDocument(client, result);
-				presenter.goTo(tdp);
-			}
-
-			@Override
-			public void onException(Throwable caught) {
-				
-			}
-		});
+		NewTransportDocumentPlace p = new NewTransportDocumentPlace();
+		p.setClientId(client.getId());
+		presenter.goTo(p);
 	}
 	
 	@UiHandler("newCreditNote")
 	void onNewCreditNoteClicked(ClickEvent e){
-		ServerFacade.creditNote.getNextCreditNoteDocumentID(new WrappedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(Long result) {
-				if(result == null){
-					return;
-				}
-				CreditNotePlace cnp = new CreditNotePlace();
-				cnp.setDataForNewCreditNote(client, result);
-				presenter.goTo(cnp);
-			}
-
-			@Override
-			public void onException(Throwable caught) {
-				
-			}
-		});
+		NewCreditNotePlace p = new NewCreditNotePlace();
+		p.setClientId(client.getId());
+		presenter.goTo(p);
 	}
 	
 	

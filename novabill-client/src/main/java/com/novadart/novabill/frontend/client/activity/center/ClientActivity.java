@@ -29,8 +29,8 @@ public class ClientActivity extends BasicActivity {
 			
 			@Override
 			public void onSuccess(final ClientView cv) {
-				if(place.getDocumentsListing() != null){
-					cv.setDocumentsListing(place.getDocumentsListing());
+				if(place.getDocs() != null){
+					cv.setDocumentsListing(place.getDocs());
 				}
 				
 				ServerFacade.client.get(place.getClientId(), new WrappedAsyncCallback<ClientDTO>() {

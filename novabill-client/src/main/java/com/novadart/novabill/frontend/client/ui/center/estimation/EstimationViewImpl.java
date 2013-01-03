@@ -25,7 +25,7 @@ import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
-import com.novadart.novabill.frontend.client.place.InvoicePlace;
+import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.AccountDocument;
 import com.novadart.novabill.frontend.client.ui.center.EstimationView;
 import com.novadart.novabill.frontend.client.ui.center.ItemInsertionForm;
@@ -117,20 +117,21 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		}
 
 		final EstimationDTO estimation = createEstimation(this.estimation);
-		
-		ServerFacade.invoice.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
+		ServerFacade.estimation.add(estimation, new WrappedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
-				InvoicePlace ip = new InvoicePlace();
-				ip.setDataForNewInvoice(result, estimation);
-				presenter.goTo(ip);
+				FromEstimationInvoicePlace pl = new FromEstimationInvoicePlace();
+				pl.setEstimationId(result);
+				presenter.goTo(pl);
 			}
 
 			@Override
 			public void onException(Throwable caught) {
+				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 			}
 		});
+		
 	}
 
 
@@ -153,7 +154,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 				ClientPlace cp = new ClientPlace();
 				cp.setClientId(client.getId());
-				cp.setDocumentsListing(DOCUMENTS.estimations);
+				cp.setDocs(DOCUMENTS.estimations);
 				presenter.goTo(cp);
 			}
 
@@ -228,7 +229,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(es.getClient().getId());
-					cp.setDocumentsListing(DOCUMENTS.estimations);
+					cp.setDocs(DOCUMENTS.estimations);
 					presenter.goTo(cp);
 				}
 			});
@@ -240,7 +241,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
 			ClientPlace cp = new ClientPlace();
 			cp.setClientId(client.getId());
-			cp.setDocumentsListing(DOCUMENTS.estimations);
+			cp.setDocs(DOCUMENTS.estimations);
 			presenter.goTo(cp);
 		}
 	}

@@ -136,7 +136,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 
 				ClientPlace cp = new ClientPlace();
 				cp.setClientId(client.getId());
-				cp.setDocumentsListing(DOCUMENTS.creditNotes);
+				cp.setDocs(DOCUMENTS.creditNotes);
 				presenter.goTo(cp);
 			}
 
@@ -207,7 +207,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(cn.getClient().getId());
-					cp.setDocumentsListing(DOCUMENTS.creditNotes);
+					cp.setDocs(DOCUMENTS.creditNotes);
 					presenter.goTo(cp);
 				}
 
@@ -229,7 +229,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
 			ClientPlace cp = new ClientPlace();
 			cp.setClientId(client.getId());
-			cp.setDocumentsListing(DOCUMENTS.creditNotes);
+			cp.setDocs(DOCUMENTS.creditNotes);
 			presenter.goTo(cp);
 		}
 	}
