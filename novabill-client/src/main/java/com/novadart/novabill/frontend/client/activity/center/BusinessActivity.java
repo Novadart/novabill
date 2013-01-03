@@ -20,19 +20,6 @@ public class BusinessActivity extends BasicActivity {
 			
 			@Override
 			public void onSuccess(BusinessView bv) {
-//				TODO
-//				ServerFacade.business.get(new WrappedAsyncCallback<BusinessDTO>() {
-//
-//					@Override
-//					public void onSuccess(BusinessDTO result) {
-//						
-//					}
-//
-//					@Override
-//					public void onException(Throwable caught) {
-//						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-//					}
-//				});
 				bv.setPresenter(BusinessActivity.this);
 				MainWidget.getInstance().setStandardView();
 				panel.setWidget(bv);

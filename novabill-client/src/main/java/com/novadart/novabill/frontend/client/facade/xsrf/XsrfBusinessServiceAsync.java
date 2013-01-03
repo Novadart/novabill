@@ -5,7 +5,6 @@ import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -25,13 +24,13 @@ BusinessServiceAsync {
 	}
 	
 	
-	public void get(final AsyncCallback<BusinessDTO> callback) {
+	@Override
+	public void get(final Long businessID, final AsyncCallback<BusinessDTO> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
 
 			@Override
 			protected void performCall(BusinessServiceAsync service) {
-//TODO				service.get(callback);
-				callback.onSuccess(Configuration.getBusiness());
+				service.get(businessID, callback);
 			}
 
 		});
@@ -187,4 +186,5 @@ BusinessServiceAsync {
 
 		});
 	}
+	
 }
