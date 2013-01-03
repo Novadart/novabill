@@ -129,16 +129,22 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				double newPrice = 0;
 				try{
-					double newPrice = NumberFormat.getCurrencyFormat().parse(value);
-					object.setPrice(new BigDecimal(newPrice));
-					ItemTable.this.handler.onUpdate(object);
-					redraw();
+					newPrice = NumberFormat.getCurrencyFormat().parse(value);
 				} catch(NumberFormatException e){
-					Notification.showMessage(I18N.INSTANCE.errorClientData());
-					priceEditCell.clearViewData(object);
-					redraw();
+					try{
+						newPrice = Double.parseDouble(value.replace(',', '.'));//NOTE replace comma with dot, to separate decimals
+					} catch(NumberFormatException f){
+						Notification.showMessage(I18N.INSTANCE.errorClientData());
+						priceEditCell.clearViewData(object);
+						redraw();
+						return;
+					}
 				}
+				object.setPrice(new BigDecimal(newPrice));
+				ItemTable.this.handler.onUpdate(object);
+				redraw();
 			}
 		});
 		addColumn(price, I18N.INSTANCE.price());
