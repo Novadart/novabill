@@ -139,10 +139,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		welcomeMessage.setVisible(invoiceList.getVisibleItemCount()
-				+estimationList.getVisibleItemCount()
-				+transportDocumentList.getVisibleItemCount()
-				+creditNoteList.getVisibleItemCount() == 0);
+		welcomeMessage.setVisible(Configuration.getStats().getInvoicesCountForYear() == 0);
 		
 		if(isInitialSetup){
 			isInitialSetup = false;
