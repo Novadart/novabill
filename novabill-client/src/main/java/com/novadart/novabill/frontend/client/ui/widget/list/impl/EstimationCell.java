@@ -11,7 +11,7 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
-import com.novadart.novabill.frontend.client.place.InvoicePlace;
+import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewCell;
@@ -182,23 +182,9 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 	}
 
 	public void onConvertToInvoiceClicked(final EstimationDTO estimation) {
-		ServerFacade.invoice.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(Long result) {
-				if(result == null){
-					return;
-				}
-				InvoicePlace ip = new InvoicePlace();
-				ip.setDataForNewInvoice(result, estimation);
-				presenter.goTo(ip);
-			}
-
-			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-			}
-		});
+		FromEstimationInvoicePlace p = new FromEstimationInvoicePlace();
+		p.setEstimationId(estimation.getId());
+		presenter.goTo(p);
 	}
 
 	public void onDeleteClicked(EstimationDTO estimation) {

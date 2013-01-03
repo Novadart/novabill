@@ -35,8 +35,8 @@ import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
-import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
+import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.ClientView;
 import com.novadart.novabill.frontend.client.ui.center.client.dialog.ClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.CreditNoteList;
@@ -245,23 +245,9 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	@UiHandler("newInvoice")
 	void onNewInvoiceClicked(ClickEvent e){
-		ServerFacade.invoice.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
-			
-			@Override
-			public void onSuccess(Long result) {
-				if(result == null){
-					return;
-				}
-				InvoicePlace ip = new InvoicePlace();
-				ip.setDataForNewInvoice(client, result);
-				presenter.goTo(ip);
-			}
-			
-			@Override
-			public void onException(Throwable caught) {
-				
-			}
-		});
+		NewInvoicePlace nip = new NewInvoicePlace();
+		nip.setClientId(client.getId());
+		presenter.goTo(nip);
 	}
 	
 	@UiHandler("newEstimation")

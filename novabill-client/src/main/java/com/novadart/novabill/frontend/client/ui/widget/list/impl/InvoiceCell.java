@@ -11,7 +11,8 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.CreditNotePlace;
-import com.novadart.novabill.frontend.client.place.InvoicePlace;
+import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
+import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewCell;
@@ -168,38 +169,23 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 	}
 
 	private void onOpenInvoiceClicked(InvoiceDTO invoice) {
-		if(presenter != null){
-			InvoicePlace ip = new InvoicePlace();
-			ip.setInvoiceId(invoice.getId());
-			presenter.goTo(ip);
-		}
+		ModifyInvoicePlace p = new ModifyInvoicePlace();
+		p.setInvoiceId(invoice.getId());
+		presenter.goTo(p);
 	}
 
 	private void onCloneClicked(final InvoiceDTO invoice) {
-		ServerFacade.invoice.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
-
+		SelectClientDialog dia = new SelectClientDialog(new SelectClientDialog.Handler() {
+			
 			@Override
-			public void onSuccess(final Long result) {
-				if(result == null){
-					return;
-				}
-				SelectClientDialog dia = new SelectClientDialog(new SelectClientDialog.Handler() {
-					
-					@Override
-					public void onClientSelected(ClientDTO client) {
-						InvoicePlace ip = new InvoicePlace();
-						ip.setDataForNewInvoice(client, result, invoice);
-						presenter.goTo(ip);
-					}
-				});
-				dia.showCentered();
-			}
-
-			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+			public void onClientSelected(ClientDTO client) {
+				CloneInvoicePlace cip = new CloneInvoicePlace();
+				cip.setClientId(invoice.getClient().getId());
+				cip.setInvoiceId(invoice.getId());
+				presenter.goTo(cip);
 			}
 		});
+		dia.showCentered();
 	}
 	
 	private void onCreditNoteClicked(final InvoiceDTO invoice) {

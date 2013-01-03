@@ -10,8 +10,8 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.InvoicePlace;
 import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
+import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentInvoicePlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewCell;
@@ -179,28 +179,9 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 	}
 
 	public void onCreateInvoiceClicked(final TransportDocumentDTO transportDocument) {
-		if(transportDocument.getId() == null){
-			return;
-		}
-		if(presenter != null){
-			ServerFacade.invoice.getNextInvoiceDocumentID(new WrappedAsyncCallback<Long>() {
-
-				@Override
-				public void onSuccess(Long result) {
-					if(result == null){
-						return;
-					}
-					InvoicePlace ip = new InvoicePlace();
-					ip.setDataForNewInvoice(result, transportDocument);
-					presenter.goTo(ip);
-				}
-
-				@Override
-				public void onException(Throwable caught) {
-					
-				}
-			});
-		}
+		FromTransportDocumentInvoicePlace p = new FromTransportDocumentInvoicePlace();
+		p.setTransportDocumentId(transportDocument.getId());
+		presenter.goTo(p);
 	}
 
 	public void onDeleteClicked(TransportDocumentDTO transportDocument) {
