@@ -3,6 +3,7 @@ package com.novadart.novabill.aspect;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.CacheEvict;
 import java.util.List;
+import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
@@ -15,6 +16,8 @@ public privileged aspect CachingAspect {
 	 * Business service caching
 	 * Dependencies: Client caching, Invoice caching
 	 */
+	public static final String BUSINESS_CACHE = "business-cache";
+	
 	public static final String CLIENT_CACHE = "client-cache";
 	
 	public static final String INVOICE_CACHE = "invoice-cache";
@@ -25,6 +28,8 @@ public privileged aspect CachingAspect {
 	
 	public static final String TRANSPORTDOCUMENT_CACHE = "transportdocument-cache";
 	
+	declare @method : public BusinessDTO com.novadart.novabill.web.gwt.BusinessServiceImpl.get(Long): @Cacheable(value = BUSINESS_CACHE, key = "#businessID");
+	
 	declare @method : public List<ClientDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getClients(Long): @Cacheable(value = CLIENT_CACHE, key = "#businessID");
 	
 	declare @method : public List<InvoiceDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getInvoices(Long): @Cacheable(value = INVOICE_CACHE, key = "#businessID");
@@ -34,6 +39,8 @@ public privileged aspect CachingAspect {
 	declare @method : public List<EstimationDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getEstimations(Long): @Cacheable(value = ESTIMATION_CACHE, key = "#businessID");
 	
 	declare @method : public List<TransportDocumentDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getTransportDocuments(Long): @Cacheable(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID");
+	
+	declare @method : public void com.novadart.novabill.web.gwt.BusinessServiceImpl.update(BusinessDTO): @CacheEvict(value = BUSINESS_CACHE, key = "#businessDTO.id");
 	
 	
 	/*

@@ -28,7 +28,6 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -49,7 +48,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		BusinessStatsDTO stats = new BusinessStatsDTO();
 		stats.setClientsCount(countClients(businessID));
 		int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -61,26 +60,26 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
-	public Long countClients(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public Long countClients(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return new Long(self().getClients(businessID).size());
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
-	public Long countInvoices(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public Long countInvoices(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return new Long(self().getInvoices(businessID).size());
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public Long countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, ConcurrentAccessException {
+	public Long countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
 		return new Long(DTOUtils.filter(self().getInvoices(businessID), new DTOUtils.EqualsYearPredicate<InvoiceDTO>(year)).size());
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, ConcurrentAccessException {
+	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
 		BigDecimal totalAfterTaxes = new BigDecimal("0.0");
 		for(InvoiceDTO invoiceDTO: DTOUtils.filter(self().getInvoices(businessID), new DTOUtils.EqualsYearPredicate<InvoiceDTO>(year)))
 			totalAfterTaxes = totalAfterTaxes.add(invoiceDTO.getTotal());
@@ -102,12 +101,12 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 	
 	@Override
-	public String generatePDFToken() throws NotAuthenticatedException, ConcurrentAccessException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public String generatePDFToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		return URLEncoder.encode(generateToken(PDFController.TOKENS_SESSION_FIELD), "UTF-8");
 	}
 
 	@Override
-	public String generateExportToken() throws NotAuthenticatedException, ConcurrentAccessException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public String generateExportToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		return URLEncoder.encode(generateToken(ExportController.TOKENS_SESSION_FIELD), "UTF-8");
 	}
 	
@@ -119,19 +118,19 @@ public abstract class BusinessServiceImpl implements BusinessService {
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<CreditNoteDTO> getCreditNotes(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public List<CreditNoteDTO> getCreditNotes(Long businessID) throws NotAuthenticatedException {
 		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchCreditNotesEagerly()), DTOUtils.creditNoteDTOConverter);
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<EstimationDTO> getEstimations(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public List<EstimationDTO> getEstimations(Long businessID) throws NotAuthenticatedException {
 		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchEstimationsEagerly()), DTOUtils.estimationDTOConverter);
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException {
 		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchTransportDocumentsEagerly()), DTOUtils.transportDocDTOConverter);
 	}
 	
@@ -143,6 +142,12 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		for(Client client: clients)
 			clientDTOs.add(ClientDTOFactory.toDTO(client));
 		return clientDTOs;
+	}
+	
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return BusinessDTOFactory.toDTO(Business.findBusiness(businessID));
 	}
 
 }

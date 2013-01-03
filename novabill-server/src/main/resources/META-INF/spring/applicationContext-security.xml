@@ -13,13 +13,15 @@
         <logout logout-url="/resources/j_spring_security_logout" logout-success-url="/"/>
         <!-- Configure these elements to secure URIs in your application -->
         <intercept-url pattern="/private/**" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
-        <intercept-url pattern="/rpc/**" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
-        <intercept-url pattern="/concurrentAccess/**" access="permitAll" />
+        <intercept-url pattern="/**/business.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
+        <intercept-url pattern="/**/client.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
+        <intercept-url pattern="/**/invoice.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
+        <intercept-url pattern="/**/estimation.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
+        <intercept-url pattern="/**/creditnote.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
+        <intercept-url pattern="/**/transportdoc.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" />
         <intercept-url pattern="/resources/**" access="permitAll" />
         <intercept-url pattern="/**" access="permitAll" />
-        <session-management session-fixation-protection="migrateSession">
-        	<concurrency-control max-sessions="1" expired-url="/concurrentAccess"/>
-        </session-management>
+        <session-management session-fixation-protection="migrateSession"/>
         <remember-me key="${rememberme.key}" token-validity-seconds="345600" data-source-ref="dataSource"/>
     </http>
     <!-- Configure Authentication mechanism -->

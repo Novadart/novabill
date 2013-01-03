@@ -20,7 +20,6 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
-import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -41,14 +40,14 @@ public class InvoiceServiceImpl implements InvoiceService {
 	
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == principal.business.id")
-	public InvoiceDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, ConcurrentAccessException {
+	public InvoiceDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
 		return DTOUtils.findDocumentInCollection(businessService.getInvoices(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), id);
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, ConcurrentAccessException {
+	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
 		List<InvoiceDTO> allInvoices = businessService.getInvoices(businessID);
 		return new PageDTO<InvoiceDTO>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
 	}
@@ -71,7 +70,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public List<InvoiceDTO> getAllForClient(Long clientID) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, ConcurrentAccessException {
+	public List<InvoiceDTO> getAllForClient(Long clientID) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
 		return new ArrayList<InvoiceDTO>(DTOUtils.filter(businessService.getInvoices(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), new EqualsClientIDPredicate(clientID)));
 	}
 	
@@ -136,7 +135,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer start, Integer length) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, ConcurrentAccessException {
+	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer start, Integer length) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
 		List<InvoiceDTO> allInvoices = getAllForClient(clientID);
 		return new PageDTO<InvoiceDTO>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
 	}
@@ -147,7 +146,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@PreAuthorize("principal.business.id == #businessID and " +
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == #businessID and " +
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.client?.id == #clientID")
-	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException, AuthorizationException {
+	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException {
 		Invoice.findInvoice(id).setPayed(value);
 	}
 	
