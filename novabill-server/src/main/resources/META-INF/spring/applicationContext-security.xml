@@ -17,9 +17,7 @@
         <intercept-url pattern="/concurrentAccess/**" access="permitAll" />
         <intercept-url pattern="/resources/**" access="permitAll" />
         <intercept-url pattern="/**" access="permitAll" />
-        <session-management session-fixation-protection="migrateSession">
-        	<concurrency-control max-sessions="1" expired-url="/concurrentAccess"/>
-        </session-management>
+        <session-management session-fixation-protection="migrateSession"/>
         <remember-me key="${rememberme.key}" token-validity-seconds="345600" data-source-ref="dataSource"/>
     </http>
     <!-- Configure Authentication mechanism -->
