@@ -29,10 +29,10 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
+import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.ui.center.HomeView;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.ShowMoreButton;
@@ -40,7 +40,6 @@ import com.novadart.novabill.frontend.client.ui.widget.list.impl.CreditNoteList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.EstimationList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.TransportDocumentList;
-import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
@@ -318,23 +317,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 
 			@Override
 			public void onClientSelected(final ClientDTO client) {
-				ServerFacade.transportDocument.getNextTransportDocId(new WrappedAsyncCallback<Long>() {
-
-					@Override
-					public void onSuccess(Long result) {
-						if(result == null){
-							return;
-						}
-						TransportDocumentPlace tdp = new TransportDocumentPlace();
-						tdp.setDataForNewTransportDocument(client, result);
-						presenter.goTo(tdp);
-					}
-
-					@Override
-					public void onException(Throwable caught) {
-						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-					}
-				});
+				NewTransportDocumentPlace p = new NewTransportDocumentPlace();
+				p.setClientId(client.getId());
+				presenter.goTo(p);
 			}
 		});
 		scd.showCentered();

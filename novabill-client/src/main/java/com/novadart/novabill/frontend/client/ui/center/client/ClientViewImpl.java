@@ -33,10 +33,10 @@ import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.place.HomePlace;
-import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
+import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.ui.center.ClientView;
 import com.novadart.novabill.frontend.client.ui.center.client.dialog.ClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.impl.CreditNoteList;
@@ -259,23 +259,9 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	@UiHandler("newTransportDocument")
 	void onNewTransportDocumentClicked(ClickEvent e){
-		ServerFacade.transportDocument.getNextTransportDocId(new WrappedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(Long result) {
-				if(result == null){
-					return;
-				}
-				TransportDocumentPlace tdp = new TransportDocumentPlace();
-				tdp.setDataForNewTransportDocument(client, result);
-				presenter.goTo(tdp);
-			}
-
-			@Override
-			public void onException(Throwable caught) {
-				
-			}
-		});
+		NewTransportDocumentPlace p = new NewTransportDocumentPlace();
+		p.setClientId(client.getId());
+		presenter.goTo(p);
 	}
 	
 	@UiHandler("newCreditNote")

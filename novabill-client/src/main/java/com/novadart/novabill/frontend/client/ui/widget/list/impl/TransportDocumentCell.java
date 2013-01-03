@@ -10,8 +10,9 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentInvoicePlace;
+import com.novadart.novabill.frontend.client.place.transportdocument.CloneTransportDocumentPlace;
+import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewCell;
@@ -137,11 +138,9 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 	}
 
 	public void onOpenTransportDocumentClicked(TransportDocumentDTO transportDocument) {
-		if(presenter != null){
-			TransportDocumentPlace tdp = new TransportDocumentPlace();
-			tdp.setTransportDocumentId(transportDocument.getId());
-			presenter.goTo(tdp);
-		}
+		ModifyTransportDocumentPlace tdp = new ModifyTransportDocumentPlace();
+		tdp.setTransportDocumentId(transportDocument.getId());
+		presenter.goTo(tdp);
 	}
 	
 	private void onCloneClicked(final TransportDocumentDTO transportDocument) {
@@ -149,23 +148,10 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 			
 			@Override
 			public void onClientSelected(final ClientDTO client) {
-				ServerFacade.transportDocument.getNextTransportDocId(new WrappedAsyncCallback<Long>() {
-
-					@Override
-					public void onSuccess(Long result) {
-						if(result == null){
-							return;
-						}
-						TransportDocumentPlace tdp = new TransportDocumentPlace();
-						tdp.setDataForNewTransportDocument(client, result, transportDocument);
-						presenter.goTo(tdp);
-					}
-
-					@Override
-					public void onException(Throwable caught) {
-						
-					}
-				});
+				CloneTransportDocumentPlace p = new CloneTransportDocumentPlace();
+				p.setClientId(transportDocument.getClient().getId());
+				p.setTransportDocumentId(transportDocument.getId());
+				presenter.goTo(p);
 			}
 		});
 		dia.showCentered();
