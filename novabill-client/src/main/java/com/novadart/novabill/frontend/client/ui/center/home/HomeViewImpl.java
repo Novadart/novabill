@@ -30,8 +30,8 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.CreditNotePlace;
-import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
+import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.HomeView;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog;
@@ -314,21 +314,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 
 			@Override
 			public void onClientSelected(final ClientDTO client) {
-				ServerFacade.estimation.getNextEstimationId(new WrappedAsyncCallback<Long>() {
-
-					@Override
-					public void onSuccess(Long result) {
-						EstimationPlace ep = new EstimationPlace();
-						ep.setDataForNewEstimation(client, result);
-						presenter.goTo(ep);
-					}
-
-					@Override
-					public void onException(Throwable caught) {
-						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-					}
-				});
-
+				NewEstimationPlace p = new NewEstimationPlace();
+				p.setClientId(client.getId());
+				presenter.goTo(p);
 			}
 		});
 		scd.showCentered();

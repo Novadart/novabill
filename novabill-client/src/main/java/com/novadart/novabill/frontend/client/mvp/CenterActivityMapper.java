@@ -14,9 +14,9 @@ import com.novadart.novabill.frontend.client.activity.center.TransportDocumentAc
 import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.CreditNotePlace;
-import com.novadart.novabill.frontend.client.place.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
+import com.novadart.novabill.frontend.client.place.estimation.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.InvoicePlace;
 
 public class CenterActivityMapper implements ActivityMapper {

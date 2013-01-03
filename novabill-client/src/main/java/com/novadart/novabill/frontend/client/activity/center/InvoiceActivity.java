@@ -7,7 +7,6 @@ import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
-import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
@@ -17,7 +16,6 @@ import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.ui.MainWidget;
 import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
-import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -216,12 +214,6 @@ public class InvoiceActivity extends BasicActivity {
 				manageError();
 			}
 		});
-	}
-	
-	
-	private void manageError(){
-		Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-		goTo(new HomePlace());
 	}
 	
 }

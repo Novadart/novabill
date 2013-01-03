@@ -9,7 +9,7 @@ import com.google.gwt.place.shared.Prefix;
 import com.novadart.novabill.frontend.client.place.HistoryPrefix;
 import com.novadart.novabill.frontend.client.place.HistoryUtils;
 
-public class InvoicePlace extends Place {
+public abstract class InvoicePlace extends Place {
 	
 	public static String ARG_ID = "id";
 	public static String ARG_CLONE = "clone";

@@ -10,7 +10,8 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.EstimationPlace;
+import com.novadart.novabill.frontend.client.place.estimation.CloneEstimationPlace;
+import com.novadart.novabill.frontend.client.place.estimation.ModifyEstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.dialog.SelectClientDialog;
@@ -140,38 +141,23 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 	}
 
 	public void onOpenEstimationClicked(EstimationDTO estimation) {
-		if(presenter != null){
-			EstimationPlace ep = new EstimationPlace();
-			ep.setEstimationId(estimation.getId());
-			presenter.goTo(ep);
-		}
+		ModifyEstimationPlace ep = new ModifyEstimationPlace();
+		ep.setEstimationId(estimation.getId());
+		presenter.goTo(ep);
 	}
 
 	private void onCloneClicked(final EstimationDTO estimation) {
-		ServerFacade.estimation.getNextEstimationId(new WrappedAsyncCallback<Long>() {
+		SelectClientDialog dia = new SelectClientDialog(new SelectClientDialog.Handler() {
 
 			@Override
-			public void onSuccess(final Long result) {
-				if(result == null){
-					return;
-				}
-				SelectClientDialog dia = new SelectClientDialog(new SelectClientDialog.Handler() {
-
-					@Override
-					public void onClientSelected(ClientDTO client) {
-						EstimationPlace ep = new EstimationPlace();
-						ep.setDataForNewEstimation(client, result, estimation);
-						presenter.goTo(ep);
-					}
-				});
-				dia.showCentered();
-			}
-
-			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+			public void onClientSelected(ClientDTO client) {
+				CloneEstimationPlace ep = new CloneEstimationPlace();
+				ep.setClientId(client.getId());
+				ep.setEstimationId(estimation.getId());
+				presenter.goTo(ep);
 			}
 		});
+		dia.showCentered();
 	}
 
 	public void onPdfClicked(EstimationDTO estimation) {
