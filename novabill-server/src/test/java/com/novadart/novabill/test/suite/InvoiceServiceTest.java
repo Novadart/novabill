@@ -14,7 +14,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -71,13 +70,13 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		assertTrue(TestUtils.accountingDocumentComparator.equal(actualDTO, expectedDTO));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long invoiceID = Business.findBusiness(getUnathorizedBusinessID()).getInvoices().iterator().next().getId();
 		invoiceService.get(invoiceID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAuthorizedInvoiceIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		invoiceService.get(null);
 	}
@@ -88,13 +87,13 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		invoiceService.getAllInRange(getUnathorizedBusinessID(), 0, 10);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getAllInRangeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getAllInRangeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException{
 		invoiceService.getAllInRange(null, 0, 10);
 	}
 	
@@ -106,18 +105,18 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.accountingDocumentComparator));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		invoiceService.getAllForClient(clientID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		invoiceService.getAllForClient(-1l);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		invoiceService.getAllForClient(null);
 	}
@@ -131,27 +130,27 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		assertNull(Invoice.findInvoice(invoiceID));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		Long invoiceID = Client.findClient(clientID).getInvoices().iterator().next().getId();
 		invoiceService.remove(getUnathorizedBusinessID(), clientID, invoiceID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		Long invoiceID = Client.findClient(clientID).getInvoices().iterator().next().getId();
 		invoiceService.remove(null, clientID, invoiceID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long invoiceID = authenticatedPrincipal.getBusiness().getInvoices().iterator().next().getId();
 		invoiceService.remove(authenticatedPrincipal.getBusiness().getId(), null, invoiceID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeAauthorizedInvoiceIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		invoiceService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, null);
@@ -165,27 +164,27 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		assertTrue(Invoice.findInvoice(invoiceID).getPayed());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void setPayedUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		Long invoiceID = Client.findClient(clientID).getInvoices().iterator().next().getId();
 		invoiceService.remove(getUnathorizedBusinessID(), clientID, invoiceID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void setPayedUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		Long invoiceID = Client.findClient(clientID).getInvoices().iterator().next().getId();
 		invoiceService.remove(null, clientID, invoiceID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void setPayedUnauthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long invoiceID = authenticatedPrincipal.getBusiness().getInvoices().iterator().next().getId();
 		invoiceService.remove(authenticatedPrincipal.getBusiness().getId(), null, invoiceID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void setPayedUnauthorizedInvoiceIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		invoiceService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, null);
@@ -198,13 +197,13 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		invoiceService.getAllForClientInRange(clientID, 0, 10);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		invoiceService.getAllForClientInRange(null, 0, 10);
 	}
@@ -220,12 +219,12 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void updateAuthorizedInvoiceNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		invoiceService.update(null);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(invoice);
@@ -245,7 +244,7 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		assertTrue(TestUtils.accountingDocumentComparatorIgnoreID.equal(invDTO, InvoiceDTOFactory.toDTO(Invoice.findInvoice(id))));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void addUnathorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvOrCredNote(Business.findBusiness(getUnathorizedBusinessID()).getNextInvoiceDocumentID(), Invoice.class));
@@ -254,12 +253,12 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		invoiceService.add(invDTO);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void addAuthorizedInvoiceDTONull() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException{
 		invoiceService.add(null);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void addAuthorizedInvoiceDTOIDNotNull() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class));

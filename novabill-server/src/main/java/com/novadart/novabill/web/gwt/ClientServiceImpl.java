@@ -38,7 +38,7 @@ public class ClientServiceImpl implements ClientService {
 	@Transactional(readOnly = false)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id and " +
 				  "principal.business.id == #businessID")
-	public void remove(Long businessID, Long id) throws DataAccessException, NoSuchObjectException, DataIntegrityException {
+	public void remove(Long businessID, Long id) throws NoSuchObjectException, DataIntegrityException {
 		Client client = Client.findClient(id);
 		if(client.hasAccountingDocs())
 			throw new DataIntegrityException();
@@ -68,7 +68,7 @@ public class ClientServiceImpl implements ClientService {
 	@PreAuthorize("principal.business.id == #businessID and " + 
 				  "T(com.novadart.novabill.domain.Client).findClient(#clientDTO?.id)?.business?.id == principal.business.id and " +
 				  "#clientDTO?.id != null")
-	public void update(Long businessID, ClientDTO clientDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
+	public void update(Long businessID, ClientDTO clientDTO) throws NoSuchObjectException, ValidationException {
 		Client client = Client.findClient(clientDTO.getId());
 		ClientDTOFactory.copyFromDTO(client, clientDTO);
 		validator.validate(client);
@@ -78,7 +78,7 @@ public class ClientServiceImpl implements ClientService {
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id")
-	public ClientDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
+	public ClientDTO get(Long id) throws NoSuchObjectException, NotAuthenticatedException, DataAccessException {
 		for(ClientDTO clientDTO: businessService.getClients(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()))
 			if(clientDTO.getId().equals(id))
 				return clientDTO;

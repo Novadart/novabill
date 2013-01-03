@@ -26,10 +26,10 @@ public interface EstimationService extends RemoteService {
 	
 	public void update(EstimationDTO estimationDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException;
 	
-	public Long getNextEstimationId() throws NotAuthenticatedException;
+	public Long getNextEstimationId() throws NotAuthenticatedException, DataAccessException;
 	
 	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	
-	public PageDTO<EstimationDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException;
+	public PageDTO<EstimationDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException, DataAccessException;
 	
 }

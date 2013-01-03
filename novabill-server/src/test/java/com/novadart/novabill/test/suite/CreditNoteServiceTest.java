@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,30 +68,30 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		assertTrue(TestUtils.accountingDocumentComparator.equal(expectedDTO, actualDTO));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getUnathorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long creditNoteID = Business.findBusiness(getUnathorizedBusinessID()).getCreditNotes().iterator().next().getId();
 		creditNoteService.get(creditNoteID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAuthorizedCreditNoteIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		creditNoteService.get(null);
 	}
 	
 	@Test
-	public void getAllInRangeAuthorizedTest() throws NotAuthenticatedException{
+	public void getAllInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		PageDTO<CreditNoteDTO> results = creditNoteService.getAllInRange(authenticatedPrincipal.getBusiness().getId(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		creditNoteService.getAllInRange(getUnathorizedBusinessID(), 0, 10);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getAllInRangeAuthorizedBusinessIDNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getAllInRangeAuthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException{
 		creditNoteService.getAllInRange(null, 0, 10);
 	}
 	
@@ -104,18 +103,18 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.accountingDocumentComparator));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		creditNoteService.getAllForClient(clientID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		creditNoteService.getAllForClient(null);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		creditNoteService.getAllForClient(-1l);
 	}
@@ -127,13 +126,13 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		creditNoteService.getAllForClientInRange(clientID, 0, 10);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		creditNoteService.getAllForClientInRange(null, 0, 10);
 	}
@@ -147,28 +146,28 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		assertNull(CreditNote.findCreditNote(creditNoteID));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeUnauthorized() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithCreditNoteID"));
 		Long creditNoteID = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(getUnathorizedBusinessID(), clientID, creditNoteID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithCreditNoteID"));
 		Long creditNoteID = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(null, clientID, creditNoteID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithCreditNoteID"));
 		Long creditNoteID = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(authenticatedPrincipal.getBusiness().getId(), null, creditNoteID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeUnauthorizedCreditNoteIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithCreditNoteID"));
 		creditNoteService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, null);
@@ -185,7 +184,7 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		assertTrue(TestUtils.accountingDocumentComparatorIgnoreID.equal(creditNoteDTO, CreditNoteDTOFactory.toDTO(CreditNote.findCreditNote(id))));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void addUnathorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		CreditNoteDTO creditNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvOrCredNote(Business.findBusiness(getUnathorizedBusinessID()).getNextCreditNoteDocumentID(), CreditNote.class));
@@ -194,12 +193,12 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		creditNoteService.add(creditNoteDTO);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void addAuthorizedCreditNoteDTONull() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException{
 		creditNoteService.add(null);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void addAuthorizedCreditNoteDTOIDNotNull() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		CreditNoteDTO creditNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class));
@@ -220,12 +219,12 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void updateAuthorizedCreditNoteNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		creditNoteService.update(null);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		CreditNote creditNote = authenticatedPrincipal.getBusiness().getCreditNotes().iterator().next();
 		CreditNoteDTO credNoteDTO = CreditNoteDTOFactory.toDTO(creditNote);

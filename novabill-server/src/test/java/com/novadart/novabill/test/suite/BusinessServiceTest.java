@@ -16,7 +16,6 @@ import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,94 +55,94 @@ public class BusinessServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void getStatsAuthorizedTest() throws NotAuthenticatedException{
+	public void getStatsAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		BusinessStatsDTO stats = businessService.getStats(authenticatedPrincipal.getBusiness().getId());
 		assertEquals(new Long(authenticatedPrincipal.getBusiness().getClients().size()), stats.getClientsCount());
 		assertEquals(new Long(businessService.countInvoicesForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR))), stats.getInvoicesCountForYear());
 		assertEquals(businessService.getTotalAfterTaxesForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR)), stats.getTotalAfterTaxesForYear());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getStatsUnauthorizedIDTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getStatsUnauthorizedIDTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getStats(getUnathorizedBusinessID());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getStatsUnauthorizedNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getStatsUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getStats(null);
 	}
 	
 	@Test
-	public void countClientsAuthorizedTest() throws NotAuthenticatedException{
+	public void countClientsAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		assertEquals(new Long(authenticatedPrincipal.getBusiness().getClients().size()).longValue(), new Long(businessService.countClients(authenticatedPrincipal.getId())).longValue());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void countClientsUnauthorizedTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void countClientsUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.countClients(getUnathorizedBusinessID());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void countClientsUnauthorizedNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void countClientsUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.countClients(null);
 	}
 	
 	@Test
-	public void countInvoicesAuthorizedTest() throws NotAuthenticatedException{
+	public void countInvoicesAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		assertEquals(new Long(authenticatedPrincipal.getBusiness().getInvoices().size()), new Long(businessService.countInvoices(authenticatedPrincipal.getId())));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void countInvoicesUnauthorizedTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void countInvoicesUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.countInvoices(getUnathorizedBusinessID());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void countInvoicesUnauthorizedNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void countInvoicesUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.countInvoices(null);
 	}
 	
 	@Test
-	public void countInvoicesForYearAuthorizedTest() throws NotAuthenticatedException{
+	public void countInvoicesForYearAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		long expected = authenticatedPrincipal.getBusiness().getInvoicesForYear(year).size();
 		long actual = businessService.countInvoicesForYear(authenticatedPrincipal.getId(), year);
 		assertEquals(expected, actual);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void countInvoicesForYearUnauthorizedTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void countInvoicesForYearUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		businessService.countInvoicesForYear(getUnathorizedBusinessID(), year);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void countInvoicesForYearUnauthorizedNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void countInvoicesForYearUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		businessService.countInvoicesForYear(null, year);
 	}
 	
 	@Test
-	public void countInvoicesForYearAuthorizedBogusYearNullTest() throws NotAuthenticatedException{
+	public void countInvoicesForYearAuthorizedBogusYearNullTest() throws NotAuthenticatedException, DataAccessException{
 		long expected = 0l;
 		long actual = businessService.countInvoicesForYear(authenticatedPrincipal.getId(), 0);
 		assertEquals(actual, expected);
 	}
 	
 	@Test
-	public void getTotalAfterTaxesForYearAuthorizedTest() throws NotAuthenticatedException{
+	public void getTotalAfterTaxesForYearAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		BigDecimal expected = new BigDecimal(totalsAfterTax.get(authenticatedPrincipal.getUsername()));
 		BigDecimal actual = businessService.getTotalAfterTaxesForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR));
 		assertEquals(expected, actual);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getTotalAfterTaxesForYearUnauthorizedTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getTotalAfterTaxesForYearUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getTotalAfterTaxesForYear(getUnathorizedBusinessID(), Calendar.getInstance().get(Calendar.YEAR));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getTotalAfterTaxesForYearUnauthorizedNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getTotalAfterTaxesForYearUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getTotalAfterTaxesForYear(null, Calendar.getInstance().get(Calendar.YEAR));
 	}
 	
@@ -178,77 +177,77 @@ public class BusinessServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void getInvoicesAuthorizedTest() throws NotAuthenticatedException{
+	public void getInvoicesAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getInvoices(authenticatedPrincipal.getBusiness().getId());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getInvoicesUnauthorizedIDTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getInvoicesUnauthorizedIDTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getInvoices(getUnathorizedBusinessID());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getInvoicesUnauthorizedNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getInvoicesUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getInvoices(null);
 	}
 	
 	@Test
-	public void getCreditNotesAuthorizedTest() throws NotAuthenticatedException{
+	public void getCreditNotesAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getCreditNotes(authenticatedPrincipal.getBusiness().getId());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getCreditNotesUnauthorizedIDTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getCreditNotesUnauthorizedIDTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getCreditNotes(getUnathorizedBusinessID());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getCreditNotesUnauthorizedNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getCreditNotesUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getCreditNotes(null);
 	}
 	
 	@Test
-	public void getEstimationsAuthorizedTest() throws NotAuthenticatedException{
+	public void getEstimationsAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getEstimations(authenticatedPrincipal.getBusiness().getId());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getEstimationsUnauthorizedIDTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getEstimationsUnauthorizedIDTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getEstimations(getUnathorizedBusinessID());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getEstimationsUnauthorizedNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getEstimationsUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getEstimations(null);
 	}
 	
 	@Test
-	public void getTransportDocumentsAuthorizedTest() throws NotAuthenticatedException{
+	public void getTransportDocumentsAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getTransportDocumentsUnauthorizedIDTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getTransportDocumentsUnauthorizedIDTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getTransportDocuments(getUnathorizedBusinessID());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getTransportDocumentsUnauthorizedNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getTransportDocumentsUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getTransportDocuments(null);
 	}
 	
 	@Test
-	public void getClientsAuthorizedTest() throws NotAuthenticatedException{
+	public void getClientsAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getClients(authenticatedPrincipal.getBusiness().getId());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getClientsUnauthorizedIDTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getClientsUnauthorizedIDTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getClients(getUnathorizedBusinessID());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getClientsUnauthorizedNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getClientsUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getClients(null);
 	}
 

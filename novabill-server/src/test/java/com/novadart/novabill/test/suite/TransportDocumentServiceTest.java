@@ -13,7 +13,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -69,13 +68,13 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		assertTrue(TestUtils.transportDocumentComparator.equal(actualDTO, expectedDTO));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long transportDocID = Business.findBusiness(getUnathorizedBusinessID()).getTransportDocuments().iterator().next().getId();
 		transportDocService.get(transportDocID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAuthorizedTransportDocIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		transportDocService.get(null);
 	}
@@ -86,13 +85,13 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		transportDocService.getAllInRange(getUnathorizedBusinessID(), 0, 10);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getAllInRangeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getAllInRangeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException{
 		transportDocService.getAllInRange(null, 0, 10);
 	}
 	
@@ -104,18 +103,18 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.transportDocumentComparator));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		transportDocService.getAllForClient(clientID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		transportDocService.getAllForClient(-1l);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		transportDocService.getAllForClient(null);
 	}
@@ -129,27 +128,27 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		assertNull(TransportDocument.findTransportDocument(transportDocID));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
 		Long transportDocID = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(getUnathorizedBusinessID(), clientID, transportDocID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
 		Long transportDocID = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(null, clientID, transportDocID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long transportDocID = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(authenticatedPrincipal.getBusiness().getId(), null, transportDocID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeAauthorizedTransportDocIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
 		transportDocService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, null);
@@ -162,13 +161,13 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
 		transportDocService.getAllForClientInRange(clientID, 0, 10);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		transportDocService.getAllForClientInRange(null, 0, 10);
 	}
@@ -184,12 +183,12 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void updateAuthorizedTransportDocNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		transportDocService.update(null);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		TransportDocument transportDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(transportDoc);
@@ -208,7 +207,7 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		assertTrue(TestUtils.transportDocumentComparatorIgnoreID.equal(transDocDTO, TransportDocumentDTOFactory.toDTO(TransportDocument.findTransportDocument(id))));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void addUnathorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(Business.findBusiness(getUnathorizedBusinessID()).getNextTransportDocDocumentID()));
@@ -217,12 +216,12 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		transportDocService.add(transDocDTO);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void addAuthorizedTransportDocDTONull() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException{
 		transportDocService.add(null);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void addAuthorizedTransportDocDTOIDNotNull() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()));

@@ -3,6 +3,8 @@ package com.novadart.novabill.web.gwt;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
+import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -12,6 +14,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.CreditNoteService;
 
+@HandleGWTServiceAccessDenied
 public class CreditNoteServiceProxy extends AbstractGwtController implements CreditNoteService {
 	
 	private static final long serialVersionUID = 1L;
@@ -24,7 +27,7 @@ public class CreditNoteServiceProxy extends AbstractGwtController implements Cre
 		return creditNoteService.get(id);
 	}
 
-	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException {
+	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
 		return creditNoteService.getAllInRange(businessID, start, length);
 	}
 
@@ -48,7 +51,7 @@ public class CreditNoteServiceProxy extends AbstractGwtController implements Cre
 		creditNoteService.update(creditNoteDTO);
 	}
 
-	public Long getNextCreditNoteDocumentID() throws NotAuthenticatedException {
+	public Long getNextCreditNoteDocumentID() throws NotAuthenticatedException, DataAccessException {
 		return creditNoteService.getNextCreditNoteDocumentID();
 	}
 

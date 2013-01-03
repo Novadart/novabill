@@ -47,7 +47,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException {
+	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
 		List<InvoiceDTO> allInvoices = businessService.getInvoices(businessID);
 		return new PageDTO<InvoiceDTO>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
 	}
@@ -146,7 +146,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@PreAuthorize("principal.business.id == #businessID and " +
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == #businessID and " +
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.client?.id == #clientID")
-	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, AuthorizationException {
+	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException {
 		Invoice.findInvoice(id).setPayed(value);
 	}
 	

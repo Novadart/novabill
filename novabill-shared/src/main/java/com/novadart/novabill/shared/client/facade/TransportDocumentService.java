@@ -27,10 +27,10 @@ public interface TransportDocumentService extends RemoteService {
 	
 	public void update(TransportDocumentDTO transportDocDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException;
 	
-	public Long getNextTransportDocId() throws NotAuthenticatedException;
+	public Long getNextTransportDocId() throws NotAuthenticatedException, DataAccessException;
 	
 	public PageDTO<TransportDocumentDTO> getAllForClientInRange(Long clientID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	
-	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException;
+	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException;
 	
 }

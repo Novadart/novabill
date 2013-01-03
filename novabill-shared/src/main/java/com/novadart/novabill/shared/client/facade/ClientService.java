@@ -17,14 +17,14 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 @RemoteServiceRelativePath("client.rpc")
 public interface ClientService extends RemoteService{
 
-	public void remove(Long businessID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException;
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, DataAccessException;
 	
-	public Long add(Long businessID, ClientDTO clientDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException;
+	public Long add(Long businessID, ClientDTO clientDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException;
 	
-	public void update(Long businessID, ClientDTO clientDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException;
+	public void update(Long businessID, ClientDTO clientDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException;
 	
-	public ClientDTO get(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException;
+	public ClientDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
 	
-	public PageDTO<ClientDTO> searchClients(Long businessID, String query, int start, int offset) throws InvalidArgumentException, NotAuthenticatedException;
+	public PageDTO<ClientDTO> searchClients(Long businessID, String query, int start, int offset) throws InvalidArgumentException, NotAuthenticatedException, DataAccessException;
 
 }

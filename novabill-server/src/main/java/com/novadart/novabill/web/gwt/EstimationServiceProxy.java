@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
+import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -14,6 +15,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 
+@HandleGWTServiceAccessDenied
 public class EstimationServiceProxy extends AbstractGwtController implements EstimationService {
 	
 	private static final long serialVersionUID = 1L;
@@ -42,7 +44,7 @@ public class EstimationServiceProxy extends AbstractGwtController implements Est
 		estimationService.update(estimationDTO);
 	}
 
-	public Long getNextEstimationId() throws NotAuthenticatedException {
+	public Long getNextEstimationId() throws NotAuthenticatedException, DataAccessException {
 		return estimationService.getNextEstimationId();
 	}
 
@@ -50,7 +52,7 @@ public class EstimationServiceProxy extends AbstractGwtController implements Est
 		return estimationService.getAllForClientInRange(clientID, start, length);
 	}
 
-	public PageDTO<EstimationDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException {
+	public PageDTO<EstimationDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException, DataAccessException {
 		return estimationService.getAllInRange(businessID, start, length);
 	}
 

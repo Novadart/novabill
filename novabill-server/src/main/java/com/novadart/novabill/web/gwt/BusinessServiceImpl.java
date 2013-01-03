@@ -48,7 +48,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException {
+	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		BusinessStatsDTO stats = new BusinessStatsDTO();
 		stats.setClientsCount(countClients(businessID));
 		int year = Calendar.getInstance().get(Calendar.YEAR);
@@ -60,26 +60,26 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
-	public Long countClients(Long businessID) throws NotAuthenticatedException {
+	public Long countClients(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return new Long(self().getClients(businessID).size());
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
-	public Long countInvoices(Long businessID) throws NotAuthenticatedException {
+	public Long countInvoices(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return new Long(self().getInvoices(businessID).size());
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public Long countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException {
+	public Long countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
 		return new Long(DTOUtils.filter(self().getInvoices(businessID), new DTOUtils.EqualsYearPredicate<InvoiceDTO>(year)).size());
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException {
+	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
 		BigDecimal totalAfterTaxes = new BigDecimal("0.0");
 		for(InvoiceDTO invoiceDTO: DTOUtils.filter(self().getInvoices(businessID), new DTOUtils.EqualsYearPredicate<InvoiceDTO>(year)))
 			totalAfterTaxes = totalAfterTaxes.add(invoiceDTO.getTotal());

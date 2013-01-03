@@ -140,7 +140,7 @@ public class TransportDocumentServiceImpl implements TransportDocumentService {
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException {
+	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
 		List<TransportDocumentDTO> allTransportDocs = businessService.getTransportDocuments(businessID);
 		return new PageDTO<TransportDocumentDTO>(DTOUtils.range(allTransportDocs, start, length), start, length, new Long(allTransportDocs.size()));
 	}

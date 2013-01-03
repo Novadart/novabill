@@ -15,7 +15,6 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -70,7 +69,7 @@ public class ClientServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void getAllAuthenticatedTest() throws NotAuthenticatedException{
+	public void getAllAuthenticatedTest() throws NotAuthenticatedException, DataAccessException{
 		Set<ClientDTO> expected = new HashSet<ClientDTO>();
 		for(Client client: authenticatedPrincipal.getBusiness().getClients())
 			expected.add(ClientDTOFactory.toDTO(client));
@@ -86,13 +85,13 @@ public class ClientServiceTest extends GWTServiceTest {
 		assertTrue(contained && expected.size() == actual.size());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getAllUnauthenticatedTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getAllUnauthenticatedTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getClients(getUnathorizedBusinessID());
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void getAllUnauthenticatedNullTest() throws NotAuthenticatedException{
+	@Test(expected = DataAccessException.class)
+	public void getAllUnauthenticatedNullTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.getClients(null);
 	}
 	
@@ -112,24 +111,24 @@ public class ClientServiceTest extends GWTServiceTest {
 	}
 	
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeUnauthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException{
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
 		clientService.remove(getUnathorizedBusinessID(), clientID);
 	}
 
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeUnauthenticatedTestBusinessIDNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException{
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
 		clientService.remove(null, clientID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeUnauthenticatedTestClientIDNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException{
 		clientService.remove(getUnathorizedBusinessID(), null);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void removeAuthenticatedNonExistingClientTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException{
 		clientService.remove(authenticatedPrincipal.getBusiness().getId(), -1l);
 	}
@@ -142,24 +141,24 @@ public class ClientServiceTest extends GWTServiceTest {
 		assertTrue(EqualsBuilder.reflectionEquals(expectedDTO, actualDTO, "contact") && EqualsBuilder.reflectionEquals(expectedDTO.getContact(), actualDTO.getContact(), false));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getUnauthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException{
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId(); 
 		clientService.get(clientID);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getUnauthenticatedClientIDNullTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException{
 		clientService.get(null);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void getAuthenticatedNonExistingClientTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException{
 		clientService.get(-1l);
 	}
 	
 	@Test
-	public void addAuthenticatedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException{
+	public void addAuthenticatedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
 		Client expectedClient = TestUtils.createClient();
 		expectedClient.setBusiness(authenticatedPrincipal.getBusiness());
 		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(expectedClient));
@@ -169,13 +168,13 @@ public class ClientServiceTest extends GWTServiceTest {
 		assertTrue(EqualsBuilder.reflectionEquals(expectedClient, actualClient, "contact", "invoices", "estimations", "creditNotes", "transportDocuments", "business", "version"));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void addAuthenticatedNullClient() throws NotAuthenticatedException, AuthorizationException, ValidationException{
+	@Test(expected = DataAccessException.class)
+	public void addAuthenticatedNullClient() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
 		clientService.add(authenticatedPrincipal.getBusiness().getId(), null);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
-	public void addAuthenticatedNotNullClientID() throws NotAuthenticatedException, AuthorizationException, ValidationException{
+	@Test(expected = DataAccessException.class)
+	public void addAuthenticatedNotNullClientID() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
 		Client client = TestUtils.createClient();
 		client.setId(100l);
 		clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(client));
@@ -209,17 +208,17 @@ public class ClientServiceTest extends GWTServiceTest {
 		assertEquals(actualClient.getName(), "Temporary name for this company");
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void updateAuthenticatedClientIDNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(TestUtils.createClient()));
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void updateAuthenticatedClientNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), null);
 	}
 	
-	@Test(expected = AccessDeniedException.class)
+	@Test(expected = DataAccessException.class)
 	public void updateUnauthenticatedClient() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		client.setName("Temporary name for this company");

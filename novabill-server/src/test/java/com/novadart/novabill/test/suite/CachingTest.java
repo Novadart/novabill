@@ -30,7 +30,6 @@ import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -92,7 +91,7 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void clientGetAllCacheTest() throws NotAuthenticatedException{
+	public void clientGetAllCacheTest() throws NotAuthenticatedException, DataAccessException{
 		Set<ClientDTO> clients = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		Set<ClientDTO> cachedClients = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(clients.equals(cachedClients));
@@ -110,7 +109,7 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void  clientAddCacheTest() throws NotAuthenticatedException, AuthorizationException, ValidationException{
+	public void  clientAddCacheTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
 		Set<ClientDTO> clients = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		Long count = businessService.countClients(authenticatedPrincipal.getBusiness().getId());
 		Client client = TestUtils.createClient();
@@ -414,16 +413,16 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void invoiceGetAllUnauthorizedTest() throws NotAuthenticatedException{
+	public void invoiceGetAllUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		List<InvoiceDTO> result = businessService.getInvoices(authenticatedPrincipal.getBusiness().getId());
-		boolean accessDeniedException = false;
+		boolean dataAccessException = false;
 		try {
 			businessService.getInvoices(getUnathorizedBusinessID());
-		} catch (Exception e) {
-			accessDeniedException = true;
+		} catch (DataAccessException e) {
+			dataAccessException = true;
 		}
 		List<InvoiceDTO> cachedResult = businessService.getInvoices(authenticatedPrincipal.getBusiness().getId());
-		assertTrue(accessDeniedException && result == cachedResult);
+		assertTrue(dataAccessException && result == cachedResult);
 	}
 
 }

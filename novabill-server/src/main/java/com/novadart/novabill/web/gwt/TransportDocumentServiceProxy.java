@@ -3,6 +3,8 @@ package com.novadart.novabill.web.gwt;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
+
+import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -12,6 +14,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.TransportDocumentService;
 
+@HandleGWTServiceAccessDenied
 public class TransportDocumentServiceProxy extends AbstractGwtController implements TransportDocumentService {
 	
 	private static final long serialVersionUID = 1L;
@@ -40,7 +43,7 @@ public class TransportDocumentServiceProxy extends AbstractGwtController impleme
 		transportDocService.update(transportDocDTO);
 	}
 
-	public Long getNextTransportDocId() throws NotAuthenticatedException {
+	public Long getNextTransportDocId() throws NotAuthenticatedException, DataAccessException {
 		return transportDocService.getNextTransportDocId();
 	}
 
@@ -49,7 +52,7 @@ public class TransportDocumentServiceProxy extends AbstractGwtController impleme
 				length);
 	}
 
-	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException {
+	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
 		return transportDocService.getAllInRange(businessID, start, length);
 	}
 

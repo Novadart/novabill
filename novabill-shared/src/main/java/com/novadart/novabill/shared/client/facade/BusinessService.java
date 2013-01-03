@@ -23,30 +23,30 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 @RemoteServiceRelativePath("business.rpc")
 public interface BusinessService extends RemoteService {
 	
-	public Long countClients(Long businessID) throws NotAuthenticatedException;
+	public Long countClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
-	public Long countInvoices(Long businessID) throws NotAuthenticatedException;
+	public Long countInvoices(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
-	public Long countInvoicesForYear(Long BusinessID, Integer year) throws NotAuthenticatedException;
+	public Long countInvoicesForYear(Long BusinessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
-	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException;
+	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
-	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException;
+	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
-	public void update(BusinessDTO businessDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException;
+	public void update(BusinessDTO businessDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException;
 	
-	public String generatePDFToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException;
+	public String generatePDFToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException;
 	
-	public String generateExportToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException;
+	public String generateExportToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException;
 	
-	public List<InvoiceDTO> getInvoices(Long businessID) throws NotAuthenticatedException;
+	public List<InvoiceDTO> getInvoices(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
-	public List<CreditNoteDTO> getCreditNotes(Long businessID) throws NotAuthenticatedException;
+	public List<CreditNoteDTO> getCreditNotes(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
-	public List<EstimationDTO> getEstimations(Long businessID) throws NotAuthenticatedException;
+	public List<EstimationDTO> getEstimations(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
-	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException;
+	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
-	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException;
+	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
 
 }

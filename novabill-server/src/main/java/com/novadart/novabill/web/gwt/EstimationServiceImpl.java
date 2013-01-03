@@ -134,7 +134,7 @@ public class EstimationServiceImpl implements EstimationService {
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<EstimationDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException {
+	public PageDTO<EstimationDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException, DataAccessException {
 		List<EstimationDTO> allEstimations = businessService.getEstimations(businessID);
 		return new PageDTO<EstimationDTO>(DTOUtils.range(allEstimations, start, length), start, length, new Long(allEstimations.size()));
 	}

@@ -46,7 +46,7 @@ public class CreditNoteServiceImpl implements CreditNoteService {
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException {
+	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
 		List<CreditNoteDTO> allCreditNotes = businessService.getCreditNotes(businessID);
 		return new PageDTO<CreditNoteDTO>(DTOUtils.range(allCreditNotes, start, length), start, length, new Long(allCreditNotes.size()));
 	}
