@@ -138,7 +138,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 							
 							ClientPlace cp = new ClientPlace();
 							cp.setClientId(client.getId());
-							cp.setDocumentsListing(DOCUMENTS.invoices);
+							cp.setDocs(DOCUMENTS.invoices);
 							presenter.goTo(cp);
 						}
 			
@@ -162,7 +162,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 					
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(client.getId());
-					cp.setDocumentsListing(DOCUMENTS.invoices);
+					cp.setDocs(DOCUMENTS.invoices);
 					presenter.goTo(cp);
 				}
 	
@@ -188,7 +188,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(client.getId());
-					cp.setDocumentsListing(DOCUMENTS.invoices);
+					cp.setDocs(DOCUMENTS.invoices);
 					presenter.goTo(cp);
 				}
 
@@ -267,7 +267,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(inv.getClient().getId());
-					cp.setDocumentsListing(DOCUMENTS.invoices);
+					cp.setDocs(DOCUMENTS.invoices);
 					presenter.goTo(cp);
 				}
 			});
@@ -280,7 +280,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
 			ClientPlace cp = new ClientPlace();
 			cp.setClientId(client.getId());
-			cp.setDocumentsListing(DOCUMENTS.invoices);
+			cp.setDocs(DOCUMENTS.invoices);
 			presenter.goTo(cp);
 		}
 	}

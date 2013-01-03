@@ -234,7 +234,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 				ClientPlace cp = new ClientPlace();
 				cp.setClientId(client.getId());
-				cp.setDocumentsListing(DOCUMENTS.transportDocuments);
+				cp.setDocs(DOCUMENTS.transportDocuments);
 				presenter.goTo(cp);
 			}
 
@@ -340,7 +340,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(td.getClient().getId());
-					cp.setDocumentsListing(DOCUMENTS.transportDocuments);
+					cp.setDocs(DOCUMENTS.transportDocuments);
 					presenter.goTo(cp);
 				}
 			});
@@ -352,7 +352,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
 			ClientPlace cp = new ClientPlace();
 			cp.setClientId(client.getId());
-			cp.setDocumentsListing(DOCUMENTS.transportDocuments);
+			cp.setDocs(DOCUMENTS.transportDocuments);
 			presenter.goTo(cp);
 		}
 	}

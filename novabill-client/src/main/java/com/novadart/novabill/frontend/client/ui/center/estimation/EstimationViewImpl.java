@@ -154,7 +154,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 				ClientPlace cp = new ClientPlace();
 				cp.setClientId(client.getId());
-				cp.setDocumentsListing(DOCUMENTS.estimations);
+				cp.setDocs(DOCUMENTS.estimations);
 				presenter.goTo(cp);
 			}
 
@@ -229,7 +229,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(es.getClient().getId());
-					cp.setDocumentsListing(DOCUMENTS.estimations);
+					cp.setDocs(DOCUMENTS.estimations);
 					presenter.goTo(cp);
 				}
 			});
@@ -241,7 +241,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
 			ClientPlace cp = new ClientPlace();
 			cp.setClientId(client.getId());
-			cp.setDocumentsListing(DOCUMENTS.estimations);
+			cp.setDocs(DOCUMENTS.estimations);
 			presenter.goTo(cp);
 		}
 	}
