@@ -6,7 +6,6 @@ import java.security.NoSuchAlgorithmException;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
-
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -14,7 +13,6 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -30,66 +28,66 @@ public class BusinessServiceProxy extends AbstractGwtController implements Busin
 	private BusinessService businessService;
 	
 	@Override
-	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException {
 		return businessService.getStats(businessID);
 	}
 
 	@Override
-	public Long countClients(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public Long countClients(Long businessID) throws NotAuthenticatedException {
 		return businessService.countClients(businessID);
 	}
 
 	@Override
-	public Long countInvoices(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public Long countInvoices(Long businessID) throws NotAuthenticatedException {
 		return businessService.countInvoices(businessID);
 	}
 
 	@Override
-	public Long countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, ConcurrentAccessException {
+	public Long countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException {
 		return businessService.countInvoicesForYear(businessID, year);
 	}
 
 
 	@Override
-	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, ConcurrentAccessException {
+	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException {
 		return businessService.getTotalAfterTaxesForYear(businessID, year);
 	}
 
 	@Override
-	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException, NotAuthenticatedException, ConcurrentAccessException {
+	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException, NotAuthenticatedException {
 		businessService.update(businessDTO);
 	}
 
-	public String generatePDFToken() throws NotAuthenticatedException, ConcurrentAccessException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public String generatePDFToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		return businessService.generatePDFToken();
 	}
 
 	@Override
-	public String generateExportToken() throws NotAuthenticatedException, ConcurrentAccessException, NoSuchAlgorithmException, UnsupportedEncodingException {
+	public String generateExportToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException {
 		return businessService.generateExportToken();
 	}
 
 	@Override
-	public List<InvoiceDTO> getInvoices(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public List<InvoiceDTO> getInvoices(Long businessID) throws NotAuthenticatedException {
 		return businessService.getInvoices(businessID);
 	}
 
 	@Override
-	public List<CreditNoteDTO> getCreditNotes(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public List<CreditNoteDTO> getCreditNotes(Long businessID) throws NotAuthenticatedException {
 		return businessService.getCreditNotes(businessID);
 	}
 
 	@Override
-	public List<EstimationDTO> getEstimations(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public List<EstimationDTO> getEstimations(Long businessID) throws NotAuthenticatedException {
 		return businessService.getEstimations(businessID);
 	}
 
 	@Override
-	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException {
 		return businessService.getTransportDocuments(businessID);
 	}
 	
-	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, ConcurrentAccessException {
+	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException {
 		return businessService.getClients(businessID);
 	}
 

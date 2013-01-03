@@ -20,7 +20,6 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
-import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -41,13 +40,13 @@ public class CreditNoteServiceImpl implements CreditNoteService {
 
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.business?.id == principal.business.id")
-	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
+	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		return DTOUtils.findDocumentInCollection(businessService.getCreditNotes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), id);
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, ConcurrentAccessException {
+	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException {
 		List<CreditNoteDTO> allCreditNotes = businessService.getCreditNotes(businessID);
 		return new PageDTO<CreditNoteDTO>(DTOUtils.range(allCreditNotes, start, length), start, length, new Long(allCreditNotes.size()));
 	}
@@ -69,7 +68,7 @@ public class CreditNoteServiceImpl implements CreditNoteService {
 	
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public List<CreditNoteDTO> getAllForClient(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
+	public List<CreditNoteDTO> getAllForClient(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		return new ArrayList<CreditNoteDTO>(DTOUtils.filter(businessService.getCreditNotes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), new EqualsClientIDPredicate(clientID)));
 	}
 	
@@ -78,7 +77,7 @@ public class CreditNoteServiceImpl implements CreditNoteService {
 	@PreAuthorize("#creditNoteDTO?.business?.id == principal.business.id and " +
 				  "T(com.novadart.novabill.domain.Client).findClient(#creditNoteDTO?.client?.id)?.business?.id == principal.business.id and " +
 				  "#creditNoteDTO != null and #creditNoteDTO.id == null")
-	public Long add(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, ConcurrentAccessException, AuthorizationException {
+	public Long add(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException {
 		CreditNote creditNote = new CreditNote();//create new credit note
 		CreditNoteDTOFactory.copyFromDTO(creditNote, creditNoteDTO, true);
 		validator.validate(CreditNote.class, creditNote);
@@ -97,7 +96,7 @@ public class CreditNoteServiceImpl implements CreditNoteService {
 	@PreAuthorize("#businessID == principal.business.id and " +
 				  "T(com.novadart.novabill.domain.CreditNote).findCreditNote(#creditNoteID)?.business?.id == #businessID and " +
 				  "T(com.novadart.novabill.domain.CreditNote).findCreditNote(#creditNoteID)?.client?.id == #clientID")
-	public void remove(Long businessID, Long clientID, Long creditNoteID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
+	public void remove(Long businessID, Long clientID, Long creditNoteID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		CreditNote creditNote = CreditNote.findCreditNote(creditNoteID);
 		creditNote.remove(); //removing credit note
 		if(Hibernate.isInitialized(creditNote.getBusiness().getCreditNotes()))
@@ -111,7 +110,7 @@ public class CreditNoteServiceImpl implements CreditNoteService {
 	@PreAuthorize("#creditNoteDTO?.business?.id == principal.business.id and " +
 			  	  "T(com.novadart.novabill.domain.Client).findClient(#creditNoteDTO?.client?.id)?.business?.id == principal.business.id and " +
 			  	  "#creditNoteDTO?.id != null")
-	public void update(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, ConcurrentAccessException {
+	public void update(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException {
 		CreditNote persistedCreditNote = CreditNote.findCreditNote(creditNoteDTO.getId());
 		if(persistedCreditNote == null)
 			throw new NoSuchObjectException();
@@ -128,13 +127,13 @@ public class CreditNoteServiceImpl implements CreditNoteService {
 	}
 
 	@Override
-	public Long getNextCreditNoteDocumentID() throws NotAuthenticatedException, ConcurrentAccessException {
+	public Long getNextCreditNoteDocumentID() throws NotAuthenticatedException {
 		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextCreditNoteDocumentID();
 	}
 
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public PageDTO<CreditNoteDTO> getAllForClientInRange(Long clientID, int start, int length) throws NotAuthenticatedException, DataAccessException,	NoSuchObjectException, ConcurrentAccessException {
+	public PageDTO<CreditNoteDTO> getAllForClientInRange(Long clientID, int start, int length) throws NotAuthenticatedException, DataAccessException,	NoSuchObjectException {
 		List<CreditNoteDTO> allCreditNotes = getAllForClient(clientID);
 		return new PageDTO<CreditNoteDTO>(DTOUtils.range(allCreditNotes, start, length), start, length, new Long(allCreditNotes.size()));
 	}

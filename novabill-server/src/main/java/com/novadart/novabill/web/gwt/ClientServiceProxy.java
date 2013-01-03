@@ -5,7 +5,6 @@ import org.springframework.beans.factory.annotation.Qualifier;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
-import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
@@ -22,23 +21,23 @@ public class ClientServiceProxy extends AbstractGwtController implements ClientS
 	@Qualifier("clientServiceImpl")
 	private ClientService clientService;
 	
-	public void remove(Long businessID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, ConcurrentAccessException {
+	public void remove(Long businessID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException {
 		clientService.remove(businessID, id);
 	}
 
-	public Long add(Long businessID, ClientDTO clientDTO) throws NotAuthenticatedException, ConcurrentAccessException, AuthorizationException, ValidationException {
+	public Long add(Long businessID, ClientDTO clientDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException {
 		return clientService.add(businessID, clientDTO);
 	}
 
-	public void update(Long businessID, ClientDTO clientDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException, ValidationException {
+	public void update(Long businessID, ClientDTO clientDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException {
 		clientService.update(businessID, clientDTO);
 	}
 
-	public ClientDTO get(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException {
+	public ClientDTO get(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException {
 		return clientService.get(id);
 	}
 
-	public PageDTO<ClientDTO> searchClients(Long businessID, String query, int start, int offset) throws InvalidArgumentException, NotAuthenticatedException, ConcurrentAccessException {
+	public PageDTO<ClientDTO> searchClients(Long businessID, String query, int start, int offset) throws InvalidArgumentException, NotAuthenticatedException {
 		return clientService.searchClients(businessID, query, start, offset);
 	}
 
