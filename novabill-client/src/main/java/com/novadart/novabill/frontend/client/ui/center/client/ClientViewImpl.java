@@ -32,9 +32,9 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
-import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
+import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.ui.center.ClientView;
@@ -280,23 +280,9 @@ public class ClientViewImpl extends Composite implements ClientView {
 	
 	@UiHandler("newCreditNote")
 	void onNewCreditNoteClicked(ClickEvent e){
-		ServerFacade.creditNote.getNextCreditNoteDocumentID(new WrappedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(Long result) {
-				if(result == null){
-					return;
-				}
-				CreditNotePlace cnp = new CreditNotePlace();
-				cnp.setDataForNewCreditNote(client, result);
-				presenter.goTo(cnp);
-			}
-
-			@Override
-			public void onException(Throwable caught) {
-				
-			}
-		});
+		NewCreditNotePlace p = new NewCreditNotePlace();
+		p.setClientId(client.getId());
+		presenter.goTo(p);
 	}
 	
 	

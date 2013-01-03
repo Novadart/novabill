@@ -10,7 +10,7 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.CreditNotePlace;
+import com.novadart.novabill.frontend.client.place.creditnote.ModifyCreditNotePlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
 import com.novadart.novabill.frontend.client.ui.widget.list.QuickViewCell;
 import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
@@ -116,11 +116,9 @@ public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
 
 
 	private void onOpenCreditNoteClicked(CreditNoteDTO creditNote) {
-		if(presenter != null){
-			CreditNotePlace cnp = new CreditNotePlace();
-			cnp.setCreditNoteId(creditNote.getId());
-			presenter.goTo(cnp);
-		}
+		ModifyCreditNotePlace p = new ModifyCreditNotePlace();
+		p.setCreditNoteId(creditNote.getId());
+		presenter.goTo(p);
 	}
 
 

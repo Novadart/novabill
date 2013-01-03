@@ -13,9 +13,9 @@ import com.novadart.novabill.frontend.client.activity.center.InvoiceActivity;
 import com.novadart.novabill.frontend.client.activity.center.TransportDocumentActivity;
 import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
-import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.TransportDocumentPlace;
+import com.novadart.novabill.frontend.client.place.creditnote.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.estimation.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.InvoicePlace;
 

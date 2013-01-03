@@ -10,7 +10,7 @@ import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.CreditNotePlace;
+import com.novadart.novabill.frontend.client.place.creditnote.FromInvoiceCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.ui.View.Presenter;
@@ -189,20 +189,9 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 	}
 	
 	private void onCreditNoteClicked(final InvoiceDTO invoice) {
-		ServerFacade.creditNote.getNextCreditNoteDocumentID(new WrappedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(Long result) {
-				CreditNotePlace cnp = new CreditNotePlace();
-				cnp.setDataForNewCreditNote(result, invoice);
-				presenter.goTo(cnp);
-			}
-
-			@Override
-			public void onException(Throwable caught) {
-				Notification.showYesNoRequest(I18N.INSTANCE.errorServerCommunication());
-			}
-		});
+		FromInvoiceCreditNotePlace p = new FromInvoiceCreditNotePlace();
+		p.setInvoiceId(invoice.getId());
+		presenter.goTo(p);
 	}
 
 	private void onPdfClicked(InvoiceDTO invoice) {
