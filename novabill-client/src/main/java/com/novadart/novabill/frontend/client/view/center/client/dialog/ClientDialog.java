@@ -254,6 +254,8 @@ public class ClientDialog extends Dialog {
 		setVatIdSsnValidation(isIT);
 		vatID.reset();
 		ssn.reset();
+		postcode.setValidationBundle(isIT ? ValidationKit.NUMBER : ValidationKit.NOT_EMPTY);
+		postcode.reset();
 		return isIT;
 	}
 	
@@ -270,6 +272,7 @@ public class ClientDialog extends Dialog {
 	private void clearData(){
 		client = null;
 		setVatIdSsnValidation(true);
+		postcode.setValidationBundle(ValidationKit.NUMBER);
 		province.reset();
 		web.setText("");
 		for (ValidatedTextBox tb: new ValidatedTextBox[]{companyName, 
