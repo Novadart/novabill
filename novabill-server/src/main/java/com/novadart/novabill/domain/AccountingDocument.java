@@ -50,6 +50,7 @@ public abstract class AccountingDocument {
 	
 	protected Long documentID;
 
+	@NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "S-")
     protected Date accountingDocumentDate;
