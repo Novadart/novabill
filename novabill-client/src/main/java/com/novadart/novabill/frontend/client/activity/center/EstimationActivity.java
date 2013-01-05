@@ -12,8 +12,8 @@ import com.novadart.novabill.frontend.client.place.estimation.CloneEstimationPla
 import com.novadart.novabill.frontend.client.place.estimation.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.estimation.ModifyEstimationPlace;
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
-import com.novadart.novabill.frontend.client.ui.MainWidget;
-import com.novadart.novabill.frontend.client.ui.center.EstimationView;
+import com.novadart.novabill.frontend.client.view.MainWidget;
+import com.novadart.novabill.frontend.client.view.center.EstimationView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 

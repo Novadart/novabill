@@ -14,8 +14,8 @@ import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocument
 import com.novadart.novabill.frontend.client.place.invoice.InvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
-import com.novadart.novabill.frontend.client.ui.MainWidget;
-import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
+import com.novadart.novabill.frontend.client.view.MainWidget;
+import com.novadart.novabill.frontend.client.view.center.InvoiceView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;

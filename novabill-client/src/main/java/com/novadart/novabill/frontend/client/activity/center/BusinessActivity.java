@@ -5,8 +5,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
-import com.novadart.novabill.frontend.client.ui.MainWidget;
-import com.novadart.novabill.frontend.client.ui.center.BusinessView;
+import com.novadart.novabill.frontend.client.view.MainWidget;
+import com.novadart.novabill.frontend.client.view.center.BusinessView;
 
 public class BusinessActivity extends BasicActivity {
 

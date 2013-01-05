@@ -3,14 +3,14 @@ package com.novadart.novabill.frontend.client;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
-import com.novadart.novabill.frontend.client.ui.center.BusinessView;
-import com.novadart.novabill.frontend.client.ui.center.ClientView;
-import com.novadart.novabill.frontend.client.ui.center.CreditNoteView;
-import com.novadart.novabill.frontend.client.ui.center.EstimationView;
-import com.novadart.novabill.frontend.client.ui.center.HomeView;
-import com.novadart.novabill.frontend.client.ui.center.InvoiceView;
-import com.novadart.novabill.frontend.client.ui.center.TransportDocumentView;
-import com.novadart.novabill.frontend.client.ui.west.WestView;
+import com.novadart.novabill.frontend.client.view.center.BusinessView;
+import com.novadart.novabill.frontend.client.view.center.ClientView;
+import com.novadart.novabill.frontend.client.view.center.CreditNoteView;
+import com.novadart.novabill.frontend.client.view.center.EstimationView;
+import com.novadart.novabill.frontend.client.view.center.HomeView;
+import com.novadart.novabill.frontend.client.view.center.InvoiceView;
+import com.novadart.novabill.frontend.client.view.center.TransportDocumentView;
+import com.novadart.novabill.frontend.client.view.west.WestView;
 
 public interface ClientFactory {
 	PlaceController getPlaceController();

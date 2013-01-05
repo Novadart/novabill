@@ -1,0 +1,42 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.novadart.novabill.frontend.client.view.center"
+	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget">
+
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
+		field="i18n"></ui:with>
+
+	<g:FlowPanel>
+		<g:ScrollPanel ui:field="itemTableScroller" styleName="itemTableScroller">
+			<c:ItemTable ui:field="itemTable" styleName="itemTable"></c:ItemTable>
+		</g:ScrollPanel>
+
+		<g:SimplePanel styleName="newItemContainer" ui:field="newItemContainer">
+			<g:HorizontalPanel>
+				<g:VerticalPanel styleName="itemContainer">
+					<g:Label styleName="smallLabel" text="{i18n.nameDescription}"></g:Label>
+					<v:ValidatedTextArea ui:field="item" styleName="item invoiceEntry"></v:ValidatedTextArea>
+				</g:VerticalPanel>
+				<g:VerticalPanel styleName="quantityContainer">
+					<g:Label styleName="smallLabel" text="{i18n.quantity}"></g:Label>
+					<g:TextBox ui:field="quantity" styleName="quantity invoiceEntry"></g:TextBox>
+				</g:VerticalPanel>
+				<g:VerticalPanel styleName="unitOfMeasureContainer">
+					<g:Label styleName="smallLabel" text="{i18n.unityOfMeasure}"></g:Label>
+					<g:TextBox ui:field="unitOfMeasure" styleName="unitOfMeasure invoiceEntry" maxLength="255"></g:TextBox>
+				</g:VerticalPanel>
+				<g:VerticalPanel styleName="priceContainer">
+					<g:Label styleName="smallLabel" text="{i18n.price}"></g:Label>
+					<g:TextBox ui:field="price" styleName="price invoiceEntry"></g:TextBox>
+				</g:VerticalPanel>
+				<g:VerticalPanel styleName="taxContainer">
+					<g:Label styleName="smallLabel" text="{i18n.vat}"></g:Label>
+					<g:ListBox styleName="tax invoiceEntry" ui:field="tax"></g:ListBox>
+				</g:VerticalPanel>
+				<g:SimplePanel styleName="addButtonContainer">
+					<g:Button ui:field="add" text="{i18n.add}"></g:Button>
+				</g:SimplePanel>
+			</g:HorizontalPanel>
+		</g:SimplePanel>
+	</g:FlowPanel>
+</ui:UiBinder> 

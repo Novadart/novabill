@@ -16,8 +16,8 @@ import com.novadart.novabill.frontend.client.mvp.AppPlaceHistoryMapper;
 import com.novadart.novabill.frontend.client.mvp.CenterActivityMapper;
 import com.novadart.novabill.frontend.client.mvp.WestActivityMapper;
 import com.novadart.novabill.frontend.client.place.HomePlace;
-import com.novadart.novabill.frontend.client.ui.MainWidget;
-import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.view.MainWidget;
+import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 
 public class Novabill implements EntryPoint {

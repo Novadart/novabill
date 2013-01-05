@@ -1,0 +1,38 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:t="urn:import:com.novadart.gwtshared.client.textbox" 
+	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget" 
+	xmlns:n="urn:import:com.novadart.novabill.frontend.client.view.widget.notification">
+
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
+		field="i18n"></ui:with>
+
+	<g:FlowPanel styleName="bootstrapDialogBody">
+		<g:HTML ui:field="welcomeMessage" styleName="welcomeMessage"
+			HTML="{i18n.bootstrapWelcomeMessage}" />
+		
+		<n:InlineNotification ui:field="inlineNotification"></n:InlineNotification>
+		
+		<g:SimplePanel styleName="gridContainer">
+			<g:VerticalPanel styleName="grid">
+				<t:RichTextBox maxLength="255" ui:field="name"></t:RichTextBox>
+				<t:RichTextBox maxLength="255" ui:field="address"></t:RichTextBox>
+				<t:RichTextBox maxLength="10" ui:field="postcode"></t:RichTextBox>
+				<t:RichTextBox maxLength="60" ui:field="city"></t:RichTextBox>
+				<v:ValidatedListBox ui:field="province"></v:ValidatedListBox>
+				<v:ValidatedListBox ui:field="country"></v:ValidatedListBox>
+				<t:RichTextBox maxLength="25" ui:field="ssn"></t:RichTextBox>
+				<t:RichTextBox maxLength="25" ui:field="vatID"></t:RichTextBox>
+				<t:RichTextBox maxLength="25" ui:field="phone"></t:RichTextBox>
+				<t:RichTextBox maxLength="25" ui:field="mobile"></t:RichTextBox>
+				<t:RichTextBox maxLength="255" ui:field="email"></t:RichTextBox>
+				<t:RichTextBox maxLength="25" ui:field="fax"></t:RichTextBox>
+				<t:RichTextBox maxLength="255" ui:field="web"></t:RichTextBox>
+			</g:VerticalPanel>
+		</g:SimplePanel>
+
+		<g:Button styleName="action-button submit" ui:field="confirm" text="{i18n.submit}"></g:Button>
+
+	</g:FlowPanel>
+
+</ui:UiBinder> 

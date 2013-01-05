@@ -6,7 +6,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
 import com.novadart.novabill.frontend.client.place.invoice.InvoicePlace;
-import com.novadart.novabill.frontend.client.ui.west.WestView;
+import com.novadart.novabill.frontend.client.view.west.WestView;
 
 public class InvoiceActivity extends BasicActivity {
 
