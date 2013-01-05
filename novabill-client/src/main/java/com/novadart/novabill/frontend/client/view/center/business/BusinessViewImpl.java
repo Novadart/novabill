@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
@@ -21,7 +22,7 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.Const;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
+import com.novadart.novabill.frontend.client.event.BusinessUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
@@ -45,6 +46,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	}
 
 	private Presenter presenter;
+	private EventBus eventBus;
 
 	@UiField Button updateLogo;
 	@UiField FormPanel formPanel;
@@ -237,6 +239,11 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 	}
+	
+	@Override
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+	}
 
 	private boolean validate(){
 		boolean validationOk = true;
@@ -290,7 +297,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 				public void onSuccess(Void result) {
 					Configuration.setBusiness(b);
 					presenter.goTo(new HomePlace());
-					DataWatcher.getInstance().fireBusinessEvent();
+					eventBus.fireEvent(new BusinessUpdateEvent());
 				}
 				
 				@Override

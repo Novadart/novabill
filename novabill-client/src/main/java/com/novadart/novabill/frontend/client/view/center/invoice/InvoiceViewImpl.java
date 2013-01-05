@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -21,7 +22,8 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
+import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -75,6 +77,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 
 	private Presenter presenter;
+	private EventBus eventBus;
 	private InvoiceDTO invoice;
 	private EstimationDTO estimation;
 	private TransportDocumentDTO transportDocument;
@@ -114,6 +117,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		return new Element[]{titleLabel.getElement(), docControls.getElement()};
 	}
 	
+	@Override
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+	}
+	
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
@@ -126,15 +134,14 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 			return;
 		}
 
-		InvoiceDTO invoice = createInvoice(null);
+		final InvoiceDTO invoice = createInvoice(null);
 		
 		if(this.estimation != null) {
 			ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
 			
 						@Override
 						public void onSuccess(Long result) {
-							DataWatcher.getInstance().fireInvoiceEvent();
-							DataWatcher.getInstance().fireStatsEvent();
+							eventBus.fireEvent(new DocumentAddEvent(invoice));
 							
 							ClientPlace cp = new ClientPlace();
 							cp.setClientId(client.getId());
@@ -157,8 +164,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 				
 				@Override
 				public void onSuccess(Long result) {
-					DataWatcher.getInstance().fireInvoiceEvent();
-					DataWatcher.getInstance().fireStatsEvent();
+					eventBus.fireEvent(new DocumentAddEvent(invoice));
 					
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(client.getId());
@@ -183,8 +189,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 				public void onSuccess(Long result) {
 					Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess());
 
-					DataWatcher.getInstance().fireInvoiceEvent();
-					DataWatcher.getInstance().fireStatsEvent();
+					eventBus.fireEvent(new DocumentAddEvent(invoice));
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(client.getId());
@@ -262,8 +267,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 				public void onSuccess(Void result) {
 					Notification.showMessage(I18N.INSTANCE.invoiceUpdateSuccess());
 
-					DataWatcher.getInstance().fireInvoiceEvent();
-					DataWatcher.getInstance().fireStatsEvent();
+					eventBus.fireEvent(new DocumentUpdateEvent(inv));
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(inv.getClient().getId());

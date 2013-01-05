@@ -7,6 +7,7 @@ import java.util.Map;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -23,9 +24,12 @@ import com.google.gwt.user.client.ui.TabBar;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.Range;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
+import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.event.DocumentAddHandler;
+import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
+import com.novadart.novabill.frontend.client.event.DocumentDeleteHandler;
+import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
+import com.novadart.novabill.frontend.client.event.DocumentUpdateHandler;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -40,8 +44,13 @@ import com.novadart.novabill.frontend.client.view.widget.list.impl.CreditNoteLis
 import com.novadart.novabill.frontend.client.view.widget.list.impl.EstimationList;
 import com.novadart.novabill.frontend.client.view.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.view.widget.list.impl.TransportDocumentList;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public class HomeViewImpl extends Composite implements HomeView {
 
@@ -70,6 +79,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 	private final Map<Integer, FlowPanel> lists = new HashMap<Integer, FlowPanel>();
 
 	private Presenter presenter;
+	private EventBus eventBus;
 
 	private final InvoiceDataProvider invoiceDataProvider = new InvoiceDataProvider();
 	private final EstimationDataProvider estimationDataProvider = new EstimationDataProvider();
@@ -93,47 +103,72 @@ public class HomeViewImpl extends Composite implements HomeView {
 		tabBar.selectTab(0);
 
 		setStyleName("HomeView");
-
-		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
+	}
+	
+	@Override
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+		bind();
+		invoiceList.setEventBus(eventBus);
+		estimationList.setEventBus(eventBus);
+		creditNoteList.setEventBus(eventBus);
+		transportDocumentList.setEventBus(eventBus);
+	}
+	
+	private void bind(){
+		eventBus.addHandler(DocumentAddEvent.TYPE, new DocumentAddHandler() {
 
 			@Override
-			public void onDataUpdated(DATA data) {
-				switch (data) {
-
-				case CLIENT_DATA:
-					if(HomeViewImpl.this.isAttached()){
-						invoiceList.setVisibleRangeAndClearData(invoiceList.getVisibleRange(), true);
-						estimationList.setVisibleRangeAndClearData(estimationList.getVisibleRange(), true);
-						creditNoteList.setVisibleRangeAndClearData(creditNoteList.getVisibleRange(), true);
-						transportDocumentList.setVisibleRangeAndClearData(transportDocumentList.getVisibleRange(), true);
-					}
-					break;
-
-				case STATS:
-					ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
-
-						@Override
-						public void onSuccess(BusinessStatsDTO result) {
-							if(result == null){
-								return;
-							}
-							if(result.getInvoicesCountForYear() > 0){
-								welcomeMessage.setVisible(false);
-								tabBody.setVisible(true);
-							}
-						}
-
-						@Override
-						public void onException(Throwable caught) {
-						}
-					});
-					break;
-
-				default:
-					break;
-				}
+			public void onDocumentAdd(DocumentAddEvent event) {
+				onDocumentChangeEvent(event.getDocument());
 			}
 		});
+		eventBus.addHandler(DocumentDeleteEvent.TYPE, new DocumentDeleteHandler() {
+
+			@Override
+			public void onDocumentDelete(DocumentDeleteEvent event) {
+				onDocumentChangeEvent(event.getDocument());
+			}
+		});
+		eventBus.addHandler(DocumentUpdateEvent.TYPE, new DocumentUpdateHandler() {
+
+			@Override
+			public void onDocumentUpdate(DocumentUpdateEvent event) {
+				onDocumentChangeEvent(event.getDocument());
+			}
+		});
+	}
+	
+	private void onDocumentChangeEvent(AccountingDocumentDTO doc){
+		if(HomeViewImpl.this.isAttached()){
+			if(doc instanceof InvoiceDTO){
+				invoiceList.setVisibleRangeAndClearData(invoiceList.getVisibleRange(), true);
+			} else if(doc instanceof EstimationDTO){
+				estimationList.setVisibleRangeAndClearData(estimationList.getVisibleRange(), true);
+			} else if(doc instanceof CreditNoteDTO){
+				creditNoteList.setVisibleRangeAndClearData(creditNoteList.getVisibleRange(), true);
+			} else if(doc instanceof TransportDocumentDTO){
+				transportDocumentList.setVisibleRangeAndClearData(transportDocumentList.getVisibleRange(), true);
+			}
+			
+			ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
+
+				@Override
+				public void onSuccess(BusinessStatsDTO result) {
+					if(result == null){
+						return;
+					}
+					if(result.getInvoicesCountForYear() > 0){
+						welcomeMessage.setVisible(false);
+						tabBody.setVisible(true);
+					}
+				}
+
+				@Override
+				public void onException(Throwable caught) {
+				}
+			});
+		}
 	}
 
 	@Override
@@ -272,6 +307,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 				presenter.goTo(p);
 			}
 		});
+		scd.setEventBus(eventBus);
 		scd.showCentered();
 	}
 
@@ -287,6 +323,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 				presenter.goTo(p);
 			}
 		});
+		scd.setEventBus(eventBus);
 		scd.showCentered();
 	}
 
@@ -302,6 +339,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 				presenter.goTo(p);
 			}
 		});
+		scd.setEventBus(eventBus);
 		scd.showCentered();
 	}
 
@@ -317,6 +355,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 				presenter.goTo(p);
 			}
 		});
+		scd.setEventBus(eventBus);
 		scd.showCentered();
 	}
 

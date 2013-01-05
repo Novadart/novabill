@@ -5,8 +5,10 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
+import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
+import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -24,7 +26,7 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 
 	private Presenter presenter;
-
+	private EventBus eventBus;
 
 	@Override
 	protected void renderVisible(
@@ -89,6 +91,10 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
+	}
+	
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
 	}
 
 	@Override
@@ -185,6 +191,7 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 				presenter.goTo(cip);
 			}
 		});
+		dia.setEventBus(eventBus);
 		dia.showCentered();
 	}
 	
@@ -201,14 +208,13 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 		PDFUtils.generateInvoicePdf(invoice.getId());
 	}
 
-	private void onDeleteClicked(InvoiceDTO invoice) {
+	private void onDeleteClicked(final InvoiceDTO invoice) {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmInvoiceDeletion())){
 			ServerFacade.invoice.remove(Configuration.getBusinessId(), invoice.getClient().getId(), invoice.getId(), new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {
-					DataWatcher.getInstance().fireInvoiceEvent();
-					DataWatcher.getInstance().fireStatsEvent();
+					eventBus.fireEvent(new DocumentDeleteEvent(invoice));
 				}
 
 				@Override
@@ -220,12 +226,12 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 
 	}
 
-	private void onPayedSwitchClicked(InvoiceDTO invoice) {
+	private void onPayedSwitchClicked(final InvoiceDTO invoice) {
 		ServerFacade.invoice.setPayed(Configuration.getBusinessId(), invoice.getClient().getId(), invoice.getId(), !invoice.getPayed(), new WrappedAsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {
-				DataWatcher.getInstance().fireClientDataEvent();
+				eventBus.fireEvent(new ClientUpdateEvent(invoice.getClient()));
 			}
 
 			@Override

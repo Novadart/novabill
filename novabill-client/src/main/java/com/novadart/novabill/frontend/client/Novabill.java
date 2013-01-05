@@ -69,6 +69,7 @@ public class Novabill implements EntryPoint {
 						historyHandler.register(placeController, eventBus, defaultPlace);
 						
 						main.setPlaceController(placeController);
+						main.setEventBus(clientFactory.getEventBus());
 						RootLayoutPanel.get().add(main);
 						// Goes to place represented on URL or default place
 						historyHandler.handleCurrentHistory();

@@ -14,6 +14,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ProvidesKey;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
+import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -41,6 +42,7 @@ public class SelectClientDialog extends Dialog {
 	@UiField Button ok;
 
 	private ClientDTO selectedClient = null;
+	private ClientSearch clientSearch;
 
 	public SelectClientDialog(Handler handler) {
 		this.handler = handler;
@@ -67,13 +69,17 @@ public class SelectClientDialog extends Dialog {
 
 		});
 
-		ClientSearch clientSearch = new ClientSearch(list);
+		clientSearch = new ClientSearch(list);
 		listWrapper = clientSearch.getWrappedClientList();
 		filter = clientSearch.getSearchInput();
 		clearFilter = clientSearch.getResetButton();
 
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("SelectClientDialog");
+	}
+	
+	public void setEventBus(EventBus eventBus){
+		clientSearch.setEventBus(eventBus);
 	}
 	
 

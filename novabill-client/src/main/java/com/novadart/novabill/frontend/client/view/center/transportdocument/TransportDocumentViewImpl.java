@@ -8,6 +8,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -26,7 +27,8 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
+import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -99,6 +101,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 
 	private Presenter presenter;
+	private EventBus eventBus;
 	private TransportDocumentDTO transportDocument;
 	private ClientDTO client;
 
@@ -171,6 +174,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return new Element[]{titleLabel.getElement(), docControls.getElement()};
 	}
 	
+	@Override
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+	}
+	
 	@UiHandler("fromAddrCountry")
 	void onFromCountryChange(ChangeEvent event){
 		fromAddrProvince.setEnabled(fromAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT"));
@@ -222,16 +230,14 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			return;
 		}
 
-		TransportDocumentDTO transportDocument = createTransportDocument(null);
+		final TransportDocumentDTO transportDocument = createTransportDocument(null);
 
 		ServerFacade.transportDocument.add(transportDocument, new WrappedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
+				eventBus.fireEvent(new DocumentAddEvent(transportDocument));
 				Notification.showMessage(I18N.INSTANCE.transportDocumentCreationSuccess());
-
-				DataWatcher.getInstance().fireTransportDocumentEvent();
-
 				ClientPlace cp = new ClientPlace();
 				cp.setClientId(client.getId());
 				cp.setDocs(DOCUMENTS.transportDocuments);
@@ -334,9 +340,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 				@Override
 				public void onSuccess(Void result) {
+					eventBus.fireEvent(new DocumentUpdateEvent(transportDocument));
 					Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateSuccess());
-
-					DataWatcher.getInstance().fireTransportDocumentEvent();
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(td.getClient().getId());

@@ -7,6 +7,7 @@ import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.MouseOutEvent;
 import com.google.gwt.event.dom.client.MouseOverEvent;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
@@ -25,9 +26,15 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
+import com.novadart.novabill.frontend.client.event.ClientDeleteEvent;
+import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
+import com.novadart.novabill.frontend.client.event.ClientUpdateHandler;
+import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.event.DocumentAddHandler;
+import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
+import com.novadart.novabill.frontend.client.event.DocumentDeleteHandler;
+import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
+import com.novadart.novabill.frontend.client.event.DocumentUpdateHandler;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -45,6 +52,7 @@ import com.novadart.novabill.frontend.client.view.widget.list.impl.EstimationLis
 import com.novadart.novabill.frontend.client.view.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.view.widget.list.impl.TransportDocumentList;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -62,12 +70,13 @@ public class ClientViewImpl extends Composite implements ClientView {
 
 	private Presenter presenter;
 	private ClientDTO client;
+	private EventBus eventBus;
 	private final ListDataProvider<InvoiceDTO> invoiceDataProvider = new ListDataProvider<InvoiceDTO>();
 	private final ListDataProvider<EstimationDTO> estimationDataProvider = new ListDataProvider<EstimationDTO>();
 	private final ListDataProvider<CreditNoteDTO> creditNoteDataProvider = new ListDataProvider<CreditNoteDTO>();
 	private final ListDataProvider<TransportDocumentDTO> transportDocumentDataProvider = new ListDataProvider<TransportDocumentDTO>();
 	private final ContactPopup contactPopup = new ContactPopup();
-	
+
 	@UiField InvoiceList invoiceList;
 	@UiField EstimationList estimationList;
 	@UiField CreditNoteList creditNoteList;
@@ -75,7 +84,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	@UiField Label clientName;
 	@UiField HTML clientDetails;
 	@UiField TabLayoutPanel tabPanel;
-	
+
 	@UiField FlowPanel listWrapperInvoice;
 	@UiField SimplePanel actionWrapperInvoice;
 	@UiField ScrollPanel scrollInvoice;
@@ -91,19 +100,19 @@ public class ClientViewImpl extends Composite implements ClientView {
 
 	@UiField HorizontalPanel clientOptions;
 	@UiField SimpleLayoutPanel clientMainBody;
-	
+
 	@UiField Label contact;
-	
+
 	private static final int HIDE_TIMEOUT = 3000;
 	private Timer hideContactPopup = new Timer() {
-		
+
 		@Override
 		public void run() {
 			contactPopup.hide();
 		}
 	};
-	
-	
+
+
 	public ClientViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("ClientView");
@@ -111,79 +120,94 @@ public class ClientViewImpl extends Composite implements ClientView {
 		estimationDataProvider.addDataDisplay(estimationList);
 		creditNoteDataProvider.addDataDisplay(creditNoteList);
 		transportDocumentDataProvider.addDataDisplay(transportDocumentList);
-		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
-			
+	}
+
+	@Override
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+		bind();
+		invoiceList.setEventBus(eventBus);
+		estimationList.setEventBus(eventBus);
+		creditNoteList.setEventBus(eventBus);
+		transportDocumentList.setEventBus(eventBus);
+	}
+
+	private void bind(){
+		eventBus.addHandler(DocumentAddEvent.TYPE, new DocumentAddHandler() {
+
 			@Override
-			public void onDataUpdated(DATA data) {
-				switch (data) {
-				case INVOICE:
-					if(ClientViewImpl.this.isAttached()){
-						loadInvoices();
-					}
-					break;
-					
-				case CLIENT:
-				case CLIENT_DATA:
-					if(ClientViewImpl.this.isAttached()){
-						ServerFacade.client.get(ClientViewImpl.this.client.getId(), 
-								new WrappedAsyncCallback<ClientDTO>() {
-	
-							@Override
-							public void onSuccess(ClientDTO result) {
-								setClient(result);
-							}
-	
-							@Override
-							public void onException(Throwable caught) {
-								Window.Location.reload();
-							}
-						});
-					}
-					break;
-					
-				case ESTIMATION:
-					if(ClientViewImpl.this.isAttached()){
-						loadEstimations();
-					}
-					break;
-					
-				case CREDIT_NOTE:
-					if(ClientViewImpl.this.isAttached()){
-						loadCreditNotes();
-					}
-					break;
-					
-				case TRANSPORT_DOCUMENT:
-					if(ClientViewImpl.this.isAttached()){
-						loadTransportDocuments();
-					}
-					break;
-					
-				default:
-					break;
+			public void onDocumentAdd(DocumentAddEvent event) {
+				onDocumentChangeEvent(event.getDocument());
+			}
+		});
+		eventBus.addHandler(DocumentDeleteEvent.TYPE, new DocumentDeleteHandler() {
+
+			@Override
+			public void onDocumentDelete(DocumentDeleteEvent event) {
+				onDocumentChangeEvent(event.getDocument());
+			}
+		});
+		eventBus.addHandler(DocumentUpdateEvent.TYPE, new DocumentUpdateHandler() {
+
+			@Override
+			public void onDocumentUpdate(DocumentUpdateEvent event) {
+				onDocumentChangeEvent(event.getDocument());
+			}
+		});
+		eventBus.addHandler(ClientUpdateEvent.TYPE, new ClientUpdateHandler() {
+
+			@Override
+			public void onClientUpdate(ClientUpdateEvent event) {
+				if(ClientViewImpl.this.isAttached()){
+					ServerFacade.client.get(ClientViewImpl.this.client.getId(), 
+							new WrappedAsyncCallback<ClientDTO>() {
+
+						@Override
+						public void onSuccess(ClientDTO result) {
+							setClient(result);
+						}
+
+						@Override
+						public void onException(Throwable caught) {
+							Window.Location.reload();
+						}
+					});
 				}
-				
 			}
 		});
 	}
-	
+
+	private void onDocumentChangeEvent(AccountingDocumentDTO doc){
+		if(ClientViewImpl.this.isAttached()){
+			if(doc instanceof InvoiceDTO){
+				loadInvoices();
+			} else if(doc instanceof EstimationDTO){
+				loadEstimations();
+			} else if(doc instanceof CreditNoteDTO){
+				loadCreditNotes();
+			} else if(doc instanceof TransportDocumentDTO){
+				loadTransportDocuments();
+			}
+		}
+	}
+
 	@Override
 	protected void onUnload() {
 		super.onUnload();
 		contactPopup.hide();
 	}
-	
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		
+
 		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-			
+
 			@Override
 			public void execute() {
 				WidgetUtils.setElementHeightToFillSpace(clientMainBody.getElement(), getElement(), 
 						clientName.getElement(), clientDetails.getElement(), clientOptions.getElement());
-				
+
 				WidgetUtils.setElementHeightToFillSpace(scrollInvoice.getElement(), listWrapperInvoice.getElement(), 
 						40, actionWrapperInvoice.getElement());
 				WidgetUtils.setElementHeightToFillSpace(scrollEstimation.getElement(), listWrapperEstimation.getElement(), 
@@ -192,11 +216,11 @@ public class ClientViewImpl extends Composite implements ClientView {
 						40, actionWrapperTransport.getElement());
 				WidgetUtils.setElementHeightToFillSpace(scrollCredit.getElement(), listWrapperCredit.getElement(), 
 						40, actionWrapperCredit.getElement());
-				
+
 			}
 		});
 	}
-	
+
 	@Override
 	public void setDocumentsListing(DOCUMENTS documentsListing) {
 		switch(documentsListing){
@@ -209,7 +233,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		case creditNotes:
 			tabPanel.selectTab(3);
 			break;
-			default:
+		default:
 		case invoices:
 			tabPanel.selectTab(0);
 			break;
@@ -241,55 +265,55 @@ public class ClientViewImpl extends Composite implements ClientView {
 		contactPopup.reset();
 		contact.setVisible(false);
 	}
-	
+
 	@UiHandler("contact")
 	void onContactMouseOver(MouseOverEvent event) {
 		contactPopup.showRelativeTo(contact);
 		hideContactPopup.cancel();
 	}
-	
+
 	@UiHandler("contact")
 	void onContactMouseOut(MouseOutEvent event) {
 		hideContactPopup.schedule(HIDE_TIMEOUT);
 	}
-	
+
 	@UiHandler("newInvoice")
 	void onNewInvoiceClicked(ClickEvent e){
 		NewInvoicePlace nip = new NewInvoicePlace();
 		nip.setClientId(client.getId());
 		presenter.goTo(nip);
 	}
-	
+
 	@UiHandler("newEstimation")
 	void onNewEstimationClicked(ClickEvent e){
 		NewEstimationPlace p = new NewEstimationPlace();
 		p.setClientId(client.getId());
 		presenter.goTo(p);
 	}
-	
+
 	@UiHandler("newTransportDocument")
 	void onNewTransportDocumentClicked(ClickEvent e){
 		NewTransportDocumentPlace p = new NewTransportDocumentPlace();
 		p.setClientId(client.getId());
 		presenter.goTo(p);
 	}
-	
+
 	@UiHandler("newCreditNote")
 	void onNewCreditNoteClicked(ClickEvent e){
 		NewCreditNotePlace p = new NewCreditNotePlace();
 		p.setClientId(client.getId());
 		presenter.goTo(p);
 	}
-	
-	
+
+
 	@UiHandler("modifyClient")
 	void onModifyClientClicked(ClickEvent e){
-		ClientDialog cd = ClientDialog.getInstance();
+		ClientDialog cd = ClientDialog.getInstance(eventBus);
 		cd.setClient(client);
 		cd.showCentered();
 	}
 
-	
+
 	@UiHandler("cancelClient")
 	void onCancelClientClicked(ClickEvent e){
 		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmClientDeletion())){
@@ -297,8 +321,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 
 				@Override
 				public void onSuccess(Void result) {
-					DataWatcher.getInstance().fireClientEvent();
-					DataWatcher.getInstance().fireStatsEvent();
+					eventBus.fireEvent(new ClientDeleteEvent(client));
 					presenter.goTo(new HomePlace());
 				}
 
@@ -331,7 +354,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		loadCreditNotes();
 		loadTransportDocuments();
 	}
-	
+
 	private void updateClientDetails(ClientDTO client){
 		SafeHtmlBuilder sb = new SafeHtmlBuilder();
 		sb.appendEscaped(client.getAddress()+ " ");
@@ -349,9 +372,9 @@ public class ClientViewImpl extends Composite implements ClientView {
 
 		clientDetails.setHTML(sb.toSafeHtml());
 	}
-	
-	
-	
+
+
+
 	private void loadInvoices(){
 		ServerFacade.invoice.getAllForClient(client.getId(), new WrappedAsyncCallback<List<InvoiceDTO>>() {
 
@@ -370,8 +393,8 @@ public class ClientViewImpl extends Composite implements ClientView {
 			}
 		});
 	}
-	
-	
+
+
 	private void loadTransportDocuments(){
 		ServerFacade.transportDocument.getAllForClient(client.getId(), new WrappedAsyncCallback<List<TransportDocumentDTO>>() {
 
@@ -390,8 +413,8 @@ public class ClientViewImpl extends Composite implements ClientView {
 			}
 		});
 	}
-	
-	
+
+
 	private void loadCreditNotes(){
 		ServerFacade.creditNote.getAllForClient(client.getId(), new WrappedAsyncCallback<List<CreditNoteDTO>>() {
 
@@ -410,7 +433,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 			}
 		});
 	}
-	
+
 	private void loadEstimations(){
 		ServerFacade.estimation.getAllForClient(client.getId(), new WrappedAsyncCallback<List<EstimationDTO>>() {
 

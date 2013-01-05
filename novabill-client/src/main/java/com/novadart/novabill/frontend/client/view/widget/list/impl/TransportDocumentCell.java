@@ -5,8 +5,9 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
+import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -24,6 +25,7 @@ import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 
 	private Presenter presenter;
+	private EventBus eventBus;
 
 	@Override
 	protected void renderDetails(
@@ -154,6 +156,7 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 				presenter.goTo(p);
 			}
 		});
+		dia.setEventBus(eventBus);
 		dia.showCentered();
 	}
 
@@ -170,13 +173,13 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 		presenter.goTo(p);
 	}
 
-	public void onDeleteClicked(TransportDocumentDTO transportDocument) {
+	public void onDeleteClicked(final TransportDocumentDTO transportDocument) {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmTransportDocumentDeletion())){
 			ServerFacade.transportDocument.remove(Configuration.getBusinessId(), transportDocument.getClient().getId(), transportDocument.getId(), new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {
-					DataWatcher.getInstance().fireEstimationEvent();
+					eventBus.fireEvent(new DocumentDeleteEvent(transportDocument));
 				}
 
 				@Override
@@ -190,6 +193,10 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
+	}
+	
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
 	}
 
 }

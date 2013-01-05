@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -19,7 +20,8 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
+import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -69,6 +71,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	
 
 	private Presenter presenter;
+	private EventBus eventBus;
 	private EstimationDTO estimation;
 	private ClientDTO client;
 
@@ -95,6 +98,11 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@Override
 	protected Element getBody() {
 		return docScroll.getElement();
+	}
+	
+	@Override
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
 	}
 	
 	@Override
@@ -142,7 +150,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			return;
 		}
 
-		EstimationDTO estimation = createEstimation(null);
+		final EstimationDTO estimation = createEstimation(null);
 
 		ServerFacade.estimation.add(estimation, new WrappedAsyncCallback<Long>() {
 
@@ -150,7 +158,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			public void onSuccess(Long result) {
 				Notification.showMessage(I18N.INSTANCE.estimationCreationSuccess());
 
-				DataWatcher.getInstance().fireEstimationEvent();
+				eventBus.fireEvent(new DocumentAddEvent(estimation));
 
 				ClientPlace cp = new ClientPlace();
 				cp.setClientId(client.getId());
@@ -224,8 +232,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 				@Override
 				public void onSuccess(Void result) {
 					Notification.showMessage(I18N.INSTANCE.estimationUpdateSuccess());
-
-					DataWatcher.getInstance().fireEstimationEvent();
+					
+					eventBus.fireEvent(new DocumentUpdateEvent(es));
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(es.getClient().getId());

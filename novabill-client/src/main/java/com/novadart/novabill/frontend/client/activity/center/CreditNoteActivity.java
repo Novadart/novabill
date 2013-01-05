@@ -29,13 +29,14 @@ public class CreditNoteActivity extends BasicActivity {
 	}
 
 	@Override
-	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
+	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		getClientFactory().getCreditNoteView(new AsyncCallback<CreditNoteView>() {
 
 			@Override
 			public void onSuccess(final CreditNoteView view) {
 				view.setPresenter(CreditNoteActivity.this);
-
+				view.setEventBus(eventBus);
+				
 				if (place instanceof ModifyCreditNotePlace) {
 					ModifyCreditNotePlace p = (ModifyCreditNotePlace) place;
 					setupModifyCreditNoteView(panel, view, p);

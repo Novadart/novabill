@@ -24,7 +24,7 @@ public class ClientActivity extends BasicActivity {
 	}
 
 	@Override
-	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
+	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		getClientFactory().getClientView(new AsyncCallback<ClientView>() {
 			
 			@Override
@@ -43,6 +43,7 @@ public class ClientActivity extends BasicActivity {
 					@Override
 					public void onSuccess(ClientDTO result) {
 						cv.setClient(result);
+						cv.setEventBus(eventBus);
 						cv.setPresenter(ClientActivity.this);
 						MainWidget.getInstance().setStandardView();
 						panel.setWidget(cv);

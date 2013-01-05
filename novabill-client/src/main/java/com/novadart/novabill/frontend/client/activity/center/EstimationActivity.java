@@ -28,13 +28,14 @@ public class EstimationActivity extends BasicActivity {
 	}
 
 	@Override
-	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
+	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		getClientFactory().getEstimationView(new AsyncCallback<EstimationView>() {
 			
 			@Override
 			public void onSuccess(final EstimationView view) {
 				view.setPresenter(EstimationActivity.this);
-
+				view.setEventBus(eventBus);
+				
 				if (place instanceof ModifyEstimationPlace) {
 					ModifyEstimationPlace p = (ModifyEstimationPlace) place;
 					setupModifyEstimationView(panel, view, p);

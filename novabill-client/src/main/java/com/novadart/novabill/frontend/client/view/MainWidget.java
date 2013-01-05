@@ -15,13 +15,23 @@ import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
+import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.Const;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
+import com.novadart.novabill.frontend.client.event.BusinessUpdateEvent;
+import com.novadart.novabill.frontend.client.event.BusinessUpdateHandler;
+import com.novadart.novabill.frontend.client.event.ClientAddEvent;
+import com.novadart.novabill.frontend.client.event.ClientAddHandler;
+import com.novadart.novabill.frontend.client.event.ClientDeleteEvent;
+import com.novadart.novabill.frontend.client.event.ClientDeleteHandler;
+import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.event.DocumentAddHandler;
+import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
+import com.novadart.novabill.frontend.client.event.DocumentDeleteHandler;
+import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
+import com.novadart.novabill.frontend.client.event.DocumentUpdateHandler;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
@@ -62,42 +72,74 @@ public class MainWidget extends Composite {
 		logout.setHref(GWT.getHostPageBaseURL()+"resources/j_spring_security_logout");
 		logoAnchor.setHref(GWT.getHostPageBaseURL());
 
-		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
-
-			@Override
-			public void onDataUpdated(DATA data) {
-				switch (data) {
-				case STATS:
-					ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
-
-						@Override
-						public void onSuccess(BusinessStatsDTO result) {
-							if(result == null){
-								return;
-							}
-							generateStats(result);
-						}
-
-						@Override
-						public void onException(Throwable caught) {
-						}
-					});
-					break;
-
-				case BUSINESS:
-					generateBusinessBanner();
-					break;
-
-				default:
-					break;
-				}
-			}
-		});
-
 		generateBusinessBanner();
 		generateStats(Configuration.getStats());
 
 		instance = this;
+	}
+	
+	public void setEventBus(EventBus eventBus) {
+		eventBus.addHandler(DocumentUpdateEvent.TYPE, new DocumentUpdateHandler() {
+
+			@Override
+			public void onDocumentUpdate(DocumentUpdateEvent event) {
+				onDocumentChangeEvent();
+			}
+			
+		});
+		eventBus.addHandler(DocumentDeleteEvent.TYPE, new DocumentDeleteHandler() {
+			
+			@Override
+			public void onDocumentDelete(DocumentDeleteEvent event) {
+				onDocumentChangeEvent();
+			}
+		});
+		
+		eventBus.addHandler(DocumentAddEvent.TYPE, new DocumentAddHandler() {
+			
+			@Override
+			public void onDocumentAdd(DocumentAddEvent event) {
+				onDocumentChangeEvent();
+			}
+		});
+		eventBus.addHandler(BusinessUpdateEvent.TYPE, new BusinessUpdateHandler() {
+			
+			@Override
+			public void onBusinessUpdate(BusinessUpdateEvent event) {
+				generateBusinessBanner();
+			}
+		});
+		eventBus.addHandler(ClientDeleteEvent.TYPE, new ClientDeleteHandler() {
+			
+			@Override
+			public void onClientDelete(ClientDeleteEvent event) {
+				onDocumentChangeEvent();
+			}
+		});
+		eventBus.addHandler(ClientAddEvent.TYPE, new ClientAddHandler() {
+			
+			@Override
+			public void onClientAdd(ClientAddEvent event) {
+				onDocumentChangeEvent();
+			}
+		});
+	}
+	
+	private void onDocumentChangeEvent(){
+		ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
+
+			@Override
+			public void onSuccess(BusinessStatsDTO result) {
+				if(result == null){
+					return;
+				}
+				generateStats(result);
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+			}
+		});
 	}
 
 	public void setLargeView(){

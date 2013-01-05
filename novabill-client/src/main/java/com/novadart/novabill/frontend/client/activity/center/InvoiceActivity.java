@@ -32,12 +32,13 @@ public class InvoiceActivity extends BasicActivity {
 	}
 
 	@Override
-	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
+	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		getClientFactory().getInvoiceView(new AsyncCallback<InvoiceView>() {
 
 			@Override
 			public void onSuccess(final InvoiceView view) {
 				view.setPresenter(InvoiceActivity.this);
+				view.setEventBus(eventBus);
 
 				if (place instanceof ModifyInvoicePlace) {
 					ModifyInvoicePlace p = (ModifyInvoicePlace) place;

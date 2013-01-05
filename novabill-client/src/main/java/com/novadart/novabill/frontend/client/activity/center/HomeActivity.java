@@ -15,12 +15,14 @@ public class HomeActivity extends BasicActivity {
 	}
 	
 	@Override
-	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
+	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		getClientFactory().getHomeView(new AsyncCallback<HomeView>() {
 			
 			@Override
 			public void onSuccess(HomeView hv) {
 				hv.setPresenter(HomeActivity.this);
+				hv.setEventBus(eventBus);
+				
 				MainWidget.getInstance().setStandardView();
 				panel.setWidget(hv);
 			}

@@ -27,12 +27,13 @@ public class TransportDocumentActivity extends BasicActivity {
 	}
 
 	@Override
-	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
+	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		getClientFactory().getTransportDocumentView(new AsyncCallback<TransportDocumentView>() {
 
 			@Override
 			public void onSuccess(final TransportDocumentView view) {
 				view.setPresenter(TransportDocumentActivity.this);
+				view.setEventBus(eventBus);
 				
 				if (place instanceof ModifyTransportDocumentPlace) {
 					ModifyTransportDocumentPlace p = (ModifyTransportDocumentPlace) place;

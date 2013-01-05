@@ -4,6 +4,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -19,9 +20,10 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatchEventHandler;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatchEvent.DATA;
+import com.novadart.novabill.frontend.client.event.ClientAddEvent;
+import com.novadart.novabill.frontend.client.event.ClientAddHandler;
+import com.novadart.novabill.frontend.client.event.ClientDeleteEvent;
+import com.novadart.novabill.frontend.client.event.ClientDeleteHandler;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -52,6 +54,7 @@ public class WestViewImpl extends Composite implements WestView  {
 	@UiField Label welcomeMessage;
 	
 	private Presenter presenter;
+	private EventBus eventBus;
 	private final ClientSearch clientSearch;
 	
 	public WestViewImpl() {
@@ -61,41 +64,51 @@ public class WestViewImpl extends Composite implements WestView  {
 		cleanClientFilter = clientSearch.getResetButton();
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("WestView");
-		
-		DataWatcher.getInstance().addDataEventHandler(new DataWatchEventHandler() {
+	}
+	
+	@Override
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+		clientSearch.setEventBus(eventBus);
+		eventBus.addHandler(ClientAddEvent.TYPE, new ClientAddHandler() {
 			
 			@Override
-			public void onDataUpdated(DATA data) {
-				switch (data) {
-				case STATS:
-					ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
+			public void onClientAdd(ClientAddEvent event) {
+				onDocumentChangeEvent();
+			}
+		});
+		
+		eventBus.addHandler(ClientDeleteEvent.TYPE, new ClientDeleteHandler() {
+			
+			@Override
+			public void onClientDelete(ClientDeleteEvent event) {
+				onDocumentChangeEvent();
+			}
+		});
+		
+	}
+	
+	private void onDocumentChangeEvent(){
+		ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
 
-						@Override
-						public void onSuccess(BusinessStatsDTO result) {
-							if(result == null){
-								return;
-							}
-							if(result.getClientsCount() > 0){
-								welcomeMessage.setVisible(false);
-								clientListContainer.setVisible(true);
-								clientFilterContainer.setVisible(true);
-							}
-						}
-
-						@Override
-						public void onException(Throwable caught) {
-						}
-					});
-					break;
-
-				default:
-					break;
+			@Override
+			public void onSuccess(BusinessStatsDTO result) {
+				if(result == null){
+					return;
 				}
-				
+				if(result.getClientsCount() > 0){
+					welcomeMessage.setVisible(false);
+					clientListContainer.setVisible(true);
+					clientFilterContainer.setVisible(true);
+				}
+			}
+
+			@Override
+			public void onException(Throwable caught) {
 			}
 		});
 	}
-	
+
 	
 	@Override
 	protected void onLoad() {
@@ -140,7 +153,7 @@ public class WestViewImpl extends Composite implements WestView  {
 
 	@UiHandler("addClient")
 	void onAddClientClicked(ClickEvent e){
-		ClientDialog.getInstance().showCentered();
+		ClientDialog.getInstance(eventBus).showCentered();
 	}
 	
 	@Override

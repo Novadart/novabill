@@ -15,12 +15,13 @@ public class BusinessActivity extends BasicActivity {
 	}
 
 	@Override
-	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
+	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		getClientFactory().getBusinessView(new AsyncCallback<BusinessView>() {
 			
 			@Override
 			public void onSuccess(BusinessView bv) {
 				bv.setPresenter(BusinessActivity.this);
+				bv.setEventBus(eventBus);
 				MainWidget.getInstance().setStandardView();
 				panel.setWidget(bv);
 			}

@@ -16,12 +16,13 @@ public class ClientActivity extends BasicActivity {
 	}
 
 	@Override
-	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
+	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		getClientFactory().getWestView(new AsyncCallback<WestView>() {
 			
 			@Override
 			public void onSuccess(final WestView wv) {
 				wv.setPresenter(ClientActivity.this);
+				wv.setEventBus(eventBus);
 				panel.setWidget(wv);
 			}
 			

@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -21,7 +22,8 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
+import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -78,6 +80,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	private Presenter presenter;
 	private CreditNoteDTO creditNote;
 	private ClientDTO client;
+	private EventBus eventBus;
 
 	public CreditNoteViewImpl() {
 		payment = new ValidatedListBox(I18N.INSTANCE.notEmptyValidationError());
@@ -102,6 +105,11 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	}
 
 	@Override
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;	
+	}
+	
+	@Override
 	protected Element getBody() {
 		return docScroll.getElement();
 	}
@@ -123,7 +131,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 			return;
 		}
 
-		CreditNoteDTO creditNote = createCreditNote(null);
+		final CreditNoteDTO creditNote = createCreditNote(null);
 		
 
 		ServerFacade.creditNote.add(creditNote, new WrappedAsyncCallback<Long>() {
@@ -131,8 +139,8 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 			@Override
 			public void onSuccess(Long result) {
 				Notification.showMessage(I18N.INSTANCE.creditNoteCreationSuccess());
-
-				DataWatcher.getInstance().fireCreditNoteEvent();
+				
+				eventBus.fireEvent(new DocumentAddEvent(creditNote));
 
 				ClientPlace cp = new ClientPlace();
 				cp.setClientId(client.getId());
@@ -202,8 +210,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 				public void onSuccess(Void result) {
 					Notification.showMessage(I18N.INSTANCE.creditNoteUpdateSuccess());
 
-					DataWatcher.getInstance().fireCreditNoteEvent();
-					DataWatcher.getInstance().fireStatsEvent();
+					eventBus.fireEvent(new DocumentUpdateEvent(creditNote));
 
 					ClientPlace cp = new ClientPlace();
 					cp.setClientId(cn.getClient().getId());

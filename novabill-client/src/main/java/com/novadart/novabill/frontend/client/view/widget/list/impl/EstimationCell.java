@@ -5,8 +5,9 @@ import com.google.gwt.dom.client.SpanElement;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
+import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -24,6 +25,7 @@ import com.novadart.novabill.shared.client.dto.EstimationDTO;
 public class EstimationCell extends QuickViewCell<EstimationDTO> {
 
 	private Presenter presenter;
+	private EventBus eventBus;
 
 	@Override
 	protected void renderDetails(
@@ -157,6 +159,7 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 				presenter.goTo(ep);
 			}
 		});
+		dia.setEventBus(eventBus);
 		dia.showCentered();
 	}
 
@@ -173,13 +176,13 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 		presenter.goTo(p);
 	}
 
-	public void onDeleteClicked(EstimationDTO estimation) {
+	public void onDeleteClicked(final EstimationDTO estimation) {
 		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmEstimationDeletion())){
 			ServerFacade.estimation.remove(Configuration.getBusinessId(), estimation.getClient().getId(), estimation.getId(), new WrappedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {
-					DataWatcher.getInstance().fireEstimationEvent();
+					eventBus.fireEvent(new DocumentDeleteEvent(estimation));
 				}
 
 				@Override
@@ -193,6 +196,10 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
+	}
+	
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
 	}
 
 }

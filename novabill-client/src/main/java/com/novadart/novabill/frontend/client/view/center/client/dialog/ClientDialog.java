@@ -3,6 +3,7 @@ package com.novadart.novabill.frontend.client.view.center.client.dialog;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -14,7 +15,8 @@ import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.datawatcher.DataWatcher;
+import com.novadart.novabill.frontend.client.event.ClientAddEvent;
+import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -35,8 +37,10 @@ public class ClientDialog extends Dialog {
 	}
 
 	private static final ClientDialog instance = new ClientDialog();
+	private static EventBus eventBus;
 
-	public static ClientDialog getInstance(){
+	public static ClientDialog getInstance(EventBus eventBus){
+		ClientDialog.eventBus = eventBus;
 		instance.clearData();
 		return instance;
 	}
@@ -157,7 +161,7 @@ public class ClientDialog extends Dialog {
 		}
 
 		ContactDTO contact;
-		ClientDTO client;
+		final ClientDTO client;
 
 		if(this.client == null){
 			client = new ClientDTO();
@@ -202,8 +206,7 @@ public class ClientDialog extends Dialog {
 				@Override
 				public void onSuccess(Long result) {
 					ok.showLoader(false);
-					DataWatcher.getInstance().fireClientEvent();
-					DataWatcher.getInstance().fireStatsEvent();
+					eventBus.fireEvent(new ClientAddEvent(client));
 					hide();
 				}
 
@@ -220,7 +223,7 @@ public class ClientDialog extends Dialog {
 				@Override
 				public void onSuccess(Void result) {
 					ok.showLoader(false);
-					DataWatcher.getInstance().fireClientEvent();
+					eventBus.fireEvent(new ClientUpdateEvent(client));
 					hide();
 				}
 
