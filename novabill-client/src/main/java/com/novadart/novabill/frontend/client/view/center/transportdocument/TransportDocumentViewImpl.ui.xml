@@ -29,7 +29,8 @@
 							<g:Label styleName="label" text="{i18n.transportDocumentNumber}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<g:Label styleName="box number"	ui:field="number"></g:Label>
+							<v:ValidatedTextBox styleName="box number"
+								ui:field="number"></v:ValidatedTextBox>
 						</g:customCell>
 					</g:row>
 					<g:row>

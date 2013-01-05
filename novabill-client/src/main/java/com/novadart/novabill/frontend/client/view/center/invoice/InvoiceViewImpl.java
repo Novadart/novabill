@@ -385,7 +385,9 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	private boolean validateInvoice(){
 		if(date.getTextBox().getText().isEmpty() || date.getValue() == null){
 			return false;
-		} else if(itemInsertionForm.getItems().isEmpty()){
+		} 
+		
+		if(itemInsertionForm.getItems().isEmpty()){
 			return false;
 		}
 		
@@ -409,8 +411,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 		//reset widget statuses
 		number.reset();
-		number.setVisible(true);
-		payment.setVisible(true);
 		payment.reset();
 		createInvoice.setVisible(false);
 		modifyDocument.setVisible(false);
@@ -434,6 +434,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		for (ErrorObject eo : ex.getErrors()) {
 			switch(eo.getErrorCode()){
 			case INVALID_DOCUMENT_ID:
+				docScroll.scrollToTop();
 				StringBuilder sb = new StringBuilder();
 				List<Long> gaps = eo.getGaps();
 

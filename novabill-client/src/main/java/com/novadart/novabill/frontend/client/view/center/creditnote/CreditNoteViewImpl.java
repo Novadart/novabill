@@ -339,6 +339,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		for (ErrorObject eo : ex.getErrors()) {
 			switch(eo.getErrorCode()){
 			case INVALID_DOCUMENT_ID:
+				docScroll.scrollToTop();
 				StringBuilder sb = new StringBuilder();
 				List<Long> gaps = eo.getGaps();
 

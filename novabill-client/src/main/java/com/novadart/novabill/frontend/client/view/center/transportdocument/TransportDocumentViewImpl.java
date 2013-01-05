@@ -32,6 +32,7 @@ import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
@@ -89,7 +90,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField TextBox tradeZone;
 	
 	@UiField Label clientName;
-	@UiField Label number;
+	@UiField(provided=true) ValidatedTextBox number;
 	@UiField(provided=true) DateBox date;
 	@UiField ValidatedTextArea note;
 	@UiField Button createTransportDocument;
@@ -114,6 +115,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			@Override
 			public String getErrorMessage() {	return null; }
 		};
+		
+		number = new ValidatedTextBox(ValidationKit.NUMBER);
 		
 		numberOfPackages = new ValidatedTextBox(ValidationKit.NUMBER);
 		transporter = new ValidatedTextBox(nev);
@@ -266,8 +269,9 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			td = new TransportDocumentDTO();
 			td.setBusiness(Configuration.getBusiness());
 			td.setClient(client);
-			td.setDocumentID(Long.parseLong(number.getText()));
 		}
+		
+		td.setDocumentID(Long.parseLong(number.getText()));
 		
 		EndpointDTO loc = new EndpointDTO();
 		loc.setCompanyName(fromAddrCompanyName.getText());
@@ -394,7 +398,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			this.client = transportDocument.getClient();
 			date.setValue(transportDocument.getAccountingDocumentDate());
 			clientName.setText(transportDocument.getClient().getName());
-			number.setText(transportDocument.getDocumentID().toString());
 			
 			Date d = transportDocument.getTransportStartDate();
 			transportStartDate.setValue(d);
@@ -419,6 +422,10 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 		itemInsertionForm.setItems(items);
 		note.setText(transportDocument.getNote());
+		
+		if(!cloning && transportDocument.getDocumentID() != null){
+			number.setText(transportDocument.getDocumentID().toString());
+		} 
 		
 		numberOfPackages.setText(String.valueOf(transportDocument.getNumberOfPackages()));
 		
@@ -459,7 +466,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			return false;
 		} else {
 			boolean validation = true;
-			for (ValidatedWidget<?, ?> vw : new ValidatedWidget<?, ?>[]{fromAddrCity, fromAddrCompanyName, fromAddrPostCode,
+			for (ValidatedWidget<?, ?> vw : new ValidatedWidget<?, ?>[]{number, fromAddrCity, fromAddrCompanyName, fromAddrPostCode,
 					fromAddrStreetName, fromAddrCountry, toAddrCountry, toAddrCity, toAddrCompanyName, toAddrPostCode, 
 					toAddrStreetName, numberOfPackages, hour, minute}) {
 				vw.validate();
@@ -491,7 +498,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		this.client = null;
 		this.transportDocument = null;
 
-		number.setText("");
+		number.reset();
 		
 		//reset widget statuses
 		createTransportDocument.setVisible(false);
@@ -536,6 +543,23 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		for (ErrorObject eo : ex.getErrors()) {
 			switch(eo.getErrorCode()){
 
+			case INVALID_DOCUMENT_ID:
+				docScroll.scrollToTop();
+				StringBuilder sb = new StringBuilder();
+				List<Long> gaps = eo.getGaps();
+
+				if(gaps.size() > 1) {
+					for (int i=0; i<gaps.size()-1; i++) {
+						sb.append(gaps.get(i) +", ");
+					}
+					sb.append(gaps.get(gaps.size()-1));
+				} else {
+					sb.append(gaps.get(0));
+				}
+					
+				number.showErrorMessage(I18NM.get.invalidDocumentIdError(sb.toString()));
+				break;
+				
 			default:
 				break;
 			}

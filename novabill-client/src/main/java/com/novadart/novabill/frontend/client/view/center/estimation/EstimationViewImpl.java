@@ -19,12 +19,14 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
@@ -34,6 +36,7 @@ import com.novadart.novabill.frontend.client.view.center.EstimationView;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.view.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.view.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -53,7 +56,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiField ScrollPanel docScroll;
 
 	@UiField Label clientName;
-	@UiField Label number;
+	@UiField(provided=true) ValidatedTextBox number;
 	@UiField(provided=true) DateBox date;
 	@UiField(provided=true) DateBox validTill;
 	@UiField ValidatedTextArea note;
@@ -84,6 +87,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			}
 			
 		});
+		
+		number = new ValidatedTextBox(ValidationKit.NUMBER);
 
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat
@@ -189,9 +194,10 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			es = new EstimationDTO();
 			es.setBusiness(Configuration.getBusiness());
 			es.setClient(client);
-			es.setDocumentID(Long.parseLong(number.getText()));
 		}
 
+		es.setDocumentID(Long.parseLong(number.getText()));
+		
 		es.setAccountingDocumentDate(date.getValue());
 		es.setValidTill(validTill.getValue());
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
@@ -284,7 +290,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			date.setValue(estimation.getAccountingDocumentDate());
 			validTill.setValue(estimation.getValidTill());
 			clientName.setText(estimation.getClient().getName());
-			number.setText(estimation.getDocumentID().toString());
 			modifyDocument.setVisible(true);
 
 			convertToInvoice.setVisible(true);
@@ -301,6 +306,10 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		} else {
 			items = estimation.getItems();
 		}
+		
+		if(!cloning && estimation.getDocumentID() != null){
+			number.setText(estimation.getDocumentID().toString());
+		} 
 
 		itemInsertionForm.setItems(items);
 		note.setText(estimation.getNote());
@@ -326,10 +335,13 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		if(date.getTextBox().getText().isEmpty() || date.getValue() == null 
 				|| validTill.getTextBox().getText().isEmpty() || validTill.getValue() == null){
 			return false;
-		} else if(itemInsertionForm.getItems().isEmpty()){
+		} 
+		
+		if(itemInsertionForm.getItems().isEmpty()){
 			return false;
 		}
-		return true;
+		number.validate();
+		return number.isValid();
 	}
 
 
@@ -339,7 +351,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		this.client = null;
 		this.estimation = null;
 		
-		number.setText("");
+		number.reset();
 
 		//reset widget statuses
 		createEstimation.setVisible(false);
@@ -361,6 +373,23 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	private void handleServerValidationException(ValidationException ex){
 		for (ErrorObject eo : ex.getErrors()) {
 			switch(eo.getErrorCode()){
+			
+			case INVALID_DOCUMENT_ID:
+				docScroll.scrollToTop();
+				StringBuilder sb = new StringBuilder();
+				List<Long> gaps = eo.getGaps();
+
+				if(gaps.size() > 1) {
+					for (int i=0; i<gaps.size()-1; i++) {
+						sb.append(gaps.get(i) +", ");
+					}
+					sb.append(gaps.get(gaps.size()-1));
+				} else {
+					sb.append(gaps.get(0));
+				}
+					
+				number.showErrorMessage(I18NM.get.invalidDocumentIdError(sb.toString()));
+				break;
 
 			default:
 				break;
