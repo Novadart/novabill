@@ -1,9 +1,17 @@
 package com.novadart.novabill.frontend.client.view.center;
 
+import java.util.List;
+
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.ScrollPanel;
+import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.util.WidgetUtils;
+import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
 
 public abstract class AccountDocument extends Composite {
@@ -17,6 +25,10 @@ public abstract class AccountDocument extends Composite {
 	protected abstract Element[] getNonBodyElements();
 	
 	protected abstract Element getBody();
+	
+	protected abstract ValidatedTextBox getNumber();
+	
+	protected abstract ScrollPanel getDocScroll();
 	
 	protected String getHumanReadable(Field field){
 		switch (field) {
@@ -81,5 +93,35 @@ public abstract class AccountDocument extends Composite {
 		default:
 			return null;
 		}
+	}
+	
+	protected void handleServerValidationException(ValidationException ex){
+		if(ex.getErrors().size() > 0){
+			ErrorObject eo = ex.getErrors().get(0);
+			
+			switch(eo.getErrorCode()){
+			case INVALID_DOCUMENT_ID:
+				getDocScroll().scrollToTop();
+				StringBuilder sb = new StringBuilder();
+				List<Long> gaps = eo.getGaps();
+
+				if(gaps.size() > 1) {
+					for (int i=0; i<gaps.size()-1; i++) {
+						sb.append(gaps.get(i) +", ");
+					}
+					sb.append(gaps.get(gaps.size()-1));
+				} else {
+					sb.append(gaps.get(0));
+				}
+					
+				getNumber().showErrorMessage(I18NM.get.invalidDocumentIdError(sb.toString()));
+				break;
+			
+			default:
+				Notification.showMessage(I18NM.get.errorCheckField(getHumanReadable(eo.getField())));
+				break;
+			}
+		}
+		
 	}
 }

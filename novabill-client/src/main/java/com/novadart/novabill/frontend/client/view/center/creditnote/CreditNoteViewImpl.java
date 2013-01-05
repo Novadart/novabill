@@ -27,7 +27,6 @@ import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
@@ -43,7 +42,6 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.validation.ErrorObject;
 
 public class CreditNoteViewImpl extends AccountDocument implements CreditNoteView {
 
@@ -123,6 +121,16 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	I18N getI18N(){
 		return I18N.INSTANCE;
 	}
+	
+	@Override
+	protected ScrollPanel getDocScroll() {
+		return docScroll;
+	}
+	
+	@Override
+	protected ValidatedTextBox getNumber() {
+		return number;
+	}
 
 	@UiHandler("createCreditNote")
 	void onCreateCreditNoteClicked(ClickEvent e){
@@ -198,6 +206,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	void onModifyCreditNoteClicked(ClickEvent e){
 
 		if(!validateCreditNote()){
+			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
 
@@ -333,32 +342,6 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		itemInsertionForm.reset();
 		
 		titleLabel.setText(I18N.INSTANCE.newCreditNoteCreation());
-	}
-
-	private void handleServerValidationException(ValidationException ex){
-		for (ErrorObject eo : ex.getErrors()) {
-			switch(eo.getErrorCode()){
-			case INVALID_DOCUMENT_ID:
-				docScroll.scrollToTop();
-				StringBuilder sb = new StringBuilder();
-				List<Long> gaps = eo.getGaps();
-
-				if(gaps.size() > 1) {
-					for (int i=0; i<gaps.size()-1; i++) {
-						sb.append(gaps.get(i) +", ");
-					}
-					sb.append(gaps.get(gaps.size()-1));
-				} else {
-					sb.append(gaps.get(0));
-				}
-
-				number.showErrorMessage(I18NM.get.invalidDocumentIdError(sb.toString()));
-				break;
-
-			default:
-				break;
-			}
-		}
 	}
 
 }

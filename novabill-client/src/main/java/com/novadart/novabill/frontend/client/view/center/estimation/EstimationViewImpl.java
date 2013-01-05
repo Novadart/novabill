@@ -26,7 +26,6 @@ import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
@@ -41,7 +40,6 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.validation.ErrorObject;
 
 public class EstimationViewImpl extends AccountDocument implements EstimationView {
 
@@ -120,6 +118,15 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		return I18N.INSTANCE;
 	}
 
+	@Override
+	protected ScrollPanel getDocScroll() {
+		return docScroll;
+	}
+	
+	@Override
+	protected ValidatedTextBox getNumber() {
+		return number;
+	}
 
 
 	@UiHandler("convertToInvoice")
@@ -218,6 +225,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiHandler("modifyDocument")
 	void onModifyEstimationClicked(ClickEvent e){
 		if(!validateEstimation()){
+			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
 
@@ -368,33 +376,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		itemInsertionForm.reset();
 		
 		titleLabel.setText(I18N.INSTANCE.newEstimationCreation());
-	}
-
-	private void handleServerValidationException(ValidationException ex){
-		for (ErrorObject eo : ex.getErrors()) {
-			switch(eo.getErrorCode()){
-			
-			case INVALID_DOCUMENT_ID:
-				docScroll.scrollToTop();
-				StringBuilder sb = new StringBuilder();
-				List<Long> gaps = eo.getGaps();
-
-				if(gaps.size() > 1) {
-					for (int i=0; i<gaps.size()-1; i++) {
-						sb.append(gaps.get(i) +", ");
-					}
-					sb.append(gaps.get(gaps.size()-1));
-				} else {
-					sb.append(gaps.get(0));
-				}
-					
-				number.showErrorMessage(I18NM.get.invalidDocumentIdError(sb.toString()));
-				break;
-
-			default:
-				break;
-			}
-		}
 	}
 
 }

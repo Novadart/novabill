@@ -44,7 +44,6 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.validation.ErrorObject;
 
 public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
@@ -125,6 +124,16 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
+	}
+	
+	@Override
+	protected ScrollPanel getDocScroll() {
+		return docScroll;
+	}
+	
+	@Override
+	protected ValidatedTextBox getNumber() {
+		return number;
 	}
 
 	@UiHandler("createInvoice")
@@ -246,6 +255,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	void onModifyInvoiceClicked(ClickEvent e){
 
 		if(!validateInvoice()){
+			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
 
@@ -428,45 +438,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
 		titleLabel.setText(I18N.INSTANCE.newInvoiceCreation());
-	}
-
-	private void handleServerValidationException(ValidationException ex){
-		for (ErrorObject eo : ex.getErrors()) {
-			switch(eo.getErrorCode()){
-			case INVALID_DOCUMENT_ID:
-				docScroll.scrollToTop();
-				StringBuilder sb = new StringBuilder();
-				List<Long> gaps = eo.getGaps();
-
-				if(gaps.size() > 1) {
-					for (int i=0; i<gaps.size()-1; i++) {
-						sb.append(gaps.get(i) +", ");
-					}
-					sb.append(gaps.get(gaps.size()-1));
-				} else {
-					sb.append(gaps.get(0));
-				}
-					
-				number.showErrorMessage(I18NM.get.invalidDocumentIdError(sb.toString()));
-				break;
-			
-			case NULL:
-			case BLANK_OR_NULL:
-				break;
-				
-			case LENGTH:
-				break;
-				
-			case MALFORMED_EMAIL:
-				break;
-				
-			case MALFORMED_REGEX_PATTERN:
-				break;
-			
-			default:
-				break;
-			}
-		}
 	}
 
 }
