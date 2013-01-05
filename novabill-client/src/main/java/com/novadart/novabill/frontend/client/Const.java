@@ -1,8 +1,10 @@
 package com.novadart.novabill.frontend.client;
 
+import java.util.Comparator;
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class Const {
 	
@@ -15,4 +17,14 @@ public class Const {
 	public static String genLogoUrl(){
 		return URL_LOGO + "?v=" + new Date().getTime();
 	}
+	
+	public static final Comparator<ClientDTO> CLIENT_COMPARATOR = new Comparator<ClientDTO>() {
+		
+		@Override
+		public int compare(ClientDTO o1, ClientDTO o2) {
+			
+			return o1.getName().compareToIgnoreCase(o2.getName());
+		}
+	};
+	
 }

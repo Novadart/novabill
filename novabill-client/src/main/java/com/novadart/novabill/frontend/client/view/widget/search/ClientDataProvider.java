@@ -1,10 +1,12 @@
 package com.novadart.novabill.frontend.client.view.widget.search;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.Const;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -41,6 +43,7 @@ public class ClientDataProvider extends AsyncDataProvider<ClientDTO> {
 				
 				@Override
 				public void onSuccess(List<ClientDTO> result) {
+					Collections.sort(result, Const.CLIENT_COMPARATOR);
 					updateRowData(start, result);
 					watcher.onServerCallComplete(result.size()>0);
 				}
