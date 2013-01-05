@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.view;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.place.shared.PlaceController;
@@ -171,8 +172,19 @@ public class MainWidget extends Composite {
 	
 	@UiHandler("feedback")
 	void onFeedbackClicked(ClickEvent e){
-		FeedbackDialog feedbackDialog = new FeedbackDialog();
-		feedbackDialog.showCentered();
+		GWT.runAsync(new RunAsyncCallback() {
+			
+			@Override
+			public void onSuccess() {
+				FeedbackDialog feedbackDialog = new FeedbackDialog();
+				feedbackDialog.showCentered();
+			}
+			
+			@Override
+			public void onFailure(Throwable reason) {
+				I18N.INSTANCE.errorServerCommunication();
+			}
+		});
 	}
 
 	@UiHandler("myData")
