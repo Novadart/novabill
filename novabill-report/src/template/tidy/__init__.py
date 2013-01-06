@@ -36,7 +36,7 @@ class TidyDirector(AbstractDirector):
         builder = self.getBuilder()
         doc, data = builder.getDocument(), self.getData()
         story = []
-        if data.getBusiness().getLogo():
+        if self.hasLogo():
             story.append(builder.getLogoFlowable(2.5*cm, 2.5*cm)) #place logo at the top
 #        else:
 #            story.append(builder.getNoLogoFlowable(2.5*cm, 2.5*cm))

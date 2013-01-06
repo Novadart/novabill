@@ -55,9 +55,6 @@ class BusinessData(object):
     def getWeb(self):
         return self.__data["web"]
     
-    def getLogo(self):
-        return self.__data["logo"]
-    
 """
     CLIENT DATA
 """

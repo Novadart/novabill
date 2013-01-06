@@ -62,5 +62,5 @@ def create_doc(out, docData, pathToLogo=None, logoWidth=None, logoHeight=None, d
                        subject=_("%(docType)s for %(client)s") % dict(docType=DocumentType.toString(docType), client=dataWrapper.getClient().getName()),
                        translator=_)
     directorDisplayParams = dict(pagenumbers=True, watermark=watermark, metadata=docMetadata)
-    director = Factory.createDirector(tempType, docType, builder, dataWrapper, dispParams=directorDisplayParams, translator=_) 
+    director = Factory.createDirector(tempType, docType, builder, dataWrapper, hasLogo=(pathToLogo is not None), dispParams=directorDisplayParams, translator=_) 
     director.construct()
