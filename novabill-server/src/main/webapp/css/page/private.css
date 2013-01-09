@@ -167,6 +167,10 @@ textarea:HOVER {
 	cursor: pointer;
 }
 
+.ClientView .newEstimation {
+	width: 160px;
+}
+
 .ClientView .newCreditNote {
 	width: 12em;
 }
