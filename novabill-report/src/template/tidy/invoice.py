@@ -36,7 +36,7 @@ class TidyInvoiceBuilder(TidyDocumentBuilder):
     def getDocumentDetailsHeaderFlowable(self, data, width):
         style = getSampleStyleSheet()["Normal"]
         t = Table([["", Paragraph("<b><font size=\"%d\">%s</font></b>" % (MEDIUM_FONT_SIZE, self._("Invoice")), style)],
-                   ["%s:" % self._("Number"), data.getAccountingDocumentID()],
+                   ["%s:" % self._("Number"), "%d/%d" % (data.getAccountingDocumentID(), data.getAccountingDocumentYear())],
                    ["%s:" % self._("Date"), data.getAccountingDocumentDate()]],
                   colWidths=[width*0.2, width*0.3]
                   )
