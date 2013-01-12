@@ -38,11 +38,5 @@
 			<g:SimplePanel styleName="centerContainer" ui:field="centerContainer"></g:SimplePanel>
 		</g:center>
 
-		<g:south size="2">
-			<g:HorizontalPanel styleName="southContainer">
-				<g:HTML styleName="banner" ui:field="businessBanner"></g:HTML>
-			</g:HorizontalPanel>
-		</g:south>
-
 	</g:DockLayoutPanel>
 </ui:UiBinder> 

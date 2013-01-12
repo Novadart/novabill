@@ -19,8 +19,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.Const;
-import com.novadart.novabill.frontend.client.event.BusinessUpdateEvent;
-import com.novadart.novabill.frontend.client.event.BusinessUpdateHandler;
 import com.novadart.novabill.frontend.client.event.ClientAddEvent;
 import com.novadart.novabill.frontend.client.event.ClientAddHandler;
 import com.novadart.novabill.frontend.client.event.ClientDeleteEvent;
@@ -38,7 +36,6 @@ import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.view.feedback.FeedbackDialog;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 
 public class MainWidget extends Composite {
@@ -58,7 +55,6 @@ public class MainWidget extends Composite {
 
 	@UiField SimplePanel centerContainer;
 	@UiField SimplePanel westContainer;
-	@UiField HTML businessBanner;
 	@UiField HTML stats;
 	@UiField Anchor logout;
 	@UiField Anchor logoAnchor;
@@ -73,7 +69,6 @@ public class MainWidget extends Composite {
 		logout.setHref(GWT.getHostPageBaseURL()+"resources/j_spring_security_logout");
 		logoAnchor.setHref(GWT.getHostPageBaseURL());
 
-		generateBusinessBanner();
 		generateStats(Configuration.getStats());
 
 		instance = this;
@@ -101,13 +96,6 @@ public class MainWidget extends Composite {
 			@Override
 			public void onDocumentAdd(DocumentAddEvent event) {
 				onDocumentChangeEvent();
-			}
-		});
-		eventBus.addHandler(BusinessUpdateEvent.TYPE, new BusinessUpdateHandler() {
-			
-			@Override
-			public void onBusinessUpdate(BusinessUpdateEvent event) {
-				generateBusinessBanner();
 			}
 		});
 		eventBus.addHandler(ClientDeleteEvent.TYPE, new ClientDeleteHandler() {
@@ -190,34 +178,6 @@ public class MainWidget extends Composite {
 	@UiHandler("myData")
 	void onMyDataClicked(ClickEvent e){
 		this.placeController.goTo(new BusinessPlace());
-	}
-
-	private void generateBusinessBanner(){
-		SafeHtmlBuilder shb = new SafeHtmlBuilder();
-
-		BusinessDTO b = Configuration.getBusiness();
-		//first row
-		shb.appendHtmlConstant("<span class='name'>");
-		shb.appendEscaped(b.getName());
-		shb.appendHtmlConstant("</span>");
-
-		//second row
-		shb.appendHtmlConstant("<span class='address'>");
-		shb.appendEscaped(b.getAddress()+" - " +
-				b.getPostcode()+" "+b.getCity()+" ("+b.getProvince()+")");
-		shb.appendHtmlConstant("</span>");
-
-		//third row
-		shb.appendHtmlConstant("<span class='phoneAndFax'>");
-		shb.appendEscaped("Tel. "+Configuration.getBusiness().getPhone()+" - Fax "+Configuration.getBusiness().getFax());
-		shb.appendHtmlConstant("</span>");
-
-		//fourth row
-		shb.appendHtmlConstant("<span class='vatID'>");
-		shb.appendEscaped("P.IVA "+Configuration.getBusiness().getVatID());
-		shb.appendHtmlConstant("</span>");
-
-		businessBanner.setHTML(shb.toSafeHtml());
 	}
 
 	public SimplePanel getCenterContainer() {
