@@ -1064,7 +1064,7 @@ td.datePickerMonth {
 
 .AccountDocumentView .sublabel {
 	font-weight: bold;
-	font-size: 1.3em;
+	font-size: 1.1em;
 	padding: 0.3em 0.6em 0.2em 0;
 }
 
@@ -1074,6 +1074,7 @@ td.datePickerMonth {
 
 .AccountDocumentView input[type=text].box {
 	width: 15em;
+	margin-bottom: 0.5em;
 }
 
 .AccountDocumentView .addressBox .loadDefaultsButton {
