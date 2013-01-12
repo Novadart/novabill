@@ -8,7 +8,7 @@ body {
 	background: none;
 }
 
-button {
+button.action-button, button.action2-button {
 	font-size: 1.2em !important;
 }
 
@@ -506,7 +506,7 @@ textarea:HOVER {
 
 .MainWidget .header .myDataButton {
 	height: 2.5em;
-	width: 8em;
+	width: 6em;
 	margin-left: 0.5em;
 }
 
@@ -1035,7 +1035,7 @@ td.datePickerMonth {
 .AccountDocumentView .newCreditNote
 	{
 		font-weight: bold;
-	font-size: 2em;
+	font-size: 1.8em;
 	border-bottom: 1px solid;
 	text-align: center;
 	background-color: #CCC;
@@ -1052,12 +1052,12 @@ td.datePickerMonth {
 }
 
 .AccountDocumentView .clientName {
-	font-size: 1.5em;
+	font-size: 1.3em;
 }
 
 .AccountDocumentView .label {
 	font-weight: bold;
-	font-size: 1.3em;
+	font-size: 1.1em;
 	padding: 0.2em 2em 0.7em 0;
 	width: 12em;
 }
