@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.orm.jpa.JpaSystemException;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,8 @@ import org.springframework.ui.ExtendedModelMap;
 import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.web.bind.support.SessionStatus;
+
+import com.dumbster.smtp.SimpleSmtpServer;
 import com.novadart.novabill.domain.EmailPasswordHolder;
 import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
@@ -31,6 +34,7 @@ import com.novadart.novabill.web.mvc.RegisterController;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:mvc-test-config.xml")
 @Transactional
+@DirtiesContext
 public class RegistrationActivationTest {
 	
 	@Resource(name = "userPasswordMap")
@@ -69,7 +73,12 @@ public class RegistrationActivationTest {
 		String token = "1", email = "foo@bar.com", password = "password";
 		RegisterController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
+		
 		ActivateAccountController activationController = new ActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);
@@ -157,7 +166,12 @@ public class RegistrationActivationTest {
 		String token = "1", email = "foo@bar.com", password = "password";
 		RegisterController registerController = initRegisterController(token, "%s%s", 0); //expires immediately
 		Registration registration = initRegistration(token, email, password, password, true);
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
+		
 		ActivateAccountController activationController = new ActivateAccountController();
 		String activateView = activationController.setupForm(email, token, mock(Model.class));
 		assertEquals("redirect:/registrationCompleted", registerView);
@@ -169,7 +183,12 @@ public class RegistrationActivationTest {
 		String token = "1", email = "foo@bar.com", password = "password";
 		RegisterController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertEquals(1, smtpServer.getReceivedEmailSize());
+		
 		ActivateAccountController activationController = new ActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView1 = activationController.setupForm(email, token, model);
@@ -190,12 +209,20 @@ public class RegistrationActivationTest {
 		//First registration
 		RegisterController registerController = initRegisterController(token1, "%s%s", 24);
 		Registration registration = initRegistration(token1, email, password, password, true);
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String registerView1 = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
 		//Second registration
 		registerController = initRegisterController(token2, "%s%s", 24);
 		registration = initRegistration(token2, email, password, password, true);
+		
+		smtpServer = SimpleSmtpServer.start(2525);
 		String registerView2 = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
 		//First activation initiation
 		ActivateAccountController activationController1 = new ActivateAccountController();
@@ -206,7 +233,6 @@ public class RegistrationActivationTest {
 		ActivateAccountController activationController2 = new ActivateAccountController();
 		Model model2 = new ExtendedModelMap();
 		String activateView2 = activationController2.setupForm(email, token2, model2);
-		
 		String forwardToSpringSecurityCheck1 = activationController1.processSubmit(email, password, (Registration)model1.asMap().get("registration"),
 				mock(Model.class), mock(SessionStatus.class));
 		
@@ -231,7 +257,12 @@ public class RegistrationActivationTest {
 		String token = "1", email = "foo@bar.com", password = "password";
 		RegisterController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
+		
 		ActivateAccountController activationController = new ActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);
@@ -247,7 +278,12 @@ public class RegistrationActivationTest {
 		String token = "1", email = "foo@bar.com", password = "password";
 		RegisterController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertEquals(1, smtpServer.getReceivedEmailSize());
+		
 		ActivateAccountController activationController = new ActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);

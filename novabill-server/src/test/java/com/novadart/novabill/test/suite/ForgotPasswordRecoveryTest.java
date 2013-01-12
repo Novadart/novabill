@@ -12,6 +12,7 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -20,6 +21,7 @@ import org.springframework.ui.Model;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.web.bind.support.SessionStatus;
 
+import com.dumbster.smtp.SimpleSmtpServer;
 import com.novadart.novabill.domain.EmailPasswordHolder;
 import com.novadart.novabill.domain.ForgotPassword;
 import com.novadart.novabill.domain.security.Principal;
@@ -32,6 +34,7 @@ import com.novadart.novabill.web.mvc.PasswordRecoveryController;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:mvc-test-config.xml")
 @Transactional
+@DirtiesContext
 public class ForgotPasswordRecoveryTest {
 
 	@Resource(name = "userPasswordMap")
@@ -77,7 +80,12 @@ public class ForgotPasswordRecoveryTest {
 		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "new password";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
+		
 		
 		PasswordRecoveryController recoveryController = initPasswordRecoveryController();
 		Model model = new ExtendedModelMap();
@@ -120,7 +128,11 @@ public class ForgotPasswordRecoveryTest {
 		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "new password1", confirmNewPassword = "new password2";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
 		PasswordRecoveryController recoveryController = initPasswordRecoveryController();
 		Model model = new ExtendedModelMap();
@@ -139,7 +151,11 @@ public class ForgotPasswordRecoveryTest {
 		String token = "1", email = userPasswordMap.keySet().iterator().next();
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
 		PasswordRecoveryController recoveryController = initPasswordRecoveryController();
 		Model model = new ExtendedModelMap();
@@ -158,7 +174,11 @@ public class ForgotPasswordRecoveryTest {
 		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "looooooooooooong password";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
 		PasswordRecoveryController recoveryController = initPasswordRecoveryController();
 		Model model = new ExtendedModelMap();
@@ -178,7 +198,11 @@ public class ForgotPasswordRecoveryTest {
 		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "pass";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
 		PasswordRecoveryController recoveryController = initPasswordRecoveryController();
 		Model model = new ExtendedModelMap();
@@ -198,7 +222,11 @@ public class ForgotPasswordRecoveryTest {
 		String token = "1", email = userPasswordMap.keySet().iterator().next();
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 0); //expires immediately
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
 		PasswordRecoveryController recoveryController = initPasswordRecoveryController();
 		String passwordRecoveryView = recoveryController.setupForm(email, token, mock(Model.class));
@@ -214,12 +242,20 @@ public class ForgotPasswordRecoveryTest {
 		//First forgot password
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token1, "%S%S", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token1, email);
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String forgotPasswordView1 = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
 		//Second forgot password
 		forgotPasswordController = initForgotPasswordController(token2, "%s%s", 24);
 		forgotPassword = initForgotPassword(token2, email);
+		
+		smtpServer = SimpleSmtpServer.start(2525);
 		String forgotPasswordView2 = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
 		//First password recovery
 		PasswordRecoveryController passwordRecoveryController1 = initPasswordRecoveryController();
