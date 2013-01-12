@@ -19,6 +19,7 @@ import com.novadart.novabill.frontend.client.view.View.Presenter;
 import com.novadart.novabill.frontend.client.view.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.view.widget.list.QuickViewCell;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.view.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
@@ -174,21 +175,26 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 	}
 
 	public void onDeleteClicked(final TransportDocumentDTO transportDocument) {
-		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmTransportDocumentDeletion())){
-			ServerFacade.transportDocument.remove(Configuration.getBusinessId(), transportDocument.getClient().getId(), transportDocument.getId(), new WrappedAsyncCallback<Void>() {
+		Notification.showConfirm(I18N.INSTANCE.confirmTransportDocumentDeletion(), new NotificationCallback<Boolean>() {
+			
+			@Override
+			public void onNotificationClosed(Boolean value) {
+				if(value){
+					ServerFacade.transportDocument.remove(Configuration.getBusinessId(), transportDocument.getClient().getId(), transportDocument.getId(), new WrappedAsyncCallback<Void>() {
 
-				@Override
-				public void onSuccess(Void result) {
-					eventBus.fireEvent(new DocumentDeleteEvent(transportDocument));
+						@Override
+						public void onSuccess(Void result) {
+							eventBus.fireEvent(new DocumentDeleteEvent(transportDocument));
+						}
+
+						@Override
+						public void onException(Throwable caught) {
+							Notification.showMessage(I18N.INSTANCE.errorServerCommunication());		
+						}
+					});
 				}
-
-				@Override
-				public void onException(Throwable caught) {
-					Notification.showYesNoRequest(I18N.INSTANCE.errorServerCommunication());		
-				}
-			});
-		}
-
+			}
+		});
 	}
 
 	public void setPresenter(Presenter presenter) {

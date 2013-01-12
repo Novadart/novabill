@@ -80,6 +80,32 @@ textarea:HOVER {
 	font-style: italic;
 }
 
+.NotificationDialog .body {
+	border: 0.1em solid #DDD;
+	padding: 1.5em 2em;
+	background-color: #FFF;
+	margin: 0 auto;
+	width: 25em;
+}
+
+.NotificationDialog .message {
+	text-align: center;
+	font-size: 1.2em;
+}
+
+.NotificationDialog .buttonsWrapper {
+	text-align: center;
+	margin-top: 1em;
+}
+
+.NotificationDialog .buttonsWrapper button {
+	width: 5em;
+}
+
+.NotificationDialog .buttonsWrapper button + button {
+	margin-left: 2em;
+
+}
 
 .AuthDialog {
 	background-color: white;

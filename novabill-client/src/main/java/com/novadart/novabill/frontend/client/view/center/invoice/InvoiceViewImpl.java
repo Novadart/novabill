@@ -36,6 +36,7 @@ import com.novadart.novabill.frontend.client.view.center.InvoiceView;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.view.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.view.widget.notification.NotificationCallback;
 import com.novadart.novabill.frontend.client.view.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -196,14 +197,19 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 				@Override
 				public void onSuccess(Long result) {
-					Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess());
+					Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess(), new NotificationCallback<Void>() {
+						
+						@Override
+						public void onNotificationClosed(Void value) {
+							eventBus.fireEvent(new DocumentAddEvent(invoice));
 
-					eventBus.fireEvent(new DocumentAddEvent(invoice));
-
-					ClientPlace cp = new ClientPlace();
-					cp.setClientId(client.getId());
-					cp.setDocs(DOCUMENTS.invoices);
-					presenter.goTo(cp);
+							ClientPlace cp = new ClientPlace();
+							cp.setClientId(client.getId());
+							cp.setDocs(DOCUMENTS.invoices);
+							presenter.goTo(cp);
+						}
+					});
+					
 				}
 
 				@Override
@@ -259,44 +265,60 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 			return;
 		}
 
-		if(Notification.showYesNoRequest(I18N.INSTANCE.saveModificationsConfirm()) ){
-			final InvoiceDTO inv = createInvoice(invoice);
+		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback<Boolean>() {
+			
+			@Override
+			public void onNotificationClosed(Boolean value) {
+				if(value){
+					final InvoiceDTO inv = createInvoice(invoice);
 
-			ServerFacade.invoice.update(inv, new WrappedAsyncCallback<Void>() {
+					ServerFacade.invoice.update(inv, new WrappedAsyncCallback<Void>() {
 
-				@Override
-				public void onException(Throwable caught) {
-					if(caught instanceof ValidationException){
-						handleServerValidationException((ValidationException) caught);
-					} else {
-						Notification.showMessage(I18N.INSTANCE.invoiceUpdateFailure());
-					}
+						@Override
+						public void onException(Throwable caught) {
+							if(caught instanceof ValidationException){
+								handleServerValidationException((ValidationException) caught);
+							} else {
+								Notification.showMessage(I18N.INSTANCE.invoiceUpdateFailure());
+							}
+						}
+
+						@Override
+						public void onSuccess(Void result) {
+							Notification.showMessage(I18N.INSTANCE.invoiceUpdateSuccess(), new NotificationCallback<Void>() {
+								
+								@Override
+								public void onNotificationClosed(Void value) {
+									eventBus.fireEvent(new DocumentUpdateEvent(inv));
+
+									ClientPlace cp = new ClientPlace();
+									cp.setClientId(inv.getClient().getId());
+									cp.setDocs(DOCUMENTS.invoices);
+									presenter.goTo(cp);
+								}
+							});
+						}
+					});
 				}
-
-				@Override
-				public void onSuccess(Void result) {
-					Notification.showMessage(I18N.INSTANCE.invoiceUpdateSuccess());
-
-					eventBus.fireEvent(new DocumentUpdateEvent(inv));
-
-					ClientPlace cp = new ClientPlace();
-					cp.setClientId(inv.getClient().getId());
-					cp.setDocs(DOCUMENTS.invoices);
-					presenter.goTo(cp);
-				}
-			});
-
-		} 
+			}
+		});
+		
 	}
 
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
-		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
-			ClientPlace cp = new ClientPlace();
-			cp.setClientId(client.getId());
-			cp.setDocs(DOCUMENTS.invoices);
-			presenter.goTo(cp);
-		}
+		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback<Boolean>() {
+			
+			@Override
+			public void onNotificationClosed(Boolean value) {
+				if(value){
+					ClientPlace cp = new ClientPlace();
+					cp.setClientId(client.getId());
+					cp.setDocs(DOCUMENTS.invoices);
+					presenter.goTo(cp);
+				}
+			}
+		});
 	}
 
 	private void setInvoice(InvoiceDTO invoice, boolean cloning) {

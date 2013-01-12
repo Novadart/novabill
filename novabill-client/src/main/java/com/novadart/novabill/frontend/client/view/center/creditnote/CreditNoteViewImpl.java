@@ -35,6 +35,7 @@ import com.novadart.novabill.frontend.client.view.center.CreditNoteView;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.view.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.view.widget.notification.NotificationCallback;
 import com.novadart.novabill.frontend.client.view.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -146,14 +147,18 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 
 			@Override
 			public void onSuccess(Long result) {
-				Notification.showMessage(I18N.INSTANCE.creditNoteCreationSuccess());
-				
-				eventBus.fireEvent(new DocumentAddEvent(creditNote));
+				Notification.showMessage(I18N.INSTANCE.creditNoteCreationSuccess(), new NotificationCallback<Void>() {
+					
+					@Override
+					public void onNotificationClosed(Void value) {
+						eventBus.fireEvent(new DocumentAddEvent(creditNote));
 
-				ClientPlace cp = new ClientPlace();
-				cp.setClientId(client.getId());
-				cp.setDocs(DOCUMENTS.creditNotes);
-				presenter.goTo(cp);
+						ClientPlace cp = new ClientPlace();
+						cp.setClientId(client.getId());
+						cp.setDocs(DOCUMENTS.creditNotes);
+						presenter.goTo(cp);
+					}
+				});
 			}
 
 			@Override
@@ -209,45 +214,63 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
-
-		if(Notification.showYesNoRequest(I18N.INSTANCE.saveModificationsConfirm()) ){
-			final CreditNoteDTO cn = createCreditNote(creditNote);
-
-			ServerFacade.creditNote.update(cn, new WrappedAsyncCallback<Void>() {
-
-				@Override
-				public void onSuccess(Void result) {
-					Notification.showMessage(I18N.INSTANCE.creditNoteUpdateSuccess());
-
-					eventBus.fireEvent(new DocumentUpdateEvent(creditNote));
-
-					ClientPlace cp = new ClientPlace();
-					cp.setClientId(cn.getClient().getId());
-					cp.setDocs(DOCUMENTS.creditNotes);
-					presenter.goTo(cp);
+		
+		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback<Boolean>() {
+			
+			@Override
+			public void onNotificationClosed(Boolean value) {
+				if(value){
+					final CreditNoteDTO cn = createCreditNote(creditNote);
+	
+					ServerFacade.creditNote.update(cn, new WrappedAsyncCallback<Void>() {
+	
+						@Override
+						public void onSuccess(Void result) {
+							Notification.showMessage(I18N.INSTANCE.creditNoteUpdateSuccess(), new NotificationCallback<Void>() {
+								
+								@Override
+								public void onNotificationClosed(Void value) {
+									eventBus.fireEvent(new DocumentUpdateEvent(creditNote));
+									
+									ClientPlace cp = new ClientPlace();
+									cp.setClientId(cn.getClient().getId());
+									cp.setDocs(DOCUMENTS.creditNotes);
+									presenter.goTo(cp);
+								}
+							});
+							
+						}
+	
+						@Override
+						public void onException(Throwable caught) {
+							if(caught instanceof ValidationException){
+								handleServerValidationException((ValidationException) caught);
+							} else {
+								Notification.showMessage(I18N.INSTANCE.creditNoteUpdateFailure());
+							}
+						}
+					});
 				}
+			}
+		});
 
-				@Override
-				public void onException(Throwable caught) {
-					if(caught instanceof ValidationException){
-						handleServerValidationException((ValidationException) caught);
-					} else {
-						Notification.showMessage(I18N.INSTANCE.creditNoteUpdateFailure());
-					}
-				}
-			});
-
-		} 
 	}
 
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
-		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
-			ClientPlace cp = new ClientPlace();
-			cp.setClientId(client.getId());
-			cp.setDocs(DOCUMENTS.creditNotes);
-			presenter.goTo(cp);
-		}
+		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback<Boolean>() {
+			
+			@Override
+			public void onNotificationClosed(Boolean value) {
+				if(value){
+					ClientPlace cp = new ClientPlace();
+					cp.setClientId(client.getId());
+					cp.setDocs(DOCUMENTS.creditNotes);
+					presenter.goTo(cp);
+				}
+			}
+		});
+		
 	}
 	
 	

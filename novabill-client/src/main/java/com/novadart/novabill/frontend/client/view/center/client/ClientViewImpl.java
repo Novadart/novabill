@@ -52,6 +52,7 @@ import com.novadart.novabill.frontend.client.view.widget.list.impl.EstimationLis
 import com.novadart.novabill.frontend.client.view.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.view.widget.list.impl.TransportDocumentList;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.view.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
@@ -316,25 +317,31 @@ public class ClientViewImpl extends Composite implements ClientView {
 
 	@UiHandler("cancelClient")
 	void onCancelClientClicked(ClickEvent e){
-		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmClientDeletion())){
-			ServerFacade.client.remove(Configuration.getBusinessId(), client.getId(), new WrappedAsyncCallback<Void>() {
+		Notification.showConfirm(I18N.INSTANCE.confirmClientDeletion(), new NotificationCallback<Boolean>() {
+			
+			@Override
+			public void onNotificationClosed(Boolean value) {
+				if(value){
+					ServerFacade.client.remove(Configuration.getBusinessId(), client.getId(), new WrappedAsyncCallback<Void>() {
 
-				@Override
-				public void onSuccess(Void result) {
-					eventBus.fireEvent(new ClientDeleteEvent(client));
-					presenter.goTo(new HomePlace());
-				}
+						@Override
+						public void onSuccess(Void result) {
+							eventBus.fireEvent(new ClientDeleteEvent(client));
+							presenter.goTo(new HomePlace());
+						}
 
-				@Override
-				public void onException(Throwable caught) {
-					if(caught instanceof DataIntegrityException){
-						Notification.showMessage(I18N.INSTANCE.errorClientCancelation());
-					} else {
-						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-					}
+						@Override
+						public void onException(Throwable caught) {
+							if(caught instanceof DataIntegrityException){
+								Notification.showMessage(I18N.INSTANCE.errorClientCancelation());
+							} else {
+								Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+							}
+						}
+					});
 				}
-			});
-		}
+			}
+		});
 	}
 
 	@Override

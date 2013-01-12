@@ -19,6 +19,7 @@ import com.novadart.novabill.frontend.client.view.View.Presenter;
 import com.novadart.novabill.frontend.client.view.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.view.widget.list.QuickViewCell;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.view.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 
@@ -177,20 +178,26 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 	}
 
 	public void onDeleteClicked(final EstimationDTO estimation) {
-		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmEstimationDeletion())){
-			ServerFacade.estimation.remove(Configuration.getBusinessId(), estimation.getClient().getId(), estimation.getId(), new WrappedAsyncCallback<Void>() {
+		Notification.showConfirm(I18N.INSTANCE.confirmEstimationDeletion(), new NotificationCallback<Boolean>() {
+			
+			@Override
+			public void onNotificationClosed(Boolean value) {
+				if(value){
+					ServerFacade.estimation.remove(Configuration.getBusinessId(), estimation.getClient().getId(), estimation.getId(), new WrappedAsyncCallback<Void>() {
 
-				@Override
-				public void onSuccess(Void result) {
-					eventBus.fireEvent(new DocumentDeleteEvent(estimation));
-				}
+						@Override
+						public void onSuccess(Void result) {
+							eventBus.fireEvent(new DocumentDeleteEvent(estimation));
+						}
 
-				@Override
-				public void onException(Throwable caught) {
-					Notification.showYesNoRequest(I18N.INSTANCE.errorServerCommunication());		
+						@Override
+						public void onException(Throwable caught) {
+							Notification.showMessage(I18N.INSTANCE.errorServerCommunication());		
+						}
+					});
 				}
-			});
-		}
+			}
+		});
 
 	}
 

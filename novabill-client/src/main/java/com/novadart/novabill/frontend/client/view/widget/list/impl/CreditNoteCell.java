@@ -16,6 +16,7 @@ import com.novadart.novabill.frontend.client.util.PDFUtils;
 import com.novadart.novabill.frontend.client.view.View.Presenter;
 import com.novadart.novabill.frontend.client.view.widget.list.QuickViewCell;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.view.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 
 public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
@@ -73,7 +74,7 @@ public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 	}
-	
+
 	public void setEventBus(EventBus eventBus) {
 		this.eventBus = eventBus;
 	}
@@ -136,22 +137,26 @@ public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
 	}
 
 	private void onDeleteClicked(final CreditNoteDTO creditNote) {
-		if(Notification.showYesNoRequest(I18N.INSTANCE.confirmCreditNoteDeletion())){
-			ServerFacade.creditNote.remove(Configuration.getBusinessId(), creditNote.getClient().getId(), creditNote.getId(), new WrappedAsyncCallback<Void>() {
+		Notification.showConfirm(I18N.INSTANCE.confirmCreditNoteDeletion(), new NotificationCallback<Boolean>() {
 
-				@Override
-				public void onSuccess(Void result) {
-					eventBus.fireEvent(new DocumentDeleteEvent(creditNote));
+			@Override
+			public void onNotificationClosed(Boolean value) {
+				if(value){
+					ServerFacade.creditNote.remove(Configuration.getBusinessId(), creditNote.getClient().getId(), creditNote.getId(), new WrappedAsyncCallback<Void>() {
+
+						@Override
+						public void onSuccess(Void result) {
+							eventBus.fireEvent(new DocumentDeleteEvent(creditNote));
+						}
+
+						@Override
+						public void onException(Throwable caught) {
+							Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+						}
+					});
 				}
-
-				@Override
-				public void onException(Throwable caught) {
-					Notification.showYesNoRequest(I18N.INSTANCE.errorServerCommunication());
-				}
-			});
-
-		}
-
+			}
+		});
 	}
 
 }

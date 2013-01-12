@@ -35,6 +35,7 @@ import com.novadart.novabill.frontend.client.view.center.EstimationView;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.view.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.view.widget.notification.NotificationCallback;
 import com.novadart.novabill.frontend.client.view.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -228,44 +229,61 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
+		
+		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback<Boolean>() {
+			
+			@Override
+			public void onNotificationClosed(Boolean value) {
+				if(value){
+					final EstimationDTO es = createEstimation(estimation);
 
-		if(Notification.showYesNoRequest(I18N.INSTANCE.saveModificationsConfirm()) ){
-			final EstimationDTO es = createEstimation(estimation);
+					ServerFacade.estimation.update(es, new WrappedAsyncCallback<Void>() {
 
-			ServerFacade.estimation.update(es, new WrappedAsyncCallback<Void>() {
+						@Override
+						public void onException(Throwable caught) {
+							if(caught instanceof ValidationException){
+								handleServerValidationException((ValidationException) caught);
+							} else {
+								Notification.showMessage(I18N.INSTANCE.estimationUpdateFailure());
+							}
+						}
 
-				@Override
-				public void onException(Throwable caught) {
-					if(caught instanceof ValidationException){
-						handleServerValidationException((ValidationException) caught);
-					} else {
-						Notification.showMessage(I18N.INSTANCE.estimationUpdateFailure());
-					}
+						@Override
+						public void onSuccess(Void result) {
+							Notification.showMessage(I18N.INSTANCE.estimationUpdateSuccess(), new NotificationCallback<Void>() {
+								
+								@Override
+								public void onNotificationClosed(Void value) {
+									eventBus.fireEvent(new DocumentUpdateEvent(es));
+
+									ClientPlace cp = new ClientPlace();
+									cp.setClientId(es.getClient().getId());
+									cp.setDocs(DOCUMENTS.estimations);
+									presenter.goTo(cp);
+								}
+							});
+						}
+					});
 				}
+			}
+		});
 
-				@Override
-				public void onSuccess(Void result) {
-					Notification.showMessage(I18N.INSTANCE.estimationUpdateSuccess());
-					
-					eventBus.fireEvent(new DocumentUpdateEvent(es));
-
-					ClientPlace cp = new ClientPlace();
-					cp.setClientId(es.getClient().getId());
-					cp.setDocs(DOCUMENTS.estimations);
-					presenter.goTo(cp);
-				}
-			});
-		}
 	}
 
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
-		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
-			ClientPlace cp = new ClientPlace();
-			cp.setClientId(client.getId());
-			cp.setDocs(DOCUMENTS.estimations);
-			presenter.goTo(cp);
-		}
+		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback<Boolean>() {
+			
+			@Override
+			public void onNotificationClosed(Boolean value) {
+				if(value){
+					ClientPlace cp = new ClientPlace();
+					cp.setClientId(client.getId());
+					cp.setDocs(DOCUMENTS.estimations);
+					presenter.goTo(cp);
+				}
+			}
+		});
 	}
 
 

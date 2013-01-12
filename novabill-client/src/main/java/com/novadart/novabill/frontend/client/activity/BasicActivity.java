@@ -7,6 +7,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.view.View.Presenter;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.view.widget.notification.NotificationCallback;
 
 public abstract class BasicActivity extends AbstractActivity implements Presenter {
 	
@@ -27,8 +28,13 @@ public abstract class BasicActivity extends AbstractActivity implements Presente
 	}
 	
 	protected void manageError(){
-		Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-		goTo(new HomePlace());
+		Notification.showMessage(I18N.INSTANCE.errorServerCommunication(), new NotificationCallback<Void>() {
+			
+			@Override
+			public void onNotificationClosed(Void value) {
+				goTo(new HomePlace());
+			}
+		});
 	}
 	
 }

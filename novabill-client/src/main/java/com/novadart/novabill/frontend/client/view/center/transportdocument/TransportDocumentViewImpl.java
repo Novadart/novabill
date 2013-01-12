@@ -41,6 +41,7 @@ import com.novadart.novabill.frontend.client.view.center.TransportDocumentView;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.view.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.view.widget.notification.NotificationCallback;
 import com.novadart.novabill.frontend.client.view.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
@@ -248,11 +249,17 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			@Override
 			public void onSuccess(Long result) {
 				eventBus.fireEvent(new DocumentAddEvent(transportDocument));
-				Notification.showMessage(I18N.INSTANCE.transportDocumentCreationSuccess());
-				ClientPlace cp = new ClientPlace();
-				cp.setClientId(client.getId());
-				cp.setDocs(DOCUMENTS.transportDocuments);
-				presenter.goTo(cp);
+				Notification.showMessage(I18N.INSTANCE.transportDocumentCreationSuccess(), new NotificationCallback<Void>() {
+					
+					@Override
+					public void onNotificationClosed(Void value) {
+						ClientPlace cp = new ClientPlace();
+						cp.setClientId(client.getId());
+						cp.setDocs(DOCUMENTS.transportDocuments);
+						presenter.goTo(cp);
+					}
+				});
+				
 			}
 
 			@Override
@@ -336,43 +343,60 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
+		
+		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback<Boolean>() {
+			
+			@Override
+			public void onNotificationClosed(Boolean value) {
+				if(value){
+					final TransportDocumentDTO td = createTransportDocument(transportDocument);
 
-		if(Notification.showYesNoRequest(I18N.INSTANCE.saveModificationsConfirm()) ){
-			final TransportDocumentDTO td = createTransportDocument(transportDocument);
+					ServerFacade.transportDocument.update(td, new WrappedAsyncCallback<Void>() {
 
-			ServerFacade.transportDocument.update(td, new WrappedAsyncCallback<Void>() {
+						@Override
+						public void onException(Throwable caught) {
+							if(caught instanceof ValidationException){
+								handleServerValidationException((ValidationException) caught);
+							} else {
+								Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateFailure());
+							}
+						}
 
-				@Override
-				public void onException(Throwable caught) {
-					if(caught instanceof ValidationException){
-						handleServerValidationException((ValidationException) caught);
-					} else {
-						Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateFailure());
-					}
+						@Override
+						public void onSuccess(Void result) {
+							eventBus.fireEvent(new DocumentUpdateEvent(transportDocument));
+							Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateSuccess(), new NotificationCallback<Void>() {
+								
+								@Override
+								public void onNotificationClosed(Void value) {
+									ClientPlace cp = new ClientPlace();
+									cp.setClientId(td.getClient().getId());
+									cp.setDocs(DOCUMENTS.transportDocuments);
+									presenter.goTo(cp);
+								}
+							});
+						}
+					});
 				}
+			}
+		});
 
-				@Override
-				public void onSuccess(Void result) {
-					eventBus.fireEvent(new DocumentUpdateEvent(transportDocument));
-					Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateSuccess());
-
-					ClientPlace cp = new ClientPlace();
-					cp.setClientId(td.getClient().getId());
-					cp.setDocs(DOCUMENTS.transportDocuments);
-					presenter.goTo(cp);
-				}
-			});
-		}
 	}
 
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
-		if(Notification.showYesNoRequest(I18N.INSTANCE.cancelModificationsConfirmation()) ){
-			ClientPlace cp = new ClientPlace();
-			cp.setClientId(client.getId());
-			cp.setDocs(DOCUMENTS.transportDocuments);
-			presenter.goTo(cp);
-		}
+		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback<Boolean>() {
+			
+			@Override
+			public void onNotificationClosed(Boolean value) {
+				if(value){
+					ClientPlace cp = new ClientPlace();
+					cp.setClientId(client.getId());
+					cp.setDocs(DOCUMENTS.transportDocuments);
+					presenter.goTo(cp);
+				}
+			}
+		});
 	}
 
 	@Override
