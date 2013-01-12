@@ -19,6 +19,8 @@ public abstract class NotificationDialog<T> extends Dialog {
 			UiBinder<Widget, NotificationDialog<?>> {
 	}
 
+	private static boolean notificationOnScreen = false;
+	
 	@UiField Label message;
 	@UiField FlowPanel buttons;
 	
@@ -44,11 +46,21 @@ public abstract class NotificationDialog<T> extends Dialog {
 	@Override
 	protected void onUnload() {
 		super.onUnload();
+		notificationOnScreen = false;
 		this.onClose.onNotificationClosed(getValue());
 	}
 	
 	public void setMessage(String text) {
 		message.setText(text);
+	}
+	
+	@Override
+	public void show() {
+		if(notificationOnScreen){
+			return;
+		}
+		notificationOnScreen = true;
+		super.show();
 	}
 	
 }
