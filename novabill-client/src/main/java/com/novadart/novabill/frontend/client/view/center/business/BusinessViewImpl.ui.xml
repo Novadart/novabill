@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:t="urn:import:com.novadart.gwtshared.client.textbox"
 	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget" 
-	xmlns:n="urn:import:com.novadart.novabill.frontend.client.view.widget.notification">
+	xmlns:n="urn:import:com.novadart.novabill.frontend.client.view.widget.notification" xmlns:gwtshared="urn:import:com.novadart.gwtshared.client">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n" />
@@ -10,8 +10,7 @@
 	<g:ScrollPanel styleName="BusinessView" height="100%">
 		<g:FlowPanel>
 			<g:SimplePanel>
-				<g:Button styleName="saveData button" ui:field="saveData"
-					text="{i18n.saveModifications}"></g:Button>
+			<gwtshared:LoaderButton ui:field="saveData" text="{i18n.saveModifications}" />
 			</g:SimplePanel>
 	
 	

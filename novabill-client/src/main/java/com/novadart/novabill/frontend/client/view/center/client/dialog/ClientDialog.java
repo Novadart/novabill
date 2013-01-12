@@ -202,7 +202,6 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		contact.setPhone(contactPhone.getText());
 		
 		ok.showLoader(true);
-		
 		setLocked(true);
 		if(this.client == null) {
 			ServerFacade.client.add(Configuration.getBusinessId(), client, new WrappedAsyncCallback<Long>() {

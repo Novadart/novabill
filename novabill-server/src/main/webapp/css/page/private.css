@@ -1269,6 +1269,10 @@ td.datePickerMonth {
 	padding: 1em;
 }
 
+.BusinessView .LoaderButton {
+	width: 10em;
+}
+
 .BusinessView .businessLabel {
 	margin-right: 1em;
 }
