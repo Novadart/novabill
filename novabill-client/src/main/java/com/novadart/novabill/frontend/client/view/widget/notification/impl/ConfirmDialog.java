@@ -10,7 +10,7 @@ import com.novadart.novabill.frontend.client.view.widget.notification.Notificati
 
 public class ConfirmDialog extends NotificationDialog<Boolean> {
 
-	private Boolean value;
+	private Boolean value = false;
 	
 	public ConfirmDialog(NotificationCallback<Boolean> onClose) {
 		super(onClose);
