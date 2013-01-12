@@ -25,7 +25,7 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientSearch implements Watcher {
 
-	private static final int QUERY_MIN_LENGHT = 3; 
+	private static final int QUERY_MIN_LENGHT = 1; 
 	private static final int MIN_WAIT_BEFORE_FIRING_SEARCH = 1200;
 	private static final Range CLIENT_LIST_RANGE = new Range(0, 20000);
 
