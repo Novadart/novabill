@@ -186,7 +186,7 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 			@Override
 			public void onClientSelected(ClientDTO client) {
 				CloneInvoicePlace cip = new CloneInvoicePlace();
-				cip.setClientId(invoice.getClient().getId());
+				cip.setClientId(client.getId());
 				cip.setInvoiceId(invoice.getId());
 				presenter.goTo(cip);
 			}

@@ -151,7 +151,7 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 			@Override
 			public void onClientSelected(final ClientDTO client) {
 				CloneTransportDocumentPlace p = new CloneTransportDocumentPlace();
-				p.setClientId(transportDocument.getClient().getId());
+				p.setClientId(client.getId());
 				p.setTransportDocumentId(transportDocument.getId());
 				presenter.goTo(p);
 			}
