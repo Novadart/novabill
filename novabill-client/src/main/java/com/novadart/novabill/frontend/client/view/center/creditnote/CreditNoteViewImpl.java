@@ -13,6 +13,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -74,6 +75,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
 
+	@UiField Button abort;
 	@UiField LoaderButton modifyDocument;
 	@UiField LoaderButton createCreditNote;
 	
@@ -389,12 +391,14 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	public void setLocked(boolean value) {
 
 		payment.setEnabled(!value);
-		itemInsertionForm.setLocked(!value);
+		itemInsertionForm.setLocked(value);
 
 		date.setEnabled(!value);
 		number.setEnabled(!value);
 		paymentNote.setEnabled(!value);
 		note.setEnabled(!value);
+		
+		abort.setEnabled(!value);
 	}
 
 }
