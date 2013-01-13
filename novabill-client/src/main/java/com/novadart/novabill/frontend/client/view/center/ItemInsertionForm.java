@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -19,10 +20,11 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
-public class ItemInsertionForm extends Composite {
+public class ItemInsertionForm extends Composite implements HasUILocking {
 
 	private static ItemListUiBinder uiBinder = GWT
 			.create(ItemListUiBinder.class);
@@ -45,6 +47,8 @@ public class ItemInsertionForm extends Composite {
 	@UiField(provided=true) ListBox tax;
 	@UiField(provided=true) ItemTable itemTable;
 
+	@UiField Button add;
+	
 	private final Handler handler;
 	
 	public ItemInsertionForm(Handler handler) {
@@ -110,6 +114,7 @@ public class ItemInsertionForm extends Composite {
 		unitOfMeasure.setText("");
 		price.setText("");
 		tax.setSelectedIndex(0);
+		setLocked(false);
 	}
 
 	public void reset(){
@@ -129,6 +134,16 @@ public class ItemInsertionForm extends Composite {
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
+	}
+
+	@Override
+	public void setLocked(boolean value) {
+		item.setEnabled(!value);
+		quantity.setEnabled(!value);
+		unitOfMeasure.setEnabled(!value);
+		price.setEnabled(!value);
+		tax.setEnabled(!value);
+		add.setEnabled(!value);
 	}
 	
 }
