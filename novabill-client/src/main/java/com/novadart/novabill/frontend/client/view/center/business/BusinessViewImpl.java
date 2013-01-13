@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitCompleteEvent;
 import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
+import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
@@ -27,6 +28,7 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.util.ExportUtils;
+import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.BusinessView;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.view.widget.notification.InlineNotification;
@@ -36,7 +38,7 @@ import com.novadart.novabill.frontend.client.view.widget.validation.ValidationKi
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
 
-public class BusinessViewImpl extends Composite implements BusinessView {
+public class BusinessViewImpl extends Composite implements BusinessView, HasUILocking {
 
 	private static BusinessViewImplUiBinder uiBinder = GWT
 			.create(BusinessViewImplUiBinder.class);
@@ -49,6 +51,7 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	private EventBus eventBus;
 
 	@UiField Button updateLogo;
+	@UiField Button removeLogo;
 	@UiField FormPanel formPanel;
 	@UiField Image logo;
 	
@@ -67,6 +70,11 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	@UiField(provided=true) ValidatedTextBox mobile;
 	@UiField(provided=true) ValidatedTextBox fax;
 	@UiField ValidatedTextBox web;
+	
+	@UiField LoaderButton saveData;
+	@UiField Button exportClientData;
+	@UiField Button exportInvoiceData;
+	@UiField Button exportEstimationData;
 	
 	private boolean logoUpdateCompleted = true;
 	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation();
@@ -106,7 +114,9 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		fax.setText(b.getFax());
 
 		initWidget(uiBinder.createAndBindUi(this));
-
+		
+		saveData.getButton().setStyleName("saveData button");
+		
 		logo.setUrl(Const.genLogoUrl());
 		
 		formPanel.setAction(Const.URL_LOGO);
@@ -233,6 +243,8 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 		mobile.setText(b.getMobile());
 		fax.setText(b.getFax());
 		inlineNotification.hide();
+		saveData.reset();
+		setLocked(false);
 	}
 
 	@Override
@@ -291,18 +303,25 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 			b.setFax(fax.getText());
 			b.setWeb(web.getText());
 			
+			saveData.showLoader(true);
+			setLocked(true);
+			
 			ServerFacade.business.update(b, new AsyncCallback<Void>() {
 				
 				@Override
 				public void onSuccess(Void result) {
+					saveData.showLoader(true);
 					Configuration.setBusiness(b);
 					presenter.goTo(new HomePlace());
 					eventBus.fireEvent(new BusinessUpdateEvent());
+					setLocked(false);
 				}
 				
 				@Override
 				public void onFailure(Throwable caught) {
 					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+					saveData.showLoader(true);
+					setLocked(false);
 				}
 			});
 			
@@ -322,6 +341,29 @@ public class BusinessViewImpl extends Composite implements BusinessView {
 	@UiHandler("exportEstimationData")
 	void onExportEstimationDataClicked(ClickEvent e){
 		ExportUtils.exportData(false, false, true);
+	}
+	
+	@Override
+	public void setLocked(boolean value) {
+		updateLogo.setEnabled(!value);
+		removeLogo.setEnabled(!value);
+		
+		name.setEnabled(!value);
+		ssn.setEnabled(!value);
+		vatID.setEnabled(!value);
+		address.setEnabled(!value);
+		city.setEnabled(!value);
+		province.setEnabled(!value);
+		country.setEnabled(!value);
+		postcode.setEnabled(!value);
+		phone.setEnabled(!value);
+		email.setEnabled(!value);
+		mobile.setEnabled(!value);
+		fax.setEnabled(!value);
+		web.setEnabled(!value);
+		exportClientData.setEnabled(!value);
+		exportEstimationData.setEnabled(!value);
+		exportInvoiceData.setEnabled(!value);
 	}
 	
 }

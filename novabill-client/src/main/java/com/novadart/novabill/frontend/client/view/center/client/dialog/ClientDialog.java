@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
@@ -20,6 +21,7 @@ import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.view.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
@@ -28,7 +30,7 @@ import com.novadart.novabill.frontend.client.view.widget.validation.ValidationKi
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
 
-public class ClientDialog extends Dialog {
+public class ClientDialog extends Dialog implements HasUILocking {
 
 	private static ClientDialogUiBinder uiBinder = GWT
 			.create(ClientDialogUiBinder.class);
@@ -71,6 +73,7 @@ public class ClientDialog extends Dialog {
 	@UiField(provided=true) ValidatedTextBox contactSurname;
 	
 	@UiField LoaderButton ok;
+	@UiField Button cancel;
 	
 	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation(); 
 	
@@ -199,7 +202,7 @@ public class ClientDialog extends Dialog {
 		contact.setPhone(contactPhone.getText());
 		
 		ok.showLoader(true);
-		
+		setLocked(true);
 		if(this.client == null) {
 			ServerFacade.client.add(Configuration.getBusinessId(), client, new WrappedAsyncCallback<Long>() {
 
@@ -208,12 +211,14 @@ public class ClientDialog extends Dialog {
 					ok.showLoader(false);
 					eventBus.fireEvent(new ClientAddEvent(client));
 					hide();
+					setLocked(false);
 				}
 
 				@Override
 				public void onException(Throwable caught) {
 					ok.showLoader(false);
 					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+					setLocked(false);
 				}
 			});
 		} else {
@@ -225,12 +230,14 @@ public class ClientDialog extends Dialog {
 					ok.showLoader(false);
 					eventBus.fireEvent(new ClientUpdateEvent(client));
 					hide();
+					setLocked(false);
 				}
 
 				@Override
 				public void onException(Throwable caught) {
 					ok.showLoader(false);
 					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+					setLocked(false);
 				}
 			});
 			
@@ -291,6 +298,8 @@ public class ClientDialog extends Dialog {
 		inlineNotification.hide();
 		clientDialogTitle.setText(I18N.INSTANCE.addNewClientTitle());
 		ok.reset();
+		
+		setLocked(false);
 	}
 
 	private boolean validate(){
@@ -320,5 +329,28 @@ public class ClientDialog extends Dialog {
 		return isValid;
 	}
 
+	@Override
+	public void setLocked(boolean value) {
+		companyName.setEnabled(!value);
+		address.setEnabled(!value);
+		city.setEnabled(!value);
+		province.setEnabled(!value);
+		country.setEnabled(!value);
+		postcode.setEnabled(!value);
+		phone.setEnabled(!value);
+		mobile.setEnabled(!value);
+		fax.setEnabled(!value);
+		email.setEnabled(!value);
+		web.setEnabled(!value);
+		vatID.setEnabled(!value);
+		ssn.setEnabled(!value);
+		contactMobile.setEnabled(!value);
+		contactFax.setEnabled(!value);
+		contactEmail.setEnabled(!value);
+		contactPhone.setEnabled(!value);
+		contactName.setEnabled(!value);
+		contactSurname.setEnabled(!value);
+		cancel.setEnabled(!value);
+	}
 
 }

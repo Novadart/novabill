@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
@@ -30,6 +31,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
 import com.novadart.novabill.frontend.client.view.center.CreditNoteView;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
@@ -44,7 +46,7 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
-public class CreditNoteViewImpl extends AccountDocument implements CreditNoteView {
+public class CreditNoteViewImpl extends AccountDocument implements CreditNoteView, HasUILocking {
 
 	private static CreditNoteViewImplUiBinder uiBinder = GWT
 			.create(CreditNoteViewImplUiBinder.class);
@@ -68,14 +70,15 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	@UiField Label paymentNoteLabel;
 	@UiField ValidatedTextArea paymentNote;
 	@UiField ValidatedTextArea note;
-	@UiField Button createCreditNote;
-	@UiField Button modifyDocument;
 
 	@UiField Label totalBeforeTaxes;
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
 
-
+	@UiField Button abort;
+	@UiField LoaderButton modifyDocument;
+	@UiField LoaderButton createCreditNote;
+	
 	private Presenter presenter;
 	private CreditNoteDTO creditNote;
 	private ClientDTO client;
@@ -101,6 +104,9 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("AccountDocumentView");
+		
+		modifyDocument.getButton().setStyleName("modifyButton button");
+		createCreditNote.getButton().setStyleName("createButton button");
 	}
 
 	@Override
@@ -142,7 +148,8 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 
 		final CreditNoteDTO creditNote = createCreditNote(null);
 		
-
+		setLocked(true);
+		createCreditNote.showLoader(true);
 		ServerFacade.creditNote.add(creditNote, new WrappedAsyncCallback<Long>() {
 
 			@Override
@@ -151,23 +158,27 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 					
 					@Override
 					public void onNotificationClosed(Void value) {
+						createCreditNote.showLoader(false);
 						eventBus.fireEvent(new DocumentAddEvent(creditNote));
 
 						ClientPlace cp = new ClientPlace();
 						cp.setClientId(client.getId());
 						cp.setDocs(DOCUMENTS.creditNotes);
 						presenter.goTo(cp);
+						setLocked(false);
 					}
 				});
 			}
 
 			@Override
 			public void onException(Throwable caught) {
+				createCreditNote.showLoader(false);
 				if(caught instanceof ValidationException){
 					handleServerValidationException((ValidationException) caught);
 				} else {
 					Notification.showMessage(I18N.INSTANCE.creditNoteCreationFailure());
 				}
+				setLocked(false);
 			}
 		});
 			
@@ -221,7 +232,10 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 			public void onNotificationClosed(Boolean value) {
 				if(value){
 					final CreditNoteDTO cn = createCreditNote(creditNote);
-	
+					
+					setLocked(true);
+					modifyDocument.showLoader(true);
+					
 					ServerFacade.creditNote.update(cn, new WrappedAsyncCallback<Void>() {
 	
 						@Override
@@ -230,6 +244,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 								
 								@Override
 								public void onNotificationClosed(Void value) {
+									modifyDocument.showLoader(false);
 									eventBus.fireEvent(new DocumentUpdateEvent(creditNote));
 									
 									ClientPlace cp = new ClientPlace();
@@ -238,16 +253,18 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 									presenter.goTo(cp);
 								}
 							});
-							
+							setLocked(false);
 						}
 	
 						@Override
 						public void onException(Throwable caught) {
+							modifyDocument.showLoader(false);
 							if(caught instanceof ValidationException){
 								handleServerValidationException((ValidationException) caught);
 							} else {
 								Notification.showMessage(I18N.INSTANCE.creditNoteUpdateFailure());
 							}
+							setLocked(false);
 						}
 					});
 				}
@@ -365,6 +382,23 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		itemInsertionForm.reset();
 		
 		titleLabel.setText(I18N.INSTANCE.newCreditNoteCreation());
+		modifyDocument.reset();
+		createCreditNote.reset();
+		setLocked(false);
+	}
+
+	@Override
+	public void setLocked(boolean value) {
+
+		payment.setEnabled(!value);
+		itemInsertionForm.setLocked(value);
+
+		date.setEnabled(!value);
+		number.setEnabled(!value);
+		paymentNote.setEnabled(!value);
+		note.setEnabled(!value);
+		
+		abort.setEnabled(!value);
 	}
 
 }

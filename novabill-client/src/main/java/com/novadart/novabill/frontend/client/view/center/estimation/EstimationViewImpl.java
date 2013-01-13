@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
@@ -30,6 +31,7 @@ import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
 import com.novadart.novabill.frontend.client.view.center.EstimationView;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
@@ -42,7 +44,7 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
-public class EstimationViewImpl extends AccountDocument implements EstimationView {
+public class EstimationViewImpl extends AccountDocument implements EstimationView, HasUILocking {
 
 	private static EstimationViewImplUiBinder uiBinder = GWT
 			.create(EstimationViewImplUiBinder.class);
@@ -61,9 +63,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiField ValidatedTextArea note;
 	@UiField ValidatedTextArea paymentNote;
 	@UiField ValidatedTextArea limitations;
-	@UiField Button createEstimation;
-	@UiField Button modifyDocument;
-	@UiField Button convertToInvoice;
 	
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 	
@@ -71,7 +70,12 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
 	
-
+	@UiField LoaderButton modifyDocument;
+	@UiField LoaderButton createEstimation;
+	@UiField LoaderButton convertToInvoice;
+	@UiField Button abort;
+	
+	
 	private Presenter presenter;
 	private EventBus eventBus;
 	private EstimationDTO estimation;
@@ -97,6 +101,11 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("AccountDocumentView");
+		
+		modifyDocument.getButton().setStyleName("modifyButton button");
+		createEstimation.getButton().setStyleName("createButton button");
+		convertToInvoice.getButton().setStyleName("convertToInvoice button");
+		
 	}
 	
 	@Override
@@ -136,20 +145,35 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
-
+		
+		convertToInvoice.showLoader(true);
+		setLocked(true);
+		modifyDocument.getButton().setEnabled(false);
+		createEstimation.getButton().setEnabled(false);
+		
 		final EstimationDTO estimation = createEstimation(this.estimation);
 		ServerFacade.estimation.add(estimation, new WrappedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
+				convertToInvoice.showLoader(false);
 				FromEstimationInvoicePlace pl = new FromEstimationInvoicePlace();
 				pl.setEstimationId(result);
 				presenter.goTo(pl);
+				
+				setLocked(false);
+				modifyDocument.getButton().setEnabled(true);
+				createEstimation.getButton().setEnabled(true);
 			}
 
 			@Override
 			public void onException(Throwable caught) {
+				convertToInvoice.showLoader(false);
 				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+				
+				setLocked(false);
+				modifyDocument.getButton().setEnabled(true);
+				createEstimation.getButton().setEnabled(true);
 			}
 		});
 		
@@ -162,13 +186,18 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
+		
+		createEstimation.showLoader(true);
+		setLocked(true);
+		modifyDocument.getButton().setEnabled(false);
+		convertToInvoice.getButton().setEnabled(false);
 
 		final EstimationDTO estimation = createEstimation(null);
-
 		ServerFacade.estimation.add(estimation, new WrappedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
+				createEstimation.showLoader(false);
 				Notification.showMessage(I18N.INSTANCE.estimationCreationSuccess());
 
 				eventBus.fireEvent(new DocumentAddEvent(estimation));
@@ -177,15 +206,24 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 				cp.setClientId(client.getId());
 				cp.setDocs(DOCUMENTS.estimations);
 				presenter.goTo(cp);
+				
+				setLocked(false);
+				modifyDocument.getButton().setEnabled(true);
+				convertToInvoice.getButton().setEnabled(true);
 			}
 
 			@Override
 			public void onException(Throwable caught) {
+				createEstimation.showLoader(false);
 				if(caught instanceof ValidationException){
 					handleServerValidationException((ValidationException) caught);
 				} else {
 					Notification.showMessage(I18N.INSTANCE.estimationCreationFailure());
 				}
+				
+				setLocked(false);
+				modifyDocument.getButton().setEnabled(true);
+				convertToInvoice.getButton().setEnabled(true);
 			}
 		});
 
@@ -235,21 +273,35 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
+					
+					modifyDocument.showLoader(true);
+					setLocked(true);
+					createEstimation.getButton().setEnabled(false);
+					convertToInvoice.getButton().setEnabled(false);
+					
+					
 					final EstimationDTO es = createEstimation(estimation);
 
 					ServerFacade.estimation.update(es, new WrappedAsyncCallback<Void>() {
 
 						@Override
 						public void onException(Throwable caught) {
+							modifyDocument.showLoader(false);
 							if(caught instanceof ValidationException){
 								handleServerValidationException((ValidationException) caught);
 							} else {
 								Notification.showMessage(I18N.INSTANCE.estimationUpdateFailure());
 							}
+							
+							setLocked(false);
+							createEstimation.getButton().setEnabled(true);
+							convertToInvoice.getButton().setEnabled(true);
 						}
 
 						@Override
 						public void onSuccess(Void result) {
+							modifyDocument.showLoader(false);
+							
 							Notification.showMessage(I18N.INSTANCE.estimationUpdateSuccess(), new NotificationCallback<Void>() {
 								
 								@Override
@@ -260,6 +312,10 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 									cp.setClientId(es.getClient().getId());
 									cp.setDocs(DOCUMENTS.estimations);
 									presenter.goTo(cp);
+									
+									setLocked(false);
+									createEstimation.getButton().setEnabled(true);
+									convertToInvoice.getButton().setEnabled(true);
 								}
 							});
 						}
@@ -394,6 +450,25 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		itemInsertionForm.reset();
 		
 		titleLabel.setText(I18N.INSTANCE.newEstimationCreation());
+		
+		modifyDocument.reset();
+		createEstimation.reset();
+		convertToInvoice.reset();
+		setLocked(false);
+	}
+
+	@Override
+	public void setLocked(boolean value) {
+		number.setEnabled(!value);
+		date.setEnabled(!value);
+		validTill.setEnabled(!value);
+		note.setEnabled(!value);
+		paymentNote.setEnabled(!value);
+		limitations.setEnabled(!value);
+		
+		itemInsertionForm.setLocked(value);
+		
+		abort.setEnabled(!value);
 	}
 
 }

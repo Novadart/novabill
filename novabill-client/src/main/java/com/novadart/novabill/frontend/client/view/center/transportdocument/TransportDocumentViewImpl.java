@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.ValidationBundle;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
@@ -35,6 +36,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.view.center.TransportDocumentView;
@@ -50,14 +52,14 @@ import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
-public class TransportDocumentViewImpl extends AccountDocument implements TransportDocumentView {
+public class TransportDocumentViewImpl extends AccountDocument implements TransportDocumentView, HasUILocking {
 
 	private static TransportDocumentViewImplUiBinder uiBinder = GWT
 			.create(TransportDocumentViewImplUiBinder.class);
 
 	interface TransportDocumentViewImplUiBinder extends UiBinder<Widget, TransportDocumentViewImpl> {
 	}
-	
+
 	@UiField Label titleLabel;
 	@UiField FlowPanel docControls;
 	@UiField ScrollPanel docScroll;
@@ -68,6 +70,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) RichTextBox fromAddrCity;
 	@UiField(provided=true) ValidatedListBox fromAddrProvince;
 	@UiField(provided=true) ValidatedListBox fromAddrCountry;
+	@UiField Button fromAddrButtonDefault;
 	
 	@UiField(provided=true) RichTextBox toAddrCompanyName;
 	@UiField(provided=true) RichTextBox toAddrStreetName;
@@ -75,29 +78,32 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) RichTextBox toAddrCity;
 	@UiField(provided=true) ValidatedListBox toAddrProvince;
 	@UiField(provided=true) ValidatedListBox toAddrCountry;
+	@UiField Button toAddrButtonDefault;
 	
 	@UiField(provided=true) ValidatedTextBox numberOfPackages;
 	@UiField(provided=true) ValidatedTextBox transporter;
-	
+
 	@UiField(provided=true) DateBox transportStartDate;
 	@UiField(provided=true) ValidatedListBox hour;
 	@UiField(provided=true) ValidatedListBox minute;
-	
+
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
-	
+
 	@UiField TextBox transportationResponsibility;
 	@UiField TextBox tradeZone;
-	
+
 	@UiField Label clientName;
 	@UiField(provided=true) ValidatedTextBox number;
 	@UiField(provided=true) DateBox date;
 	@UiField ValidatedTextArea note;
-	@UiField Button createTransportDocument;
-	@UiField Button modifyDocument;
 
 	@UiField Label totalBeforeTaxes;
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
+
+	@UiField LoaderButton modifyDocument;
+	@UiField LoaderButton createTransportDocument;
+	@UiField Button abort;
 
 
 	private Presenter presenter;
@@ -107,107 +113,110 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	public TransportDocumentViewImpl() {
 		ValidationBundle<String> nev = new ValidationBundle<String>() {
-			
+
 			@Override
 			public boolean isValid(String value) { 	return !value.isEmpty(); }
-			
+
 			@Override
 			public String getErrorMessage() {	return null; }
 		};
-		
+
 		number = new ValidatedTextBox(ValidationKit.NUMBER);
-		
+
 		numberOfPackages = new ValidatedTextBox(ValidationKit.NUMBER);
 		transporter = new ValidatedTextBox(nev);
-		
+
 		fromAddrCity = new RichTextBox(I18N.INSTANCE.city(), nev);
 		fromAddrCompanyName = new RichTextBox(I18N.INSTANCE.companyName(),nev);
 		fromAddrPostCode = new RichTextBox(I18N.INSTANCE.postcode(), nev);
 		fromAddrStreetName = new RichTextBox(I18N.INSTANCE.address(),nev);
 		fromAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		fromAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
-		
+
 		toAddrCity = new RichTextBox(I18N.INSTANCE.city(),nev);
 		toAddrCompanyName = new RichTextBox(I18N.INSTANCE.companyName(), nev);
 		toAddrPostCode = new RichTextBox(I18N.INSTANCE.postcode(),nev);
 		toAddrStreetName = new RichTextBox(I18N.INSTANCE.address(),nev);
 		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
-		
+
 		String str;
 		hour = new ValidatedListBox();
 		for(int i=0; i<24; i++){
 			str = String.valueOf(i);
 			hour.addItem(str.length() < 2 ? "0"+str : str);
 		}
-		
+
 		minute = new ValidatedListBox();
 		for(int i=0; i<60; i++){
 			str = String.valueOf(i);
 			minute.addItem(str.length() < 2 ? "0"+str : str);
 		}
-		
+
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
-		
+
 		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
-			
+
 			@Override
 			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
 				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
 		});
-		
+
 		transportStartDate = new DateBox();
 		transportStartDate.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("AccountDocumentView");
+
+		modifyDocument.getButton().setStyleName("modifyButton button");
+		createTransportDocument.getButton().setStyleName("createButton button");
 	}
 
 	@Override
 	protected Element getBody() {
 		return docScroll.getElement();
 	}
-	
+
 	@Override
 	protected Element[] getNonBodyElements() {
 		return new Element[]{titleLabel.getElement(), docControls.getElement()};
 	}
-	
+
 	@Override
 	public void setEventBus(EventBus eventBus) {
 		this.eventBus = eventBus;
 	}
-	
+
 	@Override
 	protected ScrollPanel getDocScroll() {
 		return docScroll;
 	}
-	
+
 	@Override
 	protected ValidatedTextBox getNumber() {
 		return number;
 	}
-	
+
 	@UiHandler("fromAddrCountry")
 	void onFromCountryChange(ChangeEvent event){
 		fromAddrProvince.setEnabled(fromAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT"));
 		fromAddrProvince.reset();
 	}
-	
+
 	@UiHandler("toAddrCountry")
 	void onToCountryChange(ChangeEvent event){
 		toAddrProvince.setEnabled(toAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT"));
 		toAddrProvince.reset();
 	}
-	
+
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
 	}
-	
+
 	@UiHandler("fromAddrButtonDefault")
 	void onFromAddressButtonDefaultCLicked(ClickEvent e){
 		BusinessDTO b = Configuration.getBusiness();
@@ -233,7 +242,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddrStreetName.setText(client.getAddress());
 		toAddrCountry.setSelectedItemByValue(client.getCountry());
 	}
-	
+
 
 	@UiHandler("createTransportDocument")
 	void onCreateTransportDocumentClicked(ClickEvent e){
@@ -242,33 +251,43 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			return;
 		}
 
+		createTransportDocument.showLoader(true);
+		setLocked(true);
+		
 		final TransportDocumentDTO transportDocument = createTransportDocument(null);
 
 		ServerFacade.transportDocument.add(transportDocument, new WrappedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
+				createTransportDocument.showLoader(false);
+				
 				eventBus.fireEvent(new DocumentAddEvent(transportDocument));
 				Notification.showMessage(I18N.INSTANCE.transportDocumentCreationSuccess(), new NotificationCallback<Void>() {
-					
+
 					@Override
 					public void onNotificationClosed(Void value) {
 						ClientPlace cp = new ClientPlace();
 						cp.setClientId(client.getId());
 						cp.setDocs(DOCUMENTS.transportDocuments);
 						presenter.goTo(cp);
+						setLocked(false);
 					}
 				});
-				
+
 			}
 
 			@Override
 			public void onException(Throwable caught) {
+				createTransportDocument.showLoader(false);
+				
 				if(caught instanceof ValidationException){
 					handleServerValidationException((ValidationException) caught);
 				} else {
 					Notification.showMessage(I18N.INSTANCE.transportDocumentCreationFailure());
 				}
+				
+				setLocked(false);
 			}
 		});
 	}
@@ -285,9 +304,9 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			td.setBusiness(Configuration.getBusiness());
 			td.setClient(client);
 		}
-		
+
 		td.setDocumentID(Long.parseLong(number.getText()));
-		
+
 		EndpointDTO loc = new EndpointDTO();
 		loc.setCompanyName(fromAddrCompanyName.getText());
 		loc.setCity(fromAddrCity.getText());
@@ -300,7 +319,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		loc.setStreet(fromAddrStreetName.getText());
 		loc.setCountry(fromAddrCountry.getSelectedItemValue());
 		td.setFromEndpoint(loc);
-		
+
 		loc = new EndpointDTO();
 		loc.setCompanyName(toAddrCompanyName.getText());
 		loc.setCity(toAddrCity.getText());
@@ -313,18 +332,18 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		loc.setStreet(toAddrStreetName.getText());
 		loc.setCountry(toAddrCountry.getSelectedItemValue());
 		td.setToEndpoint(loc);
-		
+
 		Date tsd = transportStartDate.getValue();
 		String dateTime = DateTimeFormat.getFormat("dd MMMM yyyy").format(tsd);
 		dateTime += " "+hour.getSelectedItemText()+":"+minute.getSelectedItemText();
 		tsd = DateTimeFormat.getFormat("dd MMMM yyyy HH:mm").parse(dateTime);		
 		td.setTransportStartDate(tsd);
-		
+
 		td.setNumberOfPackages(Integer.valueOf(numberOfPackages.getText()));
 		td.setTradeZone(tradeZone.getText());
 		td.setTransportationResponsibility(transportationResponsibility.getText());
 		td.setTransporter(transporter.getText());
-		
+
 		td.setAccountingDocumentDate(date.getValue());
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
 		for (AccountingDocumentItemDTO itemDTO : itemInsertionForm.getItems()) {
@@ -343,36 +362,43 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
-		
+
 		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback<Boolean>() {
-			
+
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
+					modifyDocument.showLoader(true);
+					setLocked(true);
+					
 					final TransportDocumentDTO td = createTransportDocument(transportDocument);
 
 					ServerFacade.transportDocument.update(td, new WrappedAsyncCallback<Void>() {
 
 						@Override
 						public void onException(Throwable caught) {
+							modifyDocument.showLoader(false);
 							if(caught instanceof ValidationException){
 								handleServerValidationException((ValidationException) caught);
 							} else {
 								Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateFailure());
 							}
+							setLocked(false);
 						}
 
 						@Override
 						public void onSuccess(Void result) {
+							modifyDocument.showLoader(false);
 							eventBus.fireEvent(new DocumentUpdateEvent(transportDocument));
 							Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateSuccess(), new NotificationCallback<Void>() {
-								
+
 								@Override
 								public void onNotificationClosed(Void value) {
 									ClientPlace cp = new ClientPlace();
 									cp.setClientId(td.getClient().getId());
 									cp.setDocs(DOCUMENTS.transportDocuments);
 									presenter.goTo(cp);
+									setLocked(false);
 								}
 							});
 						}
@@ -386,7 +412,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
 		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback<Boolean>() {
-			
+
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
@@ -402,7 +428,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@Override
 	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId) {
 		this.client =client;
-		
+
 		number.setText(transportDocumentProgressiveId.toString());
 		clientName.setText(client.getName());
 		Date d = new Date();
@@ -415,9 +441,9 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 		createTransportDocument.setVisible(true);
 	}
-	
-	
-	
+
+
+
 	@Override
 	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId,
 			TransportDocumentDTO document) {
@@ -431,7 +457,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			this.client = transportDocument.getClient();
 			date.setValue(transportDocument.getAccountingDocumentDate());
 			clientName.setText(transportDocument.getClient().getName());
-			
+
 			Date d = transportDocument.getTransportStartDate();
 			transportStartDate.setValue(d);
 			String hourStr = DateTimeFormat.getFormat("HH").format(d);
@@ -439,7 +465,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			hour.setSelectedItem(hourStr);
 			minute.setSelectedItem(minuteStr);
 			modifyDocument.setVisible(true);
-			
+
 			titleLabel.setText(I18N.INSTANCE.modifyTransportDocument());
 		}
 
@@ -455,13 +481,13 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 		itemInsertionForm.setItems(items);
 		note.setText(transportDocument.getNote());
-		
+
 		if(!cloning && transportDocument.getDocumentID() != null){
 			number.setText(transportDocument.getDocumentID().toString());
 		} 
-		
+
 		numberOfPackages.setText(String.valueOf(transportDocument.getNumberOfPackages()));
-		
+
 		EndpointDTO loc = transportDocument.getFromEndpoint();
 		fromAddrCity.setText(loc.getCity());
 		fromAddrCompanyName.setText(loc.getCompanyName());
@@ -469,7 +495,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrProvince.setSelectedItem(loc.getProvince());
 		fromAddrStreetName.setText(loc.getStreet());
 		fromAddrCountry.setSelectedItemByValue(loc.getCountry());
-		
+
 		loc = transportDocument.getToEndpoint();
 		toAddrCity.setText(loc.getCity());
 		toAddrCompanyName.setText(loc.getCompanyName());
@@ -505,18 +531,18 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 				vw.validate();
 				validation = validation && vw.isValid();
 			}
-			
+
 			if(fromAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT")){
 				fromAddrProvince.validate();
 				validation = validation && fromAddrProvince.isValid();
 			}
-			
+
 			if(toAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT")){
 				toAddrProvince.validate();
 				validation = validation && toAddrProvince.isValid();
 			}
-			
-			
+
+
 			if(!validation){
 				return false;
 			}
@@ -532,7 +558,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		this.transportDocument = null;
 
 		number.reset();
-		
+
 		//reset widget statuses
 		createTransportDocument.setVisible(false);
 		modifyDocument.setVisible(false);
@@ -546,7 +572,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		hour.reset();
 		minute.reset();
 		numberOfPackages.reset();
-		
+
 		fromAddrCity.reset();
 		fromAddrCompanyName.reset();
 		fromAddrPostCode.reset();
@@ -554,7 +580,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrProvince.setEnabled(true);
 		fromAddrProvince.reset();
 		fromAddrCountry.reset();
-		
+
 		toAddrCity.reset();
 		toAddrCompanyName.reset();
 		toAddrPostCode.reset();
@@ -562,14 +588,55 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddrProvince.setEnabled(true);
 		toAddrProvince.reset();
 		toAddrCountry.reset();
-		
+
 		itemInsertionForm.reset();
-		
+
 		totalTax.setText("");
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
-		
+
 		titleLabel.setText(I18N.INSTANCE.newTransportDocumentCreation());
+		
+		modifyDocument.reset();
+		createTransportDocument.reset();
+		setLocked(false);
+	}
+
+	@Override
+	public void setLocked(boolean value) {
+		fromAddrCompanyName.setEnabled(!value);
+		fromAddrStreetName.setEnabled(!value);
+		fromAddrPostCode.setEnabled(!value);
+		fromAddrCity.setEnabled(!value);
+		fromAddrProvince.setEnabled(!value);
+		fromAddrCountry.setEnabled(!value);
+		fromAddrButtonDefault.setEnabled(!value);
+		
+		toAddrCompanyName.setEnabled(!value);
+		toAddrStreetName.setEnabled(!value);
+		toAddrPostCode.setEnabled(!value);
+		toAddrCity.setEnabled(!value);
+		toAddrProvince.setEnabled(!value);
+		toAddrCountry.setEnabled(!value);
+		toAddrButtonDefault.setEnabled(!value);
+
+		numberOfPackages.setEnabled(!value);
+		transporter.setEnabled(!value);
+
+		transportStartDate.setEnabled(!value);
+		hour.setEnabled(!value);
+		minute.setEnabled(!value);
+
+		itemInsertionForm.setLocked(value);
+
+		transportationResponsibility.setEnabled(!value);
+		tradeZone.setEnabled(!value);
+
+		number.setEnabled(!value);
+		date.setEnabled(!value);
+		note.setEnabled(!value);
+
+		abort.setEnabled(!value);
 	}
 
 }

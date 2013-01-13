@@ -96,6 +96,9 @@ public class WestViewImpl extends Composite implements WestView  {
 				if(result == null){
 					return;
 				}
+				
+				Configuration.setStats(result);
+				
 				if(result.getClientsCount() > 0){
 					welcomeMessage.setVisible(false);
 					clientListContainer.setVisible(true);

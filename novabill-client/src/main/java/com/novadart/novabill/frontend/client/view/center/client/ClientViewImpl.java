@@ -14,6 +14,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
+import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
@@ -25,6 +26,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
+import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.ClientDeleteEvent;
 import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
@@ -45,6 +47,7 @@ import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.util.WidgetUtils;
+import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.ClientView;
 import com.novadart.novabill.frontend.client.view.center.client.dialog.ClientDialog;
 import com.novadart.novabill.frontend.client.view.widget.list.impl.CreditNoteList;
@@ -61,7 +64,7 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 
-public class ClientViewImpl extends Composite implements ClientView {
+public class ClientViewImpl extends Composite implements ClientView, HasUILocking {
 
 	private static ClientViewImplUiBinder uiBinder = GWT
 			.create(ClientViewImplUiBinder.class);
@@ -103,6 +106,14 @@ public class ClientViewImpl extends Composite implements ClientView {
 	@UiField SimpleLayoutPanel clientMainBody;
 
 	@UiField Label contact;
+	
+	@UiField LoaderButton cancelClient;
+	@UiField Button modifyClient;
+	
+	@UiField Button newInvoice;
+	@UiField Button newEstimation;
+	@UiField Button newTransportDocument;
+	@UiField Button newCreditNote;
 
 	private static final int HIDE_TIMEOUT = 3000;
 	private Timer hideContactPopup = new Timer() {
@@ -121,6 +132,8 @@ public class ClientViewImpl extends Composite implements ClientView {
 		estimationDataProvider.addDataDisplay(estimationList);
 		creditNoteDataProvider.addDataDisplay(creditNoteList);
 		transportDocumentDataProvider.addDataDisplay(transportDocumentList);
+		
+		cancelClient.getButton().setStyleName("cancelClient button");
 	}
 
 	@Override
@@ -265,6 +278,9 @@ public class ClientViewImpl extends Composite implements ClientView {
 		setDocumentsListing(DOCUMENTS.invoices);
 		contactPopup.reset();
 		contact.setVisible(false);
+		
+		setLocked(false);
+		cancelClient.reset();
 	}
 
 	@UiHandler("contact")
@@ -322,21 +338,28 @@ public class ClientViewImpl extends Composite implements ClientView {
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
+					
+					cancelClient.showLoader(true);
+					setLocked(true);
 					ServerFacade.client.remove(Configuration.getBusinessId(), client.getId(), new WrappedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {
+							cancelClient.showLoader(false);
 							eventBus.fireEvent(new ClientDeleteEvent(client));
 							presenter.goTo(new HomePlace());
+							setLocked(false);
 						}
 
 						@Override
 						public void onException(Throwable caught) {
+							cancelClient.showLoader(false);
 							if(caught instanceof DataIntegrityException){
 								Notification.showMessage(I18N.INSTANCE.errorClientCancelation());
 							} else {
 								Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 							}
+							setLocked(false);
 						}
 					});
 				}
@@ -458,6 +481,16 @@ public class ClientViewImpl extends Composite implements ClientView {
 				estimationDataProvider.refresh();
 			}
 		});
+	}
+
+	@Override
+	public void setLocked(boolean value) {
+		newInvoice.setEnabled(!value);
+		newEstimation.setEnabled(!value);
+		newTransportDocument.setEnabled(!value);
+		newCreditNote.setEnabled(!value);
+		
+		modifyClient.setEnabled(!value);
 	}
 
 }
