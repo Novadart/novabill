@@ -5,7 +5,7 @@
 	xmlns:d="urn:import:com.google.gwt.user.datepicker.client" 
 	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget"
 	xmlns:t="urn:import:com.novadart.novabill.frontend.client.view.center"
-	xmlns:textbox="urn:import:com.novadart.gwtshared.client.textbox" xmlns:f="urn:import:com.novadart.novabill.frontend.client.view.widget">
+	xmlns:textbox="urn:import:com.novadart.gwtshared.client.textbox" xmlns:f="urn:import:com.novadart.novabill.frontend.client.view.widget" xmlns:gwtshared="urn:import:com.novadart.gwtshared.client">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
@@ -216,12 +216,9 @@
 		</g:ScrollPanel>
 		
 		<g:FlowPanel styleName="docControls" ui:field="docControls">
-			<g:Button styleName="modifyButton button" ui:field="modifyDocument"
-				text="{i18n.saveModifications}"></g:Button>
-			<g:Button styleName="createButton button" ui:field="createTransportDocument"
-				text="{i18n.createTransportDocument}"></g:Button>
-			<g:Button ui:field="abort" styleName="abortButton button"
-				text="{i18n.cancel}"></g:Button>
+			<gwtshared:LoaderButton ui:field="modifyDocument" text="{i18n.saveModifications}"/>
+			<gwtshared:LoaderButton ui:field="createTransportDocument" text="{i18n.createTransportDocument}"/>
+			<g:Button ui:field="abort" styleName="abortButton button" text="{i18n.cancel}"></g:Button>
 		</g:FlowPanel>
 	</g:FlowPanel>
 
