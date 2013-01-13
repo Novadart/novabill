@@ -47,6 +47,8 @@ public class Principal implements UserDetails {
 	
 	private Long lastLogin;
 	
+	private boolean enabled = true;
+	
 	@ManyToOne
 	private Business business;
 	
@@ -118,6 +120,10 @@ public class Principal implements UserDetails {
 		this.lastLogin = lastLogin;
 	}
 	
+	public void setEnabled(Boolean enabled) {
+		this.enabled = enabled;
+	}
+	
 	public Business getBusiness() {
 		return business;
 	}
@@ -137,7 +143,7 @@ public class Principal implements UserDetails {
      * End of getters and setters section
      * */
     
-    /*
+	/*
      * UserDetails interface methods
      * */
 	@Override
@@ -160,8 +166,7 @@ public class Principal implements UserDetails {
 
 	@Override
 	public boolean isEnabled() {
-		// TODO Auto-generated method stub
-		return true;
+		return enabled;
 	}
 	/*
      * End of UserDetails interface methods section
