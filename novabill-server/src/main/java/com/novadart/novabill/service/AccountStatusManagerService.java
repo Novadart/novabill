@@ -6,16 +6,17 @@ import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.RoleType;
 
 
-@Service
+//@Service
 @MailMixin
 public class AccountStatusManagerService {
 	
