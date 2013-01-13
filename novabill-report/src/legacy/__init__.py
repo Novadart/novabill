@@ -158,7 +158,7 @@ class DefaultTemplate(InvoiceTemplate):
     def __invoice_details_flowable(self, width, ratio):
         style = getSampleStyleSheet()["Normal"]
         tableFlowables = [
-            [Paragraph("<b>FATTURA</b>", style), Paragraph("%s" % self.__get(self._getData().getAccountingDocumentID(), ""), style)],
+            [Paragraph("<b>FATTURA</b>", style), Paragraph("%d/%d" % (self._getData().getAccountingDocumentID(), self._getData().getAccountingDocumentYear()), style)],
             [Paragraph("<b>DATA</b>", style), Paragraph("%s" % self.__get(self._getData().getAccountingDocumentDate(), ""), style)],
         ]
         if self.docType == DocumentType.INVOICE:
