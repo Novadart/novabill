@@ -316,6 +316,12 @@
 							<goal>compile</goal>
 						</goals>
 					</execution>
+					<execution>
+						<phase>process-test-sources</phase>
+						<goals>
+							<goal>compile</goal>
+						</goals>
+					</execution>
 				</executions>
 				<configuration>
 					<aspectLibraries>
