@@ -311,12 +311,14 @@
 
 				<executions>
 					<execution>
+						<id>process-sources</id>
 						<phase>process-sources</phase>
 						<goals>
 							<goal>compile</goal>
 						</goals>
 					</execution>
 					<execution>
+						<id>process-test-sources</id>
 						<phase>process-test-sources</phase>
 						<goals>
 							<goal>compile</goal>
