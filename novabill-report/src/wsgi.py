@@ -12,13 +12,13 @@ def process_input_parameters(request):
     params["docData"] = json.loads(form["docData"].decode("unicode-escape")) #decode json
     if "logoData" in form:
         _, logoFPath = tempfile.mkstemp()
-        with open(logoFPath) as f:
+        with open(logoFPath, "w") as f:
             f.write(base64.b64decode(form["logoData"]))
         params["pathToLogo"] = logoFPath
     if "logoWidth" in form:
-        params["logoWidth"] = form["logoWidth"]
+        params["logoWidth"] = float(form["logoWidth"])
     if "logoHeight" in form:
-        params["logoHeight"] = form["logoHeight"]
+        params["logoHeight"] = float(form["logoHeight"])
     if "docType" in form:
         params["docType"] = int(form["docType"])
     if "tempType" in form:
