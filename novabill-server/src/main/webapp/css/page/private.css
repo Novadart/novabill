@@ -1032,9 +1032,8 @@ td.datePickerMonth {
 }
 
 .AccountDocumentView .newEstimation,.AccountDocumentView .newInvoice,.AccountDocumentView .newTransportDocument,
-.AccountDocumentView .newCreditNote
-	{
-		font-weight: bold;
+.AccountDocumentView .newCreditNote	{
+	font-weight: bold;
 	font-size: 1.8em;
 	border-bottom: 1px solid;
 	text-align: center;
@@ -1042,8 +1041,16 @@ td.datePickerMonth {
 	padding: 0.2em;
 }
 
-.AccountDocumentView .abortButton,.AccountDocumentView .modifyDocument,.AccountDocumentView .createInvoice,.AccountDocumentView .saveAsEstimation,.AccountDocumentView .convertToInvoice
-	{
+.AccountDocumentView .docControls .LoaderButton img {
+	height: 2em;
+}
+
+.AccountDocumentView .docControls .LoaderButton {
+	display: inline-block;
+}
+
+.AccountDocumentView .convertToInvoiceLB,
+.AccountDocumentView .abortButton {
 	margin-left: 2em;
 }
 
