@@ -158,6 +158,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 					if(result == null){
 						return;
 					}
+					
+					Configuration.setStats(result);
+					
 					if(result.getInvoicesCountForYear() > 0){
 						welcomeMessage.setVisible(false);
 						tabBody.setVisible(true);

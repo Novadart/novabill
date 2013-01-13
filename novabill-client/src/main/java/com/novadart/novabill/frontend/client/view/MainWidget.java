@@ -122,6 +122,9 @@ public class MainWidget extends Composite {
 				if(result == null){
 					return;
 				}
+				
+				Configuration.setStats(result);
+				
 				generateStats(result);
 			}
 
