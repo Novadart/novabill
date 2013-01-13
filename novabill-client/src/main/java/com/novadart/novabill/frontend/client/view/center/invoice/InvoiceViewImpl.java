@@ -19,6 +19,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
@@ -31,6 +32,7 @@ import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
 import com.novadart.novabill.frontend.client.view.center.InvoiceView;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
@@ -46,7 +48,7 @@ import com.novadart.novabill.shared.client.dto.PaymentType;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
-public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
+public class InvoiceViewImpl extends AccountDocument implements InvoiceView, HasUILocking {
 
 	private static InvoiceViewImplUiBinder uiBinder = GWT
 			.create(InvoiceViewImplUiBinder.class);
@@ -68,19 +70,18 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiField Label paymentNoteLabel;
 	@UiField ValidatedTextArea paymentNote;
 	@UiField ValidatedTextArea note;
-	@UiField Button createInvoice;
-	@UiField Button modifyDocument;
 
 	@UiField Label totalBeforeTaxes;
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
 
+	@UiField LoaderButton modifyDocument;
+	@UiField LoaderButton createInvoice;
+	@UiField Button abort;
 
 	private Presenter presenter;
 	private EventBus eventBus;
 	private InvoiceDTO invoice;
-	private EstimationDTO estimation;
-	private TransportDocumentDTO transportDocument;
 	private ClientDTO client;
 
 	public InvoiceViewImpl() {
@@ -105,6 +106,9 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("AccountDocumentView");
+		
+		modifyDocument.getButton().setStyleName("modifyButton button");
+		createInvoice.getButton().setStyleName("createButton button");
 	}
 	
 	@Override
@@ -143,86 +147,46 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
+		
+		createInvoice.showLoader(true);
+		setLocked(true);
 
 		final InvoiceDTO invoice = createInvoice(null);
 		
-		if(this.estimation != null) {
-			ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
-			
-						@Override
-						public void onSuccess(Long result) {
-							eventBus.fireEvent(new DocumentAddEvent(invoice));
-							
-							ClientPlace cp = new ClientPlace();
-							cp.setClientId(client.getId());
-							cp.setDocs(DOCUMENTS.invoices);
-							presenter.goTo(cp);
-						}
-			
-						@Override
-						public void onException(Throwable caught) {
-							if(caught instanceof ValidationException){
-								handleServerValidationException((ValidationException) caught);
-							} else {
-								Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
-							}
-						}
-					});
-		} else if(this.transportDocument != null) {
-			
-			ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
-				
-				@Override
-				public void onSuccess(Long result) {
-					eventBus.fireEvent(new DocumentAddEvent(invoice));
-					
-					ClientPlace cp = new ClientPlace();
-					cp.setClientId(client.getId());
-					cp.setDocs(DOCUMENTS.invoices);
-					presenter.goTo(cp);
-				}
-	
-				@Override
-				public void onException(Throwable caught) {
-					if(caught instanceof ValidationException){
-						handleServerValidationException((ValidationException) caught);
-					} else {
-						Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
-					}
-				}
-			});
-		} else {
-		
-			ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
+		ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
 
-				@Override
-				public void onSuccess(Long result) {
-					Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess(), new NotificationCallback<Void>() {
+			@Override
+			public void onSuccess(Long result) {
+				createInvoice.showLoader(false);
+				Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess(), new NotificationCallback<Void>() {
+					
+					@Override
+					public void onNotificationClosed(Void value) {
+						eventBus.fireEvent(new DocumentAddEvent(invoice));
+
+						ClientPlace cp = new ClientPlace();
+						cp.setClientId(client.getId());
+						cp.setDocs(DOCUMENTS.invoices);
+						presenter.goTo(cp);
 						
-						@Override
-						public void onNotificationClosed(Void value) {
-							eventBus.fireEvent(new DocumentAddEvent(invoice));
-
-							ClientPlace cp = new ClientPlace();
-							cp.setClientId(client.getId());
-							cp.setDocs(DOCUMENTS.invoices);
-							presenter.goTo(cp);
-						}
-					});
-					
-				}
-
-				@Override
-				public void onException(Throwable caught) {
-					if(caught instanceof ValidationException){
-						handleServerValidationException((ValidationException) caught);
-					} else {
-						Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
+						setLocked(false);
 					}
+				});
+				
+			}
+
+			@Override
+			public void onException(Throwable caught) {
+				createInvoice.showLoader(false);
+				if(caught instanceof ValidationException){
+					handleServerValidationException((ValidationException) caught);
+				} else {
+					Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
 				}
-			});
-			
-		}
+				setLocked(false);
+			}
+		});
+
 	}
 
 	private InvoiceDTO createInvoice(InvoiceDTO invoice){
@@ -270,21 +234,28 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
+					
+					modifyDocument.showLoader(true);
+					setLocked(true);
+					
 					final InvoiceDTO inv = createInvoice(invoice);
 
 					ServerFacade.invoice.update(inv, new WrappedAsyncCallback<Void>() {
 
 						@Override
 						public void onException(Throwable caught) {
+							modifyDocument.showLoader(false);
 							if(caught instanceof ValidationException){
 								handleServerValidationException((ValidationException) caught);
 							} else {
 								Notification.showMessage(I18N.INSTANCE.invoiceUpdateFailure());
 							}
+							setLocked(false);
 						}
 
 						@Override
 						public void onSuccess(Void result) {
+							modifyDocument.showLoader(false);
 							Notification.showMessage(I18N.INSTANCE.invoiceUpdateSuccess(), new NotificationCallback<Void>() {
 								
 								@Override
@@ -295,6 +266,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 									cp.setClientId(inv.getClient().getId());
 									cp.setDocs(DOCUMENTS.invoices);
 									presenter.goTo(cp);
+									setLocked(false);
 								}
 							});
 						}
@@ -382,7 +354,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@Override
 	public void setDataForNewInvoice(Long progressiveId, EstimationDTO estimation) {
 		setDataForNewInvoice(estimation.getClient(), progressiveId);
-		this.estimation = estimation;
 
 		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(estimation.getItems().size());
 		for (AccountingDocumentItemDTO i : estimation.getItems()) {
@@ -398,7 +369,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	public void setDataForNewInvoice(Long progressiveId,
 			TransportDocumentDTO transportDocument) {
 		setDataForNewInvoice(transportDocument.getClient(), progressiveId);
-		this.transportDocument = transportDocument;
 
 		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(transportDocument.getItems().size());
 		for (AccountingDocumentItemDTO i : transportDocument.getItems()) {
@@ -438,8 +408,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		//clean internal data		
 		this.invoice = null;
 		this.client = null;
-		this.estimation = null;
-		this.transportDocument = null;
 
 		//reset widget statuses
 		number.reset();
@@ -460,6 +428,22 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
 		titleLabel.setText(I18N.INSTANCE.newInvoiceCreation());
+		
+		createInvoice.reset();
+		modifyDocument.reset();
+		setLocked(false);
+	}
+
+	@Override
+	public void setLocked(boolean value) {
+		payment.setEnabled(!value);
+		itemInsertionForm.setLocked(value);
+		date.setEnabled(!value);
+		number.setEnabled(!value);
+		paymentNote.setEnabled(!value);
+		note.setEnabled(!value);
+
+		abort.setEnabled(!value);
 	}
 
 }
