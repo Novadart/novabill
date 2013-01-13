@@ -6,6 +6,10 @@
     font-size: 14px;
 }
 
+body {
+	padding: 2em;
+}
+
 .logo{
     color: #445058;
     font-size: 18px;
@@ -16,14 +20,15 @@
 </style>
 </head>
 <body>
-<h2 class="logo">Novabill</h2>
+<h2 class="logo">Novabill - Attivazione Account</h2>
 
-<p>Per concludere la procedura di registrazione per favore premi su <a href="${activationLink}">questo link.</a><br>
+<p>Per concludere la procedura di registrazione per favore premi su <a target="_blank" href="${activationLink}">questo link</a><br>
 Alternativamente copia e incolla questa url nel tuo browser ${activationLink}</p>
-<br>
+
 <p>Nota: dovrai attivare il tuo account entro le prossime ${activationPeriod} ore.</p>
-<br>
-<p>Grazie :)<br> Il team di Novabill</p>
+
+<p>Grazie :)<br> 
+Il team di Novabill</p>
 
 </body>
 
