@@ -1005,6 +1005,7 @@ td.datePickerMonth {
 .LoaderButton .LoaderButton-loader {
 	margin: 0 auto;
 	display: block;
+	height: 2em;
 }
 
 .AccountDocumentView {
@@ -1039,10 +1040,6 @@ td.datePickerMonth {
 	text-align: center;
 	background-color: #CCC;
 	padding: 0.2em;
-}
-
-.AccountDocumentView .docControls .LoaderButton img {
-	height: 2em;
 }
 
 .AccountDocumentView .docControls .LoaderButton {
