@@ -78,15 +78,22 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				if(!Validation.isDouble(value)){
-					Notification.showMessage(I18N.INSTANCE.errorClientData());
-					qtyEditCell.clearViewData(object);
-					redraw();
-				} else {
-					object.setQuantity(CalcUtils.parseValue(value));
-					ItemTable.this.handler.onUpdate(object);
-					redraw();
+				double newQty = 0;
+				try{
+					newQty = NumberFormat.getDecimalFormat().parse(value);
+				} catch(NumberFormatException e){
+					try{
+						newQty = Double.parseDouble(value.replace(',', '.'));//NOTE replace comma with dot, to separate decimals
+					} catch(NumberFormatException f){
+						Notification.showMessage(I18N.INSTANCE.errorClientData());
+						qtyEditCell.clearViewData(object);
+						redraw();
+						return;
+					}
 				}
+				object.setQuantity(new BigDecimal(newQty));
+				ItemTable.this.handler.onUpdate(object);
+				redraw();
 			}
 		});
 		addColumn(quantity, I18N.INSTANCE.quantity());
