@@ -88,7 +88,7 @@ def instatiateCanvasMaker(pagenumbers=True, watermark=True, metadata=dict(), tra
             self.setFillColorRGB(0.45, 0.45, 0.45)
             #self.setFillColor(lightgrey)
             w, _h = A4
-            self.drawCentredString(w/2, 20*mm,  "%s - http://www.novabill.it" % _("Powered by Novabill"))
+            self.drawCentredString(w/2, 20*mm,  "%s - https://www.novabill.it" % _("Powered by Novabill"))
         
         def add_annotations(self):
             self.setTitle(metadata["title"] if "title" in metadata else "")
