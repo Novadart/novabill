@@ -2,10 +2,14 @@ h1 {
 	width: 300px;
 }
 
+h4 {
+	font-size: 1.2em;	
+}
+
 .intro h2 {
 	text-align: center;
 	color:#333333;
-	font-size: 88px;
+	font-size: 6em;
 	padding: 30px 0px;
 	font-weight: bold;
 	text-shadow: 0px 1px 2px #bbb;
@@ -44,7 +48,7 @@ h1 {
 .intro p {
 	text-align: center;
 	color: #8C8C8C;
-	font-size: 17px;
+	font-size: 1.4em;
 	margin: -20px 0 0 0;
 	text-shadow: 0px 1px 0px #fff;
 }
@@ -76,7 +80,7 @@ h1 {
 
 h3 {
 	color: #474747;
-	font-size: 22px;
+	font-size: 1.9em;
 	padding: 5px 10px;
 	font-weight: bold;
 	text-shadow: 0px 1px 2px #bbb;
@@ -193,7 +197,7 @@ h3 {
 
 .top-features p {
 	color: #8C8C8C;
-	font-size: 14px;
+	font-size: 1.1em;
 	margin: 10px 0;
 	line-height: 120%;
 }
