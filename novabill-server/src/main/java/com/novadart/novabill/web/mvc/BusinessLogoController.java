@@ -33,6 +33,7 @@ import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
 import com.novadart.utils.image.ImageFormat;
 import com.novadart.utils.image.ImageUtils;
+import com.novadart.utils.image.UnsupportedImageFormatException;
 
 @Controller
 @RequestMapping("/private/businesses/logo")
@@ -78,7 +79,7 @@ public class BusinessLogoController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@Transactional(readOnly = false)
-	public String uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) {
+	public String uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws UnsupportedImageFormatException {
 		if(!ServletFileUpload.isMultipartContent(request))
 			return String.valueOf(LogoUploadStatus.ILLEGAL_REQUEST.ordinal());
 		if(file == null)
