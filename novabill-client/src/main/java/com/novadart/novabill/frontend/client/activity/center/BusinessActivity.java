@@ -4,11 +4,10 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.frontend.client.activity.BasicActivity;
 import com.novadart.novabill.frontend.client.view.MainWidget;
 import com.novadart.novabill.frontend.client.view.center.BusinessView;
 
-public class BusinessActivity extends BasicActivity {
+public class BusinessActivity extends AbstractCenterActivity {
 
 	public BusinessActivity(ClientFactory clientFactory) {
 		super(clientFactory);
@@ -16,6 +15,8 @@ public class BusinessActivity extends BasicActivity {
 
 	@Override
 	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
+		super.start(panel, eventBus);
+		
 		getClientFactory().getBusinessView(new AsyncCallback<BusinessView>() {
 			
 			@Override

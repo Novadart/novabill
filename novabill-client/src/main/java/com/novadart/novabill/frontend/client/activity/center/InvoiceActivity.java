@@ -4,7 +4,6 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.frontend.client.activity.BasicActivity;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.place.HomePlace;
@@ -21,7 +20,7 @@ import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
-public class InvoiceActivity extends BasicActivity {
+public class InvoiceActivity extends AbstractCenterActivity {
 
 	private final InvoicePlace place;
 
@@ -33,6 +32,8 @@ public class InvoiceActivity extends BasicActivity {
 
 	@Override
 	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
+		super.start(panel, eventBus);
+		
 		getClientFactory().getInvoiceView(new AsyncCallback<InvoiceView>() {
 
 			@Override

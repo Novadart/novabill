@@ -4,9 +4,8 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.frontend.client.activity.BasicActivity;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.view.MainWidget;
@@ -14,7 +13,7 @@ import com.novadart.novabill.frontend.client.view.center.ClientView;
 import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
-public class ClientActivity extends BasicActivity {
+public class ClientActivity extends AbstractCenterActivity {
 
 	private final ClientPlace place;
 
@@ -25,6 +24,8 @@ public class ClientActivity extends BasicActivity {
 
 	@Override
 	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
+		super.start(panel, eventBus);
+		
 		getClientFactory().getClientView(new AsyncCallback<ClientView>() {
 			
 			@Override

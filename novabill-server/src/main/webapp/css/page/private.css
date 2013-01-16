@@ -12,6 +12,11 @@ button.action-button, button.action2-button {
 	font-size: 1.2em !important;
 }
 
+.centerViewLoader {
+	display: block;
+	margin: 100px auto 0;
+}
+
 .button {
 	padding: 0.5em;
 	font-size: 1em;
