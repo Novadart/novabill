@@ -75,6 +75,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@UiField Button exportClientData;
 	@UiField Button exportInvoiceData;
 	@UiField Button exportEstimationData;
+	@UiField Button exportCreditNoteData;
+	@UiField Button exportTransportDocumentData;
 	
 	private boolean logoUpdateCompleted = true;
 	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation();
@@ -330,17 +332,27 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	
 	@UiHandler("exportClientData")
 	void onExportClientDataClicked(ClickEvent e){
-		ExportUtils.exportData(true, false, false);
+		ExportUtils.exportData(true, false, false, false, false);
 	}
 
 	@UiHandler("exportInvoiceData")
 	void onExportInvoiceDataClicked(ClickEvent e){
-		ExportUtils.exportData(false, true, false);
+		ExportUtils.exportData(false, true, false, false, false);
 	}
 	
 	@UiHandler("exportEstimationData")
 	void onExportEstimationDataClicked(ClickEvent e){
-		ExportUtils.exportData(false, false, true);
+		ExportUtils.exportData(false, false, true, false, false);
+	}
+	
+	@UiHandler("exportCreditNoteData")
+	void onExportCreditNoteDataClicked(ClickEvent e){
+		ExportUtils.exportData(false, false, false, true, false);
+	}
+	
+	@UiHandler("exportTransportDocumentData")
+	void onExportTransportDocumentDataClicked(ClickEvent e){
+		ExportUtils.exportData(false, false, false, false, true);
 	}
 	
 	@Override
@@ -364,6 +376,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		exportClientData.setEnabled(!value);
 		exportEstimationData.setEnabled(!value);
 		exportInvoiceData.setEnabled(!value);
+		exportCreditNoteData.setEnabled(!value);
+		exportTransportDocumentData.setEnabled(!value);
 	}
 	
 }
