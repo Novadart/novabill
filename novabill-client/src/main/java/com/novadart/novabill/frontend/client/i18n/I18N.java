@@ -149,6 +149,8 @@ public interface I18N extends Constants {
 	public String exportClientData();
 	public String exportInvoiceData();
 	public String exportEstimationData();
+	public String exportCreditNoteData();
+	public String exportTransportDocumentData();
 	public String clone();
 	public String showMore();
 	public String welcomeMessage1();

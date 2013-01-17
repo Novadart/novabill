@@ -155,6 +155,8 @@
 					<g:Button styleName="exportButton button" ui:field="exportClientData" text="{i18n.exportClientData}"></g:Button>
 					<g:Button styleName="exportButton button" ui:field="exportInvoiceData" text="{i18n.exportInvoiceData}"></g:Button>
 					<g:Button styleName="exportButton button" ui:field="exportEstimationData" text="{i18n.exportEstimationData}"></g:Button>
+					<g:Button styleName="exportButton button" ui:field="exportCreditNoteData" text="{i18n.exportCreditNoteData}"></g:Button>
+					<g:Button styleName="exportButton button" ui:field="exportTransportDocumentData" text="{i18n.exportTransportDocumentData}"></g:Button>
 				</g:HorizontalPanel>
 			</g:VerticalPanel>
 	

@@ -1,6 +1,6 @@
 .header {
 	width: 100%;
-	height: 4.5em;
+	height: 6em;
 	background: url('../images/divider-1.png') no-repeat bottom;
 	padding-top: 1em;
 }
@@ -8,23 +8,23 @@
 .welcomeMessage {
 	top: 1.2em;
 	position: relative;
-	font-size: 1.2em;
+	font-size: 1.1em;
 }
 
 #goPremium {
 }
 
 .logoutLink {
-	font-size: 1em;
+	font-size: 1.1em;
 }
 
 .private  {
-	font-size: 1em;
+	font-size: 1.1em;
 }
 
 .authLinks {
 	float: right;
-	margin-top: 1.2em; /* REMOVE for premium */
+	margin-top: 1.1em; /* REMOVE for premium */
 }
 
 .authLinks * {
@@ -33,17 +33,17 @@
 
 .businessName {
 	font-weight: bold;
-	font-size: 1em;
+	font-size: 1.1em;
 }
 
 .thanksForSignup {
-	font-size: 0.9em;
+	font-size: 1.1em;
 }
 
 .noBusinessName {
 	width: 15em;
 	margin: 0;
-	font-size: 0.9em;
+	font-size: 1.1em;
 }
 
 /* Login Container (default to float:right) */

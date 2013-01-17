@@ -9,10 +9,11 @@ import com.novadart.novabill.frontend.client.view.widget.notification.Notificati
 public class ExportUtils {
 
 	private static final String EXPORT_REQUEST = 
-			GWT.getHostPageBaseURL()+"private/export?clients={c}&invoices={i}&estimations={e}&token={token}";
+			GWT.getHostPageBaseURL()+"private/export?clients={c}&invoices={i}&estimations={e}&creditnotes={cn}&transportdocs={t}&token={token}";
 	
 	
-	public static void exportData(final boolean clients, final boolean invoices, final boolean estimations){
+	public static void exportData(final boolean clients, final boolean invoices, final boolean estimations,
+			final boolean creditNotes, final boolean traspDocuments){
 		ServerFacade.business.generateExportToken(new WrappedAsyncCallback<String>() {
 
 			@Override
@@ -21,6 +22,8 @@ public class ExportUtils {
 						EXPORT_REQUEST.replace("{c}", String.valueOf(clients))
 							.replace("{i}", String.valueOf(invoices))
 							.replace("{e}", String.valueOf(estimations))
+							.replace("{cn}", String.valueOf(creditNotes))
+							.replace("{t}", String.valueOf(traspDocuments))
 							.replace("{token}", result)
 						);
 			}
