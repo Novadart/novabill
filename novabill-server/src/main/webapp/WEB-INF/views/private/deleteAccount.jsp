@@ -1,6 +1,5 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8"
     pageEncoding="UTF-8"%>
-<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
 
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
@@ -14,15 +13,12 @@
 	<spring:param name="${exportTokenParamName}" value="${exportToken}"/>
 </spring:url>
 
-<html>
-<head>
-<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
-<title>Insert title here</title>
-</head>
-<body>
-<a href='${exportURL}'>Export</a>
+<p class="goodbyeMessage"><spring:message code="deleteAccount.goodbye" htmlEscape="false" /></p>
+<p class="lastChanceToExport"><spring:message code="deleteAccount.lastChanceToExport" /></p>
+<a class="action2-button exportLink" href='${exportURL}'><spring:message code="deleteAccount.exportData" /></a>
 
-<form:form id="form" method="post" modelAttribute="deleteAccount"
+<p class="deleteMessage"><spring:message code="deleteAccount.deleteMessage" /> <span class="lastWarning"><spring:message code="deleteAccount.lastWarning" /></span></p>
+<form:form id="form" method="post" cssClass="deleteAccountForm" modelAttribute="deleteAccount"
 	class="registrationForm">
 
 	<table class="changePasswordTable">
@@ -32,13 +28,11 @@
 			<td><form:errors path="password" cssClass="error" /></td>
 		</tr>
 		<tr>
-			<td colspan="3"><input type="submit"
-				class="action2-button changePasswordSubmit"
-				 value='<spring:message code="deleteAccount.delete" />' /></td>
+			<td colspan="3">
+				<input type="submit" class="deleteAccountSubmit" value='<spring:message code="deleteAccount.delete" />' />
+			</td>
 		</tr>
 	</table>
 
 </form:form>
 
-</body>
-</html>

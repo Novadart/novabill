@@ -13,6 +13,10 @@
 	
 	<!-- <definition name="upgrade" template="/WEB-INF/views/private/upgrade.jsp"/> -->
 	
-	<definition name="deleteAccount" template="/WEB-INF/views/private/deleteAccount.jsp"/>
+	<definition name="deleteAccount" extends="basePrivate">
+		<put-attribute name="pagelinks" value="/WEB-INF/views/private/deleteAccountPageLinks.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/private/headerSimple.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/private/deleteAccount.jsp" />
+	</definition>
 	
 </tiles-definitions>

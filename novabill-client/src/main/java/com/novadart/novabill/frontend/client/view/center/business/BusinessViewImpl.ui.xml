@@ -159,6 +159,11 @@
 					<g:Button styleName="exportButton button" ui:field="exportTransportDocumentData" text="{i18n.exportTransportDocumentData}"></g:Button>
 				</g:HorizontalPanel>
 			</g:VerticalPanel>
+			
+			<g:VerticalPanel styleName="cancelDataContainer">
+				<g:Label styleName="sectionLabel" text="{i18n.deleteAccountLabel}"></g:Label>
+				<g:Anchor styleName="deleteAccount button" href="private/delete" text="{i18n.deleteAccount}"></g:Anchor>
+			</g:VerticalPanel>
 	
 		</g:FlowPanel>
 	</g:ScrollPanel>

@@ -1309,6 +1309,15 @@ td.datePickerMonth {
 	text-transform: uppercase;
 }
 
+.BusinessView .cancelDataContainer {
+	margin-top: 2em;
+}
+
+.BusinessView .cancelDataContainer .deleteAccount {
+	margin-top: 1em;
+	display: block;
+}
+
 .WestView {
 	height: 100%;
 }
