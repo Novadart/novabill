@@ -13,4 +13,6 @@
 	
 	<!-- <definition name="upgrade" template="/WEB-INF/views/private/upgrade.jsp"/> -->
 	
+	<definition name="deleteAccount" template="/WEB-INF/views/private/deleteAccount.jsp"/>
+	
 </tiles-definitions>

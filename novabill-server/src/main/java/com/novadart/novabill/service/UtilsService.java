@@ -7,7 +7,9 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
@@ -19,6 +21,9 @@ import com.novadart.novabill.domain.security.Principal;
 @Service("utilsService")
 public class UtilsService {
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	private Authentication getAuthentication(){
 		return SecurityContextHolder.getContext().getAuthentication();
 	}
@@ -53,6 +58,10 @@ public class UtilsService {
 		} catch (SerializationException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public String hash(String value, Object salt){
+		return passwordEncoder.encodePassword(value, salt);
 	}
 	
 }
