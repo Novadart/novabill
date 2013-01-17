@@ -8,23 +8,19 @@ import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
-
-import org.junit.After;
-import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
-import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
+import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.support.SessionStatus;
-
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
@@ -45,13 +41,17 @@ public class DeleteAccountTest {
 	@Autowired
 	private Validator validator;
 	
-	private DeleteAccountController initDeleteAccountController(String username, String password) throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
+	private DeleteAccountController initDeleteAccountController(String username, String password, String providedPassword) throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
 		Principal principal = Principal.findByUsername(username);
 		DeleteAccountController deleteAccountController = new DeleteAccountController();
 		XsrfTokenService tokenService = mock(XsrfTokenService.class);
 		UtilsService utilsService = mock(UtilsService.class);
 		when(utilsService.getAuthenticatedPrincipalDetails()).thenReturn(principal);
 		when(utilsService.hash(password, principal.getCreationTime())).thenReturn(principal.getPassword());
+		when(utilsService.hash(providedPassword, principal.getCreationTime())).thenReturn(passwordEncoder.encodePassword(providedPassword, principal.getCreationTime()));
 		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "xsrfTokenService", tokenService);
 		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "utilsService", utilsService);
 		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "validator", validator);
@@ -62,7 +62,7 @@ public class DeleteAccountTest {
 	public void defaultDeleteAccountFlow() throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, UnsupportedEncodingException{
 		String username = userPasswordMap.keySet().iterator().next(), password = userPasswordMap.get(username);
 		Long businessID = Principal.findByUsername(username).getBusiness().getId();
-		DeleteAccountController deleteAccountController = initDeleteAccountController(username, password);
+		DeleteAccountController deleteAccountController = initDeleteAccountController(username, password, password);
 		String deleteAccountView = deleteAccountController.setupForm(mock(Model.class), mock(HttpSession.class));
 		DeleteAccount deleteAccount = new DeleteAccount();
 		deleteAccount.setPassword(password);
@@ -74,6 +74,32 @@ public class DeleteAccountTest {
 		assertEquals("redirect:/resources/j_spring_security_logout", redirectLogoutView);
 		assertEquals(null, Principal.findByUsername(username));
 		assertEquals(null, Business.findBusiness(businessID));
+	}
+	
+	private void invalidPasswordValue(String username, String passValue) throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+		DeleteAccountController deleteAccountController = initDeleteAccountController(username, userPasswordMap.get(username), passValue);
+		DeleteAccount deleteAccount = new DeleteAccount();
+		deleteAccount.setPassword(passValue);
+		BindingResult result = new BeanPropertyBindingResult(deleteAccount, "deleteAccount");
+		String view = deleteAccountController.processSubmit(deleteAccount, result, mock(SessionStatus.class));
+		assertEquals("deleteAccount", view);
+		assertTrue(result.hasErrors());
+	}
+	
+	@Test
+	public void deleteAccountNullPasswordTest() throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+		invalidPasswordValue(userPasswordMap.keySet().iterator().next(), null);
+	}
+	
+	@Test
+	public void deleteAccountBlankPasswordTest() throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+		invalidPasswordValue(userPasswordMap.keySet().iterator().next(), "");
+	}
+	
+	@Test
+	public void deleteAccountWrongPasswordTest() throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+		String username = userPasswordMap.keySet().iterator().next();
+		invalidPasswordValue(username, userPasswordMap.get(username) + "1");
 	}
 
 }
