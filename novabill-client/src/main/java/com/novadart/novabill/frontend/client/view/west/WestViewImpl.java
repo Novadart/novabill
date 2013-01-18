@@ -14,24 +14,17 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
-import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.event.ClientAddEvent;
-import com.novadart.novabill.frontend.client.event.ClientAddHandler;
-import com.novadart.novabill.frontend.client.event.ClientDeleteEvent;
-import com.novadart.novabill.frontend.client.event.ClientDeleteHandler;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.util.WidgetUtils;
 import com.novadart.novabill.frontend.client.view.center.client.dialog.ClientDialog;
 import com.novadart.novabill.frontend.client.widget.search.ClientSearch;
-import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
+import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
+import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class WestViewImpl extends Composite implements WestView  {
@@ -51,7 +44,7 @@ public class WestViewImpl extends Composite implements WestView  {
 	@UiField HorizontalPanel clientFilterContainer;
 	@UiField ScrollPanel clientListContainerWrapper;
 	
-	@UiField Label welcomeMessage;
+	@UiField SimplePanel tip;
 	
 	private Presenter presenter;
 	private EventBus eventBus;
@@ -63,61 +56,22 @@ public class WestViewImpl extends Composite implements WestView  {
 		clientFilter = clientSearch.getSearchInput();
 		cleanClientFilter = clientSearch.getResetButton();
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		TipFactory.show(Tips.west_home_no_clients, tip);
+		
 		setStyleName("WestView");
 	}
 	
+	
 	@Override
 	public void setEventBus(EventBus eventBus) {
-		this.eventBus = eventBus;
-		clientSearch.setEventBus(eventBus);
-		eventBus.addHandler(ClientAddEvent.TYPE, new ClientAddHandler() {
-			
-			@Override
-			public void onClientAdd(ClientAddEvent event) {
-				onDocumentChangeEvent();
-			}
-		});
 		
-		eventBus.addHandler(ClientDeleteEvent.TYPE, new ClientDeleteHandler() {
-			
-			@Override
-			public void onClientDelete(ClientDeleteEvent event) {
-				onDocumentChangeEvent();
-			}
-		});
-		
-	}
-	
-	private void onDocumentChangeEvent(){
-		ServerFacade.business.getStats(Configuration.getBusinessId(), new ManagedAsyncCallback<BusinessStatsDTO>() {
-
-			@Override
-			public void onSuccess(BusinessStatsDTO result) {
-				if(result == null){
-					return;
-				}
-				
-				Configuration.setStats(result);
-				
-				if(result.getClientsCount() > 0){
-					welcomeMessage.setVisible(false);
-					clientListContainer.setVisible(true);
-					clientFilterContainer.setVisible(true);
-				}
-			}
-
-		});
 	}
 
 	
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		if(Configuration.getStats().getClientsCount() == 0){
-			welcomeMessage.setVisible(true);
-			clientListContainer.setVisible(false);
-			clientFilterContainer.setVisible(false);
-		}
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 		    @Override
 		    public void execute() {

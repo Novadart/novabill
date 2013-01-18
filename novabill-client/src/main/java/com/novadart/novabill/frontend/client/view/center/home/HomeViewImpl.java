@@ -18,20 +18,16 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabBar;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.Range;
-import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
 import com.novadart.novabill.frontend.client.event.DocumentAddHandler;
 import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
 import com.novadart.novabill.frontend.client.event.DocumentDeleteHandler;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateHandler;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
@@ -44,8 +40,9 @@ import com.novadart.novabill.frontend.client.widget.list.impl.CreditNoteList;
 import com.novadart.novabill.frontend.client.widget.list.impl.EstimationList;
 import com.novadart.novabill.frontend.client.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.widget.list.impl.TransportDocumentList;
+import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
+import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
-import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -72,9 +69,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 	private final CreditNoteList creditNoteList = new CreditNoteList();
 	private final TransportDocumentList transportDocumentList = new TransportDocumentList();
 	@UiField(provided=true) HTML date;
-	@UiField(provided=true) HTML welcome;
+	@UiField SimplePanel tipWelcome;
+	@UiField SimplePanel tipDocs;
 	@UiField(provided=true) SimplePanel tabBody;
-	@UiField Label welcomeMessage;
 
 	private final Map<Integer, FlowPanel> lists = new HashMap<Integer, FlowPanel>();
 
@@ -90,7 +87,6 @@ public class HomeViewImpl extends Composite implements HomeView {
 
 	public HomeViewImpl() {
 		date = setupDate();
-		welcome = setupWelcomeMessage();
 		tabBody = new SimplePanel();
 		setupLists();
 
@@ -101,7 +97,10 @@ public class HomeViewImpl extends Composite implements HomeView {
 		tabBar.addTab(I18N.INSTANCE.creditNote());
 		tabBar.addTab(I18N.INSTANCE.transportDocumentsTab());
 		tabBar.selectTab(0);
-
+		
+		TipFactory.show(Tips.center_home_welcome, tipWelcome);
+		TipFactory.show(Tips.center_home_yourdocs, tipDocs);
+		
 		setStyleName("HomeView");
 	}
 	
@@ -150,31 +149,12 @@ public class HomeViewImpl extends Composite implements HomeView {
 			} else if(doc instanceof TransportDocumentDTO){
 				transportDocumentList.setVisibleRangeAndClearData(transportDocumentList.getVisibleRange(), true);
 			}
-			
-			ServerFacade.business.getStats(Configuration.getBusinessId(), new ManagedAsyncCallback<BusinessStatsDTO>() {
-
-				@Override
-				public void onSuccess(BusinessStatsDTO result) {
-					if(result == null){
-						return;
-					}
-					
-					Configuration.setStats(result);
-					
-					if(result.getInvoicesCountForYear() > 0){
-						welcomeMessage.setVisible(false);
-						tabBody.setVisible(true);
-					}
-				}
-
-			});
 		}
 	}
 
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		welcomeMessage.setVisible(Configuration.getStats().getInvoicesCountForYear() == 0);
 		
 		if(isInitialSetup){
 			isInitialSetup = false;
@@ -206,17 +186,6 @@ public class HomeViewImpl extends Composite implements HomeView {
 		updater.scheduleRepeating(1000);
 
 		return dateBox;
-	}
-
-
-	private HTML setupWelcomeMessage() {
-		HTML welcomeMessage = new HTML();
-		SafeHtmlBuilder shb = new SafeHtmlBuilder();
-		shb.appendHtmlConstant("<p>"+I18N.INSTANCE.welcomeMessage1()+"</p>");
-		shb.appendHtmlConstant("<p>"+I18N.INSTANCE.welcomeMessage2()+"</p>");
-		shb.appendHtmlConstant("<p>"+I18N.INSTANCE.welcomeMessage3()+"</p>");
-		welcomeMessage.setHTML(shb.toSafeHtml());
-		return welcomeMessage;
 	}
 
 
@@ -288,11 +257,6 @@ public class HomeViewImpl extends Composite implements HomeView {
 	@UiHandler("tabBar")
 	void onTabBarSelected(SelectionEvent<Integer> event) {
 		int selectedTab = event.getSelectedItem();
-
-		welcomeMessage.setVisible(invoiceList.getVisibleItemCount()
-				+estimationList.getVisibleItemCount()
-				+transportDocumentList.getVisibleItemCount()
-				+creditNoteList.getVisibleItemCount() == 0);
 		tabBody.setWidget(lists.get(selectedTab));
 	}
 

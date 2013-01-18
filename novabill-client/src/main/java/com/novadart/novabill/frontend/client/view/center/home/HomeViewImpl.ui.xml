@@ -13,7 +13,7 @@
 
 		<g:ScrollPanel styleName="scrollHome">
 			<g:FlowPanel styleName="scrollHomeBody">
-				<g:HTML ui:field="welcome" styleName="welcomeMessage"></g:HTML>
+				<g:SimplePanel ui:field="tipWelcome" />
 	
 				<g:HorizontalPanel ui:field="actions" styleName="actions">
 					<g:Button ui:field="newInvoice" styleName="action-button newInvoice"
@@ -26,8 +26,8 @@
 						text="{i18n.newTransportDocument}"></g:Button>
 				</g:HorizontalPanel>
 				
-				<g:Label styleName="yourDocsLabel" text="{i18n.yourDocs}"></g:Label>
-				<g:Label ui:field="welcomeMessage" styleName="welcomeMessage" text="{i18n.welcomeMessageDocuments}" visible="false"></g:Label>
+				<g:Label styleName="yourDocsLabel" text="{i18n.yourDocs}" />
+				<g:SimplePanel ui:field="tipDocs" />
 				<g:FlowPanel styleName="tabPanel">
 					<g:TabBar ui:field="tabBar" styleName="tabBar" />
 					<g:SimplePanel ui:field="tabBody" styleName="tabBody" />				
