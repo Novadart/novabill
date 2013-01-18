@@ -30,7 +30,7 @@ import com.novadart.novabill.frontend.client.event.DocumentDeleteHandler;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateHandler;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
@@ -115,7 +115,7 @@ public class MainWidget extends Composite {
 	}
 	
 	private void onDocumentChangeEvent(){
-		ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
+		ServerFacade.business.getStats(Configuration.getBusinessId(), new ManagedAsyncCallback<BusinessStatsDTO>() {
 
 			@Override
 			public void onSuccess(BusinessStatsDTO result) {
@@ -128,9 +128,6 @@ public class MainWidget extends Composite {
 				generateStats(result);
 			}
 
-			@Override
-			public void onException(Throwable caught) {
-			}
 		});
 	}
 

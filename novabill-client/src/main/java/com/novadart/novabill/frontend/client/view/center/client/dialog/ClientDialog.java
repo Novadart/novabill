@@ -18,13 +18,12 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.ClientAddEvent;
 import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
-import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.validation.AlternativeSsnVatIdValidation;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -204,7 +203,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		ok.showLoader(true);
 		setLocked(true);
 		if(this.client == null) {
-			ServerFacade.client.add(Configuration.getBusinessId(), client, new WrappedAsyncCallback<Long>() {
+			ServerFacade.client.add(Configuration.getBusinessId(), client, new ManagedAsyncCallback<Long>() {
 
 				@Override
 				public void onSuccess(Long result) {
@@ -215,15 +214,15 @@ public class ClientDialog extends Dialog implements HasUILocking {
 				}
 
 				@Override
-				public void onException(Throwable caught) {
+				public void onFailure(Throwable caught) {
 					ok.showLoader(false);
-					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+					super.onFailure(caught);
 					setLocked(false);
 				}
 			});
 		} else {
 			
-			ServerFacade.client.update(Configuration.getBusinessId(), client, new WrappedAsyncCallback<Void>() {
+			ServerFacade.client.update(Configuration.getBusinessId(), client, new ManagedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {
@@ -234,9 +233,9 @@ public class ClientDialog extends Dialog implements HasUILocking {
 				}
 
 				@Override
-				public void onException(Throwable caught) {
+				public void onFailure(Throwable caught) {
 					ok.showLoader(false);
-					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+					super.onFailure(caught);
 					setLocked(false);
 				}
 			});

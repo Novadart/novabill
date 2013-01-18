@@ -2,9 +2,7 @@ package com.novadart.novabill.frontend.client.util;
 
 import com.google.gwt.core.client.GWT;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
-import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 
 public class ExportUtils {
 
@@ -14,7 +12,7 @@ public class ExportUtils {
 	
 	public static void exportData(final boolean clients, final boolean invoices, final boolean estimations,
 			final boolean creditNotes, final boolean traspDocuments){
-		ServerFacade.business.generateExportToken(new WrappedAsyncCallback<String>() {
+		ServerFacade.business.generateExportToken(new ManagedAsyncCallback<String>() {
 
 			@Override
 			public void onSuccess(String result) {
@@ -28,10 +26,6 @@ public class ExportUtils {
 						);
 			}
 
-			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-			}
 		});
 	}
 	

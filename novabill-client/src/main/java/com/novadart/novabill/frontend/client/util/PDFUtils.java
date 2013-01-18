@@ -2,9 +2,7 @@ package com.novadart.novabill.frontend.client.util;
 
 import com.google.gwt.core.client.GWT;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
-import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 
 public class PDFUtils {
 
@@ -13,7 +11,7 @@ public class PDFUtils {
 
 
 	private static void generatePdf(final String documentClass, final String documentId) {
-		ServerFacade.business.generatePDFToken(new WrappedAsyncCallback<String>() {
+		ServerFacade.business.generatePDFToken(new ManagedAsyncCallback<String>() {
 
 			@Override
 			public void onSuccess(String result) {
@@ -24,10 +22,6 @@ public class PDFUtils {
 						);
 			}
 
-			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-			}
 		});
 	}
 	

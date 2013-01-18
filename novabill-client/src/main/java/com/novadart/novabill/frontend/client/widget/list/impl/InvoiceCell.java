@@ -10,7 +10,7 @@ import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
 import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.creditnote.FromInvoiceCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
@@ -215,17 +215,13 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
-					ServerFacade.invoice.remove(Configuration.getBusinessId(), invoice.getClient().getId(), invoice.getId(), new WrappedAsyncCallback<Void>() {
+					ServerFacade.invoice.remove(Configuration.getBusinessId(), invoice.getClient().getId(), invoice.getId(), new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {
 							eventBus.fireEvent(new DocumentDeleteEvent(invoice));
 						}
 
-						@Override
-						public void onException(Throwable caught) {
-							Notification.showMessage(I18N.INSTANCE.errorServerCommunication());		
-						}
 					});
 				}
 			}
@@ -234,17 +230,13 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 	}
 
 	private void onPayedSwitchClicked(final InvoiceDTO invoice) {
-		ServerFacade.invoice.setPayed(Configuration.getBusinessId(), invoice.getClient().getId(), invoice.getId(), !invoice.getPayed(), new WrappedAsyncCallback<Void>() {
+		ServerFacade.invoice.setPayed(Configuration.getBusinessId(), invoice.getClient().getId(), invoice.getId(), !invoice.getPayed(), new ManagedAsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {
 				eventBus.fireEvent(new ClientUpdateEvent(invoice.getClient()));
 			}
 
-			@Override
-			public void onException(Throwable caught) {
-
-			}
 		});
 	}
 

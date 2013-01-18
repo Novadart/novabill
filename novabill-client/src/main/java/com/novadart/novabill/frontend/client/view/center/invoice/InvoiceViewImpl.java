@@ -26,7 +26,7 @@ import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
@@ -153,7 +153,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView, Has
 
 		final InvoiceDTO invoice = createInvoice(null);
 		
-		ServerFacade.invoice.add(invoice, new WrappedAsyncCallback<Long>() {
+		ServerFacade.invoice.add(invoice, new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
@@ -176,12 +176,13 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView, Has
 			}
 
 			@Override
-			public void onException(Throwable caught) {
+			public void onFailure(Throwable caught) {
 				createInvoice.showLoader(false);
 				if(caught instanceof ValidationException){
 					handleServerValidationException((ValidationException) caught);
 				} else {
 					Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
+					super.onFailure(caught);
 				}
 				setLocked(false);
 			}
@@ -240,15 +241,16 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView, Has
 					
 					final InvoiceDTO inv = createInvoice(invoice);
 
-					ServerFacade.invoice.update(inv, new WrappedAsyncCallback<Void>() {
+					ServerFacade.invoice.update(inv, new ManagedAsyncCallback<Void>() {
 
 						@Override
-						public void onException(Throwable caught) {
+						public void onFailure(Throwable caught) {
 							modifyDocument.showLoader(false);
 							if(caught instanceof ValidationException){
 								handleServerValidationException((ValidationException) caught);
 							} else {
 								Notification.showMessage(I18N.INSTANCE.invoiceUpdateFailure());
+								super.onFailure(caught);
 							}
 							setLocked(false);
 						}

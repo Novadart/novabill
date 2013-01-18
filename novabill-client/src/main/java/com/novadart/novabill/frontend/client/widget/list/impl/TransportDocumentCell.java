@@ -9,7 +9,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentInvoicePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.CloneTransportDocumentPlace;
@@ -180,17 +180,13 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
-					ServerFacade.transportDocument.remove(Configuration.getBusinessId(), transportDocument.getClient().getId(), transportDocument.getId(), new WrappedAsyncCallback<Void>() {
+					ServerFacade.transportDocument.remove(Configuration.getBusinessId(), transportDocument.getClient().getId(), transportDocument.getId(), new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {
 							eventBus.fireEvent(new DocumentDeleteEvent(transportDocument));
 						}
 
-						@Override
-						public void onException(Throwable caught) {
-							Notification.showMessage(I18N.INSTANCE.errorServerCommunication());		
-						}
 					});
 				}
 			}

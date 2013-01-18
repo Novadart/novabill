@@ -9,7 +9,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.creditnote.ModifyCreditNotePlace;
 import com.novadart.novabill.frontend.client.util.PDFUtils;
@@ -142,17 +142,13 @@ public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
-					ServerFacade.creditNote.remove(Configuration.getBusinessId(), creditNote.getClient().getId(), creditNote.getId(), new WrappedAsyncCallback<Void>() {
+					ServerFacade.creditNote.remove(Configuration.getBusinessId(), creditNote.getClient().getId(), creditNote.getId(), new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {
 							eventBus.fireEvent(new DocumentDeleteEvent(creditNote));
 						}
-
-						@Override
-						public void onException(Throwable caught) {
-							Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-						}
+						
 					});
 				}
 			}

@@ -24,6 +24,7 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.Const;
 import com.novadart.novabill.frontend.client.event.BusinessUpdateEvent;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
@@ -308,7 +309,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 			saveData.showLoader(true);
 			setLocked(true);
 			
-			ServerFacade.business.update(b, new AsyncCallback<Void>() {
+			ServerFacade.business.update(b, new ManagedAsyncCallback<Void>() {
 				
 				@Override
 				public void onSuccess(Void result) {
@@ -321,8 +322,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 				
 				@Override
 				public void onFailure(Throwable caught) {
-					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 					saveData.showLoader(true);
+					super.onFailure(caught);
 					setLocked(false);
 				}
 			});

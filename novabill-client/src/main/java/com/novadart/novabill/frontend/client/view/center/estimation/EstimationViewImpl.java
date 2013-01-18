@@ -25,7 +25,7 @@ import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
@@ -152,7 +152,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		createEstimation.getButton().setEnabled(false);
 		
 		final EstimationDTO estimation = createEstimation(this.estimation);
-		ServerFacade.estimation.add(estimation, new WrappedAsyncCallback<Long>() {
+		ServerFacade.estimation.add(estimation, new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
@@ -167,9 +167,9 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			}
 
 			@Override
-			public void onException(Throwable caught) {
+			public void onFailure(Throwable caught) {
 				convertToInvoice.showLoader(false);
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+				super.onFailure(caught);
 				
 				setLocked(false);
 				modifyDocument.getButton().setEnabled(true);
@@ -193,7 +193,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		convertToInvoice.getButton().setEnabled(false);
 
 		final EstimationDTO estimation = createEstimation(null);
-		ServerFacade.estimation.add(estimation, new WrappedAsyncCallback<Long>() {
+		ServerFacade.estimation.add(estimation, new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
@@ -213,12 +213,12 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			}
 
 			@Override
-			public void onException(Throwable caught) {
+			public void onFailure(Throwable caught) {
 				createEstimation.showLoader(false);
 				if(caught instanceof ValidationException){
 					handleServerValidationException((ValidationException) caught);
 				} else {
-					Notification.showMessage(I18N.INSTANCE.estimationCreationFailure());
+					super.onFailure(caught);
 				}
 				
 				setLocked(false);
@@ -282,15 +282,15 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 					
 					final EstimationDTO es = createEstimation(estimation);
 
-					ServerFacade.estimation.update(es, new WrappedAsyncCallback<Void>() {
+					ServerFacade.estimation.update(es, new ManagedAsyncCallback<Void>() {
 
 						@Override
-						public void onException(Throwable caught) {
+						public void onFailure(Throwable caught) {
 							modifyDocument.showLoader(false);
 							if(caught instanceof ValidationException){
 								handleServerValidationException((ValidationException) caught);
 							} else {
-								Notification.showMessage(I18N.INSTANCE.estimationUpdateFailure());
+								super.onFailure(caught);
 							}
 							
 							setLocked(false);

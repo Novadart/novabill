@@ -5,12 +5,10 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
-import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.view.MainWidget;
 import com.novadart.novabill.frontend.client.view.center.ClientView;
-import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientActivity extends AbstractCenterActivity {
@@ -34,12 +32,7 @@ public class ClientActivity extends AbstractCenterActivity {
 					cv.setDocumentsListing(place.getDocs());
 				}
 				
-				ServerFacade.client.get(place.getClientId(), new WrappedAsyncCallback<ClientDTO>() {
-
-					@Override
-					public void onException(Throwable caught) {
-						Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-					}
+				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
 
 					@Override
 					public void onSuccess(ClientDTO result) {

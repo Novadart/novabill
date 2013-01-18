@@ -11,12 +11,13 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
-public abstract class WrappedAsyncCallback<T> implements AsyncCallback<T> {
+public abstract class ManagedAsyncCallback<T> implements AsyncCallback<T> {
 
 	private static boolean authDialogVisible = false;
+	
 
 	@Override
-	public final void onFailure(Throwable caught) {
+	public void onFailure(Throwable caught) {
 		if(caught instanceof NotAuthenticatedException){
 			
 			if(!authDialogVisible) {
@@ -49,11 +50,12 @@ public abstract class WrappedAsyncCallback<T> implements AsyncCallback<T> {
 //				GoPremiumDialog.getInstance().showCentered();
 //			}
 			
-		} else {
+		}  else {
 			
-			onException(caught);
+			Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
 			
 		}
+		
 	}
 
 
@@ -64,6 +66,5 @@ public abstract class WrappedAsyncCallback<T> implements AsyncCallback<T> {
 		authDialogVisible = true;
 	}
 
-	public abstract void onException(Throwable caught);
 
 }

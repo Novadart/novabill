@@ -26,7 +26,7 @@ import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
@@ -150,7 +150,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		
 		setLocked(true);
 		createCreditNote.showLoader(true);
-		ServerFacade.creditNote.add(creditNote, new WrappedAsyncCallback<Long>() {
+		ServerFacade.creditNote.add(creditNote, new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
@@ -171,12 +171,12 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 			}
 
 			@Override
-			public void onException(Throwable caught) {
+			public void onFailure(Throwable caught) {
 				createCreditNote.showLoader(false);
 				if(caught instanceof ValidationException){
 					handleServerValidationException((ValidationException) caught);
 				} else {
-					Notification.showMessage(I18N.INSTANCE.creditNoteCreationFailure());
+					super.onFailure(caught);
 				}
 				setLocked(false);
 			}
@@ -236,7 +236,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 					setLocked(true);
 					modifyDocument.showLoader(true);
 					
-					ServerFacade.creditNote.update(cn, new WrappedAsyncCallback<Void>() {
+					ServerFacade.creditNote.update(cn, new ManagedAsyncCallback<Void>() {
 	
 						@Override
 						public void onSuccess(Void result) {
@@ -257,12 +257,12 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 						}
 	
 						@Override
-						public void onException(Throwable caught) {
+						public void onFailure(Throwable caught) {
 							modifyDocument.showLoader(false);
 							if(caught instanceof ValidationException){
 								handleServerValidationException((ValidationException) caught);
 							} else {
-								Notification.showMessage(I18N.INSTANCE.creditNoteUpdateFailure());
+								super.onFailure(caught);
 							}
 							setLocked(false);
 						}

@@ -9,7 +9,7 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.i18n.client.Dictionary;
 import com.google.gwt.user.client.Window;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.view.bootstrap.BootstrapDialog;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
@@ -21,7 +21,7 @@ public class Configuration {
 	private static BusinessDTO business;
 	private static BusinessStatsDTO stats;
 
-	public static final void init(final WrappedAsyncCallback<Void> callback){
+	public static final void init(final ManagedAsyncCallback<Void> callback){
 		try {
 			Map<String, String> values = new HashMap<String, String>();
 			
@@ -61,7 +61,7 @@ public class Configuration {
 							@Override
 							public void businessData(final BusinessDTO business) {
 								
-								ServerFacade.business.update(business, new WrappedAsyncCallback<Void>() {
+								ServerFacade.business.update(business, new ManagedAsyncCallback<Void>() {
 									
 									@Override
 									public void onSuccess(Void result) {
@@ -71,9 +71,10 @@ public class Configuration {
 									}
 									
 									@Override
-									public void onException(Throwable caught) {
-										callback.onException(caught);
+									public void onFailure(Throwable caught) {
+										callback.onFailure(caught);
 									}
+									
 								});
 							}
 						});
@@ -93,7 +94,7 @@ public class Configuration {
 			
 			
 		} catch(Exception e){
-			callback.onException(e);
+			callback.onFailure(e);
 		}
 	}
 

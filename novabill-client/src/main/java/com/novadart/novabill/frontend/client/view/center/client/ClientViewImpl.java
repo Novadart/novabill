@@ -38,7 +38,7 @@ import com.novadart.novabill.frontend.client.event.DocumentDeleteHandler;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateHandler;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.place.HomePlace;
@@ -174,17 +174,17 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 			public void onClientUpdate(ClientUpdateEvent event) {
 				if(ClientViewImpl.this.isAttached()){
 					ServerFacade.client.get(ClientViewImpl.this.client.getId(), 
-							new WrappedAsyncCallback<ClientDTO>() {
+							new ManagedAsyncCallback<ClientDTO>() {
 
 						@Override
 						public void onSuccess(ClientDTO result) {
 							setClient(result);
 						}
 
-						@Override
-						public void onException(Throwable caught) {
+						public void onFailure(Throwable caught) {
+							super.onFailure(caught);
 							Window.Location.reload();
-						}
+						};
 					});
 				}
 			}
@@ -341,7 +341,7 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 					
 					cancelClient.showLoader(true);
 					setLocked(true);
-					ServerFacade.client.remove(Configuration.getBusinessId(), client.getId(), new WrappedAsyncCallback<Void>() {
+					ServerFacade.client.remove(Configuration.getBusinessId(), client.getId(), new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {
@@ -352,12 +352,12 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 						}
 
 						@Override
-						public void onException(Throwable caught) {
+						public void onFailure(Throwable caught) {
 							cancelClient.showLoader(false);
 							if(caught instanceof DataIntegrityException){
 								Notification.showMessage(I18N.INSTANCE.errorClientCancelation());
 							} else {
-								Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+								super.onFailure(caught);
 							}
 							setLocked(false);
 						}
@@ -406,12 +406,7 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 
 
 	private void loadInvoices(){
-		ServerFacade.invoice.getAllForClient(client.getId(), new WrappedAsyncCallback<List<InvoiceDTO>>() {
-
-			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-			}
+		ServerFacade.invoice.getAllForClient(client.getId(), new ManagedAsyncCallback<List<InvoiceDTO>>() {
 
 			@Override
 			public void onSuccess(List<InvoiceDTO> result) {
@@ -426,7 +421,7 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 
 
 	private void loadTransportDocuments(){
-		ServerFacade.transportDocument.getAllForClient(client.getId(), new WrappedAsyncCallback<List<TransportDocumentDTO>>() {
+		ServerFacade.transportDocument.getAllForClient(client.getId(), new ManagedAsyncCallback<List<TransportDocumentDTO>>() {
 
 			@Override
 			public void onSuccess(List<TransportDocumentDTO> result) {
@@ -437,16 +432,12 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 				transportDocumentDataProvider.refresh();
 			}
 
-			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-			}
 		});
 	}
 
 
 	private void loadCreditNotes(){
-		ServerFacade.creditNote.getAllForClient(client.getId(), new WrappedAsyncCallback<List<CreditNoteDTO>>() {
+		ServerFacade.creditNote.getAllForClient(client.getId(), new ManagedAsyncCallback<List<CreditNoteDTO>>() {
 
 			@Override
 			public void onSuccess(List<CreditNoteDTO> result) {
@@ -457,20 +448,11 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 				creditNoteDataProvider.refresh();
 			}
 
-			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-			}
 		});
 	}
 
 	private void loadEstimations(){
-		ServerFacade.estimation.getAllForClient(client.getId(), new WrappedAsyncCallback<List<EstimationDTO>>() {
-
-			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-			}
+		ServerFacade.estimation.getAllForClient(client.getId(), new ManagedAsyncCallback<List<EstimationDTO>>() {
 
 			@Override
 			public void onSuccess(List<EstimationDTO> result) {

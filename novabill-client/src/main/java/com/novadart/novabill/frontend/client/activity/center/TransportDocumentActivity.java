@@ -4,8 +4,9 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
+import com.novadart.novabill.frontend.client.facade.CallbackUtils;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.CloneTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
@@ -28,30 +29,30 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 	@Override
 	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		super.start(panel, eventBus);
-		
+
 		getClientFactory().getTransportDocumentView(new AsyncCallback<TransportDocumentView>() {
 
 			@Override
 			public void onSuccess(final TransportDocumentView view) {
 				view.setPresenter(TransportDocumentActivity.this);
 				view.setEventBus(eventBus);
-				
+
 				if (place instanceof ModifyTransportDocumentPlace) {
 					ModifyTransportDocumentPlace p = (ModifyTransportDocumentPlace) place;
 					setupModifyTransportDocumentView(panel, view, p);
-				
+
 				} else if (place instanceof CloneTransportDocumentPlace) {
 					CloneTransportDocumentPlace p = (CloneTransportDocumentPlace) place;
 					setupCloneTransportDocumentView(panel, view, p);
-					
+
 				} else if (place instanceof NewTransportDocumentPlace) {
 					NewTransportDocumentPlace p = (NewTransportDocumentPlace) place;
 					setupNewTransportDocumentView(panel, view, p);
-					
+
 				} else {
 					goTo(new HomePlace());
 				}
-				
+
 			}
 
 			@Override
@@ -61,13 +62,13 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 		});
 	}
 
-	
+
 	private void setupNewTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, final NewTransportDocumentPlace place){
-		ServerFacade.transportDocument.getNextTransportDocId(new WrappedAsyncCallback<Long>() {
+		ServerFacade.transportDocument.getNextTransportDocId(new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new WrappedAsyncCallback<ClientDTO>() {
+				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
 
 					@Override
 					public void onSuccess(ClientDTO client) {
@@ -77,21 +78,29 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 					}
 
 					@Override
-					public void onException(Throwable caught) {
-						manageError();
+					public void onFailure(Throwable caught) {
+						if(CallbackUtils.isServerCommunicationException(caught)){
+							manageError();
+						} else {
+							super.onFailure(caught);
+						}
 					}
 				});
 			}
 
 			@Override
-			public void onException(Throwable caught) {
-				manageError();
+			public void onFailure(Throwable caught) {
+				if(CallbackUtils.isServerCommunicationException(caught)){
+					manageError();
+				} else {
+					super.onFailure(caught);
+				}
 			}
 		});
 	}
-	
+
 	private void setupModifyTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, ModifyTransportDocumentPlace place){
-		ServerFacade.transportDocument.get(place.getTransportDocumentId(), new WrappedAsyncCallback<TransportDocumentDTO>() {
+		ServerFacade.transportDocument.get(place.getTransportDocumentId(), new ManagedAsyncCallback<TransportDocumentDTO>() {
 
 			@Override
 			public void onSuccess(TransportDocumentDTO result) {
@@ -101,22 +110,26 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 			}
 
 			@Override
-			public void onException(Throwable caught) {
-				manageError();
+			public void onFailure(Throwable caught) {
+				if(CallbackUtils.isServerCommunicationException(caught)){
+					manageError();
+				} else {
+					super.onFailure(caught);
+				}
 			}
 		});
 	}
-	
+
 	private void setupCloneTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, final CloneTransportDocumentPlace place){
-		ServerFacade.transportDocument.getNextTransportDocId(new WrappedAsyncCallback<Long>() {
+		ServerFacade.transportDocument.getNextTransportDocId(new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new WrappedAsyncCallback<ClientDTO>() {
+				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
 
 					@Override
 					public void onSuccess(final ClientDTO client) {
-						ServerFacade.transportDocument.get(place.getTransportDocumentId(), new WrappedAsyncCallback<TransportDocumentDTO>() {
+						ServerFacade.transportDocument.get(place.getTransportDocumentId(), new ManagedAsyncCallback<TransportDocumentDTO>() {
 
 							@Override
 							public void onSuccess(TransportDocumentDTO toClone) {
@@ -126,23 +139,35 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 							}
 
 							@Override
-							public void onException(Throwable caught) {
-								manageError();
+							public void onFailure(Throwable caught) {
+								if(CallbackUtils.isServerCommunicationException(caught)){
+									manageError();
+								} else {
+									super.onFailure(caught);
+								}
 							}
 						});
-						
+
 					}
 
 					@Override
-					public void onException(Throwable caught) {
-						manageError();
+					public void onFailure(Throwable caught) {
+						if(CallbackUtils.isServerCommunicationException(caught)){
+							manageError();
+						} else {
+							super.onFailure(caught);
+						}
 					}
 				});
 			}
 
 			@Override
-			public void onException(Throwable caught) {
-				manageError();
+			public void onFailure(Throwable caught) {
+				if(CallbackUtils.isServerCommunicationException(caught)){
+					manageError();
+				} else {
+					super.onFailure(caught);
+				}
 			}
 		});
 	}

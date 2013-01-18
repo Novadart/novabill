@@ -9,8 +9,9 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.novabill.frontend.client.facade.CallbackUtils;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.mvp.AppPlaceHistoryMapper;
 import com.novadart.novabill.frontend.client.mvp.CenterActivityMapper;
@@ -29,12 +30,12 @@ public class Novabill implements EntryPoint {
 
 	public void onModuleLoad() {
 		
-		Configuration.init(new WrappedAsyncCallback<Void>() {
+		Configuration.init(new ManagedAsyncCallback<Void>() {
 			
 			@Override
 			public void onSuccess(Void result) {
 				
-				ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
+				ServerFacade.business.getStats(Configuration.getBusinessId(), new ManagedAsyncCallback<BusinessStatsDTO>() {
 
 					@Override
 					public void onSuccess(BusinessStatsDTO result) {
@@ -75,19 +76,29 @@ public class Novabill implements EntryPoint {
 						historyHandler.handleCurrentHistory();
 						
 					}
-
+					
 					@Override
-					public void onException(Throwable caught) {
-						Notification.showMessage(I18N.INSTANCE.errorLoadingAppConfiguration());
+					public void onFailure(Throwable caught) {
+						if(CallbackUtils.isServerCommunicationException(caught)){
+							Notification.showMessage(I18N.INSTANCE.errorLoadingAppConfiguration());
+						} else {
+							super.onFailure(caught);
+						}
 					}
+
 				});
 				
 			}
 			
 			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorLoadingAppConfiguration());
+			public void onFailure(Throwable caught) {
+				if(CallbackUtils.isServerCommunicationException(caught)){
+					Notification.showMessage(I18N.INSTANCE.errorLoadingAppConfiguration());
+				} else {
+					super.onFailure(caught);
+				}
 			}
+			
 		});
 		
 	}

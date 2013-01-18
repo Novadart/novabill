@@ -25,7 +25,7 @@ import com.novadart.novabill.frontend.client.event.ClientAddHandler;
 import com.novadart.novabill.frontend.client.event.ClientDeleteEvent;
 import com.novadart.novabill.frontend.client.event.ClientDeleteHandler;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.util.WidgetUtils;
@@ -89,7 +89,7 @@ public class WestViewImpl extends Composite implements WestView  {
 	}
 	
 	private void onDocumentChangeEvent(){
-		ServerFacade.business.getStats(Configuration.getBusinessId(), new WrappedAsyncCallback<BusinessStatsDTO>() {
+		ServerFacade.business.getStats(Configuration.getBusinessId(), new ManagedAsyncCallback<BusinessStatsDTO>() {
 
 			@Override
 			public void onSuccess(BusinessStatsDTO result) {
@@ -106,9 +106,6 @@ public class WestViewImpl extends Composite implements WestView  {
 				}
 			}
 
-			@Override
-			public void onException(Throwable caught) {
-			}
 		});
 	}
 
