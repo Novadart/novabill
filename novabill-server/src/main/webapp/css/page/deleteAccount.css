@@ -15,7 +15,7 @@
 	background: -webkit-linear-gradient(top, #FF9292 0%, #FD0202 100%);
 	background: -o-linear-gradient(top, #FF9292 0%, #FD0202 100%);
 	background: -ms-linear-gradient(top, #FF9292 0%, #FD0202 100%);
-	filter: progid:DXImageTransform.Microsoft.gradient(  startColorstr='#FF9292',
+	filter: progid:DXImageTransform.Microsoft.gradient(   startColorstr='#FF9292',
 		endColorstr='#FD0202', GradientType=0 );
 	background: linear-gradient(top, #FF9292 0%, #FD0202 100%);
 	border: 1px solid #850000;
@@ -44,13 +44,6 @@ p {
 	line-height: 1.5em;
 }
 
-.exportLink {
-	width: 200px;
-	margin: 0 auto;
-	display: block;
-}
-
-
 .goodbyeMessage {
 	margin-top: 2em;
 }
@@ -64,6 +57,11 @@ p {
 	margin-top: 3em;
 }
 
-.deleteAccountForm {
-	
+iframe {
+	width: 202px;
+	height: 32px;
+	border: none;
+	background: none;
+	display: block;
+	margin: 0 auto;
 }

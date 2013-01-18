@@ -35,14 +35,7 @@ public class DeleteAccountController {
 	private Validator validator;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String setupForm(Model model, HttpSession session) throws NoSuchAlgorithmException, UnsupportedEncodingException{
-		model.addAttribute("exportClientsParamName", ExportController.CLIENTS_REQUEST_PARAM);
-		model.addAttribute("exportInvoicesParamName", ExportController.INVOICES_REQUEST_PARAM);
-		model.addAttribute("exportEstimationsParamName", ExportController.ESTIMATIONS_REQUEST_PARAM);
-		model.addAttribute("exportCreditnotesParamName", ExportController.CREDITNOTES_REQUEST_PARAM);
-		model.addAttribute("exportTransportdocsParamName", ExportController.TRANSPORTDOCS_REQUEST_PARAM);
-		model.addAttribute("exportTokenParamName", ExportController.TOKEN_REQUEST_PARAM);
-		model.addAttribute("exportToken", xsrfTokenService.generateToken(session, ExportController.TOKENS_SESSION_FIELD));
+	public String setupForm(Model model) {
 		DeleteAccount deleteAccount = new DeleteAccount();
 		model.addAttribute("deleteAccount", deleteAccount);
 		return "deleteAccount";
@@ -62,6 +55,18 @@ public class DeleteAccountController {
 		principal.getBusiness().remove();
 		status.setComplete();
 		return "redirect:/resources/j_spring_security_logout";
+	}
+	
+	@RequestMapping(value="/deleteAccountExportButton", method = RequestMethod.GET)
+	public String getDeleteAccountExportButton(Model model, HttpSession session) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+		model.addAttribute("exportClientsParamName", ExportController.CLIENTS_REQUEST_PARAM);
+		model.addAttribute("exportInvoicesParamName", ExportController.INVOICES_REQUEST_PARAM);
+		model.addAttribute("exportEstimationsParamName", ExportController.ESTIMATIONS_REQUEST_PARAM);
+		model.addAttribute("exportCreditnotesParamName", ExportController.CREDITNOTES_REQUEST_PARAM);
+		model.addAttribute("exportTransportdocsParamName", ExportController.TRANSPORTDOCS_REQUEST_PARAM);
+		model.addAttribute("exportTokenParamName", ExportController.TOKEN_REQUEST_PARAM);
+		model.addAttribute("exportToken", xsrfTokenService.generateToken(session, ExportController.TOKENS_SESSION_FIELD));
+		return "deleteAccountExportButton";
 	}
 
 }

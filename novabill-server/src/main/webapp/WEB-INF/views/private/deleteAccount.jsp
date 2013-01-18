@@ -4,18 +4,13 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<spring:url var="exportURL" value="/private/export">
-	<spring:param name="${exportClientsParamName}" value="true"/>
-	<spring:param name="${exportInvoicesParamName}" value="true"/>
-	<spring:param name="${exportEstimationsParamName}" value="true"/>
-	<spring:param name="${exportCreditnotesParamName}" value="true"/>
-	<spring:param name="${exportTransportdocsParamName}" value="true"/>
-	<spring:param name="${exportTokenParamName}" value="${exportToken}"/>
-</spring:url>
 
 <p class="goodbyeMessage"><spring:message code="deleteAccount.goodbye" htmlEscape="false" /></p>
 <p class="lastChanceToExport"><spring:message code="deleteAccount.lastChanceToExport" /></p>
-<a class="action2-button exportLink" href='${exportURL}'><spring:message code="deleteAccount.exportData" /></a>
+<iframe src='<spring:url value="/private/delete/deleteAccountExportButton"></spring:url>'></iframe>
+
+
+
 
 <p class="deleteMessage"><spring:message code="deleteAccount.deleteMessage" /> <span class="lastWarning"><spring:message code="deleteAccount.lastWarning" /></span></p>
 <form:form id="form" method="post" cssClass="deleteAccountForm" modelAttribute="deleteAccount"

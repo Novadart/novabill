@@ -11,7 +11,7 @@
 		<put-attribute name="body" value="/WEB-INF/views/private/changePassword.jsp" />
 	</definition>
 	
-	<!-- <definition name="upgrade" template="/WEB-INF/views/private/upgrade.jsp"/> -->
+	<definition name="deleteAccountExportButton" template="/WEB-INF/views/private/deleteAccountExportButton.jsp"/>
 	
 	<definition name="deleteAccount" extends="basePrivate">
 		<put-attribute name="pagelinks" value="/WEB-INF/views/private/deleteAccountPageLinks.jsp" />
