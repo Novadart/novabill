@@ -31,10 +31,10 @@ import com.novadart.novabill.frontend.client.util.ExportUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.BusinessView;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
-import com.novadart.novabill.frontend.client.view.widget.notification.InlineNotification;
-import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
-import com.novadart.novabill.frontend.client.view.widget.validation.AlternativeSsnVatIdValidation;
-import com.novadart.novabill.frontend.client.view.widget.validation.ValidationKit;
+import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
+import com.novadart.novabill.frontend.client.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.widget.validation.AlternativeSsnVatIdValidation;
+import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
 

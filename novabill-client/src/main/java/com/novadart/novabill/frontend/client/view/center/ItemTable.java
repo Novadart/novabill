@@ -16,7 +16,7 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
-import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
 public class ItemTable extends CellTable<AccountingDocumentItemDTO> {

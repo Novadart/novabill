@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:i="urn:import:com.novadart.novabill.frontend.client.view.widget.list.impl" xmlns:gwtshared="urn:import:com.novadart.gwtshared.client">
+	xmlns:i="urn:import:com.novadart.novabill.frontend.client.widget.list.impl" xmlns:gwtshared="urn:import:com.novadart.gwtshared.client">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>

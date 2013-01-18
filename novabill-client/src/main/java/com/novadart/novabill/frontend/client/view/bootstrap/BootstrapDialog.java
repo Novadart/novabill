@@ -13,9 +13,9 @@ import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.util.CountryUtils;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
-import com.novadart.novabill.frontend.client.view.widget.notification.InlineNotification;
-import com.novadart.novabill.frontend.client.view.widget.validation.AlternativeSsnVatIdValidation;
-import com.novadart.novabill.frontend.client.view.widget.validation.ValidationKit;
+import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
+import com.novadart.novabill.frontend.client.widget.validation.AlternativeSsnVatIdValidation;
+import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
 public class BootstrapDialog extends Dialog {

@@ -10,7 +10,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.view.MainWidget;
 import com.novadart.novabill.frontend.client.view.center.ClientView;
-import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientActivity extends AbstractCenterActivity {

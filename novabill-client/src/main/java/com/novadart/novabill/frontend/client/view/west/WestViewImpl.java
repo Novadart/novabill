@@ -30,7 +30,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.util.WidgetUtils;
 import com.novadart.novabill.frontend.client.view.center.client.dialog.ClientDialog;
-import com.novadart.novabill.frontend.client.view.widget.search.ClientSearch;
+import com.novadart.novabill.frontend.client.widget.search.ClientSearch;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 

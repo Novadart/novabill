@@ -6,8 +6,8 @@ import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.view.View.Presenter;
-import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
-import com.novadart.novabill.frontend.client.view.widget.notification.NotificationCallback;
+import com.novadart.novabill.frontend.client.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 
 public abstract class BasicActivity extends AbstractActivity implements Presenter {
 	

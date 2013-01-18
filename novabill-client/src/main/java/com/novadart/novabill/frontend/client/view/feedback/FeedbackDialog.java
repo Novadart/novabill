@@ -20,7 +20,7 @@ import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
-import com.novadart.novabill.frontend.client.view.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.widget.notification.Notification;
 
 public class FeedbackDialog extends Dialog {
 

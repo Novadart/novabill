@@ -2,7 +2,7 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:t="urn:import:com.novadart.gwtshared.client.textbox" 
 	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget" 
-	xmlns:n="urn:import:com.novadart.novabill.frontend.client.view.widget.notification">
+	xmlns:n="urn:import:com.novadart.novabill.frontend.client.widget.notification">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
@@ -10,8 +10,7 @@
 	<g:FlowPanel styleName="bootstrapDialogBody">
 		<g:HTML ui:field="welcomeMessage" styleName="welcomeMessage"
 			HTML="{i18n.bootstrapWelcomeMessage}" />
-		
-		<n:InlineNotification ui:field="inlineNotification"></n:InlineNotification>
+		<n:InlineNotification ui:field="inlineNotification" />
 		
 		<g:SimplePanel styleName="gridContainer">
 			<g:VerticalPanel styleName="grid">
