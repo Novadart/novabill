@@ -57,7 +57,7 @@ p {
 	margin-top: 3em;
 }
 
-iframe {
+iframe.exportButton {
 	width: 202px;
 	height: 32px;
 	border: none;
