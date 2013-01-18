@@ -11,6 +11,11 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 
 class Tip extends Composite {
+	
+	public static final byte TIP_ENABLED = 1;
+	public static final byte TIP_DISABLED = 0;
+	
+	private static long bytemap = 7L;
 
 	private static TipUiBinder uiBinder = GWT.create(TipUiBinder.class);
 
@@ -39,8 +44,12 @@ class Tip extends Composite {
 //
 //			
 //		});
-		tipCode.ordinal();
+		unsetBitForTip(tipCode, bytemap);
 		removeFromParent();
+	}
+	
+	private long unsetBitForTip(Tips tip, long bitmap){
+		return bitmap & ~(1 << tip.ordinal());
 	}
 	
 }

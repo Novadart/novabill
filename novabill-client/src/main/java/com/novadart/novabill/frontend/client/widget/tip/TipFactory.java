@@ -7,10 +7,10 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 
 public class TipFactory {
 	
-	private static byte[] bytemap = new byte[]{1,1,1,1,1,1,1};
+	private static long bytemap = 7L;
 	
 	public static void show(Tips t, HasOneWidget w){
-		if(bytemap[t.ordinal()] == 1){
+		if ((bytemap & (1L << t.ordinal())) != Tip.TIP_DISABLED) {
 			Tip tip = new Tip(t, getMessage(t));
 			w.setWidget(tip);
 		}
