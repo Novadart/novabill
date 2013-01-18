@@ -99,6 +99,7 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
 		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(transportDocService.getAllForClient(clientID));
+		@SuppressWarnings({ "unchecked", "rawtypes" })
 		List<AccountingDocumentDTO> expected = DTOUtils.toDTOList(new ArrayList(Client.findClient(clientID).getTransportDocuments()), DTOUtils.transportDocDTOConverter); 
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.transportDocumentComparator));
 	}

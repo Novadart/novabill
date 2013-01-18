@@ -21,6 +21,7 @@ import com.novadart.novabill.shared.client.dto.PaymentType;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.validation.Field;
 
+@SuppressWarnings("serial")
 public class TestUtils {
 	
 	public static Map<String, Field> accountingDocumentValidationFieldsMap; 

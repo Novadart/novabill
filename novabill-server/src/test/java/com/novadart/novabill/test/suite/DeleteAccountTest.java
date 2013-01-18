@@ -1,13 +1,17 @@
 package com.novadart.novabill.test.suite;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+
 import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +25,7 @@ import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.validation.BindingResult;
 import org.springframework.validation.Validator;
 import org.springframework.web.bind.support.SessionStatus;
+
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
@@ -63,7 +68,8 @@ public class DeleteAccountTest {
 		String username = userPasswordMap.keySet().iterator().next(), password = userPasswordMap.get(username);
 		Long businessID = Principal.findByUsername(username).getBusiness().getId();
 		DeleteAccountController deleteAccountController = initDeleteAccountController(username, password, password);
-		String deleteAccountView = deleteAccountController.setupForm(mock(Model.class), mock(HttpSession.class));
+		String deleteAccountView = deleteAccountController.setupForm(mock(Model.class));
+		String deleteAccountExportButtonView = deleteAccountController.getDeleteAccountExportButton(mock(Model.class), mock(HttpSession.class));
 		DeleteAccount deleteAccount = new DeleteAccount();
 		deleteAccount.setPassword(password);
 		BindingResult result = mock(BindingResult.class);
@@ -72,6 +78,7 @@ public class DeleteAccountTest {
 		Principal.entityManager().flush();
 		assertEquals("deleteAccount", deleteAccountView);
 		assertEquals("redirect:/resources/j_spring_security_logout", redirectLogoutView);
+		assertEquals("deleteAccountExportButton", deleteAccountExportButtonView);
 		assertEquals(null, Principal.findByUsername(username));
 		assertEquals(null, Business.findBusiness(businessID));
 	}
