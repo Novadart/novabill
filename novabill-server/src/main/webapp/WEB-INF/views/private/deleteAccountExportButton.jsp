@@ -80,6 +80,7 @@
 
 .exportLink {
 	width: 200px;
+	font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
 }
 </style>
 
