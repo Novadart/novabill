@@ -156,7 +156,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	}
 
 	@Override
-	@Transactional
+	@Transactional(readOnly = false)
 	public void updateNotesBitMask(Long notesBitMask) throws NotAuthenticatedException, DataAccessException {
 		Principal authenticatedPrincipal = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId());
 		authenticatedPrincipal.setNotesBitMask(notesBitMask);
