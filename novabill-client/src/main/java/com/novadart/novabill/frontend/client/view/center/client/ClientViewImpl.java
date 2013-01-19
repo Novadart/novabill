@@ -275,6 +275,7 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 		transportDocumentDataProvider.refresh();
 		setDocumentsListing(DOCUMENTS.invoices);
 		contactPopup.reset();
+		contact.setDown(false);
 		contact.setEnabled(false);
 		contact.setStyleName("contact");
 		
