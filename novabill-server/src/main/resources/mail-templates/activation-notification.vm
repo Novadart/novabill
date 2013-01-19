@@ -22,10 +22,11 @@ body {
 <body>
 <h2 class="logo">Novabill - Attivazione Account</h2>
 
-<p>Per concludere la procedura di registrazione per favore premi su <a target="_blank" href="${activationLink}">questo link</a><br>
-Alternativamente copia e incolla questa url nel tuo browser ${activationLink}</p>
+<p>Per concludere la procedura di registrazione e attivare il tuo account, per favore premi su <a target="_blank" href="${activationLink}">questo link</a></p>
+<p>Se il link non funzionasse, puoi copiare e incollare questa url nella barra degli indirizzi del tuo browser (il programma che usi per navigare in internet)</p>
+<p style="text-align:center;"><em>${activationLink}</em></p>
 
-<p>Nota: dovrai attivare il tuo account entro le prossime ${activationPeriod} ore.</p>
+<p><u>Nota</u>: dovrai attivare il tuo account entro le prossime ${activationPeriod} ore.</p>
 
 <p>Grazie :)<br> 
 Il team di Novabill</p>
