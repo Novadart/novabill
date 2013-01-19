@@ -3,14 +3,13 @@ package com.novadart.novabill.frontend.client.widget.tip;
 import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.HasOneWidget;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 
 public class TipFactory {
 	
-	private static long bytemap = 7L;
-	
 	public static void show(Tips t, HasOneWidget w){
-		if ((bytemap & (1L << t.ordinal())) != Tip.TIP_DISABLED) {
+		if ((Configuration.getNotesBitMask() & (1L << t.ordinal())) != Tip.TIP_DISABLED) {
 			Tip tip = new Tip(t, getMessage(t));
 			w.setWidget(tip);
 		}

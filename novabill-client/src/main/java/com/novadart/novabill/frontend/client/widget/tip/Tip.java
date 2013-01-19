@@ -9,14 +9,15 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
+import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 
 class Tip extends Composite {
 	
 	public static final byte TIP_ENABLED = 1;
 	public static final byte TIP_DISABLED = 0;
 	
-	private static long bytemap = 7L;
-
 	private static TipUiBinder uiBinder = GWT.create(TipUiBinder.class);
 
 	interface TipUiBinder extends UiBinder<Widget, Tip> {
@@ -34,18 +35,20 @@ class Tip extends Composite {
 
 	@UiHandler("closeTip")
 	void closeTipClicked(ClickEvent e){
-//		ServerFacade.business.update(null, new ManagedAsyncCallback<Void>() {
-//
-//			@Override
-//			public void onSuccess(Void result) {
-//				// TODO Auto-generated method stub
-//				
-//			}
-//
-//			
-//		});
-		unsetBitForTip(tipCode, bytemap);
-		removeFromParent();
+		ServerFacade.business.updateNotesBitMask(unsetBitForTip(tipCode, Configuration.getNotesBitMask()), new ManagedAsyncCallback<Void>() {
+
+			@Override
+			public void onSuccess(Void result) {
+				removeFromParent();
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				//let's not display errors to the user in this case, let's simply hide the tip
+				removeFromParent();
+			}
+		});
+
 	}
 	
 	private long unsetBitForTip(Tips tip, long bitmap){

@@ -20,9 +20,13 @@ public class Configuration {
 
 	private static BusinessDTO business;
 	private static BusinessStatsDTO stats;
+	private static long notesBitMask;
 
 	public static final void init(final ManagedAsyncCallback<Void> callback){
 		try {
+
+			notesBitMask = Long.parseLong(readNotesBitMask());
+			
 			Map<String, String> values = new HashMap<String, String>();
 			
 			BusinessDTO business = new BusinessDTO();
@@ -30,6 +34,7 @@ public class Configuration {
 			
 			business.setId( Long.parseLong(businessJS.get("id")) );
 			
+			//load all the values
 			if(loadBusinessValues(values)){
 				
 				business.setAddress(values.get("address"));
@@ -97,7 +102,15 @@ public class Configuration {
 			callback.onFailure(e);
 		}
 	}
+	
+	private static native String readNotesBitMask()/*-{
+		return $wnd.notesBitMask;
+	}-*/;
 
+	public static long getNotesBitMask() {
+		return notesBitMask;
+	}
+	
 	public static boolean isPremium() {
 		return business.isPremium();
 	}
