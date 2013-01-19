@@ -37,7 +37,7 @@ class TidyDirector(AbstractDirector):
         doc, data = builder.getDocument(), self.getData()
         story = []
         if self.hasLogo():
-            story.append(builder.getLogoFlowable(2.5*cm, 2.5*cm)) #place logo at the top
+            story.append(builder.getLogoFlowable(4*cm, 4*cm)) #place logo at the top
 #        else:
 #            story.append(builder.getNoLogoFlowable(2.5*cm, 2.5*cm))
         
@@ -77,7 +77,7 @@ class TidyDocumentBuilder(object):
     
     def getLogoFlowable(self, height, width):
         logoParams = self.__displayParams["logo"]
-        logoPath, logoWidth, logoHeight = logoParams["path"], logoParams["width"], logoParams["height"]  
+        logoPath, logoWidth, logoHeight = logoParams["path"], logoParams["width"], logoParams["height"]
         r = min(width / logoWidth, height / logoHeight)
         im = Image(logoPath, logoWidth * r, logoHeight * r)
         im.hAlign = 'LEFT'
