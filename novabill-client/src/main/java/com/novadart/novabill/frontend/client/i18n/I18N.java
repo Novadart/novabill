@@ -122,6 +122,7 @@ public interface I18N extends Constants {
 	public String quantity();
 	public String price();
 	public String unityOfMeasure();
+	public String unityOfMeasureExtended();
 	public String vat();
 	public String totalBeforeTaxesForItem();
 	public String totalTaxForItem();

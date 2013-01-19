@@ -10,6 +10,8 @@ import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.SelectionCell;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.NumberFormat;
+import com.google.gwt.safehtml.shared.SafeHtml;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
@@ -118,7 +120,11 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 				redraw();
 			}
 		});
-		addColumn(unitOfMeasure, I18N.INSTANCE.unityOfMeasure());
+		SafeHtmlBuilder shb = new SafeHtmlBuilder();
+		shb.appendHtmlConstant("<span title=\""+I18N.INSTANCE.unityOfMeasureExtended()+"\">");
+		shb.appendEscaped(I18N.INSTANCE.unityOfMeasure());
+		shb.appendHtmlConstant("</span>");
+		addColumn(unitOfMeasure, shb.toSafeHtml());
 
 
 
