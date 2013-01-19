@@ -111,6 +111,10 @@ public class Configuration {
 		return notesBitMask;
 	}
 	
+	public static void setNotesBitMask(long notesBitMask) {
+		Configuration.notesBitMask = notesBitMask;
+	}
+	
 	public static boolean isPremium() {
 		return business.isPremium();
 	}

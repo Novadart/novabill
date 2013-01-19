@@ -37,7 +37,7 @@ BusinessServiceAsync {
 	}
 	
 	@Override
-	public void updateNotesBitMask(final Long notesBitMask, final AsyncCallback<Void> callback) {
+	public void updateNotesBitMask(final Long notesBitMask, final AsyncCallback<Long> callback) {
 		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
 
 			@Override

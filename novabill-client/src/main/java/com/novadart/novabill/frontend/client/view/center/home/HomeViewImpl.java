@@ -25,8 +25,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.Range;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.Const;
-import com.novadart.novabill.frontend.client.event.BusinessUpdateEvent;
-import com.novadart.novabill.frontend.client.event.BusinessUpdateHandler;
 import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
 import com.novadart.novabill.frontend.client.event.DocumentAddHandler;
 import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
@@ -106,8 +104,6 @@ public class HomeViewImpl extends Composite implements HomeView {
 		tabBar.addTab(I18N.INSTANCE.transportDocumentsTab());
 		tabBar.selectTab(0);
 		
-		updateBusinessDetails(Configuration.getBusiness());
-		
 		TipFactory.show(Tips.center_home_welcome, tipWelcome);
 		TipFactory.show(Tips.center_home_yourdocs, tipDocs);
 		
@@ -116,6 +112,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 	
 	@Override
 	public void setEventBus(EventBus eventBus) {
+		if(this.eventBus != null){
+			return;
+		}
 		this.eventBus = eventBus;
 		bind();
 		invoiceList.setEventBus(eventBus);
@@ -144,13 +143,6 @@ public class HomeViewImpl extends Composite implements HomeView {
 			@Override
 			public void onDocumentUpdate(DocumentUpdateEvent event) {
 				onDocumentChangeEvent(event.getDocument());
-			}
-		});
-		eventBus.addHandler(BusinessUpdateEvent.TYPE, new BusinessUpdateHandler() {
-			
-			@Override
-			public void onBusinessUpdate(BusinessUpdateEvent event) {
-				updateBusinessDetails(event.getBusiness());
 			}
 		});
 	}
@@ -214,6 +206,8 @@ public class HomeViewImpl extends Composite implements HomeView {
 	@Override
 	protected void onLoad() {
 		super.onLoad();
+		
+		updateBusinessDetails(Configuration.getBusiness());
 		
 		if(isInitialSetup){
 			isInitialSetup = false;
