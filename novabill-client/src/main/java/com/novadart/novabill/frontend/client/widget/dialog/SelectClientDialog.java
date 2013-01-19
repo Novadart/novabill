@@ -19,6 +19,8 @@ import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.widget.search.ClientSearch;
+import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
+import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class SelectClientDialog extends Dialog {
@@ -40,7 +42,8 @@ public class SelectClientDialog extends Dialog {
 	@UiField(provided=true) RichTextBox filter;
 	@UiField(provided=true) Image clearFilter;
 	@UiField Button ok;
-
+	@UiField SimplePanel tip;
+	
 	private ClientDTO selectedClient = null;
 	private ClientSearch clientSearch;
 
@@ -76,6 +79,8 @@ public class SelectClientDialog extends Dialog {
 
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("SelectClientDialog");
+		
+		TipFactory.show(Tips.select_client_dialog, tip);
 	}
 	
 	public void setEventBus(EventBus eventBus){

@@ -20,9 +20,15 @@ public class TipFactory {
 		SafeHtmlBuilder shb = new SafeHtmlBuilder();
 		switch (t) {
 		case center_home_welcome:
-			shb.appendHtmlConstant("<p>"+I18N.INSTANCE.welcomeMessage1()+"</p>");
-			shb.appendHtmlConstant("<p>"+I18N.INSTANCE.welcomeMessage2()+"</p>");
-			shb.appendHtmlConstant("<p>"+I18N.INSTANCE.welcomeMessage3()+"</p>");
+			shb.appendHtmlConstant("<p>");
+			shb.appendEscaped(I18N.INSTANCE.welcomeMessage1());
+			shb.appendHtmlConstant("</p>");
+			shb.appendHtmlConstant("<p>");
+			shb.appendEscaped(I18N.INSTANCE.welcomeMessage2());
+			shb.appendHtmlConstant("</p>");
+			shb.appendHtmlConstant("<p>");
+			shb.appendEscaped(I18N.INSTANCE.welcomeMessage3());
+			shb.appendHtmlConstant("</p>");
 			break;
 			
 		case center_home_yourdocs:
@@ -31,6 +37,24 @@ public class TipFactory {
 
 		case west_home_no_clients:
 			shb.appendEscaped(I18N.INSTANCE.welcomeMessageClients());
+			break;
+			
+		case select_client_dialog:
+			shb.appendHtmlConstant("<p>");
+			shb.appendEscaped(I18N.INSTANCE.tipselectClientDialog1());
+			shb.appendHtmlConstant("</p>");
+			shb.appendHtmlConstant("<p>");
+			shb.appendEscaped(I18N.INSTANCE.tipselectClientDialog2());
+			shb.appendHtmlConstant("</p>");
+			break;
+			
+		case client_view:
+			shb.appendHtmlConstant("<p>");
+			shb.appendEscaped(I18N.INSTANCE.tipClientView1());
+			shb.appendHtmlConstant("</p>");
+			shb.appendHtmlConstant("<p>");
+			shb.appendEscaped(I18N.INSTANCE.tipClientView2());
+			shb.appendHtmlConstant("</p>");
 			break;
 		}
 		return shb.toSafeHtml();

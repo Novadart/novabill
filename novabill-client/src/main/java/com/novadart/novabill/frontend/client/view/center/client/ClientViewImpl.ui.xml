@@ -15,7 +15,9 @@
 			<g:Button styleName="modifyClient button" ui:field="modifyClient" text="{i18n.modifyClient}" />
 			<gwtshared:LoaderButton ui:field="cancelClient" text="{i18n.cancelClient}" />
 		</g:HorizontalPanel>
-
+		
+		<g:SimplePanel ui:field="tip"></g:SimplePanel>
+		
 		<g:SimpleLayoutPanel ui:field="clientMainBody" styleName="clientMainBody">
 			<g:TabLayoutPanel ui:field="tabPanel" barHeight="36" barUnit='PX'> <!-- TODO use PX because of a GWT bug http://code.google.com/p/google-web-toolkit/issues/detail?id=4694&can=5 To replace with 3.5 EM -->
 				<g:tab>

@@ -54,6 +54,8 @@ import com.novadart.novabill.frontend.client.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.widget.list.impl.TransportDocumentList;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
+import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
+import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
@@ -112,6 +114,8 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 	@UiField Button newEstimation;
 	@UiField Button newTransportDocument;
 	@UiField Button newCreditNote;
+	
+	@UiField SimplePanel tip;
 
 
 	public ClientViewImpl() {
@@ -123,6 +127,8 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 		transportDocumentDataProvider.addDataDisplay(transportDocumentList);
 		
 		cancelClient.getButton().setStyleName("cancelClient button");
+		
+		TipFactory.show(Tips.client_view, tip);
 	}
 
 	@Override
@@ -269,7 +275,8 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 		transportDocumentDataProvider.refresh();
 		setDocumentsListing(DOCUMENTS.invoices);
 		contactPopup.reset();
-		contact.setVisible(false);
+		contact.setEnabled(false);
+		contact.setStyleName("contact");
 		
 		setLocked(false);
 		cancelClient.reset();
@@ -366,9 +373,12 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 		clientName.setText(client.getName());
 		updateClientDetails(client);
 		contactPopup.setContact(client.getContact());
-		if(!contactPopup.isEmpty()) {
-			contact.setVisible(true);
+		if(contactPopup.isEmpty()) {
+			contact.setStyleName("contact-disabled");
+		} else {
+			contact.setStyleName("contact");
 		}
+		contact.setEnabled(!contactPopup.isEmpty());
 		loadInvoices();
 		loadEstimations();
 		loadCreditNotes();

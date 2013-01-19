@@ -6,6 +6,8 @@ import com.google.gwt.i18n.client.Constants;
 public interface I18N extends Constants {
 	public static final I18N INSTANCE = GWT.create(I18N.class);
 	
+	public String tipselectClientDialog1();
+	public String tipselectClientDialog2();
 	public String deleteAccountLabel();
 	public String deleteAccount();
 	public String yes();
@@ -195,4 +197,6 @@ public interface I18N extends Constants {
 	public String sessionExpiredError2();
 	public String reloadPage();
 	public String alternativeSsnOrVatIdValidationError();
+	public String tipClientView1();
+	public String tipClientView2();
 }

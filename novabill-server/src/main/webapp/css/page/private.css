@@ -190,6 +190,19 @@ textarea:HOVER {
 	cursor: pointer;
 }
 
+.ClientView .contact-disabled {
+	font-size: 1.2em;
+	font-weight: bold;
+	border: 1px solid #CCC;
+	float: left;
+	color: #DDD;
+	padding: 0.2em 0.5em;
+	-moz-box-shadow: 2px 2px 2px #AAA;
+	-webkit-box-shadow: 2px 2px 2px #AAA;
+	box-shadow: 2px 2px 2px #AAA;
+	cursor: pointer;
+}
+
 .ClientView .contact.contact-down-hovering,
 .ClientView .contact.contact-up-hovering {
 	background-color: #DDD;

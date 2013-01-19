@@ -6,7 +6,7 @@
 	
 	<g:FlowPanel styleName="body">
 		<g:Label styleName="title" text="{i18n.selectClient}"></g:Label>
-		
+		<g:SimplePanel ui:field="tip"></g:SimplePanel>
 		<g:HorizontalPanel styleName="filterContainer">
 			<t:RichTextBox ui:field="filter"></t:RichTextBox>
 			<g:Image ui:field="clearFilter"></g:Image>
