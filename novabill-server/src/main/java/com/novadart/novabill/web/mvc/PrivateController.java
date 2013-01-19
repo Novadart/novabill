@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
@@ -34,7 +35,7 @@ public class PrivateController {
 		}
 		mav.addObject("business", sw.toString());
 		mav.addObject("daysToExpiration", business.getNonFreeExpirationDelta(TimeUnit.DAYS));
-		mav.addObject("notesBitMask", utilsService.getAuthenticatedPrincipalDetails().getNotesBitMask());
+		mav.addObject("notesBitMask", Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId()).getNotesBitMask());
 		return mav;
 	}
 
