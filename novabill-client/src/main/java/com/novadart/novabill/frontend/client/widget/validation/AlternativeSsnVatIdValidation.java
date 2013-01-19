@@ -7,7 +7,7 @@ public class AlternativeSsnVatIdValidation extends AlternativeValidation {
 
 	@Override
 	public String getErrorMessage() {
-		return I18N.INSTANCE.ssnOrVatIdValidationError();
+		return I18N.INSTANCE.alternativeSsnOrVatIdValidationError();
 	}
 
 }

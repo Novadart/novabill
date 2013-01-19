@@ -194,4 +194,5 @@ public interface I18N extends Constants {
 	public String sessionExpiredError();
 	public String sessionExpiredError2();
 	public String reloadPage();
+	public String alternativeSsnOrVatIdValidationError();
 }

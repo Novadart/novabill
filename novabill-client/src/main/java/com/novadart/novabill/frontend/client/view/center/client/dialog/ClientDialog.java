@@ -82,9 +82,9 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		companyName = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
 		
 		vatID =  new ValidatedTextBox(ValidationKit.VAT_ID);
-		vatID.setShowMessageOnError(false);
+		vatID.setShowMessageOnError(true);
 		ssn =  new ValidatedTextBox(ValidationKit.SSN_OR_VAT_ID);
-		ssn.setShowMessageOnError(false);
+		ssn.setShowMessageOnError(true);
 		ssnOrVatIdValidation.addWidget(vatID);
 		ssnOrVatIdValidation.addWidget(ssn);
 		
@@ -94,12 +94,12 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		city = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
 		country = LocaleWidgets.createCountryListBox("");
 		
-		phone = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
-		mobile = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
-		fax = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
-		contactPhone = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
-		contactMobile = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
-		contactFax = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
+		phone = new ValidatedTextBox(ValidationKit.DEFAULT);
+		mobile = new ValidatedTextBox(ValidationKit.DEFAULT);
+		fax = new ValidatedTextBox(ValidationKit.DEFAULT);
+		contactPhone = new ValidatedTextBox(ValidationKit.DEFAULT);
+		contactMobile = new ValidatedTextBox(ValidationKit.DEFAULT);
+		contactFax = new ValidatedTextBox(ValidationKit.DEFAULT);
 		
 		web = new ValidatedTextBox(ValidationKit.DEFAULT);
 		contactName = new ValidatedTextBox(ValidationKit.DEFAULT);

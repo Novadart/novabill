@@ -9,8 +9,6 @@
 	<g:FlowPanel styleName="wrapper">
 		<g:Label ui:field="clientDialogTitle" styleName="title" text="{i18n.addNewClientTitle}"></g:Label>
 		
-		<n:InlineNotification ui:field="inlineNotification"></n:InlineNotification>
-		
 		<g:FlowPanel styleName="gridWrapper">
 			<g:HorizontalPanel styleName="leftBox">
 				<g:FlowPanel>
@@ -197,6 +195,9 @@
 					</g:Grid>
 				</g:FlowPanel>
 			</g:HorizontalPanel>
+			
+			<n:InlineNotification ui:field="inlineNotification"></n:InlineNotification>
+			
 			<g:SimplePanel styleName="buttonContainer">
 				<g:HorizontalPanel>
 				<gwtshared:LoaderButton ui:field="ok"

@@ -89,10 +89,10 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		name = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
 		name.setText(b.getName());
 		ssn = new ValidatedTextBox(ValidationKit.SSN_OR_VAT_ID);
-		ssn.setShowMessageOnError(false);
+		ssn.setShowMessageOnError(true);
 		ssn.setText(b.getSsn());
 		vatID = new ValidatedTextBox(ValidationKit.VAT_ID);
-		vatID.setShowMessageOnError(false);
+		vatID.setShowMessageOnError(true);
 		vatID.setText(b.getVatID());
 		ssnOrVatIdValidation.addWidget(ssn);
 		ssnOrVatIdValidation.addWidget(vatID);
@@ -107,13 +107,13 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		country.setSelectedItemByValue(b.getCountry());
 		postcode = new ValidatedTextBox(ValidationKit.POSTCODE);
 		postcode.setText(b.getPostcode());
-		phone = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
+		phone = new ValidatedTextBox(ValidationKit.DEFAULT);
 		phone.setText(b.getPostcode());
 		email = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
 		email.setText(b.getEmail());
-		mobile = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
+		mobile = new ValidatedTextBox(ValidationKit.DEFAULT);
 		mobile.setText(b.getMobile());
-		fax = new ValidatedTextBox(ValidationKit.OPTIONAL_NUMBER);
+		fax = new ValidatedTextBox(ValidationKit.DEFAULT);
 		fax.setText(b.getFax());
 
 		initWidget(uiBinder.createAndBindUi(this));
