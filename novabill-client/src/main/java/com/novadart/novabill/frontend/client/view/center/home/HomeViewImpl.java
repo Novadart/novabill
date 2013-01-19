@@ -18,10 +18,15 @@ import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabBar;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.Range;
+import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.event.BusinessUpdateEvent;
+import com.novadart.novabill.frontend.client.event.BusinessUpdateHandler;
 import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
 import com.novadart.novabill.frontend.client.event.DocumentAddHandler;
 import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
@@ -43,6 +48,7 @@ import com.novadart.novabill.frontend.client.widget.list.impl.TransportDocumentL
 import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
 import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
+import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -72,7 +78,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 	@UiField SimplePanel tipWelcome;
 	@UiField SimplePanel tipDocs;
 	@UiField(provided=true) SimplePanel tabBody;
-
+	@UiField Image businessLogo;
+	@UiField HTML businessDetails;
+	
 	private final Map<Integer, FlowPanel> lists = new HashMap<Integer, FlowPanel>();
 
 	private Presenter presenter;
@@ -97,6 +105,8 @@ public class HomeViewImpl extends Composite implements HomeView {
 		tabBar.addTab(I18N.INSTANCE.creditNote());
 		tabBar.addTab(I18N.INSTANCE.transportDocumentsTab());
 		tabBar.selectTab(0);
+		
+		updateBusinessDetails(Configuration.getBusiness());
 		
 		TipFactory.show(Tips.center_home_welcome, tipWelcome);
 		TipFactory.show(Tips.center_home_yourdocs, tipDocs);
@@ -136,6 +146,13 @@ public class HomeViewImpl extends Composite implements HomeView {
 				onDocumentChangeEvent(event.getDocument());
 			}
 		});
+		eventBus.addHandler(BusinessUpdateEvent.TYPE, new BusinessUpdateHandler() {
+			
+			@Override
+			public void onBusinessUpdate(BusinessUpdateEvent event) {
+				updateBusinessDetails(event.getBusiness());
+			}
+		});
 	}
 	
 	private void onDocumentChangeEvent(AccountingDocumentDTO doc){
@@ -150,6 +167,48 @@ public class HomeViewImpl extends Composite implements HomeView {
 				transportDocumentList.setVisibleRangeAndClearData(transportDocumentList.getVisibleRange(), true);
 			}
 		}
+	}
+	
+	private void updateBusinessDetails(BusinessDTO business){
+		businessLogo.setUrl(Const.genLogoUrl());
+		
+		SafeHtmlBuilder shb = new SafeHtmlBuilder();
+		shb.appendHtmlConstant("<p class=\"businessName\">");
+		shb.appendEscaped(business.getName());
+		shb.appendHtmlConstant("</p>");
+		shb.appendHtmlConstant("<p class=\"businessAddress\">");
+		shb.appendEscaped(business.getAddress());
+		shb.appendEscaped(" "+business.getPostcode());
+		shb.appendEscaped(" "+business.getCity());
+		shb.appendEscaped(" ("+business.getProvince()+")");
+		shb.appendEscaped(" "+business.getCountry());
+		shb.appendHtmlConstant("</p>");
+		shb.appendHtmlConstant("<p class=\"businessOther\">");
+		boolean needSpace = false;
+		if(!business.getVatID().isEmpty()){
+			needSpace = true;
+			shb.appendEscaped(I18N.INSTANCE.vatID()+" "+business.getVatID());
+		}
+		if(!business.getVatID().isEmpty()){
+			if(needSpace){
+				shb.appendHtmlConstant("&nbsp;&nbsp;");
+			}
+			shb.appendEscaped(I18N.INSTANCE.ssn()+" "+business.getSsn());
+		}
+		if(!business.getPhone().isEmpty()){
+			if(needSpace){
+				shb.appendHtmlConstant("&nbsp;&nbsp;");
+			}
+			shb.appendEscaped(I18N.INSTANCE.phone()+" "+business.getPhone());
+		}
+		if(!business.getFax().isEmpty()){
+			if(needSpace){
+				shb.appendHtmlConstant("&nbsp;&nbsp;");
+			}
+			shb.appendEscaped(I18N.INSTANCE.fax()+" "+business.getFax());
+		}
+		shb.appendHtmlConstant("</p>");
+		businessDetails.setHTML(shb.toSafeHtml());
 	}
 
 	@Override

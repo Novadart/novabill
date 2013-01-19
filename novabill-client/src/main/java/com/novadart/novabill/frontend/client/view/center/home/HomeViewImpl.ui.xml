@@ -14,7 +14,13 @@
 		<g:ScrollPanel styleName="scrollHome">
 			<g:FlowPanel styleName="scrollHomeBody">
 				<g:SimplePanel ui:field="tipWelcome" />
-	
+				
+				<g:HorizontalPanel styleName="businessPanel">
+					<g:Image ui:field="businessLogo" styleName="businessLogo" />
+					<g:HTML ui:field="businessDetails" styleName="businessDetails" />
+				</g:HorizontalPanel>
+				
+				
 				<g:HorizontalPanel ui:field="actions" styleName="actions">
 					<g:Button ui:field="newInvoice" styleName="action-button newInvoice"
 						text="{i18n.newInvoice}"></g:Button>

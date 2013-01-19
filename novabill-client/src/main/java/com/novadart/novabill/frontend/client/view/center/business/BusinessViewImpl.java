@@ -316,7 +316,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 					saveData.showLoader(true);
 					Configuration.setBusiness(b);
 					presenter.goTo(new HomePlace());
-					eventBus.fireEvent(new BusinessUpdateEvent());
+					eventBus.fireEvent(new BusinessUpdateEvent(b));
 					setLocked(false);
 				}
 				

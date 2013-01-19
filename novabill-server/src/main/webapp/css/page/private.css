@@ -304,6 +304,36 @@ textarea:HOVER {
 	height: 100%;
 }
 
+.HomeView .businessPanel {
+	margin: 0 auto;
+	width: 80%;
+	font-size: 1.2em;
+	margin-top: 1em;
+	padding: 1em;
+	border: 0.1em solid #DDD;
+	-moz-box-shadow: 2px 2px 2px #CCC;
+	-webkit-box-shadow: 2px 2px 2px #CCC;
+	box-shadow: 2px 2px 2px #CCC;
+	line-height: 1.5em;
+}
+
+.HomeView .businessPanel td {
+	padding: 0.5em;
+	text-align: center;
+}
+
+.HomeView .businessPanel .businessName {
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.HomeView .businessPanel .businessLogo {
+	height: 8em;
+}
+
+.HomeView .businessPanel .businessDetails {
+	padding: 1em;
+}
 
 .HomeView .tabPanel {
 	width: 80%;
@@ -364,17 +394,6 @@ textarea:HOVER {
 	cursor: pointer;
 }
 
-.HomeView .listWrapper {
-	
-}
-
-.HomeView .invoiceList {
-	
-}
-
-.HomeView .clientList {
-	
-}
 
 .HomeView .invoicesTitle {
 	font-size: 1.2em;
@@ -389,10 +408,6 @@ textarea:HOVER {
 
 .HomeView .ShowMoreButton .ShowMoreButton-button {
 	width: 40%;
-}
-
-.HomeView .ShowMoreButton .ShowMoreButton-loader {
-	
 }
 
 .HomeView .yourDocsLabel {
@@ -413,16 +428,8 @@ textarea:HOVER {
 	margin-right: 1em;
 }
 
-.HomeView .currentDate .time {
-	
-}
-
 .MainWidget .centerContainer {
 	padding: 1em;
-}
-
-.MainWidget .westContainer {
-	
 }
 
 .MainWidget .southContainer .changeButton {
@@ -566,10 +573,6 @@ textarea:HOVER {
 .QuickViewList .pdf {
 	width: 2em;
 	height: 2em;
-}
-
-.QuickViewList.TransportDocumentList .upper span.createInvoice,.QuickViewList.EstimationList .upper span.convertToInvoice
-	{
 }
 
 .QuickViewList .details .tools {
