@@ -22,7 +22,7 @@
     <script type="text/javascript">
     	var business = <%=request.getAttribute("business")%>;
     	var daysToExpiration = <%=request.getAttribute("daysToExpiration")%>;
-    	var notesBitMask = <%=request.getAttribute("notesBitMask")%>;
+    	var notesBitMask = '<%=request.getAttribute("notesBitMask")%>';
     </script>
     
     <script type="text/javascript" language="javascript" src="<spring:url value="/rpc/rpc.nocache.js" />"></script>
