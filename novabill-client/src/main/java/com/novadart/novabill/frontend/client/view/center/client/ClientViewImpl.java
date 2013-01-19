@@ -5,14 +5,11 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.MouseOutEvent;
-import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
@@ -24,6 +21,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimpleLayoutPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.gwtshared.client.LoaderButton;
@@ -37,8 +35,8 @@ import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
 import com.novadart.novabill.frontend.client.event.DocumentDeleteHandler;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateHandler;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.place.HomePlace;
@@ -105,7 +103,7 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 	@UiField HorizontalPanel clientOptions;
 	@UiField SimpleLayoutPanel clientMainBody;
 
-	@UiField Label contact;
+	@UiField ToggleButton contact;
 	
 	@UiField LoaderButton cancelClient;
 	@UiField Button modifyClient;
@@ -114,15 +112,6 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 	@UiField Button newEstimation;
 	@UiField Button newTransportDocument;
 	@UiField Button newCreditNote;
-
-	private static final int HIDE_TIMEOUT = 3000;
-	private Timer hideContactPopup = new Timer() {
-
-		@Override
-		public void run() {
-			contactPopup.hide();
-		}
-	};
 
 
 	public ClientViewImpl() {
@@ -287,14 +276,12 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 	}
 
 	@UiHandler("contact")
-	void onContactMouseOver(MouseOverEvent event) {
-		contactPopup.showRelativeTo(contact);
-		hideContactPopup.cancel();
-	}
-
-	@UiHandler("contact")
-	void onContactMouseOut(MouseOutEvent event) {
-		hideContactPopup.schedule(HIDE_TIMEOUT);
+	void onContactMouseClick(ClickEvent event) {
+		if(contact.isDown()){
+			contactPopup.showRelativeTo(contact);
+		} else {
+			contactPopup.hide();
+		}
 	}
 
 	@UiHandler("newInvoice")
