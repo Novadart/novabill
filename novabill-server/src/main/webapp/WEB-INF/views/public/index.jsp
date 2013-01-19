@@ -10,6 +10,10 @@
 	<p><spring:message code="index.promotion" /> </p>
 	
 	<sec:authorize access="isAnonymous()">
+		<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/register">
+			<spring:message code="header.signupForFree"></spring:message>
+		</a>
+	
 		<script type="text/javascript" src="<spring:url value="/js/jquery.cycle.all.js" />"></script>
 		
 		<div id="shuffle">
@@ -22,16 +26,12 @@
 		
 		<script type="text/javascript">
 			$('#shuffle').cycle({
-				fx:      'scrollRight', 
-			    next:   '#shuffle', 
-			    delay:  -4000, 
+				fx:     'shuffle', 
 			    easing: 'easeOutBack', 
+			    delay:  -2000,
+			    timeout: 3000,
 			});
 		</script>
-	
-		<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/register">
-			<spring:message code="header.signupForFree"></spring:message>
-		</a>
 	</sec:authorize>
 	<sec:authorize access="isAuthenticated()">
 		<a class="action2-button goToPrivate" href='<spring:url value="/private"></spring:url>'><spring:message code="shared.private"/></a>
