@@ -49,6 +49,8 @@ public class Principal implements UserDetails {
 	
 	private boolean enabled = true;
 	
+	private Long notesBitMask = 0xFFFFFFFFFFFFFFFFl;
+	
 	@ManyToOne
 	private Business business;
 	
@@ -124,6 +126,14 @@ public class Principal implements UserDetails {
 		this.enabled = enabled;
 	}
 	
+	public Long getNotesBitMask() {
+		return notesBitMask;
+	}
+
+	public void setNotesBitMask(Long notesBitMask) {
+		this.notesBitMask = notesBitMask;
+	}
+
 	public Business getBusiness() {
 		return business;
 	}

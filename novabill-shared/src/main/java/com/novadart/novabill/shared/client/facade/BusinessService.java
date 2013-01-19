@@ -50,5 +50,7 @@ public interface BusinessService extends RemoteService {
 	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
 	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	
+	public void updateNotesBitMask(Long notesBitMask) throws NotAuthenticatedException, DataAccessException;
 
 }

@@ -34,6 +34,7 @@ public class PrivateController {
 		}
 		mav.addObject("business", sw.toString());
 		mav.addObject("daysToExpiration", business.getNonFreeExpirationDelta(TimeUnit.DAYS));
+		mav.addObject("notesBitMask", utilsService.getAuthenticatedPrincipalDetails().getNotesBitMask());
 		return mav;
 	}
 

@@ -19,6 +19,8 @@ import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.XsrfTokenService;
 import com.novadart.novabill.service.validator.TaxableEntityValidator;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
@@ -43,6 +45,9 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	
 	@Autowired
 	private XsrfTokenService xsrfTokenService;
+	
+	@Autowired
+	private UtilsService utilsService;
 	
 	protected abstract BusinessService self();
 	
@@ -148,6 +153,13 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@PreAuthorize("#businessID == principal.business.id")
 	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return BusinessDTOFactory.toDTO(Business.findBusiness(businessID));
+	}
+
+	@Override
+	public void updateNotesBitMask(Long notesBitMask) throws NotAuthenticatedException, DataAccessException {
+		Principal authenticatedPrincipal = utilsService.getAuthenticatedPrincipalDetails();
+		authenticatedPrincipal.setNotesBitMask(notesBitMask);
+		authenticatedPrincipal.merge();
 	}
 
 }

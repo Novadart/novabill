@@ -47,4 +47,6 @@ public interface BusinessServiceAsync {
 
 	void get(Long businessID, AsyncCallback<BusinessDTO> callback);
 
+	void updateNotesBitMask(Long notesBitMask, AsyncCallback<Void> callback);
+
 }

@@ -98,4 +98,9 @@ public class BusinessServiceProxy extends AbstractGwtController implements Busin
 		return businessService.get(businessID);
 	}
 
+	@Override
+	public void updateNotesBitMask(Long notesBitMask) throws NotAuthenticatedException, DataAccessException {
+		businessService.updateNotesBitMask(notesBitMask);
+	}
+
 }
