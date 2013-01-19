@@ -18,6 +18,8 @@ class Tip extends Composite {
 	public static final byte TIP_ENABLED = 1;
 	public static final byte TIP_DISABLED = 0;
 	
+	private static boolean pendingCall = false;
+	
 	private static TipUiBinder uiBinder = GWT.create(TipUiBinder.class);
 
 	interface TipUiBinder extends UiBinder<Widget, Tip> {
@@ -35,17 +37,24 @@ class Tip extends Composite {
 
 	@UiHandler("closeTip")
 	void closeTipClicked(ClickEvent e){
-		ServerFacade.business.updateNotesBitMask(unsetBitForTip(tipCode, Configuration.getNotesBitMask()), new ManagedAsyncCallback<Void>() {
+		if(pendingCall){
+			return;
+		}
+		pendingCall = true;
+		ServerFacade.business.updateNotesBitMask(unsetBitForTip(tipCode, Configuration.getNotesBitMask()), new ManagedAsyncCallback<Long>() {
 
 			@Override
-			public void onSuccess(Void result) {
+			public void onSuccess(Long result) {
+				Configuration.setNotesBitMask(result);
 				removeFromParent();
+				pendingCall = false;
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
 				//let's not display errors to the user in this case, let's simply hide the tip
 				removeFromParent();
+				pendingCall = false;
 			}
 		});
 
