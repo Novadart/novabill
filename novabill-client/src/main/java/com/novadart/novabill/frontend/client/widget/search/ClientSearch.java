@@ -42,6 +42,8 @@ public class ClientSearch implements Watcher {
 	private boolean searchQueryComplete = true;
 	private long lastTimeKeyWasPressedInFilter = 0;
 	private final SearchTriggerTimer timer = new SearchTriggerTimer();
+	
+	private EventBus eventBus;
 
 	public ClientSearch(CellList<ClientDTO> dataDisplay) {
 		this.dataDisplay = dataDisplay;
@@ -88,6 +90,10 @@ public class ClientSearch implements Watcher {
 	}
 
 	public void setEventBus(EventBus eventBus){
+		if(this.eventBus != null){
+			return;
+		}
+		this.eventBus = eventBus;
 		eventBus.addHandler(ClientUpdateEvent.TYPE, new ClientUpdateHandler() {
 
 			@Override
