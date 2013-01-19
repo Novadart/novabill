@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -49,6 +50,7 @@ public class Principal implements UserDetails {
 	
 	private boolean enabled = true;
 	
+	@NotNull
 	private Long notesBitMask = 0xFFFFFFFFFFFFFFFFl;
 	
 	@ManyToOne
