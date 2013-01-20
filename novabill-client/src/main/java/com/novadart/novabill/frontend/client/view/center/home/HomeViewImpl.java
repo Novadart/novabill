@@ -112,9 +112,6 @@ public class HomeViewImpl extends Composite implements HomeView {
 	
 	@Override
 	public void setEventBus(EventBus eventBus) {
-		if(this.eventBus != null){
-			return;
-		}
 		this.eventBus = eventBus;
 		bind();
 		invoiceList.setEventBus(eventBus);

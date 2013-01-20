@@ -133,9 +133,6 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 
 	@Override
 	public void setEventBus(EventBus eventBus) {
-		if(this.eventBus != null){
-			return;
-		}
 		this.eventBus = eventBus;
 		bind();
 		invoiceList.setEventBus(eventBus);
