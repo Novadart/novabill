@@ -197,10 +197,11 @@ public class HomeViewImpl extends Composite implements HomeView {
 			}
 			shb.appendEscaped(I18N.INSTANCE.fax()+" "+business.getFax());
 		}
+		shb.appendHtmlConstant("</p>");
+		shb.appendHtmlConstant("<p class=\"businessOther3\">");
+		needSpace = false;
 		if(!business.getMobile().isEmpty()){
-			if(needSpace){
-				shb.appendHtmlConstant("&nbsp;&nbsp;");
-			}
+			needSpace = true;
 			shb.appendEscaped(I18N.INSTANCE.mobile()+" "+business.getMobile());
 		}
 		if(!business.getWeb().isEmpty()){
