@@ -355,6 +355,10 @@ textarea:HOVER {
 	padding: 1em;
 }
 
+.HomeView .businessPanel .businessDetails a {
+	font-weight: normal;
+}
+
 .HomeView .tabPanel {
 	width: 80%;
 	margin: 1em auto;

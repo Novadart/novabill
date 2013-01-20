@@ -172,7 +172,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 		shb.appendEscaped(" ("+business.getProvince()+")");
 		shb.appendEscaped(" "+business.getCountry());
 		shb.appendHtmlConstant("</p>");
-		shb.appendHtmlConstant("<p class=\"businessOther\">");
+		shb.appendHtmlConstant("<p class=\"businessOther1\">");
 		boolean needSpace = false;
 		if(!business.getVatID().isEmpty()){
 			needSpace = true;
@@ -184,17 +184,34 @@ public class HomeViewImpl extends Composite implements HomeView {
 			}
 			shb.appendEscaped(I18N.INSTANCE.ssn()+" "+business.getSsn());
 		}
+		shb.appendHtmlConstant("</p>");
+		shb.appendHtmlConstant("<p class=\"businessOther2\">");
+		needSpace = false;
+		if(!business.getVatID().isEmpty()){
+			needSpace = true;
+			shb.appendEscaped(I18N.INSTANCE.phone()+" "+business.getPhone());
+		}
 		if(!business.getPhone().isEmpty()){
 			if(needSpace){
 				shb.appendHtmlConstant("&nbsp;&nbsp;");
 			}
-			shb.appendEscaped(I18N.INSTANCE.phone()+" "+business.getPhone());
+			shb.appendEscaped(I18N.INSTANCE.fax()+" "+business.getFax());
 		}
 		if(!business.getFax().isEmpty()){
 			if(needSpace){
 				shb.appendHtmlConstant("&nbsp;&nbsp;");
 			}
-			shb.appendEscaped(I18N.INSTANCE.fax()+" "+business.getFax());
+			shb.appendEscaped(I18N.INSTANCE.mobile()+" "+business.getMobile());
+		}
+		if(!business.getWeb().isEmpty()){
+			if(needSpace){
+				shb.appendHtmlConstant("&nbsp;&nbsp;");
+			}
+			shb.appendEscaped(I18N.INSTANCE.web()+" ");
+			shb.appendHtmlConstant("<a target=\"_blank\" href=\""+ 
+			(business.getWeb().startsWith("http://") || business.getWeb().startsWith("https://") ? business.getWeb() : "http://"+business.getWeb()) +"\">");
+			shb.appendEscaped(business.getWeb());
+			shb.appendHtmlConstant("<a>");
 		}
 		shb.appendHtmlConstant("</p>");
 		businessDetails.setHTML(shb.toSafeHtml());

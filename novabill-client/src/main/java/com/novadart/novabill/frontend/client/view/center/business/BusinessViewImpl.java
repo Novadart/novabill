@@ -70,7 +70,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@UiField(provided=true) ValidatedTextBox email;
 	@UiField(provided=true) ValidatedTextBox mobile;
 	@UiField(provided=true) ValidatedTextBox fax;
-	@UiField ValidatedTextBox web;
+	@UiField(provided=true) ValidatedTextBox web;
 	
 	@UiField LoaderButton saveData;
 	@UiField Button exportClientData;
@@ -83,38 +83,25 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation();
 
 	public BusinessViewImpl() {
-		BusinessDTO b = Configuration.getBusiness();
-
 
 		name = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
-		name.setText(b.getName());
 		ssn = new ValidatedTextBox(ValidationKit.SSN_OR_VAT_ID);
 		ssn.setShowMessageOnError(true);
-		ssn.setText(b.getSsn());
 		vatID = new ValidatedTextBox(ValidationKit.VAT_ID);
 		vatID.setShowMessageOnError(true);
-		vatID.setText(b.getVatID());
 		ssnOrVatIdValidation.addWidget(ssn);
 		ssnOrVatIdValidation.addWidget(vatID);
 		
 		address = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
-		address.setText(b.getAddress());
 		city = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
-		city.setText(b.getCity());
 		province = LocaleWidgets.createProvinceListBox("");
-		province.setSelectedItem(b.getProvince());
 		country = LocaleWidgets.createCountryListBoxItalyOnly("");
-		country.setSelectedItemByValue(b.getCountry());
 		postcode = new ValidatedTextBox(ValidationKit.POSTCODE);
-		postcode.setText(b.getPostcode());
 		phone = new ValidatedTextBox(ValidationKit.DEFAULT);
-		phone.setText(b.getPhone());
 		email = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
-		email.setText(b.getEmail());
 		mobile = new ValidatedTextBox(ValidationKit.DEFAULT);
-		mobile.setText(b.getMobile());
 		fax = new ValidatedTextBox(ValidationKit.DEFAULT);
-		fax.setText(b.getFax());
+		web = new ValidatedTextBox(ValidationKit.DEFAULT);
 
 		initWidget(uiBinder.createAndBindUi(this));
 		
@@ -183,6 +170,27 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		
 	}
 	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		
+		BusinessDTO b = Configuration.getBusiness();
+		
+		name.setText(b.getName());
+		ssn.setText(b.getSsn());
+		vatID.setText(b.getVatID());
+		address.setText(b.getAddress());
+		city.setText(b.getCity());
+		province.setSelectedItem(b.getProvince());
+		country.setSelectedItemByValue(b.getCountry());
+		postcode.setText(b.getPostcode());
+		phone.setText(b.getPhone());
+		email.setText(b.getEmail());
+		mobile.setText(b.getMobile());
+		fax.setText(b.getFax());
+		web.setText(b.getWeb());
+	}
+	
 	
 	@UiHandler("removeLogo")
 	void onRemoveLogoClicked(ClickEvent e){
@@ -245,6 +253,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		email.setText(b.getEmail());
 		mobile.setText(b.getMobile());
 		fax.setText(b.getFax());
+		web.reset();
 		inlineNotification.hide();
 		saveData.reset();
 		setLocked(false);
