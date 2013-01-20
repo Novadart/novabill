@@ -108,7 +108,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		postcode = new ValidatedTextBox(ValidationKit.POSTCODE);
 		postcode.setText(b.getPostcode());
 		phone = new ValidatedTextBox(ValidationKit.DEFAULT);
-		phone.setText(b.getPostcode());
+		phone.setText(b.getPhone());
 		email = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
 		email.setText(b.getEmail());
 		mobile = new ValidatedTextBox(ValidationKit.DEFAULT);

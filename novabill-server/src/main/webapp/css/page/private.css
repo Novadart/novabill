@@ -1212,11 +1212,24 @@ td.datePickerMonth {
 	border-radius: 0.5em;
 }
 
+
+.BootstrapDialog .businessLabel {
+	margin-right: 1em;
+	width: 10em;
+	font-size: 1.1em;
+}
+
+.BootstrapDialog .InlineNotification {
+	margin: 1em auto;
+}
+
 .BootstrapDialog .welcomeMessage {
 	background-color: #FFFFB1;
 	padding: 1em;
 	border: 0.1em solid #333;
 	width: 30em;
+	margin: 0 auto;
+	font-size: 1.2em;
 }
 
 .BootstrapDialog .bootstrapDialogBody {
@@ -1225,8 +1238,8 @@ td.datePickerMonth {
 }
 
 .BootstrapDialog .gridContainer {
-	margin: 1em auto;
-	width: 22em;
+	margin: 0 auto;
+	padding: 2em;
 }
 
 .BootstrapDialog .submit {
@@ -1234,7 +1247,7 @@ td.datePickerMonth {
 	display: block;
 }
 
-.BootstrapDialog .ValidatedListBox,.BootstrapDialog .RichTextBox {
+.BootstrapDialog .ValidatedListBox,.BootstrapDialog .ValidatedTextBox {
 	width: 20em;
 	margin: 0.3em;
 }
