@@ -1308,6 +1308,7 @@ td.datePickerMonth {
 
 .BusinessView .LoaderButton {
 	width: 10em;
+	margin: 0 auto;
 }
 
 .BusinessView .businessLabel {

@@ -10,11 +10,6 @@
 
 	<g:ScrollPanel styleName="BusinessView" height="100%">
 		<g:FlowPanel>
-			<g:SimplePanel>
-			<gwtshared:LoaderButton ui:field="saveData" text="{i18n.saveModifications}" />
-			</g:SimplePanel>
-	
-	
 			<g:HorizontalPanel styleName="upperPart">
 				<g:VerticalPanel styleName="businessDataContainer">
 					<g:Label styleName="sectionLabel" text="{i18n.companyDataLabel}"></g:Label>
@@ -130,6 +125,7 @@
 							</g:row>
 						</g:Grid>
 					</g:SimplePanel>
+					<gwtshared:LoaderButton ui:field="saveData" text="{i18n.saveModifications}" />
 				</g:VerticalPanel>
 	
 				<g:VerticalPanel styleName="logoDataContainer">
