@@ -116,7 +116,7 @@ public class PDFController{
 				else if(docType.equals(DocumentType.TRANSPORT_DOCUMENT))
 					fileNamePattern = messageSource.getMessage("export.transportdocs.name.pattern", null, "transportdoc_%d_%d.pdf", locale);
 				String fileName = String.format(fileNamePattern, accountingDocument.getAccountingDocumentYear(), accountingDocument.getDocumentID());
-				response.setContentType("application/octet-stream");
+				response.setContentType("application/pdf");
 				response.setHeader ("Content-Disposition", String.format("attachment; filename=\"%s\"", fileName));
 				response.setHeader ("Content-Length", ctx.get(PDFGenerationCtxFields.contentLenght).toString());
 			}
