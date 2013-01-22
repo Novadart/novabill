@@ -20,6 +20,7 @@ public class CalcUtils {
 	
 	public static BigDecimal parseCurrency(String value) throws NumberFormatException {
 		try{
+			//GWT requires a non breakable space between currency symbol and value
 			return new BigDecimal( NumberFormat.getCurrencyFormat().parse(value.replace(" ", "\u00A0")) );
 		} catch (NumberFormatException e) {
 			return parseValue(value);
