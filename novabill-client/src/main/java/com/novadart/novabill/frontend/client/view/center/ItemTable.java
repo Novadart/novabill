@@ -16,7 +16,7 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
@@ -83,7 +83,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
 				try{
 					
-					BigDecimal newQty = CalcUtils.parseValue(value);
+					BigDecimal newQty = DocumentUtils.parseValue(value);
 					object.setQuantity(newQty);
 					ItemTable.this.handler.onUpdate(object);
 					
@@ -144,7 +144,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
 				try{
 					
-					BigDecimal newPrice = CalcUtils.parseCurrency(value);
+					BigDecimal newPrice = DocumentUtils.parseCurrency(value);
 					object.setPrice(newPrice);
 					ItemTable.this.handler.onUpdate(object);
 					
@@ -179,7 +179,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				object.setTax(CalcUtils.parseValue(value.split("%")[0]));
+				object.setTax(DocumentUtils.parseValue(value.split("%")[0]));
 				ItemTable.this.handler.onUpdate(object);
 				selectionCell.clearViewData(object);
 				redrawRow(index);
@@ -194,7 +194,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
-				BigDecimal totalPrice = CalcUtils.calculateTotalBeforeTaxesForItem(object);
+				BigDecimal totalPrice = DocumentUtils.calculateTotalBeforeTaxesForItem(object);
 				return NumberFormat.getCurrencyFormat().format(totalPrice.doubleValue());
 			}
 		};
@@ -206,7 +206,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
-				BigDecimal totalVat = CalcUtils.calculateTaxesForItem(object);
+				BigDecimal totalVat = DocumentUtils.calculateTaxesForItem(object);
 				return NumberFormat.getCurrencyFormat().format(totalVat.doubleValue());
 			}
 		};
@@ -219,7 +219,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
-				BigDecimal total = CalcUtils.calculateTotalAfterTaxesForItem(object); 
+				BigDecimal total = DocumentUtils.calculateTotalAfterTaxesForItem(object); 
 				return NumberFormat.getCurrencyFormat().format(total.doubleValue());
 			}
 		};

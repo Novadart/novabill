@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.view.center.client;
 
+import java.util.Collections;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -26,6 +27,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.Const;
 import com.novadart.novabill.frontend.client.event.ClientDeleteEvent;
 import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
 import com.novadart.novabill.frontend.client.event.ClientUpdateHandler;
@@ -237,10 +239,10 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 			tabPanel.selectTab(1);
 			break;
 		case transportDocuments:
-			tabPanel.selectTab(2);
+			tabPanel.selectTab(3);
 			break;
 		case creditNotes:
-			tabPanel.selectTab(3);
+			tabPanel.selectTab(2);
 			break;
 		default:
 		case invoices:
@@ -411,6 +413,7 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 				if(result == null){
 					return;
 				}
+				Collections.sort(result, Const.DOCUMENT_COMPARATOR);
 				invoiceDataProvider.setList(result);
 				invoiceDataProvider.refresh();
 			}
@@ -426,6 +429,7 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 				if(result == null){
 					return;
 				}
+				Collections.sort(result, Const.DOCUMENT_COMPARATOR);
 				transportDocumentDataProvider.setList(result);
 				transportDocumentDataProvider.refresh();
 			}
@@ -442,6 +446,7 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 				if(result == null){
 					return;
 				}
+				Collections.sort(result, Const.DOCUMENT_COMPARATOR);
 				creditNoteDataProvider.setList(result);
 				creditNoteDataProvider.refresh();
 			}
@@ -457,6 +462,7 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 				if(result == null){
 					return;
 				}
+				Collections.sort(result, Const.DOCUMENT_COMPARATOR);
 				estimationDataProvider.setList(result);
 				estimationDataProvider.refresh();
 			}

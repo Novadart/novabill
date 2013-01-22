@@ -31,7 +31,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
-import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
 import com.novadart.novabill.frontend.client.view.center.InvoiceView;
@@ -96,7 +96,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView, Has
 			
 			@Override
 			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
-				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
+				DocumentUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
 
 		});
@@ -212,13 +212,13 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView, Has
 		inv.setNote(note.getText());
 		inv.setPaymentType(PaymentType.values()[payment.getSelectedIndex()-1]);
 		if(payment.getSelectedIndex() > 0){
-			inv.setPaymentDueDate(CalcUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
+			inv.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
 		} else {
 			inv.setPaymentDueDate(null);
 		}
 
 		inv.setPaymentNote(paymentNote.getText());
-		CalcUtils.calculateTotals(invItems, inv);
+		DocumentUtils.calculateTotals(invItems, inv);
 		return inv;
 	}
 
