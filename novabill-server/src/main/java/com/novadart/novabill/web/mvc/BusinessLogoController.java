@@ -54,6 +54,9 @@ public class BusinessLogoController {
 	@Value("${logoThumbnail.folder}")
 	private String logoThumbnailFolder;
 	
+	@Value("${logoThumbnail.quality}")
+	private double logoThumbnailQuality;
+	
 	@Autowired
 	private UtilsService utilsService;
 	
@@ -104,7 +107,7 @@ public class BusinessLogoController {
 				try{
 					inFile = createTempFile("." + logo.getFormat().name(), true);
 					IOUtils.copy(new ByteArrayInputStream(logo.getData()), new FileOutputStream(inFile));
-					ImageUtils.resizeConvertImage(inFile, logoThumbnailWidth, logoThumbnailHeight, logoThumbnailFile);
+					ImageUtils.resizeConvertImage(inFile, logoThumbnailWidth, logoThumbnailHeight, logoThumbnailFile, logoThumbnailQuality);
 				}finally{
 					if(inFile != null) inFile.delete();
 				}
@@ -152,13 +155,13 @@ public class BusinessLogoController {
 			inFile = createTempFile("." + subtype, true);
 			file.transferTo(inFile);
 			outFile = createTempFile("." + DEFAULT_FORMAT.name(), true);
-			Dimension imageDim = ImageUtils.resizeConvertImage(inFile, Integer.MAX_VALUE, Integer.MAX_VALUE, outFile);
+			Dimension imageDim = ImageUtils.resizeConvertImage(inFile, Integer.MAX_VALUE, Integer.MAX_VALUE, outFile, 100.0);
 			logo.setWidth(imageDim.width);
 			logo.setHeight(imageDim.height);
 			logo.setData(IOUtils.toByteArray(new FileInputStream(outFile)));
 			logo.setBusinessID(businessID);
 			logo.persist();
-			ImageUtils.resizeConvertImage(inFile, logoThumbnailWidth, logoThumbnailHeight, getThumbnailFile(businessID));
+			ImageUtils.resizeConvertImage(inFile, logoThumbnailWidth, logoThumbnailHeight, getThumbnailFile(businessID), logoThumbnailQuality);
 		} catch (IOException e) {
 			return String.valueOf(LogoUploadStatus.INTERNAL_ERROR.ordinal());
 		} catch (InterruptedException e) {
