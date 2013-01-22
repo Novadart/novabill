@@ -7,6 +7,8 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
+import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -61,6 +63,22 @@ public class BusinessLogoController {
 	private UtilsService utilsService;
 	
 	private ServletContextResource noLogoImage;
+	
+	private void clearLogoFolder(File folder){
+		File[] files = folder.listFiles();
+		if(files != null)
+			for(File file: files)
+				file.delete();
+	}
+	
+	@PostConstruct
+	public void init(){
+		File logoFolder = new File(logoThumbnailFolder);
+		if(logoFolder.exists())
+			clearLogoFolder(logoFolder);
+		else
+			logoFolder.mkdir();
+	}
 	
 	@Autowired
 	public void setServletContext(ServletContext servletContext){
