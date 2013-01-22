@@ -53,13 +53,15 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
 				if(Validation.isEmpty(value)){
 					Notification.showMessage(I18N.INSTANCE.errorClientData());
-					descEditCell.clearViewData(object);
-					redraw();
 				} else {
 					object.setDescription(value);
 					ItemTable.this.handler.onUpdate(object);
-					redraw();
+					
 				}
+				
+				descEditCell.clearViewData(object);
+				redrawRow(index);
+				
 			}
 		});
 		addColumn(nameDescription, I18N.INSTANCE.nameDescription());
@@ -79,22 +81,20 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				double newQty = 0;
 				try{
-					newQty = NumberFormat.getDecimalFormat().parse(value);
+					
+					BigDecimal newQty = CalcUtils.parseValue(value);
+					object.setQuantity(newQty);
+					ItemTable.this.handler.onUpdate(object);
+					
 				} catch(NumberFormatException e){
-					try{
-						newQty = Double.parseDouble(value.replace(',', '.'));//NOTE replace comma with dot, to separate decimals
-					} catch(NumberFormatException f){
-						Notification.showMessage(I18N.INSTANCE.errorClientData());
-						qtyEditCell.clearViewData(object);
-						redraw();
-						return;
-					}
+					
+					Notification.showMessage(I18N.INSTANCE.errorClientData());
+					
 				}
-				object.setQuantity(new BigDecimal(newQty));
-				ItemTable.this.handler.onUpdate(object);
-				redraw();
+				
+				qtyEditCell.clearViewData(object);
+				redrawRow(index);
 			}
 		});
 		addColumn(quantity, I18N.INSTANCE.quantity());
@@ -116,7 +116,8 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
 				object.setUnitOfMeasure(value);
 				ItemTable.this.handler.onUpdate(object);
-				redraw();
+				unitEditCell.clearViewData(object);
+				redrawRow(index);
 			}
 		});
 		SafeHtmlBuilder shb = new SafeHtmlBuilder();
@@ -141,22 +142,20 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				double newPrice = 0;
 				try{
-					newPrice = NumberFormat.getCurrencyFormat().parse(value);
+					
+					BigDecimal newPrice = CalcUtils.parseCurrency(value);
+					object.setPrice(newPrice);
+					ItemTable.this.handler.onUpdate(object);
+					
 				} catch(NumberFormatException e){
-					try{
-						newPrice = Double.parseDouble(value.replace(',', '.'));//NOTE replace comma with dot, to separate decimals
-					} catch(NumberFormatException f){
-						Notification.showMessage(I18N.INSTANCE.errorClientData());
-						priceEditCell.clearViewData(object);
-						redraw();
-						return;
-					}
+
+					Notification.showMessage(I18N.INSTANCE.errorClientData());
+					
 				}
-				object.setPrice(new BigDecimal(newPrice));
-				ItemTable.this.handler.onUpdate(object);
-				redraw();
+				
+				priceEditCell.clearViewData(object);
+				redrawRow(index);
 			}
 		});
 		addColumn(price, I18N.INSTANCE.price());
@@ -167,7 +166,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		for (String v : I18N.INSTANCE.vatItems()) {
 			vats.add(v+"%");
 		}
-		SelectionCell selectionCell = new SelectionCell(vats);
+		final SelectionCell selectionCell = new SelectionCell(vats);
 		Column<AccountingDocumentItemDTO, String> tax =
 				new Column<AccountingDocumentItemDTO, String>(selectionCell) {
 
@@ -182,7 +181,8 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
 				object.setTax(CalcUtils.parseValue(value.split("%")[0]));
 				ItemTable.this.handler.onUpdate(object);
-				redraw();
+				selectionCell.clearViewData(object);
+				redrawRow(index);
 			}
 		});
 		addColumn(tax, I18N.INSTANCE.vat());
