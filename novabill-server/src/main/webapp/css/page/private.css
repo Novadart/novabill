@@ -98,7 +98,7 @@ textarea:HOVER {
 }
 
 .NotificationDialog .message {
-	text-align: center;
+	text-align: justify;
 	font-size: 1.2em;
 }
 
@@ -1129,9 +1129,14 @@ td.datePickerMonth {
 	margin-left: 2em;
 }
 
-.AccountDocumentView .number {
+.AccountDocumentView input[type="text"].box.number {
 	width: 2em;
 	text-align: center;
+}
+
+.AccountDocumentView .invoiceNumberSuffix {
+	padding: 0.4em;
+	font-size: 1.2em;
 }
 
 .AccountDocumentView .note,.AccountDocumentView .paymentNote {

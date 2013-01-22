@@ -33,8 +33,11 @@
 								text="{i18n.invoiceNumber}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<v:ValidatedTextBox styleName="box number"
-								ui:field="number"></v:ValidatedTextBox>
+							<g:HorizontalPanel>
+								<v:ValidatedTextBox styleName="box number"
+								ui:field="number" />
+								<g:Label ui:field="invoiceNumberSuffix" styleName="invoiceNumberSuffix" />
+							</g:HorizontalPanel>
 						</g:customCell>
 					</g:row>
 					<g:row>
