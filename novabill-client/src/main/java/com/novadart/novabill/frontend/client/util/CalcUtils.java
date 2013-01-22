@@ -18,6 +18,14 @@ public class CalcUtils {
 		return new BigDecimal( NumberFormat.getDecimalFormat().parse(value) );
 	}
 	
+	public static BigDecimal parseCurrency(String value) throws NumberFormatException {
+		try{
+			return new BigDecimal( NumberFormat.getCurrencyFormat().parse(value.replace(" ", "\u00A0")) );
+		} catch (NumberFormatException e) {
+			return parseValue(value);
+		}
+	}
+	
 	
 	public static BigDecimal calculateTaxesForItem(AccountingDocumentItemDTO item){
 		return item.getPrice()
@@ -53,7 +61,7 @@ public class CalcUtils {
 
 		try {
 			ii.setDescription(description);
-			ii.setPrice(parseValue(price));
+			ii.setPrice(parseCurrency(price));
 			ii.setQuantity(parseValue(quantity));
 			ii.setUnitOfMeasure(unitOfMeasure);
 			ii.setTax(new BigDecimal(tax));
