@@ -48,6 +48,19 @@
 				</g:tab>
 				<g:tab>
 					<g:customHeader>
+						<g:Label styleName="tabHeaderLabel" text="{i18n.creditNotes}"></g:Label>
+					</g:customHeader>
+					<g:FlowPanel ui:field="listWrapperCredit" styleName="listWrapper panel">
+						<g:SimplePanel ui:field="actionWrapperCredit" styleName="actionWrapper">
+							<g:Button ui:field="newCreditNote" styleName="action-button newCreditNote" text="{i18n.newCreditNote}"></g:Button>
+						</g:SimplePanel>
+						<g:ScrollPanel ui:field="scrollCredit">
+							<i:CreditNoteList ui:field="creditNoteList"></i:CreditNoteList>						
+						</g:ScrollPanel>
+					</g:FlowPanel>
+				</g:tab>
+				<g:tab>
+					<g:customHeader>
 						<g:Label styleName="tabHeaderLabel" text="{i18n.transportDocumentsTab}"></g:Label>
 					</g:customHeader>
 					<g:FlowPanel ui:field="listWrapperTransport" styleName="listWrapper panel">
@@ -57,19 +70,6 @@
 						</g:SimplePanel>
 						<g:ScrollPanel ui:field="scrollTransport">
 							<i:TransportDocumentList ui:field="transportDocumentList"></i:TransportDocumentList>						
-						</g:ScrollPanel>
-					</g:FlowPanel>
-				</g:tab>
-				<g:tab>
-					<g:customHeader>
-						<g:Label styleName="tabHeaderLabel" text="{i18n.creditNotes}"></g:Label>
-					</g:customHeader>
-					<g:FlowPanel ui:field="listWrapperCredit" styleName="listWrapper panel">
-						<g:SimplePanel ui:field="actionWrapperCredit" styleName="actionWrapper">
-							<g:Button ui:field="newCreditNote" styleName="action-button newCreditNote" text="{i18n.newCreditNote}"></g:Button>
-						</g:SimplePanel>
-						<g:ScrollPanel ui:field="scrollCredit">
-							<i:CreditNoteList ui:field="creditNoteList"></i:CreditNoteList>						
 						</g:ScrollPanel>
 					</g:FlowPanel>
 				</g:tab>

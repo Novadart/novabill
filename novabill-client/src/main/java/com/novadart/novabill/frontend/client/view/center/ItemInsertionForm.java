@@ -19,7 +19,7 @@ import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
-import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
@@ -77,7 +77,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			
 			@Override
 			public void onUpdate(AccountingDocumentItemDTO item) {
-				CalcUtils.updateTotals(item);
+				DocumentUtils.updateTotals(item);
 				ItemInsertionForm.this.handler.onItemListUpdated(getItems());
 			}
 			
@@ -89,7 +89,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 	@UiHandler("add")
 	void onAddClicked(ClickEvent e){
-		AccountingDocumentItemDTO ii = CalcUtils.createAccountingDocumentItem(item.getText(), price.getText(), 
+		AccountingDocumentItemDTO ii = DocumentUtils.createAccountingDocumentItem(item.getText(), price.getText(), 
 				quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
 
 		if(ii == null) {

@@ -10,7 +10,7 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
 
-public class CalcUtils {
+public class DocumentUtils {
 	
 	private static final long ONE_DAY_MS = 1000 * 60 * 60 * 24;
 	
@@ -70,14 +70,14 @@ public class CalcUtils {
 			return null;
 		}
 		
-		CalcUtils.updateTotals(ii);
+		DocumentUtils.updateTotals(ii);
 		return ii;
 	}
 	
 	
 	public static void updateTotals(AccountingDocumentItemDTO item){
-		BigDecimal totBeforeTaxesForItem = CalcUtils.calculateTotalBeforeTaxesForItem(item);
-		BigDecimal totTaxesForItem = CalcUtils.calculateTaxesForItem(item);
+		BigDecimal totBeforeTaxesForItem = DocumentUtils.calculateTotalBeforeTaxesForItem(item);
+		BigDecimal totTaxesForItem = DocumentUtils.calculateTaxesForItem(item);
 		item.setTotal(totBeforeTaxesForItem.add(totTaxesForItem));
 		item.setTotalTax(totTaxesForItem);
 		item.setTotalBeforeTax(totBeforeTaxesForItem);
@@ -89,8 +89,8 @@ public class CalcUtils {
 		BigDecimal totBeforeTaxes = BigDecimal.ZERO;
 		BigDecimal totTaxes = BigDecimal.ZERO;
 		for (AccountingDocumentItemDTO item : accountingDocumentItems) {
-			totBeforeTaxes = totBeforeTaxes.add(CalcUtils.calculateTotalBeforeTaxesForItem(item));
-			totTaxes = totTaxes.add(CalcUtils.calculateTaxesForItem(item));
+			totBeforeTaxes = totBeforeTaxes.add(DocumentUtils.calculateTotalBeforeTaxesForItem(item));
+			totTaxes = totTaxes.add(DocumentUtils.calculateTaxesForItem(item));
 		}
 		BigDecimal totAfterTaxes = totBeforeTaxes.add(totTaxes);
 
@@ -103,8 +103,8 @@ public class CalcUtils {
 		BigDecimal totBeforeTaxes = BigDecimal.ZERO;
 		BigDecimal totTaxes = BigDecimal.ZERO;
 		for (AccountingDocumentItemDTO item : accountingDocumentItems) {
-			totBeforeTaxes = totBeforeTaxes.add(CalcUtils.calculateTotalBeforeTaxesForItem(item));
-			totTaxes = totTaxes.add(CalcUtils.calculateTaxesForItem(item));
+			totBeforeTaxes = totBeforeTaxes.add(DocumentUtils.calculateTotalBeforeTaxesForItem(item));
+			totTaxes = totTaxes.add(DocumentUtils.calculateTaxesForItem(item));
 		}
 		BigDecimal totAfterTaxes = totBeforeTaxes.add(totTaxes);
 

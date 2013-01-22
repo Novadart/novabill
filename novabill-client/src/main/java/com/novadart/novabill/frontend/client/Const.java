@@ -4,6 +4,8 @@ import java.util.Comparator;
 import java.util.Date;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.i18n.client.DateTimeFormat;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class Const {
@@ -25,6 +27,22 @@ public class Const {
 		public int compare(ClientDTO o1, ClientDTO o2) {
 			
 			return o1.getName().compareToIgnoreCase(o2.getName());
+		}
+	};
+	
+	//comparator returns inverse ordering
+	public static final Comparator<AccountingDocumentDTO> DOCUMENT_COMPARATOR = new Comparator<AccountingDocumentDTO>() {
+		
+		@Override
+		public int compare(AccountingDocumentDTO o1, AccountingDocumentDTO o2) {
+			Integer year1 = Integer.parseInt(DateTimeFormat.getFormat("yyyy").format(o1.getAccountingDocumentDate()));
+			Integer year2 = Integer.parseInt(DateTimeFormat.getFormat("yyyy").format(o2.getAccountingDocumentDate()));
+			
+			if(year1 != year2) {
+				return -year1.compareTo(year2);
+			} else {
+				return -o1.getDocumentID().compareTo(o2.getDocumentID());
+			}
 		}
 	};
 	
