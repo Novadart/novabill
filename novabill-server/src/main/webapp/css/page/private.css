@@ -98,7 +98,7 @@ textarea:HOVER {
 }
 
 .NotificationDialog .message {
-	text-align: center;
+	text-align: justify;
 	font-size: 1.2em;
 }
 
