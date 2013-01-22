@@ -152,30 +152,63 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		createEstimation.getButton().setEnabled(false);
 		
 		final EstimationDTO estimation = createEstimation(this.estimation);
-		ServerFacade.estimation.add(estimation, new ManagedAsyncCallback<Long>() {
+		
+		if(this.estimation == null) {
+			
+			ServerFacade.estimation.add(estimation, new ManagedAsyncCallback<Long>() {
 
-			@Override
-			public void onSuccess(Long result) {
-				convertToInvoice.showLoader(false);
-				FromEstimationInvoicePlace pl = new FromEstimationInvoicePlace();
-				pl.setEstimationId(result);
-				presenter.goTo(pl);
-				
-				setLocked(false);
-				modifyDocument.getButton().setEnabled(true);
-				createEstimation.getButton().setEnabled(true);
-			}
+				@Override
+				public void onSuccess(Long result) {
+					convertToInvoice.showLoader(false);
+					FromEstimationInvoicePlace pl = new FromEstimationInvoicePlace();
+					pl.setEstimationId(result);
+					presenter.goTo(pl);
+					
+					setLocked(false);
+					modifyDocument.getButton().setEnabled(true);
+					createEstimation.getButton().setEnabled(true);
+				}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				convertToInvoice.showLoader(false);
-				super.onFailure(caught);
+				@Override
+				public void onFailure(Throwable caught) {
+					convertToInvoice.showLoader(false);
+					super.onFailure(caught);
+					
+					setLocked(false);
+					modifyDocument.getButton().setEnabled(true);
+					createEstimation.getButton().setEnabled(true);
+				}
+			});
+			
+		} else {
+			
+			ServerFacade.estimation.update(estimation, new ManagedAsyncCallback<Void>() {
+
+				@Override
+				public void onSuccess(Void result) {
+					convertToInvoice.showLoader(false);
+					FromEstimationInvoicePlace pl = new FromEstimationInvoicePlace();
+					pl.setEstimationId(EstimationViewImpl.this.estimation.getId());
+					presenter.goTo(pl);
+					
+					setLocked(false);
+					modifyDocument.getButton().setEnabled(true);
+					createEstimation.getButton().setEnabled(true);
+				}
 				
-				setLocked(false);
-				modifyDocument.getButton().setEnabled(true);
-				createEstimation.getButton().setEnabled(true);
-			}
-		});
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					convertToInvoice.showLoader(false);
+					super.onFailure(caught);
+					
+					setLocked(false);
+					modifyDocument.getButton().setEnabled(true);
+					createEstimation.getButton().setEnabled(true);
+				}
+			});
+			
+		}
 		
 	}
 
