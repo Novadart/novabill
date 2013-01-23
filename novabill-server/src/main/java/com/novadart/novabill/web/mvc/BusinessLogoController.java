@@ -13,6 +13,7 @@ import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
+import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.im4java.core.IM4JavaException;
@@ -64,18 +65,11 @@ public class BusinessLogoController {
 	
 	private ServletContextResource noLogoImage;
 	
-	private void clearLogoFolder(File folder){
-		File[] files = folder.listFiles();
-		if(files != null)
-			for(File file: files)
-				file.delete();
-	}
-	
 	@PostConstruct
-	public void init(){
+	public void init() throws IOException{
 		File logoFolder = new File(logoThumbnailFolder);
 		if(logoFolder.exists())
-			clearLogoFolder(logoFolder);
+			FileUtils.cleanDirectory(logoFolder);
 		else
 			logoFolder.mkdir();
 	}
