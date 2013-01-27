@@ -187,7 +187,7 @@ public class BusinessLogoController {
 		return String.valueOf(LogoUploadStatus.OK.ordinal());
 	}
 	
-	private void clearLogo(Long businessID){
+	public void clearLogo(Long businessID){
 		Logo oldLogo = Logo.getLogoByBusinessID(businessID);
 		if(oldLogo != null)
 			oldLogo.remove();
