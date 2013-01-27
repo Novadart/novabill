@@ -604,7 +604,9 @@ textarea:HOVER {
 	position: relative;
 }
 
-.QuickViewList.TransportDocumentList .upper span.createInvoice,.QuickViewList.EstimationList .upper span.convertToInvoice,.QuickViewList .details .tools span
+.QuickViewList.TransportDocumentList .upper span.createInvoice,
+.QuickViewList.EstimationList .upper span.convertToInvoice,
+.QuickViewList .details .tools span
 	{
 	text-transform: uppercase;
 	font-size: 0.8em;
@@ -612,7 +614,9 @@ textarea:HOVER {
 	cursor: pointer;
 }
 
-.QuickViewList.TransportDocumentList .upper span.createInvoice:HOVER,.QuickViewList.EstimationList .upper span.convertToInvoice:HOVER,.QuickViewList .details .tools span:HOVER
+.QuickViewList.TransportDocumentList .upper span.createInvoice:HOVER,
+.QuickViewList.EstimationList .upper span.convertToInvoice:HOVER,
+.QuickViewList .details .tools span:HOVER
 	{
 	text-decoration: underline;
 }
