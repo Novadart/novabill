@@ -42,10 +42,6 @@ msgstr "Numero"
 msgid "Date"
 msgstr "Data"
 
-#: src/template/tidy/transport_document.py:45
-msgid "city pattern"
-msgstr "%(city)s (%(province)s)"
-
 #: src/template/tidy/transport_document.py:60
 msgid "Receiving address"
 msgstr "Indirizzo di Destinazione"
