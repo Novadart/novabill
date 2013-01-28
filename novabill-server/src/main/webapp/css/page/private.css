@@ -702,11 +702,36 @@ textarea:HOVER {
 	padding: 0.2em;
 }
 
+.QuickViewList .quickViewCell .details {
+	-webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+    color: #CCC;
+}
+
+.QuickViewList .quickViewCell:HOVER .details {
+	color: inherit;
+}
+
 .QuickViewList .openEstimation,.QuickViewList .openInvoice,.QuickViewList .openCreditNote,.QuickViewList .openTransportDocument
 {
 	position: absolute;
 	right: 48%;
 	bottom: -4px;
+	font-weight: bold;
+	padding: 1px;
+	text-decoration: none;
+}
+
+.QuickViewList .openEstimation:HOVER,
+.QuickViewList .openInvoice:HOVER,
+.QuickViewList .openCreditNote:HOVER,
+.QuickViewList .openTransportDocument:HOVER {
+	color: white;
+	background-color: #333;
+	text-decoration: none;
 }
 
 .westContainer {

@@ -58,11 +58,11 @@ public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
 		sb.appendHtmlConstant("</div>");
 
 		sb.appendHtmlConstant("<div class='tools'>");
-		sb.appendHtmlConstant("<span class='button openCreditNote'>");
+		sb.appendHtmlConstant("<span class='openCreditNote'>");
 		sb.appendEscaped(I18N.INSTANCE.modify());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("<span class='downloadAsPDF'>");
-		sb.appendEscaped("PDF");
+		sb.appendEscaped(I18N.INSTANCE.download());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("<span class='delete'>");
 		sb.appendEscaped(I18N.INSTANCE.delete());

@@ -12,6 +12,7 @@ public interface I18N extends Constants {
 	public String deleteAccount();
 	public String yes();
 	public String no();
+	public String download();
 	public String errorDataAccessException();
 	public String updateLogo();
 	public String deleteLogo();
