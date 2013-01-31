@@ -23,8 +23,8 @@ public aspect XsrfAspect {
 	private boolean canExecute(Xsrf xsrfAnnotation){
 		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
 	    HttpSession session = attr.getRequest().getSession(false);
-	    Object token = attr.getRequest().getAttribute(xsrfAnnotation.tokenRequestParam());
-		return token == null || !xsrfTokenService.verifyAndRemoveToken((String)token, session, xsrfAnnotation.tokensSessionField());
+	    Object token = attr.getRequest().getParameter(xsrfAnnotation.tokenRequestParam());
+		return token != null && xsrfTokenService.verifyAndRemoveToken((String)token, session, xsrfAnnotation.tokensSessionField());
 	}
 	
 	Object around(Xsrf xsrfAnnotation): protectedMethod(xsrfAnnotation){
