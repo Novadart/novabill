@@ -103,4 +103,9 @@ public class BusinessServiceProxy extends AbstractGwtController implements Busin
 		return businessService.updateNotesBitMask(notesBitMask);
 	}
 
+	@Override
+	public String generateLogoOpToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException {
+		return businessService.generateLogoOpToken();
+	}
+
 }

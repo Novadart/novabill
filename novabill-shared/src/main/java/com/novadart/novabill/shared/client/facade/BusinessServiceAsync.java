@@ -49,4 +49,6 @@ public interface BusinessServiceAsync {
 
 	void updateNotesBitMask(Long notesBitMask, AsyncCallback<Long> callback);
 
+	void generateLogoOpToken(AsyncCallback<String> callback);
+
 }

@@ -115,4 +115,9 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.XsrfAspect"
+		factory-method="aspectOf">
+	</bean>
+	
 </beans>

@@ -28,6 +28,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.multipart.MultipartFile;
+
+import com.novadart.novabill.annotation.Xsrf;
 import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.domain.Logo.LogoFormat;
 import com.novadart.novabill.service.UtilsService;
@@ -40,8 +42,9 @@ import com.novadart.utils.image.UnsupportedImageFormatException;
 public class BusinessLogoController {
 	
 	public static final int LOGO_SIZE_LIMIT = 1024 * 1024; // 1MB
-	
 	public static final LogoFormat DEFAULT_FORMAT = LogoFormat.JPEG;
+	public static final String TOKEN_REQUEST_PARAM = "token";
+	public static final String TOKENS_SESSION_FIELD = "business.logo.tokens";
 	
 	@Value("${logoThumbnail.format}")
 	private String logoThumbnailFormat;
@@ -136,6 +139,7 @@ public class BusinessLogoController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@Transactional(readOnly = false)
+	@Xsrf(tokensSessionField = TOKENS_SESSION_FIELD, tokenRequestParam = TOKEN_REQUEST_PARAM)
 	public String uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws UnsupportedImageFormatException {
 		if(!ServletFileUpload.isMultipartContent(request))
 			return String.valueOf(LogoUploadStatus.ILLEGAL_REQUEST.ordinal());
@@ -189,6 +193,7 @@ public class BusinessLogoController {
 	@RequestMapping(method = RequestMethod.DELETE)
 	@ResponseBody
 	@Transactional(readOnly = false)
+	@Xsrf(tokensSessionField = TOKENS_SESSION_FIELD, tokenRequestParam = TOKEN_REQUEST_PARAM)
 	public void deleteLogo(){
 		clearLogo(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 	}
