@@ -7,7 +7,6 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
-
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
@@ -33,7 +32,6 @@ import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.domain.Logo.LogoFormat;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
-import com.novadart.utils.image.ImageFormat;
 import com.novadart.utils.image.ImageUtils;
 import com.novadart.utils.image.UnsupportedImageFormatException;
 
@@ -149,14 +147,6 @@ public class BusinessLogoController {
 		if(!contentType.startsWith("image"))
 			return String.valueOf(LogoUploadStatus.ILLEGAL_PAYLOAD.ordinal());
 		String subtype = contentType.substring(contentType.lastIndexOf('/') + 1);
-		boolean acceptedFormat = false;
-		for(ImageFormat format: ImageFormat.values())
-			if(format.name().equalsIgnoreCase(subtype)){
-				acceptedFormat = true;
-				break;
-			}
-		if(!acceptedFormat)
-			throw new IllegalArgumentException("Image type not supported");
 		Long businessID = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
 		clearLogo(businessID);
 		Logo logo = new Logo();
