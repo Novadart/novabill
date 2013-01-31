@@ -71,7 +71,7 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 		sb.appendHtmlConstant("</div>");
 
 		sb.appendHtmlConstant("<div class='tools'>");
-		sb.appendHtmlConstant("<span class='button openInvoice'>");
+		sb.appendHtmlConstant("<span class='openInvoice'>");
 		sb.appendEscaped(I18N.INSTANCE.modify());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("<span class='clone'>");
@@ -81,7 +81,7 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 		sb.appendEscaped(I18N.INSTANCE.creditNote());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("<span class='downloadAsPDF'>");
-		sb.appendEscaped("PDF");
+		sb.appendEscaped(I18N.INSTANCE.download());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("<span class='delete'>");
 		sb.appendEscaped(I18N.INSTANCE.delete());

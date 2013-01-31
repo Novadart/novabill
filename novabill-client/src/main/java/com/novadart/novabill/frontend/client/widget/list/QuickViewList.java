@@ -7,7 +7,6 @@ import com.novadart.novabill.frontend.client.widget.list.resources.QuickViewList
 public class QuickViewList<T> extends CellList<T> {
 	
 	static{
-		QuickViewListResources.INSTANCE.quickViewListStyle().ensureInjected();
 		QuickViewListResources.INSTANCE.cellListStyle().ensureInjected();
 	}
 	
