@@ -15,12 +15,16 @@
 
 </head>
 
+<spring:message var="link1" htmlEscape="false" text="<a target='_blank' href='http://windows.microsoft.com/en-US/internet-explorer/downloads/ie-9/worldwide-languages'>" />
+<spring:message var="link2" htmlEscape="false" text="</a>" /> 
 
 <body>
 	<div class="browser-alert" style="display: none;">
 		<table>
 			<tr>
-				<td><span class="browserMessage"><spring:message code="header.browsermessage" /> </span></td>
+				<td><span style="max-width: 50%;" class="browserMessage">
+					<spring:message code="header.browsermessage" arguments="${link1},${link2}" htmlEscape="false"/> 
+					</span></td>
 				<td><a target="_blank" href="http://www.google.com/chrome"><img src='<spring:url value="images/chrome.png" />' /></a></td>
 				<td><a target="_blank" href="http://www.google.com/chrome">Google Chrome</a></td>
 				<td><a target="_blank" href="http://www.mozilla.org/firefox/"><img src='<spring:url value="images/firefox.png" />' /></a></td>
@@ -32,7 +36,7 @@
 	</div>
 	<script>
 		$(function(){
-			if($.browser.msie){
+			if($.browser.msie && (parseInt($.browser.version) <= 7 ) ){
 				$('div.browser-alert').show();
 			}	
 		})

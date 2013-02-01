@@ -154,6 +154,10 @@ blockquote:before,blockquote:after,q:before,q:after {
 	font-weight: bold;
 }
 
+.browser-alert * {
+	text-shadow: none;
+}
+
 .browser-alert {
 	padding: 0.2em 1em;
 	background-color: #EFF17D;
