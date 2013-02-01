@@ -349,6 +349,7 @@ textarea:HOVER {
 
 .HomeView .businessPanel .businessLogo {
 	height: 8em;
+	cursor: pointer;
 }
 
 .HomeView .businessPanel .businessDetails {

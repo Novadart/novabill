@@ -32,6 +32,7 @@ import com.novadart.novabill.frontend.client.event.DocumentDeleteHandler;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateHandler;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
@@ -321,6 +322,12 @@ public class HomeViewImpl extends Composite implements HomeView {
 		creditNoteList.setPresenter(presenter);
 		transportDocumentList.setPresenter(presenter);
 	}
+	
+	@UiHandler("businessLogo")
+	void onLogoClicked(ClickEvent e){
+		presenter.goTo(new BusinessPlace());
+	}
+	
 
 	@UiHandler("tabBar")
 	void onTabBarSelected(SelectionEvent<Integer> event) {
