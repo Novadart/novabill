@@ -15,7 +15,7 @@
 
 </head>
 
-<spring:message var="link1" htmlEscape="false" text="<a target='_blank' href='http://windows.microsoft.com/en-US/internet-explorer/downloads/ie-9/worldwide-languages'>" />
+<spring:message var="link1" htmlEscape="false" text="<a target='_blank' href='http://windows.microsoft.com/it-IT/internet-explorer/downloads/ie-9/worldwide-languages'>" />
 <spring:message var="link2" htmlEscape="false" text="</a>" /> 
 
 <body>
