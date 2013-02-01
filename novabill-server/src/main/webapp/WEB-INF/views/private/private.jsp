@@ -2,6 +2,7 @@
 <%@page import="org.codehaus.jackson.map.ObjectMapper"%>
 <%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 
 <!doctype html>
 
@@ -30,7 +31,9 @@
   </head>
 
   <body>
-
+	
+	<tiles:insertAttribute name="analytics" />
+	
     <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
     
     <noscript>
