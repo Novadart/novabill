@@ -7,7 +7,7 @@
 
 <p class="goodbyeMessage"><spring:message code="deleteAccount.goodbye" htmlEscape="false" /></p>
 <p class="lastChanceToExport"><spring:message code="deleteAccount.lastChanceToExport" /></p>
-<iframe class="exportButton" src='<spring:url value="/private/delete/deleteAccountExportButton"></spring:url>'></iframe>
+<iframe frameBorder="0" class="exportButton" src='<spring:url value="/private/delete/deleteAccountExportButton"></spring:url>'></iframe>
 
 
 

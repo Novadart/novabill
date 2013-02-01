@@ -120,7 +120,9 @@ blockquote:before,blockquote:after,q:before,q:after {
 .footer .iubenda-ibadge {
 	margin-left: 1em;
 	position: relative;
-	top: 8px;
+	top: 6px;
+	height: 20px !important;
+	width: 104px !important;
 }
 
 .clear {
@@ -128,7 +130,7 @@ blockquote:before,blockquote:after,q:before,q:after {
 }
 
 .footer .tec {
-	background: #383838 no-repeat;
+	background-color: #383838;
 	background-position: 7px 3px;
 	background-position-x: 6px;
 	background-position-y: 2px;
@@ -150,7 +152,7 @@ blockquote:before,blockquote:after,q:before,q:after {
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 	font-size: 11px;
-	line-height: 16px;
+	line-height: 14px;
 	font-weight: bold;
 }
 
