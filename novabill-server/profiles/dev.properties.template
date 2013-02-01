@@ -1,3 +1,5 @@
+debug.enabled.value=true
+
 database.driverClassName.value=org.postgresql.Driver
 database.url.value=jdbc:postgresql://localhost/novabill
 database.username.value=novadart

@@ -4,6 +4,7 @@ import java.io.StringWriter;
 import java.util.concurrent.TimeUnit;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -22,6 +23,9 @@ public class PrivateController {
 	@Autowired
 	private UtilsService utilsService;
 	
+	@Value("${debug.enabled}")
+	private boolean debugEnabled;
+	
 	@RequestMapping(value = "/private", method = RequestMethod.GET)
 	public ModelAndView privateArea(){
 		ModelAndView mav = new ModelAndView("private");
@@ -36,6 +40,7 @@ public class PrivateController {
 		mav.addObject("business", sw.toString());
 		mav.addObject("daysToExpiration", business.getNonFreeExpirationDelta(TimeUnit.DAYS));
 		mav.addObject("notesBitMask", Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId()).getNotesBitMask());
+		mav.addObject("debugEnabled", debugEnabled);
 		return mav;
 	}
 

@@ -4,11 +4,15 @@ import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
+import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.novabill.frontend.client.analytics.Analytics;
 import com.novadart.novabill.frontend.client.facade.CallbackUtils;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
@@ -72,6 +76,15 @@ public class Novabill implements EntryPoint {
 						main.setPlaceController(placeController);
 						main.setEventBus(clientFactory.getEventBus());
 						RootLayoutPanel.get().add(main);
+						
+						// track page views with Google Analytics
+						History.addValueChangeHandler(new ValueChangeHandler<String>() {
+							@Override
+							public void onValueChange(ValueChangeEvent<String> event) {
+								Analytics.trackPlaceview(event.getValue());
+							}
+						});
+						
 						// Goes to place represented on URL or default place
 						historyHandler.handleCurrentHistory();
 						

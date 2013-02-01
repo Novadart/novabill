@@ -21,10 +21,12 @@ public class Configuration {
 	private static BusinessDTO business;
 	private static BusinessStatsDTO stats;
 	private static long notesBitMask;
+	private static boolean debugEnabled;
 
 	public static final void init(final ManagedAsyncCallback<Void> callback){
 		try {
-
+			debugEnabled = Boolean.parseBoolean(readDebugEnabled());
+			
 			notesBitMask = Long.parseLong(readNotesBitMask());
 			
 			Map<String, String> values = new HashMap<String, String>();
@@ -106,7 +108,15 @@ public class Configuration {
 	private static native String readNotesBitMask()/*-{
 		return $wnd.notesBitMask;
 	}-*/;
+	
+	private static native String readDebugEnabled()/*-{
+		return $wnd.debugEnabled;
+	}-*/;
 
+	public static boolean isDebugEnabled() {
+		return debugEnabled;
+	}
+	
 	public static long getNotesBitMask() {
 		return notesBitMask;
 	}

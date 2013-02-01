@@ -109,7 +109,6 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		
 		logo.setUrl(Const.genLogoUrl());
 		
-		formPanel.setAction(Const.URL_LOGO);
 		formPanel.setMethod(FormPanel.METHOD_POST);
 		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
 		
@@ -213,8 +212,15 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	
 	@UiHandler("updateLogo")
 	void onUpdateLogoClicked(ClickEvent e){
-		updateLogo.setVisible(false);
-		formPanel.setVisible(true);
+		ServerFacade.business.generateLogoOpToken(new ManagedAsyncCallback<String>() {
+
+			@Override
+			public void onSuccess(String result) {
+				formPanel.setAction(Const.UPDATE_LOGO+result);
+				updateLogo.setVisible(false);
+				formPanel.setVisible(true);
+			}
+		});
 	}
 
 
