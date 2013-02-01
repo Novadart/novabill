@@ -1,8 +1,7 @@
 <%@page import="java.io.StringWriter"%>
 <%@page import="org.codehaus.jackson.map.ObjectMapper"%>
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-    pageEncoding="UTF-8"%>
-<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <!doctype html>
 
@@ -10,6 +9,7 @@
   <head>
     <meta http-equiv="content-type" content="text/html; charset=UTF-8">
     <meta name="gwt:property" content="locale=it_IT">
+    <meta http-equiv="X-UA-Compatible" content="IE=8" />
     
 	<link rel="shortcut icon" type="image/png" href="<spring:url value="/images/favicon.png" />"></link>
     <link type="text/css" rel="stylesheet" href="<spring:url value="/css/reset-min.css" />">

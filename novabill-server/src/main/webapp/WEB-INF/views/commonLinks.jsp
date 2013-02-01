@@ -5,7 +5,8 @@
 
 <meta name="description" content="<spring:message code="application_description" />" />
 <meta name="keywords" content="<spring:message code="application_keywords" />" />
- 
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
+
 <link rel="shortcut icon" type="image/png" href="<spring:url value="/images/favicon.png" />"></link>
 <title><spring:message code="application_name" /></title>
 <link rel="stylesheet" type="text/css" href="<spring:url value="/css/reset-min.css" />" />
