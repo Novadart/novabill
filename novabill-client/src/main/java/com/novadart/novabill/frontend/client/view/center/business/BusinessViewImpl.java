@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
-import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
@@ -125,20 +124,13 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 			@Override
 			public void onSubmitComplete(SubmitCompleteEvent event) {
 				String resultCodeStr = event.getResults();
-				logoUpdateCompleted = true;
 				
-				int resultCode = 0;
-				
-				if(! Validation.isPositiveNumber(resultCodeStr)){
-					Notification.showMessage(I18N.INSTANCE.errorLogoIllegalRequest());
-					return;
-				} else {
-					resultCode = Integer.parseInt(resultCodeStr);
-					if(resultCode > LogoUploadStatus.values().length){
-						Notification.showMessage(I18N.INSTANCE.errorLogoIllegalRequest());
-						return;	
-					}
+				// for some reason Internet Explorer wraps the number in <pre></pre>, thus instead of 0 you get <pre>0</pre>
+				if(resultCodeStr.toLowerCase().contains("<pre>")){
+					resultCodeStr = String.valueOf(resultCodeStr.charAt(5));
 				}
+				
+				int resultCode = Integer.parseInt(resultCodeStr);
 				
 				LogoUploadStatus status = LogoUploadStatus.values()[resultCode];
 				switch(status){
@@ -164,6 +156,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 					break;
 				
 				}
+				
+				logoUpdateCompleted = true;
 			}
 		});
 		
