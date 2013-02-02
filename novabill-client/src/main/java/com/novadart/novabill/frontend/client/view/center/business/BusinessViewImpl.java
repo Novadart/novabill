@@ -192,6 +192,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 			
 			@Override
 			public void onSuccess(Boolean result) {
+				Const.refeshLogoUrl();
 				formPanel.setVisible(false);
 				formPanel.reset();
 				updateLogo.setVisible(true);
