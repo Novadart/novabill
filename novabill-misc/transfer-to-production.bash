@@ -9,8 +9,9 @@
 #
 # 
 local_copy=$NOVABILL_DATA
-remote_copy="/home/novadart/DEPLOY/novabill-server"
+remote_copy="/home/novadart/DEPLOY/novabill-server/"
 
-/usr/bin/rsync -r -v -e "ssh -l novadart" --delete $local_copy 46.252.156.221:$remote_copy
+#/usr/bin/rsync -r -v -z -e "ssh -l novadart" --delete $local_copy 46.252.156.221:$remote_copy
+/usr/bin/rsync -v -a -z -e "ssh -l novadart" --delete $local_copy 46.252.156.221:$remote_copy
 
 

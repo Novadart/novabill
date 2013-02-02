@@ -106,7 +106,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		
 		saveData.getButton().setStyleName("saveData button");
 		
-		logo.setUrl(Const.genLogoUrl());
+		logo.setUrl(Const.getLogoUrl());
 		
 		formPanel.setMethod(FormPanel.METHOD_POST);
 		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
@@ -149,7 +149,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 					break;
 					
 				case OK:
-					logo.setUrl(Const.genLogoUrl());
+					Const.refeshLogoUrl();
+					logo.setUrl(Const.getLogoUrl());
 					formPanel.setVisible(false);
 					formPanel.reset();
 					updateLogo.setVisible(true);
@@ -194,7 +195,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 				formPanel.setVisible(false);
 				formPanel.reset();
 				updateLogo.setVisible(true);
-				logo.setUrl(Const.genLogoUrl());
+				logo.setUrl(Const.getLogoUrl());
 			}
 			
 			@Override

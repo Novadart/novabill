@@ -160,7 +160,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 	}
 	
 	private void updateBusinessDetails(BusinessDTO business){
-		businessLogo.setUrl(Const.genLogoUrl());
+		businessLogo.setUrl(Const.getLogoUrl());
 		
 		SafeHtmlBuilder shb = new SafeHtmlBuilder();
 		shb.appendHtmlConstant("<p class=\"businessName\">");

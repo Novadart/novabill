@@ -18,8 +18,14 @@ public class Const {
 	public static final String XSRF_URL = GWT.getHostPageBaseURL() + "gwt/xsrf";
 	public static final String POST_FEEDBACK_URL = GWT.getHostPageBaseURL()+"private/feedback";
 	
-	public static String genLogoUrl(){
-		return URL_THUMB + "?v=" + new Date().getTime();
+	private static String logoUrl = URL_THUMB;
+	
+	public static String getLogoUrl(){
+		return logoUrl;
+	}
+	
+	public static void refeshLogoUrl(){
+		logoUrl = URL_THUMB + "?v=" + new Date().getTime();
 	}
 	
 	public static final Comparator<ClientDTO> CLIENT_COMPARATOR = new Comparator<ClientDTO>() {
