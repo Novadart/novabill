@@ -1,8 +1,12 @@
 package com.novadart.novabill.frontend.client.view.center.home;
 
+import java.util.Collections;
+import java.util.List;
+
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.Const;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
@@ -19,7 +23,9 @@ public class CreditNoteDataProvider extends AsyncDataProvider<CreditNoteDTO> {
 
 			@Override
 			public void onSuccess(PageDTO<CreditNoteDTO> result) {
-				updateRowData(start, result.getItems());
+				List<CreditNoteDTO> items = result.getItems();
+				Collections.sort(items, Const.DOCUMENT_COMPARATOR);
+				updateRowData(start, items);
 			}
 
 		});

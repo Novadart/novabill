@@ -7,8 +7,8 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.dialog.Dialog;
-import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
+import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.util.CountryUtils;
@@ -31,19 +31,19 @@ public class BootstrapDialog extends Dialog {
 		public void businessData(BusinessDTO business);
 	}
 
-	@UiField(provided=true) RichTextBox name;
-	@UiField(provided=true) RichTextBox ssn;
-	@UiField(provided=true) RichTextBox vatID;
-	@UiField(provided=true) RichTextBox address;
-	@UiField(provided=true) RichTextBox city;
+	@UiField(provided=true) ValidatedTextBox name;
+	@UiField(provided=true) ValidatedTextBox ssn;
+	@UiField(provided=true) ValidatedTextBox vatID;
+	@UiField(provided=true) ValidatedTextBox address;
+	@UiField(provided=true) ValidatedTextBox city;
 	@UiField(provided=true) ValidatedListBox province;
 	@UiField(provided=true) ValidatedListBox country;
-	@UiField(provided=true) RichTextBox postcode;
-	@UiField(provided=true) RichTextBox phone;
-	@UiField(provided=true) RichTextBox email;
-	@UiField(provided=true) RichTextBox mobile;
-	@UiField(provided=true) RichTextBox fax;
-	@UiField(provided=true) RichTextBox web;
+	@UiField(provided=true) ValidatedTextBox postcode;
+	@UiField(provided=true) ValidatedTextBox phone;
+	@UiField(provided=true) ValidatedTextBox email;
+	@UiField(provided=true) ValidatedTextBox mobile;
+	@UiField(provided=true) ValidatedTextBox fax;
+	@UiField(provided=true) ValidatedTextBox web;
 
 	@UiField InlineNotification inlineNotification;
 	
@@ -52,26 +52,26 @@ public class BootstrapDialog extends Dialog {
 
 	public BootstrapDialog() {
 		super(false);
-		name = new RichTextBox(I18N.INSTANCE.companyName(), ValidationKit.NOT_EMPTY);
+		name = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
 		
-		ssn = new RichTextBox(I18N.INSTANCE.ssn(), ValidationKit.SSN_OR_VAT_ID);
-		ssn.setShowMessageOnError(false);
-		vatID = new RichTextBox(I18N.INSTANCE.vatID(), ValidationKit.OPTIONAL_VAT_ID);
-		vatID.setShowMessageOnError(false);
+		ssn = new ValidatedTextBox(ValidationKit.SSN_OR_VAT_ID);
+		ssn.setShowMessageOnError(true);
+		vatID = new ValidatedTextBox(ValidationKit.OPTIONAL_VAT_ID);
+		vatID.setShowMessageOnError(true);
 		ssnOrVatIdValidation.addWidget(ssn);
 		ssnOrVatIdValidation.addWidget(vatID);
 		
-		address = new RichTextBox(I18N.INSTANCE.address(), ValidationKit.NOT_EMPTY);
-		city = new RichTextBox(I18N.INSTANCE.city(), ValidationKit.NOT_EMPTY);
+		address = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
+		city = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
 		province = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province()); 
 		country = LocaleWidgets.createCountryListBoxItalyOnly(I18N.INSTANCE.country());
 		country.setSelectedItem(CountryUtils.getRegionName("IT"));
-		postcode = new RichTextBox(I18N.INSTANCE.postcode(), ValidationKit.POSTCODE);
-		phone = new RichTextBox(I18N.INSTANCE.phone(), ValidationKit.OPTIONAL_NUMBER);
-		email = new RichTextBox(I18N.INSTANCE.companyEmail(), ValidationKit.OPTIONAL_EMAIL);
-		mobile = new RichTextBox(I18N.INSTANCE.mobile(), ValidationKit.OPTIONAL_NUMBER);
-		fax = new RichTextBox(I18N.INSTANCE.fax(), ValidationKit.OPTIONAL_NUMBER);
-		web = new RichTextBox(I18N.INSTANCE.web(), ValidationKit.DEFAULT);
+		postcode = new ValidatedTextBox(ValidationKit.POSTCODE);
+		phone = new ValidatedTextBox(ValidationKit.DEFAULT);
+		email = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
+		mobile = new ValidatedTextBox(ValidationKit.DEFAULT);
+		fax = new ValidatedTextBox(ValidationKit.DEFAULT);
+		web = new ValidatedTextBox(ValidationKit.DEFAULT);
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("BootstrapDialog");
 	}
@@ -86,7 +86,7 @@ public class BootstrapDialog extends Dialog {
 			valid = false;
 		}
 
-		for (RichTextBox r : new RichTextBox[]{name, address, city, 
+		for (ValidatedTextBox r : new ValidatedTextBox[]{name, address, city, 
 				postcode, phone, email, mobile, fax, web}) {
 			r.validate();
 			valid &= r.isValid();

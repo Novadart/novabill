@@ -7,11 +7,9 @@ import java.lang.reflect.InvocationTargetException;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
-
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -21,12 +19,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
+import com.novadart.novabill.annotation.Xsrf;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.service.DataExporter;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.XsrfTokenService;
 import com.novadart.novabill.shared.client.data.DataExportClasses;
 
 @Controller
@@ -45,9 +42,6 @@ public class ExportController {
 	private UtilsService utilsService;
 	
 	@Autowired
-	private XsrfTokenService xsrfTokenService;
-
-	@Autowired
 	private DataExporter dataExporter;
 
 	@Autowired
@@ -56,16 +50,14 @@ public class ExportController {
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
 	@Transactional(readOnly = true)
+	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
 	public void getData(
 			@RequestParam(value = CLIENTS_REQUEST_PARAM, required = false) boolean clients, 
 			@RequestParam(value = INVOICES_REQUEST_PARAM, required = false) boolean invoices,
 			@RequestParam(value = ESTIMATIONS_REQUEST_PARAM, required = false) boolean estimations,
 			@RequestParam(value = CREDITNOTES_REQUEST_PARAM, required = false) boolean creditnotes,
 			@RequestParam(value = TRANSPORTDOCS_REQUEST_PARAM, required = false) boolean transportdocs,
-			@RequestParam(value = TOKEN_REQUEST_PARAM, required = false) String token, 
 			HttpServletResponse response, Locale locale, HttpSession session) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
-		if(token == null || !xsrfTokenService.verifyAndRemoveToken(token, session, TOKENS_SESSION_FIELD))
-			return;
 		Set<DataExportClasses> classes = new HashSet<DataExportClasses>();
 		if(clients)
 			classes.add(DataExportClasses.CLIENT);

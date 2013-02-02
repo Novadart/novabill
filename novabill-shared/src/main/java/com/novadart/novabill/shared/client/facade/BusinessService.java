@@ -52,5 +52,7 @@ public interface BusinessService extends RemoteService {
 	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
 	public Long updateNotesBitMask(Long notesBitMask) throws NotAuthenticatedException, DataAccessException;
+	
+	public String generateLogoOpToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException;
 
 }

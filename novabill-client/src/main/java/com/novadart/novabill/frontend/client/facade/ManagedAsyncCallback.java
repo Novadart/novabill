@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.facade;
 
+import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -26,7 +27,7 @@ public abstract class ManagedAsyncCallback<T> implements AsyncCallback<T> {
 			
 		} else if(caught instanceof DataAccessException){
 			
-			Notification.showMessage(I18N.INSTANCE.errorDataAccessException(), new NotificationCallback<Void>() {
+			Notification.showMessage(SafeHtmlUtils.fromTrustedString(I18N.INSTANCE.errorDataAccessException()), new NotificationCallback<Void>() {
 				
 				@Override
 				public void onNotificationClosed(Void value) {
@@ -36,7 +37,7 @@ public abstract class ManagedAsyncCallback<T> implements AsyncCallback<T> {
 			
 		} else if(caught instanceof NoSuchObjectException){
 			
-			Notification.showMessage(I18N.INSTANCE.errorDataAccessException(), new NotificationCallback<Void>() {
+			Notification.showMessage(SafeHtmlUtils.fromTrustedString(I18N.INSTANCE.errorDataAccessException()), new NotificationCallback<Void>() {
 				
 				@Override
 				public void onNotificationClosed(Void value) {

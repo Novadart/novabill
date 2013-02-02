@@ -59,9 +59,35 @@ blockquote:before,blockquote:after,q:before,q:after {
 	box-shadow: 3px 1px 3px #CCC;
 }
 
+.credit {
+	text-align: center;
+	margin: 5px auto 0;
+	color: #FFF;
+	opacity: 0.4;
+		
+	-webkit-transition: all 1s ;
+	-moz-transition: all 1s ;
+	-ms-transition: all 1s ;
+	-o-transition: all 1s ;
+	transition: all 1s ;
+}
 
+.credit.medialoot {
+	margin-top: 4em;
+}
+
+.credit:HOVER {
+	opacity: 1;
+}
+
+.credit *,
 .footer * {
 	color: inherit;
+}
+
+
+.credit a {
+	text-shadow: none;
 }
 
 .footer:HOVER {
@@ -70,6 +96,7 @@ blockquote:before,blockquote:after,q:before,q:after {
 }
 
 .footer {
+	font-size: 1.1em;
 	width: 1100px;
 	padding: 1.5em 0 2em;
 	margin: 0 auto;
@@ -84,6 +111,7 @@ blockquote:before,blockquote:after,q:before,q:after {
 	transition: all 1s ;
 }
 
+
 .footer a {
 	text-shadow: none;
 	margin-left: 1em;
@@ -92,7 +120,9 @@ blockquote:before,blockquote:after,q:before,q:after {
 .footer .iubenda-ibadge {
 	margin-left: 1em;
 	position: relative;
-	top: 8px;
+	top: 6px;
+	height: 20px !important;
+	width: 104px !important;
 }
 
 .clear {
@@ -100,7 +130,7 @@ blockquote:before,blockquote:after,q:before,q:after {
 }
 
 .footer .tec {
-	background: #383838 no-repeat;
+	background-color: #383838;
 	background-position: 7px 3px;
 	background-position-x: 6px;
 	background-position-y: 2px;
@@ -122,8 +152,12 @@ blockquote:before,blockquote:after,q:before,q:after {
 	-moz-border-radius: 3px;
 	border-radius: 3px;
 	font-size: 11px;
-	line-height: 16px;
+	line-height: 14px;
 	font-weight: bold;
+}
+
+.browser-alert * {
+	text-shadow: none;
 }
 
 .browser-alert {

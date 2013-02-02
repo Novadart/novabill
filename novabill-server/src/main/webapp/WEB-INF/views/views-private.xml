@@ -3,7 +3,9 @@
 	"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
 <tiles-definitions>
 
-	<definition name="private" template="/WEB-INF/views/private/private.jsp" />
+	<definition name="private" template="/WEB-INF/views/private/private.jsp">
+		<put-attribute name="analytics" value="/WEB-INF/views/analytics.jsp" />
+	</definition>
 	
 	<definition name="changePassword" extends="basePrivate">
 		<put-attribute name="pagelinks" value="/WEB-INF/views/private/changePasswordPageLinks.jsp" />

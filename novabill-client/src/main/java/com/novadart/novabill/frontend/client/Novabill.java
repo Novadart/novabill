@@ -5,13 +5,15 @@ import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.place.shared.Place;
+import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.novabill.frontend.client.analytics.Analytics;
 import com.novadart.novabill.frontend.client.facade.CallbackUtils;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.mvp.AppPlaceHistoryMapper;
 import com.novadart.novabill.frontend.client.mvp.CenterActivityMapper;
@@ -65,13 +67,23 @@ public class Novabill implements EntryPoint {
 						activityManager.setDisplay(main.getWestContainer());
 
 						// Start PlaceHistoryHandler with our PlaceHistoryMapper
-						AppPlaceHistoryMapper historyMapper= GWT.create(AppPlaceHistoryMapper.class);
+						final AppPlaceHistoryMapper historyMapper= GWT.create(AppPlaceHistoryMapper.class);
 						PlaceHistoryHandler historyHandler = new PlaceHistoryHandler(historyMapper);
 						historyHandler.register(placeController, eventBus, defaultPlace);
 						
 						main.setPlaceController(placeController);
 						main.setEventBus(clientFactory.getEventBus());
 						RootLayoutPanel.get().add(main);
+
+						eventBus.addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
+							@Override
+							public void onPlaceChange(PlaceChangeEvent event) {
+								Place place = event.getNewPlace();
+								String token = historyMapper.getToken(place);
+								Analytics.trackPlaceview(token);
+							}
+						});
+						
 						// Goes to place represented on URL or default place
 						historyHandler.handleCurrentHistory();
 						

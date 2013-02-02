@@ -122,7 +122,7 @@ public class FeedbackDialog extends Dialog {
 						
 						@Override
 						public void onFailure(Throwable caught) {
-							Notification.showMessage("Ops.. c'è stato un errore con l'invio :P \n\nPotresti riprovare per favore? \nAltrimenti puoi mandare una email a help@novabill.it");
+							Notification.showMessage("Ops.. c'è stato un errore con l'invio :P \n\nPotresti riprovare per favore? \nAltrimenti puoi mandare una email a support@novabill.it");
 						}
 					});
 		}

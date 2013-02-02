@@ -35,6 +35,7 @@ import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
+import com.novadart.novabill.web.mvc.BusinessLogoController;
 import com.novadart.novabill.web.mvc.ExportController;
 import com.novadart.novabill.web.mvc.PDFController;
 
@@ -163,4 +164,9 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		return authenticatedPrincipal.merge().getNotesBitMask();
 	}
 
+	@Override
+	public String generateLogoOpToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException {
+		return URLEncoder.encode(generateToken(BusinessLogoController.TOKENS_SESSION_FIELD), "UTF-8");
+	}
+	
 }

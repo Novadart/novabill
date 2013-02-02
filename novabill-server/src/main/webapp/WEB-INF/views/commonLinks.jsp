@@ -3,9 +3,12 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
+<meta name="description" content="<spring:message code="application_description" />" />
+<meta name="keywords" content="<spring:message code="application_keywords" />" />
+<meta http-equiv="X-UA-Compatible" content="IE=8" />
 
 <link rel="shortcut icon" type="image/png" href="<spring:url value="/images/favicon.png" />"></link>
-<title><spring:message code="application_name"></spring:message></title>
+<title><spring:message code="application_name" /></title>
 <link rel="stylesheet" type="text/css" href="<spring:url value="/css/reset-min.css" />" />
 <link rel="stylesheet" type="text/css" href="<spring:url value="/css/common.css" />" />
 <link rel="stylesheet" href="<spring:url value="/js/fancybox/jquery.fancybox-1.3.4.css" />" type="text/css" media="screen" />

@@ -14,7 +14,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.XsrfTokenService;
@@ -34,6 +33,9 @@ public class DeleteAccountController {
 	@Autowired
 	private Validator validator;
 	
+	@Autowired
+	private BusinessLogoController businessLogoController;
+	
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(Model model) {
 		DeleteAccount deleteAccount = new DeleteAccount();
@@ -52,6 +54,7 @@ public class DeleteAccountController {
 			result.rejectValue("password", "deleteAccount.wrong.password");
 			return "deleteAccount";
 		}
+		businessLogoController.clearLogo(principal.getBusiness().getId());
 		principal.getBusiness().remove();
 		status.setComplete();
 		return "redirect:/resources/j_spring_security_logout";

@@ -65,6 +65,7 @@ public class WestViewImpl extends Composite implements WestView  {
 	
 	@Override
 	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
 		clientSearch.setEventBus(eventBus);
 	}
 

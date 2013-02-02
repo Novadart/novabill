@@ -16,23 +16,35 @@ h4 {
 	text-transform: uppercase;
 }
 
-#shuffle {
-	margin: 2em auto 1em;
-	width: 170px;
+#shuffleContainer {
+	height: 152px;
+	width: 500px;
+	margin: 0 auto;
 }
 
-#shuffle .doc {
-	padding: 100px 10px 0;
+#shuffleImage {
+	margin: 2em auto 0.5em;
+}
+
+#shuffleImage .image {
+	background-color: white;
+	width: 100px;
+	height: 100px;
+}
+
+#shuffleAsset {
+	margin: 0 auto;
+}
+
+#shuffleAsset .doc {
+	padding: 1em;
+	background-color: white;
+	width: 300px;
 	font-size: 1.5em;
-	background-image: url("../../images/document.png");
-	background-repeat: no-repeat;
-	width: 150px;
-	height: 137px;
 	text-align: center;
 	font-weight: bold;
 	text-shadow: 0px 1px 2px #BBB;
 	text-transform: uppercase;
-	line-height: 1.8em;
 }
 
 .goToPrivate {
@@ -193,7 +205,7 @@ h3 {
 #registerForFree {
 	width: 18em;
 	height: 2em;
-	margin: 2em auto;
+	margin: 0 auto;
 	display: block;
 }
 

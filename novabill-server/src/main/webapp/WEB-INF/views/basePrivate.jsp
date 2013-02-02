@@ -16,7 +16,10 @@
 
 
 <body>
-
+	<tiles:insertAttribute name="analytics" />
+	
+	<tiles:insertAttribute name="browserAlert" />
+	
 	<div class="container">
 		<tiles:insertAttribute name="header" />
 		

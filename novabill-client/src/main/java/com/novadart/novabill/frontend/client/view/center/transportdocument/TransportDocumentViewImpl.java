@@ -35,7 +35,7 @@ import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
-import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
@@ -161,7 +161,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 			@Override
 			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
-				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
+				DocumentUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
 		});
 
@@ -352,7 +352,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		}
 		td.setItems(invItems);
 		td.setNote(note.getText());
-		CalcUtils.calculateTotals(invItems, td);
+		DocumentUtils.calculateTotals(invItems, td);
 		return td;
 	}
 

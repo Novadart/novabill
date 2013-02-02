@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -31,7 +32,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
-import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
 import com.novadart.novabill.frontend.client.view.center.InvoiceView;
@@ -74,6 +75,8 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView, Has
 	@UiField Label totalBeforeTaxes;
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
+	
+	@UiField Label invoiceNumberSuffix;
 
 	@UiField LoaderButton modifyDocument;
 	@UiField LoaderButton createInvoice;
@@ -83,6 +86,8 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView, Has
 	private EventBus eventBus;
 	private InvoiceDTO invoice;
 	private ClientDTO client;
+	
+	private static final DateTimeFormat YEAR_FORMAT = DateTimeFormat.getFormat("yyyy");
 
 	public InvoiceViewImpl() {
 		payment = new ValidatedListBox(I18N.INSTANCE.notEmptyValidationError());
@@ -96,7 +101,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView, Has
 			
 			@Override
 			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
-				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
+				DocumentUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
 
 		});
@@ -141,6 +146,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView, Has
 		return number;
 	}
 
+	@UiHandler("date")
+	void onDateChanged(ValueChangeEvent<Date> e){
+		invoiceNumberSuffix.setText(" / "+ YEAR_FORMAT.format(e.getValue()));
+	}
+	
 	@UiHandler("createInvoice")
 	void onCreateInvoiceClicked(ClickEvent e){
 		if(!validateInvoice()){
@@ -212,13 +222,13 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView, Has
 		inv.setNote(note.getText());
 		inv.setPaymentType(PaymentType.values()[payment.getSelectedIndex()-1]);
 		if(payment.getSelectedIndex() > 0){
-			inv.setPaymentDueDate(CalcUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
+			inv.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
 		} else {
 			inv.setPaymentDueDate(null);
 		}
 
 		inv.setPaymentNote(paymentNote.getText());
-		CalcUtils.calculateTotals(invItems, inv);
+		DocumentUtils.calculateTotals(invItems, inv);
 		return inv;
 	}
 
@@ -300,6 +310,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView, Has
 			this.invoice = invoice;
 			this.client = invoice.getClient();
 			date.setValue(invoice.getAccountingDocumentDate());
+			invoiceNumberSuffix.setText(" / "+ YEAR_FORMAT.format(invoice.getAccountingDocumentDate()));
 			clientName.setText(invoice.getClient().getName());
 			modifyDocument.setVisible(true);
 			titleLabel.setText(I18N.INSTANCE.modifyInvoice());
@@ -340,7 +351,9 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView, Has
 		this.client = client;
 
 		clientName.setText(client.getName());
-		date.setValue(new Date());
+		Date d = new Date();
+		date.setValue(d);
+		invoiceNumberSuffix.setText(" / "+ YEAR_FORMAT.format(d));
 		number.setText(progressiveId.toString());
 
 		createInvoice.setVisible(true);

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-12-17 00:26+0100\n"
+"POT-Creation-Date: 2013-01-27 16:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,24 +26,95 @@ msgstr ""
 msgid "Powered by Novabill"
 msgstr ""
 
-#: src/template/tidy/transport_document.py:42
-msgid "Transport document"
+#: src/template/tidy/__init__.py:106
+#, python-format
+msgid "VAT ID %s"
 msgstr ""
 
-#: src/template/tidy/transport_document.py:43
+#: src/template/tidy/__init__.py:110
+msgid "Client"
+msgstr ""
+
+#: src/template/tidy/__init__.py:113
+msgid "From"
+msgstr ""
+
+#: src/template/tidy/__init__.py:117
+msgid "Description"
+msgstr ""
+
+#: src/template/tidy/__init__.py:117
+msgid "Qty"
+msgstr ""
+
+#: src/template/tidy/__init__.py:117
+msgid "U.M."
+msgstr ""
+
+#: src/template/tidy/__init__.py:117
+msgid "Price"
+msgstr ""
+
+#: src/template/tidy/__init__.py:117
+msgid "% Tax"
+msgstr ""
+
+#: src/template/tidy/__init__.py:117 src/template/tidy/__init__.py:131
+msgid "Total"
+msgstr ""
+
+#: src/template/tidy/__init__.py:129
+msgid "Total before tax"
+msgstr ""
+
+#: src/template/tidy/__init__.py:130
+msgid "Total tax"
+msgstr ""
+
+#: src/template/tidy/__init__.py:141
+msgid "Invoice notes"
+msgstr ""
+
+#: src/template/tidy/__init__.py:141
+msgid "No notes"
+msgstr ""
+
+#: src/template/tidy/credit_note.py:12
+msgid "Credit note"
+msgstr ""
+
 #: src/template/tidy/credit_note.py:13 src/template/tidy/estimation.py:28
-#: src/template/tidy/invoice.py:39
+#: src/template/tidy/transport_document.py:43 src/template/tidy/invoice.py:39
 msgid "Number"
 msgstr ""
 
-#: src/template/tidy/transport_document.py:44
 #: src/template/tidy/credit_note.py:14 src/template/tidy/estimation.py:29
-#: src/template/tidy/invoice.py:40
+#: src/template/tidy/transport_document.py:44 src/template/tidy/invoice.py:40
 msgid "Date"
 msgstr ""
 
-#: src/template/tidy/transport_document.py:57
-msgid "city pattern"
+#: src/template/tidy/estimation.py:27
+msgid "Estimation"
+msgstr ""
+
+#: src/template/tidy/estimation.py:30
+msgid "Valid until"
+msgstr ""
+
+#: src/template/tidy/estimation.py:40
+msgid "Limitations"
+msgstr ""
+
+#: src/template/tidy/estimation.py:41
+msgid "No limitations"
+msgstr ""
+
+#: src/template/tidy/estimation.py:45
+msgid "Payment note"
+msgstr ""
+
+#: src/template/tidy/transport_document.py:42
+msgid "Transport document"
 msgstr ""
 
 #: src/template/tidy/transport_document.py:68
@@ -68,83 +139,6 @@ msgstr ""
 
 #: src/template/tidy/transport_document.py:78
 msgid "Trade zone"
-msgstr ""
-
-#: src/template/tidy/__init__.py:105
-#, python-format
-msgid "VAT ID %s"
-msgstr ""
-
-#: src/template/tidy/__init__.py:109
-msgid "Client"
-msgstr ""
-
-#: src/template/tidy/__init__.py:112
-msgid "From"
-msgstr ""
-
-#: src/template/tidy/__init__.py:116
-msgid "Description"
-msgstr ""
-
-#: src/template/tidy/__init__.py:116
-msgid "Qty"
-msgstr ""
-
-#: src/template/tidy/__init__.py:116
-msgid "U.M."
-msgstr ""
-
-#: src/template/tidy/__init__.py:116
-msgid "Price"
-msgstr ""
-
-#: src/template/tidy/__init__.py:116
-msgid "% Tax"
-msgstr ""
-
-#: src/template/tidy/__init__.py:116 src/template/tidy/__init__.py:130
-msgid "Total"
-msgstr ""
-
-#: src/template/tidy/__init__.py:128
-msgid "Total before tax"
-msgstr ""
-
-#: src/template/tidy/__init__.py:129
-msgid "Total tax"
-msgstr ""
-
-#: src/template/tidy/__init__.py:140
-msgid "Invoice notes"
-msgstr ""
-
-#: src/template/tidy/__init__.py:140
-msgid "No notes"
-msgstr ""
-
-#: src/template/tidy/credit_note.py:12
-msgid "Credit note"
-msgstr ""
-
-#: src/template/tidy/estimation.py:27
-msgid "Estimation"
-msgstr ""
-
-#: src/template/tidy/estimation.py:30
-msgid "Valid until"
-msgstr ""
-
-#: src/template/tidy/estimation.py:40
-msgid "Limitations"
-msgstr ""
-
-#: src/template/tidy/estimation.py:41
-msgid "No limitations"
-msgstr ""
-
-#: src/template/tidy/estimation.py:45
-msgid "Payment note"
 msgstr ""
 
 #: src/template/tidy/invoice.py:38

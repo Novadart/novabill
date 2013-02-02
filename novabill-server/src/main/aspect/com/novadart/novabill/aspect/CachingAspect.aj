@@ -1,7 +1,10 @@
 package com.novadart.novabill.aspect;
 
+import org.apache.commons.io.FileUtils;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.CacheEvict;
+import java.io.File;
+import java.io.IOException;
 import java.util.List;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -11,6 +14,21 @@ import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public privileged aspect CachingAspect {
+	
+	private String ehcacheDiskStore;
+	
+	private void initCacheStore() throws IOException{
+		File folder = new File(ehcacheDiskStore);
+		if(folder.exists())
+			FileUtils.cleanDirectory(folder);
+		else
+			folder.mkdir();
+	}
+	
+	public void setEhcacheDiskStore(String ehcacheDiskStore) throws IOException{
+		this.ehcacheDiskStore = ehcacheDiskStore;
+		initCacheStore();
+	}
 
 	/*
 	 * Business service caching

@@ -1,3 +1,5 @@
+debug.enabled.value=true
+
 database.driverClassName.value=org.postgresql.Driver
 database.url.value=jdbc:postgresql://localhost/novabill
 database.username.value=novadart
@@ -9,7 +11,6 @@ hibernate.show_sql.value=true
 hibernate.hbm2ddl.import_files.value=/import.sql,/test-rows.sql
 
 #cache
-ehcache.diskStore.value=/tmp/novabill-cache
 ehcache.business-cache.maxElementsInMemory.value=100
 ehcache.business-cache.timeToLiveSeconds.value=600
 ehcache.client-cache.maxElementsInMemory.value=100
@@ -68,3 +69,8 @@ forgotpassword.expiration.value=48
 
 pdfgen.service.url.value=http://localhost:8081
 
+resources.root=/opt/novabill
+
+exception.sendemail.value = false
+
+log.file.location.value=/tmp/novabill.log

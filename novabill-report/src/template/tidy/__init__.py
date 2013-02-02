@@ -95,6 +95,7 @@ class TidyDocumentBuilder(object):
     
     def __getBusinessEntityDetailsFlowable(self, data, label):
         style = getSampleStyleSheet()["Normal"]
+        print "province", data.getProvince()
         entity_str_lns = ["<b><font size='%(size)d'>%(label)s</font></b>" % dict(size=MEDIUM_FONT_SIZE, label=label),
                           data.getName(),
                           data.getAddress(),

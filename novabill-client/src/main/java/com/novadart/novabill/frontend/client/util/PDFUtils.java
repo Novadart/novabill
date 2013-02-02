@@ -6,7 +6,7 @@ import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 
 public class PDFUtils {
 
-	private static final String EXPORT_REQUEST = 
+	private static final String PDF_REQUEST = 
 			GWT.getHostPageBaseURL()+"private/pdf/{document}/{id}?token={token}";
 
 
@@ -16,7 +16,7 @@ public class PDFUtils {
 			@Override
 			public void onSuccess(String result) {
 				FileDownloadUtils.downloadUrl(
-						EXPORT_REQUEST.replace("{document}", documentClass)
+						PDF_REQUEST.replace("{document}", documentClass)
 							.replace("{id}", documentId)
 							.replace("{token}", result)
 						);

@@ -13,7 +13,6 @@ public class FileDownloadUtils {
 	}
 	
 	public static void downloadUrl(String url){
-		hiddenFrame.setUrl("");
 		hiddenFrame.setUrl(url);
 	}
 	

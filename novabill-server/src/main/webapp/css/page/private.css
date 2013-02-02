@@ -98,7 +98,7 @@ textarea:HOVER {
 }
 
 .NotificationDialog .message {
-	text-align: center;
+	text-align: justify;
 	font-size: 1.2em;
 }
 
@@ -349,10 +349,15 @@ textarea:HOVER {
 
 .HomeView .businessPanel .businessLogo {
 	height: 8em;
+	cursor: pointer;
 }
 
 .HomeView .businessPanel .businessDetails {
 	padding: 1em;
+}
+
+.HomeView .businessPanel .businessDetails a {
+	font-weight: normal;
 }
 
 .HomeView .tabPanel {
@@ -600,7 +605,9 @@ textarea:HOVER {
 	position: relative;
 }
 
-.QuickViewList.TransportDocumentList .upper span.createInvoice,.QuickViewList.EstimationList .upper span.convertToInvoice,.QuickViewList .details .tools span
+.QuickViewList.TransportDocumentList .upper span.createInvoice,
+.QuickViewList.EstimationList .upper span.convertToInvoice,
+.QuickViewList .details .tools span
 	{
 	text-transform: uppercase;
 	font-size: 0.8em;
@@ -608,7 +615,9 @@ textarea:HOVER {
 	cursor: pointer;
 }
 
-.QuickViewList.TransportDocumentList .upper span.createInvoice:HOVER,.QuickViewList.EstimationList .upper span.convertToInvoice:HOVER,.QuickViewList .details .tools span:HOVER
+.QuickViewList.TransportDocumentList .upper span.createInvoice:HOVER,
+.QuickViewList.EstimationList .upper span.convertToInvoice:HOVER,
+.QuickViewList .details .tools span:HOVER
 	{
 	text-decoration: underline;
 }
@@ -658,7 +667,7 @@ textarea:HOVER {
 	padding: 0.5em 0;
 }
 
-.QuickViewList.InvoiceList .main.invoice-not-payed .id {
+/* .QuickViewList.InvoiceList .main.invoice-not-payed .id {
 	background-color: #EDE700;
 	border: 0.1em solid #D8D308;
 	color: black;
@@ -673,7 +682,7 @@ textarea:HOVER {
 .QuickViewList.EstimationList .id {
 	background-color: #888;
 	color: white;
-}
+} */
 
 .QuickViewList .id {
 	padding: 1px 2px;
@@ -694,11 +703,36 @@ textarea:HOVER {
 	padding: 0.2em;
 }
 
+.QuickViewList .quickViewCell .details {
+	-webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+    color: #CCC;
+}
+
+.QuickViewList .quickViewCell:HOVER .details {
+	color: inherit;
+}
+
 .QuickViewList .openEstimation,.QuickViewList .openInvoice,.QuickViewList .openCreditNote,.QuickViewList .openTransportDocument
 {
 	position: absolute;
 	right: 48%;
 	bottom: -4px;
+	font-weight: bold;
+	padding: 1px;
+	text-decoration: none;
+}
+
+.QuickViewList .openEstimation:HOVER,
+.QuickViewList .openInvoice:HOVER,
+.QuickViewList .openCreditNote:HOVER,
+.QuickViewList .openTransportDocument:HOVER {
+	color: white;
+	background-color: #333;
+	text-decoration: none;
 }
 
 .westContainer {
@@ -1125,9 +1159,14 @@ td.datePickerMonth {
 	margin-left: 2em;
 }
 
-.AccountDocumentView .number {
+.AccountDocumentView input[type="text"].box.number {
 	width: 2em;
 	text-align: center;
+}
+
+.AccountDocumentView .invoiceNumberSuffix {
+	padding: 0.4em;
+	font-size: 1.2em;
 }
 
 .AccountDocumentView .note,.AccountDocumentView .paymentNote {
@@ -1212,11 +1251,24 @@ td.datePickerMonth {
 	border-radius: 0.5em;
 }
 
+
+.BootstrapDialog .businessLabel {
+	margin-right: 1em;
+	width: 10em;
+	font-size: 1.1em;
+}
+
+.BootstrapDialog .InlineNotification {
+	margin: 1em auto;
+}
+
 .BootstrapDialog .welcomeMessage {
 	background-color: #FFFFB1;
 	padding: 1em;
 	border: 0.1em solid #333;
 	width: 30em;
+	margin: 0 auto;
+	font-size: 1.2em;
 }
 
 .BootstrapDialog .bootstrapDialogBody {
@@ -1225,8 +1277,8 @@ td.datePickerMonth {
 }
 
 .BootstrapDialog .gridContainer {
-	margin: 1em auto;
-	width: 22em;
+	margin: 0 auto;
+	padding: 2em;
 }
 
 .BootstrapDialog .submit {
@@ -1234,7 +1286,7 @@ td.datePickerMonth {
 	display: block;
 }
 
-.BootstrapDialog .ValidatedListBox,.BootstrapDialog .RichTextBox {
+.BootstrapDialog .ValidatedListBox,.BootstrapDialog .ValidatedTextBox {
 	width: 20em;
 	margin: 0.3em;
 }
@@ -1295,6 +1347,7 @@ td.datePickerMonth {
 
 .BusinessView .LoaderButton {
 	width: 10em;
+	margin: 0 auto;
 }
 
 .BusinessView .businessLabel {

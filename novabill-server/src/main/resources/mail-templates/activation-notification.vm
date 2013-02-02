@@ -3,11 +3,20 @@
 <style>
 * {
     font-family: Arial, sans-serif, serif;
-    font-size: 14px;
+    font-size: 16px;
 }
 
+a {
+    text-decoration: none;
+}
+
+a:HOVER {
+    text-decoration: underline;
+}
+
+
 body {
-	padding: 2em;
+	padding: 1em;
 }
 
 .logo{
@@ -17,20 +26,35 @@ body {
     text-shadow: 1px 1px white;
     text-decoration: none;
 }
+
+.footer * {
+    font-size: 14px;
+}
+
+
+.footer .wwa {
+    margin-left: 1em;
+}
 </style>
 </head>
 <body>
 <h2 class="logo">Novabill - Attivazione Account</h2>
-
+<hr>
+<br>
 <p>Per concludere la procedura di registrazione e attivare il tuo account, per favore premi su <a target="_blank" href="${activationLink}">questo link</a></p>
-<p>Se il link non funzionasse, puoi copiare e incollare questa url nella barra degli indirizzi del tuo browser (il programma che usi per navigare in internet)</p>
-<p style="text-align:center;"><em>${activationLink}</em></p>
+<p>Alternativamente, puoi copiare e incollare nella barra degli indirizzi del tuo browser (il programma che usi per navigare in internet) l'url sottostante:</p>
 
+<p><em>${activationLink}</em></p>
+<br>
 <p><u>Nota</u>: dovrai attivare il tuo account entro le prossime ${activationPeriod} ore.</p>
 
-<p>Grazie :)<br> 
+<p>Grazie<br> 
 Il team di Novabill</p>
-
+<br>
+<hr>
+<span class="footer">
+<a target="_blank" href="http://www.novabill.it/">Novabill</a> <a class="wwa" target="_blank" href="http://www.novadart.com/">Chi Siamo</a> 
+</span>
 </body>
 
 </html>

@@ -17,7 +17,10 @@
 
 
 <body>
-
+	<tiles:insertAttribute name="analytics" />
+	
+	<tiles:insertAttribute name="browserAlert" />
+	
 	<div class="container">
 		<tiles:insertTemplate template="/WEB-INF/views/public/headerSimple.jsp"></tiles:insertTemplate>
 		

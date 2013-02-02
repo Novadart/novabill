@@ -10,12 +10,21 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
 
-public class CalcUtils {
+public class DocumentUtils {
 	
 	private static final long ONE_DAY_MS = 1000 * 60 * 60 * 24;
 	
 	public static BigDecimal parseValue(String value) throws NumberFormatException {
 		return new BigDecimal( NumberFormat.getDecimalFormat().parse(value) );
+	}
+	
+	public static BigDecimal parseCurrency(String value) throws NumberFormatException {
+		try{
+			//GWT requires a non breakable space between currency symbol and value
+			return new BigDecimal( NumberFormat.getCurrencyFormat().parse(value.replace(" ", "\u00A0")) );
+		} catch (NumberFormatException e) {
+			return parseValue(value);
+		}
 	}
 	
 	
@@ -53,7 +62,7 @@ public class CalcUtils {
 
 		try {
 			ii.setDescription(description);
-			ii.setPrice(parseValue(price));
+			ii.setPrice(parseCurrency(price));
 			ii.setQuantity(parseValue(quantity));
 			ii.setUnitOfMeasure(unitOfMeasure);
 			ii.setTax(new BigDecimal(tax));
@@ -61,14 +70,14 @@ public class CalcUtils {
 			return null;
 		}
 		
-		CalcUtils.updateTotals(ii);
+		DocumentUtils.updateTotals(ii);
 		return ii;
 	}
 	
 	
 	public static void updateTotals(AccountingDocumentItemDTO item){
-		BigDecimal totBeforeTaxesForItem = CalcUtils.calculateTotalBeforeTaxesForItem(item);
-		BigDecimal totTaxesForItem = CalcUtils.calculateTaxesForItem(item);
+		BigDecimal totBeforeTaxesForItem = DocumentUtils.calculateTotalBeforeTaxesForItem(item);
+		BigDecimal totTaxesForItem = DocumentUtils.calculateTaxesForItem(item);
 		item.setTotal(totBeforeTaxesForItem.add(totTaxesForItem));
 		item.setTotalTax(totTaxesForItem);
 		item.setTotalBeforeTax(totBeforeTaxesForItem);
@@ -80,8 +89,8 @@ public class CalcUtils {
 		BigDecimal totBeforeTaxes = BigDecimal.ZERO;
 		BigDecimal totTaxes = BigDecimal.ZERO;
 		for (AccountingDocumentItemDTO item : accountingDocumentItems) {
-			totBeforeTaxes = totBeforeTaxes.add(CalcUtils.calculateTotalBeforeTaxesForItem(item));
-			totTaxes = totTaxes.add(CalcUtils.calculateTaxesForItem(item));
+			totBeforeTaxes = totBeforeTaxes.add(DocumentUtils.calculateTotalBeforeTaxesForItem(item));
+			totTaxes = totTaxes.add(DocumentUtils.calculateTaxesForItem(item));
 		}
 		BigDecimal totAfterTaxes = totBeforeTaxes.add(totTaxes);
 
@@ -94,8 +103,8 @@ public class CalcUtils {
 		BigDecimal totBeforeTaxes = BigDecimal.ZERO;
 		BigDecimal totTaxes = BigDecimal.ZERO;
 		for (AccountingDocumentItemDTO item : accountingDocumentItems) {
-			totBeforeTaxes = totBeforeTaxes.add(CalcUtils.calculateTotalBeforeTaxesForItem(item));
-			totTaxes = totTaxes.add(CalcUtils.calculateTaxesForItem(item));
+			totBeforeTaxes = totBeforeTaxes.add(DocumentUtils.calculateTotalBeforeTaxesForItem(item));
+			totTaxes = totTaxes.add(DocumentUtils.calculateTaxesForItem(item));
 		}
 		BigDecimal totAfterTaxes = totBeforeTaxes.add(totTaxes);
 

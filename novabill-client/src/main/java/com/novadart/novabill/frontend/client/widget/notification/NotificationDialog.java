@@ -1,11 +1,12 @@
 package com.novadart.novabill.frontend.client.widget.notification;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.safehtml.shared.SafeHtml;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.FlowPanel;
-import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -21,7 +22,7 @@ public abstract class NotificationDialog<T> extends Dialog {
 
 	private static boolean notificationOnScreen = false;
 	
-	@UiField Label message;
+	@UiField HTML message;
 	@UiField FlowPanel buttons;
 	
 	private final NotificationCallback<T> onClose;
@@ -52,6 +53,10 @@ public abstract class NotificationDialog<T> extends Dialog {
 	
 	public void setMessage(String text) {
 		message.setText(text);
+	}
+	
+	public void setMessage(SafeHtml text) {
+		message.setHTML(text);
 	}
 	
 	@Override

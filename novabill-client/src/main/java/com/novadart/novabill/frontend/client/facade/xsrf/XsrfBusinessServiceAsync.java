@@ -198,5 +198,17 @@ BusinessServiceAsync {
 
 		});
 	}
+
+
+	@Override
+	public void generateLogoOpToken(final AsyncCallback<String> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+			
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.generateLogoOpToken(callback);
+			}
+		});
+	}
 	
 }

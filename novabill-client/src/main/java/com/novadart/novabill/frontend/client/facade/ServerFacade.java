@@ -22,7 +22,7 @@ import com.novadart.novabill.shared.client.facade.InvoiceServiceAsync;
 import com.novadart.novabill.shared.client.facade.TransportDocumentServiceAsync;
 
 public class ServerFacade {
-	
+
 	public static final InvoiceServiceAsync invoice = new XsrfInvoiceServiceAsync();
 
 	public static final ClientServiceAsync client = new XsrfClientServiceAsync();
@@ -30,22 +30,20 @@ public class ServerFacade {
 	public static final BusinessServiceAsync business = new XsrfBusinessServiceAsync();
 
 	public static final EstimationServiceAsync estimation = new XsrfEstimationServiceAsync();
-	
+
 	public static final CreditNoteServiceAsync creditNote = new XsrfCreditNoteServiceAsync();
-	
+
 	public static final TransportDocumentServiceAsync transportDocument = new XsrfTransportDocumentServiceAsync();
-	
-	
+
+
 	private static final RequestBuilder FEEDBACK_REQUEST =
 			new RequestBuilder(RequestBuilder.POST, Const.POST_FEEDBACK_URL);
-	
-	private static final RequestBuilder DELETE_LOGO_REQUEST =
-			new RequestBuilder(RequestBuilder.DELETE, Const.DELETE_LOGO);
+
 
 	static {
 		FEEDBACK_REQUEST.setHeader("Content-type", "application/x-www-form-urlencoded");
 	}
-	
+
 	public static void sendFeedback(String subject, String name, String email, String message, String category, final AsyncCallback<Boolean> callback){
 
 		String payload = "name="+URL.encodeQueryString(name)
@@ -53,45 +51,53 @@ public class ServerFacade {
 				+"&message="+URL.encodeQueryString(message)
 				+"&subject="+URL.encodeQueryString(subject)
 				+"&issue="+URL.encodeQueryString(category);
-		
+
 		try {
 			FEEDBACK_REQUEST.sendRequest(payload, new RequestCallback() {
-				
+
 				@Override
 				public void onResponseReceived(Request request, Response response) {
 					callback.onSuccess(response.getStatusCode() == 200 && response.getText().contains("success"));
 				}
-				
+
 				@Override
 				public void onError(Request request, Throwable exception) {
 					callback.onFailure(exception);
 				}
 			});
-			
+
 		} catch (RequestException e) {
 			callback.onFailure(e);
 		}
 
 	}
-	
+
 	public static void deleteLogo(final AsyncCallback<Boolean> callback){
-		try {
-			DELETE_LOGO_REQUEST.sendRequest(null, new RequestCallback() {
-				
-				@Override
-				public void onResponseReceived(Request request, Response response) {
-					callback.onSuccess(response.getStatusCode() == 200 && response.getText().contains("success"));
+		ServerFacade.business.generateLogoOpToken(new ManagedAsyncCallback<String>() {
+
+			@Override
+			public void onSuccess(String result) {
+				try {
+					RequestBuilder deleteLogoReq =
+							new RequestBuilder(RequestBuilder.DELETE, Const.DELETE_LOGO+result);
+					deleteLogoReq.sendRequest(null, new RequestCallback() {
+
+						@Override
+						public void onResponseReceived(Request request, Response response) {
+							callback.onSuccess(response.getStatusCode() == 200 && response.getText().contains("success"));
+						}
+
+						@Override
+						public void onError(Request request, Throwable exception) {
+							callback.onFailure(exception);
+						}
+					});
+
+				} catch (RequestException e) {
+					callback.onFailure(e);
 				}
-				
-				@Override
-				public void onError(Request request, Throwable exception) {
-					callback.onFailure(exception);
-				}
-			});
-			
-		} catch (RequestException e) {
-			callback.onFailure(e);
-		}
+			}
+		});
 	}
 
 }

@@ -10,28 +10,41 @@
 	<p><spring:message code="index.promotion" /> </p>
 	
 	<sec:authorize access="isAnonymous()">
+		<script type="text/javascript" src="<spring:url value="/js/jquery.cycle.all.js" />"></script>
+		
+		<!-- <div id="shuffleContainer"> -->
+			<div id="shuffleImage">
+				<div><img class="image" src="<spring:url value="/images/index/clients.png" />"></div>
+				<div><img class="image" src="<spring:url value="/images/index/invoice.png" />"></div>
+				<div><img class="image" src="<spring:url value="/images/index/estimation.png" />"></div>
+				<div><img class="image" src="<spring:url value="/images/index/creditNote.png" />"></div>
+				<div><img class="image" src="<spring:url value="/images/index/transportDoc.png" />"></div>
+			</div>	
+			<div id="shuffleAsset">
+				<div class="doc"><spring:message code="shared.clientManagement"></spring:message> </div>
+				<div class="doc"><spring:message code="shared.invoices"></spring:message></div>
+				<div class="doc"><spring:message code="shared.estimations"></spring:message></div>
+				<div class="doc"><spring:message code="shared.creditNotes"></spring:message></div>
+				<div class="doc"><spring:message code="shared.transportDocument"></spring:message></div>
+			</div>				
+		<!-- </div>		 -->
+		
+		<script type="text/javascript">
+			$('#shuffleImage').cycle({
+				fx:      'turnDown', 
+			    delay: -4000
+			});
+			$('#shuffleAsset').cycle({
+				fx:      'scrollRight', 
+			    next:   '#shuffleAsset', 
+			    /* easing:  'easeInOutBack', */
+			    delay: -4000
+			});
+		</script>
+		
 		<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/register">
 			<spring:message code="header.signupForFree"></spring:message>
 		</a>
-	
-		<script type="text/javascript" src="<spring:url value="/js/jquery.cycle.all.js" />"></script>
-		
-		<div id="shuffle">
-			<div class="doc"><spring:message code="shared.clientManagement"></spring:message> </div>
-			<div class="doc"><spring:message code="shared.invoices"></spring:message></div>
-			<div class="doc"><spring:message code="shared.estimations"></spring:message></div>
-			<div class="doc"><spring:message code="shared.creditNotes"></spring:message></div>
-			<div class="doc"><spring:message code="shared.transportDocument"></spring:message></div>
-		</div>
-		
-		<script type="text/javascript">
-			$('#shuffle').cycle({
-				fx:     'shuffle', 
-			    easing: 'easeOutBack', 
-			    delay:  -2000,
-			    timeout: 3000,
-			});
-		</script>
 	</sec:authorize>
 	<sec:authorize access="isAuthenticated()">
 		<a class="action2-button goToPrivate" href='<spring:url value="/private"></spring:url>'><spring:message code="shared.private"/></a>

@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
-import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
@@ -70,7 +69,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@UiField(provided=true) ValidatedTextBox email;
 	@UiField(provided=true) ValidatedTextBox mobile;
 	@UiField(provided=true) ValidatedTextBox fax;
-	@UiField ValidatedTextBox web;
+	@UiField(provided=true) ValidatedTextBox web;
 	
 	@UiField LoaderButton saveData;
 	@UiField Button exportClientData;
@@ -83,46 +82,32 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation();
 
 	public BusinessViewImpl() {
-		BusinessDTO b = Configuration.getBusiness();
-
 
 		name = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
-		name.setText(b.getName());
 		ssn = new ValidatedTextBox(ValidationKit.SSN_OR_VAT_ID);
 		ssn.setShowMessageOnError(true);
-		ssn.setText(b.getSsn());
 		vatID = new ValidatedTextBox(ValidationKit.VAT_ID);
 		vatID.setShowMessageOnError(true);
-		vatID.setText(b.getVatID());
 		ssnOrVatIdValidation.addWidget(ssn);
 		ssnOrVatIdValidation.addWidget(vatID);
 		
 		address = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
-		address.setText(b.getAddress());
 		city = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
-		city.setText(b.getCity());
 		province = LocaleWidgets.createProvinceListBox("");
-		province.setSelectedItem(b.getProvince());
 		country = LocaleWidgets.createCountryListBoxItalyOnly("");
-		country.setSelectedItemByValue(b.getCountry());
 		postcode = new ValidatedTextBox(ValidationKit.POSTCODE);
-		postcode.setText(b.getPostcode());
 		phone = new ValidatedTextBox(ValidationKit.DEFAULT);
-		phone.setText(b.getPostcode());
 		email = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
-		email.setText(b.getEmail());
 		mobile = new ValidatedTextBox(ValidationKit.DEFAULT);
-		mobile.setText(b.getMobile());
 		fax = new ValidatedTextBox(ValidationKit.DEFAULT);
-		fax.setText(b.getFax());
+		web = new ValidatedTextBox(ValidationKit.DEFAULT);
 
 		initWidget(uiBinder.createAndBindUi(this));
 		
 		saveData.getButton().setStyleName("saveData button");
 		
-		logo.setUrl(Const.genLogoUrl());
+		logo.setUrl(Const.getLogoUrl());
 		
-		formPanel.setAction(Const.URL_LOGO);
 		formPanel.setMethod(FormPanel.METHOD_POST);
 		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
 		
@@ -139,20 +124,13 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 			@Override
 			public void onSubmitComplete(SubmitCompleteEvent event) {
 				String resultCodeStr = event.getResults();
-				logoUpdateCompleted = true;
 				
-				int resultCode = 0;
-				
-				if(! Validation.isPositiveNumber(resultCodeStr)){
-					Notification.showMessage(I18N.INSTANCE.errorLogoIllegalRequest());
-					return;
-				} else {
-					resultCode = Integer.parseInt(resultCodeStr);
-					if(resultCode > LogoUploadStatus.values().length){
-						Notification.showMessage(I18N.INSTANCE.errorLogoIllegalRequest());
-						return;	
-					}
+				// for some reason Internet Explorer wraps the number in <pre></pre>, thus instead of 0 you get <pre>0</pre>
+				if(resultCodeStr.toLowerCase().contains("<pre>")){
+					resultCodeStr = String.valueOf(resultCodeStr.charAt(5));
 				}
+				
+				int resultCode = Integer.parseInt(resultCodeStr);
 				
 				LogoUploadStatus status = LogoUploadStatus.values()[resultCode];
 				switch(status){
@@ -171,16 +149,40 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 					break;
 					
 				case OK:
-					logo.setUrl(Const.genLogoUrl());
+					Const.refeshLogoUrl();
+					logo.setUrl(Const.getLogoUrl());
 					formPanel.setVisible(false);
 					formPanel.reset();
 					updateLogo.setVisible(true);
 					break;
 				
 				}
+				
+				logoUpdateCompleted = true;
 			}
 		});
 		
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		
+		BusinessDTO b = Configuration.getBusiness();
+		
+		name.setText(b.getName());
+		ssn.setText(b.getSsn());
+		vatID.setText(b.getVatID());
+		address.setText(b.getAddress());
+		city.setText(b.getCity());
+		province.setSelectedItem(b.getProvince());
+		country.setSelectedItemByValue(b.getCountry());
+		postcode.setText(b.getPostcode());
+		phone.setText(b.getPhone());
+		email.setText(b.getEmail());
+		mobile.setText(b.getMobile());
+		fax.setText(b.getFax());
+		web.setText(b.getWeb());
 	}
 	
 	
@@ -193,7 +195,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 				formPanel.setVisible(false);
 				formPanel.reset();
 				updateLogo.setVisible(true);
-				logo.setUrl(Const.genLogoUrl());
+				logo.setUrl(Const.getLogoUrl());
 			}
 			
 			@Override
@@ -205,8 +207,15 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	
 	@UiHandler("updateLogo")
 	void onUpdateLogoClicked(ClickEvent e){
-		updateLogo.setVisible(false);
-		formPanel.setVisible(true);
+		ServerFacade.business.generateLogoOpToken(new ManagedAsyncCallback<String>() {
+
+			@Override
+			public void onSuccess(String result) {
+				formPanel.setAction(Const.UPDATE_LOGO+result);
+				updateLogo.setVisible(false);
+				formPanel.setVisible(true);
+			}
+		});
 	}
 
 
@@ -245,6 +254,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		email.setText(b.getEmail());
 		mobile.setText(b.getMobile());
 		fax.setText(b.getFax());
+		web.reset();
 		inlineNotification.hide();
 		saveData.reset();
 		setLocked(false);

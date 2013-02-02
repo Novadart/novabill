@@ -32,6 +32,7 @@ import com.novadart.novabill.frontend.client.event.DocumentDeleteHandler;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateHandler;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
@@ -112,9 +113,6 @@ public class HomeViewImpl extends Composite implements HomeView {
 	
 	@Override
 	public void setEventBus(EventBus eventBus) {
-		if(this.eventBus != null){
-			return;
-		}
 		this.eventBus = eventBus;
 		bind();
 		invoiceList.setEventBus(eventBus);
@@ -162,7 +160,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 	}
 	
 	private void updateBusinessDetails(BusinessDTO business){
-		businessLogo.setUrl(Const.genLogoUrl());
+		businessLogo.setUrl(Const.getLogoUrl());
 		
 		SafeHtmlBuilder shb = new SafeHtmlBuilder();
 		shb.appendHtmlConstant("<p class=\"businessName\">");
@@ -175,7 +173,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 		shb.appendEscaped(" ("+business.getProvince()+")");
 		shb.appendEscaped(" "+business.getCountry());
 		shb.appendHtmlConstant("</p>");
-		shb.appendHtmlConstant("<p class=\"businessOther\">");
+		shb.appendHtmlConstant("<p class=\"businessOther1\">");
 		boolean needSpace = false;
 		if(!business.getVatID().isEmpty()){
 			needSpace = true;
@@ -187,10 +185,11 @@ public class HomeViewImpl extends Composite implements HomeView {
 			}
 			shb.appendEscaped(I18N.INSTANCE.ssn()+" "+business.getSsn());
 		}
+		shb.appendHtmlConstant("</p>");
+		shb.appendHtmlConstant("<p class=\"businessOther2\">");
+		needSpace = false;
 		if(!business.getPhone().isEmpty()){
-			if(needSpace){
-				shb.appendHtmlConstant("&nbsp;&nbsp;");
-			}
+			needSpace = true;
 			shb.appendEscaped(I18N.INSTANCE.phone()+" "+business.getPhone());
 		}
 		if(!business.getFax().isEmpty()){
@@ -198,6 +197,23 @@ public class HomeViewImpl extends Composite implements HomeView {
 				shb.appendHtmlConstant("&nbsp;&nbsp;");
 			}
 			shb.appendEscaped(I18N.INSTANCE.fax()+" "+business.getFax());
+		}
+		shb.appendHtmlConstant("</p>");
+		shb.appendHtmlConstant("<p class=\"businessOther3\">");
+		needSpace = false;
+		if(!business.getMobile().isEmpty()){
+			needSpace = true;
+			shb.appendEscaped(I18N.INSTANCE.mobile()+" "+business.getMobile());
+		}
+		if(!business.getWeb().isEmpty()){
+			if(needSpace){
+				shb.appendHtmlConstant("&nbsp;&nbsp;");
+			}
+			shb.appendEscaped(I18N.INSTANCE.web()+" ");
+			shb.appendHtmlConstant("<a target=\"_blank\" href=\""+ 
+			(business.getWeb().startsWith("http://") || business.getWeb().startsWith("https://") ? business.getWeb() : "http://"+business.getWeb()) +"\">");
+			shb.appendEscaped(business.getWeb());
+			shb.appendHtmlConstant("<a>");
 		}
 		shb.appendHtmlConstant("</p>");
 		businessDetails.setHTML(shb.toSafeHtml());
@@ -306,6 +322,12 @@ public class HomeViewImpl extends Composite implements HomeView {
 		creditNoteList.setPresenter(presenter);
 		transportDocumentList.setPresenter(presenter);
 	}
+	
+	@UiHandler("businessLogo")
+	void onLogoClicked(ClickEvent e){
+		presenter.goTo(new BusinessPlace());
+	}
+	
 
 	@UiHandler("tabBar")
 	void onTabBarSelected(SelectionEvent<Integer> event) {

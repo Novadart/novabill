@@ -20,7 +20,7 @@
 <ehcache xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
     xsi:noNamespaceSchemaLocation="http://ehcache.org/ehcache.xsd" updateCheck="false">
 
-    <diskStore path="${ehcache.diskStore.value}" />
+    <diskStore path="${ehcache.diskStore}" />
 
     <defaultCache eternal="false" maxElementsInMemory="${ehcache.default.maxElementsInMemory.value}"
         overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
