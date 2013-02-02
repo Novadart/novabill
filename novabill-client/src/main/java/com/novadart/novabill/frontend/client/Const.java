@@ -18,7 +18,7 @@ public class Const {
 	public static final String XSRF_URL = GWT.getHostPageBaseURL() + "gwt/xsrf";
 	public static final String POST_FEEDBACK_URL = GWT.getHostPageBaseURL()+"private/feedback";
 	
-	private static String logoUrl = URL_THUMB;
+	private static String logoUrl = URL_THUMB + "?v=" + new Date().getTime();
 	
 	public static String getLogoUrl(){
 		return logoUrl;
