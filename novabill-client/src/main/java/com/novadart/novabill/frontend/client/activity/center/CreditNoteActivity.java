@@ -4,18 +4,21 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.frontend.client.activity.BasicActivity;
+import com.novadart.novabill.frontend.client.facade.CallbackUtils;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
-import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
-import com.novadart.novabill.frontend.client.ui.MainWidget;
-import com.novadart.novabill.frontend.client.ui.center.CreditNoteView;
-import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.place.creditnote.CreditNotePlace;
+import com.novadart.novabill.frontend.client.place.creditnote.FromInvoiceCreditNotePlace;
+import com.novadart.novabill.frontend.client.place.creditnote.ModifyCreditNotePlace;
+import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
+import com.novadart.novabill.frontend.client.view.MainWidget;
+import com.novadart.novabill.frontend.client.view.center.CreditNoteView;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
-public class CreditNoteActivity extends BasicActivity {
+public class CreditNoteActivity extends AbstractCenterActivity {
 
 	private final CreditNotePlace place;
 
@@ -26,58 +29,130 @@ public class CreditNoteActivity extends BasicActivity {
 	}
 
 	@Override
-	public void start(final AcceptsOneWidget panel, EventBus eventBus) {
+	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
+		super.start(panel, eventBus);
+
 		getClientFactory().getCreditNoteView(new AsyncCallback<CreditNoteView>() {
 
 			@Override
-			public void onSuccess(final CreditNoteView cnv) {
-				cnv.setPresenter(CreditNoteActivity.this);
+			public void onSuccess(final CreditNoteView view) {
+				view.setPresenter(CreditNoteActivity.this);
+				view.setEventBus(eventBus);
 
-				if(place.getCreditNoteId() == 0){ //we're creating a new credit note
+				if (place instanceof ModifyCreditNotePlace) {
+					ModifyCreditNotePlace p = (ModifyCreditNotePlace) place;
+					setupModifyCreditNoteView(panel, view, p);
 
-					if(place.getClient() == null){
+				} else if (place instanceof FromInvoiceCreditNotePlace) {
+					FromInvoiceCreditNotePlace p = (FromInvoiceCreditNotePlace) place;
+					setupFromInvoiceCreditNoteView(panel, view, p);
 
-						goTo(new HomePlace());
-
-					} else {
-
-						if(place.getSourceInvoice() != null){
-							cnv.setDataForNewCreditNote(place.getCreditNoteProgressiveId(), place.getSourceInvoice());
-						} else {
-							cnv.setDataForNewCreditNote(place.getClient(), place.getCreditNoteProgressiveId());
-						}
-						
-						MainWidget.getInstance().setLargeView();
-						panel.setWidget(cnv);
-
-					}
+				} else if (place instanceof NewCreditNotePlace) {
+					NewCreditNotePlace p = (NewCreditNotePlace) place;
+					setupNewCreditNoteView(panel, view, p);
 
 				} else {
-
-					ServerFacade.creditNote.get(place.getCreditNoteId(), new WrappedAsyncCallback<CreditNoteDTO>() {
-
-						@Override
-						public void onException(Throwable caught) {
-							Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-							goTo(new HomePlace());
-						}
-
-						@Override
-						public void onSuccess(CreditNoteDTO result) {
-							cnv.setCreditNote(result);
-							MainWidget.getInstance().setLargeView();
-							panel.setWidget(cnv);
-						}
-					});
-
+					goTo(new HomePlace());
 				}
 			}
 
 			@Override
 			public void onFailure(Throwable caught) {
-
+				manageError();
 			}
 		});
 	}
 
+	private void setupNewCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, final NewCreditNotePlace place){
+		ServerFacade.creditNote.getNextCreditNoteDocumentID(new ManagedAsyncCallback<Long>() {
+
+			@Override
+			public void onSuccess(final Long progrId) {
+				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
+
+					@Override
+					public void onSuccess(ClientDTO client) {
+						view.setDataForNewCreditNote(client, progrId);
+						MainWidget.getInstance().setLargeView();
+						panel.setWidget(view);
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						if(CallbackUtils.isServerCommunicationException(caught)){
+							manageError();
+						} else {
+							super.onFailure(caught);
+						}
+					}
+				});
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				if(CallbackUtils.isServerCommunicationException(caught)){
+					manageError();
+				} else {
+					super.onFailure(caught);
+				}
+			}
+		});
+	}
+
+	private void setupFromInvoiceCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, final FromInvoiceCreditNotePlace place){
+		ServerFacade.creditNote.getNextCreditNoteDocumentID(new ManagedAsyncCallback<Long>() {
+
+			@Override
+			public void onSuccess(final Long progrId) {
+				ServerFacade.invoice.get(place.getInvoiceId(), new ManagedAsyncCallback<InvoiceDTO>() {
+
+					@Override
+					public void onSuccess(InvoiceDTO result) {
+						view.setDataForNewCreditNote(progrId, result);
+						MainWidget.getInstance().setLargeView();
+						panel.setWidget(view);
+					}
+
+					@Override
+					public void onFailure(Throwable caught) {
+						if(CallbackUtils.isServerCommunicationException(caught)){
+							manageError();
+						} else {
+							super.onFailure(caught);
+						}
+					}
+				});
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				if(CallbackUtils.isServerCommunicationException(caught)){
+					manageError();
+				} else {
+					super.onFailure(caught);
+				}
+			}
+		});
+	}
+
+	private void setupModifyCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, ModifyCreditNotePlace place){
+		ServerFacade.creditNote.get(place.getCreditNoteId(), new ManagedAsyncCallback<CreditNoteDTO>() {
+
+			@Override
+			public void onSuccess(CreditNoteDTO result) {
+				view.setCreditNote(result);
+				MainWidget.getInstance().setLargeView();
+				panel.setWidget(view);
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				if(CallbackUtils.isServerCommunicationException(caught)){
+					manageError();
+				} else {
+					super.onFailure(caught);
+				}
+			}
+		});
+	}
 }

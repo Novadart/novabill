@@ -5,7 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
-import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.shared.client.exception.AuthorizationError;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -23,10 +23,10 @@ public class NumberOfTransportDocsPerYearQuotaReachedChecker implements Restrici
 	}
 
 	@Override
-	public void check(Business business) throws AuthorizationException {
-		LOGGER.debug("Number of transport documents per year quota check - quota: {}, roles: {}", new Object[]{numberOfTransportDocsPerYearQuota, business.getGrantedRoles()});
-		if(business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE) && 
-				business.getTransportDocsForYear(Calendar.getInstance().get(Calendar.YEAR)).size() >= numberOfTransportDocsPerYearQuota)
+	public void check(Principal principal) throws AuthorizationException {
+		LOGGER.debug("Number of transport documents per year quota check - quota: {}, roles: {}", new Object[]{numberOfTransportDocsPerYearQuota, principal.getGrantedRoles()});
+		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE) && 
+				principal.getBusiness().getTransportDocsForYear(Calendar.getInstance().get(Calendar.YEAR)).size() >= numberOfTransportDocsPerYearQuota)
 			throw new AuthorizationException(AuthorizationError.NUMBER_OF_TRANSPORT_DOCUMENTS_QUOTA_REACHED);
 	}
 

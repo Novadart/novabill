@@ -5,7 +5,12 @@ import java.util.Date;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
+import javax.validation.constraints.Size;
+
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
 
 /*
@@ -19,8 +24,11 @@ public class Estimation extends AccountingDocument implements Serializable {
 	
 	private static final long serialVersionUID = 8020837636815686509L;
 	
+	@Size(max = 1500)
 	private String limitations;
 	
+	@Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(style = "S-")
 	private Date validTill;
 
 	@ManyToOne
@@ -29,7 +37,7 @@ public class Estimation extends AccountingDocument implements Serializable {
     @ManyToOne
     protected Client client;
     
-	public static Integer countEstimationsForClient(Long id){
+	public static Long countEstimationsForClient(Long id){
     	return countForClient(Estimation.class, id);
     }
     

@@ -4,14 +4,15 @@ import java.util.ArrayList;
 import java.util.List;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-import com.novadart.novabill.annotation.Restrictions;
-import com.novadart.novabill.authorization.NumberOfTransportDocsPerYearQuotaReachedChecker;
+import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.TransportDocument;
+import com.novadart.novabill.domain.dto.DTOUtils;
+import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
 import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
 import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
 import com.novadart.novabill.service.UtilsService;
@@ -20,83 +21,81 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
-import com.novadart.novabill.shared.client.exception.ConcurrentAccessException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentService;
 
-@SuppressWarnings("serial")
-public class TransportDocumentServiceImpl extends AbstractGwtController<TransportDocumentService, TransportDocumentServiceImpl> implements TransportDocumentService {
+public class TransportDocumentServiceImpl implements TransportDocumentService {
 
 
 	@Autowired
 	private UtilsService utilsService;
 	
 	@Autowired
+	private BusinessService businessService;
+	
+	@Autowired
 	private AccountingDocumentValidator validator;
 	
-	public TransportDocumentServiceImpl() {
-		super(TransportDocumentService.class);
+	@Override
+	@PreAuthorize("T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#id)?.business?.id == principal.business.id")
+	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return DTOUtils.findDocumentInCollection(businessService.getTransportDocuments(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), id);
+	}
+	
+	private static class EqualsClientIDPredicate implements Predicate<TransportDocumentDTO>{
+		
+		private Long id;
+		
+		public EqualsClientIDPredicate(Long id) {
+			this.id = id;
+		}
+		
+		@Override
+		public boolean isTrue(TransportDocumentDTO doc) {
+			return doc.getClient().getId().equals(id);
+		}
+		
 	}
 
 	@Override
-	public TransportDocumentDTO get(long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
-		TransportDocument estimation = TransportDocument.findTransportDocument(id);
-		if(estimation == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(estimation.getBusiness().getId()))
-			throw new DataAccessException();
-		return TransportDocumentDTOFactory.toDTO(estimation);
-	}
-
-	@Override
-	public List<TransportDocumentDTO> getAllForClient(long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ConcurrentAccessException {
-		Client client = Client.findClient(id);
-		if(client == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		List<TransportDocument> transportDocs = client.getSortedTransportDocuments();
-		List<TransportDocumentDTO> transportDocDTOs = new ArrayList<TransportDocumentDTO>(transportDocs.size());
-		for(TransportDocument transportDoc: transportDocs)
-			transportDocDTOs.add(TransportDocumentDTOFactory.toDTO(transportDoc));
-		return transportDocDTOs;
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
+	public List<TransportDocumentDTO> getAllForClient(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return new ArrayList<TransportDocumentDTO>(DTOUtils.filter(businessService.getTransportDocuments(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), new EqualsClientIDPredicate(clientID)));
 	}
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	//@Restrictions(checkers = {NumberOfTransportDocsPerYearQuotaReachedChecker.class})
-	public Long add(TransportDocumentDTO transportDocDTO) throws NotAuthenticatedException, DataAccessException, ConcurrentAccessException, AuthorizationException, ValidationException {
+	@PreAuthorize("#transportDocDTO?.business?.id == principal.business.id and " +
+		  	  	  "T(com.novadart.novabill.domain.Client).findClient(#transportDocDTO?.client?.id)?.business?.id == principal.business.id and " +
+		  	  	  "#transportDocDTO != null and #transportDocDTO.id == null")
+	public Long add(TransportDocumentDTO transportDocDTO) throws NotAuthenticatedException, DataAccessException, AuthorizationException, ValidationException {
 		TransportDocument transportDoc = new TransportDocument();
 		transportDoc.setFromEndpoint(new Endpoint());
 		transportDoc.setToEndpoint(new Endpoint());
+		TransportDocumentDTOFactory.copyFromDTO(transportDoc, transportDocDTO, true);
+		validator.validate(TransportDocument.class, transportDoc);
 		Client client = Client.findClient(transportDocDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
 		transportDoc.setClient(client);
 		client.getTransportDocuments().add(transportDoc);
 		Business business = Business.findBusiness(transportDocDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
-			throw new DataAccessException();
 		transportDoc.setBusiness(business);
 		business.getTransportDocuments().add(transportDoc);
-		TransportDocumentDTOFactory.copyFromDTO(transportDoc, transportDocDTO, true);
-		transportDoc.setDocumentID(business.getNextTransportDocDocumentID());
-		validator.validate(transportDoc);
 		transportDoc.persist();
 		transportDoc.flush();
 		return transportDoc.getId();
 	}
 
 	@Override
-	public void remove(Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException {
+	@PreAuthorize("#businessID == principal.business.id and " +
+		  	  	 "T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#id)?.business?.id == #businessID and " +
+		  	  	 "T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#id)?.client?.id == #clientID")
+	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException {
 		TransportDocument transportDoc = TransportDocument.findTransportDocument(id);
-		if(transportDoc == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(transportDoc.getBusiness().getId()))
-			throw new DataAccessException();
 		transportDoc.remove();
 		if(Hibernate.isInitialized(transportDoc.getBusiness().getTransportDocuments()))
 			transportDoc.getBusiness().getTransportDocuments().remove(transportDoc);
@@ -107,16 +106,11 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 	
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	public void update(TransportDocumentDTO transportDocDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ConcurrentAccessException,
+	@PreAuthorize("#transportDocDTO?.business?.id == principal.business.id and " +
+	  	  	  	  "T(com.novadart.novabill.domain.Client).findClient(#transportDocDTO?.client?.id)?.business?.id == principal.business.id and " +
+	  	  	  	  "#transportDocDTO?.id != null")
+	public void update(TransportDocumentDTO transportDocDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException,
 			ValidationException {
-		if(transportDocDTO.getId() == null)
-			throw new DataAccessException();
-		Client client = Client.findClient(transportDocDTO.getClient().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		Business business = Business.findBusiness(transportDocDTO.getBusiness().getId());
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(business.getId()))
-			throw new DataAccessException();
 		TransportDocument persistedTransportDoc = TransportDocument.findTransportDocument(transportDocDTO.getId());
 		if(persistedTransportDoc == null)
 			throw new NoSuchObjectException();
@@ -128,37 +122,27 @@ public class TransportDocumentServiceImpl extends AbstractGwtController<Transpor
 			item.setAccountingDocument(persistedTransportDoc);
 			persistedTransportDoc.getAccountingDocumentItems().add(item);
 		}
-		validator.validate(persistedTransportDoc);
+		validator.validate(TransportDocument.class, persistedTransportDoc);
 		
 	}
 
 	@Override
-	public Long getNextTransportDocId() throws NotAuthenticatedException, ConcurrentAccessException {
-		return utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getNextTransportDocDocumentID();
+	public Long getNextTransportDocId() throws NotAuthenticatedException {
+		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextTransportDocDocumentID();
 	}
 
 	@Override
-	public PageDTO<TransportDocumentDTO> getAllForClientInRange(long id, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException,
-			ConcurrentAccessException {
-		Client client = Client.findClient(id);
-		if(client == null)
-			throw new NoSuchObjectException();
-		if(!utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId().equals(client.getBusiness().getId()))
-			throw new DataAccessException();
-		List<TransportDocument> transportDocs = client.getAllTransportDocsInRange(start, length);
-		List<TransportDocumentDTO> transportDocDTOs = new ArrayList<TransportDocumentDTO>(transportDocs.size());
-		for(TransportDocument transportDoc: transportDocs)
-			transportDocDTOs.add(TransportDocumentDTOFactory.toDTO(transportDoc));
-		return new PageDTO<TransportDocumentDTO>(transportDocDTOs, start, length, TransportDocument.countTransportDocumentsForClient(id));
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
+	public PageDTO<TransportDocumentDTO> getAllForClientInRange(Long clientID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		List<TransportDocumentDTO> allTransportDocs = getAllForClient(clientID);
+		return new PageDTO<TransportDocumentDTO>(DTOUtils.range(allTransportDocs, start, length), start, length, new Long(allTransportDocs.size()));
 	}
 
 	@Override
-	public PageDTO<TransportDocumentDTO> getAllInRange(int start, int length) throws NotAuthenticatedException, ConcurrentAccessException {
-		List<TransportDocument> transportDocs = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId()).getAllTransportDocsInRange(start, length);
-		List<TransportDocumentDTO> transportDocDTOs = new ArrayList<TransportDocumentDTO>(transportDocs.size());
-		for(TransportDocument transportDoc: transportDocs)
-			transportDocDTOs.add(TransportDocumentDTOFactory.toDTO(transportDoc));
-		return new PageDTO<TransportDocumentDTO>(transportDocDTOs, start, length, (int)TransportDocument.countTransportDocuments());
+	@PreAuthorize("#businessID == principal.business.id")
+	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+		List<TransportDocumentDTO> allTransportDocs = businessService.getTransportDocuments(businessID);
+		return new PageDTO<TransportDocumentDTO>(DTOUtils.range(allTransportDocs, start, length), start, length, new Long(allTransportDocs.size()));
 	}
 
 }

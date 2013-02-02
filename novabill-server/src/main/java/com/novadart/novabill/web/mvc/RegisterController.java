@@ -27,7 +27,17 @@ import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.validator.RegistrationValidator;
 
-
+/*
+ * RegistrationController controller class handles the process of creating registration request.
+ * It provides method that renders the registration form and the subsequent processing of the 
+ * form submit. The processing includes validation of the form data, generation of activation 
+ * token, sending an email containing a link to activate the account and storing the registration
+ * in the DB. Both the stored registration object and the sent link contain the token which is
+ * used to cross-reference them. The registration has expiration period specified by the
+ * activation period field.
+ * Note: More than one registration objects with the same email address can be stored in the DB
+ * at the same time.
+ */
 @Controller
 @RequestMapping("/register")
 @SessionAttributes("registration")
@@ -51,6 +61,8 @@ public class RegisterController{
 	@Value("${activation.period}")
 	private Integer activationPeriod;
 	
+	private String emailTemplateLocation = "mail-templates/activation-notification.vm";
+	
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
@@ -69,7 +81,7 @@ public class RegisterController{
 				URLEncoder.encode(registration.getEmail(), "UTF-8"), URLEncoder.encode(registration.getActivationToken(), "UTF-8"));
 		templateVars.put("activationLink", activationLink);
 		templateVars.put("activationPeriod", activationPeriod);
-		sendMessage(registration.getEmail(), messageSource.getMessage("activation.notification", null, locale), templateVars, "mail-templates/activation-notification.vm");
+		sendMessage(registration.getEmail(), messageSource.getMessage("activation.notification", null, locale), templateVars, emailTemplateLocation);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

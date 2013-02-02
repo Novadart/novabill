@@ -8,10 +8,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.i18n.client.Dictionary;
 import com.google.gwt.user.client.Window;
-import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.ui.bootstrap.BootstrapDialog;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.view.bootstrap.BootstrapDialog;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 
@@ -21,9 +20,15 @@ public class Configuration {
 
 	private static BusinessDTO business;
 	private static BusinessStatsDTO stats;
+	private static long notesBitMask;
+	private static boolean debugEnabled;
 
-	public static final void init(final WrappedAsyncCallback<Void> callback){
+	public static final void init(final ManagedAsyncCallback<Void> callback){
 		try {
+			debugEnabled = Boolean.parseBoolean(readDebugEnabled());
+			
+			notesBitMask = Long.parseLong(readNotesBitMask());
+			
 			Map<String, String> values = new HashMap<String, String>();
 			
 			BusinessDTO business = new BusinessDTO();
@@ -31,6 +36,7 @@ public class Configuration {
 			
 			business.setId( Long.parseLong(businessJS.get("id")) );
 			
+			//load all the values
 			if(loadBusinessValues(values)){
 				
 				business.setAddress(values.get("address"));
@@ -62,7 +68,7 @@ public class Configuration {
 							@Override
 							public void businessData(final BusinessDTO business) {
 								
-								ServerFacade.business.update(business, new AsyncCallback<Void>() {
+								ServerFacade.business.update(business, new ManagedAsyncCallback<Void>() {
 									
 									@Override
 									public void onSuccess(Void result) {
@@ -73,8 +79,9 @@ public class Configuration {
 									
 									@Override
 									public void onFailure(Throwable caught) {
-										callback.onException(caught);
+										callback.onFailure(caught);
 									}
+									
 								});
 							}
 						});
@@ -94,16 +101,40 @@ public class Configuration {
 			
 			
 		} catch(Exception e){
-			callback.onException(e);
+			callback.onFailure(e);
 		}
 	}
+	
+	private static native String readNotesBitMask()/*-{
+		return $wnd.notesBitMask;
+	}-*/;
+	
+	private static native String readDebugEnabled()/*-{
+		return $wnd.debugEnabled;
+	}-*/;
 
+	public static boolean isDebugEnabled() {
+		return debugEnabled;
+	}
+	
+	public static long getNotesBitMask() {
+		return notesBitMask;
+	}
+	
+	public static void setNotesBitMask(long notesBitMask) {
+		Configuration.notesBitMask = notesBitMask;
+	}
+	
 	public static boolean isPremium() {
 		return business.isPremium();
 	}
 	
 	public static BusinessDTO getBusiness() {
 		return business;
+	}
+	
+	public static Long getBusinessId() {
+		return business.getId();
 	}
 
 	public static void setBusiness(BusinessDTO business) {

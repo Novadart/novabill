@@ -119,7 +119,7 @@
 
 	<bean class="com.novadart.novabill.aspect.logging.ExceptionTraceAspect"
 		factory-method="aspectOf">
-		<property name="sendEmail" value="false" />
+		<property name="sendEmail" value="${exception.sendemail}" />
 		<property name="emailAddresses">
 			<list>
 				<value>giordano.battilana@novadart.com</value>
@@ -160,6 +160,18 @@
 		</property>
 	</bean>
 	
+	<bean
+		class="com.novadart.novabill.aspect.logging.FeedbackAspect"
+		factory-method="aspectOf">
+		<property name="sendEmail" value="true" />
+		<property name="emailAddresses">
+			<list>
+				<value>giordano.battilana@novadart.com</value>
+				<value>risto.gligorov@novadart.com</value>
+			</list>
+		</property>
+	</bean>
+	
 	<bean class="com.novadart.novabill.aspect.logging.InvoiceServiceActionsAspect"
 		factory-method="aspectOf">
 	</bean>
@@ -174,6 +186,19 @@
 	
 	<bean class="com.novadart.novabill.aspect.logging.EstimationServiceActionsAspect"
 		factory-method="aspectOf">
+	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.logging.CreditNoteServiceActionsAspect"
+		factory-method="aspectOf">
+	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.logging.TransportDocumentServiceActionsAspect"
+		factory-method="aspectOf">
+	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.CachingAspect"
+		factory-method="aspectOf">
+		<property name="ehcacheDiskStore" value="${ehcache.diskStore}"/>
 	</bean>
 
 </beans>

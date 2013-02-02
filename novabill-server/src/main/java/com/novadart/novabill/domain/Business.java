@@ -11,10 +11,8 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
-
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
-import javax.persistence.ElementCollection;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
@@ -22,11 +20,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.OneToMany;
-import javax.persistence.OneToOne;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang.StringUtils;
@@ -43,6 +38,8 @@ import org.apache.lucene.search.FuzzyQuery;
 import org.apache.lucene.search.PrefixQuery;
 import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.search.bridge.builtin.LongBridge;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
@@ -50,8 +47,7 @@ import org.hibernate.search.jpa.Search;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-import com.novadart.novabill.annotation.Hash;
-import com.novadart.novabill.domain.security.RoleType;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
@@ -60,21 +56,13 @@ import com.novadart.utils.fts.TermValueFilterFactory;
  * If fields and validation constraints are modified be sure to update the validation code. 
  */
 
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"email"}))
 @Configurable
 @Entity
-public class Business implements Serializable {
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Business implements Serializable, Taxable {
 
 	private static final long serialVersionUID = 261999997691744944L;
 	
-	public Business(){}
-	
-	public Business(Registration registration){
-		email = registration.getEmail();
-		password = registration.getPassword();
-		creationTime = registration.getCreationTime();
-	}
-
 	@Size(max = 255)
 	@NotNull
     private String name = "";
@@ -95,7 +83,7 @@ public class Business implements Serializable {
     //@NotNull
     private String province = "";
 
-    @Size(max = 200)
+    @Size(max = 3)
     private String country;
 
     @Size(max = 255)
@@ -122,12 +110,6 @@ public class Business implements Serializable {
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
     private String ssn;
 
-    private String password;
-    
-    private Long creationTime = System.currentTimeMillis();
-    
-    private Long lastLogin;
-    
     private Long nonFreeAccountExpirationTime; 
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
@@ -151,11 +133,8 @@ public class Business implements Serializable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Client> clients = new HashSet<Client>();
 
-    @ElementCollection
-    private Set<RoleType> grantedRoles = new HashSet<RoleType>();
-    
-    @OneToOne(fetch = FetchType.LAZY, cascade = CascadeType.ALL, orphanRemoval = true, mappedBy = "business")
-    private Logo logo;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+    private Set<Principal> principals = new HashSet<Principal>();
     
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
@@ -177,7 +156,7 @@ public class Business implements Serializable {
     	return entityManager().createQuery(query, TransportDocument.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
     }
     
-    private <T extends AccountingDocument> Long getNextAccountingDocDocumentID(Class<T> cls){
+    public <T extends AccountingDocument> Long getNextAccountingDocDocumentID(Class<T> cls){
     	String query = String.format("select max(o.documentID) from %s o where o.business.id = :businessId and o.accountingDocumentYear = :year",
     									cls.getSimpleName());
     	Long id = entityManager.createQuery(query, Long.class)
@@ -202,17 +181,41 @@ public class Business implements Serializable {
     	return getNextAccountingDocDocumentID(TransportDocument.class);
     }
     
+    private <T extends AccountingDocument> List<T> fetchAccountingDocsEagerly(Class<T> cls){
+    	String query = String.format("select doc from %s doc join fetch doc.accountingDocumentItems where doc.business.id = :id", cls.getSimpleName());
+    	return entityManager.createQuery(query, cls).setParameter("id", getId()).getResultList();
+    }
+    
+    public List<Invoice> fetchInvoicesEagerly(){
+    	return fetchAccountingDocsEagerly(Invoice.class);
+    }
+    
+    public List<CreditNote> fetchCreditNotesEagerly(){
+    	return fetchAccountingDocsEagerly(CreditNote.class);
+    }
+    
+    public List<Estimation> fetchEstimationsEagerly(){
+    	return fetchAccountingDocsEagerly(Estimation.class);
+    }
+    
+    public List<TransportDocument> fetchTransportDocumentsEagerly(){
+    	return fetchAccountingDocsEagerly(TransportDocument.class);
+    }
     
     public List<Long> getCurrentYearInvoicesDocumentIDs(){
-    	String query = "select invoice.documentID from Invoice as invoice where invoice.business.id = :businessId and invoice.accountingDocumentYear = :year order by invoice.documentID";
+    	return getCurrentYearDocumentsIDs(Invoice.class);
+    }
+    
+    public <T extends AccountingDocument> List<Long> getCurrentYearDocumentsIDs(Class<T> cls){
+    	String query = String.format("select o.documentID from %s as o where o.business.id = :businessId and o.accountingDocumentYear = :year order by o.documentID", cls.getSimpleName());
     	return entityManager.createQuery(query, Long.class)
     			.setParameter("businessId", getId())
     			.setParameter("year", Calendar.getInstance().get(Calendar.YEAR)).getResultList();
     }
     
-    public List<Invoice> getInvoiceByIdInYear(Long documentID, Integer year){
-    	String query = "select invoice from Invoice invoice where invoice.business.id = :businessId and invoice.accountingDocumentYear = :year and invoice.documentID = :id";
-    	return entityManager().createQuery(query, Invoice.class)
+    public <T extends AccountingDocument> List<T> getDocsByIdInYear(Class<T> cls, Long documentID, Integer year){
+    	String query = String.format("select o from %s o where o.business.id = :businessId and o.accountingDocumentYear = :year and o.documentID = :id", cls.getSimpleName());
+    	return entityManager().createQuery(query, cls)
     			.setParameter("businessId", getId())
     			.setParameter("year", year)
     			.setParameter("id", documentID).getResultList();
@@ -273,7 +276,7 @@ public class Business implements Serializable {
     		.setParameter(TermValueFilterFactory.FIELD_NAME, StringUtils.join(new Object[]{FTSNamespace.BUSINESS, FTSNamespace.ID}, "."))
     		.setParameter(TermValueFilterFactory.FIELD_VALUE, new LongBridge().objectToString(getId()));
     	PageDTO<Client> pageDTO = new PageDTO<Client>(null, start, length, null);
-    	pageDTO.setTotal(ftQuery.getResultSize());
+    	pageDTO.setTotal(new Long(ftQuery.getResultSize()));
     	pageDTO.setItems(ftQuery.setFirstResult(start).setMaxResults(length).getResultList());
     	return pageDTO;
     }
@@ -317,12 +320,6 @@ public class Business implements Serializable {
     	return getAccountingDocumentForYear(getTransportDocuments().iterator(), year);
     }
     
-    public static Business findByEmail(String email){
-    	String query = "select b from Business b where b.email = :email";
-    	List<Business> result = entityManager().createQuery(query, Business.class).setParameter("email", email).getResultList();
-    	return result.size() == 0? null: result.get(0);
-    }
-    
     public Long getNonFreeExpirationDelta(TimeUnit timeUnit){
     	Long now = System.currentTimeMillis();
     	if(nonFreeAccountExpirationTime == null || nonFreeAccountExpirationTime < now)
@@ -330,45 +327,6 @@ public class Business implements Serializable {
     	return timeUnit.convert(nonFreeAccountExpirationTime, TimeUnit.MILLISECONDS);
     }
 
-	@Override
-	public int hashCode() {
-		final int prime = 31;
-		int result = 1;
-		result = prime * result
-				+ ((creationTime == null) ? 0 : creationTime.hashCode());
-		result = prime * result + ((email == null) ? 0 : email.hashCode());
-		result = prime * result
-				+ ((password == null) ? 0 : password.hashCode());
-		return result;
-	}
-
-	@Override
-	public boolean equals(Object obj) {
-		if (this == obj)
-			return true;
-		if (obj == null)
-			return false;
-		if (getClass() != obj.getClass())
-			return false;
-		Business other = (Business) obj;
-		if (creationTime == null) {
-			if (other.creationTime != null)
-				return false;
-		} else if (!creationTime.equals(other.creationTime))
-			return false;
-		if (email == null) {
-			if (other.email != null)
-				return false;
-		} else if (!email.equals(other.email))
-			return false;
-		if (password == null) {
-			if (other.password != null)
-				return false;
-		} else if (!password.equals(other.password))
-			return false;
-		return true;
-	}
-	
 	/*
 	 * Getters and setters
 	 * */
@@ -477,31 +435,6 @@ public class Business implements Serializable {
         this.ssn = ssn;
     }
     
-    public String getPassword() {
-        return this.password;
-    }
-    
-    @Hash(saltMethod = "getCreationTime")
-    public void setPassword(String password) {
-        this.password = password;
-    }
-    
-    public Long getCreationTime() {
-        return this.creationTime;
-    }
-    
-    public void setCreationTime(Long creationTime) {
-        this.creationTime = creationTime;
-    }
-    
-    public Long getLastLogin() {
-		return lastLogin;
-	}
-
-	public void setLastLogin(Long lastLogin) {
-		this.lastLogin = lastLogin;
-	}
-	
 	public Long getNonFreeAccountExpirationTime() {
 		return nonFreeAccountExpirationTime;
 	}
@@ -566,22 +499,6 @@ public class Business implements Serializable {
         this.clients = clients;
     }
     
-    public Set<RoleType> getGrantedRoles() {
-        return this.grantedRoles;
-    }
-    
-    public void setGrantedRoles(Set<RoleType> grantedRoles) {
-        this.grantedRoles = grantedRoles;
-    }
-    
-    public Logo getLogo(){
-    	return this.logo;
-    }
-    
-    public void setLogo(Logo logo){
-    	this.logo = logo;
-    }
-    
     /*
      * End of getters and setters section
      * */
@@ -590,7 +507,15 @@ public class Business implements Serializable {
      * Active record functionality
      * */
     
-    @PersistenceContext
+    public Set<Principal> getPrincipals() {
+		return principals;
+	}
+
+	public void setPrincipals(Set<Principal> principals) {
+		this.principals = principals;
+	}
+
+	@PersistenceContext
     transient EntityManager entityManager;
     
     public static final EntityManager entityManager() {

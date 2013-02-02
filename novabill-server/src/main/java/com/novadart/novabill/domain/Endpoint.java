@@ -1,21 +1,32 @@
 package com.novadart.novabill.domain;
 
 import javax.persistence.Embeddable;
+import javax.validation.constraints.Size;
 
+/*
+ * Important note!
+ * If fields and validation constraints are modified be sure to update the validation code. 
+ */
 
 @Embeddable
 public class Endpoint {
 	
+	@Size(max = 255)
 	private String companyName;
 	
+	@Size(max = 255)
 	private String street;
 	
+	@Size(max = 10)
 	private String postcode;
 	
+	@Size(max = 60)
 	private String city;
 	
+	@Size(max = 2)
 	private String province;
 	
+	@Size(max = 3)
 	private String country;
 
 	public String getCompanyName() {

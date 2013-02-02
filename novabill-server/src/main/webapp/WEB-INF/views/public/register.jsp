@@ -14,6 +14,8 @@
 			<td>
 				<form:input id="email" path="email" class="registrationInput" />
 				<br>
+			</td>
+			<td>
 				<form:errors path="email" cssClass="error" />
 			</td>
 		</tr>
@@ -21,7 +23,8 @@
 			<td><label for="email" class="registrationLabel"><spring:message code="shared.password" /></label></td>
 			<td>
 				<form:input id="password" path="password" type="password" class="registrationInput"/>
-				<br>
+			</td>
+			<td>
 				<form:errors path="password" cssClass="error" />
 			</td>
 		</tr>
@@ -29,8 +32,24 @@
 			<td><label for="email" class="registrationLabel"><spring:message code="shared.password.confirm" /></label></td>
 			<td><form:input id="confirmPassword" path="confirmPassword"
 					type="password" class="registrationInput" />
-					<br>
+			</td>
+			<td>
 				<form:errors path="confirmPassword" cssClass="error" />
+			</td>
+		</tr>
+		<tr>
+			<td>
+				<div class="acceptAgreementWrapper">
+					<form:checkbox path="agreementAccepted" id="acceptAgreement" class="accept-agreement" />
+					<label class="acceptAgreementLabel" for="acceptAgreement">
+						<spring:message code="registration.agreement"/>
+						<a class="iframe tec" href="<spring:url value="/tos" />"><spring:message code="registration.termsAndConditions" /></a>
+						<a href="https://www.iubenda.com/privacy-policy/257554" class="iubenda-white iubenda-embed" title="Privacy Policy">Privacy Policy</a>
+					</label>
+				</div>
+			</td>
+			<td>
+				<form:errors path="agreementAccepted" cssClass="error" />
 			</td>
 		</tr>
 		<tr>
@@ -39,3 +58,30 @@
 	</table>
 	
 </form:form>
+
+<script type="text/javascript">
+	(function(w, d) {
+		var loader = function() {
+			var s = d.createElement("script"), tag = d
+					.getElementsByTagName("script")[0];
+			s.src = "https://cdn.iubenda.com/iubenda.js";
+			tag.parentNode.insertBefore(s, tag);
+		};
+		if (w.addEventListener) {
+			w.addEventListener("load", loader, false);
+		} else if (w.attachEvent) {
+			w.attachEvent("onload", loader);
+		} else {
+			w.onload = loader;
+		}
+	})(window, document);
+</script>
+
+<script type="text/javascript">
+$(function() {
+	$("a.iframe").fancybox({
+		width: '70%',
+		height: '90%'
+	});
+});
+</script>

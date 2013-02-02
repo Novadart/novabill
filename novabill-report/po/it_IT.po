@@ -42,10 +42,6 @@ msgstr "Numero"
 msgid "Date"
 msgstr "Data"
 
-#: src/template/tidy/transport_document.py:45
-msgid "city pattern"
-msgstr "%(city)s (%(province)s)"
-
 #: src/template/tidy/transport_document.py:60
 msgid "Receiving address"
 msgstr "Indirizzo di Destinazione"
@@ -70,13 +66,13 @@ msgstr "Colli"
 msgid "Trade zone"
 msgstr "Porto"
 
-#: src/template/tidy/__init__.py:99
-msgid "entity pattern"
-msgstr "<b><font size='%(size)d'>%(label)s</font></b><br/>%(name)s<br/>%(address)s<br/>%(city)s (%(province)s)<br/>%(country)s"
+#: src/template/tidy/__init__.py:105
+msgid "VAT ID %s"
+msgstr "P.IVA %s"
 
-#: src/template/tidy/__init__.py:102
-msgid "To"
-msgstr "A"
+#: src/template/tidy/__init__.py:108
+msgid "Client"
+msgstr "Cliente"
 
 #: src/template/tidy/__init__.py:105
 msgid "From"
@@ -86,9 +82,17 @@ msgstr "Da"
 msgid "Price"
 msgstr "Prezzo"
 
+#: src/template/tidy/__init__.py:114
+msgid "% Tax"
+msgstr "% Iva"
+
 #: src/template/tidy/__init__.py:109
 msgid "Qty"
 msgstr "Qtà"
+
+#: src/template/tidy/__init__.py:114
+msgid "U.M."
+msgstr ""
 
 #: src/template/tidy/__init__.py:109
 msgid "Description"
@@ -130,17 +134,21 @@ msgstr "Scadenza Pagamento"
 msgid "Estimation"
 msgstr "Preventivo"
 
+#: src/template/tidy/estimation.py:30
+msgid "Valid until"
+msgstr "Valido fino al"
+
 #: src/template/tidy/estimation.py:35
 msgid "Limitations"
-msgstr ""
+msgstr "Limitazioni"
 
 #: src/template/tidy/estimation.py:35
 msgid "No limitations"
-msgstr ""
+msgstr "Nessuna limitazione"
 
 #: src/template/tidy/estimation.py:41
 msgid "Payment note"
-msgstr ""
+msgstr "Note pagamento"
 
 #: src/template/tidy/invoice.py:32
 msgid "Invoice"
@@ -149,6 +157,10 @@ msgstr "Fattura"
 #: src/template/tidy/invoice.py:45
 msgid "Payment details"
 msgstr "Note Pagamento"
+
+#: src/template/tidy/invoice.py:52
+msgid "Deadline"
+msgstr "Scadenza"
 
 #: src/template/tidy/invoice.py:47
 msgid "Type"

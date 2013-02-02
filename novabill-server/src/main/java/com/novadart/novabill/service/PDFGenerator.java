@@ -1,23 +1,27 @@
 package com.novadart.novabill.service;
 
-import java.io.File;
-import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.OutputStream;
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Date;
-
-import javax.annotation.PostConstruct;
-
-import jep.Jep;
-import jep.JepException;
-
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
+import org.apache.http.HttpResponse;
+import org.apache.http.NameValuePair;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import com.novadart.novabill.domain.AccountingDocument;
-
+import com.novadart.novabill.domain.Logo;
 import flexjson.JSONSerializer;
 import flexjson.transformer.AbstractTransformer;
 import flexjson.transformer.DateTransformer;
@@ -31,63 +35,48 @@ public class PDFGenerator {
 	public enum DocumentType{
 		INVOICE, ESTIMATION, CREDIT_NOTE, TRANSPORT_DOCUMENT
 	}
-
-	@Value("${path.jep}")
-	private String includePath;
 	
-	@Value("${path.report_script}")
-	private String pyInvGenScript;
-	
-	@Value("${path.tmpdir.invoice_generation}")
-	private String invOutLocation;
-
-	@SuppressWarnings("unused")
-	@PostConstruct
-	private void init(){
-		File outDir = new File(invOutLocation);
-		if(!outDir.exists())
-			outDir.mkdir();
+	public enum PDFGenerationCtxFields{
+		contentLenght
 	}
-	
+
+	@Value("${pdfgen.service.url}")
+	private String pdfgenServiceURL;
+
 	public static interface BeforeWriteEventHandler{
-		public void beforeWriteCallback(File file);
+		public void beforeWriteCallback(Map<PDFGenerationCtxFields, Object> ctx);
 	};
 	
-	public void createAndWrite(OutputStream out, AccountingDocument accountingDocument, String pathToLogo, Integer logoWidth, Integer logoHeight, 
+	private HttpPost prepareRequest(String docData, Logo logo, int docType) throws UnsupportedEncodingException{
+		List<NameValuePair> params = new ArrayList<NameValuePair>();
+		params.add(new BasicNameValuePair("docData", docData));
+		if(logo != null){
+			params.add(new BasicNameValuePair("logoData", new String(Base64.encodeBase64(logo.getData()))));
+			params.add(new BasicNameValuePair("logoWidth", logo.getWidth().toString()));
+			params.add(new BasicNameValuePair("logoHeight", logo.getHeight().toString()));
+		}
+		params.add(new BasicNameValuePair("docType", String.valueOf(docType)));
+		UrlEncodedFormEntity entity = new UrlEncodedFormEntity(params, "UTF-8");
+		HttpPost post = new HttpPost(pdfgenServiceURL);
+		post.setEntity(entity);
+		return post;
+	}
+	
+	public void createAndWrite(OutputStream out, AccountingDocument accountingDocument, Logo logo, 
 			DocumentType docType, Boolean putWatermark, BeforeWriteEventHandler bwEvHnld) throws IOException{
-		File outDir = new File(invOutLocation);
-		File invFile = File.createTempFile("inv", ".pdf", outDir);
-		invFile.deleteOnExit();
 		String json = new JSONSerializer().transform(new DateTransformer("dd/MM/yyyy"), Date.class)
 				.transform(new HtmlEncoderTransformer(), String.class)
 				.transform(new StringTransformer(), BigDecimal.class).include("accountingDocumentItems").serialize(accountingDocument).replace("'", "\\'");
-		
-		try {
-			Jep jep = new Jep(false, includePath,  Thread.currentThread().getContextClassLoader());
-			jep.runScript(pyInvGenScript, Thread.currentThread().getContextClassLoader());
-			jep.eval("import json");
-			int docTypeConst = docType.ordinal();
-			if(pathToLogo == null)
-				jep.eval(String.format("create_doc('%s', json.loads('%s'), docType=%d, watermark=%s)", invFile.getAbsolutePath(), json, docTypeConst, putWatermark? "True": "False"));
-			else
-				jep.eval(String.format("create_doc('%s', json.loads('%s'), '%s', %d, %d, docType=%d, watermark=%s)", invFile.getAbsolutePath(), json, pathToLogo, logoWidth, logoHeight, docTypeConst, putWatermark? "True": "False"));
-			jep.close();
-			if(bwEvHnld != null)
-				bwEvHnld.beforeWriteCallback(invFile);
-			InputStream in = new FileInputStream(invFile);
-			int length = 0;
-		    byte[] buf = new byte[4096];
-		    while ((in != null) && ((length = in.read(buf)) != -1)) {
-		         out.write(buf,0,length);
-		    }
-		    out.flush();
-			
-		} catch (JepException e) {
-			e.printStackTrace();
-		}finally{
-			invFile.delete();
-		}
-		
+		int docTypeConst = docType.ordinal();
+		HttpClient httpClient = new DefaultHttpClient();
+		HttpResponse response = httpClient.execute(prepareRequest(json, logo, docTypeConst));
+		int contentLength = Integer.valueOf(response.getFirstHeader("Content-length").getValue());
+		Map<PDFGenerationCtxFields, Object> ctx = new HashMap<PDFGenerationCtxFields, Object>();
+		ctx.put(PDFGenerationCtxFields.contentLenght, contentLength);
+		if(bwEvHnld != null)
+			bwEvHnld.beforeWriteCallback(ctx);
+		IOUtils.copy(response.getEntity().getContent(), out);
+	    out.flush();
 	}
 	
 	public static class StringTransformer extends AbstractTransformer{

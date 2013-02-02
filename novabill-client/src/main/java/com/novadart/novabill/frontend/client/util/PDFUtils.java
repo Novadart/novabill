@@ -2,32 +2,26 @@ package com.novadart.novabill.frontend.client.util;
 
 import com.google.gwt.core.client.GWT;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.WrappedAsyncCallback;
-import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.ui.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 
 public class PDFUtils {
 
-	private static final String EXPORT_REQUEST = 
+	private static final String PDF_REQUEST = 
 			GWT.getHostPageBaseURL()+"private/pdf/{document}/{id}?token={token}";
 
 
 	private static void generatePdf(final String documentClass, final String documentId) {
-		ServerFacade.business.generatePDFToken(new WrappedAsyncCallback<String>() {
+		ServerFacade.business.generatePDFToken(new ManagedAsyncCallback<String>() {
 
 			@Override
 			public void onSuccess(String result) {
 				FileDownloadUtils.downloadUrl(
-						EXPORT_REQUEST.replace("{document}", documentClass)
+						PDF_REQUEST.replace("{document}", documentClass)
 							.replace("{id}", documentId)
 							.replace("{token}", result)
 						);
 			}
 
-			@Override
-			public void onException(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-			}
 		});
 	}
 	

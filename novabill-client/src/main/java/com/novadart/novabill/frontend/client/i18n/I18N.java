@@ -6,6 +6,19 @@ import com.google.gwt.i18n.client.Constants;
 public interface I18N extends Constants {
 	public static final I18N INSTANCE = GWT.create(I18N.class);
 	
+	public String tipselectClientDialog1();
+	public String tipselectClientDialog2();
+	public String deleteAccountLabel();
+	public String deleteAccount();
+	public String yes();
+	public String no();
+	public String download();
+	public String errorDataAccessException();
+	public String updateLogo();
+	public String deleteLogo();
+	public String feedback(); 
+	public String yourDocs(); 
+	public String fillVatIdOrSsn();
 	public String limitations();
 	public String validTill();
 	public String contact();
@@ -14,6 +27,7 @@ public interface I18N extends Constants {
 	public String clientData();
 	public String clientContactData();
 	public String addNewClientTitle();
+	public String modifyClientTitle();
 	public String selectClient();
 	public String helpClearFilter();
 	public String helpSearchClient();
@@ -38,6 +52,7 @@ public interface I18N extends Constants {
 	public String saveModifications();
 	public String saveModificationsConfirm();
 	public String modifyInvoice();
+	public String modifyCreditNote();
 	public String modifyEstimation();
 	public String errorSessionExpired();
 	public String openInvoice();
@@ -93,8 +108,6 @@ public interface I18N extends Constants {
 	public String remove();
 	public String impossibleToLoadInvoice();
 	public String pleaseSelectInvoice();
-	public String newInvoiceCreation();
-	public String newEstimationCreation();
 	public String client();
 	public String addNewClient();
 	public String date();
@@ -109,6 +122,7 @@ public interface I18N extends Constants {
 	public String quantity();
 	public String price();
 	public String unityOfMeasure();
+	public String unityOfMeasureExtended();
 	public String vat();
 	public String totalBeforeTaxesForItem();
 	public String totalTaxForItem();
@@ -140,6 +154,8 @@ public interface I18N extends Constants {
 	public String exportClientData();
 	public String exportInvoiceData();
 	public String exportEstimationData();
+	public String exportCreditNoteData();
+	public String exportTransportDocumentData();
 	public String clone();
 	public String showMore();
 	public String welcomeMessage1();
@@ -150,8 +166,11 @@ public interface I18N extends Constants {
 	public String creditNote();
 	public String newCreditNote();
 	public String newCreditNoteCreation();
+	public String newTransportDocumentCreation();
+	public String newInvoiceCreation();
+	public String newEstimationCreation();
+	public String modifyTransportDocument();
 	public String createCreditNote();
-	public String modifyCreditNote();
 	public String creditNoteNumber();
 	public String confirmTransportDocumentDeletion();
 	public String transportDocumentCreationSuccess();
@@ -172,4 +191,13 @@ public interface I18N extends Constants {
 	public String numberOfPackages();
 	public String transportStartDate();
 	public String time();
+	public String transportDocumentNumber();
+	public String welcomeMessageClients();
+	public String welcomeMessageDocuments();
+	public String sessionExpiredError();
+	public String sessionExpiredError2();
+	public String reloadPage();
+	public String alternativeSsnOrVatIdValidationError();
+	public String tipClientView1();
+	public String tipClientView2();
 }

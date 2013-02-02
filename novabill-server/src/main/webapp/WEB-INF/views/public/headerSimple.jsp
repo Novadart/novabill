@@ -1,6 +1,6 @@
 <%@page
 	import="org.springframework.security.core.context.SecurityContextHolder"%>
-<%@page import="com.novadart.novabill.domain.security.PrincipalDetails"%>
+<%@page import="com.novadart.novabill.domain.security.Principal"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -41,6 +41,13 @@
 				</form>
 			</div>
 		</div>
+		<script>
+			var remMe = $('#checkbox');
+			remMe.attr('checked', $.cookie("com.novadart.novabill.rememberMeChecked")!=null);
+			remMe.change(function(e){
+				$.cookie("com.novadart.novabill.rememberMeChecked", this.checked ? true : null, { expires : 365 });
+			});
+		</script>
 	</sec:authorize>
 
 
@@ -48,7 +55,7 @@
 
 		<span class="authLinks"> <a class="private"
 			href='<spring:url value="/private"></spring:url>'><spring:message
-					code="header.private" /></a> 
+					code="shared.private" /></a> 
 					<%-- <sec:authorize
 				access="hasRole('ROLE_BUSINESS_FREE')">
 				<a id="goPremium" class="action-button"

@@ -6,22 +6,34 @@ from template.tidy import TidyDocumentBuilder, MEDIUM_FONT_SIZE, TidyDirector
 from reportlab.lib.units import cm
 from reportlab.lib.colors import lightgrey
 from template.tidy import BORDER_SIZE, BORDER_COLOR
-from reportlab.platypus.flowables import Spacer
 
 
 class TidyTransportDocumentDirector(TidyDirector):
     
     def getDocumentDetailsBodyFlowables(self, builder, data, docWidth):
-        toFrom = Table([[builder.getToBusinessEntityDetailsFlowable(data), builder.getFromBusinessEntityDetailsFlowable(data)],
+        toFrom = Table([[builder.getFromBusinessEntityDetailsFlowable(data), builder.getToBusinessEntityDetailsFlowable(data)],
                         ["",""],
-                        [builder.getToEndpointFlowable(data, 7*cm), builder.getFromEndpointFlowable(data, 7*cm)]],
+                        [builder.getFromEndpointFlowable(data, 7*cm), builder.getToEndpointFlowable(data, 7*cm)]],
                        colWidths=[docWidth*0.5, docWidth*0.5])
         toFrom.setStyle(TableStyle([("VALIGN", (0, 0), (-1, -1), "TOP"),
                                     ("ALIGN", (0, 0), (-1, -1), "LEFT"),
                                     ("LEFTPADDING", (0, 0), (-1, -1), 1.75*cm)]))
-        transDetFlow = builder.getTransportDetailsFlowable(data, docWidth*0.45)
-        transDetFlow.hAlign = "RIGHT"
-        return [toFrom, Spacer(1, 0.5*cm), transDetFlow]
+        #transDetFlow = builder.getTransportDetailsFlowable(data, docWidth*0.45)
+        #transDetFlow.hAlign = "RIGHT"
+        return [toFrom]#, Spacer(1, 0.5*cm), transDetFlow]
+    
+    def getDocumentDetailsBottomFlowables(self, builder, data, docWidth):
+        tbl = Table([[
+                      builder.getNotesFlowable(data),
+                      builder.getTransportDetailsFlowable(data, docWidth*0.5)
+                      ]], colWidths=[docWidth * 0.5, docWidth * 0.5])
+        tbl.setStyle(TableStyle([("ALIGN", (0,0), (0,0), "LEFT"),
+                                 ("ALIGN", (1,0), (1,0), "RIGHT"),
+                                 ("VALIGN", (0,0), (0,0), "TOP"),
+                                 ("VALIGN", (1,0), (1,0), "TOP"),
+                                 ("RIGHTPADDING", (0,0), (0,0), 15),
+                                 ("RIGHTPADDING", (1,0), (1,0), 0)]))
+        return [tbl]
 
 class TidyTransportDocumentBuilder(TidyDocumentBuilder):
     
@@ -42,15 +54,14 @@ class TidyTransportDocumentBuilder(TidyDocumentBuilder):
             tbl = Table([[Paragraph(label, style)],
                          [Paragraph(data.getCompanyName(), style)],
                          [Paragraph(data.getStreet(), style)],
-                         [Paragraph(self._("city pattern") % dict(city=data.getCity(), province=data.getProvince()), style)],
-                         #[Paragraph(data.getCountry(), style)]
+                         [Paragraph(("%(city)s" + (" (%(province)s)" if data.getProvince() else "")) % dict(city=data.getCity(), province=data.getProvince()), style)],
+                         [Paragraph(data.getCountry(), style)]
                          ], colWidths=[width])
             tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), lightgrey),
                                      ("LEFTPADDING", (0, 0), (-1, -1), 3),
                                      ("TOPPADDING", (0, 1), (-1, -1), 0),
                                      ("BOTTOMPADDING", (0, 1), (0, -2), 0),
-                                     ("BOX", (0, 0), (0, 0), BORDER_SIZE, BORDER_COLOR),
-                                     ("BOX", (0, 1), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))
+                                     ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))
             return tbl
         
         def getToEndpointFlowable(self, data, width):
@@ -65,8 +76,9 @@ class TidyTransportDocumentBuilder(TidyDocumentBuilder):
                          [Paragraph("%s:" % self._("Transportation responsibility"), style), Paragraph(data.getTransportationResponsibility(), style)],
                          [Paragraph("%s:" % self._("Num. of packages"), style), Paragraph(str(data.getNumberOfPackages()), style)],
                          [Paragraph("%s:" % self._("Trade zone"), style), Paragraph(data.getTradeZone(), style)]
-                         ], colWidths=[width*0.3, width*0.7])
-            tbl.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'BOTTOM'),
+                         ], colWidths=[width*0.4, width*0.6])
+            tbl.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),
                                      ("LINEABOVE", (0, 0), (-1, 0), BORDER_SIZE, BORDER_COLOR),
-                                     ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))
+                                     ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR)
+                                     ]))
             return tbl

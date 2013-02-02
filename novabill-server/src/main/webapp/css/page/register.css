@@ -24,17 +24,58 @@
 	display: block;
 }
 
-.error {
-	color: red;
-	font-size: 1.2em;
-	display: block;
-	margin-left: 2em;
-}
-
 .title {
 	margin: 1em auto 0;
 }
 
 .description {
 	font-size: 1.2em;
+}
+
+.acceptAgreementWrapper {
+	margin-top: 2.5em;
+}
+
+.acceptAgreementWrapper input {
+	cursor: pointer;
+}
+
+.acceptAgreementWrapper .iubenda-ibadge {
+	position: relative;
+	top: 8px;
+}
+
+.acceptAgreementWrapper .tec:HOVER {
+	color : #333;
+}
+
+.acceptAgreementWrapper .tec {
+	border: 1px solid;
+	background: white no-repeat;
+	background-position: 7px 3px;
+	background-position-x: 6px;
+	background-position-y: 2px;
+	padding-left: 20px;
+	text-decoration: none;
+	color: #59636D;
+	-webkit-box-shadow: 0 1px 0 #EBEBEC;
+	-moz-box-shadow: 0 1px 0 #ebebec;
+	box-shadow: 0 1px 0 #EBEBEC;
+	-webkit-box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+	-moz-box-shadow: 0 1px 0 rgba(0,0,0,0.08);
+	box-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+	border-top-color: #D0D0D0;
+	border-left-color: #C3C3C3;
+	border-right-color: #C3C3C3;
+	border-bottom-color: #B8B9BA;
+	
+	display: inline-block;
+	padding: 0 8px;
+	border-style: solid;
+	-webkit-border-radius: 3px;
+	-moz-border-radius: 3px;
+	border-radius: 3px;
+	font-size: 11px;
+	line-height: 16px;
+	font-weight: bold;
 }

@@ -1,8 +1,4 @@
-path.jep.value=/usr/local/lib/libjep.so.2.0.1:/home/gio/GIT/novadart-novabill/novabill-report/src
-path.report_script.value=/home/gio/GIT/novadart-novabill/novabill-report/src/main.py
-path.tmpdir.invoice_generation.value=/tmp/novabill
-
-url.store_service.serviceUrl.value=rmi://localhost:1199/ImageStoreService
+debug.enabled.value=true
 
 database.driverClassName.value=org.postgresql.Driver
 database.url.value=jdbc:postgresql://localhost/novabill
@@ -13,6 +9,26 @@ hibernate.hbm2ddl.auto.value=create
 hibernate.search.default.indexBase.value=/var/novabill/lucene.indexBase
 hibernate.show_sql.value=true
 hibernate.hbm2ddl.import_files.value=/import.sql,/test-rows.sql
+
+#cache
+ehcache.business-cache.maxElementsInMemory.value=100
+ehcache.business-cache.timeToLiveSeconds.value=600
+ehcache.client-cache.maxElementsInMemory.value=100
+ehcache.client-cache.timeToLiveSeconds.value=600
+ehcache.invoice-cache.maxElementsInMemory.value=100
+ehcache.invoice-cache.timeToLiveSeconds.value=600
+ehcache.creditnote-cache.maxElementsInMemory.value=100
+ehcache.creditnote-cache.timeToLiveSeconds.value=600
+ehcache.estimation-cache.maxElementsInMemory.value=100
+ehcache.estimation-cache.timeToLiveSeconds.value=600
+ehcache.transportdocument-cache.maxElementsInMemory.value=100
+ehcache.transportdocument-cache.timeToLiveSeconds.value=600
+ehcache.default.maxElementsInMemory.value=1000
+ehcache.default.timeToLiveSeconds.value=600
+ehcache.client-hib-2nd-level.maxElementsInMemory.value=100
+ehcache.client-hib-2nd-level.timeToLiveSeconds.value=600
+ehcache.business-hib-2nd-level.maxElementsInMemory.value=100
+ehcache.business-hib-2nd-level.timeToLiveSeconds.value=600
 
 activation.url.pattern.value=http://localhost:8080/novabill-server/activate?email=%s&token=%s
 #in hours
@@ -50,3 +66,11 @@ rememberme.expiration=345600
 #in hours
 registration.expiration.value=48
 forgotpassword.expiration.value=48
+
+pdfgen.service.url.value=http://localhost:8081
+
+resources.root=/opt/novabill
+
+exception.sendemail.value = false
+
+log.file.location.value=/tmp/novabill.log

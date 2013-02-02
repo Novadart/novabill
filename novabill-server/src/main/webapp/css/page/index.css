@@ -1,17 +1,68 @@
+h1 {
+	width: 300px;
+}
+
+h4 {
+	font-size: 1.2em;	
+}
+
 .intro h2 {
 	text-align: center;
 	color:#333333;
-	font-size: 88px;
+	font-size: 6em;
 	padding: 30px 0px;
 	font-weight: bold;
 	text-shadow: 0px 1px 2px #bbb;
 	text-transform: uppercase;
 }
 
+#shuffleContainer {
+	height: 152px;
+	width: 500px;
+	margin: 0 auto;
+}
+
+#shuffleImage {
+	margin: 2em auto 0.5em;
+}
+
+#shuffleImage .image {
+	background-color: white;
+	width: 100px;
+	height: 100px;
+}
+
+#shuffleAsset {
+	margin: 0 auto;
+}
+
+#shuffleAsset .doc {
+	padding: 1em;
+	background-color: white;
+	width: 300px;
+	font-size: 1.5em;
+	text-align: center;
+	font-weight: bold;
+	text-shadow: 0px 1px 2px #BBB;
+	text-transform: uppercase;
+}
+
+.goToPrivate {
+	display: block;
+	margin: 2em auto 0;
+	color: white;
+	text-shadow: none;
+	padding: 0.5em 1em;
+}
+
+.goToPrivate:HOVER {
+	text-decoration: none;
+}
+
 .intro p {
 	text-align: center;
 	color: #8C8C8C;
-	font-size: 17px;
+	font-size: 1.4em;
 	margin: -20px 0 0 0;
 	text-shadow: 0px 1px 0px #fff;
 }
@@ -38,12 +89,12 @@
 	width: 960px;
 	height: 17px;
 	background: url('../../images/divider-2.png') no-repeat;
-	margin: 60px 0 20px 0;
+	margin: 30px 0 0;
 }
 
 h3 {
 	color: #474747;
-	font-size: 22px;
+	font-size: 1.9em;
 	padding: 5px 10px;
 	font-weight: bold;
 	text-shadow: 0px 1px 2px #bbb;
@@ -93,6 +144,7 @@ h3 {
 	width: 100px;
 	height: 100px;
 	padding: 2px 3px 4px 3px;
+	display: block;
 }
 
 .mask-gloss-thumbnail {
@@ -102,10 +154,23 @@ h3 {
 	background: url('../../images/gloss-thumbnail.png');
 	top: 0;
 	left: 0;
+	display: block;
 }
 
 .mask-gloss-thumbnail:hover {
 	background: url('../../images/gloss-thumbnail-hover.png');
+}
+
+.fancybox-title-over{
+	background: rgba(0, 0, 0, .7);
+	padding: 0.5em 0;
+}
+
+.fancybox-title-over p{
+	color: white;
+	padding: 0 10px;
+	font-size: 1.4em;
+	line-height: 140%;
 }
 
 .feature-image {
@@ -137,27 +202,17 @@ h3 {
 	margin: 0 10px 0 5px;
 }
 
-.footer {
-	width: 960px;
-	height: 80px;
-	background: url('../../images/divider-1.png') no-repeat top;
-	padding: 1px 0 0 0;
-}
-
-.footer p {
-	margin: 40px 0 0 0;
-	width: 400px;
-	float: left;
-}
-
-.footer .free-trial-button, .footer .buy-it-button {
-	margin: 32px 10px 0 10px;
-}
-
-
 #registerForFree {
 	width: 18em;
 	height: 2em;
-	margin: 2em auto;
+	margin: 0 auto;
 	display: block;
 }
+
+.top-features p {
+	color: #8C8C8C;
+	font-size: 1.1em;
+	margin: 10px 0;
+	line-height: 120%;
+}
+

@@ -3,16 +3,21 @@ package com.novadart.novabill.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
-
+import javax.validation.Valid;
+import javax.validation.constraints.Size;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
+/*
+ * Important note!
+ * If fields and validation constraints are modified be sure to update the validation code. 
+ */
 
 @Configurable
 @Entity
@@ -31,6 +36,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		@AttributeOverride(name = "country", column = @Column(name = "from_country"))
 	})
 	@Embedded
+	@Valid
 	private Endpoint fromEndpoint;
 	
 	@AttributeOverrides({
@@ -42,12 +48,16 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		@AttributeOverride(name = "country", column = @Column(name = "to_country"))
 	})
 	@Embedded
+	@Valid
 	private Endpoint toEndpoint;
 	
+	@Size(max = 255)
 	private String transporter;
 	
+	@Size(max = 255)
 	private String transportationResponsibility;
 	
+	@Size(max = 255)
 	private String tradeZone;
 	
 	private Date transportStartDate;
@@ -58,7 +68,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
     @ManyToOne
     protected Client client;
     
-    public static Integer countTransportDocumentsForClient(Long id){
+    public static Long countTransportDocumentsForClient(Long id){
     	return countForClient(TransportDocument.class, id);
     }
     

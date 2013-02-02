@@ -1,4 +1,4 @@
-<%@page import="com.novadart.novabill.domain.security.PrincipalDetails"%>
+<%@page import="com.novadart.novabill.domain.security.Principal"%>
 <%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
 <%@page import="com.novadart.novabill.domain.Business"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
@@ -37,16 +37,25 @@
 				</form>
 			</div>
 		</div>
+		<script>
+			var remMe = $('#checkbox');
+			remMe.attr('checked', $.cookie("com.novadart.novabill.rememberMeChecked")!=null);
+			remMe.change(function(e){
+				$.cookie("com.novadart.novabill.rememberMeChecked", this.checked ? true : null, { expires : 365 });
+			});
+		</script>
 	</sec:authorize>
 	
 	
 	<sec:authorize access="isAuthenticated()">
-		<%PrincipalDetails pd = 
-			((PrincipalDetails)SecurityContextHolder.getContext().getAuthentication().getPrincipal());%>
+		<%
+			Principal pd = 
+			((Principal)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+		%>
 		
 		<span class="welcomeMessage">
 			<%
-			String principalName = pd.getPrincipal().getName();
+			String principalName = pd.getBusiness().getName();
 			if(principalName != null && !principalName.isEmpty()){
 			%>
 				<spring:message code="header.welcomeMessage"/>
@@ -63,7 +72,7 @@
 		</span>
 		
 		<span class="authLinks">
-			<a class="private" href='<spring:url value="/private"></spring:url>'><spring:message code="header.private"/></a>
+			<a class="private" href='<spring:url value="/private"></spring:url>'><spring:message code="shared.private"/></a>
 		
 			<%-- <sec:authorize access="hasRole('ROLE_BUSINESS_FREE')">
 				<a id="goPremium" class="action-button" href='<spring:url value="/premiumInfo"></spring:url>'>

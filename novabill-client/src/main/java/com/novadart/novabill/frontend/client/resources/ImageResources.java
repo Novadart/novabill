@@ -7,14 +7,12 @@ import com.google.gwt.resources.client.ImageResource;
 public interface ImageResources extends ClientBundle {
 	public static final ImageResources INSTANCE = GWT.create(ImageResources.class);
 
-	ImageResource bullet();
-
-	ImageResource pdf();
-
 	ImageResource loader();
 
 	ImageResource clear_left();
 	
 	ImageResource delete();
+
+	ImageResource fancy_close();
 
 }

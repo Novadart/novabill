@@ -5,7 +5,7 @@ import gettext
 #  @LOCALE_DIR@/@LANGUAGE@/LC_MESSAGES/@APP_NAME@.mo
 APP_NAME = "novabill"
 
-APP_DIR = '/home/risto/novadart/novadart-novabill/novabill-report/build'
+APP_DIR = '/home/gio/GIT/novadart-novabill/novabill-report/build'
 LOCALE_DIR = os.path.join(APP_DIR, 'locale')
 
 mo_location = LOCALE_DIR

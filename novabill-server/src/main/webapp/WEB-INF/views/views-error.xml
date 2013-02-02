@@ -14,10 +14,6 @@
 		<put-attribute name="body"	value="/WEB-INF/views/error/uncaughtException.jsp" />
 	</definition>
 	
-	<definition name="concurrentAccess" extends="baseFeedback">
-		<put-attribute name="feedbackMessage" value="/WEB-INF/views/error/concurrentAccess.jsp" />
-	</definition>
-	
 	<definition name="invalidActivationRequest" extends="baseFeedback">
 		<put-attribute name="feedbackMessage" value="/WEB-INF/views/error/invalidActivationRequest.jsp" />
 	</definition>

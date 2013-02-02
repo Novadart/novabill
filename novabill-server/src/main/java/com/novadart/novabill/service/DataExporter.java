@@ -2,7 +2,6 @@ package com.novadart.novabill.service;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -29,7 +28,6 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Logo;
-import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.service.PDFGenerator.DocumentType;
 import com.novadart.novabill.shared.client.data.DataExportClasses;
 
@@ -44,9 +42,8 @@ public class DataExporter {
 	@Autowired
 	private PDFGenerator pdfGenerator;
 	
-	@SuppressWarnings("unused")
 	@PostConstruct
-	private void init(){
+	protected void init(){
 		File outDir = new File(dataOutLocation);
 		if(!outDir.exists())
 			outDir.mkdir();
@@ -75,16 +72,15 @@ public class DataExporter {
 		return clientsData;
 	}
 	
-	private File exportAccountingDocument(File outDir, AccountingDocument accountingDocument, String pathToLogo, Integer logoWidth,
-			Integer logoHeight, DocumentType docType, Boolean putWatermark) throws IOException{
+	private File exportAccountingDocument(File outDir, AccountingDocument accountingDocument, Logo logo, DocumentType docType, Boolean putWatermark) throws IOException{
 		File docFile = File.createTempFile("doc", ".pdf", outDir);
 		docFile.deleteOnExit();
-		pdfGenerator.createAndWrite(new FileOutputStream(docFile), accountingDocument, pathToLogo, logoWidth, logoHeight, docType, putWatermark, null);
+		pdfGenerator.createAndWrite(new FileOutputStream(docFile), accountingDocument, logo, docType, putWatermark, null);
 		return docFile;
 	}
 	
-	private List<File> exportAccountingDocumentsData(File outDir, ZipOutputStream zipStream, Business business, File tempLogoFile,
-			Logo logo, DocumentType docType, Boolean putWatermark, String entryFormat) throws IOException, FileNotFoundException {
+	private List<File> exportAccountingDocumentsData(File outDir, ZipOutputStream zipStream, Business business, Logo logo,
+			DocumentType docType, Boolean putWatermark, String entryFormat) throws IOException, FileNotFoundException {
 		List<File> files = new ArrayList<File>();
 		Set<? extends AccountingDocument> docs = new HashSet<AccountingDocument>();
 		if(docType.equals(DocumentType.INVOICE))
@@ -97,10 +93,7 @@ public class DataExporter {
 			docs = business.getTransportDocuments();
 		for(AccountingDocument doc: docs){
 			File docFile;
-			if(tempLogoFile != null)
-				docFile = exportAccountingDocument(outDir, doc, tempLogoFile.getPath(), logo.getWidth(), logo.getHeight(), docType, putWatermark);
-			else
-				docFile = exportAccountingDocument(outDir, doc, null, null, null, docType, putWatermark);
+				docFile = exportAccountingDocument(outDir, doc, logo, docType, putWatermark);
 			zipStream.putNextEntry(new ZipEntry(String.format(entryFormat, doc.getAccountingDocumentYear(), doc.getDocumentID())));
 			FileInputStream invStream = new FileInputStream(docFile);
 			IOUtils.copy(invStream, zipStream);
@@ -116,7 +109,6 @@ public class DataExporter {
 		File zipFile = File.createTempFile("export", ".zip", outDir);
 		ZipOutputStream zipStream = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
 		File clientsData = null;
-		File tempLogoFile = null;
 		List<File> invoicesFiles = null;
 		List<File> estimationFiles = null;
 		List<File> creditNoteFiles = null;
@@ -129,26 +121,18 @@ public class DataExporter {
 				IOUtils.copy(clientDataStream, zipStream);
 				clientDataStream.close();
 			}
-			if(logo != null){
-				tempLogoFile = File.createTempFile("logo", "." + logo.getFormat().name());
-				tempLogoFile.deleteOnExit();
-				IOUtils.copy(new ByteArrayInputStream(logo.getData()), new FileOutputStream(tempLogoFile));
-			}
+			boolean putWatermark = true;
 			if(classes.contains(DataExportClasses.INVOICE))
-				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.INVOICE,
-						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
+				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, business, logo, DocumentType.INVOICE, putWatermark,
 						messageSource.getMessage("export.invoices.zipentry.pattern", null, "invoices/invoice_%d_%d.pdf", locale));
 			if(classes.contains(DataExportClasses.ESTIMATION))
-				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.ESTIMATION,
-						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
+				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, business, logo, DocumentType.ESTIMATION, putWatermark,
 						messageSource.getMessage("export.estimations.zipentry.pattern", null, "estimations/estimation_%d_%d.pdf", locale));
 			if(classes.contains(DataExportClasses.CREDIT_NOTE))
-				creditNoteFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.CREDIT_NOTE,
-						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
+				creditNoteFiles = exportAccountingDocumentsData(outDir, zipStream, business, logo, DocumentType.CREDIT_NOTE, putWatermark,
 						messageSource.getMessage("export.creditnotes.zipentry.pattern", null, "creditnotes/creditnotes_%d_%d.pdf", locale));
 			if(classes.contains(DataExportClasses.TRANSPORT_DOCUMENT))
-				transportDocsFiles = exportAccountingDocumentsData(outDir, zipStream, business, tempLogoFile, logo, DocumentType.TRANSPORT_DOCUMENT,
-						business.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE),
+				transportDocsFiles = exportAccountingDocumentsData(outDir, zipStream, business, logo, DocumentType.TRANSPORT_DOCUMENT, putWatermark,
 						messageSource.getMessage("export.transportdoc.zipentry.pattern", null, "transportdocs/transportdocs_%d_%d.pdf", locale));
 				
 			zipStream.close();
@@ -156,18 +140,22 @@ public class DataExporter {
 		} finally {
 			if(clientsData != null)
 				clientsData.delete();
-			if(tempLogoFile != null)
-				tempLogoFile.delete();
-			if(invoicesFiles != null)
+			if(invoicesFiles != null){
 				for(File file: invoicesFiles)
 					file.delete();
+			}
 			if(estimationFiles != null){
 				for(File file: estimationFiles)
 					file.delete();
 			}
-			if(creditNoteFiles != null)
+			if(creditNoteFiles != null){
 				for(File file: creditNoteFiles)
 					file.delete();
+			}
+			if(transportDocsFiles != null){
+				for(File file: transportDocsFiles)
+					file.delete();
+			}
 		}
 	}
 

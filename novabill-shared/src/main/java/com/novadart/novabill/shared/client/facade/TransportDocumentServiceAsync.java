@@ -7,20 +7,25 @@ import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public interface TransportDocumentServiceAsync {
 
-	void get(long id, AsyncCallback<TransportDocumentDTO> callback);
-
-	void getAllForClient(long id, AsyncCallback<List<TransportDocumentDTO>> callback);
-
 	void add(TransportDocumentDTO transportDocDTO, AsyncCallback<Long> callback);
 
-	void remove(Long id, AsyncCallback<Void> callback);
-	
-	void update(TransportDocumentDTO transportDocDTO, AsyncCallback<Void> callback);
+	void get(Long id, AsyncCallback<TransportDocumentDTO> callback);
+
+	void getAllForClient(Long clientID,
+			AsyncCallback<List<TransportDocumentDTO>> callback);
+
+	void getAllForClientInRange(Long clientID, Integer start, Integer length,
+			AsyncCallback<PageDTO<TransportDocumentDTO>> callback);
+
+	void getAllInRange(Long businessID, Integer start, Integer length,
+			AsyncCallback<PageDTO<TransportDocumentDTO>> callback);
 
 	void getNextTransportDocId(AsyncCallback<Long> callback);
 
-	void getAllForClientInRange(long id, int start, int length, AsyncCallback<PageDTO<TransportDocumentDTO>> callback);
+	void remove(Long businessID, Long clientID, Long id,
+			AsyncCallback<Void> callback);
 
-	void getAllInRange(int start, int length, AsyncCallback<PageDTO<TransportDocumentDTO>> callback);
+	void update(TransportDocumentDTO transportDocDTO,
+			AsyncCallback<Void> callback);
 
 }

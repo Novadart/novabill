@@ -1,11 +1,16 @@
 package com.novadart.novabill.domain;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collection;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.SortedSet;
+import java.util.TreeSet;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -21,7 +26,11 @@ import javax.persistence.OrderBy;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
+import javax.persistence.Transient;
 import javax.persistence.Version;
+import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.annotations.Type;
@@ -41,6 +50,7 @@ public abstract class AccountingDocument {
 	
 	protected Long documentID;
 
+	@NotNull
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "S-")
     protected Date accountingDocumentDate;
@@ -48,19 +58,25 @@ public abstract class AccountingDocument {
     protected Integer accountingDocumentYear;
     
     @Type(type = "text")
+    @Size(max = 1500)
     protected String note;
     
+    @NotNull
     protected BigDecimal total;
     
+    @NotNull
     protected BigDecimal totalTax;
     
+    @NotNull
     protected BigDecimal totalBeforeTax;
     
     @Type(type = "text")
+    @Size(max = 1500)
     protected String paymentNote;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "accountingDocument", orphanRemoval = true)
     @OrderBy("id")
+    @Valid
     protected List<AccountingDocumentItem> accountingDocumentItems = new LinkedList<AccountingDocumentItem>();
     
     protected static int getYear(Date date){
@@ -73,11 +89,25 @@ public abstract class AccountingDocument {
         this.accountingDocumentYear = year;
     }
 	
-	protected static <T> Integer countForClient(Class<T> cls, Long id){
+	protected static <T> Long countForClient(Class<T> cls, Long id){
 		String query = String.format("select count(o) FROM %s o where o.client.id = :clientID", cls.getSimpleName()); 
-    	return entityManager().createQuery(query, Integer.class).setParameter("clientID", id).getSingleResult();
+    	return entityManager().createQuery(query, Long.class).setParameter("clientID", id).getSingleResult();
 	}
 	
+	@Transient
+    private static final Comparator<AccountingDocument> ACCOUNTING_DOCUMENT_COMPARATOR = new AccountingDocumentComparator();
+	
+	public static <T extends AccountingDocument> List<T> sortAccountingDocuments(Collection<T> collection){
+    	SortedSet<T> sortedSet = new TreeSet<T>(ACCOUNTING_DOCUMENT_COMPARATOR);
+    	sortedSet.addAll(collection);
+    	return new ArrayList<T>(sortedSet);
+    }
+	
+	public static <T extends AccountingDocument> T getAccountingDocument(Class<T> cls, Long documentID, int year){
+		String query = String.format("select o from %s o where o.documentID = :docID and o.accountingDocumentYear = :year", cls.getSimpleName());
+		List<T> result = entityManager().createQuery(query, cls).setParameter("docID", documentID).setParameter("year", year).getResultList();
+		return result.size() > 0? result.get(0): null;
+	}
 	
 	/*
 	 * Getters and setters

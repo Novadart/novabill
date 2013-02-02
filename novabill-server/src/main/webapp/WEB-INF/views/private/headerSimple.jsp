@@ -1,6 +1,6 @@
 <%@page
 	import="org.springframework.security.core.context.SecurityContextHolder"%>
-<%@page import="com.novadart.novabill.domain.security.PrincipalDetails"%>
+<%@page import="com.novadart.novabill.domain.security.Principal"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
@@ -14,12 +14,12 @@
 
 		<span class="authLinks"> <a class="private"
 			href='<spring:url value="/private"></spring:url>'><spring:message
-					code="header.private" /></a> <sec:authorize
+					code="shared.private" /></a> <sec:authorize
 				access="hasRole('ROLE_BUSINESS_FREE')">
-				<a id="goPremium" class="action-button"
+				<%-- <a id="goPremium" class="action-button"
 					href='<spring:url value="/premiumInfo"></spring:url>'> <spring:message
 						code="header.goPremium"></spring:message>
-				</a>
+				</a> --%>
 			</sec:authorize> <a class="logoutLink"
 			href='<spring:url value="/resources/j_spring_security_logout"></spring:url>'><spring:message
 					code="header.logout" /></a>

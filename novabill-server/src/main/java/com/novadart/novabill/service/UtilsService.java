@@ -7,18 +7,23 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.AnonymousAuthenticationToken;
+import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RPC;
-import com.novadart.novabill.domain.security.PrincipalDetails;
+import com.novadart.novabill.domain.security.Principal;
 
 @Service("utilsService")
 public class UtilsService {
 
+	@Autowired
+	private PasswordEncoder passwordEncoder;
+	
 	private Authentication getAuthentication(){
 		return SecurityContextHolder.getContext().getAuthentication();
 	}
@@ -28,13 +33,21 @@ public class UtilsService {
 		return authentication != null && !(authentication instanceof AnonymousAuthenticationToken); 
 	}
 	
-	public PrincipalDetails getAuthenticatedPrincipalDetails(){
-		return (PrincipalDetails)getAuthentication().getPrincipal();
+	public Principal getAuthenticatedPrincipalDetails(){
+		return (Principal)getAuthentication().getPrincipal();
+	}
+	
+	private boolean isGWTContentType(HttpServletRequest request){
+		String contentType = request.getContentType();
+		return contentType != null && contentType.trim().toLowerCase().startsWith("text/x-gwt-rpc");
+	}
+	
+	private boolean containsGWTHeaders(HttpServletRequest request){
+		return (request.getHeader("x-gwt-module-base") != null) || (request.getHeader("x-gwt-permutation") != null);
 	}
 	
 	public boolean isGWTRPCCall(HttpServletRequest request){
-		String contentType = request.getContentType();
-		return contentType != null && contentType.trim().toLowerCase().startsWith("text/x-gwt-rpc");
+		return isGWTContentType(request) || containsGWTHeaders(request); 
 	}
 	
 	
@@ -45,6 +58,10 @@ public class UtilsService {
 		} catch (SerializationException e) {
 			throw new RuntimeException(e);
 		}
+	}
+	
+	public String hash(String value, Object salt){
+		return passwordEncoder.encodePassword(value, salt);
 	}
 	
 }

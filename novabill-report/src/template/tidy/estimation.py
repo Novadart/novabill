@@ -4,18 +4,21 @@ from reportlab.platypus.para import Paragraph
 from reportlab.platypus.tables import Table, TableStyle
 from template.tidy import TidyDocumentBuilder, MEDIUM_FONT_SIZE, TidyDirector,\
     BORDER_SIZE, BORDER_COLOR
-from reportlab.platypus.flowables import Spacer
-from reportlab.lib.units import cm
 from reportlab.lib.colors import lightgrey
 
 
 class TidyEstimationDirector(TidyDirector):
     
     def getDocumentDetailsBottomFlowables(self, builder, data, docWidth):
-        estDetailsF = builder.getEstimationPaymentDetailsFlowable(data, docWidth*0.4)
-        estDetailsF.hAlign = "RIGHT"
-        return [estDetailsF, Spacer(1, 0.25*cm)] + builder.getLimitationsFlowables(data) + [Spacer(1, 0.25*cm), builder.getNotesFlowable(data)]
-
+        tbl = Table([[builder.getLimitationsFlowables(data), builder.getEstimationPaymentDetailsFlowable(data, docWidth*0.5)],
+                     [builder.getNotesFlowable(data), ""]], colWidths=[docWidth * 0.5, docWidth * 0.5])
+        tbl.setStyle(TableStyle([("ALIGN", (0,0), (0,0), "LEFT"),
+                                 ("ALIGN", (1,0), (1,0), "RIGHT"),
+                                 ("VALIGN", (0,0), (0,0), "TOP"),
+                                 ("VALIGN", (1,0), (1,0), "TOP"),
+                                 ("RIGHTPADDING", (0,0), (1,0), 0)]))
+        return [tbl]
+        
 
 class TidyEstimationBuilder(TidyDocumentBuilder):
     
@@ -43,8 +46,6 @@ class TidyEstimationBuilder(TidyDocumentBuilder):
                      ["", Paragraph(data.getPaymentNote() if data.getPaymentNote() else "", style)],
                     ], colWidths=[width * 0.01, width * 0.99])
         tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), lightgrey),
-                                 ('VALIGN', (0, 0), (-1, -1), 'BOTTOM'),
-                                 ("SPAN", (0, 0), (1, 0)),
-                                 ("BOX", (0, 0), (1, 0), BORDER_SIZE, BORDER_COLOR),
-                                 ("BOX", (0, 1), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))
+                                 ('VALIGN', (0, 0), (-1, -1), 'TOP'),
+                                 ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))
         return tbl

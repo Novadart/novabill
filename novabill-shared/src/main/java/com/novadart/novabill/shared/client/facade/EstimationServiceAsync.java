@@ -7,22 +7,24 @@ import com.novadart.novabill.shared.client.dto.PageDTO;
 
 public interface EstimationServiceAsync {
 
-	void get(long id, AsyncCallback<EstimationDTO> callback);
-
 	void add(EstimationDTO estimationDTO, AsyncCallback<Long> callback);
 
-	void remove(Long id, AsyncCallback<Void> callback);
+	void get(Long id, AsyncCallback<EstimationDTO> callback);
 
-	void getAllForClient(long id, AsyncCallback<List<EstimationDTO>> callback);
+	void getAllForClient(Long clientID,
+			AsyncCallback<List<EstimationDTO>> callback);
 
-	void update(EstimationDTO estimationDTO, AsyncCallback<Void> callback);
+	void getAllForClientInRange(Long clientID, int start, int length,
+			AsyncCallback<PageDTO<EstimationDTO>> callback);
+
+	void getAllInRange(Long businessID, int start, int length,
+			AsyncCallback<PageDTO<EstimationDTO>> callback);
 
 	void getNextEstimationId(AsyncCallback<Long> callback);
 
-	void getAllForClientInRange(long id, int start, int length,
-			AsyncCallback<PageDTO<EstimationDTO>> callback);
+	void remove(Long businessID, Long clientID, Long id,
+			AsyncCallback<Void> callback);
 
-	void getAllInRange(int start, int length,
-			AsyncCallback<PageDTO<EstimationDTO>> callback);
+	void update(EstimationDTO estimationDTO, AsyncCallback<Void> callback);
 
 }

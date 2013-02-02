@@ -3,9 +3,18 @@ html {
 }
 
 body {
-	font-size: 14px;
+	font-size: 12px;
 	color: #333;
 	background: none;
+}
+
+button.action-button, button.action2-button {
+	font-size: 1.2em !important;
+}
+
+.centerViewLoader {
+	display: block;
+	margin: 100px auto 0;
 }
 
 .button {
@@ -23,6 +32,22 @@ body {
 	background-color: #DDD;
 	border: 0.1em solid #EEE;
 	color: #EEE;
+}
+
+.feedbackButton {
+	color: #DDD;
+	position: absolute;
+	right: 0;
+	top: 0;
+	padding: 2px 10px;
+	background-color: #445058;
+	cursor: pointer;
+	font-style: italic;
+	font-size: 0.9em;
+}
+
+.feedbackButton:HOVER {
+	color: #FFF;
 }
 
 * {
@@ -64,6 +89,32 @@ textarea:HOVER {
 	font-style: italic;
 }
 
+.NotificationDialog .body {
+	border: 0.1em solid #DDD;
+	padding: 1.5em 2em;
+	background-color: #FFF;
+	margin: 0 auto;
+	width: 25em;
+}
+
+.NotificationDialog .message {
+	text-align: justify;
+	font-size: 1.2em;
+}
+
+.NotificationDialog .buttonsWrapper {
+	text-align: center;
+	margin-top: 1em;
+}
+
+.NotificationDialog .buttonsWrapper button {
+	width: 5em;
+}
+
+.NotificationDialog .buttonsWrapper button + button {
+	margin-left: 2em;
+
+}
 
 .AuthDialog {
 	background-color: white;
@@ -74,26 +125,16 @@ textarea:HOVER {
 	
 }
 
-.AuthDialog .username,.AuthDialog .password {
-	width: 15em;
-	margin-left: 2em;
+.AuthDialog .authDialog .reloadButton {
+	margin: 2em auto 0;
+	display: block;
+	width: 45%;
 }
 
-.AuthDialog .password,.AuthDialog .passwordLabel {
-	margin-top: 1em;
+.AuthDialog .authDialog .reloadMessage {
+	padding: 0.5em 0;
 }
 
-.AuthDialog .submit {
-	margin-top: 2em;
-	text-align: center;
-	width: 100%;
-}
-
-.AuthDialog .submitContainer {
-	margin-left: auto;
-	margin-right: auto;
-	width: 8em;
-}
 
 .Novabill {
 	margin: 0 auto;
@@ -146,10 +187,30 @@ textarea:HOVER {
 	-moz-box-shadow: 2px 2px 2px #AAA;
 	-webkit-box-shadow: 2px 2px 2px #AAA;
 	box-shadow: 2px 2px 2px #AAA;
+	cursor: pointer;
 }
 
-.ClientView .contact:HOVER {
+.ClientView .contact-disabled {
+	font-size: 1.2em;
+	font-weight: bold;
+	border: 1px solid #CCC;
+	float: left;
+	color: #DDD;
+	padding: 0.2em 0.5em;
+	-moz-box-shadow: 2px 2px 2px #AAA;
+	-webkit-box-shadow: 2px 2px 2px #AAA;
+	box-shadow: 2px 2px 2px #AAA;
+	cursor: pointer;
+}
+
+.ClientView .contact.contact-down-hovering,
+.ClientView .contact.contact-up-hovering {
 	background-color: #DDD;
+}
+
+.ClientView .contact.contact-down {
+	background-color: #333;
+	color: white;
 }
 
 .ClientView .actionWrapper {
@@ -159,6 +220,10 @@ textarea:HOVER {
 .ClientView .newInvoice,.ClientView .newEstimation,.ClientView .newCreditNote,.ClientView .newTransportDocument
 	{
 	cursor: pointer;
+}
+
+.ClientView .newEstimation {
+	width: 160px;
 }
 
 .ClientView .newCreditNote {
@@ -201,10 +266,8 @@ textarea:HOVER {
 	margin-left: auto;
 }
 
-.ClientView .clientOptions .modifyClient,.ClientView .clientOptions .cancelClient
-	{
-	padding: 0.5em;
-	font-weight: bold;
+.ClientView .clientOptions .modifyClient {
+	margin-right: 0.5em;
 }
 
 .ClientView .modifyClient:HOVER,.ClientView .cancelClient:HOVER {
@@ -261,10 +324,84 @@ textarea:HOVER {
 	height: 100%;
 }
 
+.HomeView .businessPanel {
+	margin: 0 auto;
+	width: 80%;
+	font-size: 1.2em;
+	margin-top: 1em;
+	padding: 1em;
+	border: 0.1em solid #DDD;
+	-moz-box-shadow: 2px 2px 2px #CCC;
+	-webkit-box-shadow: 2px 2px 2px #CCC;
+	box-shadow: 2px 2px 2px #CCC;
+	line-height: 1.5em;
+}
+
+.HomeView .businessPanel td {
+	padding: 0.5em;
+	text-align: center;
+}
+
+.HomeView .businessPanel .businessName {
+	font-weight: bold;
+	text-transform: uppercase;
+}
+
+.HomeView .businessPanel .businessLogo {
+	height: 8em;
+	cursor: pointer;
+}
+
+.HomeView .businessPanel .businessDetails {
+	padding: 1em;
+}
+
+.HomeView .businessPanel .businessDetails a {
+	font-weight: normal;
+}
+
+.HomeView .tabPanel {
+	width: 80%;
+	margin: 1em auto;
+}
+
+.HomeView .listWrapper {
+	padding: 0.8em 2em;
+}
+
+.HomeView .gwt-TabBarItem {
+	padding: 0.5em 1em;
+	background-color: white;
+	border: 0.1em solid #DDD;
+	width: 9em;
+	border-top-right-radius: 1em;
+	border-top-left-radius: 1em;
+	font-size: 1.2em;
+	cursor: pointer;
+}
+
+.HomeView .gwt-TabBarItem:HOVER {
+	text-decoration: underline;
+}
+
+.HomeView .gwt-TabBarItem-selected:HOVER {
+	text-decoration: none;
+}
+
+.HomeView .gwt-TabBarItem-selected {
+	background-color: #EEE;
+	font-weight: bold;
+}
+
+
 
 .HomeView .homeBody {
 	width: 80%;
 	margin: 1em auto 0;
+}
+
+.HomeView .scrollHome {
+	height: 100%;
 }
 
 .panel {
@@ -272,25 +409,6 @@ textarea:HOVER {
 	padding: 1.5em 2em;
 	background-color: #EEE;
 	margin: 0 auto;
-}
-
-
-.HomeView .welcomeMessage {
-	width: 75%;
-	margin: 2em auto 0;
-	background-color: #FFFDB3;
-	padding: 1em;
-	border: 0.1em solid #DDD;
-	-moz-box-shadow: 2px 2px 2px #CCC;
-	-webkit-box-shadow: 2px 2px 2px #CCC;
-	box-shadow: 2px 2px 2px #CCC;
-}
-
-.HomeView .welcomeMessage p {
-	color: #333;
-	font-size: 1.1em;
-	margin: 0.5em 0;
-	line-height: 110%;
 }
 
 .HomeView .actions {
@@ -301,17 +419,6 @@ textarea:HOVER {
 	cursor: pointer;
 }
 
-.HomeView .listWrapper {
-	
-}
-
-.HomeView .invoiceList {
-	
-}
-
-.HomeView .clientList {
-	
-}
 
 .HomeView .invoicesTitle {
 	font-size: 1.2em;
@@ -319,17 +426,21 @@ textarea:HOVER {
 	margin: 0 0 0.5em
 }
 
-.HomeView .showMore {
+.HomeView .ShowMoreButton {
 	text-align: center;
 	margin-top: 0.5em;
 }
 
-.HomeView .showMore .ShowMoreButton-button {
+.HomeView .ShowMoreButton .ShowMoreButton-button {
 	width: 40%;
 }
 
-.HomeView .showMore .ShowMoreButton-loader {
-	
+.HomeView .yourDocsLabel {
+	width: 80%;
+	margin: 2em auto 0;
+	font-size: 1.2em;
+	text-transform: uppercase;
+	font-weight: bold;
 }
 
 .HomeView .currentDate {
@@ -342,16 +453,8 @@ textarea:HOVER {
 	margin-right: 1em;
 }
 
-.HomeView .currentDate .time {
-	
-}
-
 .MainWidget .centerContainer {
 	padding: 1em;
-}
-
-.MainWidget .westContainer {
-	
 }
 
 .MainWidget .southContainer .changeButton {
@@ -427,7 +530,7 @@ textarea:HOVER {
 
 .MainWidget .header .homeButton {
 	height: 2.5em;
-	width: 6em;
+	width: 8em;
 }
 
 .MainWidget .header .myDataButton {
@@ -497,16 +600,14 @@ textarea:HOVER {
 	height: 2em;
 }
 
-.QuickViewList.TransportDocumentList .upper span.createInvoice,.QuickViewList.EstimationList .upper span.convertToInvoice
-	{
-}
-
 .QuickViewList .details .tools {
 	text-align: right;
 	position: relative;
 }
 
-.QuickViewList.TransportDocumentList .upper span.createInvoice,.QuickViewList.EstimationList .upper span.convertToInvoice,.QuickViewList .details .tools span
+.QuickViewList.TransportDocumentList .upper span.createInvoice,
+.QuickViewList.EstimationList .upper span.convertToInvoice,
+.QuickViewList .details .tools span
 	{
 	text-transform: uppercase;
 	font-size: 0.8em;
@@ -514,7 +615,9 @@ textarea:HOVER {
 	cursor: pointer;
 }
 
-.QuickViewList.TransportDocumentList .upper span.createInvoice:HOVER,.QuickViewList.EstimationList .upper span.convertToInvoice:HOVER,.QuickViewList .details .tools span:HOVER
+.QuickViewList.TransportDocumentList .upper span.createInvoice:HOVER,
+.QuickViewList.EstimationList .upper span.convertToInvoice:HOVER,
+.QuickViewList .details .tools span:HOVER
 	{
 	text-decoration: underline;
 }
@@ -564,7 +667,7 @@ textarea:HOVER {
 	padding: 0.5em 0;
 }
 
-.QuickViewList.InvoiceList .main.invoice-not-payed .id {
+/* .QuickViewList.InvoiceList .main.invoice-not-payed .id {
 	background-color: #EDE700;
 	border: 0.1em solid #D8D308;
 	color: black;
@@ -579,7 +682,7 @@ textarea:HOVER {
 .QuickViewList.EstimationList .id {
 	background-color: #888;
 	color: white;
-}
+} */
 
 .QuickViewList .id {
 	padding: 1px 2px;
@@ -600,11 +703,36 @@ textarea:HOVER {
 	padding: 0.2em;
 }
 
+.QuickViewList .quickViewCell .details {
+	-webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+    color: #CCC;
+}
+
+.QuickViewList .quickViewCell:HOVER .details {
+	color: inherit;
+}
+
 .QuickViewList .openEstimation,.QuickViewList .openInvoice,.QuickViewList .openCreditNote,.QuickViewList .openTransportDocument
 {
 	position: absolute;
 	right: 48%;
 	bottom: -4px;
+	font-weight: bold;
+	padding: 1px;
+	text-decoration: none;
+}
+
+.QuickViewList .openEstimation:HOVER,
+.QuickViewList .openInvoice:HOVER,
+.QuickViewList .openCreditNote:HOVER,
+.QuickViewList .openTransportDocument:HOVER {
+	color: white;
+	background-color: #333;
+	text-decoration: none;
 }
 
 .westContainer {
@@ -676,6 +804,10 @@ textarea:HOVER {
 
 .Dialog {
 	z-index: 2;
+}
+
+.Dialog-focusableBody {
+	outline: none;
 }
 
 .gwt-PopupPanelGlass {
@@ -915,8 +1047,19 @@ td.datePickerMonth {
 	width: 9em;
 }
 
-.ClientDialog .buttonContainer .button.submit {
+.ClientDialog .buttonContainer .submit {
 	margin-right: 1em;
+	width: 9em;
+}
+
+
+.LoaderButton {
+}
+
+.LoaderButton .LoaderButton-loader {
+	margin: 0 auto;
+	display: block;
+	height: 2em;
 }
 
 .AccountDocumentView {
@@ -944,18 +1087,21 @@ td.datePickerMonth {
 }
 
 .AccountDocumentView .newEstimation,.AccountDocumentView .newInvoice,.AccountDocumentView .newTransportDocument,
-.AccountDocumentView .newCreditNote
-	{
-		font-weight: bold;
-	font-size: 2em;
+.AccountDocumentView .newCreditNote	{
+	font-weight: bold;
+	font-size: 1.8em;
 	border-bottom: 1px solid;
 	text-align: center;
 	background-color: #CCC;
 	padding: 0.2em;
 }
 
-.AccountDocumentView .abortButton,.AccountDocumentView .modifyDocument,.AccountDocumentView .createInvoice,.AccountDocumentView .saveAsEstimation,.AccountDocumentView .convertToInvoice
-	{
+.AccountDocumentView .docControls .LoaderButton {
+	display: inline-block;
+}
+
+.AccountDocumentView .convertToInvoiceLB,
+.AccountDocumentView .abortButton {
 	margin-left: 2em;
 }
 
@@ -964,19 +1110,19 @@ td.datePickerMonth {
 }
 
 .AccountDocumentView .clientName {
-	font-size: 1.5em;
+	font-size: 1.3em;
 }
 
 .AccountDocumentView .label {
 	font-weight: bold;
-	font-size: 1.3em;
+	font-size: 1.1em;
 	padding: 0.2em 2em 0.7em 0;
 	width: 12em;
 }
 
 .AccountDocumentView .sublabel {
 	font-weight: bold;
-	font-size: 1.3em;
+	font-size: 1.1em;
 	padding: 0.3em 0.6em 0.2em 0;
 }
 
@@ -986,6 +1132,7 @@ td.datePickerMonth {
 
 .AccountDocumentView input[type=text].box {
 	width: 15em;
+	margin-bottom: 0.5em;
 }
 
 .AccountDocumentView .addressBox .loadDefaultsButton {
@@ -1012,9 +1159,14 @@ td.datePickerMonth {
 	margin-left: 2em;
 }
 
-.AccountDocumentView .number {
+.AccountDocumentView input[type="text"].box.number {
 	width: 2em;
 	text-align: center;
+}
+
+.AccountDocumentView .invoiceNumberSuffix {
+	padding: 0.4em;
+	font-size: 1.2em;
 }
 
 .AccountDocumentView .note,.AccountDocumentView .paymentNote {
@@ -1099,11 +1251,24 @@ td.datePickerMonth {
 	border-radius: 0.5em;
 }
 
+
+.BootstrapDialog .businessLabel {
+	margin-right: 1em;
+	width: 10em;
+	font-size: 1.1em;
+}
+
+.BootstrapDialog .InlineNotification {
+	margin: 1em auto;
+}
+
 .BootstrapDialog .welcomeMessage {
 	background-color: #FFFFB1;
 	padding: 1em;
 	border: 0.1em solid #333;
 	width: 30em;
+	margin: 0 auto;
+	font-size: 1.2em;
 }
 
 .BootstrapDialog .bootstrapDialogBody {
@@ -1112,8 +1277,8 @@ td.datePickerMonth {
 }
 
 .BootstrapDialog .gridContainer {
-	margin: 1em auto;
-	width: 22em;
+	margin: 0 auto;
+	padding: 2em;
 }
 
 .BootstrapDialog .submit {
@@ -1121,7 +1286,7 @@ td.datePickerMonth {
 	display: block;
 }
 
-.BootstrapDialog .ValidatedListBox,.BootstrapDialog .RichTextBox {
+.BootstrapDialog .ValidatedListBox,.BootstrapDialog .ValidatedTextBox {
 	width: 20em;
 	margin: 0.3em;
 }
@@ -1142,12 +1307,24 @@ td.datePickerMonth {
 	background-color: #F9E0E0;
 }
 
+.InlineNotification {
+	width: 80%;
+	background-color: #F9E0E0;
+	border: 0.1em solid red;
+	padding: 0.3em;
+	margin: 0.2em auto;
+	text-align: center;
+}
+
 .ValidationBaloonMessage-validationMessage {
 	background-color: #F9E0E0;
 	border: 0.1em solid red;
 	border-radius: 0.5em;
 	padding: 0.3em;
 	margin-left: 5px;
+}
+.BusinessView .removeLogo {
+	margin-left: 0.5em;
 }
 
 .BusinessView .ValidatedTextBox {
@@ -1159,8 +1336,18 @@ td.datePickerMonth {
 	padding: 1em;
 }
 
+.BusinessView .logoContainerWrapper .logo {
+	max-width: 300px;
+	max-height: 300px;
+}
+
 .BusinessView .gridContainer {
 	padding: 1em;
+}
+
+.BusinessView .LoaderButton {
+	width: 10em;
+	margin: 0 auto;
 }
 
 .BusinessView .businessLabel {
@@ -1190,8 +1377,55 @@ td.datePickerMonth {
 	text-transform: uppercase;
 }
 
+.BusinessView .cancelDataContainer {
+	margin-top: 2em;
+}
+
+.BusinessView .cancelDataContainer .deleteAccount {
+	margin-top: 1em;
+	display: block;
+}
+
 .WestView {
 	height: 100%;
+}
+
+.tipPanel {
+	width: 80%;
+	margin: 2em auto 0;
+	background-color: #FFFDB3;
+	padding: 1em;
+	border: 0.1em solid #DDD;
+	-moz-box-shadow: 2px 2px 2px #CCC;
+	-webkit-box-shadow: 2px 2px 2px #CCC;
+	box-shadow: 2px 2px 2px #CCC;
+	position: relative;
+}
+
+.tipPanel .tip {
+	color: #333;
+	font-size: 1.1em;
+	line-height: 110%;
+}
+
+.tipPanel .tip p {
+	margin: 0.5em 0;
+}
+
+.tipPanel .closeTip {
+	float: right;
+	cursor: pointer;
+	padding: 2px;
+	position: absolute;
+	top: 1px;
+	right: 1px;
+	font-weight: bold;
+	color: #888;
+}
+
+.tipPanel .closeTip:HOVER {
+	color: white;
+	background-color: #333;
 }
 
 .WestView .clientContainer {

@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2012-10-21 18:09+0200\n"
+"POT-Creation-Date: 2013-01-27 16:47+0100\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -26,95 +26,56 @@ msgstr ""
 msgid "Powered by Novabill"
 msgstr ""
 
-#: src/template/tidy/transport_document.py:30
-msgid "Transport document"
+#: src/template/tidy/__init__.py:106
+#, python-format
+msgid "VAT ID %s"
 msgstr ""
 
-#: src/template/tidy/transport_document.py:31
-#: src/template/tidy/credit_note.py:13 src/template/tidy/estimation.py:25
-#: src/template/tidy/invoice.py:33
-msgid "Number"
+#: src/template/tidy/__init__.py:110
+msgid "Client"
 msgstr ""
 
-#: src/template/tidy/transport_document.py:32
-#: src/template/tidy/credit_note.py:14 src/template/tidy/estimation.py:26
-#: src/template/tidy/invoice.py:34 src/template/tidy/invoice.py:46
-msgid "Date"
-msgstr ""
-
-#: src/template/tidy/transport_document.py:45
-msgid "city pattern"
-msgstr ""
-
-#: src/template/tidy/transport_document.py:57
-msgid "Receiving address"
-msgstr ""
-
-#: src/template/tidy/transport_document.py:60
-msgid "Sending address"
-msgstr ""
-
-#: src/template/tidy/transport_document.py:64
-msgid "Transporter"
-msgstr ""
-
-#: src/template/tidy/transport_document.py:65
-msgid "Transportation responsibility"
-msgstr ""
-
-#: src/template/tidy/transport_document.py:66
-msgid "Num. of packages"
-msgstr ""
-
-#: src/template/tidy/transport_document.py:67
-msgid "Trade zone"
-msgstr ""
-
-#: src/template/tidy/__init__.py:99
-msgid "entity pattern"
-msgstr ""
-
-#: src/template/tidy/__init__.py:104
-msgid "To"
-msgstr ""
-
-#: src/template/tidy/__init__.py:107
+#: src/template/tidy/__init__.py:113
 msgid "From"
 msgstr ""
 
-#: src/template/tidy/__init__.py:111
-msgid "Price"
-msgstr ""
-
-#: src/template/tidy/__init__.py:111
-msgid "Qty"
-msgstr ""
-
-#: src/template/tidy/__init__.py:111
+#: src/template/tidy/__init__.py:117
 msgid "Description"
 msgstr ""
 
-#: src/template/tidy/__init__.py:111
-msgid "Tax"
+#: src/template/tidy/__init__.py:117
+msgid "Qty"
 msgstr ""
 
-#: src/template/tidy/__init__.py:111 src/template/tidy/__init__.py:125
+#: src/template/tidy/__init__.py:117
+msgid "U.M."
+msgstr ""
+
+#: src/template/tidy/__init__.py:117
+msgid "Price"
+msgstr ""
+
+#: src/template/tidy/__init__.py:117
+msgid "% Tax"
+msgstr ""
+
+#: src/template/tidy/__init__.py:117 src/template/tidy/__init__.py:131
 msgid "Total"
 msgstr ""
 
-#: src/template/tidy/__init__.py:122
+#: src/template/tidy/__init__.py:129
 msgid "Total before tax"
 msgstr ""
 
-#: src/template/tidy/__init__.py:123
+#: src/template/tidy/__init__.py:130
 msgid "Total tax"
 msgstr ""
 
-#: src/template/tidy/__init__.py:133
+#: src/template/tidy/__init__.py:141
 msgid "Invoice notes"
 msgstr ""
 
-#: src/template/tidy/__init__.py:133
+#: src/template/tidy/__init__.py:141
 msgid "No notes"
 msgstr ""
 
@@ -122,43 +83,85 @@ msgstr ""
 msgid "Credit note"
 msgstr ""
 
-#: src/template/tidy/estimation.py:24
-msgid "Estimation"
+#: src/template/tidy/credit_note.py:13 src/template/tidy/estimation.py:28
+#: src/template/tidy/transport_document.py:43 src/template/tidy/invoice.py:39
+msgid "Number"
+msgstr ""
+
+#: src/template/tidy/credit_note.py:14 src/template/tidy/estimation.py:29
+#: src/template/tidy/transport_document.py:44 src/template/tidy/invoice.py:40
+msgid "Date"
 msgstr ""
 
 #: src/template/tidy/estimation.py:27
+msgid "Estimation"
+msgstr ""
+
+#: src/template/tidy/estimation.py:30
 msgid "Valid until"
 msgstr ""
 
-#: src/template/tidy/estimation.py:37
+#: src/template/tidy/estimation.py:40
 msgid "Limitations"
 msgstr ""
 
-#: src/template/tidy/estimation.py:38
+#: src/template/tidy/estimation.py:41
 msgid "No limitations"
 msgstr ""
 
-#: src/template/tidy/estimation.py:42
+#: src/template/tidy/estimation.py:45
 msgid "Payment note"
 msgstr ""
 
-#: src/template/tidy/invoice.py:32
+#: src/template/tidy/transport_document.py:42
+msgid "Transport document"
+msgstr ""
+
+#: src/template/tidy/transport_document.py:68
+msgid "Receiving address"
+msgstr ""
+
+#: src/template/tidy/transport_document.py:71
+msgid "Sending address"
+msgstr ""
+
+#: src/template/tidy/transport_document.py:75
+msgid "Transporter"
+msgstr ""
+
+#: src/template/tidy/transport_document.py:76
+msgid "Transportation responsibility"
+msgstr ""
+
+#: src/template/tidy/transport_document.py:77
+msgid "Num. of packages"
+msgstr ""
+
+#: src/template/tidy/transport_document.py:78
+msgid "Trade zone"
+msgstr ""
+
+#: src/template/tidy/invoice.py:38
 msgid "Invoice"
 msgstr ""
 
-#: src/template/tidy/invoice.py:45
+#: src/template/tidy/invoice.py:51
 msgid "Payment details"
 msgstr ""
 
-#: src/template/tidy/invoice.py:47
+#: src/template/tidy/invoice.py:52
+msgid "Deadline"
+msgstr ""
+
+#: src/template/tidy/invoice.py:53
 msgid "Type"
 msgstr ""
 
-#: src/template/tidy/invoice.py:48
+#: src/template/tidy/invoice.py:54
 msgid "Note"
 msgstr ""
 
-#: src/main.py:64
+#: src/core.py:62
 #, python-format
 msgid "%(docType)s for %(client)s"
 msgstr ""

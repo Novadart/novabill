@@ -1,7 +1,0 @@
-<html>
-<body>
-	<p>New ${eventType}!</p>
-	<p>Principal: ${principal}</p>
-	<p>Time: ${time}</p>
-</body>
-</html>

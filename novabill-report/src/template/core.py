@@ -2,9 +2,10 @@
 
 class AbstractDirector(object):
     
-    def __init__(self, builder, dataObject, dispParams=dict(), translator=None):
+    def __init__(self, builder, dataObject, hasLogo=False, dispParams=dict(), translator=None):
         self.__builder = builder
         self.__data = dataObject
+        self.__hasLogo = hasLogo
         self.__displayParams = dispParams
         self._ = translator
     
@@ -13,6 +14,9 @@ class AbstractDirector(object):
         
     def getData(self):
         return self.__data;
+    
+    def hasLogo(self):
+        return self.__hasLogo
     
     def getDispParams(self):
         return self.__displayParams

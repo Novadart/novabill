@@ -1,14 +1,9 @@
 package com.novadart.novabill.domain;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import java.util.SortedSet;
-import java.util.TreeSet;
 
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
@@ -24,8 +19,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Transient;
 import javax.persistence.Version;
+import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -33,6 +28,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
 import org.apache.solr.analysis.LowerCaseFilterFactory;
 import org.apache.solr.analysis.StandardTokenizerFactory;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Field;
@@ -67,7 +64,8 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 })
 @Configurable
 @Entity
-public class Client implements Serializable {
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+public class Client implements Serializable, Taxable {
 	
 	private static final long serialVersionUID = 8383909226336873374L;
 	
@@ -97,7 +95,7 @@ public class Client implements Serializable {
     private String province;
 
 	@Field(name = FTSNamespace.COUNTRY)
-    @Size(max = 200)
+    @Size(max = 3)
 	@NotBlank
     private String country;
 
@@ -136,6 +134,7 @@ public class Client implements Serializable {
     })
     @Embedded
     @IndexedEmbedded(prefix = FTSNamespace.CONTACT_PREFIX)
+    @Valid
     private Contact contact = new Contact();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
@@ -154,29 +153,20 @@ public class Client implements Serializable {
     @IndexedEmbedded
     private Business business;
     
-    @Transient
-    private static final Comparator<AccountingDocument> ACCOUNTING_DOCUMENT_COMPARATOR = new AccountingDocumentComparator();
-    
-    private <T extends AccountingDocument> List<T> sortAccountingDocuments(Collection<T> collection){
-    	SortedSet<T> sortedSet = new TreeSet<T>(ACCOUNTING_DOCUMENT_COMPARATOR);
-    	sortedSet.addAll(collection);
-    	return new ArrayList<T>(sortedSet);
-    }
-    
     public List<Invoice> getSortedInvoices(){
-    	return sortAccountingDocuments(getInvoices()); 
+    	return AccountingDocument.sortAccountingDocuments(getInvoices()); 
     }
 	
     public List<Estimation> getSortedEstimations(){
-    	return sortAccountingDocuments(getEstimations());
+    	return AccountingDocument.sortAccountingDocuments(getEstimations());
     }
     
     public List<CreditNote> getSortedCreditNotes(){
-    	return sortAccountingDocuments(getCreditNotes());
+    	return AccountingDocument.sortAccountingDocuments(getCreditNotes());
     }
     
     public List<TransportDocument> getSortedTransportDocuments(){
-    	return sortAccountingDocuments(getTransportDocuments());
+    	return AccountingDocument.sortAccountingDocuments(getTransportDocuments());
     }
     
     public List<Invoice> getAllInvoicesInRange(Integer start, Integer length){
@@ -209,6 +199,15 @@ public class Client implements Serializable {
     			.setParameter("clientId", getId())
     			.setFirstResult(start)
     			.setMaxResults(length).getResultList();
+    }
+    
+    public boolean hasAccountingDocs(){
+    	String queryTemplate = "select count(o) from %s o where o.client.id = :clientId";
+    	Long clientID = getId();
+    	return entityManager.createQuery(String.format(queryTemplate, "Invoice"), Long.class).setParameter("clientId", clientID).getSingleResult() != 0 ||
+    			entityManager.createQuery(String.format(queryTemplate, "CreditNote"), Long.class).setParameter("clientId", clientID).getSingleResult() != 0 ||
+    			entityManager.createQuery(String.format(queryTemplate, "Estimation"), Long.class).setParameter("clientId", clientID).getSingleResult() != 0 ||
+    			entityManager.createQuery(String.format(queryTemplate, "TransportDocument"), Long.class).setParameter("clientId", clientID).getSingleResult() != 0;
     }
     
     /*

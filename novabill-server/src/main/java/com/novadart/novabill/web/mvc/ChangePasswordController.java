@@ -12,8 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
-
-import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.ChangePasswordValidator;
 import com.novadart.novabill.web.mvc.command.ChangePassword;
@@ -37,7 +36,7 @@ public class ChangePasswordController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(Model model){
 		ChangePassword changePassword = new ChangePassword();
-		changePassword.setEmail(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getEmail());
+		changePassword.setEmail(utilsService.getAuthenticatedPrincipalDetails().getUsername());
 		model.addAttribute("changePassword", changePassword);
 		return "changePassword";
 	}
@@ -49,8 +48,8 @@ public class ChangePasswordController {
 		if(result.hasErrors())
 			return "changePassword";
 		else{
-			Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getPrincipal().getId());
-			business.setPassword(changePassword.getNewPassword());
+			Principal principal = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId());
+			principal.setPassword(changePassword.getNewPassword());
 			status.setComplete();
 			return "redirect:/private";
 		}
