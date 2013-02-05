@@ -27,6 +27,7 @@ import com.novadart.novabill.domain.EmailPasswordHolder;
 import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.TokenGenerator;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.RegistrationValidator;
 import com.novadart.novabill.web.mvc.ActivateAccountController;
 import com.novadart.novabill.web.mvc.RegisterController;
@@ -42,6 +43,9 @@ public class RegistrationActivationTest {
 
 	@Autowired
 	private RegistrationValidator validator;
+	
+	@Autowired
+	private UtilsService utilsService;
 	
 	private RegisterController initRegisterController(String token, String activationUrlPattern, int activationPeriod) throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException{
 		RegisterController controller = new RegisterController();
@@ -68,6 +72,12 @@ public class RegistrationActivationTest {
 		return registration;
 	}
 	
+	private ActivateAccountController initActivateAccountController() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+		ActivateAccountController activateAccountController = new ActivateAccountController();
+		TestUtils.setPrivateField(ActivateAccountController.class, activateAccountController, "utilsService", utilsService);
+		return activateAccountController;
+	}
+	
 	@Test
 	public void defaultRegistrationActivationFlow() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
 		String token = "1", email = "foo@bar.com", password = "password";
@@ -79,7 +89,7 @@ public class RegistrationActivationTest {
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
-		ActivateAccountController activationController = new ActivateAccountController();
+		ActivateAccountController activationController = initActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);
 		String forwardToSpringSecurityCheck = activationController.processSubmit(email, password, (Registration)model.asMap().get("registration"),
@@ -189,7 +199,7 @@ public class RegistrationActivationTest {
 		smtpServer.stop();
 		assertEquals(1, smtpServer.getReceivedEmailSize());
 		
-		ActivateAccountController activationController = new ActivateAccountController();
+		ActivateAccountController activationController = initActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView1 = activationController.setupForm(email, token, model);
 		String forwardToSpringSecurityCheck1 = activationController.processSubmit(email, password, (Registration)model.asMap().get("registration"),
@@ -225,12 +235,12 @@ public class RegistrationActivationTest {
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
 		//First activation initiation
-		ActivateAccountController activationController1 = new ActivateAccountController();
+		ActivateAccountController activationController1 = initActivateAccountController();
 		Model model1 = new ExtendedModelMap();
 		String activateView1 = activationController1.setupForm(email, token1, model1);
 
 		//Second activation initiation
-		ActivateAccountController activationController2 = new ActivateAccountController();
+		ActivateAccountController activationController2 = initActivateAccountController();
 		Model model2 = new ExtendedModelMap();
 		String activateView2 = activationController2.setupForm(email, token2, model2);
 		String forwardToSpringSecurityCheck1 = activationController1.processSubmit(email, password, (Registration)model1.asMap().get("registration"),
@@ -263,7 +273,7 @@ public class RegistrationActivationTest {
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
-		ActivateAccountController activationController = new ActivateAccountController();
+		ActivateAccountController activationController = initActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);
 		String backToActivate = activationController.processSubmit(email, password + "1", (Registration)model.asMap().get("registration"),
@@ -284,7 +294,7 @@ public class RegistrationActivationTest {
 		smtpServer.stop();
 		assertEquals(1, smtpServer.getReceivedEmailSize());
 		
-		ActivateAccountController activationController = new ActivateAccountController();
+		ActivateAccountController activationController = initActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);
 		String backToActivate = activationController.processSubmit(email, null, (Registration)model.asMap().get("registration"),
