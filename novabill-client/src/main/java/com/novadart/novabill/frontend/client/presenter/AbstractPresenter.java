@@ -3,14 +3,15 @@ package com.novadart.novabill.frontend.client.presenter;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
+import com.novadart.novabill.frontend.client.view.View;
 
-public abstract class AbstractPresenter<View> implements Presenter {
+public abstract class AbstractPresenter<V extends View<?>> implements Presenter {
 	
 	private final EventBus eventBus;
 	private final PlaceController placeController;
-	private final View view;
+	private final V view;
 	
-	public AbstractPresenter(PlaceController placeController, EventBus eventBus, View view) {
+	public AbstractPresenter(PlaceController placeController, EventBus eventBus, V view) {
 		this.placeController = placeController;
 		this.eventBus = eventBus;
 		this.view = view;
@@ -20,7 +21,7 @@ public abstract class AbstractPresenter<View> implements Presenter {
 		return eventBus;
 	}
 	
-	protected View getView() {
+	protected V getView() {
 		return view;
 	}
 

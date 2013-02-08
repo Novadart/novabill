@@ -26,6 +26,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 	
 	public BusinessPresenter(PlaceController placeController, EventBus eventBus, BusinessView view) {
 		super(placeController, eventBus, view);
+		getView().setPresenter(this);
 	}
 	
 	@Override
