@@ -34,7 +34,6 @@ import com.novadart.novabill.frontend.client.presenter.Presenter;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
-import com.novadart.novabill.frontend.client.view.center.CreditNoteView;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;

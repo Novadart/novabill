@@ -38,7 +38,6 @@ import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.presenter.Presenter;
-import com.novadart.novabill.frontend.client.view.center.HomeView;
 import com.novadart.novabill.frontend.client.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.widget.list.ShowMoreButton;
 import com.novadart.novabill.frontend.client.widget.list.impl.CreditNoteList;

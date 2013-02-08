@@ -13,7 +13,7 @@ import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTrans
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.TransportDocumentPlace;
 import com.novadart.novabill.frontend.client.view.MainWidget;
-import com.novadart.novabill.frontend.client.view.center.TransportDocumentView;
+import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 

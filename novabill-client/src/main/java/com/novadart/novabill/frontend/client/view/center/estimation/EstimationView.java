@@ -1,4 +1,4 @@
-package com.novadart.novabill.frontend.client.view.center;
+package com.novadart.novabill.frontend.client.view.center.estimation;
 
 import com.novadart.novabill.frontend.client.view.View;
 import com.novadart.novabill.shared.client.dto.ClientDTO;

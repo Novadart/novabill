@@ -18,14 +18,12 @@ import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
-import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.Const;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.widget.validation.AlternativeSsnVatIdValidation;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
 public class BusinessViewImpl extends Composite implements BusinessView, HasUILocking {
 
@@ -160,23 +158,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 			v.reset();
 		}
 		ssnOrVatIdValidation.reset();
-		
-		BusinessDTO b = Configuration.getBusiness();
-		
-		name.setText(b.getName());
-		ssn.setText(b.getSsn());
-		vatID.setText(b.getVatID());
-		address.setText(b.getAddress());
-		city.setText(b.getCity());
 		province.reset();
-		province.setSelectedItem(b.getProvince());
 		country.reset();
-		country.setSelectedItemByValue(b.getCountry());
-		postcode.setText(b.getPostcode());
-		phone.setText(b.getPostcode());
-		email.setText(b.getEmail());
-		mobile.setText(b.getMobile());
-		fax.setText(b.getFax());
 		web.reset();
 		inlineNotification.hide();
 		saveData.reset();

@@ -13,7 +13,7 @@ import com.novadart.novabill.frontend.client.place.creditnote.FromInvoiceCreditN
 import com.novadart.novabill.frontend.client.place.creditnote.ModifyCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
 import com.novadart.novabill.frontend.client.view.MainWidget;
-import com.novadart.novabill.frontend.client.view.center.CreditNoteView;
+import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;

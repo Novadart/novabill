@@ -1,4 +1,4 @@
-package com.novadart.novabill.frontend.client.view.center;
+package com.novadart.novabill.frontend.client.view.center.home;
 
 import com.novadart.novabill.frontend.client.view.View;
 
