@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
+import com.novadart.novabill.frontend.client.presenter.Presenter;
 import com.novadart.novabill.frontend.client.util.WidgetUtils;
 import com.novadart.novabill.frontend.client.view.center.client.dialog.ClientDialog;
 import com.novadart.novabill.frontend.client.widget.search.ClientSearch;
@@ -122,7 +123,7 @@ public class WestViewImpl extends Composite implements WestView  {
 	}
 
 	@Override
-	public void setClean() {
+	public void clean() {
 		clientContainer.setVisible(true);
 	}
 

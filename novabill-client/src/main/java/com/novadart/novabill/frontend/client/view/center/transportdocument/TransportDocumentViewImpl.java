@@ -35,6 +35,7 @@ import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
+import com.novadart.novabill.frontend.client.presenter.Presenter;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
@@ -554,7 +555,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 
 	@Override
-	public void setClean() {
+	public void clean() {
 		//clean internal data		
 		this.client = null;
 		this.transportDocument = null;

@@ -4,11 +4,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
@@ -22,21 +20,12 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.Const;
-import com.novadart.novabill.frontend.client.event.BusinessUpdateEvent;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.HomePlace;
-import com.novadart.novabill.frontend.client.util.ExportUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
-import com.novadart.novabill.frontend.client.view.center.BusinessView;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
-import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.validation.AlternativeSsnVatIdValidation;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
-import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
 
 public class BusinessViewImpl extends Composite implements BusinessView, HasUILocking {
 
@@ -46,9 +35,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	interface BusinessViewImplUiBinder extends
 	UiBinder<Widget, BusinessViewImpl> {
 	}
-
-	private Presenter presenter;
-	private EventBus eventBus;
+	
+	private BusinessView.Presenter presenter;
 
 	@UiField Button updateLogo;
 	@UiField Button removeLogo;
@@ -78,7 +66,6 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@UiField Button exportCreditNoteData;
 	@UiField Button exportTransportDocumentData;
 	
-	private boolean logoUpdateCompleted = true;
 	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation();
 
 	public BusinessViewImpl() {
@@ -115,7 +102,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 			
 			@Override
 			public void onSubmit(SubmitEvent event) {
-				logoUpdateCompleted = false;
+				presenter.onLogoSubmit();
 			}
 		});
 		
@@ -124,41 +111,14 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 			@Override
 			public void onSubmitComplete(SubmitCompleteEvent event) {
 				String resultCodeStr = event.getResults();
-				
+
 				// for some reason Internet Explorer wraps the number in <pre></pre>, thus instead of 0 you get <pre>0</pre>
 				if(resultCodeStr.toLowerCase().contains("<pre>")){
 					resultCodeStr = String.valueOf(resultCodeStr.charAt(5));
 				}
-				
+
 				int resultCode = Integer.parseInt(resultCodeStr);
-				
-				LogoUploadStatus status = LogoUploadStatus.values()[resultCode];
-				switch(status){
-				case ILLEGAL_PAYLOAD:
-					Notification.showMessage(I18N.INSTANCE.errorLogoIllegalFile());
-					break;
-					
-				case ILLEGAL_SIZE:
-					Notification.showMessage(I18N.INSTANCE.errorLogoSizeTooBig());
-					break;
-					
-					default:
-				case ILLEGAL_REQUEST:
-				case INTERNAL_ERROR:
-					Notification.showMessage(I18N.INSTANCE.errorLogoIllegalRequest());
-					break;
-					
-				case OK:
-					Const.refeshLogoUrl();
-					logo.setUrl(Const.getLogoUrl());
-					formPanel.setVisible(false);
-					formPanel.reset();
-					updateLogo.setVisible(true);
-					break;
-				
-				}
-				
-				logoUpdateCompleted = true;
+				presenter.onLogoSubmitComplete(resultCode);
 			}
 		});
 		
@@ -167,61 +127,23 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		
-		BusinessDTO b = Configuration.getBusiness();
-		
-		name.setText(b.getName());
-		ssn.setText(b.getSsn());
-		vatID.setText(b.getVatID());
-		address.setText(b.getAddress());
-		city.setText(b.getCity());
-		province.setSelectedItem(b.getProvince());
-		country.setSelectedItemByValue(b.getCountry());
-		postcode.setText(b.getPostcode());
-		phone.setText(b.getPhone());
-		email.setText(b.getEmail());
-		mobile.setText(b.getMobile());
-		fax.setText(b.getFax());
-		web.setText(b.getWeb());
+		presenter.onLoad();
 	}
 	
 	
 	@UiHandler("removeLogo")
 	void onRemoveLogoClicked(ClickEvent e){
-		ServerFacade.deleteLogo(new AsyncCallback<Boolean>() {
-			
-			@Override
-			public void onSuccess(Boolean result) {
-				Const.refeshLogoUrl();
-				formPanel.setVisible(false);
-				formPanel.reset();
-				updateLogo.setVisible(true);
-				logo.setUrl(Const.getLogoUrl());
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
-			}
-		});
+		presenter.onRemoveLogoClicked();
 	}
 	
 	@UiHandler("updateLogo")
 	void onUpdateLogoClicked(ClickEvent e){
-		ServerFacade.business.generateLogoOpToken(new ManagedAsyncCallback<String>() {
-
-			@Override
-			public void onSuccess(String result) {
-				formPanel.setAction(Const.UPDATE_LOGO+result);
-				updateLogo.setVisible(false);
-				formPanel.setVisible(true);
-			}
-		});
+		presenter.onUpdateLogoClicked();
 	}
 
 
 	@Override
-	public void setClean() {
+	public void clean() {
 		FileUpload fileUpload = new FileUpload();
 		fileUpload.setName("file");
 		fileUpload.setStyleName("logoFileUpload");
@@ -261,110 +183,34 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		setLocked(false);
 	}
 
-	@Override
-	public void setPresenter(Presenter presenter) {
-		this.presenter = presenter;
-	}
-	
-	@Override
-	public void setEventBus(EventBus eventBus) {
-		this.eventBus = eventBus;
-	}
-
-	private boolean validate(){
-		boolean validationOk = true;
-		inlineNotification.hide();
-		
-		ssnOrVatIdValidation.validate();
-		if(!ssnOrVatIdValidation.isValid()){
-			inlineNotification.showMessage(ssnOrVatIdValidation.getErrorMessage());
-			validationOk = false;
-		}
-		
-		for (ValidatedTextBox v : new ValidatedTextBox[]{name, address, city, 
-				postcode, phone, email, mobile, fax, web}) {
-			v.validate();
-			validationOk = validationOk && v.isValid();
-		}
-		
-		province.validate();
-		validationOk = validationOk && province.isValid();
-		country.validate();
-		validationOk = validationOk && country.isValid();
-		return validationOk;
-	}
-
 	@UiHandler("saveData")
 	void onSaveDataClicked(ClickEvent e){
-		if(!logoUpdateCompleted){
-			Notification.showMessage(I18N.INSTANCE.errorLogoNotYetUploaded());
-			return;
-		}
-		
-		if(validate()){
-			final BusinessDTO b = Configuration.getBusiness();
-			b.setName(name.getText());
-			b.setAddress(address.getText());
-			b.setSsn(ssn.getText());
-			b.setVatID(vatID.getText());
-			b.setCity(city.getText());
-			b.setProvince(province.getSelectedItemText());
-			b.setCountry(country.getSelectedItemValue());
-			b.setPostcode(postcode.getText());
-			b.setPhone(phone.getText());
-			b.setEmail(email.getText());
-			b.setMobile(mobile.getText());
-			b.setFax(fax.getText());
-			b.setWeb(web.getText());
-			
-			saveData.showLoader(true);
-			setLocked(true);
-			
-			ServerFacade.business.update(b, new ManagedAsyncCallback<Void>() {
-				
-				@Override
-				public void onSuccess(Void result) {
-					saveData.showLoader(true);
-					Configuration.setBusiness(b);
-					presenter.goTo(new HomePlace());
-					eventBus.fireEvent(new BusinessUpdateEvent(b));
-					setLocked(false);
-				}
-				
-				@Override
-				public void onFailure(Throwable caught) {
-					saveData.showLoader(true);
-					super.onFailure(caught);
-					setLocked(false);
-				}
-			});
-			
-		} 
+		presenter.onSaveDataClicked();
 	}
 	
 	@UiHandler("exportClientData")
 	void onExportClientDataClicked(ClickEvent e){
-		ExportUtils.exportData(true, false, false, false, false);
+		presenter.onExportClientDataClicked();
 	}
 
 	@UiHandler("exportInvoiceData")
 	void onExportInvoiceDataClicked(ClickEvent e){
-		ExportUtils.exportData(false, true, false, false, false);
+		presenter.onExportInvoiceDataClicked();
 	}
 	
 	@UiHandler("exportEstimationData")
 	void onExportEstimationDataClicked(ClickEvent e){
-		ExportUtils.exportData(false, false, true, false, false);
+		presenter.onExportEstimationDataClicked();
 	}
 	
 	@UiHandler("exportCreditNoteData")
 	void onExportCreditNoteDataClicked(ClickEvent e){
-		ExportUtils.exportData(false, false, false, true, false);
+		presenter.onExportCreditNoteDataClicked();
 	}
 	
 	@UiHandler("exportTransportDocumentData")
 	void onExportTransportDocumentDataClicked(ClickEvent e){
-		ExportUtils.exportData(false, false, false, false, true);
+		presenter.onExportTransportDocumentDataClicked();
 	}
 	
 	@Override
@@ -392,4 +238,134 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		exportTransportDocumentData.setEnabled(!value);
 	}
 	
+	@Override
+	public void setPresenter(Presenter presenter) {
+		this.presenter = presenter;
+	}
+
+	@Override
+	public Button getUpdateLogo() {
+		return updateLogo;
+	}
+
+	@Override
+	public Button getRemoveLogo() {
+		return removeLogo;
+	}
+
+	@Override
+	public FormPanel getFormPanel() {
+		return formPanel;
+	}
+
+	@Override
+	public Image getLogo() {
+		return logo;
+	}
+
+	@Override
+	public InlineNotification getInlineNotification() {
+		return inlineNotification;
+	}
+
+	@Override
+	public ValidatedTextBox getName() {
+		return name;
+	}
+
+	@Override
+	public ValidatedTextBox getSsn() {
+		return ssn;
+	}
+
+	@Override
+	public ValidatedTextBox getVatID() {
+		return vatID;
+	}
+
+	@Override
+	public ValidatedTextBox getAddress() {
+		return address;
+	}
+
+	@Override
+	public ValidatedTextBox getCity() {
+		return city;
+	}
+
+	@Override
+	public ValidatedListBox getProvince() {
+		return province;
+	}
+
+	@Override
+	public ValidatedListBox getCountry() {
+		return country;
+	}
+
+	@Override
+	public ValidatedTextBox getPostcode() {
+		return postcode;
+	}
+
+	@Override
+	public ValidatedTextBox getPhone() {
+		return phone;
+	}
+
+	@Override
+	public ValidatedTextBox getEmail() {
+		return email;
+	}
+
+	@Override
+	public ValidatedTextBox getMobile() {
+		return mobile;
+	}
+
+	@Override
+	public ValidatedTextBox getFax() {
+		return fax;
+	}
+
+	@Override
+	public ValidatedTextBox getWeb() {
+		return web;
+	}
+
+	@Override
+	public LoaderButton getSaveData() {
+		return saveData;
+	}
+
+	@Override
+	public Button getExportClientData() {
+		return exportClientData;
+	}
+
+	@Override
+	public Button getExportInvoiceData() {
+		return exportInvoiceData;
+	}
+
+	@Override
+	public Button getExportEstimationData() {
+		return exportEstimationData;
+	}
+
+	@Override
+	public Button getExportCreditNoteData() {
+		return exportCreditNoteData;
+	}
+
+	@Override
+	public Button getExportTransportDocumentData() {
+		return exportTransportDocumentData;
+	}
+
+	@Override
+	public AlternativeSsnVatIdValidation getSsnOrVatIdValidation() {
+		return ssnOrVatIdValidation;
+	}
+
 }

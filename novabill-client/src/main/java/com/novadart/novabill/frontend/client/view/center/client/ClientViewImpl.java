@@ -46,6 +46,7 @@ import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
+import com.novadart.novabill.frontend.client.presenter.Presenter;
 import com.novadart.novabill.frontend.client.util.WidgetUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.ClientView;
@@ -261,7 +262,7 @@ public class ClientViewImpl extends Composite implements ClientView, HasUILockin
 	}
 
 	@Override
-	public void setClean() {
+	public void clean() {
 		clientName.setText("");
 		clientDetails.setHTML("");
 		invoiceDataProvider.getList().clear();

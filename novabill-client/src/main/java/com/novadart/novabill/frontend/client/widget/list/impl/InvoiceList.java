@@ -1,7 +1,7 @@
 package com.novadart.novabill.frontend.client.widget.list.impl;
 
 import com.google.web.bindery.event.shared.EventBus;
-import com.novadart.novabill.frontend.client.view.View.Presenter;
+import com.novadart.novabill.frontend.client.presenter.Presenter;
 import com.novadart.novabill.frontend.client.widget.list.QuickViewList;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 

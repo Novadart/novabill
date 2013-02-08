@@ -11,13 +11,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.novadart.novabill.frontend.client.view.View;
-import com.novadart.novabill.frontend.client.view.center.BusinessView;
 import com.novadart.novabill.frontend.client.view.center.ClientView;
 import com.novadart.novabill.frontend.client.view.center.CreditNoteView;
 import com.novadart.novabill.frontend.client.view.center.EstimationView;
 import com.novadart.novabill.frontend.client.view.center.HomeView;
 import com.novadart.novabill.frontend.client.view.center.InvoiceView;
 import com.novadart.novabill.frontend.client.view.center.TransportDocumentView;
+import com.novadart.novabill.frontend.client.view.center.business.BusinessView;
 import com.novadart.novabill.frontend.client.view.center.business.BusinessViewImpl;
 import com.novadart.novabill.frontend.client.view.center.client.ClientViewImpl;
 import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteViewImpl;
@@ -51,14 +51,14 @@ public class ClientFactoryImpl implements ClientFactory
 	@SuppressWarnings("unchecked")
 	private <T extends View> T getView(Class<?> cl, View view){
 		views.put(cl, view);
-		view.setClean();
+		view.clean();
 		return (T)view;
 	}
 	
 	@SuppressWarnings("unchecked")
 	private <T extends View> T getView(Class<?> cl){
 		View view = views.get(cl);
-		view.setClean();
+		view.clean();
 		return (T)view;
 	}
 	

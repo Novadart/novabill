@@ -32,6 +32,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
+import com.novadart.novabill.frontend.client.presenter.Presenter;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
@@ -419,7 +420,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView, Has
 
 
 	@Override
-	public void setClean() {
+	public void clean() {
 		//clean internal data		
 		this.invoice = null;
 		this.client = null;
