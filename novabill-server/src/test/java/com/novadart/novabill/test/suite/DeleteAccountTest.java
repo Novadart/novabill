@@ -30,6 +30,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.XsrfTokenService;
+import com.novadart.novabill.web.mvc.BusinessLogoController;
 import com.novadart.novabill.web.mvc.DeleteAccountController;
 import com.novadart.novabill.web.mvc.command.DeleteAccount;
 
@@ -60,10 +61,11 @@ public class DeleteAccountTest {
 		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "xsrfTokenService", tokenService);
 		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "utilsService", utilsService);
 		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "validator", validator);
+		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "businessLogoController", mock(BusinessLogoController.class));
 		return deleteAccountController;
 	}
 	
-//	@Test
+	@Test
 	public void defaultDeleteAccountFlow() throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, UnsupportedEncodingException{
 		String username = userPasswordMap.keySet().iterator().next(), password = userPasswordMap.get(username);
 		Long businessID = Principal.findByUsername(username).getBusiness().getId();
