@@ -16,6 +16,9 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.shared.client.dto.PaymentDateDelta;
+import com.novadart.novabill.shared.client.dto.PaymentDateType;
+
 @Configurable
 @Entity
 public class PaymentType {
