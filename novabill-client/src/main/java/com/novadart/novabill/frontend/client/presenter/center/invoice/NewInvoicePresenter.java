@@ -7,6 +7,7 @@ import java.util.List;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
@@ -28,8 +29,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	
 	@Override
 	public void onLoad() {
-		// TODO Auto-generated method stub
-		
+		getView().getTitleLabel().setText(I18N.INSTANCE.newInvoiceCreation());
 	}
 	
 	public void setDataForNewInvoice(ClientDTO client, Long progressiveId) {

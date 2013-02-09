@@ -253,7 +253,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
-		titleLabel.setText(I18N.INSTANCE.newInvoiceCreation());
 		
 		createInvoice.reset();
 		modifyDocument.reset();

@@ -1,16 +1,20 @@
 package com.novadart.novabill.frontend.client.view.center.creditnote;
 
-import com.novadart.novabill.frontend.client.view.View;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.google.gwt.user.client.ui.Label;
+import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
+import com.novadart.novabill.frontend.client.view.DocumentView;
+import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
 
-public interface CreditNoteView extends View {
+public interface CreditNoteView extends DocumentView<CreditNoteView.Presenter> {
+	
+	public static interface Presenter extends DocumentView.Presenter{
+		
+	}
 
-	public void setDataForNewCreditNote(ClientDTO client, Long progressiveId);
-	
-	public void setDataForNewCreditNote(Long progressiveId, InvoiceDTO invoice);
-	
-	public void setCreditNote(CreditNoteDTO creditNote);
+	ValidatedListBox getPayment();
+
+	ValidatedTextArea getPaymentNote();
+
+	Label getTitleLabel();
 
 }

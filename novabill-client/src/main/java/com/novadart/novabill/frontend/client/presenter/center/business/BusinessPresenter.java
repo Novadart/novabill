@@ -1,4 +1,4 @@
-package com.novadart.novabill.frontend.client.presenter.center;
+package com.novadart.novabill.frontend.client.presenter.center.business;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;

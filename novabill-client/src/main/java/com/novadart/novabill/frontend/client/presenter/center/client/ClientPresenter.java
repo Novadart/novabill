@@ -1,4 +1,4 @@
-package com.novadart.novabill.frontend.client.presenter.center;
+package com.novadart.novabill.frontend.client.presenter.center.client;
 
 import java.util.Collections;
 import java.util.List;

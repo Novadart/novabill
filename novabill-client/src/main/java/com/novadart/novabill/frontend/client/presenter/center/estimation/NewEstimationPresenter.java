@@ -6,6 +6,7 @@ import java.util.List;
 
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.view.center.estimation.EstimationView;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -52,8 +53,7 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 
 	@Override
 	public void onLoad() {
-		// TODO Auto-generated method stub
-
+		getView().getTitleLabel().setText(I18N.INSTANCE.newEstimationCreation());
 	}
 
 }

@@ -30,8 +30,6 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 
 		getView().getConvertToInvoice().setVisible(true);
 
-		getView().getTitleLabel().setText(I18N.INSTANCE.modifyEstimation());
-
 		List<AccountingDocumentItemDTO> items = null;
 		items = estimation.getItems();
 
@@ -48,8 +46,7 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 
 	@Override
 	public void onLoad() {
-		// TODO Auto-generated method stub
-
+		getView().getTitleLabel().setText(I18N.INSTANCE.modifyEstimation());
 	}
 
 }

@@ -7,7 +7,7 @@ import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
-import com.novadart.novabill.frontend.client.presenter.center.ClientPresenter;
+import com.novadart.novabill.frontend.client.presenter.center.client.ClientPresenter;
 import com.novadart.novabill.frontend.client.view.center.client.ClientView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 

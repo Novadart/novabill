@@ -160,8 +160,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
 		
-		titleLabel.setText(I18N.INSTANCE.newEstimationCreation());
-		
 		modifyDocument.reset();
 		createEstimation.reset();
 		convertToInvoice.reset();

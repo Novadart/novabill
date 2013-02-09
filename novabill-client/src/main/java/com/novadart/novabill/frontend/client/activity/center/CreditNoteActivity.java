@@ -4,14 +4,14 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.frontend.client.facade.CallbackUtils;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.FromInvoiceCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.ModifyCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
-import com.novadart.novabill.frontend.client.view.MainWidget;
+import com.novadart.novabill.frontend.client.presenter.center.creditnote.ModifyCreditNotePresenter;
+import com.novadart.novabill.frontend.client.presenter.center.creditnote.NewCreditNotePresenter;
 import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
@@ -35,9 +35,6 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(final CreditNoteView view) {
-				view.setPresenter(CreditNoteActivity.this);
-				view.setEventBus(eventBus);
-
 				if (place instanceof ModifyCreditNotePlace) {
 					ModifyCreditNotePlace p = (ModifyCreditNotePlace) place;
 					setupModifyCreditNoteView(panel, view, p);
@@ -51,7 +48,7 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 					setupNewCreditNoteView(panel, view, p);
 
 				} else {
-					goTo(new HomePlace());
+					getClientFactory().getPlaceController().goTo(new HomePlace());
 				}
 			}
 
@@ -71,9 +68,10 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 
 					@Override
 					public void onSuccess(ClientDTO client) {
-						view.setDataForNewCreditNote(client, progrId);
-						MainWidget.getInstance().setLargeView();
-						panel.setWidget(view);
+						NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view);
+						p.setDataForNewCreditNote(client, progrId);
+						p.go(panel);
 					}
 
 				});
@@ -91,9 +89,10 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 
 					@Override
 					public void onSuccess(InvoiceDTO result) {
-						view.setDataForNewCreditNote(progrId, result);
-						MainWidget.getInstance().setLargeView();
-						panel.setWidget(view);
+						NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view);
+						p.setDataForNewCreditNote(progrId, result);
+						p.go(panel);
 					}
 				});
 			}
@@ -105,9 +104,10 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(CreditNoteDTO result) {
-				view.setCreditNote(result);
-				MainWidget.getInstance().setLargeView();
-				panel.setWidget(view);
+				ModifyCreditNotePresenter p = new ModifyCreditNotePresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setData(result);
+				p.go(panel);
 			}
 
 		});

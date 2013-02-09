@@ -22,8 +22,7 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 
 	@Override
 	public void onLoad() {
-		// TODO Auto-generated method stub
-
+		getView().getTitleLabel().setText(I18N.INSTANCE.modifyInvoice());
 	}
 
 	public void setData(InvoiceDTO invoice) {
@@ -33,7 +32,6 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(invoice.getAccountingDocumentDate()));
 		getView().getClientName().setText(invoice.getClient().getName());
 		getView().getModifyDocument().setVisible(true);
-		getView().getTitleLabel().setText(I18N.INSTANCE.modifyInvoice());
 
 		List<AccountingDocumentItemDTO> items = null;
 		items = invoice.getItems();
