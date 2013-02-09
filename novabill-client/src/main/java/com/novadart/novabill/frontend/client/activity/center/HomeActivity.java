@@ -4,7 +4,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.frontend.client.view.MainWidget;
+import com.novadart.novabill.frontend.client.presenter.center.home.HomePresenter;
 import com.novadart.novabill.frontend.client.view.center.home.HomeView;
 
 public class HomeActivity extends AbstractCenterActivity {
@@ -21,11 +21,8 @@ public class HomeActivity extends AbstractCenterActivity {
 			
 			@Override
 			public void onSuccess(HomeView hv) {
-				hv.setPresenter(HomeActivity.this);
-				hv.setEventBus(eventBus);
-				
-				MainWidget.getInstance().setStandardView();
-				panel.setWidget(hv);
+				HomePresenter p = new HomePresenter(getClientFactory().getPlaceController(), getClientFactory().getEventBus(), hv);
+				p.go(panel);
 			}
 			
 			@Override

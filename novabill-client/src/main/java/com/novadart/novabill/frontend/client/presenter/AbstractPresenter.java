@@ -2,6 +2,7 @@ package com.novadart.novabill.frontend.client.presenter;
 
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.view.View;
 
@@ -24,6 +25,11 @@ public abstract class AbstractPresenter<V extends View<?>> implements Presenter 
 	
 	protected V getView() {
 		return view;
+	}
+	
+	@Override
+	public void go(AcceptsOneWidget panel) {
+		panel.setWidget(getView());
 	}
 
 	@Override

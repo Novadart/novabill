@@ -30,7 +30,7 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 	@Override
 	public void go(AcceptsOneWidget panel) {
 		MainWidget.getInstance().setLargeView();
-		panel.setWidget(getView());
+		super.go(panel);
 	}
 	
 	protected String getHumanReadable(Field field){
