@@ -2,6 +2,8 @@ package com.novadart.novabill.frontend.client.activity;
 
 import com.google.gwt.activity.shared.AbstractActivity;
 import com.novadart.novabill.frontend.client.ClientFactory;
+import com.novadart.novabill.frontend.client.facade.CallbackUtils;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
@@ -28,5 +30,19 @@ public abstract class BasicActivity extends AbstractActivity {
 			}
 		});
 	}
+	
+	protected abstract class DocumentCallack<T> extends ManagedAsyncCallback<T> {
+		
+		@Override
+		public void onFailure(Throwable caught) {
+			if(CallbackUtils.isServerCommunicationException(caught)){
+				manageError();
+			} else {
+				super.onFailure(caught);
+			}
+		}
+
+	}
+
 	
 }

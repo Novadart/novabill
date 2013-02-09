@@ -35,8 +35,8 @@ public class ClientFactoryImpl implements ClientFactory
 	private static final PlaceController placeController = 
 			new PlaceController(eventBus);
 	
-	private static final Map<Class<?>, View> views =
-			new HashMap<Class<?>, View>();
+	private static final Map<Class<?>, View<?>> views =
+			new HashMap<Class<?>, View<?>>();
 
 	@Override
 	public PlaceController getPlaceController()	{
@@ -49,15 +49,15 @@ public class ClientFactoryImpl implements ClientFactory
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T extends View> T getView(Class<?> cl, View view){
+	private <T extends View<?>> T getView(Class<?> cl, View<?> view){
 		views.put(cl, view);
 		view.clean();
 		return (T)view;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T extends View> T getView(Class<?> cl){
-		View view = views.get(cl);
+	private <T extends View<?>> T getView(Class<?> cl){
+		View<?> view = views.get(cl);
 		view.clean();
 		return (T)view;
 	}

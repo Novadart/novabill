@@ -64,11 +64,11 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 
 
 	private void setupNewTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, final NewTransportDocumentPlace place){
-		ServerFacade.transportDocument.getNextTransportDocId(new ManagedAsyncCallback<Long>() {
+		ServerFacade.transportDocument.getNextTransportDocId(new DocumentCallack<Long>() {
 
 			@Override
 			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
+				ServerFacade.client.get(place.getClientId(), new DocumentCallack<ClientDTO>() {
 
 					@Override
 					public void onSuccess(ClientDTO client) {
@@ -77,30 +77,14 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 						panel.setWidget(view);
 					}
 
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
-					}
 				});
 			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
 		});
 	}
 
 	private void setupModifyTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, ModifyTransportDocumentPlace place){
-		ServerFacade.transportDocument.get(place.getTransportDocumentId(), new ManagedAsyncCallback<TransportDocumentDTO>() {
+		ServerFacade.transportDocument.get(place.getTransportDocumentId(), new DocumentCallack<TransportDocumentDTO>() {
 
 			@Override
 			public void onSuccess(TransportDocumentDTO result) {
@@ -109,27 +93,19 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 				panel.setWidget(view);
 			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
 		});
 	}
 
 	private void setupCloneTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, final CloneTransportDocumentPlace place){
-		ServerFacade.transportDocument.getNextTransportDocId(new ManagedAsyncCallback<Long>() {
+		ServerFacade.transportDocument.getNextTransportDocId(new DocumentCallack<Long>() {
 
 			@Override
 			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
+				ServerFacade.client.get(place.getClientId(), new DocumentCallack<ClientDTO>() {
 
 					@Override
 					public void onSuccess(final ClientDTO client) {
-						ServerFacade.transportDocument.get(place.getTransportDocumentId(), new ManagedAsyncCallback<TransportDocumentDTO>() {
+						ServerFacade.transportDocument.get(place.getTransportDocumentId(), new DocumentCallack<TransportDocumentDTO>() {
 
 							@Override
 							public void onSuccess(TransportDocumentDTO toClone) {
@@ -138,37 +114,12 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 								panel.setWidget(view);
 							}
 
-							@Override
-							public void onFailure(Throwable caught) {
-								if(CallbackUtils.isServerCommunicationException(caught)){
-									manageError();
-								} else {
-									super.onFailure(caught);
-								}
-							}
 						});
 
-					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
 					}
 				});
 			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
 		});
 	}
 }

@@ -2,14 +2,17 @@ package com.novadart.novabill.frontend.client.presenter.center;
 
 import java.util.List;
 
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.presenter.AbstractPresenter;
 import com.novadart.novabill.frontend.client.view.DocumentView;
+import com.novadart.novabill.frontend.client.view.MainWidget;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
@@ -18,10 +21,18 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 	
 	private static final DateTimeFormat YEAR_FORMAT = DateTimeFormat.getFormat("yyyy");
 	
+	private ClientDTO client;
+	
 	public DocumentPresenter(PlaceController placeController, EventBus eventBus, V view) {
 		super(placeController, eventBus, view);
 	}
-
+	
+	@Override
+	public void go(AcceptsOneWidget panel) {
+		MainWidget.getInstance().setLargeView();
+		panel.setWidget(getView());
+	}
+	
 	protected String getHumanReadable(Field field){
 		switch (field) {
 		case accountingDocumentDate: return I18N.INSTANCE.date();
@@ -117,6 +128,13 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 		
 	}
 
+	protected ClientDTO getClient() {
+		return client;
+	}
+	
+	protected void setClient(ClientDTO client) {
+		this.client = client;
+	}
 	
 	public static DateTimeFormat getYearFormat() {
 		return YEAR_FORMAT;

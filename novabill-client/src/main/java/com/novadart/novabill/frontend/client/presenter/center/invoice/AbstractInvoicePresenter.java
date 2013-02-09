@@ -4,9 +4,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
-import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
@@ -21,7 +20,6 @@ import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -29,15 +27,9 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 public abstract class AbstractInvoicePresenter extends DocumentPresenter<InvoiceView> implements InvoiceView.Presenter {
 
 	private InvoiceDTO invoice;
-	private ClientDTO client;
 	
 	public AbstractInvoicePresenter(PlaceController placeController, EventBus eventBus,	InvoiceView view) {
 		super(placeController, eventBus, view);
-	}
-
-	@Override
-	public void go(AcceptsOneWidget panel) {
-		// TODO Auto-generated method stub
 	}
 
 	@Override
@@ -46,13 +38,13 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 	}
 
 	@Override
-	public void onCreateInvoiceClicked() {
+	public void onCreateDocumentClicked() {
 		if(!validateInvoice()){
 			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
 		}
 
-		getView().getCreateInvoice().showLoader(true);
+		getView().getCreateDocument().showLoader(true);
 		getView().setLocked(true);
 
 		final InvoiceDTO invoice = createInvoice(null);
@@ -61,7 +53,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 
 			@Override
 			public void onSuccess(Long result) {
-				getView().getCreateInvoice().showLoader(false);
+				getView().getCreateDocument().showLoader(false);
 				Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess(), new NotificationCallback<Void>() {
 
 					@Override
@@ -69,7 +61,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 						getEventBus().fireEvent(new DocumentAddEvent(invoice));
 
 						ClientPlace cp = new ClientPlace();
-						cp.setClientId(client.getId());
+						cp.setClientId(getClient().getId());
 						cp.setDocs(DOCUMENTS.invoices);
 						goTo(cp);
 
@@ -81,7 +73,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 
 			@Override
 			public void onFailure(Throwable caught) {
-				getView().getCreateInvoice().showLoader(false);
+				getView().getCreateDocument().showLoader(false);
 				if(caught instanceof ValidationException){
 					handleServerValidationException((ValidationException) caught);
 				} else {
@@ -95,7 +87,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 	}
 
 	@Override
-	public void onModifyInvoiceClicked() {
+	public void onModifyDocumentClicked() {
 		if(!validateInvoice()){
 			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
 			return;
@@ -157,7 +149,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 			public void onNotificationClosed(Boolean value) {
 				if(value){
 					ClientPlace cp = new ClientPlace();
-					cp.setClientId(client.getId());
+					cp.setClientId(getClient().getId());
 					cp.setDocs(DOCUMENTS.invoices);
 					goTo(cp);
 				}
@@ -165,11 +157,8 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		});
 	}
 	
-	public void setClient(ClientDTO client) {
-		this.client = client;
-	}
 	
-	public void setInvoice(InvoiceDTO invoice) {
+	protected void setInvoice(InvoiceDTO invoice) {
 		this.invoice = invoice;
 	}
 	
@@ -200,7 +189,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		} else {
 			inv = new InvoiceDTO();
 			inv.setBusiness(Configuration.getBusiness());
-			inv.setClient(client);
+			inv.setClient(getClient());
 		}
 
 

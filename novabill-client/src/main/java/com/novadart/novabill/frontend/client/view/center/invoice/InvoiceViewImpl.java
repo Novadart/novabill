@@ -130,12 +130,12 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	
 	@UiHandler("createInvoice")
 	void onCreateInvoiceClicked(ClickEvent e){
-		presenter.onCreateInvoiceClicked();
+		presenter.onCreateDocumentClicked();
 	}
 
 	@UiHandler("modifyDocument")
 	void onModifyInvoiceClicked(ClickEvent e){
-		presenter.onModifyInvoiceClicked();
+		presenter.onModifyDocumentClicked();
 	}
 
 	@UiHandler("abort")
@@ -224,7 +224,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 
 	@Override
-	public LoaderButton getCreateInvoice() {
+	public LoaderButton getCreateDocument() {
 		return createInvoice;
 	}
 

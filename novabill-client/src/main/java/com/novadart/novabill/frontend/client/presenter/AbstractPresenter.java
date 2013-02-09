@@ -1,8 +1,8 @@
 package com.novadart.novabill.frontend.client.presenter;
 
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.view.View;
 
 public abstract class AbstractPresenter<V extends View<?>> implements Presenter {
@@ -15,6 +15,7 @@ public abstract class AbstractPresenter<V extends View<?>> implements Presenter 
 		this.placeController = placeController;
 		this.eventBus = eventBus;
 		this.view = view;
+		setPresenterinView(view);
 	}
 	
 	protected EventBus getEventBus() {
@@ -29,5 +30,7 @@ public abstract class AbstractPresenter<V extends View<?>> implements Presenter 
 	public void goTo(Place place) {
 		this.placeController.goTo(place);
 	}
+	
+	protected abstract void setPresenterinView(V view);
 
 }

@@ -5,7 +5,6 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.facade.CallbackUtils;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.CreditNotePlace;
@@ -64,11 +63,11 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 	}
 
 	private void setupNewCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, final NewCreditNotePlace place){
-		ServerFacade.creditNote.getNextCreditNoteDocumentID(new ManagedAsyncCallback<Long>() {
+		ServerFacade.creditNote.getNextCreditNoteDocumentID(new DocumentCallack<Long>() {
 
 			@Override
 			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
+				ServerFacade.client.get(place.getClientId(), new DocumentCallack<ClientDTO>() {
 
 					@Override
 					public void onSuccess(ClientDTO client) {
@@ -77,34 +76,18 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 						panel.setWidget(view);
 					}
 
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
-					}
 				});
 			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
+		
 		});
 	}
 
 	private void setupFromInvoiceCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, final FromInvoiceCreditNotePlace place){
-		ServerFacade.creditNote.getNextCreditNoteDocumentID(new ManagedAsyncCallback<Long>() {
+		ServerFacade.creditNote.getNextCreditNoteDocumentID(new DocumentCallack<Long>() {
 
 			@Override
 			public void onSuccess(final Long progrId) {
-				ServerFacade.invoice.get(place.getInvoiceId(), new ManagedAsyncCallback<InvoiceDTO>() {
+				ServerFacade.invoice.get(place.getInvoiceId(), new DocumentCallack<InvoiceDTO>() {
 
 					@Override
 					public void onSuccess(InvoiceDTO result) {
@@ -112,31 +95,13 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 						MainWidget.getInstance().setLargeView();
 						panel.setWidget(view);
 					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
-					}
 				});
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
 			}
 		});
 	}
 
 	private void setupModifyCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, ModifyCreditNotePlace place){
-		ServerFacade.creditNote.get(place.getCreditNoteId(), new ManagedAsyncCallback<CreditNoteDTO>() {
+		ServerFacade.creditNote.get(place.getCreditNoteId(), new DocumentCallack<CreditNoteDTO>() {
 
 			@Override
 			public void onSuccess(CreditNoteDTO result) {
@@ -145,14 +110,6 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 				panel.setWidget(view);
 			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
 		});
 	}
 }

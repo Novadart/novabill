@@ -2,8 +2,8 @@ package com.novadart.novabill.frontend.client.presenter.center.invoice;
 
 import java.util.List;
 
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
@@ -13,6 +13,11 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 
 	public ModifyInvoicePresenter(PlaceController placeController, EventBus eventBus, InvoiceView view) {
 		super(placeController, eventBus, view);
+	}
+	
+	@Override
+	protected void setPresenterinView(InvoiceView view) {
+		view.setPresenter(this);
 	}
 
 	@Override

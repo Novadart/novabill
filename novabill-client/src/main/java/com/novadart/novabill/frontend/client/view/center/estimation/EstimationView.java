@@ -1,14 +1,27 @@
 package com.novadart.novabill.frontend.client.view.center.estimation;
 
-import com.novadart.novabill.frontend.client.view.View;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.datepicker.client.DateBox;
+import com.novadart.gwtshared.client.LoaderButton;
+import com.novadart.novabill.frontend.client.view.DocumentView;
+import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
 
-public interface EstimationView extends View {
+public interface EstimationView extends DocumentView<EstimationView.Presenter> {
 	
-	public void setDataForNewEstimation(ClientDTO client, Long progressiveId);
+	public static interface Presenter extends DocumentView.Presenter {
+		
+		void onConvertToInvoiceClicked();
+		
+	}
 	
-	public void setDataForNewEstimation(ClientDTO client, Long progressiveId, EstimationDTO estimation);
+	public Label getTitleLabel();
+
+	public DateBox getValidTill();
+
+	public ValidatedTextArea getPaymentNote();
+
+	public ValidatedTextArea getLimitations();
+
+	public LoaderButton getConvertToInvoice();
 	
-	public void setEstimation(EstimationDTO estimation);
 }

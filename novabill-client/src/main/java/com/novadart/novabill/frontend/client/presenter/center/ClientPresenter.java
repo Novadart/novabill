@@ -54,8 +54,12 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 	
 	public ClientPresenter(PlaceController placeController, EventBus eventBus,	ClientView view) {
 		super(placeController, eventBus, view);
-		getView().setPresenter(this);
 		setDocumentsListing(DOCUMENTS.invoices);
+	}
+	
+	@Override
+	protected void setPresenterinView(ClientView view) {
+		view.setPresenter(this);
 	}
 	
 	@Override

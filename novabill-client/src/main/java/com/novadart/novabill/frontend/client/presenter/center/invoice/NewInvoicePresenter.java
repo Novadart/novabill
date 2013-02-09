@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
@@ -22,6 +22,11 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	}
 
 	@Override
+	protected void setPresenterinView(InvoiceView view) {
+		view.setPresenter(this);
+	}
+	
+	@Override
 	public void onLoad() {
 		// TODO Auto-generated method stub
 		
@@ -36,7 +41,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(d));
 		getView().getNumber().setText(progressiveId.toString());
 
-		getView().getCreateInvoice().setVisible(true);
+		getView().getCreateDocument().setVisible(true);
 	}
 
 	
