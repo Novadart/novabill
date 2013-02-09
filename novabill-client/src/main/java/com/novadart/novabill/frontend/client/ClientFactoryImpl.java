@@ -11,22 +11,24 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.novadart.novabill.frontend.client.view.View;
-import com.novadart.novabill.frontend.client.view.center.BusinessView;
-import com.novadart.novabill.frontend.client.view.center.ClientView;
-import com.novadart.novabill.frontend.client.view.center.CreditNoteView;
-import com.novadart.novabill.frontend.client.view.center.EstimationView;
-import com.novadart.novabill.frontend.client.view.center.HomeView;
-import com.novadart.novabill.frontend.client.view.center.InvoiceView;
-import com.novadart.novabill.frontend.client.view.center.TransportDocumentView;
+import com.novadart.novabill.frontend.client.view.center.business.BusinessView;
 import com.novadart.novabill.frontend.client.view.center.business.BusinessViewImpl;
+import com.novadart.novabill.frontend.client.view.center.client.ClientView;
 import com.novadart.novabill.frontend.client.view.center.client.ClientViewImpl;
+import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteView;
 import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteViewImpl;
+import com.novadart.novabill.frontend.client.view.center.estimation.EstimationView;
 import com.novadart.novabill.frontend.client.view.center.estimation.EstimationViewImpl;
+import com.novadart.novabill.frontend.client.view.center.home.HomeView;
 import com.novadart.novabill.frontend.client.view.center.home.HomeViewImpl;
+import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceViewImpl;
+import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentViewImpl;
-import com.novadart.novabill.frontend.client.view.west.WestView;
-import com.novadart.novabill.frontend.client.view.west.WestViewImpl;
+import com.novadart.novabill.frontend.client.view.west.empty.EmptyWestView;
+import com.novadart.novabill.frontend.client.view.west.empty.EmptyWestViewImpl;
+import com.novadart.novabill.frontend.client.view.west.standard.StandardWestView;
+import com.novadart.novabill.frontend.client.view.west.standard.StandardWestViewImpl;
 
 public class ClientFactoryImpl implements ClientFactory
 {
@@ -35,8 +37,8 @@ public class ClientFactoryImpl implements ClientFactory
 	private static final PlaceController placeController = 
 			new PlaceController(eventBus);
 	
-	private static final Map<Class<?>, View> views =
-			new HashMap<Class<?>, View>();
+	private static final Map<Class<?>, View<?>> views =
+			new HashMap<Class<?>, View<?>>();
 
 	@Override
 	public PlaceController getPlaceController()	{
@@ -49,16 +51,16 @@ public class ClientFactoryImpl implements ClientFactory
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T extends View> T getView(Class<?> cl, View view){
+	private <T extends View<?>> T getView(Class<?> cl, View<?> view){
 		views.put(cl, view);
-		view.setClean();
+		view.reset();
 		return (T)view;
 	}
 	
 	@SuppressWarnings("unchecked")
-	private <T extends View> T getView(Class<?> cl){
-		View view = views.get(cl);
-		view.setClean();
+	private <T extends View<?>> T getView(Class<?> cl){
+		View<?> view = views.get(cl);
+		view.reset();
 		return (T)view;
 	}
 	
@@ -192,11 +194,20 @@ public class ClientFactoryImpl implements ClientFactory
 	}
 
 	@Override
-	public void getWestView(final AsyncCallback<WestView> callback) {
-		if(views.containsKey(WestView.class)){
-			callback.onSuccess((WestView) getView(WestView.class));
+	public void getStandardWestView(final AsyncCallback<StandardWestView> callback) {
+		if(views.containsKey(StandardWestView.class)){
+			callback.onSuccess((StandardWestView) getView(StandardWestView.class));
 		} else {
-			callback.onSuccess((WestView) getView(WestView.class, new WestViewImpl()));
+			callback.onSuccess((StandardWestView) getView(StandardWestView.class, new StandardWestViewImpl()));
+		}
+	}
+	
+	@Override
+	public void getEmptyWestView(AsyncCallback<EmptyWestView> callback) {
+		if(views.containsKey(EmptyWestView.class)){
+			callback.onSuccess((EmptyWestView) getView(EmptyWestView.class));
+		} else {
+			callback.onSuccess((EmptyWestView) getView(EmptyWestView.class, new EmptyWestViewImpl()));
 		}
 	}
 	

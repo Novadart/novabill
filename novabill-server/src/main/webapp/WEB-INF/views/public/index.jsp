@@ -32,13 +32,14 @@
 		<script type="text/javascript">
 			$('#shuffleImage').cycle({
 				fx:      'turnDown', 
-			    delay: -4000
+			    delay: -4000,
+			    prevNextEvent: null
 			});
 			$('#shuffleAsset').cycle({
 				fx:      'scrollRight', 
 			    next:   '#shuffleAsset', 
-			    /* easing:  'easeInOutBack', */
-			    delay: -4000
+			    delay: -4000,
+			    prevNextEvent: null
 			});
 		</script>
 		

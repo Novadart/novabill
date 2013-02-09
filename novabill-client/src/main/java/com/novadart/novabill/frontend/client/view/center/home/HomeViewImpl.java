@@ -7,7 +7,6 @@ import java.util.Map;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -22,23 +21,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabBar;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.Range;
-import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.Const;
-import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
-import com.novadart.novabill.frontend.client.event.DocumentAddHandler;
-import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
-import com.novadart.novabill.frontend.client.event.DocumentDeleteHandler;
-import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
-import com.novadart.novabill.frontend.client.event.DocumentUpdateHandler;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.BusinessPlace;
-import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
-import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
-import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
-import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
-import com.novadart.novabill.frontend.client.view.center.HomeView;
-import com.novadart.novabill.frontend.client.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.widget.list.ShowMoreButton;
 import com.novadart.novabill.frontend.client.widget.list.impl.CreditNoteList;
 import com.novadart.novabill.frontend.client.widget.list.impl.EstimationList;
@@ -46,26 +29,16 @@ import com.novadart.novabill.frontend.client.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.widget.list.impl.TransportDocumentList;
 import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
 import com.novadart.novabill.frontend.client.widget.tip.Tips;
-import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public class HomeViewImpl extends Composite implements HomeView {
 
 	private static final int DOCS_PAGE_SIZE = 10;
-
 
 	private static HomeViewUiBinder uiBinder = GWT
 			.create(HomeViewUiBinder.class);
 
 	interface HomeViewUiBinder extends UiBinder<Widget, HomeViewImpl> {
 	}
-
-	private static final Range DOCS_LIST_RANGE = new Range(0, DOCS_PAGE_SIZE);
 
 	@UiField TabBar tabBar;
 
@@ -80,17 +53,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 	@UiField Image businessLogo;
 	@UiField HTML businessDetails;
 	
-	private final Map<Integer, FlowPanel> lists = new HashMap<Integer, FlowPanel>();
+	private final Map<Integer, FlowPanel> documentViews = new HashMap<Integer, FlowPanel>();
 
 	private Presenter presenter;
-	private EventBus eventBus;
-
-	private final InvoiceDataProvider invoiceDataProvider = new InvoiceDataProvider();
-	private final EstimationDataProvider estimationDataProvider = new EstimationDataProvider();
-	private final CreditNoteDataProvider creditNoteDataProvider = new CreditNoteDataProvider();
-	private final TransportDocumentDataProvider transportDocumentDataProvider = new TransportDocumentDataProvider();
-	
-	private boolean isInitialSetup = true;
 
 	public HomeViewImpl() {
 		date = setupDate();
@@ -103,7 +68,6 @@ public class HomeViewImpl extends Composite implements HomeView {
 		tabBar.addTab(I18N.INSTANCE.estimates());
 		tabBar.addTab(I18N.INSTANCE.creditNote());
 		tabBar.addTab(I18N.INSTANCE.transportDocumentsTab());
-		tabBar.selectTab(0);
 		
 		TipFactory.show(Tips.center_home_welcome, tipWelcome);
 		TipFactory.show(Tips.center_home_yourdocs, tipDocs);
@@ -112,127 +76,10 @@ public class HomeViewImpl extends Composite implements HomeView {
 	}
 	
 	@Override
-	public void setEventBus(EventBus eventBus) {
-		this.eventBus = eventBus;
-		bind();
-		invoiceList.setEventBus(eventBus);
-		estimationList.setEventBus(eventBus);
-		creditNoteList.setEventBus(eventBus);
-		transportDocumentList.setEventBus(eventBus);
-	}
-	
-	private void bind(){
-		eventBus.addHandler(DocumentAddEvent.TYPE, new DocumentAddHandler() {
-
-			@Override
-			public void onDocumentAdd(DocumentAddEvent event) {
-				onDocumentChangeEvent(event.getDocument());
-			}
-		});
-		eventBus.addHandler(DocumentDeleteEvent.TYPE, new DocumentDeleteHandler() {
-
-			@Override
-			public void onDocumentDelete(DocumentDeleteEvent event) {
-				onDocumentChangeEvent(event.getDocument());
-			}
-		});
-		eventBus.addHandler(DocumentUpdateEvent.TYPE, new DocumentUpdateHandler() {
-
-			@Override
-			public void onDocumentUpdate(DocumentUpdateEvent event) {
-				onDocumentChangeEvent(event.getDocument());
-			}
-		});
-	}
-	
-	private void onDocumentChangeEvent(AccountingDocumentDTO doc){
-		if(HomeViewImpl.this.isAttached()){
-			if(doc instanceof InvoiceDTO){
-				invoiceList.setVisibleRangeAndClearData(invoiceList.getVisibleRange(), true);
-			} else if(doc instanceof EstimationDTO){
-				estimationList.setVisibleRangeAndClearData(estimationList.getVisibleRange(), true);
-			} else if(doc instanceof CreditNoteDTO){
-				creditNoteList.setVisibleRangeAndClearData(creditNoteList.getVisibleRange(), true);
-			} else if(doc instanceof TransportDocumentDTO){
-				transportDocumentList.setVisibleRangeAndClearData(transportDocumentList.getVisibleRange(), true);
-			}
-		}
-	}
-	
-	private void updateBusinessDetails(BusinessDTO business){
-		businessLogo.setUrl(Const.getLogoUrl());
-		
-		SafeHtmlBuilder shb = new SafeHtmlBuilder();
-		shb.appendHtmlConstant("<p class=\"businessName\">");
-		shb.appendEscaped(business.getName());
-		shb.appendHtmlConstant("</p>");
-		shb.appendHtmlConstant("<p class=\"businessAddress\">");
-		shb.appendEscaped(business.getAddress());
-		shb.appendEscaped(" "+business.getPostcode());
-		shb.appendEscaped(" "+business.getCity());
-		shb.appendEscaped(" ("+business.getProvince()+")");
-		shb.appendEscaped(" "+business.getCountry());
-		shb.appendHtmlConstant("</p>");
-		shb.appendHtmlConstant("<p class=\"businessOther1\">");
-		boolean needSpace = false;
-		if(!business.getVatID().isEmpty()){
-			needSpace = true;
-			shb.appendEscaped(I18N.INSTANCE.vatID()+" "+business.getVatID());
-		}
-		if(!business.getVatID().isEmpty()){
-			if(needSpace){
-				shb.appendHtmlConstant("&nbsp;&nbsp;");
-			}
-			shb.appendEscaped(I18N.INSTANCE.ssn()+" "+business.getSsn());
-		}
-		shb.appendHtmlConstant("</p>");
-		shb.appendHtmlConstant("<p class=\"businessOther2\">");
-		needSpace = false;
-		if(!business.getPhone().isEmpty()){
-			needSpace = true;
-			shb.appendEscaped(I18N.INSTANCE.phone()+" "+business.getPhone());
-		}
-		if(!business.getFax().isEmpty()){
-			if(needSpace){
-				shb.appendHtmlConstant("&nbsp;&nbsp;");
-			}
-			shb.appendEscaped(I18N.INSTANCE.fax()+" "+business.getFax());
-		}
-		shb.appendHtmlConstant("</p>");
-		shb.appendHtmlConstant("<p class=\"businessOther3\">");
-		needSpace = false;
-		if(!business.getMobile().isEmpty()){
-			needSpace = true;
-			shb.appendEscaped(I18N.INSTANCE.mobile()+" "+business.getMobile());
-		}
-		if(!business.getWeb().isEmpty()){
-			if(needSpace){
-				shb.appendHtmlConstant("&nbsp;&nbsp;");
-			}
-			shb.appendEscaped(I18N.INSTANCE.web()+" ");
-			shb.appendHtmlConstant("<a target=\"_blank\" href=\""+ 
-			(business.getWeb().startsWith("http://") || business.getWeb().startsWith("https://") ? business.getWeb() : "http://"+business.getWeb()) +"\">");
-			shb.appendEscaped(business.getWeb());
-			shb.appendHtmlConstant("<a>");
-		}
-		shb.appendHtmlConstant("</p>");
-		businessDetails.setHTML(shb.toSafeHtml());
-	}
-
-	@Override
 	protected void onLoad() {
 		super.onLoad();
-		
-		updateBusinessDetails(Configuration.getBusiness());
-		
-		if(isInitialSetup){
-			isInitialSetup = false;
-		} else {
-			invoiceList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
-			estimationList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
-			creditNoteList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
-			transportDocumentList.setVisibleRangeAndClearData(DOCS_LIST_RANGE, true);
-		}
+		presenter.onLoad();
+		tabBar.selectTab(0);
 	}
 
 	private HTML setupDate() {
@@ -257,7 +104,6 @@ public class HomeViewImpl extends Composite implements HomeView {
 		return dateBox;
 	}
 
-
 	private void setupLists() {
 		FlowPanel fp = new FlowPanel();
 		fp.setStyleName("listWrapper panel");
@@ -266,9 +112,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 		sb.addStyleNameToButton("action-button");
 		fp.add(invoiceList);
 		fp.add(sb);
-		invoiceList.setVisibleRange(DOCS_LIST_RANGE);
-		invoiceDataProvider.addDataDisplay(invoiceList);
-		lists.put(0, fp);
+		documentViews.put(0, fp);
 
 		fp = new FlowPanel();
 		fp.setStyleName("listWrapper panel");
@@ -277,9 +121,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 		sb.addStyleNameToButton("action-button");
 		fp.add(estimationList);
 		fp.add(sb);
-		estimationList.setVisibleRange(DOCS_LIST_RANGE);
-		estimationDataProvider.addDataDisplay(estimationList);
-		lists.put(1, fp);
+		documentViews.put(1, fp);
 
 		fp = new FlowPanel();
 		fp.setStyleName("listWrapper panel");
@@ -288,9 +130,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 		sb.addStyleNameToButton("action-button");
 		fp.add(creditNoteList);
 		fp.add(sb);
-		creditNoteList.setVisibleRange(DOCS_LIST_RANGE);
-		creditNoteDataProvider.addDataDisplay(creditNoteList);
-		lists.put(2, fp);
+		documentViews.put(2, fp);
 
 		fp = new FlowPanel();
 		fp.setStyleName("listWrapper panel");
@@ -299,11 +139,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 		sb.addStyleNameToButton("action-button");
 		fp.add(transportDocumentList);
 		fp.add(sb);
-		transportDocumentList.setVisibleRange(DOCS_LIST_RANGE);
-		transportDocumentDataProvider.addDataDisplay(transportDocumentList);
-		lists.put(3, fp);
+		documentViews.put(3, fp);
 	}
-
+	
 
 	@UiFactory
 	I18N getI18N(){
@@ -311,7 +149,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 	}
 
 	@Override
-	public void setClean(){
+	public void reset(){
 	}
 
 	@Override
@@ -325,77 +163,78 @@ public class HomeViewImpl extends Composite implements HomeView {
 	
 	@UiHandler("businessLogo")
 	void onLogoClicked(ClickEvent e){
-		presenter.goTo(new BusinessPlace());
+		presenter.onLogoClicked();
 	}
 	
 
 	@UiHandler("tabBar")
 	void onTabBarSelected(SelectionEvent<Integer> event) {
 		int selectedTab = event.getSelectedItem();
-		tabBody.setWidget(lists.get(selectedTab));
+		presenter.onTabBarSelected(selectedTab);
 	}
 
 	@UiHandler("newInvoice")
 	void onNewInvoiceClicked(ClickEvent e) {
-		SelectClientDialog scd = new SelectClientDialog(new SelectClientDialog.Handler() {
-
-			@Override
-			public void onClientSelected(final ClientDTO client) {
-				NewInvoicePlace p = new NewInvoicePlace();
-				p.setClientId(client.getId());
-				presenter.goTo(p);
-			}
-		});
-		scd.setEventBus(eventBus);
-		scd.showCentered();
+		presenter.onNewInvoiceClicked();
 	}
 
 
 	@UiHandler("newCreditNote")
 	void onNewCreditNoteClicked(ClickEvent e) {
-		SelectClientDialog scd = new SelectClientDialog(new SelectClientDialog.Handler() {
-
-			@Override
-			public void onClientSelected(final ClientDTO client) {
-				NewCreditNotePlace p = new NewCreditNotePlace();
-				p.setClientId(client.getId());
-				presenter.goTo(p);
-			}
-		});
-		scd.setEventBus(eventBus);
-		scd.showCentered();
+		presenter.onNewCreditNoteClicked();
 	}
 
 
 	@UiHandler("newEstimation")
 	void onNewEstimationClicked(ClickEvent e) {
-		SelectClientDialog scd = new SelectClientDialog(new SelectClientDialog.Handler() {
-
-			@Override
-			public void onClientSelected(final ClientDTO client) {
-				NewEstimationPlace p = new NewEstimationPlace();
-				p.setClientId(client.getId());
-				presenter.goTo(p);
-			}
-		});
-		scd.setEventBus(eventBus);
-		scd.showCentered();
+		presenter.onNewEstimationClicked();
 	}
 
 
 	@UiHandler("newTransportDocument")
 	void onNewTransportDocumentClicked(ClickEvent e) {
-		SelectClientDialog scd = new SelectClientDialog(new SelectClientDialog.Handler() {
-
-			@Override
-			public void onClientSelected(final ClientDTO client) {
-				NewTransportDocumentPlace p = new NewTransportDocumentPlace();
-				p.setClientId(client.getId());
-				presenter.goTo(p);
-			}
-		});
-		scd.setEventBus(eventBus);
-		scd.showCentered();
+		presenter.onNewTransportDocumentClicked();
 	}
 
+	@Override
+	public InvoiceList getInvoiceList() {
+		return invoiceList;
+	}
+	
+	@Override
+	public CreditNoteList getCreditNoteList() {
+		return creditNoteList;
+	}
+
+	@Override
+	public EstimationList getEstimationList() {
+		return estimationList;
+	}
+
+	@Override
+	public TransportDocumentList getTransportDocumentList() {
+		return transportDocumentList;
+	}
+
+	@Override
+	public Image getBusinessLogo() {
+		return businessLogo;
+	}
+
+	@Override
+	public HTML getBusinessDetails() {
+		return businessDetails;
+	}
+	
+	@Override
+	public SimplePanel getTabBody() {
+		return tabBody;
+	}
+	
+	@Override
+	public Map<Integer, FlowPanel> getDocumentViews() {
+		return documentViews;
+	}
+	
+	
 }

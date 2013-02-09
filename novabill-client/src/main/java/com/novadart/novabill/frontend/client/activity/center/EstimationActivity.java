@@ -4,16 +4,15 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.frontend.client.facade.CallbackUtils;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.estimation.CloneEstimationPlace;
 import com.novadart.novabill.frontend.client.place.estimation.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.estimation.ModifyEstimationPlace;
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
-import com.novadart.novabill.frontend.client.view.MainWidget;
-import com.novadart.novabill.frontend.client.view.center.EstimationView;
+import com.novadart.novabill.frontend.client.presenter.center.estimation.ModifyEstimationPresenter;
+import com.novadart.novabill.frontend.client.presenter.center.estimation.NewEstimationPresenter;
+import com.novadart.novabill.frontend.client.view.center.estimation.EstimationView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 
@@ -35,9 +34,6 @@ public class EstimationActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(final EstimationView view) {
-				view.setPresenter(EstimationActivity.this);
-				view.setEventBus(eventBus);
-
 				if (place instanceof ModifyEstimationPlace) {
 					ModifyEstimationPlace p = (ModifyEstimationPlace) place;
 					setupModifyEstimationView(panel, view, p);
@@ -51,7 +47,7 @@ public class EstimationActivity extends AbstractCenterActivity {
 					setupNewEstimationView(panel, view, p);
 
 				} else {
-					goTo(new HomePlace());
+					getClientFactory().getPlaceController().goTo(new HomePlace());
 				}
 			}
 
@@ -64,110 +60,62 @@ public class EstimationActivity extends AbstractCenterActivity {
 
 
 	private void setupNewEstimationView(final AcceptsOneWidget panel, final EstimationView view, final NewEstimationPlace place){
-		ServerFacade.estimation.getNextEstimationId(new ManagedAsyncCallback<Long>() {
+		ServerFacade.estimation.getNextEstimationId(new DocumentCallack<Long>() {
 
 			@Override
 			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
+				ServerFacade.client.get(place.getClientId(), new DocumentCallack<ClientDTO>() {
 
 					@Override
 					public void onSuccess(ClientDTO client) {
-						view.setDataForNewEstimation(client, progrId);
-						MainWidget.getInstance().setLargeView();
-						panel.setWidget(view);
+						NewEstimationPresenter p = new NewEstimationPresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view);
+						p.setDataForNewEstimation(client, progrId);
+						p.go(panel);
 					}
 
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
-					}
 				});
 			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
 		});
 	}
 
 	private void setupModifyEstimationView(final AcceptsOneWidget panel, final EstimationView view, ModifyEstimationPlace place){
-		ServerFacade.estimation.get(place.getEstimationId(), new ManagedAsyncCallback<EstimationDTO>() {
+		ServerFacade.estimation.get(place.getEstimationId(), new DocumentCallack<EstimationDTO>() {
 
 			@Override
 			public void onSuccess(EstimationDTO result) {
-				view.setEstimation(result);
-				MainWidget.getInstance().setLargeView();
-				panel.setWidget(view);
+				ModifyEstimationPresenter p = new ModifyEstimationPresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setData(result);
+				p.go(panel);
 			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
 		});
 	}
 
 	private void setupCloneEstimationView(final AcceptsOneWidget panel, final EstimationView view, final CloneEstimationPlace place){
-		ServerFacade.estimation.getNextEstimationId(new ManagedAsyncCallback<Long>() {
+		ServerFacade.estimation.getNextEstimationId(new DocumentCallack<Long>() {
 
 			@Override
 			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
+				ServerFacade.client.get(place.getClientId(), new DocumentCallack<ClientDTO>() {
 
 					@Override
 					public void onSuccess(final ClientDTO client) {
-						ServerFacade.estimation.get(place.getEstimationId(), new ManagedAsyncCallback<EstimationDTO>() {
+						ServerFacade.estimation.get(place.getEstimationId(), new DocumentCallack<EstimationDTO>() {
 
 							@Override
 							public void onSuccess(EstimationDTO estimationToClone) {
-								view.setDataForNewEstimation(client, progrId, estimationToClone);
-								MainWidget.getInstance().setLargeView();
-								panel.setWidget(view);
+								NewEstimationPresenter p = new NewEstimationPresenter(getClientFactory().getPlaceController(), 
+										getClientFactory().getEventBus(), view);
+								p.setDataForNewEstimation(client, progrId, estimationToClone);
+								p.go(panel);
 							}
 
-							@Override
-							public void onFailure(Throwable caught) {
-								if(CallbackUtils.isServerCommunicationException(caught)){
-									manageError();
-								} else {
-									super.onFailure(caught);
-								}
-							}
 						});
-
-					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
 					}
 				});
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
 			}
 		});
 	}

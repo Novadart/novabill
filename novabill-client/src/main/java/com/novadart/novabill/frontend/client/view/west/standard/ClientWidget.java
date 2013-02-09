@@ -1,4 +1,4 @@
-package com.novadart.novabill.frontend.client.view.west;
+package com.novadart.novabill.frontend.client.view.west.standard;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.uibinder.client.UiBinder;

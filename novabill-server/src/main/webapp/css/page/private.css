@@ -1386,7 +1386,7 @@ td.datePickerMonth {
 	display: block;
 }
 
-.WestView {
+.StandardWestView {
 	height: 100%;
 }
 
@@ -1428,19 +1428,19 @@ td.datePickerMonth {
 	background-color: #333;
 }
 
-.WestView .clientContainer {
+.StandardWestView .clientContainer {
 	height: 100%;
 }
 
-.WestView .ClientSearch-clientListWrapper {
+.StandardWestView .ClientSearch-clientListWrapper {
 	width: 100%;
 	height: 100%;
 }
 
-.WestView .clientListContainerWrapper {
+.StandardWestView .clientListContainerWrapper {
 	height: 100%;
 }
-.WestView .ClientSearch-resetFilter {
+.StandardWestView .ClientSearch-resetFilter {
 	cursor: pointer;
 	width: 1.5em;
 	position: relative;
@@ -1448,12 +1448,12 @@ td.datePickerMonth {
 	right: 0.5em;
 }
 
-.WestView .ClientSearch-clientListWrapper .ClientSearch-clientLoader {
+.StandardWestView .ClientSearch-clientListWrapper .ClientSearch-clientLoader {
 	display: block;
 	margin: 2em auto 0;
 }
 
-.WestView .ClientSearch-clientListWrapper .ClientSearch-noClientsFoundMessage
+.StandardWestView .ClientSearch-clientListWrapper .ClientSearch-noClientsFoundMessage
 	{
 	margin: 2em auto 0;
 	text-align: center;
