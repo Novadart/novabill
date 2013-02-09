@@ -25,8 +25,10 @@ import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceViewImpl;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentViewImpl;
-import com.novadart.novabill.frontend.client.view.west.WestView;
-import com.novadart.novabill.frontend.client.view.west.WestViewImpl;
+import com.novadart.novabill.frontend.client.view.west.empty.EmptyWestView;
+import com.novadart.novabill.frontend.client.view.west.empty.EmptyWestViewImpl;
+import com.novadart.novabill.frontend.client.view.west.standard.StandardWestView;
+import com.novadart.novabill.frontend.client.view.west.standard.StandardWestViewImpl;
 
 public class ClientFactoryImpl implements ClientFactory
 {
@@ -192,11 +194,20 @@ public class ClientFactoryImpl implements ClientFactory
 	}
 
 	@Override
-	public void getWestView(final AsyncCallback<WestView> callback) {
-		if(views.containsKey(WestView.class)){
-			callback.onSuccess((WestView) getView(WestView.class));
+	public void getStandardWestView(final AsyncCallback<StandardWestView> callback) {
+		if(views.containsKey(StandardWestView.class)){
+			callback.onSuccess((StandardWestView) getView(StandardWestView.class));
 		} else {
-			callback.onSuccess((WestView) getView(WestView.class, new WestViewImpl()));
+			callback.onSuccess((StandardWestView) getView(StandardWestView.class, new StandardWestViewImpl()));
+		}
+	}
+	
+	@Override
+	public void getEmptyWestView(AsyncCallback<EmptyWestView> callback) {
+		if(views.containsKey(EmptyWestView.class)){
+			callback.onSuccess((EmptyWestView) getView(EmptyWestView.class));
+		} else {
+			callback.onSuccess((EmptyWestView) getView(EmptyWestView.class, new EmptyWestViewImpl()));
 		}
 	}
 	

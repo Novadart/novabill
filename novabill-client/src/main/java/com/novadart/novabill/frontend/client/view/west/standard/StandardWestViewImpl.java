@@ -1,10 +1,9 @@
-package com.novadart.novabill.frontend.client.view.west;
+package com.novadart.novabill.frontend.client.view.west.standard;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -20,82 +19,73 @@ import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
-import com.novadart.novabill.frontend.client.presenter.Presenter;
 import com.novadart.novabill.frontend.client.util.WidgetUtils;
-import com.novadart.novabill.frontend.client.view.center.client.dialog.ClientDialog;
 import com.novadart.novabill.frontend.client.widget.search.ClientSearch;
 import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
 import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
-public class WestViewImpl extends Composite implements WestView  {
+public class StandardWestViewImpl extends Composite implements StandardWestView  {
 
-	private static WestViewImplUiBinder uiBinder = GWT
-			.create(WestViewImplUiBinder.class);
+	private static StandardWestViewImplUiBinder uiBinder = GWT
+			.create(StandardWestViewImplUiBinder.class);
 
-	interface WestViewImplUiBinder extends UiBinder<Widget, WestViewImpl> {
+	interface StandardWestViewImplUiBinder extends UiBinder<Widget, StandardWestViewImpl> {
 	}
-	
+
 	@UiField FlowPanel clientContainer;
 	@UiField(provided=true) SimplePanel clientListContainer;
 	@UiField(provided=true) RichTextBox clientFilter;
 	@UiField(provided=true) Image cleanClientFilter;
-	
+
 	@UiField HorizontalPanel clientsHeader;
 	@UiField HorizontalPanel clientFilterContainer;
 	@UiField ScrollPanel clientListContainerWrapper;
-	
+
 	@UiField SimplePanel tip;
-	
+
 	private Presenter presenter;
-	private EventBus eventBus;
 	private final ClientSearch clientSearch;
-	
-	public WestViewImpl() {
+
+	public StandardWestViewImpl() {
 		clientSearch = new ClientSearch(createClientList());
 		clientListContainer = clientSearch.getWrappedClientList();
 		clientFilter = clientSearch.getSearchInput();
 		cleanClientFilter = clientSearch.getResetButton();
 		initWidget(uiBinder.createAndBindUi(this));
-		
+
 		TipFactory.show(Tips.west_home_no_clients, tip);
-		
-		setStyleName("WestView");
-	}
-	
-	
-	@Override
-	public void setEventBus(EventBus eventBus) {
-		this.eventBus = eventBus;
-		clientSearch.setEventBus(eventBus);
+
+		setStyleName("StandardWestView");
 	}
 
-	
 	@Override
 	protected void onLoad() {
 		super.onLoad();
+		presenter.onLoad();
+		
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
-		    @Override
-		    public void execute() {
-		    	WidgetUtils.setElementHeightToFillSpace(clientListContainerWrapper.getElement(), 
+			@Override
+			public void execute() {
+				WidgetUtils.setElementHeightToFillSpace(clientListContainerWrapper.getElement(), 
 						clientContainer.getElement(), 
 						clientsHeader.getElement(), clientFilterContainer.getElement());
-		    }
-		  });
+			}
+		});
 	}
-	
+
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
 	}
-	
+
 	private CellList<ClientDTO> createClientList(){
 		ClientCell cell = new ClientCell();
 		CellList<ClientDTO> list = new CellList<ClientDTO>(cell);
 		list.setStyleName("cellList");
-		
+
 		cell.setHandler(new ClientCell.Handler() {
-			
+
 			@Override
 			public void onClientSelected(ClientDTO client) {
 				ClientPlace cp = new ClientPlace();
@@ -103,28 +93,26 @@ public class WestViewImpl extends Composite implements WestView  {
 				presenter.goTo(cp);
 			}
 		});
-		
+
 		return list;
 	}
 
 	@UiHandler("addClient")
 	void onAddClientClicked(ClickEvent e){
-		ClientDialog.getInstance(eventBus).showCentered();
+		presenter.onAddClientClicked();
 	}
-	
-	@Override
-	public void setClient(ClientDTO client) {
-		clientContainer.setVisible(false);
-	}
-	
+
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 	}
 
 	@Override
-	public void reset() {
-		clientContainer.setVisible(true);
+	public void reset() {}
+
+	@Override
+	public ClientSearch getClientSearch() {
+		return clientSearch;
 	}
 
 }

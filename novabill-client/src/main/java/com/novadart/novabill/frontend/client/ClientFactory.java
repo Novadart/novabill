@@ -10,7 +10,8 @@ import com.novadart.novabill.frontend.client.view.center.estimation.EstimationVi
 import com.novadart.novabill.frontend.client.view.center.home.HomeView;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
-import com.novadart.novabill.frontend.client.view.west.WestView;
+import com.novadart.novabill.frontend.client.view.west.empty.EmptyWestView;
+import com.novadart.novabill.frontend.client.view.west.standard.StandardWestView;
 
 public interface ClientFactory {
 	PlaceController getPlaceController();
@@ -26,5 +27,6 @@ public interface ClientFactory {
 	void getTransportDocumentView(AsyncCallback<TransportDocumentView> asyncCallback);
 	
 	//west
-	void getWestView(AsyncCallback<WestView> callback);
+	void getStandardWestView(AsyncCallback<StandardWestView> callback);
+	void getEmptyWestView(AsyncCallback<EmptyWestView> callback);
 }

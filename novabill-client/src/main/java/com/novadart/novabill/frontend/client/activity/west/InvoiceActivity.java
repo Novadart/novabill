@@ -6,7 +6,8 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
 import com.novadart.novabill.frontend.client.place.invoice.InvoicePlace;
-import com.novadart.novabill.frontend.client.view.west.WestView;
+import com.novadart.novabill.frontend.client.presenter.west.empty.EmptyViewPresenter;
+import com.novadart.novabill.frontend.client.view.west.empty.EmptyWestView;
 
 public class InvoiceActivity extends BasicActivity {
 
@@ -16,21 +17,18 @@ public class InvoiceActivity extends BasicActivity {
 
 	@Override
 	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
-		getClientFactory().getWestView(new AsyncCallback<WestView>() {
+getClientFactory().getEmptyWestView(new AsyncCallback<EmptyWestView>() {
 			
 			@Override
-			public void onSuccess(final WestView wv) {
-				wv.setPresenter(InvoiceActivity.this);
-				wv.setClient(null);
-				wv.setEventBus(eventBus);
-				panel.setWidget(wv);
+			public void onSuccess(EmptyWestView wv) {
+				EmptyViewPresenter p = new EmptyViewPresenter(getClientFactory().getPlaceController(), eventBus, wv);
+				p.go(panel);
 			}
 			
 			@Override
 			public void onFailure(Throwable caught) {
 			}
 		});
-
 	}
 
 }
