@@ -6,16 +6,25 @@ import java.util.List;
 
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.place.ClientPlace;
+import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteView;
+import com.novadart.novabill.frontend.client.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 
-	
-	
+
+
 	public NewCreditNotePresenter(PlaceController placeController, EventBus eventBus, CreditNoteView view) {
 		super(placeController, eventBus, view);
 	}
@@ -30,11 +39,11 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 
 		getView().getCreateDocument().setVisible(true);
 	}
-	
-	
+
+
 	public void setDataForNewCreditNote(Long progressiveId, InvoiceDTO invoice) {
 		setDataForNewCreditNote(invoice.getClient(), progressiveId);
-		
+
 		List<AccountingDocumentItemDTO> items = null;
 		items = new ArrayList<AccountingDocumentItemDTO>(invoice.getItems().size());
 		for (AccountingDocumentItemDTO i : invoice.getItems()) {
@@ -46,6 +55,7 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 
 	@Override
 	public void onLoad() {
+		getView().getCreateDocument().setText(I18N.INSTANCE.createCreditNote());
 		getView().getTitleLabel().setText(I18N.INSTANCE.newCreditNoteCreation());
 	}
 
@@ -55,6 +65,50 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 		view.setPresenter(this);
 	}
 
-	
-	
+
+	@Override
+	public void onCreateDocumentClicked() {
+		if(!validateCreditNote()){
+			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
+			return;
+		}
+
+		final CreditNoteDTO creditNote = createCreditNote(null);
+
+		getView().setLocked(true);
+		getView().getCreateDocument().showLoader(true);
+		ServerFacade.creditNote.add(creditNote, new ManagedAsyncCallback<Long>() {
+
+			@Override
+			public void onSuccess(Long result) {
+				Notification.showMessage(I18N.INSTANCE.creditNoteCreationSuccess(), new NotificationCallback<Void>() {
+
+					@Override
+					public void onNotificationClosed(Void value) {
+						getView().getCreateDocument().showLoader(false);
+						getEventBus().fireEvent(new DocumentAddEvent(creditNote));
+
+						ClientPlace cp = new ClientPlace();
+						cp.setClientId(getClient().getId());
+						cp.setDocs(DOCUMENTS.creditNotes);
+						goTo(cp);
+						getView().setLocked(false);
+					}
+				});
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				getView().getCreateDocument().showLoader(false);
+				if(caught instanceof ValidationException){
+					handleServerValidationException((ValidationException) caught);
+				} else {
+					super.onFailure(caught);
+				}
+				getView().setLocked(false);
+			}
+		});
+	}
+
+
 }

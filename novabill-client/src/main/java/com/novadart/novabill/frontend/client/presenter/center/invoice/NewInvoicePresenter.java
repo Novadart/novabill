@@ -7,14 +7,22 @@ import java.util.List;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
+import com.novadart.novabill.frontend.client.place.ClientPlace;
+import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
+import com.novadart.novabill.frontend.client.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
@@ -29,6 +37,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	
 	@Override
 	public void onLoad() {
+		getView().getCreateDocument().setText(I18N.INSTANCE.createInvoice());
 		getView().getTitleLabel().setText(I18N.INSTANCE.newInvoiceCreation());
 	}
 	
@@ -86,6 +95,56 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(transportDocument.getNote());
+	}
+	
+	
+	@Override
+	public void onCreateDocumentClicked() {
+		if(!validateInvoice()){
+			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
+			return;
+		}
+
+		getView().getCreateDocument().showLoader(true);
+		getView().setLocked(true);
+
+		final InvoiceDTO invoice = createInvoice(null);
+
+		ServerFacade.invoice.add(invoice, new ManagedAsyncCallback<Long>() {
+
+			@Override
+			public void onSuccess(Long result) {
+				getView().getCreateDocument().showLoader(false);
+				Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess(), new NotificationCallback<Void>() {
+
+					@Override
+					public void onNotificationClosed(Void value) {
+						getEventBus().fireEvent(new DocumentAddEvent(invoice));
+
+						ClientPlace cp = new ClientPlace();
+						cp.setClientId(getClient().getId());
+						cp.setDocs(DOCUMENTS.invoices);
+						goTo(cp);
+
+						getView().setLocked(false);
+					}
+				});
+
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				getView().getCreateDocument().showLoader(false);
+				if(caught instanceof ValidationException){
+					handleServerValidationException((ValidationException) caught);
+				} else {
+					Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
+					super.onFailure(caught);
+				}
+				getView().setLocked(false);
+			}
+		});
+
 	}
 
 }

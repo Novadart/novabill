@@ -7,12 +7,20 @@ import java.util.List;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.place.ClientPlace;
+import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
+import com.novadart.novabill.frontend.client.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public class NewTransportDocumentPresenter extends AbstractTransportDocumentPresenter {
 
@@ -53,6 +61,55 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 
 	}
 
+	@Override
+	public void onCreateDocumentClicked() {
+		if(!validateTransportDocument()){
+			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
+			return;
+		}
+
+		getView().getCreateDocument().showLoader(true);
+		getView().setLocked(true);
+
+		final TransportDocumentDTO transportDocument = createTransportDocument(null);
+
+		ServerFacade.transportDocument.add(transportDocument, new ManagedAsyncCallback<Long>() {
+
+			@Override
+			public void onSuccess(Long result) {
+				getView().getCreateDocument().showLoader(false);
+
+				getEventBus().fireEvent(new DocumentAddEvent(transportDocument));
+				Notification.showMessage(I18N.INSTANCE.transportDocumentCreationSuccess(), new NotificationCallback<Void>() {
+
+					@Override
+					public void onNotificationClosed(Void value) {
+						ClientPlace cp = new ClientPlace();
+						cp.setClientId(getClient().getId());
+						cp.setDocs(DOCUMENTS.transportDocuments);
+						goTo(cp);
+						getView().setLocked(false);
+					}
+				});
+
+			}
+
+			@Override
+			public void onFailure(Throwable caught) {
+				getView().getCreateDocument().showLoader(false);
+
+				if(caught instanceof ValidationException){
+					handleServerValidationException((ValidationException) caught);
+				} else {
+					Notification.showMessage(I18N.INSTANCE.transportDocumentCreationFailure());
+					super.onFailure(caught);
+				}
+
+				getView().setLocked(false);
+			}
+		});
+	}
+
 	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId) {
 		setClient(client);
 
@@ -71,6 +128,7 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 
 	@Override
 	public void onLoad() {
+		getView().getCreateDocument().setText(I18N.INSTANCE.createTransportDocument());
 		getView().getTitleLabel().setText(I18N.INSTANCE.newTransportDocumentCreation());
 	}
 

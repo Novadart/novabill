@@ -123,13 +123,6 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		presenter.onCreateDocumentClicked();
 	}
 
-
-	@UiHandler("modifyDocument")
-	void onModifyCreditNoteClicked(ClickEvent e){
-		presenter.onModifyDocumentClicked();
-
-	}
-
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
 		presenter.onCancelClicked();
@@ -182,12 +175,6 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	@Override
 	public LoaderButton getCreateDocument() {
 		return createCreditNote;
-	}
-
-
-	@Override
-	public LoaderButton getModifyDocument() {
-		return modifyDocument;
 	}
 
 

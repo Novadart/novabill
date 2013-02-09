@@ -203,11 +203,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		presenter.onCreateDocumentClicked();
 	}
 
-	@UiHandler("modifyDocument")
-	void onModifyTransportDocumentClicked(ClickEvent e){
-		presenter.onModifyDocumentClicked();
-	}
-
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
 		presenter.onCancelClicked();
@@ -304,11 +299,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@Override
 	public LoaderButton getCreateDocument() {
 		return createTransportDocument;
-	}
-
-	@Override
-	public LoaderButton getModifyDocument() {
-		return modifyDocument;
 	}
 
 	@Override

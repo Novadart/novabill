@@ -52,7 +52,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
 	
-	@UiField LoaderButton modifyDocument;
 	@UiField LoaderButton createEstimation;
 	@UiField LoaderButton convertToInvoice;
 	@UiField Button abort;
@@ -81,7 +80,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("AccountDocumentView");
 		
-		modifyDocument.getButton().setStyleName("modifyButton button");
 		createEstimation.getButton().setStyleName("createButton button");
 		convertToInvoice.getButton().setStyleName("convertToInvoice button");
 		
@@ -125,12 +123,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		presenter.onCreateDocumentClicked();
 	}
 
-
-	@UiHandler("modifyDocument")
-	void onModifyEstimationClicked(ClickEvent e){
-		presenter.onModifyDocumentClicked();
-	}
-
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
 		presenter.onCancelClicked();
@@ -147,8 +139,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		number.reset();
 
 		//reset widget statuses
-		createEstimation.setVisible(false);
-		modifyDocument.setVisible(false);
 		convertToInvoice.setVisible(false);
 
 		//reset widget contents		
@@ -160,7 +150,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
 		
-		modifyDocument.reset();
 		createEstimation.reset();
 		convertToInvoice.reset();
 		setLocked(false);
@@ -218,11 +207,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@Override
 	public LoaderButton getCreateDocument() {
 		return createEstimation;
-	}
-	
-	@Override
-	public LoaderButton getModifyDocument() {
-		return modifyDocument;
 	}
 	
 	@Override

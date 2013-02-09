@@ -17,16 +17,12 @@ public interface DocumentView<P extends DocumentView.Presenter> extends View<P>,
 		
 		void onCreateDocumentClicked();
 		
-		void onModifyDocumentClicked();
-		
 		void onCancelClicked();
 
 	}
 
 	LoaderButton getCreateDocument();
 
-	LoaderButton getModifyDocument();
-	
 	Button getAbort();
 	
 	ValidatedTextBox getNumber();

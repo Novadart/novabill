@@ -7,10 +7,6 @@ import java.util.List;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
-import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
@@ -22,7 +18,6 @@ import com.novadart.novabill.frontend.client.widget.notification.NotificationCal
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentType;
-import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public abstract class AbstractInvoicePresenter extends DocumentPresenter<InvoiceView> implements InvoiceView.Presenter {
 
@@ -37,109 +32,6 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(date));
 	}
 
-	@Override
-	public void onCreateDocumentClicked() {
-		if(!validateInvoice()){
-			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
-			return;
-		}
-
-		getView().getCreateDocument().showLoader(true);
-		getView().setLocked(true);
-
-		final InvoiceDTO invoice = createInvoice(null);
-
-		ServerFacade.invoice.add(invoice, new ManagedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(Long result) {
-				getView().getCreateDocument().showLoader(false);
-				Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess(), new NotificationCallback<Void>() {
-
-					@Override
-					public void onNotificationClosed(Void value) {
-						getEventBus().fireEvent(new DocumentAddEvent(invoice));
-
-						ClientPlace cp = new ClientPlace();
-						cp.setClientId(getClient().getId());
-						cp.setDocs(DOCUMENTS.invoices);
-						goTo(cp);
-
-						getView().setLocked(false);
-					}
-				});
-
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				getView().getCreateDocument().showLoader(false);
-				if(caught instanceof ValidationException){
-					handleServerValidationException((ValidationException) caught);
-				} else {
-					Notification.showMessage(I18N.INSTANCE.invoiceCreationFailure());
-					super.onFailure(caught);
-				}
-				getView().setLocked(false);
-			}
-		});
-
-	}
-
-	@Override
-	public void onModifyDocumentClicked() {
-		if(!validateInvoice()){
-			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
-			return;
-		}
-
-		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback<Boolean>() {
-
-			@Override
-			public void onNotificationClosed(Boolean value) {
-				if(value){
-
-					getView().getModifyDocument().showLoader(true);
-					getView().setLocked(true);
-
-					final InvoiceDTO inv = createInvoice(invoice);
-
-					ServerFacade.invoice.update(inv, new ManagedAsyncCallback<Void>() {
-
-						@Override
-						public void onFailure(Throwable caught) {
-							getView().getModifyDocument().showLoader(false);
-							if(caught instanceof ValidationException){
-								handleServerValidationException((ValidationException) caught);
-							} else {
-								Notification.showMessage(I18N.INSTANCE.invoiceUpdateFailure());
-								super.onFailure(caught);
-							}
-							getView().setLocked(false);
-						}
-
-						@Override
-						public void onSuccess(Void result) {
-							getView().getModifyDocument().showLoader(false);
-							Notification.showMessage(I18N.INSTANCE.invoiceUpdateSuccess(), new NotificationCallback<Void>() {
-
-								@Override
-								public void onNotificationClosed(Void value) {
-									getEventBus().fireEvent(new DocumentUpdateEvent(inv));
-
-									ClientPlace cp = new ClientPlace();
-									cp.setClientId(inv.getClient().getId());
-									cp.setDocs(DOCUMENTS.invoices);
-									goTo(cp);
-									getView().setLocked(false);
-								}
-							});
-						}
-					});
-				}
-			}
-		});
-	}
 
 	@Override
 	public void onCancelClicked() {
@@ -162,7 +54,11 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		this.invoice = invoice;
 	}
 	
-	private boolean validateInvoice(){
+	protected InvoiceDTO getInvoice() {
+		return invoice;
+	}
+	
+	protected boolean validateInvoice(){
 		if(getView().getDate().getTextBox().getText().isEmpty() || getView().getDate().getValue() == null){
 			return false;
 		} 
@@ -179,9 +75,8 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 
 		return true;
 	}
-	
 
-	private InvoiceDTO createInvoice(InvoiceDTO invoice){
+	protected InvoiceDTO createInvoice(InvoiceDTO invoice){
 		InvoiceDTO inv;
 
 		if(invoice != null){

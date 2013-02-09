@@ -58,7 +58,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	
 	@UiField Label invoiceNumberSuffix;
 
-	@UiField LoaderButton modifyDocument;
 	@UiField LoaderButton createInvoice;
 	@UiField Button abort;
 
@@ -87,7 +86,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("AccountDocumentView");
 		
-		modifyDocument.getButton().setStyleName("modifyButton button");
 		createInvoice.getButton().setStyleName("createButton button");
 	}
 	
@@ -131,11 +129,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiHandler("createInvoice")
 	void onCreateInvoiceClicked(ClickEvent e){
 		presenter.onCreateDocumentClicked();
-	}
-
-	@UiHandler("modifyDocument")
-	void onModifyInvoiceClicked(ClickEvent e){
-		presenter.onModifyDocumentClicked();
 	}
 
 	@UiHandler("abort")
@@ -219,11 +212,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 
 	@Override
-	public LoaderButton getModifyDocument() {
-		return modifyDocument;
-	}
-
-	@Override
 	public LoaderButton getCreateDocument() {
 		return createInvoice;
 	}
@@ -238,8 +226,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		//reset widget statuses
 		number.reset();
 		payment.reset();
-		createInvoice.setVisible(false);
-		modifyDocument.setVisible(false);
 		paymentNote.setVisible(true);
 		invoiceNumber.setVisible(true);
 		paymentNoteLabel.setVisible(true);
@@ -255,7 +241,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		itemInsertionForm.reset();
 		
 		createInvoice.reset();
-		modifyDocument.reset();
 		setLocked(false);
 	}
 

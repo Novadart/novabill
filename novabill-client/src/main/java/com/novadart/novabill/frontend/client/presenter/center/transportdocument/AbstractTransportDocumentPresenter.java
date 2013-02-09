@@ -9,10 +9,6 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
-import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
@@ -25,7 +21,6 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public abstract class AbstractTransportDocumentPresenter extends DocumentPresenter<TransportDocumentView> implements TransportDocumentView.Presenter {
 
@@ -38,6 +33,10 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 
 	protected void setTransportDocument(TransportDocumentDTO transportDocument) {
 		this.transportDocument = transportDocument;
+	}
+	
+	protected TransportDocumentDTO getTransportDocument() {
+		return transportDocument;
 	}
 	
 	@Override
@@ -79,109 +78,6 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 	}
 	
 	@Override
-	public void onCreateDocumentClicked() {
-		if(!validateTransportDocument()){
-			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
-			return;
-		}
-
-		getView().getCreateDocument().showLoader(true);
-		getView().setLocked(true);
-		
-		final TransportDocumentDTO transportDocument = createTransportDocument(null);
-
-		ServerFacade.transportDocument.add(transportDocument, new ManagedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(Long result) {
-				getView().getCreateDocument().showLoader(false);
-				
-				getEventBus().fireEvent(new DocumentAddEvent(transportDocument));
-				Notification.showMessage(I18N.INSTANCE.transportDocumentCreationSuccess(), new NotificationCallback<Void>() {
-
-					@Override
-					public void onNotificationClosed(Void value) {
-						ClientPlace cp = new ClientPlace();
-						cp.setClientId(getClient().getId());
-						cp.setDocs(DOCUMENTS.transportDocuments);
-						goTo(cp);
-						getView().setLocked(false);
-					}
-				});
-
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				getView().getCreateDocument().showLoader(false);
-				
-				if(caught instanceof ValidationException){
-					handleServerValidationException((ValidationException) caught);
-				} else {
-					Notification.showMessage(I18N.INSTANCE.transportDocumentCreationFailure());
-					super.onFailure(caught);
-				}
-				
-				getView().setLocked(false);
-			}
-		});
-	}
-
-	@Override
-	public void onModifyDocumentClicked() {
-		if(!validateTransportDocument()){
-			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
-			return;
-		}
-
-		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback<Boolean>() {
-
-			@Override
-			public void onNotificationClosed(Boolean value) {
-				if(value){
-					getView().getModifyDocument().showLoader(true);
-					getView().setLocked(true);
-					
-					final TransportDocumentDTO td = createTransportDocument(transportDocument);
-
-					ServerFacade.transportDocument.update(td, new ManagedAsyncCallback<Void>() {
-
-						@Override
-						public void onFailure(Throwable caught) {
-							getView().getModifyDocument().showLoader(false);
-							if(caught instanceof ValidationException){
-								handleServerValidationException((ValidationException) caught);
-							} else {
-								Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateFailure());
-								super.onFailure(caught);
-							}
-							getView().setLocked(false);
-						}
-
-						@Override
-						public void onSuccess(Void result) {
-							getView().getModifyDocument().showLoader(false);
-							getEventBus().fireEvent(new DocumentUpdateEvent(transportDocument));
-							Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateSuccess(), new NotificationCallback<Void>() {
-
-								@Override
-								public void onNotificationClosed(Void value) {
-									ClientPlace cp = new ClientPlace();
-									cp.setClientId(td.getClient().getId());
-									cp.setDocs(DOCUMENTS.transportDocuments);
-									goTo(cp);
-									getView().setLocked(false);
-								}
-							});
-						}
-					});
-				}
-			}
-		});
-	}
-	
-	
-	@Override
 	public void onCancelClicked() {
 		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback<Boolean>() {
 
@@ -197,7 +93,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		});
 	}
 	
-	private TransportDocumentDTO createTransportDocument(TransportDocumentDTO transportDocument){
+	protected TransportDocumentDTO createTransportDocument(TransportDocumentDTO transportDocument){
 		TransportDocumentDTO td;
 
 		if(transportDocument != null){
@@ -258,7 +154,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		return td;
 	}
 	
-	private boolean validateTransportDocument(){
+	protected boolean validateTransportDocument(){
 		if(getView().getDate().getTextBox().getText().isEmpty() || getView().getDate().getValue() == null 
 				|| getView().getTransportStartDate().getTextBox().getText().isEmpty() || getView().getTransportStartDate().getValue() == null){
 			return false;
