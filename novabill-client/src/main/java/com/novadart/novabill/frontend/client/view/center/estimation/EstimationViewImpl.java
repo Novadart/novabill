@@ -143,7 +143,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 
 	@Override
-	public void clean() {
+	public void reset() {
 		number.reset();
 
 		//reset widget statuses

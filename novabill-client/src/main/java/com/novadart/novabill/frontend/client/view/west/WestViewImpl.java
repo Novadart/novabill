@@ -123,7 +123,7 @@ public class WestViewImpl extends Composite implements WestView  {
 	}
 
 	@Override
-	public void clean() {
+	public void reset() {
 		clientContainer.setVisible(true);
 	}
 

@@ -234,7 +234,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 	
 	@Override
-	public void clean() {
+	public void reset() {
 		//reset widget statuses
 		number.reset();
 		payment.reset();

@@ -137,7 +137,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	
 	
 	@Override
-	public void clean() {
+	public void reset() {
 		//reset widget statuses
 		number.reset();
 		number.setVisible(true);

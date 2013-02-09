@@ -6,6 +6,6 @@ import com.novadart.novabill.frontend.client.presenter.Presenter;
 public interface View<P extends Presenter> extends IsWidget {
 
 	public void setPresenter(P presenter);
-	public void clean();
+	public void reset();
 	
 }

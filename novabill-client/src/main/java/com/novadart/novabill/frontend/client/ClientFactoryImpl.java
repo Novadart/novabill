@@ -51,14 +51,14 @@ public class ClientFactoryImpl implements ClientFactory
 	@SuppressWarnings("unchecked")
 	private <T extends View<?>> T getView(Class<?> cl, View<?> view){
 		views.put(cl, view);
-		view.clean();
+		view.reset();
 		return (T)view;
 	}
 	
 	@SuppressWarnings("unchecked")
 	private <T extends View<?>> T getView(Class<?> cl){
 		View<?> view = views.get(cl);
-		view.clean();
+		view.reset();
 		return (T)view;
 	}
 	

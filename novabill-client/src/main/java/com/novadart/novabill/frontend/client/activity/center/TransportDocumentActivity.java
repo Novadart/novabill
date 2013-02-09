@@ -4,15 +4,14 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.frontend.client.facade.CallbackUtils;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.CloneTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.TransportDocumentPlace;
-import com.novadart.novabill.frontend.client.view.MainWidget;
+import com.novadart.novabill.frontend.client.presenter.center.transportdocument.ModifyTransportDocumentPresenter;
+import com.novadart.novabill.frontend.client.presenter.center.transportdocument.NewTransportDocumentPresenter;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
@@ -34,8 +33,6 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(final TransportDocumentView view) {
-				view.setPresenter(TransportDocumentActivity.this);
-				view.setEventBus(eventBus);
 
 				if (place instanceof ModifyTransportDocumentPlace) {
 					ModifyTransportDocumentPlace p = (ModifyTransportDocumentPlace) place;
@@ -50,7 +47,7 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 					setupNewTransportDocumentView(panel, view, p);
 
 				} else {
-					goTo(new HomePlace());
+					getClientFactory().getPlaceController().goTo(new HomePlace());
 				}
 
 			}
@@ -72,9 +69,10 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 
 					@Override
 					public void onSuccess(ClientDTO client) {
-						view.setDataForNewTransportDocument(client, progrId);
-						MainWidget.getInstance().setLargeView();
-						panel.setWidget(view);
+						NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view);
+						p.setDataForNewTransportDocument(client, progrId);
+						p.go(panel);
 					}
 
 				});
@@ -88,9 +86,10 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(TransportDocumentDTO result) {
-				view.setTransportDocument(result);
-				MainWidget.getInstance().setLargeView();
-				panel.setWidget(view);
+				ModifyTransportDocumentPresenter p = new ModifyTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setData(result);
+				p.go(panel);
 			}
 
 		});
@@ -109,9 +108,10 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 
 							@Override
 							public void onSuccess(TransportDocumentDTO toClone) {
-								view.setDataForNewTransportDocument(client, progrId, toClone);
-								MainWidget.getInstance().setLargeView();
-								panel.setWidget(view);
+								NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+										getClientFactory().getEventBus(), view);
+								p.setDataForNewTransportDocument(client, progrId, toClone);
+								p.go(panel);
 							}
 
 						});

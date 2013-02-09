@@ -311,7 +311,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 	}
 
 	@Override
-	public void clean(){
+	public void reset(){
 	}
 
 	@Override

@@ -141,7 +141,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 
 
 	@Override
-	public void clean() {
+	public void reset() {
 		FileUpload fileUpload = new FileUpload();
 		fileUpload.setName("file");
 		fileUpload.setStyleName("logoFileUpload");

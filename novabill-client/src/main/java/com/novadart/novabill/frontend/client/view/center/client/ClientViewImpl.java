@@ -125,7 +125,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 	}
 
 	@Override
-	public void clean() {
+	public void reset() {
 		clientName.setText("");
 		clientDetails.setHTML("");
 		contactPopup.reset();
