@@ -29,7 +29,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 	}
 	
 	@Override
-	protected void setPresenterinView(BusinessView view) {
+	protected void setPresenterInView(BusinessView view) {
 		view.setPresenter(this);
 	}
 	

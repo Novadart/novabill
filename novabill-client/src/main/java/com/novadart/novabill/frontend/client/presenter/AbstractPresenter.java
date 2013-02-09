@@ -16,7 +16,7 @@ public abstract class AbstractPresenter<V extends View<?>> implements Presenter 
 		this.placeController = placeController;
 		this.eventBus = eventBus;
 		this.view = view;
-		setPresenterinView(view);
+		setPresenterInView(view);
 	}
 	
 	protected EventBus getEventBus() {
@@ -37,6 +37,6 @@ public abstract class AbstractPresenter<V extends View<?>> implements Presenter 
 		this.placeController.goTo(place);
 	}
 	
-	protected abstract void setPresenterinView(V view);
+	protected abstract void setPresenterInView(V view);
 
 }

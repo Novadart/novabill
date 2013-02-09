@@ -13,7 +13,7 @@ public class StandardViewPresenter extends AbstractPresenter<StandardWestView> i
 	}
 
 	@Override
-	protected void setPresenterinView(StandardWestView view) {
+	protected void setPresenterInView(StandardWestView view) {
 		view.setPresenter(this);
 	}
 

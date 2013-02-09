@@ -133,7 +133,7 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 	}
 
 	@Override
-	protected void setPresenterinView(TransportDocumentView view) {
+	protected void setPresenterInView(TransportDocumentView view) {
 		view.setPresenter(this);
 	}
 }

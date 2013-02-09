@@ -61,7 +61,7 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 
 
 	@Override
-	protected void setPresenterinView(CreditNoteView view) {
+	protected void setPresenterInView(CreditNoteView view) {
 		view.setPresenter(this);
 	}
 

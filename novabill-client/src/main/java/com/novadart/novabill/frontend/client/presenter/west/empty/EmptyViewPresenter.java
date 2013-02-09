@@ -12,7 +12,7 @@ public class EmptyViewPresenter extends AbstractPresenter<EmptyWestView> impleme
 	}
 
 	@Override
-	protected void setPresenterinView(EmptyWestView view) {
+	protected void setPresenterInView(EmptyWestView view) {
 		view.setPresenter(this);
 	}
 

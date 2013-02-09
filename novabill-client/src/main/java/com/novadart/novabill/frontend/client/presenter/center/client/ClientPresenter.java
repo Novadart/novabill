@@ -58,7 +58,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 	}
 	
 	@Override
-	protected void setPresenterinView(ClientView view) {
+	protected void setPresenterInView(ClientView view) {
 		view.setPresenter(this);
 	}
 	

@@ -31,7 +31,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	}
 
 	@Override
-	protected void setPresenterinView(InvoiceView view) {
+	protected void setPresenterInView(InvoiceView view) {
 		view.setPresenter(this);
 	}
 	

@@ -26,7 +26,7 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 	}
 	
 	@Override
-	protected void setPresenterinView(EstimationView view) {
+	protected void setPresenterInView(EstimationView view) {
 		view.setPresenter(this);
 	}
 

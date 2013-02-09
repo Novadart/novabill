@@ -59,7 +59,7 @@ public class HomePresenter extends AbstractPresenter<HomeView> implements HomeVi
 	}
 
 	@Override
-	protected void setPresenterinView(HomeView view) {
+	protected void setPresenterInView(HomeView view) {
 		view.setPresenter(this);
 	}
 
