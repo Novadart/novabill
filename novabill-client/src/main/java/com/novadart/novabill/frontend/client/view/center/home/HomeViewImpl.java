@@ -68,7 +68,6 @@ public class HomeViewImpl extends Composite implements HomeView {
 		tabBar.addTab(I18N.INSTANCE.estimates());
 		tabBar.addTab(I18N.INSTANCE.creditNote());
 		tabBar.addTab(I18N.INSTANCE.transportDocumentsTab());
-		tabBar.selectTab(0);
 		
 		TipFactory.show(Tips.center_home_welcome, tipWelcome);
 		TipFactory.show(Tips.center_home_yourdocs, tipDocs);
@@ -80,6 +79,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 	protected void onLoad() {
 		super.onLoad();
 		presenter.onLoad();
+		tabBar.selectTab(0);
 	}
 
 	private HTML setupDate() {
