@@ -1,0 +1,190 @@
+.AccountDocumentView {
+	width: 100%;
+	height: 100%;
+}
+
+.docControls {
+	padding: 0.5em;
+	border-top: 1px solid;
+	background-color: #CCC;
+	text-align: center;
+}
+
+.docBody {
+	
+}
+
+.docScroll {
+	width: 100%;
+}
+
+.docScrollBody {
+	
+}
+
+.newEstimation,.newInvoice,.newTransportDocument,.newCreditNote
+	{
+	font-weight: bold;
+	font-size: 1.8em;
+	border-bottom: 1px solid;
+	text-align: center;
+	background-color: #CCC;
+	padding: 0.2em;
+}
+
+.docControls .LoaderButton {
+	display: inline-block;
+}
+
+.convertToInvoiceLB,.abortButton
+	{
+	margin-left: 2em;
+}
+
+.documentMainDetails {
+	margin-top: 0.5em;
+}
+
+.clientName {
+	font-size: 1.3em;
+}
+
+.label {
+	font-weight: bold;
+	font-size: 1.1em;
+	padding: 0.2em 2em 0.7em 0;
+	width: 12em;
+}
+
+.sublabel {
+	font-weight: bold;
+	font-size: 1.1em;
+	padding: 0.3em 0.6em 0.2em 0;
+}
+
+.sublabel.date {
+	
+}
+
+input[type=text].box {
+	width: 15em;
+	margin-bottom: 0.5em;
+}
+
+.addressBox .loadDefaultsButton {
+	margin: 0 0 0 3em;
+}
+
+.addressBox {
+	margin: 1.5em 0 0;
+}
+
+.addressBox .box {
+	margin: 0.2em 0.5em 0.2em 0.2em;
+}
+
+select {
+	padding: 0.2em;
+}
+
+.sublabel.time {
+	margin-left: 2em;
+}
+
+.modifyButton,.createButton {
+	margin-left: 2em;
+}
+
+input[type="text"].box.number {
+	width: 2em;
+	text-align: center;
+}
+
+.invoiceNumberSuffix {
+	padding: 0.4em;
+	font-size: 1.2em;
+}
+
+.note,.paymentNote {
+	width: 40em;
+	height: 2em;
+}
+
+.itemTableContainer {
+	margin: 1em 0;
+	border: 0.1em solid #EEE;
+	padding: 2em;
+}
+
+.newItemContainer {
+	margin-top: 2em;
+	background-color: #EEE;
+	padding: 1em;
+	border: 0.1em solid #CCC;
+}
+
+.itemTable {
+	margin: 0 auto;
+}
+
+.smallLabel {
+	font-weight: bold;
+	padding: 0.4em 0 0.4em 0;
+}
+
+.tax {
+	position: relative;
+	top: -0.2em;
+}
+
+.item {
+	width: 25em;
+	min-height: 5em;
+}
+
+.quantity {
+	width: 4em;
+}
+
+.unitOfMeasure {
+	width: 6em;
+}
+
+.price {
+	width: 6em;
+}
+
+.quantityContainer,.unitOfMeasureContainer,.priceContainer,.taxContainer
+	{
+	margin-left: 1em;
+}
+
+.addButtonContainer {
+	padding: 1.6em 0 0 0.5em;
+}
+
+.totalContainer.totalTax,.totalContainer.totalAfterTaxes
+	{
+	margin-left: 4em;
+}
+
+.totalContainer.totalBeforeTaxes {}
+
+.totalContainer .label {
+	text-align: center;
+	padding: 0.4em;
+}
+
+.itemTableScroller {
+	max-height: 400px;
+}
+
+.totalContainer .total {
+	font-size: 1.5em;
+	font-weight: bold;
+	color: white;
+	background-color: #888;
+	padding: 0.5em;
+	text-align: center;
+	border-radius: 0.5em;
+}

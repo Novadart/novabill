@@ -22,6 +22,7 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
+import com.novadart.novabill.frontend.client.view.center.AccountDocumentCss;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
@@ -81,7 +82,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		initWidget(uiBinder.createAndBindUi(this));
-		setStyleName("AccountDocumentView");
+		setStyleName(CSS.accountDocumentView());
 		
 		modifyDocument.getButton().setStyleName("modifyButton button");
 		createCreditNote.getButton().setStyleName("createButton button");
@@ -106,6 +107,11 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
+	}
+	
+	@UiFactory
+	AccountDocumentCss getAccountDocumentCss(){
+		return CSS;
 	}
 	
 	@Override

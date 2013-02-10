@@ -10,90 +10,91 @@
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
-
+	<ui:with type="com.novadart.novabill.frontend.client.view.center.AccountDocumentCss" field="s" />
+	
 	<g:FlowPanel>
-		<g:Label ui:field="titleLabel" styleName="newEstimation" text="{i18n.newEstimationCreation}"></g:Label>
+		<g:Label ui:field="titleLabel" styleName="{s.newEstimation}" text="{i18n.newEstimationCreation}"></g:Label>
 
-		<g:ScrollPanel styleName="docScroll" ui:field="docScroll">
-			<g:FlowPanel styleName="docScrollBody">
-				<g:Grid styleName="documentMainDetails">
+		<g:ScrollPanel styleName="{s.docScroll}" ui:field="docScroll">
+			<g:FlowPanel styleName="{s.docScrollBody}">
+				<g:Grid styleName="{s.documentMainDetails}">
 					<g:row>
 						<g:customCell>
-							<g:Label styleName="label" text="{i18n.client}"></g:Label>
+							<g:Label styleName="{s.label}" text="{i18n.client}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<g:Label styleName="box clientName" ui:field="clientName"></g:Label>
+							<g:Label styleName="{s.box} {s.clientName}" ui:field="clientName"></g:Label>
 						</g:customCell>
 					</g:row>
 					<g:row>
 						<g:customCell>
-							<g:Label styleName="label" text="{i18n.estimationNumber}"></g:Label>
+							<g:Label styleName="{s.label}" text="{i18n.estimationNumber}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<v:ValidatedTextBox styleName="box number"
+							<v:ValidatedTextBox styleName="{s.box} {s.number}"
 								ui:field="number"></v:ValidatedTextBox>
 						</g:customCell>
 					</g:row>
 					<g:row>
 						<g:customCell>
-							<g:Label styleName="label" text="{i18n.date}"></g:Label>
+							<g:Label styleName="{s.label}" text="{i18n.date}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<d:DateBox styleName="box date" ui:field="date"></d:DateBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="label" text="{i18n.validTill}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<d:DateBox styleName="box date" ui:field="validTill"></d:DateBox>
+							<d:DateBox styleName="{s.box} {s.date}" ui:field="date"></d:DateBox>
 						</g:customCell>
 					</g:row>
 					<g:row>
 						<g:customCell>
-							<g:Label styleName="label" text="{i18n.paymentNote}"></g:Label>
+							<g:Label styleName="{s.label}" text="{i18n.validTill}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<f:ValidatedTextArea styleName="box note" ui:field="paymentNote"></f:ValidatedTextArea>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label styleName="label" text="{i18n.limitations}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<f:ValidatedTextArea styleName="box note" ui:field="limitations"></f:ValidatedTextArea>
+							<d:DateBox styleName="{s.box} {s.date}" ui:field="validTill"></d:DateBox>
 						</g:customCell>
 					</g:row>
 					<g:row>
 						<g:customCell>
-							<g:Label styleName="label" text="{i18n.note}"></g:Label>
+							<g:Label styleName="{s.label}" text="{i18n.paymentNote}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<f:ValidatedTextArea styleName="box note" ui:field="note"></f:ValidatedTextArea>
+							<f:ValidatedTextArea styleName="{s.box} {s.note}" ui:field="paymentNote"></f:ValidatedTextArea>
+						</g:customCell>
+					</g:row>
+					<g:row>
+						<g:customCell>
+							<g:Label styleName="{s.label}" text="{i18n.limitations}"></g:Label>
+						</g:customCell>
+						<g:customCell>
+							<f:ValidatedTextArea styleName="{s.box} {s.note}" ui:field="limitations"></f:ValidatedTextArea>
+						</g:customCell>
+					</g:row>
+					<g:row>
+						<g:customCell>
+							<g:Label styleName="{s.label}" text="{i18n.note}"></g:Label>
+						</g:customCell>
+						<g:customCell>
+							<f:ValidatedTextArea styleName="{s.box} {s.note}" ui:field="note"></f:ValidatedTextArea>
 						</g:customCell>
 					</g:row>
 				</g:Grid>
 
 
-				<g:SimplePanel styleName="itemTableContainer">
+				<g:SimplePanel styleName="{s.itemTableContainer}">
 					<t:ItemInsertionForm ui:field="itemInsertionForm"></t:ItemInsertionForm>
 				</g:SimplePanel>
 
 				<g:SimplePanel>
 					<g:HorizontalPanel>
-						<g:VerticalPanel styleName="totalContainer totalBeforeTaxes">
-							<g:Label styleName="label" text="{i18n.totalBeforeTaxes}"></g:Label>
-							<g:Label styleName="total" ui:field="totalBeforeTaxes"></g:Label>
+						<g:VerticalPanel styleName="{s.totalContainer} {s.totalBeforeTaxes}">
+							<g:Label styleName="{s.label}" text="{i18n.totalBeforeTaxes}"></g:Label>
+							<g:Label styleName="{s.total}" ui:field="totalBeforeTaxes"></g:Label>
 						</g:VerticalPanel>
-						<g:VerticalPanel styleName="totalContainer totalTax">
-							<g:Label styleName="label" text="{i18n.totalTax}"></g:Label>
-							<g:Label styleName="total" ui:field="totalTax"></g:Label>
+						<g:VerticalPanel styleName="{s.totalContainer} {s.totalTax}">
+							<g:Label styleName="{s.label}" text="{i18n.totalTax}"></g:Label>
+							<g:Label styleName="{s.total}" ui:field="totalTax"></g:Label>
 						</g:VerticalPanel>
-						<g:VerticalPanel styleName="totalContainer totalAfterTaxes">
-							<g:Label styleName="label" text="{i18n.totalAfterTaxes}"></g:Label>
-							<g:Label styleName="total" ui:field="totalAfterTaxes"></g:Label>
+						<g:VerticalPanel styleName="{s.totalContainer} {s.totalAfterTaxes}">
+							<g:Label styleName="{s.label}" text="{i18n.totalAfterTaxes}"></g:Label>
+							<g:Label styleName="{s.total}" ui:field="totalAfterTaxes"></g:Label>
 						</g:VerticalPanel>
 					</g:HorizontalPanel>
 				</g:SimplePanel>
@@ -101,10 +102,10 @@
 			</g:FlowPanel>
 		</g:ScrollPanel>
 		
-		<g:FlowPanel styleName="docControls" ui:field="docControls">
-			<gwtshared:LoaderButton styleName="LoaderButton createEstimationLB" ui:field="createEstimation" text="{i18n.createEstimate}"/>
-			<gwtshared:LoaderButton styleName="LoaderButton convertToInvoiceLB" ui:field="convertToInvoice" text="{i18n.convertToInvoice}" />
-			<g:Button ui:field="abort" styleName="abortButton button" text="{i18n.cancel}"></g:Button>
+		<g:FlowPanel styleName="{s.docControls}" ui:field="docControls">
+			<gwtshared:LoaderButton styleName="{s.loaderButton}" ui:field="createEstimation" text="{i18n.createEstimate}"/>
+			<gwtshared:LoaderButton styleName="{s.loaderButton} {s.convertToInvoiceLB}" ui:field="convertToInvoice" text="{i18n.convertToInvoice}" />
+			<g:Button ui:field="abort" styleName="{s.abortButton} button" text="{i18n.cancel}"></g:Button>
 		</g:FlowPanel>
 
 	</g:FlowPanel>
