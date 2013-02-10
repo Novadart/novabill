@@ -31,5 +31,8 @@ public enum Field {
 	name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatID, ssn, 
 	
 	//Client contact fields 
-	contact_firstName, contact_lastName, contact_email, contact_phone, contact_fax, contact_mobile 
+	contact_firstName, contact_lastName, contact_email, contact_phone, contact_fax, contact_mobile,
+	
+	//PaymentType fields
+	defaultPaymentNote, paymentDateGenerator, paymentDateDelta
 }

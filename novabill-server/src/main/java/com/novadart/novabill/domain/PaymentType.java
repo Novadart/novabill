@@ -19,6 +19,11 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.shared.client.dto.PaymentDateDelta;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 
+/*
+ * Important note!
+ * If fields and validation constraints are modified be sure to update the validation code. 
+ */
+
 @Configurable
 @Entity
 public class PaymentType {

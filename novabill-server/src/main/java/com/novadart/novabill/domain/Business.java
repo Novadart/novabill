@@ -502,14 +502,6 @@ public class Business implements Serializable, Taxable {
         this.clients = clients;
     }
     
-    /*
-     * End of getters and setters section
-     * */
-    
-    /*
-     * Active record functionality
-     * */
-    
     public Set<Principal> getPrincipals() {
 		return principals;
 	}
@@ -518,6 +510,22 @@ public class Business implements Serializable, Taxable {
 		this.principals = principals;
 	}
 
+	public Set<PaymentType> getPaymentTypes() {
+		return paymentTypes;
+	}
+
+	public void setPaymentTypes(Set<PaymentType> paymentTypes) {
+		this.paymentTypes = paymentTypes;
+	}
+    
+    /*
+     * End of getters and setters section
+     * */
+    
+    /*
+     * Active record functionality
+     * */
+    
 	@PersistenceContext
     transient EntityManager entityManager;
     
