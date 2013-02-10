@@ -7,4 +7,6 @@ public interface PaymentTypeServiceAsync {
 
 	void add(PaymentTypeDTO paymentTypeDTO, AsyncCallback<Long> callback);
 
+	void remove(Long businessID, Long id, AsyncCallback<Void> callback);
+
 }

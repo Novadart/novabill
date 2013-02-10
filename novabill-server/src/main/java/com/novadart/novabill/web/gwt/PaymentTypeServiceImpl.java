@@ -1,9 +1,9 @@
 package com.novadart.novabill.web.gwt;
 
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
@@ -33,6 +33,17 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 		paymentType.setBusiness(business);
 		paymentType.flush();
 		return paymentType.getId();
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	@PreAuthorize("#businessID == principal.business.id and " +
+		  	  	  "T(com.novadart.novabill.domain.PaymentType).findPaymentType(#id)?.business?.id == #businessID")
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+		PaymentType paymentType = PaymentType.findPaymentType(id);
+		paymentType.remove(); //removing payment type
+		if(Hibernate.isInitialized(paymentType.getBusiness().getPaymentTypes()))
+			paymentType.getBusiness().getPaymentTypes().remove(paymentType);
 	}
 
 }

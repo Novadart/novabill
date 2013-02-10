@@ -10,5 +10,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 public interface PaymentTypeService extends RemoteService {
 	
 	public Long add(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException;
+	
+	public void remove(Long businessID, Long id)  throws NotAuthenticatedException, DataAccessException;
 
 }
