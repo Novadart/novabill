@@ -406,135 +406,7 @@ textarea:HOVER {
 	margin-right: 1em;
 }
 
-.MainWidget .centerContainer {
-	padding: 1em;
-}
 
-.MainWidget .southContainer .changeButton {
-	background-color: white;
-	border: 0.1em solid #CCC;
-	color: #CCC;
-	margin: 0 0.3em 0.1em;
-}
-
-.MainWidget .southContainer .changeButton:HOVER {
-	background-color: #EEE;
-	border: 0.1em solid #DDD;
-	color: #333;
-}
-
-.MainWidget .header { 
-	background: rgb(255,255,255); /* Old browsers */
-	background: -moz-linear-gradient(top,  rgba(255,255,255,1) 0%, rgba(239,239,239,1) 100%); /* FF3.6+ */
-	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,rgba(255,255,255,1)), color-stop(100%,rgba(239,239,239,1))); /* Chrome,Safari4+ */
-	background: -webkit-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(239,239,239,1) 100%); /* Chrome10+,Safari5.1+ */
-	background: -o-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(239,239,239,1) 100%); /* Opera 11.10+ */
-	background: -ms-linear-gradient(top,  rgba(255,255,255,1) 0%,rgba(239,239,239,1) 100%); /* IE10+ */
-	background: linear-gradient(to bottom,  rgba(255,255,255,1) 0%,rgba(239,239,239,1) 100%); /* W3C */
-	filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#ffffff', endColorstr='#efefef',GradientType=0 ); /* IE6-9 */
-}
-
-.MainWidget .header .logo {
-	height: 2.5em;
-}
-
-.MainWidget .header .stats {
-	font-size: 1.2em;
-	padding-bottom: 0.5em;
-	padding-top: 0.5em;
-	position: absolute;
-	right: 0.5em;
-	top: 0.8em;
-}
-
-.MainWidget .header .menuBar {
-	float: left;
-	width: 50em;
-}
-
-.MainWidget .header .logoBar {
-	float: left;
-	width: 25em;
-}
-
-.MainWidget .changePassword {
-	text-decoration: none;
-	font-size: 1em;
-	cursor: pointer;
-	color: #333;
-	margin: 0.8em 0 0 2em;
-}
-
-.MainWidget .changePassword:HOVER {
-	font-weight: bold;
-}
-
-.MainWidget .header .exitButton {
-	text-decoration: none;
-	font-size: 1em;
-	cursor: pointer;
-	color: #333;
-	margin: 0.8em 0 0 2em;
-}
-
-.MainWidget .header .exitButton:HOVER {
-	font-weight: bold;
-}
-
-.MainWidget .header .homeButton {
-	height: 2.5em;
-	width: 8em;
-}
-
-.MainWidget .header .myDataButton {
-	height: 2.5em;
-	width: 8em;
-	margin-left: 0.5em;
-}
-
-.MainWidget .header .productName {
-	font-size: 2.5em;
-	font-weight: bold;
-	cursor: pointer;
-	margin-left: 0.5em;
-}
-
-.MainWidget .header .clients,.MainWidget .header .invoices,.MainWidget .header .totalAmount
-	{
-	margin-left: 2.5em;
-}
-
-.MainWidget .header .value {
-	margin-left: 0.7em;
-	font-weight: bold;
-}
-
-.MainWidget .banner {
-	background-color: #EEE;
-	text-align: center;
-	height: 1.5em;
-	padding: 0.5em 1em 0;
-}
-
-.MainWidget .banner .name {
-	font-weight: bold;
-	font-size: 1.1em;
-}
-
-.MainWidget .banner .address {
-	font-size: 1.0em;
-	margin-left: 0.5em;
-}
-
-.MainWidget .banner .phoneAndFax {
-	font-size: 1.0em;
-	margin-left: 0.5em;
-}
-
-.MainWidget .banner .vatID {
-	font-size: 1.0em;
-	margin-left: 0.5em;
-}
 
 .QuickViewList .quickViewCell {
 	padding: 0 1em 0 0;
@@ -688,11 +560,6 @@ textarea:HOVER {
 	text-decoration: none;
 }
 
-.westContainer {
-	border-right: 1px solid #EEE;
-}
-
-
 .ClientWidget {
 	background-color: #EEE;
 	margin: 3em 0;
@@ -700,29 +567,7 @@ textarea:HOVER {
 	padding: 0.2em;
 }
 
-.westContainer .client {
-	border: 0.1em solid #EEE;
-	padding: 2px;
-	margin: 0.1em 0;
-}
-
-.westContainer .client:HOVER {
-	background-color: #EEE;
-}
-
-.westContainer .client-simple {
-	border: 0.1em solid #DDD;
-	padding: 1em 0.5em;
-	margin: 0.1em 0;
-	box-shadow: 2px 2px 2px #CCC;
-}
-
-}
-.westContainer .client-simple:HOVER {
-	background-color: #EEE;
-}
-
-.ClientWidget .name,.westContainer .client .name {
+.ClientWidget .name {
 	font-weight: bold;
 }
 

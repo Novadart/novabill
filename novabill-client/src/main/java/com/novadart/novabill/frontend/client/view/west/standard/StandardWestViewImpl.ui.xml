@@ -10,42 +10,43 @@
 		type="com.novadart.novabill.frontend.client.resources.ImageResources"
 		field="img"></ui:with>
 
-	<ui:style field="s" type="com.novadart.novabill.frontend.client.view.west.standard.StandardWestViewImpl.Style">
-		.clientListWrapper {
-			height: 100%;
-		}
-		
-		.clientContainer {
-			height: 100%;
-		}
-		
-		.clientListContainerWrapper {
-			height: 100%;
-		}
-		
-		.addClient {
-			margin-top: 1.8em;
-			cursor: pointer;
-		}
-		
-		.addClient:HOVER {
-			border: 1px solid #2F9524;
-		}
-		
-		.clients {
-			font-size: 2em;
-			margin-top: 1em;
-			margin-left: 0.5em;
-		}
-		
-		.clientsHeader {
-			width: 100%;
-		}
-		
-		.cellList {
-			padding: 10px;
-		}
-	</ui:style>
+	<ui:style field="s"
+		type="com.novadart.novabill.frontend.client.view.west.standard.StandardWestViewImpl.Style">
+			.clientListWrapper {
+				height: 100%;
+			}
+			
+			.clientContainer {
+				height: 100%;
+			}
+			
+			.clientListContainerWrapper {
+				height: 100%;
+			}
+			
+			.addClient {
+				margin-top: 1.8em;
+				cursor: pointer;
+			}
+			
+			.addClient:HOVER {
+				border: 1px solid #2F9524;
+			}
+			
+			.clients {
+				font-size: 2em;
+				margin-top: 1em;
+				margin-left: 0.5em;
+			}
+			
+			.clientsHeader {
+				width: 100%;
+			}
+			
+			.cellList {
+				padding: 10px;
+			}
+		</ui:style>
 
 	<ui:style field="cs"
 		type="com.novadart.novabill.frontend.client.view.west.standard.StandardWestViewImpl.ClientSearchStyle">
@@ -79,7 +80,23 @@
 			}
 		</ui:style>
 
-
+	<ui:style field="ccs"
+		type="com.novadart.novabill.frontend.client.view.west.standard.StandardWestViewImpl.ClientCellStyle">
+			.client {
+				border: 0.1em solid #DDD;
+				padding: 1em 0.5em;
+				margin: 0.1em 0;
+				box-shadow: 2px 2px 2px #CCC;
+			}
+			
+			.client:HOVER {
+				background-color: #EEE;
+			}
+			
+			.name  {
+				font-weight: bold;
+			}
+		</ui:style>
 
 	<g:FlowPanel styleName="{s.clientListWrapper}">
 
@@ -87,8 +104,8 @@
 			<g:HorizontalPanel ui:field="clientsHeader"
 				styleName="{s.clientsHeader}">
 				<g:Label styleName="{s.clients}" text="{i18n.clients}"></g:Label>
-				<g:Button styleName="action-button {s.addClient}"
-					ui:field="addClient" text="{i18n.newClient}"></g:Button>
+				<g:Button styleName="action-button {s.addClient}" ui:field="addClient"
+					text="{i18n.newClient}"></g:Button>
 			</g:HorizontalPanel>
 			<g:HorizontalPanel ui:field="clientFilterContainer" />
 			<g:SimplePanel ui:field="tip" />

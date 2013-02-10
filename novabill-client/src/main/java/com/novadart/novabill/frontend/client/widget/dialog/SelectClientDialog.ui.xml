@@ -81,6 +81,9 @@
 			padding: 1em 1em 0;
 		}
 	
+		.filter {}
+		
+		.clientListWrapper{}
 	</ui:style>
 
 	<g:FlowPanel styleName="{style.body}">

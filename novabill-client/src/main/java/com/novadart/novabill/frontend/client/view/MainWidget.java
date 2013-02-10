@@ -5,6 +5,7 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -39,6 +40,25 @@ import com.novadart.novabill.frontend.client.view.feedback.FeedbackDialog;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 
 public class MainWidget extends Composite {
+	
+	interface Style extends CssResource {
+		String logo();
+		String menuBar();
+		String westContainer();
+		String myDataButton();
+		String stats();
+		String exitButton();
+		String header();
+		String homeButton();
+		String logoBar();
+		String centerContainer();
+		String value();
+		String totalAmount();
+		String changePassword();
+		String invoices();
+		String productName();
+		String clients();
+	}
 
 	private static MainWidgetUiBinder uiBinder = GWT
 			.create(MainWidgetUiBinder.class);
@@ -59,6 +79,7 @@ public class MainWidget extends Composite {
 	@UiField Anchor logout;
 	@UiField Anchor logoAnchor;
 	@UiField(provided=true) Anchor changePasswordAnchor;
+	@UiField Style style;
 
 	private PlaceController placeController;
 
@@ -192,25 +213,25 @@ public class MainWidget extends Composite {
 		SafeHtmlBuilder shb = new SafeHtmlBuilder();
 
 		//first row
-		shb.appendHtmlConstant("<span class='clients'>");
+		shb.appendHtmlConstant("<span class='"+style.clients()+"'>");
 		shb.appendEscaped(I18N.INSTANCE.totalClients());
-		shb.appendHtmlConstant("<span class='value'>");
+		shb.appendHtmlConstant("<span class='"+style.value()+"'>");
 		shb.append(statistics.getClientsCount());
 		shb.appendHtmlConstant("</span>");
 		shb.appendHtmlConstant("</span>");
 
 		//second row
-		shb.appendHtmlConstant("<span class='invoices'>");
+		shb.appendHtmlConstant("<span class='"+style.invoices()+"'>");
 		shb.appendEscaped(I18N.INSTANCE.totalInvoices());
-		shb.appendHtmlConstant("<span class='value'>");
+		shb.appendHtmlConstant("<span class='"+style.value()+"'>");
 		shb.append(statistics.getInvoicesCountForYear());
 		shb.appendHtmlConstant("</span>");
 		shb.appendHtmlConstant("</span>");
 
 		//third row
-		shb.appendHtmlConstant("<span class='totalAmount'>");
+		shb.appendHtmlConstant("<span class='"+style.totalAmount()+"'>");
 		shb.appendEscaped(I18N.INSTANCE.totalInvoicing());
-		shb.appendHtmlConstant("<span class='value'>");
+		shb.appendHtmlConstant("<span class='"+style.value()+"'>");
 		shb.appendEscaped(NumberFormat.getCurrencyFormat().format(statistics.getTotalAfterTaxesForYear()));
 		shb.appendHtmlConstant("</span>");
 		shb.appendHtmlConstant("</span>");

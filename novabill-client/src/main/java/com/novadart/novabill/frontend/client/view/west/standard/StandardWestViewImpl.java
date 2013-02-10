@@ -27,6 +27,7 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 public class StandardWestViewImpl extends Composite implements StandardWestView  {
 	
 	interface ClientSearchStyle extends ClientSearch.Style {}
+	interface ClientCellStyle extends ClientCell.Style {}
 	
 	interface Style extends CssResource {
 		String clientListWrapper();
@@ -54,6 +55,7 @@ public class StandardWestViewImpl extends Composite implements StandardWestView 
 	
 	@UiField Style s;
 	@UiField ClientSearchStyle cs;
+	@UiField ClientCellStyle ccs;
 	
 	private Presenter presenter;
 	private final ClientSearch clientSearch;
@@ -90,7 +92,7 @@ public class StandardWestViewImpl extends Composite implements StandardWestView 
 	}
 
 	private CellList<ClientDTO> createClientList(){
-		ClientCell cell = new ClientCell();
+		ClientCell cell = new ClientCell(ccs);
 		CellList<ClientDTO> list = new CellList<ClientDTO>(cell);
 		list.setStyleName(s.cellList());
 
