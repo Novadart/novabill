@@ -2,13 +2,32 @@
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
 
-	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N" field="i18n"></ui:with>
-	
-	<g:FlowPanel styleName="authDialog">
-		<g:Label styleName="reloadMessage" text="{i18n.sessionExpiredError}"></g:Label>
-		<g:Label styleName="reloadMessage" text="{i18n.sessionExpiredError2}"></g:Label>
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
+		field="i18n"></ui:with>
+
+	<ui:style>
+		.authDialog {
+			background-color: white;
+			padding: 2em;
+		}
 		
-		<g:Button ui:field="reloadPage" styleName="reloadButton submit action2-button" text="{i18n.reloadPage}"></g:Button>
+		.authDialog .reloadButton {
+			margin: 2em auto 0;
+			display: block;
+			width: 45%;
+		}
+		
+		.authDialog .reloadMessage {
+			padding: 0.5em 0;
+		}
+	</ui:style>
+
+	<g:FlowPanel styleName="{style.authDialog}">
+		<g:Label styleName="{style.reloadMessage}" text="{i18n.sessionExpiredError}"></g:Label>
+		<g:Label styleName="{style.reloadMessage}" text="{i18n.sessionExpiredError2}"></g:Label>
+
+		<g:Button ui:field="reloadPage" styleName="{style.reloadButton} submit action2-button"
+			text="{i18n.reloadPage}"></g:Button>
 	</g:FlowPanel>
-	
+
 </ui:UiBinder> 

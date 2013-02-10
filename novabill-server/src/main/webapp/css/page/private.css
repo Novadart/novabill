@@ -89,53 +89,6 @@ textarea:HOVER {
 	font-style: italic;
 }
 
-.NotificationDialog .body {
-	border: 0.1em solid #DDD;
-	padding: 1.5em 2em;
-	background-color: #FFF;
-	margin: 0 auto;
-	width: 25em;
-}
-
-.NotificationDialog .message {
-	text-align: justify;
-	font-size: 1.2em;
-}
-
-.NotificationDialog .buttonsWrapper {
-	text-align: center;
-	margin-top: 1em;
-}
-
-.NotificationDialog .buttonsWrapper button {
-	width: 5em;
-}
-
-.NotificationDialog .buttonsWrapper button + button {
-	margin-left: 2em;
-
-}
-
-.AuthDialog {
-	background-color: white;
-	padding: 2em;
-}
-
-.AuthDialog .authDialog {
-	
-}
-
-.AuthDialog .authDialog .reloadButton {
-	margin: 2em auto 0;
-	display: block;
-	width: 45%;
-}
-
-.AuthDialog .authDialog .reloadMessage {
-	padding: 0.5em 0;
-}
-
-
 .Novabill {
 	margin: 0 auto;
 	background-color: white;
@@ -739,19 +692,6 @@ textarea:HOVER {
 	border-right: 1px solid #EEE;
 }
 
-.westContainer .cellList {
-	padding: 10px;
-}
-
-.westContainer .clientsHeader {
-	width: 100%;
-}
-
-.westContainer .clients {
-	font-size: 2em;
-	margin-top: 1em;
-	margin-left: 0.5em;
-}
 
 .ClientWidget {
 	background-color: #EEE;
@@ -785,22 +725,6 @@ textarea:HOVER {
 .ClientWidget .name,.westContainer .client .name {
 	font-weight: bold;
 }
-
-.westContainer .addClient {
-	margin-top: 1.8em;
-	cursor: pointer;
-}
-
-.westContainer .addClient:HOVER {
-	border: 1px solid #2F9524;
-}
-
-.westContainer .ClientSearch-filter {
-	margin: 0.5em 1em;
-	width: 20em;
-}
-
-
 
 .Dialog {
 	z-index: 2;
@@ -918,84 +842,6 @@ td.datePickerMonth {
 	font-weight: bold;
 	padding: 0px 4px;
 	outline: none;
-}
-
-.SelectClientDialog {
-	
-}
-
-.SelectClientDialog .body {
-	background-color: white;
-	padding: 1em;
-	border: 1em solid #EEE;
-	border-radius: 0.5em;
-	width: 40em;
-	min-height: 10em;
-}
-
-.SelectClientDialog .title {
-	text-align: center;
-	padding: 0.2em;
-	font-size: 1.4em;
-	font-weight: bold;
-	margin-bottom: 1em;
-}
-
-.SelectClientDialog .filterContainer {
-	margin: 0 auto;
-}
-
-.SelectClientDialog .ClientSearch-filter {
-	width: 20em;
-	margin-bottom: 1em;
-}
-
-
-.SelectClientDialog .ClientSearch-resetFilter {
-	cursor: pointer;
-	width: 1.5em;
-	position: relative;
-	top: 0.4em;
-	right: -0.5em;
-}
-
-.SelectClientDialog .listWrapper {
-	width: 100%;
-}
-
-.SelectClientDialog .buttons {
-	margin: 1em auto 0;
-}
-
-.SelectClientDialog .buttons .button {
-	width: 7em;
-}
-
-.SelectClientDialog .buttons .button.submit {
-	margin-right: 1em;
-}
-
-.SelectClientDialog .client {
-	text-align: center;
-	padding: 0.5em;
-	font-size: 1.1em;
-	border: 0.1em solid #DDD;
-	margin-bottom: 0.2em;
-}
-
-.SelectClientDialog .ClientSearch-clientLoader {
-	display: block;
-	margin: 1em auto 0;
-}
-
-.SelectClientDialog .ClientSearch-noClientsFoundMessage {
-	margin: 1em auto 0;
-	text-align: center;
-	padding: 1em 1em 0;
-}
-
-.SelectClientDialog .listWrapperScroll {
-	height: 30em;
 }
 
 .ClientDialog .wrapper {
@@ -1386,10 +1232,6 @@ td.datePickerMonth {
 	display: block;
 }
 
-.StandardWestView {
-	height: 100%;
-}
-
 .tipPanel {
 	width: 80%;
 	margin: 2em auto 0;
@@ -1428,37 +1270,6 @@ td.datePickerMonth {
 	background-color: #333;
 }
 
-.StandardWestView .clientContainer {
-	height: 100%;
-}
-
-.StandardWestView .ClientSearch-clientListWrapper {
-	width: 100%;
-	height: 100%;
-}
-
-.StandardWestView .clientListContainerWrapper {
-	height: 100%;
-}
-.StandardWestView .ClientSearch-resetFilter {
-	cursor: pointer;
-	width: 1.5em;
-	position: relative;
-	top: 0.8em;
-	right: 0.5em;
-}
-
-.StandardWestView .ClientSearch-clientListWrapper .ClientSearch-clientLoader {
-	display: block;
-	margin: 2em auto 0;
-}
-
-.StandardWestView .ClientSearch-clientListWrapper .ClientSearch-noClientsFoundMessage
-	{
-	margin: 2em auto 0;
-	text-align: center;
-	padding: 1em 3em 0;
-}
 
 .GoPremiumDialog {
 	-webkit-transition: all 1s;

@@ -1,27 +1,99 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client"
-	xmlns:w="urn:import:com.novadart.novabill.frontend.client.view.west" xmlns:t="urn:import:com.novadart.gwtshared.client.textbox">
+	xmlns:w="urn:import:com.novadart.novabill.frontend.client.view.west"
+	xmlns:t="urn:import:com.novadart.gwtshared.client.textbox">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
-	<ui:with type="com.novadart.novabill.frontend.client.resources.ImageResources" field="img"></ui:with>
+	<ui:with
+		type="com.novadart.novabill.frontend.client.resources.ImageResources"
+		field="img"></ui:with>
 
-	<g:FlowPanel styleName="clientListWrapper">
+	<ui:style field="s" type="com.novadart.novabill.frontend.client.view.west.standard.StandardWestViewImpl.Style">
+		.clientListWrapper {
+			height: 100%;
+		}
+		
+		.clientContainer {
+			height: 100%;
+		}
+		
+		.clientListContainerWrapper {
+			height: 100%;
+		}
+		
+		.addClient {
+			margin-top: 1.8em;
+			cursor: pointer;
+		}
+		
+		.addClient:HOVER {
+			border: 1px solid #2F9524;
+		}
+		
+		.clients {
+			font-size: 2em;
+			margin-top: 1em;
+			margin-left: 0.5em;
+		}
+		
+		.clientsHeader {
+			width: 100%;
+		}
+		
+		.cellList {
+			padding: 10px;
+		}
+	</ui:style>
 
-		<g:FlowPanel ui:field="clientContainer" styleName="clientContainer">
-			<g:HorizontalPanel ui:field="clientsHeader" styleName="clientsHeader">
-				<g:Label styleName="clients" text="{i18n.clients}"></g:Label>
-				<g:Button styleName="action-button addClient" ui:field="addClient" text="{i18n.newClient}"></g:Button>
+	<ui:style field="cs"
+		type="com.novadart.novabill.frontend.client.view.west.standard.StandardWestViewImpl.ClientSearchStyle">
+			.filter {
+				margin: 0.5em 1em;
+				width: 20em;
+			}
+			
+			.clientLoader {
+				display: block;
+				margin: 2em auto 0;
+			}
+			
+			.noClientsFoundMessage {
+				margin: 2em auto 0;
+				text-align: center;
+				padding: 1em 3em 0;
+			}
+			
+			.resetFilter {
+				cursor: pointer;
+				width: 1.5em;
+				position: relative;
+				top: 0.8em;
+				right: 0.5em;
+			}
+			
+			.clientListWrapper {
+				width: 100%;
+				height: 100%;
+			}
+		</ui:style>
+
+
+
+	<g:FlowPanel styleName="{s.clientListWrapper}">
+
+		<g:FlowPanel ui:field="clientContainer" styleName="{s.clientContainer}">
+			<g:HorizontalPanel ui:field="clientsHeader"
+				styleName="{s.clientsHeader}">
+				<g:Label styleName="{s.clients}" text="{i18n.clients}"></g:Label>
+				<g:Button styleName="action-button {s.addClient}"
+					ui:field="addClient" text="{i18n.newClient}"></g:Button>
 			</g:HorizontalPanel>
-			<g:HorizontalPanel ui:field="clientFilterContainer">
-				<t:RichTextBox ui:field="clientFilter"></t:RichTextBox>
-				<g:Image ui:field="cleanClientFilter" />
-			</g:HorizontalPanel>
+			<g:HorizontalPanel ui:field="clientFilterContainer" />
 			<g:SimplePanel ui:field="tip" />
-			<g:ScrollPanel ui:field="clientListContainerWrapper" styleName="clientListContainerWrapper">
-				<g:SimplePanel ui:field="clientListContainer"/>
-			</g:ScrollPanel>
+			<g:ScrollPanel ui:field="clientListContainerWrapper"
+				styleName="{s.clientListContainerWrapper}" />
 		</g:FlowPanel>
 
 	</g:FlowPanel>

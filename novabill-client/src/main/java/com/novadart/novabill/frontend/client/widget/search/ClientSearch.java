@@ -4,6 +4,7 @@ import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Image;
@@ -24,6 +25,14 @@ import com.novadart.novabill.frontend.client.widget.search.ClientDataProvider.Wa
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientSearch implements Watcher {
+	
+	public interface Style extends CssResource {
+		String clientLoader();
+		String noClientsFoundMessage();
+		String clientListWrapper();
+		String filter();
+		String resetFilter();
+	}
 
 	private static final int QUERY_MIN_LENGHT = 1; 
 	private static final int MIN_WAIT_BEFORE_FIRING_SEARCH = 1200;
@@ -43,16 +52,17 @@ public class ClientSearch implements Watcher {
 	private long lastTimeKeyWasPressedInFilter = 0;
 	private final SearchTriggerTimer timer = new SearchTriggerTimer();
 	
-	public ClientSearch(CellList<ClientDTO> dataDisplay) {
+	public ClientSearch(Style style, CellList<ClientDTO> dataDisplay) {
+		style.ensureInjected();
 		this.dataDisplay = dataDisplay;
 
-		loader.setStyleName("ClientSearch-clientLoader");
-		noClientsFound.setStyleName("ClientSearch-noClientsFoundMessage");
+		loader.setStyleName(style.clientLoader());
+		noClientsFound.setStyleName(style.noClientsFoundMessage());
 
-		clientListWrapper.setStyleName("ClientSearch-clientListWrapper");
+		clientListWrapper.setStyleName(style.clientListWrapper());
 		clientListWrapper.setWidget(loader);
 
-		filter.addStyleName("ClientSearch-filter");
+		filter.addStyleName(style.filter());
 		filter.addKeyUpHandler(new KeyUpHandler() {
 
 			@Override
@@ -69,7 +79,7 @@ public class ClientSearch implements Watcher {
 			}
 		});
 
-		resetFilter.addStyleName("ClientSearch-resetFilter");
+		resetFilter.addStyleName(style.resetFilter());
 		resetFilter.setVisible(false);
 		resetFilter.setTitle(I18N.INSTANCE.helpClearFilter());
 		resetFilter.addClickHandler(new ClickHandler() {
