@@ -559,59 +559,7 @@ td.datePickerMonth {
 	outline: none;
 }
 
-.ClientDialog .wrapper {
-	background-color: white;
-}
 
-.ClientDialog .title {
-	text-align: center;
-	padding: 0.2em;
-	font-size: 1.4em;
-	font-weight: bold;
-	margin-bottom: 1em;
-}
-
-.ClientDialog .title2 {
-	text-align: center;
-	padding: 0.2em;
-	font-size: 1.1em;
-	font-weight: bold;
-	margin-bottom: 0.5em;
-}
-
-.ClientDialog .rightBox {
-	margin-left: 2em;
-}
-
-.ClientDialog .gridWrapper {
-	background-color: white;
-}
-
-.ClientDialog .label {
-	padding: 0.5em;
-}
-
-.ClientDialog .value {
-	margin: 0.3em 0.5em;
-	width: 15em;
-}
-
-.ClientDialog .buttonContainer table {
-	margin: 0 auto;
-}
-
-.ClientDialog .buttonContainer {
-	padding: 1em 0;
-}
-
-.ClientDialog .buttonContainer .button {
-	width: 9em;
-}
-
-.ClientDialog .buttonContainer .submit {
-	margin-right: 1em;
-	width: 9em;
-}
 
 
 .LoaderButton {
