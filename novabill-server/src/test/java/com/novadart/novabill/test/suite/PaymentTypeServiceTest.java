@@ -59,7 +59,7 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void addAuthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	public void addAuthorizedNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
 		paymentTypeService.add(null);
 	}
 	
@@ -68,7 +68,7 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(TestUtils.createPaymentType());
 		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		paymentTypeDTO.setId(1l);
-		paymentTypeService.add(null);
+		paymentTypeService.add(paymentTypeDTO);
 	}
 	
 	@Test
@@ -88,17 +88,17 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 		}
 	}
 	
-	private Long addPaymentType() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	private PaymentTypeDTO addPaymentType() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
 		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(TestUtils.createPaymentType());
 		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
-		Long id = paymentTypeService.add(paymentTypeDTO);
+		paymentTypeDTO.setId(paymentTypeService.add(paymentTypeDTO));
 		PaymentType.entityManager().flush();
-		return id;
+		return paymentTypeDTO;
 	}
 	
 	@Test
 	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
-		Long id = addPaymentType();
+		Long id = addPaymentType().getId();
 		paymentTypeService.remove(authenticatedPrincipal.getBusiness().getId(), id);
 		PaymentType.entityManager().flush();
 		assertNull(Invoice.findInvoice(id));
@@ -106,20 +106,48 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 	
 	@Test(expected = DataAccessException.class)
 	public void removeUnAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
-		Long id = addPaymentType();
+		Long id = addPaymentType().getId();
 		paymentTypeService.remove(getUnathorizedBusinessID(), id);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void removeBusinessIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
-		Long id = addPaymentType();
+		Long id = addPaymentType().getId();
 		paymentTypeService.remove(null, id);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void removeAuthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
-		Long id = addPaymentType();
 		paymentTypeService.remove(getUnathorizedBusinessID(), null);
+	}
+	
+	@Test
+	public void updateAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+		PaymentTypeDTO paymentTypeDTO = addPaymentType();
+		paymentTypeDTO.setName("Test name!!!");
+		paymentTypeService.update(paymentTypeDTO);
+		PaymentType.entityManager().flush();
+		PaymentTypeDTO persistedDTO = PaymentTypeDTOFactory.toDTO(PaymentType.findPaymentType(paymentTypeDTO.getId()));
+		assertTrue(EqualsBuilder.reflectionEquals(paymentTypeDTO, persistedDTO, "business"));
+	}
+	
+	@Test
+	public void updateUnathorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+		PaymentTypeDTO paymentTypeDTO = addPaymentType();
+		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		paymentTypeService.update(paymentTypeDTO);
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void updateAuthorizedNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+		paymentTypeService.update(null);
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void updateAuthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+		PaymentTypeDTO paymentTypeDTO = addPaymentType();
+		paymentTypeDTO.setId(null);
+		paymentTypeService.update(paymentTypeDTO);
 	}
 
 }

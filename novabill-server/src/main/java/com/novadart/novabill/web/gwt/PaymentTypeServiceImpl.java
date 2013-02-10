@@ -11,6 +11,7 @@ import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.PaymentTypeService;
@@ -34,6 +35,22 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 		paymentType.flush();
 		return paymentType.getId();
 	}
+	
+	
+
+	@Override
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
+	@PreAuthorize("#paymentTypeDTO?.business?.id == principal.business.id and " +
+	  	  	  	  "#paymentTypeDTO?.id != null")
+	public void update(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+		PaymentType persistedPaymentType = PaymentType.findPaymentType(paymentTypeDTO.getId());
+		if(persistedPaymentType == null)
+			throw new NoSuchObjectException();
+		PaymentTypeDTOFactory.copyFromDTO(persistedPaymentType, paymentTypeDTO);
+		validator.validate(persistedPaymentType);
+	}
+
+
 
 	@Override
 	@Transactional(readOnly = false)

@@ -6,6 +6,7 @@ import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.PaymentTypeService;
@@ -24,6 +25,12 @@ public class PaymentTypeServiceProxy extends AbstractGwtController implements Pa
 		return paymentTypeService.add(paymentTypeDTO);
 	}
 	
+	
+	public void update(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+		paymentTypeService.update(paymentTypeDTO);
+	}
+
+
 	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
 		paymentTypeService.remove(businessID, id);
 	}
