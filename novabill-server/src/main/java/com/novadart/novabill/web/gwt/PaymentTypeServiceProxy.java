@@ -1,5 +1,7 @@
 package com.novadart.novabill.web.gwt;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
@@ -19,18 +21,24 @@ public class PaymentTypeServiceProxy extends AbstractGwtController implements Pa
 	@Autowired
 	@Qualifier("paymentTypeServiceImpl")
 	private PaymentTypeService paymentTypeService;
+	
+	@Override
+	public List<PaymentTypeDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return paymentTypeService.getAll(businessID);
+	}
+
 
 	@Override
 	public Long add(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
 		return paymentTypeService.add(paymentTypeDTO);
 	}
 	
-	
+	@Override
 	public void update(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
 		paymentTypeService.update(paymentTypeDTO);
 	}
 
-
+	@Override
 	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
 		paymentTypeService.remove(businessID, id);
 	}

@@ -12,5 +12,10 @@
 						
     <bean id="paymenttype" class="com.novadart.novabill.web.gwt.PaymentTypeServiceProxy" primary="true"/>
 	<bean id="paymentTypeServiceImpl" class="com.novadart.novabill.web.gwt.PaymentTypeServiceImpl"/>
+	
+	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessServiceProxy" primary="true"/>
+    <bean id="businessServiceImpl" class="com.novadart.novabill.web.gwt.BusinessServiceImpl">
+		<lookup-method name="self" bean="businessServiceImpl"/>
+	</bean>
     
 </beans>

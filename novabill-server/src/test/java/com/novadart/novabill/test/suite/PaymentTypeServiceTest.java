@@ -3,6 +3,7 @@ package com.novadart.novabill.test.suite;
 import static org.junit.Assert.*;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -149,5 +150,22 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 		paymentTypeDTO.setId(null);
 		paymentTypeService.update(paymentTypeDTO);
 	}
+	
+	@Test
+	public void getAllAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
+		List<PaymentTypeDTO> paymentTypeDTOs = paymentTypeService.getAll(authenticatedPrincipal.getBusiness().getId());
+		assertTrue(paymentTypeDTOs.size() == authenticatedPrincipal.getBusiness().getPaymentTypes().size());
+	}
+	
+	
+	@Test(expected = DataAccessException.class)
+	public void getAllUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+		paymentTypeService.getAll(getUnathorizedBusinessID());
+	}
 
+	@Test(expected = DataAccessException.class)
+	public void getAllIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+		paymentTypeService.getAll(null);
+	}
+	
 }

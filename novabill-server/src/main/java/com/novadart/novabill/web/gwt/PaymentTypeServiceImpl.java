@@ -1,5 +1,7 @@
 package com.novadart.novabill.web.gwt;
 
+import java.util.List;
+
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -14,13 +16,23 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.PaymentTypeService;
 
 public class PaymentTypeServiceImpl implements PaymentTypeService {
 	
 	@Autowired
 	private SimpleValidator validator;
+	
+	@Autowired
+	private BusinessService businessService;
 
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<PaymentTypeDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return businessService.getPaymentTypes(businessID);
+	}
+	
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#paymentTypeDTO?.business?.id == principal.business.id and " +
