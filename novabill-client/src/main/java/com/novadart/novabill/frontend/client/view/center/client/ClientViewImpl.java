@@ -28,7 +28,7 @@ import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
 import com.novadart.novabill.frontend.client.widget.tip.Tips;
 
 public class ClientViewImpl extends Composite implements ClientView {
-
+	
 	private static ClientViewImplUiBinder uiBinder = GWT
 			.create(ClientViewImplUiBinder.class);
 

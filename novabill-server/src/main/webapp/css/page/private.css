@@ -98,9 +98,7 @@ textarea:HOVER {
 	border-right: 1px solid #AAA;
 }
 
-.ClientView {
-	height: 100%;
-}
+
 
 .ContactPopup {
 	-moz-box-shadow: 2px 2px 2px #AAA;
@@ -131,61 +129,6 @@ textarea:HOVER {
 	min-width: 6em;
 }
 
-.ClientView .contact {
-	font-size: 1.2em;
-	font-weight: bold;
-	border: 1px solid #CCC;
-	float: left;
-	padding: 0.2em 0.5em;
-	-moz-box-shadow: 2px 2px 2px #AAA;
-	-webkit-box-shadow: 2px 2px 2px #AAA;
-	box-shadow: 2px 2px 2px #AAA;
-	cursor: pointer;
-}
-
-.ClientView .contact-disabled {
-	font-size: 1.2em;
-	font-weight: bold;
-	border: 1px solid #CCC;
-	float: left;
-	color: #DDD;
-	padding: 0.2em 0.5em;
-	-moz-box-shadow: 2px 2px 2px #AAA;
-	-webkit-box-shadow: 2px 2px 2px #AAA;
-	box-shadow: 2px 2px 2px #AAA;
-	cursor: pointer;
-}
-
-.ClientView .contact.contact-down-hovering,
-.ClientView .contact.contact-up-hovering {
-	background-color: #DDD;
-}
-
-.ClientView .contact.contact-down {
-	background-color: #333;
-	color: white;
-}
-
-.ClientView .actionWrapper {
-	text-align: center;
-}
-
-.ClientView .newInvoice,.ClientView .newEstimation,.ClientView .newCreditNote,.ClientView .newTransportDocument
-	{
-	cursor: pointer;
-}
-
-.ClientView .newEstimation {
-	width: 160px;
-}
-
-.ClientView .newCreditNote {
-	width: 12em;
-}
-
-.ClientView .newTransportDocument {
-	width: 16em;
-}
 
 .HomeView .newEstimation {
 	width: 10em;
@@ -199,79 +142,6 @@ textarea:HOVER {
 	width: 16em;
 }
 
-.ClientView .clientName {
-	font-size: 2em;
-	font-weight: bold;
-	padding: 0 0.5em;
-	text-align: center;
-	text-shadow: 2px 2px 2px #DDD;
-	filter: dropshadow(color =   #DDDDDD, offx =   2, offy =   2);
-}
-
-.ClientView .clientDetails {
-	min-width: 30em;
-	padding: 0.2em 0.5em 0.5em;
-	font-size: 1.3em;
-	text-align: center;
-}
-
-.ClientView .clientOptions {
-	margin-left: auto;
-}
-
-.ClientView .clientOptions .modifyClient {
-	margin-right: 0.5em;
-}
-
-.ClientView .modifyClient:HOVER,.ClientView .cancelClient:HOVER {
-	text-decoration: underline;
-	cursor: pointer;
-}
-
-.ClientView .clientMainBody {
-	margin: 0 auto 2em;
-	width: 90%;
-}
-
-.ClientView .clientMainBody .gwt-TabLayoutPanelTabs {
-	
-}
-
-.ClientView .listWrapper {
-	padding: 0.8em 2em;
-}
-
-.ClientView .clientMainBody .gwt-TabLayoutPanelTab {
-	padding: 0.5em 1em;
-	background-color: white;
-	border: 0.1em solid #DDD;
-	width: 9em;
-	border-top-right-radius: 1em;
-	border-top-left-radius: 1em;
-	font-size: 1.2em;
-	cursor: pointer;
-}
-
-.ClientView .clientMainBody .gwt-TabLayoutPanelTab:HOVER {
-	text-decoration: underline;
-}
-
-.ClientView .clientMainBody .gwt-TabLayoutPanelTab-selected:HOVER {
-	text-decoration: none;
-}
-
-.ClientView .clientMainBody .gwt-TabLayoutPanelTab-selected {
-	background-color: #EEE;
-	font-weight: bold;
-}
-
-.ClientView .clientMainBody .gwt-TabLayoutPanelTabInner {
-	
-}
-
-.ClientView .clientMainBody .tabHeaderLabel {
-	
-}
 
 .HomeView {
 	height: 100%;
