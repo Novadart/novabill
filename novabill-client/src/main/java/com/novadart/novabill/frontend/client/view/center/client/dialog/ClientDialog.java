@@ -81,34 +81,34 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	private ClientDTO client = null;
 
 	private ClientDialog() {
-		companyName = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
+		companyName = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		
-		vatID =  new ValidatedTextBox(ValidationKit.VAT_ID);
+		vatID =  new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.VAT_ID);
 		vatID.setShowMessageOnError(true);
-		ssn =  new ValidatedTextBox(ValidationKit.SSN_OR_VAT_ID);
+		ssn =  new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.SSN_OR_VAT_ID);
 		ssn.setShowMessageOnError(true);
 		ssnOrVatIdValidation.addWidget(vatID);
 		ssnOrVatIdValidation.addWidget(ssn);
 		
-		postcode = new ValidatedTextBox(ValidationKit.NUMBER);
+		postcode = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 		
-		address = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
-		city = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
+		address = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
+		city = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		country = LocaleWidgets.createCountryListBox("");
 		
-		phone = new ValidatedTextBox(ValidationKit.DEFAULT);
-		mobile = new ValidatedTextBox(ValidationKit.DEFAULT);
-		fax = new ValidatedTextBox(ValidationKit.DEFAULT);
-		contactPhone = new ValidatedTextBox(ValidationKit.DEFAULT);
-		contactMobile = new ValidatedTextBox(ValidationKit.DEFAULT);
-		contactFax = new ValidatedTextBox(ValidationKit.DEFAULT);
+		phone = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		mobile = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		fax = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		contactPhone = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		contactMobile = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		contactFax = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		
-		web = new ValidatedTextBox(ValidationKit.DEFAULT);
-		contactName = new ValidatedTextBox(ValidationKit.DEFAULT);
-		contactSurname = new ValidatedTextBox(ValidationKit.DEFAULT);
+		web = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		contactName = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		contactSurname = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 
-		email = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
-		contactEmail = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
+		email = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_EMAIL);
+		contactEmail = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_EMAIL);
 		
 		province = LocaleWidgets.createProvinceListBox("");
 		

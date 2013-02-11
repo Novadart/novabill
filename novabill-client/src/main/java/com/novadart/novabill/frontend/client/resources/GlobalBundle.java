@@ -9,4 +9,10 @@ public interface GlobalBundle extends ClientBundle {
 	@Source("LoaderButton.css")
 	LoaderButtonCss loaderButton();
 
+	@Source("ValidatedWidgetCss.css")
+	ValidatedWidgetCss validatedWidget();
+
+	@Source("RichTextBoxCss.css")
+	RichTextBoxCss richTextBoxCss();
+
 }

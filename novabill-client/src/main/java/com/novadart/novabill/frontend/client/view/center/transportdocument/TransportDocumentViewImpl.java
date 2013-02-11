@@ -99,33 +99,33 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			public String getErrorMessage() {	return null; }
 		};
 
-		number = new ValidatedTextBox(ValidationKit.NUMBER);
+		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
-		numberOfPackages = new ValidatedTextBox(ValidationKit.NUMBER);
-		transporter = new ValidatedTextBox(nev);
+		numberOfPackages = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
+		transporter = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), nev);
 
-		fromAddrCity = new RichTextBox(I18N.INSTANCE.city(), nev);
-		fromAddrCompanyName = new RichTextBox(I18N.INSTANCE.companyName(),nev);
-		fromAddrPostCode = new RichTextBox(I18N.INSTANCE.postcode(), nev);
-		fromAddrStreetName = new RichTextBox(I18N.INSTANCE.address(),nev);
+		fromAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(), nev);
+		fromAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(),nev);
+		fromAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(), nev);
+		fromAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),nev);
 		fromAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		fromAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
-		toAddrCity = new RichTextBox(I18N.INSTANCE.city(),nev);
-		toAddrCompanyName = new RichTextBox(I18N.INSTANCE.companyName(), nev);
-		toAddrPostCode = new RichTextBox(I18N.INSTANCE.postcode(),nev);
-		toAddrStreetName = new RichTextBox(I18N.INSTANCE.address(),nev);
+		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),nev);
+		toAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(), nev);
+		toAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(),nev);
+		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),nev);
 		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
 		String str;
-		hour = new ValidatedListBox();
+		hour = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget());
 		for(int i=0; i<24; i++){
 			str = String.valueOf(i);
 			hour.addItem(str.length() < 2 ? "0"+str : str);
 		}
 
-		minute = new ValidatedListBox();
+		minute = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget());
 		for(int i=0; i<60; i++){
 			str = String.valueOf(i);
 			minute.addItem(str.length() < 2 ? "0"+str : str);

@@ -84,11 +84,6 @@ textarea:HOVER {
 	border: 0.1em solid #000;
 }
 
-.RichTextBox-labelStyle {
-	color: #666;
-	font-style: italic;
-}
-
 .Novabill {
 	margin: 0 auto;
 	background-color: white;
@@ -389,60 +384,7 @@ td.datePickerMonth {
 	outline: none;
 }
 
-.BootstrapDialog .businessLabel {
-	margin-right: 1em;
-	width: 10em;
-	font-size: 1.1em;
-}
 
-.BootstrapDialog .InlineNotification {
-	margin: 1em auto;
-}
-
-.BootstrapDialog .welcomeMessage {
-	background-color: #FFFFB1;
-	padding: 1em;
-	border: 0.1em solid #333;
-	width: 30em;
-	margin: 0 auto;
-	font-size: 1.2em;
-}
-
-.BootstrapDialog .bootstrapDialogBody {
-	background-color: #FFE;
-	padding: 0.5em;
-}
-
-.BootstrapDialog .gridContainer {
-	margin: 0 auto;
-	padding: 2em;
-}
-
-.BootstrapDialog .submit {
-	margin: 0 auto;
-	display: block;
-}
-
-.BootstrapDialog .ValidatedListBox,.BootstrapDialog .ValidatedTextBox {
-	width: 20em;
-	margin: 0.3em;
-}
-
-.BootstrapDialog .ValidatedListBox.ValidatedWidget-validationOk {
-	font-style: normal;
-	color: inherit;
-}
-
-.ValidatedWidget-validationOk {
-	border-color: #4DE133;
-	background-color: #DEFFD8;
-}
-
-
-.ValidatedWidget-validationError {
-	border-color: #E32424;
-	background-color: #F9E0E0;
-}
 
 .InlineNotification {
 	width: 80%;
@@ -452,15 +394,6 @@ td.datePickerMonth {
 	margin: 0.2em auto;
 	text-align: center;
 }
-
-.ValidationBaloonMessage-validationMessage {
-	background-color: #F9E0E0;
-	border: 0.1em solid red;
-	border-radius: 0.5em;
-	padding: 0.3em;
-	margin-left: 5px;
-}
-
 
 .GoPremiumDialog {
 	-webkit-transition: all 1s;

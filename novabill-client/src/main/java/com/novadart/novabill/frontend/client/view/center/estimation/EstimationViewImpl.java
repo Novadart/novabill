@@ -72,7 +72,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			
 		});
 		
-		number = new ValidatedTextBox(ValidationKit.NUMBER);
+		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat

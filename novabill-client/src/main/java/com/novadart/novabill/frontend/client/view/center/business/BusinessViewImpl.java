@@ -70,24 +70,24 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 
 	public BusinessViewImpl() {
 
-		name = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
-		ssn = new ValidatedTextBox(ValidationKit.SSN_OR_VAT_ID);
+		name = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
+		ssn = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.SSN_OR_VAT_ID);
 		ssn.setShowMessageOnError(true);
-		vatID = new ValidatedTextBox(ValidationKit.VAT_ID);
+		vatID = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.VAT_ID);
 		vatID.setShowMessageOnError(true);
 		ssnOrVatIdValidation.addWidget(ssn);
 		ssnOrVatIdValidation.addWidget(vatID);
 		
-		address = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
-		city = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
+		address = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
+		city = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		province = LocaleWidgets.createProvinceListBox("");
 		country = LocaleWidgets.createCountryListBoxItalyOnly("");
-		postcode = new ValidatedTextBox(ValidationKit.POSTCODE);
-		phone = new ValidatedTextBox(ValidationKit.DEFAULT);
-		email = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
-		mobile = new ValidatedTextBox(ValidationKit.DEFAULT);
-		fax = new ValidatedTextBox(ValidationKit.DEFAULT);
-		web = new ValidatedTextBox(ValidationKit.DEFAULT);
+		postcode = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.POSTCODE);
+		phone = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		email = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_EMAIL);
+		mobile = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		fax = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		web = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 
 		saveData = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		

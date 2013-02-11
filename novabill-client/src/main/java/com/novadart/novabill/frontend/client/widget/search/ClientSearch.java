@@ -20,6 +20,7 @@ import com.novadart.novabill.frontend.client.event.ClientDeleteHandler;
 import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
 import com.novadart.novabill.frontend.client.event.ClientUpdateHandler;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.widget.search.ClientDataProvider.Watcher;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -44,7 +45,7 @@ public class ClientSearch implements Watcher {
 
 	private final ClientDataProvider clientDataProvider = new ClientDataProvider();
 	private final CellList<ClientDTO> dataDisplay;
-	private final RichTextBox filter = new RichTextBox(I18N.INSTANCE.helpSearchClient());
+	private final RichTextBox filter = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.helpSearchClient());
 
 	private final SimplePanel clientListWrapper = new SimplePanel();
 

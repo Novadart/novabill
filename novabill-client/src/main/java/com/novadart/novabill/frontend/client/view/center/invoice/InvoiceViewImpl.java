@@ -67,12 +67,12 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	private Presenter presenter;
 	
 	public InvoiceViewImpl() {
-		payment = new ValidatedListBox(I18N.INSTANCE.notEmptyValidationError());
+		payment = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget(), I18N.INSTANCE.notEmptyValidationError());
 		for (String item : I18N.INSTANCE.paymentItems()) {
 			payment.addItem(item);
 		}
 		
-		number = new ValidatedTextBox(ValidationKit.NUMBER);
+		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 		
 		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
 			
