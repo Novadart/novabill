@@ -100,35 +100,6 @@ textarea:HOVER {
 
 
 
-.ContactPopup {
-	-moz-box-shadow: 2px 2px 2px #AAA;
-	-webkit-box-shadow: 2px 2px 2px #AAA;
-	box-shadow: 2px 2px 2px #AAA;
-}
-
-.ContactPopup .wrapper {
-	padding: 1em;
-	border: 1px solid #DDD;
-	background-color: white;
-}
-
-.ContactPopup .grid {
-
-}
-
-.ContactPopup .grid .label {
-	padding: 0.2em 0;
-	font-size: 1.1em;
-	font-weight: bold;
-	width: 8em;
-}
-
-.ContactPopup .grid .value {
-	padding: 0.2em 0;
-	font-size: 1.1em;
-	min-width: 6em;
-}
-
 .panel {
 	border: 0.1em solid #DDD;
 	padding: 1.5em 2em;
@@ -416,18 +387,6 @@ td.datePickerMonth {
 	font-weight: bold;
 	padding: 0px 4px;
 	outline: none;
-}
-
-
-
-
-.LoaderButton {
-}
-
-.LoaderButton .LoaderButton-loader {
-	margin: 0 auto;
-	display: block;
-	height: 2em;
 }
 
 .BootstrapDialog .businessLabel {
