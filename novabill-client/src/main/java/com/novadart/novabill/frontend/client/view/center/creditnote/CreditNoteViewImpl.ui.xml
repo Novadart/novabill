@@ -22,7 +22,7 @@
 							<g:Label styleName="{s.label}" text="{i18n.client}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<g:Label styleName="{s.box} clientName" ui:field="clientName"></g:Label>
+							<g:Label styleName="{s.box} {s.clientName}" ui:field="clientName"></g:Label>
 						</g:customCell>
 					</g:row>
 					<g:row>
@@ -96,9 +96,7 @@
 		</g:ScrollPanel>
 		
 		<g:FlowPanel styleName="{s.docControls}" ui:field="docControls">
-			<gwtshared:LoaderButton ui:field="modifyDocument"
-				text="{i18n.saveModifications}"/>
-			<gwtshared:LoaderButton ui:field="createCreditNote"
+			<gwtshared:LoaderButton styleName="{s.loaderButton}" ui:field="createCreditNote"
 				text="{i18n.createCreditNote}"/>
 			<g:Button ui:field="abort" styleName="{s.abortButton} button"
 				text="{i18n.cancel}"></g:Button>

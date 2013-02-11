@@ -19,6 +19,8 @@ import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.WidgetUtils;
 import com.novadart.novabill.frontend.client.widget.list.impl.CreditNoteList;
 import com.novadart.novabill.frontend.client.widget.list.impl.EstimationList;
@@ -65,7 +67,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 
 	@UiField ToggleButton contact;
 	
-	@UiField LoaderButton cancelClient;
+	@UiField(provided=true) LoaderButton cancelClient;
 	@UiField Button modifyClient;
 	
 	@UiField Button newInvoice;
@@ -77,6 +79,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 
 
 	public ClientViewImpl() {
+		cancelClient = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("ClientView");
 		cancelClient.getButton().setStyleName("cancelClient button");

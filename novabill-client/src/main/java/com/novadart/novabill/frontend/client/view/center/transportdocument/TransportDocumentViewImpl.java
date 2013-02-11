@@ -24,6 +24,8 @@ import com.novadart.gwtshared.client.validation.ValidationBundle;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
 import com.novadart.novabill.frontend.client.view.center.AccountDocumentCss;
@@ -82,8 +84,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
 
-	@UiField LoaderButton modifyDocument;
-	@UiField LoaderButton createTransportDocument;
+	@UiField(provided=true) LoaderButton createTransportDocument;
 	@UiField Button abort;
 
 	private Presenter presenter;
@@ -145,11 +146,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		transportStartDate = new DateBox();
 		transportStartDate.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
+		createTransportDocument = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
 
-		modifyDocument.getButton().setStyleName("modifyButton button");
-		createTransportDocument.getButton().setStyleName("createButton button");
+		createTransportDocument.getButton().setStyleName(CSS.createButton()+" button");
 	}
 
 	@Override
@@ -224,10 +225,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	public void reset() {
 		number.reset();
 
-		//reset widget statuses
-		createTransportDocument.setVisible(false);
-		modifyDocument.setVisible(false);
-
 		//reset widget contents		
 		note.setText("");
 		numberOfPackages.setText("");
@@ -260,7 +257,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
 
-		modifyDocument.reset();
 		createTransportDocument.reset();
 		setLocked(false);
 	}

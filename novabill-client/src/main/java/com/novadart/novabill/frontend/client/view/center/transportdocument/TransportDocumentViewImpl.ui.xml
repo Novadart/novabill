@@ -218,8 +218,7 @@
 		</g:ScrollPanel>
 		
 		<g:FlowPanel styleName="{s.docControls}" ui:field="docControls">
-			<gwtshared:LoaderButton ui:field="modifyDocument" text="{i18n.saveModifications}"/>
-			<gwtshared:LoaderButton ui:field="createTransportDocument" text="{i18n.createTransportDocument}"/>
+			<gwtshared:LoaderButton styleName="{s.loaderButton}" ui:field="createTransportDocument" text="{i18n.createTransportDocument}"/>
 			<g:Button ui:field="abort" styleName="{s.abortButton} button" text="{i18n.cancel}"></g:Button>
 		</g:FlowPanel>
 	</g:FlowPanel>

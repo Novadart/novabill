@@ -20,6 +20,8 @@ import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
 import com.novadart.novabill.frontend.client.view.center.AccountDocumentCss;
@@ -58,8 +60,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	@UiField Label totalAfterTaxes;
 
 	@UiField Button abort;
-	@UiField LoaderButton modifyDocument;
-	@UiField LoaderButton createCreditNote;
+	@UiField(provided=true) LoaderButton createCreditNote;
 	
 	private Presenter presenter;
 
@@ -81,11 +82,11 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
+		createCreditNote = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
 		
-		modifyDocument.getButton().setStyleName("modifyButton button");
-		createCreditNote.getButton().setStyleName("createButton button");
+		createCreditNote.getButton().setStyleName(CSS.createButton()+" button");
 	}
 
 	@Override
@@ -139,15 +140,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	public void reset() {
 		//reset widget statuses
 		number.reset();
-		number.setVisible(true);
-		payment.setVisible(true);
 		payment.reset();
-		createCreditNote.setVisible(false);
-		modifyDocument.setVisible(false);
-		paymentNote.setVisible(true);
-		creditNoteNumber.setVisible(true);
-		paymentNoteLabel.setVisible(true);
-		paymentLabel.setVisible(true);
 
 		//reset widget contents		
 		payment.setSelectedIndex(0);
@@ -158,7 +151,6 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
 		
-		modifyDocument.reset();
 		createCreditNote.reset();
 		setLocked(false);
 	}

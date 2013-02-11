@@ -21,6 +21,8 @@ import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
@@ -71,7 +73,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	@UiField(provided=true) ValidatedTextBox contactName;
 	@UiField(provided=true) ValidatedTextBox contactSurname;
 	
-	@UiField LoaderButton ok;
+	@UiField(provided=true) LoaderButton ok;
 	@UiField Button cancel;
 	
 	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation(); 
@@ -109,6 +111,8 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		contactEmail = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
 		
 		province = LocaleWidgets.createProvinceListBox("");
+		
+		ok = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("ClientDialog panel");

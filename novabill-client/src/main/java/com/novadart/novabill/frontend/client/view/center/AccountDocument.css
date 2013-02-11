@@ -22,9 +22,8 @@
 	
 }
 
-.newEstimation,.newInvoice,.newTransportDocument,.newCreditNote
-	{
-	font-weight: bold;
+.newEstimation,.newInvoice,.newTransportDocument,.newCreditNote {
+ 	font-weight: bold;
 	font-size: 1.8em;
 	border-bottom: 1px solid;
 	text-align: center;
@@ -32,12 +31,11 @@
 	padding: 0.2em;
 }
 
-.docControls .LoaderButton {
+.docControls .loaderButton {
 	display: inline-block;
 }
 
-.convertToInvoiceLB,.abortButton
-	{
+.convertToInvoiceLB,.abortButton {
 	margin-left: 2em;
 }
 
@@ -116,55 +114,7 @@ input[type="text"].box.number {
 	padding: 2em;
 }
 
-.newItemContainer {
-	margin-top: 2em;
-	background-color: #EEE;
-	padding: 1em;
-	border: 0.1em solid #CCC;
-}
-
-.itemTable {
-	margin: 0 auto;
-}
-
-.smallLabel {
-	font-weight: bold;
-	padding: 0.4em 0 0.4em 0;
-}
-
-.tax {
-	position: relative;
-	top: -0.2em;
-}
-
-.item {
-	width: 25em;
-	min-height: 5em;
-}
-
-.quantity {
-	width: 4em;
-}
-
-.unitOfMeasure {
-	width: 6em;
-}
-
-.price {
-	width: 6em;
-}
-
-.quantityContainer,.unitOfMeasureContainer,.priceContainer,.taxContainer
-	{
-	margin-left: 1em;
-}
-
-.addButtonContainer {
-	padding: 1.6em 0 0 0.5em;
-}
-
-.totalContainer.totalTax,.totalContainer.totalAfterTaxes
-	{
+.totalContainer.totalTax, .totalContainer.totalAfterTaxes {
 	margin-left: 4em;
 }
 
@@ -173,10 +123,6 @@ input[type="text"].box.number {
 .totalContainer .label {
 	text-align: center;
 	padding: 0.4em;
-}
-
-.itemTableScroller {
-	max-height: 400px;
 }
 
 .totalContainer .total {

@@ -19,6 +19,8 @@ import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
@@ -57,7 +59,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@UiField(provided=true) ValidatedTextBox fax;
 	@UiField(provided=true) ValidatedTextBox web;
 	
-	@UiField LoaderButton saveData;
+	@UiField(provided=true) LoaderButton saveData;
 	@UiField Button exportClientData;
 	@UiField Button exportInvoiceData;
 	@UiField Button exportEstimationData;
@@ -87,6 +89,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		fax = new ValidatedTextBox(ValidationKit.DEFAULT);
 		web = new ValidatedTextBox(ValidationKit.DEFAULT);
 
+		saveData = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
+		
 		initWidget(uiBinder.createAndBindUi(this));
 		
 		saveData.getButton().setStyleName("saveData button");

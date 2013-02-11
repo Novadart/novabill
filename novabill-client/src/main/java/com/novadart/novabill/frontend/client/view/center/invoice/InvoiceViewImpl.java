@@ -22,6 +22,8 @@ import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
 import com.novadart.novabill.frontend.client.view.center.AccountDocumentCss;
@@ -59,7 +61,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	
 	@UiField Label invoiceNumberSuffix;
 
-	@UiField LoaderButton createInvoice;
+	@UiField(provided=true) LoaderButton createInvoice;
 	@UiField Button abort;
 
 	private Presenter presenter;
@@ -84,10 +86,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
+		createInvoice = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
 		
-		createInvoice.getButton().setStyleName("createButton button");
+		createInvoice.getButton().setStyleName(CSS.createButton()+" button");
 	}
 	
 	@Override

@@ -1,7 +1,9 @@
 package com.novadart.novabill.frontend.client.view.center;
 
+import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.dom.client.Element;
+import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
@@ -9,12 +11,27 @@ import com.novadart.novabill.frontend.client.util.WidgetUtils;
 
 public abstract class AccountDocument extends Composite {
 	
-	protected static final AccountDocumentCss CSS = GWT.create(AccountDocumentCss.class);
+	public interface Bundle extends ClientBundle{
+		public static final Bundle INSTANCE = GWT.create(Bundle.class);
+
+		@Source("AccountDocument.css")
+		AccountDocumentCss accountDocument();
+		
+	} 
+	
+	protected static final AccountDocumentCss CSS = Bundle.INSTANCE.accountDocument();
 
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		WidgetUtils.setElementHeightToFillSpace(getBody(), getElement(), getNonBodyElements());
+		CSS.ensureInjected();
+		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+			
+			@Override
+			public void execute() {
+				WidgetUtils.setElementHeightToFillSpace(getBody(), getElement(), getNonBodyElements());
+			}
+		});
 	}
 	
 	protected abstract Element[] getNonBodyElements();

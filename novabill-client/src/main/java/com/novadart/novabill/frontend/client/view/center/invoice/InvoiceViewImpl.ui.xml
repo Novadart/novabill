@@ -14,7 +14,7 @@
 
 	<g:FlowPanel>
 
-		<g:Label ui:field="titleLabel" styleName="newInvoice" text="{i18n.newInvoiceCreation}"></g:Label>
+		<g:Label ui:field="titleLabel" styleName="{s.newInvoice}" text="{i18n.newInvoiceCreation}"></g:Label>
 
 		<g:ScrollPanel styleName="{s.docScroll}" ui:field="docScroll">
 			<g:FlowPanel styleName="{s.docScrollBody}">
@@ -101,7 +101,7 @@
 		</g:ScrollPanel>
 		
 		<g:FlowPanel styleName="{s.docControls}" ui:field="docControls">
-			<gwtshared:LoaderButton ui:field="createInvoice" text="{i18n.createInvoice}"/>
+			<gwtshared:LoaderButton styleName="{s.loaderButton}" ui:field="createInvoice" text="{i18n.createInvoice}"/>
 			<g:Button ui:field="abort" styleName="{s.abortButton} button" text="{i18n.cancel}"></g:Button>
 		</g:FlowPanel>
 
