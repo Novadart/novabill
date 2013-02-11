@@ -35,67 +35,77 @@
 			margin: 1em auto 0;
 		}
 		
-		.buttons .button {
+		.buttons .changeme {
 			width: 7em;
 		}
 		
-		.buttons .button.submit {
+		.buttons .changeme.submit {
 			margin-right: 1em;
-		}
-		
-		.client {
-			text-align: center;
-			padding: 0.5em;
-			font-size: 1.1em;
-			border: 0.1em solid #DDD;
-			margin-bottom: 0.2em;
 		}
 		
 		.listWrapperScroll {
 			height: 30em;
 		}
 	</ui:style>
-	
-	<ui:style field="cs" type="com.novadart.novabill.frontend.client.widget.dialog.SelectClientDialog.ClientSearchStyle">
-		.clientLoader {
-			width: 20em;
-			margin-bottom: 1em;
-		}
-		
-		.resetFilter {
-			cursor: pointer;
-			width: 1.5em;
-			position: relative;
-			top: 0.4em;
-			right: -0.5em;
-		}
-		
-		.clientLoader {
-			display: block;
-			margin: 1em auto 0;
-		}
-		
-		.noClientsFoundMessage {
-			margin: 1em auto 0;
-			text-align: center;
-			padding: 1em 1em 0;
-		}
-	
-		.filter {}
-		
-		.clientListWrapper{}
-	</ui:style>
+
+	<ui:style field="cs"
+		type="com.novadart.novabill.frontend.client.widget.dialog.SelectClientDialog.ClientSearchStyle">
+			.resetFilter {
+				cursor: pointer;
+				width: 1.5em;
+				position: relative;
+				top: 0.4em;
+				right: -0.5em;
+			}
+			
+			.clientLoader {
+				display: block;
+				margin: 1em auto 0;
+			}
+			
+			.noClientsFoundMessage {
+				margin: 1em auto 0;
+				text-align: center;
+				padding: 1em 1em 0;
+			}
+			
+			.filter {
+				width: 20em;
+				margin-bottom: 1em
+			}
+			
+			.clientListWrapper {
+				
+			}
+		</ui:style>
+
+	<ui:style field="ccs"
+		type="com.novadart.novabill.frontend.client.widget.dialog.SelectClientDialog.ClientCellStyle">
+			.client {
+				text-align: center;
+				padding: 0.5em;
+				font-size: 1.1em;
+				border: 0.1em solid #DDD;
+				margin-bottom: 0.2em;
+			}
+			
+			.name {
+				
+			}
+		</ui:style>
 
 	<g:FlowPanel styleName="{style.body}">
 		<g:Label styleName="{style.title}" text="{i18n.selectClient}"></g:Label>
 		<g:SimplePanel ui:field="tip"></g:SimplePanel>
-		<g:HorizontalPanel ui:field="filterContainer" styleName="{style.filterContainer}" />
-		<g:ScrollPanel styleName="{style.listWrapperScroll}" ui:field="listWrapperScroll" />
+		<g:HorizontalPanel ui:field="filterContainer"
+			styleName="{style.filterContainer}" />
+		<g:ScrollPanel styleName="{style.listWrapperScroll}"
+			ui:field="listWrapperScroll" />
 
 		<g:HorizontalPanel styleName="{style.buttons}">
-			<g:Button ui:field="ok" enabled="false" styleName="{style.button} {style.submit}"
-				text="{i18n.submit}"></g:Button>
-			<g:Button ui:field="cancel" text="{i18n.cancel}" styleName="{style.button}"></g:Button>
+			<g:Button ui:field="ok" enabled="false"
+				styleName="button {style.changeme} {style.submit}" text="{i18n.submit}"></g:Button>
+			<g:Button ui:field="cancel" text="{i18n.cancel}" styleName="button {style.changeme}"></g:Button>
 		</g:HorizontalPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 

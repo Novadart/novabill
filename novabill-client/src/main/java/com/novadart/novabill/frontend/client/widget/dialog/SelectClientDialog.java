@@ -18,6 +18,7 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.view.west.standard.ClientCell;
 import com.novadart.novabill.frontend.client.widget.search.ClientSearch;
 import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
 import com.novadart.novabill.frontend.client.widget.tip.Tips;
@@ -26,6 +27,7 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 public class SelectClientDialog extends Dialog {
 	
 	interface ClientSearchStyle extends ClientSearch.Style {}
+	interface ClientCellStyle extends ClientCell.Style {}
 
 	private static SelectClientDialogUiBinder uiBinder = GWT
 			.create(SelectClientDialogUiBinder.class);
@@ -46,6 +48,7 @@ public class SelectClientDialog extends Dialog {
 	@UiField ScrollPanel listWrapperScroll;
 	
 	@UiField ClientSearchStyle cs;
+	@UiField ClientCellStyle ccs;
 	
 	private ClientDTO selectedClient = null;
 	private ClientSearch clientSearch;
@@ -53,8 +56,9 @@ public class SelectClientDialog extends Dialog {
 	public SelectClientDialog(Handler handler) {
 		this.handler = handler;
 		setHeightDivisionValue(5);
-
-		CellList<ClientDTO> list = new CellList<ClientDTO>(new ClientCell());
+		setWidget(uiBinder.createAndBindUi(this));
+		
+		CellList<ClientDTO> list = new CellList<ClientDTO>(new ClientCell(ccs));
 
 		final SingleSelectionModel<ClientDTO> selModel = new SingleSelectionModel<ClientDTO>(
 				new ProvidesKey<ClientDTO>() {
@@ -74,8 +78,6 @@ public class SelectClientDialog extends Dialog {
 			}
 
 		});
-
-		setWidget(uiBinder.createAndBindUi(this));
 		
 		clientSearch = new ClientSearch(cs, list);
 		filterContainer.add(clientSearch.getSearchInput());
@@ -83,8 +85,6 @@ public class SelectClientDialog extends Dialog {
 		
 		listWrapperScroll.setWidget(clientSearch.getWrappedClientList());
 
-		addStyleName("SelectClientDialog");
-		
 		TipFactory.show(Tips.select_client_dialog, tip);
 	}
 	

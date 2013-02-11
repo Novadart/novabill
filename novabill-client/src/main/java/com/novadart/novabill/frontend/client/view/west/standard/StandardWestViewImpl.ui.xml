@@ -94,7 +94,6 @@
 			}
 			
 			.name  {
-				font-weight: bold;
 			}
 		</ui:style>
 
