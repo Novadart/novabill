@@ -8,6 +8,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.SelectionEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -39,6 +40,29 @@ public class HomeViewImpl extends Composite implements HomeView {
 
 	interface HomeViewUiBinder extends UiBinder<Widget, HomeViewImpl> {
 	}
+	
+	public interface ShowMoreStyle extends ShowMoreButton.Style {
+		String showmore();
+	}
+	
+	public interface Style extends CssResource {
+		String businessName();
+		String homeBody();
+		String businessDetails();
+		String invoicesTitle();
+		String date();
+		String businessPanel();
+		String newCreditNote();
+		String newTransportDocument();
+		String currentDate();
+		String scrollHome();
+		String listWrapper();
+		String newEstimation();
+		String tabPanel();
+		String businessLogo();
+		String yourDocsLabel();
+		String actions();
+	}
 
 	@UiField TabBar tabBar;
 
@@ -53,6 +77,9 @@ public class HomeViewImpl extends Composite implements HomeView {
 	@UiField Image businessLogo;
 	@UiField HTML businessDetails;
 	
+	@UiField ShowMoreStyle sm;
+	@UiField Style s;
+	
 	private final Map<Integer, FlowPanel> documentViews = new HashMap<Integer, FlowPanel>();
 
 	private Presenter presenter;
@@ -60,10 +87,10 @@ public class HomeViewImpl extends Composite implements HomeView {
 	public HomeViewImpl() {
 		date = setupDate();
 		tabBody = new SimplePanel();
-		setupLists();
-
 		initWidget(uiBinder.createAndBindUi(this));
 
+		setupLists();
+		
 		tabBar.addTab(I18N.INSTANCE.invoices());
 		tabBar.addTab(I18N.INSTANCE.estimates());
 		tabBar.addTab(I18N.INSTANCE.creditNote());
@@ -72,7 +99,6 @@ public class HomeViewImpl extends Composite implements HomeView {
 		TipFactory.show(Tips.center_home_welcome, tipWelcome);
 		TipFactory.show(Tips.center_home_yourdocs, tipDocs);
 		
-		setStyleName("HomeView");
 	}
 	
 	@Override
@@ -106,37 +132,41 @@ public class HomeViewImpl extends Composite implements HomeView {
 
 	private void setupLists() {
 		FlowPanel fp = new FlowPanel();
-		fp.setStyleName("listWrapper panel");
-		ShowMoreButton sb = new ShowMoreButton(DOCS_PAGE_SIZE);
+		fp.setStyleName(s.listWrapper()+" panel");
+		ShowMoreButton sb = new ShowMoreButton(sm, DOCS_PAGE_SIZE);
 		sb.setDisplay(invoiceList);
-		sb.addStyleNameToButton("action-button");
+		sb.setStyleName(sm.showmore());
+		sb.getButton().addStyleName("action-button");
 		fp.add(invoiceList);
 		fp.add(sb);
 		documentViews.put(0, fp);
 
 		fp = new FlowPanel();
-		fp.setStyleName("listWrapper panel");
-		sb = new ShowMoreButton(DOCS_PAGE_SIZE);
+		fp.setStyleName(s.listWrapper()+" panel");
+		sb = new ShowMoreButton(sm, DOCS_PAGE_SIZE);
 		sb.setDisplay(estimationList);
-		sb.addStyleNameToButton("action-button");
+		sb.setStyleName(sm.showmore());
+		sb.getButton().addStyleName("action-button");
 		fp.add(estimationList);
 		fp.add(sb);
 		documentViews.put(1, fp);
 
 		fp = new FlowPanel();
-		fp.setStyleName("listWrapper panel");
-		sb = new ShowMoreButton(DOCS_PAGE_SIZE);
+		fp.setStyleName(s.listWrapper()+" panel");
+		sb = new ShowMoreButton(sm, DOCS_PAGE_SIZE);
 		sb.setDisplay(creditNoteList);
-		sb.addStyleNameToButton("action-button");
+		sb.setStyleName(sm.showmore());
+		sb.getButton().addStyleName("action-button");
 		fp.add(creditNoteList);
 		fp.add(sb);
 		documentViews.put(2, fp);
 
 		fp = new FlowPanel();
-		fp.setStyleName("listWrapper panel");
-		sb = new ShowMoreButton(DOCS_PAGE_SIZE);
+		fp.setStyleName(s.listWrapper()+" panel");
+		sb = new ShowMoreButton(sm, DOCS_PAGE_SIZE);
 		sb.setDisplay(transportDocumentList);
-		sb.addStyleNameToButton("action-button");
+		sb.setStyleName(sm.showmore());
+		sb.getButton().addStyleName("action-button");
 		fp.add(transportDocumentList);
 		fp.add(sb);
 		documentViews.put(3, fp);
@@ -235,6 +265,5 @@ public class HomeViewImpl extends Composite implements HomeView {
 	public Map<Integer, FlowPanel> getDocumentViews() {
 		return documentViews;
 	}
-	
 	
 }

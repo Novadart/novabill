@@ -1,0 +1,121 @@
+		.newEstimation {
+			width: 10em;
+		}
+		
+		.newCreditNote {
+			width: 12em;
+		}
+		
+		.newTransportDocument {
+			width: 16em;
+		}
+		
+		.businessPanel {
+			margin: 0 auto;
+			width: 80%;
+			font-size: 1.2em;
+			margin-top: 1em;
+			padding: 1em;
+			border: 0.1em solid #DDD;
+			-moz-box-shadow: 2px 2px 2px #CCC;
+			-webkit-box-shadow: 2px 2px 2px #CCC;
+			box-shadow: 2px 2px 2px #CCC;
+			line-height: 1.5em;
+		}
+		
+		.businessPanel td {
+			padding: 0.5em;
+			text-align: center;
+		}
+		
+		.businessPanel .businessName {
+			font-weight: bold;
+			text-transform: uppercase;
+		}
+		
+		.businessPanel .businessLogo {
+			height: 8em;
+			cursor: pointer;
+		}
+		
+		.businessPanel .businessDetails {
+			padding: 1em;
+		}
+		
+		.businessPanel .businessDetails a {
+			font-weight: normal;
+		}
+		
+		.tabPanel {
+			width: 80%;
+			margin: 1em auto;
+		}
+		
+		.listWrapper {
+			padding: 0.8em 2em;
+		}
+		
+		.gwt-TabBarItem {
+			padding: 0.5em 1em;
+			background-color: white;
+			border: 0.1em solid #DDD;
+			width: 9em;
+			border-top-right-radius: 1em;
+			border-top-left-radius: 1em;
+			font-size: 1.2em;
+			cursor: pointer;
+		}
+		
+		.gwt-TabBarItem:HOVER {
+			text-decoration: underline;
+		}
+		
+		.gwt-TabBarItem-selected:HOVER {
+			text-decoration: none;
+		}
+		
+		.gwt-TabBarItem-selected {
+			background-color: #EEE;
+			font-weight: bold;
+		}
+		
+		.homeBody {
+			width: 80%;
+			margin: 1em auto 0;
+		}
+		
+		.scrollHome {
+			height: 100%;
+		}
+		
+		.actions {
+			margin: 0 auto;
+		}
+		
+		.actions button {
+			cursor: pointer;
+		}
+		
+		.invoicesTitle {
+			font-size: 1.2em;
+			font-weight: bold;
+			margin: 0 0 0.5em
+		}
+		
+		.yourDocsLabel {
+			width: 80%;
+			margin: 2em auto 0;
+			font-size: 1.2em;
+			text-transform: uppercase;
+			font-weight: bold;
+		}
+		
+		.currentDate {
+			text-align: right;
+			color: #333;
+			height: 1.2em;
+		}
+		
+		.currentDate .date {
+			margin-right: 1em;
+		}
