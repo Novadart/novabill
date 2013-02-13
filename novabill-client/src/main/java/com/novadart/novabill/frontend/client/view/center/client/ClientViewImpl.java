@@ -3,7 +3,9 @@ package com.novadart.novabill.frontend.client.view.center.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -20,6 +22,7 @@ import com.google.gwt.user.client.ui.ToggleButton;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.WidgetUtils;
 import com.novadart.novabill.frontend.client.widget.list.impl.CreditNoteList;
@@ -35,6 +38,52 @@ public class ClientViewImpl extends Composite implements ClientView {
 			.create(ClientViewImplUiBinder.class);
 
 	interface ClientViewImplUiBinder extends UiBinder<Widget, ClientViewImpl> {
+	}
+	
+	public interface Style extends CssResource {
+		@ClassName("gwt-TabLayoutPanelTab")
+		String gwtTabLayoutPanelTab();
+
+		@ClassName("contact-down")
+		String contactDown();
+
+		@ClassName("contact-disabled")
+		String contactDisabled();
+
+		String contact();
+
+		@ClassName("gwt-TabLayoutPanelTab-selected")
+		String gwtTabLayoutPanelTabSelected();
+
+		String newCreditNote();
+
+		String cancelClient();
+
+		String newTransportDocument();
+
+		String modifyClient();
+
+		String clientName();
+
+		String listWrapper();
+
+		String newEstimation();
+
+		String clientMainBody();
+
+		@ClassName("contact-up-hovering")
+		String contactUpHovering();
+
+		String actionWrapper();
+
+		String clientOptions();
+
+		String clientDetails();
+
+		@ClassName("contact-down-hovering")
+		String contactDownHovering();
+
+		String newInvoice();
 	}
 
 	private Presenter presenter;
@@ -76,13 +125,15 @@ public class ClientViewImpl extends Composite implements ClientView {
 	@UiField Button newCreditNote;
 	
 	@UiField SimplePanel tip;
+	
+	@UiField Style s;
 
 
 	public ClientViewImpl() {
 		cancelClient = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName("ClientView");
-		cancelClient.getButton().setStyleName("cancelClient button");
+		cancelClient.getButton().setStyleName(s.cancelClient()+" "+GlobalBundle.INSTANCE.globalCss().button());
 		
 		TipFactory.show(Tips.client_view, tip);
 	}
@@ -134,7 +185,7 @@ public class ClientViewImpl extends Composite implements ClientView {
 		contactPopup.reset();
 		contact.setDown(false);
 		contact.setEnabled(false);
-		contact.setStyleName("contact");
+		contact.setStyleName(s.contact());
 		
 		setLocked(false);
 		cancelClient.reset();
@@ -185,6 +236,11 @@ public class ClientViewImpl extends Composite implements ClientView {
 		newCreditNote.setEnabled(!value);
 		
 		modifyClient.setEnabled(!value);
+	}
+	
+	@UiFactory
+	GlobalCss getgGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 
 	@Override

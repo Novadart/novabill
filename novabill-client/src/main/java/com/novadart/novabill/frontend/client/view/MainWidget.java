@@ -30,11 +30,13 @@ import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
 import com.novadart.novabill.frontend.client.event.DocumentDeleteHandler;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateHandler;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.view.feedback.FeedbackDialog;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
@@ -58,6 +60,7 @@ public class MainWidget extends Composite {
 		String invoices();
 		String productName();
 		String clients();
+		String feedbackButton();
 	}
 
 	private static MainWidgetUiBinder uiBinder = GWT
@@ -84,6 +87,7 @@ public class MainWidget extends Composite {
 	private PlaceController placeController;
 
 	public MainWidget() {
+		GlobalBundle.INSTANCE.globalCss().ensureInjected();
 		changePasswordAnchor = new Anchor(I18N.INSTANCE.changePassword(), Const.CHANGE_PASSWORD_URL);
 
 		initWidget(uiBinder.createAndBindUi(this));
@@ -167,6 +171,11 @@ public class MainWidget extends Composite {
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 
 	@UiFactory

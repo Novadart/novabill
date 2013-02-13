@@ -3,6 +3,7 @@ package com.novadart.novabill.frontend.client.view.bootstrap;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Widget;
@@ -12,6 +13,7 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.util.CountryUtils;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
@@ -127,5 +129,10 @@ public class BootstrapDialog extends Dialog {
 			handler.businessData(b);
 
 		}
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 }

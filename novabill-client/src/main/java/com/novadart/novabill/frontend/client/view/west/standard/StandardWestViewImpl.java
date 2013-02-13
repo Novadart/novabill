@@ -18,6 +18,8 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.util.WidgetUtils;
 import com.novadart.novabill.frontend.client.widget.search.ClientSearch;
 import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
@@ -112,6 +114,11 @@ public class StandardWestViewImpl extends Composite implements StandardWestView 
 	@UiHandler("addClient")
 	void onAddClientClicked(ClickEvent e){
 		presenter.onAddClientClicked();
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 
 	@Override

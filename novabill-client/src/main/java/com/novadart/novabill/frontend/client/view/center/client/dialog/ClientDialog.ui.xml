@@ -6,6 +6,8 @@
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
+		
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
 
 	<ui:style field="s">
 		.wrapper {
@@ -260,7 +262,7 @@
 				<g:HorizontalPanel>
 					<gwtshared:LoaderButton ui:field="ok"
 						text="{i18n.submit}"></gwtshared:LoaderButton>
-					<g:Button styleName="cancelButton button" ui:field="cancel" text="{i18n.cancel}"></g:Button>
+					<g:Button styleName="cancelButton {g.button}" ui:field="cancel" text="{i18n.cancel}"></g:Button>
 				</g:HorizontalPanel>
 			</g:SimplePanel>
 		</g:FlowPanel>

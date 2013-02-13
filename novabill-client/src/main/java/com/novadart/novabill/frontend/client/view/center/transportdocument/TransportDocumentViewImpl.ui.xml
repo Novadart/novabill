@@ -12,6 +12,7 @@
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
 	<ui:with type="com.novadart.novabill.frontend.client.view.center.AccountDocumentCss" field="s" />
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
 	
 	<g:FlowPanel>
 		<g:Label ui:field="titleLabel" styleName="{s.newTransportDocument}" text="{i18n.newTransportDocument}"></g:Label>
@@ -142,7 +143,7 @@
 										</g:customCell>
 									</g:row>
 								</g:Grid>
-								<g:Button styleName="button {s.loadDefaultsButton}"
+								<g:Button styleName="{g.button} {s.loadDefaultsButton}"
 									ui:field="fromAddrButtonDefault" text="{i18n.loadFromAddress}"></g:Button>
 							</g:HorizontalPanel>
 						</g:customCell>
@@ -186,7 +187,7 @@
 										</g:customCell>
 									</g:row>
 								</g:Grid>
-								<g:Button styleName="button {s.loadDefaultsButton}"
+								<g:Button styleName="{g.button} {s.loadDefaultsButton}"
 									ui:field="toAddrButtonDefault" text="{i18n.loadToAddress}"></g:Button>
 							</g:HorizontalPanel>
 						</g:customCell>
@@ -219,7 +220,7 @@
 		
 		<g:FlowPanel styleName="{s.docControls}" ui:field="docControls">
 			<gwtshared:LoaderButton styleName="{s.loaderButton}" ui:field="createTransportDocument" text="{i18n.createTransportDocument}"/>
-			<g:Button ui:field="abort" styleName="{s.abortButton} button" text="{i18n.cancel}"></g:Button>
+			<g:Button ui:field="abort" styleName="{s.abortButton} {g.button}" text="{i18n.cancel}"></g:Button>
 		</g:FlowPanel>
 	</g:FlowPanel>
 

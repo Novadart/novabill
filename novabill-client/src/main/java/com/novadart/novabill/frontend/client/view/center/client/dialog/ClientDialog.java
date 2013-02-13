@@ -22,6 +22,7 @@ import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
@@ -116,15 +117,20 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		ok = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		
 		setWidget(uiBinder.createAndBindUi(this));
-		addStyleName("ClientDialog panel");
+		addStyleName(GlobalBundle.INSTANCE.globalCss().panel());
 		
 		ok.addStyleName("submit");
-		ok.getButton().addStyleName("button");
+		ok.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().button());
 	}
 
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 
 	public void setClient(ClientDTO client) {

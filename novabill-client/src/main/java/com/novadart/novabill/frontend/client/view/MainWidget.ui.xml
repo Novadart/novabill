@@ -7,6 +7,7 @@
 	<ui:with
 		type="com.novadart.novabill.frontend.client.resources.ImageResources"
 		field="img"></ui:with>
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>	
 
 	<ui:style src="MainWidget.css" type="com.novadart.novabill.frontend.client.view.MainWidget.Style" />
 
@@ -18,13 +19,13 @@
 				<g:FlowPanel styleName="{style.logoBar}">
 					<g:Anchor ui:field="logoAnchor" styleName="{style.productName}"
 						text="{i18n.productName}"></g:Anchor>
-					<g:Label ui:field="feedback" styleName="feedbackButton"
+					<g:Label ui:field="feedback" styleName="{style.feedbackButton}"
 						text="{i18n.feedback}"></g:Label>
 				</g:FlowPanel>
 				<g:FlowPanel styleName="{style.menuBar}">
-					<g:Button styleName="{style.homeButton} button" text="{i18n.home}"
+					<g:Button styleName="{style.homeButton} {g.button}" text="{i18n.home}"
 						ui:field="home"></g:Button>
-					<g:Button styleName="{style.myDataButton} button" text="{i18n.myData}"
+					<g:Button styleName="{style.myDataButton} {g.button}" text="{i18n.myData}"
 						ui:field="myData"></g:Button>
 					<g:Anchor ui:field="changePasswordAnchor" styleName="{style.changePassword}" />
 					<g:Anchor styleName="{style.exitButton}" text="{i18n.logout}"

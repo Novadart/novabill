@@ -18,4 +18,7 @@ public interface GlobalBundle extends ClientBundle {
 	@Source("DialogCss.css")
 	DialogCss dialog();
 
+	@Source("GlobalCss.css")
+	GlobalCss globalCss();
+
 }

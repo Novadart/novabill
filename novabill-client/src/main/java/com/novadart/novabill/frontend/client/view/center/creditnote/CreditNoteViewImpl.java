@@ -21,6 +21,7 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
@@ -86,7 +87,12 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
 		
-		createCreditNote.getButton().setStyleName(CSS.createButton()+" button");
+		createCreditNote.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 
 	@Override

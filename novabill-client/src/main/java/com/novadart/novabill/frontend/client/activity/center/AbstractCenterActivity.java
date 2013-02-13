@@ -5,6 +5,7 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Image;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 
 public abstract class AbstractCenterActivity extends BasicActivity {
@@ -12,7 +13,7 @@ public abstract class AbstractCenterActivity extends BasicActivity {
 	private static final Image LOADER = new Image(ImageResources.INSTANCE.loader());
 	
 	static{
-		LOADER.setStyleName("centerViewLoader");
+		LOADER.setStyleName(GlobalBundle.INSTANCE.globalCss().centerViewLoader());
 	}
 
 	public AbstractCenterActivity(ClientFactory clientFactory) {

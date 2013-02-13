@@ -4,6 +4,8 @@
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
+		
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>	
 
 	<ui:style>
 		.authDialog {
@@ -26,7 +28,7 @@
 		<g:Label styleName="{style.reloadMessage}" text="{i18n.sessionExpiredError}"></g:Label>
 		<g:Label styleName="{style.reloadMessage}" text="{i18n.sessionExpiredError2}"></g:Label>
 
-		<g:Button ui:field="reloadPage" styleName="{style.reloadButton} submit action2-button"
+		<g:Button ui:field="reloadPage" styleName="{style.reloadButton} submit {g.action2Button}"
 			text="{i18n.reloadPage}"></g:Button>
 	</g:FlowPanel>
 

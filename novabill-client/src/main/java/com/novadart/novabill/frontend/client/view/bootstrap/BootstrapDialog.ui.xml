@@ -7,6 +7,8 @@
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
 
+	<ui:with field="g"  type="com.novadart.novabill.frontend.client.resources.GlobalCss" />
+
 	<ui:style field="s" >
 		.businessLabel {
 			margin-right: 1em;
@@ -48,6 +50,7 @@
 		}
 		
 	</ui:style>
+
 
 	<g:FlowPanel styleName="{s.bootstrapDialogBody}">
 		<g:HTML ui:field="welcomeMessage" styleName="{s.welcomeMessage}"
@@ -168,7 +171,7 @@
 
 		<n:InlineNotification styleName="{s.inlineNotification}" ui:field="inlineNotification" />
 
-		<g:Button styleName="action-button {s.submit}" ui:field="confirm"
+		<g:Button styleName="{g.actionButton} {s.submit}" ui:field="confirm"
 			text="{i18n.submit}"></g:Button>
 
 	</g:FlowPanel>

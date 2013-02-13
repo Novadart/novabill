@@ -25,6 +25,8 @@ import com.google.gwt.user.client.ui.Widget;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.Const;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.widget.list.ShowMoreButton;
 import com.novadart.novabill.frontend.client.widget.list.impl.CreditNoteList;
 import com.novadart.novabill.frontend.client.widget.list.impl.EstimationList;
@@ -196,41 +198,41 @@ public class HomeViewImpl extends Composite implements HomeView {
 
 	private void setupLists() {
 		FlowPanel fp = new FlowPanel();
-		fp.setStyleName(s.listWrapper()+" panel");
+		fp.setStyleName(s.listWrapper()+" "+GlobalBundle.INSTANCE.globalCss().panel());
 		ShowMoreButton sb = new ShowMoreButton(sm, DOCS_PAGE_SIZE);
 		sb.setDisplay(invoiceList);
 		sb.setStyleName(sm.showmore());
-		sb.getButton().addStyleName("action-button");
+		sb.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().actionButton());
 		fp.add(invoiceList);
 		fp.add(sb);
 		documentViews.put(0, fp);
 
 		fp = new FlowPanel();
-		fp.setStyleName(s.listWrapper()+" panel");
+		fp.setStyleName(s.listWrapper()+" "+GlobalBundle.INSTANCE.globalCss().panel());
 		sb = new ShowMoreButton(sm, DOCS_PAGE_SIZE);
 		sb.setDisplay(estimationList);
 		sb.setStyleName(sm.showmore());
-		sb.getButton().addStyleName("action-button");
+		sb.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().actionButton());
 		fp.add(estimationList);
 		fp.add(sb);
 		documentViews.put(1, fp);
 
 		fp = new FlowPanel();
-		fp.setStyleName(s.listWrapper()+" panel");
+		fp.setStyleName(s.listWrapper()+" "+GlobalBundle.INSTANCE.globalCss().panel());
 		sb = new ShowMoreButton(sm, DOCS_PAGE_SIZE);
 		sb.setDisplay(creditNoteList);
 		sb.setStyleName(sm.showmore());
-		sb.getButton().addStyleName("action-button");
+		sb.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().actionButton());
 		fp.add(creditNoteList);
 		fp.add(sb);
 		documentViews.put(2, fp);
 
 		fp = new FlowPanel();
-		fp.setStyleName(s.listWrapper()+" panel");
+		fp.setStyleName(s.listWrapper()+" "+GlobalBundle.INSTANCE.globalCss().panel());
 		sb = new ShowMoreButton(sm, DOCS_PAGE_SIZE);
 		sb.setDisplay(transportDocumentList);
 		sb.setStyleName(sm.showmore());
-		sb.getButton().addStyleName("action-button");
+		sb.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().actionButton());
 		fp.add(transportDocumentList);
 		fp.add(sb);
 		documentViews.put(3, fp);
@@ -240,6 +242,11 @@ public class HomeViewImpl extends Composite implements HomeView {
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss() {
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 
 	@Override

@@ -4,8 +4,8 @@
 	border: 1px solid #DDD;
 	background-color: white;
 	margin: 3px 0;
-	-moz-box-shadow: 2px 2px 2px #CCC;
-	-webkit-box-shadow: 2px 2px 2px #CCC;
+	\-moz-box-shadow: 2px 2px 2px #CCC;
+	\-webkit-box-shadow: 2px 2px 2px #CCC;
 	box-shadow: 2px 2px 2px #CCC;
 	height: 4.5em;
 }
@@ -30,8 +30,7 @@
 
 .TransportDocumentList .upper span.createInvoice,
 .EstimationList .upper span.convertToInvoice,
-.details .tools span
-	{
+.details .tools span {
 	text-transform: uppercase;
 	font-size: 0.8em;
 	margin-right: 1em;
@@ -143,7 +142,7 @@
 {
 	position: absolute;
 	right: 48%;
-	bottom: -4px;
+	bottom: 0px;
 	font-weight: bold;
 	padding: 1px;
 	text-decoration: none;

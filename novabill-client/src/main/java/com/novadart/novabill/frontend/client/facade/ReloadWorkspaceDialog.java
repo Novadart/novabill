@@ -13,6 +13,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 
 public class ReloadWorkspaceDialog extends Dialog {
 
@@ -52,6 +53,11 @@ public class ReloadWorkspaceDialog extends Dialog {
 	@UiHandler("reloadPage")
 	void onSubmitClicked(ClickEvent e){
 		Window.Location.reload();
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 	
 	@UiFactory 

@@ -6,8 +6,10 @@
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
+		
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
 
-	<ui:style field="s">
+	<ui:style type="com.novadart.novabill.frontend.client.view.center.client.ClientViewImpl.Style" field="s">
 		@external contact, contact-down, contact-disabled, contact-down-hovering, contact-up-hovering, gwt-TabLayoutPanelTab, gwt-TabLayoutPanelTab-selected;
 		.contact {
 			font-size: 1.2em;
@@ -134,7 +136,7 @@
 		<!-- <g:Label styleName="contact" ui:field="contact" text="{i18n.contact}"></g:Label> -->
 		<g:HorizontalPanel ui:field="clientOptions"
 			styleName="{s.clientOptions}">
-			<g:Button styleName="{s.modifyClient} button" ui:field="modifyClient"
+			<g:Button styleName="{s.modifyClient} {g.button}" ui:field="modifyClient"
 				text="{i18n.modifyClient}" />
 			<gwtshared:LoaderButton ui:field="cancelClient"
 				text="{i18n.cancelClient}" />
@@ -151,10 +153,10 @@
 					<g:customHeader>
 						<g:Label text="{i18n.invoices}"></g:Label>
 					</g:customHeader>
-					<g:FlowPanel ui:field="listWrapperInvoice" styleName="{s.listWrapper} panel">
+					<g:FlowPanel ui:field="listWrapperInvoice" styleName="{s.listWrapper} {g.panel}">
 						<g:SimplePanel ui:field="actionWrapperInvoice"
 							styleName="{s.actionWrapper}">
-							<g:Button ui:field="newInvoice" styleName="action-button {s.newInvoice}"
+							<g:Button ui:field="newInvoice" styleName="{g.actionButton} {s.newInvoice}"
 								text="{i18n.newInvoice}"></g:Button>
 						</g:SimplePanel>
 						<g:ScrollPanel ui:field="scrollInvoice">
@@ -167,10 +169,10 @@
 						<g:Label text="{i18n.estimates}"></g:Label>
 					</g:customHeader>
 					<g:FlowPanel ui:field="listWrapperEstimation"
-						styleName="{s.listWrapper} panel">
+						styleName="{s.listWrapper} {g.panel}">
 						<g:SimplePanel ui:field="actionWrapperEstimation"
 							styleName="{s.actionWrapper}">
-							<g:Button ui:field="newEstimation" styleName="action-button {s.newEstimation}"
+							<g:Button ui:field="newEstimation" styleName="{g.actionButton} {s.newEstimation}"
 								text="{i18n.newEstimation}"></g:Button>
 						</g:SimplePanel>
 						<g:ScrollPanel ui:field="scrollEstimation">
@@ -182,10 +184,10 @@
 					<g:customHeader>
 						<g:Label text="{i18n.creditNotes}"></g:Label>
 					</g:customHeader>
-					<g:FlowPanel ui:field="listWrapperCredit" styleName="{s.listWrapper} panel">
+					<g:FlowPanel ui:field="listWrapperCredit" styleName="{s.listWrapper} {g.panel}">
 						<g:SimplePanel ui:field="actionWrapperCredit"
 							styleName="{s.actionWrapper}">
-							<g:Button ui:field="newCreditNote" styleName="action-button {s.newCreditNote}"
+							<g:Button ui:field="newCreditNote" styleName="{g.actionButton} {s.newCreditNote}"
 								text="{i18n.newCreditNote}"></g:Button>
 						</g:SimplePanel>
 						<g:ScrollPanel ui:field="scrollCredit">
@@ -197,11 +199,11 @@
 					<g:customHeader>
 						<g:Label text="{i18n.transportDocumentsTab}"></g:Label>
 					</g:customHeader>
-					<g:FlowPanel ui:field="listWrapperTransport" styleName="{s.listWrapper} panel">
+					<g:FlowPanel ui:field="listWrapperTransport" styleName="{s.listWrapper} {g.panel}">
 						<g:SimplePanel ui:field="actionWrapperTransport"
 							styleName="{s.actionWrapper}">
 							<g:Button ui:field="newTransportDocument"
-								styleName="action-button {s.newTransportDocument}" text="{i18n.newTransportDocument}"></g:Button>
+								styleName="{g.actionButton} {s.newTransportDocument}" text="{i18n.newTransportDocument}"></g:Button>
 						</g:SimplePanel>
 						<g:ScrollPanel ui:field="scrollTransport">
 							<i:TransportDocumentList ui:field="transportDocumentList"></i:TransportDocumentList>

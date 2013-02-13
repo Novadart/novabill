@@ -5,6 +5,7 @@
 	<ui:with
 		type="com.novadart.novabill.frontend.client.resources.ImageResources"
 		field="img"></ui:with>
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
 
 	<ui:style field="s">
 		.GoPremiumDialog {
@@ -102,7 +103,7 @@
 			The Novabill Team
 		</p>
 		<br />
-		<g:Label ui:field="goPremium" styleName="{s.goPremium} button"
+		<g:Label ui:field="goPremium" styleName="{s.goPremium} {g.button}"
 			text="Activate Premium" />
 
 		<g:Label ui:field="noThanks" styleName="{s.noThanks}"

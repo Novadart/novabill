@@ -9,6 +9,8 @@
 	<ui:with
 		type="com.novadart.novabill.frontend.client.resources.ImageResources"
 		field="img"></ui:with>
+	
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
 
 	<ui:style field="s"
 		type="com.novadart.novabill.frontend.client.view.west.standard.StandardWestViewImpl.Style">
@@ -103,7 +105,7 @@
 			<g:HorizontalPanel ui:field="clientsHeader"
 				styleName="{s.clientsHeader}">
 				<g:Label styleName="{s.clients}" text="{i18n.clients}"></g:Label>
-				<g:Button styleName="action-button {s.addClient}" ui:field="addClient"
+				<g:Button styleName="{g.actionButton} {s.addClient}" ui:field="addClient"
 					text="{i18n.newClient}"></g:Button>
 			</g:HorizontalPanel>
 			<g:HorizontalPanel ui:field="clientFilterContainer" />

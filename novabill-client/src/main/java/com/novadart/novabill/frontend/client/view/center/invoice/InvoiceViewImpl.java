@@ -23,6 +23,7 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
@@ -90,7 +91,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
 		
-		createInvoice.getButton().setStyleName(CSS.createButton()+" button");
+		createInvoice.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
 	}
 	
 	@Override
@@ -118,6 +119,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiFactory
 	AccountDocumentCss getAccountDocumentCss(){
 		return CSS;
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 	
 	@Override

@@ -4,7 +4,8 @@
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
-
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
+	
 	<ui:style>
 		.body {
 			background-color: white;
@@ -104,8 +105,8 @@
 
 		<g:HorizontalPanel styleName="{style.buttons}">
 			<g:Button ui:field="ok" enabled="false"
-				styleName="button {style.changeme} {style.submit}" text="{i18n.submit}"></g:Button>
-			<g:Button ui:field="cancel" text="{i18n.cancel}" styleName="button {style.changeme}"></g:Button>
+				styleName="{g.button} {style.changeme} {style.submit}" text="{i18n.submit}"></g:Button>
+			<g:Button ui:field="cancel" text="{i18n.cancel}" styleName="{g.button} {style.changeme}"></g:Button>
 		</g:HorizontalPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 

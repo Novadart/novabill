@@ -20,6 +20,7 @@ import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
@@ -85,8 +86,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
 		
-		createEstimation.getButton().setStyleName(CSS.createButton()+" button");
-		convertToInvoice.getButton().setStyleName(CSS.convertToInvoiceLB()+" button");
+		createEstimation.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
+		convertToInvoice.getButton().setStyleName(CSS.convertToInvoiceLB()+" "+GlobalBundle.INSTANCE.globalCss().button());
 		
 	}
 	
@@ -104,6 +105,11 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 	
 	@UiFactory

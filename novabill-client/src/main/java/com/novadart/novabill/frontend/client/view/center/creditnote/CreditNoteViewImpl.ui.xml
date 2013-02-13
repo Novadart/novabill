@@ -10,6 +10,7 @@
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
 	<ui:with type="com.novadart.novabill.frontend.client.view.center.AccountDocumentCss" field="s" />
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
 
 	<g:FlowPanel>
 		<g:Label ui:field="titleLabel" styleName="{s.newCreditNote}" text="{i18n.newCreditNoteCreation}"></g:Label>
@@ -98,7 +99,7 @@
 		<g:FlowPanel styleName="{s.docControls}" ui:field="docControls">
 			<gwtshared:LoaderButton styleName="{s.loaderButton}" ui:field="createCreditNote"
 				text="{i18n.createCreditNote}"/>
-			<g:Button ui:field="abort" styleName="{s.abortButton} button"
+			<g:Button ui:field="abort" styleName="{s.abortButton} {g.button}"
 				text="{i18n.cancel}"></g:Button>
 		</g:FlowPanel>
 

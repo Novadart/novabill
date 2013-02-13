@@ -6,6 +6,8 @@
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
+		
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
 
 	<ui:style field="s" type="com.novadart.novabill.frontend.client.view.center.home.HomeViewImpl.Style" >
 		@external gwt-TabBarItem, gwt-TabBarItem-selected;
@@ -161,13 +163,13 @@
 
 
 				<g:HorizontalPanel ui:field="actions" styleName="{s.actions}">
-					<g:Button ui:field="newInvoice" styleName="action-button"
+					<g:Button ui:field="newInvoice" styleName="{g.actionButton}"
 						text="{i18n.newInvoice}"></g:Button>
-					<g:Button ui:field="newEstimation" styleName="action-button {s.newEstimation}"
+					<g:Button ui:field="newEstimation" styleName="{g.actionButton} {s.newEstimation}"
 						text="{i18n.newEstimation}"></g:Button>
-					<g:Button ui:field="newCreditNote" styleName="action-button {s.newCreditNote}"
+					<g:Button ui:field="newCreditNote" styleName="{g.actionButton} {s.newCreditNote}"
 						text="{i18n.newCreditNote}"></g:Button>
-					<g:Button ui:field="newTransportDocument" styleName="action-button {s.newTransportDocument}"
+					<g:Button ui:field="newTransportDocument" styleName="{g.actionButton} {s.newTransportDocument}"
 						text="{i18n.newTransportDocument}"></g:Button>
 				</g:HorizontalPanel>
 

@@ -19,6 +19,7 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.view.west.standard.ClientCell;
 import com.novadart.novabill.frontend.client.widget.search.ClientSearch;
 import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
@@ -109,6 +110,11 @@ public class SelectClientDialog extends Dialog {
 	@UiFactory
 	I18N getI18n(){
 		return I18N.INSTANCE;
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 
 }
