@@ -7,6 +7,8 @@ import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.dialog.Dialog;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 
 public class GoPremiumDialog extends Dialog {
@@ -29,10 +31,9 @@ public class GoPremiumDialog extends Dialog {
 	}
 
 	private GoPremiumDialog() {
+		super(GlobalBundle.INSTANCE.dialog());
 		setHeightDivisionValue(4);
 		setWidget(uiBinder.createAndBindUi(this));
-		addStyleName("GoPremiumDialog");
-		
 	}
 
 	@UiHandler(value={"closeButton", "noThanks"})
@@ -43,5 +44,10 @@ public class GoPremiumDialog extends Dialog {
 	@UiFactory
 	ImageResources getImageResources(){
 		return ImageResources.INSTANCE;
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 }

@@ -1,0 +1,17 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	<ui:style>
+		.InlineNotification {
+			width: 80%;
+			background-color: #F9E0E0;
+			border: 0.1em solid red;
+			padding: 0.3em;
+			margin: 0.2em auto;
+			text-align: center;
+		}
+	</ui:style>
+
+	<g:Label styleName="{style.InlineNotification}" ui:field="label" />
+
+</ui:UiBinder> 

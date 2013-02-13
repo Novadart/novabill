@@ -5,6 +5,7 @@ import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -29,16 +30,38 @@ import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
 import com.novadart.novabill.frontend.client.event.DocumentDeleteHandler;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateHandler;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.view.feedback.FeedbackDialog;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 
 public class MainWidget extends Composite {
+	
+	interface Style extends CssResource {
+		String logo();
+		String menuBar();
+		String westContainer();
+		String myDataButton();
+		String stats();
+		String exitButton();
+		String header();
+		String homeButton();
+		String logoBar();
+		String centerContainer();
+		String value();
+		String totalAmount();
+		String changePassword();
+		String invoices();
+		String productName();
+		String clients();
+		String feedbackButton();
+	}
 
 	private static MainWidgetUiBinder uiBinder = GWT
 			.create(MainWidgetUiBinder.class);
@@ -59,10 +82,12 @@ public class MainWidget extends Composite {
 	@UiField Anchor logout;
 	@UiField Anchor logoAnchor;
 	@UiField(provided=true) Anchor changePasswordAnchor;
+	@UiField Style style;
 
 	private PlaceController placeController;
 
 	public MainWidget() {
+		GlobalBundle.INSTANCE.globalCss().ensureInjected();
 		changePasswordAnchor = new Anchor(I18N.INSTANCE.changePassword(), Const.CHANGE_PASSWORD_URL);
 
 		initWidget(uiBinder.createAndBindUi(this));
@@ -147,6 +172,11 @@ public class MainWidget extends Composite {
 	I18N getI18N(){
 		return I18N.INSTANCE;
 	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
+	}
 
 	@UiFactory
 	ImageResources getImage(){
@@ -192,25 +222,25 @@ public class MainWidget extends Composite {
 		SafeHtmlBuilder shb = new SafeHtmlBuilder();
 
 		//first row
-		shb.appendHtmlConstant("<span class='clients'>");
+		shb.appendHtmlConstant("<span class='"+style.clients()+"'>");
 		shb.appendEscaped(I18N.INSTANCE.totalClients());
-		shb.appendHtmlConstant("<span class='value'>");
+		shb.appendHtmlConstant("<span class='"+style.value()+"'>");
 		shb.append(statistics.getClientsCount());
 		shb.appendHtmlConstant("</span>");
 		shb.appendHtmlConstant("</span>");
 
 		//second row
-		shb.appendHtmlConstant("<span class='invoices'>");
+		shb.appendHtmlConstant("<span class='"+style.invoices()+"'>");
 		shb.appendEscaped(I18N.INSTANCE.totalInvoices());
-		shb.appendHtmlConstant("<span class='value'>");
+		shb.appendHtmlConstant("<span class='"+style.value()+"'>");
 		shb.append(statistics.getInvoicesCountForYear());
 		shb.appendHtmlConstant("</span>");
 		shb.appendHtmlConstant("</span>");
 
 		//third row
-		shb.appendHtmlConstant("<span class='totalAmount'>");
+		shb.appendHtmlConstant("<span class='"+style.totalAmount()+"'>");
 		shb.appendEscaped(I18N.INSTANCE.totalInvoicing());
-		shb.appendHtmlConstant("<span class='value'>");
+		shb.appendHtmlConstant("<span class='"+style.value()+"'>");
 		shb.appendEscaped(NumberFormat.getCurrencyFormat().format(statistics.getTotalAfterTaxesForYear()));
 		shb.appendHtmlConstant("</span>");
 		shb.appendHtmlConstant("</span>");

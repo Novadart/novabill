@@ -19,6 +19,7 @@ import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
@@ -54,7 +55,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	public ItemInsertionForm(Handler handler) {
 		this.handler = handler;
 		
-		item = new ValidatedTextArea(new TextLengthValidation(255) {
+		item = new ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), new TextLengthValidation(255) {
 			
 			@Override
 			public String getErrorMessage() {

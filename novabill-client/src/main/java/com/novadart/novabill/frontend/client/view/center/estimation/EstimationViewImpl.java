@@ -19,8 +19,12 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
+import com.novadart.novabill.frontend.client.view.center.AccountDocumentCss;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
@@ -52,8 +56,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
 	
-	@UiField LoaderButton createEstimation;
-	@UiField LoaderButton convertToInvoice;
+	@UiField(provided=true) LoaderButton createEstimation;
+	@UiField(provided=true) LoaderButton convertToInvoice;
 	@UiField Button abort;
 	
 	
@@ -69,7 +73,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 			
 		});
 		
-		number = new ValidatedTextBox(ValidationKit.NUMBER);
+		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat
@@ -77,11 +81,13 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		validTill = new DateBox();
 		validTill.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
+		createEstimation = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
+		convertToInvoice = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		initWidget(uiBinder.createAndBindUi(this));
-		setStyleName("AccountDocumentView");
+		setStyleName(CSS.accountDocumentView());
 		
-		createEstimation.getButton().setStyleName("createButton button");
-		convertToInvoice.getButton().setStyleName("convertToInvoice button");
+		createEstimation.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
+		convertToInvoice.getButton().setStyleName(CSS.convertToInvoiceLB()+" "+GlobalBundle.INSTANCE.globalCss().button());
 		
 	}
 	
@@ -99,6 +105,16 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
+	}
+	
+	@UiFactory
+	AccountDocumentCss getAccountDocumentCss(){
+		return CSS;
 	}
 
 	@Override
