@@ -49,13 +49,12 @@
 	
 	<sec:authorize access="isAuthenticated()">
 		<%
-			Principal pd = 
-			((Principal)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+			Principal pd = ((Principal)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
+			String principalName = Business.findBusiness(pd.getBusiness().getId()).getName();
 		%>
 		
 		<span class="welcomeMessage">
 			<%
-			String principalName = pd.getBusiness().getName();
 			if(principalName != null && !principalName.isEmpty()){
 			%>
 				<spring:message code="header.welcomeMessage"/>
