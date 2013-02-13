@@ -19,6 +19,7 @@ import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 
@@ -44,6 +45,7 @@ public class FeedbackDialog extends Dialog {
 	@UiField SelectElement contactableDdown;
 	
 	public FeedbackDialog() {
+		super(GlobalBundle.INSTANCE.dialog());
 		setAutoHideEnabled(true);
 		setWidget(uiBinder.createAndBindUi(this));
 		contactableMessage.setVisibleLines(5);

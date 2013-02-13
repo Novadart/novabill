@@ -22,6 +22,8 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabBar;
 import com.google.gwt.user.client.ui.Widget;
+import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.Const;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.widget.list.ShowMoreButton;
 import com.novadart.novabill.frontend.client.widget.list.impl.CreditNoteList;
@@ -30,6 +32,7 @@ import com.novadart.novabill.frontend.client.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.widget.list.impl.TransportDocumentList;
 import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
 import com.novadart.novabill.frontend.client.widget.tip.Tips;
+import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
 public class HomeViewImpl extends Composite implements HomeView {
 
@@ -105,7 +108,68 @@ public class HomeViewImpl extends Composite implements HomeView {
 	protected void onLoad() {
 		super.onLoad();
 		presenter.onLoad();
+		updateBusinessDetails(Configuration.getBusiness());
 		tabBar.selectTab(0);
+	}
+	
+	private void updateBusinessDetails(BusinessDTO business){
+		businessLogo.setUrl(Const.getLogoUrl());
+
+		SafeHtmlBuilder shb = new SafeHtmlBuilder();
+		shb.appendHtmlConstant("<p class='"+s.businessName()+"'>");
+		shb.appendEscaped(business.getName());
+		shb.appendHtmlConstant("</p>");
+		shb.appendHtmlConstant("<p>");
+		shb.appendEscaped(business.getAddress());
+		shb.appendEscaped(" "+business.getPostcode());
+		shb.appendEscaped(" "+business.getCity());
+		shb.appendEscaped(" ("+business.getProvince()+")");
+		shb.appendEscaped(" "+business.getCountry());
+		shb.appendHtmlConstant("</p>");
+		shb.appendHtmlConstant("<p>");
+		boolean needSpace = false;
+		if(!business.getVatID().isEmpty()){
+			needSpace = true;
+			shb.appendEscaped(I18N.INSTANCE.vatID()+" "+business.getVatID());
+		}
+		if(!business.getVatID().isEmpty()){
+			if(needSpace){
+				shb.appendHtmlConstant("&nbsp;&nbsp;");
+			}
+			shb.appendEscaped(I18N.INSTANCE.ssn()+" "+business.getSsn());
+		}
+		shb.appendHtmlConstant("</p>");
+		shb.appendHtmlConstant("<p>");
+		needSpace = false;
+		if(!business.getPhone().isEmpty()){
+			needSpace = true;
+			shb.appendEscaped(I18N.INSTANCE.phone()+" "+business.getPhone());
+		}
+		if(!business.getFax().isEmpty()){
+			if(needSpace){
+				shb.appendHtmlConstant("&nbsp;&nbsp;");
+			}
+			shb.appendEscaped(I18N.INSTANCE.fax()+" "+business.getFax());
+		}
+		shb.appendHtmlConstant("</p>");
+		shb.appendHtmlConstant("<p>");
+		needSpace = false;
+		if(!business.getMobile().isEmpty()){
+			needSpace = true;
+			shb.appendEscaped(I18N.INSTANCE.mobile()+" "+business.getMobile());
+		}
+		if(!business.getWeb().isEmpty()){
+			if(needSpace){
+				shb.appendHtmlConstant("&nbsp;&nbsp;");
+			}
+			shb.appendEscaped(I18N.INSTANCE.web()+" ");
+			shb.appendHtmlConstant("<a target='_blank' href='"+ 
+					(business.getWeb().startsWith("http://") || business.getWeb().startsWith("https://") ? business.getWeb() : "http://"+business.getWeb()) +"'>");
+			shb.appendEscaped(business.getWeb());
+			shb.appendHtmlConstant("<a>");
+		}
+		shb.appendHtmlConstant("</p>");
+		businessDetails.setHTML(shb.toSafeHtml());
 	}
 
 	private HTML setupDate() {

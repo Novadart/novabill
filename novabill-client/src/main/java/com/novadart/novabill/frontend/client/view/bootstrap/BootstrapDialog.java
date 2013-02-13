@@ -52,7 +52,7 @@ public class BootstrapDialog extends Dialog {
 	private Handler handler;
 
 	public BootstrapDialog() {
-		super(false);
+		super(GlobalBundle.INSTANCE.dialog(), false);
 		name = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		
 		ssn = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.SSN_OR_VAT_ID);

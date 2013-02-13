@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 
 public class ReloadWorkspaceDialog extends Dialog {
 
@@ -24,6 +25,7 @@ public class ReloadWorkspaceDialog extends Dialog {
 	@UiField Button reloadPage;
 	
 	public ReloadWorkspaceDialog() {
+		super(GlobalBundle.INSTANCE.dialog());
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName("AuthDialog");
 	}
