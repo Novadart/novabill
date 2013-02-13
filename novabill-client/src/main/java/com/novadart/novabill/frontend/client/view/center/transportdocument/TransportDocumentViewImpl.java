@@ -24,8 +24,12 @@ import com.novadart.gwtshared.client.validation.ValidationBundle;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
+import com.novadart.novabill.frontend.client.view.center.AccountDocumentCss;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
@@ -81,8 +85,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
 
-	@UiField LoaderButton modifyDocument;
-	@UiField LoaderButton createTransportDocument;
+	@UiField(provided=true) LoaderButton createTransportDocument;
 	@UiField Button abort;
 
 	private Presenter presenter;
@@ -97,33 +100,33 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			public String getErrorMessage() {	return null; }
 		};
 
-		number = new ValidatedTextBox(ValidationKit.NUMBER);
+		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
-		numberOfPackages = new ValidatedTextBox(ValidationKit.NUMBER);
-		transporter = new ValidatedTextBox(nev);
+		numberOfPackages = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
+		transporter = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), nev);
 
-		fromAddrCity = new RichTextBox(I18N.INSTANCE.city(), nev);
-		fromAddrCompanyName = new RichTextBox(I18N.INSTANCE.companyName(),nev);
-		fromAddrPostCode = new RichTextBox(I18N.INSTANCE.postcode(), nev);
-		fromAddrStreetName = new RichTextBox(I18N.INSTANCE.address(),nev);
+		fromAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(), nev);
+		fromAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(),nev);
+		fromAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(), nev);
+		fromAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),nev);
 		fromAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		fromAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
-		toAddrCity = new RichTextBox(I18N.INSTANCE.city(),nev);
-		toAddrCompanyName = new RichTextBox(I18N.INSTANCE.companyName(), nev);
-		toAddrPostCode = new RichTextBox(I18N.INSTANCE.postcode(),nev);
-		toAddrStreetName = new RichTextBox(I18N.INSTANCE.address(),nev);
+		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),nev);
+		toAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(), nev);
+		toAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(),nev);
+		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),nev);
 		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
 		String str;
-		hour = new ValidatedListBox();
+		hour = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget());
 		for(int i=0; i<24; i++){
 			str = String.valueOf(i);
 			hour.addItem(str.length() < 2 ? "0"+str : str);
 		}
 
-		minute = new ValidatedListBox();
+		minute = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget());
 		for(int i=0; i<60; i++){
 			str = String.valueOf(i);
 			minute.addItem(str.length() < 2 ? "0"+str : str);
@@ -144,11 +147,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		transportStartDate = new DateBox();
 		transportStartDate.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
+		createTransportDocument = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		initWidget(uiBinder.createAndBindUi(this));
-		setStyleName("AccountDocumentView");
+		setStyleName(CSS.accountDocumentView());
 
-		modifyDocument.getButton().setStyleName("modifyButton button");
-		createTransportDocument.getButton().setStyleName("createButton button");
+		createTransportDocument.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
 	}
 
 	@Override
@@ -161,7 +164,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return new Element[]{titleLabel.getElement(), docControls.getElement()};
 	}
 
-
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
+	}
+	
 	@Override
 	public ScrollPanel getDocScroll() {
 		return docScroll;
@@ -185,6 +192,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
+	}
+	
+	@UiFactory
+	AccountDocumentCss getAccountDocumentCss(){
+		return CSS;
 	}
 
 	@UiHandler("fromAddrButtonDefault")
@@ -218,10 +230,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	public void reset() {
 		number.reset();
 
-		//reset widget statuses
-		createTransportDocument.setVisible(false);
-		modifyDocument.setVisible(false);
-
 		//reset widget contents		
 		note.setText("");
 		numberOfPackages.setText("");
@@ -254,7 +262,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
 
-		modifyDocument.reset();
 		createTransportDocument.reset();
 		setLocked(false);
 	}

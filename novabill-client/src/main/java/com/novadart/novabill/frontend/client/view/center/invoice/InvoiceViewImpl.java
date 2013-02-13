@@ -22,8 +22,12 @@ import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
+import com.novadart.novabill.frontend.client.view.center.AccountDocumentCss;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
@@ -58,18 +62,18 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	
 	@UiField Label invoiceNumberSuffix;
 
-	@UiField LoaderButton createInvoice;
+	@UiField(provided=true) LoaderButton createInvoice;
 	@UiField Button abort;
 
 	private Presenter presenter;
 	
 	public InvoiceViewImpl() {
-		payment = new ValidatedListBox(I18N.INSTANCE.notEmptyValidationError());
+		payment = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget(), I18N.INSTANCE.notEmptyValidationError());
 		for (String item : I18N.INSTANCE.paymentItems()) {
 			payment.addItem(item);
 		}
 		
-		number = new ValidatedTextBox(ValidationKit.NUMBER);
+		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 		
 		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
 			
@@ -83,10 +87,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
+		createInvoice = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		initWidget(uiBinder.createAndBindUi(this));
-		setStyleName("AccountDocumentView");
+		setStyleName(CSS.accountDocumentView());
 		
-		createInvoice.getButton().setStyleName("createButton button");
+		createInvoice.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
 	}
 	
 	@Override
@@ -109,6 +114,16 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
+	}
+	
+	@UiFactory
+	AccountDocumentCss getAccountDocumentCss(){
+		return CSS;
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 	
 	@Override

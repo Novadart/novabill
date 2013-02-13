@@ -1,0 +1,7 @@
+.dialog {
+	z-index: 2;
+}
+
+.focusableBody {
+	outline: none;
+}

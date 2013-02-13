@@ -5,6 +5,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
@@ -19,6 +20,10 @@ import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
@@ -33,14 +38,15 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	interface BusinessViewImplUiBinder extends
 	UiBinder<Widget, BusinessViewImpl> {
 	}
-	
+
+
 	private BusinessView.Presenter presenter;
 
 	@UiField Button updateLogo;
 	@UiField Button removeLogo;
 	@UiField FormPanel formPanel;
 	@UiField Image logo;
-	
+
 	@UiField InlineNotification inlineNotification;
 
 	@UiField(provided=true) ValidatedTextBox name;
@@ -56,8 +62,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@UiField(provided=true) ValidatedTextBox mobile;
 	@UiField(provided=true) ValidatedTextBox fax;
 	@UiField(provided=true) ValidatedTextBox web;
-	
-	@UiField LoaderButton saveData;
+
+	@UiField(provided=true) LoaderButton saveData;
 	@UiField Button exportClientData;
 	@UiField Button exportInvoiceData;
 	@UiField Button exportEstimationData;
@@ -68,42 +74,44 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 
 	public BusinessViewImpl() {
 
-		name = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
-		ssn = new ValidatedTextBox(ValidationKit.SSN_OR_VAT_ID);
+		name = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
+		ssn = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.SSN_OR_VAT_ID);
 		ssn.setShowMessageOnError(true);
-		vatID = new ValidatedTextBox(ValidationKit.VAT_ID);
+		vatID = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.VAT_ID);
 		vatID.setShowMessageOnError(true);
 		ssnOrVatIdValidation.addWidget(ssn);
 		ssnOrVatIdValidation.addWidget(vatID);
-		
-		address = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
-		city = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
+
+		address = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
+		city = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		province = LocaleWidgets.createProvinceListBox("");
 		country = LocaleWidgets.createCountryListBoxItalyOnly("");
-		postcode = new ValidatedTextBox(ValidationKit.POSTCODE);
-		phone = new ValidatedTextBox(ValidationKit.DEFAULT);
-		email = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
-		mobile = new ValidatedTextBox(ValidationKit.DEFAULT);
-		fax = new ValidatedTextBox(ValidationKit.DEFAULT);
-		web = new ValidatedTextBox(ValidationKit.DEFAULT);
+		postcode = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.POSTCODE);
+		phone = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		email = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_EMAIL);
+		mobile = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		fax = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		web = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+
+		saveData = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 
 		initWidget(uiBinder.createAndBindUi(this));
-		
-		saveData.getButton().setStyleName("saveData button");
-		
+
+		saveData.getButton().setStyleName(GlobalBundle.INSTANCE.globalCss().button());
+
 		logo.setUrl(Const.getLogoUrl());
-		
+
 		formPanel.setMethod(FormPanel.METHOD_POST);
 		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
-		
+
 		formPanel.addSubmitHandler(new FormPanel.SubmitHandler() {
-			
+
 			@Override
 			public void onSubmit(SubmitEvent event) {
 				presenter.onLogoSubmit();
 			}
 		});
-		
+
 		formPanel.addSubmitCompleteHandler(new FormPanel.SubmitCompleteHandler() {
 
 			@Override
@@ -119,21 +127,31 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 				presenter.onLogoSubmitComplete(resultCode);
 			}
 		});
-		
+
 	}
-	
+
+	@UiFactory
+	I18N getI18n(){
+		return I18N.INSTANCE;
+	}
+
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
+	}
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
 		presenter.onLoad();
 	}
-	
-	
+
+
 	@UiHandler("removeLogo")
 	void onRemoveLogoClicked(ClickEvent e){
 		presenter.onRemoveLogoClicked();
 	}
-	
+
 	@UiHandler("updateLogo")
 	void onUpdateLogoClicked(ClickEvent e){
 		presenter.onUpdateLogoClicked();
@@ -146,7 +164,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		fileUpload.setName("file");
 		fileUpload.setStyleName("logoFileUpload");
 		fileUpload.addChangeHandler(new ChangeHandler() {
-			
+
 			@Override
 			public void onChange(ChangeEvent event) {
 				formPanel.submit();
@@ -170,7 +188,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	void onSaveDataClicked(ClickEvent e){
 		presenter.onSaveDataClicked();
 	}
-	
+
 	@UiHandler("exportClientData")
 	void onExportClientDataClicked(ClickEvent e){
 		presenter.onExportClientDataClicked();
@@ -180,27 +198,27 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	void onExportInvoiceDataClicked(ClickEvent e){
 		presenter.onExportInvoiceDataClicked();
 	}
-	
+
 	@UiHandler("exportEstimationData")
 	void onExportEstimationDataClicked(ClickEvent e){
 		presenter.onExportEstimationDataClicked();
 	}
-	
+
 	@UiHandler("exportCreditNoteData")
 	void onExportCreditNoteDataClicked(ClickEvent e){
 		presenter.onExportCreditNoteDataClicked();
 	}
-	
+
 	@UiHandler("exportTransportDocumentData")
 	void onExportTransportDocumentDataClicked(ClickEvent e){
 		presenter.onExportTransportDocumentDataClicked();
 	}
-	
+
 	@Override
 	public void setLocked(boolean value) {
 		updateLogo.setEnabled(!value);
 		removeLogo.setEnabled(!value);
-		
+
 		name.setEnabled(!value);
 		ssn.setEnabled(!value);
 		vatID.setEnabled(!value);
@@ -220,7 +238,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		exportCreditNoteData.setEnabled(!value);
 		exportTransportDocumentData.setEnabled(!value);
 	}
-	
+
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;

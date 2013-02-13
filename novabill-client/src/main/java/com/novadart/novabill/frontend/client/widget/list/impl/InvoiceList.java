@@ -9,7 +9,6 @@ public class InvoiceList extends QuickViewList<InvoiceDTO> {
 
 	public InvoiceList() {
 		super(new InvoiceCell());
-		addStyleName("InvoiceList");
 	}
 	
 	public void setPresenter(Presenter presenter) {

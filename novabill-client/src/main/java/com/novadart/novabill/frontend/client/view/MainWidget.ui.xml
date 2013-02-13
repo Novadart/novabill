@@ -7,35 +7,40 @@
 	<ui:with
 		type="com.novadart.novabill.frontend.client.resources.ImageResources"
 		field="img"></ui:with>
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>	
 
-	<g:DockLayoutPanel ui:field="dockWidget" styleName="MainWidget" unit='EM'>
+	<ui:style src="MainWidget.css" type="com.novadart.novabill.frontend.client.view.MainWidget.Style" />
+
+
+	<g:DockLayoutPanel ui:field="dockWidget" unit='EM'>
 
 		<g:north size="3">
-			<g:FlowPanel styleName="header">
-				<g:FlowPanel styleName="logoBar">
-					<g:Anchor ui:field="logoAnchor" styleName="productName"
+			<g:FlowPanel styleName="{style.header}">
+				<g:FlowPanel styleName="{style.logoBar}">
+					<g:Anchor ui:field="logoAnchor" styleName="{style.productName}"
 						text="{i18n.productName}"></g:Anchor>
-					<g:Label ui:field="feedback" styleName="feedbackButton" text="{i18n.feedback}"></g:Label>
+					<g:Label ui:field="feedback" styleName="{style.feedbackButton}"
+						text="{i18n.feedback}"></g:Label>
 				</g:FlowPanel>
-				<g:FlowPanel styleName="menuBar">
-					<g:Button styleName="homeButton button" text="{i18n.home}"
+				<g:FlowPanel styleName="{style.menuBar}">
+					<g:Button styleName="{style.homeButton} {g.button}" text="{i18n.home}"
 						ui:field="home"></g:Button>
-					<g:Button styleName="myDataButton button" text="{i18n.myData}"
+					<g:Button styleName="{style.myDataButton} {g.button}" text="{i18n.myData}"
 						ui:field="myData"></g:Button>
-					<g:Anchor ui:field="changePasswordAnchor" styleName="changePassword" />
-					<g:Anchor styleName="exitButton" text="{i18n.logout}"
+					<g:Anchor ui:field="changePasswordAnchor" styleName="{style.changePassword}" />
+					<g:Anchor styleName="{style.exitButton}" text="{i18n.logout}"
 						ui:field="logout"></g:Anchor>
 				</g:FlowPanel>
-				<g:HTML styleName="stats" ui:field="stats"></g:HTML>
+				<g:HTML styleName="{style.stats}" ui:field="stats"></g:HTML>
 			</g:FlowPanel>
 		</g:north>
 
 		<g:west size="25">
-			<g:SimplePanel styleName="westContainer" ui:field="westContainer"></g:SimplePanel>
+			<g:SimplePanel styleName="{style.westContainer}" ui:field="westContainer"></g:SimplePanel>
 		</g:west>
 
 		<g:center>
-			<g:SimplePanel styleName="centerContainer" ui:field="centerContainer"></g:SimplePanel>
+			<g:SimplePanel styleName="{style.centerContainer}" ui:field="centerContainer"></g:SimplePanel>
 		</g:center>
 
 	</g:DockLayoutPanel>

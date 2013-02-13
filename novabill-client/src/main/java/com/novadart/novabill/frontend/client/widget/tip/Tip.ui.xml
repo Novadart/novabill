@@ -1,10 +1,50 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui">
-	
-	<g:FlowPanel styleName="tipPanel">
-		<g:Label ui:field="closeTip" styleName="closeTip" text="X" />
-		<g:HTML ui:field="tip" styleName="tip" />
+
+	<ui:style>
+		.tipPanel {
+			width: 80%;
+			margin: 2em auto 0;
+			background-color: #FFFDB3;
+			padding: 1em;
+			border: 0.1em solid #DDD;
+			-moz-box-shadow: 2px 2px 2px #CCC;
+			-webkit-box-shadow: 2px 2px 2px #CCC;
+			box-shadow: 2px 2px 2px #CCC;
+			position: relative;
+		}
+		
+		.tipPanel .tip {
+			color: #333;
+			font-size: 1.1em;
+			line-height: 110%;
+		}
+		
+		.tipPanel .tip p {
+			margin: 0.5em 0;
+		}
+		
+		.tipPanel .closeTip {
+			float: right;
+			cursor: pointer;
+			padding: 2px;
+			position: absolute;
+			top: 1px;
+			right: 1px;
+			font-weight: bold;
+			color: #888;
+		}
+		
+		.tipPanel .closeTip:HOVER {
+			color: white;
+			background-color: #333;
+		}
+	</ui:style>
+
+	<g:FlowPanel styleName="{style.tipPanel}">
+		<g:Label ui:field="closeTip" styleName="{style.closeTip}" text="X" />
+		<g:HTML ui:field="tip" styleName="{style.tip}" />
 	</g:FlowPanel>
-	
+
 </ui:UiBinder> 

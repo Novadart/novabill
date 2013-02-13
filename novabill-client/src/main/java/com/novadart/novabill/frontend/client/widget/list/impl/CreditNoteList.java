@@ -9,7 +9,6 @@ public class CreditNoteList extends QuickViewList<CreditNoteDTO> {
 
 	public CreditNoteList() {
 		super(new CreditNoteCell());
-		addStyleName("CreditNoteList");
 	}
 	
 	public void setPresenter(Presenter presenter) {

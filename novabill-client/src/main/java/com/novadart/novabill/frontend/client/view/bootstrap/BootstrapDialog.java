@@ -3,6 +3,7 @@ package com.novadart.novabill.frontend.client.view.bootstrap;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Widget;
@@ -11,6 +12,8 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.util.CountryUtils;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
@@ -51,29 +54,28 @@ public class BootstrapDialog extends Dialog {
 	private Handler handler;
 
 	public BootstrapDialog() {
-		super(false);
-		name = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
+		super(GlobalBundle.INSTANCE.dialog(), false);
+		name = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		
-		ssn = new ValidatedTextBox(ValidationKit.SSN_OR_VAT_ID);
+		ssn = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.SSN_OR_VAT_ID);
 		ssn.setShowMessageOnError(true);
-		vatID = new ValidatedTextBox(ValidationKit.OPTIONAL_VAT_ID);
+		vatID = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_VAT_ID);
 		vatID.setShowMessageOnError(true);
 		ssnOrVatIdValidation.addWidget(ssn);
 		ssnOrVatIdValidation.addWidget(vatID);
 		
-		address = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
-		city = new ValidatedTextBox(ValidationKit.NOT_EMPTY);
+		address = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
+		city = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		province = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province()); 
 		country = LocaleWidgets.createCountryListBoxItalyOnly(I18N.INSTANCE.country());
 		country.setSelectedItem(CountryUtils.getRegionName("IT"));
-		postcode = new ValidatedTextBox(ValidationKit.POSTCODE);
-		phone = new ValidatedTextBox(ValidationKit.DEFAULT);
-		email = new ValidatedTextBox(ValidationKit.OPTIONAL_EMAIL);
-		mobile = new ValidatedTextBox(ValidationKit.DEFAULT);
-		fax = new ValidatedTextBox(ValidationKit.DEFAULT);
-		web = new ValidatedTextBox(ValidationKit.DEFAULT);
+		postcode = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.POSTCODE);
+		phone = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		email = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_EMAIL);
+		mobile = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		fax = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		web = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		setWidget(uiBinder.createAndBindUi(this));
-		addStyleName("BootstrapDialog");
 	}
 
 	private boolean validate(){
@@ -127,5 +129,10 @@ public class BootstrapDialog extends Dialog {
 			handler.businessData(b);
 
 		}
+	}
+	
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
 }

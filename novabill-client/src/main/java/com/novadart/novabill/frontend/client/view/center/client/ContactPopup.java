@@ -27,7 +27,6 @@ public class ContactPopup extends PopupPanel {
 
 	ContactPopup() {
 		setWidget(uiBinder.createAndBindUi(this));
-		setStyleName("ContactPopup");
 	}
 	
 	@UiFactory

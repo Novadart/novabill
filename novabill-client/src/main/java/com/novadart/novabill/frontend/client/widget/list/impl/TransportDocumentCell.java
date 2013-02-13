@@ -18,6 +18,7 @@ import com.novadart.novabill.frontend.client.presenter.Presenter;
 import com.novadart.novabill.frontend.client.util.PDFUtils;
 import com.novadart.novabill.frontend.client.widget.dialog.SelectClientDialog;
 import com.novadart.novabill.frontend.client.widget.list.QuickViewCell;
+import com.novadart.novabill.frontend.client.widget.list.resources.QuickViewListBundle;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -32,23 +33,23 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 	protected void renderDetails(
 			com.google.gwt.cell.client.Cell.Context context,
 			TransportDocumentDTO value, SafeHtmlBuilder sb) {
-		sb.appendHtmlConstant("<div class='upper'>");
-		sb.appendHtmlConstant("<span class='total'>");
+		sb.appendHtmlConstant("<div class='"+QuickViewListBundle.INSTANCE.quickViewListCss().upper()+"'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().total()+"'>");
 		sb.appendEscaped(I18N.INSTANCE.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
 		sb.appendHtmlConstant("</span>");
-		sb.appendHtmlConstant("<span class='createInvoice'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().createInvoice()+"'>");
 		sb.appendEscaped(I18N.INSTANCE.createInvoice());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("</div>");
 
-		sb.appendHtmlConstant("<div class='tools'>");
-		sb.appendHtmlConstant("<span class='openTransportDocument'>");
+		sb.appendHtmlConstant("<div class='"+QuickViewListBundle.INSTANCE.quickViewListCss().tools()+"'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().openTransportDocument()+"'>");
 		sb.appendEscaped(I18N.INSTANCE.modify());
 		sb.appendHtmlConstant("</span>");
-		sb.appendHtmlConstant("<span class='downloadAsPDF'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().downloadAsPDF()+"'>");
 		sb.appendEscaped(I18N.INSTANCE.download());
 		sb.appendHtmlConstant("</span>");
-		sb.appendHtmlConstant("<span class='delete'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().delete()+"'>");
 		sb.appendEscaped(I18N.INSTANCE.delete());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("</div>");
@@ -58,16 +59,16 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 	protected void renderVisible(
 			com.google.gwt.cell.client.Cell.Context context,
 			TransportDocumentDTO value, SafeHtmlBuilder sb) {
-		sb.appendHtmlConstant("<div class='main'>");
-		sb.appendHtmlConstant("<span class='id'>");
+		sb.appendHtmlConstant("<div class='"+QuickViewListBundle.INSTANCE.quickViewListCss().main()+"'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().id()+"'>");
 		sb.append(value.getDocumentID());
 		sb.appendHtmlConstant("</span>");
 
-		sb.appendHtmlConstant("<span class='date'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().date()+"'>");
 		sb.appendEscaped(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_LONG).format(value.getAccountingDocumentDate()));
 		sb.appendHtmlConstant("</span>");
 
-		sb.appendHtmlConstant("<span class='name'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().name()+"'>");
 		sb.appendEscaped(value.getClient().getName());
 		sb.appendHtmlConstant("</span>");
 
@@ -93,7 +94,7 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 	private boolean isCreateInvoice(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement open = et.cast();
-			return open.getClassName().contains("createInvoice");
+			return open.getClassName().contains(QuickViewListBundle.INSTANCE.quickViewListCss().createInvoice());
 
 		} else {
 			return false;
@@ -103,7 +104,7 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 	private boolean isOpenTransportDocument(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement open = et.cast();
-			return open.getClassName().contains("openTransportDocument");
+			return open.getClassName().contains(QuickViewListBundle.INSTANCE.quickViewListCss().openTransportDocument());
 
 		} else {
 			return false;
@@ -113,7 +114,7 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 	private boolean isPdf(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement img = et.cast();
-			return "downloadAsPDF".equals(img.getClassName());
+			return QuickViewListBundle.INSTANCE.quickViewListCss().downloadAsPDF().equals(img.getClassName());
 
 		} else {
 			return false;
@@ -123,7 +124,7 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 	private boolean isClone(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement img = et.cast();
-			return "clone".equals(img.getClassName());
+			return QuickViewListBundle.INSTANCE.quickViewListCss().clone().equals(img.getClassName());
 
 		} else {
 			return false;
@@ -133,7 +134,7 @@ public class TransportDocumentCell extends QuickViewCell<TransportDocumentDTO> {
 	private boolean isDelete(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement delete = et.cast();
-			return "delete".equals(delete.getClassName());
+			return QuickViewListBundle.INSTANCE.quickViewListCss().delete().equals(delete.getClassName());
 
 		} else {
 			return false;
