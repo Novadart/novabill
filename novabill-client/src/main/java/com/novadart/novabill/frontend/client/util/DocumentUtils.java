@@ -6,9 +6,11 @@ import java.util.List;
 
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-import com.novadart.novabill.shared.client.dto.PaymentType;
+import com.novadart.novabill.shared.client.dto.PaymentDateType;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public class DocumentUtils {
 	
@@ -113,41 +115,62 @@ public class DocumentUtils {
 		doc.setTotal(totAfterTaxes);
 	}
 	
-	
-	public static Date calculatePaymentDueDate(Date creation, PaymentType paymentType){
+	public static Date calculatePaymentDueDate(Date documentDate, PaymentTypeDTO payment){
+		if(PaymentDateType.CUSTOM.equals(payment.getPaymentDateGenerator())){
+			return null;
+		}
 		
-		switch(paymentType){
-		case BANK_TRANSFER:
-		case CASH:
+		long delta = 0;
+		switch (payment.getPaymentDateDelta()) {
+		
+		case NOW:
+			delta = 0;
+			break;
+			
+		case ONE_MONTH:
+			delta = ONE_DAY_MS*30;
+			break;
+
+		case TWO_MONTHS:
+			delta = ONE_DAY_MS*60;
+			break;
+		
+		case THREE_MONTHS:
+			delta = ONE_DAY_MS*90;
+			break;
+			
+		case FOUR_MONTHS:
+			delta = ONE_DAY_MS*120;
+			break;
+		
+		case FIVE_MONTHS:
+			delta = ONE_DAY_MS*150;
+			break;
+			
+		case SIX_MONTHS:
+			delta = ONE_DAY_MS*180;
+			break;
+			
+		case SEVEN_MONTHS:
+			delta = ONE_DAY_MS*210;
+			break;
+		
+		}
+		
+		switch (payment.getPaymentDateGenerator()) {
 		default:
-			return creation;
+		case CUSTOM:
+			return null;
 			
-		case BANK_TRANSFER_30:
-		case RIBA_30:
-		case RIBA_30_FM:
-			return new Date(creation.getTime()+ONE_DAY_MS*30);
+		case END_OF_MONTH:
+			Date d = new Date(documentDate.getTime()+delta);
+			CalendarUtil.setToFirstDayOfMonth(d);
+			CalendarUtil.addMonthsToDate(d, 1);
+			CalendarUtil.addDaysToDate(d, -1);
+			return d;
 			
-		case BANK_TRANSFER_60:
-		case RIBA_60:
-		case RIBA_60_FM:
-			return new Date(creation.getTime()+ONE_DAY_MS*60);
-		
-		case RIBA_90:
-		case RIBA_90_FM:
-			return new Date(creation.getTime()+ONE_DAY_MS*90);
-			
-		case RIBA_120:
-		case RIBA_120_FM:
-			return new Date(creation.getTime()+ONE_DAY_MS*120);
-		
-		case RIBA_150:
-		case RIBA_150_FM:
-			return new Date(creation.getTime()+ONE_DAY_MS*150);
-			
-		case RIBA_180:
-		case RIBA_180_FM:
-			return new Date(creation.getTime()+ONE_DAY_MS*180);
+		case IMMEDIATE:
+			return new Date(documentDate.getTime()+delta);
 		}
 	}
-	
 }

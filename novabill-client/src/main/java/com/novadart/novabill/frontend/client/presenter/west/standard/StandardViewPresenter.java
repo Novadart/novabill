@@ -3,8 +3,8 @@ package com.novadart.novabill.frontend.client.presenter.west.standard;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.presenter.AbstractPresenter;
-import com.novadart.novabill.frontend.client.view.center.client.dialog.ClientDialog;
 import com.novadart.novabill.frontend.client.view.west.standard.StandardWestView;
+import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
 
 public class StandardViewPresenter extends AbstractPresenter<StandardWestView> implements StandardWestView.Presenter {
 

@@ -17,7 +17,6 @@ import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.PaymentType;
 
 public abstract class AbstractInvoicePresenter extends DocumentPresenter<InvoiceView> implements InvoiceView.Presenter {
 
@@ -96,7 +95,6 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		}
 		inv.setItems(invItems);
 		inv.setNote(getView().getNote().getText());
-		inv.setPaymentType(PaymentType.values()[getView().getPayment().getSelectedIndex()-1]);
 		if(getView().getPayment().getSelectedIndex() > 0){
 			inv.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
 		} else {

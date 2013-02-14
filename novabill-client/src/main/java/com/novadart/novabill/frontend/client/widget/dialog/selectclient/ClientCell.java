@@ -1,4 +1,4 @@
-package com.novadart.novabill.frontend.client.widget.dialog;
+package com.novadart.novabill.frontend.client.widget.dialog.selectclient;
 
 import com.google.gwt.cell.client.AbstractCell;
 import com.google.gwt.cell.client.Cell;

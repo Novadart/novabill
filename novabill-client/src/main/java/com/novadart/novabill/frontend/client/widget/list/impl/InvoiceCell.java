@@ -17,7 +17,7 @@ import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.presenter.Presenter;
 import com.novadart.novabill.frontend.client.util.PDFUtils;
-import com.novadart.novabill.frontend.client.widget.dialog.SelectClientDialog;
+import com.novadart.novabill.frontend.client.widget.dialog.selectclient.SelectClientDialog;
 import com.novadart.novabill.frontend.client.widget.list.QuickViewCell;
 import com.novadart.novabill.frontend.client.widget.list.resources.QuickViewListBundle;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;

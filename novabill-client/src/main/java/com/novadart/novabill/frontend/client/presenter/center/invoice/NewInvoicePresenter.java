@@ -65,9 +65,6 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(invoice.getNote());
 		getView().getPaymentNote().setText(invoice.getPaymentNote());
-		if(invoice.getPaymentType() != null) { //can be null if the invoice is derived from an estimation
-			getView().getPayment().setSelectedIndex(invoice.getPaymentType().ordinal()+1);
-		}
 	}
 
 	

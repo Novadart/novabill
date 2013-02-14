@@ -1,4 +1,4 @@
-package com.novadart.novabill.frontend.client.widget.dialog;
+package com.novadart.novabill.frontend.client.widget.dialog.selectclient;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;

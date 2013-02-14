@@ -22,7 +22,7 @@ import com.novadart.novabill.frontend.client.view.center.home.EstimationDataProv
 import com.novadart.novabill.frontend.client.view.center.home.HomeView;
 import com.novadart.novabill.frontend.client.view.center.home.InvoiceDataProvider;
 import com.novadart.novabill.frontend.client.view.center.home.TransportDocumentDataProvider;
-import com.novadart.novabill.frontend.client.widget.dialog.SelectClientDialog;
+import com.novadart.novabill.frontend.client.widget.dialog.selectclient.SelectClientDialog;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
