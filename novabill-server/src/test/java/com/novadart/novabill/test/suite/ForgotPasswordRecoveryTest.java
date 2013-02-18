@@ -13,6 +13,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -35,6 +36,7 @@ import com.novadart.novabill.web.mvc.PasswordRecoveryController;
 @ContextConfiguration(locations = "classpath*:mvc-test-config.xml")
 @Transactional
 @DirtiesContext
+@ActiveProfiles("dev")
 public class ForgotPasswordRecoveryTest {
 
 	@Resource(name = "userPasswordMap")

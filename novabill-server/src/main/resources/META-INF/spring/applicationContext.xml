@@ -53,8 +53,6 @@
 	
 	<task:annotation-driven/>
 	
-	<jee:jndi-lookup id="dataSource" jndi-name="jdbc/novabill"/>
-	
 	<bean class="org.springframework.orm.jpa.JpaTransactionManager"
 		id="transactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
@@ -188,5 +186,26 @@
 		factory-method="aspectOf">
 		<property name="ehcacheDiskStore" value="${ehcache.diskStore}"/>
 	</bean>
+
+	<beans profile="dev">
+		<bean class="org.apache.commons.dbcp.BasicDataSource"
+			destroy-method="close" id="dataSource">
+			<property name="driverClassName" value="org.postgresql.Driver" />
+			<property name="url" value="jdbc:postgresql://localhost/novabill" />
+			<property name="username" value="novadart" />
+			<property name="password" value="novadart" />
+			<property name="testOnBorrow" value="true" />
+			<property name="testOnReturn" value="true" />
+			<property name="testWhileIdle" value="true" />
+			<property name="timeBetweenEvictionRunsMillis" value="1800000" />
+			<property name="numTestsPerEvictionRun" value="3" />
+			<property name="minEvictableIdleTimeMillis" value="1800000" />
+			<property name="validationQuery" value="SELECT version();" />
+		</bean>
+	</beans>
+	
+	<beans profile="production">
+		<jee:jndi-lookup id="dataSource" jndi-name="jdbc/novabill"/>
+	</beans>
 
 </beans>
