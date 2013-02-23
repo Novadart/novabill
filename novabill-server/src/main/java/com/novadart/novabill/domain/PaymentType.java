@@ -15,8 +15,6 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
-
-import com.novadart.novabill.shared.client.dto.PaymentDateDelta;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 
 /*
@@ -40,7 +38,7 @@ public class PaymentType {
 	private PaymentDateType paymentDateGenerator;
 	
 	@NotNull
-	private PaymentDateDelta paymentDateDelta;
+	private Integer paymentDateDelta;
 	
 	@ManyToOne
 	private Business business;
@@ -73,11 +71,11 @@ public class PaymentType {
 		this.paymentDateGenerator = paymentDateGenerator;
 	}
 
-	public PaymentDateDelta getPaymentDateDelta() {
+	public Integer getPaymentDateDelta() {
 		return paymentDateDelta;
 	}
 
-	public void setPaymentDateDelta(PaymentDateDelta paymentDateDelta) {
+	public void setPaymentDateDelta(Integer paymentDateDelta) {
 		this.paymentDateDelta = paymentDateDelta;
 	}
 

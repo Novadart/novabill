@@ -12,7 +12,7 @@ public class PaymentTypeDTO implements IsSerializable {
 	
 	private PaymentDateType paymentDateGenerator;
 	
-	private PaymentDateDelta paymentDateDelta;
+	private Integer paymentDateDelta;
 	
 	private BusinessDTO business;
 
@@ -48,11 +48,11 @@ public class PaymentTypeDTO implements IsSerializable {
 		this.paymentDateGenerator = paymentDateGenerator;
 	}
 
-	public PaymentDateDelta getPaymentDateDelta() {
+	public Integer getPaymentDateDelta() {
 		return paymentDateDelta;
 	}
 
-	public void setPaymentDateDelta(PaymentDateDelta paymentDateDelta) {
+	public void setPaymentDateDelta(Integer paymentDateDelta) {
 		this.paymentDateDelta = paymentDateDelta;
 	}
 
