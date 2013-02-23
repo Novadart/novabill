@@ -19,7 +19,6 @@ import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.PaymentDateDelta;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
-import com.novadart.novabill.shared.client.dto.PaymentType;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.validation.Field;
 
@@ -174,7 +173,6 @@ public class TestUtils {
 		T doc = createDoc(documentID, cls);
 		doc.setPayed(false);
 		doc.setPaymentDueDate(new Date());
-		doc.setPaymentType(PaymentType.CASH);
 		return doc;
 	}
 	

@@ -6,10 +6,9 @@ import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
+
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
-
-import com.novadart.novabill.shared.client.dto.PaymentType;
 
 /*
  * Important note!
