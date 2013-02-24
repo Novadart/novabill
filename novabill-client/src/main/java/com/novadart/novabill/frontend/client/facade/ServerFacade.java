@@ -13,12 +13,14 @@ import com.novadart.novabill.frontend.client.facade.xsrf.XsrfClientServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfCreditNoteServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfEstimationServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfInvoiceServiceAsync;
+import com.novadart.novabill.frontend.client.facade.xsrf.XsrfPaymentTypeServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfTransportDocumentServiceAsync;
 import com.novadart.novabill.shared.client.facade.BusinessServiceAsync;
 import com.novadart.novabill.shared.client.facade.ClientServiceAsync;
 import com.novadart.novabill.shared.client.facade.CreditNoteServiceAsync;
 import com.novadart.novabill.shared.client.facade.EstimationServiceAsync;
 import com.novadart.novabill.shared.client.facade.InvoiceServiceAsync;
+import com.novadart.novabill.shared.client.facade.PaymentTypeServiceAsync;
 import com.novadart.novabill.shared.client.facade.TransportDocumentServiceAsync;
 
 public class ServerFacade {
@@ -35,6 +37,7 @@ public class ServerFacade {
 
 	public static final TransportDocumentServiceAsync transportDocument = new XsrfTransportDocumentServiceAsync();
 
+	public static final PaymentTypeServiceAsync payment = new XsrfPaymentTypeServiceAsync();
 
 	private static final RequestBuilder FEEDBACK_REQUEST =
 			new RequestBuilder(RequestBuilder.POST, Const.POST_FEEDBACK_URL);

@@ -120,42 +120,7 @@ public class DocumentUtils {
 			return null;
 		}
 		
-		long delta = 0;
-		switch (payment.getPaymentDateDelta()) {
-		
-		case NOW:
-			delta = 0;
-			break;
-			
-		case ONE_MONTH:
-			delta = ONE_DAY_MS*30;
-			break;
-
-		case TWO_MONTHS:
-			delta = ONE_DAY_MS*60;
-			break;
-		
-		case THREE_MONTHS:
-			delta = ONE_DAY_MS*90;
-			break;
-			
-		case FOUR_MONTHS:
-			delta = ONE_DAY_MS*120;
-			break;
-		
-		case FIVE_MONTHS:
-			delta = ONE_DAY_MS*150;
-			break;
-			
-		case SIX_MONTHS:
-			delta = ONE_DAY_MS*180;
-			break;
-			
-		case SEVEN_MONTHS:
-			delta = ONE_DAY_MS*210;
-			break;
-		
-		}
+		long delta = payment.getPaymentDateDelta() * ONE_DAY_MS;
 		
 		switch (payment.getPaymentDateGenerator()) {
 		default:

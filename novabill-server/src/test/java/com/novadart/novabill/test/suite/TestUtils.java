@@ -230,7 +230,6 @@ public class TestUtils {
 		T doc = createInvalidDoc(documentID, cls);
 		doc.setPayed(false);
 		doc.setPaymentDueDate(null);
-		doc.setPaymentType(null);
 		return doc;
 	}
 	

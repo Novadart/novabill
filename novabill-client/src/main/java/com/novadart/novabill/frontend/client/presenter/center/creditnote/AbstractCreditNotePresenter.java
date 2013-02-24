@@ -70,11 +70,12 @@ public abstract class AbstractCreditNotePresenter extends DocumentPresenter<Cred
 		}
 		cn.setItems(invItems);
 		cn.setNote(getView().getNote().getText());
-		if(getView().getPayment().getSelectedIndex() > 0){
-			cn.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(cn.getAccountingDocumentDate(), cn.getPaymentType()));  
-		} else {
-			cn.setPaymentDueDate(null);
-		}
+//		TODO
+//		if(getView().getPayment().getSelectedIndex() > 0){
+//			cn.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(cn.getAccountingDocumentDate(), cn.getPaymentType()));  
+//		} else {
+//			cn.setPaymentDueDate(null);
+//		}
 
 		cn.setPaymentNote(getView().getPaymentNote().getText());
 		DocumentUtils.calculateTotals(invItems, cn);

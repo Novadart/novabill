@@ -95,11 +95,12 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		}
 		inv.setItems(invItems);
 		inv.setNote(getView().getNote().getText());
-		if(getView().getPayment().getSelectedIndex() > 0){
-			inv.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
-		} else {
-			inv.setPaymentDueDate(null);
-		}
+//		TODO
+//		if(getView().getPayment().getSelectedIndex() > 0){
+//			inv.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
+//		} else {
+//			inv.setPaymentDueDate(null);
+//		}
 
 		inv.setPaymentNote(getView().getPaymentNote().getText());
 		DocumentUtils.calculateTotals(invItems, inv);

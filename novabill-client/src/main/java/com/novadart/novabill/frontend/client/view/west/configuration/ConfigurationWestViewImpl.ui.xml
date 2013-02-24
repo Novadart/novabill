@@ -4,6 +4,9 @@
 	<ui:style>
 		
 	</ui:style>
-	<g:HTMLPanel>
-	</g:HTMLPanel>
+	
+	<g:VerticalPanel>
+		<g:Hyperlink ui:field="general" />
+		<g:Hyperlink ui:field="payment" />
+	</g:VerticalPanel>
 </ui:UiBinder> 

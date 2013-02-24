@@ -6,6 +6,15 @@ import com.google.gwt.i18n.client.Constants;
 public interface I18N extends Constants {
 	public static final I18N INSTANCE = GWT.create(I18N.class);
 	
+	public String settingsGeneral();
+	public String settingsPayments();
+	public String createPaymentType();
+	public String days();
+	public String dateGeneration();
+	public String dateGenerationImmediate();
+	public String dateGenerationEndOfMonth();
+	public String dateGenerationManual();
+	public String paymentDelay();
 	public String tipselectClientDialog1();
 	public String tipselectClientDialog2();
 	public String deleteAccountLabel();

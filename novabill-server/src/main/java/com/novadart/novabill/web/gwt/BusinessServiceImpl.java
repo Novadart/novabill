@@ -159,7 +159,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<PaymentTypeDTO> getPaymentTypes(Long businessID) throws NotAuthenticatedException, DataAccessException{
 		Set<PaymentType> paymentTypes = Business.findBusiness(businessID).getPaymentTypes();
-		List<PaymentTypeDTO> paymentTypeDTOs = new ArrayList<>(paymentTypes.size());
+		List<PaymentTypeDTO> paymentTypeDTOs = new ArrayList<PaymentTypeDTO>(paymentTypes.size());
 		for(PaymentType paymentType: paymentTypes)
 			paymentTypeDTOs.add(PaymentTypeDTOFactory.toDTO(paymentType));
 		return paymentTypeDTOs;

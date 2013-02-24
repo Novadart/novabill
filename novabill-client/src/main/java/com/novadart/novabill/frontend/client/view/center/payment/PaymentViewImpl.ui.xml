@@ -1,0 +1,25 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+	
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N" field="i18n"></ui:with>
+	
+	<ui:style type="com.novadart.novabill.frontend.client.view.center.payment.PaymentViewImpl.Style">
+		.label {
+			
+		}
+		
+		.value {
+			
+		}
+	</ui:style>
+
+	<g:HorizontalPanel>
+		<c:CellList ui:field="payments"></c:CellList>
+		<g:HTML ui:field="description"></g:HTML>
+	</g:HorizontalPanel>
+
+
+
+
+</ui:UiBinder> 

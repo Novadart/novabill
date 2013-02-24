@@ -57,6 +57,7 @@ public class SelectClientDialog extends Dialog {
 
 	public SelectClientDialog(Handler handler) {
 		super(GlobalBundle.INSTANCE.dialog());
+		GlobalBundle.INSTANCE.dialog().ensureInjected();
 		this.handler = handler;
 		setHeightDivisionValue(5);
 		setWidget(uiBinder.createAndBindUi(this));

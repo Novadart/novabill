@@ -8,9 +8,9 @@ import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.facade.PaymentTypeService;
 import com.novadart.novabill.shared.client.facade.PaymentTypeServiceAsync;
 
-public class XsrfPaymentType extends XsrfProtectedService<PaymentTypeServiceAsync> implements PaymentTypeServiceAsync {
+public class XsrfPaymentTypeServiceAsync extends XsrfProtectedService<PaymentTypeServiceAsync> implements PaymentTypeServiceAsync {
 
-	XsrfPaymentType() {
+	public XsrfPaymentTypeServiceAsync() {
 		super((PaymentTypeServiceAsync)GWT.create(PaymentTypeService.class));
 	}
 

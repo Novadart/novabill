@@ -83,6 +83,8 @@ public class ClientDialog extends Dialog implements HasUILocking {
 
 	private ClientDialog() {
 		super(GlobalBundle.INSTANCE.dialog());
+		GlobalBundle.INSTANCE.dialog().ensureInjected();
+		
 		companyName = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		
 		vatID =  new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.VAT_ID);
