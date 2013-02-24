@@ -19,11 +19,6 @@ import org.springframework.format.annotation.DateTimeFormat;
 @Entity
 public abstract class AbstractInvoice extends AccountingDocument {
 
-	
-    
-	@NotNull
-    protected PaymentType paymentType;
-    
     @Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "S-")
     protected Date paymentDueDate;
@@ -34,14 +29,6 @@ public abstract class AbstractInvoice extends AccountingDocument {
     /**
      * Getters and setters  
      */
-    
-    public PaymentType getPaymentType() {
-        return this.paymentType;
-    }
-    
-    public void setPaymentType(PaymentType paymentType) {
-        this.paymentType = paymentType;
-    }
     
     public Date getPaymentDueDate() {
         return this.paymentDueDate;
