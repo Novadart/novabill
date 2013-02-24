@@ -31,7 +31,7 @@ public class SimpleValidator {
 		errors.addAll(violationMapper.convert(validator.validate(object)));
 		isValid &= errors.size() == 0;
 		if(!isValid)
-			throw new ValidationException(errors);
+			throw new ValidationException(errors, object.getClass().getName());
 	}
 	
 }

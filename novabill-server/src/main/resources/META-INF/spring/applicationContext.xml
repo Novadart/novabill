@@ -186,6 +186,19 @@
 		factory-method="aspectOf">
 		<property name="ehcacheDiskStore" value="${ehcache.diskStore}"/>
 	</bean>
+	
+	<bean
+		class="com.novadart.novabill.aspect.logging.ValidationAspect"
+		factory-method="aspectOf">
+		<property name="sendEmail" value="${validation.error.sendemail}" />
+		<property name="emailAddresses">
+			<list>
+				<value>giordano.battilana@novadart.com</value>
+				<value>risto.gligorov@novadart.com</value>
+			</list>
+		</property>
+	</bean>
+	
 
 	<beans profile="dev">
 		<bean class="org.apache.commons.dbcp.BasicDataSource"
