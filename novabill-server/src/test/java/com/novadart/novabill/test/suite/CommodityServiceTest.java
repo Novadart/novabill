@@ -17,6 +17,7 @@ import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.CommodityService;
@@ -64,5 +65,38 @@ public class CommodityServiceTest extends GWTServiceTest {
 		commodityDTO.setId(1l);
 		commodityService.add(commodityDTO);
 	}
+	
+	private CommodityDTO addCommodity() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
+		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		commodityDTO.setId(commodityService.add(commodityDTO));
+		Commodity.entityManager().flush();
+		return commodityDTO;
+	}
+	
+	@Test
+	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+		Long id = addCommodity().getId();
+		commodityService.remove(authenticatedPrincipal.getBusiness().getId(), id);
+		Commodity.entityManager().flush();
+	    assertNull(Commodity.findCommodity(id));
+	}
+	
+	@Test(expected = DataAccessException.class)
+    public void removeUnAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+		Long id = addCommodity().getId();
+		commodityService.remove(getUnathorizedBusinessID(), id);
+    }
 
+	 @Test(expected = DataAccessException.class)
+     public void removeBusinessIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+        Long id = addCommodity().getId();
+        commodityService.remove(null, id);
+     }
+	 
+     @Test(expected = DataAccessException.class)
+     public void removeAuthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+    	 commodityService.remove(getUnathorizedBusinessID(), null);
+     }
+	
 }

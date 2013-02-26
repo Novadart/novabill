@@ -32,4 +32,10 @@ public class CommodityServiceProxy extends AbstractGwtController implements Comm
 		return commodityService.add(paymentTypeDTO);
 	}
 
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+		commodityService.remove(businessID, id);
+	}
+	
+	
+
 }

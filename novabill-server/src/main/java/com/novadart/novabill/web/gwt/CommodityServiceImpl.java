@@ -1,6 +1,8 @@
 package com.novadart.novabill.web.gwt;
 
 import java.util.List;
+
+import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -34,7 +36,7 @@ public class CommodityServiceImpl implements CommodityService {
 	@Override
 	@PreAuthorize("#commodityDTO?.business?.id == principal.business.id and " +
 				  "#commodityDTO != null and #commodityDTO.id == null" )
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	public Long add(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
 		Commodity commodity = new Commodity();
 		CommodityDTOFactory.copyFromDTO(commodity, commodityDTO);
@@ -43,6 +45,17 @@ public class CommodityServiceImpl implements CommodityService {
 		business.getCommodities().add(commodity);
 		commodity.setBusiness(business);
 		return commodity.merge().getId();
+	}
+
+	@Override
+	@Transactional(readOnly = false)
+	 @PreAuthorize("#businessID == principal.business.id and " +
+			       "T(com.novadart.novabill.domain.Commodity).findCommodity(#id)?.business?.id == #businessID")
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+		Commodity commodity = Commodity.findCommodity(id);
+		commodity.remove(); //removing commodity
+		if(Hibernate.isInitialized(commodity.getBusiness().getCommodities()))
+			commodity.getBusiness().getCommodities().remove(commodity);
 	}
 
 }

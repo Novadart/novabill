@@ -17,5 +17,7 @@ public interface CommodityService extends RemoteService {
 	public List<CommodityDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
 	public Long add(CommodityDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException;
+	
+	public void remove(Long businessID, Long id)  throws NotAuthenticatedException, DataAccessException;
 
 }

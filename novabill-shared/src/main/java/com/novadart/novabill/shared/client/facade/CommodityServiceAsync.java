@@ -11,4 +11,6 @@ public interface CommodityServiceAsync {
 
 	void add(CommodityDTO paymentTypeDTO, AsyncCallback<Long> callback);
 
+	void remove(Long businessID, Long id, AsyncCallback<Void> callback);
+
 }
