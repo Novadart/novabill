@@ -13,6 +13,7 @@ import com.novadart.novabill.domain.AbstractInvoice;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.TransportDocument;
@@ -279,6 +280,16 @@ public class TestUtils {
 		client.setWeb("");
 		client.setSsn("");
 		return client;
+	}
+	
+	public static Commodity createCommodity(){
+		Commodity commodity = new Commodity();
+		commodity.setName("Test commodity");
+		commodity.setDescription("Test commodity description");
+		commodity.setPrice(new BigDecimal("100.0"));
+		commodity.setTax(new BigDecimal("15.0"));
+		commodity.setUnitOfMeasure("piece");
+		return commodity;
 	}
 	
 	public static <T1, T2 extends T1> void setPrivateField(Class<T1> cls, T2 target, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{

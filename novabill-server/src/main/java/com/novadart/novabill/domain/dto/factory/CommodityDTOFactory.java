@@ -18,5 +18,15 @@ public class CommodityDTOFactory {
 		commodityDTO.setTax(commodity.getTax());
 		return commodityDTO;
 	}
+	
+	public static void copyFromDTO(Commodity commodity, CommodityDTO commodityDTO){
+		if(commodity == null || commodityDTO == null)
+			return;
+		commodity.setName(commodityDTO.getName());
+		commodity.setPrice(commodityDTO.getPrice());
+		commodity.setDescription(commodityDTO.getDescription());
+		commodity.setUnitOfMeasure(commodityDTO.getUnitOfMeasure());
+		commodity.setTax(commodityDTO.getTax());
+	}
 
 }

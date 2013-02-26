@@ -1,14 +1,21 @@
 package com.novadart.novabill.shared.client.facade;
 
 import java.util.List;
-
 import com.google.gwt.user.client.rpc.RemoteService;
+import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
+import com.google.gwt.user.server.rpc.XsrfProtect;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
+import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 
+@XsrfProtect
+@RemoteServiceRelativePath("commodity.rpc")
 public interface CommodityService extends RemoteService {
 	
 	public List<CommodityDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	
+	public Long add(CommodityDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException;
 
 }

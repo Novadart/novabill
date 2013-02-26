@@ -16,6 +16,8 @@ public class CommodityDTO implements IsSerializable {
 	private String unitOfMeasure;
 	
 	private BigDecimal tax;
+	
+	private BusinessDTO business;
 
 	public Long getId() {
 		return id;
@@ -63,6 +65,14 @@ public class CommodityDTO implements IsSerializable {
 
 	public void setTax(BigDecimal tax) {
 		this.tax = tax;
+	}
+
+	public BusinessDTO getBusiness() {
+		return business;
+	}
+
+	public void setBusiness(BusinessDTO business) {
+		this.business = business;
 	}
 	
 }

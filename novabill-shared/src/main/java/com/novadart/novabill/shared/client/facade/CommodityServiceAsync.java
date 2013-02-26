@@ -9,4 +9,6 @@ public interface CommodityServiceAsync {
 
 	void getAll(Long businessID, AsyncCallback<List<CommodityDTO>> callback);
 
+	void add(CommodityDTO paymentTypeDTO, AsyncCallback<Long> callback);
+
 }
