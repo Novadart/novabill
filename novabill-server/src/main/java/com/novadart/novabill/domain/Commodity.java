@@ -23,7 +23,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
-public class Item implements Serializable {
+public class Commodity implements Serializable {
 	
 	private static final long serialVersionUID = 4265058605330997015L;
 
@@ -107,26 +107,26 @@ public class Item implements Serializable {
     transient EntityManager entityManager;
     
     public static final EntityManager entityManager() {
-        EntityManager em = new Item().entityManager;
+        EntityManager em = new Commodity().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
     
-    public static long countItems() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM Item o", Long.class).getSingleResult();
+    public static long countCommodities() {
+        return entityManager().createQuery("SELECT COUNT(o) FROM Commodity o", Long.class).getSingleResult();
     }
     
-    public static List<Item> findAllItems() {
-        return entityManager().createQuery("SELECT o FROM Item o", Item.class).getResultList();
+    public static List<Commodity> findAllCommodities() {
+        return entityManager().createQuery("SELECT o FROM Commodity o", Commodity.class).getResultList();
     }
     
-    public static Item findItem(Long id) {
+    public static Commodity findCommodity(Long id) {
         if (id == null) return null;
-        return entityManager().find(Item.class, id);
+        return entityManager().find(Commodity.class, id);
     }
     
-    public static List<Item> findItemEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM Item o", Item.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+    public static List<Commodity> findCommodityEntries(int firstResult, int maxResults) {
+        return entityManager().createQuery("SELECT o FROM Commodity o", Commodity.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
     
     @Transactional
@@ -141,7 +141,7 @@ public class Item implements Serializable {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            Item attached = Item.findItem(this.id);
+            Commodity attached = Commodity.findCommodity(this.id);
             this.entityManager.remove(attached);
         }
     }
@@ -159,9 +159,9 @@ public class Item implements Serializable {
     }
     
     @Transactional
-    public Item merge() {
+    public Commodity merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
-        Item merged = this.entityManager.merge(this);
+        Commodity merged = this.entityManager.merge(this);
         this.entityManager.flush();
         return merged;
     }

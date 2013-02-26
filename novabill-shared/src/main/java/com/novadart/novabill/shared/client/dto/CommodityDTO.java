@@ -3,7 +3,7 @@ package com.novadart.novabill.shared.client.dto;
 import java.math.BigDecimal;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class ItemDTO implements IsSerializable {
+public class CommodityDTO implements IsSerializable {
 	
 	private Long id;
 	

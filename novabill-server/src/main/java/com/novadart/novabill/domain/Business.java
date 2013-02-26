@@ -113,7 +113,7 @@ public class Business implements Serializable, Taxable {
     private Long nonFreeAccountExpirationTime; 
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Item> items = new HashSet<Item>();
+    private Set<Commodity> commodities = new HashSet<Commodity>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<BankAccount> accounts = new HashSet<BankAccount>();
@@ -443,12 +443,12 @@ public class Business implements Serializable, Taxable {
 		this.nonFreeAccountExpirationTime = nonFreeAccountExpirationTime;
 	}
 
-	public Set<Item> getItems() {
-        return this.items;
+	public Set<Commodity> getCommodities() {
+        return this.commodities;
     }
     
-    public void setItems(Set<Item> items) {
-        this.items = items;
+    public void setCommodities(Set<Commodity> commodities) {
+        this.commodities = commodities;
     }
     
     public Set<BankAccount> getAccounts() {

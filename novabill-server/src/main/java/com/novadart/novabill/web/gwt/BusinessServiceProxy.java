@@ -11,6 +11,7 @@ import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -61,6 +62,7 @@ public class BusinessServiceProxy extends AbstractGwtController implements Busin
 		businessService.update(businessDTO);
 	}
 
+	@Override
 	public String generatePDFToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException {
 		return businessService.generatePDFToken();
 	}
@@ -90,8 +92,14 @@ public class BusinessServiceProxy extends AbstractGwtController implements Busin
 		return businessService.getTransportDocuments(businessID);
 	}
 	
+	@Override
 	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return businessService.getClients(businessID);
+	}
+	
+	@Override
+	public List<CommodityDTO> getCommodities(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return businessService.getCommodities(businessID);
 	}
 
 	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException {

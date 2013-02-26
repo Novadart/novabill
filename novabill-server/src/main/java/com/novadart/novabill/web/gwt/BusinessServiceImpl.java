@@ -16,9 +16,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
+import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.XsrfTokenService;
@@ -26,6 +28,7 @@ import com.novadart.novabill.service.validator.TaxableEntityValidator;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -150,6 +153,15 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		return clientDTOs;
 	}
 	
+	@Override
+	public List<CommodityDTO> getCommodities(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		Set<Commodity> commodities = Business.findBusiness(businessID).getCommodities();
+		List<CommodityDTO> commodityDTOs = new ArrayList<CommodityDTO>(commodities.size());
+		for(Commodity commodity: commodities)
+			commodityDTOs.add(CommodityDTOFactory.toDTO(commodity));
+		return commodityDTOs;
+	}
+
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException {
