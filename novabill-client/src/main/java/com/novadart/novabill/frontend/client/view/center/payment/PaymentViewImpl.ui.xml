@@ -15,7 +15,11 @@
 	</ui:style>
 
 	<g:HorizontalPanel>
-		<c:CellList ui:field="payments"></c:CellList>
+		<g:VerticalPanel>
+			<c:CellTable ui:field="payments"></c:CellTable>
+			<g:Button ui:field="newPayment" text="{i18n.add}"></g:Button>
+		</g:VerticalPanel>
+		
 		<g:HTML ui:field="description"></g:HTML>
 	</g:HorizontalPanel>
 

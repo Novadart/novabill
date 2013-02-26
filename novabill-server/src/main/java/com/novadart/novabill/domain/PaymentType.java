@@ -37,7 +37,6 @@ public class PaymentType {
 	@NotNull
 	private PaymentDateType paymentDateGenerator;
 	
-	@NotNull
 	private Integer paymentDateDelta;
 	
 	@ManyToOne

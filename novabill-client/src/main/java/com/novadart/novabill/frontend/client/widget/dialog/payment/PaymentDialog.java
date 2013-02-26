@@ -34,7 +34,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 	}
 	
 	public interface Handler {
-		void onPaymentCreated();
+		void onPaymentCreated(PaymentTypeDTO payment);
 	}
 
 	@UiField(provided=true) ValidatedTextBox name;
@@ -87,7 +87,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 		if(validate()) {
 			setLocked(true);
 			
-			PaymentTypeDTO p = new PaymentTypeDTO();
+			final PaymentTypeDTO p = new PaymentTypeDTO();
 			p.setBusiness(Configuration.getBusiness());
 			p.setDefaultPaymentNote(paymentNote.getText());
 			p.setName(name.getText());
@@ -112,7 +112,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 
 				@Override
 				public void onSuccess(Long result) {
-					handler.onPaymentCreated();
+					handler.onPaymentCreated(p);
 					setLocked(false);
 					hide();
 				}

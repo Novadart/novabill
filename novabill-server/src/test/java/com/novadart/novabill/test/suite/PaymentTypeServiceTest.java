@@ -1,6 +1,8 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.util.HashSet;
 import java.util.List;
@@ -15,7 +17,6 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
@@ -102,7 +103,7 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 		Long id = addPaymentType().getId();
 		paymentTypeService.remove(authenticatedPrincipal.getBusiness().getId(), id);
 		PaymentType.entityManager().flush();
-		assertNull(Invoice.findInvoice(id));
+		assertNull(PaymentType.findPaymentType(id));
 	}
 	
 	@Test(expected = DataAccessException.class)
