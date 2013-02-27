@@ -85,7 +85,6 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 				actual.add(error.getField());
 			assertTrue(actual.contains(Field.name));
 			assertTrue(actual.contains(Field.defaultPaymentNote));
-			assertTrue(actual.contains(Field.paymentDateDelta));
 			assertTrue(actual.contains(Field.paymentDateGenerator));
 		}
 	}
@@ -133,10 +132,11 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 		assertTrue(EqualsBuilder.reflectionEquals(paymentTypeDTO, persistedDTO, "business"));
 	}
 	
-	@Test
+	@Test(expected = DataAccessException.class)
 	public void updateUnathorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
 		PaymentTypeDTO paymentTypeDTO = addPaymentType();
-		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		paymentTypeDTO.setName("Test name!!!");
+		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		paymentTypeService.update(paymentTypeDTO);
 	}
 	
