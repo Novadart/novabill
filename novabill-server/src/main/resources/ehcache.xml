@@ -56,6 +56,11 @@
         timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.transportdocument-cache.timeToLiveSeconds.value}"
         memoryStoreEvictionPolicy="LRU" statistics="true" />
         
+    <cache name="paymenttype-cache" eternal="false"
+        maxElementsInMemory="${ehcache.paymenttype-cache.maxElementsInMemory.value}" overflowToDisk="false" diskPersistent="false"
+        timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.paymenttype-cache.timeToLiveSeconds.value}"
+        memoryStoreEvictionPolicy="LRU" statistics="true" />
+        
     <cache name="com.novadart.novabill.domain.Client" eternal="false"
     	maxElementsInMemory="${ehcache.client-hib-2nd-level.maxElementsInMemory.value}" overflowToDisk="false" diskPersistent="false"
     	timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.client-hib-2nd-level.timeToLiveSeconds.value}"

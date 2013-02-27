@@ -238,4 +238,8 @@ insert into accounting_document (id, accounting_document_date, accounting_docume
 insert into transport_document (from_company_name, from_street, from_city, from_postcode, from_province, from_country, to_company_name, to_street, to_city, to_postcode, to_province, to_country, number_of_packages, trade_zone, transport_start_date, transportation_responsibility, transporter, id, business, client) values ('Novadart S.n.c. di Giordano Battilana & C.', 'via Stradone, 51', 'Campo San Martino', '35010', 'PD', 'IT', 'The mighty company from this Young Entrepreneur', 'via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', '42837', 'PD', 'IT', 1 , '', '2013-10-20', '', '', 140, 2, 128);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (141, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 140);
 
-alter sequence hibernate_sequence restart with 142;
+--creating payment types
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (142, 'payment note', 'default', 0, 0, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (143, 'payment note', 'default', 0, 0, 1, 2);
+
+alter sequence hibernate_sequence restart with 144;
