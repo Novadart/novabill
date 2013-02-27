@@ -14,6 +14,7 @@ import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
@@ -35,7 +36,7 @@ public class CommodityServiceImpl implements CommodityService {
 
 	@Override
 	@PreAuthorize("#commodityDTO?.business?.id == principal.business.id and " +
-				  "#commodityDTO != null and #commodityDTO.id == null" )
+				  "#commodityDTO?.id == null" )
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	public Long add(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
 		Commodity commodity = new Commodity();
@@ -48,9 +49,21 @@ public class CommodityServiceImpl implements CommodityService {
 	}
 
 	@Override
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
+	@PreAuthorize("#commodityDTO?.business?.id == principal.business.id and " +
+			  	  "#commodityDTO?.id != null" )
+	public void update(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+		Commodity persistentCommodity = Commodity.findCommodity(commodityDTO.getId());
+		if(persistentCommodity == null)
+			throw new NoSuchObjectException();
+		CommodityDTOFactory.copyFromDTO(persistentCommodity, commodityDTO);
+		validator.validate(persistentCommodity);
+	}
+
+	@Override
 	@Transactional(readOnly = false)
-	 @PreAuthorize("#businessID == principal.business.id and " +
-			       "T(com.novadart.novabill.domain.Commodity).findCommodity(#id)?.business?.id == #businessID")
+	@PreAuthorize("#businessID == principal.business.id and " +
+			      "T(com.novadart.novabill.domain.Commodity).findCommodity(#id)?.business?.id == #businessID")
 	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
 		Commodity commodity = Commodity.findCommodity(id);
 		commodity.remove(); //removing commodity

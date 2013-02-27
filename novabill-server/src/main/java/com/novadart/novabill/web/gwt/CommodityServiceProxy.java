@@ -9,6 +9,7 @@ import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.CommodityService;
@@ -32,10 +33,14 @@ public class CommodityServiceProxy extends AbstractGwtController implements Comm
 		return commodityService.add(paymentTypeDTO);
 	}
 
+	@Override
+	public void update(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+		commodityService.update(commodityDTO);
+	}
+
+	@Override
 	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
 		commodityService.remove(businessID, id);
 	}
-	
-	
 
 }
