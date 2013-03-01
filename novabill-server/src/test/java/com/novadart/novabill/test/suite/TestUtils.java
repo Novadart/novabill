@@ -52,7 +52,7 @@ public class TestUtils {
 		
 		abstractInvoiceValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);
 		abstractInvoiceValidationFieldsMap.putAll(new HashMap<String, Field>(){{
-			put("paymentType", Field.paymentType); put("paymentDueDate", Field.paymentDueDate); put("payed", Field.payed);
+			put("paymentDueDate", Field.paymentDueDate); put("payed", Field.payed); put("paymentDateGenerator", Field.paymentDateGenerator);
 		}});
 		
 		estimationValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);
@@ -172,6 +172,7 @@ public class TestUtils {
 		T doc = createDoc(documentID, cls);
 		doc.setPayed(false);
 		doc.setPaymentDueDate(new Date());
+		doc.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
 		return doc;
 	}
 	

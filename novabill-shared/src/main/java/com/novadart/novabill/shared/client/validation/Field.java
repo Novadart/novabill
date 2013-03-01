@@ -13,7 +13,7 @@ public enum Field {
 	accountingDocumentItems_totalBeforeTax, accountingDocumentItems_totalTax, accountingDocumentItems_total, accountingDocumentItems_price,
 	
 	//Invoice fields
-	paymentType, paymentDueDate, payed,
+	paymentDueDate, payed,
 	
 	//Estimation
 	limitations, validTill,
