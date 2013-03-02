@@ -80,7 +80,6 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 		case payed: return I18N.INSTANCE.payed();
 		case paymentDueDate: return I18N.INSTANCE.dueDate();
 		case paymentNote: return I18N.INSTANCE.paymentNote();
-		case paymentType: return I18N.INSTANCE.payment();
 		case ssn: return I18N.INSTANCE.ssn();
 		case total: return I18N.INSTANCE.totalAfterTaxes();
 		case totalBeforeTax: return I18N.INSTANCE.totalBeforeTaxes();

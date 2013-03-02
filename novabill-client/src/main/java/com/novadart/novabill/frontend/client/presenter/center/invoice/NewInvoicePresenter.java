@@ -39,6 +39,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	public void onLoad() {
 		getView().getCreateDocument().setText(I18N.INSTANCE.createInvoice());
 		getView().getTitleLabel().setText(I18N.INSTANCE.newInvoiceCreation());
+		getView().getPayment().init();
 	}
 	
 	public void setDataForNewInvoice(ClientDTO client, Long progressiveId) {
@@ -47,6 +48,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		getView().getClientName().setText(client.getName());
 		Date d = new Date();
 		getView().getDate().setValue(d);
+		getView().getPayment().setDocumentCreationDate(d);
 		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(d));
 		getView().getNumber().setText(progressiveId.toString());
 

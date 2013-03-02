@@ -39,4 +39,10 @@ public class Notification {
 		cd.showCentered();
 	}
 	
+	public static void showConfirm(SafeHtml message, NotificationCallback<Boolean> onClose){
+		ConfirmDialog cd = new ConfirmDialog(onClose);
+		cd.setMessage(message);
+		cd.showCentered();
+	}
+	
 }

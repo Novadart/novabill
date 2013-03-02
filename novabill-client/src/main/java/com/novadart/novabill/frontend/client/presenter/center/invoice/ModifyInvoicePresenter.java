@@ -38,6 +38,10 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 		setInvoice(invoice);
 		setClient(invoice.getClient());
 		getView().getDate().setValue(invoice.getAccountingDocumentDate());
+		getView().getPayment().setDocumentCreationDate(invoice.getAccountingDocumentDate());
+		
+//		TODO set payment
+		getView().getPayment().init();
 		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(invoice.getAccountingDocumentDate()));
 		getView().getClientName().setText(invoice.getClient().getName());
 

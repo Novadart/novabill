@@ -6,7 +6,7 @@
 	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget"
 	xmlns:t="urn:import:com.novadart.novabill.frontend.client.view.center" 
 	xmlns:f="urn:import:com.novadart.novabill.frontend.client.widget" 
-	xmlns:gwtshared="urn:import:com.novadart.gwtshared.client">
+	xmlns:gwtshared="urn:import:com.novadart.gwtshared.client" xmlns:p="urn:import:com.novadart.novabill.frontend.client.widget.payment">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
@@ -55,7 +55,7 @@
 								text="{i18n.payment}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<v:ValidatedListBox ui:field="payment" />
+							<p:SelectPayment ui:field="payment" />
 						</g:customCell>
 					</g:row>
 					<g:row>

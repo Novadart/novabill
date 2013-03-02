@@ -7,7 +7,6 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -19,7 +18,6 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
-import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
@@ -30,8 +28,10 @@ import com.novadart.novabill.frontend.client.view.center.AccountDocument;
 import com.novadart.novabill.frontend.client.view.center.AccountDocumentCss;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
+import com.novadart.novabill.frontend.client.widget.payment.SelectPayment;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
@@ -46,7 +46,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 	@UiField Label titleLabel;
 	@UiField Label paymentLabel;
-	@UiField(provided=true) ValidatedListBox payment;
+	@UiField(provided=true) SelectPayment payment;
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 	@UiField Label clientName;
 	@UiField(provided=true) DateBox date;
@@ -68,10 +68,14 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	private Presenter presenter;
 	
 	public InvoiceViewImpl() {
-		payment = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget(), I18N.INSTANCE.notEmptyValidationError());
-		for (String item : I18N.INSTANCE.paymentItems()) {
-			payment.addItem(item);
-		}
+		payment = new SelectPayment(new SelectPayment.Handler() {
+			
+			@Override
+			public void onPaymentSelected(PaymentTypeDTO payment) {
+				presenter.onPaymentSelected(payment);
+				
+			}
+		});
 		
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 		
@@ -86,7 +90,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		
 		date = new DateBox();
 		date.setFormat(new DateBox.DefaultFormat
-				(DateTimeFormat.getFormat("dd MMMM yyyy")));
+				(DocumentUtils.DOCUMENT_DATE_FORMAT));
 		createInvoice = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
@@ -162,11 +166,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 
 	@Override
-	public ValidatedListBox getPayment() {
-		return payment;
-	}
-
-	@Override
 	public ItemInsertionForm getItemInsertionForm() {
 		return itemInsertionForm;
 	}
@@ -237,17 +236,20 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 	
 	@Override
+	public SelectPayment getPayment() {
+		return payment;
+	}
+	
+	@Override
 	public void reset() {
 		//reset widget statuses
 		number.reset();
-		payment.reset();
 		paymentNote.setVisible(true);
 		invoiceNumber.setVisible(true);
 		paymentNoteLabel.setVisible(true);
 		paymentLabel.setVisible(true);
 
 		//reset widget contents		
-		payment.setSelectedIndex(0);
 		paymentNote.setText("");
 		note.setText("");
 		totalTax.setText("");

@@ -1,0 +1,23 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N" field="i18n"></ui:with>
+	
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
+
+	<g:HorizontalPanel>
+		<g:Grid>
+			<g:row>
+				<g:customCell><g:Label text="{i18n.payment}" /> </g:customCell>
+				<g:customCell><g:Label ui:field="paymentName" /> </g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell><g:Label text="{i18n.dueDate}" /> </g:customCell>
+				<g:customCell> <g:SimplePanel ui:field="paymentDateContainer" /> </g:customCell>
+			</g:row>
+		</g:Grid>
+		<g:Button ui:field="reset" styleName="{g.button}" text="{i18n.changePayment}" />
+	</g:HorizontalPanel>
+
+</ui:UiBinder> 
