@@ -272,7 +272,7 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	@Test
 	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, AuthorizationException, InstantiationException{
 		try{
-			InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvalidIngOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class));
+			InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvalidInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class));
 			invDTO.setClient(ClientDTOFactory.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
 			invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 			invoiceService.add(invDTO);

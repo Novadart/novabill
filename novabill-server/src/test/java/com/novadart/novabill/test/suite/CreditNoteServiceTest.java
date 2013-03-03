@@ -236,7 +236,7 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 	@Test
 	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, AuthorizationException, InstantiationException{
 		try{
-			CreditNoteDTO creditNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvalidIngOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class));
+			CreditNoteDTO creditNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvalidInvOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class));
 			creditNoteDTO.setClient(ClientDTOFactory.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
 			creditNoteDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 			creditNoteService.add(creditNoteDTO);

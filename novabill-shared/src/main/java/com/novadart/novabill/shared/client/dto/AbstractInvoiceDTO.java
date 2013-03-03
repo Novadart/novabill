@@ -8,6 +8,8 @@ public class AbstractInvoiceDTO extends AccountingDocumentDTO {
     
     private boolean payed;
     
+    private String paymentTypeName;
+    
     private PaymentDateType paymentDateGenerator;
     
     private Integer paymentDateDelta;
@@ -43,6 +45,14 @@ public class AbstractInvoiceDTO extends AccountingDocumentDTO {
 
 	public void setPaymentDateDelta(Integer paymentDateDelta) {
 		this.paymentDateDelta = paymentDateDelta;
+	}
+
+	public String getPaymentTypeName() {
+		return paymentTypeName;
+	}
+
+	public void setPaymentTypeName(String paymentTypeName) {
+		this.paymentTypeName = paymentTypeName;
 	}
 
 }

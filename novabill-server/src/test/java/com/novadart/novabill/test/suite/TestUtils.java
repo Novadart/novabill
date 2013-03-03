@@ -52,7 +52,8 @@ public class TestUtils {
 		
 		abstractInvoiceValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);
 		abstractInvoiceValidationFieldsMap.putAll(new HashMap<String, Field>(){{
-			put("paymentDueDate", Field.paymentDueDate); put("payed", Field.payed); put("paymentDateGenerator", Field.paymentDateGenerator);
+			put("paymentDueDate", Field.paymentDueDate); put("payed", Field.payed);
+			put("paymentDateGenerator", Field.paymentDateGenerator); put("paymentTypeName", Field.paymentTypeName);
 		}});
 		
 		estimationValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);
@@ -171,6 +172,7 @@ public class TestUtils {
 	public static <T extends AbstractInvoice> T createInvOrCredNote(Long documentID, Class<T> cls) throws InstantiationException, IllegalAccessException{
 		T doc = createDoc(documentID, cls);
 		doc.setPayed(false);
+		doc.setPaymentTypeName("defaut");
 		doc.setPaymentDueDate(new Date());
 		doc.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
 		return doc;
@@ -227,10 +229,12 @@ public class TestUtils {
 		return doc;
 	}
 	
-	public static <T extends AbstractInvoice> T createInvalidIngOrCredNote(Long documentID, Class<T> cls) throws InstantiationException, IllegalAccessException{
+	public static <T extends AbstractInvoice> T createInvalidInvOrCredNote(Long documentID, Class<T> cls) throws InstantiationException, IllegalAccessException{
 		T doc = createInvalidDoc(documentID, cls);
 		doc.setPayed(false);
 		doc.setPaymentDueDate(null);
+		doc.setPaymentDateGenerator(null);
+		doc.setPaymentTypeName(null);
 		return doc;
 	}
 	
