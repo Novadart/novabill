@@ -42,7 +42,7 @@
 							<g:Label styleName="{s.label}" text="{i18n.date}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<d:DateBox styleName="{s.box} {s.date}" ui:field="date"></d:DateBox>
+							<v:ValidatedDateBox styleName="{s.box} {s.date}" ui:field="date" />
 						</g:customCell>
 					</g:row>
 					<g:row>
@@ -50,7 +50,7 @@
 							<g:Label styleName="{s.label}" text="{i18n.validTill}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<d:DateBox styleName="{s.box} {s.date}" ui:field="validTill"></d:DateBox>
+							<v:ValidatedDateBox styleName="{s.box} {s.date}" ui:field="validTill"/>
 						</g:customCell>
 					</g:row>
 					<g:row>
