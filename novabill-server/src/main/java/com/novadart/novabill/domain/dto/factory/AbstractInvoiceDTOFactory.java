@@ -9,18 +9,12 @@ public class AbstractInvoiceDTOFactory extends AccountingDocumentDTOFactory {
 		AccountingDocumentDTOFactory.copyToDTO(abstractInvoice, abstractInvoiceDTO);
 		abstractInvoiceDTO.setPaymentDueDate(abstractInvoice.getPaymentDueDate());
 		abstractInvoiceDTO.setPayed(abstractInvoice.getPayed());
-		abstractInvoiceDTO.setPaymentTypeName(abstractInvoice.getPaymentTypeName());
-		abstractInvoiceDTO.setPaymentDateGenerator(abstractInvoice.getPaymentDateGenerator());
-		abstractInvoiceDTO.setPaymentDateDelta(abstractInvoice.getPaymentDateDelta());
 	}
 
 	public static void copyFromDTO(AbstractInvoice abstractInvoice, AbstractInvoiceDTO abstractInvoiceDTO, boolean addItems){
 		AccountingDocumentDTOFactory.copyFromDTO(abstractInvoice, abstractInvoiceDTO, addItems);
 		abstractInvoice.setPaymentDueDate(abstractInvoiceDTO.getPaymentDueDate());
 		abstractInvoice.setPayed(abstractInvoiceDTO.getPayed());
-		abstractInvoice.setPaymentTypeName(abstractInvoiceDTO.getPaymentTypeName());
-		abstractInvoice.setPaymentDateGenerator(abstractInvoiceDTO.getPaymentDateGenerator());
-		abstractInvoice.setPaymentDateDelta(abstractInvoiceDTO.getPaymentDateDelta());
 	}
 	
 }

@@ -15,6 +15,7 @@ import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
+import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
@@ -31,6 +32,8 @@ public class TestUtils {
 	public static Map<String, Field> estimationValidationFieldsMap;
 	
 	public static Map<String, Field> transportDocValidationFieldsMap;
+	
+	public static Map<String, Field> invoiceValidationFieldsMap;
 	
 	static{
 		accountingDocumentValidationFieldsMap = new HashMap<String, Field>(){{
@@ -53,6 +56,10 @@ public class TestUtils {
 		abstractInvoiceValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);
 		abstractInvoiceValidationFieldsMap.putAll(new HashMap<String, Field>(){{
 			put("paymentDueDate", Field.paymentDueDate); put("payed", Field.payed);
+		}});
+		
+		invoiceValidationFieldsMap = new HashMap<String, Field>(abstractInvoiceValidationFieldsMap);
+		invoiceValidationFieldsMap.putAll(new HashMap<String, Field>(){{
 			put("paymentDateGenerator", Field.paymentDateGenerator); put("paymentTypeName", Field.paymentTypeName);
 		}});
 		
@@ -172,9 +179,12 @@ public class TestUtils {
 	public static <T extends AbstractInvoice> T createInvOrCredNote(Long documentID, Class<T> cls) throws InstantiationException, IllegalAccessException{
 		T doc = createDoc(documentID, cls);
 		doc.setPayed(false);
-		doc.setPaymentTypeName("defaut");
-		doc.setPaymentDueDate(new Date());
-		doc.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+		if(cls.equals(Invoice.class)){
+			Invoice inv = (Invoice)doc;
+			inv.setPaymentTypeName("defaut");
+			inv.setPaymentDueDate(new Date());
+			inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+		}
 		return doc;
 	}
 	
@@ -233,8 +243,12 @@ public class TestUtils {
 		T doc = createInvalidDoc(documentID, cls);
 		doc.setPayed(false);
 		doc.setPaymentDueDate(null);
-		doc.setPaymentDateGenerator(null);
-		doc.setPaymentTypeName(null);
+		if(cls.equals(Invoice.class)){
+			Invoice inv = (Invoice)doc;
+			inv.setPaymentTypeName(null);
+			inv.setPaymentDateGenerator(null);
+			inv.setPaymentTypeName(null);
+		}
 		return doc;
 	}
 	

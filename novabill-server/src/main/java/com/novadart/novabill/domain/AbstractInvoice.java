@@ -5,11 +5,8 @@ import javax.persistence.Entity;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.NotNull;
-import javax.validation.constraints.Size;
-
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
-import com.novadart.novabill.shared.client.dto.PaymentDateType;
 
 /*
  * Important note!
@@ -26,16 +23,6 @@ public abstract class AbstractInvoice extends AccountingDocument {
     
     @NotNull
     protected Boolean payed = false;
-    
-    @Size(max = 255)
-	@NotNull
-    private String paymentTypeName;
-    
-    @NotNull
-	private PaymentDateType paymentDateGenerator;
-    
-    private Integer paymentDateDelta;
-    
     
     /**
      * Getters and setters  
@@ -59,30 +46,6 @@ public abstract class AbstractInvoice extends AccountingDocument {
 	
 	public abstract Business getBusiness();
 
-	public PaymentDateType getPaymentDateGenerator() {
-		return paymentDateGenerator;
-	}
-
-	public void setPaymentDateGenerator(PaymentDateType paymentDateGenerator) {
-		this.paymentDateGenerator = paymentDateGenerator;
-	}
-
-	public Integer getPaymentDateDelta() {
-		return paymentDateDelta;
-	}
-
-	public void setPaymentDateDelta(Integer paymentDateDelta) {
-		this.paymentDateDelta = paymentDateDelta;
-	}
-
-	public String getPaymentTypeName() {
-		return paymentTypeName;
-	}
-
-	public void setPaymentTypeName(String paymentTypeName) {
-		this.paymentTypeName = paymentTypeName;
-	}
-	
 	/**
 	 * End of getters and setters section
 	 */

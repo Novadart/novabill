@@ -8,13 +8,6 @@ public class AbstractInvoiceDTO extends AccountingDocumentDTO {
     
     private boolean payed;
     
-    private String paymentTypeName;
-    
-    private PaymentDateType paymentDateGenerator;
-    
-    private Integer paymentDateDelta;
-    
-    
 	public Date getPaymentDueDate() {
 		return paymentDueDate;
 	}
@@ -29,30 +22,6 @@ public class AbstractInvoiceDTO extends AccountingDocumentDTO {
 
 	public void setPayed(boolean payed) {
 		this.payed = payed;
-	}
-
-	public PaymentDateType getPaymentDateGenerator() {
-		return paymentDateGenerator;
-	}
-
-	public void setPaymentDateGenerator(PaymentDateType paymentDateGenerator) {
-		this.paymentDateGenerator = paymentDateGenerator;
-	}
-
-	public Integer getPaymentDateDelta() {
-		return paymentDateDelta;
-	}
-
-	public void setPaymentDateDelta(Integer paymentDateDelta) {
-		this.paymentDateDelta = paymentDateDelta;
-	}
-
-	public String getPaymentTypeName() {
-		return paymentTypeName;
-	}
-
-	public void setPaymentTypeName(String paymentTypeName) {
-		this.paymentTypeName = paymentTypeName;
 	}
 
 }

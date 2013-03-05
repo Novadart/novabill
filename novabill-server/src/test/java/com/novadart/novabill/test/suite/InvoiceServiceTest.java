@@ -277,7 +277,7 @@ public class InvoiceServiceTest extends GWTServiceTest {
 			invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 			invoiceService.add(invDTO);
 		}catch(ValidationException e){
-			Set<Field> expected = new HashSet<Field>(TestUtils.abstractInvoiceValidationFieldsMap.values());
+			Set<Field> expected = new HashSet<Field>(TestUtils.invoiceValidationFieldsMap.values());
 			expected.remove(Field.accountingDocumentYear);
 			expected.remove(Field.accountingDocumentDate);
 			expected.remove(Field.documentID);

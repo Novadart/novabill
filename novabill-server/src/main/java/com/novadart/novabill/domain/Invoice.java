@@ -4,8 +4,13 @@ import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
+
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.shared.client.dto.PaymentDateType;
 
 
 /*
@@ -18,6 +23,15 @@ import org.springframework.transaction.annotation.Transactional;
 public class Invoice extends AbstractInvoice implements Serializable {
 	
 	private static final long serialVersionUID = 3369941491294470750L;
+	
+	@Size(max = 255)
+	@NotNull
+	private String paymentTypeName;
+
+	@NotNull
+	private PaymentDateType paymentDateGenerator;
+
+	private Integer paymentDateDelta;
 
     @ManyToOne
     protected Business business;
@@ -32,6 +46,30 @@ public class Invoice extends AbstractInvoice implements Serializable {
     /*
      * Getters and setters
      * */
+    
+    public PaymentDateType getPaymentDateGenerator() {
+		return paymentDateGenerator;
+	}
+
+	public void setPaymentDateGenerator(PaymentDateType paymentDateGenerator) {
+		this.paymentDateGenerator = paymentDateGenerator;
+	}
+
+	public Integer getPaymentDateDelta() {
+		return paymentDateDelta;
+	}
+
+	public void setPaymentDateDelta(Integer paymentDateDelta) {
+		this.paymentDateDelta = paymentDateDelta;
+	}
+
+	public String getPaymentTypeName() {
+		return paymentTypeName;
+	}
+
+	public void setPaymentTypeName(String paymentTypeName) {
+		this.paymentTypeName = paymentTypeName;
+	}
     
     public Business getBusiness() {
         return this.business;
