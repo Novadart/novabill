@@ -2,6 +2,7 @@ package com.novadart.novabill.frontend.client.view.west.configuration;
 
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.novadart.novabill.frontend.client.view.View;
+import com.novadart.novabill.frontend.client.view.west.configuration.ConfigurationWestViewImpl.Style;
 
 public interface ConfigurationWestView extends View<ConfigurationWestView.Presenter> {
 
@@ -13,4 +14,6 @@ public interface ConfigurationWestView extends View<ConfigurationWestView.Presen
 	Hyperlink getPayment();
 
 	Hyperlink getGeneral();
+
+	Style getStyle();
 }

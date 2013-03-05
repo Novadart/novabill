@@ -13,7 +13,7 @@ public class HistoryPrefix {
 	public static final String CLIENT_CREDIT_NOTES  = "{clientId}/"+DOCUMENTS.creditNotes;
 	public static final String CLIENT_TRANSPORT_DOCUMENTS  = "{clientId}/"+DOCUMENTS.transportDocuments;
 	public static final String BUSINESS = "business";
-	public static final String PAYMENT = "payment";
+	public static final String PAYMENT = "payments";
 	public static final String HOME = "home";
 	public static final String ESTIMATION = "estimation";
 
