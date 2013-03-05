@@ -51,6 +51,7 @@ public interface I18N extends Constants {
 	public String cancelModificationsConfirmation();
 	public String missingVatIdAndSSNValidationError();
 	public String notEmptyValidationError();
+	public String notEmptyDateValidationError();
 	public String vatidValidationError();
 	public String ssnValidationError();
 	public String submit();
@@ -126,9 +127,7 @@ public interface I18N extends Constants {
 	public String invoiceNumber();
 	public String estimationNumber();
 	public String dueDate();
-	public String[] dueDateItems();
 	public String payment();
-	public String[] paymentItems();
 	public String[] vatItems();
 	public String nameDescription();
 	public String quantity();

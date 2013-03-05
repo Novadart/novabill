@@ -121,16 +121,15 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 	}
 	
 	protected boolean validateEstimation(){
-		if(getView().getDate().getTextBox().getText().isEmpty() || getView().getDate().getValue() == null 
-				|| getView().getValidTill().getTextBox().getText().isEmpty() || getView().getValidTill().getValue() == null){
-			return false;
-		} 
-
+		getView().getNumber().validate();
+		getView().getDate().validate();
+		getView().getValidTill().validate();
+		
 		if(getView().getItemInsertionForm().getItems().isEmpty()){
 			return false;
 		}
-		getView().getNumber().validate();
-		return getView().getNumber().isValid();
+		
+		return getView().getNumber().isValid() && getView().getDate().isValid() && getView().getValidTill().isValid();
 	}
 	
 	

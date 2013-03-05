@@ -14,10 +14,12 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
+import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
+import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 
 public class PaymentSummary extends Composite {
 
@@ -35,7 +37,6 @@ public class PaymentSummary extends Composite {
 	@UiField Label paymentName;
 	@UiField Button reset;
 	
-	private boolean manual = false;
 	private Handler handler;
 	private Date paymentDueDate;
 
@@ -66,15 +67,16 @@ public class PaymentSummary extends Composite {
 	}
 
 	public void setManual(){
-		DateBox date = new DateBox();
+		ValidatedDateBox date = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
 		date.setFormat(new DateBox.DefaultFormat
 				(DocumentUtils.DOCUMENT_DATE_FORMAT));
 		paymentDateContainer.setWidget(date);
 	}
 	
 	public Date getPaymentDueDate(){
-		if(manual) {
-			DateBox db = (DateBox) paymentDateContainer.getWidget();
+		if(paymentDateContainer.getWidget() instanceof ValidatedDateBox) {
+			ValidatedDateBox db = (ValidatedDateBox) paymentDateContainer.getWidget();
+			db.validate(); // display validation alert if needed
 			return db.getValue();
 		} else {
 			return paymentDueDate;

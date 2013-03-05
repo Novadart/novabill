@@ -61,16 +61,15 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 	}
 
 	protected boolean validateInvoice(){
-		if(getView().getDate().getTextBox().getText().isEmpty() || getView().getDate().getValue() == null){
-			return false;
-		} 
-
+		getView().getDate().validate();
+		getView().getNumber().validate();
+		getView().getPayment();
+		
 		if(getView().getItemInsertionForm().getItems().isEmpty()){
 			return false;
 		}
 
-		getView().getNumber().validate();
-		if(!getView().getNumber().isValid() || !getView().getPayment().isValid()){
+		if(!getView().getDate().isValid() || !getView().getNumber().isValid() || !getView().getPayment().isValid()){
 			return false;
 		}
 
@@ -118,7 +117,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 			shb.appendHtmlConstant("<div>");
 			shb.appendEscaped(I18N.INSTANCE.overridePaymentNoteQuestion());
 			shb.appendHtmlConstant("</div>");
-			shb.appendHtmlConstant("<div style=\"text-transform:italic;\">");
+			shb.appendHtmlConstant("<div style=\"font-style: italic;\">");
 			shb.appendEscaped(payment.getDefaultPaymentNote());
 			shb.appendHtmlConstant("</div>");
 			Notification.showConfirm(shb.toSafeHtml(), new NotificationCallback<Boolean>() {

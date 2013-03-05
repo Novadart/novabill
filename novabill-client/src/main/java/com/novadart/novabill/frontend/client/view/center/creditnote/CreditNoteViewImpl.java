@@ -17,7 +17,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
-import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
+import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
@@ -40,20 +40,16 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	}
 
 	@UiField Label titleLabel;
-	
+
 	@UiField FlowPanel docControls;
 	@UiField ScrollPanel docScroll;
-	
-	@UiField Label paymentLabel;
-	@UiField(provided=true) ValidatedListBox payment;
+
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 
 	@UiField Label clientName;
-	@UiField(provided=true) DateBox date;
+	@UiField(provided=true) ValidatedDateBox date;
 	@UiField Label creditNoteNumber;
 	@UiField(provided=true) ValidatedTextBox number;
-	@UiField Label paymentNoteLabel;
-	@UiField ValidatedTextArea paymentNote;
 	@UiField ValidatedTextArea note;
 
 	@UiField Label totalBeforeTaxes;
@@ -62,34 +58,30 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 
 	@UiField Button abort;
 	@UiField(provided=true) LoaderButton createCreditNote;
-	
+
 	private Presenter presenter;
 
 	public CreditNoteViewImpl() {
-		payment = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget(), I18N.INSTANCE.notEmptyValidationError());
-		for (String item : I18N.INSTANCE.paymentItems()) {
-			payment.addItem(item);
-		}
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
 		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
-			
+
 			@Override
 			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
 				DocumentUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
-			
+
 		});
-		date = new DateBox();
+		date = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		createCreditNote = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
-		
+
 		createCreditNote.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
 	}
-	
+
 	@UiFactory
 	GlobalCss getGlobalCss(){
 		return GlobalBundle.INSTANCE.globalCss();
@@ -98,34 +90,34 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
-		
+
 	}
-	
+
 	@Override
 	protected Element getBody() {
 		return docScroll.getElement();
 	}
-	
+
 	@Override
 	protected Element[] getNonBodyElements() {
 		return new Element[]{titleLabel.getElement(), docControls.getElement()};
 	}
-	
+
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
 	}
-	
+
 	@UiFactory
 	AccountDocumentCss getAccountDocumentCss(){
 		return CSS;
 	}
-	
+
 	@Override
 	public ScrollPanel getDocScroll() {
 		return docScroll;
 	}
-	
+
 	@Override
 	public ValidatedTextBox getNumber() {
 		return number;
@@ -141,37 +133,30 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		presenter.onCancelClicked();
 	}
 	
-	
 	@Override
 	public void reset() {
 		//reset widget statuses
 		number.reset();
-		payment.reset();
 
 		//reset widget contents		
-		payment.setSelectedIndex(0);
-		paymentNote.setText("");
 		note.setText("");
 		totalTax.setText("");
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
-		
+
 		createCreditNote.reset();
 		setLocked(false);
 	}
 
 	@Override
 	public void setLocked(boolean value) {
-
-		payment.setEnabled(!value);
 		itemInsertionForm.setLocked(value);
 
 		date.setEnabled(!value);
 		number.setEnabled(!value);
-		paymentNote.setEnabled(!value);
 		note.setEnabled(!value);
-		
+
 		abort.setEnabled(!value);
 	}
 
@@ -189,7 +174,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 
 
 	@Override
-	public DateBox getDate() {
+	public ValidatedDateBox getDate() {
 		return date;
 	}
 
@@ -230,18 +215,8 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	}
 
 	@Override
-	public ValidatedListBox getPayment() {
-		return payment;
-	}
-
-	@Override
-	public ValidatedTextArea getPaymentNote() {
-		return paymentNote;
-	}
-
-	@Override
 	public Label getTitleLabel() {
 		return titleLabel;
 	}
-	
+
 }

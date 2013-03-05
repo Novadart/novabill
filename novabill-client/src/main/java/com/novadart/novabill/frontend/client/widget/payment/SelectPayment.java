@@ -69,7 +69,16 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 		setupPaymentSummaryView();
 	}
 	
+	public void init(String paymentName, PaymentDateType dateGenerator, Integer paymentDateDelta){
+		selectedPayment = new PaymentTypeDTO();
+		selectedPayment.setName(paymentName);
+		selectedPayment.setPaymentDateDelta(paymentDateDelta);
+		selectedPayment.setPaymentDateGenerator(dateGenerator);
+		setupPaymentSummaryView();
+	}
+	
 	public void init(){
+		selectedPayment = null;
 		setupPaymentView();
 	}
 	
@@ -146,7 +155,12 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 	
 	
 	public boolean isValid(){
-		boolean result = selectedPayment != null;
+		if(!showingSummary){
+			paymentList.validate();
+			return false;
+		}
+		
+		boolean result = showingSummary;
 		if(result && PaymentDateType.CUSTOM.equals(selectedPayment.getPaymentDateGenerator())){
 			result &= paymentSummary.getPaymentDueDate() != null;
 		}

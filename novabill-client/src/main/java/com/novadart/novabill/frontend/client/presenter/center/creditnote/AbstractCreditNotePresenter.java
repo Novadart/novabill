@@ -70,32 +70,20 @@ public abstract class AbstractCreditNotePresenter extends DocumentPresenter<Cred
 		}
 		cn.setItems(invItems);
 		cn.setNote(getView().getNote().getText());
-//		TODO
-//		if(getView().getPayment().getSelectedIndex() > 0){
-//			cn.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(cn.getAccountingDocumentDate(), cn.getPaymentType()));  
-//		} else {
-//			cn.setPaymentDueDate(null);
-//		}
-
-		cn.setPaymentNote(getView().getPaymentNote().getText());
 		DocumentUtils.calculateTotals(invItems, cn);
 		return cn;
 	}
 	
 	
 	protected boolean validateCreditNote(){
-		if(getView().getDate().getTextBox().getText().isEmpty() || getView().getDate().getValue() == null){
-			return false;
-		} else if(getView().getItemInsertionForm().getItems().isEmpty()){
-			return false;
-		}
+		getView().getDate().validate();
 		getView().getNumber().validate();
-		getView().getPayment().validate();
-		if(!getView().getNumber().isValid() || !getView().getPayment().isValid()){
+		
+		if(getView().getItemInsertionForm().getItems().isEmpty()){
 			return false;
 		}
-
-		return true;
+		
+		return getView().getNumber().isValid() && getView().getDate().isValid();
 	}
 
 }

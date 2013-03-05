@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
+import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
@@ -49,7 +50,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiField(provided=true) SelectPayment payment;
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 	@UiField Label clientName;
-	@UiField(provided=true) DateBox date;
+	@UiField(provided=true) ValidatedDateBox date;
 	@UiField Label invoiceNumber;
 	@UiField(provided=true) ValidatedTextBox number;
 	@UiField Label paymentNoteLabel;
@@ -88,7 +89,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 		});
 		
-		date = new DateBox();
+		date = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
 		date.setFormat(new DateBox.DefaultFormat
 				(DocumentUtils.DOCUMENT_DATE_FORMAT));
 		createInvoice = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
@@ -176,7 +177,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 
 	@Override
-	public DateBox getDate() {
+	public ValidatedDateBox getDate() {
 		return date;
 	}
 

@@ -42,7 +42,7 @@
 							<g:Label styleName="{s.label}" text="{i18n.date}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<d:DateBox styleName="{s.box} {s.date}" ui:field="date"></d:DateBox>
+							<v:ValidatedDateBox styleName="{s.box} {s.date}" ui:field="date" />
 						</g:customCell>
 					</g:row>
 					<g:row>
@@ -94,7 +94,7 @@
 						<g:customCell>
 							<g:HorizontalPanel>
 								<g:Label styleName="{s.sublabel} {s.date}" text="{i18n.date}"></g:Label>
-								<d:DateBox styleName="{s.box} {s.date}" ui:field="transportStartDate"></d:DateBox>
+								<v:ValidatedDateBox styleName="{s.box} {s.date}" ui:field="transportStartDate" />
 								<g:Label styleName="{s.sublabel} {s.time}" text="{i18n.time}"></g:Label>
 								<v:ValidatedListBox styleName="{s.box} {s.time}"
 									ui:field="hour"></v:ValidatedListBox>
