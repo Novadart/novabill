@@ -58,8 +58,10 @@ public class PaymentViewImpl extends Composite implements PaymentView {
 				return object.getName();
 			}
 		};
+		name.setSortable(true);
 		payments.addColumn(name, I18N.INSTANCE.payment());
-
+		payments.setColumnWidth(name, "300px");
+		
 		Column<PaymentTypeDTO, PaymentTypeDTO> delete = new Column<PaymentTypeDTO, PaymentTypeDTO>(new ActionCell<PaymentTypeDTO>(I18N.INSTANCE.delete(), new ActionCell.Delegate<PaymentTypeDTO>() {
 
 			@Override
@@ -82,8 +84,8 @@ public class PaymentViewImpl extends Composite implements PaymentView {
 				return object;
 			}
 		};
-
 		payments.addColumn(delete);
+		
 
 		payments.setSelectionModel(selectedPayment);
 

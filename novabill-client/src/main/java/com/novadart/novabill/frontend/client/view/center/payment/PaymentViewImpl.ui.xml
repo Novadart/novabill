@@ -9,12 +9,41 @@
 
 	<ui:style
 		type="com.novadart.novabill.frontend.client.view.center.payment.PaymentViewImpl.Style">
+			.container {
+				padding: 2em;
+			}
+			
+			.paymentTable {
+				margin-top: 2em;
+			}
+			
+			.description {
+				margin-top: 4em;
+				padding: 2em;
+				border: 1px solid #DDD;
+				width: 50%;
+				min-height: 50px;
+			}
+			
+			.scrollPayments {
+				max-height: 25em;
+				padding: 0.5em;
+			}
+			
+			.newPayment {
+				margin-left: 2em;
+			}
+			
+			
 			.label {
-				
+				font-weight: bold;
+				padding: 0.5em;
+				font-size: 1.1em;
 			}
 			
 			.value {
-				
+				margin-left: 2em;
+				font-size: 1.1em;
 			}
 			
 			.sectionLabel {
@@ -24,17 +53,17 @@
 			}
 		</ui:style>
 
-	<g:FlowPanel>
+	<g:FlowPanel styleName="{style.container}">
 		<g:Label styleName="{style.sectionLabel}" text="{i18n.createPaymentType}" />
-		<g:HorizontalPanel>
-			<g:VerticalPanel>
+		<g:HorizontalPanel styleName="{style.paymentTable}">
+			<g:ScrollPanel styleName="{style.scrollPayments}">
 				<c:CellTable ui:field="payments" />
-				<g:Button ui:field="newPayment" styleName="{g.button}"
-					text="{i18n.add}" />
-			</g:VerticalPanel>
-
-			<g:HTML ui:field="description"></g:HTML>
+			</g:ScrollPanel>
+			<g:Button ui:field="newPayment" styleName="{style.newPayment} {g.button}"
+				text="{i18n.add}" />
 		</g:HorizontalPanel>
+		
+		<g:HTML styleName="{style.description}" ui:field="description"></g:HTML>
 	</g:FlowPanel>
 
 
