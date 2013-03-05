@@ -8,6 +8,7 @@ import java.util.Map;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
@@ -27,6 +28,14 @@ import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public class SelectPayment extends Composite implements PaymentSummary.Handler {
 	
+	public interface Style extends CssResource {
+		String container();
+		String paymentList();
+		String label();
+		String value();
+		String changePayment();
+	}
+	
 	public static interface Handler {
 		void onPaymentSelected(PaymentTypeDTO payment);
 	}
@@ -38,8 +47,9 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 	}
 	
 	@UiField SimplePanel container;
+	@UiField Style style;
 	
-	private PaymentSummary paymentSummary = new PaymentSummary(this);
+	private PaymentSummary paymentSummary;
 	private ValidatedListBox paymentList;
 	private Image loader;
 	
@@ -52,6 +62,7 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 	public SelectPayment(Handler handler) {
 		this.handler = handler;
 		initWidget(uiBinder.createAndBindUi(this));
+		paymentSummary = new PaymentSummary(style, this);
 	}
 	
 	public void setEnabled(boolean value) {
@@ -97,6 +108,7 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 			@Override
 			public void onSuccess(List<PaymentTypeDTO> result) {
 				paymentList = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget(), I18N.INSTANCE.notEmptyValidationError());
+				paymentList.addStyleName(style.paymentList());
 				paymentList.addChangeHandler(new ChangeHandler() {
 					
 					@Override

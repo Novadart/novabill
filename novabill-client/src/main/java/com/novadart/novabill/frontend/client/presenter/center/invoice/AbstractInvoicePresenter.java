@@ -113,6 +113,11 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		if(getView().getPaymentNote().isEmpty()){
 			getView().getPaymentNote().setText(payment.getDefaultPaymentNote());
 		} else {
+			
+			if(getView().getPaymentNote().getText().equals(payment.getDefaultPaymentNote())){
+				return;
+			}
+			
 			SafeHtmlBuilder shb = new SafeHtmlBuilder();
 			shb.appendHtmlConstant("<div>");
 			shb.appendEscaped(I18N.INSTANCE.overridePaymentNoteQuestion());

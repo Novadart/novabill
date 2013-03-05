@@ -39,10 +39,17 @@ public class PaymentSummary extends Composite {
 	
 	private Handler handler;
 	private Date paymentDueDate;
+	private SelectPayment.Style style;
 
-	public PaymentSummary(Handler handler) {
+	public PaymentSummary(SelectPayment.Style style, Handler handler) {
 		this.handler = handler;
+		this.style = style;
 		initWidget(uiBinder.createAndBindUi(this));
+	}
+	
+	@UiFactory
+	SelectPayment.Style getStyle(){
+		return style;
 	}
 	
 	@UiFactory
