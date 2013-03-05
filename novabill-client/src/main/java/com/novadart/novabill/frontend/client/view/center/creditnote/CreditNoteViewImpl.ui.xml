@@ -5,7 +5,7 @@
 	xmlns:d="urn:import:com.google.gwt.user.datepicker.client" xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget"
 	xmlns:t="urn:import:com.novadart.novabill.frontend.client.view.center" 
 	xmlns:f="urn:import:com.novadart.novabill.frontend.client.widget" 
-	xmlns:gwtshared="urn:import:com.novadart.gwtshared.client">
+	xmlns:gwtshared="urn:import:com.novadart.gwtshared.client" xmlns:p="urn:import:com.novadart.novabill.frontend.client.widget.payment">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
@@ -41,25 +41,7 @@
 							<g:Label styleName="{s.label}" text="{i18n.date}"></g:Label>
 						</g:customCell>
 						<g:customCell>
-							<d:DateBox styleName="{s.box} {s.date}" ui:field="date"></d:DateBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label ui:field="paymentLabel" styleName="{s.label}"
-								text="{i18n.payment}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<v:ValidatedListBox ui:field="payment"></v:ValidatedListBox>
-						</g:customCell>
-					</g:row>
-					<g:row>
-						<g:customCell>
-							<g:Label ui:field="paymentNoteLabel" styleName="{s.label}"
-								text="{i18n.paymentNote}"></g:Label>
-						</g:customCell>
-						<g:customCell>
-							<f:ValidatedTextArea styleName="{s.box} {s.paymentNote}" ui:field="paymentNote"></f:ValidatedTextArea>
+							<v:ValidatedDateBox styleName="{s.box} {s.date}" ui:field="date"/>
 						</g:customCell>
 					</g:row>
 					<g:row>

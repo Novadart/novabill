@@ -13,6 +13,7 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -48,6 +49,8 @@ public interface BusinessService extends RemoteService {
 	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
 	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	
+	public List<PaymentTypeDTO> getPaymentTypes(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
 	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	

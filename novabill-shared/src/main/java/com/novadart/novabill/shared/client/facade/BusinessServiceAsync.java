@@ -10,6 +10,7 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public interface BusinessServiceAsync {
@@ -50,5 +51,8 @@ public interface BusinessServiceAsync {
 	void updateNotesBitMask(Long notesBitMask, AsyncCallback<Long> callback);
 
 	void generateLogoOpToken(AsyncCallback<String> callback);
+
+	void getPaymentTypes(Long businessID,
+			AsyncCallback<List<PaymentTypeDTO>> callback);
 
 }

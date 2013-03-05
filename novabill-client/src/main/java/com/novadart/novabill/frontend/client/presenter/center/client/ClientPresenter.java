@@ -32,7 +32,7 @@ import com.novadart.novabill.frontend.client.place.transportdocument.NewTranspor
 import com.novadart.novabill.frontend.client.presenter.AbstractPresenter;
 import com.novadart.novabill.frontend.client.view.MainWidget;
 import com.novadart.novabill.frontend.client.view.center.client.ClientView;
-import com.novadart.novabill.frontend.client.view.center.client.dialog.ClientDialog;
+import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;

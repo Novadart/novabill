@@ -36,9 +36,6 @@ public class ModifyCreditNotePresenter extends AbstractCreditNotePresenter {
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNumber().setText(creditNote.getDocumentID().toString());
 		getView().getNote().setText(creditNote.getNote());
-		getView().getPaymentNote().setText(creditNote.getPaymentNote());
-		getView().getPayment().setSelectedIndex(creditNote.getPaymentType().ordinal()+1);
-
 	}
 
 	@Override

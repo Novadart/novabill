@@ -50,7 +50,7 @@
 	</ui:style>
 
 	<ui:style field="cs"
-		type="com.novadart.novabill.frontend.client.widget.dialog.SelectClientDialog.ClientSearchStyle">
+		type="com.novadart.novabill.frontend.client.widget.dialog.selectclient.SelectClientDialog.ClientSearchStyle">
 			.resetFilter {
 				cursor: pointer;
 				width: 1.5em;
@@ -81,7 +81,7 @@
 		</ui:style>
 
 	<ui:style field="ccs"
-		type="com.novadart.novabill.frontend.client.widget.dialog.SelectClientDialog.ClientCellStyle">
+		type="com.novadart.novabill.frontend.client.widget.dialog.selectclient.SelectClientDialog.ClientCellStyle">
 			.client {
 				text-align: center;
 				padding: 0.5em;

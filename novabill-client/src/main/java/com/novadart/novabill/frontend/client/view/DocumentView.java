@@ -3,8 +3,8 @@ package com.novadart.novabill.frontend.client.view;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
+import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
@@ -27,7 +27,7 @@ public interface DocumentView<P extends DocumentView.Presenter> extends View<P>,
 	
 	ValidatedTextBox getNumber();
 	
-	DateBox getDate();
+	ValidatedDateBox getDate();
 
 	Label getClientName();
 	

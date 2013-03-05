@@ -3,8 +3,8 @@ package com.novadart.novabill.frontend.client.view.center.transportdocument;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
-import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
+import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.view.DocumentView;
@@ -57,7 +57,7 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 
 	ValidatedTextBox getTransporter();
 
-	DateBox getTransportStartDate();
+	ValidatedDateBox getTransportStartDate();
 
 	ValidatedListBox getHour();
 

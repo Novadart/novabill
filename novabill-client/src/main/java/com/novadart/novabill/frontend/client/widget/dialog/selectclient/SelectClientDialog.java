@@ -1,4 +1,4 @@
-package com.novadart.novabill.frontend.client.widget.dialog;
+package com.novadart.novabill.frontend.client.widget.dialog.selectclient;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -57,6 +57,7 @@ public class SelectClientDialog extends Dialog {
 
 	public SelectClientDialog(Handler handler) {
 		super(GlobalBundle.INSTANCE.dialog());
+		GlobalBundle.INSTANCE.dialog().ensureInjected();
 		this.handler = handler;
 		setHeightDivisionValue(5);
 		setWidget(uiBinder.createAndBindUi(this));

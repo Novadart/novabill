@@ -12,7 +12,7 @@ public class HomePlace extends Place {
 
 		@Override
 		public HomePlace getPlace(String token) {
-			return null;
+			return new HomePlace();
 		}
 
 		@Override

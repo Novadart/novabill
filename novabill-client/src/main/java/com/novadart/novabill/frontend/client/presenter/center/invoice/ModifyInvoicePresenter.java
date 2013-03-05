@@ -38,6 +38,9 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 		setInvoice(invoice);
 		setClient(invoice.getClient());
 		getView().getDate().setValue(invoice.getAccountingDocumentDate());
+		getView().getPayment().setDocumentCreationDate(invoice.getAccountingDocumentDate());
+		
+		getView().getPayment().init(invoice.getPaymentTypeName(), invoice.getPaymentDateGenerator(), invoice.getPaymentDateDelta());
 		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(invoice.getAccountingDocumentDate()));
 		getView().getClientName().setText(invoice.getClient().getName());
 
@@ -51,10 +54,6 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 		} 
 		getView().getNote().setText(invoice.getNote());
 		getView().getPaymentNote().setText(invoice.getPaymentNote());
-		if(invoice.getPaymentType() != null) { //can be null if the invoice is derived from an estimation
-			getView().getPayment().setSelectedIndex(invoice.getPaymentType().ordinal()+1);
-		}
-
 	}
 	
 	@Override

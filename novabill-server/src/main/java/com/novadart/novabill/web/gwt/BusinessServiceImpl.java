@@ -8,6 +8,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Set;
+
+import org.hibernate.mapping.Array;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
@@ -16,9 +18,11 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
+import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.XsrfTokenService;
@@ -29,6 +33,7 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -148,6 +153,16 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		for(Client client: clients)
 			clientDTOs.add(ClientDTOFactory.toDTO(client));
 		return clientDTOs;
+	}
+	
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<PaymentTypeDTO> getPaymentTypes(Long businessID) throws NotAuthenticatedException, DataAccessException{
+		Set<PaymentType> paymentTypes = Business.findBusiness(businessID).getPaymentTypes();
+		List<PaymentTypeDTO> paymentTypeDTOs = new ArrayList<PaymentTypeDTO>(paymentTypes.size());
+		for(PaymentType paymentType: paymentTypes)
+			paymentTypeDTOs.add(PaymentTypeDTOFactory.toDTO(paymentType));
+		return paymentTypeDTOs;
 	}
 	
 	@Override

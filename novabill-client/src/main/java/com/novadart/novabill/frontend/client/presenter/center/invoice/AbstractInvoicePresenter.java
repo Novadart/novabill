@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -17,12 +18,12 @@ import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.PaymentType;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public abstract class AbstractInvoicePresenter extends DocumentPresenter<InvoiceView> implements InvoiceView.Presenter {
 
 	private InvoiceDTO invoice;
-	
+
 	public AbstractInvoicePresenter(PlaceController placeController, EventBus eventBus,	InvoiceView view) {
 		super(placeController, eventBus, view);
 	}
@@ -30,6 +31,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 	@Override
 	public void onDateChanged(Date date){
 		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(date));
+		getView().getPayment().setDocumentCreationDate(date);
 	}
 
 
@@ -48,28 +50,26 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 			}
 		});
 	}
-	
-	
+
+
 	protected void setInvoice(InvoiceDTO invoice) {
 		this.invoice = invoice;
 	}
-	
+
 	protected InvoiceDTO getInvoice() {
 		return invoice;
 	}
-	
+
 	protected boolean validateInvoice(){
-		if(getView().getDate().getTextBox().getText().isEmpty() || getView().getDate().getValue() == null){
-			return false;
-		} 
+		getView().getDate().validate();
+		getView().getNumber().validate();
+		getView().getPayment();
 		
 		if(getView().getItemInsertionForm().getItems().isEmpty()){
 			return false;
 		}
-		
-		getView().getNumber().validate();
-		getView().getPayment().validate();
-		if(!getView().getNumber().isValid() || !getView().getPayment().isValid()){
+
+		if(!getView().getDate().isValid() || !getView().getNumber().isValid() || !getView().getPayment().isValid()){
 			return false;
 		}
 
@@ -96,16 +96,45 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		}
 		inv.setItems(invItems);
 		inv.setNote(getView().getNote().getText());
-		inv.setPaymentType(PaymentType.values()[getView().getPayment().getSelectedIndex()-1]);
-		if(getView().getPayment().getSelectedIndex() > 0){
-			inv.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
-		} else {
-			inv.setPaymentDueDate(null);
-		}
-
+		inv.setPaymentDateDelta(getView().getPayment().getSelectedPayment().getPaymentDateDelta());
+		inv.setPaymentDateGenerator(getView().getPayment().getSelectedPayment().getPaymentDateGenerator());
+		inv.setPaymentDueDate(getView().getPayment().getPaymentDueDate());
 		inv.setPaymentNote(getView().getPaymentNote().getText());
 		DocumentUtils.calculateTotals(invItems, inv);
 		return inv;
+	}
+	
+	@Override
+	public void onPaymentSelected(final PaymentTypeDTO payment) {
+		if(payment.getDefaultPaymentNote().trim().isEmpty()){
+			return;
+		}
+		
+		if(getView().getPaymentNote().isEmpty()){
+			getView().getPaymentNote().setText(payment.getDefaultPaymentNote());
+		} else {
+			
+			if(getView().getPaymentNote().getText().equals(payment.getDefaultPaymentNote())){
+				return;
+			}
+			
+			SafeHtmlBuilder shb = new SafeHtmlBuilder();
+			shb.appendHtmlConstant("<div>");
+			shb.appendEscaped(I18N.INSTANCE.overridePaymentNoteQuestion());
+			shb.appendHtmlConstant("</div>");
+			shb.appendHtmlConstant("<div style=\"font-style: italic;\">");
+			shb.appendEscaped(payment.getDefaultPaymentNote());
+			shb.appendHtmlConstant("</div>");
+			Notification.showConfirm(shb.toSafeHtml(), new NotificationCallback<Boolean>() {
+				
+				@Override
+				public void onNotificationClosed(Boolean value) {
+					if(value){
+						getView().getPaymentNote().setText(payment.getDefaultPaymentNote());
+					}
+				}
+			});
+		}
 	}
 
 }

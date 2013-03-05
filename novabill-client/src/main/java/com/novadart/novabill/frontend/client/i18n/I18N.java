@@ -6,6 +6,18 @@ import com.google.gwt.i18n.client.Constants;
 public interface I18N extends Constants {
 	public static final I18N INSTANCE = GWT.create(I18N.class);
 	
+	public String overridePaymentNoteQuestion();
+	public String changePayment();
+	public String deletionConfirm();
+	public String settingsGeneral();
+	public String settingsPayments();
+	public String createPaymentType();
+	public String days();
+	public String dateGeneration();
+	public String dateGenerationImmediate();
+	public String dateGenerationEndOfMonth();
+	public String dateGenerationManual();
+	public String paymentDelay();
 	public String tipselectClientDialog1();
 	public String tipselectClientDialog2();
 	public String deleteAccountLabel();
@@ -39,6 +51,7 @@ public interface I18N extends Constants {
 	public String cancelModificationsConfirmation();
 	public String missingVatIdAndSSNValidationError();
 	public String notEmptyValidationError();
+	public String notEmptyDateValidationError();
 	public String vatidValidationError();
 	public String ssnValidationError();
 	public String submit();
@@ -114,9 +127,7 @@ public interface I18N extends Constants {
 	public String invoiceNumber();
 	public String estimationNumber();
 	public String dueDate();
-	public String[] dueDateItems();
 	public String payment();
-	public String[] paymentItems();
 	public String[] vatItems();
 	public String nameDescription();
 	public String quantity();

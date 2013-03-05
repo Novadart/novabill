@@ -16,7 +16,6 @@ import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.PaymentType;
 
 public abstract class AbstractCreditNotePresenter extends DocumentPresenter<CreditNoteView> implements CreditNoteView.Presenter {
 
@@ -71,32 +70,20 @@ public abstract class AbstractCreditNotePresenter extends DocumentPresenter<Cred
 		}
 		cn.setItems(invItems);
 		cn.setNote(getView().getNote().getText());
-		cn.setPaymentType(PaymentType.values()[getView().getPayment().getSelectedIndex()-1]);
-		if(getView().getPayment().getSelectedIndex() > 0){
-			cn.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(cn.getAccountingDocumentDate(), cn.getPaymentType()));  
-		} else {
-			cn.setPaymentDueDate(null);
-		}
-
-		cn.setPaymentNote(getView().getPaymentNote().getText());
 		DocumentUtils.calculateTotals(invItems, cn);
 		return cn;
 	}
 	
 	
 	protected boolean validateCreditNote(){
-		if(getView().getDate().getTextBox().getText().isEmpty() || getView().getDate().getValue() == null){
-			return false;
-		} else if(getView().getItemInsertionForm().getItems().isEmpty()){
-			return false;
-		}
+		getView().getDate().validate();
 		getView().getNumber().validate();
-		getView().getPayment().validate();
-		if(!getView().getNumber().isValid() || !getView().getPayment().isValid()){
+		
+		if(getView().getItemInsertionForm().getItems().isEmpty()){
 			return false;
 		}
-
-		return true;
+		
+		return getView().getNumber().isValid() && getView().getDate().isValid();
 	}
 
 }

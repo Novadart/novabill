@@ -136,6 +136,9 @@ public class Business implements Serializable, Taxable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Principal> principals = new HashSet<Principal>();
     
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+    private Set<PaymentType> paymentTypes = new HashSet<PaymentType>();
+    
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
     	return entityManager().createQuery(query, Invoice.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
@@ -499,14 +502,6 @@ public class Business implements Serializable, Taxable {
         this.clients = clients;
     }
     
-    /*
-     * End of getters and setters section
-     * */
-    
-    /*
-     * Active record functionality
-     * */
-    
     public Set<Principal> getPrincipals() {
 		return principals;
 	}
@@ -515,6 +510,22 @@ public class Business implements Serializable, Taxable {
 		this.principals = principals;
 	}
 
+	public Set<PaymentType> getPaymentTypes() {
+		return paymentTypes;
+	}
+
+	public void setPaymentTypes(Set<PaymentType> paymentTypes) {
+		this.paymentTypes = paymentTypes;
+	}
+    
+    /*
+     * End of getters and setters section
+     * */
+    
+    /*
+     * Active record functionality
+     * */
+    
 	@PersistenceContext
     transient EntityManager entityManager;
     

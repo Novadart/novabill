@@ -11,7 +11,6 @@ import com.novadart.novabill.frontend.client.view.west.standard.StandardWestView
 
 public class ClientActivity extends BasicActivity {
 
-
 	public ClientActivity(ClientPlace place, ClientFactory clientFactory) {
 		super(clientFactory);
 	}
@@ -21,7 +20,7 @@ public class ClientActivity extends BasicActivity {
 		getClientFactory().getStandardWestView(new AsyncCallback<StandardWestView>() {
 
 			@Override
-			public void onSuccess(StandardWestView wv) {
+			public void onSuccess(final StandardWestView wv) {
 				StandardViewPresenter p = new StandardViewPresenter(getClientFactory().getPlaceController(), eventBus, wv);
 				p.go(panel);
 			}
