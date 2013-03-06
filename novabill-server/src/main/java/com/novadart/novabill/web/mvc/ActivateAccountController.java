@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
@@ -61,6 +62,11 @@ public class ActivateAccountController {
 		Principal principal = new Principal(registration);
 		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
 		Business business = new Business();
+		for(PaymentType pType: PaymentType.PAYMENT_TYPES){
+			PaymentType paymentType = pType.clone();
+			paymentType.setBusiness(business);
+			business.getPaymentTypes().add(paymentType);
+		}
 		principal.setBusiness(business);
 		business.getPrincipals().add(principal);
 		business.persist();

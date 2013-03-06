@@ -8,6 +8,7 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Transient;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -42,6 +43,27 @@ public class PaymentType {
 	@ManyToOne
 	private Business business;
 	
+	public PaymentType(String name, String defaultPaymentNote, PaymentDateType paymentDateGenerator, Integer paymentDateDelta) {
+		this.name = name;
+		this.defaultPaymentNote = defaultPaymentNote;
+		this.paymentDateGenerator = paymentDateGenerator;
+		this.paymentDateDelta = paymentDateDelta;
+	}
+	
+	public PaymentType(){
+		this(null, null, null, null);
+	}
+	
+	
+	@Override
+	public  PaymentType clone() throws CloneNotSupportedException {
+		return new PaymentType(name, defaultPaymentNote, paymentDateGenerator, paymentDateDelta);
+	}
+
+
+	@Transient
+	public static PaymentType[] PAYMENT_TYPES = new PaymentType[]{};
+
 	/*
      * Getters and setters
      * */
