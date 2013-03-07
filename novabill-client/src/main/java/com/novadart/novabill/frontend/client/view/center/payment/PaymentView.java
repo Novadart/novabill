@@ -13,6 +13,7 @@ public interface PaymentView extends View<PaymentView.Presenter>, HasUILocking{
 		void onLoad();
 		void onPaymentDelete(PaymentTypeDTO payment);
 		void onAddPaymentClicked();
+		void onPaymentEdit(PaymentTypeDTO value);
 	}
 	
 	Style getStyle();

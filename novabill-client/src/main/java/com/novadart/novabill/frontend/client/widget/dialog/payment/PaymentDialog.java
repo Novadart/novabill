@@ -34,7 +34,8 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 	}
 	
 	public interface Handler {
-		void onPaymentCreated(PaymentTypeDTO payment);
+		void onPaymentAdd(PaymentTypeDTO payment);
+		void onPaymentUpdate(PaymentTypeDTO payment);
 	}
 
 	@UiField(provided=true) ValidatedTextBox name;
@@ -46,8 +47,9 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 	@UiField Label paymentDelayLabel;
 	
 	private Handler handler;
+	private PaymentTypeDTO payment = null;
 	
-	public PaymentDialog(Handler handler) {
+	public PaymentDialog(Handler handler, PaymentTypeDTO payment) {
 		super(GlobalBundle.INSTANCE.dialog());
 		GlobalBundle.INSTANCE.dialog().ensureInjected();
 
@@ -65,6 +67,22 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 		days = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 		
 		setWidget(uiBinder.createAndBindUi(this));
+		
+		if(payment != null){
+			this.payment = payment;
+			name.setText(payment.getName());
+			paymentNote.setText(payment.getDefaultPaymentNote());
+			dateGenerator.setSelectedIndex(payment.getPaymentDateGenerator().ordinal());
+			if(PaymentDateType.CUSTOM.equals(payment.getPaymentDateGenerator())){
+				paymentDelayLabel.setVisible(false);
+				paymentDelayValue.setVisible(false);
+			}
+			days.setText(payment.getPaymentDateDelta()==null ? "" : String.valueOf(payment.getPaymentDateDelta()));
+		}
+	}
+	
+	public PaymentDialog(Handler handler) {
+		this(handler, null);
 	}
 	
 	@UiFactory
@@ -87,7 +105,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 		if(validate()) {
 			setLocked(true);
 			
-			final PaymentTypeDTO p = new PaymentTypeDTO();
+			final PaymentTypeDTO p = this.payment == null ? new PaymentTypeDTO() : this.payment;
 			p.setBusiness(Configuration.getBusiness());
 			p.setDefaultPaymentNote(paymentNote.getText());
 			p.setName(name.getText());
@@ -108,21 +126,43 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 				break;
 			}
 			
-			ServerFacade.payment.add(p, new ManagedAsyncCallback<Long>() {
-
-				@Override
-				public void onSuccess(Long result) {
-					handler.onPaymentCreated(p);
-					setLocked(false);
-					hide();
-				}
+			if(this.payment == null){
 				
-				@Override
-				public void onFailure(Throwable caught) {
-					super.onFailure(caught);
-					setLocked(false);
-				}
-			});
+				ServerFacade.payment.add(p, new ManagedAsyncCallback<Long>() {
+
+					@Override
+					public void onSuccess(Long result) {
+						handler.onPaymentAdd(p);
+						setLocked(false);
+						hide();
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						super.onFailure(caught);
+						setLocked(false);
+					}
+				});
+				
+			} else {
+				
+				ServerFacade.payment.update(p, new ManagedAsyncCallback<Void>() {
+
+					@Override
+					public void onSuccess(Void result) {
+						handler.onPaymentUpdate(p);
+						setLocked(false);
+						hide();
+					}
+					
+					@Override
+					public void onFailure(Throwable caught) {
+						super.onFailure(caught);
+						setLocked(false);
+					}
+				});
+				
+			}
 			
 		}
 	}

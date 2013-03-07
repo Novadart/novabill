@@ -15,4 +15,6 @@ public interface ImageResources extends ClientBundle {
 
 	ImageResource fancy_close();
 
+	ImageResource edit();
+
 }

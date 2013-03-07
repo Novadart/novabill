@@ -1,7 +1,11 @@
 package com.novadart.novabill.frontend.client.view.center.payment;
 
-import com.google.gwt.cell.client.ActionCell;
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.Cell;
+import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -15,14 +19,10 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
-import com.novadart.novabill.frontend.client.widget.notification.Notification;
-import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
-import com.novadart.novabill.shared.client.dto.PaymentDateType;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public class PaymentViewImpl extends Composite implements PaymentView {
@@ -30,6 +30,8 @@ public class PaymentViewImpl extends Composite implements PaymentView {
 	public static interface Style extends CssResource {
 		String label();
 		String value();
+		String deletePaymentImage();
+		String noPaymentSelected();
 	}
 
 	private static PaymentViewImplUiBinder uiBinder = GWT
@@ -37,13 +39,35 @@ public class PaymentViewImpl extends Composite implements PaymentView {
 
 	interface PaymentViewImplUiBinder extends UiBinder<Widget, PaymentViewImpl> {
 	}
+	
+	private abstract class ClickableImageCell extends AbstractCell<PaymentTypeDTO> {
+		
+		private String imageUrl;
+		
+		public ClickableImageCell(String imageUrl) {
+			super("click");
+			this.imageUrl = imageUrl;
+		}
+
+		@Override
+		public void render(Cell.Context context, PaymentTypeDTO value, SafeHtmlBuilder sb) {
+			sb.appendHtmlConstant("<img class='"+style.deletePaymentImage()+"' src='"+this.imageUrl+"'>");
+		}
+		
+		@Override
+		public void onBrowserEvent(Cell.Context context, Element parent, PaymentTypeDTO value, NativeEvent event,
+				ValueUpdater<PaymentTypeDTO> valueUpdater) {
+			super.onBrowserEvent(context, parent, value, event, valueUpdater);
+			onClick(value);
+		}
+		
+		protected abstract void onClick(PaymentTypeDTO value);
+		
+	}
 
 	@UiField Style style;
 	@UiField(provided=true) CellTable<PaymentTypeDTO> payments;
 	@UiField HTML description;
-
-	private final SingleSelectionModel<PaymentTypeDTO> selectedPayment = new SingleSelectionModel<PaymentTypeDTO>();
-
 
 	private Presenter presenter;
 
@@ -62,22 +86,32 @@ public class PaymentViewImpl extends Composite implements PaymentView {
 		payments.addColumn(name, I18N.INSTANCE.payment());
 		payments.setColumnWidth(name, "300px");
 		
-		Column<PaymentTypeDTO, PaymentTypeDTO> delete = new Column<PaymentTypeDTO, PaymentTypeDTO>(new ActionCell<PaymentTypeDTO>(I18N.INSTANCE.delete(), new ActionCell.Delegate<PaymentTypeDTO>() {
+		
+		Column<PaymentTypeDTO, PaymentTypeDTO> edit = new Column<PaymentTypeDTO, PaymentTypeDTO>(
+				new ClickableImageCell(ImageResources.INSTANCE.edit().getSafeUri().asString()) {
+					
+					@Override
+					protected void onClick(final PaymentTypeDTO value) {
+						presenter.onPaymentEdit(value);
+					}
+				}) {
 
 			@Override
-			public void execute(final PaymentTypeDTO object) {
-				Notification.showConfirm(I18N.INSTANCE.deletionConfirm(), new NotificationCallback<Boolean>() {
-
-					@Override
-					public void onNotificationClosed(Boolean value) {
-						if(value){
-							presenter.onPaymentDelete(object);
-							resetDescription();
-						}
-					}
-				});
+			public PaymentTypeDTO getValue(PaymentTypeDTO object) {
+				return object;
 			}
-		})) {
+		};
+		payments.addColumn(edit);
+		payments.setColumnWidth(edit, "16px");
+		
+		Column<PaymentTypeDTO, PaymentTypeDTO> delete = new Column<PaymentTypeDTO, PaymentTypeDTO>(
+				new ClickableImageCell(ImageResources.INSTANCE.delete().getSafeUri().asString()) {
+					
+					@Override
+					protected void onClick(final PaymentTypeDTO value) {
+						presenter.onPaymentDelete(value);
+					}
+				}) {
 
 			@Override
 			public PaymentTypeDTO getValue(PaymentTypeDTO object) {
@@ -85,75 +119,10 @@ public class PaymentViewImpl extends Composite implements PaymentView {
 			}
 		};
 		payments.addColumn(delete);
+		payments.setColumnWidth(delete, "16px");
 		
 
-		payments.setSelectionModel(selectedPayment);
-
-		selectedPayment.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
-			@Override
-			public void onSelectionChange(SelectionChangeEvent event) {
-				updateDescription(selectedPayment.getSelectedObject());
-			}
-		});
-
 		initWidget(uiBinder.createAndBindUi(this));
-	}
-
-	private void updateDescription(PaymentTypeDTO payment){
-		SafeHtmlBuilder shb = new SafeHtmlBuilder();
-
-		shb.appendHtmlConstant("<table>");
-
-		shb.appendHtmlConstant("<tr><td><div class='"+style.label()+"'>");
-		shb.appendEscaped(I18N.INSTANCE.name());
-		shb.appendHtmlConstant("</div></td>");
-		shb.appendHtmlConstant("<td><div class='"+style.value()+"'>");
-		shb.appendEscaped(payment.getName());
-		shb.appendHtmlConstant("</div></td></tr>");
-
-		shb.appendHtmlConstant("<tr><td><div class='"+style.label()+"'>");
-		shb.appendEscaped(I18N.INSTANCE.paymentNote());
-		shb.appendHtmlConstant("</div></td>");
-		shb.appendHtmlConstant("<td><div class='"+style.value()+"'>");
-		shb.appendEscaped(payment.getDefaultPaymentNote());
-		shb.appendHtmlConstant("</div></td></tr>");
-
-		shb.appendHtmlConstant("<tr><td><div class='"+style.label()+"'>");
-		shb.appendEscaped(I18N.INSTANCE.dateGeneration());
-		shb.appendHtmlConstant("</div></td>");
-		shb.appendHtmlConstant("<td><div class='"+style.value()+"'>");
-		switch (payment.getPaymentDateGenerator()) {
-		case CUSTOM:
-			shb.appendEscaped(I18N.INSTANCE.dateGenerationManual());
-			break;
-
-		case END_OF_MONTH:
-			shb.appendEscaped(I18N.INSTANCE.dateGenerationEndOfMonth());
-			break;
-
-		case IMMEDIATE:
-			shb.appendEscaped(I18N.INSTANCE.dateGenerationImmediate());
-			break;
-		}
-		shb.appendHtmlConstant("</div></td></tr>");
-
-		if(!PaymentDateType.CUSTOM.equals(payment.getPaymentDateGenerator())) {
-			shb.appendHtmlConstant("<tr><td><div class='"+style.label()+"'>");
-			shb.appendEscaped(I18N.INSTANCE.paymentDelay());
-			shb.appendHtmlConstant("</div></td>");
-			shb.appendHtmlConstant("<td><div class='"+style.value()+"'>");
-			shb.appendEscaped(payment.getPaymentDateDelta()+ " "+I18N.INSTANCE.days());
-			shb.appendHtmlConstant("</div></td></tr>");
-		}
-
-		shb.appendHtmlConstant("</table>");
-
-		description.setHTML(shb.toSafeHtml());
-	}
-	
-	private void resetDescription(){
-		description.setHTML("");
 	}
 
 	@Override
@@ -205,5 +174,5 @@ public class PaymentViewImpl extends Composite implements PaymentView {
 	public HTML getDescription() {
 		return description;
 	}
-
+	
 }

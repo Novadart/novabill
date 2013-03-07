@@ -7,6 +7,7 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public class Const {
 	
@@ -34,6 +35,14 @@ public class Const {
 		public int compare(ClientDTO o1, ClientDTO o2) {
 			
 			return o1.getName().compareToIgnoreCase(o2.getName());
+		}
+	};
+	
+	public static final Comparator<PaymentTypeDTO> PAYMENT_COMPARATOR = new Comparator<PaymentTypeDTO>() {
+		
+		@Override
+		public int compare(PaymentTypeDTO o1, PaymentTypeDTO o2) {
+			return o1.getName().compareTo(o2.getName());
 		}
 	};
 	

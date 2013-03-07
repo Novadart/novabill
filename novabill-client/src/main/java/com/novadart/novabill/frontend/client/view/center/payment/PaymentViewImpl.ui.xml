@@ -51,6 +51,18 @@
 				font-size: 1.5em;
 				text-transform: uppercase;
 			}
+			
+			.deletePaymentImage {
+				width: 16px;
+				cursor: pointer;
+			}
+			
+			.noPaymentSelected {
+				text-align: center;
+				height: 100%;
+				font-style: italic;
+				color: #AAA;
+			}
 		</ui:style>
 
 	<g:FlowPanel styleName="{style.container}">
@@ -60,7 +72,7 @@
 				<c:CellTable ui:field="payments" />
 			</g:ScrollPanel>
 			<g:Button ui:field="newPayment" styleName="{style.newPayment} {g.button}"
-				text="{i18n.add}" />
+				text="{i18n.addPayment}" />
 		</g:HorizontalPanel>
 		
 		<g:HTML styleName="{style.description}" ui:field="description"></g:HTML>
