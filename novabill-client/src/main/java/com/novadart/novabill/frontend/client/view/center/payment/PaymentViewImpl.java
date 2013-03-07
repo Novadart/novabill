@@ -84,7 +84,7 @@ public class PaymentViewImpl extends Composite implements PaymentView {
 		};
 		name.setSortable(true);
 		payments.addColumn(name, I18N.INSTANCE.payment());
-		payments.setColumnWidth(name, "300px");
+		payments.setColumnWidth(name, "400px");
 		
 		
 		Column<PaymentTypeDTO, PaymentTypeDTO> edit = new Column<PaymentTypeDTO, PaymentTypeDTO>(
