@@ -65,5 +65,5 @@ public class ConfigurationWestViewImpl extends Composite implements Configuratio
 	public Style getStyle() {
 		return style;
 	}
-	
+
 }
