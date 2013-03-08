@@ -82,12 +82,12 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 		setupPaymentSummaryView();
 	}
 	
-	public void init(String paymentName, PaymentDateType dateGenerator, Integer paymentDateDelta){
+	public void init(String paymentName, PaymentDateType dateGenerator, Integer paymentDateDelta, Date paymentDueDate){
 		selectedPayment = new PaymentTypeDTO();
 		selectedPayment.setName(paymentName);
 		selectedPayment.setPaymentDateDelta(paymentDateDelta);
 		selectedPayment.setPaymentDateGenerator(dateGenerator);
-		setupPaymentSummaryView();
+		setupPaymentSummaryView(paymentDueDate);
 	}
 	
 	public void init(){
@@ -139,8 +139,11 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 		});
 	}
 	
-	
 	private void setupPaymentSummaryView(){
+		setupPaymentSummaryView(null);
+	}
+	
+	private void setupPaymentSummaryView(Date paymentDueDate){
 		paymentSummary.setPaymentName(selectedPayment.getName());
 		switch (selectedPayment.getPaymentDateGenerator()) {
 		case CUSTOM:
@@ -148,7 +151,11 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 			break;
 
 		default:
-			paymentSummary.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(documentCreationDate, selectedPayment));
+			if(paymentDueDate != null) {
+				paymentSummary.setPaymentDueDate(paymentDueDate);
+			} else {
+				paymentSummary.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(documentCreationDate, selectedPayment));
+			}
 			break;
 		}
 		
