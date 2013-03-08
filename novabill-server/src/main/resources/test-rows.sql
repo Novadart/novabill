@@ -239,7 +239,20 @@ insert into transport_document (from_company_name, from_street, from_city, from_
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (141, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 140);
 
 --creating payment types
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (142, 'payment note', 'default', 0, 0, 1, 1);
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (143, 'payment note', 'default', 0, 0, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (142, 'Pagamento in Rimessa Diretta', 'Rimessa Diretta', 0, 0, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (143, 'Pagamento con bonifico bancario entro 30 giorni', 'Bonifico Bancario 30GG', 30, 0, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (144, 'Pagamento con bonifico bancario entro 60 giorni', 'Bonifico Bancario 60GG', 60, 0, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (145, 'Pagamento con bonifico bancario entro 90 giorni', 'Bonifico Bancario 90GG', 90, 0, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (146, 'Pagamento con bonifico bancario entro 30 giorni d.f. f.m.', 'Bonifico Bancario 30GG d.f. f.m.', 30, 1, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (147, 'Pagamento con bonifico bancario entro 60 giorni d.f. f.m.', 'Bonifico Bancario 60GG d.f. f.m.', 60, 1, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (148, 'Pagamento con bonifico bancario entro 90 giorni d.f. f.m.', 'Bonifico Bancario 90GG d.f. f.m.', 90, 1, 1, 1);
 
-alter sequence hibernate_sequence restart with 144;
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (149, 'Pagamento in Rimessa Diretta', 'Rimessa Diretta', 0, 0, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (150, 'Pagamento con bonifico bancario entro 30 giorni', 'Bonifico Bancario 30GG', 30, 0, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (151, 'Pagamento con bonifico bancario entro 60 giorni', 'Bonifico Bancario 60GG', 60, 0, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (152, 'Pagamento con bonifico bancario entro 90 giorni', 'Bonifico Bancario 90GG', 90, 0, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (153, 'Pagamento con bonifico bancario entro 30 giorni d.f. f.m.', 'Bonifico Bancario 30GG d.f. f.m.', 30, 1, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (154, 'Pagamento con bonifico bancario entro 60 giorni d.f. f.m.', 'Bonifico Bancario 60GG d.f. f.m.', 60, 1, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (155, 'Pagamento con bonifico bancario entro 90 giorni d.f. f.m.', 'Bonifico Bancario 90GG d.f. f.m.', 90, 1, 1, 2);
+
+alter sequence hibernate_sequence restart with 156;
