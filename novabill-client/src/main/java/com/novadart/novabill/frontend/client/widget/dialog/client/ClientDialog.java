@@ -3,6 +3,7 @@ package com.novadart.novabill.frontend.client.widget.dialog.client;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -38,6 +39,18 @@ public class ClientDialog extends Dialog implements HasUILocking {
 			.create(ClientDialogUiBinder.class);
 
 	interface ClientDialogUiBinder extends UiBinder<Widget, ClientDialog> {
+	}
+	
+	public interface Style extends CssResource {
+		String wrapper();
+		String title();
+		String title2();
+		String rightBox();
+		String gridWrapper();
+		String label();
+		String value();
+		String buttonContainer();
+		String submit();
 	}
 
 	private static final ClientDialog instance = new ClientDialog();
@@ -76,6 +89,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	
 	@UiField(provided=true) LoaderButton ok;
 	@UiField Button cancel;
+	@UiField Style s;
 	
 	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation(); 
 	
@@ -121,7 +135,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName(GlobalBundle.INSTANCE.globalCss().panel());
 		
-		ok.addStyleName("submit");
+		ok.addStyleName(s.submit());
 		ok.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().button());
 	}
 

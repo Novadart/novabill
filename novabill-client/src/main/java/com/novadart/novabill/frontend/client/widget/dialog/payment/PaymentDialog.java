@@ -11,6 +11,7 @@ import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
+import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
@@ -19,6 +20,7 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
@@ -45,6 +47,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 	
 	@UiField FlowPanel paymentDelayValue;
 	@UiField Label paymentDelayLabel;
+	@UiField(provided=true) LoaderButton ok;
 	
 	private Handler handler;
 	private PaymentTypeDTO payment = null;
@@ -66,6 +69,9 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 
 		days = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 		
+		ok = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
+		ok.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().button());
+		
 		setWidget(uiBinder.createAndBindUi(this));
 		
 		if(payment != null){
@@ -78,6 +84,8 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 				paymentDelayValue.setVisible(false);
 			}
 			days.setText(payment.getPaymentDateDelta()==null ? "" : String.valueOf(payment.getPaymentDateDelta()));
+			
+			ok.setText(I18N.INSTANCE.saveModifications());
 		}
 	}
 	
@@ -103,6 +111,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 	@UiHandler("ok")
 	void onOkClicked(ClickEvent e){
 		if(validate()) {
+			ok.showLoader(true);
 			setLocked(true);
 			
 			final PaymentTypeDTO p = this.payment == null ? new PaymentTypeDTO() : this.payment;
@@ -132,6 +141,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 
 					@Override
 					public void onSuccess(Long result) {
+						ok.showLoader(false);
 						handler.onPaymentAdd(p);
 						setLocked(false);
 						hide();
@@ -139,6 +149,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 					
 					@Override
 					public void onFailure(Throwable caught) {
+						ok.showLoader(false);
 						super.onFailure(caught);
 						setLocked(false);
 					}
@@ -150,6 +161,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 
 					@Override
 					public void onSuccess(Void result) {
+						ok.showLoader(false);
 						handler.onPaymentUpdate(p);
 						setLocked(false);
 						hide();
@@ -157,6 +169,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 					
 					@Override
 					public void onFailure(Throwable caught) {
+						ok.showLoader(false);
 						super.onFailure(caught);
 						setLocked(false);
 					}

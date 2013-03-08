@@ -1,6 +1,6 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
-	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget" xmlns:f="urn:import:com.novadart.novabill.frontend.client.widget">
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget" xmlns:f="urn:import:com.novadart.novabill.frontend.client.widget" xmlns:gwtshared="urn:import:com.novadart.gwtshared.client">
 	
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N" field="i18n"></ui:with>
 	
@@ -84,7 +84,7 @@
 			</g:row>
 		</g:Grid>
 		<g:HorizontalPanel styleName="{style.buttons}">
-			<g:Button ui:field="ok" styleName="{g.button}" text="{i18n.submit}"></g:Button>
+			<gwtshared:LoaderButton ui:field="ok" text="{i18n.submit}" />
 			<g:Button ui:field="cancel" text="{i18n.cancel}" styleName="{g.button} {style.cancel}"></g:Button>
 		</g:HorizontalPanel>
 	</g:FlowPanel>

@@ -9,7 +9,7 @@
 		
 	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
 
-	<ui:style field="s">
+	<ui:style field="s" type="com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog.Style">
 		.wrapper {
 			background-color: white;
 		}
