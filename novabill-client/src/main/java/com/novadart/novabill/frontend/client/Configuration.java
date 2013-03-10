@@ -10,6 +10,7 @@ import com.google.gwt.i18n.client.Dictionary;
 import com.google.gwt.user.client.Window;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.view.bootstrap.BootstrapDialog;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
@@ -25,6 +26,8 @@ public class Configuration {
 
 	public static final void init(final ManagedAsyncCallback<Void> callback){
 		try {
+			injectCss();
+			
 			debugEnabled = Boolean.parseBoolean(readDebugEnabled());
 			
 			notesBitMask = Long.parseLong(readNotesBitMask());
@@ -162,6 +165,14 @@ public class Configuration {
 			}
 		}
 		return valuesLoaded;
+	}
+	
+	private static void injectCss() {
+		GlobalBundle.INSTANCE.dialog().ensureInjected();
+		GlobalBundle.INSTANCE.globalCss().ensureInjected();
+		GlobalBundle.INSTANCE.loaderButton().ensureInjected();
+		GlobalBundle.INSTANCE.richTextBoxCss().ensureInjected();
+		GlobalBundle.INSTANCE.validatedWidget().ensureInjected();
 	}
 
 }
