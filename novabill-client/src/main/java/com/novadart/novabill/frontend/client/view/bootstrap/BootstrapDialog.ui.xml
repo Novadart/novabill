@@ -16,10 +16,6 @@
 			font-size: 1.1em;
 		}
 		
-		.inlineNotification {
-			margin: 1em auto;
-		}
-		
 		.welcomeMessage {
 			background-color: #FFFFB1;
 			padding: 1em;
@@ -169,7 +165,7 @@
 
 		</g:SimplePanel>
 
-		<n:InlineNotification styleName="{s.inlineNotification}" ui:field="inlineNotification" />
+		<n:InlineNotification ui:field="inlineNotification" />
 
 		<g:Button styleName="{g.actionButton} {s.submit}" ui:field="confirm"
 			text="{i18n.submit}"></g:Button>
