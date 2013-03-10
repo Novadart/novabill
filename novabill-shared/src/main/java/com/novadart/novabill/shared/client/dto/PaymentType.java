@@ -12,17 +12,12 @@ public enum PaymentType {
     BANK_TRANSFER,
     BANK_TRANSFER_30,
     BANK_TRANSFER_60,
+    BANK_TRANSFER_90,
+    BANK_TRANSFER_120,
+    BANK_TRANSFER_150,
+    BANK_TRANSFER_180,
     
     RIBA_30,
-    RIBA_30_FM,
     RIBA_60,
-    RIBA_60_FM,
-    RIBA_90,
-    RIBA_90_FM,
-    RIBA_120,
-    RIBA_120_FM,
-    RIBA_150,
-    RIBA_150_FM,
-    RIBA_180,
-    RIBA_180_FM
+    RIBA_90
 }

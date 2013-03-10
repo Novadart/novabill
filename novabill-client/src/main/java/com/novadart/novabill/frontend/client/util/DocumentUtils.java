@@ -122,31 +122,27 @@ public class DocumentUtils {
 		default:
 			return creation;
 			
-		case BANK_TRANSFER_30:
 		case RIBA_30:
-		case RIBA_30_FM:
+		case BANK_TRANSFER_30:
 			return new Date(creation.getTime()+ONE_DAY_MS*30);
-			
-		case BANK_TRANSFER_60:
+		
 		case RIBA_60:
-		case RIBA_60_FM:
+		case BANK_TRANSFER_60:
 			return new Date(creation.getTime()+ONE_DAY_MS*60);
 		
 		case RIBA_90:
-		case RIBA_90_FM:
+		case BANK_TRANSFER_90:
 			return new Date(creation.getTime()+ONE_DAY_MS*90);
 			
-		case RIBA_120:
-		case RIBA_120_FM:
+		case BANK_TRANSFER_120:
 			return new Date(creation.getTime()+ONE_DAY_MS*120);
-		
-		case RIBA_150:
-		case RIBA_150_FM:
+
+		case BANK_TRANSFER_150:
 			return new Date(creation.getTime()+ONE_DAY_MS*150);
 			
-		case RIBA_180:
-		case RIBA_180_FM:
+		case BANK_TRANSFER_180:
 			return new Date(creation.getTime()+ONE_DAY_MS*180);
+			
 		}
 	}
 	
