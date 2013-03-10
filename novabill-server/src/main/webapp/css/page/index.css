@@ -3,12 +3,12 @@ h1 {
 }
 
 h4 {
-	font-size: 1.2em;	
+	font-size: 1.2em;
 }
 
 .intro h2 {
 	text-align: center;
-	color:#333333;
+	color: #333333;
 	font-size: 6em;
 	padding: 30px 0px;
 	font-weight: bold;
@@ -129,6 +129,7 @@ h3 {
 .inset .row:first-child {
 	margin-top: -13px;
 }
+
 .inset .row:last-child {
 	border-bottom: none;
 }
@@ -161,12 +162,12 @@ h3 {
 	background: url('../../images/gloss-thumbnail-hover.png');
 }
 
-.fancybox-title-over{
+.fancybox-title-over {
 	background: rgba(0, 0, 0, .7);
 	padding: 0.5em 0;
 }
 
-.fancybox-title-over p{
+.fancybox-title-over p {
 	color: white;
 	padding: 0 10px;
 	font-size: 1.4em;
@@ -197,6 +198,7 @@ h3 {
 	font-family: Georgia, Times, serif;
 	font-style: italic;
 }
+
 .quotation-mark {
 	float: left;
 	margin: 0 10px 0 5px;
@@ -215,4 +217,20 @@ h3 {
 	margin: 10px 0;
 	line-height: 120%;
 }
+
+/* Floating menu */
+#fl_menu {
+	position: absolute;
+	top: 50px;
+	left: 0px;
+	z-index: 9999;
+	padding: 0 0 1em 1em;
+	min-width: 100px;
+	margin-left: 1em;
+}
+
+#fl_menu .entry {
+	margin-top: 1em;
+}
+/*  */
 

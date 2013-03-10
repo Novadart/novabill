@@ -3,6 +3,49 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
+<div id="fl_menu">
+	<div class="entry">
+		<div class="g-plusone"></div>
+	</div>
+	<div class="entry">
+		<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.novabill.it/" data-lang="it" data-size="large">Tweet</a>
+	</div>
+	<div class="entry">
+		<div class="fb-like" data-href="https://www.novabill.it/" data-send="true" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+	</div>
+</div>
+
+<script>
+//config
+var menuPosition = null;
+$float_speed=1500; //milliseconds
+$float_easing="easeOutQuint";
+$menu_fade_speed=500; //milliseconds
+
+//cache vars
+$fl_menu=$("#fl_menu");
+$fl_menu_menu=$("#fl_menu .menu");
+
+$(window).load(function() {
+	menuPosition=100;
+	FloatMenu();
+});
+
+$(window).scroll(function () { 
+	FloatMenu();
+});
+
+function FloatMenu(){
+	var scrollAmount=$(document).scrollTop();
+	var newPosition=menuPosition+scrollAmount;
+	if($(window).height()<$fl_menu.height()+$fl_menu_menu.height()){
+		$fl_menu.css("top",menuPosition);
+	} else {
+		$fl_menu.stop().animate({top: newPosition}, $float_speed, $float_easing);
+	}
+}
+</script>
+
 <div class="intro">
 	<h2>
 		<spring:message code="application_name"></spring:message>
@@ -172,6 +215,7 @@
 			<spring:message code="header.signupForFree"></spring:message>
 		</a>
 	</sec:authorize>
+	
 </div>
 
 <script type="text/javascript">
@@ -186,4 +230,33 @@
 		    });
 		});
 </script>
+
+<!-- Google Plus -->
+<!-- +1 button -->
+<script type="text/javascript">
+  window.___gcfg = {lang: 'it'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<!--  -->
+
+<!-- Twitter -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<!--  -->
+
+<!-- Facebook -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/it_IT/all.js#xfbml=1&appId=217986825010193";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<!--  -->
+
 
