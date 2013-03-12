@@ -17,8 +17,6 @@ public class DocumentUtils {
 	
 	public static DateTimeFormat DOCUMENT_DATE_FORMAT = DateTimeFormat.getFormat("dd MMMM yyyy");
 	
-	private static final long ONE_DAY_MS = 1000 * 60 * 60 * 24;
-	
 	public static BigDecimal parseValue(String value) throws NumberFormatException {
 		return new BigDecimal( NumberFormat.getDecimalFormat().parse(value) );
 	}
@@ -123,7 +121,7 @@ public class DocumentUtils {
 			return null;
 		}
 		
-		long delta = payment.getPaymentDateDelta() * ONE_DAY_MS;
+		Date d;
 		
 		switch (payment.getPaymentDateGenerator()) {
 		default:
@@ -131,14 +129,51 @@ public class DocumentUtils {
 			return null;
 			
 		case END_OF_MONTH:
-			Date d = new Date(documentDate.getTime()+delta);
+			//add the delay	
+			d = calculatePaymentDueDateAddingCommercialMonths(documentDate, payment.getPaymentDateDelta());
+			
+			// move to the end of month	
 			CalendarUtil.setToFirstDayOfMonth(d);
 			CalendarUtil.addMonthsToDate(d, 1);
 			CalendarUtil.addDaysToDate(d, -1);
 			return d;
 			
 		case IMMEDIATE:
-			return new Date(documentDate.getTime()+delta);
+			//add the delay	
+			d = calculatePaymentDueDateAddingCommercialMonths(documentDate, payment.getPaymentDateDelta());
+						
+			return d;
 		}
 	}
+	
+	
+	@SuppressWarnings("deprecation")
+	private static Date calculatePaymentDueDateAddingCommercialMonths(Date date, int months){
+		if(months == 0){
+			return date;
+		}
+		
+		// first of all add the months on a date set to the first day of month.
+		// This way the different length of months won't get on the way
+		Date resultDate = (Date)date.clone();
+		CalendarUtil.setToFirstDayOfMonth(resultDate);
+		CalendarUtil.addMonthsToDate(resultDate, months);
+		
+		//save the resulting month		
+		int resultMonth = resultDate.getMonth();
+		
+		// set the day of the original date. Notice: if month is February and day is 31 this will cause a change of month.
+		// Of course there are many other similar cases.
+		resultDate.setDate(date.getDate());
+		
+		// NOTE: we can use > because December is 31 days long. However != is more general and can take into account cases that
+		// do not come up into my mind now The months must be the same
+		while(resultDate.getMonth() != resultMonth) {
+			//remove a day till we get to the last day of the target month
+			CalendarUtil.addDaysToDate(resultDate, -1);
+		}
+		
+		return resultDate;
+	}
+	
 }

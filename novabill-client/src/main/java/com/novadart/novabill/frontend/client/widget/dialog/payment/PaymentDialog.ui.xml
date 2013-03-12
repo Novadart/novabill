@@ -43,7 +43,7 @@
 		
 		.daysVal {
 			float: left;
-			width: 5em;
+			width: 10em;
 			text-align: center;
 		}
 		
@@ -77,8 +77,8 @@
 				<g:customCell><g:Label styleName="{style.label}" ui:field="paymentDelayLabel" text="{i18n.paymentDelay}" /></g:customCell>
 				<g:customCell>
 					<g:FlowPanel styleName="{style.value} {style.daysCont}" ui:field="paymentDelayValue">
-						<v:ValidatedTextBox styleName="{style.daysVal}" ui:field="days" text="30"/>
-						<g:Label styleName="{style.daysLabel}" text="{i18n.days}" />
+						<g:ListBox styleName="{style.daysVal}" ui:field="months" />
+						<g:Label styleName="{style.daysLabel}" ui:field="daysLabel" text="{i18n.days}" visible="false" />
 					</g:FlowPanel>
 				</g:customCell>
 			</g:row>

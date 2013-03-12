@@ -207,7 +207,7 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 			shb.appendEscaped(I18N.INSTANCE.paymentDelay());
 			shb.appendHtmlConstant("</div></td>");
 			shb.appendHtmlConstant("<td><div class='"+getView().getStyle().value()+"'>");
-			shb.appendEscaped(payment.getPaymentDateDelta()+ " "+I18N.INSTANCE.days());
+			shb.appendEscaped(payment.getPaymentDateDelta()==0 ? I18N.INSTANCE.immediate() : payment.getPaymentDateDelta()*30 + " "+I18N.INSTANCE.days());
 			shb.appendHtmlConstant("</div></td></tr>");
 		}
 
