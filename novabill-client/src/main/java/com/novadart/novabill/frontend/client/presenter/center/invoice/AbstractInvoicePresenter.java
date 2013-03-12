@@ -96,6 +96,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		}
 		inv.setItems(invItems);
 		inv.setNote(getView().getNote().getText());
+		inv.setPaymentTypeName(getView().getPayment().getSelectedPayment().getName());
 		inv.setPaymentDateDelta(getView().getPayment().getSelectedPayment().getPaymentDateDelta());
 		inv.setPaymentDateGenerator(getView().getPayment().getSelectedPayment().getPaymentDateGenerator());
 		inv.setPaymentDueDate(getView().getPayment().getPaymentDueDate());
