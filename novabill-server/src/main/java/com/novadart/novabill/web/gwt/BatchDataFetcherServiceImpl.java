@@ -12,6 +12,7 @@ import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.facade.BatchDataFetcherService;
 import com.novadart.novabill.shared.client.facade.ClientService;
+import com.novadart.novabill.shared.client.facade.CreditNoteService;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentService;
@@ -32,6 +33,9 @@ public class BatchDataFetcherServiceImpl extends AbstractGwtController implement
 	
 	@Autowired
 	private TransportDocumentService transportDocService;
+	
+	@Autowired
+	private CreditNoteService creditNoteService;
 
 	@Override
 	public Pair<Long, ClientDTO> fetchNewInvoiceForClientOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
@@ -71,6 +75,16 @@ public class BatchDataFetcherServiceImpl extends AbstractGwtController implement
 	@Override
 	public Triple<Long, ClientDTO, TransportDocumentDTO> fetchCloneTransportDocumentOpData(Long transportDocID, Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		return new Triple<Long, ClientDTO, TransportDocumentDTO>(transportDocService.getNextTransportDocId(), clientService.get(clientID), transportDocService.get(transportDocID));
+	}
+
+	@Override
+	public Pair<Long, ClientDTO> fetchNewCreditNoteForClientOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return new Pair<Long, ClientDTO>(creditNoteService.getNextCreditNoteDocumentID(), clientService.get(clientID));
+	}
+
+	@Override
+	public Pair<Long, InvoiceDTO> fetchNewCreditNoteFromInvoiceOpData(Long invoiceID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return new Pair<Long, InvoiceDTO>(creditNoteService.getNextCreditNoteDocumentID(), invoiceService.get(invoiceID));
 	}
 	
 }

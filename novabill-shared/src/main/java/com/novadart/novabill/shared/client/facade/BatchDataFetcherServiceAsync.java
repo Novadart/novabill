@@ -26,4 +26,8 @@ public interface BatchDataFetcherServiceAsync {
 
 	void fetchCloneTransportDocumentOpData(Long transportDocID, Long clientID, AsyncCallback<Triple<Long, ClientDTO, TransportDocumentDTO>> callback);
 
+	void fetchNewCreditNoteForClientOpData(Long clientID, AsyncCallback<Pair<Long, ClientDTO>> callback);
+
+	void fetchNewCreditNoteFromInvoiceOpData(Long invoiceID, AsyncCallback<Pair<Long, InvoiceDTO>> callback);
+
 }
