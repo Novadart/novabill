@@ -1,12 +1,12 @@
 package com.novadart.novabill.shared.client.facade;
 
-import com.google.gwt.rpc.server.WebModeClientOracle.Triple;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.tuple.Pair;
+import com.novadart.novabill.shared.client.tuple.Triple;
 
 public interface BatchDataFetcherServiceAsync {
 

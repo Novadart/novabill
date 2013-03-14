@@ -16,6 +16,7 @@ import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteVi
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.tuple.Pair;
 
 public class CreditNoteActivity extends AbstractCenterActivity {
 
@@ -60,41 +61,28 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 	}
 
 	private void setupNewCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, final NewCreditNotePlace place){
-		ServerFacade.creditNote.getNextCreditNoteDocumentID(new DocumentCallack<Long>() {
+		
+		ServerFacade.batchFetcher.fetchNewCreditNoteForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
 
 			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new DocumentCallack<ClientDTO>() {
-
-					@Override
-					public void onSuccess(ClientDTO client) {
-						NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view);
-						p.setDataForNewCreditNote(client, progrId);
-						p.go(panel);
-					}
-
-				});
+			public void onSuccess(Pair<Long, ClientDTO> result) {
+				NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setDataForNewCreditNote(result.getSecond(), result.getFirst());
+				p.go(panel);
 			}
-		
 		});
 	}
 
 	private void setupFromInvoiceCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, final FromInvoiceCreditNotePlace place){
-		ServerFacade.creditNote.getNextCreditNoteDocumentID(new DocumentCallack<Long>() {
+		ServerFacade.batchFetcher.fetchNewCreditNoteFromInvoiceOpData(place.getInvoiceId(), new DocumentCallack<Pair<Long,InvoiceDTO>>() {
 
 			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.invoice.get(place.getInvoiceId(), new DocumentCallack<InvoiceDTO>() {
-
-					@Override
-					public void onSuccess(InvoiceDTO result) {
-						NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view);
-						p.setDataForNewCreditNote(progrId, result);
-						p.go(panel);
-					}
-				});
+			public void onSuccess(Pair<Long, InvoiceDTO> result) {
+				NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setDataForNewCreditNote(result.getFirst(), result.getSecond());
+				p.go(panel);
 			}
 		});
 	}

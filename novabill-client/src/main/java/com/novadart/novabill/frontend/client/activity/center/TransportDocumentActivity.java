@@ -15,6 +15,8 @@ import com.novadart.novabill.frontend.client.presenter.center.transportdocument.
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.tuple.Pair;
+import com.novadart.novabill.shared.client.tuple.Triple;
 
 public class TransportDocumentActivity extends AbstractCenterActivity {
 
@@ -61,23 +63,15 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 
 
 	private void setupNewTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, final NewTransportDocumentPlace place){
-		ServerFacade.transportDocument.getNextTransportDocId(new DocumentCallack<Long>() {
+		ServerFacade.batchFetcher.fetchNewTransportDocumentForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
 
 			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new DocumentCallack<ClientDTO>() {
-
-					@Override
-					public void onSuccess(ClientDTO client) {
-						NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view);
-						p.setDataForNewTransportDocument(client, progrId);
-						p.go(panel);
-					}
-
-				});
+			public void onSuccess(Pair<Long, ClientDTO> result) {
+				NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setDataForNewTransportDocument(result.getSecond(), result.getFirst());
+				p.go(panel);
 			}
-
 		});
 	}
 
@@ -96,30 +90,17 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 	}
 
 	private void setupCloneTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, final CloneTransportDocumentPlace place){
-		ServerFacade.transportDocument.getNextTransportDocId(new DocumentCallack<Long>() {
-
-			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new DocumentCallack<ClientDTO>() {
+		ServerFacade.batchFetcher.fetchCloneTransportDocumentOpData(place.getTransportDocumentId(), place.getClientId(), 
+				new DocumentCallack<Triple<Long,ClientDTO,TransportDocumentDTO>>() {
 
 					@Override
-					public void onSuccess(final ClientDTO client) {
-						ServerFacade.transportDocument.get(place.getTransportDocumentId(), new DocumentCallack<TransportDocumentDTO>() {
-
-							@Override
-							public void onSuccess(TransportDocumentDTO toClone) {
-								NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
-										getClientFactory().getEventBus(), view);
-								p.setDataForNewTransportDocument(client, progrId, toClone);
-								p.go(panel);
-							}
-
-						});
-
+					public void onSuccess(
+							Triple<Long, ClientDTO, TransportDocumentDTO> result) {
+						NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view);
+						p.setDataForNewTransportDocument(result.getSecond(), result.getFirst(), result.getThird());
+						p.go(panel);
 					}
-				});
-			}
-
 		});
 	}
 }

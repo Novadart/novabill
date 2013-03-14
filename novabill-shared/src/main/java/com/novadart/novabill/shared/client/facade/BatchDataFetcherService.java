@@ -1,6 +1,5 @@
 package com.novadart.novabill.shared.client.facade;
 
-import com.google.gwt.rpc.server.WebModeClientOracle.Triple;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
@@ -12,6 +11,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.tuple.Pair;
+import com.novadart.novabill.shared.client.tuple.Triple;
 
 @XsrfProtect
 @RemoteServiceRelativePath("batchdatafetcher.rpc")

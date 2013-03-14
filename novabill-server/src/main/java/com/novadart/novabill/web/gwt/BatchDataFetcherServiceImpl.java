@@ -2,7 +2,6 @@ package com.novadart.novabill.web.gwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.google.gwt.rpc.server.WebModeClientOracle.Triple;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -17,6 +16,7 @@ import com.novadart.novabill.shared.client.facade.EstimationService;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentService;
 import com.novadart.novabill.shared.client.tuple.Pair;
+import com.novadart.novabill.shared.client.tuple.Triple;
 
 public class BatchDataFetcherServiceImpl extends AbstractGwtController implements BatchDataFetcherService {
 

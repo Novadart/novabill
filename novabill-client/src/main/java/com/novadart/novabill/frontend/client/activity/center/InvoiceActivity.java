@@ -19,6 +19,8 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.tuple.Pair;
+import com.novadart.novabill.shared.client.tuple.Triple;
 
 public class InvoiceActivity extends AbstractCenterActivity {
 
@@ -74,65 +76,45 @@ public class InvoiceActivity extends AbstractCenterActivity {
 	}
 
 	private void setupNewInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, final NewInvoicePlace place){
-		ServerFacade.invoice.getNextInvoiceDocumentID(new DocumentCallack<Long>() {
+		ServerFacade.batchFetcher.fetchNewInvoiceForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
 
 			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new DocumentCallack<ClientDTO>() {
-
-					@Override
-					public void onSuccess(ClientDTO client) {
-						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view);
-						p.setDataForNewInvoice(client, progrId);
-						p.go(panel);
-					}
-
-				});
+			public void onSuccess(Pair<Long, ClientDTO> result) {
+				NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setDataForNewInvoice(result.getSecond(), result.getFirst());
+				p.go(panel);
 			}
 		});
 	}
 
 	private void setupFromEstimationInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, final FromEstimationInvoicePlace place){
-		ServerFacade.invoice.getNextInvoiceDocumentID(new DocumentCallack<Long>() {
+		ServerFacade.batchFetcher.fetchNewInvoiceFromEstimationOpData(place.getEstimationId(), new DocumentCallack<Pair<Long,EstimationDTO>>(){
 
 			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.estimation.get(place.getEstimationId(), new DocumentCallack<EstimationDTO>() {
-
-					@Override
-					public void onSuccess(EstimationDTO result) {
-						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view);
-						p.setDataForNewInvoice(progrId, result);
-						p.go(panel);
-					}
-
-				});
+			public void onSuccess(Pair<Long, EstimationDTO> result) {
+				NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setDataForNewInvoice(result.getFirst(), result.getSecond());
+				p.go(panel);
 			}
-
+			
 		});
 	}
 
 	private void setupFromTransportDocumentInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, 
 			final FromTransportDocumentInvoicePlace place){
-		ServerFacade.invoice.getNextInvoiceDocumentID(new DocumentCallack<Long>() {
-
-			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.transportDocument.get(place.getTransportDocumentId(), new DocumentCallack<TransportDocumentDTO>() {
+		ServerFacade.batchFetcher.fetchNewInvoiceFromTransportDocumentOpData(place.getTransportDocumentId(), 
+				new DocumentCallack<Pair<Long,TransportDocumentDTO>>() {
 
 					@Override
-					public void onSuccess(TransportDocumentDTO result) {
+					public void onSuccess(
+							Pair<Long, TransportDocumentDTO> result) {
 						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
 								getClientFactory().getEventBus(), view);
-						p.setDataForNewInvoice(progrId, result);
+						p.setDataForNewInvoice(result.getFirst(), result.getSecond());
 						p.go(panel);
 					}
-
-				});
-			}
-
 		});
 	}
 
@@ -152,29 +134,17 @@ public class InvoiceActivity extends AbstractCenterActivity {
 	}
 
 	private void setupCloneInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, final CloneInvoicePlace place){
-		ServerFacade.invoice.getNextInvoiceDocumentID(new DocumentCallack<Long>() {
-
-			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new DocumentCallack<ClientDTO>() {
+		ServerFacade.batchFetcher.fetchCloneInvoiceOpData(place.getInvoiceId(), place.getClientId(), 
+				new DocumentCallack<Triple<Long,ClientDTO,InvoiceDTO>>() {
 
 					@Override
-					public void onSuccess(final ClientDTO client) {
-						ServerFacade.invoice.get(place.getInvoiceId(), new DocumentCallack<InvoiceDTO>() {
-
-							@Override
-							public void onSuccess(InvoiceDTO invoiceToClone) {
-								NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-										getClientFactory().getEventBus(), view);
-								p.setDataForNewInvoice(client, progrId, invoiceToClone);
-								p.go(panel);
-							}
-						});
-
+					public void onSuccess(
+							Triple<Long, ClientDTO, InvoiceDTO> result) {
+						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view);
+						p.setDataForNewInvoice(result.getSecond(), result.getFirst(), result.getThird());
+						p.go(panel);
 					}
-
-				});
-			}
 		});
 	}
 
