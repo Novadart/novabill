@@ -52,7 +52,6 @@ blockquote:before,blockquote:after,q:before,q:after {
 .container {
 	width: 960px;
 	margin: 0 auto;
-	/* background: url('../images/header-bg.png') repeat-x; */
 	background-color: #FFFFFE;
 	padding: 0 70px 5em;
 	box-shadow: 3px 1px 3px #CCC;

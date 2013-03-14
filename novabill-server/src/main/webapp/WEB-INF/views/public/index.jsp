@@ -3,48 +3,17 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
-<div id="fl_menu">
+<div id="socialBox">
 	<div class="entry">
-		<div class="g-plusone"></div>
+		<div class="fb-like" data-href="https://www.novabill.it/" data-send="true" data-layout="box_count" data-width="450" data-show-faces="false" data-font="arial"></div>
 	</div>
 	<div class="entry">
-		<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.novabill.it/" data-lang="it" data-size="large">Tweet</a>
+		<div class="g-plusone" data-annotation="bubble" data-size="tall"></div>
 	</div>
 	<div class="entry">
-		<div class="fb-like" data-href="https://www.novabill.it/" data-send="true" data-layout="button_count" data-width="450" data-show-faces="false"></div>
+		<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.novabill.it/" data-lang="it" data-size="large" data-count="none">Tweet</a>
 	</div>
 </div>
-
-<script>
-//config
-var menuPosition = null;
-$float_speed=1500; //milliseconds
-$float_easing="easeOutQuint";
-$menu_fade_speed=500; //milliseconds
-
-//cache vars
-$fl_menu=$("#fl_menu");
-$fl_menu_menu=$("#fl_menu .menu");
-
-$(window).load(function() {
-	menuPosition=100;
-	FloatMenu();
-});
-
-$(window).scroll(function () { 
-	FloatMenu();
-});
-
-function FloatMenu(){
-	var scrollAmount=$(document).scrollTop();
-	var newPosition=menuPosition+scrollAmount;
-	if($(window).height()<$fl_menu.height()+$fl_menu_menu.height()){
-		$fl_menu.css("top",menuPosition);
-	} else {
-		$fl_menu.stop().animate({top: newPosition}, $float_speed, $float_easing);
-	}
-}
-</script>
 
 <div class="intro">
 	<h2>

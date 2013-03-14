@@ -219,18 +219,20 @@ h3 {
 }
 
 /* Floating menu */
-#fl_menu {
-	position: absolute;
-	top: 50px;
-	left: 0px;
-	z-index: 9999;
-	padding: 0 0 1em 1em;
-	min-width: 100px;
-	margin-left: 1em;
+#socialBox {
+	padding: 0 1em 1em;
+	background-color: #FFFFFE;
+	left: -10em;
+	text-align: center;
+	top: 20em;
+	box-shadow: 3px 1px 3px #CCC;
+	width: 75px;
+	float: left;
+	position: relative;
 }
 
-#fl_menu .entry {
-	margin-top: 1em;
+#socialBox .entry {
+	margin-top: 20px;
 }
 /*  */
 
