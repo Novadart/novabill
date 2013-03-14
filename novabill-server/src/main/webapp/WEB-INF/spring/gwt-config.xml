@@ -59,6 +59,8 @@
 	<bean id="paymentTypeServiceImpl" class="com.novadart.novabill.web.gwt.PaymentTypeServiceImpl"/>
 	
 	
+	<bean id="batchdatafetcher" class="com.novadart.novabill.web.gwt.BatchDataFetcherServiceImpl"/>
+	
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
 			<value>
@@ -69,6 +71,7 @@
 				/**/creditnote.rpc=creditnote
 				/**/transportdoc.rpc=transportdoc
 				/**/paymenttype.rpc=paymenttype
+				/**/batchdatafetcher.rpc=batchdatafetcher
 			</value>
 		</property>
 	</bean>
