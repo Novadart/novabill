@@ -220,7 +220,7 @@ h3 {
 
 /* Floating menu */
 #socialBox {
-	padding: 0 1em 1em;
+	padding: 0 12px 12px;
 	background-color: #FFFFFE;
 	left: -10em;
 	text-align: center;
@@ -229,6 +229,7 @@ h3 {
 	width: 75px;
 	float: left;
 	position: relative;
+	height: 250px;
 }
 
 #socialBox .entry {
