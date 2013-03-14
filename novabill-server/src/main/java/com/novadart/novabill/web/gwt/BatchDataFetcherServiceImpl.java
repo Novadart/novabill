@@ -62,5 +62,15 @@ public class BatchDataFetcherServiceImpl extends AbstractGwtController implement
 	public Triple<Long, ClientDTO, EstimationDTO> fetchCloneEstimationOpData(Long estimationID, Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		return new Triple<Long, ClientDTO, EstimationDTO>(estimationService.getNextEstimationId(), clientService.get(clientID), estimationService.get(estimationID));
 	}
+
+	@Override
+	public Pair<Long, ClientDTO> fetchNewTransportDocumentForClientOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return new Pair<Long, ClientDTO>(transportDocService.getNextTransportDocId(), clientService.get(clientID));
+	}
+
+	@Override
+	public Triple<Long, ClientDTO, TransportDocumentDTO> fetchCloneTransportDocumentOpData(Long transportDocID, Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return new Triple<Long, ClientDTO, TransportDocumentDTO>(transportDocService.getNextTransportDocId(), clientService.get(clientID), transportDocService.get(transportDocID));
+	}
 	
 }
