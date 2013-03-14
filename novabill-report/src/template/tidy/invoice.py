@@ -50,7 +50,6 @@ class TidyInvoiceBuilder(TidyDocumentBuilder):
         style = getSampleStyleSheet()["Normal"]
         tbl = Table([["%s" % self._("Payment details"), ""],
                      [Paragraph("%s:" % self._("Deadline"), style), Paragraph(data.getPaymentDueDate() if data.getPaymentDueDate() else "", style)],
-                     [Paragraph("%s:" % self._("Type"), style), Paragraph(data.getHumanReadablePaymentType(), style)],
                      [Paragraph("%s:" % self._("Note"), style), Paragraph(data.getPaymentNote() if data.getPaymentNote() else "", style)],
                     ], colWidths=[width * 0.3, width * 0.7])
         tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), lightgrey),

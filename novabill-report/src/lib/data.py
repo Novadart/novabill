@@ -238,43 +238,6 @@ class AbstractInvoiceData(AccountingDocumentData):
     def getPaymentDueDate(self):
         return self.__data["paymentDueDate"]
     
-    def getPaymentType(self):
-        return self.__data["paymentType"]
-    
-    def getHumanReadablePaymentType(self):
-        """
-        public enum PaymentType {
-		    CASH,
-    
-            BANK_TRANSFER,
-            BANK_TRANSFER_30,
-            BANK_TRANSFER_60,
-            BANK_TRANSFER_90,
-            BANK_TRANSFER_120,
-            BANK_TRANSFER_150,
-            BANK_TRANSFER_180,
-            
-            RIBA_30,
-            RIBA_60,
-            RIBA_90
-		}
-        """
-        pt = self.getPaymentType()
-        if(pt == "CASH"): return "Rimessa Diretta"
-        
-        elif(pt == "BANK_TRANSFER"): return "Bonifico Bancario"
-        elif(pt == "BANK_TRANSFER_30"): return "Bonifico Bancario 30GG"
-        elif(pt == "BANK_TRANSFER_60"): return "Bonifico Bancario 60GG"
-        elif(pt == "BANK_TRANSFER_90"): return "Bonifico Bancario 90GG"
-        elif(pt == "BANK_TRANSFER_120"): return "Bonifico Bancario 120GG"
-        elif(pt == "BANK_TRANSFER_150"): return "Bonifico Bancario 150GG"
-        elif(pt == "BANK_TRANSFER_180"): return "Bonifico Bancario 180GG"
-        
-        elif(pt == "RIBA_30"): return "Ri.Ba. 30GG"
-        elif(pt == "RIBA_60"): return "Ri.Ba. 60GG"
-        elif(pt == "RIBA_90"): return "Ri.Ba. 90GG"
-        
-        else: return ""
 
 """
     INVOICE DATA

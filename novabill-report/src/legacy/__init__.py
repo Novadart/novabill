@@ -163,7 +163,6 @@ class DefaultTemplate(InvoiceTemplate):
         ]
         if self.docType == DocumentType.INVOICE:
             tableFlowables +=[
-            [Paragraph("<b>Pagamento</b>", style), Paragraph(self.__get(self._getData().getHumanReadablePaymentType(), ""), style)],
             [Paragraph("<b>Note Pagamento</b>", style), Paragraph(self.__get(self._getData().getPaymentNote(), ""), style)],
             [Paragraph("<b>Scadenza Pagamento</b>", style), Paragraph(self.__get(self._getData().getPaymentDueDate(), ""), style)],
         ]
