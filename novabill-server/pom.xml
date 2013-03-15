@@ -369,13 +369,6 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-eclipse-plugin</artifactId>
 				<configuration>
-					<linkedResources>
-						<linkedResource>
-							<name>src/main/webapp/rpc</name>
-							<type>2</type>
-							<location>${basedir}/../novabill-client/target/novabill-client/rpc</location>
-						</linkedResource>
-					</linkedResources>
 					<wtpversion>2.0</wtpversion>
 					<additionalBuildcommands>
 						<buildCommand>
