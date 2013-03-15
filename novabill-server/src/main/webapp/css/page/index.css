@@ -219,21 +219,23 @@ h3 {
 }
 
 /* Floating menu */
+.container {
+	position: relative;
+}
+
 #socialBox {
-	padding: 0 12px 12px;
 	background-color: #FFFFFE;
-	left: -10em;
+	left: -4em;
 	text-align: center;
 	top: 20em;
 	box-shadow: 3px 1px 3px #CCC;
-	width: 75px;
+	width: 100px;
 	float: left;
-	position: relative;
-	height: 250px;
+	position: absolute;
+	height: 290px;
 }
 
 #socialBox .entry {
 	margin-top: 20px;
 }
 /*  */
-

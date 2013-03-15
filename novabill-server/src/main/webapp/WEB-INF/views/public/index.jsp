@@ -11,7 +11,7 @@
 		<div class="g-plusone" data-annotation="bubble" data-size="tall"></div>
 	</div>
 	<div class="entry">
-		<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.novabill.it/" data-lang="it" data-size="large" data-count="none">Tweet</a>
+		<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.novabill.it/" data-lang="it" data-count="vertical">Tweet</a>
 	</div>
 </div>
 
