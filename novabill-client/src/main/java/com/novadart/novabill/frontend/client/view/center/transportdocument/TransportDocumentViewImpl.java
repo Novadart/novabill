@@ -154,6 +154,12 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 		createTransportDocument.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
 	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		presenter.onLoad();
+	}
 
 	@Override
 	protected Element getBody() {

@@ -81,6 +81,12 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 
 		createCreditNote.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
 	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		presenter.onLoad();
+	}
 
 	@UiFactory
 	GlobalCss getGlobalCss(){

@@ -93,6 +93,12 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	}
 	
 	@Override
+	protected void onLoad() {
+		super.onLoad();
+		presenter.onLoad();
+	}
+	
+	@Override
 	protected Element getBody() {
 		return docScroll.getElement();
 	}
