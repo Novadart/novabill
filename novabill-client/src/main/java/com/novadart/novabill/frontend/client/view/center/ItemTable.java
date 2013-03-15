@@ -14,6 +14,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
+import com.novadart.gwtshared.client.cell.LargeEditTextCell;
 import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
@@ -37,7 +38,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		this.handler = handler;
 
 		//Name & Description
-		final EditTextCell descEditCell = new EditTextCell();
+		final LargeEditTextCell descEditCell = new LargeEditTextCell();
 		final Column<AccountingDocumentItemDTO, String> nameDescription = 
 				new Column<AccountingDocumentItemDTO, String>(descEditCell) {
 
