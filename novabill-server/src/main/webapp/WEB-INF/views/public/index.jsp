@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
-<div id="socialBox">
+<div id="socialBox" style="display: none;">
 	<div class="entry">
 		<div class="fb-like" data-href="https://www.novabill.it/" data-send="true" data-layout="box_count" data-width="450" data-show-faces="false" data-font="arial"></div>
 	</div>
@@ -188,15 +188,20 @@
 </div>
 
 <script type="text/javascript">
-		$(window).load(function() {
+		$(function() {
 		    $("*[rel=fancybox]").fancybox({
 		    	'titleFormat': function(title, currentArray, currentIndex, currentOpts){
 		    		temp=title.split('|');
-		    		if(!temp[2]){temp[2]=""};
+		    		if(!temp[2]){temp[2]="";};
 		    		return '<p>'+temp[0]+'</p><p>'+temp[1]+'</p><p>'+temp[2]+'</p>'
 		    		},
 		    	'titlePosition' : 'over'
 		    });
+		    
+		    
+		    setTimeout(function(){
+		    	$("#socialBox").fadeIn('slow');
+		    }, 4000);
 		});
 </script>
 
