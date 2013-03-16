@@ -61,6 +61,10 @@
 		.totalContainer.totalTax,.totalContainer.totalAfterTaxes {
 			margin-left: 4em;
 		}
+		
+		.decimalSeparatorInfo {
+			margin-top: 1em;
+		}
 	</ui:style>
 
 	<g:FlowPanel>
@@ -68,7 +72,7 @@
 			<c:ItemTable ui:field="itemTable" styleName="{s.itemTable}"></c:ItemTable>
 		</g:ScrollPanel>
 
-		<g:SimplePanel styleName="{s.newItemContainer}"
+		<g:FlowPanel styleName="{s.newItemContainer}"
 			ui:field="newItemContainer">
 			<g:HorizontalPanel>
 				<g:VerticalPanel>
@@ -97,6 +101,8 @@
 					<g:Button ui:field="add" text="{i18n.add}"></g:Button>
 				</g:SimplePanel>
 			</g:HorizontalPanel>
-		</g:SimplePanel>
+			
+			<g:Label styleName="{s.decimalSeparatorInfo}" text="{i18n.decimalSeparatorInfo}" />
+		</g:FlowPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 
