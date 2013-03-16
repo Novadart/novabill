@@ -34,7 +34,6 @@
 				margin-left: 2em;
 			}
 			
-			
 			.label {
 				font-weight: bold;
 				padding: 0.5em;
@@ -65,19 +64,19 @@
 			}
 		</ui:style>
 
-	<g:FlowPanel styleName="{style.container}">
-		<g:Label styleName="{style.sectionLabel}" text="{i18n.createPaymentType}" />
-		<g:HorizontalPanel styleName="{style.paymentTable}">
-			<g:ScrollPanel styleName="{style.scrollPayments}">
-				<c:CellTable ui:field="payments" />
-			</g:ScrollPanel>
-			<g:Button ui:field="newPayment" styleName="{style.newPayment} {g.button}"
-				text="{i18n.addPayment}" />
-		</g:HorizontalPanel>
-		
-		<g:HTML styleName="{style.description}" ui:field="description"></g:HTML>
-	</g:FlowPanel>
+	<g:ScrollPanel height="100%">
+		<g:FlowPanel styleName="{style.container}">
+			<g:Label styleName="{style.sectionLabel}" text="{i18n.createPaymentType}" />
+			<g:HorizontalPanel styleName="{style.paymentTable}">
+				<g:ScrollPanel styleName="{style.scrollPayments}">
+					<c:CellTable ui:field="payments" />
+				</g:ScrollPanel>
+				<g:Button ui:field="newPayment" styleName="{style.newPayment} {g.button}"
+					text="{i18n.addPayment}" />
+			</g:HorizontalPanel>
 
-
+			<g:HTML styleName="{style.description}" ui:field="description"></g:HTML>
+		</g:FlowPanel>
+	</g:ScrollPanel>
 
 </ui:UiBinder> 
