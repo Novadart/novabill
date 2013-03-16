@@ -9,5 +9,6 @@ public enum Tips {
 	center_home_yourdocs,
 	west_home_no_clients,
 	select_client_dialog,
-	client_view
+	client_view,
+	center_invoice_payment
 }

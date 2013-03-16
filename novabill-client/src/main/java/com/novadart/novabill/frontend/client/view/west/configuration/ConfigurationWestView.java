@@ -7,7 +7,7 @@ import com.novadart.novabill.frontend.client.view.west.configuration.Configurati
 public interface ConfigurationWestView extends View<ConfigurationWestView.Presenter> {
 
 	public static interface Presenter extends com.novadart.novabill.frontend.client.presenter.Presenter {
-		
+
 		void onLoad();
 	}
 

@@ -215,4 +215,5 @@ public interface I18N extends Constants {
 	public String alternativeSsnOrVatIdValidationError();
 	public String tipClientView1();
 	public String tipClientView2();
+	public String tipInvoicePayment();
 }

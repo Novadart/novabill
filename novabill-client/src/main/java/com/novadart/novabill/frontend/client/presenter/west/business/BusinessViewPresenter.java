@@ -13,7 +13,6 @@ public class BusinessViewPresenter extends ConfigurationViewPresenter {
 
 	@Override
 	public void onLoad() {
-		super.onLoad();
 		getView().getGeneral().addStyleName(getView().getStyle().selectedMenuItem());
 	}
 

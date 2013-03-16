@@ -13,6 +13,12 @@
 	<ui:with type="com.novadart.novabill.frontend.client.view.center.AccountDocumentCss" field="s" />
 	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
 	
+	<ui:style>
+		.tipContainer {
+			max-width: 600px;
+		}
+	</ui:style>
+	
 	<g:ScrollPanel height="100%">
 		<g:FlowPanel>
 	
@@ -20,6 +26,11 @@
 	
 			<g:ScrollPanel styleName="{s.docScroll}" ui:field="docScroll">
 				<g:FlowPanel styleName="{s.docScrollBody}">
+					
+					<g:SimplePanel styleName="{style.tipContainer}">
+						<g:SimplePanel ui:field="tipPayment" />					
+					</g:SimplePanel>
+					
 					<g:Grid styleName="{s.documentMainDetails}">
 						<g:row>
 							<g:customCell>

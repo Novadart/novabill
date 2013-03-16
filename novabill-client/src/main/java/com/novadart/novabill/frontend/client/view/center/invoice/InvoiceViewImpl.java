@@ -15,6 +15,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
@@ -30,6 +31,8 @@ import com.novadart.novabill.frontend.client.view.center.AccountDocumentCss;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.widget.payment.SelectPayment;
+import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
+import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
@@ -65,6 +68,8 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 	@UiField(provided=true) LoaderButton createInvoice;
 	@UiField Button abort;
+	
+	@UiField SimplePanel tipPayment;
 
 	private Presenter presenter;
 	
@@ -97,6 +102,8 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		setStyleName(CSS.accountDocumentView());
 		
 		createInvoice.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
+		
+		TipFactory.show(Tips.center_invoice_payment, tipPayment);
 	}
 	
 	@Override

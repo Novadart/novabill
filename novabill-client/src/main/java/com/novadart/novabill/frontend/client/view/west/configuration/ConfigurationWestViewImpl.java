@@ -3,10 +3,13 @@ package com.novadart.novabill.frontend.client.view.west.configuration;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
+import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Hyperlink;
 import com.google.gwt.user.client.ui.Widget;
+import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.place.HistoryPrefix;
 
 public class ConfigurationWestViewImpl extends Composite implements ConfigurationWestView {
 
@@ -27,19 +30,22 @@ public class ConfigurationWestViewImpl extends Composite implements Configuratio
 	@UiField Hyperlink payment;
 	
 	@UiField Style style;
-
-	private Presenter presenter;
 	
+	private Presenter presenter;
+
 	public ConfigurationWestViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		general.setTargetHistoryToken(HistoryPrefix.BUSINESS+":");
+		payment.setTargetHistoryToken(HistoryPrefix.PAYMENT+":");
 	}
 	
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		presenter.onLoad();
+		this.presenter.onLoad();
 	}
-
+	
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
@@ -64,6 +70,11 @@ public class ConfigurationWestViewImpl extends Composite implements Configuratio
 	@Override
 	public Style getStyle() {
 		return style;
+	}
+	
+	@UiFactory
+	I18N getI18n(){
+		return I18N.INSTANCE;
 	}
 
 }

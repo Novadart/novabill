@@ -185,8 +185,8 @@ public class HomeViewImpl extends Composite implements HomeView {
 			public void run() {
 				SafeHtmlBuilder shb = new SafeHtmlBuilder();
 				Date d = new Date();
-				shb.appendHtmlConstant("<span class='date'>"+date.format(d)+"</span>");
-				shb.appendHtmlConstant("<span class='time'>"+time.format(d)+"</span>");
+				shb.appendHtmlConstant("<span class='"+s.date()+"'>"+date.format(d)+"</span>");
+				shb.appendHtmlConstant("<span>"+time.format(d)+"</span>");
 				dateBox.setHTML(shb.toSafeHtml());
 			}
 		};

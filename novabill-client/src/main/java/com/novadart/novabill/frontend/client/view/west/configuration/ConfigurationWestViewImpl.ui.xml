@@ -4,6 +4,8 @@
 	
 	<ui:image src="menuSelect.png" field="menuSelect" />
 	
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N" field="i18n"></ui:with>
+	
 	<ui:style type="com.novadart.novabill.frontend.client.view.west.configuration.ConfigurationWestViewImpl.Style">
 		.menu {
 			margin: 4em auto 0;
@@ -31,8 +33,8 @@
 	</ui:style>
 
 	<g:VerticalPanel styleName="{style.menu}">
-		<g:Hyperlink styleName="{style.menuItem}" ui:field="general" />
-		<g:Hyperlink styleName="{style.menuItem}" ui:field="payment" />
+		<g:Hyperlink styleName="{style.menuItem}" ui:field="general" text="{i18n.settingsGeneral}" />
+		<g:Hyperlink styleName="{style.menuItem}" ui:field="payment" text="{i18n.settingsPayments}" />
 	</g:VerticalPanel>
 
 </ui:UiBinder> 

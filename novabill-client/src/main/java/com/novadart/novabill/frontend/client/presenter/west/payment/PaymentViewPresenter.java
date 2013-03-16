@@ -13,7 +13,6 @@ public class PaymentViewPresenter extends ConfigurationViewPresenter {
 
 	@Override
 	public void onLoad() {
-		super.onLoad();
 		getView().getPayment().addStyleName(getView().getStyle().selectedMenuItem());
 	}
 
