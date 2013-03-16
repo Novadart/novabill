@@ -164,14 +164,14 @@ button.action2-button:active {
 	cursor: pointer;
 	font-weight: bold;
 	background-color: #EEE;
-	border: 0.1em solid #DDD;
+	border: 1px solid #DDD;
 	color: #333;
 	margin: 1px;
 }
 
 .button:HOVER {
 	background-color: #DDD;
-	border: 0.1em solid #EEE;
+	border: 1px solid #EEE;
 	color: #EEE;
 }
 
@@ -179,8 +179,12 @@ button.action2-button:active {
 	font-family: Arial, sans-serif, serif;
 }
 
+.mandatory {
+	font-weight: bold;
+}
+
 input[type="text"],input[type="password"] {
-	border: 0.1em solid #CCC;
+	border: 1px solid #CCC;
 	padding: 0.4em;
 }
 
@@ -192,7 +196,7 @@ textarea:HOVER {
 select {
 	padding: 0.4em;
 	background-color: white;
-	border: 0.1em solid #CCC;
+	border: 1px solid #CCC;
 	cursor: pointer;
 }
 
@@ -202,16 +206,16 @@ select:HOVER {
 
 textarea {
 	padding: 0.4em;
-	border: 0.1em solid #CCC;
+	border: 1px solid #CCC;
 }
 
 textarea:HOVER {
-	border: 0.1em solid #000;
+	border: 1px solid #000;
 }
 
 
 .panel {
-	border: 0.1em solid #DDD;
+	border: 1px solid #DDD;
 	padding: 1.5em 2em;
 	background-color: #EEE;
 	margin: 0 auto;

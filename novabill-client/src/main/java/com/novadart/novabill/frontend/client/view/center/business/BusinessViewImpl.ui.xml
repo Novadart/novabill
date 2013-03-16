@@ -87,7 +87,7 @@
 						<g:Grid>
 							<g:row>
 								<g:customCell>
-									<g:Label styleName="{style.businessLabel}" text="{i18n.companyName}"></g:Label>
+									<g:Label styleName="{style.businessLabel} {g.mandatory}" text="{i18n.companyName}"></g:Label>
 								</g:customCell>
 								<g:customCell>
 									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="name"
@@ -96,7 +96,7 @@
 							</g:row>
 							<g:row>
 								<g:customCell>
-									<g:Label styleName="{style.businessLabel}" text="{i18n.ssn}"></g:Label>
+									<g:Label styleName="{style.businessLabel} {g.mandatory}" text="{i18n.ssn}"></g:Label>
 								</g:customCell>
 								<g:customCell>
 									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="ssn"
@@ -105,7 +105,7 @@
 							</g:row>
 							<g:row>
 								<g:customCell>
-									<g:Label styleName="{style.businessLabel}" text="{i18n.vatID}"></g:Label>
+									<g:Label styleName="{style.businessLabel} {g.mandatory}" text="{i18n.vatID}"></g:Label>
 								</g:customCell>
 								<g:customCell>
 									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="vatID"
@@ -114,7 +114,7 @@
 							</g:row>
 							<g:row>
 								<g:customCell>
-									<g:Label styleName="{style.businessLabel}" text="{i18n.address}"></g:Label>
+									<g:Label styleName="{style.businessLabel} {g.mandatory}" text="{i18n.address}"></g:Label>
 								</g:customCell>
 								<g:customCell>
 									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="address"
@@ -123,7 +123,7 @@
 							</g:row>
 							<g:row>
 								<g:customCell>
-									<g:Label styleName="{style.businessLabel}" text="{i18n.city}"></g:Label>
+									<g:Label styleName="{style.businessLabel} {g.mandatory}" text="{i18n.city}"></g:Label>
 								</g:customCell>
 								<g:customCell>
 									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="city"
@@ -132,7 +132,7 @@
 							</g:row>
 							<g:row>
 								<g:customCell>
-									<g:Label styleName="{style.businessLabel}" text="{i18n.postcode}"></g:Label>
+									<g:Label styleName="{style.businessLabel} {g.mandatory}" text="{i18n.postcode}"></g:Label>
 								</g:customCell>
 								<g:customCell>
 									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="postcode"
@@ -141,7 +141,7 @@
 							</g:row>
 							<g:row>
 								<g:customCell>
-									<g:Label styleName="{style.businessLabel}" text="{i18n.province}"></g:Label>
+									<g:Label styleName="{style.businessLabel} {g.mandatory}" text="{i18n.province}"></g:Label>
 								</g:customCell>
 								<g:customCell>
 									<v:ValidatedListBox	ui:field="province"></v:ValidatedListBox>
@@ -149,7 +149,7 @@
 							</g:row>
 							<g:row>
 								<g:customCell>
-									<g:Label styleName="{style.businessLabel}" text="{i18n.country}"></g:Label>
+									<g:Label styleName="{style.businessLabel} {g.mandatory}" text="{i18n.country}"></g:Label>
 								</g:customCell>
 								<g:customCell>
 									<v:ValidatedListBox ui:field="country"></v:ValidatedListBox>
