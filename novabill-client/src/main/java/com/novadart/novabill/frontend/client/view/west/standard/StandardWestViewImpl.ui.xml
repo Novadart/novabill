@@ -27,7 +27,7 @@
 			}
 			
 			.addClient {
-				margin-top: 1.8em;
+				margin-top: 1.5em !important;
 				cursor: pointer;
 			}
 			
