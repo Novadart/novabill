@@ -123,7 +123,7 @@
 						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.country}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedListBox ui:field="country"></v:ValidatedListBox>
+						<v:ValidatedListBox ui:field="country" enabled="false"></v:ValidatedListBox>
 					</g:customCell>
 				</g:row>
 				<g:row>
