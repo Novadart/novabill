@@ -37,7 +37,7 @@ public class AccountingDocumentItem implements Serializable {
 	private BigDecimal price;
 
     @Type(type = "text")
-    @Size(max = 255)
+    @Size(max = 500)
     private String description;
 
     @Size(max = 255)
