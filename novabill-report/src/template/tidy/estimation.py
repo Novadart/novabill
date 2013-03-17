@@ -10,7 +10,7 @@ from reportlab.lib.colors import lightgrey
 class TidyEstimationDirector(TidyDirector):
     
     def getDocumentDetailsBottomFlowables(self, builder, data, docWidth):
-        tbl = Table([[builder.getLimitationsFlowables(data), builder.getEstimationPaymentDetailsFlowable(data, docWidth*0.5)],
+        tbl = Table([[builder.getLimitationsFlowables(data, docWidth*0.5), builder.getEstimationPaymentDetailsFlowable(data, docWidth*0.5)],
                      [builder.getNotesFlowable(data), ""]], colWidths=[docWidth * 0.5, docWidth * 0.5])
         tbl.setStyle(TableStyle([("ALIGN", (0,0), (0,0), "LEFT"),
                                  ("ALIGN", (1,0), (1,0), "RIGHT"),
@@ -35,17 +35,23 @@ class TidyEstimationBuilder(TidyDocumentBuilder):
                                ("TOPPADDING", (0, 0), (-1, -1), 1)]))
         return t
     
-    def getLimitationsFlowables(self, data):
+    def getLimitationsFlowables(self, data, width):
         style = getSampleStyleSheet()["Normal"]
-        return [Paragraph("<b>%s:</b>" % self._("Limitations"), style),
-                Paragraph(data.getLimitations() if data.getLimitations() else "<i>%s</i>" % self._("No limitations"), style)]
+        noteflows = [[Paragraph(ln, style)] for ln in  (data.getLimitations() if data.getLimitations() else "<i>%s</i>" % self._("No limitations")).split("<br/>")]
+        tbl = Table([[Paragraph("<b>%s:</b>" % self._("Limitations"), style)]
+                     ] + noteflows, colWidths=[width])
+        tbl.setStyle(TableStyle([("TOPPADDING", (0, 0), (-1, -1), 0),
+                                 ("BOTTOMPADDING", (0, 0), (-1, -1), 0)]))
+        return tbl
         
     def getEstimationPaymentDetailsFlowable(self, data, width):
         style = getSampleStyleSheet()["Normal"]
-        tbl = Table([["%s" % self._("Payment note"), ""],
-                     ["", Paragraph(data.getPaymentNote() if data.getPaymentNote() else "", style)],
-                    ], colWidths=[width * 0.01, width * 0.99])
+        noteflows = [["", Paragraph(ln, style)] for ln in  (data.getPaymentNote() if data.getPaymentNote() else "").split("<br/>")]
+        tbl = Table([["%s" % self._("Payment note"), ""]
+                    ] + noteflows, colWidths=[width * 0.01, width * 0.99])
         tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), lightgrey),
                                  ('VALIGN', (0, 0), (-1, -1), 'TOP'),
-                                 ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))
+                                 ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR),
+                                 ("TOPPADDING", (0, 2), (-1, -1), 0),
+                                 ("BOTTOMPADDING", (0, 1), (-1, -2), 0)]))
         return tbl

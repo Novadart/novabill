@@ -48,14 +48,17 @@ class TidyInvoiceBuilder(TidyDocumentBuilder):
     
     def getInvoicePaymentDetailsFlowable(self, data, width):
         style = getSampleStyleSheet()["Normal"]
+        noteflows = [Paragraph(ln, style) for ln in  (data.getPaymentNote() if data.getPaymentNote() else "").split("<br/>")]
+        tblflows = zip([Paragraph("%s:" % self._("Note"), style)] + [""] * (len(noteflows) - 1), noteflows)
         tbl = Table([["%s" % self._("Payment details"), ""],
                      [Paragraph("%s:" % self._("Deadline"), style), Paragraph(data.getPaymentDueDate() if data.getPaymentDueDate() else "", style)],
-                     [Paragraph("%s:" % self._("Note"), style), Paragraph(data.getPaymentNote() if data.getPaymentNote() else "", style)],
-                    ], colWidths=[width * 0.3, width * 0.7])
+                    ] + tblflows, colWidths=[width * 0.3, width * 0.7])
         tbl.setStyle(TableStyle([("BACKGROUND", (0,0), (-1,0), lightgrey),
                                  ('VALIGN', (0, 0), (-1, -1), 'TOP'),
                                  ("SPAN", (0, 0), (1, 0)),
-                                 ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))
+                                 ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR),
+                                 ("TOPPADDING", (0, 3), (-1, -1), 0),
+                                 ("BOTTOMPADDING", (0, 2), (-1, -2), 0)]))
         return tbl
     
     
