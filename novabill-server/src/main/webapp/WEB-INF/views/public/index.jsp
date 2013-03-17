@@ -201,7 +201,7 @@
 		    
 		    setTimeout(function(){
 		    	$("#socialBox").fadeIn('slow');
-		    }, 4000);
+		    }, 3000);
 		});
 </script>
 
