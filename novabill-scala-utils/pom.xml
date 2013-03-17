@@ -19,17 +19,17 @@
 		<!-- Scala Testing -->
 		<dependency>
 			<groupId>org.scalacheck</groupId>
-			<artifactId>scalacheck_${scala.version}</artifactId>
+			<artifactId>scalacheck_2.9.2</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.scalatest</groupId>
-			<artifactId>scalatest_${scala.version}</artifactId>
+			<artifactId>scalatest_2.9.2</artifactId>
 			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.specs2</groupId>
-			<artifactId>specs2_${scala.version}</artifactId>
+			<artifactId>specs2_2.9.2</artifactId>
 			<scope>test</scope>
 		</dependency>
 	</dependencies>
