@@ -17,12 +17,18 @@
 		}
 		
 		.welcomeMessage {
-			background-color: #FFFFB1;
+			width: 80%;
+			margin: 2em auto 0;
+			background-color: #FFFDB3;
 			padding: 1em;
-			border: 0.1em solid #333;
-			width: 30em;
-			margin: 0 auto;
-			font-size: 1.2em;
+			border: 0.1em solid #DDD;
+			-moz-box-shadow: 2px 2px 2px #CCC;
+			-webkit-box-shadow: 2px 2px 2px #CCC;
+			box-shadow: 2px 2px 2px #CCC;
+			position: relative;
+			color: #333;
+			font-size: 1.1em;
+			line-height: 110%;
 		}
 		
 		.bootstrapDialogBody {
@@ -56,7 +62,7 @@
 			<g:Grid>
 				<g:row>
 					<g:customCell >
-						<g:Label  styleName="{s.businessLabel}" text="{i18n.companyName}"></g:Label>
+						<g:Label  styleName="{s.businessLabel} {g.mandatory}" text="{i18n.companyName}"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="name" maxLength="255" />
@@ -64,7 +70,7 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel}" text="{i18n.ssn}"></g:Label>
+						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.ssn}"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="ssn" maxLength="25"></v:ValidatedTextBox>
@@ -72,7 +78,7 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel}" text="{i18n.vatID}"></g:Label>
+						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.vatID}"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="vatID" maxLength="25"></v:ValidatedTextBox>
@@ -80,7 +86,7 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel}" text="{i18n.address}"></g:Label>
+						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.address}"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="address"
@@ -89,7 +95,7 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel}" text="{i18n.city}"></g:Label>
+						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.city}"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="city" maxLength="60"></v:ValidatedTextBox>
@@ -97,7 +103,7 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel}" text="{i18n.postcode}"></g:Label>
+						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.postcode}"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="postcode"
@@ -106,7 +112,7 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel}" text="{i18n.province}"></g:Label>
+						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.province}"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedListBox ui:field="province"></v:ValidatedListBox>
@@ -114,10 +120,10 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel}" text="{i18n.country}"></g:Label>
+						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.country}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedListBox ui:field="country"></v:ValidatedListBox>
+						<v:ValidatedListBox ui:field="country" enabled="false"></v:ValidatedListBox>
 					</g:customCell>
 				</g:row>
 				<g:row>

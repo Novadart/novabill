@@ -64,12 +64,20 @@ public class PaymentType {
 	@Transient
 	public static PaymentType[] PAYMENT_TYPES = new PaymentType[]{
 		new PaymentType("payment1.name", "payment1.paymentNote", PaymentDateType.IMMEDIATE, 0),
+		
 		new PaymentType("payment2.name", "payment2.paymentNote", PaymentDateType.IMMEDIATE, 30),
 		new PaymentType("payment3.name", "payment3.paymentNote", PaymentDateType.IMMEDIATE, 60),
 		new PaymentType("payment4.name", "payment4.paymentNote", PaymentDateType.IMMEDIATE, 90),
 		new PaymentType("payment5.name", "payment5.paymentNote", PaymentDateType.END_OF_MONTH, 30),
 		new PaymentType("payment6.name", "payment6.paymentNote", PaymentDateType.END_OF_MONTH, 60),
 		new PaymentType("payment7.name", "payment7.paymentNote", PaymentDateType.END_OF_MONTH, 90),
+		
+		new PaymentType("payment8.name", "payment8.paymentNote", PaymentDateType.IMMEDIATE, 30),
+		new PaymentType("payment9.name", "payment9.paymentNote", PaymentDateType.IMMEDIATE, 60),
+		new PaymentType("payment10.name", "payment10.paymentNote", PaymentDateType.IMMEDIATE, 90),
+		new PaymentType("payment11.name", "payment11.paymentNote", PaymentDateType.END_OF_MONTH, 30),
+		new PaymentType("payment12.name", "payment12.paymentNote", PaymentDateType.END_OF_MONTH, 60),
+		new PaymentType("payment13.name", "payment13.paymentNote", PaymentDateType.END_OF_MONTH, 90),
 	};
 	
 
