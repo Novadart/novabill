@@ -61,9 +61,12 @@ public class TipFactory {
 		case center_invoice_payment:
 			shb.appendHtmlConstant("<p>");
 			shb.appendEscaped(I18N.INSTANCE.tipInvoicePayment());
+			shb.appendHtmlConstant("<span style='font-style:italic;'>");
+			shb.appendEscaped(" "+I18N.INSTANCE.myData()+" > ");
 			shb.appendHtmlConstant(" <a href='#"+HistoryPrefix.PAYMENT+":'>");
-			shb.appendEscaped(I18N.INSTANCE.myData()+" > "+I18N.INSTANCE.settingsPayments());
+			shb.appendEscaped(I18N.INSTANCE.settingsPayments());
 			shb.appendHtmlConstant("</a>");
+			shb.appendHtmlConstant("</span>");
 			shb.appendHtmlConstant("</p>");
 			break;
 		}

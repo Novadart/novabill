@@ -77,8 +77,7 @@
 			<g:HorizontalPanel>
 				<g:VerticalPanel>
 					<g:Label styleName="{s.smallLabel}" text="{i18n.nameDescription}"></g:Label>
-					<v:ValidatedTextArea ui:field="item"
-						styleName="{s.item}"></v:ValidatedTextArea>
+					<v:ValidatedTextArea ui:field="item" styleName="{s.item}" />
 				</g:VerticalPanel>
 				<g:VerticalPanel styleName="{s.quantityContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.quantity}"></g:Label>

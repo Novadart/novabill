@@ -55,11 +55,11 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	public ItemInsertionForm(Handler handler) {
 		this.handler = handler;
 		
-		item = new ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), new TextLengthValidation(255) {
+		item = new ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), new TextLengthValidation(500) {
 			
 			@Override
 			public String getErrorMessage() {
-				return I18NM.get.textLengthError(255);
+				return I18NM.get.textLengthError(500);
 			}
 		});
 		
