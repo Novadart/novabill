@@ -39,6 +39,8 @@ public class DataExporter {
 	
 	public static final String[] CLIENT_FIELDS = new String[]{"name", "address", "postcode", "city", "province", "country", "email", "phone",	"mobile", "fax", "web", "vatID", "ssn"};
 	
+	public static final String[] CLIENT_CONTACT_FIELDS = new String[]{"firstName", "lastName", "email", "phone", "fax", "mobile"};
+	
 	@Autowired
 	private PDFGenerator pdfGenerator;
 	
@@ -55,15 +57,20 @@ public class DataExporter {
 		clientsData.deleteOnExit();
 		FileWriter fstream = new FileWriter(clientsData);
 		BufferedWriter out = new BufferedWriter(fstream);
-		String[] headers = new String[CLIENT_FIELDS.length];
-		for(int i = 0; i < headers.length; ++i)
+		String[] headers = new String[CLIENT_FIELDS.length + CLIENT_CONTACT_FIELDS.length];
+		int i = 0, j = 0;
+		for(; i < CLIENT_FIELDS.length; ++i)
 			headers[i] = messageSource.getMessage("export." + CLIENT_FIELDS[i], null, CLIENT_FIELDS[i], locale);
+		for(; j < CLIENT_CONTACT_FIELDS.length; ++j)
+			headers[i + j] = messageSource.getMessage("export.contact." + CLIENT_CONTACT_FIELDS[j], null, CLIENT_CONTACT_FIELDS[j], locale);
 		out.write(StringUtils.join(headers, ","));
 		out.newLine();
 		for(Client client: clients){
-			List<String> clientVals = new ArrayList<String>(CLIENT_FIELDS.length);
+			List<String> clientVals = new ArrayList<String>(CLIENT_FIELDS.length + CLIENT_CONTACT_FIELDS.length);
 			for(String clientField: CLIENT_FIELDS)
 				clientVals.add(BeanUtils.getProperty(client, clientField));
+			for(String clientContactField: CLIENT_CONTACT_FIELDS)
+				clientVals.add(BeanUtils.getProperty(client.getContact(), clientContactField));
 			out.write(StringUtils.join(clientVals, ","));
 			out.newLine();
 		}
