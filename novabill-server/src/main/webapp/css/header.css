@@ -84,6 +84,11 @@
 	z-index: 29;
 }
 
+#loginBox #rememberme {
+	margin-bottom: 1em;
+	float: none;
+}
+
 /* If the Login Button has been clicked */
 #loginButton.active {
 	border-radius: 3px 3px 0 0;
