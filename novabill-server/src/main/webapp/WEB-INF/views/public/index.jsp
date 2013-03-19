@@ -3,7 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
-<div id="socialBox" style="display: none;">
+<div id="socialBox">
 	<div class="entry">
 		<div class="fb-like" data-href="https://www.novabill.it/" data-send="true" data-layout="box_count" data-width="450" data-show-faces="false" data-font="arial"></div>
 	</div>
@@ -197,11 +197,6 @@
 		    		},
 		    	'titlePosition' : 'over'
 		    });
-		    
-		    
-		    setTimeout(function(){
-		    	$("#socialBox").fadeIn('slow');
-		    }, 3000);
 		});
 </script>
 

@@ -39,10 +39,9 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	public void onLoad() {
 		getView().getCreateDocument().setText(I18N.INSTANCE.createInvoice());
 		getView().getTitleLabel().setText(I18N.INSTANCE.newInvoiceCreation());
-		getView().getPayment().init();
 	}
 	
-	public void setDataForNewInvoice(ClientDTO client, Long progressiveId) {
+	private void initData(ClientDTO client, Long progressiveId){
 		setClient(client);
 
 		getView().getClientName().setText(client.getName());
@@ -54,16 +53,24 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
 		getView().getCreateDocument().setVisible(true);
 	}
+	
+	public void setDataForNewInvoice(ClientDTO client, Long progressiveId) {
+		initData(client, progressiveId);
+		getView().getPayment().init();
+	}
 
 	
 	public void setDataForNewInvoice(ClientDTO client, Long progressiveId, InvoiceDTO invoice) {
-		setDataForNewInvoice(client, progressiveId);
+		initData(client, progressiveId);
 
 		List<AccountingDocumentItemDTO> items = null;
 		items = new ArrayList<AccountingDocumentItemDTO>(invoice.getItems().size());
 		for (AccountingDocumentItemDTO i : invoice.getItems()) {
 			items.add(i.clone());
 		}
+		getView().getPayment().setDocumentCreationDate(getView().getDate().getValue());
+		getView().getPayment().init(invoice.getPaymentTypeName(), invoice.getPaymentDateGenerator(), 
+				invoice.getPaymentDateDelta());
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(invoice.getNote());
 		getView().getPaymentNote().setText(invoice.getPaymentNote());
@@ -71,7 +78,8 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
 	
 	public void setDataForNewInvoice(Long progressiveId, EstimationDTO estimation) {
-		setDataForNewInvoice(estimation.getClient(), progressiveId);
+		initData(estimation.getClient(), progressiveId);
+		getView().getPayment().init();
 
 		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(estimation.getItems().size());
 		for (AccountingDocumentItemDTO i : estimation.getItems()) {
@@ -85,7 +93,8 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
 	
 	public void setDataForNewInvoice(Long progressiveId, TransportDocumentDTO transportDocument) {
-		setDataForNewInvoice(transportDocument.getClient(), progressiveId);
+		initData(transportDocument.getClient(), progressiveId);
+		getView().getPayment().init();
 
 		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(transportDocument.getItems().size());
 		for (AccountingDocumentItemDTO i : transportDocument.getItems()) {

@@ -179,10 +179,6 @@ button.action2-button:active {
 	font-family: Arial, sans-serif, serif;
 }
 
-.mandatory {
-	font-weight: bold;
-}
-
 input[type="text"],input[type="password"] {
 	border: 1px solid #CCC;
 	padding: 0.4em;
