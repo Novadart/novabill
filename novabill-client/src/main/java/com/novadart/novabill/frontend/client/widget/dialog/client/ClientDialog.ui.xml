@@ -63,6 +63,9 @@
 			margin-right: 1em;
 			width: 9em;
 		}
+		.mandatory {
+			margin-top: 2em;
+		}
 	</ui:style>
 
 	<g:FlowPanel styleName="{s.wrapper}">
@@ -76,7 +79,7 @@
 					<g:Grid>
 						<g:row>
 							<g:customCell>
-								<g:Label styleName="{s.label} {g.mandatory}" text="{i18n.companyName}"></g:Label>
+								<g:Label styleName="{s.label}" text="{i18n.companyName} *"></g:Label>
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
@@ -85,7 +88,7 @@
 						</g:row>
 						<g:row>
 							<g:customCell>
-								<g:Label styleName="{s.label} {g.mandatory}" text="{i18n.address}"></g:Label>
+								<g:Label styleName="{s.label}" text="{i18n.address} *"></g:Label>
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
@@ -94,7 +97,7 @@
 						</g:row>
 						<g:row>
 							<g:customCell>
-								<g:Label styleName="{s.label} {g.mandatory}" text="{i18n.postcode}"></g:Label>
+								<g:Label styleName="{s.label}" text="{i18n.postcode} *"></g:Label>
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
@@ -103,7 +106,7 @@
 						</g:row>
 						<g:row>
 							<g:customCell>
-								<g:Label styleName="{s.label} {g.mandatory}" text="{i18n.city}"></g:Label>
+								<g:Label styleName="{s.label}" text="{i18n.city} *"></g:Label>
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
@@ -112,7 +115,7 @@
 						</g:row>
 						<g:row>
 							<g:customCell>
-								<g:Label styleName="{s.label} {g.mandatory}" text="{i18n.province}"></g:Label>
+								<g:Label styleName="{s.label}" text="{i18n.province} *"></g:Label>
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedListBox
@@ -121,7 +124,7 @@
 						</g:row>
 						<g:row>
 							<g:customCell>
-								<g:Label styleName="{s.label} {g.mandatory}" text="{i18n.country}"></g:Label>
+								<g:Label styleName="{s.label}" text="{i18n.country} *"></g:Label>
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedListBox
@@ -130,7 +133,7 @@
 						</g:row>
 						<g:row>
 							<g:customCell>
-								<g:Label styleName="{s.label} {g.mandatory}" text="{i18n.ssn}"></g:Label>
+								<g:Label styleName="{s.label}" text="{i18n.ssn} *"></g:Label>
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
@@ -139,7 +142,7 @@
 						</g:row>
 						<g:row>
 							<g:customCell>
-								<g:Label styleName="{s.label} {g.mandatory}" text="{i18n.vatID}"></g:Label>
+								<g:Label styleName="{s.label}" text="{i18n.vatID} *"></g:Label>
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
@@ -255,6 +258,8 @@
 					</g:Grid>
 				</g:FlowPanel>
 			</g:HorizontalPanel>
+			
+			<g:Label styleName="{s.mandatory}" text="* {i18n.mandatory}"/>
 
 			<n:InlineNotification ui:field="inlineNotification"></n:InlineNotification>
 

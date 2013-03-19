@@ -97,7 +97,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 
 		initWidget(uiBinder.createAndBindUi(this));
 
-		saveData.getButton().setStyleName(GlobalBundle.INSTANCE.globalCss().button());
+		saveData.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().button());
 
 		logo.setUrl(Const.getLogoUrl());
 
