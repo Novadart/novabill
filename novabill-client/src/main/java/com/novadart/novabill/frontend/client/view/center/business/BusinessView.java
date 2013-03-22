@@ -34,7 +34,7 @@ public interface BusinessView extends View<BusinessView.Presenter>, HasUILocking
 		
 		void onLogoSubmit();
 		
-		void onLogoSubmitComplete(int resultCode);
+		void onLogoSubmitComplete(String result);
 	}
 
 	public Button getUpdateLogo();

@@ -116,15 +116,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 
 			@Override
 			public void onSubmitComplete(SubmitCompleteEvent event) {
-				String resultCodeStr = event.getResults();
-
-				// for some reason Internet Explorer wraps the number in <pre></pre>, thus instead of 0 you get <pre>0</pre>
-				if(resultCodeStr.toLowerCase().contains("<pre>")){
-					resultCodeStr = String.valueOf(resultCodeStr.charAt(5));
-				}
-
-				int resultCode = Integer.parseInt(resultCodeStr);
-				presenter.onLogoSubmitComplete(resultCode);
+				presenter.onLogoSubmitComplete(event.getResults());
 			}
 		});
 

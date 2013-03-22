@@ -17,4 +17,7 @@ public interface ImageResources extends ClientBundle {
 
 	ImageResource edit();
 
+	@Source("large-loader.gif")
+	ImageResource largeLoader();
+
 }
