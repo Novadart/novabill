@@ -19,7 +19,7 @@
 var xsrfParam = '${exportTokenParamName}';
 
 function buildUrl(xsrfToken){
-	return '${exportURL}' + '&' + xsrfParam + '=' + xsrfToken;
+	return '${exportURL}' + '&' + xsrfParam + '=' + encodeURIComponent(xsrfToken);
 }
 
 $(function(){
