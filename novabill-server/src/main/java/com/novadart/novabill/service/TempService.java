@@ -27,7 +27,7 @@ public class TempService {
 			new PaymentType("Ri.Ba. 90GG d.f. f.m.", "Pagamento tramite ricevuta bancaria entro 90 giorni d.f. f.m.", PaymentDateType.END_OF_MONTH, 90)	
 	};
 	
-	private void addPayments(){
+	private void addPayments() throws CloneNotSupportedException{
 		for(Business business: Business.findAllBusinesses()){
 			for(PaymentType pType: paymentTypes){
 				PaymentType paymentType = pType.clone();
@@ -69,7 +69,7 @@ public class TempService {
 	
 	//@PostConstruct
 	@Transactional(readOnly = false)
-	public void update(){
+	public void update() throws CloneNotSupportedException{
 		addPayments();
 		updateInvoicePaymentInfo();
 	}
