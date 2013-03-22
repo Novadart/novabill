@@ -4,6 +4,7 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
@@ -24,6 +25,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.service.DataExporter;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.XsrfTokenService;
 import com.novadart.novabill.shared.client.data.DataExportClasses;
 
 @Controller
@@ -46,6 +48,9 @@ public class ExportController {
 
 	@Autowired
 	private ReloadableResourceBundleMessageSource messageSource;
+	
+	@Autowired
+	private XsrfTokenService xsrfTokenService;
 
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
@@ -91,6 +96,12 @@ public class ExportController {
 			if(zipFile != null)
 				zipFile.delete();
 		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/token", method = RequestMethod.GET)
+	public String getToken(HttpSession session) throws NoSuchAlgorithmException{
+		return xsrfTokenService.generateToken(session, ExportController.TOKENS_SESSION_FIELD);
 	}
 
 }
