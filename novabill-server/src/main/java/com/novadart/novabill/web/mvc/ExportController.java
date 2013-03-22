@@ -84,7 +84,7 @@ public class ExportController {
 		File zipFile = null;
 		try{
 			zipFile = dataExporter.exportData(classes, business, logo, messageSource, locale);
-			response.setContentType("application/octet-stream");
+			response.setContentType("application/zip");
 			response.setHeader ("Content-Disposition", 
 					String.format("attachment; filename=\"%s.zip\"", messageSource.getMessage("export.filename", null, "data", locale)));
 			response.setHeader ("Content-Length", String.valueOf(zipFile.length()));
