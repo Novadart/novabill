@@ -1,8 +1,9 @@
 package com.novadart.novabill.web.mvc;
 
-import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+
 import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +15,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.XsrfTokenService;
@@ -37,9 +39,18 @@ public class DeleteAccountController {
 	private BusinessLogoController businessLogoController;
 	
 	@RequestMapping(method = RequestMethod.GET)
-	public String setupForm(Model model) {
+	public String setupForm(Model model, HttpSession session) throws NoSuchAlgorithmException {
 		DeleteAccount deleteAccount = new DeleteAccount();
 		model.addAttribute("deleteAccount", deleteAccount);
+		
+		model.addAttribute("exportClientsParamName", ExportController.CLIENTS_REQUEST_PARAM);
+		model.addAttribute("exportInvoicesParamName", ExportController.INVOICES_REQUEST_PARAM);
+		model.addAttribute("exportEstimationsParamName", ExportController.ESTIMATIONS_REQUEST_PARAM);
+		model.addAttribute("exportCreditnotesParamName", ExportController.CREDITNOTES_REQUEST_PARAM);
+		model.addAttribute("exportTransportdocsParamName", ExportController.TRANSPORTDOCS_REQUEST_PARAM);
+		model.addAttribute("exportTokenParamName", ExportController.TOKEN_REQUEST_PARAM);
+		model.addAttribute("exportToken", xsrfTokenService.generateToken(session, ExportController.TOKENS_SESSION_FIELD));
+		
 		return "deleteAccount";
 	}
 	
@@ -60,16 +71,4 @@ public class DeleteAccountController {
 		return "redirect:/resources/j_spring_security_logout";
 	}
 	
-	@RequestMapping(value="/deleteAccountExportButton", method = RequestMethod.GET)
-	public String getDeleteAccountExportButton(Model model, HttpSession session) throws NoSuchAlgorithmException, UnsupportedEncodingException {
-		model.addAttribute("exportClientsParamName", ExportController.CLIENTS_REQUEST_PARAM);
-		model.addAttribute("exportInvoicesParamName", ExportController.INVOICES_REQUEST_PARAM);
-		model.addAttribute("exportEstimationsParamName", ExportController.ESTIMATIONS_REQUEST_PARAM);
-		model.addAttribute("exportCreditnotesParamName", ExportController.CREDITNOTES_REQUEST_PARAM);
-		model.addAttribute("exportTransportdocsParamName", ExportController.TRANSPORTDOCS_REQUEST_PARAM);
-		model.addAttribute("exportTokenParamName", ExportController.TOKEN_REQUEST_PARAM);
-		model.addAttribute("exportToken", xsrfTokenService.generateToken(session, ExportController.TOKENS_SESSION_FIELD));
-		return "deleteAccountExportButton";
-	}
-
 }
