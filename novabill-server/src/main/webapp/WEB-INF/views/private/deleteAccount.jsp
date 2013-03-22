@@ -4,7 +4,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
-<spring:url var="exportURL" value="/private/export">
+<spring:url var="exportURL" value="/private/export" htmlEscape="false">
 	<spring:param name="${exportClientsParamName}" value="true"/>
 	<spring:param name="${exportInvoicesParamName}" value="true"/>
 	<spring:param name="${exportEstimationsParamName}" value="true"/>
