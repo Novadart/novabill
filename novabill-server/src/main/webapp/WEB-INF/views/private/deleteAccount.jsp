@@ -17,21 +17,18 @@
 
 <script type="text/javascript">
 var xsrfParam = '${exportTokenParamName}';
-var xsrfValue = '${exportToken}';
 
 function buildUrl(xsrfToken){
 	return '${exportURL}' + '&' + xsrfParam + '=' + xsrfToken;
 }
 
 $(function(){
-	$('#exportDocs').attr('href', buildUrl(xsrfValue));
-	
 	$('#exportDocs').click(function(){
 		$('#exportDocs').hide();
 		$('#loader').show();
 		
 		$.get('${xsrfTokenService}', function(xsrfToken){
-			$('#exportDocs').attr('href', buildUrl(xsrfToken));
+			$('#downloadFrame').attr('src', buildUrl(xsrfToken));
 			
 			$('#loader').hide();
 			$('#exportDocs').show();
@@ -50,9 +47,9 @@ $(function(){
 	<spring:message code="deleteAccount.lastChanceToExport" />
 </p>
 
-<a id="exportDocs" class="action2-button exportLink" target="_blank">
+<div id="exportDocs" class="action2-button exportLink">
 	<spring:message code="deleteAccount.exportData" />
-</a>
+</div>
 <img src="${loader}" id="loader" style="display: none;">
 
 <p class="deleteMessage">
@@ -79,3 +76,4 @@ $(function(){
 
 </form:form>
 
+<iframe id="downloadFrame" style="display: none;" ></iframe>

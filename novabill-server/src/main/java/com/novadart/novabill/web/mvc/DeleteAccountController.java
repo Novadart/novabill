@@ -18,16 +18,12 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.XsrfTokenService;
 import com.novadart.novabill.web.mvc.command.DeleteAccount;
 
 @Controller
 @RequestMapping("/private/delete")
 @SessionAttributes("deleteAccount")
 public class DeleteAccountController {
-	
-	@Autowired
-	private XsrfTokenService xsrfTokenService;
 	
 	@Autowired
 	private UtilsService utilsService;
@@ -49,7 +45,6 @@ public class DeleteAccountController {
 		model.addAttribute("exportCreditnotesParamName", ExportController.CREDITNOTES_REQUEST_PARAM);
 		model.addAttribute("exportTransportdocsParamName", ExportController.TRANSPORTDOCS_REQUEST_PARAM);
 		model.addAttribute("exportTokenParamName", ExportController.TOKEN_REQUEST_PARAM);
-		model.addAttribute("exportToken", xsrfTokenService.generateToken(session, ExportController.TOKENS_SESSION_FIELD));
 		
 		return "deleteAccount";
 	}
