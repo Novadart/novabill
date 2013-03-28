@@ -1,5 +1,7 @@
 package com.novadart.novabill.service;
 
+
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
@@ -11,6 +13,8 @@ import com.novadart.novabill.shared.client.dto.PaymentDateType;
 @Service
 public class TempService {
 
+	private boolean run = false;
+	
 	private PaymentType[] paymentTypes = new PaymentType[]{
 			new PaymentType("Rimessa Diretta", "Pagamento in Rimessa Diretta", PaymentDateType.IMMEDIATE, 0),
 			new PaymentType("Bonifico Bancario 30GG", "Pagamento con bonifico bancario entro 30 giorni", PaymentDateType.IMMEDIATE, 30),
@@ -33,45 +37,82 @@ public class TempService {
 				PaymentType paymentType = pType.clone();
 				paymentType.setBusiness(business);
 				business.getPaymentTypes().add(paymentType);
+				business.merge();
 			}
 		}
 	}
 	
 	private void updateInvoicePaymentInfo(){
 		for(Invoice inv: Invoice.findAllInvoices()){
-			if(inv.getId() == 35){
-				
-			}else if(inv.getId() == 42){
-				
-			}else if(inv.getId() == 44){
-				
-			}else if(inv.getId() == 46){
-				
-			}else if(inv.getId() == 58){
-				
-			}else if(inv.getId() == 60){
-				
-			}else if(inv.getId() == 65){
-				
-			}else if(inv.getId() == 73){
-				
-			}else if(inv.getId() == 52){
-				
-			}else if(inv.getId() == 77){
-				
-			}else if(inv.getId() == 93){
-				
-			}else if(inv.getId() == 95){
-				
+			if(inv.getId() == 35){ //0
+				inv.setPaymentTypeName("Rimessa Diretta");
+				inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+				inv.setPaymentDateDelta(0);
+			}else if(inv.getId() == 42){ //3
+				inv.setPaymentTypeName("Bonifico Bancario 60GG");
+				inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+				inv.setPaymentDateDelta(60);
+			}else if(inv.getId() == 44){//3
+				inv.setPaymentTypeName("Bonifico Bancario 60GG");
+				inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+				inv.setPaymentDateDelta(60);
+			}else if(inv.getId() == 46){//3
+				inv.setPaymentTypeName("Bonifico Bancario 60GG");
+				inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+				inv.setPaymentDateDelta(60);
+			}else if(inv.getId() == 52){//10
+				inv.setPaymentTypeName("Ri.Ba. 90GG");
+				inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+				inv.setPaymentDateDelta(90);
+			}else if(inv.getId() == 58){//0
+				inv.setPaymentTypeName("Rimessa Diretta");
+				inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+				inv.setPaymentDateDelta(0);
+			}else if(inv.getId() == 65){//2
+				inv.setPaymentTypeName("Bonifico Bancario 30GG");
+				inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+				inv.setPaymentDateDelta(30);
+			}else if(inv.getId() == 73){//2
+				inv.setPaymentTypeName("Bonifico Bancario 30GG");
+				inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+				inv.setPaymentDateDelta(30);
+			}else if(inv.getId() == 77){//4
+				inv.setPaymentTypeName("Bonifico Bancario 90GG");
+				inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+				inv.setPaymentDateDelta(90);
+			}else if(inv.getId() == 93){//0
+				inv.setPaymentTypeName("Rimessa Diretta");
+				inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+				inv.setPaymentDateDelta(0);
+			}else if(inv.getId() == 95){//2
+				inv.setPaymentTypeName("Bonifico Bancario 30GG");
+				inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+				inv.setPaymentDateDelta(30);
+			}else if(inv.getId() == 102){//0
+				inv.setPaymentTypeName("Rimessa Diretta");
+				inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+				inv.setPaymentDateDelta(0);
+			}else if(inv.getId() == 110){//0
+				inv.setPaymentTypeName("Rimessa Diretta");
+				inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+				inv.setPaymentDateDelta(0);
 			}
+			inv.merge();
 		}
 	}
 	
-	//@PostConstruct
+	@Scheduled(fixedDelay = 10000)
 	@Transactional(readOnly = false)
 	public void update() throws CloneNotSupportedException{
-		addPayments();
-		updateInvoicePaymentInfo();
+		if(!run){
+			System.out.println("Runnint temp bean task...");
+			addPayments();
+			updateInvoicePaymentInfo();
+			System.out.println("Finished...");
+			run = true;
+		}else
+			System.out.println("Skipping...");
+		
 	}
 	
 }
