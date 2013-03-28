@@ -4,6 +4,8 @@ hibernate.hbm2ddl.auto.value=create
 hibernate.search.default.indexBase.value=/opt/novabill/lucene.indexBase
 hibernate.show_sql.value=true
 hibernate.hbm2ddl.import_files.value=/import.sql,/test-rows.sql
+dbuser=novabill
+dbpassword=novabill
 
 #cache
 ehcache.business-cache.maxElementsInMemory.value=100
