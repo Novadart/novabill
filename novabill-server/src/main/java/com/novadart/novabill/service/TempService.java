@@ -101,7 +101,7 @@ public class TempService {
 		}
 	}
 	
-	@Scheduled(fixedDelay = 10000)
+	//@Scheduled(fixedDelay = 10000)
 	@Transactional(readOnly = false)
 	public void update() throws CloneNotSupportedException{
 		if(!run){
