@@ -10,6 +10,7 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 
 public abstract class NotificationDialog<T> extends Dialog {
 	
@@ -28,6 +29,7 @@ public abstract class NotificationDialog<T> extends Dialog {
 	private final NotificationCallback<T> onClose;
 	
 	public NotificationDialog(NotificationCallback<T> onClose) {
+		super(GlobalBundle.INSTANCE.dialog());
 		setAutoHideEnabled(false);
 		setWidget(uiBinder.createAndBindUi(this));
 		addButtons(buttons);

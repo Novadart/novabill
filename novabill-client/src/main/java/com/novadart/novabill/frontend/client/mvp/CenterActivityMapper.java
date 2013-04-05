@@ -10,10 +10,12 @@ import com.novadart.novabill.frontend.client.activity.center.CreditNoteActivity;
 import com.novadart.novabill.frontend.client.activity.center.EstimationActivity;
 import com.novadart.novabill.frontend.client.activity.center.HomeActivity;
 import com.novadart.novabill.frontend.client.activity.center.InvoiceActivity;
+import com.novadart.novabill.frontend.client.activity.center.PaymentActivity;
 import com.novadart.novabill.frontend.client.activity.center.TransportDocumentActivity;
 import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
+import com.novadart.novabill.frontend.client.place.PaymentPlace;
 import com.novadart.novabill.frontend.client.place.creditnote.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.estimation.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.InvoicePlace;
@@ -36,6 +38,10 @@ public class CenterActivityMapper implements ActivityMapper {
 		} else if(place instanceof BusinessPlace){
 
 			return new BusinessActivity(clientFactory);
+
+		} else if(place instanceof PaymentPlace){
+
+			return new PaymentActivity(clientFactory);
 
 		} else if(place instanceof InvoicePlace){
 

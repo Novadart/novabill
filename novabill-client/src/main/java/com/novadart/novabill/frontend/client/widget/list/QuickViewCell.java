@@ -7,6 +7,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.novadart.novabill.frontend.client.widget.list.resources.QuickViewListBundle;
 
 public abstract class QuickViewCell<T> extends AbstractCell<T> {
 
@@ -25,9 +26,9 @@ public abstract class QuickViewCell<T> extends AbstractCell<T> {
 			return;
 		}
 		
-		sb.appendHtmlConstant("<div class='quickViewCell'>");
+		sb.appendHtmlConstant("<div class='"+QuickViewListBundle.INSTANCE.quickViewListCss().quickViewCell()+"'>");
 		renderVisible(context, value, sb);
-		sb.appendHtmlConstant("<div class='details'>");
+		sb.appendHtmlConstant("<div class='"+QuickViewListBundle.INSTANCE.quickViewListCss().details()+"'>");
 		renderDetails(context, value, sb);
 		sb.appendHtmlConstant("</div>");
 		sb.appendHtmlConstant("</div>");

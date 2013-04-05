@@ -48,7 +48,6 @@ public class PayPalIPNListenerController {
     
     private final static String RECEIVER_EMAIL = "receiver_email";
     
-	@SuppressWarnings("unchecked")
 	private boolean verifyIPN(HttpServletRequest request) throws URISyntaxException, ClientProtocolException, IOException{
 		//passing back the message to paypal
 		HttpClient client = new DefaultHttpClient();
@@ -68,7 +67,6 @@ public class PayPalIPNListenerController {
     	return RESP_VERIFIED.equals(responseText);
     }
     
-    @SuppressWarnings("unchecked")
 	private Map<String, String> extractParameters(HttpServletRequest request){
     	Map<String, String> parametersMap = new HashMap<String, String>();
     	Enumeration<String> paramNames = request.getParameterNames();

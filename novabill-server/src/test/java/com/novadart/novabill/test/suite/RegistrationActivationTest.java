@@ -6,6 +6,8 @@ import static org.junit.Assert.*;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Locale;
+
 import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -14,6 +16,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.orm.jpa.JpaSystemException;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,7 @@ import com.novadart.novabill.domain.EmailPasswordHolder;
 import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.TokenGenerator;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.RegistrationValidator;
 import com.novadart.novabill.web.mvc.ActivateAccountController;
 import com.novadart.novabill.web.mvc.RegisterController;
@@ -35,6 +39,7 @@ import com.novadart.novabill.web.mvc.RegisterController;
 @ContextConfiguration(locations = "classpath*:mvc-test-config.xml")
 @Transactional
 @DirtiesContext
+@ActiveProfiles("dev")
 public class RegistrationActivationTest {
 	
 	@Resource(name = "userPasswordMap")
@@ -42,6 +47,12 @@ public class RegistrationActivationTest {
 
 	@Autowired
 	private RegistrationValidator validator;
+	
+	@Autowired
+	private UtilsService utilsService;
+	
+	@Autowired
+	private MessageSource messageSource;
 	
 	private RegisterController initRegisterController(String token, String activationUrlPattern, int activationPeriod) throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException{
 		RegisterController controller = new RegisterController();
@@ -68,6 +79,14 @@ public class RegistrationActivationTest {
 		return registration;
 	}
 	
+	private ActivateAccountController initActivateAccountController() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+		ActivateAccountController activateAccountController = new ActivateAccountController();
+		TestUtils.setPrivateField(ActivateAccountController.class, activateAccountController, "utilsService", utilsService);
+		TestUtils.setPrivateField(ActivateAccountController.class, activateAccountController, "messageSource", messageSource);
+		activateAccountController.init();
+		return activateAccountController;
+	}
+	
 	@Test
 	public void defaultRegistrationActivationFlow() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
 		String token = "1", email = "foo@bar.com", password = "password";
@@ -79,11 +98,11 @@ public class RegistrationActivationTest {
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
-		ActivateAccountController activationController = new ActivateAccountController();
+		ActivateAccountController activationController = initActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);
 		String forwardToSpringSecurityCheck = activationController.processSubmit(email, password, (Registration)model.asMap().get("registration"),
-				mock(Model.class), mock(SessionStatus.class));
+				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		assertEquals("redirect:/registrationCompleted", registerView);
 		assertEquals("activate", activateView);
 		assertEquals("forward:/resources/j_spring_security_check", forwardToSpringSecurityCheck);
@@ -189,11 +208,11 @@ public class RegistrationActivationTest {
 		smtpServer.stop();
 		assertEquals(1, smtpServer.getReceivedEmailSize());
 		
-		ActivateAccountController activationController = new ActivateAccountController();
+		ActivateAccountController activationController = initActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView1 = activationController.setupForm(email, token, model);
 		String forwardToSpringSecurityCheck1 = activationController.processSubmit(email, password, (Registration)model.asMap().get("registration"),
-				mock(Model.class), mock(SessionStatus.class));
+				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		model = new ExtendedModelMap();
 		String activateView2 = activationController.setupForm(email, token, model);
 		assertEquals("redirect:/registrationCompleted", registerView);
@@ -225,16 +244,16 @@ public class RegistrationActivationTest {
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
 		//First activation initiation
-		ActivateAccountController activationController1 = new ActivateAccountController();
+		ActivateAccountController activationController1 = initActivateAccountController();
 		Model model1 = new ExtendedModelMap();
 		String activateView1 = activationController1.setupForm(email, token1, model1);
 
 		//Second activation initiation
-		ActivateAccountController activationController2 = new ActivateAccountController();
+		ActivateAccountController activationController2 = initActivateAccountController();
 		Model model2 = new ExtendedModelMap();
 		String activateView2 = activationController2.setupForm(email, token2, model2);
 		String forwardToSpringSecurityCheck1 = activationController1.processSubmit(email, password, (Registration)model1.asMap().get("registration"),
-				mock(Model.class), mock(SessionStatus.class));
+				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		
 		Principal.entityManager().flush();
 		
@@ -246,7 +265,7 @@ public class RegistrationActivationTest {
 		assertEquals("activate", activateView2);
 		
 		activationController2.processSubmit(email, password, (Registration)model2.asMap().get("registration"),
-				mock(Model.class), mock(SessionStatus.class));
+				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		
 		Principal.entityManager().flush();
 		
@@ -263,11 +282,11 @@ public class RegistrationActivationTest {
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
-		ActivateAccountController activationController = new ActivateAccountController();
+		ActivateAccountController activationController = initActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);
 		String backToActivate = activationController.processSubmit(email, password + "1", (Registration)model.asMap().get("registration"),
-				mock(Model.class), mock(SessionStatus.class));
+				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		assertEquals("redirect:/registrationCompleted", registerView);
 		assertEquals("activate", activateView);
 		assertEquals("activate", backToActivate);
@@ -284,11 +303,11 @@ public class RegistrationActivationTest {
 		smtpServer.stop();
 		assertEquals(1, smtpServer.getReceivedEmailSize());
 		
-		ActivateAccountController activationController = new ActivateAccountController();
+		ActivateAccountController activationController = initActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);
 		String backToActivate = activationController.processSubmit(email, null, (Registration)model.asMap().get("registration"),
-				mock(Model.class), mock(SessionStatus.class));
+				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		assertEquals("redirect:/registrationCompleted", registerView);
 		assertEquals("activate", activateView);
 		assertEquals("activate", backToActivate);

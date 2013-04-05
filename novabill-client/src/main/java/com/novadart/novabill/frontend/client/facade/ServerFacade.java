@@ -8,17 +8,21 @@ import com.google.gwt.http.client.Response;
 import com.google.gwt.http.client.URL;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.facade.xsrf.XsrfBatchDataFetcherServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfBusinessServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfClientServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfCreditNoteServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfEstimationServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfInvoiceServiceAsync;
+import com.novadart.novabill.frontend.client.facade.xsrf.XsrfPaymentTypeServiceAsync;
 import com.novadart.novabill.frontend.client.facade.xsrf.XsrfTransportDocumentServiceAsync;
+import com.novadart.novabill.shared.client.facade.BatchDataFetcherServiceAsync;
 import com.novadart.novabill.shared.client.facade.BusinessServiceAsync;
 import com.novadart.novabill.shared.client.facade.ClientServiceAsync;
 import com.novadart.novabill.shared.client.facade.CreditNoteServiceAsync;
 import com.novadart.novabill.shared.client.facade.EstimationServiceAsync;
 import com.novadart.novabill.shared.client.facade.InvoiceServiceAsync;
+import com.novadart.novabill.shared.client.facade.PaymentTypeServiceAsync;
 import com.novadart.novabill.shared.client.facade.TransportDocumentServiceAsync;
 
 public class ServerFacade {
@@ -35,6 +39,9 @@ public class ServerFacade {
 
 	public static final TransportDocumentServiceAsync transportDocument = new XsrfTransportDocumentServiceAsync();
 
+	public static final PaymentTypeServiceAsync payment = new XsrfPaymentTypeServiceAsync();
+	
+	public static final BatchDataFetcherServiceAsync batchFetcher = new XsrfBatchDataFetcherServiceAsync();
 
 	private static final RequestBuilder FEEDBACK_REQUEST =
 			new RequestBuilder(RequestBuilder.POST, Const.POST_FEEDBACK_URL);

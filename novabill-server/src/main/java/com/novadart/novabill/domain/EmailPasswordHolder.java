@@ -177,7 +177,7 @@ public class EmailPasswordHolder {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
-    private Long id;
+    protected Long id;
     
     @Version
     @Column(name = "version")

@@ -4,8 +4,8 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.frontend.client.view.MainWidget;
-import com.novadart.novabill.frontend.client.view.center.BusinessView;
+import com.novadart.novabill.frontend.client.presenter.center.business.BusinessPresenter;
+import com.novadart.novabill.frontend.client.view.center.business.BusinessView;
 
 public class BusinessActivity extends AbstractCenterActivity {
 
@@ -21,10 +21,8 @@ public class BusinessActivity extends AbstractCenterActivity {
 			
 			@Override
 			public void onSuccess(BusinessView bv) {
-				bv.setPresenter(BusinessActivity.this);
-				bv.setEventBus(eventBus);
-				MainWidget.getInstance().setStandardView();
-				panel.setWidget(bv);
+				BusinessPresenter presenter = new BusinessPresenter(getClientFactory().getPlaceController(), eventBus, bv);
+				presenter.go(panel);
 			}
 			
 			@Override

@@ -2,6 +2,7 @@ package com.novadart.novabill.frontend.client.widget.list;
 
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.user.cellview.client.AbstractHasData;
 import com.google.gwt.user.client.Timer;
 import com.google.gwt.user.client.ui.Button;
@@ -14,7 +15,12 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 
 public class ShowMoreButton extends Composite {
-	private static final int CANCEL_LOADER_TIMEOUT = 10000;
+	private static final int CANCEL_LOADER_TIMEOUT = 5000;
+	
+	public static interface Style extends CssResource {
+		String button();
+		String loader();
+	}
 
 	private final SimplePanel container = new SimplePanel();
 	private AbstractHasData<?> display;
@@ -29,7 +35,7 @@ public class ShowMoreButton extends Composite {
 
 	private final int rangeIncrement;
 
-	public ShowMoreButton(int rangeIncrement) {
+	public ShowMoreButton(Style style, int rangeIncrement) {
 		this.rangeIncrement = rangeIncrement;
 		container.setWidget(button);
 		initWidget(container);
@@ -43,8 +49,8 @@ public class ShowMoreButton extends Composite {
 			}
 		});
 
-		button.setStyleName(getStylePrimaryName()+"-button");
-		loader.setStyleName(getStylePrimaryName()+"-loader");
+		button.setStyleName(style.button());
+		loader.setStyleName(style.loader());
 
 	}
 
@@ -71,11 +77,11 @@ public class ShowMoreButton extends Composite {
 		cancelLoaderTimer.schedule(CANCEL_LOADER_TIMEOUT);
 	}
 
-	public void addStyleNameToButton(String styleName){
-		button.addStyleName(styleName);
+	public Button getButton() {
+		return button;
 	}
-
-	public void addStyleNameToLoader(String styleName){
-		loader.addStyleName(styleName);
+	
+	public Image getLoader() {
+		return loader;
 	}
 }

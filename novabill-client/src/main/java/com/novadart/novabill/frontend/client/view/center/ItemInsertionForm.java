@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -19,9 +20,12 @@ import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
+import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
 public class ItemInsertionForm extends Composite implements HasUILocking {
@@ -46,6 +50,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField TextBox price;
 	@UiField(provided=true) ListBox tax;
 	@UiField(provided=true) ItemTable itemTable;
+	@UiField SimplePanel tip;
 
 	@UiField Button add;
 	
@@ -54,11 +59,11 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	public ItemInsertionForm(Handler handler) {
 		this.handler = handler;
 		
-		item = new ValidatedTextArea(new TextLengthValidation(255) {
+		item = new ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), new TextLengthValidation(500) {
 			
 			@Override
 			public String getErrorMessage() {
-				return I18NM.get.textLengthError(255);
+				return I18NM.get.textLengthError(500);
 			}
 		});
 		
@@ -85,6 +90,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		accountingDocumentItems.addDataDisplay(itemTable);
 		
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		TipFactory.show(Tips.item_insertion_form, tip);
 	}
 
 	@UiHandler("add")

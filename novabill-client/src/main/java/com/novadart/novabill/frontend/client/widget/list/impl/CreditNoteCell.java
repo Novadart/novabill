@@ -12,9 +12,10 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.creditnote.ModifyCreditNotePlace;
+import com.novadart.novabill.frontend.client.presenter.Presenter;
 import com.novadart.novabill.frontend.client.util.PDFUtils;
-import com.novadart.novabill.frontend.client.view.View.Presenter;
 import com.novadart.novabill.frontend.client.widget.list.QuickViewCell;
+import com.novadart.novabill.frontend.client.widget.list.resources.QuickViewListBundle;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
@@ -30,16 +31,16 @@ public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
 			com.google.gwt.cell.client.Cell.Context context, CreditNoteDTO value,
 			SafeHtmlBuilder sb) {
 
-		sb.appendHtmlConstant("<div class='main '>");
-		sb.appendHtmlConstant("<span class='id'>");
+		sb.appendHtmlConstant("<div class='"+QuickViewListBundle.INSTANCE.quickViewListCss().main()+" '>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().id()+"'>");
 		sb.append(value.getDocumentID());
 		sb.appendHtmlConstant("</span>");
 
-		sb.appendHtmlConstant("<span class='date'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().date()+"'>");
 		sb.appendEscaped(DateTimeFormat.getFormat(DateTimeFormat.PredefinedFormat.DATE_LONG).format(value.getAccountingDocumentDate()));
 		sb.appendHtmlConstant("</span>");
 
-		sb.appendHtmlConstant("<span class='name'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().name()+"'>");
 		sb.appendEscaped(value.getClient().getName());
 		sb.appendHtmlConstant("</span>");
 
@@ -51,20 +52,20 @@ public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
 			com.google.gwt.cell.client.Cell.Context context, CreditNoteDTO value,
 			SafeHtmlBuilder sb) {
 
-		sb.appendHtmlConstant("<div class='upper'>");
-		sb.appendHtmlConstant("<span class='total'>");
+		sb.appendHtmlConstant("<div class='"+QuickViewListBundle.INSTANCE.quickViewListCss().upper()+"'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().total()+"'>");
 		sb.appendEscaped(I18N.INSTANCE.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("</div>");
 
-		sb.appendHtmlConstant("<div class='tools'>");
-		sb.appendHtmlConstant("<span class='openCreditNote'>");
+		sb.appendHtmlConstant("<div class='"+QuickViewListBundle.INSTANCE.quickViewListCss().tools()+"'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().openCreditNote()+"'>");
 		sb.appendEscaped(I18N.INSTANCE.modify());
 		sb.appendHtmlConstant("</span>");
-		sb.appendHtmlConstant("<span class='downloadAsPDF'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().downloadAsPDF()+"'>");
 		sb.appendEscaped(I18N.INSTANCE.download());
 		sb.appendHtmlConstant("</span>");
-		sb.appendHtmlConstant("<span class='delete'>");
+		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().delete()+"'>");
 		sb.appendEscaped(I18N.INSTANCE.delete());
 		sb.appendHtmlConstant("</span>");
 		sb.appendHtmlConstant("</div>");
@@ -93,7 +94,7 @@ public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
 	private boolean isOpenCreditNote(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement open = et.cast();
-			return open.getClassName().contains("openCreditNote");
+			return open.getClassName().contains(QuickViewListBundle.INSTANCE.quickViewListCss().openCreditNote());
 
 		} else {
 			return false;
@@ -103,7 +104,7 @@ public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
 	private boolean isPdf(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement pdf = et.cast();
-			return "downloadAsPDF".equals(pdf.getClassName());
+			return QuickViewListBundle.INSTANCE.quickViewListCss().downloadAsPDF().equals(pdf.getClassName());
 
 		} else {
 			return false;
@@ -113,7 +114,7 @@ public class CreditNoteCell extends QuickViewCell<CreditNoteDTO> {
 	private boolean isDelete(EventTarget et){
 		if(SpanElement.is(et)){
 			SpanElement delete = et.cast();
-			return "delete".equals(delete.getClassName());
+			return QuickViewListBundle.INSTANCE.quickViewListCss().delete().equals(delete.getClassName());
 
 		} else {
 			return false;

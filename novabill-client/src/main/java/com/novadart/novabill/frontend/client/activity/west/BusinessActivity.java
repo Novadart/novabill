@@ -5,7 +5,8 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.activity.BasicActivity;
-import com.novadart.novabill.frontend.client.view.west.WestView;
+import com.novadart.novabill.frontend.client.presenter.west.business.BusinessViewPresenter;
+import com.novadart.novabill.frontend.client.view.west.configuration.ConfigurationWestView;
 
 public class BusinessActivity extends BasicActivity {
 
@@ -15,17 +16,16 @@ public class BusinessActivity extends BasicActivity {
 
 	@Override
 	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
-		getClientFactory().getWestView(new AsyncCallback<WestView>() {
-			
-			@Override
-			public void onSuccess(WestView wv) {
-				wv.setPresenter(BusinessActivity.this);
-				wv.setClient(null);
-				panel.setWidget(wv);
-			}
-			
+		getClientFactory().getConfigurationWestView(new AsyncCallback<ConfigurationWestView>() {
+
 			@Override
 			public void onFailure(Throwable caught) {
+			}
+
+			@Override
+			public void onSuccess(ConfigurationWestView result) {
+				BusinessViewPresenter p = new BusinessViewPresenter(getClientFactory().getPlaceController(), eventBus, result);
+				p.go(panel);
 			}
 		});
 	}

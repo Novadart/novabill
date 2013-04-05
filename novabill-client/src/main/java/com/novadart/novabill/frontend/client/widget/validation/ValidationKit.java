@@ -2,6 +2,7 @@ package com.novadart.novabill.frontend.client.widget.validation;
 
 import com.novadart.gwtshared.client.validation.DefaultValidation;
 import com.novadart.gwtshared.client.validation.EmailValidation;
+import com.novadart.gwtshared.client.validation.NotEmptyDateValidation;
 import com.novadart.gwtshared.client.validation.NotEmptyValidation;
 import com.novadart.gwtshared.client.validation.NumberValidation;
 import com.novadart.gwtshared.client.validation.PostcodeValidation;
@@ -36,6 +37,14 @@ public class ValidationKit {
 		@Override
 		public String getErrorMessage() {
 			return I18N.INSTANCE.notEmptyValidationError();
+		}
+	};
+	
+	public static final NotEmptyDateValidation NOT_EMPTY_DATE = new NotEmptyDateValidation() {
+
+		@Override
+		public String getErrorMessage() {
+			return I18N.INSTANCE.notEmptyDateValidationError();
 		}
 	};
 

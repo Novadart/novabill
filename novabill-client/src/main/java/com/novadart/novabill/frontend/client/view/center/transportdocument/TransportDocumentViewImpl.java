@@ -1,14 +1,11 @@
 package com.novadart.novabill.frontend.client.view.center.transportdocument;
 
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -24,35 +21,23 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.ValidationBundle;
+import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
-import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
-import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
-import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.ClientPlace;
-import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
+import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.resources.GlobalCss;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
-import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.center.AccountDocument;
+import com.novadart.novabill.frontend.client.view.center.AccountDocumentCss;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
-import com.novadart.novabill.frontend.client.view.center.TransportDocumentView;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
-import com.novadart.novabill.frontend.client.widget.notification.Notification;
-import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.EndpointDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.exception.ValidationException;
 
-public class TransportDocumentViewImpl extends AccountDocument implements TransportDocumentView, HasUILocking {
+public class TransportDocumentViewImpl extends AccountDocument implements TransportDocumentView {
 
 	private static TransportDocumentViewImplUiBinder uiBinder = GWT
 			.create(TransportDocumentViewImplUiBinder.class);
@@ -83,7 +68,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) ValidatedTextBox numberOfPackages;
 	@UiField(provided=true) ValidatedTextBox transporter;
 
-	@UiField(provided=true) DateBox transportStartDate;
+	@UiField(provided=true) ValidatedDateBox transportStartDate;
 	@UiField(provided=true) ValidatedListBox hour;
 	@UiField(provided=true) ValidatedListBox minute;
 
@@ -94,22 +79,17 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	@UiField Label clientName;
 	@UiField(provided=true) ValidatedTextBox number;
-	@UiField(provided=true) DateBox date;
+	@UiField(provided=true) ValidatedDateBox date;
 	@UiField ValidatedTextArea note;
 
 	@UiField Label totalBeforeTaxes;
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
 
-	@UiField LoaderButton modifyDocument;
-	@UiField LoaderButton createTransportDocument;
+	@UiField(provided=true) LoaderButton createTransportDocument;
 	@UiField Button abort;
 
-
 	private Presenter presenter;
-	private EventBus eventBus;
-	private TransportDocumentDTO transportDocument;
-	private ClientDTO client;
 
 	public TransportDocumentViewImpl() {
 		ValidationBundle<String> nev = new ValidationBundle<String>() {
@@ -121,39 +101,39 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			public String getErrorMessage() {	return null; }
 		};
 
-		number = new ValidatedTextBox(ValidationKit.NUMBER);
+		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
-		numberOfPackages = new ValidatedTextBox(ValidationKit.NUMBER);
-		transporter = new ValidatedTextBox(nev);
+		numberOfPackages = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
+		transporter = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), nev);
 
-		fromAddrCity = new RichTextBox(I18N.INSTANCE.city(), nev);
-		fromAddrCompanyName = new RichTextBox(I18N.INSTANCE.companyName(),nev);
-		fromAddrPostCode = new RichTextBox(I18N.INSTANCE.postcode(), nev);
-		fromAddrStreetName = new RichTextBox(I18N.INSTANCE.address(),nev);
+		fromAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(), nev);
+		fromAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(),nev);
+		fromAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(), nev);
+		fromAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),nev);
 		fromAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		fromAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
-		toAddrCity = new RichTextBox(I18N.INSTANCE.city(),nev);
-		toAddrCompanyName = new RichTextBox(I18N.INSTANCE.companyName(), nev);
-		toAddrPostCode = new RichTextBox(I18N.INSTANCE.postcode(),nev);
-		toAddrStreetName = new RichTextBox(I18N.INSTANCE.address(),nev);
+		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),nev);
+		toAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(), nev);
+		toAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(),nev);
+		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),nev);
 		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
 		String str;
-		hour = new ValidatedListBox();
+		hour = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget());
 		for(int i=0; i<24; i++){
 			str = String.valueOf(i);
 			hour.addItem(str.length() < 2 ? "0"+str : str);
 		}
 
-		minute = new ValidatedListBox();
+		minute = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget());
 		for(int i=0; i<60; i++){
 			str = String.valueOf(i);
 			minute.addItem(str.length() < 2 ? "0"+str : str);
 		}
 
-		date = new DateBox();
+		date = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 
@@ -165,14 +145,20 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			}
 		});
 
-		transportStartDate = new DateBox();
+		transportStartDate = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
 		transportStartDate.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
+		createTransportDocument = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		initWidget(uiBinder.createAndBindUi(this));
-		setStyleName("AccountDocumentView");
+		setStyleName(CSS.accountDocumentView());
 
-		modifyDocument.getButton().setStyleName("modifyButton button");
-		createTransportDocument.getButton().setStyleName("createButton button");
+		createTransportDocument.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		presenter.onLoad();
 	}
 
 	@Override
@@ -185,385 +171,71 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return new Element[]{titleLabel.getElement(), docControls.getElement()};
 	}
 
-	@Override
-	public void setEventBus(EventBus eventBus) {
-		this.eventBus = eventBus;
+	@UiFactory
+	GlobalCss getGlobalCss(){
+		return GlobalBundle.INSTANCE.globalCss();
 	}
-
+	
 	@Override
-	protected ScrollPanel getDocScroll() {
+	public ScrollPanel getDocScroll() {
 		return docScroll;
 	}
 
 	@Override
-	protected ValidatedTextBox getNumber() {
+	public ValidatedTextBox getNumber() {
 		return number;
 	}
 
 	@UiHandler("fromAddrCountry")
 	void onFromCountryChange(ChangeEvent event){
-		fromAddrProvince.setEnabled(fromAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT"));
-		fromAddrProvince.reset();
+		presenter.onFromCountryChange();
 	}
 
 	@UiHandler("toAddrCountry")
 	void onToCountryChange(ChangeEvent event){
-		toAddrProvince.setEnabled(toAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT"));
-		toAddrProvince.reset();
+		presenter.onToCountryChange();
 	}
 
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
 	}
+	
+	@UiFactory
+	AccountDocumentCss getAccountDocumentCss(){
+		return CSS;
+	}
 
 	@UiHandler("fromAddrButtonDefault")
 	void onFromAddressButtonDefaultCLicked(ClickEvent e){
-		BusinessDTO b = Configuration.getBusiness();
-		fromAddrCity.setText(b.getCity());
-		fromAddrCompanyName.setText(b.getName());
-		fromAddrPostCode.setText(b.getPostcode());
-		fromAddrProvince.setSelectedItem(b.getProvince());
-		fromAddrStreetName.setText(b.getAddress());
-		fromAddrCountry.setSelectedItemByValue(b.getCountry());
+		presenter.onFromAddressButtonDefaultCLicked();
 	}
 
 	@UiHandler("toAddrButtonDefault")
 	void onToAddressButtonDefaultCLicked(ClickEvent e){
-		toAddrCity.setText(client.getCity());
-		toAddrCompanyName.setText(client.getName());
-		toAddrPostCode.setText(client.getPostcode());
-		if(client.getCountry().equalsIgnoreCase("IT")){
-			toAddrProvince.setSelectedItem(client.getProvince());
-		} else {
-			toAddrProvince.setEnabled(false);
-			toAddrProvince.setSelectedIndex(0);
-		}
-		toAddrStreetName.setText(client.getAddress());
-		toAddrCountry.setSelectedItemByValue(client.getCountry());
+		presenter.onToAddressButtonDefaultCLicked();
 	}
 
 
 	@UiHandler("createTransportDocument")
 	void onCreateTransportDocumentClicked(ClickEvent e){
-		if(!validateTransportDocument()){
-			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
-			return;
-		}
-
-		createTransportDocument.showLoader(true);
-		setLocked(true);
-		
-		final TransportDocumentDTO transportDocument = createTransportDocument(null);
-
-		ServerFacade.transportDocument.add(transportDocument, new ManagedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(Long result) {
-				createTransportDocument.showLoader(false);
-				
-				eventBus.fireEvent(new DocumentAddEvent(transportDocument));
-				Notification.showMessage(I18N.INSTANCE.transportDocumentCreationSuccess(), new NotificationCallback<Void>() {
-
-					@Override
-					public void onNotificationClosed(Void value) {
-						ClientPlace cp = new ClientPlace();
-						cp.setClientId(client.getId());
-						cp.setDocs(DOCUMENTS.transportDocuments);
-						presenter.goTo(cp);
-						setLocked(false);
-					}
-				});
-
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				createTransportDocument.showLoader(false);
-				
-				if(caught instanceof ValidationException){
-					handleServerValidationException((ValidationException) caught);
-				} else {
-					Notification.showMessage(I18N.INSTANCE.transportDocumentCreationFailure());
-					super.onFailure(caught);
-				}
-				
-				setLocked(false);
-			}
-		});
-	}
-
-
-
-	private TransportDocumentDTO createTransportDocument(TransportDocumentDTO transportDocument){
-		TransportDocumentDTO td;
-
-		if(transportDocument != null){
-			td = transportDocument;
-		} else {
-			td = new TransportDocumentDTO();
-			td.setBusiness(Configuration.getBusiness());
-			td.setClient(client);
-		}
-
-		td.setDocumentID(Long.parseLong(number.getText()));
-
-		EndpointDTO loc = new EndpointDTO();
-		loc.setCompanyName(fromAddrCompanyName.getText());
-		loc.setCity(fromAddrCity.getText());
-		loc.setPostcode(fromAddrPostCode.getText());
-		if(fromAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT")){
-			loc.setProvince(fromAddrProvince.getSelectedItemText());
-		} else {
-			loc.setProvince("");
-		}
-		loc.setStreet(fromAddrStreetName.getText());
-		loc.setCountry(fromAddrCountry.getSelectedItemValue());
-		td.setFromEndpoint(loc);
-
-		loc = new EndpointDTO();
-		loc.setCompanyName(toAddrCompanyName.getText());
-		loc.setCity(toAddrCity.getText());
-		loc.setPostcode(toAddrPostCode.getText());
-		if(toAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT")){
-			loc.setProvince(toAddrProvince.getSelectedItemText());
-		} else {
-			loc.setProvince("");
-		}
-		loc.setStreet(toAddrStreetName.getText());
-		loc.setCountry(toAddrCountry.getSelectedItemValue());
-		td.setToEndpoint(loc);
-
-		Date tsd = transportStartDate.getValue();
-		String dateTime = DateTimeFormat.getFormat("dd MMMM yyyy").format(tsd);
-		dateTime += " "+hour.getSelectedItemText()+":"+minute.getSelectedItemText();
-		tsd = DateTimeFormat.getFormat("dd MMMM yyyy HH:mm").parse(dateTime);		
-		td.setTransportStartDate(tsd);
-
-		td.setNumberOfPackages(Integer.valueOf(numberOfPackages.getText()));
-		td.setTradeZone(tradeZone.getText());
-		td.setTransportationResponsibility(transportationResponsibility.getText());
-		td.setTransporter(transporter.getText());
-
-		td.setAccountingDocumentDate(date.getValue());
-		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
-		for (AccountingDocumentItemDTO itemDTO : itemInsertionForm.getItems()) {
-			invItems.add(itemDTO);
-		}
-		td.setItems(invItems);
-		td.setNote(note.getText());
-		DocumentUtils.calculateTotals(invItems, td);
-		return td;
-	}
-
-
-	@UiHandler("modifyDocument")
-	void onModifyTransportDocumentClicked(ClickEvent e){
-		if(!validateTransportDocument()){
-			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
-			return;
-		}
-
-		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback<Boolean>() {
-
-			@Override
-			public void onNotificationClosed(Boolean value) {
-				if(value){
-					modifyDocument.showLoader(true);
-					setLocked(true);
-					
-					final TransportDocumentDTO td = createTransportDocument(transportDocument);
-
-					ServerFacade.transportDocument.update(td, new ManagedAsyncCallback<Void>() {
-
-						@Override
-						public void onFailure(Throwable caught) {
-							modifyDocument.showLoader(false);
-							if(caught instanceof ValidationException){
-								handleServerValidationException((ValidationException) caught);
-							} else {
-								Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateFailure());
-								super.onFailure(caught);
-							}
-							setLocked(false);
-						}
-
-						@Override
-						public void onSuccess(Void result) {
-							modifyDocument.showLoader(false);
-							eventBus.fireEvent(new DocumentUpdateEvent(transportDocument));
-							Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateSuccess(), new NotificationCallback<Void>() {
-
-								@Override
-								public void onNotificationClosed(Void value) {
-									ClientPlace cp = new ClientPlace();
-									cp.setClientId(td.getClient().getId());
-									cp.setDocs(DOCUMENTS.transportDocuments);
-									presenter.goTo(cp);
-									setLocked(false);
-								}
-							});
-						}
-					});
-				}
-			}
-		});
-
+		presenter.onCreateDocumentClicked();
 	}
 
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
-		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback<Boolean>() {
-
-			@Override
-			public void onNotificationClosed(Boolean value) {
-				if(value){
-					ClientPlace cp = new ClientPlace();
-					cp.setClientId(client.getId());
-					cp.setDocs(DOCUMENTS.transportDocuments);
-					presenter.goTo(cp);
-				}
-			}
-		});
+		presenter.onCancelClicked();
 	}
 
-	@Override
-	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId) {
-		this.client =client;
-
-		number.setText(transportDocumentProgressiveId.toString());
-		clientName.setText(client.getName());
-		Date d = new Date();
-		String hourStr = DateTimeFormat.getFormat("HH").format(d);
-		String minuteStr = DateTimeFormat.getFormat("mm").format(d);
-		date.setValue(d);
-		transportStartDate.setValue(d);
-		hour.setSelectedItem(hourStr);
-		minute.setSelectedItem(minuteStr);
-
-		createTransportDocument.setVisible(true);
-	}
-
-
-
-	@Override
-	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId,
-			TransportDocumentDTO document) {
-		setDataForNewTransportDocument(client,transportDocumentProgressiveId);
-		setTransportDocument(document, true);
-	}
-
-	private void setTransportDocument(TransportDocumentDTO transportDocument, boolean cloning) {
-		if(!cloning){
-			this.transportDocument = transportDocument;
-			this.client = transportDocument.getClient();
-			date.setValue(transportDocument.getAccountingDocumentDate());
-			clientName.setText(transportDocument.getClient().getName());
-
-			Date d = transportDocument.getTransportStartDate();
-			transportStartDate.setValue(d);
-			String hourStr = DateTimeFormat.getFormat("HH").format(d);
-			String minuteStr = DateTimeFormat.getFormat("mm").format(d);
-			hour.setSelectedItem(hourStr);
-			minute.setSelectedItem(minuteStr);
-			modifyDocument.setVisible(true);
-
-			titleLabel.setText(I18N.INSTANCE.modifyTransportDocument());
-		}
-
-		List<AccountingDocumentItemDTO> items = null;
-		if(cloning) {
-			items = new ArrayList<AccountingDocumentItemDTO>(transportDocument.getItems().size());
-			for (AccountingDocumentItemDTO i : transportDocument.getItems()) {
-				items.add(i.clone());
-			}
-		} else {
-			items = transportDocument.getItems();
-		}
-
-		itemInsertionForm.setItems(items);
-		note.setText(transportDocument.getNote());
-
-		if(!cloning && transportDocument.getDocumentID() != null){
-			number.setText(transportDocument.getDocumentID().toString());
-		} 
-
-		numberOfPackages.setText(String.valueOf(transportDocument.getNumberOfPackages()));
-
-		EndpointDTO loc = transportDocument.getFromEndpoint();
-		fromAddrCity.setText(loc.getCity());
-		fromAddrCompanyName.setText(loc.getCompanyName());
-		fromAddrPostCode.setText(loc.getPostcode());
-		fromAddrProvince.setSelectedItem(loc.getProvince());
-		fromAddrStreetName.setText(loc.getStreet());
-		fromAddrCountry.setSelectedItemByValue(loc.getCountry());
-
-		loc = transportDocument.getToEndpoint();
-		toAddrCity.setText(loc.getCity());
-		toAddrCompanyName.setText(loc.getCompanyName());
-		toAddrPostCode.setText(loc.getPostcode());
-		toAddrProvince.setSelectedItem(loc.getProvince());
-		toAddrStreetName.setText(loc.getStreet());
-		toAddrCountry.setSelectedItemByValue(loc.getCountry());
-	}
-
-
-	@Override
-	public void setTransportDocument(TransportDocumentDTO document) {
-		setTransportDocument(document, false);
-	}
-
+	
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 	}
 
-
-	private boolean validateTransportDocument(){
-		if(date.getTextBox().getText().isEmpty() || date.getValue() == null 
-				|| transportStartDate.getTextBox().getText().isEmpty() || transportStartDate.getValue() == null){
-			return false;
-		} else if(itemInsertionForm.getItems().isEmpty()){
-			return false;
-		} else {
-			boolean validation = true;
-			for (ValidatedWidget<?, ?> vw : new ValidatedWidget<?, ?>[]{number, fromAddrCity, fromAddrCompanyName, fromAddrPostCode,
-					fromAddrStreetName, fromAddrCountry, toAddrCountry, toAddrCity, toAddrCompanyName, toAddrPostCode, 
-					toAddrStreetName, numberOfPackages, hour, minute}) {
-				vw.validate();
-				validation = validation && vw.isValid();
-			}
-
-			if(fromAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT")){
-				fromAddrProvince.validate();
-				validation = validation && fromAddrProvince.isValid();
-			}
-
-			if(toAddrCountry.getSelectedItemValue().equalsIgnoreCase("IT")){
-				toAddrProvince.validate();
-				validation = validation && toAddrProvince.isValid();
-			}
-
-
-			if(!validation){
-				return false;
-			}
-		}
-		return true;
-	}
-
-
 	@Override
-	public void setClean() {
-		//clean internal data		
-		this.client = null;
-		this.transportDocument = null;
-
+	public void reset() {
 		number.reset();
-
-		//reset widget statuses
-		createTransportDocument.setVisible(false);
-		modifyDocument.setVisible(false);
 
 		//reset widget contents		
 		note.setText("");
@@ -597,9 +269,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
 
-		titleLabel.setText(I18N.INSTANCE.newTransportDocumentCreation());
-		
-		modifyDocument.reset();
 		createTransportDocument.reset();
 		setLocked(false);
 	}
@@ -639,6 +308,139 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		note.setEnabled(!value);
 
 		abort.setEnabled(!value);
+	}
+
+	@Override
+	public LoaderButton getCreateDocument() {
+		return createTransportDocument;
+	}
+
+	@Override
+	public Button getAbort() {
+		return abort;
+	}
+
+	@Override
+	public ValidatedDateBox getDate() {
+		return date;
+	}
+
+	@Override
+	public Label getClientName() {
+		return clientName;
+	}
+
+	@Override
+	public Label getTotalAfterTaxes() {
+		return totalAfterTaxes;
+	}
+
+	@Override
+	public Label getTotalTax() {
+		return totalTax;
+	}
+
+	@Override
+	public Label getTotalBeforeTaxes() {
+		return totalBeforeTaxes;
+	}
+
+	@Override
+	public ItemInsertionForm getItemInsertionForm() {
+		return itemInsertionForm;
+	}
+
+	@Override
+	public ValidatedTextArea getNote() {
+		return note;
+	}
+
+	public Label getTitleLabel() {
+		return titleLabel;
+	}
+
+	public RichTextBox getFromAddrCompanyName() {
+		return fromAddrCompanyName;
+	}
+
+	public RichTextBox getFromAddrStreetName() {
+		return fromAddrStreetName;
+	}
+
+	public RichTextBox getFromAddrPostCode() {
+		return fromAddrPostCode;
+	}
+
+	public RichTextBox getFromAddrCity() {
+		return fromAddrCity;
+	}
+
+	public ValidatedListBox getFromAddrProvince() {
+		return fromAddrProvince;
+	}
+
+	public ValidatedListBox getFromAddrCountry() {
+		return fromAddrCountry;
+	}
+
+	public Button getFromAddrButtonDefault() {
+		return fromAddrButtonDefault;
+	}
+
+	public RichTextBox getToAddrCompanyName() {
+		return toAddrCompanyName;
+	}
+
+	public RichTextBox getToAddrStreetName() {
+		return toAddrStreetName;
+	}
+
+	public RichTextBox getToAddrPostCode() {
+		return toAddrPostCode;
+	}
+
+	public RichTextBox getToAddrCity() {
+		return toAddrCity;
+	}
+
+	public ValidatedListBox getToAddrProvince() {
+		return toAddrProvince;
+	}
+
+	public ValidatedListBox getToAddrCountry() {
+		return toAddrCountry;
+	}
+
+	public Button getToAddrButtonDefault() {
+		return toAddrButtonDefault;
+	}
+
+	public ValidatedTextBox getNumberOfPackages() {
+		return numberOfPackages;
+	}
+
+	public ValidatedTextBox getTransporter() {
+		return transporter;
+	}
+
+	public ValidatedDateBox getTransportStartDate() {
+		return transportStartDate;
+	}
+
+	public ValidatedListBox getHour() {
+		return hour;
+	}
+
+	public ValidatedListBox getMinute() {
+		return minute;
+	}
+
+	public TextBox getTransportationResponsibility() {
+		return transportationResponsibility;
+	}
+
+	public TextBox getTradeZone() {
+		return tradeZone;
 	}
 
 }

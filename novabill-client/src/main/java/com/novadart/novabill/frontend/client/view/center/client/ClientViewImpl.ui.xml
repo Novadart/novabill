@@ -1,32 +1,162 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui"
-	xmlns:i="urn:import:com.novadart.novabill.frontend.client.widget.list.impl" xmlns:gwtshared="urn:import:com.novadart.gwtshared.client">
+	xmlns:i="urn:import:com.novadart.novabill.frontend.client.widget.list.impl"
+	xmlns:gwtshared="urn:import:com.novadart.gwtshared.client">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
+		
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
 
-	<g:FlowPanel>
-		<g:Label styleName="clientName" ui:field="clientName"></g:Label>
-		<g:HTML styleName="clientDetails" ui:field="clientDetails"></g:HTML>
-		<g:ToggleButton styleName="contact" ui:field="contact" text="{i18n.contact}" />
+	<ui:style type="com.novadart.novabill.frontend.client.view.center.client.ClientViewImpl.Style" field="s">
+		@external contact, contact-down, contact-disabled, contact-down-hovering, contact-up-hovering, gwt-TabLayoutPanelTab, gwt-TabLayoutPanelTab-selected;
+		.contact {
+			font-size: 1.2em;
+			font-weight: bold;
+			border: 1px solid #CCC;
+			float: left;
+			padding: 0.2em 0.5em;
+			\-moz-box-shadow: 2px 2px 2px #AAA;
+			\-webkit-box-shadow: 2px 2px 2px #AAA;
+			box-shadow: 2px 2px 2px #AAA;
+			cursor: pointer;
+		}
+		
+		.contact-disabled {
+			font-size: 1.2em;
+			font-weight: bold;
+			border: 1px solid #CCC;
+			float: left;
+			color: #DDD;
+			padding: 0.2em 0.5em;
+			\-moz-box-shadow: 2px 2px 2px #AAA;
+			\-webkit-box-shadow: 2px 2px 2px #AAA;
+			box-shadow: 2px 2px 2px #AAA;
+			cursor: pointer;
+		}
+		
+		.contact.contact-down-hovering,.contact.contact-up-hovering {
+			background-color: #DDD;
+		}
+		
+		.contact.contact-down {
+			background-color: #333;
+			color: white;
+		}
+		
+		.actionWrapper {
+			text-align: center;
+		}
+		
+		.newInvoice,.newEstimation,.newCreditNote,.newTransportDocument {
+			cursor: pointer;
+		}
+		
+		.newEstimation {
+			width: 160px;
+		}
+		
+		.newCreditNote {
+			width: 12em;
+		}
+		
+		.newTransportDocument {
+			width: 16em;
+		}
+		
+		.clientName {
+			font-size: 2em;
+			font-weight: bold;
+			padding: 0 0.5em;
+			text-align: center;
+			text-shadow: 2px 2px 2px #DDD;
+		}
+		
+		.clientDetails {
+			min-width: 30em;
+			padding: 0.2em 0.5em 0.5em;
+			font-size: 1.3em;
+			text-align: center;
+		}
+		
+		.clientOptions {
+			margin-left: auto;
+		}
+		
+		.clientOptions .modifyClient {
+			margin-right: 0.5em;
+		}
+		
+		.modifyClient:HOVER,.cancelClient:HOVER {
+			text-decoration: underline;
+			cursor: pointer;
+		}
+		
+		.clientMainBody {
+			margin: 0 auto 2em;
+			width: 90%;
+		}
+		
+		.listWrapper {
+			padding: 0.8em 2em;
+		}
+		
+		.clientMainBody .gwt-TabLayoutPanelTab {
+			padding: 0.5em 1em;
+			background-color: white;
+			border: 0.1em solid #DDD;
+			width: 9em;
+			border-top-right-radius: 1em;
+			border-top-left-radius: 1em;
+			font-size: 1.2em;
+			cursor: pointer;
+		}
+		
+		.clientMainBody .gwt-TabLayoutPanelTab:HOVER {
+			text-decoration: underline;
+		}
+		
+		.clientMainBody .gwt-TabLayoutPanelTab-selected:HOVER {
+			text-decoration: none;
+		}
+		
+		.clientMainBody .gwt-TabLayoutPanelTab-selected {
+			background-color: #EEE;
+			font-weight: bold;
+		}
+	</ui:style>
+
+	<g:FlowPanel height="100%">
+		<g:Label styleName="{s.clientName}" ui:field="clientName"></g:Label>
+		<g:HTML styleName="{s.clientDetails}" ui:field="clientDetails"></g:HTML>
+		<g:ToggleButton styleName="{s.contact}" ui:field="contact"
+			text="{i18n.contact}" />
 		<!-- <g:Label styleName="contact" ui:field="contact" text="{i18n.contact}"></g:Label> -->
-		<g:HorizontalPanel ui:field="clientOptions" styleName="clientOptions">
-			<g:Button styleName="modifyClient button" ui:field="modifyClient" text="{i18n.modifyClient}" />
-			<gwtshared:LoaderButton ui:field="cancelClient" text="{i18n.cancelClient}" />
+		<g:HorizontalPanel ui:field="clientOptions"
+			styleName="{s.clientOptions}">
+			<g:Button styleName="{s.modifyClient} {g.button}" ui:field="modifyClient"
+				text="{i18n.modifyClient}" />
+			<gwtshared:LoaderButton ui:field="cancelClient"
+				text="{i18n.cancelClient}" />
 		</g:HorizontalPanel>
-		
+
 		<g:SimplePanel ui:field="tip"></g:SimplePanel>
-		
-		<g:SimpleLayoutPanel ui:field="clientMainBody" styleName="clientMainBody">
-			<g:TabLayoutPanel ui:field="tabPanel" barHeight="36" barUnit='PX'> <!-- TODO use PX because of a GWT bug http://code.google.com/p/google-web-toolkit/issues/detail?id=4694&can=5 To replace with 3.5 EM -->
+
+		<g:SimpleLayoutPanel ui:field="clientMainBody"
+			styleName="{s.clientMainBody}">
+			<g:TabLayoutPanel ui:field="tabPanel" barHeight="36"
+				barUnit='PX'> <!-- TODO use PX because of a GWT bug http://code.google.com/p/google-web-toolkit/issues/detail?id=4694&can=5 
+					To replace with 3.5 EM -->
 				<g:tab>
 					<g:customHeader>
-						<g:Label styleName="tabHeaderLabel" text="{i18n.invoices}"></g:Label>
+						<g:Label text="{i18n.invoices}"></g:Label>
 					</g:customHeader>
-					<g:FlowPanel ui:field="listWrapperInvoice" styleName="listWrapper panel">
-						<g:SimplePanel ui:field="actionWrapperInvoice" styleName="actionWrapper">
-							<g:Button ui:field="newInvoice" styleName="action-button newInvoice" text="{i18n.newInvoice}"></g:Button>
+					<g:FlowPanel ui:field="listWrapperInvoice" styleName="{s.listWrapper} {g.panel}">
+						<g:SimplePanel ui:field="actionWrapperInvoice"
+							styleName="{s.actionWrapper}">
+							<g:Button ui:field="newInvoice" styleName="{g.actionButton} {s.newInvoice}"
+								text="{i18n.newInvoice}"></g:Button>
 						</g:SimplePanel>
 						<g:ScrollPanel ui:field="scrollInvoice">
 							<i:InvoiceList ui:field="invoiceList"></i:InvoiceList>
@@ -35,11 +165,14 @@
 				</g:tab>
 				<g:tab>
 					<g:customHeader>
-						<g:Label styleName="tabHeaderLabel" text="{i18n.estimates}"></g:Label>
+						<g:Label text="{i18n.estimates}"></g:Label>
 					</g:customHeader>
-					<g:FlowPanel ui:field="listWrapperEstimation" styleName="listWrapper panel">
-						<g:SimplePanel ui:field="actionWrapperEstimation" styleName="actionWrapper">
-							<g:Button ui:field="newEstimation" styleName="action-button newEstimation" text="{i18n.newEstimation}"></g:Button>
+					<g:FlowPanel ui:field="listWrapperEstimation"
+						styleName="{s.listWrapper} {g.panel}">
+						<g:SimplePanel ui:field="actionWrapperEstimation"
+							styleName="{s.actionWrapper}">
+							<g:Button ui:field="newEstimation" styleName="{g.actionButton} {s.newEstimation}"
+								text="{i18n.newEstimation}"></g:Button>
 						</g:SimplePanel>
 						<g:ScrollPanel ui:field="scrollEstimation">
 							<i:EstimationList ui:field="estimationList"></i:EstimationList>
@@ -48,28 +181,31 @@
 				</g:tab>
 				<g:tab>
 					<g:customHeader>
-						<g:Label styleName="tabHeaderLabel" text="{i18n.creditNotes}"></g:Label>
+						<g:Label text="{i18n.creditNotes}"></g:Label>
 					</g:customHeader>
-					<g:FlowPanel ui:field="listWrapperCredit" styleName="listWrapper panel">
-						<g:SimplePanel ui:field="actionWrapperCredit" styleName="actionWrapper">
-							<g:Button ui:field="newCreditNote" styleName="action-button newCreditNote" text="{i18n.newCreditNote}"></g:Button>
+					<g:FlowPanel ui:field="listWrapperCredit" styleName="{s.listWrapper} {g.panel}">
+						<g:SimplePanel ui:field="actionWrapperCredit"
+							styleName="{s.actionWrapper}">
+							<g:Button ui:field="newCreditNote" styleName="{g.actionButton} {s.newCreditNote}"
+								text="{i18n.newCreditNote}"></g:Button>
 						</g:SimplePanel>
 						<g:ScrollPanel ui:field="scrollCredit">
-							<i:CreditNoteList ui:field="creditNoteList"></i:CreditNoteList>						
+							<i:CreditNoteList ui:field="creditNoteList"></i:CreditNoteList>
 						</g:ScrollPanel>
 					</g:FlowPanel>
 				</g:tab>
 				<g:tab>
 					<g:customHeader>
-						<g:Label styleName="tabHeaderLabel" text="{i18n.transportDocumentsTab}"></g:Label>
+						<g:Label text="{i18n.transportDocumentsTab}"></g:Label>
 					</g:customHeader>
-					<g:FlowPanel ui:field="listWrapperTransport" styleName="listWrapper panel">
-						<g:SimplePanel ui:field="actionWrapperTransport" styleName="actionWrapper">
-							<g:Button ui:field="newTransportDocument" styleName="action-button newTransportDocument" 
-							text="{i18n.newTransportDocument}"></g:Button>
+					<g:FlowPanel ui:field="listWrapperTransport" styleName="{s.listWrapper} {g.panel}">
+						<g:SimplePanel ui:field="actionWrapperTransport"
+							styleName="{s.actionWrapper}">
+							<g:Button ui:field="newTransportDocument"
+								styleName="{g.actionButton} {s.newTransportDocument}" text="{i18n.newTransportDocument}"></g:Button>
 						</g:SimplePanel>
 						<g:ScrollPanel ui:field="scrollTransport">
-							<i:TransportDocumentList ui:field="transportDocumentList"></i:TransportDocumentList>						
+							<i:TransportDocumentList ui:field="transportDocumentList"></i:TransportDocumentList>
 						</g:ScrollPanel>
 					</g:FlowPanel>
 				</g:tab>

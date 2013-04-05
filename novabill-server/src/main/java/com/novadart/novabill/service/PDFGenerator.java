@@ -66,7 +66,7 @@ public class PDFGenerator {
 			DocumentType docType, Boolean putWatermark, BeforeWriteEventHandler bwEvHnld) throws IOException{
 		String json = new JSONSerializer().transform(new DateTransformer("dd/MM/yyyy"), Date.class)
 				.transform(new HtmlEncoderTransformer(), String.class)
-				.transform(new StringTransformer(), BigDecimal.class).include("accountingDocumentItems").serialize(accountingDocument).replace("'", "\\'");
+				.transform(new StringTransformer(), BigDecimal.class).include("accountingDocumentItems").serialize(accountingDocument).replace("'", "\\'").replace("\n", "<br/>");
 		int docTypeConst = docType.ordinal();
 		HttpClient httpClient = new DefaultHttpClient();
 		HttpResponse response = httpClient.execute(prepareRequest(json, logo, docTypeConst));

@@ -31,7 +31,7 @@ public class TaxableEntityValidator {
 			errors.add(new ErrorObject(Field.vatID, ErrorCode.BLANK_OR_NULL));
 		}
 		if(!isValid)
-			throw new ValidationException(errors);
+			throw new ValidationException(errors, taxableEntity.getClass().getName());
 	}
 
 }

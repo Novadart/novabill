@@ -6,15 +6,15 @@
 	xmlns:cache="http://www.springframework.org/schema/cache"
 	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
-						http://www.springframework.org/schema/beans/spring-beans-3.1.xsd
+						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 						http://www.springframework.org/schema/context
-						http://www.springframework.org/schema/context/spring-context-3.1.xsd
+						http://www.springframework.org/schema/context/spring-context-3.2.xsd
 						http://www.springframework.org/schema/mvc
-						http://www.springframework.org/schema/mvc/spring-mvc-3.1.xsd
+						http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
 						http://www.springframework.org/schema/security
 						http://www.springframework.org/schema/security/spring-security-3.1.xsd
 						http://www.springframework.org/schema/cache
-						http://www.springframework.org/schema/cache/spring-cache-3.1.xsd">
+						http://www.springframework.org/schema/cache/spring-cache-3.2.xsd">
 
 	<context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
 	<context:annotation-config />
@@ -55,6 +55,11 @@
 		<lookup-method name="self" bean="businessServiceImpl"/>
 	</bean>
 	
+	<bean id="paymenttype" class="com.novadart.novabill.web.gwt.PaymentTypeServiceProxy" primary="true"/>
+	<bean id="paymentTypeServiceImpl" class="com.novadart.novabill.web.gwt.PaymentTypeServiceImpl"/>
+	
+	
+	<bean id="batchdatafetcher" class="com.novadart.novabill.web.gwt.BatchDataFetcherServiceImpl"/>
 	
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">
@@ -65,6 +70,8 @@
 				/**/estimation.rpc=estimation
 				/**/creditnote.rpc=creditnote
 				/**/transportdoc.rpc=transportdoc
+				/**/paymenttype.rpc=paymenttype
+				/**/batchdatafetcher.rpc=batchdatafetcher
 			</value>
 		</property>
 	</bean>

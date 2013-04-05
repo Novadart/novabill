@@ -1,0 +1,112 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:t="urn:import:com.novadart.gwtshared.client.textbox">
+
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
+		field="i18n"></ui:with>
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
+	
+	<ui:style>
+		.body {
+			background-color: white;
+			padding: 1em;
+			border: 1em solid #EEE;
+			border-radius: 0.5em;
+			width: 40em;
+			min-height: 10em;
+		}
+		
+		.title {
+			text-align: center;
+			padding: 0.2em;
+			font-size: 1.4em;
+			font-weight: bold;
+			margin-bottom: 1em;
+		}
+		
+		.filterContainer {
+			margin: 0 auto;
+		}
+		
+		.listWrapper {
+			width: 100%;
+		}
+		
+		.buttons {
+			margin: 1em auto 0;
+		}
+		
+		.buttons .changeme {
+			width: 7em;
+		}
+		
+		.buttons .changeme.submit {
+			margin-right: 1em;
+		}
+		
+		.listWrapperScroll {
+			height: 30em;
+		}
+	</ui:style>
+
+	<ui:style field="cs"
+		type="com.novadart.novabill.frontend.client.widget.dialog.selectclient.SelectClientDialog.ClientSearchStyle">
+			.resetFilter {
+				cursor: pointer;
+				width: 1.5em;
+				position: relative;
+				top: 0.4em;
+				right: -0.5em;
+			}
+			
+			.clientLoader {
+				display: block;
+				margin: 1em auto 0;
+			}
+			
+			.noClientsFoundMessage {
+				margin: 1em auto 0;
+				text-align: center;
+				padding: 1em 1em 0;
+			}
+			
+			.filter {
+				width: 20em;
+				margin-bottom: 1em
+			}
+			
+			.clientListWrapper {
+				
+			}
+		</ui:style>
+
+	<ui:style field="ccs"
+		type="com.novadart.novabill.frontend.client.widget.dialog.selectclient.SelectClientDialog.ClientCellStyle">
+			.client {
+				text-align: center;
+				padding: 0.5em;
+				font-size: 1.1em;
+				border: 0.1em solid #DDD;
+				margin-bottom: 0.2em;
+			}
+			
+			.name {
+				
+			}
+		</ui:style>
+
+	<g:FlowPanel styleName="{style.body}">
+		<g:Label styleName="{style.title}" text="{i18n.selectClient}"></g:Label>
+		<g:SimplePanel ui:field="tip"></g:SimplePanel>
+		<g:HorizontalPanel ui:field="filterContainer"
+			styleName="{style.filterContainer}" />
+		<g:ScrollPanel styleName="{style.listWrapperScroll}"
+			ui:field="listWrapperScroll" />
+
+		<g:HorizontalPanel styleName="{style.buttons}">
+			<g:Button ui:field="ok" enabled="false"
+				styleName="{g.button} {style.changeme} {style.submit}" text="{i18n.submit}"></g:Button>
+			<g:Button ui:field="cancel" text="{i18n.cancel}" styleName="{g.button} {style.changeme}"></g:Button>
+		</g:HorizontalPanel>
+	</g:FlowPanel>
+</ui:UiBinder> 

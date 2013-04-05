@@ -10,10 +10,12 @@ import com.novadart.novabill.frontend.client.activity.west.CreditNoteActivity;
 import com.novadart.novabill.frontend.client.activity.west.EstimationActivity;
 import com.novadart.novabill.frontend.client.activity.west.HomeActivity;
 import com.novadart.novabill.frontend.client.activity.west.InvoiceActivity;
+import com.novadart.novabill.frontend.client.activity.west.PaymentActivity;
 import com.novadart.novabill.frontend.client.activity.west.TransportDocumentActivity;
 import com.novadart.novabill.frontend.client.place.BusinessPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.HomePlace;
+import com.novadart.novabill.frontend.client.place.PaymentPlace;
 import com.novadart.novabill.frontend.client.place.creditnote.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.estimation.EstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.InvoicePlace;
@@ -56,6 +58,10 @@ private final ClientFactory clientFactory;
 		} else if(place instanceof BusinessPlace) {
 		
 			return new BusinessActivity(clientFactory);
+	
+		} else if(place instanceof PaymentPlace) {
+		
+			return new PaymentActivity(clientFactory);
 	
 		} else {
 		

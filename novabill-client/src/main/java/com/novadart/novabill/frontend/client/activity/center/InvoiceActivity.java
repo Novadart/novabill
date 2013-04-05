@@ -4,8 +4,6 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.frontend.client.facade.CallbackUtils;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
@@ -14,12 +12,15 @@ import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocument
 import com.novadart.novabill.frontend.client.place.invoice.InvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
-import com.novadart.novabill.frontend.client.view.MainWidget;
-import com.novadart.novabill.frontend.client.view.center.InvoiceView;
+import com.novadart.novabill.frontend.client.presenter.center.invoice.ModifyInvoicePresenter;
+import com.novadart.novabill.frontend.client.presenter.center.invoice.NewInvoicePresenter;
+import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.tuple.Pair;
+import com.novadart.novabill.shared.client.tuple.Triple;
 
 public class InvoiceActivity extends AbstractCenterActivity {
 
@@ -39,8 +40,6 @@ public class InvoiceActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(final InvoiceView view) {
-				view.setPresenter(InvoiceActivity.this);
-				view.setEventBus(eventBus);
 
 				if (place instanceof ModifyInvoicePlace) {
 					ModifyInvoicePlace p = (ModifyInvoicePlace) place;
@@ -63,7 +62,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 					setupNewInvoiceView(panel, view, p);
 
 				} else {
-					goTo(new HomePlace());
+					getClientFactory().getPlaceController().goTo(new HomePlace());
 				}
 
 
@@ -77,185 +76,75 @@ public class InvoiceActivity extends AbstractCenterActivity {
 	}
 
 	private void setupNewInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, final NewInvoicePlace place){
-		ServerFacade.invoice.getNextInvoiceDocumentID(new ManagedAsyncCallback<Long>() {
+		ServerFacade.batchFetcher.fetchNewInvoiceForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
 
 			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
-
-					@Override
-					public void onSuccess(ClientDTO client) {
-						view.setDataForNewInvoice(client, progrId);
-						MainWidget.getInstance().setLargeView();
-						panel.setWidget(view);
-					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
-					}
-				});
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
+			public void onSuccess(Pair<Long, ClientDTO> result) {
+				NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setDataForNewInvoice(result.getSecond(), result.getFirst());
+				p.go(panel);
 			}
 		});
 	}
 
 	private void setupFromEstimationInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, final FromEstimationInvoicePlace place){
-		ServerFacade.invoice.getNextInvoiceDocumentID(new ManagedAsyncCallback<Long>() {
+		ServerFacade.batchFetcher.fetchNewInvoiceFromEstimationOpData(place.getEstimationId(), new DocumentCallack<Pair<Long,EstimationDTO>>(){
 
 			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.estimation.get(place.getEstimationId(), new ManagedAsyncCallback<EstimationDTO>() {
-
-					@Override
-					public void onSuccess(EstimationDTO result) {
-						view.setDataForNewInvoice(progrId, result);
-						MainWidget.getInstance().setLargeView();
-						panel.setWidget(view);
-					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
-					}
-				});
+			public void onSuccess(Pair<Long, EstimationDTO> result) {
+				NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setDataForNewInvoice(result.getFirst(), result.getSecond());
+				p.go(panel);
 			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
+			
 		});
 	}
 
 	private void setupFromTransportDocumentInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, 
 			final FromTransportDocumentInvoicePlace place){
-		ServerFacade.invoice.getNextInvoiceDocumentID(new ManagedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.transportDocument.get(place.getTransportDocumentId(), new ManagedAsyncCallback<TransportDocumentDTO>() {
+		ServerFacade.batchFetcher.fetchNewInvoiceFromTransportDocumentOpData(place.getTransportDocumentId(), 
+				new DocumentCallack<Pair<Long,TransportDocumentDTO>>() {
 
 					@Override
-					public void onSuccess(TransportDocumentDTO result) {
-						view.setDataForNewInvoice(progrId, result);
-						MainWidget.getInstance().setLargeView();
-						panel.setWidget(view);
+					public void onSuccess(
+							Pair<Long, TransportDocumentDTO> result) {
+						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view);
+						p.setDataForNewInvoice(result.getFirst(), result.getSecond());
+						p.go(panel);
 					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
-					}
-				});
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
 		});
 	}
 
 
 	private void setupModifyInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, ModifyInvoicePlace place){
-		ServerFacade.invoice.get(place.getInvoiceId(), new ManagedAsyncCallback<InvoiceDTO>() {
+		ServerFacade.invoice.get(place.getInvoiceId(), new DocumentCallack<InvoiceDTO>() {
 
 			@Override
 			public void onSuccess(InvoiceDTO result) {
-				view.setInvoice(result);
-				MainWidget.getInstance().setLargeView();
-				panel.setWidget(view);
+				ModifyInvoicePresenter p = new ModifyInvoicePresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setData(result);
+				p.go(panel);
 			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
 		});
 	}
 
 	private void setupCloneInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, final CloneInvoicePlace place){
-		ServerFacade.invoice.getNextInvoiceDocumentID(new ManagedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
+		ServerFacade.batchFetcher.fetchCloneInvoiceOpData(place.getInvoiceId(), place.getClientId(), 
+				new DocumentCallack<Triple<Long,ClientDTO,InvoiceDTO>>() {
 
 					@Override
-					public void onSuccess(final ClientDTO client) {
-						ServerFacade.invoice.get(place.getInvoiceId(), new ManagedAsyncCallback<InvoiceDTO>() {
-
-							@Override
-							public void onSuccess(InvoiceDTO invoiceToClone) {
-								view.setDataForNewInvoice(client, progrId, invoiceToClone);
-								MainWidget.getInstance().setLargeView();
-								panel.setWidget(view);
-							}
-
-							@Override
-							public void onFailure(Throwable caught) {
-								if(CallbackUtils.isServerCommunicationException(caught)){
-									manageError();
-								} else {
-									super.onFailure(caught);
-								}
-							}
-						});
-
+					public void onSuccess(
+							Triple<Long, ClientDTO, InvoiceDTO> result) {
+						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view);
+						p.setDataForNewInvoice(result.getSecond(), result.getFirst(), result.getThird());
+						p.go(panel);
 					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
-					}
-				});
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
 		});
 	}
 

@@ -4,15 +4,18 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-import com.novadart.novabill.shared.client.dto.PaymentType;
+import com.novadart.novabill.shared.client.dto.PaymentDateType;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public class DocumentUtils {
 	
-	private static final long ONE_DAY_MS = 1000 * 60 * 60 * 24;
+	public static DateTimeFormat DOCUMENT_DATE_FORMAT = DateTimeFormat.getFormat("dd MMMM yyyy");
 	
 	public static BigDecimal parseValue(String value) throws NumberFormatException {
 		return new BigDecimal( NumberFormat.getDecimalFormat().parse(value) );
@@ -113,37 +116,64 @@ public class DocumentUtils {
 		doc.setTotal(totAfterTaxes);
 	}
 	
-	
-	public static Date calculatePaymentDueDate(Date creation, PaymentType paymentType){
-		
-		switch(paymentType){
-		case BANK_TRANSFER:
-		case CASH:
-		default:
-			return creation;
-			
-		case RIBA_30:
-		case BANK_TRANSFER_30:
-			return new Date(creation.getTime()+ONE_DAY_MS*30);
-		
-		case RIBA_60:
-		case BANK_TRANSFER_60:
-			return new Date(creation.getTime()+ONE_DAY_MS*60);
-		
-		case RIBA_90:
-		case BANK_TRANSFER_90:
-			return new Date(creation.getTime()+ONE_DAY_MS*90);
-			
-		case BANK_TRANSFER_120:
-			return new Date(creation.getTime()+ONE_DAY_MS*120);
-
-		case BANK_TRANSFER_150:
-			return new Date(creation.getTime()+ONE_DAY_MS*150);
-			
-		case BANK_TRANSFER_180:
-			return new Date(creation.getTime()+ONE_DAY_MS*180);
-			
+	public static Date calculatePaymentDueDate(Date documentDate, PaymentTypeDTO payment){
+		if(PaymentDateType.CUSTOM.equals(payment.getPaymentDateGenerator())){
+			return null;
 		}
+		
+		Date d;
+		
+		switch (payment.getPaymentDateGenerator()) {
+		default:
+		case CUSTOM:
+			return null;
+			
+		case END_OF_MONTH:
+			//add the delay	
+			d = calculatePaymentDueDateAddingCommercialMonths(documentDate, payment.getPaymentDateDelta());
+			
+			// move to the end of month	
+			CalendarUtil.setToFirstDayOfMonth(d);
+			CalendarUtil.addMonthsToDate(d, 1);
+			CalendarUtil.addDaysToDate(d, -1);
+			return d;
+			
+		case IMMEDIATE:
+			//add the delay	
+			d = calculatePaymentDueDateAddingCommercialMonths(documentDate, payment.getPaymentDateDelta());
+						
+			return d;
+		}
+	}
+	
+	
+	@SuppressWarnings("deprecation")
+	private static Date calculatePaymentDueDateAddingCommercialMonths(Date date, int months){
+		if(months == 0){
+			return date;
+		}
+		
+		// first of all add the months on a date set to the first day of month.
+		// This way the different length of months won't get on the way
+		Date resultDate = (Date)date.clone();
+		CalendarUtil.setToFirstDayOfMonth(resultDate);
+		CalendarUtil.addMonthsToDate(resultDate, months);
+		
+		//save the resulting month		
+		int resultMonth = resultDate.getMonth();
+		
+		// set the day of the original date. Notice: if month is February and day is 31 this will cause a change of month.
+		// Of course there are many other similar cases.
+		resultDate.setDate(date.getDate());
+		
+		// NOTE: we can use > because December is 31 days long. However != is more general and can take into account cases that
+		// do not come up into my mind now The months must be the same
+		while(resultDate.getMonth() != resultMonth) {
+			//remove a day till we get to the last day of the target month
+			CalendarUtil.addDaysToDate(resultDate, -1);
+		}
+		
+		return resultDate;
 	}
 	
 }

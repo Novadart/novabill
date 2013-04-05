@@ -7,65 +7,115 @@
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
 
-	<g:FlowPanel styleName="bootstrapDialogBody">
-		<g:HTML ui:field="welcomeMessage" styleName="welcomeMessage"
+	<ui:with field="g"  type="com.novadart.novabill.frontend.client.resources.GlobalCss" />
+
+	<ui:style field="s" >
+		.businessLabel {
+			margin-right: 1em;
+			width: 10em;
+			font-size: 1.1em;
+		}
+		
+		.welcomeMessage {
+			width: 80%;
+			margin: 2em auto 0;
+			background-color: #FFFDB3;
+			padding: 1em;
+			border: 0.1em solid #DDD;
+			-moz-box-shadow: 2px 2px 2px #CCC;
+			-webkit-box-shadow: 2px 2px 2px #CCC;
+			box-shadow: 2px 2px 2px #CCC;
+			position: relative;
+			color: #333;
+			font-size: 1.1em;
+			line-height: 110%;
+		}
+		
+		.bootstrapDialogBody {
+			background-color: white;
+			padding: 0.5em;
+		}
+		
+		.gridContainer {
+			margin: 0 auto;
+			padding: 2em;
+		}
+		
+		.submit {
+			margin: 0 auto !important;
+			display: block !important;
+		}
+		
+		.validatedListBox,.validatedTextBox {
+			width: 20em;
+			margin: 0.3em;
+		}
+		
+		.mandatory {
+			padding: 0 0 0.5em 2em;
+		}
+	</ui:style>
+
+
+	<g:FlowPanel styleName="{s.bootstrapDialogBody}">
+		<g:HTML ui:field="welcomeMessage" styleName="{s.welcomeMessage}"
 			HTML="{i18n.bootstrapWelcomeMessage}" />
 
-		<g:SimplePanel styleName="gridContainer">
-			<g:Grid styleName="grid">
+		<g:SimplePanel styleName="{s.gridContainer}">
+			<g:Grid>
 				<g:row>
-					<g:customCell>
-						<g:Label styleName="businessLabel" text="{i18n.companyName}"></g:Label>
+					<g:customCell >
+						<g:Label  styleName="{s.businessLabel}" text="{i18n.companyName} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedTextBox ui:field="name" maxLength="255"></v:ValidatedTextBox>
+						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="name" maxLength="255" />
 					</g:customCell>
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="businessLabel" text="{i18n.ssn}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.ssn} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedTextBox ui:field="ssn" maxLength="25"></v:ValidatedTextBox>
-					</g:customCell>
-				</g:row>
-				<g:row>
-					<g:customCell>
-						<g:Label styleName="businessLabel" text="{i18n.vatID}"></g:Label>
-					</g:customCell>
-					<g:customCell>
-						<v:ValidatedTextBox ui:field="vatID" maxLength="25"></v:ValidatedTextBox>
+						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="ssn" maxLength="25"></v:ValidatedTextBox>
 					</g:customCell>
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="businessLabel" text="{i18n.address}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.vatID} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedTextBox ui:field="address"
+						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="vatID" maxLength="25"></v:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.address} *"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="address"
 							maxLength="255"></v:ValidatedTextBox>
 					</g:customCell>
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="businessLabel" text="{i18n.city}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.city} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedTextBox ui:field="city" maxLength="60"></v:ValidatedTextBox>
+						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="city" maxLength="60"></v:ValidatedTextBox>
 					</g:customCell>
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="businessLabel" text="{i18n.postcode}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.postcode} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedTextBox ui:field="postcode"
+						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="postcode"
 							maxLength="10"></v:ValidatedTextBox>
 					</g:customCell>
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="businessLabel" text="{i18n.province}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.province} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedListBox ui:field="province"></v:ValidatedListBox>
@@ -73,60 +123,62 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="businessLabel" text="{i18n.country}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.country} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedListBox ui:field="country"></v:ValidatedListBox>
-					</g:customCell>
-				</g:row>
-				<g:row>
-					<g:customCell>
-						<g:Label styleName="businessLabel" text="{i18n.phone}"></g:Label>
-					</g:customCell>
-					<g:customCell>
-						<v:ValidatedTextBox ui:field="phone" maxLength="25"></v:ValidatedTextBox>
+						<v:ValidatedListBox ui:field="country" enabled="false"></v:ValidatedListBox>
 					</g:customCell>
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="businessLabel" text="{i18n.mobile}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.phone}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedTextBox ui:field="mobile"
+						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="phone" maxLength="25"></v:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.mobile}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="mobile"
 							maxLength="25"></v:ValidatedTextBox>
 					</g:customCell>
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="businessLabel" text="{i18n.email}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.email}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedTextBox ui:field="email" maxLength="255"></v:ValidatedTextBox>
-					</g:customCell>
-				</g:row>
-				<g:row>
-					<g:customCell>
-						<g:Label styleName="businessLabel" text="{i18n.fax}"></g:Label>
-					</g:customCell>
-					<g:customCell>
-						<v:ValidatedTextBox ui:field="fax" maxLength="25"></v:ValidatedTextBox>
+						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="email" maxLength="255"></v:ValidatedTextBox>
 					</g:customCell>
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="businessLabel" text="{i18n.web}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.fax}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedTextBox ui:field="web" maxLength="255"></v:ValidatedTextBox>
+						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="fax" maxLength="25"></v:ValidatedTextBox>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.web}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="web" maxLength="255"></v:ValidatedTextBox>
 					</g:customCell>
 				</g:row>
 			</g:Grid>
 
 		</g:SimplePanel>
+		
+		<g:Label styleName="{s.mandatory}" text="* {i18n.mandatory}"/>
 
 		<n:InlineNotification ui:field="inlineNotification" />
 
-		<g:Button styleName="action-button submit" ui:field="confirm"
+		<g:Button styleName="{g.actionButton} {s.submit}" ui:field="confirm"
 			text="{i18n.submit}"></g:Button>
 
 	</g:FlowPanel>

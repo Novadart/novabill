@@ -10,7 +10,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
 
-class ContactPopup extends PopupPanel {
+public class ContactPopup extends PopupPanel {
 
 	private static ContactPopupUiBinder uiBinder = GWT
 			.create(ContactPopupUiBinder.class);
@@ -27,7 +27,6 @@ class ContactPopup extends PopupPanel {
 
 	ContactPopup() {
 		setWidget(uiBinder.createAndBindUi(this));
-		setStyleName("ContactPopup");
 	}
 	
 	@UiFactory
@@ -35,7 +34,7 @@ class ContactPopup extends PopupPanel {
 		return I18N.INSTANCE;
 	}
 	
-	void setContact(ContactDTO contact) {
+	public void setContact(ContactDTO contact) {
 		name.setText(contact.getFirstName());
 		surname.setText(contact.getLastName());
 		email.setText(contact.getEmail());
@@ -53,7 +52,7 @@ class ContactPopup extends PopupPanel {
 		fax.setText("");
 	}
 	
-	boolean isEmpty(){
+	public boolean isEmpty(){
 		return (name.getText().isEmpty() && surname.getText().isEmpty() && email.getText().isEmpty()
 				&& mobile.getText().isEmpty() && phone.getText().isEmpty() && fax.getText().isEmpty());
 	}

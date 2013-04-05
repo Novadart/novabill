@@ -73,7 +73,7 @@ public class AccountingDocumentValidator{
 		if(gapsAccumulator.size() > 0)
 			errors.add(new ErrorObject(Field.documentID, ErrorCode.INVALID_DOCUMENT_ID, gapsAccumulator));
 		if(!isValid)
-			throw new ValidationException(errors);
+			throw new ValidationException(errors, doc.getClass().getName());
 	}
 
 }

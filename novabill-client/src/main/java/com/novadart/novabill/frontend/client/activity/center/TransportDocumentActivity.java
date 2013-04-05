@@ -4,18 +4,19 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.frontend.client.facade.CallbackUtils;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.CloneTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.TransportDocumentPlace;
-import com.novadart.novabill.frontend.client.view.MainWidget;
-import com.novadart.novabill.frontend.client.view.center.TransportDocumentView;
+import com.novadart.novabill.frontend.client.presenter.center.transportdocument.ModifyTransportDocumentPresenter;
+import com.novadart.novabill.frontend.client.presenter.center.transportdocument.NewTransportDocumentPresenter;
+import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.tuple.Pair;
+import com.novadart.novabill.shared.client.tuple.Triple;
 
 public class TransportDocumentActivity extends AbstractCenterActivity {
 
@@ -34,8 +35,6 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(final TransportDocumentView view) {
-				view.setPresenter(TransportDocumentActivity.this);
-				view.setEventBus(eventBus);
 
 				if (place instanceof ModifyTransportDocumentPlace) {
 					ModifyTransportDocumentPlace p = (ModifyTransportDocumentPlace) place;
@@ -50,7 +49,7 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 					setupNewTransportDocumentView(panel, view, p);
 
 				} else {
-					goTo(new HomePlace());
+					getClientFactory().getPlaceController().goTo(new HomePlace());
 				}
 
 			}
@@ -64,111 +63,44 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 
 
 	private void setupNewTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, final NewTransportDocumentPlace place){
-		ServerFacade.transportDocument.getNextTransportDocId(new ManagedAsyncCallback<Long>() {
+		ServerFacade.batchFetcher.fetchNewTransportDocumentForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
 
 			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
-
-					@Override
-					public void onSuccess(ClientDTO client) {
-						view.setDataForNewTransportDocument(client, progrId);
-						MainWidget.getInstance().setLargeView();
-						panel.setWidget(view);
-					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
-					}
-				});
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
+			public void onSuccess(Pair<Long, ClientDTO> result) {
+				NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setDataForNewTransportDocument(result.getSecond(), result.getFirst());
+				p.go(panel);
 			}
 		});
 	}
 
 	private void setupModifyTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, ModifyTransportDocumentPlace place){
-		ServerFacade.transportDocument.get(place.getTransportDocumentId(), new ManagedAsyncCallback<TransportDocumentDTO>() {
+		ServerFacade.transportDocument.get(place.getTransportDocumentId(), new DocumentCallack<TransportDocumentDTO>() {
 
 			@Override
 			public void onSuccess(TransportDocumentDTO result) {
-				view.setTransportDocument(result);
-				MainWidget.getInstance().setLargeView();
-				panel.setWidget(view);
+				ModifyTransportDocumentPresenter p = new ModifyTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setData(result);
+				p.go(panel);
 			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
 		});
 	}
 
 	private void setupCloneTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, final CloneTransportDocumentPlace place){
-		ServerFacade.transportDocument.getNextTransportDocId(new ManagedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
+		ServerFacade.batchFetcher.fetchCloneTransportDocumentOpData(place.getTransportDocumentId(), place.getClientId(), 
+				new DocumentCallack<Triple<Long,ClientDTO,TransportDocumentDTO>>() {
 
 					@Override
-					public void onSuccess(final ClientDTO client) {
-						ServerFacade.transportDocument.get(place.getTransportDocumentId(), new ManagedAsyncCallback<TransportDocumentDTO>() {
-
-							@Override
-							public void onSuccess(TransportDocumentDTO toClone) {
-								view.setDataForNewTransportDocument(client, progrId, toClone);
-								MainWidget.getInstance().setLargeView();
-								panel.setWidget(view);
-							}
-
-							@Override
-							public void onFailure(Throwable caught) {
-								if(CallbackUtils.isServerCommunicationException(caught)){
-									manageError();
-								} else {
-									super.onFailure(caught);
-								}
-							}
-						});
-
+					public void onSuccess(
+							Triple<Long, ClientDTO, TransportDocumentDTO> result) {
+						NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view);
+						p.setDataForNewTransportDocument(result.getSecond(), result.getFirst(), result.getThird());
+						p.go(panel);
 					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
-					}
-				});
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
 		});
 	}
 }

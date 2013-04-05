@@ -1,0 +1,158 @@
+.quickViewCell {
+	padding: 0 1em 0 0;
+	font-size: 1em;
+	border: 1px solid #DDD;
+	background-color: white;
+	margin: 3px 0;
+	\-moz-box-shadow: 2px 2px 2px #CCC;
+	\-webkit-box-shadow: 2px 2px 2px #CCC;
+	box-shadow: 2px 2px 2px #CCC;
+	height: 4.5em;
+}
+
+.downloadAsPDF{}
+
+.delete{}
+
+.clone{}
+
+.creditNote{}
+
+.pdf {
+	width: 2em;
+	height: 2em;
+}
+
+.details .tools {
+	text-align: right;
+	position: relative;
+}
+
+.TransportDocumentList .upper span.createInvoice,
+.EstimationList .upper span.convertToInvoice,
+.details .tools span {
+	text-transform: uppercase;
+	font-size: 0.8em;
+	margin-right: 1em;
+	cursor: pointer;
+}
+
+.TransportDocumentList .upper span.createInvoice:HOVER,
+.EstimationList .upper span.convertToInvoice:HOVER,
+.details .tools span:HOVER
+	{
+	text-decoration: underline;
+}
+
+.quickViewCell  .upper {
+	height: 1em;
+}
+
+.quickViewCell .details .total {
+	float: left;
+}
+
+.quickViewCell .details .total {
+	float: left;
+}
+
+.quickViewCell .details .convertToInvoice,
+.quickViewCell .details .createInvoice {
+	float: right;
+}
+
+
+.InvoiceList .details .payed:HOVER {
+	text-decoration: underline;
+}
+
+.InvoiceList .details .payed {
+	float: right;
+	padding: 0.2em 0.5em;
+	border-radius: 0.5em;
+	cursor: pointer;
+	text-transform: uppercase;
+	font-size: 0.8em;
+}
+
+.details .payed.payed-true {
+	background-color: #B9F2B3;
+	border: 0.1em solid #66C25B;
+}
+
+.details .payed.payed-false {
+	background-color: #EDE700;
+	border: 0.1em solid #D8D308;
+}
+
+.main {
+	padding: 0.5em 0;
+}
+
+/* .InvoiceList .main.invoice-not-payed .id {
+	background-color: #EDE700;
+	border: 0.1em solid #D8D308;
+	color: black;
+}
+
+.InvoiceList .main.invoice-payed .id {
+	background-color: #B9F2B3;
+	border: 0.1em solid #66C25B;
+	color: black;
+}
+
+.EstimationList .id {
+	background-color: #888;
+	color: white;
+} */
+
+.id {
+	padding: 1px 2px;
+	position: relative;
+	top: -0.3em;
+	left: 0.1em;
+}
+
+.date {
+	padding: 0 20px;
+}
+
+.name {
+	font-weight: bold;
+}
+
+.details {
+	padding: 0 0.2em;
+}
+
+.quickViewCell .details {
+	-webkit-transition: all 1s ease;
+    -moz-transition: all 1s ease;
+    -ms-transition: all 1s ease;
+    -o-transition: all 1s ease;
+    transition: all 1s ease;
+    color: #CCC;
+}
+
+.quickViewCell:HOVER .details {
+	color: inherit;
+}
+
+.openEstimation,.openInvoice,.openCreditNote,.openTransportDocument
+{
+	position: absolute;
+	right: 48%;
+	bottom: 0px;
+	font-weight: bold;
+	padding: 1px;
+	text-decoration: none;
+}
+
+.openEstimation:HOVER,
+.openInvoice:HOVER,
+.openCreditNote:HOVER,
+.openTransportDocument:HOVER {
+	color: white;
+	background-color: #333;
+	text-decoration: none;
+}

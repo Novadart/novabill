@@ -17,6 +17,7 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +31,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.XsrfTokenService;
+import com.novadart.novabill.web.mvc.BusinessLogoController;
 import com.novadart.novabill.web.mvc.DeleteAccountController;
 import com.novadart.novabill.web.mvc.command.DeleteAccount;
 
@@ -38,6 +40,7 @@ import com.novadart.novabill.web.mvc.command.DeleteAccount;
 @ContextConfiguration(locations = "classpath*:mvc-test-config.xml")
 @Transactional
 @DirtiesContext
+@ActiveProfiles("dev")
 public class DeleteAccountTest {
 	
 	@Resource(name = "userPasswordMap")
@@ -60,16 +63,16 @@ public class DeleteAccountTest {
 		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "xsrfTokenService", tokenService);
 		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "utilsService", utilsService);
 		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "validator", validator);
+		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "businessLogoController", mock(BusinessLogoController.class));
 		return deleteAccountController;
 	}
 	
-//	@Test
+	@Test
 	public void defaultDeleteAccountFlow() throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, UnsupportedEncodingException{
 		String username = userPasswordMap.keySet().iterator().next(), password = userPasswordMap.get(username);
 		Long businessID = Principal.findByUsername(username).getBusiness().getId();
 		DeleteAccountController deleteAccountController = initDeleteAccountController(username, password, password);
-		String deleteAccountView = deleteAccountController.setupForm(mock(Model.class));
-		String deleteAccountExportButtonView = deleteAccountController.getDeleteAccountExportButton(mock(Model.class), mock(HttpSession.class));
+		String deleteAccountView = deleteAccountController.setupForm(mock(Model.class), mock(HttpSession.class));
 		DeleteAccount deleteAccount = new DeleteAccount();
 		deleteAccount.setPassword(password);
 		BindingResult result = mock(BindingResult.class);
@@ -78,7 +81,6 @@ public class DeleteAccountTest {
 		Principal.entityManager().flush();
 		assertEquals("deleteAccount", deleteAccountView);
 		assertEquals("redirect:/resources/j_spring_security_logout", redirectLogoutView);
-		assertEquals("deleteAccountExportButton", deleteAccountExportButtonView);
 		assertEquals(null, Principal.findByUsername(username));
 		assertEquals(null, Business.findBusiness(businessID));
 	}

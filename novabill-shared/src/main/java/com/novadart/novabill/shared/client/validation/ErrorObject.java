@@ -75,6 +75,10 @@ public class ErrorObject implements Serializable, IsSerializable {
 		this(field, errorCode);
 		this.gaps = gaps;
 	}
-	
+
+	@Override
+	public String toString() {
+		return "[field: "+field+", code: "+errorCode.name()+"]";
+	}
 
 }

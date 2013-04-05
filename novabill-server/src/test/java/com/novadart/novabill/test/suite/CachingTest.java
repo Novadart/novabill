@@ -14,6 +14,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,12 +24,14 @@ import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
 import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
+import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
 import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
@@ -36,6 +39,7 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -48,12 +52,14 @@ import com.novadart.novabill.shared.client.facade.ClientService;
 import com.novadart.novabill.shared.client.facade.CreditNoteService;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
+import com.novadart.novabill.shared.client.facade.PaymentTypeService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:caching-test-config.xml")
 @Transactional
+@ActiveProfiles("dev")
 public class CachingTest extends GWTServiceTest {
 	
 	@Autowired
@@ -75,6 +81,9 @@ public class CachingTest extends GWTServiceTest {
 	private TransportDocumentService transDocService;
 	
 	@Autowired
+	private PaymentTypeService paymentTypeService;
+	
+	@Autowired
 	private CacheManager cacheManager;
 	
 	@Resource(name = "testProps")
@@ -91,6 +100,7 @@ public class CachingTest extends GWTServiceTest {
 		cacheManager.getCache(CachingAspect.CREDITNOTE_CACHE).flush();
 		cacheManager.getCache(CachingAspect.TRANSPORTDOCUMENT_CACHE).flush();
 		cacheManager.getCache(CachingAspect.BUSINESS_CACHE).flush();
+		cacheManager.getCache(CachingAspect.PAYMENTTYPE_CACHE).flush();
 	}
 	
 	@Test
@@ -443,6 +453,46 @@ public class CachingTest extends GWTServiceTest {
 		}
 		List<InvoiceDTO> cachedResult = businessService.getInvoices(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(dataAccessException && result == cachedResult);
+	}
+	
+	@Test
+	public void paymentTypeGetAllCacheTest() throws NotAuthenticatedException, DataAccessException{
+		Set<PaymentTypeDTO> paymentTypes = new HashSet<PaymentTypeDTO>(businessService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
+		Set<PaymentTypeDTO> cachedpaymentTypes = new HashSet<PaymentTypeDTO>(businessService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
+		assertTrue(paymentTypes.equals(cachedpaymentTypes));
+	}
+	
+	@Test
+	public void paymentTypeRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException{
+		Set<PaymentTypeDTO> paymentTypes = new HashSet<PaymentTypeDTO>(businessService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
+		paymentTypeService.remove(authenticatedPrincipal.getBusiness().getId(), authenticatedPrincipal.getBusiness().getPaymentTypes().iterator().next().getId());
+		Set<PaymentTypeDTO> notCachedPaymentTypes = new HashSet<PaymentTypeDTO>(businessService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
+		assertTrue(!paymentTypes.equals(notCachedPaymentTypes));
+		assertTrue(paymentTypes.size() == notCachedPaymentTypes.size() + 1);
+	}
+	
+	@Test
+	public void  paymentTypeAddCacheTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+		Set<PaymentTypeDTO> paymentTypes = new HashSet<PaymentTypeDTO>(businessService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(TestUtils.createPaymentType());
+		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		paymentTypeService.add(paymentTypeDTO);
+		HashSet<PaymentTypeDTO> notCachedPaymentTypes = new HashSet<PaymentTypeDTO>(businessService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
+		assertTrue(notCachedPaymentTypes.size() == paymentTypes.size() + 1);
+		assertTrue(!paymentTypes.equals(notCachedPaymentTypes));
+	}
+	
+	@Test
+	public void  paymentTypeUpdateCacheTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, NoSuchObjectException{
+		Set<PaymentTypeDTO> paymentTypes = new HashSet<PaymentTypeDTO>(businessService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
+		PaymentType paymentType = authenticatedPrincipal.getBusiness().getPaymentTypes().iterator().next();
+		paymentType.setName("Updated test payment type name");
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(paymentType);
+		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		paymentTypeService.update(paymentTypeDTO);
+		Set<PaymentTypeDTO> notCachedPaymentTypes = new HashSet<PaymentTypeDTO>(businessService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
+		assertTrue(!paymentTypes.equals(notCachedPaymentTypes));
+		assertTrue(paymentTypes.size() == notCachedPaymentTypes.size());
 	}
 
 }

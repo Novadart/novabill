@@ -1,18 +1,11 @@
 package com.novadart.novabill.frontend.client.view;
 
-import com.google.gwt.event.shared.EventBus;
-import com.google.gwt.place.shared.Place;
 import com.google.gwt.user.client.ui.IsWidget;
+import com.novadart.novabill.frontend.client.presenter.Presenter;
 
-public interface View extends IsWidget {
+public interface View<P extends Presenter> extends IsWidget {
 
-	public void setPresenter(Presenter presenter);
-	public void setClean();
+	public void setPresenter(P presenter);
+	public void reset();
 	
-	public interface Presenter {
-		public void goTo(Place place);
-	}
-
-	void setEventBus(EventBus eventBus);
-
 }

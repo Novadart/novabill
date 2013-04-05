@@ -4,19 +4,19 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.frontend.client.facade.CallbackUtils;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.CreditNotePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.FromInvoiceCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.ModifyCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
-import com.novadart.novabill.frontend.client.view.MainWidget;
-import com.novadart.novabill.frontend.client.view.center.CreditNoteView;
+import com.novadart.novabill.frontend.client.presenter.center.creditnote.ModifyCreditNotePresenter;
+import com.novadart.novabill.frontend.client.presenter.center.creditnote.NewCreditNotePresenter;
+import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.tuple.Pair;
 
 public class CreditNoteActivity extends AbstractCenterActivity {
 
@@ -36,9 +36,6 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(final CreditNoteView view) {
-				view.setPresenter(CreditNoteActivity.this);
-				view.setEventBus(eventBus);
-
 				if (place instanceof ModifyCreditNotePlace) {
 					ModifyCreditNotePlace p = (ModifyCreditNotePlace) place;
 					setupModifyCreditNoteView(panel, view, p);
@@ -52,7 +49,7 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 					setupNewCreditNoteView(panel, view, p);
 
 				} else {
-					goTo(new HomePlace());
+					getClientFactory().getPlaceController().goTo(new HomePlace());
 				}
 			}
 
@@ -64,95 +61,43 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 	}
 
 	private void setupNewCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, final NewCreditNotePlace place){
-		ServerFacade.creditNote.getNextCreditNoteDocumentID(new ManagedAsyncCallback<Long>() {
+		
+		ServerFacade.batchFetcher.fetchNewCreditNoteForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
 
 			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
-
-					@Override
-					public void onSuccess(ClientDTO client) {
-						view.setDataForNewCreditNote(client, progrId);
-						MainWidget.getInstance().setLargeView();
-						panel.setWidget(view);
-					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
-					}
-				});
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
+			public void onSuccess(Pair<Long, ClientDTO> result) {
+				NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setDataForNewCreditNote(result.getSecond(), result.getFirst());
+				p.go(panel);
 			}
 		});
 	}
 
 	private void setupFromInvoiceCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, final FromInvoiceCreditNotePlace place){
-		ServerFacade.creditNote.getNextCreditNoteDocumentID(new ManagedAsyncCallback<Long>() {
+		ServerFacade.batchFetcher.fetchNewCreditNoteFromInvoiceOpData(place.getInvoiceId(), new DocumentCallack<Pair<Long,InvoiceDTO>>() {
 
 			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.invoice.get(place.getInvoiceId(), new ManagedAsyncCallback<InvoiceDTO>() {
-
-					@Override
-					public void onSuccess(InvoiceDTO result) {
-						view.setDataForNewCreditNote(progrId, result);
-						MainWidget.getInstance().setLargeView();
-						panel.setWidget(view);
-					}
-
-					@Override
-					public void onFailure(Throwable caught) {
-						if(CallbackUtils.isServerCommunicationException(caught)){
-							manageError();
-						} else {
-							super.onFailure(caught);
-						}
-					}
-				});
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
+			public void onSuccess(Pair<Long, InvoiceDTO> result) {
+				NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setDataForNewCreditNote(result.getFirst(), result.getSecond());
+				p.go(panel);
 			}
 		});
 	}
 
 	private void setupModifyCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, ModifyCreditNotePlace place){
-		ServerFacade.creditNote.get(place.getCreditNoteId(), new ManagedAsyncCallback<CreditNoteDTO>() {
+		ServerFacade.creditNote.get(place.getCreditNoteId(), new DocumentCallack<CreditNoteDTO>() {
 
 			@Override
 			public void onSuccess(CreditNoteDTO result) {
-				view.setCreditNote(result);
-				MainWidget.getInstance().setLargeView();
-				panel.setWidget(view);
+				ModifyCreditNotePresenter p = new ModifyCreditNotePresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setData(result);
+				p.go(panel);
 			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				if(CallbackUtils.isServerCommunicationException(caught)){
-					manageError();
-				} else {
-					super.onFailure(caught);
-				}
-			}
 		});
 	}
 }

@@ -1,0 +1,23 @@
+.validationOk {
+	border-color: #4DE133;
+	background-color: #DEFFD8;
+}
+
+
+.validationError {
+	border-color: #E32424;
+	background-color: #F9E0E0;
+}
+
+.validationMessage {
+	background-color: #f9e0e0;
+	border: 1px solid #FF8C8C;
+	padding: 0.3em;
+	margin-left: 5px;
+	font-style: italic;
+	box-shadow: 2px 2px 2px #ccc;
+	\-moz-box-shadow: 2px 2px 2px #ccc;
+	\-webkit-box-shadow: 2px 2px 2px #ccc;	
+}
+
+.validationBaloon {}

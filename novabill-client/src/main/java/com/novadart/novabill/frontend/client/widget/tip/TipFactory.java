@@ -5,6 +5,7 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.gwt.user.client.ui.HasOneWidget;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.place.HistoryPrefix;
 
 public class TipFactory {
 	
@@ -54,6 +55,24 @@ public class TipFactory {
 			shb.appendHtmlConstant("</p>");
 			shb.appendHtmlConstant("<p>");
 			shb.appendEscaped(I18N.INSTANCE.tipClientView2());
+			shb.appendHtmlConstant("</p>");
+			break;
+			
+		case center_invoice_payment:
+			shb.appendHtmlConstant("<p>");
+			shb.appendEscaped(I18N.INSTANCE.tipInvoicePayment());
+			shb.appendHtmlConstant("<span style='font-style:italic;'>");
+			shb.appendEscaped(" "+I18N.INSTANCE.myData()+" > ");
+			shb.appendHtmlConstant(" <a href='#"+HistoryPrefix.PAYMENT+":'>");
+			shb.appendEscaped(I18N.INSTANCE.settingsPayments());
+			shb.appendHtmlConstant("</a>");
+			shb.appendHtmlConstant("</span>");
+			shb.appendHtmlConstant("</p>");
+			break;
+			
+		case item_insertion_form:
+			shb.appendHtmlConstant("<p>");
+			shb.appendEscaped(I18N.INSTANCE.tipItemInsertionForm());
 			shb.appendHtmlConstant("</p>");
 			break;
 		}

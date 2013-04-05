@@ -14,8 +14,6 @@
     
 	<link rel="shortcut icon" type="image/png" href="<spring:url value="/images/favicon.png" />"></link>
     <link type="text/css" rel="stylesheet" href="<spring:url value="/css/reset-min.css" />">
-    <link type="text/css" rel="stylesheet" href="<spring:url value="/css/common.css" />">
-    <link type="text/css" rel="stylesheet" href="<spring:url value="/css/page/private.css" />">
     <link type="text/css" rel="stylesheet" href="<spring:url value="/js/contactable/contactable-private.css" />">
 
     <title><spring:message code="application_name"></spring:message></title>

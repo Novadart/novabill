@@ -30,10 +30,10 @@
 									code="shared.password"></spring:message></label> <input type="password"
 								name="j_password" id="password" />
 						</fieldset>
+						<label id="rememberme" for="checkbox"><input type="checkbox" id="checkbox" />
+							<spring:message code="header.rememberme"></spring:message></label>
 						<input type="submit" id="login" class="action2-button"
 							value="<spring:message code="header.signin"></spring:message>" />
-						<label for="checkbox"><input type="checkbox" id="checkbox" />
-							<spring:message code="header.rememberme"></spring:message></label>
 					</fieldset>
 					<div>
 						<a href="<spring:url value="/forgot-password" />"><spring:message code="header.forgotPassword"></spring:message></a>

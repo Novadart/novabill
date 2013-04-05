@@ -13,7 +13,7 @@ public enum Field {
 	accountingDocumentItems_totalBeforeTax, accountingDocumentItems_totalTax, accountingDocumentItems_total, accountingDocumentItems_price,
 	
 	//Invoice fields
-	paymentType, paymentDueDate, payed,
+	paymentDueDate, payed, paymentTypeName,
 	
 	//Estimation
 	limitations, validTill,
@@ -31,5 +31,8 @@ public enum Field {
 	name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatID, ssn, 
 	
 	//Client contact fields 
-	contact_firstName, contact_lastName, contact_email, contact_phone, contact_fax, contact_mobile 
+	contact_firstName, contact_lastName, contact_email, contact_phone, contact_fax, contact_mobile,
+	
+	//PaymentType fields
+	defaultPaymentNote, paymentDateGenerator, paymentDateDelta
 }

@@ -1,49 +1,61 @@
-debug.enabled.value=true
+#
+# Paths
+#
+resources.root=/tmp
 
-database.driverClassName.value=org.postgresql.Driver
-database.url.value=jdbc:postgresql://localhost/novabill
-database.username.value=novadart
-database.password.value=novadart
+#
+# Logging
+#
+log4j.appender.file.File.value=${resources.root}/logs/novabill.log
+log4j.rootLogger.value = INFO, stdout, file
+log4j.logger.com.novadart.novabill.value = DEBUG
 
+#
+# Hibernate / Database
+#
 hibernate.hbm2ddl.auto.value=create
-hibernate.search.default.indexBase.value=/var/novabill/lucene.indexBase
+hibernate.search.default.indexBase.value=${resources.root}/lucene
 hibernate.show_sql.value=true
 hibernate.hbm2ddl.import_files.value=/import.sql,/test-rows.sql
+ehcache.diskStore=${resources.root}/cache
+dbuser=novabill
+dbpassword=novabill
 
-#cache
-ehcache.business-cache.maxElementsInMemory.value=100
-ehcache.business-cache.timeToLiveSeconds.value=600
-ehcache.client-cache.maxElementsInMemory.value=100
-ehcache.client-cache.timeToLiveSeconds.value=600
-ehcache.invoice-cache.maxElementsInMemory.value=100
-ehcache.invoice-cache.timeToLiveSeconds.value=600
-ehcache.creditnote-cache.maxElementsInMemory.value=100
-ehcache.creditnote-cache.timeToLiveSeconds.value=600
-ehcache.estimation-cache.maxElementsInMemory.value=100
-ehcache.estimation-cache.timeToLiveSeconds.value=600
-ehcache.transportdocument-cache.maxElementsInMemory.value=100
-ehcache.transportdocument-cache.timeToLiveSeconds.value=600
-ehcache.default.maxElementsInMemory.value=1000
-ehcache.default.timeToLiveSeconds.value=600
-ehcache.client-hib-2nd-level.maxElementsInMemory.value=100
-ehcache.client-hib-2nd-level.timeToLiveSeconds.value=600
-ehcache.business-hib-2nd-level.maxElementsInMemory.value=100
-ehcache.business-hib-2nd-level.timeToLiveSeconds.value=600
+#
+# Email / SMTP
+#
+smtp.auth.enabled.value=false
+smtp.host.value=localhost
+smtp.port.value=25
+smtp.username.value=
+smtp.password.value=
+smtp.mail.registration_completed_sender.value=no-reply@novadart.com
+exception.sendemail.value = false
+validation.error.sendemail.value = false
 
+#
+# Application Configuration
+#
+path.tmpdir.data_export.value=${resources.root}/export
 activation.url.pattern.value=http://localhost:8080/novabill-server/activate?email=%s&token=%s
 #in hours
 activation.period.value=24
 password.recovery.url.pattern.value=http://localhost:8080/novabill-server/password-recovery?email=%s&token=%s
 #in hours
 password.recovery.period.value=24
+rememberme.key=novabillRME
+#in seconds
+rememberme.expiration=345600
+#in hours
+registration.expiration.value=48
+forgotpassword.expiration.value=48
+pdfgen.service.url.value=http://localhost:8081
+spring.profiles.active.value=dev
+debug.enabled.value=true
 
-smtp.auth.enabled.value=false
-smtp.host.value=localhost
-smtp.port.value=25
-smtp.username.value=
-smtp.password.value=
-smtp.mail.registration_completed_sender.value=risto.gligorov@novadart.com
-
+#
+# Paypal
+#
 paypal.action.value=https://www.sandbox.paypal.com/cgi-bin/webscr
 paypal.hostedButtonID.value=QR96B53BDX3FJ
 paypal.url.value=https://www.sandbox.paypal.com/cgi-bin/webscr
@@ -51,26 +63,11 @@ paypal.email.value=nova_1337536969_biz@gmail.com
 paypal.premiumOneYearItemName.value=Novadart premium membership - 1 Year
 paypal.premiumOneYearMCGross.value=40.00
 
+#
+# Quota
+#
 quota.numberOfClients.value=1
 quota.numberOfInvoicesPerYear.value=1
 quota.numberOfEstimationsPerYear.value=1
 quota.numberOfCreditNotesPerYear.value=1
 quota.numberOfTransportDocsPerYear.value=1
-
-path.tmpdir.data_export.value=/tmp/novabill
-
-rememberme.key=novabillRME
-#in seconds
-rememberme.expiration=345600
-
-#in hours
-registration.expiration.value=48
-forgotpassword.expiration.value=48
-
-pdfgen.service.url.value=http://localhost:8081
-
-resources.root=/opt/novabill
-
-exception.sendemail.value = false
-
-log.file.location.value=/tmp/novabill.log

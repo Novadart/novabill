@@ -19,6 +19,10 @@
 	margin: 3em auto 4em;
 }
 
+.registrationFormTable tr {
+	vertical-align: middle;
+}
+
 .submit {
 	margin: 2em auto 0;
 	display: block;
@@ -34,6 +38,10 @@
 
 .acceptAgreementWrapper {
 	margin-top: 2.5em;
+}
+
+.acceptAgreementWrapper label {
+	font-size: 1.2em;
 }
 
 .acceptAgreementWrapper input {

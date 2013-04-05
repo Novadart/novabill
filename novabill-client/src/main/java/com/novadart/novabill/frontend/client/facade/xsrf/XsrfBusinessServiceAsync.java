@@ -11,6 +11,7 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.facade.BusinessService;
 import com.novadart.novabill.shared.client.facade.BusinessServiceAsync;
@@ -207,6 +208,17 @@ BusinessServiceAsync {
 			@Override
 			protected void performCall(BusinessServiceAsync service) {
 				service.generateLogoOpToken(callback);
+			}
+		});
+	}
+	
+	@Override
+	public void getPaymentTypes(final Long businessID, final AsyncCallback<List<PaymentTypeDTO>> callback) {
+		performXsrfProtectedCall(new XsrfServerCallDelegate<BusinessServiceAsync>(callback) {
+			
+			@Override
+			protected void performCall(BusinessServiceAsync service) {
+				service.getPaymentTypes(businessID, callback);
 			}
 		});
 	}
