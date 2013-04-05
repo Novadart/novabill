@@ -45,6 +45,7 @@
 #rememberMe {
 	margin-left: 2em;
 	cursor: pointer;
+	line-height: 3em;
 }
 
 #registerButton {

@@ -205,8 +205,8 @@
 			destroy-method="close" id="dataSource">
 			<property name="driverClassName" value="org.postgresql.Driver" />
 			<property name="url" value="jdbc:postgresql://localhost/novabill" />
-			<property name="username" value="novadart" />
-			<property name="password" value="novadart" />
+			<property name="username" value="${dbuser}" />
+			<property name="password" value="${dbpassword}" />
 			<property name="testOnBorrow" value="true" />
 			<property name="testOnReturn" value="true" />
 			<property name="testWhileIdle" value="true" />

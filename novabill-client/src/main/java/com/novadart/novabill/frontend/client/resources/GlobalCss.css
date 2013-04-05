@@ -51,8 +51,6 @@ button.action-button {
 	background: \-webkit-linear-gradient(top, #a4ce43 0%, #54ba47 100%);
 	background: \-o-linear-gradient(top, #a4ce43 0%, #54ba47 100%);
 	background: \-ms-linear-gradient(top, #a4ce43 0%, #54ba47 100%);
-	filter: progid\:DXImageTransform\.Microsoft\.gradient(  startColorstr\='#a4ce43',
-		endColorstr\='#54ba47', GradientType\=0 );
 	background: linear-gradient(top, #a4ce43 0%, #54ba47 100%);
 	border: 1px solid #247116;
 	\-moz-border-radius: 5px;
@@ -78,8 +76,6 @@ button.action-button:hover {
 	background: \-webkit-linear-gradient(top, #b3d43f 0%, #60bd46 100%);
 	background: \-o-linear-gradient(top, #b3d43f 0%, #60bd46 100%);
 	background: \-ms-linear-gradient(top, #b3d43f 0%, #60bd46 100%);
-	filter: progid\:DXImageTransform\.Microsoft\.gradient(  startColorstr\='#b3d43f',
-		endColorstr\='#60bd46', GradientType\=0 );
 	background: linear-gradient(top, #b3d43f 0%, #60bd46 100%);
 }
 
@@ -91,8 +87,6 @@ button.action-button:active {
 	background: \-webkit-linear-gradient(top, #94cb42 0%, #78ac38 100%);
 	background: \-o-linear-gradient(top, #94cb42 0%, #78ac38 100%);
 	background: \-ms-linear-gradient(top, #94cb42 0%, #78ac38 100%);
-	filter: progid\:DXImageTransform\.Microsoft\.gradient(  startColorstr\='#94cb42',
-		endColorstr\='#78ac38', GradientType\=0 );
 	background: linear-gradient(top, #94cb42 0%, #78ac38 100%);
 }
 
@@ -108,8 +102,6 @@ button.action2-button {
 	background: \-webkit-linear-gradient(top, #52a8e8 0%, #2e76cf 100%);
 	background: \-o-linear-gradient(top, #52a8e8 0%, #2e76cf 100%);
 	background: \-ms-linear-gradient(top, #52a8e8 0%, #2e76cf 100%);
-	filter: progid\:DXImageTransform\.Microsoft\.gradient(  startColorstr\='#52a8e8',
-		endColorstr\='#2e76cf', GradientType\=0 );
 	background: linear-gradient(top, #52a8e8 0%, #2e76cf 100%);
 	border: 1px solid #385B7A;
 	\-moz-border-radius: 5px;
@@ -135,8 +127,6 @@ button.action2-button:hover {
 	background: \-webkit-linear-gradient(top, #5caafb 0%, #3c85dc 100%);
 	background: \-o-linear-gradient(top, #5caafb 0%, #3c85dc 100%);
 	background: \-ms-linear-gradient(top, #5caafb 0%, #3c85dc 100%);
-	filter: progid\:DXImageTransform\.Microsoft\.gradient(  startColorstr\='#5caafb',
-		endColorstr\='#3c85dc', GradientType\=0 );
 	background: linear-gradient(top, #5caafb 0%, #3c85dc 100%);
 }
 
@@ -148,8 +138,6 @@ button.action2-button:active {
 	background: \-webkit-linear-gradient(top, #4596df 0%, #2a60b4 100%);
 	background: \-o-linear-gradient(top, #4596df 0%, #2a60b4 100%);
 	background: \-ms-linear-gradient(top, #4596df 0%, #2a60b4 100%);
-	filter: progid\:DXImageTransform\.Microsoft\.gradient(  startColorstr\='#4596df',
-		endColorstr\='#2a60b4', GradientType\=0 );
 	background: linear-gradient(top, #4596df 0%, #2a60b4 100%);
 }
 
@@ -177,10 +165,6 @@ button.action2-button:active {
 
 * {
 	font-family: Arial, sans-serif, serif;
-}
-
-.mandatory {
-	font-weight: bold;
 }
 
 input[type="text"],input[type="password"] {

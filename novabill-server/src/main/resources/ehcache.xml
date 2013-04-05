@@ -22,53 +22,53 @@
 
     <diskStore path="${ehcache.diskStore}" />
 
-    <defaultCache eternal="false" maxElementsInMemory="${ehcache.default.maxElementsInMemory.value}"
+    <defaultCache eternal="false" maxElementsInMemory="1000"
         overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
-        timeToLiveSeconds="${ehcache.default.timeToLiveSeconds.value}" memoryStoreEvictionPolicy="LRU" statistics="true" />
+        timeToLiveSeconds="600" memoryStoreEvictionPolicy="LRU" statistics="true" />
 
 	<cache name="business-cache" eternal="false"
-        maxElementsInMemory="${ehcache.business-cache.maxElementsInMemory.value}" overflowToDisk="false" diskPersistent="false"
-        timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.business-cache.timeToLiveSeconds.value}"
+        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+        timeToIdleSeconds="0" timeToLiveSeconds="600"
         memoryStoreEvictionPolicy="LRU" statistics="true" />
 
     <cache name="client-cache" eternal="false"
-        maxElementsInMemory="${ehcache.client-cache.maxElementsInMemory.value}" overflowToDisk="false" diskPersistent="false"
-        timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.client-cache.timeToLiveSeconds.value}"
+        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+        timeToIdleSeconds="0" timeToLiveSeconds="600"
         memoryStoreEvictionPolicy="LRU" statistics="true" />
         
     <cache name="invoice-cache" eternal="false"
-        maxElementsInMemory="${ehcache.invoice-cache.maxElementsInMemory.value}" overflowToDisk="false" diskPersistent="false"
-        timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.invoice-cache.timeToLiveSeconds.value}"
+        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+        timeToIdleSeconds="0" timeToLiveSeconds="600"
         memoryStoreEvictionPolicy="LRU" statistics="true" />
         
     <cache name="creditnote-cache" eternal="false"
-        maxElementsInMemory="${ehcache.creditnote-cache.maxElementsInMemory.value}" overflowToDisk="false" diskPersistent="false"
-        timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.creditnote-cache.timeToLiveSeconds.value}"
+        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+        timeToIdleSeconds="0" timeToLiveSeconds="600"
         memoryStoreEvictionPolicy="LRU" statistics="true" />
         
     <cache name="estimation-cache" eternal="false"
-        maxElementsInMemory="${ehcache.estimation-cache.maxElementsInMemory.value}" overflowToDisk="false" diskPersistent="false"
-        timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.estimation-cache.timeToLiveSeconds.value}"
+        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+        timeToIdleSeconds="0" timeToLiveSeconds="600"
         memoryStoreEvictionPolicy="LRU" statistics="true" />
         
 	<cache name="transportdocument-cache" eternal="false"
-        maxElementsInMemory="${ehcache.transportdocument-cache.maxElementsInMemory.value}" overflowToDisk="false" diskPersistent="false"
-        timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.transportdocument-cache.timeToLiveSeconds.value}"
+        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+        timeToIdleSeconds="0" timeToLiveSeconds="600"
         memoryStoreEvictionPolicy="LRU" statistics="true" />
         
     <cache name="paymenttype-cache" eternal="false"
-        maxElementsInMemory="${ehcache.paymenttype-cache.maxElementsInMemory.value}" overflowToDisk="false" diskPersistent="false"
-        timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.paymenttype-cache.timeToLiveSeconds.value}"
+        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+        timeToIdleSeconds="0" timeToLiveSeconds="600"
         memoryStoreEvictionPolicy="LRU" statistics="true" />
         
     <cache name="com.novadart.novabill.domain.Client" eternal="false"
-    	maxElementsInMemory="${ehcache.client-hib-2nd-level.maxElementsInMemory.value}" overflowToDisk="false" diskPersistent="false"
-    	timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.client-hib-2nd-level.timeToLiveSeconds.value}"
+    	maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+    	timeToIdleSeconds="0" timeToLiveSeconds="600"
         memoryStoreEvictionPolicy="LRU" statistics="true" />
     
     <cache name="com.novadart.novabill.domain.Business" eternal="false"
-    	maxElementsInMemory="${ehcache.business-hib-2nd-level.maxElementsInMemory.value}" overflowToDisk="false" diskPersistent="false"
-    	timeToIdleSeconds="0" timeToLiveSeconds="${ehcache.business-hib-2nd-level.timeToLiveSeconds.value}"
+    	maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+    	timeToIdleSeconds="0" timeToLiveSeconds="600"
         memoryStoreEvictionPolicy="LRU" statistics="true" />
         
  </ehcache>

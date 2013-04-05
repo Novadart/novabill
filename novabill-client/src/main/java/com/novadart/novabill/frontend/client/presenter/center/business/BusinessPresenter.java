@@ -13,6 +13,7 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.presenter.AbstractPresenter;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.ExportUtils;
 import com.novadart.novabill.frontend.client.view.MainWidget;
 import com.novadart.novabill.frontend.client.view.center.business.BusinessView;
@@ -77,6 +78,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 
 	@Override
 	public void onRemoveLogoClicked() {
+		setLoaderInLogo();
 		ServerFacade.deleteLogo(new AsyncCallback<Boolean>() {
 
 			@Override
@@ -188,25 +190,35 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 
 	@Override
 	public void onLogoSubmit() {
+		setLoaderInLogo();
 		logoUpdateCompleted = false;
 	}
 
 	@Override
-	public void onLogoSubmitComplete(int resultCode) {
-		LogoUploadStatus status = LogoUploadStatus.values()[resultCode];
+	public void onLogoSubmitComplete(String resultCode) {
+		// for some reason Internet Explorer wraps the number in <pre></pre>, thus instead of 0 you get <pre>0</pre>
+		if(resultCode.toLowerCase().contains("<pre>")){
+			resultCode = String.valueOf(resultCode.charAt(5));
+		}
+
+		int code = Integer.parseInt(resultCode);
+		
+		LogoUploadStatus status = LogoUploadStatus.values()[code];
 		switch(status){
 		case ILLEGAL_PAYLOAD:
 			Notification.showMessage(I18N.INSTANCE.errorLogoIllegalFile());
-			break;
 
 		case ILLEGAL_SIZE:
 			Notification.showMessage(I18N.INSTANCE.errorLogoSizeTooBig());
-			break;
 
 		default:
 		case ILLEGAL_REQUEST:
 		case INTERNAL_ERROR:
 			Notification.showMessage(I18N.INSTANCE.errorLogoIllegalRequest());
+			getView().getLogo().setUrl(Const.getLogoUrl());
+			getView().getFormPanel().setVisible(false);
+			getView().getFormPanel().reset();
+			getView().getUpdateLogo().setVisible(true);
 			break;
 
 		case OK:
@@ -220,6 +232,10 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 		}
 
 		logoUpdateCompleted = true;
+	}
+	
+	private void setLoaderInLogo() {
+		getView().getLogo().setUrl(ImageResources.INSTANCE.largeLoader().getSafeUri());
 	}
 
 }

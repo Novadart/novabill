@@ -90,6 +90,14 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 		setupPaymentSummaryView(paymentDueDate);
 	}
 	
+	public void init(String paymentName, PaymentDateType dateGenerator, Integer paymentDateDelta){
+		selectedPayment = new PaymentTypeDTO();
+		selectedPayment.setName(paymentName);
+		selectedPayment.setPaymentDateDelta(paymentDateDelta);
+		selectedPayment.setPaymentDateGenerator(dateGenerator);
+		setupPaymentSummaryView();
+	}
+	
 	public void init(){
 		selectedPayment = null;
 		setupPaymentView();

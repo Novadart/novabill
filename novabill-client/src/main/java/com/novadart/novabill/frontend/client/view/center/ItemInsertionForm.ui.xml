@@ -65,9 +65,14 @@
 		.decimalSeparatorInfo {
 			margin-top: 1em;
 		}
+		
+		.tip {
+			width: 50em;
+		}
 	</ui:style>
 
 	<g:FlowPanel>
+		<g:SimplePanel styleName="{s.tip}" ui:field="tip"></g:SimplePanel>
 		<g:ScrollPanel ui:field="itemTableScroller" styleName="{s.itemTableScroller}">
 			<c:ItemTable ui:field="itemTable" styleName="{s.itemTable}"></c:ItemTable>
 		</g:ScrollPanel>
@@ -80,7 +85,7 @@
 					<v:ValidatedTextArea ui:field="item" styleName="{s.item}" />
 				</g:VerticalPanel>
 				<g:VerticalPanel styleName="{s.quantityContainer}">
-					<g:Label styleName="{s.smallLabel}" text="{i18n.quantity}"></g:Label>
+					<g:Label styleName="{s.smallLabel}" text="{i18n.quantity}*"></g:Label>
 					<g:TextBox ui:field="quantity" styleName="{s.quantity}"></g:TextBox>
 				</g:VerticalPanel>
 				<g:VerticalPanel styleName="{s.unitOfMeasureContainer}">
@@ -89,7 +94,7 @@
 						maxLength="255"></g:TextBox>
 				</g:VerticalPanel>
 				<g:VerticalPanel styleName="{s.priceContainer}">
-					<g:Label styleName="{s.smallLabel}" text="{i18n.price}"></g:Label>
+					<g:Label styleName="{s.smallLabel}" text="{i18n.price}*"></g:Label>
 					<g:TextBox ui:field="price" styleName="{s.price}"></g:TextBox>
 				</g:VerticalPanel>
 				<g:VerticalPanel styleName="{s.taxContainer}">
@@ -101,7 +106,7 @@
 				</g:SimplePanel>
 			</g:HorizontalPanel>
 			
-			<g:Label styleName="{s.decimalSeparatorInfo}" text="{i18n.decimalSeparatorInfo}" />
+			<g:Label styleName="{s.decimalSeparatorInfo}" text="*{i18n.decimalSeparatorInfo}" />
 		</g:FlowPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 

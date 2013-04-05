@@ -10,5 +10,6 @@ public enum Tips {
 	west_home_no_clients,
 	select_client_dialog,
 	client_view,
-	center_invoice_payment
+	center_invoice_payment,
+	item_insertion_form
 }

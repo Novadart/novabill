@@ -72,8 +72,7 @@ public class DeleteAccountTest {
 		String username = userPasswordMap.keySet().iterator().next(), password = userPasswordMap.get(username);
 		Long businessID = Principal.findByUsername(username).getBusiness().getId();
 		DeleteAccountController deleteAccountController = initDeleteAccountController(username, password, password);
-		String deleteAccountView = deleteAccountController.setupForm(mock(Model.class));
-		String deleteAccountExportButtonView = deleteAccountController.getDeleteAccountExportButton(mock(Model.class), mock(HttpSession.class));
+		String deleteAccountView = deleteAccountController.setupForm(mock(Model.class), mock(HttpSession.class));
 		DeleteAccount deleteAccount = new DeleteAccount();
 		deleteAccount.setPassword(password);
 		BindingResult result = mock(BindingResult.class);
@@ -82,7 +81,6 @@ public class DeleteAccountTest {
 		Principal.entityManager().flush();
 		assertEquals("deleteAccount", deleteAccountView);
 		assertEquals("redirect:/resources/j_spring_security_logout", redirectLogoutView);
-		assertEquals("deleteAccountExportButton", deleteAccountExportButtonView);
 		assertEquals(null, Principal.findByUsername(username));
 		assertEquals(null, Business.findBusiness(businessID));
 	}

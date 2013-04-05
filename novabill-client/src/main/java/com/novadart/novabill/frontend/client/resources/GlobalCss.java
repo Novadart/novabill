@@ -55,6 +55,4 @@ public interface GlobalCss extends CssResource {
 
 	String centerViewLoader();
 	
-	String mandatory();
-
 }

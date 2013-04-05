@@ -69,6 +69,12 @@ public class TipFactory {
 			shb.appendHtmlConstant("</span>");
 			shb.appendHtmlConstant("</p>");
 			break;
+			
+		case item_insertion_form:
+			shb.appendHtmlConstant("<p>");
+			shb.appendEscaped(I18N.INSTANCE.tipItemInsertionForm());
+			shb.appendHtmlConstant("</p>");
+			break;
 		}
 		return shb.toSafeHtml();
 	}

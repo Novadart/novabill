@@ -32,7 +32,7 @@
 		}
 		
 		.bootstrapDialogBody {
-			background-color: #FFE;
+			background-color: white;
 			padding: 0.5em;
 		}
 		
@@ -51,6 +51,9 @@
 			margin: 0.3em;
 		}
 		
+		.mandatory {
+			padding: 0 0 0.5em 2em;
+		}
 	</ui:style>
 
 
@@ -62,7 +65,7 @@
 			<g:Grid>
 				<g:row>
 					<g:customCell >
-						<g:Label  styleName="{s.businessLabel} {g.mandatory}" text="{i18n.companyName}"></g:Label>
+						<g:Label  styleName="{s.businessLabel}" text="{i18n.companyName} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="name" maxLength="255" />
@@ -70,7 +73,7 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.ssn}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.ssn} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="ssn" maxLength="25"></v:ValidatedTextBox>
@@ -78,7 +81,7 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.vatID}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.vatID} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="vatID" maxLength="25"></v:ValidatedTextBox>
@@ -86,7 +89,7 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.address}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.address} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="address"
@@ -95,7 +98,7 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.city}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.city} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="city" maxLength="60"></v:ValidatedTextBox>
@@ -103,7 +106,7 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.postcode}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.postcode} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedTextBox styleName="{s.validatedTextBox}" ui:field="postcode"
@@ -112,7 +115,7 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.province}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.province} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedListBox ui:field="province"></v:ValidatedListBox>
@@ -120,7 +123,7 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.businessLabel} {g.mandatory}" text="{i18n.country}"></g:Label>
+						<g:Label styleName="{s.businessLabel}" text="{i18n.country} *"></g:Label>
 					</g:customCell>
 					<g:customCell>
 						<v:ValidatedListBox ui:field="country" enabled="false"></v:ValidatedListBox>
@@ -170,6 +173,8 @@
 			</g:Grid>
 
 		</g:SimplePanel>
+		
+		<g:Label styleName="{s.mandatory}" text="* {i18n.mandatory}"/>
 
 		<n:InlineNotification ui:field="inlineNotification" />
 

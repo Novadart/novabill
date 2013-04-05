@@ -6,6 +6,7 @@ import com.google.gwt.i18n.client.Constants;
 public interface I18N extends Constants {
 	public static final I18N INSTANCE = GWT.create(I18N.class);
 	
+	public String mandatory();
 	public String decimalSeparatorInfo();
 	public String immediate();
 	public String addPayment();
@@ -216,4 +217,5 @@ public interface I18N extends Constants {
 	public String tipClientView1();
 	public String tipClientView2();
 	public String tipInvoicePayment();
+	public String tipItemInsertionForm();
 }
