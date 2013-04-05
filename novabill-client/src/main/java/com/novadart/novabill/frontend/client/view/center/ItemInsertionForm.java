@@ -12,6 +12,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
@@ -23,6 +24,8 @@ import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
+import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
 public class ItemInsertionForm extends Composite implements HasUILocking {
@@ -47,6 +50,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField TextBox price;
 	@UiField(provided=true) ListBox tax;
 	@UiField(provided=true) ItemTable itemTable;
+	@UiField SimplePanel tip;
 
 	@UiField Button add;
 	
@@ -86,6 +90,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		accountingDocumentItems.addDataDisplay(itemTable);
 		
 		initWidget(uiBinder.createAndBindUi(this));
+		
+		TipFactory.show(Tips.item_insertion_form, tip);
 	}
 
 	@UiHandler("add")

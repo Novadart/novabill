@@ -17,6 +17,13 @@
 		.tipContainer {
 			max-width: 600px;
 		}
+		
+		.selectPayment {
+			margin: 2px 0 4px;
+			position: relative;
+			left: -2px;
+			top: -2px;
+		}
 	</ui:style>
 	
 	<g:ScrollPanel height="100%">
@@ -67,7 +74,7 @@
 									text="{i18n.payment}"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<p:SelectPayment ui:field="payment" />
+								<p:SelectPayment styleName="{style.selectPayment}" ui:field="payment" />
 							</g:customCell>
 						</g:row>
 						<g:row>

@@ -32,7 +32,7 @@
 		}
 		
 		.bootstrapDialogBody {
-			background-color: #FFE;
+			background-color: white;
 			padding: 0.5em;
 		}
 		
