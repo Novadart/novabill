@@ -2,6 +2,7 @@ package com.novadart.novabill.domain.security;
 
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -16,6 +17,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.NotNull;
 
@@ -23,6 +26,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -46,7 +50,9 @@ public class Principal implements UserDetails {
 	
 	private Long creationTime = System.currentTimeMillis();
 	
-	private Long lastLogin;
+	@Temporal(TemporalType.TIMESTAMP)
+    @DateTimeFormat(style = "S-")
+	private Date lastLogin;
 	
 	private boolean enabled = true;
 	
@@ -116,11 +122,11 @@ public class Principal implements UserDetails {
 		this.creationTime = creationTime;
 	}
 
-	public Long getLastLogin() {
+	public Date getLastLogin() {
 		return lastLogin;
 	}
 
-	public void setLastLogin(Long lastLogin) {
+	public void setLastLogin(Date lastLogin) {
 		this.lastLogin = lastLogin;
 	}
 	
