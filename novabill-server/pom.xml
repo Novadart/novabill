@@ -411,17 +411,17 @@
 			</build>
 		</profile>
 		<profile>
-			<id>staging</id>
+			<id>stage</id>
 			<build>
 				<filters>
-					<filter>profiles/staging.properties</filter>
+					<filter>profiles/stage.properties</filter>
 				</filters>
 				<plugins>
 					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>
 						<configuration>
-							<classifier>staging</classifier>
+							<classifier>stage</classifier>
 						</configuration>
 					</plugin>
 				</plugins>
