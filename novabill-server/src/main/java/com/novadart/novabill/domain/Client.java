@@ -44,6 +44,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
 /*
@@ -72,56 +73,68 @@ public class Client implements Serializable, Taxable {
 	@Field(name = FTSNamespace.NAME)
 	@Size(max = 255)
 	@NotBlank
+	@Trimmed
     private String name;
 
 	@Field(name = FTSNamespace.ADDRESS)
     @Size(max = 255)
 	@NotBlank
+	@Trimmed
     private String address;
 
 	@Field(name = FTSNamespace.POSTCODE)
     @Size(max = 10)
 	@NotBlank
+	@Trimmed
     private String postcode;
 
 	@Field(name = FTSNamespace.CITY)
     @Size(max = 60)
 	@NotBlank
+	@Trimmed
     private String city;
 
 	@Field(name = FTSNamespace.PROVINCE)
     @Size(max = 2)
-	//@NotBlank
+	@Trimmed
     private String province;
 
 	@Field(name = FTSNamespace.COUNTRY)
     @Size(max = 3)
 	@NotBlank
+	@Trimmed
     private String country;
 
 	@Field(name = FTSNamespace.EMAIL)
     @Size(max = 255)
     @Email
+    @Trimmed
     private String email;
 
     @Size(max = 25)
+    @Trimmed
     private String phone;
 
     @Size(max = 25)
+    @Trimmed
     private String mobile;
 
     @Size(max = 25)
+    @Trimmed
     private String fax;
 
     @Size(max = 255)
+    @Trimmed
     private String web;
 
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
+    @Trimmed
     private String vatID;
 
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
+    @Trimmed
     private String ssn;
     
     @AttributeOverrides({

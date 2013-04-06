@@ -47,6 +47,8 @@ import org.hibernate.search.jpa.Search;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
@@ -65,49 +67,62 @@ public class Business implements Serializable, Taxable {
 	
 	@Size(max = 255)
 	@NotNull
-    private String name = "";
+	@Trimmed
+    private String name;
 
     @Size(max = 255)
     @NotNull
-    private String address = "";
+    @Trimmed
+    private String address;
 
     @Size(max = 10)
     @NotNull
-    private String postcode = "";
+    @Trimmed
+    private String postcode;
 
     @Size(max = 60)
     @NotNull
-    private String city = "";
+    @Trimmed
+    private String city;
 
     @Size(max = 2)
     //@NotNull
-    private String province = "";
+    @Trimmed
+    private String province;
 
     @Size(max = 3)
+    @Trimmed
     private String country;
 
     @Size(max = 255)
     @Email
+    @Trimmed
     private String email;
 
     @Size(max = 25)
+    @Trimmed
     private String phone;
 
     @Size(max = 25)
+    @Trimmed
     private String mobile;
 
     @Size(max = 25)
+    @Trimmed
     private String fax;
 
     @Size(max = 255)
+    @Trimmed
     private String web;
 
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
+    @Trimmed
     private String vatID;
-
+    
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
+    @Trimmed
     private String ssn;
 
     private Long nonFreeAccountExpirationTime; 
