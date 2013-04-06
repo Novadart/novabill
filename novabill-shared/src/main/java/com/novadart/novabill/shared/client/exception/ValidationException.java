@@ -11,23 +11,23 @@ public class ValidationException extends Exception implements IsSerializable {
 	
 	private List<ErrorObject> errors;
 	
-	private String objectClassName;
+	private Object object;
 
 	public List<ErrorObject> getErrors() {
 		return errors;
 	}
 	
-	public String getObjectClassName() {
-		return objectClassName;
+	public Object getObject() {
+		return object;
 	}
 
 	public ValidationException(){
 		super();
 	}
 	
-	public ValidationException(List<ErrorObject> errors, String objectClassName){
+	public ValidationException(List<ErrorObject> errors, Object object){
 		super();
 		this.errors = errors;
-		this.objectClassName = objectClassName;
+		this.object = object;
 	}
 }
