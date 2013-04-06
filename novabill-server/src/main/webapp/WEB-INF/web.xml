@@ -7,6 +7,7 @@
 	id="novabill" version="3.0">
 
   <display-name>novabill-server</display-name>
+  
   <context-param>
     <param-name>spring.profiles.active</param-name>
     <param-value>${spring.profiles.active.value}</param-value>
@@ -101,6 +102,7 @@
   </servlet-mapping>
   <session-config>
     <session-timeout>60</session-timeout>
+    <tracking-mode>COOKIE</tracking-mode>
   </session-config>
   <error-page>
     <exception-type>java.lang.Exception</exception-type>
