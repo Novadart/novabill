@@ -53,7 +53,6 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 
 	@Override
 	public void onLoad() {
-		getView().getCreateDocument().setText(I18N.INSTANCE.saveModifications());
 		getView().getTitleLabel().setText(I18N.INSTANCE.modifyEstimation());
 	}
 	

@@ -4,10 +4,12 @@ import com.google.gwt.activity.shared.ActivityManager;
 import com.google.gwt.activity.shared.ActivityMapper;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Style.Display;
 import com.google.gwt.place.shared.Place;
 import com.google.gwt.place.shared.PlaceChangeEvent;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
+import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.analytics.Analytics;
@@ -27,10 +29,9 @@ public class Novabill implements EntryPoint {
 
 	private Place defaultPlace = new HomePlace();
     
-    public Novabill() {
-	}
-
 	public void onModuleLoad() {
+		
+		DOM.getElementById("loadingGWT").getStyle().setDisplay(Display.NONE);
 		
 		Configuration.init(new ManagedAsyncCallback<Void>() {
 			
@@ -41,6 +42,7 @@ public class Novabill implements EntryPoint {
 
 					@Override
 					public void onSuccess(BusinessStatsDTO result) {
+						
 						if(result == null){
 							Notification.showMessage(I18N.INSTANCE.errorLoadingAppConfiguration());
 							return;
@@ -73,6 +75,7 @@ public class Novabill implements EntryPoint {
 						
 						main.setPlaceController(placeController);
 						main.setEventBus(clientFactory.getEventBus());
+						
 						RootLayoutPanel.get().add(main);
 
 						eventBus.addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {

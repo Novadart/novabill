@@ -17,6 +17,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 
 /*
@@ -30,6 +31,7 @@ public class PaymentType {
 	
 	@Size(max = 255)
 	@NotNull
+	@Trimmed
 	private String name;
 	
 	@Size(max = 1500)

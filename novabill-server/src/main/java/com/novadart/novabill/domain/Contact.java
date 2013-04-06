@@ -15,6 +15,8 @@ import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.validator.constraints.Email;
 
+import com.novadart.novabill.annotation.Trimmed;
+
 
 /*
  * Important note!
@@ -35,19 +37,24 @@ public class Contact implements Serializable{
 
 	@Field(name = FTSNamespace.FIRST_NAME)
 	@Size(max = 50)
+	@Trimmed
 	private String firstName;
 	
 	@Field(name = FTSNamespace.LAST_NAME)
 	@Size(max = 50)
+	@Trimmed
 	private String lastName;
 	
 	@Email
+	@Trimmed
 	private String email;
 	
 	@Size(max = 25)
+	@Trimmed
 	private String phone;
 	
 	@Size(max = 25)
+	@Trimmed
 	private String fax;
 	
 	@Size(max = 25)
