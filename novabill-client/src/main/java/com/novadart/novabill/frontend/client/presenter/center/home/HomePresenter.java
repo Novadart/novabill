@@ -60,14 +60,15 @@ public class HomePresenter extends AbstractPresenter<HomeView> implements HomeVi
 
 	@Override
 	public void onLoad() {
-		invoiceDataProvider.addDataDisplay(getView().getInvoiceList());
 		getView().getInvoiceList().setVisibleRange(DOCS_LIST_RANGE);
-		estimationDataProvider.addDataDisplay(getView().getEstimationList());
 		getView().getEstimationList().setVisibleRange(DOCS_LIST_RANGE);
-		creditNoteDataProvider.addDataDisplay(getView().getCreditNoteList());
 		getView().getCreditNoteList().setVisibleRange(DOCS_LIST_RANGE);
-		transportDocumentDataProvider.addDataDisplay(getView().getTransportDocumentList());
 		getView().getTransportDocumentList().setVisibleRange(DOCS_LIST_RANGE);
+		
+		invoiceDataProvider.addDataDisplay(getView().getInvoiceList());
+		estimationDataProvider.addDataDisplay(getView().getEstimationList());
+		creditNoteDataProvider.addDataDisplay(getView().getCreditNoteList());
+		transportDocumentDataProvider.addDataDisplay(getView().getTransportDocumentList());
 		
 		bind();
 		getView().getInvoiceList().setEventBus(getEventBus());
