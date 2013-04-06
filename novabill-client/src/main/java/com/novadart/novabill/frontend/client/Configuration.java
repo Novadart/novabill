@@ -8,8 +8,9 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.i18n.client.Dictionary;
 import com.google.gwt.user.client.Window;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.view.bootstrap.BootstrapDialog;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
@@ -25,6 +26,16 @@ public class Configuration {
 	private static boolean debugEnabled;
 
 	public static final void init(final ManagedAsyncCallback<Void> callback){
+		ServerFacade.setupXsrfProtection(new ManagedAsyncCallback<Void>() {
+
+			@Override
+			public void onSuccess(Void result) {
+				loadConfiguration(callback);
+			}
+		});
+	}
+	
+	private static void loadConfiguration(final AsyncCallback<Void> callback){
 		try {
 			injectCss();
 			
@@ -107,6 +118,7 @@ public class Configuration {
 			callback.onFailure(e);
 		}
 	}
+	
 	
 	private static native String readNotesBitMask()/*-{
 		return $wnd.notesBitMask;
