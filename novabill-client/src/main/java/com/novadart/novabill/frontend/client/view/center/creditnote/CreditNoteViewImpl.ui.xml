@@ -81,7 +81,7 @@
 			
 			<g:FlowPanel styleName="{s.docControls}" ui:field="docControls">
 				<gwtshared:LoaderButton styleName="{s.loaderButton}" ui:field="createCreditNote"
-					text="{i18n.createCreditNote}"/>
+					text="{i18n.saveModifications}"/>
 				<g:Button ui:field="abort" styleName="{s.abortButton} {g.button}"
 					text="{i18n.cancel}"></g:Button>
 			</g:FlowPanel>
