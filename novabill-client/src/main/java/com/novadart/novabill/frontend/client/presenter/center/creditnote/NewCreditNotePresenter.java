@@ -55,7 +55,6 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 
 	@Override
 	public void onLoad() {
-		getView().getCreateDocument().setText(I18N.INSTANCE.createCreditNote());
 		getView().getTitleLabel().setText(I18N.INSTANCE.newCreditNoteCreation());
 	}
 

@@ -30,7 +30,6 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 
 	@Override
 	public void onLoad() {
-		getView().getCreateDocument().setText(I18N.INSTANCE.saveModifications());
 		getView().getTitleLabel().setText(I18N.INSTANCE.modifyInvoice());
 	}
 

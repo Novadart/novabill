@@ -88,7 +88,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		setStyleName(CSS.accountDocumentView());
 		
 		createEstimation.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
-		convertToInvoice.getButton().setStyleName(CSS.convertToInvoiceLB()+" "+GlobalBundle.INSTANCE.globalCss().button());
+		convertToInvoice.getButton().setStyleName(GlobalBundle.INSTANCE.globalCss().button());
 		
 	}
 	
