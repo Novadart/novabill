@@ -28,6 +28,7 @@ abstract class XsrfProtectedService<Service> {
 
 
 	private static final XsrfTokenServiceAsync xsrf = (XsrfTokenServiceAsync)GWT.create(XsrfTokenService.class);
+	private static XsrfToken xsrfToken = null;
 	
 	static {
 		((ServiceDefTarget)xsrf).setServiceEntryPoint(Const.XSRF_URL);
@@ -44,19 +45,29 @@ abstract class XsrfProtectedService<Service> {
 	}
 	
 	protected final void performXsrfProtectedCall(final XsrfServerCallDelegate<Service> serverCall) {
-		xsrf.getNewXsrfToken(new AsyncCallback<XsrfToken>() {
+		if(xsrfToken == null) {
 			
-			@Override
-			public void onSuccess(XsrfToken result) {
-				((HasRpcToken) service).setRpcToken(result);
-				serverCall.performCall(service);
-			}
+			xsrf.getNewXsrfToken(new AsyncCallback<XsrfToken>() {
+				
+				@Override
+				public void onSuccess(XsrfToken result) {
+					xsrfToken = result;
+					((HasRpcToken) service).setRpcToken(xsrfToken);
+					serverCall.performCall(service);
+				}
+				
+				@Override
+				public void onFailure(Throwable caught) {
+					serverCall.manageException(caught);
+				}
+			});
 			
-			@Override
-			public void onFailure(Throwable caught) {
-				serverCall.manageException(caught);
-			}
-		});
+		} else {
+			
+			((HasRpcToken) service).setRpcToken(xsrfToken);
+			serverCall.performCall(service);
+			
+		}
 	}
 		
 }

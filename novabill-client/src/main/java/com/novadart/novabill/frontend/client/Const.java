@@ -16,7 +16,7 @@ public class Const {
 	public static final String UPDATE_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo?token=";
 	public static final String DELETE_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo?token=";
 	public static final String CHANGE_PASSWORD_URL = GWT.getHostPageBaseURL()+"private/change-password";
-	public static final String XSRF_URL = GWT.getHostPageBaseURL() + "gwt/xsrf";
+	public static final String XSRF_URL = GWT.getHostPageBaseURL() + "private/gwt/xsrf";
 	public static final String POST_FEEDBACK_URL = GWT.getHostPageBaseURL()+"private/feedback";
 	
 	private static String logoUrl = URL_THUMB + "?v=" + new Date().getTime();

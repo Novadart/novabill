@@ -118,6 +118,6 @@
   </servlet>
   <servlet-mapping>
   	<servlet-name>xsrf</servlet-name>
-  	<url-pattern>/gwt/xsrf</url-pattern>
+  	<url-pattern>/private/gwt/xsrf</url-pattern>
   </servlet-mapping>
 </web-app>
