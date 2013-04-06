@@ -37,7 +37,6 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	
 	@Override
 	public void onLoad() {
-		getView().getCreateDocument().setText(I18N.INSTANCE.createInvoice());
 		getView().getTitleLabel().setText(I18N.INSTANCE.newInvoiceCreation());
 	}
 	

@@ -35,7 +35,11 @@
 	display: inline-block;
 }
 
-.convertToInvoiceLB,.abortButton {
+.convertToInvoiceLB {
+	margin-left: 2em;
+}
+
+.abortButton {
 	margin-left: 2em;
 }
 
@@ -89,8 +93,11 @@ select {
 	margin-left: 2em;
 }
 
-.modifyButton,.createButton {
-	margin-left: 2em;
+.modifyButton {
+	
+}
+
+.createButton {
 }
 
 input[type="text"].box.number {
