@@ -8,7 +8,7 @@ public privileged aspect TrimmingAspect {
 	
 	void around(Object value, Object target): trimmedFieldSet(value, target){
 		String strValue = (String)value;
-		proceed(strValue.trim(), target);
+		proceed(strValue != null ? strValue.trim() : null, target);
 	}
 
 }
