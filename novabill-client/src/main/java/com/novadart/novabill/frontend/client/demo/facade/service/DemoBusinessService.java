@@ -1,9 +1,11 @@
 package com.novadart.novabill.frontend.client.demo.facade.service;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -18,114 +20,134 @@ public class DemoBusinessService implements BusinessServiceAsync {
 
 	@Override
 	public void countClients(Long businessID, AsyncCallback<Long> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess(Long.valueOf(Data.getClients().values().size()));
 	}
 
 	@Override
 	public void countInvoices(Long businessID, AsyncCallback<Long> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess(Long.valueOf(Data.getInvoices().values().size()));
 	}
 
 	@Override
 	public void countInvoicesForYear(Long BusinessID, Integer year,
 			AsyncCallback<Long> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess(Long.valueOf(Data.getInvoices().values().size()));
 	}
 
 	@Override
 	public void generateExportToken(AsyncCallback<String> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess("token");
 	}
 
 	@Override
 	public void generatePDFToken(AsyncCallback<String> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess("token");
 	}
 
 	@Override
 	public void getStats(Long businessID,
 			AsyncCallback<BusinessStatsDTO> callback) {
-		// TODO Auto-generated method stub
-
+		
+		BusinessStatsDTO bs = new BusinessStatsDTO();
+		bs.setClientsCount(Long.valueOf(Data.getClients().size()));
+		bs.setInvoicesCountForYear(Long.valueOf(Data.getInvoices().size()));
+		
+		BigDecimal total = BigDecimal.ZERO;
+		
+		for (List<InvoiceDTO> il : Data.getInvoices().values()) {
+			for (InvoiceDTO i : il) {
+				total = total.add(i.getTotal());
+			}
+		}
+		
+		bs.setTotalAfterTaxesForYear(total);
+		callback.onSuccess(bs);
 	}
 
 	@Override
 	public void getTotalAfterTaxesForYear(Long businessID, Integer year,
 			AsyncCallback<BigDecimal> callback) {
-		// TODO Auto-generated method stub
-
+		BigDecimal total = BigDecimal.ZERO;
+		
+		for (List<InvoiceDTO> il : Data.getInvoices().values()) {
+			for (InvoiceDTO i : il) {
+				total = total.add(i.getTotal());
+			}
+		}
+		callback.onSuccess(total);
 	}
 
 	@Override
 	public void update(BusinessDTO businessDTO, AsyncCallback<Void> callback) {
-		// TODO Auto-generated method stub
-
+		Configuration.setBusiness(businessDTO);
+		Data.setBusiness(businessDTO);
+		callback.onSuccess(null);
 	}
 
 	@Override
-	public void getCreditNotes(Long businessID,
-			AsyncCallback<List<CreditNoteDTO>> callback) {
-		// TODO Auto-generated method stub
-
+	public void getCreditNotes(Long businessID,	AsyncCallback<List<CreditNoteDTO>> callback) {
+		List<CreditNoteDTO> result = new ArrayList<CreditNoteDTO>();
+		for (List<CreditNoteDTO> partial : Data.getCreditNotes().values()) {
+			result.addAll(partial);
+		}
+		callback.onSuccess(result);
 	}
 
 	@Override
 	public void getEstimations(Long businessID,
 			AsyncCallback<List<EstimationDTO>> callback) {
-		// TODO Auto-generated method stub
-
+		List<EstimationDTO> result = new ArrayList<EstimationDTO>();
+		for (List<EstimationDTO> partial : Data.getEstimations().values()) {
+			result.addAll(partial);
+		}
+		callback.onSuccess(result);
 	}
 
 	@Override
 	public void getInvoices(Long businessID,
 			AsyncCallback<List<InvoiceDTO>> callback) {
-		// TODO Auto-generated method stub
-
+		List<InvoiceDTO> result = new ArrayList<InvoiceDTO>();
+		for (List<InvoiceDTO> partial : Data.getInvoices().values()) {
+			result.addAll(partial);
+		}
+		callback.onSuccess(result);
 	}
 
 	@Override
 	public void getTransportDocuments(Long businessID,
 			AsyncCallback<List<TransportDocumentDTO>> callback) {
-		// TODO Auto-generated method stub
-
+		List<TransportDocumentDTO> result = new ArrayList<TransportDocumentDTO>();
+		for (List<TransportDocumentDTO> partial : Data.getTransportDocs().values()) {
+			result.addAll(partial);
+		}
+		callback.onSuccess(result);
 	}
 
 	@Override
 	public void getClients(Long businessID,
 			AsyncCallback<List<ClientDTO>> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess(new ArrayList<ClientDTO>(Data.getClients().values()));
 	}
 
 	@Override
 	public void get(Long businessID, AsyncCallback<BusinessDTO> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess(Data.getBusiness());
 	}
 
 	@Override
 	public void updateNotesBitMask(Long notesBitMask,
 			AsyncCallback<Long> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess(notesBitMask);
 	}
 
 	@Override
 	public void generateLogoOpToken(AsyncCallback<String> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess("token");
 	}
 
 	@Override
-	public void getPaymentTypes(Long businessID,
-			AsyncCallback<List<PaymentTypeDTO>> callback) {
-		// TODO Auto-generated method stub
-
+	public void getPaymentTypes(Long businessID, AsyncCallback<List<PaymentTypeDTO>> callback) {
+		callback.onSuccess(new ArrayList<PaymentTypeDTO>(Data.getPayments().values()));
 	}
 
 }

@@ -20,6 +20,7 @@
     
     <script type="text/javascript">
     	var business = <%=request.getAttribute("business")%>;
+    	var daysToExpiration = '-1';
     	var notesBitMask = '-1';
     	var debugEnabled = 'false';
     </script>

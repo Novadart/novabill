@@ -32,6 +32,7 @@ public class DemoController {
 		BUSINESS.setProvince("PD");
 		BUSINESS.setSsn("AAABBB12C34D567E");
 		BUSINESS.setVatID("IT12345678901");
+		BUSINESS.setWeb("www.example.org");
 	}
 	
 	@RequestMapping(value = "/demo", method = RequestMethod.GET)
