@@ -21,6 +21,10 @@
     <when-type-is class="com.novadart.novabill.frontend.client.ClientFactory"/>
   </replace-with>
   
+  <replace-with class="com.novadart.novabill.frontend.client.facade.ServerFacadeImpl">
+    <when-type-is class="com.novadart.novabill.frontend.client.facade.ServerFacade"/>
+  </replace-with>
+  
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.novadart.novabill.frontend.client.Novabill'/>
 
