@@ -40,7 +40,7 @@ privileged aspect MailAspect {
 			messageHelper.setTo(to);
 			messageHelper.setFrom(thisAspect.from);
 			messageHelper.setSubject(subject);
-			String text = VelocityEngineUtils.mergeTemplateIntoString(thisAspect.velocityEngine, templateLocation, model);
+			String text = VelocityEngineUtils.mergeTemplateIntoString(thisAspect.velocityEngine, templateLocation, "UTF-8", model);
 			messageHelper.setText(text, true);
 			thisAspect.mailSender.send(mimeMessage);
 		} catch (MessagingException e) {
