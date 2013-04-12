@@ -8,8 +8,8 @@ import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.estimation.CloneEstimationPlace;
 import com.novadart.novabill.frontend.client.place.estimation.ModifyEstimationPlace;
@@ -184,7 +184,7 @@ public class EstimationCell extends QuickViewCell<EstimationDTO> {
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
-					ServerFacade.estimation.remove(Configuration.getBusinessId(), estimation.getClient().getId(), estimation.getId(), new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getEstimationService().remove(Configuration.getBusinessId(), estimation.getClient().getId(), estimation.getId(), new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {

@@ -7,8 +7,8 @@ import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.Const;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 
@@ -19,7 +19,7 @@ public class CreditNoteDataProvider extends AsyncDataProvider<CreditNoteDTO> {
 		final int start = 0;
 		final int length = display.getVisibleRange().getLength();
 		
-		ServerFacade.creditNote.getAllInRange(Configuration.getBusinessId(), start, length, new ManagedAsyncCallback<PageDTO<CreditNoteDTO>>() {
+		ServerFacade.INSTANCE.getCreditnoteService().getAllInRange(Configuration.getBusinessId(), start, length, new ManagedAsyncCallback<PageDTO<CreditNoteDTO>>() {
 
 			@Override
 			public void onSuccess(PageDTO<CreditNoteDTO> result) {

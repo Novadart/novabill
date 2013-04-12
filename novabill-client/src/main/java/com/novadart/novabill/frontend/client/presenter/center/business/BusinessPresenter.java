@@ -65,7 +65,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 
 	@Override
 	public void onUpdateLogoClicked() {
-		ServerFacade.business.generateLogoOpToken(new ManagedAsyncCallback<String>() {
+		ServerFacade.INSTANCE.getBusinessService().generateLogoOpToken(new ManagedAsyncCallback<String>() {
 
 			@Override
 			public void onSuccess(String result) {
@@ -79,7 +79,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 	@Override
 	public void onRemoveLogoClicked() {
 		setLoaderInLogo();
-		ServerFacade.deleteLogo(new AsyncCallback<Boolean>() {
+		ServerFacade.INSTANCE.deleteLogo(new AsyncCallback<Boolean>() {
 
 			@Override
 			public void onSuccess(Boolean result) {
@@ -123,7 +123,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 			getView().getSaveData().showLoader(true);
 			getView().setLocked(true);
 
-			ServerFacade.business.update(b, new ManagedAsyncCallback<Void>() {
+			ServerFacade.INSTANCE.getBusinessService().update(b, new ManagedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {

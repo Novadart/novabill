@@ -135,7 +135,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 			@Override
 			public void onClientUpdate(ClientUpdateEvent event) {
-				ServerFacade.client.get(client.getId(), 
+				ServerFacade.INSTANCE.getClientService().get(client.getId(), 
 						new ManagedAsyncCallback<ClientDTO>() {
 
 					@Override
@@ -174,7 +174,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 
 	private void loadInvoices(){
-		ServerFacade.invoice.getAllForClient(client.getId(), new ManagedAsyncCallback<List<InvoiceDTO>>() {
+		ServerFacade.INSTANCE.getInvoiceService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<InvoiceDTO>>() {
 
 			@Override
 			public void onSuccess(List<InvoiceDTO> result) {
@@ -190,7 +190,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 
 	private void loadTransportDocuments(){
-		ServerFacade.transportDocument.getAllForClient(client.getId(), new ManagedAsyncCallback<List<TransportDocumentDTO>>() {
+		ServerFacade.INSTANCE.getTransportdocumentService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<TransportDocumentDTO>>() {
 
 			@Override
 			public void onSuccess(List<TransportDocumentDTO> result) {
@@ -207,7 +207,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 
 	private void loadCreditNotes(){
-		ServerFacade.creditNote.getAllForClient(client.getId(), new ManagedAsyncCallback<List<CreditNoteDTO>>() {
+		ServerFacade.INSTANCE.getCreditnoteService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<CreditNoteDTO>>() {
 
 			@Override
 			public void onSuccess(List<CreditNoteDTO> result) {
@@ -223,7 +223,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 	}
 
 	private void loadEstimations(){
-		ServerFacade.estimation.getAllForClient(client.getId(), new ManagedAsyncCallback<List<EstimationDTO>>() {
+		ServerFacade.INSTANCE.getEstimationService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<EstimationDTO>>() {
 
 			@Override
 			public void onSuccess(List<EstimationDTO> result) {
@@ -260,7 +260,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 					getView().getCancelClient().showLoader(true);
 					getView().setLocked(true);
-					ServerFacade.client.remove(Configuration.getBusinessId(), client.getId(), new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getClientService().remove(Configuration.getBusinessId(), client.getId(), new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {

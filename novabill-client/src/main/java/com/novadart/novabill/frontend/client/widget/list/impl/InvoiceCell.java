@@ -9,8 +9,8 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
 import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.creditnote.FromInvoiceCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
@@ -216,7 +216,7 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
-					ServerFacade.invoice.remove(Configuration.getBusinessId(), invoice.getClient().getId(), invoice.getId(), new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getInvoiceService().remove(Configuration.getBusinessId(), invoice.getClient().getId(), invoice.getId(), new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {
@@ -231,7 +231,7 @@ public class InvoiceCell extends QuickViewCell<InvoiceDTO> {
 	}
 
 	private void onPayedSwitchClicked(final InvoiceDTO invoice) {
-		ServerFacade.invoice.setPayed(Configuration.getBusinessId(), invoice.getClient().getId(), invoice.getId(), !invoice.getPayed(), new ManagedAsyncCallback<Void>() {
+		ServerFacade.INSTANCE.getInvoiceService().setPayed(Configuration.getBusinessId(), invoice.getClient().getId(), invoice.getId(), !invoice.getPayed(), new ManagedAsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {

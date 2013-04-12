@@ -85,7 +85,7 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 
 					final TransportDocumentDTO td = createTransportDocument(getTransportDocument());
 
-					ServerFacade.transportDocument.update(td, new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getTransportdocumentService().update(td, new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onFailure(Throwable caught) {

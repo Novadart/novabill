@@ -19,7 +19,7 @@ public class InvoiceDataProvider extends AsyncDataProvider<InvoiceDTO> {
 		final int start = 0;
 		final int length = display.getVisibleRange().getLength();
 		
-		ServerFacade.invoice.getAllInRange(Configuration.getBusinessId(), start, length, new ManagedAsyncCallback<PageDTO<InvoiceDTO>>() {
+		ServerFacade.INSTANCE.getInvoiceService().getAllInRange(Configuration.getBusinessId(), start, length, new ManagedAsyncCallback<PageDTO<InvoiceDTO>>() {
 
 			@Override
 			public void onSuccess(PageDTO<InvoiceDTO> result) {

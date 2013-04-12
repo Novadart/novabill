@@ -140,7 +140,7 @@ public class MainWidget extends Composite {
 	}
 	
 	private void onDocumentChangeEvent(){
-		ServerFacade.business.getStats(Configuration.getBusinessId(), new ManagedAsyncCallback<BusinessStatsDTO>() {
+		ServerFacade.INSTANCE.getBusinessService().getStats(Configuration.getBusinessId(), new ManagedAsyncCallback<BusinessStatsDTO>() {
 
 			@Override
 			public void onSuccess(BusinessStatsDTO result) {

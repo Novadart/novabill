@@ -1,8 +1,8 @@
 package com.novadart.novabill.frontend.client.util;
 
 import com.google.gwt.core.client.GWT;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 
 public class PDFUtils {
 
@@ -11,7 +11,7 @@ public class PDFUtils {
 
 
 	private static void generatePdf(final String documentClass, final String documentId) {
-		ServerFacade.business.generatePDFToken(new ManagedAsyncCallback<String>() {
+		ServerFacade.INSTANCE.getBusinessService().generatePDFToken(new ManagedAsyncCallback<String>() {
 
 			@Override
 			public void onSuccess(String result) {

@@ -27,7 +27,8 @@
 		<module>novabill-shared</module>
 		<module>novabill-scala-utils</module>
 		<module>novabill-client</module>
-		<module>novabill-android</module>
+		<module>novabill-client-demo</module>
+		<!-- <module>novabill-android</module> -->
 		<module>novabill-server</module>
 	</modules>
 

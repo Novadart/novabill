@@ -230,7 +230,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		ok.showLoader(true);
 		setLocked(true);
 		if(this.client == null) {
-			ServerFacade.client.add(Configuration.getBusinessId(), client, new ManagedAsyncCallback<Long>() {
+			ServerFacade.INSTANCE.getClientService().add(Configuration.getBusinessId(), client, new ManagedAsyncCallback<Long>() {
 
 				@Override
 				public void onSuccess(Long result) {
@@ -249,7 +249,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 			});
 		} else {
 			
-			ServerFacade.client.update(Configuration.getBusinessId(), client, new ManagedAsyncCallback<Void>() {
+			ServerFacade.INSTANCE.getClientService().update(Configuration.getBusinessId(), client, new ManagedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {

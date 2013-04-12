@@ -19,7 +19,7 @@ public class TransportDocumentDataProvider extends AsyncDataProvider<TransportDo
 		final int start = 0;
 		final int length = display.getVisibleRange().getLength();
 		
-		ServerFacade.transportDocument.getAllInRange(Configuration.getBusinessId(), start, length, new ManagedAsyncCallback<PageDTO<TransportDocumentDTO>>() {
+		ServerFacade.INSTANCE.getTransportdocumentService().getAllInRange(Configuration.getBusinessId(), start, length, new ManagedAsyncCallback<PageDTO<TransportDocumentDTO>>() {
 
 			@Override
 			public void onSuccess(PageDTO<TransportDocumentDTO> result) {

@@ -26,7 +26,7 @@ public class Configuration {
 	private static boolean debugEnabled;
 
 	public static final void init(final ManagedAsyncCallback<Void> callback){
-		ServerFacade.setupXsrfProtection(new ManagedAsyncCallback<Void>() {
+		ServerFacade.INSTANCE.setupXsrfProtection(new ManagedAsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {
@@ -82,7 +82,7 @@ public class Configuration {
 							@Override
 							public void businessData(final BusinessDTO business) {
 								
-								ServerFacade.business.update(business, new ManagedAsyncCallback<Void>() {
+								ServerFacade.INSTANCE.getBusinessService().update(business, new ManagedAsyncCallback<Void>() {
 									
 									@Override
 									public void onSuccess(Void result) {

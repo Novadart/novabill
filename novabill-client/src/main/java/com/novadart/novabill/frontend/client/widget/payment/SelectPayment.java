@@ -113,7 +113,7 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 	
 	private void setupPaymentView(){
 		setupLoader();
-		ServerFacade.payment.getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<PaymentTypeDTO>>() {
+		ServerFacade.INSTANCE.getPaymentService().getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<PaymentTypeDTO>>() {
 
 			@Override
 			public void onSuccess(List<PaymentTypeDTO> result) {

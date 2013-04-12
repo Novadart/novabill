@@ -74,7 +74,7 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 
 					final InvoiceDTO inv = createInvoice(getInvoice());
 
-					ServerFacade.invoice.update(inv, new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getInvoiceService().update(inv, new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onFailure(Throwable caught) {

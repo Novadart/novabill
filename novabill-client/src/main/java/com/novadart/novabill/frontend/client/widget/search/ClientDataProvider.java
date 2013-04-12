@@ -39,7 +39,7 @@ public class ClientDataProvider extends AsyncDataProvider<ClientDTO> {
 		
 		if(query == null || query.isEmpty()){
 			
-			ServerFacade.business.getClients(Configuration.getBusinessId(), new ManagedAsyncCallback<List<ClientDTO>>() {
+			ServerFacade.INSTANCE.getBusinessService().getClients(Configuration.getBusinessId(), new ManagedAsyncCallback<List<ClientDTO>>() {
 				
 				@Override
 				public void onSuccess(List<ClientDTO> result) {
@@ -58,7 +58,7 @@ public class ClientDataProvider extends AsyncDataProvider<ClientDTO> {
 			
 		} else {
 			
-			ServerFacade.client.searchClients(Configuration.getBusinessId(), query, 0, 99999, new ManagedAsyncCallback<PageDTO<ClientDTO>>() {
+			ServerFacade.INSTANCE.getClientService().searchClients(Configuration.getBusinessId(), query, 0, 99999, new ManagedAsyncCallback<PageDTO<ClientDTO>>() {
 
 				@Override
 				public void onSuccess(PageDTO<ClientDTO> result) {
