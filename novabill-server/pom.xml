@@ -255,10 +255,10 @@
 			<artifactId>dumbster</artifactId>
 			<scope>test</scope>
 		</dependency>
-		
+
 		<!-- JasperReports -->
 		<dependency>
-			<groupId>jasperreports</groupId>
+			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
 		</dependency>
 
