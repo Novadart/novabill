@@ -402,7 +402,12 @@
 				<version>1.6</version>
 			</dependency>
 
-
+			<!-- JasperReports -->
+			<dependency>
+				<groupId>jasperreports</groupId>
+				<artifactId>jasperreports</artifactId>
+				<version>3.5.3</version>
+			</dependency>
 		</dependencies>
 	</dependencyManagement>
 
