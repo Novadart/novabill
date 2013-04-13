@@ -19,7 +19,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
-import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
@@ -99,7 +99,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 
 		saveData.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().button());
 
-		logo.setUrl(Const.getLogoUrl());
+		logo.setUrl(ClientFactory.INSTANCE.getLogoUrl());
 
 		formPanel.setMethod(FormPanel.METHOD_POST);
 		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);

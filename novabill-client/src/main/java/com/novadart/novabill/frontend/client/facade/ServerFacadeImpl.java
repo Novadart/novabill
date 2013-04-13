@@ -13,7 +13,7 @@ import com.google.gwt.user.client.rpc.ServiceDefTarget;
 import com.google.gwt.user.client.rpc.XsrfToken;
 import com.google.gwt.user.client.rpc.XsrfTokenService;
 import com.google.gwt.user.client.rpc.XsrfTokenServiceAsync;
-import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.shared.client.facade.BatchDataFetcherService;
 import com.novadart.novabill.shared.client.facade.BatchDataFetcherServiceAsync;
 import com.novadart.novabill.shared.client.facade.BusinessService;
@@ -50,7 +50,7 @@ public class ServerFacadeImpl implements ServerFacade {
 	private static final BatchDataFetcherServiceAsync batchFetcherService = GWT.create(BatchDataFetcherService.class);
 
 	private static final RequestBuilder FEEDBACK_REQUEST =
-			new RequestBuilder(RequestBuilder.POST, Const.POST_FEEDBACK_URL);
+			new RequestBuilder(RequestBuilder.POST, ClientFactory.INSTANCE.getPostFeedbackUrl());
 
 
 	static {
@@ -63,7 +63,7 @@ public class ServerFacadeImpl implements ServerFacade {
 	@Override
 	public void setupXsrfProtection(final AsyncCallback<Void> callback){
 		XsrfTokenServiceAsync xsrf = (XsrfTokenServiceAsync)GWT.create(XsrfTokenService.class);
-		((ServiceDefTarget)xsrf).setServiceEntryPoint(Const.XSRF_URL);
+		((ServiceDefTarget)xsrf).setServiceEntryPoint(ClientFactory.INSTANCE.getXsrfUrl());
 		
 		xsrf.getNewXsrfToken(new AsyncCallback<XsrfToken>() {
 			
@@ -128,7 +128,7 @@ public class ServerFacadeImpl implements ServerFacade {
 			public void onSuccess(String result) {
 				try {
 					RequestBuilder deleteLogoReq =
-							new RequestBuilder(RequestBuilder.DELETE, Const.DELETE_LOGO+result);
+							new RequestBuilder(RequestBuilder.DELETE, ClientFactory.INSTANCE.getDeleteLogo()+result);
 					deleteLogoReq.sendRequest(null, new RequestCallback() {
 
 						@Override

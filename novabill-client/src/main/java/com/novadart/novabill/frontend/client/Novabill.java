@@ -54,7 +54,7 @@ public class Novabill implements EntryPoint {
 						
 						// Create ClientFactory using deferred binding so we can replace with different
 						// implementations in gwt.xml
-						ClientFactory clientFactory = GWT.create(ClientFactory.class);
+						ClientFactory clientFactory = ClientFactory.INSTANCE;
 						EventBus eventBus = clientFactory.getEventBus();
 						PlaceController placeController = clientFactory.getPlaceController();
 

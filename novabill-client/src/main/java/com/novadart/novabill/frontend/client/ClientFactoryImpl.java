@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -43,6 +44,61 @@ public class ClientFactoryImpl implements ClientFactory
 	
 	private static final Map<Class<?>, View<?>> views =
 			new HashMap<Class<?>, View<?>>();
+
+	private static final String URL_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo";
+	private static final String URL_THUMB = GWT.getHostPageBaseURL()+"private/businesses/logo/thumbnail";
+	private static final String UPDATE_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo?token=";
+	private static final String DELETE_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo?token=";
+	private static final String CHANGE_PASSWORD_URL = GWT.getHostPageBaseURL()+"private/change-password";
+	private static final String XSRF_URL = GWT.getHostPageBaseURL() + "private/gwt/xsrf";
+	private static final String POST_FEEDBACK_URL = GWT.getHostPageBaseURL()+"private/feedback";
+	
+	private static String logoUrl = URL_THUMB + "?v=" + new Date().getTime();
+	
+	@Override
+	public String getLogoUrl(){
+		return logoUrl;
+	}
+	
+	@Override
+	public void refeshLogoUrl(){
+		logoUrl = URL_THUMB + "?v=" + new Date().getTime();
+	}
+	
+	@Override
+	public String getUrlLogo() {
+		return URL_LOGO;
+	}
+
+	@Override
+	public String getUrlThumb() {
+		return URL_THUMB;
+	}
+
+	@Override
+	public String getUpdateLogo() {
+		return UPDATE_LOGO;
+	}
+
+	@Override
+	public String getDeleteLogo() {
+		return DELETE_LOGO;
+	}
+
+	@Override
+	public String getChangePasswordUrl() {
+		return CHANGE_PASSWORD_URL;
+	}
+
+	@Override
+	public String getXsrfUrl() {
+		return XSRF_URL;
+	}
+
+	@Override
+	public String getPostFeedbackUrl() {
+		return POST_FEEDBACK_URL;
+	}
 
 	@Override
 	public PlaceController getPlaceController()	{

@@ -18,8 +18,8 @@ import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.Const;
 import com.novadart.novabill.frontend.client.event.ClientAddEvent;
 import com.novadart.novabill.frontend.client.event.ClientAddHandler;
 import com.novadart.novabill.frontend.client.event.ClientDeleteEvent;
@@ -88,7 +88,7 @@ public class MainWidget extends Composite {
 
 	public MainWidget() {
 		GlobalBundle.INSTANCE.globalCss().ensureInjected();
-		changePasswordAnchor = new Anchor(I18N.INSTANCE.changePassword(), Const.CHANGE_PASSWORD_URL);
+		changePasswordAnchor = new Anchor(I18N.INSTANCE.changePassword(), ClientFactory.INSTANCE.getChangePasswordUrl());
 
 		initWidget(uiBinder.createAndBindUi(this));
 		logout.setHref(GWT.getHostPageBaseURL()+"resources/j_spring_security_logout");

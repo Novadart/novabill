@@ -22,8 +22,8 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TabBar;
 import com.google.gwt.user.client.ui.Widget;
+import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.Const;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
@@ -115,7 +115,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 	}
 	
 	private void updateBusinessDetails(BusinessDTO business){
-		businessLogo.setUrl(Const.getLogoUrl());
+		businessLogo.setUrl(ClientFactory.INSTANCE.getLogoUrl());
 
 		SafeHtmlBuilder shb = new SafeHtmlBuilder();
 		shb.appendHtmlConstant("<p class='"+s.businessName()+"'>");
