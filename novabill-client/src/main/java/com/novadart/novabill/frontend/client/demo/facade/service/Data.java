@@ -29,30 +29,13 @@ class Data {
 	private static final Map<Long, List<TransportDocumentDTO>> TRANSPORT_DOCS = new HashMap<Long, List<TransportDocumentDTO>>();
 	
 	static {
-		business.setAddress("via Novadart, 123");
-		business.setCity("Padova");
-		business.setCountry("IT");
-		business.setEmail("info@example.org");
-		business.setFax("049/123456789");
-		business.setId(0L);
-		business.setMobile("321 123456789");
-		business.setName("Soluzioni Semplici S.r.l");
-		business.setPhone("049/987654321");
-		business.setPostcode("12345");
-		business.setPremium(false);
-		business.setProvince("PD");
-		business.setSsn("AAABBB12C34D567E");
-		business.setVatID("IT12345678901");
-		business.setWeb("www.example.org");
-		
-		PaymentTypeDTO p = new PaymentTypeDTO();
-		p.setBusiness(business);
-		p.setDefaultPaymentNote("Rimessa Diretta");
-		p.setId(nextID());
-		p.setName("Rimessa diretta");
-		p.setPaymentDateDelta(0);
-		p.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
-		PAYMENTS.put(p.getId(), p);
+		populateBusiness();
+		populateClients();
+		populateCreditNotes();
+		populateEstimations();
+		populateInvoices();
+		populatePaymentTypes();
+		populateTransportDocs();
 	}
 	
 	public static long nextID(){
@@ -91,4 +74,69 @@ class Data {
 		return PAYMENTS;
 	}
 	
+	
+	private static void populateBusiness(){
+		business.setAddress("via Novadart, 123");
+		business.setCity("Padova");
+		business.setCountry("IT");
+		business.setEmail("info@example.org");
+		business.setFax("049/123456789");
+		business.setId(0L);
+		business.setMobile("321 123456789");
+		business.setName("Soluzioni Semplici S.r.l");
+		business.setPhone("049/987654321");
+		business.setPostcode("12345");
+		business.setPremium(false);
+		business.setProvince("PD");
+		business.setSsn("AAABBB12C34D567E");
+		business.setVatID("IT12345678901");
+		business.setWeb("www.example.org");
+	}
+	
+	private static void populatePaymentTypes(){
+		PaymentTypeDTO p = new PaymentTypeDTO();
+		p.setBusiness(business);
+		p.setDefaultPaymentNote("Rimessa Diretta");
+		p.setId(nextID());
+		p.setName("Rimessa diretta");
+		p.setPaymentDateDelta(0);
+		p.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+		PAYMENTS.put(p.getId(), p);
+	}
+	
+	private static void populateClients(){
+		ClientDTO c = new ClientDTO();
+		c.setAddress("");
+		c.setCity("");
+		c.setContact(null);
+		c.setCountry("IT");
+		c.setEmail("");
+		c.setFax("");
+		c.setId(nextID());
+		c.setMobile("");
+		c.setName("Client di test");
+		c.setPhone("");
+		c.setPostcode("");
+		c.setProvince("");
+		c.setSsn("");
+		c.setVatID("");
+		c.setWeb("");
+		CLIENTS.put(c.getId(), c);
+	}
+	
+	private static void populateInvoices(){
+		
+	}
+	
+	private static void populateEstimations(){
+			
+	}
+	
+	private static void populateCreditNotes(){
+		
+	}
+	
+	private static void populateTransportDocs(){
+		
+	}
 }
