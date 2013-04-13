@@ -20,18 +20,18 @@ public class DemoBusinessService implements BusinessServiceAsync {
 
 	@Override
 	public void countClients(Long businessID, AsyncCallback<Long> callback) {
-		callback.onSuccess(Long.valueOf(Data.getClients().values().size()));
+		callback.onSuccess(Long.valueOf(Data.getClients().size()));
 	}
 
 	@Override
 	public void countInvoices(Long businessID, AsyncCallback<Long> callback) {
-		callback.onSuccess(Long.valueOf(Data.getInvoices().values().size()));
+		callback.onSuccess(Long.valueOf(Data.countInvoices()));
 	}
 
 	@Override
 	public void countInvoicesForYear(Long BusinessID, Integer year,
 			AsyncCallback<Long> callback) {
-		callback.onSuccess(Long.valueOf(Data.getInvoices().values().size()));
+		callback.onSuccess(Data.countInvoices());
 	}
 
 	@Override
@@ -50,31 +50,15 @@ public class DemoBusinessService implements BusinessServiceAsync {
 		
 		BusinessStatsDTO bs = new BusinessStatsDTO();
 		bs.setClientsCount(Long.valueOf(Data.getClients().size()));
-		bs.setInvoicesCountForYear(Long.valueOf(Data.getInvoices().size()));
-		
-		BigDecimal total = BigDecimal.ZERO;
-		
-		for (List<InvoiceDTO> il : Data.getInvoices().values()) {
-			for (InvoiceDTO i : il) {
-				total = total.add(i.getTotal());
-			}
-		}
-		
-		bs.setTotalAfterTaxesForYear(total);
+		bs.setInvoicesCountForYear(Data.countInvoices());
+		bs.setTotalAfterTaxesForYear(Data.calcTotal());
 		callback.onSuccess(bs);
 	}
 
 	@Override
 	public void getTotalAfterTaxesForYear(Long businessID, Integer year,
 			AsyncCallback<BigDecimal> callback) {
-		BigDecimal total = BigDecimal.ZERO;
-		
-		for (List<InvoiceDTO> il : Data.getInvoices().values()) {
-			for (InvoiceDTO i : il) {
-				total = total.add(i.getTotal());
-			}
-		}
-		callback.onSuccess(total);
+		callback.onSuccess(Data.calcTotal());
 	}
 
 	@Override
@@ -86,47 +70,31 @@ public class DemoBusinessService implements BusinessServiceAsync {
 
 	@Override
 	public void getCreditNotes(Long businessID,	AsyncCallback<List<CreditNoteDTO>> callback) {
-		List<CreditNoteDTO> result = new ArrayList<CreditNoteDTO>();
-		for (List<CreditNoteDTO> partial : Data.getCreditNotes().values()) {
-			result.addAll(partial);
-		}
-		callback.onSuccess(result);
+		callback.onSuccess(Data.getAllDocs(CreditNoteDTO.class));
 	}
 
 	@Override
 	public void getEstimations(Long businessID,
 			AsyncCallback<List<EstimationDTO>> callback) {
-		List<EstimationDTO> result = new ArrayList<EstimationDTO>();
-		for (List<EstimationDTO> partial : Data.getEstimations().values()) {
-			result.addAll(partial);
-		}
-		callback.onSuccess(result);
+		callback.onSuccess(Data.getAllDocs(EstimationDTO.class));
 	}
 
 	@Override
 	public void getInvoices(Long businessID,
 			AsyncCallback<List<InvoiceDTO>> callback) {
-		List<InvoiceDTO> result = new ArrayList<InvoiceDTO>();
-		for (List<InvoiceDTO> partial : Data.getInvoices().values()) {
-			result.addAll(partial);
-		}
-		callback.onSuccess(result);
+		callback.onSuccess(Data.getAllDocs(InvoiceDTO.class));
 	}
 
 	@Override
 	public void getTransportDocuments(Long businessID,
 			AsyncCallback<List<TransportDocumentDTO>> callback) {
-		List<TransportDocumentDTO> result = new ArrayList<TransportDocumentDTO>();
-		for (List<TransportDocumentDTO> partial : Data.getTransportDocs().values()) {
-			result.addAll(partial);
-		}
-		callback.onSuccess(result);
+		callback.onSuccess(Data.getAllDocs(TransportDocumentDTO.class));
 	}
 
 	@Override
 	public void getClients(Long businessID,
 			AsyncCallback<List<ClientDTO>> callback) {
-		callback.onSuccess(new ArrayList<ClientDTO>(Data.getClients().values()));
+		callback.onSuccess(new ArrayList<ClientDTO>(Data.getClients()));
 	}
 
 	@Override
@@ -147,7 +115,7 @@ public class DemoBusinessService implements BusinessServiceAsync {
 
 	@Override
 	public void getPaymentTypes(Long businessID, AsyncCallback<List<PaymentTypeDTO>> callback) {
-		callback.onSuccess(new ArrayList<PaymentTypeDTO>(Data.getPayments().values()));
+		callback.onSuccess(Data.getPayments());
 	}
 
 }

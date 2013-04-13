@@ -54,7 +54,7 @@ public class Const {
 			Integer year1 = Integer.parseInt(DateTimeFormat.getFormat("yyyy").format(o1.getAccountingDocumentDate()));
 			Integer year2 = Integer.parseInt(DateTimeFormat.getFormat("yyyy").format(o2.getAccountingDocumentDate()));
 			
-			if(year1 != year2) {
+			if(!year1.equals(year2)) {
 				return -year1.compareTo(year2);
 			} else {
 				return -o1.getDocumentID().compareTo(o2.getDocumentID());

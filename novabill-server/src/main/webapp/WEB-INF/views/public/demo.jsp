@@ -42,7 +42,7 @@
     }
     </style>
     
-    <script type="text/javascript" language="javascript" src="<spring:url value="/demo/demo.nocache.js" />"></script>
+    <script type="text/javascript" language="javascript" src="<spring:url value="/democode/democode.nocache.js" />"></script>
 
   </head>
 

@@ -1,11 +1,11 @@
 package com.novadart.novabill.frontend.client.demo.facade.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.facade.ClientServiceAsync;
 
 public class DemoClientService implements ClientServiceAsync {
@@ -13,14 +13,17 @@ public class DemoClientService implements ClientServiceAsync {
 	@Override
 	public void add(Long businessID, ClientDTO clientDTO,
 			AsyncCallback<Long> callback) {
-		clientDTO.setId(Data.nextID());
-		Data.getClients().put(clientDTO.getId(), clientDTO);
+		Data.save(clientDTO);
 		callback.onSuccess(clientDTO.getId());
 	}
 
 	@Override
 	public void get(Long id, AsyncCallback<ClientDTO> callback) {
-		callback.onSuccess(Data.getClients().get(id));
+		try {
+			callback.onSuccess(Data.getClient(id));
+		} catch (NoSuchObjectException e) {
+			callback.onFailure(e);
+		}
 	}
 
 	@Override
@@ -34,7 +37,7 @@ public class DemoClientService implements ClientServiceAsync {
 			int offset, AsyncCallback<PageDTO<ClientDTO>> callback) {
 		PageDTO<ClientDTO> p = new PageDTO<ClientDTO>();
 		
-		List<ClientDTO> items = new ArrayList<ClientDTO>(Data.getClients().values());
+		List<ClientDTO> items = Data.getClients();
 		p.setItems(items);
 		p.setLength(items.size());
 		p.setTotal(Long.valueOf(items.size()));
@@ -45,7 +48,7 @@ public class DemoClientService implements ClientServiceAsync {
 	@Override
 	public void update(Long businessID, ClientDTO clientDTO,
 			AsyncCallback<Void> callback) {
-		Data.getClients().put(clientDTO.getId(), clientDTO);
+		Data.save(clientDTO);
 		callback.onSuccess(null);
 	}
 

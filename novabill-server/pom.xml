@@ -271,7 +271,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<warSourceExcludes>**/rpc/**, **/demo/**, WEB-INF/views/analytics.jsp, WEB-INF/web.xml</warSourceExcludes>
+					<warSourceExcludes>**/rpc/**, **/democode/**, WEB-INF/views/analytics.jsp, WEB-INF/web.xml</warSourceExcludes>
 					<webResources>
 						<resource>
 							<directory>src/main/webapp/WEB-INF/</directory>
@@ -289,7 +289,7 @@
 							<artifactId>novabill-client</artifactId>
 							<includes>
 								<include>rpc/**</include>
-								<include>demo/**</include>
+								<include>democode/**</include>
 							</includes>
 						</overlay>
 					</overlays>

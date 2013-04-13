@@ -5,27 +5,30 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.facade.EstimationServiceAsync;
 
 public class DemoEstimationService implements EstimationServiceAsync {
 
 	@Override
 	public void add(EstimationDTO estimationDTO, AsyncCallback<Long> callback) {
-		// TODO Auto-generated method stub
-
+		Data.save(estimationDTO, EstimationDTO.class);
+		callback.onSuccess(estimationDTO.getId());
 	}
 
 	@Override
 	public void get(Long id, AsyncCallback<EstimationDTO> callback) {
-		// TODO Auto-generated method stub
-
+		try {
+			callback.onSuccess(Data.getDoc(id, EstimationDTO.class));
+		} catch (NoSuchObjectException e) {
+			callback.onFailure(e);
+		}
 	}
 
 	@Override
 	public void getAllForClient(Long clientID,
 			AsyncCallback<List<EstimationDTO>> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess(Data.getDocsList(clientID, EstimationDTO.class));
 	}
 
 	@Override
@@ -44,21 +47,20 @@ public class DemoEstimationService implements EstimationServiceAsync {
 
 	@Override
 	public void getNextEstimationId(AsyncCallback<Long> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess(Data.nextDocID(EstimationDTO.class));
 	}
 
 	@Override
 	public void remove(Long businessID, Long clientID, Long id,
 			AsyncCallback<Void> callback) {
-		// TODO Auto-generated method stub
-
+		Data.remove(clientID, id, EstimationDTO.class);
+		callback.onSuccess(null);
 	}
 
 	@Override
 	public void update(EstimationDTO estimationDTO, AsyncCallback<Void> callback) {
-		// TODO Auto-generated method stub
-
+		Data.save(estimationDTO, EstimationDTO.class);
+		callback.onSuccess(null);
 	}
 
 }

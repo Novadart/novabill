@@ -1,6 +1,5 @@
 package com.novadart.novabill.frontend.client.demo.facade.service;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -11,14 +10,13 @@ public class DemoPaymentTypeService implements PaymentTypeServiceAsync {
 
 	@Override
 	public void add(PaymentTypeDTO paymentTypeDTO, AsyncCallback<Long> callback) {
-		paymentTypeDTO.setId(Data.nextID());
-		Data.getPayments().put(paymentTypeDTO.getId(), paymentTypeDTO);
+		Data.save(paymentTypeDTO);
 		callback.onSuccess(paymentTypeDTO.getId());
 	}
 
 	@Override
 	public void update(PaymentTypeDTO paymentTypeDTO, AsyncCallback<Void> callback) {
-		Data.getPayments().put(paymentTypeDTO.getId(), paymentTypeDTO);
+		Data.save(paymentTypeDTO);
 		callback.onSuccess(null);
 	}
 
@@ -30,7 +28,7 @@ public class DemoPaymentTypeService implements PaymentTypeServiceAsync {
 
 	@Override
 	public void getAll(Long businessID,	AsyncCallback<List<PaymentTypeDTO>> callback) {
-		callback.onSuccess(new ArrayList<PaymentTypeDTO>(Data.getPayments().values()));
+		callback.onSuccess(Data.getPayments());
 	}
 
 }

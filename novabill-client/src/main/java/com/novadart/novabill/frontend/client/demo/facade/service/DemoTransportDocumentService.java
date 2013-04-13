@@ -5,29 +5,30 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.facade.TransportDocumentServiceAsync;
 
-public class DemoTransportDocumentService implements
-		TransportDocumentServiceAsync {
+public class DemoTransportDocumentService implements TransportDocumentServiceAsync {
 
 	@Override
-	public void add(TransportDocumentDTO transportDocDTO,
-			AsyncCallback<Long> callback) {
-		// TODO Auto-generated method stub
-
+	public void add(TransportDocumentDTO transportDocDTO, AsyncCallback<Long> callback) {
+		Data.save(transportDocDTO, TransportDocumentDTO.class);
+		callback.onSuccess(transportDocDTO.getId());
 	}
 
 	@Override
 	public void get(Long id, AsyncCallback<TransportDocumentDTO> callback) {
-		// TODO Auto-generated method stub
-
+		try {
+			callback.onSuccess(Data.getDoc(id, TransportDocumentDTO.class));
+		} catch (NoSuchObjectException e) {
+			callback.onFailure(e);
+		}
 	}
 
 	@Override
 	public void getAllForClient(Long clientID,
 			AsyncCallback<List<TransportDocumentDTO>> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess(Data.getDocsList(clientID, TransportDocumentDTO.class));
 	}
 
 	@Override
@@ -47,22 +48,21 @@ public class DemoTransportDocumentService implements
 
 	@Override
 	public void getNextTransportDocId(AsyncCallback<Long> callback) {
-		// TODO Auto-generated method stub
-
+		callback.onSuccess(Data.nextDocID(TransportDocumentDTO.class));
 	}
 
 	@Override
 	public void remove(Long businessID, Long clientID, Long id,
 			AsyncCallback<Void> callback) {
-		// TODO Auto-generated method stub
-
+		Data.remove(clientID, id, TransportDocumentDTO.class);
+		callback.onSuccess(null);
 	}
 
 	@Override
 	public void update(TransportDocumentDTO transportDocDTO,
 			AsyncCallback<Void> callback) {
-		// TODO Auto-generated method stub
-
+		Data.save(transportDocDTO, TransportDocumentDTO.class);
+		callback.onSuccess(null);
 	}
 
 }
