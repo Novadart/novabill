@@ -28,7 +28,7 @@ public class DemoClientService implements ClientServiceAsync {
 
 	@Override
 	public void remove(Long businessID, Long id, AsyncCallback<Void> callback) {
-		Data.getClients().remove(id);
+		Data.removeClient(id);
 		callback.onSuccess(null);
 	}
 

@@ -226,6 +226,10 @@ class Data {
 		}
 	}
 	
+	public static void removeClient(Long clientId){
+		CLIENTS.remove(clientId);
+	}
+	
 	public static <T extends AccountingDocumentDTO> List<T> getDocsList(Long clientId, Class<T> clazz){
 		List<T> docs = new ArrayList<T>(getDocs(clientId, clazz));
 		Collections.sort(docs, Const.DOCUMENT_COMPARATOR);
