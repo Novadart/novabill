@@ -82,7 +82,7 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 	}
 
 	private void reloadPayments(){
-		ServerFacade.payment.getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<PaymentTypeDTO>>() {
+		ServerFacade.INSTANCE.getPaymentService().getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<PaymentTypeDTO>>() {
 
 			@Override
 			public void onSuccess(List<PaymentTypeDTO> result) {
@@ -116,7 +116,7 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 			@Override
 			public void onNotificationClosed(Boolean result) {
 				if(result){
-					ServerFacade.payment.remove(Configuration.getBusinessId(), payment.getId(), new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getPaymentService().remove(Configuration.getBusinessId(), payment.getId(), new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {

@@ -19,7 +19,7 @@ public class EstimationDataProvider extends AsyncDataProvider<EstimationDTO> {
 		final int start = 0;
 		final int length = display.getVisibleRange().getLength();
 		
-		ServerFacade.estimation.getAllInRange(Configuration.getBusinessId(), start, length, new ManagedAsyncCallback<PageDTO<EstimationDTO>>() {
+		ServerFacade.INSTANCE.getEstimationService().getAllInRange(Configuration.getBusinessId(), start, length, new ManagedAsyncCallback<PageDTO<EstimationDTO>>() {
 
 			@Override
 			public void onSuccess(PageDTO<EstimationDTO> result) {

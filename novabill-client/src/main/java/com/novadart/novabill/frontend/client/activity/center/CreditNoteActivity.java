@@ -62,7 +62,7 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 
 	private void setupNewCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, final NewCreditNotePlace place){
 		
-		ServerFacade.batchFetcher.fetchNewCreditNoteForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewCreditNoteForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
 
 			@Override
 			public void onSuccess(Pair<Long, ClientDTO> result) {
@@ -75,7 +75,7 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 	}
 
 	private void setupFromInvoiceCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, final FromInvoiceCreditNotePlace place){
-		ServerFacade.batchFetcher.fetchNewCreditNoteFromInvoiceOpData(place.getInvoiceId(), new DocumentCallack<Pair<Long,InvoiceDTO>>() {
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewCreditNoteFromInvoiceOpData(place.getInvoiceId(), new DocumentCallack<Pair<Long,InvoiceDTO>>() {
 
 			@Override
 			public void onSuccess(Pair<Long, InvoiceDTO> result) {
@@ -88,7 +88,7 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 	}
 
 	private void setupModifyCreditNoteView(final AcceptsOneWidget panel, final CreditNoteView view, ModifyCreditNotePlace place){
-		ServerFacade.creditNote.get(place.getCreditNoteId(), new DocumentCallack<CreditNoteDTO>() {
+		ServerFacade.INSTANCE.getCreditnoteService().get(place.getCreditNoteId(), new DocumentCallack<CreditNoteDTO>() {
 
 			@Override
 			public void onSuccess(CreditNoteDTO result) {

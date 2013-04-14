@@ -154,7 +154,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 			
 			if(this.payment == null){
 				
-				ServerFacade.payment.add(p, new ManagedAsyncCallback<Long>() {
+				ServerFacade.INSTANCE.getPaymentService().add(p, new ManagedAsyncCallback<Long>() {
 
 					@Override
 					public void onSuccess(Long result) {
@@ -174,7 +174,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 				
 			} else {
 				
-				ServerFacade.payment.update(p, new ManagedAsyncCallback<Void>() {
+				ServerFacade.INSTANCE.getPaymentService().update(p, new ManagedAsyncCallback<Void>() {
 
 					@Override
 					public void onSuccess(Void result) {

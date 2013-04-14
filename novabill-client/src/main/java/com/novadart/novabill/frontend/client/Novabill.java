@@ -38,7 +38,7 @@ public class Novabill implements EntryPoint {
 			@Override
 			public void onSuccess(Void result) {
 				
-				ServerFacade.business.getStats(Configuration.getBusinessId(), new ManagedAsyncCallback<BusinessStatsDTO>() {
+				ServerFacade.INSTANCE.getBusinessService().getStats(Configuration.getBusinessId(), new ManagedAsyncCallback<BusinessStatsDTO>() {
 
 					@Override
 					public void onSuccess(BusinessStatsDTO result) {
@@ -54,7 +54,7 @@ public class Novabill implements EntryPoint {
 						
 						// Create ClientFactory using deferred binding so we can replace with different
 						// implementations in gwt.xml
-						ClientFactory clientFactory = GWT.create(ClientFactory.class);
+						ClientFactory clientFactory = ClientFactory.INSTANCE;
 						EventBus eventBus = clientFactory.getEventBus();
 						PlaceController placeController = clientFactory.getPlaceController();
 

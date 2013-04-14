@@ -23,8 +23,8 @@ public class PrivateController {
 	@Autowired
 	private UtilsService utilsService;
 	
-	@Value("${debug.enabled}")
-	private boolean debugEnabled;
+	@Value("${devMode.enabled}")
+	private boolean devMode;
 	
 	@RequestMapping(value = "/private", method = RequestMethod.GET)
 	public ModelAndView privateArea(){
@@ -40,7 +40,7 @@ public class PrivateController {
 		mav.addObject("business", sw.toString());
 		mav.addObject("daysToExpiration", business.getNonFreeExpirationDelta(TimeUnit.DAYS));
 		mav.addObject("notesBitMask", Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId()).getNotesBitMask());
-		mav.addObject("debugEnabled", debugEnabled);
+		mav.addObject("devMode", devMode);
 		return mav;
 	}
 

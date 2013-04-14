@@ -62,7 +62,7 @@ public class EstimationActivity extends AbstractCenterActivity {
 
 
 	private void setupNewEstimationView(final AcceptsOneWidget panel, final EstimationView view, final NewEstimationPlace place){
-		ServerFacade.batchFetcher.fetchNewEstimationForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewEstimationForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
 
 			@Override
 			public void onSuccess(Pair<Long, ClientDTO> result) {
@@ -75,7 +75,7 @@ public class EstimationActivity extends AbstractCenterActivity {
 	}
 
 	private void setupModifyEstimationView(final AcceptsOneWidget panel, final EstimationView view, ModifyEstimationPlace place){
-		ServerFacade.estimation.get(place.getEstimationId(), new DocumentCallack<EstimationDTO>() {
+		ServerFacade.INSTANCE.getEstimationService().get(place.getEstimationId(), new DocumentCallack<EstimationDTO>() {
 
 			@Override
 			public void onSuccess(EstimationDTO result) {
@@ -88,7 +88,7 @@ public class EstimationActivity extends AbstractCenterActivity {
 	}
 
 	private void setupCloneEstimationView(final AcceptsOneWidget panel, final EstimationView view, final CloneEstimationPlace place){
-		ServerFacade.batchFetcher.fetchCloneEstimationOpData(place.getEstimationId(), place.getClientId(), 
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchCloneEstimationOpData(place.getEstimationId(), place.getClientId(), 
 				new DocumentCallack<Triple<Long,ClientDTO,EstimationDTO>>() {
 
 			@Override
