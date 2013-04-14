@@ -32,4 +32,9 @@
 	<replace-with class="com.novadart.novabill.frontend.client.demo.presenter.center.business.DemoBusinessPresenter">
 	  <when-type-is class="com.novadart.novabill.frontend.client.view.center.business.BusinessView.Presenter"/>
 	</replace-with>
+	
+	<!-- Views -->
+	<replace-with class="com.novadart.novabill.frontend.client.demo.view.DemoMainWidgetImpl">
+	  <when-type-is class="com.novadart.novabill.frontend.client.view.MainWidget"/>
+	</replace-with>
 </module>

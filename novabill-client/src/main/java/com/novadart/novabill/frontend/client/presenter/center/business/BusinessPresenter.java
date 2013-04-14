@@ -39,7 +39,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 	
 	@Override
 	public void go(AcceptsOneWidget panel) {
-		MainWidget.getInstance().setStandardView();
+		MainWidget.INSTANCE.setStandardView();
 		panel.setWidget(getView());
 	}
 

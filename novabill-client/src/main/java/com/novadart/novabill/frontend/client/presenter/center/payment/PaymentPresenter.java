@@ -48,7 +48,7 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 
 	@Override
 	public void go(AcceptsOneWidget panel) {
-		MainWidget.getInstance().setStandardView();
+		MainWidget.INSTANCE.setStandardView();
 		bind();
 		panel.setWidget(getView());
 	}

@@ -64,7 +64,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 	
 	@Override
 	public void go(AcceptsOneWidget panel) {
-		MainWidget.getInstance().setStandardView();
+		MainWidget.INSTANCE.setStandardView();
 		panel.setWidget(getView());
 	}
 	
