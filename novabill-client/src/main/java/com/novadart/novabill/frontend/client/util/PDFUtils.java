@@ -1,14 +1,10 @@
 package com.novadart.novabill.frontend.client.util;
 
-import com.google.gwt.core.client.GWT;
+import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 
 public class PDFUtils {
-
-	private static final String PDF_REQUEST = 
-			GWT.getHostPageBaseURL()+"private/pdf/{document}/{id}?token={token}";
-
 
 	private static void generatePdf(final String documentClass, final String documentId) {
 		ServerFacade.INSTANCE.getBusinessService().generatePDFToken(new ManagedAsyncCallback<String>() {
@@ -16,7 +12,7 @@ public class PDFUtils {
 			@Override
 			public void onSuccess(String result) {
 				FileDownloadUtils.downloadUrl(
-						PDF_REQUEST.replace("{document}", documentClass)
+						ClientFactory.INSTANCE.getPdfRequest().replace("{document}", documentClass)
 							.replace("{id}", documentId)
 							.replace("{token}", result)
 						);

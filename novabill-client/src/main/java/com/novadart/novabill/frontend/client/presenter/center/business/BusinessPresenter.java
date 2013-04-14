@@ -25,6 +25,9 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 
 	private boolean logoUpdateCompleted = true;
 	
+	public BusinessPresenter() {
+	}
+	
 	public BusinessPresenter(PlaceController placeController, EventBus eventBus, BusinessView view) {
 		super(placeController, eventBus, view);
 	}

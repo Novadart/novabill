@@ -32,6 +32,10 @@ public interface ClientFactory {
 	String getUrlLogo();
 	void refeshLogoUrl();
 	String getLogoUrl();
+	String getLogoutUrl();
+	String getDeleteAccountUrl();
+	String getExportRequest();
+	String getPdfRequest();
 	
 	//center
 	void getHomeView(AsyncCallback<HomeView> callback);

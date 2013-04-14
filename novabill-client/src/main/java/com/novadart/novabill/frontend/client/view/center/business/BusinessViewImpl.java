@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
@@ -70,6 +71,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@UiField Button exportCreditNoteData;
 	@UiField Button exportTransportDocumentData;
 	
+	@UiField Anchor deleteAccount;
+	
 	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation();
 
 	public BusinessViewImpl() {
@@ -119,6 +122,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 				presenter.onLogoSubmitComplete(event.getResults());
 			}
 		});
+		
+		deleteAccount.setHref(ClientFactory.INSTANCE.getDeleteAccountUrl());
 
 	}
 
@@ -359,6 +364,11 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@Override
 	public AlternativeSsnVatIdValidation getSsnOrVatIdValidation() {
 		return ssnOrVatIdValidation;
+	}
+	
+	@Override
+	public Anchor getDeleteAccount() {
+		return deleteAccount;
 	}
 
 }

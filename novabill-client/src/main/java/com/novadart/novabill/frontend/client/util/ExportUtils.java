@@ -1,15 +1,11 @@
 package com.novadart.novabill.frontend.client.util;
 
-import com.google.gwt.core.client.GWT;
+import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 
 public class ExportUtils {
 
-	private static final String EXPORT_REQUEST = 
-			GWT.getHostPageBaseURL()+"private/export?clients={c}&invoices={i}&estimations={e}&creditnotes={cn}&transportdocs={t}&token={token}";
-	
-	
 	public static void exportData(final boolean clients, final boolean invoices, final boolean estimations,
 			final boolean creditNotes, final boolean traspDocuments){
 		ServerFacade.INSTANCE.getBusinessService().generateExportToken(new ManagedAsyncCallback<String>() {
@@ -17,7 +13,8 @@ public class ExportUtils {
 			@Override
 			public void onSuccess(String result) {
 				FileDownloadUtils.downloadUrl(
-						EXPORT_REQUEST.replace("{c}", String.valueOf(clients))
+						ClientFactory.INSTANCE.getExportRequest()
+							.replace("{c}", String.valueOf(clients))
 							.replace("{i}", String.valueOf(invoices))
 							.replace("{e}", String.valueOf(estimations))
 							.replace("{cn}", String.valueOf(creditNotes))

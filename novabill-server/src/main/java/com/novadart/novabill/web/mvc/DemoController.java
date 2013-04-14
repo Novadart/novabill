@@ -1,16 +1,27 @@
 package com.novadart.novabill.web.mvc;
 
+import java.io.IOException;
+import java.io.InputStream;
 import java.io.StringWriter;
 
+import javax.servlet.ServletContext;
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.commons.io.FilenameUtils;
+import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
 @Controller
+@RequestMapping("/demo")
 public class DemoController {
 	
 	private static final ObjectMapper jsonSerializer = new ObjectMapper();
@@ -35,7 +46,14 @@ public class DemoController {
 		BUSINESS.setWeb("www.example.org");
 	}
 	
-	@RequestMapping(value = "/demo", method = RequestMethod.GET)
+	private ServletContextResource noLogoImage;
+	
+	@Autowired
+	public void setServletContext(ServletContext servletContext){
+		noLogoImage = new ServletContextResource(servletContext, "/images/no_logo.gif");
+	}
+	
+	@RequestMapping(method = RequestMethod.GET)
 	public ModelAndView privateArea(){
 		ModelAndView mav = new ModelAndView("demo");
 		StringWriter sw = new StringWriter();
@@ -46,6 +64,15 @@ public class DemoController {
 		}
 		mav.addObject("business", sw.toString());
 		return mav;
+	}
+	
+	@RequestMapping(value = "/logo", method = RequestMethod.GET)
+	@ResponseBody
+	public void getLogo(HttpServletResponse response) throws IOException{
+		InputStream is = noLogoImage.getInputStream();
+		response.setContentType("image/" + FilenameUtils.getExtension(noLogoImage.getPath()));
+		response.setHeader ("Content-Disposition", String.format("attachment; filename=\"%s\"",FilenameUtils.getName(noLogoImage.getPath())));
+		IOUtils.copy(is, response.getOutputStream());
 	}
 
 }

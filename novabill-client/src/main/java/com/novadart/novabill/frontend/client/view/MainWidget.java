@@ -91,7 +91,7 @@ public class MainWidget extends Composite {
 		changePasswordAnchor = new Anchor(I18N.INSTANCE.changePassword(), ClientFactory.INSTANCE.getChangePasswordUrl());
 
 		initWidget(uiBinder.createAndBindUi(this));
-		logout.setHref(GWT.getHostPageBaseURL()+"resources/j_spring_security_logout");
+		logout.setHref(ClientFactory.INSTANCE.getLogoutUrl());
 		logoAnchor.setHref(GWT.getHostPageBaseURL());
 
 		generateStats(Configuration.getStats());
