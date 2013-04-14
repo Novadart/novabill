@@ -145,7 +145,7 @@
 							<execution>
 								<phase>compile</phase>
 								<configuration>
-									<!-- <module>com.novadart.novabill.frontend.Novabill</module> -->
+									<module>com.novadart.novabill.frontend.Novabill</module>
 									<module>com.novadart.novabill.frontend.NovabillDemo</module>
 								</configuration>
 								<goals>
