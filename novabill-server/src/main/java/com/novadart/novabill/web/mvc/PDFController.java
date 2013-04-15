@@ -1,12 +1,9 @@
 package com.novadart.novabill.web.mvc;
 
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.rmi.RemoteException;
 import java.util.Locale;
-import java.util.Map;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
+import net.sf.jasperreports.engine.JRException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -16,17 +13,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import com.novadart.novabill.annotation.Xsrf;
-import com.novadart.novabill.domain.AccountingDocument;
-import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.domain.TransportDocument;
-import com.novadart.novabill.service.PDFGenerator;
-import com.novadart.novabill.service.PDFGenerator.DocumentType;
-import com.novadart.novabill.service.PDFGenerator.PDFGenerationCtxFields;
-import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.report.AccountingDocumentJRDataSource;
+import com.novadart.novabill.report.DocumentType;
+import com.novadart.novabill.report.JasperReportService;
+import com.novadart.novabill.report.LayoutType;
+import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 
@@ -38,85 +33,61 @@ public class PDFController{
 	public static final String TOKEN_REQUEST_PARAM = "token";
 	
 	@Autowired
-	private PDFGenerator pdfGenerator;
-	
-	@Autowired
-	private UtilsService utilsService;
-	
-	@Autowired
 	private MessageSource messageSource;
 	
+	@Autowired
+	private JasperReportService jrService;
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/invoices/{id}")
-	@ResponseBody
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
-	public void getInvoicePDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token,
-			final HttpServletResponse response, HttpSession session, Locale locale) throws IOException, DataAccessException, NoSuchObjectException{
-		final Invoice invoice = Invoice.findInvoice(id);
+	@ResponseBody
+	public byte[] getInvoicePDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token,
+			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JasperReportKeyResolutionException, JRException{
+		Invoice invoice = Invoice.findInvoice(id);
 		if(invoice == null)
 			throw new NoSuchObjectException();
-		generatePDF(response, invoice, invoice.getBusiness(), PDFGenerator.DocumentType.INVOICE, locale);
+		String pdfName = String.format(messageSource.getMessage("export.invoices.name.pattern", null, "invoice_%d_%d.pdf", locale), invoice.getAccountingDocumentYear(), invoice.getDocumentID());
+		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
+		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<Invoice>(invoice).getDataSource(), DocumentType.INVOICE, LayoutType.TIDY);
 	}
-
+	
 	@RequestMapping(method = RequestMethod.GET, value = "/estimations/{id}")
 	@ResponseBody
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
-	public void getEstimationPDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token, 
-			final HttpServletResponse response, HttpSession session, Locale locale) throws IOException, DataAccessException, NoSuchObjectException{
-		final Estimation estimation = Estimation.findEstimation(id);
+	public byte[] getEstimationPDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token, 
+			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JRException, JasperReportKeyResolutionException{
+		Estimation estimation = Estimation.findEstimation(id);
 		if(estimation == null)
 			throw new NoSuchObjectException();
-		generatePDF(response, estimation, estimation.getBusiness(), PDFGenerator.DocumentType.ESTIMATION, locale);
+		String pdfName = String.format(messageSource.getMessage("export.estimations.name.pattern", null, "estimation_%d_%d.pdf", locale), estimation.getAccountingDocumentYear(), estimation.getDocumentID());
+		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
+		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<Estimation>(estimation).getDataSource(), DocumentType.ESTIMATION, LayoutType.TIDY);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/creditnotes/{id}")
 	@ResponseBody
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
-	public void getCreditNotePDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token, 
-			final HttpServletResponse response, HttpSession session, Locale locale) throws IOException, DataAccessException, NoSuchObjectException{
-		final CreditNote creditNote = CreditNote.findCreditNote(id);
+	public byte[] getCreditNotePDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token, 
+			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JRException, JasperReportKeyResolutionException{
+		CreditNote creditNote = CreditNote.findCreditNote(id);
 		if(creditNote == null)
 			throw new NoSuchObjectException();
-		generatePDF(response, creditNote, creditNote.getBusiness(), PDFGenerator.DocumentType.CREDIT_NOTE, locale);
+		String pdfName = String.format(messageSource.getMessage("export.creditnotes.name.pattern", null, "creditnote_%d_%d.pdf", locale), creditNote.getAccountingDocumentYear(), creditNote.getDocumentID());
+		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
+		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<CreditNote>(creditNote).getDataSource(), DocumentType.CREDIT_NOTE, LayoutType.TIDY);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/transportdocs/{id}")
 	@ResponseBody
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
-	public void getTransportDocumentPDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token, 
-			final HttpServletResponse response, HttpSession session, Locale locale) throws IOException, DataAccessException, NoSuchObjectException{
-		final TransportDocument transportDocument = TransportDocument.findTransportDocument(id);
+	public byte[] getTransportDocumentPDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token, 
+			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JRException, JasperReportKeyResolutionException{
+		TransportDocument transportDocument = TransportDocument.findTransportDocument(id);
 		if(transportDocument == null)
 			throw new NoSuchObjectException();
-		generatePDF(response, transportDocument, transportDocument.getBusiness(), PDFGenerator.DocumentType.TRANSPORT_DOCUMENT, locale);
-	}
-	
-	private void generatePDF(final HttpServletResponse response, final AccountingDocument accountingDocument, Business invoiceOwner,
-			final PDFGenerator.DocumentType docType, final Locale locale) throws DataAccessException,
-			FileNotFoundException, RemoteException, IOException {
-		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
-		if(!business.getId().equals(invoiceOwner.getId()))
-			throw new DataAccessException();
-		Logo logo = Logo.getLogoByBusinessID(business.getId());
-		PDFGenerator.BeforeWriteEventHandler bwEvHnld = new PDFGenerator.BeforeWriteEventHandler() {
-			@Override
-			public void beforeWriteCallback(Map<PDFGenerationCtxFields, Object> ctx) {
-				String fileNamePattern = null;
-				if(docType.equals(DocumentType.INVOICE))
-					fileNamePattern = messageSource.getMessage("export.invoices.name.pattern", null, "invoice_%d_%d.pdf", locale);
-				else if(docType.equals(DocumentType.ESTIMATION))
-					fileNamePattern = messageSource.getMessage("export.estimations.name.pattern", null, "estimation_%d_%d.pdf", locale);
-				else if(docType.equals(DocumentType.CREDIT_NOTE))
-					fileNamePattern = messageSource.getMessage("export.creditnotes.name.pattern", null, "creditnote_%d_%d.pdf", locale);
-				else if(docType.equals(DocumentType.TRANSPORT_DOCUMENT))
-					fileNamePattern = messageSource.getMessage("export.transportdocs.name.pattern", null, "transportdoc_%d_%d.pdf", locale);
-				String fileName = String.format(fileNamePattern, accountingDocument.getAccountingDocumentYear(), accountingDocument.getDocumentID());
-				response.setContentType("application/pdf");
-				response.setHeader ("Content-Disposition", String.format("attachment; filename=\"%s\"", fileName));
-				response.setHeader ("Content-Length", ctx.get(PDFGenerationCtxFields.contentLenght).toString());
-			}
-		};
-		boolean putWatermark = true;
-		pdfGenerator.createAndWrite(response.getOutputStream(), accountingDocument, logo, docType, putWatermark, bwEvHnld);
+		String pdfName = String.format(messageSource.getMessage("export.transportdocs.name.pattern", null, "transportdoc_%d_%d.pdf", locale), transportDocument.getAccountingDocumentYear(), transportDocument.getDocumentID());
+		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
+		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<TransportDocument>(transportDocument).getDataSource(), DocumentType.TRANSPORT_DOCUMENT, LayoutType.TIDY);
 	}
 
 }

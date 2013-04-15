@@ -1,0 +1,16 @@
+<?xml version="1.0"?>
+<!DOCTYPE jasperReport
+  PUBLIC "-//JasperReports//DTD Report Design//EN"
+  "http://jasperreports.sourceforge.net/dtds/jasperreport.dtd">
+
+<jasperReport name="Estimation">
+ <detail>
+ 	<band height="20">
+    <textField hyperlinkType="None">
+    	<reportElement x="277" y="0" width="100" height="20"/>
+    	<textElement/>
+    	<textFieldExpression class="java.lang.String"><![CDATA[$R{tidy.estimation}]]></textFieldExpression>
+   	</textField>
+   	</band>
+  </detail>
+</jasperReport>
