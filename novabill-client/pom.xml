@@ -115,36 +115,6 @@
 							<execution>
 								<phase>compile</phase>
 								<configuration>
-									<module>com.novadart.novabill.frontend.Novabill</module>
-								</configuration>
-								<goals>
-									<goal>clean</goal>
-									<goal>compile</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>gwt-demo</id>
-			<build>
-				<plugins>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-clean-plugin</artifactId>
-						<configuration>
-							<skip>false</skip>
-						</configuration>
-					</plugin>
-					<plugin>
-						<groupId>org.codehaus.mojo</groupId>
-						<artifactId>gwt-maven-plugin</artifactId>
-						<executions>
-							<execution>
-								<phase>compile</phase>
-								<configuration>
 									<modules>
 										<module>com.novadart.novabill.frontend.Novabill</module>
 										<module>com.novadart.novabill.frontend.NovabillDemo</module>
@@ -161,7 +131,7 @@
 			</build>
 		</profile>
 		<profile>
-			<id>gwt-production</id>
+			<id>gwt-best</id>
 			<build>
 				<plugins>
 					<plugin>
