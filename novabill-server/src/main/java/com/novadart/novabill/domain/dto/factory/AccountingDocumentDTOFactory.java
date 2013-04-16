@@ -15,6 +15,7 @@ public abstract class AccountingDocumentDTOFactory {
 		accountingDocumentDTO.setDocumentID(accountingDocument.getDocumentID());
 		accountingDocumentDTO.setAccountingDocumentDate(accountingDocument.getAccountingDocumentDate());
 		accountingDocumentDTO.setNote(accountingDocument.getNote());
+		accountingDocumentDTO.setLayoutType(accountingDocument.getLayoutType());
 		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(accountingDocument.getAccountingDocumentItems().size());
 		for(AccountingDocumentItem item: accountingDocument.getAccountingDocumentItems())
 			items.add(AccountingDocumentItemDTOFactory.toDTO(item));
@@ -29,6 +30,7 @@ public abstract class AccountingDocumentDTOFactory {
 		accountingDocument.setDocumentID(accountingDocumentDTO.getDocumentID());
 		accountingDocument.setAccountingDocumentDate(accountingDocumentDTO.getAccountingDocumentDate());
 		accountingDocument.setNote(accountingDocumentDTO.getNote());
+		accountingDocument.setLayoutType(accountingDocumentDTO.getLayoutType());
 		if(addItems){
 			for(AccountingDocumentItemDTO itemDTO: accountingDocumentDTO.getItems()){
 				AccountingDocumentItem item = new AccountingDocumentItem();

@@ -37,6 +37,7 @@ import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
+import com.novadart.novabill.shared.client.data.LayoutType;
 
 /*
  * Important note!
@@ -73,6 +74,9 @@ public abstract class AccountingDocument {
     @Type(type = "text")
     @Size(max = 1500)
     protected String paymentNote;
+    
+    @NotNull
+    protected LayoutType layoutType;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "accountingDocument", orphanRemoval = true)
     @OrderBy("id")
@@ -175,7 +179,15 @@ public abstract class AccountingDocument {
         this.paymentNote = paymentNote;
     }
     
-    public List<AccountingDocumentItem> getAccountingDocumentItems() {
+    public LayoutType getLayoutType() {
+		return layoutType;
+	}
+
+	public void setLayoutType(LayoutType layoutType) {
+		this.layoutType = layoutType;
+	}
+
+	public List<AccountingDocumentItem> getAccountingDocumentItems() {
         return this.accountingDocumentItems;
     }
     
