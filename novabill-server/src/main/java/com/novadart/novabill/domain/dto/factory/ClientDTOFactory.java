@@ -24,6 +24,7 @@ public class ClientDTOFactory {
 		clientDTO.setWeb(client.getWeb());
 		clientDTO.setVatID(client.getVatID());
 		clientDTO.setSsn(client.getSsn());
+		clientDTO.setDefaultPaymentType(PaymentTypeDTOFactory.toDTO(client.getDefaultPaymentType()));
 		clientDTO.setContact(ContactDTOFactory.toDTO(client.getContact()));
 		return clientDTO;
 	}
@@ -46,6 +47,7 @@ public class ClientDTOFactory {
 		client.setSsn(clientDTO.getSsn());
 		client.setContact(new Contact());
 		ContactDTOFactory.copyFromDTO(client.getContact(), clientDTO.getContact());
+		PaymentTypeDTOFactory.copyFromDTO(client.getDefaultPaymentType(), clientDTO.getDefaultPaymentType());
 	}
 
 }
