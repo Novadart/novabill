@@ -40,8 +40,13 @@ public class DemoCreditNoteService implements CreditNoteServiceAsync {
 	@Override
 	public void getAllInRange(Long businessID, Integer start, Integer length,
 			AsyncCallback<PageDTO<CreditNoteDTO>> callback) {
-		// TODO Auto-generated method stub
-
+		PageDTO<CreditNoteDTO> page = new PageDTO<CreditNoteDTO>();
+		List<CreditNoteDTO> docs = Data.getDocsList(CreditNoteDTO.class);
+		page.setItems(docs);
+		page.setLength(docs.size());
+		page.setOffset(0);
+		page.setTotal(Long.valueOf(docs.size()));
+		callback.onSuccess(page);
 	}
 
 	@Override

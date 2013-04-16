@@ -41,8 +41,13 @@ public class DemoInvoiceService implements InvoiceServiceAsync {
 	@Override
 	public void getAllInRange(Long businessID, Integer start, Integer length,
 			AsyncCallback<PageDTO<InvoiceDTO>> callback) {
-		// TODO Auto-generated method stub
-
+		PageDTO<InvoiceDTO> page = new PageDTO<InvoiceDTO>();
+		List<InvoiceDTO> docs = Data.getDocsList(InvoiceDTO.class);
+		page.setItems(docs);
+		page.setLength(docs.size());
+		page.setOffset(0);
+		page.setTotal(Long.valueOf(docs.size()));
+		callback.onSuccess(page);
 	}
 
 	@Override

@@ -41,8 +41,13 @@ public class DemoEstimationService implements EstimationServiceAsync {
 	@Override
 	public void getAllInRange(Long businessID, int start, int length,
 			AsyncCallback<PageDTO<EstimationDTO>> callback) {
-		// TODO Auto-generated method stub
-
+		PageDTO<EstimationDTO> page = new PageDTO<EstimationDTO>();
+		List<EstimationDTO> docs = Data.getDocsList(EstimationDTO.class);
+		page.setItems(docs);
+		page.setLength(docs.size());
+		page.setOffset(0);
+		page.setTotal(Long.valueOf(docs.size()));
+		callback.onSuccess(page);
 	}
 
 	@Override

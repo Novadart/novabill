@@ -230,6 +230,10 @@ class Data {
 		CLIENTS.remove(clientId);
 	}
 	
+	public static <T extends AccountingDocumentDTO> List<T> getDocsList(Class<T> clazz){
+		return getDocsList(null, clazz);
+	}
+	
 	public static <T extends AccountingDocumentDTO> List<T> getDocsList(Long clientId, Class<T> clazz){
 		List<T> docs = new ArrayList<T>(getDocs(clientId, clazz));
 		Collections.sort(docs, Const.DOCUMENT_COMPARATOR);
@@ -237,10 +241,22 @@ class Data {
 	}
 	
 	private static <T extends AccountingDocumentDTO> Set<T> getDocs(Long clientId, Map<Long, Set<T>> docsMap){
-		Set<T> docs = docsMap.get(clientId);
-		docs = (docs==null) ? new TreeSet<T>(DOCS_COMPARATOR) : docs;
-		docsMap.put(clientId, docs);
+		Set<T> docs;
+		if(clientId == null){
+			docs = new TreeSet<T>(DOCS_COMPARATOR);
+			for (Set<T> set : docsMap.values()) {
+				docs.addAll(set);
+			} 
+		} else {
+			docs = docsMap.get(clientId);
+			docs = (docs==null) ? new TreeSet<T>(DOCS_COMPARATOR) : docs;
+			docsMap.put(clientId, docs);
+		}
 		return docs;
+	}
+	
+	public static <T extends AccountingDocumentDTO> Set<T> getDocs(Class<T> clazz){ 
+		return getDocs(null, clazz);
 	}
 	
 	@SuppressWarnings("unchecked")

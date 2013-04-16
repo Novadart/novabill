@@ -42,8 +42,13 @@ public class DemoTransportDocumentService implements TransportDocumentServiceAsy
 	@Override
 	public void getAllInRange(Long businessID, Integer start, Integer length,
 			AsyncCallback<PageDTO<TransportDocumentDTO>> callback) {
-		// TODO Auto-generated method stub
-
+		PageDTO<TransportDocumentDTO> page = new PageDTO<TransportDocumentDTO>();
+		List<TransportDocumentDTO> docs = Data.getDocsList(TransportDocumentDTO.class);
+		page.setItems(docs);
+		page.setLength(docs.size());
+		page.setOffset(0);
+		page.setTotal(Long.valueOf(docs.size()));
+		callback.onSuccess(page);
 	}
 
 	@Override
