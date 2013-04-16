@@ -7,4 +7,5 @@ public interface DemoMessages extends Constants {
 	public static final DemoMessages INSTANCE = GWT.create(DemoMessages.class);
 	
 	String functionNotAvailable();
+	String searchNotAvailable();
 }

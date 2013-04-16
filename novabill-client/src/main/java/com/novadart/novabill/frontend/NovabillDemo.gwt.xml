@@ -37,4 +37,9 @@
 	<replace-with class="com.novadart.novabill.frontend.client.demo.view.DemoMainWidgetImpl">
 	  <when-type-is class="com.novadart.novabill.frontend.client.view.MainWidget"/>
 	</replace-with>
+	
+	<!-- Widgets -->
+	<replace-with class="com.novadart.novabill.frontend.client.demo.widget.search.DemoClientSearch">
+	  <when-type-is class="com.novadart.novabill.frontend.client.widget.search.ClientSearch"/>
+	</replace-with>
 </module>
