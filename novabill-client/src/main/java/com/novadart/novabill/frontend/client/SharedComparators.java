@@ -7,7 +7,7 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
-public class Const {
+public class SharedComparators {
 	
 	public static final Comparator<ClientDTO> CLIENT_COMPARATOR = new Comparator<ClientDTO>() {
 		

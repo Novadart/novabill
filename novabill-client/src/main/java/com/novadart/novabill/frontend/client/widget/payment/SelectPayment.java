@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.SharedComparators;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -117,7 +117,7 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 
 			@Override
 			public void onSuccess(List<PaymentTypeDTO> result) {
-				Collections.sort(result, Const.PAYMENT_COMPARATOR);
+				Collections.sort(result, SharedComparators.PAYMENT_COMPARATOR);
 				
 				paymentList = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget(), I18N.INSTANCE.notEmptyValidationError());
 				paymentList.addStyleName(style.paymentList());

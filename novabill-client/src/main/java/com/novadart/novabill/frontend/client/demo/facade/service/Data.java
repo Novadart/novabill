@@ -12,7 +12,7 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
-import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.SharedComparators;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -236,7 +236,7 @@ class Data {
 	
 	public static <T extends AccountingDocumentDTO> List<T> getDocsList(Long clientId, Class<T> clazz){
 		List<T> docs = new ArrayList<T>(getDocs(clientId, clazz));
-		Collections.sort(docs, Const.DOCUMENT_COMPARATOR);
+		Collections.sort(docs, SharedComparators.DOCUMENT_COMPARATOR);
 		return docs;
 	}
 	

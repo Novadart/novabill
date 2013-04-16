@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.SharedComparators;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.shared.client.dto.PageDTO;
@@ -24,7 +24,7 @@ public class TransportDocumentDataProvider extends AsyncDataProvider<TransportDo
 			@Override
 			public void onSuccess(PageDTO<TransportDocumentDTO> result) {
 				List<TransportDocumentDTO> items = result.getItems();
-				Collections.sort(items, Const.DOCUMENT_COMPARATOR);
+				Collections.sort(items, SharedComparators.DOCUMENT_COMPARATOR);
 				updateRowData(start, items);
 			}
 

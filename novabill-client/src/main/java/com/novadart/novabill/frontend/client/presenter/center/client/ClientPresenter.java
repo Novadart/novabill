@@ -10,7 +10,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.SharedComparators;
 import com.novadart.novabill.frontend.client.event.ClientDeleteEvent;
 import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
 import com.novadart.novabill.frontend.client.event.ClientUpdateHandler;
@@ -181,7 +181,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 				if(result == null){
 					return;
 				}
-				Collections.sort(result, Const.DOCUMENT_COMPARATOR);
+				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
 				invoiceDataProvider.setList(result);
 				invoiceDataProvider.refresh();
 			}
@@ -197,7 +197,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 				if(result == null){
 					return;
 				}
-				Collections.sort(result, Const.DOCUMENT_COMPARATOR);
+				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
 				transportDocumentDataProvider.setList(result);
 				transportDocumentDataProvider.refresh();
 			}
@@ -214,7 +214,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 				if(result == null){
 					return;
 				}
-				Collections.sort(result, Const.DOCUMENT_COMPARATOR);
+				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
 				creditNoteDataProvider.setList(result);
 				creditNoteDataProvider.refresh();
 			}
@@ -230,7 +230,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 				if(result == null){
 					return;
 				}
-				Collections.sort(result, Const.DOCUMENT_COMPARATOR);
+				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
 				estimationDataProvider.setList(result);
 				estimationDataProvider.refresh();
 			}
