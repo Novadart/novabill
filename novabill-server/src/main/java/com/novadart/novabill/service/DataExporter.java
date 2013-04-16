@@ -10,13 +10,14 @@ import java.io.FileWriter;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashSet;
+import java.util.Collection;
 import java.util.List;
 import java.util.Locale;
 import java.util.Set;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipOutputStream;
 import javax.annotation.PostConstruct;
+import net.sf.jasperreports.engine.JRException;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -28,7 +29,10 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Logo;
-import com.novadart.novabill.service.PDFGenerator.DocumentType;
+import com.novadart.novabill.report.AccountingDocumentJRDataSource;
+import com.novadart.novabill.report.DocumentType;
+import com.novadart.novabill.report.JasperReportKeyResolutionException;
+import com.novadart.novabill.report.JasperReportService;
 import com.novadart.novabill.shared.client.data.DataExportClasses;
 
 @Service
@@ -42,7 +46,7 @@ public class DataExporter {
 	public static final String[] CLIENT_CONTACT_FIELDS = new String[]{"firstName", "lastName", "email", "phone", "fax", "mobile"};
 	
 	@Autowired
-	private PDFGenerator pdfGenerator;
+	private JasperReportService jrService;
 	
 	@PostConstruct
 	protected void init(){
@@ -79,26 +83,17 @@ public class DataExporter {
 		return clientsData;
 	}
 	
-	private File exportAccountingDocument(File outDir, AccountingDocument accountingDocument, Logo logo, DocumentType docType, Boolean putWatermark) throws IOException{
+	private <T extends AccountingDocument> File exportAccountingDocument(File outDir, T doc, Logo logo, DocumentType docType, Boolean putWatermark) throws IOException, JRException, JasperReportKeyResolutionException{
 		File docFile = File.createTempFile("doc", ".pdf", outDir);
 		docFile.deleteOnExit();
-		pdfGenerator.createAndWrite(new FileOutputStream(docFile), accountingDocument, logo, docType, putWatermark, null);
+		jrService.exportReportToPdfFile(new AccountingDocumentJRDataSource<T>(doc).getDataSource(), docType, doc.getLayoutType(), docFile.getPath());
 		return docFile;
 	}
 	
-	private List<File> exportAccountingDocumentsData(File outDir, ZipOutputStream zipStream, Business business, Logo logo,
-			DocumentType docType, Boolean putWatermark, String entryFormat) throws IOException, FileNotFoundException {
+	private <T extends AccountingDocument> List<File> exportAccountingDocumentsData(File outDir, ZipOutputStream zipStream, Collection<T> docs, Logo logo,
+			DocumentType docType, Boolean putWatermark, String entryFormat) throws IOException, FileNotFoundException, JRException, JasperReportKeyResolutionException {
 		List<File> files = new ArrayList<File>();
-		Set<? extends AccountingDocument> docs = new HashSet<AccountingDocument>();
-		if(docType.equals(DocumentType.INVOICE))
-			docs = business.getInvoices();
-		else if(docType.equals(DocumentType.ESTIMATION))
-			docs = business.getEstimations();
-		else if(docType.equals(DocumentType.CREDIT_NOTE))
-			docs = business.getCreditNotes();
-		else if(docType.equals(DocumentType.TRANSPORT_DOCUMENT))
-			docs = business.getTransportDocuments();
-		for(AccountingDocument doc: docs){
+		for(T doc: docs){
 			File docFile;
 				docFile = exportAccountingDocument(outDir, doc, logo, docType, putWatermark);
 			zipStream.putNextEntry(new ZipEntry(String.format(entryFormat, doc.getAccountingDocumentYear(), doc.getDocumentID())));
@@ -111,7 +106,7 @@ public class DataExporter {
 	}
 	
 	public File exportData(Set<DataExportClasses> classes, Business business, Logo logo,
-			ReloadableResourceBundleMessageSource messageSource, Locale locale) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+			ReloadableResourceBundleMessageSource messageSource, Locale locale) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, JRException, JasperReportKeyResolutionException{
 		File outDir = new File(dataOutLocation);
 		File zipFile = File.createTempFile("export", ".zip", outDir);
 		ZipOutputStream zipStream = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
@@ -130,16 +125,16 @@ public class DataExporter {
 			}
 			boolean putWatermark = true;
 			if(classes.contains(DataExportClasses.INVOICE))
-				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, business, logo, DocumentType.INVOICE, putWatermark,
+				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, business.getInvoices(), logo, DocumentType.INVOICE, putWatermark,
 						messageSource.getMessage("export.invoices.zipentry.pattern", null, "invoices/invoice_%d_%d.pdf", locale));
 			if(classes.contains(DataExportClasses.ESTIMATION))
-				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, business, logo, DocumentType.ESTIMATION, putWatermark,
+				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, business.getEstimations(), logo, DocumentType.ESTIMATION, putWatermark,
 						messageSource.getMessage("export.estimations.zipentry.pattern", null, "estimations/estimation_%d_%d.pdf", locale));
 			if(classes.contains(DataExportClasses.CREDIT_NOTE))
-				creditNoteFiles = exportAccountingDocumentsData(outDir, zipStream, business, logo, DocumentType.CREDIT_NOTE, putWatermark,
+				creditNoteFiles = exportAccountingDocumentsData(outDir, zipStream, business.getCreditNotes(), logo, DocumentType.CREDIT_NOTE, putWatermark,
 						messageSource.getMessage("export.creditnotes.zipentry.pattern", null, "creditnotes/creditnotes_%d_%d.pdf", locale));
 			if(classes.contains(DataExportClasses.TRANSPORT_DOCUMENT))
-				transportDocsFiles = exportAccountingDocumentsData(outDir, zipStream, business, logo, DocumentType.TRANSPORT_DOCUMENT, putWatermark,
+				transportDocsFiles = exportAccountingDocumentsData(outDir, zipStream, business.getTransportDocuments(), logo, DocumentType.TRANSPORT_DOCUMENT, putWatermark,
 						messageSource.getMessage("export.transportdoc.zipentry.pattern", null, "transportdocs/transportdocs_%d_%d.pdf", locale));
 				
 			zipStream.close();

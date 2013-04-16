@@ -140,4 +140,8 @@ public class JasperReportService implements ResourceLoaderAware{
 		return JasperExportManager.exportReportToPdf(createJasperPrint(dataSource, docType, layoutType));
 	}
 	
+	public void exportReportToPdfFile(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType, String destFileName) throws JRException, JasperReportKeyResolutionException{
+		JasperExportManager.exportReportToPdfFile(createJasperPrint(dataSource, docType, layoutType), destFileName);
+	}
+	
 }
