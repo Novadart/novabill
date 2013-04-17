@@ -16,6 +16,8 @@ public class ContactDTO implements IsSerializable {
 	
 	private String mobile;
 	
+	private String note;
+	
 	public String getFirstName() {
 		return firstName;
 	}
@@ -62,6 +64,14 @@ public class ContactDTO implements IsSerializable {
 
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 }
