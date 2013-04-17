@@ -22,7 +22,7 @@
     	var business = <%=request.getAttribute("business")%>;
     	var daysToExpiration = '-1';
     	var notesBitMask = '-1';
-    	var devMode = 'true';
+    	var devMode = '<%=request.getAttribute("devMode")%>';
     </script>
     
     <style type="text/css">
@@ -47,6 +47,7 @@
   </head>
 
   <body>
+  	<tiles:insertAttribute name="analytics" />
 	
 	<div id="loadingGWT">
 		<img src="images/loader.gif"><span><spring:message code="private.loading" /></span>
