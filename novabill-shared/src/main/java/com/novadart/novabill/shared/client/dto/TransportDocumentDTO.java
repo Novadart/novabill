@@ -18,6 +18,8 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 	
 	private Date transportStartDate;
 	
+	private String cause;
+	
 	public Integer getNumberOfPackages() {
 		return numberOfPackages;
 	}
@@ -72,6 +74,14 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 
 	public void setTransportStartDate(Date transportStartDate) {
 		this.transportStartDate = transportStartDate;
+	}
+
+	public String getCause() {
+		return cause;
+	}
+
+	public void setCause(String cause) {
+		this.cause = cause;
 	}
 
 }
