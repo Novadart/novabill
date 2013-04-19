@@ -64,6 +64,12 @@ class TidyTransportDocumentBuilder(TidyDocumentBuilder):
                                      ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))
             return tbl
         
+        def getToBusinessEntityDetailsFlowable(self, data):
+            return self.getBusinessEntityDetailsFlowable(data.getClient(), self._("Recipient"))
+    
+        def getFromBusinessEntityDetailsFlowable(self, data):
+            return self.getBusinessEntityDetailsFlowable(data.getBusiness(), self._("Sender"))
+        
         def getToEndpointFlowable(self, data, width):
             return self.__getEndPointFlowable(data.getToLocation(), width, self._("Receiving address"))
         

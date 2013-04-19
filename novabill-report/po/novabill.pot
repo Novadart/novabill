@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-19 14:11+0200\n"
+"POT-Creation-Date: 2013-04-19 15:27+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -118,30 +118,38 @@ msgid "Transport document"
 msgstr ""
 
 #: src/template/tidy/transport_document.py:68
-msgid "Receiving address"
+msgid "Recipient"
 msgstr ""
 
 #: src/template/tidy/transport_document.py:71
-msgid "Sending address"
+msgid "Sender"
 msgstr ""
 
-#: src/template/tidy/transport_document.py:75
-msgid "Transporter"
-msgstr ""
-
-#: src/template/tidy/transport_document.py:76
-msgid "Transportation responsibility"
+#: src/template/tidy/transport_document.py:74
+msgid "Receiving address"
 msgstr ""
 
 #: src/template/tidy/transport_document.py:77
+msgid "Sending address"
+msgstr ""
+
+#: src/template/tidy/transport_document.py:81
+msgid "Transporter"
+msgstr ""
+
+#: src/template/tidy/transport_document.py:82
+msgid "Transportation responsibility"
+msgstr ""
+
+#: src/template/tidy/transport_document.py:83
 msgid "Num. of packages"
 msgstr ""
 
-#: src/template/tidy/transport_document.py:78
+#: src/template/tidy/transport_document.py:84
 msgid "Trade zone"
 msgstr ""
 
-#: src/template/tidy/transport_document.py:79
+#: src/template/tidy/transport_document.py:85
 msgid "Cause"
 msgstr ""
 

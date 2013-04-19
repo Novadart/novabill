@@ -30,6 +30,15 @@ msgstr "Powered by Novabill"
 msgid "Transport document"
 msgstr "Transport document"
 
+#: src/template/tidy/transport_document.py:68
+msgid "Recipient"
+msgstr "Recipient"
+
+#: src/template/tidy/transport_document.py:71
+msgid "Sender"
+msgstr "Sender"
+
+
 #: src/template/tidy/transport_document.py:34
 #: src/template/tidy/credit_note.py:16 src/template/tidy/estimation.py:15
 #: src/template/tidy/invoice.py:33

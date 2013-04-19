@@ -30,6 +30,15 @@ msgstr "Generato con Novabill"
 msgid "Transport document"
 msgstr "Documento di Trasporto"
 
+#: src/template/tidy/transport_document.py:68
+msgid "Recipient"
+msgstr "Destinatario"
+
+#: src/template/tidy/transport_document.py:71
+msgid "Sender"
+msgstr "Mittente"
+
+
 #: src/template/tidy/transport_document.py:34
 #: src/template/tidy/credit_note.py:16 src/template/tidy/estimation.py:15
 #: src/template/tidy/invoice.py:33
@@ -48,7 +57,7 @@ msgstr "Indirizzo di Destinazione"
 
 #: src/template/tidy/transport_document.py:63
 msgid "Sending address"
-msgstr "Indirizzo del Mittente"
+msgstr "Indirizzo di Partenza"
 
 #: src/template/tidy/transport_document.py:67
 msgid "Transporter"
