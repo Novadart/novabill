@@ -135,6 +135,18 @@ msgstr "Note"
 msgid "No notes"
 msgstr "Nessuna nota"
 
+#: src/template/tidy/__init__.py:143
+msgid "Carrier"
+msgstr "Firma Vettore"
+
+#: src/template/tidy/__init__.py:143
+msgid "Driver"
+msgstr "Firma Conducente"
+
+#: src/template/tidy/__init__.py:143
+msgid "Reciever"
+msgstr "Firma Destinatario"
+
 #: src/template/tidy/credit_note.py:15
 msgid "Credit note"
 msgstr "Nota di Credito"

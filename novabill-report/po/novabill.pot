@@ -8,7 +8,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: PACKAGE VERSION\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2013-04-19 15:27+0200\n"
+"POT-Creation-Date: 2013-04-19 16:36+0200\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
@@ -77,6 +77,18 @@ msgstr ""
 
 #: src/template/tidy/__init__.py:140
 msgid "No notes"
+msgstr ""
+
+#: src/template/tidy/__init__.py:143
+msgid "Carrier"
+msgstr ""
+
+#: src/template/tidy/__init__.py:143
+msgid "Driver"
+msgstr ""
+
+#: src/template/tidy/__init__.py:143
+msgid "Reciever"
 msgstr ""
 
 #: src/template/tidy/credit_note.py:12

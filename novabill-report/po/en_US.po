@@ -135,6 +135,18 @@ msgstr "Invoice notes"
 msgid "No notes"
 msgstr "No notes"
 
+#: src/template/tidy/__init__.py:143
+msgid "Carrier"
+msgstr "Carrier"
+
+#: src/template/tidy/__init__.py:143
+msgid "Driver"
+msgstr "Driver"
+
+#: src/template/tidy/__init__.py:143
+msgid "Reciever"
+msgstr "Reciever"
+
 #: src/template/tidy/credit_note.py:15
 msgid "Credit note"
 msgstr "Credit note"
