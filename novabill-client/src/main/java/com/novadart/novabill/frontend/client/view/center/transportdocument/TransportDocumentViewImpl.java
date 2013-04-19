@@ -80,6 +80,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField Label clientName;
 	@UiField(provided=true) ValidatedTextBox number;
 	@UiField(provided=true) ValidatedDateBox date;
+	@UiField TextBox cause;
 	@UiField ValidatedTextArea note;
 
 	@UiField Label totalBeforeTaxes;
@@ -443,4 +444,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return tradeZone;
 	}
 
+	public TextBox getCause() {
+		return cause;
+	}
+	
 }

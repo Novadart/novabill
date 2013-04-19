@@ -62,7 +62,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	
 	private Date transportStartDate;
 	
-	@Size(max = 1500)
+	@Size(max = 255)
 	private String cause;
 	
 	@ManyToOne
