@@ -62,6 +62,9 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	
 	private Date transportStartDate;
 	
+	@Size(max = 255)
+	private String cause;
+	
 	@ManyToOne
     protected Business business;
 
@@ -146,6 +149,14 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 
 	public void setTransportStartDate(Date transportStartDate) {
 		this.transportStartDate = transportStartDate;
+	}
+	
+	public String getCause() {
+		return cause;
+	}
+
+	public void setCause(String cause) {
+		this.cause = cause;
 	}
     
     /*

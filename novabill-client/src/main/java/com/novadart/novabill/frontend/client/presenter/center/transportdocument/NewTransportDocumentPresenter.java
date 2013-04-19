@@ -40,7 +40,8 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(document.getNote());
-
+		
+		getView().getCause().setText(document.getCause());
 		getView().getNumberOfPackages().setText(String.valueOf(document.getNumberOfPackages()));
 
 		EndpointDTO loc = document.getFromEndpoint();

@@ -50,6 +50,7 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 		} 
 
 		getView().getNumberOfPackages().setText(String.valueOf(document.getNumberOfPackages()));
+		getView().getCause().setText(document.getCause());
 
 		EndpointDTO loc = document.getFromEndpoint();
 		getView().getFromAddrCity().setText(loc.getCity());
