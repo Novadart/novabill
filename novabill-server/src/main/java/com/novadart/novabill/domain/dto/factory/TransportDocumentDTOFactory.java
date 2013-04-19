@@ -19,6 +19,7 @@ public class TransportDocumentDTOFactory extends AccountingDocumentDTOFactory {
 		transportDocumentDTO.setTransportationResponsibility(transportDocument.getTransportationResponsibility());
 		transportDocumentDTO.setTradeZone(transportDocument.getTradeZone());
 		transportDocumentDTO.setTransportStartDate(transportDocument.getTransportStartDate());
+		transportDocumentDTO.setCause(transportDocument.getCause());
 		return transportDocumentDTO; 
 	}
 	
@@ -31,6 +32,7 @@ public class TransportDocumentDTOFactory extends AccountingDocumentDTOFactory {
 		transportDocument.setTransportationResponsibility(transportDocumentDTO.getTransportationResponsibility());
 		transportDocument.setTradeZone(transportDocumentDTO.getTradeZone());
 		transportDocument.setTransportStartDate(transportDocumentDTO.getTransportStartDate());
+		transportDocument.setCause(transportDocumentDTO.getCause());
 	}
 
 }

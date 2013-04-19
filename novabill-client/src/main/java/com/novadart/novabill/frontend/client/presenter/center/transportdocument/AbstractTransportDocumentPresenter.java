@@ -138,6 +138,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		tsd = DateTimeFormat.getFormat("dd MMMM yyyy HH:mm").parse(dateTime);		
 		td.setTransportStartDate(tsd);
 
+		td.setCause(getView().getCause().getText());
 		td.setNumberOfPackages(Integer.valueOf(getView().getNumberOfPackages().getText()));
 		td.setTradeZone(getView().getTradeZone().getText());
 		td.setTransportationResponsibility(getView().getTransportationResponsibility().getText());

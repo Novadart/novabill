@@ -30,6 +30,15 @@ msgstr "Generato con Novabill"
 msgid "Transport document"
 msgstr "Documento di Trasporto"
 
+#: src/template/tidy/transport_document.py:68
+msgid "Recipient"
+msgstr "Destinatario"
+
+#: src/template/tidy/transport_document.py:71
+msgid "Sender"
+msgstr "Mittente"
+
+
 #: src/template/tidy/transport_document.py:34
 #: src/template/tidy/credit_note.py:16 src/template/tidy/estimation.py:15
 #: src/template/tidy/invoice.py:33
@@ -48,7 +57,7 @@ msgstr "Indirizzo di Destinazione"
 
 #: src/template/tidy/transport_document.py:63
 msgid "Sending address"
-msgstr "Indirizzo del Mittente"
+msgstr "Indirizzo di Partenza"
 
 #: src/template/tidy/transport_document.py:67
 msgid "Transporter"
@@ -65,6 +74,10 @@ msgstr "Colli"
 #: src/template/tidy/transport_document.py:70
 msgid "Trade zone"
 msgstr "Porto"
+
+#: src/template/tidy/transport_document.py:79
+msgid "Cause"
+msgstr "Causale"
 
 #: src/template/tidy/__init__.py:105
 msgid "VAT ID %s"
@@ -121,6 +134,18 @@ msgstr "Note"
 #: src/template/tidy/__init__.py:132
 msgid "No notes"
 msgstr "Nessuna nota"
+
+#: src/template/tidy/__init__.py:143
+msgid "Carrier"
+msgstr "Firma Vettore"
+
+#: src/template/tidy/__init__.py:143
+msgid "Driver"
+msgstr "Firma Conducente"
+
+#: src/template/tidy/__init__.py:143
+msgid "Reciever"
+msgstr "Firma Destinatario"
 
 #: src/template/tidy/credit_note.py:15
 msgid "Credit note"

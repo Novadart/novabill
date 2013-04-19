@@ -302,3 +302,7 @@ class TransportDocumentData(AbstractInvoiceData):
     def getTradeZone(self):
         return self.__data["tradeZone"]
     
+    def getCause(self):
+        return self.__data["cause"]
+    
+    
