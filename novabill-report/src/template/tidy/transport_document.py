@@ -75,7 +75,8 @@ class TidyTransportDocumentBuilder(TidyDocumentBuilder):
             tbl = Table([[Paragraph("%s:" % self._("Transporter"), style), Paragraph(data.getTransporter(), style)],
                          [Paragraph("%s:" % self._("Transportation responsibility"), style), Paragraph(data.getTransportationResponsibility(), style)],
                          [Paragraph("%s:" % self._("Num. of packages"), style), Paragraph(str(data.getNumberOfPackages()), style)],
-                         [Paragraph("%s:" % self._("Trade zone"), style), Paragraph(data.getTradeZone(), style)]
+                         [Paragraph("%s:" % self._("Trade zone"), style), Paragraph(data.getTradeZone(), style)],
+                         [Paragraph("%s:" % self._("Cause"), style), Paragraph(data.getCause(), style)]
                          ], colWidths=[width*0.4, width*0.6])
             tbl.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),
                                      ("LINEABOVE", (0, 0), (-1, 0), BORDER_SIZE, BORDER_COLOR),

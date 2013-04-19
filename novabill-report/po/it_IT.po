@@ -66,6 +66,10 @@ msgstr "Colli"
 msgid "Trade zone"
 msgstr "Porto"
 
+#: src/template/tidy/transport_document.py:79
+msgid "Cause"
+msgstr "Causale"
+
 #: src/template/tidy/__init__.py:105
 msgid "VAT ID %s"
 msgstr "P.IVA %s"
