@@ -93,7 +93,7 @@ class TidyDocumentBuilder(object):
     def getDocumentDetailsHeaderFlowable(self, data, width):
         pass
     
-    def __getBusinessEntityDetailsFlowable(self, data, label):
+    def getBusinessEntityDetailsFlowable(self, data, label):
         style = getSampleStyleSheet()["Normal"]
         entity_str_lns = ["<b><font size='%(size)d'>%(label)s</font></b>" % dict(size=MEDIUM_FONT_SIZE, label=label),
                           data.getName(),
@@ -106,10 +106,10 @@ class TidyDocumentBuilder(object):
         return Paragraph("<br/>".join(entity_str_lns), style)
     
     def getToBusinessEntityDetailsFlowable(self, data):
-        return self.__getBusinessEntityDetailsFlowable(data.getClient(), self._("Client"))
+        return self.getBusinessEntityDetailsFlowable(data.getClient(), self._("Client"))
     
     def getFromBusinessEntityDetailsFlowable(self, data):
-        return self.__getBusinessEntityDetailsFlowable(data.getBusiness(), self._("From"))
+        return self.getBusinessEntityDetailsFlowable(data.getBusiness(), self._("From"))
     
     def getDocumentItemsFlowable(self, itemsData, width):
         style = getSampleStyleSheet()["Normal"]

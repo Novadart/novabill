@@ -67,4 +67,6 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 
 	TextBox getTradeZone();
 	
+	TextBox getCause();
+	
 }

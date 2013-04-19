@@ -11,6 +11,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.apache.commons.io.IOUtils;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -48,6 +49,9 @@ public class DemoController {
 	
 	private ServletContextResource noLogoImage;
 	
+	@Value("${devMode.enabled}")
+	private boolean devMode;
+	
 	@Autowired
 	public void setServletContext(ServletContext servletContext){
 		noLogoImage = new ServletContextResource(servletContext, "/images/no_logo.gif");
@@ -63,6 +67,7 @@ public class DemoController {
 			return null;
 		}
 		mav.addObject("business", sw.toString());
+		mav.addObject("devMode", devMode);
 		return mav;
 	}
 	

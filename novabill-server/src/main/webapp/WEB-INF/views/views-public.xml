@@ -7,7 +7,9 @@
 		<put-attribute name="credit" value="/WEB-INF/views/public/indexCredit.jsp" />
 	</definition>
 	
-	<definition name="demo" template="/WEB-INF/views/public/demo.jsp" />
+	<definition name="demo" template="/WEB-INF/views/public/demo.jsp">
+		<put-attribute name="analytics" value="analytics" />
+	</definition>
 
 	<definition name="index" extends="base">
 		<put-attribute name="pagelinks" value="/WEB-INF/views/public/indexPageLinks.jsp" />

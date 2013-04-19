@@ -22,7 +22,7 @@
     	var business = <%=request.getAttribute("business")%>;
     	var daysToExpiration = <%=request.getAttribute("daysToExpiration")%>;
     	var notesBitMask = '<%=request.getAttribute("notesBitMask")%>';
-    	var debugEnabled = '<%=request.getAttribute("debugEnabled")%>';
+    	var devMode = '<%=request.getAttribute("devMode")%>';
     </script>
     
     <style type="text/css">
