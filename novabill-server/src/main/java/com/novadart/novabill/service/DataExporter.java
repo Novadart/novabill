@@ -86,7 +86,7 @@ public class DataExporter {
 	private <T extends AccountingDocument> File exportAccountingDocument(File outDir, T doc, Logo logo, DocumentType docType, Boolean putWatermark) throws IOException, JRException, JasperReportKeyResolutionException{
 		File docFile = File.createTempFile("doc", ".pdf", outDir);
 		docFile.deleteOnExit();
-		jrService.exportReportToPdfFile(new AccountingDocumentJRDataSource<T>(doc).getDataSource(), docType, doc.getLayoutType(), docFile.getPath());
+		jrService.exportReportToPdfFile(new AccountingDocumentJRDataSource<T>(doc, logo).getDataSource(), docType, doc.getLayoutType(), docFile.getPath());
 		return docFile;
 	}
 	

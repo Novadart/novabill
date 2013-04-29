@@ -47,7 +47,7 @@ public class PDFController{
 			throw new NoSuchObjectException();
 		String pdfName = String.format(messageSource.getMessage("export.invoices.name.pattern", null, "invoice_%d_%d.pdf", locale), invoice.getAccountingDocumentYear(), invoice.getDocumentID());
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
-		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<Invoice>(invoice).getDataSource(), DocumentType.INVOICE, invoice.getLayoutType());
+		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<Invoice>(invoice, invoice.getBusiness().getId()).getDataSource(), DocumentType.INVOICE, invoice.getLayoutType());
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/estimations/{id}", produces = "application/pdf")
@@ -60,7 +60,7 @@ public class PDFController{
 			throw new NoSuchObjectException();
 		String pdfName = String.format(messageSource.getMessage("export.estimations.name.pattern", null, "estimation_%d_%d.pdf", locale), estimation.getAccountingDocumentYear(), estimation.getDocumentID());
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
-		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<Estimation>(estimation).getDataSource(), DocumentType.ESTIMATION, estimation.getLayoutType());
+		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<Estimation>(estimation, estimation.getBusiness().getId()).getDataSource(), DocumentType.ESTIMATION, estimation.getLayoutType());
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/creditnotes/{id}", produces = "application/pdf")
@@ -73,7 +73,7 @@ public class PDFController{
 			throw new NoSuchObjectException();
 		String pdfName = String.format(messageSource.getMessage("export.creditnotes.name.pattern", null, "creditnote_%d_%d.pdf", locale), creditNote.getAccountingDocumentYear(), creditNote.getDocumentID());
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
-		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<CreditNote>(creditNote).getDataSource(), DocumentType.CREDIT_NOTE, creditNote.getLayoutType());
+		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<CreditNote>(creditNote, creditNote.getBusiness().getId()).getDataSource(), DocumentType.CREDIT_NOTE, creditNote.getLayoutType());
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/transportdocs/{id}", produces = "application/pdf")
@@ -86,7 +86,7 @@ public class PDFController{
 			throw new NoSuchObjectException();
 		String pdfName = String.format(messageSource.getMessage("export.transportdocs.name.pattern", null, "transportdoc_%d_%d.pdf", locale), transportDocument.getAccountingDocumentYear(), transportDocument.getDocumentID());
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
-		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<TransportDocument>(transportDocument).getDataSource(), DocumentType.TRANSPORT_DOCUMENT, transportDocument.getLayoutType());
+		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<TransportDocument>(transportDocument, transportDocument.getBusiness().getId()).getDataSource(), DocumentType.TRANSPORT_DOCUMENT, transportDocument.getLayoutType());
 	}
 
 }
