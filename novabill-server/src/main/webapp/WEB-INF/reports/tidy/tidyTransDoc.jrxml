@@ -123,6 +123,7 @@
 	<field name="document.transportationResponsibility" class="java.lang.String"/>
 	<field name="document.numberOfPackages" class="java.lang.Integer"/>
 	<field name="document.tradeZone" class="java.lang.String"/>
+	<field name="document.cause" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -523,11 +524,6 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$R{tidy.cause} + ":"]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement uuid="fb75fcdc-bc50-4003-810d-324f5e6dcb0f" x="403" y="618" width="140" height="20"/>
-				<textElement/>
-				<text><![CDATA[Fix this !!!!]]></text>
-			</staticText>
 			<textField>
 				<reportElement uuid="151c1c09-0b4a-436d-888f-a4c57e37beca" x="18" y="650" width="100" height="20"/>
 				<textElement/>
@@ -552,6 +548,11 @@
 			<line>
 				<reportElement uuid="4a4e9822-f958-485c-b48b-584d13b410b0" x="382" y="673" width="97" height="1"/>
 			</line>
+			<textField>
+				<reportElement uuid="be2b1952-1fc3-449e-8074-2a6e10133ebf" x="403" y="618" width="140" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$F{document.cause}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
