@@ -69,7 +69,7 @@ public class StandardWestViewImpl extends Composite implements StandardWestView 
 		clientList = new CellList<ClientDTO>(new ClientCell(ccs));
 		clientList.setStyleName(s.cellList());
 		
-		clientSearch = new ClientSearch(cs, clientList);
+		clientSearch = ClientSearch.getInstance(cs, clientList);
 		clientFilterContainer.add(clientSearch.getSearchInput());
 		clientFilterContainer.add(clientSearch.getResetButton());
 		clientListContainerWrapper.setWidget(clientSearch.getWrappedClientList());

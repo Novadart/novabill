@@ -11,6 +11,7 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.place.shared.PlaceHistoryHandler;
 import com.google.gwt.user.client.DOM;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
+import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.analytics.Analytics;
 import com.novadart.novabill.frontend.client.facade.CallbackUtils;
@@ -38,7 +39,7 @@ public class Novabill implements EntryPoint {
 			@Override
 			public void onSuccess(Void result) {
 				
-				ServerFacade.business.getStats(Configuration.getBusinessId(), new ManagedAsyncCallback<BusinessStatsDTO>() {
+				ServerFacade.INSTANCE.getBusinessService().getStats(Configuration.getBusinessId(), new ManagedAsyncCallback<BusinessStatsDTO>() {
 
 					@Override
 					public void onSuccess(BusinessStatsDTO result) {
@@ -50,11 +51,11 @@ public class Novabill implements EntryPoint {
 						
 						Configuration.setStats(result);
 						
-						MainWidget main = new MainWidget();
+						MainWidget main = MainWidget.INSTANCE;
 						
 						// Create ClientFactory using deferred binding so we can replace with different
 						// implementations in gwt.xml
-						ClientFactory clientFactory = GWT.create(ClientFactory.class);
+						ClientFactory clientFactory = ClientFactory.INSTANCE;
 						EventBus eventBus = clientFactory.getEventBus();
 						PlaceController placeController = clientFactory.getPlaceController();
 
@@ -76,7 +77,7 @@ public class Novabill implements EntryPoint {
 						main.setPlaceController(placeController);
 						main.setEventBus(clientFactory.getEventBus());
 						
-						RootLayoutPanel.get().add(main);
+						RootLayoutPanel.get().add((Widget)main);
 
 						eventBus.addHandler(PlaceChangeEvent.TYPE, new PlaceChangeEvent.Handler() {
 							@Override

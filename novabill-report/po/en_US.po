@@ -30,6 +30,15 @@ msgstr "Powered by Novabill"
 msgid "Transport document"
 msgstr "Transport document"
 
+#: src/template/tidy/transport_document.py:68
+msgid "Recipient"
+msgstr "Recipient"
+
+#: src/template/tidy/transport_document.py:71
+msgid "Sender"
+msgstr "Sender"
+
+
 #: src/template/tidy/transport_document.py:34
 #: src/template/tidy/credit_note.py:16 src/template/tidy/estimation.py:15
 #: src/template/tidy/invoice.py:33
@@ -65,6 +74,10 @@ msgstr "Num. of packages"
 #: src/template/tidy/transport_document.py:70
 msgid "Trade zone"
 msgstr "Trade zone"
+
+#: src/template/tidy/transport_document.py:79
+msgid "Cause"
+msgstr "Cause"
 
 #: src/template/tidy/__init__.py:105
 msgid "VAT ID %s"
@@ -121,6 +134,18 @@ msgstr "Invoice notes"
 #: src/template/tidy/__init__.py:132
 msgid "No notes"
 msgstr "No notes"
+
+#: src/template/tidy/__init__.py:143
+msgid "Carrier"
+msgstr "Carrier"
+
+#: src/template/tidy/__init__.py:143
+msgid "Driver"
+msgstr "Driver"
+
+#: src/template/tidy/__init__.py:143
+msgid "Reciever"
+msgstr "Reciever"
 
 #: src/template/tidy/credit_note.py:15
 msgid "Credit note"

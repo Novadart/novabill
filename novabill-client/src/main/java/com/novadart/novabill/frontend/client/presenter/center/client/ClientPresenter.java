@@ -10,7 +10,7 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.SharedComparators;
 import com.novadart.novabill.frontend.client.event.ClientDeleteEvent;
 import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
 import com.novadart.novabill.frontend.client.event.ClientUpdateHandler;
@@ -64,7 +64,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 	
 	@Override
 	public void go(AcceptsOneWidget panel) {
-		MainWidget.getInstance().setStandardView();
+		MainWidget.INSTANCE.setStandardView();
 		panel.setWidget(getView());
 	}
 	
@@ -135,7 +135,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 			@Override
 			public void onClientUpdate(ClientUpdateEvent event) {
-				ServerFacade.client.get(client.getId(), 
+				ServerFacade.INSTANCE.getClientService().get(client.getId(), 
 						new ManagedAsyncCallback<ClientDTO>() {
 
 					@Override
@@ -174,14 +174,14 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 
 	private void loadInvoices(){
-		ServerFacade.invoice.getAllForClient(client.getId(), new ManagedAsyncCallback<List<InvoiceDTO>>() {
+		ServerFacade.INSTANCE.getInvoiceService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<InvoiceDTO>>() {
 
 			@Override
 			public void onSuccess(List<InvoiceDTO> result) {
 				if(result == null){
 					return;
 				}
-				Collections.sort(result, Const.DOCUMENT_COMPARATOR);
+				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
 				invoiceDataProvider.setList(result);
 				invoiceDataProvider.refresh();
 			}
@@ -190,14 +190,14 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 
 	private void loadTransportDocuments(){
-		ServerFacade.transportDocument.getAllForClient(client.getId(), new ManagedAsyncCallback<List<TransportDocumentDTO>>() {
+		ServerFacade.INSTANCE.getTransportdocumentService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<TransportDocumentDTO>>() {
 
 			@Override
 			public void onSuccess(List<TransportDocumentDTO> result) {
 				if(result == null){
 					return;
 				}
-				Collections.sort(result, Const.DOCUMENT_COMPARATOR);
+				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
 				transportDocumentDataProvider.setList(result);
 				transportDocumentDataProvider.refresh();
 			}
@@ -207,14 +207,14 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 
 	private void loadCreditNotes(){
-		ServerFacade.creditNote.getAllForClient(client.getId(), new ManagedAsyncCallback<List<CreditNoteDTO>>() {
+		ServerFacade.INSTANCE.getCreditnoteService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<CreditNoteDTO>>() {
 
 			@Override
 			public void onSuccess(List<CreditNoteDTO> result) {
 				if(result == null){
 					return;
 				}
-				Collections.sort(result, Const.DOCUMENT_COMPARATOR);
+				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
 				creditNoteDataProvider.setList(result);
 				creditNoteDataProvider.refresh();
 			}
@@ -223,14 +223,14 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 	}
 
 	private void loadEstimations(){
-		ServerFacade.estimation.getAllForClient(client.getId(), new ManagedAsyncCallback<List<EstimationDTO>>() {
+		ServerFacade.INSTANCE.getEstimationService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<EstimationDTO>>() {
 
 			@Override
 			public void onSuccess(List<EstimationDTO> result) {
 				if(result == null){
 					return;
 				}
-				Collections.sort(result, Const.DOCUMENT_COMPARATOR);
+				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
 				estimationDataProvider.setList(result);
 				estimationDataProvider.refresh();
 			}
@@ -260,7 +260,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 					getView().getCancelClient().showLoader(true);
 					getView().setLocked(true);
-					ServerFacade.client.remove(Configuration.getBusinessId(), client.getId(), new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getClientService().remove(Configuration.getBusinessId(), client.getId(), new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {

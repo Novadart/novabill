@@ -4,8 +4,9 @@ from reportlab.platypus.para import Paragraph
 from reportlab.platypus.tables import Table, TableStyle
 from template.tidy import TidyDocumentBuilder, MEDIUM_FONT_SIZE, TidyDirector
 from reportlab.lib.units import cm
-from reportlab.lib.colors import lightgrey
+from reportlab.lib.colors import lightgrey, black
 from template.tidy import BORDER_SIZE, BORDER_COLOR
+from reportlab.platypus.flowables import Spacer
 
 
 class TidyTransportDocumentDirector(TidyDirector):
@@ -33,7 +34,7 @@ class TidyTransportDocumentDirector(TidyDirector):
                                  ("VALIGN", (1,0), (1,0), "TOP"),
                                  ("RIGHTPADDING", (0,0), (0,0), 15),
                                  ("RIGHTPADDING", (1,0), (1,0), 0)]))
-        return [tbl]
+        return [tbl, Spacer(1, 2*cm), builder.getSignaturesFlowable(docWidth)]
 
 class TidyTransportDocumentBuilder(TidyDocumentBuilder):
     
@@ -64,6 +65,12 @@ class TidyTransportDocumentBuilder(TidyDocumentBuilder):
                                      ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR)]))
             return tbl
         
+        def getToBusinessEntityDetailsFlowable(self, data):
+            return self.getBusinessEntityDetailsFlowable(data.getClient(), self._("Recipient"))
+    
+        def getFromBusinessEntityDetailsFlowable(self, data):
+            return self.getBusinessEntityDetailsFlowable(data.getBusiness(), self._("Sender"))
+        
         def getToEndpointFlowable(self, data, width):
             return self.__getEndPointFlowable(data.getToLocation(), width, self._("Receiving address"))
         
@@ -75,10 +82,21 @@ class TidyTransportDocumentBuilder(TidyDocumentBuilder):
             tbl = Table([[Paragraph("%s:" % self._("Transporter"), style), Paragraph(data.getTransporter(), style)],
                          [Paragraph("%s:" % self._("Transportation responsibility"), style), Paragraph(data.getTransportationResponsibility(), style)],
                          [Paragraph("%s:" % self._("Num. of packages"), style), Paragraph(str(data.getNumberOfPackages()), style)],
-                         [Paragraph("%s:" % self._("Trade zone"), style), Paragraph(data.getTradeZone(), style)]
+                         [Paragraph("%s:" % self._("Trade zone"), style), Paragraph(data.getTradeZone(), style)],
+                         [Paragraph("%s:" % self._("Cause"), style), Paragraph(data.getCause(), style)]
                          ], colWidths=[width*0.4, width*0.6])
             tbl.setStyle(TableStyle([('VALIGN',(0,0),(-1,-1),'TOP'),
                                      ("LINEABOVE", (0, 0), (-1, 0), BORDER_SIZE, BORDER_COLOR),
                                      ("LINEBELOW", (0, -1), (-1, -1), BORDER_SIZE, BORDER_COLOR)
                                      ]))
             return tbl
+        
+        def getSignaturesFlowable(self, docWidth):
+            signatures = Table([["", self._("Carrier"), "", self._("Driver"), "", self._("Reciever"), ""],
+                                ["", "", "", "", ""]],
+                               colWidths=[docWidth*0.05, docWidth*0.2, docWidth*0.15, docWidth*0.2, docWidth*0.15, docWidth*0.2, docWidth*0.05])
+            signatures.setStyle(TableStyle([("LINEBELOW", (1, -1), (1, -1), 1, black),
+                                            ("LINEBELOW", (3, -1), (3, -1), 1, black),
+                                            ("LINEBELOW", (5, -1), (5, -1), 1, black),
+                                            ("LEFTPADDING", (0, 0), (-1, -1), 0)]))
+            return signatures

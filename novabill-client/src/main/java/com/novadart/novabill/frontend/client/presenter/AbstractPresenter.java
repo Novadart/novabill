@@ -8,9 +8,12 @@ import com.novadart.novabill.frontend.client.view.View;
 
 public abstract class AbstractPresenter<V extends View<?>> implements Presenter {
 	
-	private final EventBus eventBus;
-	private final PlaceController placeController;
-	private final V view;
+	private EventBus eventBus;
+	private PlaceController placeController;
+	private V view;
+	
+	public AbstractPresenter() {
+	}
 	
 	public AbstractPresenter(PlaceController placeController, EventBus eventBus, V view) {
 		this.placeController = placeController;
@@ -19,6 +22,19 @@ public abstract class AbstractPresenter<V extends View<?>> implements Presenter 
 		setPresenterInView(view);
 	}
 	
+	public void setEventBus(EventBus eventBus) {
+		this.eventBus = eventBus;
+	}
+
+	public void setPlaceController(PlaceController placeController) {
+		this.placeController = placeController;
+	}
+
+	public void setView(V view) {
+		this.view = view;
+		setPresenterInView(view);
+	}
+
 	protected EventBus getEventBus() {
 		return eventBus;
 	}

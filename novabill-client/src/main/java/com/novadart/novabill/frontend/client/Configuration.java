@@ -23,10 +23,10 @@ public class Configuration {
 	private static BusinessDTO business;
 	private static BusinessStatsDTO stats;
 	private static long notesBitMask;
-	private static boolean debugEnabled;
+	private static boolean devMode;
 
 	public static final void init(final ManagedAsyncCallback<Void> callback){
-		ServerFacade.setupXsrfProtection(new ManagedAsyncCallback<Void>() {
+		ServerFacade.INSTANCE.setupXsrfProtection(new ManagedAsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {
@@ -39,7 +39,7 @@ public class Configuration {
 		try {
 			injectCss();
 			
-			debugEnabled = Boolean.parseBoolean(readDebugEnabled());
+			devMode = Boolean.parseBoolean(readDevMode());
 			
 			notesBitMask = Long.parseLong(readNotesBitMask());
 			
@@ -82,7 +82,7 @@ public class Configuration {
 							@Override
 							public void businessData(final BusinessDTO business) {
 								
-								ServerFacade.business.update(business, new ManagedAsyncCallback<Void>() {
+								ServerFacade.INSTANCE.getBusinessService().update(business, new ManagedAsyncCallback<Void>() {
 									
 									@Override
 									public void onSuccess(Void result) {
@@ -124,12 +124,12 @@ public class Configuration {
 		return $wnd.notesBitMask;
 	}-*/;
 	
-	private static native String readDebugEnabled()/*-{
-		return $wnd.debugEnabled;
+	private static native String readDevMode()/*-{
+		return $wnd.devMode;
 	}-*/;
 
-	public static boolean isDebugEnabled() {
-		return debugEnabled;
+	public static boolean isDevMode() {
+		return devMode;
 	}
 	
 	public static long getNotesBitMask() {

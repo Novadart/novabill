@@ -50,6 +50,7 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 		} 
 
 		getView().getNumberOfPackages().setText(String.valueOf(document.getNumberOfPackages()));
+		getView().getCause().setText(document.getCause());
 
 		EndpointDTO loc = document.getFromEndpoint();
 		getView().getFromAddrCity().setText(loc.getCity());
@@ -85,7 +86,7 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 
 					final TransportDocumentDTO td = createTransportDocument(getTransportDocument());
 
-					ServerFacade.transportDocument.update(td, new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getTransportdocumentService().update(td, new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onFailure(Throwable caught) {

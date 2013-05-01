@@ -9,7 +9,7 @@
 		field="img"></ui:with>
 	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>	
 
-	<ui:style src="MainWidget.css" type="com.novadart.novabill.frontend.client.view.MainWidget.Style" />
+	<ui:style src="MainWidget.css" type="com.novadart.novabill.frontend.client.view.MainWidgetImpl.Style" />
 
 
 	<g:DockLayoutPanel ui:field="dockWidget" unit='EM'>

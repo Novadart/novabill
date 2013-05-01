@@ -76,7 +76,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 	}
 
 	private void setupNewInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, final NewInvoicePlace place){
-		ServerFacade.batchFetcher.fetchNewInvoiceForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewInvoiceForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
 
 			@Override
 			public void onSuccess(Pair<Long, ClientDTO> result) {
@@ -89,7 +89,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 	}
 
 	private void setupFromEstimationInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, final FromEstimationInvoicePlace place){
-		ServerFacade.batchFetcher.fetchNewInvoiceFromEstimationOpData(place.getEstimationId(), new DocumentCallack<Pair<Long,EstimationDTO>>(){
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewInvoiceFromEstimationOpData(place.getEstimationId(), new DocumentCallack<Pair<Long,EstimationDTO>>(){
 
 			@Override
 			public void onSuccess(Pair<Long, EstimationDTO> result) {
@@ -104,7 +104,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 
 	private void setupFromTransportDocumentInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, 
 			final FromTransportDocumentInvoicePlace place){
-		ServerFacade.batchFetcher.fetchNewInvoiceFromTransportDocumentOpData(place.getTransportDocumentId(), 
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewInvoiceFromTransportDocumentOpData(place.getTransportDocumentId(), 
 				new DocumentCallack<Pair<Long,TransportDocumentDTO>>() {
 
 					@Override
@@ -120,7 +120,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 
 
 	private void setupModifyInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, ModifyInvoicePlace place){
-		ServerFacade.invoice.get(place.getInvoiceId(), new DocumentCallack<InvoiceDTO>() {
+		ServerFacade.INSTANCE.getInvoiceService().get(place.getInvoiceId(), new DocumentCallack<InvoiceDTO>() {
 
 			@Override
 			public void onSuccess(InvoiceDTO result) {
@@ -134,7 +134,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 	}
 
 	private void setupCloneInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, final CloneInvoicePlace place){
-		ServerFacade.batchFetcher.fetchCloneInvoiceOpData(place.getInvoiceId(), place.getClientId(), 
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchCloneInvoiceOpData(place.getInvoiceId(), place.getClientId(), 
 				new DocumentCallack<Triple<Long,ClientDTO,InvoiceDTO>>() {
 
 					@Override

@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.widget.search;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
@@ -27,6 +28,13 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientSearch implements Watcher {
 	
+	public static ClientSearch getInstance(Style style, CellList<ClientDTO> dataDisplay){
+		ClientSearch clientSearch = GWT.create(ClientSearch.class);
+		clientSearch.setStyle(style);
+		clientSearch.setDataDisplay(dataDisplay);
+		return clientSearch;
+	}
+	
 	public interface Style extends CssResource {
 		String clientLoader();
 		String noClientsFoundMessage();
@@ -44,7 +52,7 @@ public class ClientSearch implements Watcher {
 	private final Label noClientsFound = new Label(I18N.INSTANCE.noClientsFound());
 
 	private final ClientDataProvider clientDataProvider = new ClientDataProvider();
-	private final CellList<ClientDTO> dataDisplay;
+	private CellList<ClientDTO> dataDisplay;
 	private final RichTextBox filter = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.helpSearchClient());
 
 	private final SimplePanel clientListWrapper = new SimplePanel();
@@ -53,17 +61,9 @@ public class ClientSearch implements Watcher {
 	private long lastTimeKeyWasPressedInFilter = 0;
 	private final SearchTriggerTimer timer = new SearchTriggerTimer();
 	
-	public ClientSearch(Style style, CellList<ClientDTO> dataDisplay) {
-		style.ensureInjected();
-		this.dataDisplay = dataDisplay;
-
-		loader.setStyleName(style.clientLoader());
-		noClientsFound.setStyleName(style.noClientsFoundMessage());
-
-		clientListWrapper.setStyleName(style.clientListWrapper());
+	protected ClientSearch() {
 		clientListWrapper.setWidget(loader);
-
-		filter.addStyleName(style.filter());
+		
 		filter.addKeyUpHandler(new KeyUpHandler() {
 
 			@Override
@@ -80,7 +80,6 @@ public class ClientSearch implements Watcher {
 			}
 		});
 
-		resetFilter.addStyleName(style.resetFilter());
 		resetFilter.setVisible(false);
 		resetFilter.setTitle(I18N.INSTANCE.helpClearFilter());
 		resetFilter.addClickHandler(new ClickHandler() {
@@ -95,6 +94,20 @@ public class ClientSearch implements Watcher {
 		});
 
 		clientDataProvider.setWatcher(this);
+		
+	}
+	
+	private void setStyle(Style style){
+		style.ensureInjected();
+		loader.setStyleName(style.clientLoader());
+		noClientsFound.setStyleName(style.noClientsFoundMessage());
+		clientListWrapper.setStyleName(style.clientListWrapper());
+		filter.addStyleName(style.filter());
+		resetFilter.addStyleName(style.resetFilter());
+	}
+	
+	private void setDataDisplay(CellList<ClientDTO> dataDisplay) {
+		this.dataDisplay = dataDisplay;
 		clientDataProvider.addDataDisplay(dataDisplay);
 	}
 

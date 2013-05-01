@@ -83,7 +83,7 @@ public class SelectClientDialog extends Dialog {
 
 		});
 		
-		clientSearch = new ClientSearch(cs, list);
+		clientSearch = ClientSearch.getInstance(cs, list);
 		filterContainer.add(clientSearch.getSearchInput());
 		filterContainer.add(clientSearch.getResetButton());
 		

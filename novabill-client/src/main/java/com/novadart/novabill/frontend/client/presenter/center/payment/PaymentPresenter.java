@@ -11,7 +11,7 @@ import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.SharedComparators;
 import com.novadart.novabill.frontend.client.event.PaymentAddEvent;
 import com.novadart.novabill.frontend.client.event.PaymentAddHandler;
 import com.novadart.novabill.frontend.client.event.PaymentDeleteEvent;
@@ -48,7 +48,7 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 
 	@Override
 	public void go(AcceptsOneWidget panel) {
-		MainWidget.getInstance().setStandardView();
+		MainWidget.INSTANCE.setStandardView();
 		bind();
 		panel.setWidget(getView());
 	}
@@ -82,11 +82,11 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 	}
 
 	private void reloadPayments(){
-		ServerFacade.payment.getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<PaymentTypeDTO>>() {
+		ServerFacade.INSTANCE.getPaymentService().getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<PaymentTypeDTO>>() {
 
 			@Override
 			public void onSuccess(List<PaymentTypeDTO> result) {
-				Collections.sort(result, Const.PAYMENT_COMPARATOR);
+				Collections.sort(result, SharedComparators.PAYMENT_COMPARATOR);
 				paymentData.setList(result);
 				paymentData.refresh();
 			}
@@ -116,7 +116,7 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 			@Override
 			public void onNotificationClosed(Boolean result) {
 				if(result){
-					ServerFacade.payment.remove(Configuration.getBusinessId(), payment.getId(), new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getPaymentService().remove(Configuration.getBusinessId(), payment.getId(), new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {

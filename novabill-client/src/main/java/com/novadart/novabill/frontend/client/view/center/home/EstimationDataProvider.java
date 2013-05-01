@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.SharedComparators;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -19,12 +19,12 @@ public class EstimationDataProvider extends AsyncDataProvider<EstimationDTO> {
 		final int start = 0;
 		final int length = display.getVisibleRange().getLength();
 		
-		ServerFacade.estimation.getAllInRange(Configuration.getBusinessId(), start, length, new ManagedAsyncCallback<PageDTO<EstimationDTO>>() {
+		ServerFacade.INSTANCE.getEstimationService().getAllInRange(Configuration.getBusinessId(), start, length, new ManagedAsyncCallback<PageDTO<EstimationDTO>>() {
 
 			@Override
 			public void onSuccess(PageDTO<EstimationDTO> result) {
 				List<EstimationDTO> items = result.getItems();
-				Collections.sort(items, Const.DOCUMENT_COMPARATOR);
+				Collections.sort(items, SharedComparators.DOCUMENT_COMPARATOR);
 				updateRowData(start, items);
 			}
 

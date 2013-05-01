@@ -63,7 +63,7 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 
 
 	private void setupNewTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, final NewTransportDocumentPlace place){
-		ServerFacade.batchFetcher.fetchNewTransportDocumentForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewTransportDocumentForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
 
 			@Override
 			public void onSuccess(Pair<Long, ClientDTO> result) {
@@ -76,7 +76,7 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 	}
 
 	private void setupModifyTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, ModifyTransportDocumentPlace place){
-		ServerFacade.transportDocument.get(place.getTransportDocumentId(), new DocumentCallack<TransportDocumentDTO>() {
+		ServerFacade.INSTANCE.getTransportdocumentService().get(place.getTransportDocumentId(), new DocumentCallack<TransportDocumentDTO>() {
 
 			@Override
 			public void onSuccess(TransportDocumentDTO result) {
@@ -90,7 +90,7 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 	}
 
 	private void setupCloneTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, final CloneTransportDocumentPlace place){
-		ServerFacade.batchFetcher.fetchCloneTransportDocumentOpData(place.getTransportDocumentId(), place.getClientId(), 
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchCloneTransportDocumentOpData(place.getTransportDocumentId(), place.getClientId(), 
 				new DocumentCallack<Triple<Long,ClientDTO,TransportDocumentDTO>>() {
 
 					@Override

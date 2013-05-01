@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
@@ -19,7 +20,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
-import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
@@ -70,6 +71,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@UiField Button exportCreditNoteData;
 	@UiField Button exportTransportDocumentData;
 	
+	@UiField Anchor deleteAccount;
+	
 	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation();
 
 	public BusinessViewImpl() {
@@ -99,7 +102,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 
 		saveData.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().button());
 
-		logo.setUrl(Const.getLogoUrl());
+		logo.setUrl(ClientFactory.INSTANCE.getLogoUrl());
 
 		formPanel.setMethod(FormPanel.METHOD_POST);
 		formPanel.setEncoding(FormPanel.ENCODING_MULTIPART);
@@ -119,6 +122,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 				presenter.onLogoSubmitComplete(event.getResults());
 			}
 		});
+		
+		deleteAccount.setHref(ClientFactory.INSTANCE.getDeleteAccountUrl());
 
 	}
 
@@ -359,6 +364,11 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@Override
 	public AlternativeSsnVatIdValidation getSsnOrVatIdValidation() {
 		return ssnOrVatIdValidation;
+	}
+	
+	@Override
+	public Anchor getDeleteAccount() {
+		return deleteAccount;
 	}
 
 }

@@ -5,6 +5,7 @@ import java.util.Map;
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
 
+import org.apache.commons.lang3.CharEncoding;
 import org.apache.velocity.app.VelocityEngine;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.ui.velocity.VelocityEngineUtils;
@@ -40,7 +41,8 @@ privileged aspect MailAspect {
 			messageHelper.setTo(to);
 			messageHelper.setFrom(thisAspect.from);
 			messageHelper.setSubject(subject);
-			String text = VelocityEngineUtils.mergeTemplateIntoString(thisAspect.velocityEngine, templateLocation, model);
+			String text = VelocityEngineUtils.mergeTemplateIntoString(thisAspect.velocityEngine, templateLocation, 
+					CharEncoding.UTF_8, model);
 			messageHelper.setText(text, true);
 			thisAspect.mailSender.send(mimeMessage);
 		} catch (MessagingException e) {

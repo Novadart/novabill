@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -34,8 +35,7 @@ import com.novadart.novabill.frontend.client.view.west.empty.EmptyWestViewImpl;
 import com.novadart.novabill.frontend.client.view.west.standard.StandardWestView;
 import com.novadart.novabill.frontend.client.view.west.standard.StandardWestViewImpl;
 
-public class ClientFactoryImpl implements ClientFactory
-{
+public class ClientFactoryImpl implements ClientFactory {
 	private static final EventBus eventBus = 
 			new SimpleEventBus();
 	private static final PlaceController placeController = 
@@ -44,6 +44,87 @@ public class ClientFactoryImpl implements ClientFactory
 	private static final Map<Class<?>, View<?>> views =
 			new HashMap<Class<?>, View<?>>();
 
+	private static final String URL_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo";
+	private static final String URL_THUMB = GWT.getHostPageBaseURL()+"private/businesses/logo/thumbnail";
+	private static final String UPDATE_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo?token=";
+	private static final String DELETE_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo?token=";
+	private static final String CHANGE_PASSWORD_URL = GWT.getHostPageBaseURL()+"private/change-password";
+	private static final String XSRF_URL = GWT.getHostPageBaseURL() + "private/gwt/xsrf";
+	private static final String POST_FEEDBACK_URL = GWT.getHostPageBaseURL()+"private/feedback";
+	private static final String LOGOUT_URL = GWT.getHostPageBaseURL()+"resources/j_spring_security_logout";
+	private static final String DELETE_ACCOUNT_URL = GWT.getHostPageBaseURL()+"private/delete";
+	private static final String EXPORT_REQUEST = GWT.getHostPageBaseURL()
+			+ "private/export?clients={c}&invoices={i}&estimations={e}&creditnotes={cn}&transportdocs={t}&token={token}";
+	private static final String PDF_REQUEST = 
+			GWT.getHostPageBaseURL()+"private/pdf/{document}/{id}?token={token}";
+			
+	private static String logoUrl = URL_THUMB + "?v=" + new Date().getTime();
+	
+	@Override
+	public String getLogoUrl(){
+		return logoUrl;
+	}
+	
+	@Override
+	public void refeshLogoUrl(){
+		logoUrl = URL_THUMB + "?v=" + new Date().getTime();
+	}
+	
+	@Override
+	public String getUrlLogo() {
+		return URL_LOGO;
+	}
+
+	@Override
+	public String getUrlThumb() {
+		return URL_THUMB;
+	}
+
+	@Override
+	public String getUpdateLogo() {
+		return UPDATE_LOGO;
+	}
+
+	@Override
+	public String getDeleteLogo() {
+		return DELETE_LOGO;
+	}
+
+	@Override
+	public String getChangePasswordUrl() {
+		return CHANGE_PASSWORD_URL;
+	}
+
+	@Override
+	public String getXsrfUrl() {
+		return XSRF_URL;
+	}
+
+	@Override
+	public String getPostFeedbackUrl() {
+		return POST_FEEDBACK_URL;
+	}
+	
+	@Override
+	public String getLogoutUrl() {
+		return LOGOUT_URL;
+	}
+	
+	@Override
+	public String getDeleteAccountUrl() {
+		return DELETE_ACCOUNT_URL;
+	}
+
+	@Override
+	public String getExportRequest() {
+		return EXPORT_REQUEST;
+	}
+	
+	@Override
+	public String getPdfRequest() {
+		return PDF_REQUEST;
+	}
+	
 	@Override
 	public PlaceController getPlaceController()	{
 		return placeController;

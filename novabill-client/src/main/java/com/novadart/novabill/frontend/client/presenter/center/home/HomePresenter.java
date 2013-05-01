@@ -49,7 +49,7 @@ public class HomePresenter extends AbstractPresenter<HomeView> implements HomeVi
 
 	@Override
 	public void go(AcceptsOneWidget panel) {
-		MainWidget.getInstance().setStandardView();
+		MainWidget.INSTANCE.setStandardView();
 		super.go(panel);
 	}
 

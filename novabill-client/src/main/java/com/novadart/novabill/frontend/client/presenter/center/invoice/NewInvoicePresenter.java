@@ -117,7 +117,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
 		final InvoiceDTO invoice = createInvoice(null);
 
-		ServerFacade.invoice.add(invoice, new ManagedAsyncCallback<Long>() {
+		ServerFacade.INSTANCE.getInvoiceService().add(invoice, new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {

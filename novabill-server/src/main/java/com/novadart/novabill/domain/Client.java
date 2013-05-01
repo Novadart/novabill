@@ -137,13 +137,17 @@ public class Client implements Serializable, Taxable {
     @Trimmed
     private String ssn;
     
+    @ManyToOne
+    private PaymentType defaultPaymentType;
+    
     @AttributeOverrides({
     	@AttributeOverride(name = "firstName", column = @Column(name = "contact_first_name")),
     	@AttributeOverride(name = "lastName", column = @Column(name = "contact_last_name")),
     	@AttributeOverride(name = "email", column = @Column(name = "contact_email")),
     	@AttributeOverride(name = "phone", column = @Column(name = "contact_phone")),
     	@AttributeOverride(name = "fax", column = @Column(name = "contact_fax")),
-    	@AttributeOverride(name = "mobile", column = @Column(name = "contact_mobile"))
+    	@AttributeOverride(name = "mobile", column = @Column(name = "contact_mobile")),
+    	@AttributeOverride(name = "note", column = @Column(name = "contact_note"))
     })
     @Embedded
     @IndexedEmbedded(prefix = FTSNamespace.CONTACT_PREFIX)
@@ -331,7 +335,15 @@ public class Client implements Serializable, Taxable {
         this.ssn = ssn;
     }
     
-    public Contact getContact() {
+    public PaymentType getDefaultPaymentType() {
+		return defaultPaymentType;
+	}
+
+	public void setDefaultPaymentType(PaymentType defaultPaymentType) {
+		this.defaultPaymentType = defaultPaymentType;
+	}
+
+	public Contact getContact() {
 		return contact;
 	}
 

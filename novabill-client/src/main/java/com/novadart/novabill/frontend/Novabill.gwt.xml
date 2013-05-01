@@ -21,6 +21,37 @@
     <when-type-is class="com.novadart.novabill.frontend.client.ClientFactory"/>
   </replace-with>
   
+  <replace-with class="com.novadart.novabill.frontend.client.facade.ServerFacadeImpl">
+    <when-type-is class="com.novadart.novabill.frontend.client.facade.ServerFacade"/>
+  </replace-with>
+  
+  <!-- Cells -->
+  <replace-with class="com.novadart.novabill.frontend.client.widget.list.impl.CreditNoteCellImpl">
+    <when-type-is class="com.novadart.novabill.frontend.client.widget.list.impl.CreditNoteCell"/>
+  </replace-with>
+  
+  <replace-with class="com.novadart.novabill.frontend.client.widget.list.impl.EstimationCellImpl">
+    <when-type-is class="com.novadart.novabill.frontend.client.widget.list.impl.EstimationCell"/>
+  </replace-with>
+  
+  <replace-with class="com.novadart.novabill.frontend.client.widget.list.impl.InvoiceCellImpl">
+    <when-type-is class="com.novadart.novabill.frontend.client.widget.list.impl.InvoiceCell"/>
+  </replace-with>
+  
+  <replace-with class="com.novadart.novabill.frontend.client.widget.list.impl.TransportDocumentCellImpl">
+    <when-type-is class="com.novadart.novabill.frontend.client.widget.list.impl.TransportDocumentCell"/>
+  </replace-with>
+  
+  <!-- Presenters -->
+  <replace-with class="com.novadart.novabill.frontend.client.presenter.center.business.BusinessPresenter">
+    <when-type-is class="com.novadart.novabill.frontend.client.view.center.business.BusinessView.Presenter"/>
+  </replace-with>
+  
+  <!-- Views -->
+  <replace-with class="com.novadart.novabill.frontend.client.view.MainWidgetImpl">
+    <when-type-is class="com.novadart.novabill.frontend.client.view.MainWidget"/>
+  </replace-with>
+  
   <!-- Specify the app entry point class.                         -->
   <entry-point class='com.novadart.novabill.frontend.client.Novabill'/>
 

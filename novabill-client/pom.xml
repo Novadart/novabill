@@ -50,7 +50,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<warSourceExcludes>rpc/**</warSourceExcludes>
+					<warSourceExcludes>rpc/**, demo/**</warSourceExcludes>
 					<packagingExcludes>WEB-INF/**</packagingExcludes>
 				</configuration>
 			</plugin>
@@ -115,7 +115,10 @@
 							<execution>
 								<phase>compile</phase>
 								<configuration>
-									<module>com.novadart.novabill.frontend.Novabill</module>
+									<modules>
+										<module>com.novadart.novabill.frontend.Novabill</module>
+										<module>com.novadart.novabill.frontend.NovabillDemo</module>
+									</modules>
 								</configuration>
 								<goals>
 									<goal>clean</goal>
@@ -145,7 +148,10 @@
 							<execution>
 								<phase>compile</phase>
 								<configuration>
-									<module>com.novadart.novabill.frontend.Novabill</module>
+									<modules>
+										<module>com.novadart.novabill.frontend.Novabill</module>
+										<module>com.novadart.novabill.frontend.NovabillDemo</module>
+									</modules>
 									<optimizationLevel>9</optimizationLevel>
 									<enableClosureCompiler>true</enableClosureCompiler>
 								</configuration>
