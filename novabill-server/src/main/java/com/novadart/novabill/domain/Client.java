@@ -140,6 +140,9 @@ public class Client implements Serializable, Taxable {
     @ManyToOne
     private PaymentType defaultPaymentType;
     
+    @Size(max = 1500)
+	private String note;
+    
     @AttributeOverrides({
     	@AttributeOverride(name = "firstName", column = @Column(name = "contact_first_name")),
     	@AttributeOverride(name = "lastName", column = @Column(name = "contact_last_name")),
@@ -341,6 +344,14 @@ public class Client implements Serializable, Taxable {
 
 	public void setDefaultPaymentType(PaymentType defaultPaymentType) {
 		this.defaultPaymentType = defaultPaymentType;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public Contact getContact() {

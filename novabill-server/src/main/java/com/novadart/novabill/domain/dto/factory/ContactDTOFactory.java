@@ -13,7 +13,6 @@ public class ContactDTOFactory {
 		contactDTO.setMobile(contact.getMobile());
 		contactDTO.setPhone(contact.getPhone());
 		contactDTO.setFax(contact.getFax());
-		contactDTO.setNote(contact.getNote());
 		return contactDTO;
 	}
 	
@@ -24,7 +23,6 @@ public class ContactDTOFactory {
 		contact.setMobile(contactDTO.getMobile());
 		contact.setPhone(contactDTO.getPhone());
 		contact.setFax(contactDTO.getFax());
-		contact.setNote(contactDTO.getNote());
 	}
 
 }

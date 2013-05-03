@@ -60,9 +60,6 @@ public class Contact implements Serializable{
 	@Size(max = 25)
 	private String mobile;
 	
-	@Size(max = 1500)
-	private String note;
-
 	public String getFirstName() {
 		return firstName;
 	}
@@ -109,14 +106,6 @@ public class Contact implements Serializable{
 
 	public void setMobile(String mobile) {
 		this.mobile = mobile;
-	}
-
-	public String getNote() {
-		return note;
-	}
-
-	public void setNote(String note) {
-		this.note = note;
 	}
 
 }
