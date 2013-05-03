@@ -8,4 +8,5 @@ public interface DemoMessages extends Constants {
 	
 	String functionNotAvailable();
 	String searchNotAvailable();
+	String closeWelcomeDialog();
 }
