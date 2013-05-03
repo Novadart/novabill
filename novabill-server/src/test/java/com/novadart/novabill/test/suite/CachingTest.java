@@ -465,10 +465,13 @@ public class CachingTest extends GWTServiceTest {
 	@Test
 	public void paymentTypeRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException{
 		Set<PaymentTypeDTO> paymentTypes = new HashSet<PaymentTypeDTO>(businessService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
+		Set<ClientDTO> clients = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		paymentTypeService.remove(authenticatedPrincipal.getBusiness().getId(), authenticatedPrincipal.getBusiness().getPaymentTypes().iterator().next().getId());
 		Set<PaymentTypeDTO> notCachedPaymentTypes = new HashSet<PaymentTypeDTO>(businessService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
+		Set<ClientDTO> nonCachedClients = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!paymentTypes.equals(notCachedPaymentTypes));
 		assertTrue(paymentTypes.size() == notCachedPaymentTypes.size() + 1);
+		assertTrue(!clients.equals(nonCachedClients));
 	}
 	
 	@Test

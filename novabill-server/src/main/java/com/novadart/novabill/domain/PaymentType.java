@@ -1,5 +1,6 @@
 package com.novadart.novabill.domain;
 
+import java.util.HashSet;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -52,7 +53,7 @@ public class PaymentType {
 	private Business business;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "defaultPaymentType")
-	private Set<Client> clients;
+	private Set<Client> clients = new HashSet<Client>();
 	
 	public PaymentType(String name, String defaultPaymentNote, PaymentDateType paymentDateGenerator, Integer paymentDateDelta) {
 		this.name = name;
