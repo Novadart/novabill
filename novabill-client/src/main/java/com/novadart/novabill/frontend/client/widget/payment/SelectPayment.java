@@ -40,6 +40,7 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 	
 	public static interface Handler {
 		void onPaymentSelected(PaymentTypeDTO payment);
+		void onPaymentClear();
 	}
 	
 	private static SelectPaymentUiBinder uiBinder = GWT
@@ -77,6 +78,11 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 		}
 	}
 	
+	public void init(){
+		selectedPayment = null;
+		setupPaymentView();
+	}
+	
 	public void init(PaymentTypeDTO payment){
 		selectedPayment = payment;
 		setupPaymentSummaryView();
@@ -96,11 +102,6 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 		selectedPayment.setPaymentDateDelta(paymentDateDelta);
 		selectedPayment.setPaymentDateGenerator(dateGenerator);
 		setupPaymentSummaryView();
-	}
-	
-	public void init(){
-		selectedPayment = null;
-		setupPaymentView();
 	}
 	
 	public void setDocumentCreationDate(Date date){
@@ -174,6 +175,7 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 
 	@Override
 	public void onResetClicked() {
+		handler.onPaymentClear();
 		init();
 	}
 	

@@ -111,7 +111,9 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 	
 	public void onPaymentDelete(final PaymentTypeDTO payment){
 		resetDescription();
-		Notification.showConfirm(I18N.INSTANCE.deletionConfirm(), new NotificationCallback<Boolean>() {
+		SafeHtmlBuilder shb = new SafeHtmlBuilder();
+		shb.appendEscapedLines(I18N.INSTANCE.paymentDeletionConfirm());
+		Notification.showConfirm(shb.toSafeHtml(), new NotificationCallback<Boolean>() {
 
 			@Override
 			public void onNotificationClosed(Boolean result) {

@@ -1,5 +1,10 @@
 package com.novadart.novabill.frontend.client.widget.dialog.client;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -10,13 +15,16 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
+import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.SharedComparators;
 import com.novadart.novabill.frontend.client.event.ClientAddEvent;
 import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
@@ -27,11 +35,13 @@ import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
+import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.widget.validation.AlternativeSsnVatIdValidation;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public class ClientDialog extends Dialog implements HasUILocking {
 
@@ -87,9 +97,15 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	@UiField(provided=true) ValidatedTextBox contactName;
 	@UiField(provided=true) ValidatedTextBox contactSurname;
 	
+	@UiField ListBox selectDefaultPayment;
+	
+	@UiField ValidatedTextArea note;
+	
 	@UiField(provided=true) LoaderButton ok;
 	@UiField Button cancel;
 	@UiField Style s;
+	
+	private final Map<String, PaymentTypeDTO> paymentTypes = new HashMap<String, PaymentTypeDTO>();
 	
 	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation(); 
 	
@@ -130,6 +146,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		
 		province = LocaleWidgets.createProvinceListBox("");
 		
+		
 		ok = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		
 		setWidget(uiBinder.createAndBindUi(this));
@@ -137,6 +154,47 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		
 		ok.addStyleName(s.submit());
 		ok.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().button());
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		selectDefaultPayment.setEnabled(false);
+		ServerFacade.INSTANCE.getPaymentService().getAll(Configuration.getBusinessId(), 
+				new ManagedAsyncCallback<List<PaymentTypeDTO>>() {
+
+					@Override
+					public void onSuccess(List<PaymentTypeDTO> result) {
+						Collections.sort(result, SharedComparators.PAYMENT_COMPARATOR);
+						
+						selectDefaultPayment.addItem("");
+						
+						Long defaultPaymentId = null;
+						if(client != null && client.getDefaultPaymentType() != null) {
+							defaultPaymentId = client.getDefaultPaymentType().getId();
+						}
+						
+						Integer indexOfDefaultPayment = null; 
+						PaymentTypeDTO p;
+						for (int i=0; i<result.size(); i++) {
+							p = result.get(i);
+							paymentTypes.put(String.valueOf(p.getId()), p);
+							selectDefaultPayment.addItem(p.getName(), String.valueOf(p.getId()));
+							
+							indexOfDefaultPayment = defaultPaymentId == null 
+									? null 
+									: (defaultPaymentId.equals(p.getId()) ? i : null);
+						}
+						
+						// select the payment type
+						if(indexOfDefaultPayment != null) {
+							selectDefaultPayment.setSelectedIndex(indexOfDefaultPayment);
+						}
+						
+						selectDefaultPayment.setEnabled(true);
+						
+					}
+		});
 	}
 
 	@UiFactory
@@ -170,6 +228,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		web.setText(client.getWeb());
 		vatID.setText(client.getVatID());
 		ssn.setText(client.getSsn());
+		note.setText(client.getNote());
 		
 		ContactDTO ct = client.getContact();
 		contactEmail.setText(ct.getEmail());
@@ -216,9 +275,15 @@ public class ClientDialog extends Dialog implements HasUILocking {
 			client.setProvince("");
 		}
 		
+		if(selectDefaultPayment.getSelectedIndex() > 0){
+			PaymentTypeDTO payment = paymentTypes.get(selectDefaultPayment.getValue(selectDefaultPayment.getSelectedIndex()));
+			client.setDefaultPaymentType(payment);
+		}
+		
 		client.setSsn(ssn.getText());
 		client.setVatID(vatID.getText());
 		client.setWeb(web.getText());
+		client.setNote(note.getText());
 
 		contact.setEmail(contactEmail.getText());
 		contact.setFax(contactFax.getText());
@@ -308,10 +373,10 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		postcode.setValidationBundle(ValidationKit.NUMBER);
 		province.reset();
 		web.setText("");
-		for (ValidatedTextBox tb: new ValidatedTextBox[]{companyName, 
+		for (ValidatedWidget<?> tb: new ValidatedWidget[]{companyName, 
 				postcode, phone, mobile, fax, email, address, city, web,
 				contactEmail, contactFax, contactMobile, contactName, contactPhone,
-				contactSurname}){
+				contactSurname, note}){
 			tb.reset();
 		}
 		ssnOrVatIdValidation.reset();
@@ -324,8 +389,9 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		inlineNotification.hide();
 		clientDialogTitle.setText(I18N.INSTANCE.addNewClientTitle());
 		ok.reset();
-		
+		selectDefaultPayment.clear();
 		setLocked(false);
+		paymentTypes.clear();
 	}
 
 	private boolean validate(){
@@ -338,10 +404,10 @@ public class ClientDialog extends Dialog implements HasUILocking {
 			isValid = false;
 		}
 		
-		for (ValidatedTextBox tb: new ValidatedTextBox[]{companyName, 
+		for (ValidatedWidget<?> tb: new ValidatedWidget[]{companyName, 
 				postcode, phone, mobile, fax, email, address, city, web,
 				contactEmail, contactFax, contactMobile, contactName, contactPhone,
-				contactSurname}){
+				contactSurname, note}){
 			tb.validate();
 			isValid = isValid && tb.isValid();
 		}
@@ -377,6 +443,8 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		contactName.setEnabled(!value);
 		contactSurname.setEnabled(!value);
 		cancel.setEnabled(!value);
+		selectDefaultPayment.setEnabled(!value);
+		note.setEnabled(!value);
 	}
 
 }

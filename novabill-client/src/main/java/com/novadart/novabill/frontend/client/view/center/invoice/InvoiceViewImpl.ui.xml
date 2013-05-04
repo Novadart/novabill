@@ -24,6 +24,16 @@
 			left: -2px;
 			top: -2px;
 		}
+		
+		.setDefaultCheckbox {
+			margin: 0 0 1.5em;
+			display: block;
+			cursor: pointer;
+		}
+		
+		.setDefaultCheckbox label {
+			margin-left: 0.5em;
+		}
 	</ui:style>
 	
 	<g:ScrollPanel height="100%">
@@ -70,11 +80,14 @@
 						</g:row>
 						<g:row>
 							<g:customCell>
-								<g:Label ui:field="paymentLabel" styleName="{s.label}"
-									text="{i18n.payment}"></g:Label>
+								<g:Label styleName="{s.label}" text="{i18n.payment}" />
 							</g:customCell>
 							<g:customCell>
-								<p:SelectPayment styleName="{style.selectPayment}" ui:field="payment" />
+								<g:VerticalPanel>
+									<p:SelectPayment styleName="{style.selectPayment}" ui:field="payment" />
+									<g:CheckBox ui:field="makePaymentAsDefault" styleName="{style.setDefaultCheckbox}"
+										text="{i18n.makePaymentAsDefault}" />
+								</g:VerticalPanel>
 							</g:customCell>
 						</g:row>
 						<g:row>

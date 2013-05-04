@@ -78,6 +78,10 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 
 	protected InvoiceDTO createInvoice(InvoiceDTO invoice){
 		InvoiceDTO inv;
+		
+		if(getView().getMakePaymentAsDefault().getValue()){
+			getClient().setDefaultPaymentType(getView().getPayment().getSelectedPayment());
+		}
 
 		if(invoice != null){
 			inv = invoice;
@@ -107,6 +111,17 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 	
 	@Override
 	public void onPaymentSelected(final PaymentTypeDTO payment) {
+		/*
+		 * show the checkbox to make the payment as default, if necessary
+		 */
+		PaymentTypeDTO defaultPayment = getClient().getDefaultPaymentType();
+		if(defaultPayment == null || !defaultPayment.getId().equals(payment.getId())) {
+			getView().getMakePaymentAsDefault().setVisible(true);
+		}
+		
+		/*
+		 * update the payment note if necessary		
+		 */
 		if(payment.getDefaultPaymentNote().trim().isEmpty()){
 			return;
 		}
@@ -136,6 +151,12 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 				}
 			});
 		}
+	}
+	
+	@Override
+	public void onPaymentClear() {
+		getView().getMakePaymentAsDefault().setVisible(false);
+		getView().getMakePaymentAsDefault().setValue(false);
 	}
 
 }

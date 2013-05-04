@@ -12,6 +12,7 @@ import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
@@ -49,14 +50,13 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiField ScrollPanel docScroll;
 
 	@UiField Label titleLabel;
-	@UiField Label paymentLabel;
 	@UiField(provided=true) SelectPayment payment;
+	@UiField CheckBox makePaymentAsDefault;
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 	@UiField Label clientName;
 	@UiField(provided=true) ValidatedDateBox date;
 	@UiField Label invoiceNumber;
 	@UiField(provided=true) ValidatedTextBox number;
-	@UiField Label paymentNoteLabel;
 	@UiField ValidatedTextArea paymentNote;
 	@UiField ValidatedTextArea note;
 
@@ -79,7 +79,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 			@Override
 			public void onPaymentSelected(PaymentTypeDTO payment) {
 				presenter.onPaymentSelected(payment);
-				
+			}
+			
+			@Override
+			public void onPaymentClear() {
+				presenter.onPaymentClear();
 			}
 		});
 		
@@ -169,11 +173,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 
 	@Override
-	public Label getPaymentLabel() {
-		return paymentLabel;
-	}
-
-	@Override
 	public ItemInsertionForm getItemInsertionForm() {
 		return itemInsertionForm;
 	}
@@ -191,11 +190,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@Override
 	public Label getInvoiceNumber() {
 		return invoiceNumber;
-	}
-
-	@Override
-	public Label getPaymentNoteLabel() {
-		return paymentNoteLabel;
 	}
 
 	@Override
@@ -249,13 +243,14 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 	
 	@Override
+	public CheckBox getMakePaymentAsDefault() {
+		return makePaymentAsDefault;
+	}
+	
+	@Override
 	public void reset() {
 		//reset widget statuses
 		number.reset();
-		paymentNote.setVisible(true);
-		invoiceNumber.setVisible(true);
-		paymentNoteLabel.setVisible(true);
-		paymentLabel.setVisible(true);
 
 		//reset widget contents		
 		paymentNote.setText("");
@@ -266,6 +261,9 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		itemInsertionForm.reset();
 		
 		createInvoice.reset();
+		
+		makePaymentAsDefault.setValue(false);
+		makePaymentAsDefault.setVisible(false);
 		setLocked(false);
 	}
 
@@ -277,7 +275,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		number.setEnabled(!value);
 		paymentNote.setEnabled(!value);
 		note.setEnabled(!value);
-
+		makePaymentAsDefault.setEnabled(!value);
 		abort.setEnabled(!value);
 	}
 	

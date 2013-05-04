@@ -21,6 +21,7 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
@@ -46,7 +47,6 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		getView().getClientName().setText(client.getName());
 		Date d = new Date();
 		getView().getDate().setValue(d);
-		getView().getPayment().setDocumentCreationDate(d);
 		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(d));
 		getView().getNumber().setText(progressiveId.toString());
 
@@ -55,7 +55,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	
 	public void setDataForNewInvoice(ClientDTO client, Long progressiveId) {
 		initData(client, progressiveId);
-		getView().getPayment().init();
+		setupPayment();
 	}
 
 	
@@ -70,6 +70,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		getView().getPayment().setDocumentCreationDate(getView().getDate().getValue());
 		getView().getPayment().init(invoice.getPaymentTypeName(), invoice.getPaymentDateGenerator(), 
 				invoice.getPaymentDateDelta());
+		//NOTE we don't show the checkbox to set this as the default payment because we don't know its ID
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(invoice.getNote());
 		getView().getPaymentNote().setText(invoice.getPaymentNote());
@@ -78,7 +79,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	
 	public void setDataForNewInvoice(Long progressiveId, EstimationDTO estimation) {
 		initData(estimation.getClient(), progressiveId);
-		getView().getPayment().init();
+		setupPayment();
 
 		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(estimation.getItems().size());
 		for (AccountingDocumentItemDTO i : estimation.getItems()) {
@@ -93,7 +94,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	
 	public void setDataForNewInvoice(Long progressiveId, TransportDocumentDTO transportDocument) {
 		initData(transportDocument.getClient(), progressiveId);
-		getView().getPayment().init();
+		setupPayment();
 
 		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(transportDocument.getItems().size());
 		for (AccountingDocumentItemDTO i : transportDocument.getItems()) {
@@ -153,5 +154,16 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		});
 
 	}
+	
+	private void setupPayment(){
+		getView().getPayment().setDocumentCreationDate(new Date());
+		PaymentTypeDTO defaultPayment = getClient().getDefaultPaymentType();
+		if(defaultPayment == null) {
+			getView().getPayment().init();
+		} else {
+			getView().getPayment().init(defaultPayment);
+		}
+	}
+	
 
 }
