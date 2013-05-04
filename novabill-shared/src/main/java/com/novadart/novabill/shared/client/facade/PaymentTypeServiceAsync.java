@@ -15,4 +15,6 @@ public interface PaymentTypeServiceAsync {
 
 	void getAll(Long businessID, AsyncCallback<List<PaymentTypeDTO>> callback);
 
+	void get(Long id, AsyncCallback<PaymentTypeDTO> callback);
+
 }

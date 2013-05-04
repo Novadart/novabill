@@ -181,4 +181,28 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 		paymentTypeService.getAll(null);
 	}
 	
+	@Test
+	public void getAuthorizedTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
+		PaymentType paymentType = TestUtils.createPaymentType();
+		paymentType.setBusiness(authenticatedPrincipal.getBusiness());
+		authenticatedPrincipal.getBusiness().getPaymentTypes().add(paymentType);
+		PaymentType.entityManager().flush();
+		assertTrue(EqualsBuilder.reflectionEquals(PaymentTypeDTOFactory.toDTO(paymentType), paymentTypeService.get(paymentType.getId())));
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void getIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+		paymentTypeService.get(null);
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void getUnauthorizedTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
+		PaymentType paymentType = TestUtils.createPaymentType();
+		Business business = Business.findBusiness(getUnathorizedBusinessID());
+		paymentType.setBusiness(business);
+		business.getPaymentTypes().add(paymentType);
+		PaymentType.entityManager().flush();
+		paymentTypeService.get(paymentType.getId());
+	}
+	
 }
