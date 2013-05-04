@@ -13,7 +13,7 @@
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
 		<file>${log.file.value}</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>novabill.%d{yyyy-MM-dd}.log</fileNamePattern>
+			<fileNamePattern>${log.fileNamePattern.value}</fileNamePattern>
 			<!-- By not setting maxHistory logs are kept indefinitely -->
 		</rollingPolicy>
 		
