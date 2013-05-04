@@ -8,11 +8,13 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.TaxableEntityValidator;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
@@ -71,6 +73,21 @@ public class ClientServiceImpl implements ClientService {
 	public void update(Long businessID, ClientDTO clientDTO) throws NoSuchObjectException, ValidationException {
 		Client client = Client.findClient(clientDTO.getId());
 		ClientDTOFactory.copyFromDTO(client, clientDTO);
+		if(client.getDefaultPaymentType() == null){
+			if(clientDTO.getDefaultPaymentTypeID() != null){
+				PaymentType paymentType = PaymentType.findPaymentType(clientDTO.getDefaultPaymentTypeID());
+				client.setDefaultPaymentType(paymentType);
+				paymentType.getClients().add(client);
+			}
+		}else{
+			if(client.getDefaultPaymentType().getId() != clientDTO.getDefaultPaymentTypeID()){
+				if(Hibernate.isInitialized(client.getDefaultPaymentType().getClients()))
+					client.getDefaultPaymentType().getClients().remove(client);
+				PaymentType newDefaultPaymentType = PaymentType.findPaymentType(clientDTO.getDefaultPaymentTypeID());
+				client.setDefaultPaymentType(newDefaultPaymentType);
+				newDefaultPaymentType.getClients().add(client);
+			}
+		}
 		validator.validate(client);
 		client.flush();
 	}
