@@ -45,12 +45,12 @@ public class TestUtils {
 			//Accounting doc item
 			put("accountingDocumentItems_description", Field.accountingDocumentItems_description); 
 			put("accountingDocumentItems_unitOfMeasure", Field.accountingDocumentItems_unitOfMeasure); 
-			put("accountingDocumentItems_tax", Field.accountingDocumentItems_tax);
-			put("accountingDocumentItems_quantity", Field.accountingDocumentItems_quantity);
-			put("accountingDocumentItems_totalBeforeTax", Field.accountingDocumentItems_totalBeforeTax);
-			put("accountingDocumentItems_totalTax", Field.accountingDocumentItems_totalTax);
-			put("accountingDocumentItems_total", Field.accountingDocumentItems_total);
-			put("accountingDocumentItems_price", Field.accountingDocumentItems_price);
+			//put("accountingDocumentItems_tax", Field.accountingDocumentItems_tax);
+			//put("accountingDocumentItems_quantity", Field.accountingDocumentItems_quantity);
+			//put("accountingDocumentItems_totalBeforeTax", Field.accountingDocumentItems_totalBeforeTax);
+			//put("accountingDocumentItems_totalTax", Field.accountingDocumentItems_totalTax);
+			//put("accountingDocumentItems_total", Field.accountingDocumentItems_total);
+			//put("accountingDocumentItems_price", Field.accountingDocumentItems_price);
 		}};
 		
 		abstractInvoiceValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);

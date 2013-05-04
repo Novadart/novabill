@@ -22,6 +22,8 @@ import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.Trimmed;
+
 /*
  * Important note!
  * If fields and validation constraints are modified be sure to update the validation code. 
@@ -33,29 +35,25 @@ public class AccountingDocumentItem implements Serializable {
 	
 	private static final long serialVersionUID = -1072295560395962907L;
 
-	@NotNull
 	private BigDecimal price;
 
     @Type(type = "text")
     @Size(max = 500)
+    @NotNull
+    @Trimmed
     private String description;
 
     @Size(max = 255)
     private String unitOfMeasure;
 
-    @NotNull
     private BigDecimal tax;
     
-    @NotNull
     private BigDecimal quantity;
     
-    @NotNull
     private BigDecimal totalBeforeTax;
     
-    @NotNull
     private BigDecimal totalTax;
     
-    @NotNull
     private BigDecimal total;
     
     @ManyToOne
