@@ -14,7 +14,6 @@ import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.TaxableEntityValidator;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
@@ -83,9 +82,12 @@ public class ClientServiceImpl implements ClientService {
 			if(client.getDefaultPaymentType().getId() != clientDTO.getDefaultPaymentTypeID()){
 				if(Hibernate.isInitialized(client.getDefaultPaymentType().getClients()))
 					client.getDefaultPaymentType().getClients().remove(client);
-				PaymentType newDefaultPaymentType = PaymentType.findPaymentType(clientDTO.getDefaultPaymentTypeID());
-				client.setDefaultPaymentType(newDefaultPaymentType);
-				newDefaultPaymentType.getClients().add(client);
+				client.setDefaultPaymentType(null);
+				if(clientDTO.getDefaultPaymentTypeID() != null){
+					PaymentType newDefaultPaymentType = PaymentType.findPaymentType(clientDTO.getDefaultPaymentTypeID());
+					client.setDefaultPaymentType(newDefaultPaymentType);
+					newDefaultPaymentType.getClients().add(client);
+				}
 			}
 		}
 		validator.validate(client);
