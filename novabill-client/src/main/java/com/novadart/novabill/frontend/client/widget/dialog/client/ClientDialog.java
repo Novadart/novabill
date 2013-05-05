@@ -170,8 +170,8 @@ public class ClientDialog extends Dialog implements HasUILocking {
 						selectDefaultPayment.addItem("");
 						
 						Long defaultPaymentId = null;
-						if(client != null && client.getDefaultPaymentType() != null) {
-							defaultPaymentId = client.getDefaultPaymentType().getId();
+						if(client != null && client.getDefaultPaymentTypeID() != null) {
+							defaultPaymentId = client.getDefaultPaymentTypeID();
 						}
 						
 						Integer indexOfDefaultPayment = null; 
@@ -181,14 +181,17 @@ public class ClientDialog extends Dialog implements HasUILocking {
 							paymentTypes.put(String.valueOf(p.getId()), p);
 							selectDefaultPayment.addItem(p.getName(), String.valueOf(p.getId()));
 							
-							indexOfDefaultPayment = defaultPaymentId == null 
-									? null 
-									: (defaultPaymentId.equals(p.getId()) ? i : null);
+							indexOfDefaultPayment = indexOfDefaultPayment == null 
+									? (	defaultPaymentId == null 
+												? null 
+												: (defaultPaymentId.equals(p.getId()) ? i : null) ) 
+									: indexOfDefaultPayment;
 						}
 						
 						// select the payment type
 						if(indexOfDefaultPayment != null) {
-							selectDefaultPayment.setSelectedIndex(indexOfDefaultPayment);
+							// +1 because the first element in list is empty
+							selectDefaultPayment.setSelectedIndex(indexOfDefaultPayment+1);
 						}
 						
 						selectDefaultPayment.setEnabled(true);
@@ -277,7 +280,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		
 		if(selectDefaultPayment.getSelectedIndex() > 0){
 			PaymentTypeDTO payment = paymentTypes.get(selectDefaultPayment.getValue(selectDefaultPayment.getSelectedIndex()));
-			client.setDefaultPaymentType(payment);
+			client.setDefaultPaymentTypeID(payment.getId());
 		}
 		
 		client.setSsn(ssn.getText());

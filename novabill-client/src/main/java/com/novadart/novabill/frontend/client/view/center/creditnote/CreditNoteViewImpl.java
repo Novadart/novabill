@@ -143,6 +143,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	public void reset() {
 		//reset widget statuses
 		number.reset();
+		date.reset();
 
 		//reset widget contents		
 		note.setText("");

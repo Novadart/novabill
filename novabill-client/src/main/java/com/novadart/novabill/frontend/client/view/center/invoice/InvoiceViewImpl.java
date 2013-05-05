@@ -253,6 +253,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		number.reset();
 
 		//reset widget contents		
+		date.reset();
 		paymentNote.setText("");
 		note.setText("");
 		totalTax.setText("");

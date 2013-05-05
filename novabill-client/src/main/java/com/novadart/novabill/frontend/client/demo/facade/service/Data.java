@@ -75,6 +75,19 @@ class Data {
 		return new ArrayList<PaymentTypeDTO>(PAYMENTS.values());
 	}
 	
+	public static void removePayment(Long id) {
+		PAYMENTS.remove(id);
+		for (ClientDTO cl : CLIENTS.values()) {
+			if(id.equals(cl.getDefaultPaymentTypeID())){
+				cl.setDefaultPaymentTypeID(null);
+			}
+		}
+	}
+	
+	public static PaymentTypeDTO getPayment(Long id) {
+		return PAYMENTS.get(id);
+	}
+	
 	public static ClientDTO getClient(long id) throws NoSuchObjectException{
 		if(CLIENTS.containsKey(id)){
 			return CLIENTS.get(id);

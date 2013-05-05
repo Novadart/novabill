@@ -5,6 +5,7 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.facade.BatchDataFetcherServiceAsync;
@@ -16,11 +17,15 @@ public class DemoBatchDataFetcherService implements
 
 	@Override
 	public void fetchNewInvoiceForClientOpData(Long clientID,
-			AsyncCallback<Pair<Long, ClientDTO>> callback) {
+			AsyncCallback<Triple<Long, ClientDTO, PaymentTypeDTO>> callback) {
 		try {
-			Pair<Long, ClientDTO> p = new Pair<Long, ClientDTO>();
+			Triple<Long, ClientDTO, PaymentTypeDTO> p = new Triple<Long, ClientDTO, PaymentTypeDTO>();
+			ClientDTO client = Data.getClient(clientID);
 			p.setFirst(Data.nextDocID(InvoiceDTO.class));
-			p.setSecond(Data.getClient(clientID));
+			p.setSecond(client);
+			p.setThird(client.getDefaultPaymentTypeID() == null 
+					? null 
+					: Data.getPayment(client.getDefaultPaymentTypeID()));
 			callback.onSuccess(p);
 		} catch (NoSuchObjectException e) {
 			callback.onFailure(e);
@@ -29,11 +34,16 @@ public class DemoBatchDataFetcherService implements
 
 	@Override
 	public void fetchNewInvoiceFromEstimationOpData(Long estimationID,
-			AsyncCallback<Pair<Long, EstimationDTO>> callback) {
+			AsyncCallback<Triple<Long, EstimationDTO, PaymentTypeDTO>> callback) {
 		try {
-			Pair<Long, EstimationDTO> p = new Pair<Long, EstimationDTO>();
+			Triple<Long, EstimationDTO, PaymentTypeDTO> p = new Triple<Long, EstimationDTO, PaymentTypeDTO>();
+			EstimationDTO estimation = Data.getDoc(estimationID, EstimationDTO.class);
 			p.setFirst(Data.nextDocID(InvoiceDTO.class));
-			p.setSecond(Data.getDoc(estimationID, EstimationDTO.class));
+			p.setSecond(estimation);
+			ClientDTO client = estimation.getClient();
+			p.setThird(client.getDefaultPaymentTypeID() == null 
+					? null 
+					: Data.getPayment(client.getDefaultPaymentTypeID()));
 			callback.onSuccess(p);
 		} catch (NoSuchObjectException e) {
 			callback.onFailure(e);
@@ -43,11 +53,16 @@ public class DemoBatchDataFetcherService implements
 	@Override
 	public void fetchNewInvoiceFromTransportDocumentOpData(
 			Long transportDocumentID,
-			AsyncCallback<Pair<Long, TransportDocumentDTO>> callback) {
+			AsyncCallback<Triple<Long, TransportDocumentDTO, PaymentTypeDTO>> callback) {
 		try {
-			Pair<Long, TransportDocumentDTO> p = new Pair<Long, TransportDocumentDTO>();
+			Triple<Long, TransportDocumentDTO, PaymentTypeDTO> p = new Triple<Long, TransportDocumentDTO, PaymentTypeDTO>();
+			TransportDocumentDTO td = Data.getDoc(transportDocumentID, TransportDocumentDTO.class);
 			p.setFirst(Data.nextDocID(InvoiceDTO.class));
-			p.setSecond(Data.getDoc(transportDocumentID, TransportDocumentDTO.class));
+			p.setSecond(td);
+			ClientDTO client = td.getClient();
+			p.setThird(client.getDefaultPaymentTypeID() == null 
+					? null 
+					: Data.getPayment(client.getDefaultPaymentTypeID()));
 			callback.onSuccess(p);
 		} catch (NoSuchObjectException e) {
 			callback.onFailure(e);

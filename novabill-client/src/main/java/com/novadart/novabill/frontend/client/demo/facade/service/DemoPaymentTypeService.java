@@ -22,13 +22,18 @@ public class DemoPaymentTypeService implements PaymentTypeServiceAsync {
 
 	@Override
 	public void remove(Long businessID, Long id, AsyncCallback<Void> callback) {
-		Data.getPayments().remove(id);
+		Data.removePayment(id);
 		callback.onSuccess(null);
 	}
 
 	@Override
 	public void getAll(Long businessID,	AsyncCallback<List<PaymentTypeDTO>> callback) {
 		callback.onSuccess(Data.getPayments());
+	}
+
+	@Override
+	public void get(Long id, AsyncCallback<PaymentTypeDTO> callback) {
+		callback.onSuccess(Data.getPayment(id));
 	}
 
 }

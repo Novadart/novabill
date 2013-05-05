@@ -163,6 +163,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 		//reset widget statuses
 		convertToInvoice.setVisible(false);
+		date.reset();
+		validTill.reset();
 
 		//reset widget contents		
 		note.setText("");

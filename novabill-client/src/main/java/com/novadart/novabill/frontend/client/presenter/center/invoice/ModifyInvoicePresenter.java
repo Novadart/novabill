@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
@@ -14,6 +15,7 @@ import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
@@ -73,39 +75,69 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 					getView().setLocked(true);
 
 					final InvoiceDTO inv = createInvoice(getInvoice());
-
-					ServerFacade.INSTANCE.getInvoiceService().update(inv, new ManagedAsyncCallback<Void>() {
-
-						@Override
-						public void onFailure(Throwable caught) {
-							getView().getCreateDocument().showLoader(false);
-							if(caught instanceof ValidationException){
-								handleServerValidationException((ValidationException) caught);
-							} else {
-								Notification.showMessage(I18N.INSTANCE.invoiceUpdateFailure());
-								super.onFailure(caught);
-							}
-							getView().setLocked(false);
-						}
-
+					
+					final ManagedAsyncCallback<Void> updateClientCallback = new ManagedAsyncCallback<Void>() {
+						
 						@Override
 						public void onSuccess(Void result) {
-							getView().getCreateDocument().showLoader(false);
-							Notification.showMessage(I18N.INSTANCE.invoiceUpdateSuccess(), new NotificationCallback<Void>() {
+							ServerFacade.INSTANCE.getInvoiceService().update(inv, new ManagedAsyncCallback<Void>() {
 
 								@Override
-								public void onNotificationClosed(Void value) {
-									getEventBus().fireEvent(new DocumentUpdateEvent(inv));
-
-									ClientPlace cp = new ClientPlace();
-									cp.setClientId(inv.getClient().getId());
-									cp.setDocs(DOCUMENTS.invoices);
-									goTo(cp);
+								public void onFailure(Throwable caught) {
+									getView().getCreateDocument().showLoader(false);
+									if(caught instanceof ValidationException){
+										handleServerValidationException((ValidationException) caught);
+									} else {
+										Notification.showMessage(I18N.INSTANCE.invoiceUpdateFailure());
+										super.onFailure(caught);
+									}
 									getView().setLocked(false);
+								}
+
+								@Override
+								public void onSuccess(Void result) {
+									getView().getCreateDocument().showLoader(false);
+									Notification.showMessage(I18N.INSTANCE.invoiceUpdateSuccess(), new NotificationCallback<Void>() {
+
+										@Override
+										public void onNotificationClosed(Void value) {
+											getEventBus().fireEvent(new DocumentUpdateEvent(inv));
+
+											ClientPlace cp = new ClientPlace();
+											cp.setClientId(inv.getClient().getId());
+											cp.setDocs(DOCUMENTS.invoices);
+											goTo(cp);
+											getView().setLocked(false);
+										}
+									});
 								}
 							});
 						}
-					});
+						
+						public void onFailure(Throwable caught) {
+							getView().getCreateDocument().showLoader(false);
+							Notification.showMessage(I18N.INSTANCE.invoiceUpdateFailure());
+							super.onFailure(caught);
+							getView().setLocked(false);
+						};
+					};
+
+					
+					
+					
+					if(getView().getMakePaymentAsDefault().getValue()){
+						// if the user decides to make this the default payment, update this info then add the invoice
+						ClientDTO client = getClient();
+						client.setDefaultPaymentTypeID(getView().getPayment().getSelectedPayment().getId());
+
+						ServerFacade.INSTANCE.getClientService().update(Configuration.getBusinessId(), client, updateClientCallback);
+					} else {
+						// otherwise just add the invoice
+						updateClientCallback.onSuccess(null);
+					}
+					
+					
+					
 				}
 			}
 		});
