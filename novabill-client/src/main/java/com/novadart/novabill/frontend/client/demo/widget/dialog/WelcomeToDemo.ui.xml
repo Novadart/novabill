@@ -15,7 +15,7 @@
 			width: 48px;
 		}
 		
-		h1 {
+		.inner h1 {
 			font-size: 1.5em;
 			font-weight: bold;
 			font-style: italic;
@@ -23,12 +23,12 @@
 			font-variant: small-caps;
 		}
 		
-		p {
+		.inner p {
 			margin-top: 0.5em;
 			font-size: 1.2em;
 		}
 		
-		ul li {
+		.inner ul li {
 			margin-top: 0.5em;
 			font-size: 1.2em;
 			list-style: circle;
