@@ -36,6 +36,7 @@ public interface ClientFactory {
 	String getDeleteAccountUrl();
 	String getExportRequest();
 	String getPdfRequest();
+	String getRegisterAccountUrl();
 	
 	//center
 	void getHomeView(AsyncCallback<HomeView> callback);

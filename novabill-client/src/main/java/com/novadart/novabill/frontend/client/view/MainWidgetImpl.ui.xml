@@ -22,7 +22,7 @@
 					<g:Label ui:field="feedback" styleName="{style.feedbackButton}"
 						text="{i18n.feedback}"></g:Label>
 				</g:FlowPanel>
-				<g:FlowPanel styleName="{style.menuBar}">
+				<g:FlowPanel ui:field="menuBar" styleName="{style.menuBar}">
 					<g:Button styleName="{style.homeButton} {g.button}" text="{i18n.home}"
 						ui:field="home"></g:Button>
 					<g:Button styleName="{style.myDataButton} {g.button}" text="{i18n.myData}"

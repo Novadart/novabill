@@ -14,6 +14,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -78,6 +79,7 @@ public class MainWidgetImpl extends Composite implements MainWidget {
 
 	@UiField SimplePanel centerContainer;
 	@UiField SimplePanel westContainer;
+	@UiField FlowPanel menuBar;
 	@UiField HTML stats;
 	@UiField Anchor logout;
 	@UiField Anchor logoAnchor;
@@ -252,6 +254,10 @@ public class MainWidgetImpl extends Composite implements MainWidget {
 		shb.appendHtmlConstant("</span>");
 
 		stats.setHTML(shb.toSafeHtml());
+	}
+	
+	protected FlowPanel getMenuBar() {
+		return menuBar;
 	}
 
 }

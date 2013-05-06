@@ -17,6 +17,7 @@ public class DemoClientFactoryImpl extends ClientFactoryImpl implements ClientFa
 	private static final String DELETE_ACCOUNT_URL = "demo";
 	private static final String EXPORT_REQUEST = "";
 	private static final String PDF_REQUEST = "";
+	private static final String REGISTER_ACCOUNT_URL = GWT.getHostPageBaseURL() + "register";
 	
 	private static String logoUrl = URL_THUMB;
 	
@@ -84,4 +85,8 @@ public class DemoClientFactoryImpl extends ClientFactoryImpl implements ClientFa
 		return DELETE_ACCOUNT_URL;
 	}
 
+	@Override
+	public String getRegisterAccountUrl() {
+		return REGISTER_ACCOUNT_URL;
+	}
 }

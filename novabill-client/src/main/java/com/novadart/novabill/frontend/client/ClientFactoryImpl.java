@@ -135,6 +135,11 @@ public class ClientFactoryImpl implements ClientFactory {
 		return eventBus;
 	}
 	
+	@Override
+	public String getRegisterAccountUrl() {
+		return "";
+	}
+	
 	@SuppressWarnings("unchecked")
 	private <T extends View<?>> T getView(Class<?> cl, View<?> view){
 		views.put(cl, view);
