@@ -294,6 +294,8 @@
 					<additionalClasspathElements>
 						<additionalClasspathElement>src/main/resources/</additionalClasspathElement>
 					</additionalClasspathElements>
+					<forkMode>once</forkMode>
+					<argLine>-Xms512m -Xmx512m</argLine>
 				</configuration>
 			</plugin>
 
