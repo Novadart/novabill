@@ -58,6 +58,11 @@
 		<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/register">
 			<spring:message code="header.signupForFree"></spring:message>
 		</a>
+		
+		<a id="tryDemo" href="<spring:url value="/demo" />">
+			<spring:message code="header.tryDemo" />
+		</a>
+		
 	</sec:authorize>
 	<sec:authorize access="isAuthenticated()">
 		<a class="action2-button goToPrivate" href='<spring:url value="/private"></spring:url>'><spring:message code="shared.private"/></a>
