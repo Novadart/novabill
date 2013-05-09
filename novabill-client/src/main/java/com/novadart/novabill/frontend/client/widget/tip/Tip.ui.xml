@@ -14,7 +14,7 @@
 			box-shadow: 2px 2px 2px #CCC;
 			position: absolute;
 			z-index: 1;
-			left: 0.5em;
+			left: 1em;
 		}
 		
 		.tipPanel .tip {
