@@ -27,7 +27,6 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 	private InvoiceDTO invoice;
 	
 	private PaymentTypeDTO cachedDefaultPaymentTypeDTO = null;
-	private boolean defaultPaymentTypeDTOFetched = false;
 
 	public AbstractInvoicePresenter(PlaceController placeController, EventBus eventBus,	InvoiceView view) {
 		super(placeController, eventBus, view);
@@ -112,14 +111,13 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 	@Override
 	public void onPaymentSelected(final PaymentTypeDTO payment) {
 		/*
-		 * show the checkbox to make the payment as default, if necessary
+		 * when the payment is selected, we will show the checkbox to make the payment as default, if necessary
 		 */
 		ManagedAsyncCallback<PaymentTypeDTO> cb = new ManagedAsyncCallback<PaymentTypeDTO>() {
 
 			@Override
 			public void onSuccess(PaymentTypeDTO result) {
 				cachedDefaultPaymentTypeDTO = result;
-				defaultPaymentTypeDTOFetched = true;
 				if(cachedDefaultPaymentTypeDTO == null || !cachedDefaultPaymentTypeDTO.getId().equals(payment.getId())) {
 					getView().getMakePaymentAsDefault().setVisible(true);
 				}
@@ -127,7 +125,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		};
 		
 		//if this client's default payment type was never fetched, we fetch it
-		if(this.cachedDefaultPaymentTypeDTO == null && !defaultPaymentTypeDTOFetched){
+		if(getClient().getDefaultPaymentTypeID() != null && this.cachedDefaultPaymentTypeDTO == null){
 			ServerFacade.INSTANCE.getPaymentService().get(getClient().getDefaultPaymentTypeID(), cb);
 		} else {
 			//otherwise we use the cached one
