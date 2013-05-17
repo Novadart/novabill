@@ -12,9 +12,7 @@
 			-moz-box-shadow: 2px 2px 2px #CCC;
 			-webkit-box-shadow: 2px 2px 2px #CCC;
 			box-shadow: 2px 2px 2px #CCC;
-			position: absolute;
-			z-index: 1;
-			left: 1em;
+			position: relative;
 		}
 		
 		.tipPanel .tip {
