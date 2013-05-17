@@ -22,6 +22,20 @@
 			border: 0.1em solid #CCC;
 		}
 		
+		.textOnlyCheckbox {
+			margin-top: 0.5em;
+			cursor: pointer;
+		}
+		
+		.textOnlyCheckbox label {
+			margin-left: 0.5em;
+			cursor: pointer;
+		}
+		
+		.textOnlyCheckbox label:HOVER {
+			text-decoration: underline;
+		}
+		
 		.smallLabel {
 			font-weight: bold;
 			padding: 0.4em 0 0.4em 0;
@@ -83,21 +97,22 @@
 				<g:VerticalPanel>
 					<g:Label styleName="{s.smallLabel}" text="{i18n.nameDescription}"></g:Label>
 					<v:ValidatedTextArea ui:field="item" styleName="{s.item}" />
+					<g:CheckBox ui:field="textOnlyAccountingItem" styleName="{s.textOnlyCheckbox}" text="{i18n.textOnlyAccountingItem}" />
 				</g:VerticalPanel>
-				<g:VerticalPanel styleName="{s.quantityContainer}">
+				<g:VerticalPanel ui:field="quantityContainer" styleName="{s.quantityContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.quantity}*"></g:Label>
 					<g:TextBox ui:field="quantity" styleName="{s.quantity}"></g:TextBox>
 				</g:VerticalPanel>
-				<g:VerticalPanel styleName="{s.unitOfMeasureContainer}">
+				<g:VerticalPanel ui:field="unitOfMeasureContainer" styleName="{s.unitOfMeasureContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.unityOfMeasure}"></g:Label>
 					<g:TextBox ui:field="unitOfMeasure" styleName="{s.unitOfMeasure}"
 						maxLength="255"></g:TextBox>
 				</g:VerticalPanel>
-				<g:VerticalPanel styleName="{s.priceContainer}">
+				<g:VerticalPanel ui:field="priceContainer" styleName="{s.priceContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.price}*"></g:Label>
 					<g:TextBox ui:field="price" styleName="{s.price}"></g:TextBox>
 				</g:VerticalPanel>
-				<g:VerticalPanel styleName="{s.taxContainer}">
+				<g:VerticalPanel ui:field="taxContainer" styleName="{s.taxContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.vat}"></g:Label>
 					<g:ListBox styleName="{s.tax}" ui:field="tax"></g:ListBox>
 				</g:VerticalPanel>
