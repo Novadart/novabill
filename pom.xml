@@ -349,7 +349,7 @@
 			<dependency>
 				<groupId>com.novadart.utils</groupId>
 				<artifactId>novadart-utils</artifactId>
-				<version>1.3</version>
+				<version>1.4</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novadart.services.shared</groupId>
