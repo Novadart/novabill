@@ -26,6 +26,15 @@ msgstr "Page %(pNum)d of %(tNum)d"
 msgid "Powered by Novabill"
 msgstr "Powered by Novabill"
 
+#: src/template/tidy/__init__.py:105
+msgid "VAT ID"
+msgstr "VAT ID"
+
+#: src/template/tidy/__init__.py:105
+msgid "SSN"
+msgstr "SSN"
+
+
 #: src/template/tidy/transport_document.py:33
 msgid "Transport document"
 msgstr "Transport document"

@@ -102,7 +102,7 @@ class TidyDocumentBuilder(object):
                                                                                                                 city=data.getCity(),
                                                                                                                 province=data.getProvince()),
                           data.getCountry(),
-                          self._("VAT ID %s") % (data.getVatID() if data.getVatID() else data.getSSN())]
+                          "%s %s" % ((self._("VAT ID"), data.getVatID()) if data.getVatID() else (self._("SSN"), data.getSSN()))]
         return Paragraph("<br/>".join(entity_str_lns), style)
     
     def getToBusinessEntityDetailsFlowable(self, data):
