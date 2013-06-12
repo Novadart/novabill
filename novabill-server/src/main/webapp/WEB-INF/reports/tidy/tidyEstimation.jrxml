@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Estimation" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="243"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -81,45 +81,42 @@
 			</image>
 		</band>
 		<band height="680" splitType="Stretch">
-			<frame>
-				<reportElement uuid="79045210-e14c-498f-8a44-86d4fee15625" positionType="Float" x="321" y="312" width="234" height="60"/>
-				<textField>
-					<reportElement uuid="710f5ddb-4585-4ebc-9edc-ac0e96bcaff7" positionType="Float" x="40" y="0" width="71" height="20"/>
-					<textElement/>
-					<textFieldExpression><![CDATA[$R{tidy.totalWithoutTax}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement uuid="445b9cab-e35a-417e-bb6b-26d777f9ab90" positionType="Float" x="111" y="0" width="120" height="20"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{document.totalBeforeTax} + " €"]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement uuid="e70d9f40-7c6a-41a3-bb67-b65e945623a1" positionType="Float" x="40" y="20" width="71" height="20"/>
-					<textElement/>
-					<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement uuid="aa3ca53a-89a9-4d3e-ac81-a337716dbba0" positionType="Float" x="111" y="20" width="120" height="20"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{document.totalTax} + " €"]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d" positionType="Float" x="40" y="40" width="71" height="20"/>
-					<textElement/>
-					<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
-				</textField>
-				<textField>
-					<reportElement uuid="14484aea-08e0-4ad3-9f02-b22a8ab01fb0" positionType="Float" x="111" y="40" width="120" height="20"/>
-					<textElement textAlignment="Right"/>
-					<textFieldExpression><![CDATA[$F{document.total} + " €"]]></textFieldExpression>
-				</textField>
-			</frame>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="0" y="0" width="308" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="710f5ddb-4585-4ebc-9edc-ac0e96bcaff7" positionType="Float" x="358" y="313" width="71" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$R{tidy.totalWithoutTax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="445b9cab-e35a-417e-bb6b-26d777f9ab90" positionType="Float" x="429" y="313" width="120" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{document.totalBeforeTax} + " €"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e70d9f40-7c6a-41a3-bb67-b65e945623a1" positionType="Float" x="358" y="333" width="71" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="aa3ca53a-89a9-4d3e-ac81-a337716dbba0" positionType="Float" x="429" y="333" width="120" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{document.totalTax} + " €"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d" positionType="Float" x="358" y="353" width="71" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="14484aea-08e0-4ad3-9f02-b22a8ab01fb0" positionType="Float" x="429" y="353" width="120" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{document.total} + " €"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="31a34766-9742-4d92-933a-3c7accb19ff9" x="478" y="0" width="76" height="20"/>
