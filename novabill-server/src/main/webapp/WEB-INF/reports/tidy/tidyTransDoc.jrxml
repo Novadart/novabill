@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transport Document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="215"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -82,6 +82,8 @@
 	<field name="document.numberOfPackages" class="java.lang.Integer"/>
 	<field name="document.tradeZone" class="java.lang.String"/>
 	<field name="document.cause" class="java.lang.String"/>
+	<field name="document.business.ssn" class="java.lang.String"/>
+	<field name="document.client.ssn" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -131,21 +133,21 @@
 				<textFieldExpression><![CDATA[$R{tidy.date} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="5ec97103-c13a-49c0-90b7-0cfe4658afe9" positionType="Float" x="55" y="77" width="200" height="20"/>
+				<reportElement uuid="5ec97103-c13a-49c0-90b7-0cfe4658afe9" positionType="Float" x="40" y="77" width="210" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.sender}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="ddd1bc93-67b0-4ccf-99c7-fd05b6ffcbde" positionType="Float" x="299" y="77" width="200" height="20"/>
+				<reportElement uuid="ddd1bc93-67b0-4ccf-99c7-fd05b6ffcbde" positionType="Float" x="299" y="77" width="210" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.receiver}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="b0329e04-13b9-4caf-8d66-fc7a7a5d696f" positionType="Float" x="55" y="97" width="200" height="99"/>
+				<reportElement uuid="b0329e04-13b9-4caf-8d66-fc7a7a5d696f" positionType="Float" x="40" y="97" width="210" height="99"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -154,10 +156,10 @@
 $F{document.business.address} + "\n" +
 $F{document.business.postcode} + " " + $F{document.business.city} + (org.apache.commons.lang3.StringUtils.isNotBlank($F{document.business.province})? " (" + $F{document.business.province} + ")": "") + "\n" +
 $F{document.business.country} + "\n" +
-$R{tidy.vatID} + " " + $F{document.business.vatID}]]></textFieldExpression>
+(org.apache.commons.lang3.StringUtils.isNotBlank($F{document.business.vatID})? $R{tidy.vatID} + " " + $F{document.business.vatID}: $R{tidy.ssn} + " " + $F{document.business.ssn})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="299" y="97" width="200" height="99"/>
+				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="299" y="97" width="210" height="99"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 				</textElement>
@@ -165,7 +167,7 @@ $R{tidy.vatID} + " " + $F{document.business.vatID}]]></textFieldExpression>
 $F{document.client.address} + "\n" +
 $F{document.client.postcode} + " " + $F{document.client.city} + (org.apache.commons.lang3.StringUtils.isNotBlank($F{document.client.province})? " (" + $F{document.client.province} + ")": "") + "\n" +
 $F{document.client.country} + "\n" +
-$R{tidy.vatID} + " " + $F{document.client.vatID}]]></textFieldExpression>
+(org.apache.commons.lang3.StringUtils.isNotBlank($F{document.client.vatID})? $R{tidy.vatID} + " " + $F{document.client.vatID}: $R{tidy.ssn} + " " + $F{document.client.ssn})]]></textFieldExpression>
 			</textField>
 			<componentElement>
 				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="0" y="350" width="540" height="50"/>
@@ -342,7 +344,7 @@ $R{tidy.vatID} + " " + $F{document.client.vatID}]]></textFieldExpression>
 				</graphicElement>
 			</line>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="2d007b3f-bae2-4e7d-b60c-008194bf2515" positionType="Float" mode="Opaque" x="55" y="225" width="200" height="20" backcolor="#C0BEBE"/>
+				<reportElement uuid="2d007b3f-bae2-4e7d-b60c-008194bf2515" positionType="Float" mode="Opaque" x="40" y="225" width="210" height="20" backcolor="#C0BEBE"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 					<paragraph leftIndent="3"/>
@@ -350,7 +352,7 @@ $R{tidy.vatID} + " " + $F{document.client.vatID}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$R{tidy.sendingaddress}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="6dd6c042-702f-4bda-a35c-e70b70c74615" positionType="Float" mode="Opaque" x="299" y="225" width="200" height="20" backcolor="#C0BEBE"/>
+				<reportElement uuid="6dd6c042-702f-4bda-a35c-e70b70c74615" positionType="Float" mode="Opaque" x="299" y="225" width="210" height="20" backcolor="#C0BEBE"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 					<paragraph leftIndent="3"/>
@@ -358,7 +360,7 @@ $R{tidy.vatID} + " " + $F{document.client.vatID}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$R{tidy.receivingaddress}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="d77bdfbc-c325-4953-8c4e-6da51be0f3e8" positionType="Float" x="55" y="245" width="200" height="80"/>
+				<reportElement uuid="d77bdfbc-c325-4953-8c4e-6da51be0f3e8" positionType="Float" x="40" y="245" width="210" height="80"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 					<paragraph lineSpacing="Single" leftIndent="3"/>
@@ -369,7 +371,7 @@ $F{document.fromEndpoint.postcode} + " " + $F{document.fromEndpoint.city} + (org
 $F{document.fromEndpoint.country}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="9ed7d285-f163-496d-9ea9-e64fe5e2d0c9" positionType="Float" x="299" y="245" width="200" height="80"/>
+				<reportElement uuid="9ed7d285-f163-496d-9ea9-e64fe5e2d0c9" positionType="Float" x="299" y="245" width="210" height="80"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 					<paragraph lineSpacing="Single" leftIndent="3"/>

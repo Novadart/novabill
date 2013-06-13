@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="CreditNote" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="238"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="0.0" lineColor="#000000"/>
@@ -66,6 +66,8 @@
 	<field name="document.totalTax" class="java.math.BigDecimal"/>
 	<field name="document.total" class="java.math.BigDecimal"/>
 	<field name="logoInStream" class="java.io.InputStream"/>
+	<field name="document.business.ssn" class="java.lang.String"/>
+	<field name="document.client.ssn" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -138,7 +140,7 @@
 $F{document.business.address} + "\n" +
 $F{document.business.postcode} + " " + $F{document.business.city} + (org.apache.commons.lang3.StringUtils.isNotBlank($F{document.business.province})? " (" + $F{document.business.province} + ")": "") + "\n" +
 $F{document.business.country} + "\n" +
-$R{tidy.vatID} + " " + $F{document.business.vatID}]]></textFieldExpression>
+(org.apache.commons.lang3.StringUtils.isNotBlank($F{document.business.vatID})? $R{tidy.vatID} + " " + $F{document.business.vatID}: $R{tidy.ssn} + " " + $F{document.business.ssn})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="303" y="114" width="200" height="99"/>
@@ -149,7 +151,7 @@ $R{tidy.vatID} + " " + $F{document.business.vatID}]]></textFieldExpression>
 $F{document.client.address} + "\n" +
 $F{document.client.postcode} + " " + $F{document.client.city} + (org.apache.commons.lang3.StringUtils.isNotBlank($F{document.client.province})? " (" + $F{document.client.province} + ")": "") + "\n" +
 $F{document.client.country} + "\n" +
-$R{tidy.vatID} + " " + $F{document.client.vatID}]]></textFieldExpression>
+(org.apache.commons.lang3.StringUtils.isNotBlank($F{document.client.vatID})? $R{tidy.vatID} + " " + $F{document.client.vatID}: $R{tidy.ssn} + " " + $F{document.client.ssn})]]></textFieldExpression>
 			</textField>
 			<componentElement>
 				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="232" width="540" height="50" backcolor="#C0BEBE"/>

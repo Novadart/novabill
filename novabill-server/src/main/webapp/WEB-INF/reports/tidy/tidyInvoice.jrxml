@@ -66,6 +66,8 @@
 	<field name="document.totalTax" class="java.math.BigDecimal"/>
 	<field name="document.total" class="java.math.BigDecimal"/>
 	<field name="logoInStream" class="java.io.InputStream"/>
+	<field name="document.business.ssn" class="java.lang.String"/>
+	<field name="document.client.ssn" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -170,7 +172,7 @@
 $F{document.business.address}  + "\n" +
 $F{document.business.postcode} + " " + $F{document.business.city} + (org.apache.commons.lang3.StringUtils.isNotBlank($F{document.business.province})? " (" + $F{document.business.province} + ")": "")   + "\n" +
 $F{document.business.country}  + "\n" +
-$R{tidy.vatID} + " " + $F{document.business.vatID}]]></textFieldExpression>
+(org.apache.commons.lang3.StringUtils.isNotBlank($F{document.business.vatID})? $R{tidy.vatID} + " " + $F{document.business.vatID}: $R{tidy.ssn} + " " + $F{document.business.ssn})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="299" y="107" width="200" height="97"/>
@@ -181,7 +183,7 @@ $R{tidy.vatID} + " " + $F{document.business.vatID}]]></textFieldExpression>
 $F{document.client.address} + "\n" +
 $F{document.client.postcode} + " " + $F{document.client.city} + (org.apache.commons.lang3.StringUtils.isNotBlank($F{document.client.province})? " (" + $F{document.client.province} + ")": "") + "\n" +
 $F{document.client.country} + "\n" +
-$R{tidy.vatID} + " " + $F{document.client.vatID}]]></textFieldExpression>
+(org.apache.commons.lang3.StringUtils.isNotBlank($F{document.client.vatID})? $R{tidy.vatID} + " " + $F{document.client.vatID}: $R{tidy.ssn} + " " + $F{document.client.ssn})]]></textFieldExpression>
 			</textField>
 			<componentElement>
 				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="230" width="540" height="50"/>
@@ -359,7 +361,7 @@ $R{tidy.vatID} + " " + $F{document.client.vatID}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{document.paymentNote}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="2e606ad7-3cca-49e2-8db8-bec852e22d9e" positionType="Float" x="343" y="60" width="196" height="1"/>
+				<reportElement uuid="2e606ad7-3cca-49e2-8db8-bec852e22d9e" positionType="Float" x="343" y="439" width="196" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
