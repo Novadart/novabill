@@ -44,15 +44,15 @@ public class JasperReportService implements ResourceLoaderAware{
 	private static final Logger LOGGER = LoggerFactory.getLogger(JasperReportService.class);
 	
 	private static final JasperReportDescriptor[] REPORT_DESCRIPTORS = new JasperReportDescriptor[]{
-		new JasperReportDescriptor("tidy.invoice", "/WEB-INF/reports/tidy/tidyInvoice.jrxml", null),
-		new JasperReportDescriptor("tidy.estimation", "/WEB-INF/reports/tidy/tidyEstimation.jrxml", null),
-		new JasperReportDescriptor("tidy.transdoc", "/WEB-INF/reports/tidy/tidyTransDoc.jrxml", null),
-		new JasperReportDescriptor("tidy.crednote", "/WEB-INF/reports/tidy/tidyCredNote.jrxml", null)
+		new JasperReportDescriptor("tidy.invoice", "classpath:/reports/tidy/tidyInvoice.jrxml", null),
+		new JasperReportDescriptor("tidy.estimation", "classpath:/reports/tidy/tidyEstimation.jrxml", null),
+		new JasperReportDescriptor("tidy.transdoc", "classpath:/reports/tidy/tidyTransDoc.jrxml", null),
+		new JasperReportDescriptor("tidy.crednote", "classpath:/reports/tidy/tidyCredNote.jrxml", null)
 	};
 	
 	private static final Map<LayoutType, String> LAYOUT_RESOURCE_BUNDLES_BASE_NAMES = new HashMap<LayoutType, String>();
 	{
-		LAYOUT_RESOURCE_BUNDLES_BASE_NAMES.put(LayoutType.TIDY, "/WEB-INF/i18n/tidy.properties");
+		LAYOUT_RESOURCE_BUNDLES_BASE_NAMES.put(LayoutType.TIDY, "classpath:/reports/tidy/i18n/tidy.properties");
 	}
 	
 	private Map<String, JasperReport> compiledJasperReports;

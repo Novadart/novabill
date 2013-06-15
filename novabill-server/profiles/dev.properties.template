@@ -27,7 +27,7 @@ dbpassword=novabill
 #
 smtp.auth.enabled.value=false
 smtp.host.value=localhost
-smtp.port.value=25
+smtp.port.value=2525
 smtp.username.value=
 smtp.password.value=
 smtp.mail.registration_completed_sender.value=no-reply@novadart.com

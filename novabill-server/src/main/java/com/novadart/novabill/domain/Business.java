@@ -68,22 +68,22 @@ public class Business implements Serializable, Taxable {
 	@Size(max = 255)
 	@NotNull
 	@Trimmed
-    private String name = "";
+    private String name;
 
     @Size(max = 255)
     @NotNull
     @Trimmed
-    private String address = "";
+    private String address;
 
     @Size(max = 10)
     @NotNull
     @Trimmed
-    private String postcode = "";
+    private String postcode;
 
     @Size(max = 60)
     @NotNull
     @Trimmed
-    private String city = "";
+    private String city;
 
     @Size(max = 2)
     //@NotNull

@@ -51,9 +51,6 @@ public class RegistrationActivationTest {
 	@Autowired
 	private UtilsService utilsService;
 	
-	@Autowired
-	private MessageSource messageSource;
-	
 	private RegisterController initRegisterController(String token, String activationUrlPattern, int activationPeriod) throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException{
 		RegisterController controller = new RegisterController();
 		TokenGenerator tokenGenerator = mock(TokenGenerator.class);
@@ -82,8 +79,6 @@ public class RegistrationActivationTest {
 	private ActivateAccountController initActivateAccountController() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
 		ActivateAccountController activateAccountController = new ActivateAccountController();
 		TestUtils.setPrivateField(ActivateAccountController.class, activateAccountController, "utilsService", utilsService);
-		TestUtils.setPrivateField(ActivateAccountController.class, activateAccountController, "messageSource", messageSource);
-		activateAccountController.init();
 		return activateAccountController;
 	}
 	

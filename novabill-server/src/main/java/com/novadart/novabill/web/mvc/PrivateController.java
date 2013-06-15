@@ -31,14 +31,18 @@ public class PrivateController {
 		ModelAndView mav = new ModelAndView("private");
 		Business business =  Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
-		StringWriter sw = new StringWriter();
-		try {
-			jsonSerializer.writeValue(sw, businessDTO);
-		} catch (Exception e) {
-			return null;
+		String serializedBizz = null;
+		if (business != null) {
+			StringWriter sw = new StringWriter();
+			try {
+				jsonSerializer.writeValue(sw, businessDTO);
+				serializedBizz = sw.toString();
+			} catch (Exception e) {
+				return null;
+			}
 		}
-		mav.addObject("business", sw.toString());
-		mav.addObject("daysToExpiration", business.getNonFreeExpirationDelta(TimeUnit.DAYS));
+		mav.addObject("business", serializedBizz);
+		mav.addObject("daysToExpiration", business == null? null: business.getNonFreeExpirationDelta(TimeUnit.DAYS));
 		mav.addObject("notesBitMask", Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId()).getNotesBitMask());
 		mav.addObject("devMode", devMode);
 		return mav;
