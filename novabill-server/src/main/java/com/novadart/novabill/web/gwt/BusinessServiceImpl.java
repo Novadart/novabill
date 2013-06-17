@@ -234,13 +234,19 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@Override
 	@PreAuthorize("principal.business == null and #businessDTO != null and #businessDTO.id == null")
 	@Transactional(readOnly = false)
-	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, CloneNotSupportedException {
+	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+													com.novadart.novabill.shared.client.exception.CloneNotSupportedException {
 		Business business = new Business();
 		BusinessDTOFactory.copyFromDTO(business, businessDTO);
 		validator.validate(business);
 		Locale locale = LocaleContextHolder.getLocale();
 		for(PaymentType pType: paymentTypes.containsKey(locale)? paymentTypes.get(locale): paymentTypes.get(Locale.ITALIAN)){
-			PaymentType paymentType = pType.clone();
+			PaymentType paymentType = null;
+			try {
+				paymentType = pType.clone();
+			} catch (CloneNotSupportedException e) {
+				throw new com.novadart.novabill.shared.client.exception.CloneNotSupportedException();
+			}
 			paymentType.setBusiness(business);
 			business.getPaymentTypes().add(paymentType);
 		}

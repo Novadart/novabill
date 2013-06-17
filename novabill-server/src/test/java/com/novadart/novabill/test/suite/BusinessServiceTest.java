@@ -277,7 +277,8 @@ public class BusinessServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, CloneNotSupportedException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+									com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		authenticatedPrincipal.setBusiness(null);
 		Business business = TestUtils.createBusiness();
 		business.setId(businessService.add(BusinessDTOFactory.toDTO(business)));
@@ -289,12 +290,14 @@ public class BusinessServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void addNullTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, CloneNotSupportedException{
+	public void addNullTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+								com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		businessService.add(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void addNotNullIDTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, CloneNotSupportedException{
+	public void addNotNullIDTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+										com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		authenticatedPrincipal.setBusiness(null);
 		Business business = TestUtils.createBusiness();
 		business.setId(1l);

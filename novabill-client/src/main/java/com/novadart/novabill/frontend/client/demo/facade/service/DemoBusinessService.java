@@ -118,4 +118,11 @@ public class DemoBusinessService implements BusinessServiceAsync {
 		callback.onSuccess(Data.getPayments());
 	}
 
+	@Override
+	public void add(BusinessDTO businessDTO, AsyncCallback<Long> callback) {
+		Configuration.setBusiness(businessDTO);
+		Data.setBusiness(businessDTO);
+		callback.onSuccess(null);
+	}
+
 }

@@ -17,28 +17,30 @@ import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
 @Controller
 public class PrivateController {
-	
+
 	private static final ObjectMapper jsonSerializer = new ObjectMapper();
-	
+
 	@Autowired
 	private UtilsService utilsService;
-	
+
 	@Value("${devMode.enabled}")
 	private boolean devMode;
-	
+
 	@RequestMapping(value = "/private", method = RequestMethod.GET)
 	public ModelAndView privateArea(){
 		ModelAndView mav = new ModelAndView("private");
-		Business business =  Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
-		BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
+		Business business =  utilsService.getAuthenticatedPrincipalDetails().getBusiness();
 		String serializedBizz = null;
-		if (business != null) {
-			StringWriter sw = new StringWriter();
-			try {
-				jsonSerializer.writeValue(sw, businessDTO);
-				serializedBizz = sw.toString();
-			} catch (Exception e) {
-				return null;
+		if(business != null) {
+			BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
+			if (business != null) {
+				StringWriter sw = new StringWriter();
+				try {
+					jsonSerializer.writeValue(sw, businessDTO);
+					serializedBizz = sw.toString();
+				} catch (Exception e) {
+					return null;
+				}
 			}
 		}
 		mav.addObject("business", serializedBizz);

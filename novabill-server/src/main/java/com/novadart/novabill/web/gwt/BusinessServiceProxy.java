@@ -119,7 +119,8 @@ public class BusinessServiceProxy extends AbstractGwtController implements Busin
 	}
 
 	@Override
-	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, CloneNotSupportedException {
+	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+			com.novadart.novabill.shared.client.exception.CloneNotSupportedException {
 		return businessService.add(businessDTO);
 	}
 
