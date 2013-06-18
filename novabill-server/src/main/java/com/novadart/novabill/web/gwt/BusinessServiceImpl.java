@@ -253,7 +253,9 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Principal principal = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId());
 		principal.setBusiness(business);
 		business.getPrincipals().add(principal);
-		return business.merge().getId();
+		Business mergedBusiness = business.merge();
+		utilsService.setBusinessForPrincipal(mergedBusiness);
+		return mergedBusiness.getId();
 	}
 	
 }

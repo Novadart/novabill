@@ -29,7 +29,7 @@ public class PrivateController {
 	@RequestMapping(value = "/private", method = RequestMethod.GET)
 	public ModelAndView privateArea(){
 		ModelAndView mav = new ModelAndView("private");
-		Business business =  utilsService.getAuthenticatedPrincipalDetails().getBusiness();
+		Business business = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId()).getBusiness();
 		String serializedBizz = null;
 		if(business != null) {
 			BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
