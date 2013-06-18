@@ -86,9 +86,7 @@ public class Configuration {
 
 									@Override
 									public void onSuccess(Long result) {
-										bd.hide();
-										setBusiness(business);
-										callback.onSuccess(null);
+										Window.Location.reload();
 									}
 
 									@Override

@@ -50,7 +50,9 @@
 	<sec:authorize access="isAuthenticated()">
 		<%
 			Principal pd = ((Principal)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-			String principalName = Business.findBusiness(pd.getBusiness().getId()).getName();
+			String principalName = pd.getBusiness() != null ? 
+					Business.findBusiness(pd.getBusiness().getId()).getName() 
+					: null;
 		%>
 		
 		<span class="welcomeMessage">
