@@ -62,7 +62,7 @@ public class DocumentUtils {
 	
 	
 	public static AccountingDocumentItemDTO createAccountingDocumentItem(String description, String price, 
-			String quantity, String unitOfMeasure, String tax){
+			String quantity, String unitOfMeasure, BigDecimal tax){
 		AccountingDocumentItemDTO ii = new AccountingDocumentItemDTO();
 
 		try {
@@ -70,7 +70,7 @@ public class DocumentUtils {
 			ii.setPrice(parseCurrency(price));
 			ii.setQuantity(parseValue(quantity));
 			ii.setUnitOfMeasure(unitOfMeasure);
-			ii.setTax(new BigDecimal(tax));
+			ii.setTax(tax);
 		} catch (NumberFormatException ex) {
 			return null;
 		}
@@ -88,7 +88,7 @@ public class DocumentUtils {
 	
 	
 	public static String validateAccountingDocumentItem(String description, String price, 
-			String quantity, String unitOfMeasure, String tax){
+			String quantity, String unitOfMeasure, BigDecimal tax){
 		if(description.isEmpty()) {
 			return I18NM.get.errorCheckField(I18N.INSTANCE.nameDescription());
 		}
@@ -99,6 +99,10 @@ public class DocumentUtils {
 		
 		if( quantity.isEmpty() ) {
 			return I18NM.get.errorCheckField(I18N.INSTANCE.quantity());
+		}
+		
+		if( tax == null ){
+			return I18NM.get.errorCheckField(I18N.INSTANCE.vat());
 		}
 		
 		return null;

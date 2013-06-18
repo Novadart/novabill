@@ -12,7 +12,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -27,6 +26,7 @@ import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
+import com.novadart.novabill.frontend.client.widget.tax.TaxWidget;
 import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
 import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
@@ -51,7 +51,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField TextBox quantity;
 	@UiField TextBox unitOfMeasure;
 	@UiField TextBox price;
-	@UiField(provided=true) ListBox tax;
+	@UiField TaxWidget tax;
 	@UiField(provided=true) ItemTable itemTable;
 	@UiField SimplePanel tip;
 	@UiField CheckBox textOnlyAccountingItem;
@@ -75,11 +75,6 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 				return I18NM.get.textLengthError(500);
 			}
 		});
-
-		tax = new ListBox();
-		for (String item : I18N.INSTANCE.vatItems()) {
-			tax.addItem(item+"%", item);
-		}
 
 		itemTable = new ItemTable(new ItemTable.Handler() {
 
@@ -112,8 +107,9 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 					? I18NM.get.errorCheckField(I18N.INSTANCE.nameDescription())
 							: null;
 		} else {
+			tax.validate();
 			validationError = DocumentUtils.validateAccountingDocumentItem(item.getText(), price.getText(), 
-					quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
+					quantity.getText(), unitOfMeasure.getText(), tax.getValue());
 		}
 
 		if(validationError != null) {
@@ -127,7 +123,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			ii = DocumentUtils.createAccountingDocumentItem(item.getText());
 		} else {
 			ii = DocumentUtils.createAccountingDocumentItem(item.getText(), price.getText(), 
-					quantity.getText(), unitOfMeasure.getText(), tax.getValue(tax.getSelectedIndex()));
+					quantity.getText(), unitOfMeasure.getText(), tax.getValue());
 		}
 
 		accountingDocumentItems.getList().add(ii);
@@ -154,7 +150,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		quantity.setText("");
 		unitOfMeasure.setText("");
 		price.setText("");
-		tax.setSelectedIndex(0);
+		tax.reset();
 		textOnlyAccountingItem.setValue(false);
 		setLocked(false);
 	}

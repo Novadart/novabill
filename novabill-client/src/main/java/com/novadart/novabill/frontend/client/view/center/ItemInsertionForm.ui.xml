@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.novadart.novabill.frontend.client.view.center"
-	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget">
+	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget" xmlns:t="urn:import:com.novadart.novabill.frontend.client.widget.tax">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
@@ -114,7 +114,7 @@
 				</g:VerticalPanel>
 				<g:VerticalPanel ui:field="taxContainer" styleName="{s.taxContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.vat}"></g:Label>
-					<g:ListBox styleName="{s.tax}" ui:field="tax"></g:ListBox>
+					<t:TaxWidget styleName="{s.tax}" ui:field="tax" />
 				</g:VerticalPanel>
 				<g:SimplePanel styleName="{s.addButtonContainer}">
 					<g:Button ui:field="add" text="{i18n.add}"></g:Button>
