@@ -120,7 +120,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		quantity.setText("");
 		unitOfMeasure.setText("");
 		price.setText("");
-		tax.setSelectedIndex(0);
+		tax.setSelectedIndex(1);
 		setLocked(false);
 	}
 
