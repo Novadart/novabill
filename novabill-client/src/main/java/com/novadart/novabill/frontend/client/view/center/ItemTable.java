@@ -1,8 +1,6 @@
 package com.novadart.novabill.frontend.client.view.center;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
-import java.util.List;
 
 import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.EditTextCell;
@@ -176,13 +174,9 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 
 		//VAT
-		List<String> vats = new ArrayList<String>();
-		for (String v : I18N.INSTANCE.vatItems()) {
-			vats.add(v+"%");
-		}
-		final VatCell selectionCell = new VatCell(vats);
+		final EditTextCell taxEditCell = new EditTextCell();
 		Column<AccountingDocumentItemDTO, String> tax =
-				new Column<AccountingDocumentItemDTO, String>(selectionCell) {
+				new Column<AccountingDocumentItemDTO, String>(taxEditCell) {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
@@ -190,7 +184,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 					return null;
 				}
 
-				return String.valueOf(object.getTax().intValue())+"%";
+				return NumberFormat.getDecimalFormat().format(object.getTax());
 			}
 		};
 		tax.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
@@ -198,15 +192,24 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
 				if(object.getTax() != null){
-					object.setTax(DocumentUtils.parseValue(value.split("%")[0]));
-					ItemTable.this.handler.onUpdate(object);
-				}
+					try{
 
-				selectionCell.clearViewData(object);
+						BigDecimal newTax = DocumentUtils.parseValue(value);
+						object.setTax(newTax);
+						ItemTable.this.handler.onUpdate(object);
+
+					} catch(NumberFormatException e){
+
+						Notification.showMessage(I18N.INSTANCE.errorClientData());
+
+					}
+				}			
+
+				taxEditCell.clearViewData(object);
 				redrawRow(index);
 			}
 		});
-		addColumn(tax, I18N.INSTANCE.vat());
+		addColumn(tax, "%"+I18N.INSTANCE.vat());
 
 
 		//Total Before Taxes

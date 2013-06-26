@@ -151,7 +151,12 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		unitOfMeasure.setText("");
 		price.setText("");
 		tax.reset();
+		
 		textOnlyAccountingItem.setValue(false);
+		quantityContainer.setVisible(true);
+		unitOfMeasureContainer.setVisible(true);
+		priceContainer.setVisible(true);
+		taxContainer.setVisible(true);
 		setLocked(false);
 	}
 
