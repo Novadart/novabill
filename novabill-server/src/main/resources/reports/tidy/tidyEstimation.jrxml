@@ -331,7 +331,7 @@ $F{document.client.country} + "\n" +
 				<textFieldExpression><![CDATA[$F{document.totalBeforeTax} + " €"]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="130" splitType="Stretch">
+		<band height="130" splitType="Prevent">
 			<line>
 				<reportElement uuid="6e264177-2838-4600-8498-00b9f6966a93" positionType="Float" x="352" y="51" width="196" height="1"/>
 				<graphicElement>

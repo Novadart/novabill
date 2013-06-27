@@ -375,7 +375,7 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{document.totalTax} + " €"]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="140" splitType="Stretch">
+		<band height="140" splitType="Prevent">
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="be2b1952-1fc3-449e-8074-2a6e10133ebf" positionType="Float" x="394" y="98" width="153" height="20"/>
 				<textElement/>

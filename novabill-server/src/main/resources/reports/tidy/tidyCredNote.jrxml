@@ -289,7 +289,7 @@ $F{document.client.country} + "\n" +
 				<textFieldExpression><![CDATA[$F{document.total} + " €"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="710f5ddb-4585-4ebc-9edc-ac0e96bcaff7" positionType="Float" x="330" y="0" width="85" height="20"/>
+				<reportElement uuid="710f5ddb-4585-4ebc-9edc-ac0e96bcaff7" positionType="Float" x="320" y="0" width="95" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$R{tidy.totalWithoutTax}]]></textFieldExpression>
 			</textField>
@@ -310,17 +310,17 @@ $F{document.client.country} + "\n" +
 				<textFieldExpression><![CDATA[$F{document.totalTax} + " €"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e70d9f40-7c6a-41a3-bb67-b65e945623a1" positionType="Float" x="330" y="20" width="85" height="20"/>
+				<reportElement uuid="e70d9f40-7c6a-41a3-bb67-b65e945623a1" positionType="Float" x="320" y="20" width="95" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d" positionType="Float" x="330" y="40" width="85" height="20"/>
+				<reportElement uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d" positionType="Float" x="320" y="40" width="95" height="20"/>
 				<textElement/>
 				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="50" splitType="Stretch">
+		<band height="50" splitType="Prevent">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="d3de5d01-969a-4b88-bb04-c2e4af24934f" positionType="Float" x="8" y="29" width="247" height="20"/>
 				<textElement/>
@@ -328,7 +328,9 @@ $F{document.client.country} + "\n" +
 			</textField>
 			<textField>
 				<reportElement uuid="a2476859-ff96-40df-915a-699078bc6147" positionType="Float" x="8" y="9" width="110" height="20"/>
-				<textElement/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.note} + ":"]]></textFieldExpression>
 			</textField>
 		</band>

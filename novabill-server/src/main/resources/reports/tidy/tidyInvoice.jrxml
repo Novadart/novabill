@@ -322,7 +322,7 @@ $F{document.client.country} + "\n" +
 				<textFieldExpression><![CDATA[$R{tidy.totalWithoutTax}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="100">
+		<band height="100" splitType="Prevent">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="d3de5d01-969a-4b88-bb04-c2e4af24934f" positionType="Float" x="8" y="32" width="247" height="20"/>
 				<textElement verticalAlignment="Middle"/>
