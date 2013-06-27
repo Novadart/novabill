@@ -76,7 +76,7 @@ public abstract class AccountingDocument {
     protected String paymentNote;
     
     @NotNull
-    protected LayoutType layoutType;
+    protected LayoutType layoutType = LayoutType.TIDY;
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "accountingDocument", orphanRemoval = true)
     @OrderBy("id")
