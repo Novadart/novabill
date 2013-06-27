@@ -72,7 +72,7 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="50">
+		<band height="50" splitType="Prevent">
 			<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null)]]></printWhenExpression>
 			<image>
 				<reportElement uuid="ad84ab22-c8c5-403b-9525-8d6a0150fa0d" x="0" y="0" width="66" height="50">
@@ -81,7 +81,7 @@
 				<imageExpression><![CDATA[$F{logoInStream}]]></imageExpression>
 			</image>
 		</band>
-		<band height="640" splitType="Stretch">
+		<band height="300" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" x="0" y="0" width="308" height="20"/>
 				<textElement>
@@ -170,7 +170,7 @@ $F{document.client.country} + "\n" +
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField>
+							<textField isStretchWithOverflow="true">
 								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="90" height="20"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
@@ -281,52 +281,56 @@ $F{document.client.country} + "\n" +
 					</jr:column>
 				</jr:table>
 			</componentElement>
+		</band>
+		<band height="70" splitType="Prevent">
 			<textField>
-				<reportElement uuid="a2476859-ff96-40df-915a-699078bc6147" positionType="Float" x="8" y="367" width="110" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$R{tidy.note} + ":"]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="d3de5d01-969a-4b88-bb04-c2e4af24934f" positionType="Float" x="8" y="387" width="247" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[org.apache.commons.lang3.StringUtils.isNotBlank($F{document.note})? $F{document.note}: $R{tidy.nonote}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="710f5ddb-4585-4ebc-9edc-ac0e96bcaff7" positionType="Float" x="352" y="291" width="71" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$R{tidy.totalWithoutTax}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="445b9cab-e35a-417e-bb6b-26d777f9ab90" positionType="Float" x="423" y="291" width="120" height="20"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{document.totalBeforeTax} + " €"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="e70d9f40-7c6a-41a3-bb67-b65e945623a1" positionType="Float" x="352" y="311" width="71" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="aa3ca53a-89a9-4d3e-ac81-a337716dbba0" positionType="Float" x="423" y="311" width="120" height="20"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{document.totalTax} + " €"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d" positionType="Float" x="352" y="331" width="71" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="14484aea-08e0-4ad3-9f02-b22a8ab01fb0" positionType="Float" x="423" y="331" width="120" height="20"/>
+				<reportElement uuid="14484aea-08e0-4ad3-9f02-b22a8ab01fb0" positionType="Float" x="415" y="40" width="120" height="20"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{document.total} + " €"]]></textFieldExpression>
 			</textField>
+			<textField>
+				<reportElement uuid="710f5ddb-4585-4ebc-9edc-ac0e96bcaff7" positionType="Float" x="330" y="0" width="85" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$R{tidy.totalWithoutTax}]]></textFieldExpression>
+			</textField>
 			<line>
-				<reportElement uuid="eee7cfe2-a963-4dff-a174-06a9b553a989" positionType="Float" x="8" y="353" width="540" height="1"/>
+				<reportElement uuid="eee7cfe2-a963-4dff-a174-06a9b553a989" positionType="Float" x="8" y="62" width="540" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
+			<textField>
+				<reportElement uuid="445b9cab-e35a-417e-bb6b-26d777f9ab90" positionType="Float" x="415" y="0" width="120" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{document.totalBeforeTax} + " €"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="aa3ca53a-89a9-4d3e-ac81-a337716dbba0" positionType="Float" x="415" y="20" width="120" height="20"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$F{document.totalTax} + " €"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e70d9f40-7c6a-41a3-bb67-b65e945623a1" positionType="Float" x="330" y="20" width="85" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d" positionType="Float" x="330" y="40" width="85" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
+			</textField>
+		</band>
+		<band height="50" splitType="Stretch">
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="d3de5d01-969a-4b88-bb04-c2e4af24934f" positionType="Float" x="8" y="29" width="247" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[org.apache.commons.lang3.StringUtils.isNotBlank($F{document.note})? $F{document.note}: $R{tidy.nonote}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a2476859-ff96-40df-915a-699078bc6147" positionType="Float" x="8" y="9" width="110" height="20"/>
+				<textElement/>
+				<textFieldExpression><![CDATA[$R{tidy.note} + ":"]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
