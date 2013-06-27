@@ -360,12 +360,15 @@ $F{document.client.country} + "\n" +
 			</textField>
 			<textField>
 				<reportElement uuid="a2476859-ff96-40df-915a-699078bc6147" positionType="Float" x="8" y="12" width="110" height="20"/>
-				<textElement verticalAlignment="Middle"/>
+				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.note} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="99c6c984-f248-42df-9536-91078e897f42" positionType="Float" mode="Opaque" x="352" y="12" width="196" height="20" backcolor="#C0BEBE"/>
 				<textElement verticalAlignment="Middle">
+					<font isBold="true"/>
 					<paragraph leftIndent="3"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.paymentnote}]]></textFieldExpression>
