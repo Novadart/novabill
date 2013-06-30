@@ -159,7 +159,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		getView().getDate().validate();
 		getView().getTransportStartDate().validate();
 		
-		if(getView().getItemInsertionForm().getItems().isEmpty()){
+		if(!getView().getItemInsertionForm().isValid()){
 			return false;
 		} else {
 			boolean validation = getView().getDate().isValid() && getView().getTransportStartDate().isValid();
@@ -181,12 +181,8 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 				validation = validation && getView().getToAddrProvince().isValid();
 			}
 
-
-			if(!validation){
-				return false;
-			}
+			return validation;
 		}
-		return true;
 	}
 
 }

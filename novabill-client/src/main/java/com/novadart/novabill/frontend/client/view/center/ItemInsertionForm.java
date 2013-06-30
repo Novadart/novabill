@@ -5,6 +5,7 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
@@ -25,6 +26,7 @@ import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
+import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.tax.TaxWidget;
 import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
@@ -32,6 +34,10 @@ import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
 public class ItemInsertionForm extends Composite implements HasUILocking {
+	
+	interface NotificationCss extends CssResource {
+		String notification();
+	}
 
 	private static ItemListUiBinder uiBinder = GWT
 			.create(ItemListUiBinder.class);
@@ -45,6 +51,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	public static interface Handler {
 		public void onItemListUpdated(List<AccountingDocumentItemDTO> items);
 	}
+	
+	@UiField InlineNotification notification;
 
 	@UiField ScrollPanel itemTableScroller;
 	@UiField(provided=true) ValidatedTextArea item;
@@ -62,6 +70,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField VerticalPanel taxContainer;
 
 	@UiField Button add;
+	
+	@UiField NotificationCss nf;
 
 	private final Handler handler;
 
@@ -95,6 +105,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 		initWidget(uiBinder.createAndBindUi(this));
 
+		notification.addStyleName(nf.notification());
 		TipFactory.show(Tips.item_insertion_form, tip);
 	}
 
@@ -162,7 +173,18 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 	public void reset(){
 		accountingDocumentItems.getList().clear();
+		notification.hide();
 		updateFields();
+	}
+	
+	public boolean isValid(){
+		if(getItems().isEmpty()){
+			notification.showMessage(I18N.INSTANCE.errorAddAtLeastOneItem());
+			return false;
+		} else {
+			notification.hide();
+			return true;
+		}
 	}
 
 	public List<AccountingDocumentItemDTO> getItems() {

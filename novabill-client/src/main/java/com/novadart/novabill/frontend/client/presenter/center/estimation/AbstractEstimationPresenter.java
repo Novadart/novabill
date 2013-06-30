@@ -125,7 +125,7 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 		getView().getDate().validate();
 		getView().getValidTill().validate();
 		
-		if(getView().getItemInsertionForm().getItems().isEmpty()){
+		if(!getView().getItemInsertionForm().isValid()){
 			return false;
 		}
 		
