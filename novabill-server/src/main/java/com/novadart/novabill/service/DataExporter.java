@@ -63,7 +63,7 @@ public class DataExporter {
 			headers[i] = messageSource.getMessage("export." + CLIENT_FIELDS[i], null, CLIENT_FIELDS[i], locale);
 		for(; j < CLIENT_CONTACT_FIELDS.length; ++j)
 			headers[i + j] = messageSource.getMessage("export.contact." + CLIENT_CONTACT_FIELDS[j], null, CLIENT_CONTACT_FIELDS[j], locale);
-		out.write(StringUtils.join(headers, ","));
+		out.write(StringUtils.join(headers, "\t"));
 		out.newLine();
 		for(Client client: clients){
 			List<String> clientVals = new ArrayList<String>(CLIENT_FIELDS.length + CLIENT_CONTACT_FIELDS.length);
@@ -71,7 +71,7 @@ public class DataExporter {
 				clientVals.add(BeanUtils.getProperty(client, clientField));
 			for(String clientContactField: CLIENT_CONTACT_FIELDS)
 				clientVals.add(BeanUtils.getProperty(client.getContact(), clientContactField));
-			out.write(StringUtils.join(clientVals, ","));
+			out.write(StringUtils.join(clientVals, "\t"));
 			out.newLine();
 		}
 		out.flush();
