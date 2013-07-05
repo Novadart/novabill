@@ -8,6 +8,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
+import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
@@ -93,11 +94,11 @@ public class DocumentUtils {
 			return I18NM.get.errorCheckField(I18N.INSTANCE.nameDescription());
 		}
 		
-		if( price.isEmpty() ) {
+		if( price.isEmpty() || !Validation.isDouble(price) ) {
 			return I18NM.get.errorCheckField(I18N.INSTANCE.price());
 		}
 		
-		if( quantity.isEmpty() ) {
+		if( quantity.isEmpty() || !Validation.isDouble(quantity) ) {
 			return I18NM.get.errorCheckField(I18N.INSTANCE.quantity());
 		}
 		
