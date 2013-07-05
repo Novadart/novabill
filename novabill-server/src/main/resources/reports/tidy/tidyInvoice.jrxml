@@ -172,7 +172,7 @@ $F{document.client.country} + "\n" +
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField isStretchWithOverflow="true">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="90" height="20"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
@@ -192,7 +192,7 @@ $F{document.client.country} + "\n" +
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="90" height="20"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
@@ -212,7 +212,7 @@ $F{document.client.country} + "\n" +
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement uuid="5e9fee78-5a16-4450-9826-0a5cfb53091e" x="0" y="0" width="90" height="20"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
@@ -237,7 +237,7 @@ $F{document.client.country} + "\n" +
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{price} + " €"]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{price} == null? "": $F{price} + " €"]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -252,7 +252,7 @@ $F{document.client.country} + "\n" +
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField>
+							<textField isBlankWhenNull="true">
 								<reportElement uuid="e6627f76-468a-4d61-bf30-28da21524f5e" x="0" y="0" width="90" height="20"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
@@ -277,7 +277,7 @@ $F{document.client.country} + "\n" +
 								<textElement textAlignment="Right" verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{total} + " €"]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{total} == null? "":$F{total} + " €"]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
