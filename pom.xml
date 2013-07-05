@@ -396,6 +396,11 @@
 				<version>5.0.4</version>
 			</dependency>
 			<dependency>
+				<groupId>com.novadart.jasperreports.fonts</groupId>
+				<artifactId>fonts-arial</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
 				<groupId>com.lowagie</groupId>
 				<artifactId>itext</artifactId>
 				<version>2.1.7</version>

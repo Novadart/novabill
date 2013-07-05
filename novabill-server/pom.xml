@@ -271,10 +271,14 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>com.novadart.jasperreports.fonts</groupId>
+			<artifactId>fonts-arial</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
 		</dependency>
-            
+
 	</dependencies>
 
 	<build>
