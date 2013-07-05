@@ -18,7 +18,6 @@ import com.google.gwt.user.cellview.client.Column;
 import com.google.gwt.user.cellview.client.TextColumn;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
-import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
@@ -75,7 +74,6 @@ public class PaymentViewImpl extends Composite implements PaymentView {
 	public PaymentViewImpl() {
 
 		payments = new CellTable<PaymentTypeDTO>();
-		payments.setLoadingIndicator(new Image(ImageResources.INSTANCE.loader()));
 
 		TextColumn<PaymentTypeDTO> name =  new TextColumn<PaymentTypeDTO>() {
 
