@@ -215,7 +215,7 @@ $F{document.client.country} + "\n" +
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField isBlankWhenNull="true">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="5e9fee78-5a16-4450-9826-0a5cfb53091e" x="0" y="0" width="40" height="20"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
