@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transport Document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="162"/>
+	<property name="ireport.y" value="30"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -155,9 +155,9 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.name} + "\n" +
 $F{document.business.address} + "\n" +
-$F{document.business.postcode} + " " + $F{document.business.city} + (org.apache.commons.lang3.StringUtils.isNotBlank($F{document.business.province})? " (" + $F{document.business.province} + ")": "") + "\n" +
+$F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim())? " (" + $F{document.business.province} + ")": "") + "\n" +
 $F{document.business.country} + "\n" +
-(org.apache.commons.lang3.StringUtils.isNotBlank($F{document.business.vatID})? $R{tidy.vatID} + " " + $F{document.business.vatID}: $R{tidy.ssn} + " " + $F{document.business.ssn})]]></textFieldExpression>
+($F{document.business.vatID}!=null && !"".equals($F{document.business.vatID}.trim())? $R{tidy.vatID} + " " + $F{document.business.vatID}: $R{tidy.ssn} + " " + $F{document.business.ssn})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="299" y="95" width="210" height="99"/>
@@ -166,9 +166,9 @@ $F{document.business.country} + "\n" +
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.client.name} + "\n" +
 $F{document.client.address} + "\n" +
-$F{document.client.postcode} + " " + $F{document.client.city} + (org.apache.commons.lang3.StringUtils.isNotBlank($F{document.client.province})? " (" + $F{document.client.province} + ")": "") + "\n" +
+$F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.client.province}!=null && !"".equals($F{document.client.province}.trim())? " (" + $F{document.client.province} + ")": "") + "\n" +
 $F{document.client.country} + "\n" +
-(org.apache.commons.lang3.StringUtils.isNotBlank($F{document.client.vatID})? $R{tidy.vatID} + " " + $F{document.client.vatID}: $R{tidy.ssn} + " " + $F{document.client.ssn})]]></textFieldExpression>
+($F{document.client.vatID}!=null && !"".equals($F{document.client.vatID}.trim())? $R{tidy.vatID} + " " + $F{document.client.vatID}: $R{tidy.ssn} + " " + $F{document.client.ssn})]]></textFieldExpression>
 			</textField>
 			<componentElement>
 				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="324" width="540" height="50"/>
@@ -322,7 +322,7 @@ $F{document.client.country} + "\n" +
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.fromEndpoint.companyName} + "\n" +
 $F{document.fromEndpoint.street} + "\n" +
-$F{document.fromEndpoint.postcode} + " " + $F{document.fromEndpoint.city} + (org.apache.commons.lang3.StringUtils.isNotBlank($F{document.fromEndpoint.province})? " (" + $F{document.fromEndpoint.province} + ")": "") + "\n" +
+$F{document.fromEndpoint.postcode} + " " + $F{document.fromEndpoint.city} + ($F{document.fromEndpoint.province}!=null && !"".equals($F{document.fromEndpoint.province}.trim())? " (" + $F{document.fromEndpoint.province} + ")": "") + "\n" +
 $F{document.fromEndpoint.country}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
@@ -333,7 +333,7 @@ $F{document.fromEndpoint.country}]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.toEndpoint.companyName} + "\n" +
 $F{document.toEndpoint.street} + "\n" +
-$F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + (org.apache.commons.lang3.StringUtils.isNotBlank($F{document.toEndpoint.province})? " (" + $F{document.toEndpoint.province} + ")": "") + "\n" +
+$F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{document.toEndpoint.province}!=null && !"".equals($F{document.toEndpoint.province}.trim())? " (" + $F{document.toEndpoint.province} + ")": "") + "\n" +
 $F{document.toEndpoint.country}]]></textFieldExpression>
 			</textField>
 		</band>
@@ -417,7 +417,7 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="d3de5d01-969a-4b88-bb04-c2e4af24934f" positionType="Float" x="8" y="32" width="247" height="20"/>
 				<textElement/>
-				<textFieldExpression><![CDATA[org.apache.commons.lang3.StringUtils.isNotBlank($F{document.note})? $F{document.note}: $R{tidy.nonote}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{document.note}!=null && !"".equals($F{document.note}.trim())? $F{document.note}: $R{tidy.nonote}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="c883cfd6-c863-4f96-bf65-6cde7370f3a5" x="394" y="12" width="153" height="20"/>
