@@ -27,7 +27,7 @@
 	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
 		<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 			<topPen lineWidth="0.0" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#C0BEBE"/>
 		</box>
 	</style>
 	<style name="Base" isDefault="true" fontName="Arial" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
@@ -509,12 +509,16 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 		<band height="60" splitType="Stretch">
 			<textField>
 				<reportElement uuid="58d47b4d-4c45-45ef-a6af-fb7c016bd67e" x="423" y="20" width="80" height="20"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
 				<reportElement uuid="3926bbcd-506a-4fc1-aa31-88a8c192b20b" x="503" y="20" width="40" height="20"/>
-				<textElement/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
