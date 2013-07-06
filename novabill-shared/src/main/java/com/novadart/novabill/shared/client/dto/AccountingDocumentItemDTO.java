@@ -96,7 +96,7 @@ public class AccountingDocumentItemDTO implements IsSerializable {
 	}
 	
 	public boolean isDescriptionOnly(){
-		return quantity == null && price == null;
+		return price == null;
 	}
 	
 	public AccountingDocumentItemDTO clone(){
