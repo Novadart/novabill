@@ -73,16 +73,16 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="50" splitType="Prevent">
+		<band height="70" splitType="Prevent">
 			<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null)]]></printWhenExpression>
 			<image>
-				<reportElement uuid="ad84ab22-c8c5-403b-9525-8d6a0150fa0d" x="0" y="0" width="66" height="50">
+				<reportElement uuid="ad84ab22-c8c5-403b-9525-8d6a0150fa0d" x="0" y="0" width="250" height="70">
 					<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null)]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$F{logoInStream}]]></imageExpression>
 			</image>
 		</band>
-		<band height="300" splitType="Stretch">
+		<band height="280" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="0" y="0" width="308" height="20"/>
 				<textElement>
@@ -120,21 +120,21 @@
 				<textFieldExpression><![CDATA[$R{tidy.date} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="5ec97103-c13a-49c0-90b7-0cfe4658afe9" positionType="Float" x="55" y="87" width="200" height="20"/>
+				<reportElement uuid="5ec97103-c13a-49c0-90b7-0cfe4658afe9" positionType="Float" x="55" y="70" width="200" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.from}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="ddd1bc93-67b0-4ccf-99c7-fd05b6ffcbde" positionType="Float" x="299" y="87" width="200" height="20"/>
+				<reportElement uuid="ddd1bc93-67b0-4ccf-99c7-fd05b6ffcbde" positionType="Float" x="299" y="70" width="200" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.client}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="b0329e04-13b9-4caf-8d66-fc7a7a5d696f" positionType="Float" x="55" y="107" width="200" height="96"/>
+				<reportElement uuid="b0329e04-13b9-4caf-8d66-fc7a7a5d696f" positionType="Float" x="55" y="90" width="200" height="96"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -146,7 +146,7 @@ $F{document.business.country}  + "\n" +
 ($F{document.business.vatID}!=null && !"".equals($F{document.business.vatID}.trim())? $R{tidy.vatID} + " " + $F{document.business.vatID}: $R{tidy.ssn} + " " + $F{document.business.ssn})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="299" y="107" width="200" height="97"/>
+				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="299" y="90" width="200" height="97"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 				</textElement>
@@ -157,7 +157,7 @@ $F{document.client.country} + "\n" +
 ($F{document.client.vatID}!=null && !"".equals($F{document.client.vatID}.trim())? $R{tidy.vatID} + " " + $F{document.client.vatID}: $R{tidy.ssn} + " " + $F{document.client.ssn})]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="230" width="540" height="50"/>
+				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="202" width="540" height="50"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{document.accountingDocumentItems})]]></dataSourceExpression>
