@@ -95,6 +95,10 @@ public class AccountingDocumentItemDTO implements IsSerializable {
 		this.tax = tax;
 	}
 	
+	public boolean isDescriptionOnly(){
+		return quantity == null && price == null;
+	}
+	
 	public AccountingDocumentItemDTO clone(){
 		AccountingDocumentItemDTO i = new AccountingDocumentItemDTO();
 		i.setDescription(getDescription());
