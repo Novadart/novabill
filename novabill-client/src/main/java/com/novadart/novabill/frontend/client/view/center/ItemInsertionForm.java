@@ -96,7 +96,9 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 			@Override
 			public void onUpdate(AccountingDocumentItemDTO item) {
-				DocumentUtils.updateTotals(item);
+				if(!item.isDescriptionOnly()) { 
+					DocumentUtils.updateTotals(item);
+				}
 				ItemInsertionForm.this.handler.onItemListUpdated(getItems());
 			}
 
