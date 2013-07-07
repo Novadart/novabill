@@ -43,6 +43,8 @@ public class Commodity implements Serializable {
     @ManyToOne
     private Business business;
     
+    private boolean service;
+    
     /*
      * Getters and setters
      * */
@@ -87,7 +89,15 @@ public class Commodity implements Serializable {
         this.tax = tax;
     }
     
-    public Business getBusiness() {
+    public boolean isService() {
+		return service;
+	}
+
+	public void setService(boolean service) {
+		this.service = service;
+	}
+
+	public Business getBusiness() {
         return this.business;
     }
     

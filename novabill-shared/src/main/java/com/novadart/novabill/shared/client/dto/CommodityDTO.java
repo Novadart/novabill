@@ -17,6 +17,8 @@ public class CommodityDTO implements IsSerializable {
 	
 	private BigDecimal tax;
 	
+	private boolean service;
+	
 	private BusinessDTO business;
 
 	public Long getId() {
@@ -65,6 +67,14 @@ public class CommodityDTO implements IsSerializable {
 
 	public void setTax(BigDecimal tax) {
 		this.tax = tax;
+	}
+
+	public boolean isService() {
+		return service;
+	}
+
+	public void setService(boolean service) {
+		this.service = service;
 	}
 
 	public BusinessDTO getBusiness() {
