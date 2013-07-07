@@ -11,7 +11,6 @@ public class CommodityDTOFactory {
 			return null;
 		CommodityDTO commodityDTO = new CommodityDTO();
 		commodityDTO.setId(commodity.getId());
-		commodityDTO.setName(commodity.getName());
 		commodityDTO.setPrice(commodity.getPrice());
 		commodityDTO.setDescription(commodity.getDescription());
 		commodityDTO.setUnitOfMeasure(commodity.getUnitOfMeasure());
@@ -23,7 +22,6 @@ public class CommodityDTOFactory {
 	public static void copyFromDTO(Commodity commodity, CommodityDTO commodityDTO){
 		if(commodity == null || commodityDTO == null)
 			return;
-		commodity.setName(commodityDTO.getName());
 		commodity.setPrice(commodityDTO.getPrice());
 		commodity.setDescription(commodityDTO.getDescription());
 		commodity.setUnitOfMeasure(commodityDTO.getUnitOfMeasure());

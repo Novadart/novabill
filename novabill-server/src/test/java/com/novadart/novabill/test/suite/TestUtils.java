@@ -302,7 +302,6 @@ public class TestUtils {
 	
 	public static Commodity createCommodity(){
 		Commodity commodity = new Commodity();
-		commodity.setName("Test commodity");
 		commodity.setDescription("Test commodity description");
 		commodity.setPrice(new BigDecimal("100.0"));
 		commodity.setTax(new BigDecimal("15.0"));

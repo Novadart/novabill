@@ -27,9 +27,6 @@ public class Commodity implements Serializable {
 	
 	private static final long serialVersionUID = 4265058605330997015L;
 
-	@Size(max = 255)
-    private String name;
-
     private BigDecimal price;
 
     @Type(type = "text")
@@ -48,14 +45,6 @@ public class Commodity implements Serializable {
     /*
      * Getters and setters
      * */
-    
-    public String getName() {
-        return this.name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
     
     public BigDecimal getPrice() {
         return this.price;

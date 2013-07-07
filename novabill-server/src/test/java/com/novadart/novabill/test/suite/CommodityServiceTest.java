@@ -104,7 +104,6 @@ public class CommodityServiceTest extends GWTServiceTest {
      @Test
      public void updateAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
          CommodityDTO commodityDTO = addCommodity();
-         commodityDTO.setName("New test name!!!");
          commodityService.update(commodityDTO);
          Commodity.entityManager().flush();
          CommodityDTO persistedDTO = CommodityDTOFactory.toDTO(Commodity.findCommodity(commodityDTO.getId()));
@@ -114,7 +113,6 @@ public class CommodityServiceTest extends GWTServiceTest {
      @Test(expected = DataAccessException.class)
      public void updateUnathorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
     	 CommodityDTO commodityDTO = addCommodity();
-    	 commodityDTO.setName("New test name!!!");
     	 commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
          commodityService.update(commodityDTO);
      }
