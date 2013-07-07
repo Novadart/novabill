@@ -7,8 +7,10 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
+import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -41,6 +43,11 @@ public class CommodityServiceProxy extends AbstractGwtController implements Comm
 	@Override
 	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
 		commodityService.remove(businessID, id);
+	}
+	
+	public PageDTO<CommodityDTO> searchCommodities(Long businessID, String query, int start, int offset)
+			throws InvalidArgumentException, NotAuthenticatedException, DataAccessException {
+		return commodityService.searchCommodities(businessID, query, start, offset);
 	}
 
 }

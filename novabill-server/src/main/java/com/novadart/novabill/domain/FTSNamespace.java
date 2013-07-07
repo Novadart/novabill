@@ -32,4 +32,10 @@ public interface FTSNamespace {
 	
 	public static final String DEFAULT_CONTACT_ANALYZER = "defaultContactAnalyzer";
 	
+	public static final String COMMODITY_BY_BUSINESS_ID_FILTER = "commodityByBusinessIdFilter";
+	
+	public static final String DEFAULT_COMMODITY_ANALYZER = "defaultCommodityAnalyzer";
+	
+	public static final String DESCRIPTION = "description";
+	
 }

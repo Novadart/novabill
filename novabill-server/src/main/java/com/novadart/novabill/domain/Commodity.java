@@ -17,10 +17,34 @@ import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
+import org.apache.solr.analysis.LowerCaseFilterFactory;
+import org.apache.solr.analysis.StandardTokenizerFactory;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FullTextFilterDef;
+import org.hibernate.search.annotations.FullTextFilterDefs;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.TokenizerDef;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.utils.fts.TermValueFilterFactory;
+
+@Indexed
+@AnalyzerDef(name = FTSNamespace.DEFAULT_COMMODITY_ANALYZER,
+tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+filters = {
+	@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
+	@TokenFilterDef(factory = LowerCaseFilterFactory.class)
+})
+@Analyzer(definition = FTSNamespace.DEFAULT_COMMODITY_ANALYZER)
+@FullTextFilterDefs({
+	@FullTextFilterDef(name = FTSNamespace.COMMODITY_BY_BUSINESS_ID_FILTER, impl = TermValueFilterFactory.class)
+})
 @Configurable
 @Entity
 public class Commodity implements Serializable {
@@ -29,6 +53,7 @@ public class Commodity implements Serializable {
 
     private BigDecimal price;
 
+    @Field(name = FTSNamespace.DESCRIPTION)
     @Type(type = "text")
     private String description;
 

@@ -9,6 +9,9 @@ import org.hibernate.search.jpa.Search;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Commodity;
+
 @Service
 public class LuceneIndexerService {
 	
@@ -32,7 +35,8 @@ public class LuceneIndexerService {
 	
 	public void reindex() throws InterruptedException{
 		FullTextEntityManager fullTextEntityManager = Search.getFullTextEntityManager(entityManager);
-		fullTextEntityManager.createIndexer().startAndWait();
+		fullTextEntityManager.createIndexer(Client.class).startAndWait();
+		fullTextEntityManager.createIndexer(Commodity.class).startAndWait();
 	}
 
 }

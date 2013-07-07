@@ -25,8 +25,6 @@ import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -40,6 +38,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.bridge.builtin.LongBridge;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
@@ -281,30 +280,51 @@ public class Business implements Serializable, Taxable {
 		}
 	};
     
-    @SuppressWarnings("unchecked")
-	private PageDTO<Client> searchClients(String query, int start, int length, ClientQueryPreparator queryPreparator) throws ParseException, IOException{
-    	FullTextEntityManager ftEntityManager = Search.getFullTextEntityManager(entityManager);
-    	Analyzer analyzer = ftEntityManager.getSearchFactory().getAnalyzer(FTSNamespace.DEFAULT_CLIENT_ANALYZER);
-    	List<String> queryTokens = new ArrayList<String>();
+	private List<String> chunkQuery(String query, Analyzer analyzer) throws IOException{
+		List<String> queryTokens = new ArrayList<String>();
     	TokenStream tokenStream = analyzer.tokenStream(null, new StringReader(query));
     	while(tokenStream.incrementToken())
     		queryTokens.add(tokenStream.getAttribute(CharTermAttribute.class).toString());
+    	return queryTokens;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private <T> PageDTO<T> preparePageDTO(int start, int length, FullTextQuery ftQuery, Class<T> cls) {
+		PageDTO<T> pageDTO = new PageDTO<T>(null, start, length, null);
+    	pageDTO.setTotal(new Long(ftQuery.getResultSize()));
+    	pageDTO.setItems(ftQuery.setFirstResult(start).setMaxResults(length).getResultList());
+		return pageDTO;
+	}
+	
+	private PageDTO<Client> searchClients(String query, int start, int length, ClientQueryPreparator queryPreparator) throws ParseException, IOException{
+    	FullTextEntityManager ftEntityManager = Search.getFullTextEntityManager(entityManager);
+    	List<String> queryTokens = chunkQuery(query, ftEntityManager.getSearchFactory().getAnalyzer(FTSNamespace.DEFAULT_CLIENT_ANALYZER));
     	FullTextQuery ftQuery = ftEntityManager.createFullTextQuery(queryPreparator.prepareQuery(queryTokens), Client.class);
     	ftQuery.enableFullTextFilter(FTSNamespace.CLIENT_BY_BUSINESS_ID_FILTER)
     		.setParameter(TermValueFilterFactory.FIELD_NAME, StringUtils.join(new Object[]{FTSNamespace.BUSINESS, FTSNamespace.ID}, "."))
     		.setParameter(TermValueFilterFactory.FIELD_VALUE, new LongBridge().objectToString(getId()));
-    	PageDTO<Client> pageDTO = new PageDTO<Client>(null, start, length, null);
-    	pageDTO.setTotal(new Long(ftQuery.getResultSize()));
-    	pageDTO.setItems(ftQuery.setFirstResult(start).setMaxResults(length).getResultList());
-    	return pageDTO;
+    	return preparePageDTO(start, length, ftQuery, Client.class);
     }
-    
+
     public PageDTO<Client> fuzzyClientSearch(String query, int start, int length)  throws ParseException, IOException{
     	return searchClients(query, start, length, fuzzyQueryPreparator);
     }
     
     public PageDTO<Client> prefixClientSearch(String query, int start, int length)  throws ParseException, IOException{
     	return searchClients(query, start, length, prefixQueryPreparator);
+    }
+    
+    public PageDTO<Commodity> prefixCommoditiesSearch(String query, int start, int length) throws IOException{
+    	FullTextEntityManager ftEntityManager = Search.getFullTextEntityManager(entityManager);
+    	List<String> queryTokens = chunkQuery(query, ftEntityManager.getSearchFactory().getAnalyzer(FTSNamespace.DEFAULT_COMMODITY_ANALYZER));
+    	BooleanQuery luceneQuery = new BooleanQuery();
+    	for(String queryToken: queryTokens)
+    		luceneQuery.add(new PrefixQuery(new Term(FTSNamespace.NAME, queryToken)), Occur.SHOULD);
+    	FullTextQuery ftQuery = ftEntityManager.createFullTextQuery(luceneQuery, Commodity.class); 
+    	ftQuery.enableFullTextFilter(FTSNamespace.COMMODITY_BY_BUSINESS_ID_FILTER)
+			.setParameter(TermValueFilterFactory.FIELD_NAME, StringUtils.join(new Object[]{FTSNamespace.BUSINESS, FTSNamespace.ID}, "."))
+			.setParameter(TermValueFilterFactory.FIELD_VALUE, new LongBridge().objectToString(getId()));
+    	return preparePageDTO(start, length, ftQuery, Commodity.class);
     }
     
     private <T extends AccountingDocument> List<T> getAccountingDocumentForYear(Iterator<T> iter, int year){
@@ -615,6 +635,7 @@ public class Business implements Serializable, Taxable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
+    @Field(name = FTSNamespace.ID)
     private Long id;
     
     @javax.persistence.Version
