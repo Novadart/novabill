@@ -6,6 +6,8 @@ import static org.junit.Assert.*;
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
 import java.util.HashMap;
+import java.util.Locale;
+
 import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
@@ -95,7 +97,7 @@ public class RegistrationActivationTest {
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);
 		String forwardToSpringSecurityCheck = activationController.processSubmit(email, password, (Registration)model.asMap().get("registration"),
-				mock(Model.class), mock(SessionStatus.class));
+				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		assertEquals("redirect:/registrationCompleted", registerView);
 		assertEquals("activate", activateView);
 		assertEquals("forward:/resources/j_spring_security_check", forwardToSpringSecurityCheck);
@@ -205,7 +207,7 @@ public class RegistrationActivationTest {
 		Model model = new ExtendedModelMap();
 		String activateView1 = activationController.setupForm(email, token, model);
 		String forwardToSpringSecurityCheck1 = activationController.processSubmit(email, password, (Registration)model.asMap().get("registration"),
-				mock(Model.class), mock(SessionStatus.class));
+				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		model = new ExtendedModelMap();
 		String activateView2 = activationController.setupForm(email, token, model);
 		assertEquals("redirect:/registrationCompleted", registerView);
@@ -246,7 +248,7 @@ public class RegistrationActivationTest {
 		Model model2 = new ExtendedModelMap();
 		String activateView2 = activationController2.setupForm(email, token2, model2);
 		String forwardToSpringSecurityCheck1 = activationController1.processSubmit(email, password, (Registration)model1.asMap().get("registration"),
-				mock(Model.class), mock(SessionStatus.class));
+				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		
 		Principal.entityManager().flush();
 		
@@ -258,7 +260,7 @@ public class RegistrationActivationTest {
 		assertEquals("activate", activateView2);
 		
 		activationController2.processSubmit(email, password, (Registration)model2.asMap().get("registration"),
-				mock(Model.class), mock(SessionStatus.class));
+				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		
 		Principal.entityManager().flush();
 		
@@ -279,7 +281,7 @@ public class RegistrationActivationTest {
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);
 		String backToActivate = activationController.processSubmit(email, password + "1", (Registration)model.asMap().get("registration"),
-				mock(Model.class), mock(SessionStatus.class));
+				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		assertEquals("redirect:/registrationCompleted", registerView);
 		assertEquals("activate", activateView);
 		assertEquals("activate", backToActivate);
@@ -300,7 +302,7 @@ public class RegistrationActivationTest {
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);
 		String backToActivate = activationController.processSubmit(email, null, (Registration)model.asMap().get("registration"),
-				mock(Model.class), mock(SessionStatus.class));
+				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		assertEquals("redirect:/registrationCompleted", registerView);
 		assertEquals("activate", activateView);
 		assertEquals("activate", backToActivate);

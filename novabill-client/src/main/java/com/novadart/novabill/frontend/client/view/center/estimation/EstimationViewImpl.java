@@ -17,6 +17,7 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
+import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
@@ -44,8 +45,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 	@UiField Label clientName;
 	@UiField(provided=true) ValidatedTextBox number;
-	@UiField(provided=true) DateBox date;
-	@UiField(provided=true) DateBox validTill;
+	@UiField(provided=true) ValidatedDateBox date;
+	@UiField(provided=true) ValidatedDateBox validTill;
 	@UiField ValidatedTextArea note;
 	@UiField ValidatedTextArea paymentNote;
 	@UiField ValidatedTextArea limitations;
@@ -75,10 +76,10 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
-		date = new DateBox();
+		date = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
-		validTill = new DateBox();
+		validTill = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
 		validTill.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		createEstimation = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
@@ -87,8 +88,14 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		setStyleName(CSS.accountDocumentView());
 		
 		createEstimation.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
-		convertToInvoice.getButton().setStyleName(CSS.convertToInvoiceLB()+" "+GlobalBundle.INSTANCE.globalCss().button());
+		convertToInvoice.getButton().setStyleName(GlobalBundle.INSTANCE.globalCss().button());
 		
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		presenter.onLoad();
 	}
 	
 	@Override
@@ -156,6 +163,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 		//reset widget statuses
 		convertToInvoice.setVisible(false);
+		date.reset();
+		validTill.reset();
 
 		//reset widget contents		
 		note.setText("");
@@ -191,7 +200,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	}
 
 	@Override
-	public DateBox getDate() {
+	public ValidatedDateBox getDate() {
 		return date;
 	}
 
@@ -236,7 +245,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	}
 
 	@Override
-	public DateBox getValidTill() {
+	public ValidatedDateBox getValidTill() {
 		return validTill;
 	}
 

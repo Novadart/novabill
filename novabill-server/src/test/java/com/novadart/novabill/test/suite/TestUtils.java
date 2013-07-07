@@ -12,13 +12,15 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import com.novadart.novabill.domain.AbstractInvoice;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
+import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
+import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
-import com.novadart.novabill.shared.client.dto.PaymentType;
+import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.validation.Field;
 
@@ -33,6 +35,8 @@ public class TestUtils {
 	
 	public static Map<String, Field> transportDocValidationFieldsMap;
 	
+	public static Map<String, Field> invoiceValidationFieldsMap;
+	
 	static{
 		accountingDocumentValidationFieldsMap = new HashMap<String, Field>(){{
 			//Accounting doc
@@ -43,17 +47,22 @@ public class TestUtils {
 			//Accounting doc item
 			put("accountingDocumentItems_description", Field.accountingDocumentItems_description); 
 			put("accountingDocumentItems_unitOfMeasure", Field.accountingDocumentItems_unitOfMeasure); 
-			put("accountingDocumentItems_tax", Field.accountingDocumentItems_tax);
-			put("accountingDocumentItems_quantity", Field.accountingDocumentItems_quantity);
-			put("accountingDocumentItems_totalBeforeTax", Field.accountingDocumentItems_totalBeforeTax);
-			put("accountingDocumentItems_totalTax", Field.accountingDocumentItems_totalTax);
-			put("accountingDocumentItems_total", Field.accountingDocumentItems_total);
-			put("accountingDocumentItems_price", Field.accountingDocumentItems_price);
+			//put("accountingDocumentItems_tax", Field.accountingDocumentItems_tax);
+			//put("accountingDocumentItems_quantity", Field.accountingDocumentItems_quantity);
+			//put("accountingDocumentItems_totalBeforeTax", Field.accountingDocumentItems_totalBeforeTax);
+			//put("accountingDocumentItems_totalTax", Field.accountingDocumentItems_totalTax);
+			//put("accountingDocumentItems_total", Field.accountingDocumentItems_total);
+			//put("accountingDocumentItems_price", Field.accountingDocumentItems_price);
 		}};
 		
 		abstractInvoiceValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);
 		abstractInvoiceValidationFieldsMap.putAll(new HashMap<String, Field>(){{
-			put("paymentType", Field.paymentType); put("paymentDueDate", Field.paymentDueDate); put("payed", Field.payed);
+			put("paymentDueDate", Field.paymentDueDate); put("payed", Field.payed);
+		}});
+		
+		invoiceValidationFieldsMap = new HashMap<String, Field>(abstractInvoiceValidationFieldsMap);
+		invoiceValidationFieldsMap.putAll(new HashMap<String, Field>(){{
+			put("paymentDateGenerator", Field.paymentDateGenerator); put("paymentTypeName", Field.paymentTypeName);
 		}});
 		
 		estimationValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);
@@ -172,8 +181,12 @@ public class TestUtils {
 	public static <T extends AbstractInvoice> T createInvOrCredNote(Long documentID, Class<T> cls) throws InstantiationException, IllegalAccessException{
 		T doc = createDoc(documentID, cls);
 		doc.setPayed(false);
-		doc.setPaymentDueDate(new Date());
-		doc.setPaymentType(PaymentType.CASH);
+		if(cls.equals(Invoice.class)){
+			Invoice inv = (Invoice)doc;
+			inv.setPaymentTypeName("defaut");
+			inv.setPaymentDueDate(new Date());
+			inv.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+		}
 		return doc;
 	}
 	
@@ -228,11 +241,16 @@ public class TestUtils {
 		return doc;
 	}
 	
-	public static <T extends AbstractInvoice> T createInvalidIngOrCredNote(Long documentID, Class<T> cls) throws InstantiationException, IllegalAccessException{
+	public static <T extends AbstractInvoice> T createInvalidInvOrCredNote(Long documentID, Class<T> cls) throws InstantiationException, IllegalAccessException{
 		T doc = createInvalidDoc(documentID, cls);
 		doc.setPayed(false);
 		doc.setPaymentDueDate(null);
-		doc.setPaymentType(null);
+		if(cls.equals(Invoice.class)){
+			Invoice inv = (Invoice)doc;
+			inv.setPaymentTypeName(null);
+			inv.setPaymentDateGenerator(null);
+			inv.setPaymentTypeName(null);
+		}
 		return doc;
 	}
 	
@@ -291,11 +309,37 @@ public class TestUtils {
 		commodity.setUnitOfMeasure("piece");
 		return commodity;
 	}
+		
+	public static com.novadart.novabill.domain.PaymentType createPaymentType(){
+		com.novadart.novabill.domain.PaymentType paymentType = new com.novadart.novabill.domain.PaymentType();
+		paymentType.setName("Payment type test name");
+		paymentType.setDefaultPaymentNote("Payment type test defualt note");
+		paymentType.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+		paymentType.setPaymentDateDelta(30);
+		return paymentType;
+	}
 	
 	public static <T1, T2 extends T1> void setPrivateField(Class<T1> cls, T2 target, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
 		java.lang.reflect.Field field = cls.getDeclaredField(fieldName);
 		field.setAccessible(true);
 		field.set(target, value);
+	}
+	
+	public static Business createBusiness(){
+		Business business = new Business();
+		business.setName("Novadart S.n.c. di Giordano Battilana & C.");
+		business.setAddress("via Stradone, 51");
+		business.setPostcode("35010");
+		business.setCity("Campo San Martino");
+		business.setProvince("PD");
+		business.setCountry("IT");
+		business.setEmail("giordano.battilana@novadart.com");
+		business.setPhone("3334927614");
+		business.setFax("3334927614");
+		business.setMobile("0498597898");
+		business.setSsn("IT04534730280");
+		business.setVatID("IT04534730280");
+		return business;
 	}
 	
 }

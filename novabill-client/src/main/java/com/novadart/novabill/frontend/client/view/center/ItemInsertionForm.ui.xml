@@ -1,7 +1,7 @@
 <!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
 <ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
 	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.novadart.novabill.frontend.client.view.center"
-	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget">
+	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget" xmlns:t="urn:import:com.novadart.novabill.frontend.client.widget.tax" xmlns:n="urn:import:com.novadart.novabill.frontend.client.widget.notification">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
@@ -20,6 +20,20 @@
 			background-color: #EEE;
 			padding: 1em;
 			border: 0.1em solid #CCC;
+		}
+		
+		.textOnlyCheckbox {
+			margin-top: 0.5em;
+			cursor: pointer;
+		}
+		
+		.textOnlyCheckbox label {
+			margin-left: 0.5em;
+			cursor: pointer;
+		}
+		
+		.textOnlyCheckbox label:HOVER {
+			text-decoration: underline;
 		}
 		
 		.smallLabel {
@@ -61,42 +75,63 @@
 		.totalContainer.totalTax,.totalContainer.totalAfterTaxes {
 			margin-left: 4em;
 		}
+		
+		.decimalSeparatorInfo {
+			margin-top: 1em;
+		}
+		
+		.tip {
+			width: 50em;
+		}
+		
+	</ui:style>
+	
+	<ui:style field="nf" type="com.novadart.novabill.frontend.client.view.center.ItemInsertionForm.NotificationCss">
+		.notification {
+			line-height: 2em;
+		}
 	</ui:style>
 
 	<g:FlowPanel>
+		<g:SimplePanel styleName="{s.tip}" ui:field="tip"></g:SimplePanel>
+		
+		<n:InlineNotification ui:field="notification" />
+		
 		<g:ScrollPanel ui:field="itemTableScroller" styleName="{s.itemTableScroller}">
 			<c:ItemTable ui:field="itemTable" styleName="{s.itemTable}"></c:ItemTable>
 		</g:ScrollPanel>
 
-		<g:SimplePanel styleName="{s.newItemContainer}"
+		<g:FlowPanel styleName="{s.newItemContainer}"
 			ui:field="newItemContainer">
 			<g:HorizontalPanel>
 				<g:VerticalPanel>
 					<g:Label styleName="{s.smallLabel}" text="{i18n.nameDescription}"></g:Label>
-					<v:ValidatedTextArea ui:field="item"
-						styleName="{s.item}"></v:ValidatedTextArea>
+					<v:ValidatedTextArea ui:field="item" styleName="{s.item}" />
+					<g:CheckBox ui:field="textOnlyAccountingItem" styleName="{s.textOnlyCheckbox}" text="{i18n.textOnlyAccountingItem}" />
 				</g:VerticalPanel>
-				<g:VerticalPanel styleName="{s.quantityContainer}">
-					<g:Label styleName="{s.smallLabel}" text="{i18n.quantity}"></g:Label>
+				<g:VerticalPanel ui:field="quantityContainer" styleName="{s.quantityContainer}">
+					<g:Label styleName="{s.smallLabel}" text="{i18n.quantity}*"></g:Label>
 					<g:TextBox ui:field="quantity" styleName="{s.quantity}"></g:TextBox>
 				</g:VerticalPanel>
-				<g:VerticalPanel styleName="{s.unitOfMeasureContainer}">
+				<g:VerticalPanel ui:field="unitOfMeasureContainer" styleName="{s.unitOfMeasureContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.unityOfMeasure}"></g:Label>
 					<g:TextBox ui:field="unitOfMeasure" styleName="{s.unitOfMeasure}"
 						maxLength="255"></g:TextBox>
 				</g:VerticalPanel>
-				<g:VerticalPanel styleName="{s.priceContainer}">
-					<g:Label styleName="{s.smallLabel}" text="{i18n.price}"></g:Label>
+				<g:VerticalPanel ui:field="priceContainer" styleName="{s.priceContainer}">
+					<g:Label styleName="{s.smallLabel}" text="{i18n.price}*"></g:Label>
 					<g:TextBox ui:field="price" styleName="{s.price}"></g:TextBox>
 				</g:VerticalPanel>
-				<g:VerticalPanel styleName="{s.taxContainer}">
+				<g:VerticalPanel ui:field="taxContainer" styleName="{s.taxContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.vat}"></g:Label>
-					<g:ListBox styleName="{s.tax}" ui:field="tax"></g:ListBox>
+					<t:TaxWidget styleName="{s.tax}" ui:field="tax" />
 				</g:VerticalPanel>
 				<g:SimplePanel styleName="{s.addButtonContainer}">
 					<g:Button ui:field="add" text="{i18n.add}"></g:Button>
 				</g:SimplePanel>
 			</g:HorizontalPanel>
-		</g:SimplePanel>
+			
+			<g:Label styleName="{s.decimalSeparatorInfo}" text="*{i18n.decimalSeparatorInfo}" />
+		</g:FlowPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 

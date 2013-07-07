@@ -3,6 +3,18 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
+<div id="socialBox">
+	<div class="entry">
+		<div class="fb-like" data-href="https://www.novabill.it/" data-send="true" data-layout="box_count" data-width="450" data-show-faces="false" data-font="arial"></div>
+	</div>
+	<div class="entry">
+		<div class="g-plusone" data-annotation="bubble" data-size="tall"></div>
+	</div>
+	<div class="entry">
+		<a href="https://twitter.com/share" class="twitter-share-button" data-url="https://www.novabill.it/" data-lang="it" data-count="vertical">Tweet</a>
+	</div>
+</div>
+
 <div class="intro">
 	<h2>
 		<spring:message code="application_name"></spring:message>
@@ -46,6 +58,11 @@
 		<a id="registerForFree" class="action-button" href="<%=request.getContextPath()%>/register">
 			<spring:message code="header.signupForFree"></spring:message>
 		</a>
+		
+		<a id="tryDemo" href="<spring:url value="/demo" />">
+			<spring:message code="header.tryDemo" />
+		</a>
+		
 	</sec:authorize>
 	<sec:authorize access="isAuthenticated()">
 		<a class="action2-button goToPrivate" href='<spring:url value="/private"></spring:url>'><spring:message code="shared.private"/></a>
@@ -172,18 +189,48 @@
 			<spring:message code="header.signupForFree"></spring:message>
 		</a>
 	</sec:authorize>
+	
 </div>
 
 <script type="text/javascript">
-		$(window).load(function() {
+		$(function() {
 		    $("*[rel=fancybox]").fancybox({
 		    	'titleFormat': function(title, currentArray, currentIndex, currentOpts){
 		    		temp=title.split('|');
-		    		if(!temp[2]){temp[2]=""};
+		    		if(!temp[2]){temp[2]="";};
 		    		return '<p>'+temp[0]+'</p><p>'+temp[1]+'</p><p>'+temp[2]+'</p>'
 		    		},
 		    	'titlePosition' : 'over'
 		    });
 		});
 </script>
+
+<!-- Google Plus -->
+<!-- +1 button -->
+<script type="text/javascript">
+  window.___gcfg = {lang: 'it'};
+
+  (function() {
+    var po = document.createElement('script'); po.type = 'text/javascript'; po.async = true;
+    po.src = 'https://apis.google.com/js/plusone.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(po, s);
+  })();
+</script>
+<!--  -->
+
+<!-- Twitter -->
+<script>!function(d,s,id){var js,fjs=d.getElementsByTagName(s)[0];if(!d.getElementById(id)){js=d.createElement(s);js.id=id;js.src="//platform.twitter.com/widgets.js";fjs.parentNode.insertBefore(js,fjs);}}(document,"script","twitter-wjs");</script>
+<!--  -->
+
+<!-- Facebook -->
+<div id="fb-root"></div>
+<script>(function(d, s, id) {
+  var js, fjs = d.getElementsByTagName(s)[0];
+  if (d.getElementById(id)) return;
+  js = d.createElement(s); js.id = id;
+  js.src = "//connect.facebook.net/it_IT/all.js#xfbml=1&appId=217986825010193";
+  fjs.parentNode.insertBefore(js, fjs);
+}(document, 'script', 'facebook-jssdk'));</script>
+<!--  -->
+
 

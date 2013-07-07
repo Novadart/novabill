@@ -138,6 +138,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		tsd = DateTimeFormat.getFormat("dd MMMM yyyy HH:mm").parse(dateTime);		
 		td.setTransportStartDate(tsd);
 
+		td.setCause(getView().getCause().getText());
 		td.setNumberOfPackages(Integer.valueOf(getView().getNumberOfPackages().getText()));
 		td.setTradeZone(getView().getTradeZone().getText());
 		td.setTransportationResponsibility(getView().getTransportationResponsibility().getText());
@@ -155,14 +156,14 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 	}
 	
 	protected boolean validateTransportDocument(){
-		if(getView().getDate().getTextBox().getText().isEmpty() || getView().getDate().getValue() == null 
-				|| getView().getTransportStartDate().getTextBox().getText().isEmpty() || getView().getTransportStartDate().getValue() == null){
-			return false;
-		} else if(getView().getItemInsertionForm().getItems().isEmpty()){
+		getView().getDate().validate();
+		getView().getTransportStartDate().validate();
+		
+		if(!getView().getItemInsertionForm().isValid()){
 			return false;
 		} else {
-			boolean validation = true;
-			for (ValidatedWidget<?, ?> vw : new ValidatedWidget<?, ?>[]{getView().getNumber(), getView().getFromAddrCity(), getView().getFromAddrCompanyName(), 
+			boolean validation = getView().getDate().isValid() && getView().getTransportStartDate().isValid();
+			for (ValidatedWidget<?> vw : new ValidatedWidget<?>[]{getView().getNumber(), getView().getFromAddrCity(), getView().getFromAddrCompanyName(), 
 					getView().getFromAddrPostCode(), getView().getFromAddrStreetName(), getView().getFromAddrCountry(), getView().getToAddrCountry(), 
 					getView().getToAddrCity(), getView().getToAddrCompanyName(), getView().getToAddrPostCode(),	getView().getToAddrStreetName(), 
 					getView().getNumberOfPackages(), getView().getHour(), getView().getMinute()}) {
@@ -180,12 +181,8 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 				validation = validation && getView().getToAddrProvince().isValid();
 			}
 
-
-			if(!validation){
-				return false;
-			}
+			return validation;
 		}
-		return true;
 	}
 
 }

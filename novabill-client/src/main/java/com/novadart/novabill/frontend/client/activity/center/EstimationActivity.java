@@ -15,6 +15,8 @@ import com.novadart.novabill.frontend.client.presenter.center.estimation.NewEsti
 import com.novadart.novabill.frontend.client.view.center.estimation.EstimationView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
+import com.novadart.novabill.shared.client.tuple.Pair;
+import com.novadart.novabill.shared.client.tuple.Triple;
 
 public class EstimationActivity extends AbstractCenterActivity {
 
@@ -60,28 +62,20 @@ public class EstimationActivity extends AbstractCenterActivity {
 
 
 	private void setupNewEstimationView(final AcceptsOneWidget panel, final EstimationView view, final NewEstimationPlace place){
-		ServerFacade.estimation.getNextEstimationId(new DocumentCallack<Long>() {
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewEstimationForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
 
 			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new DocumentCallack<ClientDTO>() {
-
-					@Override
-					public void onSuccess(ClientDTO client) {
-						NewEstimationPresenter p = new NewEstimationPresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view);
-						p.setDataForNewEstimation(client, progrId);
-						p.go(panel);
-					}
-
-				});
+			public void onSuccess(Pair<Long, ClientDTO> result) {
+				NewEstimationPresenter p = new NewEstimationPresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setDataForNewEstimation(result.getSecond(), result.getFirst());
+				p.go(panel);
 			}
-
 		});
 	}
 
 	private void setupModifyEstimationView(final AcceptsOneWidget panel, final EstimationView view, ModifyEstimationPlace place){
-		ServerFacade.estimation.get(place.getEstimationId(), new DocumentCallack<EstimationDTO>() {
+		ServerFacade.INSTANCE.getEstimationService().get(place.getEstimationId(), new DocumentCallack<EstimationDTO>() {
 
 			@Override
 			public void onSuccess(EstimationDTO result) {
@@ -90,32 +84,19 @@ public class EstimationActivity extends AbstractCenterActivity {
 				p.setData(result);
 				p.go(panel);
 			}
-
 		});
 	}
 
 	private void setupCloneEstimationView(final AcceptsOneWidget panel, final EstimationView view, final CloneEstimationPlace place){
-		ServerFacade.estimation.getNextEstimationId(new DocumentCallack<Long>() {
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchCloneEstimationOpData(place.getEstimationId(), place.getClientId(), 
+				new DocumentCallack<Triple<Long,ClientDTO,EstimationDTO>>() {
 
 			@Override
-			public void onSuccess(final Long progrId) {
-				ServerFacade.client.get(place.getClientId(), new DocumentCallack<ClientDTO>() {
-
-					@Override
-					public void onSuccess(final ClientDTO client) {
-						ServerFacade.estimation.get(place.getEstimationId(), new DocumentCallack<EstimationDTO>() {
-
-							@Override
-							public void onSuccess(EstimationDTO estimationToClone) {
-								NewEstimationPresenter p = new NewEstimationPresenter(getClientFactory().getPlaceController(), 
-										getClientFactory().getEventBus(), view);
-								p.setDataForNewEstimation(client, progrId, estimationToClone);
-								p.go(panel);
-							}
-
-						});
-					}
-				});
+			public void onSuccess(Triple<Long, ClientDTO, EstimationDTO> result) {
+				NewEstimationPresenter p = new NewEstimationPresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view);
+				p.setDataForNewEstimation(result.getSecond(), result.getFirst(), result.getThird());
+				p.go(panel);
 			}
 		});
 	}

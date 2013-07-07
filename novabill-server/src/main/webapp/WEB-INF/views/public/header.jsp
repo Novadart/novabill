@@ -26,10 +26,10 @@
 									code="shared.password"></spring:message></label> <input type="password"
 								name="j_password" id="password" />
 						</fieldset>
+						<label id="rememberme" for="checkbox"><input type="checkbox" id="checkbox" name="_spring_security_remember_me"/>
+							<spring:message code="header.rememberme"></spring:message></label>
 						<input type="submit" id="login" class="action2-button"
 							value="<spring:message code="header.signin"></spring:message>" />
-						<label for="checkbox"><input type="checkbox" id="checkbox" name="_spring_security_remember_me"/>
-							<spring:message code="header.rememberme"></spring:message></label>
 					</fieldset>
 					<div>
 						<a href="<spring:url value="/forgot-password" />"><spring:message code="header.forgotPassword"></spring:message></a>
@@ -50,7 +50,9 @@
 	<sec:authorize access="isAuthenticated()">
 		<%
 			Principal pd = ((Principal)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-			String principalName = Business.findBusiness(pd.getBusiness().getId()).getName();
+			String principalName = pd.getBusiness() != null ? 
+					Business.findBusiness(pd.getBusiness().getId()).getName() 
+					: null;
 		%>
 		
 		<span class="welcomeMessage">

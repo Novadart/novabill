@@ -54,5 +54,5 @@ public interface GlobalCss extends CssResource {
 	String action2Button();
 
 	String centerViewLoader();
-
+	
 }

@@ -4,6 +4,7 @@ import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 
@@ -15,7 +16,9 @@ import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -101,7 +104,13 @@ public class BusinessServiceProxy extends AbstractGwtController implements Busin
 	public List<CommodityDTO> getCommodities(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return businessService.getCommodities(businessID);
 	}
+	
+	@Override
+	public List<PaymentTypeDTO> getPaymentTypes(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return businessService.getPaymentTypes(businessID);
+	}
 
+	@Override
 	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return businessService.get(businessID);
 	}
@@ -114,6 +123,12 @@ public class BusinessServiceProxy extends AbstractGwtController implements Busin
 	@Override
 	public String generateLogoOpToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException {
 		return businessService.generateLogoOpToken();
+	}
+
+	@Override
+	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+			com.novadart.novabill.shared.client.exception.CloneNotSupportedException {
+		return businessService.add(businessDTO);
 	}
 
 }

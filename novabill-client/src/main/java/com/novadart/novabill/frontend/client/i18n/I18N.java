@@ -6,6 +6,27 @@ import com.google.gwt.i18n.client.Constants;
 public interface I18N extends Constants {
 	public static final I18N INSTANCE = GWT.create(I18N.class);
 	
+	public String errorAddAtLeastOneItem();
+	public String other();
+	public String textOnlyAccountingItem();
+	public String makePaymentAsDefault();
+	public String mandatory();
+	public String decimalSeparatorInfo();
+	public String immediate();
+	public String addPayment();
+	public String noPaymentSelected();
+	public String overridePaymentNoteQuestion();
+	public String changePayment();
+	public String deletionConfirm();
+	public String settingsGeneral();
+	public String settingsPayments();
+	public String createPaymentType();
+	public String days();
+	public String dateGeneration();
+	public String dateGenerationImmediate();
+	public String dateGenerationEndOfMonth();
+	public String dateGenerationManual();
+	public String paymentDelay();
 	public String tipselectClientDialog1();
 	public String tipselectClientDialog2();
 	public String deleteAccountLabel();
@@ -39,6 +60,7 @@ public interface I18N extends Constants {
 	public String cancelModificationsConfirmation();
 	public String missingVatIdAndSSNValidationError();
 	public String notEmptyValidationError();
+	public String notEmptyDateValidationError();
 	public String vatidValidationError();
 	public String ssnValidationError();
 	public String submit();
@@ -93,7 +115,6 @@ public interface I18N extends Constants {
 	public String creditNoteUpdateSuccess();
 	public String errorDocumentData();
 	public String createInvoice();
-	public String createEstimate();
 	public String clients();
 	public String newClient();
 	public String home();
@@ -114,9 +135,8 @@ public interface I18N extends Constants {
 	public String invoiceNumber();
 	public String estimationNumber();
 	public String dueDate();
-	public String[] dueDateItems();
 	public String payment();
-	public String[] paymentItems();
+	public String defaultPaymentType();
 	public String[] vatItems();
 	public String nameDescription();
 	public String quantity();
@@ -170,7 +190,6 @@ public interface I18N extends Constants {
 	public String newInvoiceCreation();
 	public String newEstimationCreation();
 	public String modifyTransportDocument();
-	public String createCreditNote();
 	public String creditNoteNumber();
 	public String confirmTransportDocumentDeletion();
 	public String transportDocumentCreationSuccess();
@@ -180,7 +199,6 @@ public interface I18N extends Constants {
 	public String transportDocuments();
 	public String transportDocumentsTab();
 	public String newTransportDocument();
-	public String createTransportDocument();
 	public String fromAddress();
 	public String toAddress();
 	public String loadFromAddress();
@@ -189,6 +207,7 @@ public interface I18N extends Constants {
 	public String transportationResponsibility();
 	public String transporter();
 	public String numberOfPackages();
+	public String cause();
 	public String transportStartDate();
 	public String time();
 	public String transportDocumentNumber();
@@ -200,4 +219,7 @@ public interface I18N extends Constants {
 	public String alternativeSsnOrVatIdValidationError();
 	public String tipClientView1();
 	public String tipClientView2();
+	public String tipInvoicePayment();
+	public String tipItemInsertionForm();
+	public String paymentDeletionConfirm();
 }

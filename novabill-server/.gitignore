@@ -1,3 +1,3 @@
 src/main/webapp/rpc
 bin
-profiles/dev.properties
+profiles/dev*.properties

@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gwt.view.client.AsyncDataProvider;
 import com.google.gwt.view.client.HasData;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.SharedComparators;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -39,11 +39,11 @@ public class ClientDataProvider extends AsyncDataProvider<ClientDTO> {
 		
 		if(query == null || query.isEmpty()){
 			
-			ServerFacade.business.getClients(Configuration.getBusinessId(), new ManagedAsyncCallback<List<ClientDTO>>() {
+			ServerFacade.INSTANCE.getBusinessService().getClients(Configuration.getBusinessId(), new ManagedAsyncCallback<List<ClientDTO>>() {
 				
 				@Override
 				public void onSuccess(List<ClientDTO> result) {
-					Collections.sort(result, Const.CLIENT_COMPARATOR);
+					Collections.sort(result, SharedComparators.CLIENT_COMPARATOR);
 					updateRowData(start, result);
 					watcher.onServerCallComplete(result.size()>0);
 				}
@@ -58,7 +58,7 @@ public class ClientDataProvider extends AsyncDataProvider<ClientDTO> {
 			
 		} else {
 			
-			ServerFacade.client.searchClients(Configuration.getBusinessId(), query, 0, 99999, new ManagedAsyncCallback<PageDTO<ClientDTO>>() {
+			ServerFacade.INSTANCE.getClientService().searchClients(Configuration.getBusinessId(), query, 0, 99999, new ManagedAsyncCallback<PageDTO<ClientDTO>>() {
 
 				@Override
 				public void onSuccess(PageDTO<ClientDTO> result) {

@@ -29,6 +29,8 @@
 		})(window, document);
 	</script>
 	<a target="_blank" href="http://www.novadart.com"><spring:message code="shared.about"></spring:message></a>
+	<a href="//plus.google.com/102114996050047445767?prsrc=3" rel="publisher" style="text-decoration:none;float:right;">
+	<img src="//ssl.gstatic.com/images/icons/gplus-32.png" alt="Google+" style="border:0;width:32px;height:32px;"/></a>
 </div>
 
 <tiles:insertAttribute name="credit" />

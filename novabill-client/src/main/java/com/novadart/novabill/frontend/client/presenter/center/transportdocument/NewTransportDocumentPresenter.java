@@ -40,7 +40,8 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(document.getNote());
-
+		
+		getView().getCause().setText(document.getCause());
 		getView().getNumberOfPackages().setText(String.valueOf(document.getNumberOfPackages()));
 
 		EndpointDTO loc = document.getFromEndpoint();
@@ -73,7 +74,7 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 
 		final TransportDocumentDTO transportDocument = createTransportDocument(null);
 
-		ServerFacade.transportDocument.add(transportDocument, new ManagedAsyncCallback<Long>() {
+		ServerFacade.INSTANCE.getTransportdocumentService().add(transportDocument, new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
@@ -128,7 +129,6 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 
 	@Override
 	public void onLoad() {
-		getView().getCreateDocument().setText(I18N.INSTANCE.createTransportDocument());
 		getView().getTitleLabel().setText(I18N.INSTANCE.newTransportDocumentCreation());
 	}
 

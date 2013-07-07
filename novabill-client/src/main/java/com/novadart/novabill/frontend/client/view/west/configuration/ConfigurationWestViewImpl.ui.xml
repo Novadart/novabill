@@ -1,0 +1,40 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui">
+	
+	<ui:image src="menuSelect.png" field="menuSelect" />
+	
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N" field="i18n"></ui:with>
+	
+	<ui:style type="com.novadart.novabill.frontend.client.view.west.configuration.ConfigurationWestViewImpl.Style">
+		.menu {
+			margin: 4em auto 0;
+		}
+		
+		.menuItem {
+			font-size: 1.3em;
+			padding: 1em 0;
+			text-align: left;
+			text-shadow: none;
+			font-weight: bold;
+			text-transform: uppercase;
+			width: 15em;
+			padding-left: 25px;
+		}
+		
+		@sprite .selectedMenuItem {
+			gwt-image: "menuSelect";
+			width: inherit;
+			height: inherit;
+			background-repeat: no-repeat;
+			background-position: 0px 18px;
+			overflow: auto;
+		}
+	</ui:style>
+
+	<g:VerticalPanel styleName="{style.menu}">
+		<g:Hyperlink styleName="{style.menuItem}" ui:field="general" text="{i18n.settingsGeneral}" />
+		<g:Hyperlink styleName="{style.menuItem}" ui:field="payment" text="{i18n.settingsPayments}" />
+	</g:VerticalPanel>
+
+</ui:UiBinder> 

@@ -5,8 +5,11 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
@@ -17,12 +20,14 @@ import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.PaymentType;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public abstract class AbstractInvoicePresenter extends DocumentPresenter<InvoiceView> implements InvoiceView.Presenter {
 
 	private InvoiceDTO invoice;
 	
+	private PaymentTypeDTO cachedDefaultPaymentTypeDTO = null;
+
 	public AbstractInvoicePresenter(PlaceController placeController, EventBus eventBus,	InvoiceView view) {
 		super(placeController, eventBus, view);
 	}
@@ -30,6 +35,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 	@Override
 	public void onDateChanged(Date date){
 		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(date));
+		getView().getPayment().setDocumentCreationDate(date);
 	}
 
 
@@ -48,28 +54,25 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 			}
 		});
 	}
-	
-	
+
+
 	protected void setInvoice(InvoiceDTO invoice) {
 		this.invoice = invoice;
 	}
-	
+
 	protected InvoiceDTO getInvoice() {
 		return invoice;
 	}
-	
+
 	protected boolean validateInvoice(){
-		if(getView().getDate().getTextBox().getText().isEmpty() || getView().getDate().getValue() == null){
-			return false;
-		} 
+		getView().getDate().validate();
+		getView().getNumber().validate();
 		
-		if(getView().getItemInsertionForm().getItems().isEmpty()){
+		if(!getView().getItemInsertionForm().isValid()){
 			return false;
 		}
-		
-		getView().getNumber().validate();
-		getView().getPayment().validate();
-		if(!getView().getNumber().isValid() || !getView().getPayment().isValid()){
+
+		if(!getView().getDate().isValid() || !getView().getNumber().isValid() || !getView().getPayment().isValid()){
 			return false;
 		}
 
@@ -78,7 +81,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 
 	protected InvoiceDTO createInvoice(InvoiceDTO invoice){
 		InvoiceDTO inv;
-
+		
 		if(invoice != null){
 			inv = invoice;
 		} else {
@@ -86,7 +89,6 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 			inv.setBusiness(Configuration.getBusiness());
 			inv.setClient(getClient());
 		}
-
 
 		inv.setDocumentID(Long.parseLong(getView().getNumber().getText()));
 		inv.setAccountingDocumentDate(getView().getDate().getValue());
@@ -96,16 +98,77 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		}
 		inv.setItems(invItems);
 		inv.setNote(getView().getNote().getText());
-		inv.setPaymentType(PaymentType.values()[getView().getPayment().getSelectedIndex()-1]);
-		if(getView().getPayment().getSelectedIndex() > 0){
-			inv.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(inv.getAccountingDocumentDate(), inv.getPaymentType()));  
-		} else {
-			inv.setPaymentDueDate(null);
-		}
-
+		inv.setPaymentTypeName(getView().getPayment().getSelectedPayment().getName());
+		inv.setPaymentDateDelta(getView().getPayment().getSelectedPayment().getPaymentDateDelta());
+		inv.setPaymentDateGenerator(getView().getPayment().getSelectedPayment().getPaymentDateGenerator());
+		inv.setPaymentDueDate(getView().getPayment().getPaymentDueDate());
 		inv.setPaymentNote(getView().getPaymentNote().getText());
 		DocumentUtils.calculateTotals(invItems, inv);
 		return inv;
+	}
+	
+	@Override
+	public void onPaymentSelected(final PaymentTypeDTO payment) {
+		/*
+		 * when the payment is selected, we will show the checkbox to make the payment as default, if necessary
+		 */
+		ManagedAsyncCallback<PaymentTypeDTO> cb = new ManagedAsyncCallback<PaymentTypeDTO>() {
+
+			@Override
+			public void onSuccess(PaymentTypeDTO result) {
+				cachedDefaultPaymentTypeDTO = result;
+				if(cachedDefaultPaymentTypeDTO == null || !cachedDefaultPaymentTypeDTO.getId().equals(payment.getId())) {
+					getView().getMakePaymentAsDefault().setVisible(true);
+				}
+			}
+		};
+		
+		//if this client's default payment type was never fetched, we fetch it
+		if(getClient().getDefaultPaymentTypeID() != null && this.cachedDefaultPaymentTypeDTO == null){
+			ServerFacade.INSTANCE.getPaymentService().get(getClient().getDefaultPaymentTypeID(), cb);
+		} else {
+			//otherwise we use the cached one
+			cb.onSuccess(cachedDefaultPaymentTypeDTO);
+		}
+		
+		/*
+		 * update the payment note if necessary		
+		 */
+		if(payment.getDefaultPaymentNote().trim().isEmpty()){
+			return;
+		}
+		
+		if(getView().getPaymentNote().isEmpty()){
+			getView().getPaymentNote().setText(payment.getDefaultPaymentNote());
+		} else {
+			
+			if(getView().getPaymentNote().getText().equals(payment.getDefaultPaymentNote())){
+				return;
+			}
+			
+			SafeHtmlBuilder shb = new SafeHtmlBuilder();
+			shb.appendHtmlConstant("<div>");
+			shb.appendEscaped(I18N.INSTANCE.overridePaymentNoteQuestion());
+			shb.appendHtmlConstant("</div>");
+			shb.appendHtmlConstant("<div style=\"font-style: italic;\">");
+			shb.appendEscaped(payment.getDefaultPaymentNote());
+			shb.appendHtmlConstant("</div>");
+			Notification.showConfirm(shb.toSafeHtml(), new NotificationCallback<Boolean>() {
+				
+				@Override
+				public void onNotificationClosed(Boolean value) {
+					if(value){
+						getView().getPaymentNote().setText(payment.getDefaultPaymentNote());
+					}
+				}
+			});
+		}
+	}
+	
+	@Override
+	public void onPaymentClear() {
+		getView().getMakePaymentAsDefault().setVisible(false);
+		getView().getMakePaymentAsDefault().setValue(false);
 	}
 
 }

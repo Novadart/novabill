@@ -68,7 +68,7 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 		
 		if(this.estimation == null) {
 			
-			ServerFacade.estimation.add(estimation, new ManagedAsyncCallback<Long>() {
+			ServerFacade.INSTANCE.getEstimationService().add(estimation, new ManagedAsyncCallback<Long>() {
 
 				@Override
 				public void onSuccess(Long result) {
@@ -93,7 +93,7 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 			
 		} else {
 			
-			ServerFacade.estimation.update(estimation, new ManagedAsyncCallback<Void>() {
+			ServerFacade.INSTANCE.getEstimationService().update(estimation, new ManagedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {
@@ -121,16 +121,15 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 	}
 	
 	protected boolean validateEstimation(){
-		if(getView().getDate().getTextBox().getText().isEmpty() || getView().getDate().getValue() == null 
-				|| getView().getValidTill().getTextBox().getText().isEmpty() || getView().getValidTill().getValue() == null){
-			return false;
-		} 
-
-		if(getView().getItemInsertionForm().getItems().isEmpty()){
+		getView().getNumber().validate();
+		getView().getDate().validate();
+		getView().getValidTill().validate();
+		
+		if(!getView().getItemInsertionForm().isValid()){
 			return false;
 		}
-		getView().getNumber().validate();
-		return getView().getNumber().isValid();
+		
+		return getView().getNumber().isValid() && getView().getDate().isValid() && getView().getValidTill().isValid();
 	}
 	
 	

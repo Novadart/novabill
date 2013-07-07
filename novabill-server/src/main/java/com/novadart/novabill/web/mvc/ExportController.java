@@ -4,12 +4,16 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.security.NoSuchAlgorithmException;
 import java.util.HashSet;
 import java.util.Locale;
 import java.util.Set;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import net.sf.jasperreports.engine.JRException;
+
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -22,8 +26,10 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.novadart.novabill.annotation.Xsrf;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Logo;
+import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.service.DataExporter;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.XsrfTokenService;
 import com.novadart.novabill.shared.client.data.DataExportClasses;
 
 @Controller
@@ -46,6 +52,9 @@ public class ExportController {
 
 	@Autowired
 	private ReloadableResourceBundleMessageSource messageSource;
+	
+	@Autowired
+	private XsrfTokenService xsrfTokenService;
 
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
@@ -57,7 +66,7 @@ public class ExportController {
 			@RequestParam(value = ESTIMATIONS_REQUEST_PARAM, required = false) boolean estimations,
 			@RequestParam(value = CREDITNOTES_REQUEST_PARAM, required = false) boolean creditnotes,
 			@RequestParam(value = TRANSPORTDOCS_REQUEST_PARAM, required = false) boolean transportdocs,
-			HttpServletResponse response, Locale locale, HttpSession session) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+			HttpServletResponse response, Locale locale, HttpSession session) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, JRException, JasperReportKeyResolutionException{
 		Set<DataExportClasses> classes = new HashSet<DataExportClasses>();
 		if(clients)
 			classes.add(DataExportClasses.CLIENT);
@@ -79,7 +88,7 @@ public class ExportController {
 		File zipFile = null;
 		try{
 			zipFile = dataExporter.exportData(classes, business, logo, messageSource, locale);
-			response.setContentType("application/octet-stream");
+			response.setContentType("application/zip");
 			response.setHeader ("Content-Disposition", 
 					String.format("attachment; filename=\"%s.zip\"", messageSource.getMessage("export.filename", null, "data", locale)));
 			response.setHeader ("Content-Length", String.valueOf(zipFile.length()));
@@ -91,6 +100,12 @@ public class ExportController {
 			if(zipFile != null)
 				zipFile.delete();
 		}
+	}
+	
+	@ResponseBody
+	@RequestMapping(value = "/token", method = RequestMethod.GET)
+	public String getToken(HttpSession session) throws NoSuchAlgorithmException{
+		return xsrfTokenService.generateToken(session, ExportController.TOKENS_SESSION_FIELD);
 	}
 
 }

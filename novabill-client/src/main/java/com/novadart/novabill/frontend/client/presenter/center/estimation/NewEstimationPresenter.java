@@ -60,7 +60,6 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 
 	@Override
 	public void onLoad() {
-		getView().getCreateDocument().setText(I18N.INSTANCE.createEstimate());
 		getView().getTitleLabel().setText(I18N.INSTANCE.newEstimationCreation());
 	}
 	
@@ -76,7 +75,7 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 		getView().getConvertToInvoice().getButton().setEnabled(false);
 
 		final EstimationDTO estimation = createEstimation(null);
-		ServerFacade.estimation.add(estimation, new ManagedAsyncCallback<Long>() {
+		ServerFacade.INSTANCE.getEstimationService().add(estimation, new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {

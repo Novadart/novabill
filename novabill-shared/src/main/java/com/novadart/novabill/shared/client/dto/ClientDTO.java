@@ -32,6 +32,10 @@ public class ClientDTO implements IsSerializable {
 	
 	private String ssn;
 	
+	private Long defaultPaymentTypeID;
+	
+	private String note;
+	
 	private ContactDTO contact;
 
 	public Long getId() {
@@ -144,6 +148,22 @@ public class ClientDTO implements IsSerializable {
 
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
+	}
+
+	public Long getDefaultPaymentTypeID() {
+		return defaultPaymentTypeID;
+	}
+
+	public void setDefaultPaymentTypeID(Long defaultPaymentTypeID) {
+		this.defaultPaymentTypeID = defaultPaymentTypeID;
+	}
+
+	public String getNote() {
+		return note;
+	}
+
+	public void setNote(String note) {
+		this.note = note;
 	}
 
 	public ContactDTO getContact() {

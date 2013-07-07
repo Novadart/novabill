@@ -6,14 +6,14 @@ package com.novadart.novabill.shared.client.validation;
  */
 public enum Field {
 	//Accounting document fields
-	documentID, accountingDocumentDate, accountingDocumentYear, note, paymentNote, total, totalTax, totalBeforeTax,
+	documentID, accountingDocumentDate, accountingDocumentYear, note, paymentNote, layoutType, total, totalTax, totalBeforeTax,
 	
 	//Accounting document item fields
 	accountingDocumentItems_description, accountingDocumentItems_unitOfMeasure, accountingDocumentItems_tax, accountingDocumentItems_quantity,
 	accountingDocumentItems_totalBeforeTax, accountingDocumentItems_totalTax, accountingDocumentItems_total, accountingDocumentItems_price,
 	
 	//Invoice fields
-	paymentType, paymentDueDate, payed,
+	paymentDueDate, payed, paymentTypeName,
 	
 	//Estimation
 	limitations, validTill,
@@ -25,11 +25,14 @@ public enum Field {
 	toEndpoint_companyName, toEndpoint_street, toEndpoint_postcode, toEndpoint_city, toEndpoint_province, toEndpoint_country,
 	
 	//Transport document fields
-	transporter, transportationResponsibility, tradeZone, transportStartDate, numberOfPackages,
+	transporter, transportationResponsibility, tradeZone, transportStartDate, numberOfPackages, cause,
 	
 	//Business and Client fields
 	name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatID, ssn, 
 	
 	//Client contact fields 
-	contact_firstName, contact_lastName, contact_email, contact_phone, contact_fax, contact_mobile 
+	contact_firstName, contact_lastName, contact_email, contact_phone, contact_fax, contact_mobile, contact_note,
+	
+	//PaymentType fields
+	defaultPaymentNote, paymentDateGenerator, paymentDateDelta
 }

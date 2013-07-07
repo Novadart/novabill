@@ -78,7 +78,7 @@ public class ErrorObject implements Serializable, IsSerializable {
 
 	@Override
 	public String toString() {
-		return String.format("[field: %s, code: %s]", field, errorCode.name());
+		return "[field: "+field+", code: "+errorCode.name()+"]";
 	}
 
 }

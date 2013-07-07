@@ -33,7 +33,7 @@
 			top: 1px;
 			right: 1px;
 			font-weight: bold;
-			color: #888;
+			color: #333;
 		}
 		
 		.tipPanel .closeTip:HOVER {

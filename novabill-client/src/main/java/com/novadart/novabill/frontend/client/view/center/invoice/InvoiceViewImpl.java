@@ -7,19 +7,20 @@ import com.google.gwt.core.client.GWT;
 import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
-import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
-import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
+import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
@@ -30,8 +31,12 @@ import com.novadart.novabill.frontend.client.view.center.AccountDocument;
 import com.novadart.novabill.frontend.client.view.center.AccountDocumentCss;
 import com.novadart.novabill.frontend.client.view.center.ItemInsertionForm;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
+import com.novadart.novabill.frontend.client.widget.payment.SelectPayment;
+import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
+import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
@@ -45,14 +50,13 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiField ScrollPanel docScroll;
 
 	@UiField Label titleLabel;
-	@UiField Label paymentLabel;
-	@UiField(provided=true) ValidatedListBox payment;
+	@UiField(provided=true) SelectPayment payment;
+	@UiField CheckBox makePaymentAsDefault;
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 	@UiField Label clientName;
-	@UiField(provided=true) DateBox date;
+	@UiField(provided=true) ValidatedDateBox date;
 	@UiField Label invoiceNumber;
 	@UiField(provided=true) ValidatedTextBox number;
-	@UiField Label paymentNoteLabel;
 	@UiField ValidatedTextArea paymentNote;
 	@UiField ValidatedTextArea note;
 
@@ -64,14 +68,24 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 	@UiField(provided=true) LoaderButton createInvoice;
 	@UiField Button abort;
+	
+	@UiField SimplePanel tipPayment;
 
 	private Presenter presenter;
 	
 	public InvoiceViewImpl() {
-		payment = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget(), I18N.INSTANCE.notEmptyValidationError());
-		for (String item : I18N.INSTANCE.paymentItems()) {
-			payment.addItem(item);
-		}
+		payment = new SelectPayment(new SelectPayment.Handler() {
+			
+			@Override
+			public void onPaymentSelected(PaymentTypeDTO payment) {
+				presenter.onPaymentSelected(payment);
+			}
+			
+			@Override
+			public void onPaymentClear() {
+				presenter.onPaymentClear();
+			}
+		});
 		
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 		
@@ -84,14 +98,16 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 		});
 		
-		date = new DateBox();
+		date = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
 		date.setFormat(new DateBox.DefaultFormat
-				(DateTimeFormat.getFormat("dd MMMM yyyy")));
+				(DocumentUtils.DOCUMENT_DATE_FORMAT));
 		createInvoice = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
 		
 		createInvoice.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
+		
+		TipFactory.show(Tips.center_invoice_payment, tipPayment);
 	}
 	
 	@Override
@@ -157,16 +173,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 
 	@Override
-	public Label getPaymentLabel() {
-		return paymentLabel;
-	}
-
-	@Override
-	public ValidatedListBox getPayment() {
-		return payment;
-	}
-
-	@Override
 	public ItemInsertionForm getItemInsertionForm() {
 		return itemInsertionForm;
 	}
@@ -177,18 +183,13 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 
 	@Override
-	public DateBox getDate() {
+	public ValidatedDateBox getDate() {
 		return date;
 	}
 
 	@Override
 	public Label getInvoiceNumber() {
 		return invoiceNumber;
-	}
-
-	@Override
-	public Label getPaymentNoteLabel() {
-		return paymentNoteLabel;
 	}
 
 	@Override
@@ -237,17 +238,22 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 	
 	@Override
+	public SelectPayment getPayment() {
+		return payment;
+	}
+	
+	@Override
+	public CheckBox getMakePaymentAsDefault() {
+		return makePaymentAsDefault;
+	}
+	
+	@Override
 	public void reset() {
 		//reset widget statuses
 		number.reset();
-		payment.reset();
-		paymentNote.setVisible(true);
-		invoiceNumber.setVisible(true);
-		paymentNoteLabel.setVisible(true);
-		paymentLabel.setVisible(true);
 
 		//reset widget contents		
-		payment.setSelectedIndex(0);
+		date.reset();
 		paymentNote.setText("");
 		note.setText("");
 		totalTax.setText("");
@@ -256,6 +262,9 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		itemInsertionForm.reset();
 		
 		createInvoice.reset();
+		
+		makePaymentAsDefault.setValue(false);
+		makePaymentAsDefault.setVisible(false);
 		setLocked(false);
 	}
 
@@ -267,7 +276,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		number.setEnabled(!value);
 		paymentNote.setEnabled(!value);
 		note.setEnabled(!value);
-
+		makePaymentAsDefault.setEnabled(!value);
 		abort.setEnabled(!value);
 	}
 	

@@ -29,7 +29,7 @@ public class ClientActivity extends AbstractCenterActivity {
 			@Override
 			public void onSuccess(final ClientView cv) {
 				
-				ServerFacade.client.get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
+				ServerFacade.INSTANCE.getClientService().get(place.getClientId(), new ManagedAsyncCallback<ClientDTO>() {
 
 					@Override
 					public void onSuccess(ClientDTO result) {

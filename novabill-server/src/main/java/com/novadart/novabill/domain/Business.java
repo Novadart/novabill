@@ -47,6 +47,8 @@ import org.hibernate.search.jpa.Search;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
@@ -65,49 +67,62 @@ public class Business implements Serializable, Taxable {
 	
 	@Size(max = 255)
 	@NotNull
-    private String name = "";
+	@Trimmed
+    private String name;
 
     @Size(max = 255)
     @NotNull
-    private String address = "";
+    @Trimmed
+    private String address;
 
     @Size(max = 10)
     @NotNull
-    private String postcode = "";
+    @Trimmed
+    private String postcode;
 
     @Size(max = 60)
     @NotNull
-    private String city = "";
+    @Trimmed
+    private String city;
 
     @Size(max = 2)
     //@NotNull
-    private String province = "";
+    @Trimmed
+    private String province;
 
     @Size(max = 3)
+    @Trimmed
     private String country;
 
     @Size(max = 255)
     @Email
+    @Trimmed
     private String email;
 
     @Size(max = 25)
+    @Trimmed
     private String phone;
 
     @Size(max = 25)
+    @Trimmed
     private String mobile;
 
     @Size(max = 25)
+    @Trimmed
     private String fax;
 
     @Size(max = 255)
+    @Trimmed
     private String web;
 
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
+    @Trimmed
     private String vatID;
-
+    
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
+    @Trimmed
     private String ssn;
 
     private Long nonFreeAccountExpirationTime; 
@@ -135,6 +150,9 @@ public class Business implements Serializable, Taxable {
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Principal> principals = new HashSet<Principal>();
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+    private Set<PaymentType> paymentTypes = new HashSet<PaymentType>();
     
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
@@ -499,14 +517,6 @@ public class Business implements Serializable, Taxable {
         this.clients = clients;
     }
     
-    /*
-     * End of getters and setters section
-     * */
-    
-    /*
-     * Active record functionality
-     * */
-    
     public Set<Principal> getPrincipals() {
 		return principals;
 	}
@@ -515,6 +525,22 @@ public class Business implements Serializable, Taxable {
 		this.principals = principals;
 	}
 
+	public Set<PaymentType> getPaymentTypes() {
+		return paymentTypes;
+	}
+
+	public void setPaymentTypes(Set<PaymentType> paymentTypes) {
+		this.paymentTypes = paymentTypes;
+	}
+    
+    /*
+     * End of getters and setters section
+     * */
+    
+    /*
+     * Active record functionality
+     * */
+    
 	@PersistenceContext
     transient EntityManager entityManager;
     
@@ -616,7 +642,8 @@ public class Business implements Serializable, Taxable {
      * */
     
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    	return String.format("<id: %d, name: %s>", id, name); 
+        //return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
     
 }

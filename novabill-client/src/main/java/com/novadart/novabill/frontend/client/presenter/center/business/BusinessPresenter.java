@@ -5,14 +5,15 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
+import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.Const;
 import com.novadart.novabill.frontend.client.event.BusinessUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.presenter.AbstractPresenter;
+import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.ExportUtils;
 import com.novadart.novabill.frontend.client.view.MainWidget;
 import com.novadart.novabill.frontend.client.view.center.business.BusinessView;
@@ -23,6 +24,9 @@ import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
 public class BusinessPresenter extends AbstractPresenter<BusinessView> implements BusinessView.Presenter {
 
 	private boolean logoUpdateCompleted = true;
+	
+	public BusinessPresenter() {
+	}
 	
 	public BusinessPresenter(PlaceController placeController, EventBus eventBus, BusinessView view) {
 		super(placeController, eventBus, view);
@@ -35,7 +39,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 	
 	@Override
 	public void go(AcceptsOneWidget panel) {
-		MainWidget.getInstance().setStandardView();
+		MainWidget.INSTANCE.setStandardView();
 		panel.setWidget(getView());
 	}
 
@@ -64,11 +68,11 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 
 	@Override
 	public void onUpdateLogoClicked() {
-		ServerFacade.business.generateLogoOpToken(new ManagedAsyncCallback<String>() {
+		ServerFacade.INSTANCE.getBusinessService().generateLogoOpToken(new ManagedAsyncCallback<String>() {
 
 			@Override
 			public void onSuccess(String result) {
-				getView().getFormPanel().setAction(Const.UPDATE_LOGO+result);
+				getView().getFormPanel().setAction(ClientFactory.INSTANCE.getUpdateLogo()+result);
 				getView().getUpdateLogo().setVisible(false);
 				getView().getFormPanel().setVisible(true);
 			}
@@ -77,15 +81,16 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 
 	@Override
 	public void onRemoveLogoClicked() {
-		ServerFacade.deleteLogo(new AsyncCallback<Boolean>() {
+		setLoaderInLogo();
+		ServerFacade.INSTANCE.deleteLogo(new AsyncCallback<Boolean>() {
 
 			@Override
 			public void onSuccess(Boolean result) {
-				Const.refeshLogoUrl();
+				ClientFactory.INSTANCE.refeshLogoUrl();
 				getView().getFormPanel().setVisible(false);
 				getView().getFormPanel().reset();
 				getView().getUpdateLogo().setVisible(true);
-				getView().getLogo().setUrl(Const.getLogoUrl());
+				getView().getLogo().setUrl(ClientFactory.INSTANCE.getLogoUrl());
 			}
 
 			@Override
@@ -121,7 +126,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 			getView().getSaveData().showLoader(true);
 			getView().setLocked(true);
 
-			ServerFacade.business.update(b, new ManagedAsyncCallback<Void>() {
+			ServerFacade.INSTANCE.getBusinessService().update(b, new ManagedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {
@@ -188,30 +193,40 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 
 	@Override
 	public void onLogoSubmit() {
+		setLoaderInLogo();
 		logoUpdateCompleted = false;
 	}
 
 	@Override
-	public void onLogoSubmitComplete(int resultCode) {
-		LogoUploadStatus status = LogoUploadStatus.values()[resultCode];
+	public void onLogoSubmitComplete(String resultCode) {
+		// for some reason Internet Explorer wraps the number in <pre></pre>, thus instead of 0 you get <pre>0</pre>
+		if(resultCode.toLowerCase().contains("<pre>")){
+			resultCode = String.valueOf(resultCode.charAt(5));
+		}
+
+		int code = Integer.parseInt(resultCode);
+		
+		LogoUploadStatus status = LogoUploadStatus.values()[code];
 		switch(status){
 		case ILLEGAL_PAYLOAD:
 			Notification.showMessage(I18N.INSTANCE.errorLogoIllegalFile());
-			break;
 
 		case ILLEGAL_SIZE:
 			Notification.showMessage(I18N.INSTANCE.errorLogoSizeTooBig());
-			break;
 
 		default:
 		case ILLEGAL_REQUEST:
 		case INTERNAL_ERROR:
 			Notification.showMessage(I18N.INSTANCE.errorLogoIllegalRequest());
+			getView().getLogo().setUrl(ClientFactory.INSTANCE.getLogoUrl());
+			getView().getFormPanel().setVisible(false);
+			getView().getFormPanel().reset();
+			getView().getUpdateLogo().setVisible(true);
 			break;
 
 		case OK:
-			Const.refeshLogoUrl();
-			getView().getLogo().setUrl(Const.getLogoUrl());
+			ClientFactory.INSTANCE.refeshLogoUrl();
+			getView().getLogo().setUrl(ClientFactory.INSTANCE.getLogoUrl());
 			getView().getFormPanel().setVisible(false);
 			getView().getFormPanel().reset();
 			getView().getUpdateLogo().setVisible(true);
@@ -220,6 +235,10 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 		}
 
 		logoUpdateCompleted = true;
+	}
+	
+	private void setLoaderInLogo() {
+		getView().getLogo().setUrl(ImageResources.INSTANCE.largeLoader().getSafeUri());
 	}
 
 }

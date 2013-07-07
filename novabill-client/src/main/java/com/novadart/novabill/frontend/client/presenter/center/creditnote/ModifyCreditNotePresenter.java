@@ -36,14 +36,10 @@ public class ModifyCreditNotePresenter extends AbstractCreditNotePresenter {
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNumber().setText(creditNote.getDocumentID().toString());
 		getView().getNote().setText(creditNote.getNote());
-		getView().getPaymentNote().setText(creditNote.getPaymentNote());
-		getView().getPayment().setSelectedIndex(creditNote.getPaymentType().ordinal()+1);
-
 	}
 
 	@Override
 	public void onLoad() {
-		getView().getCreateDocument().setText(I18N.INSTANCE.saveModifications());
 		getView().getTitleLabel().setText(I18N.INSTANCE.modifyCreditNote());
 	}
 
@@ -70,7 +66,7 @@ public class ModifyCreditNotePresenter extends AbstractCreditNotePresenter {
 					getView().setLocked(true);
 					getView().getCreateDocument().showLoader(true);
 
-					ServerFacade.creditNote.update(cn, new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getCreditnoteService().update(cn, new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {

@@ -27,7 +27,7 @@
 			}
 			
 			.addClient {
-				margin-top: 1.8em;
+				margin-top: 1.5em !important;
 				cursor: pointer;
 			}
 			
@@ -98,22 +98,22 @@
 			.name  {
 			}
 		</ui:style>
-
-	<g:FlowPanel styleName="{s.clientListWrapper}">
-
-		<g:FlowPanel ui:field="clientContainer" styleName="{s.clientContainer}">
-			<g:HorizontalPanel ui:field="clientsHeader"
-				styleName="{s.clientsHeader}">
-				<g:Label styleName="{s.clients}" text="{i18n.clients}"></g:Label>
-				<g:Button styleName="{g.actionButton} {s.addClient}" ui:field="addClient"
-					text="{i18n.newClient}"></g:Button>
-			</g:HorizontalPanel>
-			<g:HorizontalPanel ui:field="clientFilterContainer" />
-			<g:SimplePanel ui:field="tip" />
-			<g:ScrollPanel ui:field="clientListContainerWrapper"
-				styleName="{s.clientListContainerWrapper}" />
+	
+		<g:FlowPanel styleName="{s.clientListWrapper}">
+	
+			<g:FlowPanel ui:field="clientContainer" styleName="{s.clientContainer}">
+				<g:HorizontalPanel ui:field="clientsHeader"
+					styleName="{s.clientsHeader}">
+					<g:Label styleName="{s.clients}" text="{i18n.clients}"></g:Label>
+					<g:Button styleName="{g.actionButton} {s.addClient}" ui:field="addClient"
+						text="{i18n.newClient}"></g:Button>
+				</g:HorizontalPanel>
+				<g:HorizontalPanel ui:field="clientFilterContainer" />
+				<g:SimplePanel ui:field="tip" />
+				<g:ScrollPanel ui:field="clientListContainerWrapper"
+					styleName="{s.clientListContainerWrapper}" />
+			</g:FlowPanel>
+	
 		</g:FlowPanel>
-
-	</g:FlowPanel>
-
+	
 </ui:UiBinder> 

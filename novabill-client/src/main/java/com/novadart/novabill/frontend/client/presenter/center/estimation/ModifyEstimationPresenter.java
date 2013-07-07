@@ -53,7 +53,6 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 
 	@Override
 	public void onLoad() {
-		getView().getCreateDocument().setText(I18N.INSTANCE.saveModifications());
 		getView().getTitleLabel().setText(I18N.INSTANCE.modifyEstimation());
 	}
 	
@@ -77,7 +76,7 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 
 					final EstimationDTO es = createEstimation(getEstimation());
 
-					ServerFacade.estimation.update(es, new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getEstimationService().update(es, new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onFailure(Throwable caught) {

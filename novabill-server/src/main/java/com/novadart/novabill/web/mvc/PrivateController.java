@@ -17,30 +17,36 @@ import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
 @Controller
 public class PrivateController {
-	
+
 	private static final ObjectMapper jsonSerializer = new ObjectMapper();
-	
+
 	@Autowired
 	private UtilsService utilsService;
-	
-	@Value("${debug.enabled}")
-	private boolean debugEnabled;
-	
+
+	@Value("${devMode.enabled}")
+	private boolean devMode;
+
 	@RequestMapping(value = "/private", method = RequestMethod.GET)
 	public ModelAndView privateArea(){
 		ModelAndView mav = new ModelAndView("private");
-		Business business =  Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
-		BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
-		StringWriter sw = new StringWriter();
-		try {
-			jsonSerializer.writeValue(sw, businessDTO);
-		} catch (Exception e) {
-			return null;
+		Business business = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId()).getBusiness();
+		String serializedBizz = null;
+		if(business != null) {
+			BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
+			if (business != null) {
+				StringWriter sw = new StringWriter();
+				try {
+					jsonSerializer.writeValue(sw, businessDTO);
+					serializedBizz = sw.toString();
+				} catch (Exception e) {
+					return null;
+				}
+			}
 		}
-		mav.addObject("business", sw.toString());
-		mav.addObject("daysToExpiration", business.getNonFreeExpirationDelta(TimeUnit.DAYS));
+		mav.addObject("business", serializedBizz);
+		mav.addObject("daysToExpiration", business == null? null: business.getNonFreeExpirationDelta(TimeUnit.DAYS));
 		mav.addObject("notesBitMask", Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId()).getNotesBitMask());
-		mav.addObject("debugEnabled", debugEnabled);
+		mav.addObject("devMode", devMode);
 		return mav;
 	}
 

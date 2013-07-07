@@ -22,16 +22,38 @@
     	var business = <%=request.getAttribute("business")%>;
     	var daysToExpiration = <%=request.getAttribute("daysToExpiration")%>;
     	var notesBitMask = '<%=request.getAttribute("notesBitMask")%>';
-    	var debugEnabled = '<%=request.getAttribute("debugEnabled")%>';
+    	var devMode = '<%=request.getAttribute("devMode")%>';
     </script>
     
-    <script type="text/javascript" language="javascript" src="<spring:url value="/rpc/rpc.nocache.js" />"></script>
+    <style type="text/css">
+    #loadingGWT {
+    font-family: Arial, sans-serif, serif;
+    padding: 2em;
+    font-size: 1.2em;
+    }
     
+    #loadingGWT span {
+	margin-left: 2em;    
+    }
+    
+    #loadingGWT img {
+    position: relative;
+	top: 0.5em;
+    }
+    </style>
+    
+    <script type="text/javascript" language="javascript" src="<spring:url value="/rpc/rpc.nocache.js" />"></script>
+
   </head>
 
   <body>
 	
 	<tiles:insertAttribute name="analytics" />
+	
+	<div id="loadingGWT">
+		<img src="images/loader.gif"><span><spring:message code="private.loading" /></span>
+	</div>
+	
 	
     <iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1' style="position:absolute;width:0;height:0;border:0"></iframe>
     

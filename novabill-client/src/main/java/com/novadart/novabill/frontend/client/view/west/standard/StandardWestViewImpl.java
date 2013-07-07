@@ -17,7 +17,6 @@ import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.util.WidgetUtils;
@@ -61,11 +60,16 @@ public class StandardWestViewImpl extends Composite implements StandardWestView 
 	
 	private Presenter presenter;
 	private final ClientSearch clientSearch;
+	
+	private CellList<ClientDTO> clientList;
 
 	public StandardWestViewImpl() {
 		initWidget(uiBinder.createAndBindUi(this));
 		
-		clientSearch = new ClientSearch(cs, createClientList());
+		clientList = new CellList<ClientDTO>(new ClientCell(ccs));
+		clientList.setStyleName(s.cellList());
+		
+		clientSearch = ClientSearch.getInstance(cs, clientList);
 		clientFilterContainer.add(clientSearch.getSearchInput());
 		clientFilterContainer.add(clientSearch.getResetButton());
 		clientListContainerWrapper.setWidget(clientSearch.getWrappedClientList());
@@ -93,24 +97,6 @@ public class StandardWestViewImpl extends Composite implements StandardWestView 
 		return I18N.INSTANCE;
 	}
 
-	private CellList<ClientDTO> createClientList(){
-		ClientCell cell = new ClientCell(ccs);
-		CellList<ClientDTO> list = new CellList<ClientDTO>(cell);
-		list.setStyleName(s.cellList());
-
-		cell.setHandler(new ClientCell.Handler() {
-
-			@Override
-			public void onClientSelected(ClientDTO client) {
-				ClientPlace cp = new ClientPlace();
-				cp.setClientId(client.getId());
-				presenter.goTo(cp);
-			}
-		});
-
-		return list;
-	}
-
 	@UiHandler("addClient")
 	void onAddClientClicked(ClickEvent e){
 		presenter.onAddClientClicked();
@@ -124,6 +110,11 @@ public class StandardWestViewImpl extends Composite implements StandardWestView 
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
+	}
+	
+	@Override
+	public CellList<ClientDTO> getClientList() {
+		return clientList;
 	}
 
 	@Override

@@ -50,6 +50,10 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 		} 
 
 		getView().getNumberOfPackages().setText(String.valueOf(document.getNumberOfPackages()));
+		getView().getCause().setText(document.getCause());
+		getView().getTransporter().setText(document.getTransporter());
+		getView().getTradeZone().setText(document.getTradeZone());
+		getView().getTransportationResponsibility().setText(document.getTransportationResponsibility());
 
 		EndpointDTO loc = document.getFromEndpoint();
 		getView().getFromAddrCity().setText(loc.getCity());
@@ -85,7 +89,7 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 
 					final TransportDocumentDTO td = createTransportDocument(getTransportDocument());
 
-					ServerFacade.transportDocument.update(td, new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getTransportdocumentService().update(td, new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onFailure(Throwable caught) {
@@ -123,7 +127,6 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 
 	@Override
 	public void onLoad() {
-		getView().getCreateDocument().setText(I18N.INSTANCE.saveModifications());
 		getView().getTitleLabel().setText(I18N.INSTANCE.modifyTransportDocument());
 	}
 

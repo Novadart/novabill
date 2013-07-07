@@ -71,7 +71,6 @@
 			padding: 0 0.5em;
 			text-align: center;
 			text-shadow: 2px 2px 2px #DDD;
-			filter: dropshadow(color \= #DDDDDD, offx \= 2, offy \= 2);
 		}
 		
 		.clientDetails {

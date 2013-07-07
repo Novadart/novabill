@@ -11,6 +11,7 @@ import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public interface BusinessServiceAsync {
@@ -53,5 +54,10 @@ public interface BusinessServiceAsync {
 	void generateLogoOpToken(AsyncCallback<String> callback);
 
 	void getCommodities(Long businessID, AsyncCallback<List<CommodityDTO>> callback);
+
+	void getPaymentTypes(Long businessID,
+			AsyncCallback<List<PaymentTypeDTO>> callback);
+
+	void add(BusinessDTO businessDTO, AsyncCallback<Long> callback);
 
 }

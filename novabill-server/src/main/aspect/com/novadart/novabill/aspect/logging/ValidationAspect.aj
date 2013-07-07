@@ -17,7 +17,7 @@ public aspect ValidationAspect extends AbstractLogEventEmailSenderAspect {
 	
 	after() throwing(ValidationException ex): simpleValidationError(){
 		Map<String, Object> vars = new HashMap<String, Object>();
-		vars.put("type", ex.getObjectClassName());
+		vars.put("object", ex.getObjectRepr());
 		vars.put("errors", String.format("{%s}", StringUtils.join(ex.getErrors(), ", ")));
 		handleEvent(LOGGER, "JSR-303 validation error", "N/A", new Date(System.currentTimeMillis()), vars);
 	}

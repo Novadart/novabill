@@ -3,12 +3,12 @@ h1 {
 }
 
 h4 {
-	font-size: 1.2em;	
+	font-size: 1.2em;
 }
 
 .intro h2 {
 	text-align: center;
-	color:#333333;
+	color: #333333;
 	font-size: 6em;
 	padding: 30px 0px;
 	font-weight: bold;
@@ -129,6 +129,7 @@ h3 {
 .inset .row:first-child {
 	margin-top: -13px;
 }
+
 .inset .row:last-child {
 	border-bottom: none;
 }
@@ -161,12 +162,12 @@ h3 {
 	background: url('../../images/gloss-thumbnail-hover.png');
 }
 
-.fancybox-title-over{
+.fancybox-title-over {
 	background: rgba(0, 0, 0, .7);
 	padding: 0.5em 0;
 }
 
-.fancybox-title-over p{
+.fancybox-title-over p {
 	color: white;
 	padding: 0 10px;
 	font-size: 1.4em;
@@ -197,6 +198,7 @@ h3 {
 	font-family: Georgia, Times, serif;
 	font-style: italic;
 }
+
 .quotation-mark {
 	float: left;
 	margin: 0 10px 0 5px;
@@ -209,6 +211,14 @@ h3 {
 	display: block;
 }
 
+#tryDemo {
+	margin: 10px auto 0;
+	display: block;
+	font-size: 1.1em;
+	width: 380px;
+	text-align: center;
+}
+
 .top-features p {
 	color: #8C8C8C;
 	font-size: 1.1em;
@@ -216,3 +226,24 @@ h3 {
 	line-height: 120%;
 }
 
+/* Floating menu */
+.container {
+	position: relative;
+}
+
+#socialBox {
+	background-color: #FFFFFE;
+	left: -4em;
+	text-align: center;
+	top: 20em;
+	box-shadow: 3px 1px 3px #CCC;
+	width: 100px;
+	float: left;
+	position: absolute;
+	height: 290px;
+}
+
+#socialBox .entry {
+	margin-top: 20px;
+}
+/*  */

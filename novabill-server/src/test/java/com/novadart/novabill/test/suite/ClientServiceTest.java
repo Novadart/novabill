@@ -21,6 +21,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -242,6 +243,58 @@ public class ClientServiceTest extends GWTServiceTest {
 				actual.add(error.getField());
 			assertEquals(expected, actual);
 		}
+	}
+	
+	@Test
+	public void updateAuthorizedDefaultPaymentTypeNotNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		PaymentType paymentType = TestUtils.createPaymentType();
+		client.setDefaultPaymentType(paymentType);
+		paymentType.getClients().add(client);
+		paymentType.persist();
+		PaymentType.entityManager().flush();
+		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		clientDTO.setDefaultPaymentTypeID(null);
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertNull(client.getDefaultPaymentType());
+	}
+	
+	@Test
+	public void updateAuthorizedDefaultPaymentTypeNotNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		PaymentType paymentType1 = TestUtils.createPaymentType();
+		client.setDefaultPaymentType(paymentType1);
+		paymentType1.getClients().add(client);
+		paymentType1.persist();
+		PaymentType.entityManager().flush();
+		PaymentType paymentType2 = TestUtils.createPaymentType();
+		paymentType2.persist();
+		PaymentType.entityManager().flush();
+		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		clientDTO.setDefaultPaymentTypeID(paymentType2.getId());
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertEquals(paymentType2, client.getDefaultPaymentType());
+	}
+	
+	@Test
+	public void updateAuthorizedNullDefaultPaymentTypeNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		clientDTO.setDefaultPaymentTypeID(null);
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertNull(client.getDefaultPaymentType());
+	}
+	
+	@Test
+	public void updateAuthorizedNullDefaultPaymentTypeNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		PaymentType paymentType = TestUtils.createPaymentType();
+		paymentType.persist();
+		PaymentType.entityManager().flush();
+		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		clientDTO.setDefaultPaymentTypeID(paymentType.getId());
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertEquals(paymentType, client.getDefaultPaymentType());
 	}
 	
 }

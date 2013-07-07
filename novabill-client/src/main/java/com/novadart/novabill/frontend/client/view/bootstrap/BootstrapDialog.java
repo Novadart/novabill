@@ -10,7 +10,6 @@ import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
-import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
@@ -111,7 +110,7 @@ public class BootstrapDialog extends Dialog {
 	void onSubmitClicked(ClickEvent e){
 		if(validate()){
 
-			final BusinessDTO b = Configuration.getBusiness();
+			final BusinessDTO b = new BusinessDTO();
 			b.setName(name.getText());
 			b.setAddress(address.getText());
 			b.setSsn(ssn.getText());

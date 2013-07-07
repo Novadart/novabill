@@ -7,3 +7,5 @@ log.roo
 novabill-server/src/main/webapp/rpc
 /.pydevproject
 novabill-report/.pydevproject
+*.jasper
+

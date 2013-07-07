@@ -55,7 +55,6 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 
 	@Override
 	public void onLoad() {
-		getView().getCreateDocument().setText(I18N.INSTANCE.createCreditNote());
 		getView().getTitleLabel().setText(I18N.INSTANCE.newCreditNoteCreation());
 	}
 
@@ -77,7 +76,7 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 
 		getView().setLocked(true);
 		getView().getCreateDocument().showLoader(true);
-		ServerFacade.creditNote.add(creditNote, new ManagedAsyncCallback<Long>() {
+		ServerFacade.INSTANCE.getCreditnoteService().add(creditNote, new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {

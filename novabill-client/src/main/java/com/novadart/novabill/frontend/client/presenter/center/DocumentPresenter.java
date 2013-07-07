@@ -29,7 +29,7 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 	
 	@Override
 	public void go(AcceptsOneWidget panel) {
-		MainWidget.getInstance().setLargeView();
+		MainWidget.INSTANCE.setLargeView();
 		super.go(panel);
 	}
 	
@@ -78,9 +78,11 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 		case note: return I18N.INSTANCE.note();
 		case numberOfPackages: return I18N.INSTANCE.numberOfPackages();
 		case payed: return I18N.INSTANCE.payed();
+		case paymentDateDelta: return I18N.INSTANCE.paymentDelay();
+		case paymentDateGenerator: return I18N.INSTANCE.payment();
 		case paymentDueDate: return I18N.INSTANCE.dueDate();
 		case paymentNote: return I18N.INSTANCE.paymentNote();
-		case paymentType: return I18N.INSTANCE.payment();
+		case paymentTypeName: return I18N.INSTANCE.payment();
 		case ssn: return I18N.INSTANCE.ssn();
 		case total: return I18N.INSTANCE.totalAfterTaxes();
 		case totalBeforeTax: return I18N.INSTANCE.totalBeforeTaxes();
@@ -92,7 +94,8 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 		case validTill: return I18N.INSTANCE.validTill();
 		case vatID: return I18N.INSTANCE.vatID();
 		case web: return I18N.INSTANCE.web();
-		
+		case defaultPaymentNote: return I18N.INSTANCE.paymentNote();
+
 		default:
 			return null;
 		}
@@ -125,9 +128,8 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 				break;
 			}
 		}
-		
 	}
-
+	
 	protected ClientDTO getClient() {
 		return client;
 	}

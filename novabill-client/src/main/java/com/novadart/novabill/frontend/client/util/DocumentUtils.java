@@ -4,15 +4,20 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.datepicker.client.CalendarUtil;
+import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
-import com.novadart.novabill.shared.client.dto.PaymentType;
+import com.novadart.novabill.shared.client.dto.PaymentDateType;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public class DocumentUtils {
 	
-	private static final long ONE_DAY_MS = 1000 * 60 * 60 * 24;
+	public static DateTimeFormat DOCUMENT_DATE_FORMAT = DateTimeFormat.getFormat("dd MMMM yyyy");
 	
 	public static BigDecimal parseValue(String value) throws NumberFormatException {
 		return new BigDecimal( NumberFormat.getDecimalFormat().parse(value) );
@@ -29,7 +34,9 @@ public class DocumentUtils {
 	
 	
 	public static BigDecimal calculateTaxesForItem(AccountingDocumentItemDTO item){
-		return item.getPrice()
+		return item.getPrice() == null 
+				? BigDecimal.ZERO
+				: item.getPrice()
 				.multiply(item.getQuantity())
 				.multiply(item.getTax())
 				.divide(new BigDecimal(100));
@@ -37,13 +44,17 @@ public class DocumentUtils {
 	
 	
 	public static BigDecimal calculateTotalBeforeTaxesForItem(AccountingDocumentItemDTO item){
-		return item.getPrice()
+		return item.getPrice() == null 
+				? BigDecimal.ZERO
+				: item.getPrice()
 				.multiply(item.getQuantity());
 	}
 	
 	
 	public static BigDecimal calculateTotalAfterTaxesForItem(AccountingDocumentItemDTO item){
-		return item.getPrice()
+		return item.getPrice() == null 
+				? BigDecimal.ZERO
+				: item.getPrice()
 				.multiply(item.getQuantity())
 				.multiply(item.getTax().add(new BigDecimal(100)))
 				.divide(new BigDecimal(100));
@@ -51,13 +62,7 @@ public class DocumentUtils {
 	
 	
 	public static AccountingDocumentItemDTO createAccountingDocumentItem(String description, String price, 
-			String quantity, String unitOfMeasure, String tax){
-		for (String txt : new String[]{description,quantity,price}) {
-			if(txt.isEmpty()){
-				return null;
-			}
-		}
-		
+			String quantity, String unitOfMeasure, BigDecimal tax){
 		AccountingDocumentItemDTO ii = new AccountingDocumentItemDTO();
 
 		try {
@@ -65,13 +70,42 @@ public class DocumentUtils {
 			ii.setPrice(parseCurrency(price));
 			ii.setQuantity(parseValue(quantity));
 			ii.setUnitOfMeasure(unitOfMeasure);
-			ii.setTax(new BigDecimal(tax));
+			ii.setTax(tax);
 		} catch (NumberFormatException ex) {
 			return null;
 		}
 		
 		DocumentUtils.updateTotals(ii);
 		return ii;
+	}
+	
+	
+	public static AccountingDocumentItemDTO createAccountingDocumentItem(String description) {
+		AccountingDocumentItemDTO ii = new AccountingDocumentItemDTO();
+		ii.setDescription(description);
+		return ii;
+	}
+	
+	
+	public static String validateAccountingDocumentItem(String description, String price, 
+			String quantity, String unitOfMeasure, BigDecimal tax){
+		if(description.isEmpty()) {
+			return I18NM.get.errorCheckField(I18N.INSTANCE.nameDescription());
+		}
+		
+		if( price.isEmpty() ) {
+			return I18NM.get.errorCheckField(I18N.INSTANCE.price());
+		}
+		
+		if( quantity.isEmpty() ) {
+			return I18NM.get.errorCheckField(I18N.INSTANCE.quantity());
+		}
+		
+		if( tax == null ){
+			return I18NM.get.errorCheckField(I18N.INSTANCE.vat());
+		}
+		
+		return null;
 	}
 	
 	
@@ -113,41 +147,64 @@ public class DocumentUtils {
 		doc.setTotal(totAfterTaxes);
 	}
 	
-	
-	public static Date calculatePaymentDueDate(Date creation, PaymentType paymentType){
+	public static Date calculatePaymentDueDate(Date documentDate, PaymentTypeDTO payment){
+		if(PaymentDateType.CUSTOM.equals(payment.getPaymentDateGenerator())){
+			return null;
+		}
 		
-		switch(paymentType){
-		case BANK_TRANSFER:
-		case CASH:
+		Date d;
+		
+		switch (payment.getPaymentDateGenerator()) {
 		default:
-			return creation;
+		case CUSTOM:
+			return null;
 			
-		case BANK_TRANSFER_30:
-		case RIBA_30:
-		case RIBA_30_FM:
-			return new Date(creation.getTime()+ONE_DAY_MS*30);
+		case END_OF_MONTH:
+			//add the delay	
+			d = calculatePaymentDueDateAddingCommercialMonths(documentDate, payment.getPaymentDateDelta());
 			
-		case BANK_TRANSFER_60:
-		case RIBA_60:
-		case RIBA_60_FM:
-			return new Date(creation.getTime()+ONE_DAY_MS*60);
-		
-		case RIBA_90:
-		case RIBA_90_FM:
-			return new Date(creation.getTime()+ONE_DAY_MS*90);
+			// move to the end of month	
+			CalendarUtil.setToFirstDayOfMonth(d);
+			CalendarUtil.addMonthsToDate(d, 1);
+			CalendarUtil.addDaysToDate(d, -1);
+			return d;
 			
-		case RIBA_120:
-		case RIBA_120_FM:
-			return new Date(creation.getTime()+ONE_DAY_MS*120);
-		
-		case RIBA_150:
-		case RIBA_150_FM:
-			return new Date(creation.getTime()+ONE_DAY_MS*150);
-			
-		case RIBA_180:
-		case RIBA_180_FM:
-			return new Date(creation.getTime()+ONE_DAY_MS*180);
+		case IMMEDIATE:
+			//add the delay	
+			d = calculatePaymentDueDateAddingCommercialMonths(documentDate, payment.getPaymentDateDelta());
+						
+			return d;
 		}
 	}
 	
+	
+	@SuppressWarnings("deprecation")
+	private static Date calculatePaymentDueDateAddingCommercialMonths(Date date, int months){
+		if(months == 0){
+			return date;
+		}
+		
+		// first of all add the months on a date set to the first day of month.
+		// This way the different length of months won't get on the way
+		Date resultDate = (Date)date.clone();
+		CalendarUtil.setToFirstDayOfMonth(resultDate);
+		CalendarUtil.addMonthsToDate(resultDate, months);
+		
+		//save the resulting month		
+		int resultMonth = resultDate.getMonth();
+		
+		// set the day of the original date. Notice: if month is February and day is 31 this will cause a change of month.
+		// Of course there are many other similar cases.
+		resultDate.setDate(date.getDate());
+		
+		// NOTE: we can use > because December is 31 days long. However != is more general and can take into account cases that
+		// do not come up into my mind now The months must be the same
+		while(resultDate.getMonth() != resultMonth) {
+			//remove a day till we get to the last day of the target month
+			CalendarUtil.addDaysToDate(resultDate, -1);
+		}
+		
+		return resultDate;
+	}
+
 }

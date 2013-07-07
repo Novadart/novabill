@@ -22,7 +22,7 @@ import com.novadart.novabill.frontend.client.view.center.home.EstimationDataProv
 import com.novadart.novabill.frontend.client.view.center.home.HomeView;
 import com.novadart.novabill.frontend.client.view.center.home.InvoiceDataProvider;
 import com.novadart.novabill.frontend.client.view.center.home.TransportDocumentDataProvider;
-import com.novadart.novabill.frontend.client.widget.dialog.SelectClientDialog;
+import com.novadart.novabill.frontend.client.widget.dialog.selectclient.SelectClientDialog;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
@@ -49,7 +49,7 @@ public class HomePresenter extends AbstractPresenter<HomeView> implements HomeVi
 
 	@Override
 	public void go(AcceptsOneWidget panel) {
-		MainWidget.getInstance().setStandardView();
+		MainWidget.INSTANCE.setStandardView();
 		super.go(panel);
 	}
 
@@ -60,14 +60,15 @@ public class HomePresenter extends AbstractPresenter<HomeView> implements HomeVi
 
 	@Override
 	public void onLoad() {
-		invoiceDataProvider.addDataDisplay(getView().getInvoiceList());
 		getView().getInvoiceList().setVisibleRange(DOCS_LIST_RANGE);
-		estimationDataProvider.addDataDisplay(getView().getEstimationList());
 		getView().getEstimationList().setVisibleRange(DOCS_LIST_RANGE);
-		creditNoteDataProvider.addDataDisplay(getView().getCreditNoteList());
 		getView().getCreditNoteList().setVisibleRange(DOCS_LIST_RANGE);
-		transportDocumentDataProvider.addDataDisplay(getView().getTransportDocumentList());
 		getView().getTransportDocumentList().setVisibleRange(DOCS_LIST_RANGE);
+		
+		invoiceDataProvider.addDataDisplay(getView().getInvoiceList());
+		estimationDataProvider.addDataDisplay(getView().getEstimationList());
+		creditNoteDataProvider.addDataDisplay(getView().getCreditNoteList());
+		transportDocumentDataProvider.addDataDisplay(getView().getTransportDocumentList());
 		
 		bind();
 		getView().getInvoiceList().setEventBus(getEventBus());

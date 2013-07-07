@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.view.center.business;
 
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -34,57 +35,59 @@ public interface BusinessView extends View<BusinessView.Presenter>, HasUILocking
 		
 		void onLogoSubmit();
 		
-		void onLogoSubmitComplete(int resultCode);
+		void onLogoSubmitComplete(String result);
 	}
 
-	public Button getUpdateLogo();
+	Button getUpdateLogo();
 
-	public AlternativeSsnVatIdValidation getSsnOrVatIdValidation();
+	AlternativeSsnVatIdValidation getSsnOrVatIdValidation();
 
-	public Button getExportTransportDocumentData();
+	Button getExportTransportDocumentData();
 
-	public Button getExportCreditNoteData();
+	Button getExportCreditNoteData();
 
-	public Button getExportEstimationData();
+	Button getExportEstimationData();
 
-	public Button getExportInvoiceData();
+	Button getExportInvoiceData();
 
-	public Button getExportClientData();
+	Button getExportClientData();
 
-	public LoaderButton getSaveData();
+	LoaderButton getSaveData();
 
-	public ValidatedTextBox getWeb();
+	ValidatedTextBox getWeb();
 
-	public ValidatedTextBox getFax();
+	ValidatedTextBox getFax();
 
-	public ValidatedTextBox getMobile();
+	ValidatedTextBox getMobile();
 
-	public ValidatedTextBox getEmail();
+	ValidatedTextBox getEmail();
 
-	public ValidatedTextBox getPhone();
+	ValidatedTextBox getPhone();
 
-	public ValidatedTextBox getPostcode();
+	ValidatedTextBox getPostcode();
 
-	public ValidatedListBox getCountry();
+	ValidatedListBox getCountry();
 
-	public ValidatedListBox getProvince();
+	ValidatedListBox getProvince();
 
-	public ValidatedTextBox getCity();
+	ValidatedTextBox getCity();
 
-	public ValidatedTextBox getAddress();
+	ValidatedTextBox getAddress();
 
-	public ValidatedTextBox getVatID();
+	ValidatedTextBox getVatID();
 
-	public ValidatedTextBox getSsn();
+	ValidatedTextBox getSsn();
 
-	public ValidatedTextBox getName();
+	ValidatedTextBox getName();
 
-	public InlineNotification getInlineNotification();
+	InlineNotification getInlineNotification();
 
-	public Image getLogo();
+	Image getLogo();
 
-	public FormPanel getFormPanel();
+	FormPanel getFormPanel();
 
-	public Button getRemoveLogo();
+	Button getRemoveLogo();
+
+	Anchor getDeleteAccount();
 
 }
