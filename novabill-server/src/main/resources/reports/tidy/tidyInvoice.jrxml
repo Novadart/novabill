@@ -69,6 +69,7 @@
 	<field name="logoInStream" class="java.io.InputStream"/>
 	<field name="document.business.ssn" class="java.lang.String"/>
 	<field name="document.client.ssn" class="java.lang.String"/>
+	<field name="document.client.id" class="java.lang.Long"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -407,7 +408,9 @@ $F{document.client.country} + "\n" +
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="f7393b41-7696-40a3-b364-799c79bb1a2e" x="140" y="45" width="274" height="12" forecolor="#D1D1D1"/>
+				<reportElement uuid="f7393b41-7696-40a3-b364-799c79bb1a2e" x="140" y="45" width="274" height="12" forecolor="#D1D1D1">
+					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font size="8"/>
 				</textElement>
