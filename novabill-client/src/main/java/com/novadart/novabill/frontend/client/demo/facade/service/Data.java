@@ -12,8 +12,11 @@ import java.util.Map;
 import java.util.Set;
 import java.util.TreeSet;
 
+import com.google.gwt.user.client.Random;
 import com.novadart.novabill.frontend.client.SharedComparators;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
+import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
@@ -54,12 +57,8 @@ class Data {
 		REFERENCE_DATE = new Date(new Date().getYear(), 0, 1, 0, 0);
 		
 		populateBusiness();
-		populateClients();
-		populateCreditNotes();
-		populateEstimations();
-		populateInvoices();
 		populatePaymentTypes();
-		populateTransportDocs();
+		populateClients();
 	}
 	
 	public static BusinessDTO getBusiness() {
@@ -317,41 +316,155 @@ class Data {
 		p.setPaymentDateDelta(0);
 		p.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
 		PAYMENTS.put(p.getId(), p);
+		
+		p = new PaymentTypeDTO();
+		p.setBusiness(business);
+		p.setDefaultPaymentNote("Pagamento con bonifico bancario entro 30 giorni");
+		p.setId(id++);
+		p.setName("Bonifico Bancario 30GG");
+		p.setPaymentDateDelta(1);
+		p.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+		PAYMENTS.put(p.getId(), p);
+		
+		p = new PaymentTypeDTO();
+		p.setBusiness(business);
+		p.setDefaultPaymentNote("Pagamento con bonifico bancario entro 30 giorni d.f. f.m.");
+		p.setId(id++);
+		p.setName("Bonifico Bancario 30GG d.f. f.m.");
+		p.setPaymentDateDelta(1);
+		p.setPaymentDateGenerator(PaymentDateType.END_OF_MONTH);
+		PAYMENTS.put(p.getId(), p);
 	}
 	
 	private static void populateClients(){
 		ClientDTO c = new ClientDTO();
-		c.setAddress("");
-		c.setCity("");
+		c.setAddress("via del Sole");
+		c.setCity("Bellavista");
 		c.setContact(new ContactDTO());
 		c.setCountry("IT");
-		c.setEmail("");
-		c.setFax("");
+		c.setEmail("email@example.org");
+		c.setFax("1234567890");
+		c.setId(id++);
+		c.setMobile("1234567890");
+		c.setName("Mario Rossi");
+		c.setPhone("1234567890");
+		c.setPostcode("12345");
+		c.setProvince("PD");
+		c.setSsn("IT04345620280");
+		c.setVatID("IT04345620280");
+		c.setWeb("www.example.org");
+		CLIENTS.put(c.getId(), c);
+		populateInvoices(c.getId());
+		populateEstimations(c.getId());
+		populateCreditNotes(c.getId());
+		populateTransportDocs(c.getId());
+		
+		c = new ClientDTO();
+		c.setAddress("via Semplicità, 44");
+		c.setCity("Sottosopra");
+		c.setContact(new ContactDTO());
+		c.setCountry("IT");
+		c.setEmail("posta@example.org");
+		c.setFax("0987654321");
+		c.setId(id++);
+		c.setMobile("09876345678");
+		c.setName("Super Company S.p.A");
+		c.setPhone("345632744");
+		c.setPostcode("94121");
+		c.setProvince("AG");
+		c.setSsn("BGGRTD38A81B374H");
+		c.setVatID("");
+		c.setWeb("");
+		CLIENTS.put(c.getId(), c);
+		
+		c = new ClientDTO();
+		c.setAddress("via del Mattino");
+		c.setCity("Gotham");
+		c.setContact(new ContactDTO());
+		c.setCountry("IT");
+		c.setEmail("yummimail@example.org");
+		c.setFax("98765432456");
 		c.setId(id++);
 		c.setMobile("");
-		c.setName("Client di test");
-		c.setPhone("");
-		c.setPostcode("");
-		c.setProvince("");
+		c.setName("Pizzeria Napoleone Bonaparte S.r.l.");
+		c.setPhone("34567543223");
+		c.setPostcode("43221");
+		c.setProvince("UD");
 		c.setSsn("");
-		c.setVatID("");
+		c.setVatID("IT04345644380");
 		c.setWeb("");
 		CLIENTS.put(c.getId(), c);
 	}
 	
-	private static void populateInvoices(){
+	private static void populateInvoices(Long clientId){
+		InvoiceDTO i = new InvoiceDTO();
+		i.setAccountingDocumentDate(new Date());
+		i.setBusiness(business);
+		i.setClient(CLIENTS.get(clientId));
+		i.setDocumentID(1L);
+		i.setId(id++);
 		
+		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>();
+		
+		AccountingDocumentItemDTO it = new AccountingDocumentItemDTO();
+		it.setDescription("Configurazione di un sistema complesso");
+		it.setId(id++);
+		it.setPrice(new BigDecimal(50.0));
+		it.setTax(new BigDecimal(21.0));
+		it.setQuantity(new BigDecimal(16.0));
+		it.setUnitOfMeasure("ore");
+		it.setTotalTax(DocumentUtils.calculateTaxesForItem(it));
+		it.setTotalBeforeTax(DocumentUtils.calculateTotalBeforeTaxesForItem(it));
+		it.setTotal(DocumentUtils.calculateTotalAfterTaxesForItem(it));
+		items.add(it);
+		
+		it = new AccountingDocumentItemDTO();
+		it.setDescription("Stampante laser");
+		it.setId(id++);
+		it.setPrice(new BigDecimal(200.0));
+		it.setQuantity(new BigDecimal(1.0));
+		it.setTax(new BigDecimal(21.0));
+		it.setUnitOfMeasure("pezzi");
+		it.setTotalTax(DocumentUtils.calculateTaxesForItem(it));
+		it.setTotalBeforeTax(DocumentUtils.calculateTotalBeforeTaxesForItem(it));
+		it.setTotal(DocumentUtils.calculateTotalAfterTaxesForItem(it));
+		items.add(it);
+		
+		it = new AccountingDocumentItemDTO();
+		it.setDescription("Server ad alta affidabilità");
+		it.setId(id++);
+		it.setPrice(new BigDecimal(3240.0));
+		it.setQuantity(new BigDecimal(1.0));
+		it.setTax(new BigDecimal(21.0));
+		it.setUnitOfMeasure("pezzi");
+		it.setTotalTax(DocumentUtils.calculateTaxesForItem(it));
+		it.setTotalBeforeTax(DocumentUtils.calculateTotalBeforeTaxesForItem(it));
+		it.setTotal(DocumentUtils.calculateTotalAfterTaxesForItem(it));
+		items.add(it);
+		
+		i.setItems(items);
+		
+		i.setNote("");
+		
+		PaymentTypeDTO payment = PAYMENTS.values().toArray(new PaymentTypeDTO[0])[Random.nextInt(PAYMENTS.values().size())];
+		i.setPaymentDateDelta(payment.getPaymentDateDelta());
+		i.setPaymentDateGenerator(payment.getPaymentDateGenerator());
+		i.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(i.getAccountingDocumentDate(), payment));
+		i.setPaymentNote(payment.getDefaultPaymentNote());
+		i.setPaymentTypeName(payment.getName());
+		DocumentUtils.calculateTotals(items, i);
+		save(i, InvoiceDTO.class);
 	}
 	
-	private static void populateEstimations(){
+	private static void populateEstimations(Long clientId){
 			
 	}
 	
-	private static void populateCreditNotes(){
+	private static void populateCreditNotes(Long clientId){
 		
 	}
 	
-	private static void populateTransportDocs(){
+	private static void populateTransportDocs(Long clientId){
 		
 	}
 }
