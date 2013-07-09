@@ -94,12 +94,31 @@ public class DocumentUtils {
 			return I18NM.get.errorCheckField(I18N.INSTANCE.nameDescription());
 		}
 		
-		if( price.isEmpty() || !Validation.isDouble(price) ) {
+		if( price.isEmpty() ) {
 			return I18NM.get.errorCheckField(I18N.INSTANCE.price());
+		} else {
+			
+			try {
+			
+				parseCurrency(price);
+			
+			} catch (NumberFormatException e) {
+				return I18NM.get.errorCheckField(I18N.INSTANCE.price());
+			}
+			
 		}
 		
-		if( quantity.isEmpty() || !Validation.isDouble(quantity) ) {
+		if( quantity.isEmpty() ) {
 			return I18NM.get.errorCheckField(I18N.INSTANCE.quantity());
+		} else {
+			
+			try {
+				
+				parseValue(quantity);
+			
+			} catch (NumberFormatException e) {
+				return I18NM.get.errorCheckField(I18N.INSTANCE.quantity());
+			}
 		}
 		
 		if( tax == null ){
