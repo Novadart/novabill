@@ -31,8 +31,15 @@ smtp.port.value=2525
 smtp.username.value=
 smtp.password.value=
 smtp.mail.registration_completed_sender.value=no-reply@novadart.com
-exception.sendemail.value = false
-validation.error.sendemail.value = false
+
+#
+# Email Notifications
+#
+notification.registration.value=false
+notification.exception.value=false
+notification.validationError.value=false
+notification.accountUpgrade.value=false
+notification.feedback.value=true
 
 #
 # Application Configuration
