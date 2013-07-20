@@ -406,6 +406,13 @@
 				<version>2.1.7</version>
 			</dependency>
 
+			<!-- Url rewrite filter -->
+			<dependency>
+				<groupId>org.tuckey</groupId>
+				<artifactId>urlrewritefilter</artifactId>
+				<version>4.0.3</version>
+			</dependency>
+
 		</dependencies>
 	</dependencyManagement>
 
