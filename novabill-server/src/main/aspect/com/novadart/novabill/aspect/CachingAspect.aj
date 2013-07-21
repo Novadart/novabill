@@ -129,7 +129,7 @@ public privileged aspect CachingAspect {
 	 * Dependencies: None
 	 */
 	
-	declare @method : public void com.novadart.novabill.web.gwt.PaymentTypeServiceImpl.remove(Long, Long): @CacheEvict(value = PAYMENTTYPE_CACHE, key = "#businessID");
+	declare @method : public void com.novadart.novabill.web.gwt.PaymentTypeServiceImpl.remove(Long, Long): @CacheEvict(value = {PAYMENTTYPE_CACHE, CLIENT_CACHE}, key = "#businessID");
 	
 	declare @method : public Long com.novadart.novabill.web.gwt.PaymentTypeServiceImpl.add(PaymentTypeDTO): @CacheEvict(value = PAYMENTTYPE_CACHE, key = "#paymentTypeDTO.business.id");
 	

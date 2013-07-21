@@ -18,8 +18,8 @@ import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.shared.client.tuple.Triple;
 
 public class InvoiceActivity extends AbstractCenterActivity {
@@ -76,26 +76,26 @@ public class InvoiceActivity extends AbstractCenterActivity {
 	}
 
 	private void setupNewInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, final NewInvoicePlace place){
-		ServerFacade.batchFetcher.fetchNewInvoiceForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewInvoiceForClientOpData(place.getClientId(), new DocumentCallack<Triple<Long,ClientDTO,PaymentTypeDTO>>() {
 
 			@Override
-			public void onSuccess(Pair<Long, ClientDTO> result) {
+			public void onSuccess(Triple<Long,ClientDTO,PaymentTypeDTO> result) {
 				NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
 						getClientFactory().getEventBus(), view);
-				p.setDataForNewInvoice(result.getSecond(), result.getFirst());
+				p.setDataForNewInvoice(result.getSecond(), result.getFirst(), result.getThird());
 				p.go(panel);
 			}
 		});
 	}
 
 	private void setupFromEstimationInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, final FromEstimationInvoicePlace place){
-		ServerFacade.batchFetcher.fetchNewInvoiceFromEstimationOpData(place.getEstimationId(), new DocumentCallack<Pair<Long,EstimationDTO>>(){
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewInvoiceFromEstimationOpData(place.getEstimationId(), new DocumentCallack<Triple<Long,EstimationDTO,PaymentTypeDTO>>(){
 
 			@Override
-			public void onSuccess(Pair<Long, EstimationDTO> result) {
+			public void onSuccess(Triple<Long, EstimationDTO, PaymentTypeDTO> result) {
 				NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
 						getClientFactory().getEventBus(), view);
-				p.setDataForNewInvoice(result.getFirst(), result.getSecond());
+				p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
 				p.go(panel);
 			}
 			
@@ -104,15 +104,15 @@ public class InvoiceActivity extends AbstractCenterActivity {
 
 	private void setupFromTransportDocumentInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, 
 			final FromTransportDocumentInvoicePlace place){
-		ServerFacade.batchFetcher.fetchNewInvoiceFromTransportDocumentOpData(place.getTransportDocumentId(), 
-				new DocumentCallack<Pair<Long,TransportDocumentDTO>>() {
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewInvoiceFromTransportDocumentOpData(place.getTransportDocumentId(), 
+				new DocumentCallack<Triple<Long,TransportDocumentDTO, PaymentTypeDTO>>() {
 
 					@Override
 					public void onSuccess(
-							Pair<Long, TransportDocumentDTO> result) {
+							Triple<Long, TransportDocumentDTO, PaymentTypeDTO> result) {
 						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
 								getClientFactory().getEventBus(), view);
-						p.setDataForNewInvoice(result.getFirst(), result.getSecond());
+						p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
 						p.go(panel);
 					}
 		});
@@ -120,7 +120,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 
 
 	private void setupModifyInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, ModifyInvoicePlace place){
-		ServerFacade.invoice.get(place.getInvoiceId(), new DocumentCallack<InvoiceDTO>() {
+		ServerFacade.INSTANCE.getInvoiceService().get(place.getInvoiceId(), new DocumentCallack<InvoiceDTO>() {
 
 			@Override
 			public void onSuccess(InvoiceDTO result) {
@@ -134,7 +134,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 	}
 
 	private void setupCloneInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, final CloneInvoicePlace place){
-		ServerFacade.batchFetcher.fetchCloneInvoiceOpData(place.getInvoiceId(), place.getClientId(), 
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchCloneInvoiceOpData(place.getInvoiceId(), place.getClientId(), 
 				new DocumentCallack<Triple<Long,ClientDTO,InvoiceDTO>>() {
 
 					@Override

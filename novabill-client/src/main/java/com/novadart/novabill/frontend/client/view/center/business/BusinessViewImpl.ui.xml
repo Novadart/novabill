@@ -253,8 +253,7 @@
 
 			<g:VerticalPanel styleName="{style.cancelDataContainer}">
 				<g:Label styleName="{style.sectionLabel}" text="{i18n.deleteAccountLabel}"></g:Label>
-				<g:Anchor styleName="{style.deleteAccount} {g.button}" href="private/delete"
-					text="{i18n.deleteAccount}"></g:Anchor>
+				<g:Anchor ui:field="deleteAccount" styleName="{style.deleteAccount} {g.button}" text="{i18n.deleteAccount}"></g:Anchor>
 			</g:VerticalPanel>
 
 		</g:FlowPanel>

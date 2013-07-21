@@ -27,6 +27,11 @@ public class PaymentTypeServiceProxy extends AbstractGwtController implements Pa
 		return paymentTypeService.getAll(businessID);
 	}
 
+	@Override
+	public PaymentTypeDTO get(Long id) throws NotAuthenticatedException,
+			NoSuchObjectException, DataAccessException {
+		return paymentTypeService.get(id);
+	}
 
 	@Override
 	public Long add(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {

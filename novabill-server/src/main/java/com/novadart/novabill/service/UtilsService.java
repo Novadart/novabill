@@ -16,7 +16,9 @@ import org.springframework.stereotype.Service;
 
 import com.google.gwt.user.client.rpc.SerializationException;
 import com.google.gwt.user.server.rpc.RPC;
+import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
 @Service("utilsService")
 public class UtilsService {
@@ -62,6 +64,12 @@ public class UtilsService {
 	
 	public String hash(String value, Object salt){
 		return passwordEncoder.encodePassword(value, salt);
+	}
+	
+	public void setBusinessForPrincipal(Business business) throws NotAuthenticatedException{
+		if(!isAuthenticated())
+			throw new NotAuthenticatedException();
+		getAuthenticatedPrincipalDetails().setBusiness(business);
 	}
 	
 }

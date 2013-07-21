@@ -13,7 +13,7 @@
 
 
 	<form name="f"
-		action='<spring:url value="/resources/j_spring_security_check"></spring:url>'
+		action='<spring:url value="/resources/login_check"></spring:url>'
 		method="POST" class="loginForm">
 		<table class="loginFormTable">
 			<tr>

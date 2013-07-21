@@ -238,10 +238,12 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	public void reset() {
 		number.reset();
 
-		//reset widget contents		
-		note.setText("");
-		numberOfPackages.setText("");
-		transporter.setText("");
+		//reset widget contents	
+		date.reset();
+		transportStartDate.reset();
+		note.reset();
+		numberOfPackages.reset();
+		transporter.reset();
 		transportationResponsibility.setText("");
 		tradeZone.setText("");
 		hour.reset();

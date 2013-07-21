@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import com.google.gwt.user.client.rpc.IsSerializable;
+import com.novadart.novabill.shared.client.data.LayoutType;
 
 public class AccountingDocumentDTO implements IsSerializable{
 	
@@ -25,6 +26,8 @@ public class AccountingDocumentDTO implements IsSerializable{
     protected BusinessDTO business;
     
     protected String paymentNote;
+    
+    protected LayoutType layoutType = LayoutType.TIDY;
 
     protected ClientDTO client;
 
@@ -92,6 +95,14 @@ public class AccountingDocumentDTO implements IsSerializable{
 
 	public void setPaymentNote(String paymentNote) {
 		this.paymentNote = paymentNote;
+	}
+
+	public LayoutType getLayoutType() {
+		return layoutType;
+	}
+
+	public void setLayoutType(LayoutType layoutType) {
+		this.layoutType = layoutType;
 	}
 
 	public BusinessDTO getBusiness() {

@@ -108,7 +108,7 @@ public class FeedbackDialog extends Dialog {
 			contactHolder.setVisible(false);
 			contactLoading.setVisible(true);
 			
-			ServerFacade.sendFeedback(
+			ServerFacade.INSTANCE.sendFeedback(
 					Window.Location.getHref(), 
 					contactableName.getText().trim(), 
 					contactableEmail.getText().trim(), 

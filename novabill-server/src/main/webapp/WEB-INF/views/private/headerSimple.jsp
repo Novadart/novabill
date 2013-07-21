@@ -21,7 +21,7 @@
 						code="header.goPremium"></spring:message>
 				</a> --%>
 			</sec:authorize> <a class="logoutLink"
-			href='<spring:url value="/resources/j_spring_security_logout"></spring:url>'><spring:message
+			href='<spring:url value="/resources/logout"></spring:url>'><spring:message
 					code="header.logout" /></a>
 		</span>
 </div>

@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -14,6 +15,7 @@ import com.novadart.novabill.shared.client.facade.ClientService;
 import com.novadart.novabill.shared.client.facade.CreditNoteService;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 import com.novadart.novabill.shared.client.facade.InvoiceService;
+import com.novadart.novabill.shared.client.facade.PaymentTypeService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentService;
 import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.shared.client.tuple.Triple;
@@ -36,20 +38,32 @@ public class BatchDataFetcherServiceImpl extends AbstractGwtController implement
 	
 	@Autowired
 	private CreditNoteService creditNoteService;
+	
+	@Autowired
+	private PaymentTypeService paymentTypeService;
 
+	private PaymentTypeDTO getDefaultPaymentTypeDTO(Long paymentTypeID) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
+		return paymentTypeID == null? null: paymentTypeService.get(paymentTypeID);
+	}
+	
 	@Override
-	public Pair<Long, ClientDTO> fetchNewInvoiceForClientOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return new Pair<Long, ClientDTO>(invoiceService.getNextInvoiceDocumentID(), clientService.get(clientID));
+	public Triple<Long, ClientDTO, PaymentTypeDTO> fetchNewInvoiceForClientOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		ClientDTO clientDTO = clientService.get(clientID);
+		return new Triple<Long, ClientDTO, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(), clientDTO, getDefaultPaymentTypeDTO(clientDTO.getDefaultPaymentTypeID()));
 	}
 
 	@Override
-	public Pair<Long, EstimationDTO> fetchNewInvoiceFromEstimationOpData(Long estimationID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return new Pair<Long, EstimationDTO>(invoiceService.getNextInvoiceDocumentID(), estimationService.get(estimationID));
+	public Triple<Long, EstimationDTO, PaymentTypeDTO> fetchNewInvoiceFromEstimationOpData(Long estimationID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		EstimationDTO estimationtDTO = estimationService.get(estimationID);
+		return new Triple<Long, EstimationDTO, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(), estimationtDTO,
+				getDefaultPaymentTypeDTO(estimationtDTO.getClient().getDefaultPaymentTypeID()));
 	}
 
 	@Override
-	public Pair<Long, TransportDocumentDTO> fetchNewInvoiceFromTransportDocumentOpData(Long transportDocumentID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return new Pair<Long, TransportDocumentDTO>(invoiceService.getNextInvoiceDocumentID(), transportDocService.get(transportDocumentID));
+	public Triple<Long, TransportDocumentDTO, PaymentTypeDTO> fetchNewInvoiceFromTransportDocumentOpData(Long transportDocumentID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		TransportDocumentDTO transDocDTO = transportDocService.get(transportDocumentID);
+		return new Triple<Long, TransportDocumentDTO, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(), transDocDTO,
+				getDefaultPaymentTypeDTO(transDocDTO.getClient().getDefaultPaymentTypeID()));
 	}
 
 	@Override

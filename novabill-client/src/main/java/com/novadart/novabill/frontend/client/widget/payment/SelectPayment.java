@@ -18,7 +18,7 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.Const;
+import com.novadart.novabill.frontend.client.SharedComparators;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -40,6 +40,7 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 	
 	public static interface Handler {
 		void onPaymentSelected(PaymentTypeDTO payment);
+		void onPaymentClear();
 	}
 	
 	private static SelectPaymentUiBinder uiBinder = GWT
@@ -77,6 +78,11 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 		}
 	}
 	
+	public void init(){
+		selectedPayment = null;
+		setupPaymentView();
+	}
+	
 	public void init(PaymentTypeDTO payment){
 		selectedPayment = payment;
 		setupPaymentSummaryView();
@@ -98,11 +104,6 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 		setupPaymentSummaryView();
 	}
 	
-	public void init(){
-		selectedPayment = null;
-		setupPaymentView();
-	}
-	
 	public void setDocumentCreationDate(Date date){
 		documentCreationDate = date;
 		if(showingSummary){
@@ -113,11 +114,11 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 	
 	private void setupPaymentView(){
 		setupLoader();
-		ServerFacade.payment.getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<PaymentTypeDTO>>() {
+		ServerFacade.INSTANCE.getPaymentService().getAll(Configuration.getBusinessId(), new ManagedAsyncCallback<List<PaymentTypeDTO>>() {
 
 			@Override
 			public void onSuccess(List<PaymentTypeDTO> result) {
-				Collections.sort(result, Const.PAYMENT_COMPARATOR);
+				Collections.sort(result, SharedComparators.PAYMENT_COMPARATOR);
 				
 				paymentList = new ValidatedListBox(GlobalBundle.INSTANCE.validatedWidget(), I18N.INSTANCE.notEmptyValidationError());
 				paymentList.addStyleName(style.paymentList());
@@ -174,6 +175,7 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 
 	@Override
 	public void onResetClicked() {
+		handler.onPaymentClear();
 		init();
 	}
 	

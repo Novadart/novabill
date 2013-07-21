@@ -51,9 +51,6 @@ public class RegistrationActivationTest {
 	@Autowired
 	private UtilsService utilsService;
 	
-	@Autowired
-	private MessageSource messageSource;
-	
 	private RegisterController initRegisterController(String token, String activationUrlPattern, int activationPeriod) throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException{
 		RegisterController controller = new RegisterController();
 		TokenGenerator tokenGenerator = mock(TokenGenerator.class);
@@ -82,8 +79,6 @@ public class RegistrationActivationTest {
 	private ActivateAccountController initActivateAccountController() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
 		ActivateAccountController activateAccountController = new ActivateAccountController();
 		TestUtils.setPrivateField(ActivateAccountController.class, activateAccountController, "utilsService", utilsService);
-		TestUtils.setPrivateField(ActivateAccountController.class, activateAccountController, "messageSource", messageSource);
-		activateAccountController.init();
 		return activateAccountController;
 	}
 	
@@ -105,7 +100,7 @@ public class RegistrationActivationTest {
 				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		assertEquals("redirect:/registrationCompleted", registerView);
 		assertEquals("activate", activateView);
-		assertEquals("forward:/resources/j_spring_security_check", forwardToSpringSecurityCheck);
+		assertEquals("forward:/resources/login_check", forwardToSpringSecurityCheck);
 	}
 	
 	@Test
@@ -217,7 +212,7 @@ public class RegistrationActivationTest {
 		String activateView2 = activationController.setupForm(email, token, model);
 		assertEquals("redirect:/registrationCompleted", registerView);
 		assertEquals("activate", activateView1);
-		assertEquals("forward:/resources/j_spring_security_check", forwardToSpringSecurityCheck1);
+		assertEquals("forward:/resources/login_check", forwardToSpringSecurityCheck1);
 		assertEquals("invalidActivationRequest", activateView2);
 	}
 	
@@ -259,7 +254,7 @@ public class RegistrationActivationTest {
 		
 		assertEquals("redirect:/registrationCompleted", registerView1);
 		assertEquals("activate", activateView1);
-		assertEquals("forward:/resources/j_spring_security_check", forwardToSpringSecurityCheck1);
+		assertEquals("forward:/resources/login_check", forwardToSpringSecurityCheck1);
 		
 		assertEquals("redirect:/registrationCompleted", registerView2);
 		assertEquals("activate", activateView2);

@@ -74,7 +74,7 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 
 		final TransportDocumentDTO transportDocument = createTransportDocument(null);
 
-		ServerFacade.transportDocument.add(transportDocument, new ManagedAsyncCallback<Long>() {
+		ServerFacade.INSTANCE.getTransportdocumentService().add(transportDocument, new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {

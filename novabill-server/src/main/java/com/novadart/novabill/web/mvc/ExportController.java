@@ -11,6 +11,9 @@ import java.util.Set;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+
+import net.sf.jasperreports.engine.JRException;
+
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
@@ -23,6 +26,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.novadart.novabill.annotation.Xsrf;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Logo;
+import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.service.DataExporter;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.XsrfTokenService;
@@ -62,7 +66,7 @@ public class ExportController {
 			@RequestParam(value = ESTIMATIONS_REQUEST_PARAM, required = false) boolean estimations,
 			@RequestParam(value = CREDITNOTES_REQUEST_PARAM, required = false) boolean creditnotes,
 			@RequestParam(value = TRANSPORTDOCS_REQUEST_PARAM, required = false) boolean transportdocs,
-			HttpServletResponse response, Locale locale, HttpSession session) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+			HttpServletResponse response, Locale locale, HttpSession session) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, JRException, JasperReportKeyResolutionException{
 		Set<DataExportClasses> classes = new HashSet<DataExportClasses>();
 		if(clients)
 			classes.add(DataExportClasses.CLIENT);

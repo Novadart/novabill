@@ -211,6 +211,14 @@ h3 {
 	display: block;
 }
 
+#tryDemo {
+	margin: 10px auto 0;
+	display: block;
+	font-size: 1.1em;
+	width: 380px;
+	text-align: center;
+}
+
 .top-features p {
 	color: #8C8C8C;
 	font-size: 1.1em;

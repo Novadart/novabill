@@ -8,6 +8,8 @@ import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
@@ -23,6 +25,8 @@ import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 public abstract class AbstractInvoicePresenter extends DocumentPresenter<InvoiceView> implements InvoiceView.Presenter {
 
 	private InvoiceDTO invoice;
+	
+	private PaymentTypeDTO cachedDefaultPaymentTypeDTO = null;
 
 	public AbstractInvoicePresenter(PlaceController placeController, EventBus eventBus,	InvoiceView view) {
 		super(placeController, eventBus, view);
@@ -63,9 +67,8 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 	protected boolean validateInvoice(){
 		getView().getDate().validate();
 		getView().getNumber().validate();
-		getView().getPayment();
 		
-		if(getView().getItemInsertionForm().getItems().isEmpty()){
+		if(!getView().getItemInsertionForm().isValid()){
 			return false;
 		}
 
@@ -78,7 +81,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 
 	protected InvoiceDTO createInvoice(InvoiceDTO invoice){
 		InvoiceDTO inv;
-
+		
 		if(invoice != null){
 			inv = invoice;
 		} else {
@@ -86,7 +89,6 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 			inv.setBusiness(Configuration.getBusiness());
 			inv.setClient(getClient());
 		}
-
 
 		inv.setDocumentID(Long.parseLong(getView().getNumber().getText()));
 		inv.setAccountingDocumentDate(getView().getDate().getValue());
@@ -107,6 +109,31 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 	
 	@Override
 	public void onPaymentSelected(final PaymentTypeDTO payment) {
+		/*
+		 * when the payment is selected, we will show the checkbox to make the payment as default, if necessary
+		 */
+		ManagedAsyncCallback<PaymentTypeDTO> cb = new ManagedAsyncCallback<PaymentTypeDTO>() {
+
+			@Override
+			public void onSuccess(PaymentTypeDTO result) {
+				cachedDefaultPaymentTypeDTO = result;
+				if(cachedDefaultPaymentTypeDTO == null || !cachedDefaultPaymentTypeDTO.getId().equals(payment.getId())) {
+					getView().getMakePaymentAsDefault().setVisible(true);
+				}
+			}
+		};
+		
+		//if this client's default payment type was never fetched, we fetch it
+		if(getClient().getDefaultPaymentTypeID() != null && this.cachedDefaultPaymentTypeDTO == null){
+			ServerFacade.INSTANCE.getPaymentService().get(getClient().getDefaultPaymentTypeID(), cb);
+		} else {
+			//otherwise we use the cached one
+			cb.onSuccess(cachedDefaultPaymentTypeDTO);
+		}
+		
+		/*
+		 * update the payment note if necessary		
+		 */
 		if(payment.getDefaultPaymentNote().trim().isEmpty()){
 			return;
 		}
@@ -136,6 +163,12 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 				}
 			});
 		}
+	}
+	
+	@Override
+	public void onPaymentClear() {
+		getView().getMakePaymentAsDefault().setVisible(false);
+		getView().getMakePaymentAsDefault().setValue(false);
 	}
 
 }

@@ -12,6 +12,7 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import com.novadart.novabill.domain.AbstractInvoice;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
+import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
@@ -45,12 +46,12 @@ public class TestUtils {
 			//Accounting doc item
 			put("accountingDocumentItems_description", Field.accountingDocumentItems_description); 
 			put("accountingDocumentItems_unitOfMeasure", Field.accountingDocumentItems_unitOfMeasure); 
-			put("accountingDocumentItems_tax", Field.accountingDocumentItems_tax);
-			put("accountingDocumentItems_quantity", Field.accountingDocumentItems_quantity);
-			put("accountingDocumentItems_totalBeforeTax", Field.accountingDocumentItems_totalBeforeTax);
-			put("accountingDocumentItems_totalTax", Field.accountingDocumentItems_totalTax);
-			put("accountingDocumentItems_total", Field.accountingDocumentItems_total);
-			put("accountingDocumentItems_price", Field.accountingDocumentItems_price);
+			//put("accountingDocumentItems_tax", Field.accountingDocumentItems_tax);
+			//put("accountingDocumentItems_quantity", Field.accountingDocumentItems_quantity);
+			//put("accountingDocumentItems_totalBeforeTax", Field.accountingDocumentItems_totalBeforeTax);
+			//put("accountingDocumentItems_totalTax", Field.accountingDocumentItems_totalTax);
+			//put("accountingDocumentItems_total", Field.accountingDocumentItems_total);
+			//put("accountingDocumentItems_price", Field.accountingDocumentItems_price);
 		}};
 		
 		abstractInvoiceValidationFieldsMap = new HashMap<String, Field>(accountingDocumentValidationFieldsMap);
@@ -311,6 +312,23 @@ public class TestUtils {
 		java.lang.reflect.Field field = cls.getDeclaredField(fieldName);
 		field.setAccessible(true);
 		field.set(target, value);
+	}
+	
+	public static Business createBusiness(){
+		Business business = new Business();
+		business.setName("Novadart S.n.c. di Giordano Battilana & C.");
+		business.setAddress("via Stradone, 51");
+		business.setPostcode("35010");
+		business.setCity("Campo San Martino");
+		business.setProvince("PD");
+		business.setCountry("IT");
+		business.setEmail("giordano.battilana@novadart.com");
+		business.setPhone("3334927614");
+		business.setFax("3334927614");
+		business.setMobile("0498597898");
+		business.setSsn("IT04534730280");
+		business.setVatID("IT04534730280");
+		return business;
 	}
 	
 }

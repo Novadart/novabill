@@ -41,7 +41,7 @@ class Tip extends Composite {
 			return;
 		}
 		pendingCall = true;
-		ServerFacade.business.updateNotesBitMask(unsetBitForTip(tipCode, Configuration.getNotesBitMask()), new ManagedAsyncCallback<Long>() {
+		ServerFacade.INSTANCE.getBusinessService().updateNotesBitMask(unsetBitForTip(tipCode, Configuration.getNotesBitMask()), new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {

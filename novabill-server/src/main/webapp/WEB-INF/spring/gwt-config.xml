@@ -30,10 +30,7 @@
 		<property name="configLocation" value="classpath:ehcache.xml" />
 	</bean>
 	
-	
-	
 	<security:global-method-security pre-post-annotations="enabled"/>
-	
 
 	<bean id="invoice" class="com.novadart.novabill.web.gwt.InvoiceServiceProxy" primary="true"/>
 	<bean id="invoiceServiceImpl" class="com.novadart.novabill.web.gwt.InvoiceServiceImpl"/>

@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<configuration scan="true">
+
+	<appender name="STDOUT" class="ch.qos.logback.core.ConsoleAppender">
+		<encoder>
+			<pattern>
+				%d{dd/MM/yyyy HH:mm:ss} %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<appender name="FILE"
+		class="ch.qos.logback.core.rolling.RollingFileAppender">
+		<file>${log.file.value}</file>
+		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
+			<fileNamePattern>${log.fileNamePattern.value}</fileNamePattern>
+			<!-- By not setting maxHistory logs are kept indefinitely -->
+		</rollingPolicy>
+		
+		<encoder>
+			<pattern>
+				%d{dd/MM/yyyy HH:mm:ss} %-5level %logger{36} - %msg%n
+			</pattern>
+		</encoder>
+	</appender>
+
+	<logger name="com.novadart.novabill" level="${log.com.novadart.novabill.value}" />
+
+	<root level="${log.root.value}">
+		<appender-ref ref="STDOUT" />
+		<appender-ref ref="FILE" />
+	</root>
+
+</configuration>

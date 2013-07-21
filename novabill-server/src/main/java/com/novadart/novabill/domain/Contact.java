@@ -59,7 +59,7 @@ public class Contact implements Serializable{
 	
 	@Size(max = 25)
 	private String mobile;
-
+	
 	public String getFirstName() {
 		return firstName;
 	}

@@ -8,6 +8,8 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.datepicker.client.CalendarUtil;
+import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
@@ -32,7 +34,9 @@ public class DocumentUtils {
 	
 	
 	public static BigDecimal calculateTaxesForItem(AccountingDocumentItemDTO item){
-		return item.getPrice()
+		return item.getPrice() == null 
+				? BigDecimal.ZERO
+				: item.getPrice()
 				.multiply(item.getQuantity())
 				.multiply(item.getTax())
 				.divide(new BigDecimal(100));
@@ -40,13 +44,17 @@ public class DocumentUtils {
 	
 	
 	public static BigDecimal calculateTotalBeforeTaxesForItem(AccountingDocumentItemDTO item){
-		return item.getPrice()
+		return item.getPrice() == null 
+				? BigDecimal.ZERO
+				: item.getPrice()
 				.multiply(item.getQuantity());
 	}
 	
 	
 	public static BigDecimal calculateTotalAfterTaxesForItem(AccountingDocumentItemDTO item){
-		return item.getPrice()
+		return item.getPrice() == null 
+				? BigDecimal.ZERO
+				: item.getPrice()
 				.multiply(item.getQuantity())
 				.multiply(item.getTax().add(new BigDecimal(100)))
 				.divide(new BigDecimal(100));
@@ -54,13 +62,7 @@ public class DocumentUtils {
 	
 	
 	public static AccountingDocumentItemDTO createAccountingDocumentItem(String description, String price, 
-			String quantity, String unitOfMeasure, String tax){
-		for (String txt : new String[]{description,quantity,price}) {
-			if(txt.isEmpty()){
-				return null;
-			}
-		}
-		
+			String quantity, String unitOfMeasure, BigDecimal tax){
 		AccountingDocumentItemDTO ii = new AccountingDocumentItemDTO();
 
 		try {
@@ -68,13 +70,61 @@ public class DocumentUtils {
 			ii.setPrice(parseCurrency(price));
 			ii.setQuantity(parseValue(quantity));
 			ii.setUnitOfMeasure(unitOfMeasure);
-			ii.setTax(new BigDecimal(tax));
+			ii.setTax(tax);
 		} catch (NumberFormatException ex) {
 			return null;
 		}
 		
 		DocumentUtils.updateTotals(ii);
 		return ii;
+	}
+	
+	
+	public static AccountingDocumentItemDTO createAccountingDocumentItem(String description) {
+		AccountingDocumentItemDTO ii = new AccountingDocumentItemDTO();
+		ii.setDescription(description);
+		return ii;
+	}
+	
+	
+	public static String validateAccountingDocumentItem(String description, String price, 
+			String quantity, String unitOfMeasure, BigDecimal tax){
+		if(description.isEmpty()) {
+			return I18NM.get.errorCheckField(I18N.INSTANCE.nameDescription());
+		}
+		
+		if( price.isEmpty() ) {
+			return I18NM.get.errorCheckField(I18N.INSTANCE.price());
+		} else {
+			
+			try {
+			
+				parseCurrency(price);
+			
+			} catch (NumberFormatException e) {
+				return I18NM.get.errorCheckField(I18N.INSTANCE.price());
+			}
+			
+		}
+		
+		if( quantity.isEmpty() ) {
+			return I18NM.get.errorCheckField(I18N.INSTANCE.quantity());
+		} else {
+			
+			try {
+				
+				parseValue(quantity);
+			
+			} catch (NumberFormatException e) {
+				return I18NM.get.errorCheckField(I18N.INSTANCE.quantity());
+			}
+		}
+		
+		if( tax == null ){
+			return I18NM.get.errorCheckField(I18N.INSTANCE.vat());
+		}
+		
+		return null;
 	}
 	
 	
@@ -175,5 +225,5 @@ public class DocumentUtils {
 		
 		return resultDate;
 	}
-	
+
 }

@@ -79,7 +79,7 @@ public abstract class AbstractCreditNotePresenter extends DocumentPresenter<Cred
 		getView().getDate().validate();
 		getView().getNumber().validate();
 		
-		if(getView().getItemInsertionForm().getItems().isEmpty()){
+		if(!getView().getItemInsertionForm().isValid()){
 			return false;
 		}
 		

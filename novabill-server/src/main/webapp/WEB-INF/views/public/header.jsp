@@ -15,7 +15,7 @@
 						code="header.login"></spring:message></span><em></em></a>
 			<div style="clear: both"></div>
 			<div id="loginBox">
-				<form id="loginForm" action='<spring:url value="/resources/j_spring_security_check"/>' method="post">
+				<form id="loginForm" action='<spring:url value="/resources/login_check"/>' method="post">
 					<fieldset id="body">
 						<fieldset>
 							<label for="email"><spring:message code="shared.email"></spring:message></label>
@@ -50,7 +50,9 @@
 	<sec:authorize access="isAuthenticated()">
 		<%
 			Principal pd = ((Principal)SecurityContextHolder.getContext().getAuthentication().getPrincipal());
-			String principalName = Business.findBusiness(pd.getBusiness().getId()).getName();
+			String principalName = pd.getBusiness() != null ? 
+					Business.findBusiness(pd.getBusiness().getId()).getName() 
+					: null;
 		%>
 		
 		<span class="welcomeMessage">
@@ -79,7 +81,7 @@
 				</a>
 			</sec:authorize> --%>
 			
-			<a class="logoutLink" href='<spring:url value="/resources/j_spring_security_logout"></spring:url>'><spring:message code="header.logout"/></a>
+			<a class="logoutLink" href='<spring:url value="/resources/logout"></spring:url>'><spring:message code="header.logout"/></a>
 		</span>
 	</sec:authorize>
 	

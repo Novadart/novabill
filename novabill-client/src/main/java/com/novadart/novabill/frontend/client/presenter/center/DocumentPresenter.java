@@ -29,7 +29,7 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 	
 	@Override
 	public void go(AcceptsOneWidget panel) {
-		MainWidget.getInstance().setLargeView();
+		MainWidget.INSTANCE.setLargeView();
 		super.go(panel);
 	}
 	

@@ -12,6 +12,7 @@ import java.util.Set;
 import javax.annotation.Resource;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,8 +22,10 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
+import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -271,6 +274,34 @@ public class BusinessServiceTest extends GWTServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void getUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
 		businessService.get(null);
+	}
+	
+	@Test
+	public void addAuthorizedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+									com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
+		authenticatedPrincipal.setBusiness(null);
+		Business business = TestUtils.createBusiness();
+		business.setId(businessService.add(BusinessDTOFactory.toDTO(business)));
+		Business.entityManager().flush();
+		Business actualBusiness = Principal.findPrincipal(authenticatedPrincipal.getId()).getBusiness();
+		assertTrue(EqualsBuilder.reflectionEquals(business, actualBusiness, "version", "paymentTypes",
+				"nonFreeAccountExpirationTime", "items", "accounts" , "invoices", "estimations", "creditNotes",
+				"transportDocuments", "clients", "principals"));
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void addNullTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+								com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
+		businessService.add(null);
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void addNotNullIDTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+										com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
+		authenticatedPrincipal.setBusiness(null);
+		Business business = TestUtils.createBusiness();
+		business.setId(1l);
+		businessService.add(BusinessDTOFactory.toDTO(business));
 	}
 
 }

@@ -8,8 +8,10 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -28,12 +30,24 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 	@Autowired
 	private BusinessService businessService;
 
+	@Autowired
+	private UtilsService utilsService;
+	
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<PaymentTypeDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return businessService.getPaymentTypes(businessID);
 	}
 	
+	@Override
+	@PreAuthorize("T(com.novadart.novabill.domain.PaymentType).findPaymentType(#id)?.business?.id == principal.business.id")
+	public PaymentTypeDTO get(Long id) throws NotAuthenticatedException,NoSuchObjectException, DataAccessException {
+		for(PaymentTypeDTO paymentTypeDTO: businessService.getPaymentTypes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()))
+			if(paymentTypeDTO.getId().equals(id))
+				return paymentTypeDTO;
+		throw new NoSuchObjectException();
+	}
+
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#paymentTypeDTO?.business?.id == principal.business.id and " +
@@ -71,6 +85,8 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 		  	  	  "T(com.novadart.novabill.domain.PaymentType).findPaymentType(#id)?.business?.id == #businessID")
 	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
 		PaymentType paymentType = PaymentType.findPaymentType(id);
+		for(Client client: paymentType.getClients())
+			client.setDefaultPaymentType(null);
 		paymentType.remove(); //removing payment type
 		if(Hibernate.isInitialized(paymentType.getBusiness().getPaymentTypes()))
 			paymentType.getBusiness().getPaymentTypes().remove(paymentType);

@@ -76,7 +76,7 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 
 					final EstimationDTO es = createEstimation(getEstimation());
 
-					ServerFacade.estimation.update(es, new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getEstimationService().update(es, new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onFailure(Throwable caught) {

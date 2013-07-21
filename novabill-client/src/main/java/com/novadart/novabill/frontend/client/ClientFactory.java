@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client;
 
+import com.google.gwt.core.shared.GWT;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
@@ -16,8 +17,26 @@ import com.novadart.novabill.frontend.client.view.west.empty.EmptyWestView;
 import com.novadart.novabill.frontend.client.view.west.standard.StandardWestView;
 
 public interface ClientFactory {
+	public static final ClientFactory INSTANCE = GWT.create(ClientFactory.class);
+	
 	PlaceController getPlaceController();
 	EventBus getEventBus();
+	
+	//Urls	
+	String getPostFeedbackUrl();
+	String getXsrfUrl();
+	String getChangePasswordUrl();
+	String getDeleteLogo();
+	String getUpdateLogo();
+	String getUrlThumb();
+	String getUrlLogo();
+	void refeshLogoUrl();
+	String getLogoUrl();
+	String getLogoutUrl();
+	String getDeleteAccountUrl();
+	String getExportRequest();
+	String getPdfRequest();
+	String getRegisterAccountUrl();
 	
 	//center
 	void getHomeView(AsyncCallback<HomeView> callback);

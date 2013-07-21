@@ -63,7 +63,7 @@ public class DeleteAccountController {
 		businessLogoController.clearLogo(principal.getBusiness().getId());
 		principal.getBusiness().remove();
 		status.setComplete();
-		return "redirect:/resources/j_spring_security_logout";
+		return "redirect:/resources/logout";
 	}
 	
 }

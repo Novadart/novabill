@@ -18,15 +18,15 @@ import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 
 public class Configuration {
 
-	private final static Dictionary businessJS = Dictionary.getDictionary("business");
+	private static Dictionary businessJS;
 
 	private static BusinessDTO business;
 	private static BusinessStatsDTO stats;
 	private static long notesBitMask;
-	private static boolean debugEnabled;
+	private static boolean devMode;
 
 	public static final void init(final ManagedAsyncCallback<Void> callback){
-		ServerFacade.setupXsrfProtection(new ManagedAsyncCallback<Void>() {
+		ServerFacade.INSTANCE.setupXsrfProtection(new ManagedAsyncCallback<Void>() {
 
 			@Override
 			public void onSuccess(Void result) {
@@ -34,25 +34,25 @@ public class Configuration {
 			}
 		});
 	}
-	
+
 	private static void loadConfiguration(final AsyncCallback<Void> callback){
 		try {
 			injectCss();
-			
-			debugEnabled = Boolean.parseBoolean(readDebugEnabled());
-			
+
+			devMode = Boolean.parseBoolean(readDevMode());
+
 			notesBitMask = Long.parseLong(readNotesBitMask());
-			
+
 			Map<String, String> values = new HashMap<String, String>();
-			
-			BusinessDTO business = new BusinessDTO();
-			setBusiness(business);
-			
-			business.setId( Long.parseLong(businessJS.get("id")) );
-			
+
 			//load all the values
-			if(loadBusinessValues(values)){
+			if(businessExists() && loadBusinessValues(values)){
 				
+				BusinessDTO business = new BusinessDTO();
+				setBusiness(business);
+
+				business.setId( Long.parseLong(businessJS.get("id")) );
+
 				business.setAddress(values.get("address"));
 				business.setCity(values.get("city"));
 				business.setCountry(values.get("country"));
@@ -67,87 +67,85 @@ public class Configuration {
 				business.setVatID(values.get("vatID"));
 				business.setWeb(values.get("web"));
 				business.setPremium(Boolean.valueOf(values.get("premium")));
-				
+
 				callback.onSuccess(null);
-				
+
 			} else {
-				
+
 				GWT.runAsync(new RunAsyncCallback() {
-					
+
 					@Override
 					public void onSuccess() {
 						final BootstrapDialog bd = new BootstrapDialog();
 						bd.setHandler(new BootstrapDialog.Handler() {
-							
+
 							@Override
 							public void businessData(final BusinessDTO business) {
-								
-								ServerFacade.business.update(business, new ManagedAsyncCallback<Void>() {
-									
+
+								ServerFacade.INSTANCE.getBusinessService().add(business, new ManagedAsyncCallback<Long>() {
+
 									@Override
-									public void onSuccess(Void result) {
-										bd.hide();
-										setBusiness(business);
-										callback.onSuccess(null);
+									public void onSuccess(Long result) {
+										Window.Location.reload();
 									}
-									
+
 									@Override
 									public void onFailure(Throwable caught) {
 										callback.onFailure(caught);
 									}
-									
+
 								});
 							}
 						});
-						
+
 						bd.showCentered();
-						
+
 					}
-					
+
 					@Override
 					public void onFailure(Throwable reason) {
 						Window.Location.reload();
 					}
 				});
-				
+
 			}
-			
-			
-			
+
+
+
 		} catch(Exception e){
 			callback.onFailure(e);
 		}
 	}
-	
-	
+
+
 	private static native String readNotesBitMask()/*-{
 		return $wnd.notesBitMask;
 	}-*/;
-	
-	private static native String readDebugEnabled()/*-{
-		return $wnd.debugEnabled;
+
+	private static native String readDevMode()/*-{
+		return $wnd.devMode;
 	}-*/;
 
-	public static boolean isDebugEnabled() {
-		return debugEnabled;
+	public static boolean isDevMode() {
+		return devMode;
 	}
-	
+
 	public static long getNotesBitMask() {
 		return notesBitMask;
 	}
-	
+
 	public static void setNotesBitMask(long notesBitMask) {
 		Configuration.notesBitMask = notesBitMask;
 	}
-	
+
 	public static boolean isPremium() {
 		return business.isPremium();
 	}
-	
+
 	public static BusinessDTO getBusiness() {
 		return business;
 	}
-	
+
 	public static Long getBusinessId() {
 		return business.getId();
 	}
@@ -163,10 +161,19 @@ public class Configuration {
 	public static void setStats(BusinessStatsDTO stats) {
 		Configuration.stats = stats;
 	}
+
+	private static boolean businessExists(){
+		try {
+			businessJS = Dictionary.getDictionary("business");
+			return true;
+		} catch (MissingResourceException e) {
+			return false;
+		}
+	}
 	
 	private static boolean loadBusinessValues(Map<String, String> vals){
 		boolean valuesLoaded = true;
-		
+
 		for(String key : new String[]{"address","city","country","email","fax","mobile","name",
 				"phone","postcode","province","premium","ssn","vatID","web"}){
 			try {
@@ -178,7 +185,7 @@ public class Configuration {
 		}
 		return valuesLoaded;
 	}
-	
+
 	private static void injectCss() {
 		GlobalBundle.INSTANCE.dialog().ensureInjected();
 		GlobalBundle.INSTANCE.globalCss().ensureInjected();
