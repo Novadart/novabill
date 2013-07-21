@@ -3,7 +3,6 @@ package com.novadart.novabill.domain;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -14,6 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PreRemove;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -52,8 +52,15 @@ public class PaymentType {
 	@ManyToOne
 	private Business business;
 	
-	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "defaultPaymentType")
+	@OneToMany(cascade = {}, fetch = FetchType.LAZY, mappedBy = "defaultPaymentType")
 	private Set<Client> clients = new HashSet<Client>();
+	
+	@SuppressWarnings("unused")
+	@PreRemove
+	private void preRemove(){
+		for(Client client: getClients())
+			client.setDefaultPaymentType(null);
+	}
 	
 	public PaymentType(String name, String defaultPaymentNote, PaymentDateType paymentDateGenerator, Integer paymentDateDelta) {
 		this.name = name;

@@ -137,7 +137,7 @@ public class Client implements Serializable, Taxable {
     @Trimmed
     private String ssn;
     
-    @ManyToOne
+    @ManyToOne(optional = true)
     private PaymentType defaultPaymentType;
     
     @Size(max = 1500)
