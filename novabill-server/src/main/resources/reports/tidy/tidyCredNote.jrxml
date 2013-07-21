@@ -25,11 +25,12 @@
 		</box>
 	</style>
 	<style name="table_TD" mode="Opaque" backcolor="#FFFFFF">
-		<box>
+		<box topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
 			<topPen lineWidth="0.0" lineColor="#000000"/>
-			<bottomPen lineWidth="0.5" lineColor="#000000"/>
+			<bottomPen lineWidth="0.5" lineColor="#C0BEBE"/>
 		</box>
 	</style>
+	<style name="Base" isDefault="true" fontName="Arial" fontSize="10" isBold="false" isItalic="false" isUnderline="false" isStrikeThrough="false"/>
 	<subDataset name="Items Table Dataset" uuid="d1f33625-d806-4c89-a9f1-75b239fbcaec">
 		<field name="description" class="java.lang.String"/>
 		<field name="quantity" class="java.math.BigDecimal"/>
@@ -72,16 +73,16 @@
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
-		<band height="50" splitType="Prevent">
+		<band height="70" splitType="Prevent">
 			<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null)]]></printWhenExpression>
 			<image>
-				<reportElement uuid="ad84ab22-c8c5-403b-9525-8d6a0150fa0d" x="0" y="0" width="66" height="50">
+				<reportElement uuid="ad84ab22-c8c5-403b-9525-8d6a0150fa0d" x="0" y="0" width="250" height="70">
 					<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null)]]></printWhenExpression>
 				</reportElement>
 				<imageExpression><![CDATA[$F{logoInStream}]]></imageExpression>
 			</image>
 		</band>
-		<band height="300" splitType="Stretch">
+		<band height="280" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" x="0" y="0" width="308" height="20"/>
 				<textElement>
@@ -117,49 +118,49 @@
 				<textFieldExpression><![CDATA[$R{tidy.date} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="5ec97103-c13a-49c0-90b7-0cfe4658afe9" positionType="Float" x="55" y="94" width="200" height="20"/>
+				<reportElement uuid="5ec97103-c13a-49c0-90b7-0cfe4658afe9" positionType="Float" x="55" y="75" width="200" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.from}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="ddd1bc93-67b0-4ccf-99c7-fd05b6ffcbde" positionType="Float" x="303" y="94" width="200" height="20"/>
+				<reportElement uuid="ddd1bc93-67b0-4ccf-99c7-fd05b6ffcbde" positionType="Float" x="303" y="75" width="200" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.client}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="b0329e04-13b9-4caf-8d66-fc7a7a5d696f" positionType="Float" x="55" y="114" width="200" height="99"/>
+				<reportElement uuid="b0329e04-13b9-4caf-8d66-fc7a7a5d696f" positionType="Float" x="55" y="95" width="200" height="99"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.name} + "\n" +
 $F{document.business.address} + "\n" +
-$F{document.business.postcode} + " " + $F{document.business.city} + (org.apache.commons.lang3.StringUtils.isNotBlank($F{document.business.province})? " (" + $F{document.business.province} + ")": "") + "\n" +
+$F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim())? " (" + $F{document.business.province} + ")": "") + "\n" +
 $F{document.business.country} + "\n" +
-(org.apache.commons.lang3.StringUtils.isNotBlank($F{document.business.vatID})? $R{tidy.vatID} + " " + $F{document.business.vatID}: $R{tidy.ssn} + " " + $F{document.business.ssn})]]></textFieldExpression>
+($F{document.business.vatID}!=null&& !"".equals($F{document.business.vatID}.trim())? $R{tidy.vatID} + " " + $F{document.business.vatID}: $R{tidy.ssn} + " " + $F{document.business.ssn})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="303" y="114" width="200" height="99"/>
+				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="303" y="95" width="200" height="99"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.client.name} + "\n" +
 $F{document.client.address} + "\n" +
-$F{document.client.postcode} + " " + $F{document.client.city} + (org.apache.commons.lang3.StringUtils.isNotBlank($F{document.client.province})? " (" + $F{document.client.province} + ")": "") + "\n" +
+$F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.client.province}!=null && !"".equals($F{document.client.province}.trim())? " (" + $F{document.client.province} + ")": "") + "\n" +
 $F{document.client.country} + "\n" +
-(org.apache.commons.lang3.StringUtils.isNotBlank($F{document.client.vatID})? $R{tidy.vatID} + " " + $F{document.client.vatID}: $R{tidy.ssn} + " " + $F{document.client.ssn})]]></textFieldExpression>
+($F{document.client.vatID}!=null && !"".equals($F{document.client.vatID}.trim())? $R{tidy.vatID} + " " + $F{document.client.vatID}: $R{tidy.ssn} + " " + $F{document.client.ssn})]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="232" width="540" height="50" backcolor="#C0BEBE"/>
+				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="206" width="540" height="50" backcolor="#C0BEBE"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{document.accountingDocumentItems})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="90" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
+					<jr:column width="300" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
 								<reportElement uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b" x="0" y="0" width="90" height="20"/>
@@ -169,113 +170,119 @@ $F{document.client.country} + "\n" +
 								<textFieldExpression><![CDATA[$R{tidy.description}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField isStretchWithOverflow="true">
-								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="90" height="20"/>
+						<jr:detailCell style="table_TD" height="22" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="298" height="20"/>
 								<textElement verticalAlignment="Middle">
+									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{description}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
+					<jr:column width="40" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="90" height="20"/>
+								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="38" height="20"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$R{tidy.quantity}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField>
-								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="90" height="20"/>
+						<jr:detailCell style="table_TD" height="22" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="38" height="20"/>
 								<textElement verticalAlignment="Middle">
+									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="86b69e3c-a251-4e02-b575-373961e6d873">
+					<jr:column width="40" uuid="86b69e3c-a251-4e02-b575-373961e6d873">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="6055a8bc-b42d-448e-8026-845b207d6fc2" x="0" y="0" width="90" height="20" backcolor="#C0BEBE"/>
+								<reportElement uuid="6055a8bc-b42d-448e-8026-845b207d6fc2" x="0" y="0" width="38" height="20" backcolor="#C0BEBE"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$R{tidy.unitOfMeasure}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField>
-								<reportElement uuid="5e9fee78-5a16-4450-9826-0a5cfb53091e" x="0" y="0" width="90" height="20"/>
+						<jr:detailCell style="table_TD" height="22" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="5e9fee78-5a16-4450-9826-0a5cfb53091e" x="0" y="0" width="38" height="20"/>
 								<textElement verticalAlignment="Middle">
+									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{unitOfMeasure}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="1a47a9f7-ac05-45df-84df-a087c255f93a">
+					<jr:column width="60" uuid="1a47a9f7-ac05-45df-84df-a087c255f93a">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="3ef6af2d-0093-4317-ad53-d44814c95531" x="0" y="0" width="90" height="20"/>
+								<reportElement uuid="3ef6af2d-0093-4317-ad53-d44814c95531" x="0" y="0" width="58" height="20"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$R{tidy.price}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField>
-								<reportElement uuid="bf637d4a-ae9c-425b-8fb5-cdb0471c422e" x="0" y="0" width="90" height="20"/>
+						<jr:detailCell style="table_TD" height="22" rowSpan="1">
+							<textField isStretchWithOverflow="true">
+								<reportElement uuid="bf637d4a-ae9c-425b-8fb5-cdb0471c422e" x="0" y="0" width="58" height="20"/>
 								<textElement verticalAlignment="Middle">
+									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{price} + " €"]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{price} == null? "": java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{price}.doubleValue())]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="e9882e8d-4ff0-4e61-8aba-0c50007d9133">
+					<jr:column width="40" uuid="e9882e8d-4ff0-4e61-8aba-0c50007d9133">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="eb7b22df-ab5d-4b2b-a665-3a6aef5aeabe" x="0" y="0" width="90" height="20"/>
+								<reportElement uuid="eb7b22df-ab5d-4b2b-a665-3a6aef5aeabe" x="0" y="0" width="38" height="20"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA["%" + $R{tidy.tax}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField>
-								<reportElement uuid="e6627f76-468a-4d61-bf30-28da21524f5e" x="0" y="0" width="90" height="20"/>
+						<jr:detailCell style="table_TD" height="22" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="e6627f76-468a-4d61-bf30-28da21524f5e" x="0" y="0" width="38" height="20"/>
 								<textElement verticalAlignment="Middle">
+									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{tax}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="90" uuid="bd98899d-5bf0-47a8-ae22-09e6134fecad">
+					<jr:column width="60" uuid="bd98899d-5bf0-47a8-ae22-09e6134fecad">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="be14d188-8e94-427d-89f4-3d2be37c0e1e" x="0" y="0" width="90" height="20"/>
+								<reportElement uuid="be14d188-8e94-427d-89f4-3d2be37c0e1e" x="0" y="0" width="58" height="20"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField isBlankWhenNull="false">
-								<reportElement uuid="a2f77c65-878e-4827-b80c-31f61b7b5539" x="0" y="0" width="90" height="20"/>
+						<jr:detailCell style="table_TD" height="22" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+								<reportElement uuid="a2f77c65-878e-4827-b80c-31f61b7b5539" x="0" y="0" width="58" height="20"/>
 								<textElement verticalAlignment="Middle">
+									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{total} + " €"]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{total} == null? "": java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{total}.doubleValue())]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -286,7 +293,7 @@ $F{document.client.country} + "\n" +
 			<textField>
 				<reportElement uuid="14484aea-08e0-4ad3-9f02-b22a8ab01fb0" positionType="Float" x="415" y="40" width="120" height="20"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{document.total} + " €"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.total}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="710f5ddb-4585-4ebc-9edc-ac0e96bcaff7" positionType="Float" x="320" y="0" width="95" height="20"/>
@@ -302,12 +309,12 @@ $F{document.client.country} + "\n" +
 			<textField>
 				<reportElement uuid="445b9cab-e35a-417e-bb6b-26d777f9ab90" positionType="Float" x="415" y="0" width="120" height="20"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{document.totalBeforeTax} + " €"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalBeforeTax}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="aa3ca53a-89a9-4d3e-ac81-a337716dbba0" positionType="Float" x="415" y="20" width="120" height="20"/>
 				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[$F{document.totalTax} + " €"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalTax}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="e70d9f40-7c6a-41a3-bb67-b65e945623a1" positionType="Float" x="320" y="20" width="95" height="20"/>
@@ -323,33 +330,41 @@ $F{document.client.country} + "\n" +
 		<band height="50" splitType="Prevent">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="d3de5d01-969a-4b88-bb04-c2e4af24934f" positionType="Float" x="8" y="29" width="247" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[org.apache.commons.lang3.StringUtils.isNotBlank($F{document.note})? $F{document.note}: $R{tidy.nonote}]]></textFieldExpression>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.note}!=null && !"".equals($F{document.note}.trim())? $F{document.note}: $R{tidy.nonote}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="a2476859-ff96-40df-915a-699078bc6147" positionType="Float" x="8" y="9" width="110" height="20"/>
 				<textElement>
 					<font isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{tidy.note} + ":"]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{tidy.note}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
 	<pageFooter>
-		<band height="112" splitType="Stretch">
+		<band height="60" splitType="Stretch">
 			<textField>
-				<reportElement uuid="58d47b4d-4c45-45ef-a6af-fb7c016bd67e" x="423" y="70" width="80" height="20"/>
-				<textElement textAlignment="Right"/>
+				<reportElement uuid="58d47b4d-4c45-45ef-a6af-fb7c016bd67e" x="423" y="20" width="80" height="20"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="3926bbcd-506a-4fc1-aa31-88a8c192b20b" x="503" y="70" width="40" height="20"/>
-				<textElement/>
+				<reportElement uuid="3926bbcd-506a-4fc1-aa31-88a8c192b20b" x="503" y="20" width="40" height="20"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="f7393b41-7696-40a3-b364-799c79bb1a2e" x="152" y="70" width="296" height="20" forecolor="#D1D1D1"/>
-				<textElement markup="html"/>
+				<reportElement uuid="f7393b41-7696-40a3-b364-799c79bb1a2e" x="140" y="45" width="274" height="12" forecolor="#D1D1D1"/>
+				<textElement textAlignment="Center" markup="html">
+					<font size="8"/>
+				</textElement>
 				<text><![CDATA[<a href="https://www.novabill.it">Powered by Novabill - https://www.novabill.it</a>]]></text>
 			</staticText>
 		</band>

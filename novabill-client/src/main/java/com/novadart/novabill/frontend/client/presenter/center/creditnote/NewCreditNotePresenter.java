@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteView;
@@ -50,6 +52,9 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 			items.add(i.clone());
 		}
 		getView().getItemInsertionForm().setItems(items);
+		getView().getNote().setText(I18NM.get.generatedFromInvoice(
+				invoice.getDocumentID()+"/"+ getYearFormat().format(invoice.getAccountingDocumentDate()), 
+				DateTimeFormat.getFormat("dd MMMM yyyy").format(invoice.getAccountingDocumentDate())));
 	}
 
 

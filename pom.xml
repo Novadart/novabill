@@ -46,7 +46,7 @@
 			<dependency>
 				<groupId>com.novadart</groupId>
 				<artifactId>novadart-gwt-shared</artifactId>
-				<version>1.3-SNAPSHOT</version>
+				<version>1.4</version>
 			</dependency>
 
 			<dependency>
@@ -396,9 +396,21 @@
 				<version>5.0.4</version>
 			</dependency>
 			<dependency>
+				<groupId>com.novadart.jasperreports.fonts</groupId>
+				<artifactId>fonts-arial</artifactId>
+				<version>1.0</version>
+			</dependency>
+			<dependency>
 				<groupId>com.lowagie</groupId>
 				<artifactId>itext</artifactId>
 				<version>2.1.7</version>
+			</dependency>
+
+			<!-- Url rewrite filter -->
+			<dependency>
+				<groupId>org.tuckey</groupId>
+				<artifactId>urlrewritefilter</artifactId>
+				<version>4.0.3</version>
 			</dependency>
 
 		</dependencies>

@@ -14,11 +14,15 @@ import com.google.gwt.user.cellview.client.TextColumn;
 import com.novadart.gwtshared.client.cell.LargeEditTextCell;
 import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
 public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
+	
+	private static final int DESCRIPTION_MAX_LENGTH = 500;
+	private static final int UNIT_OF_MEASURE_MAX_SIZE = 255;
 
 
 	public static interface Handler{
@@ -51,6 +55,8 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
 				if(Validation.isEmpty(value)){
 					Notification.showMessage(I18N.INSTANCE.errorClientData());
+				} else if(!Validation.isWithinSize(value, DESCRIPTION_MAX_LENGTH)){
+					Notification.showMessage(I18NM.get.textLengthError(DESCRIPTION_MAX_LENGTH));
 				} else {
 					object.setDescription(value);
 					ItemTable.this.handler.onUpdate(object);
@@ -118,7 +124,9 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				if(object.getUnitOfMeasure() != null){
+				if(!Validation.isWithinSize(value, UNIT_OF_MEASURE_MAX_SIZE)){
+					Notification.showMessage(I18NM.get.textLengthError(UNIT_OF_MEASURE_MAX_SIZE));
+				} else if(object.getUnitOfMeasure() != null){
 					object.setUnitOfMeasure(value);
 					ItemTable.this.handler.onUpdate(object);
 				}

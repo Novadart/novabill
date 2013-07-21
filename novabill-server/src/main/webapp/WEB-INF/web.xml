@@ -24,6 +24,8 @@
   	<param-name>gwt.xsrf.session_cookie_name</param-name>
   	<param-value>JSESSIONID</param-value>
   </context-param>
+  
+  
   <filter>
     <filter-name>CharacterEncodingFilter</filter-name>
     <filter-class>org.springframework.web.filter.CharacterEncodingFilter</filter-class>
@@ -48,6 +50,16 @@
     <filter-name>Spring OpenEntityManagerInViewFilter</filter-name>
     <filter-class>org.springframework.orm.jpa.support.OpenEntityManagerInViewFilter</filter-class>
   </filter>
+  <filter>
+  		<filter-name>UrlRewriteFilter</filter-name>
+  		<filter-class>com.novadart.novabill.filter.WrappedUrlRewriteFilter</filter-class>
+  		<init-param>
+  			<param-name>enabled</param-name>
+  			<param-value>${urlRewriteFilter.enabled.value}</param-value>
+  		</init-param>
+  </filter>
+  
+  
   <filter-mapping>
     <filter-name>CharacterEncodingFilter</filter-name>
     <url-pattern>/*</url-pattern>
@@ -56,9 +68,7 @@
     <filter-name>HttpMethodFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
-  
-    
-    <filter-mapping>
+  <filter-mapping>
         <filter-name>springSecurityFilterChain</filter-name>
         <url-pattern>/*</url-pattern>
         <dispatcher>FORWARD</dispatcher>
@@ -68,12 +78,21 @@
     <filter-name>Spring OpenEntityManagerInViewFilter</filter-name>
     <url-pattern>/*</url-pattern>
   </filter-mapping>
+  <filter-mapping>
+  	<filter-name>UrlRewriteFilter</filter-name>
+		<url-pattern>/*</url-pattern>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>FORWARD</dispatcher>
+  </filter-mapping>
+  
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
   <listener>
   	<listener-class>org.springframework.security.web.session.HttpSessionEventPublisher</listener-class>
   </listener>
+  
+  
   <servlet>
     <servlet-name>novabill</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
@@ -88,7 +107,7 @@
     <url-pattern>/</url-pattern>
   </servlet-mapping>
   <servlet>
-    <servlet-name>invoice</servlet-name>
+    <servlet-name>gwtServlet</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <init-param>
       <param-name>contextConfigLocation</param-name>
@@ -97,7 +116,7 @@
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping>
-    <servlet-name>invoice</servlet-name>
+    <servlet-name>gwtServlet</servlet-name>
     <url-pattern>*.rpc</url-pattern>
   </servlet-mapping>
   <session-config>

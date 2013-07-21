@@ -63,7 +63,7 @@ public class ActivateAccountController {
 		principal.persist();
 		registration.remove();
 		status.setComplete();
-		return "forward:/resources/j_spring_security_check";
+		return "forward:/resources/login_check";
 	}
 	
 }

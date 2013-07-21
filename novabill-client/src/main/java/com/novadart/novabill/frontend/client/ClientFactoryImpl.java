@@ -51,7 +51,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	private static final String CHANGE_PASSWORD_URL = GWT.getHostPageBaseURL()+"private/change-password";
 	private static final String XSRF_URL = GWT.getHostPageBaseURL() + "private/gwt/xsrf";
 	private static final String POST_FEEDBACK_URL = GWT.getHostPageBaseURL()+"private/feedback";
-	private static final String LOGOUT_URL = GWT.getHostPageBaseURL()+"resources/j_spring_security_logout";
+	private static final String LOGOUT_URL = GWT.getHostPageBaseURL()+"resources/logout";
 	private static final String DELETE_ACCOUNT_URL = GWT.getHostPageBaseURL()+"private/delete";
 	private static final String EXPORT_REQUEST = GWT.getHostPageBaseURL()
 			+ "private/export?clients={c}&invoices={i}&estimations={e}&creditnotes={cn}&transportdocs={t}&token={token}";

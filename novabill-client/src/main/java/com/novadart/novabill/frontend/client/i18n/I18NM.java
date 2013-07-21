@@ -12,6 +12,7 @@ public interface I18NM extends Messages {
 	public String invalidDocumentIdError(String values);
 	public String invalidDocumentIdErrorMultiple(String values);
 	public String generatedFromEstimation(long id, String date);
+	public String generatedFromInvoice(String id, String date);
 	public String textLengthError(int length);
 	public String errorCheckField(String field);
 }
