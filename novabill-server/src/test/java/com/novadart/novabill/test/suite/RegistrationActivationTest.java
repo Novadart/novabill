@@ -100,7 +100,7 @@ public class RegistrationActivationTest {
 				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		assertEquals("redirect:/registrationCompleted", registerView);
 		assertEquals("activate", activateView);
-		assertEquals("forward:/resources/j_spring_security_check", forwardToSpringSecurityCheck);
+		assertEquals("forward:/resources/login_check", forwardToSpringSecurityCheck);
 	}
 	
 	@Test
@@ -212,7 +212,7 @@ public class RegistrationActivationTest {
 		String activateView2 = activationController.setupForm(email, token, model);
 		assertEquals("redirect:/registrationCompleted", registerView);
 		assertEquals("activate", activateView1);
-		assertEquals("forward:/resources/j_spring_security_check", forwardToSpringSecurityCheck1);
+		assertEquals("forward:/resources/login_check", forwardToSpringSecurityCheck1);
 		assertEquals("invalidActivationRequest", activateView2);
 	}
 	
@@ -254,7 +254,7 @@ public class RegistrationActivationTest {
 		
 		assertEquals("redirect:/registrationCompleted", registerView1);
 		assertEquals("activate", activateView1);
-		assertEquals("forward:/resources/j_spring_security_check", forwardToSpringSecurityCheck1);
+		assertEquals("forward:/resources/login_check", forwardToSpringSecurityCheck1);
 		
 		assertEquals("redirect:/registrationCompleted", registerView2);
 		assertEquals("activate", activateView2);

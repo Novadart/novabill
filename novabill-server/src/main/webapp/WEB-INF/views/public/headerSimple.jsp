@@ -18,7 +18,7 @@
 			<div style="clear: both"></div>
 			<div id="loginBox">
 				<form id="loginForm"
-					action='<spring:url value="/resources/j_spring_security_check"/>'
+					action='<spring:url value="/resources/login_check"/>'
 					method="post">
 					<fieldset id="body">
 						<fieldset>
@@ -64,7 +64,7 @@
 				</a>
 			</sec:authorize> --%> 
 			<a class="logoutLink"
-			href='<spring:url value="/resources/j_spring_security_logout"></spring:url>'><spring:message
+			href='<spring:url value="/resources/logout"></spring:url>'><spring:message
 					code="header.logout" /></a>
 		</span>
 	</sec:authorize>

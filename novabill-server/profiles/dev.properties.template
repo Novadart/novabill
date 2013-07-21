@@ -4,6 +4,11 @@
 resources.root=/tmp
 
 #
+# Security
+#
+privateArea.channel.value = http
+
+#
 # Logging
 #
 log.file.value=${resources.root}/logs/novabill.log
