@@ -2,6 +2,7 @@ target
 gwt-unitCache
 .classpath
 .project
+*.backup
 .settings
 log.roo
 novabill-server/src/main/webapp/rpc
