@@ -140,8 +140,9 @@
 				<textFieldExpression><![CDATA[$F{document.business.name} + "\n" +
 $F{document.business.address} + "\n" +
 $F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim())? " (" + $F{document.business.province} + ")": "") + "\n" +
-$F{document.business.country} + "\n" +
-($F{document.business.vatID}!=null&& !"".equals($F{document.business.vatID}.trim())? $R{tidy.vatID} + " " + $F{document.business.vatID}: $R{tidy.ssn} + " " + $F{document.business.ssn})]]></textFieldExpression>
+$F{document.business.country} +
+($F{document.business.vatID}!=null && !"".equals($F{document.business.vatID}.trim()) ? "\n" + $R{tidy.vatID} + " " + $F{document.business.vatID} : "") +
+($F{document.business.ssn}!=null && !"".equals($F{document.business.ssn}.trim()) ? "\n" + $R{tidy.ssn} + " " + $F{document.business.ssn} : "")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="303" y="95" width="200" height="99"/>
@@ -151,8 +152,9 @@ $F{document.business.country} + "\n" +
 				<textFieldExpression><![CDATA[$F{document.client.name} + "\n" +
 $F{document.client.address} + "\n" +
 $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.client.province}!=null && !"".equals($F{document.client.province}.trim())? " (" + $F{document.client.province} + ")": "") + "\n" +
-$F{document.client.country} + "\n" +
-($F{document.client.vatID}!=null && !"".equals($F{document.client.vatID}.trim())? $R{tidy.vatID} + " " + $F{document.client.vatID}: $R{tidy.ssn} + " " + $F{document.client.ssn})]]></textFieldExpression>
+$F{document.client.country} +
+($F{document.client.vatID}!=null && !"".equals($F{document.client.vatID}.trim()) ? "\n" + $R{tidy.vatID} + " " + $F{document.client.vatID} : "") +
+($F{document.client.ssn}!=null && !"".equals($F{document.client.ssn}.trim()) ? "\n" + $R{tidy.ssn} + " " + $F{document.client.ssn} : "")]]></textFieldExpression>
 			</textField>
 			<componentElement>
 				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="206" width="540" height="50" backcolor="#C0BEBE"/>
