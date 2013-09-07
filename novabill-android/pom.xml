@@ -19,26 +19,12 @@
 		</dependency>
 	</dependencies>
 	<build>
-		<resources>
-			<!-- filter manifest and put filtered file in target/filtered-manifest/ -->
-			<resource>
-				<directory>${project.basedir}/src/main/android/</directory>
-				<filtering>true</filtering>
-				<targetPath>${project.build.directory}/filtered-manifest</targetPath>
-				<includes>
-					<include>AndroidManifest.xml</include>
-				</includes>
-			</resource>
-		</resources>
-
-
 		<!-- Don't forget to set the ANDROID_HOME variable in .bashrc export ANDROID_HOME=/path/to/android/sdk -->
 		<plugins>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
 				<configuration>
-					<androidManifestFile>${project.build.directory}/filtered-manifest/AndroidManifest.xml</androidManifestFile>
 					<sdk>
 						<path>${env.ANDROID_HOME}</path>
 						<platform>17</platform>
@@ -48,16 +34,18 @@
 						<wait>60000</wait>
 					</emulator>
 				</configuration>
-			</plugin>
-
-			<plugin>
-				<artifactId>maven-resources-plugin</artifactId>
 				<executions>
 					<execution>
-						<phase>initialize</phase>
+						<id>update-manifest</id>
+						<phase>process-resources</phase>
 						<goals>
-							<goal>resources</goal>
+							<goal>manifest-update</goal>
 						</goals>
+						<configuration>
+							<manifest>
+								<versionName>${project.version}</versionName>
+							</manifest>
+						</configuration>
 					</execution>
 				</executions>
 			</plugin>

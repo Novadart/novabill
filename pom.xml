@@ -26,7 +26,7 @@
 		<module>novabill-shared</module>
 		<module>novabill-scala-utils</module>
 		<module>novabill-client</module>
-	<!--	<module>novabill-android</module> -->
+		<module>novabill-android</module> 
 		<module>novabill-server</module>
 	</modules>
 
@@ -517,7 +517,7 @@
 				<plugin>
 					<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 					<artifactId>android-maven-plugin</artifactId>
-					<version>3.6.0</version>
+					<version>3.6.1</version>
 					<configuration>
 						<undeployBeforeDeploy>true</undeployBeforeDeploy>
 					</configuration>
