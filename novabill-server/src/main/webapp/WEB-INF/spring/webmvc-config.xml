@@ -17,9 +17,9 @@
 
 	<mvc:annotation-driven />
 
-	<mvc:resources location="/css/" mapping="/css/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/js/" mapping="/js/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/images/" mapping="/images/**" cache-period="${images.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/css/" mapping="/frontend/css/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/js/" mapping="/frontend/js/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/images/" mapping="/frontend/images/**" cache-period="${images.cachePeriod}" />
 	
 	<mvc:resources location="/rpc/" mapping="/rpc/**" cache-period="${rpc.cachePeriod}" />
 	<mvc:resources location="/democode/" mapping="/democode/**" cache-period="${democode.cachePeriod}" />
@@ -30,14 +30,15 @@
 			p:paramName="lang" />
 	</mvc:interceptors>
 
-	<mvc:view-controller path="/login" />
-	<mvc:view-controller path="/" view-name="index" />
-	<mvc:view-controller path="/uncaughtException" />
+	<!-- <mvc:view-controller path="/login" /> -->
+	<mvc:view-controller path="/" view-name="frontend.index" />
+	<mvc:view-controller path="/contact" view-name="frontend.contact" />
+<!-- <mvc:view-controller path="/uncaughtException" />
 	<mvc:view-controller path="/resourceNotFound" />
 	<mvc:view-controller path="/dataAccessFailure" />
 	<mvc:view-controller path="/registrationCompleted" />
 	<mvc:view-controller path="/passwordRecoveryCommenced" />
-	<mvc:view-controller path="/tos" />
+	<mvc:view-controller path="/tos" /> -->
 	<!-- <mvc:view-controller path="/privacyPolicy" /> --> <!-- Not needed, currently we're using iubenda.com -->
 	<!-- <mvc:view-controller path="/premiumInfo"/> -->
 	
@@ -87,11 +88,7 @@
 		<property name="definitions">
 			<list>
 				<!-- Scan views directory for Tiles configurations -->
-				<value>/WEB-INF/views/views-base.xml</value>
-				<value>/WEB-INF/views/views-public.xml</value>
-				<value>/WEB-INF/views/views-private.xml</value>
-				<value>/WEB-INF/views/views-error.xml</value>
-				<value>/WEB-INF/views/views-test.xml</value>
+				<value>/WEB-INF/views/tiles-defs.xml</value>
 			</list>
 		</property>
 	</bean>
