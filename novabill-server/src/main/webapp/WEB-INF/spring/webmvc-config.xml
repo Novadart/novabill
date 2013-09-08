@@ -18,8 +18,10 @@
 	<mvc:annotation-driven />
 
 	<mvc:resources location="/frontend_assets/css/" mapping="/frontend/css/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/js/" mapping="/frontend/js/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/images/" mapping="/frontend/images/**" cache-period="${images.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/fonts/" mapping="/frontend/fonts/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/scripts/" mapping="/frontend/scripts/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/plugins/" mapping="/frontend/plugins/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/img/" mapping="/frontend/img/**" cache-period="${images.cachePeriod}" />
 	
 	<mvc:resources location="/rpc/" mapping="/rpc/**" cache-period="${rpc.cachePeriod}" />
 	<mvc:resources location="/democode/" mapping="/democode/**" cache-period="${democode.cachePeriod}" />
@@ -31,8 +33,6 @@
 	</mvc:interceptors>
 
 	<!-- <mvc:view-controller path="/login" /> -->
-	<mvc:view-controller path="/" view-name="frontend.index" />
-	<mvc:view-controller path="/contact" view-name="frontend.contact" />
 <!-- <mvc:view-controller path="/uncaughtException" />
 	<mvc:view-controller path="/resourceNotFound" />
 	<mvc:view-controller path="/dataAccessFailure" />

@@ -7,45 +7,30 @@
 <!-- BEGIN HEAD -->
 <head>
     <meta charset="utf-8" />
-    <title>Metronic Frotnend | Homepage</title>
+    <title>NOVABILL | Home</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
     <!-- BEGIN GLOBAL MANDATORY STYLES -->
-    <link href="assets/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/plugins/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/css/reset.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/css/style-metro.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/css/style.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" />               
-    <link href="assets/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-    <link href="assets/plugins/bxslider/jquery.bxslider.css" rel="stylesheet" />          
-    <link rel="stylesheet" href="assets/plugins/revolution_slider/css/rs-style.css" media="screen">
-    <link rel="stylesheet" href="assets/plugins/revolution_slider/rs-plugin/css/settings.css" media="screen">                
-    <link href="assets/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+    <link href="frontend/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+    <link href="frontend/plugins/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+    <link href="frontend/css/reset.css" rel="stylesheet" type="text/css"/>
+    <link href="frontend/css/style-metro.css" rel="stylesheet" type="text/css"/>
+    <link href="frontend/css/style.css" rel="stylesheet" type="text/css"/>
+    <link href="frontend/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" />               
+    <link href="frontend/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+    <link href="frontend/plugins/bxslider/jquery.bxslider.css" rel="stylesheet" />          
+    <link rel="stylesheet" href="frontend/plugins/revolution_slider/css/rs-style.css" media="screen">
+    <link rel="stylesheet" href="frontend/plugins/revolution_slider/rs-plugin/css/settings.css" media="screen">                
+    <link href="frontend/css/style-responsive.css" rel="stylesheet" type="text/css"/>
     <!-- END GLOBAL MANDATORY STYLES -->
-    <link href="assets/css/themes/blue.css" rel="stylesheet" type="text/css" id="style_color"/>    
-    <link rel="shortcut icon" href="favicon.ico" />
+    <link href="frontend/css/themes/blue.css" rel="stylesheet" type="text/css" id="style_color"/>    
+    <link rel="shortcut icon" href="frontend/img/favicon.png" />
 </head>
 <!-- END HEAD -->
 
 <!-- BEGIN BODY -->
 <body>
-	<!-- BEGIN STYLE CUSTOMIZER -->
-	<div class="color-panel hidden-phone">
-		<div class="color-mode-icons icon-color"></div>
-		<div class="color-mode-icons icon-color-close"></div>
-		<div class="color-mode">
-			<p>THEME COLOR</p>
-			<ul class="inline">
-				<li class="color-blue current color-default" data-style="blue"></li>
-				<li class="color-red" data-style="red"></li>
-				<li class="color-green" data-style="green"></li>
-				<li class="color-orange" data-style="orange"></li>
-			</ul>
-		</div>
-	</div>
-	<!-- END BEGIN STYLE CUSTOMIZER -->    
 
 	<tiles:insertAttribute name="header" />
 
@@ -54,9 +39,9 @@
         <div class="fullwidthabnner">
             <ul id="revolutionul" style="display:none;">            
                     <!-- THE FIRST SLIDE -->
-                    <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="9400" data-thumb="assets/img/sliders/revolution/thumbs/thumb2.jpg">
+                    <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="9400" data-thumb="frontend/img/sliders/revolution/thumbs/thumb2.jpg">
                         <!-- THE MAIN IMAGE IN THE FIRST SLIDE -->
-                        <img src="assets/img/sliders/revolution/bg1.jpg" alt="">
+                        <img src="frontend/img/sliders/revolution/bg1.jpg" alt="">
                         
                         <div class="caption lft slide_title slide_item_left"
                              data-x="0"
@@ -97,13 +82,13 @@
                              data-speed="700" 
                              data-start="1000" 
                              data-easing="easeOutExpo"  >
-                             <img src="assets/img/sliders/revolution/man-winner.png" alt="Image 1">
+                             <img src="frontend/img/sliders/revolution/man-winner.png" alt="Image 1">
                         </div>
                     </li>
 
                     <!-- THE SECOND SLIDE -->
-                    <li data-transition="fade" data-slotamount="7" data-masterspeed="300" data-delay="9400" data-thumb="assets/img/sliders/revolution/thumbs/thumb2.jpg">                        
-                        <img src="assets/img/sliders/revolution/bg2.jpg" alt="">
+                    <li data-transition="fade" data-slotamount="7" data-masterspeed="300" data-delay="9400" data-thumb="frontend/img/sliders/revolution/thumbs/thumb2.jpg">                        
+                        <img src="frontend/img/sliders/revolution/bg2.jpg" alt="">
                         <div class="caption lfl slide_title slide_item_left"
                              data-x="0"
                              data-y="145"
@@ -134,7 +119,7 @@
                              data-speed="1200" 
                              data-start="1500" 
                              data-easing="easeOutBack">
-                             <img src="assets/img/sliders/revolution/mac.png" alt="Image 1">
+                             <img src="frontend/img/sliders/revolution/mac.png" alt="Image 1">
                         </div>
                         <div class="caption lfr slide_item_right" 
                              data-x="580" 
@@ -142,7 +127,7 @@
                              data-speed="1200" 
                              data-start="2000" 
                              data-easing="easeOutBack">
-                             <img src="assets/img/sliders/revolution/ipad.png" alt="Image 1">
+                             <img src="frontend/img/sliders/revolution/ipad.png" alt="Image 1">
                         </div>
                         <div class="caption lfr slide_item_right" 
                              data-x="735" 
@@ -150,7 +135,7 @@
                              data-speed="1200" 
                              data-start="2500" 
                              data-easing="easeOutBack">
-                             <img src="assets/img/sliders/revolution/iphone.png" alt="Image 1">
+                             <img src="frontend/img/sliders/revolution/iphone.png" alt="Image 1">
                         </div>
                         <div class="caption lfr slide_item_right" 
                              data-x="835" 
@@ -158,7 +143,7 @@
                              data-speed="1200" 
                              data-start="3000" 
                              data-easing="easeOutBack">
-                             <img src="assets/img/sliders/revolution/macbook.png" alt="Image 1">
+                             <img src="frontend/img/sliders/revolution/macbook.png" alt="Image 1">
                         </div>
                         <div class="caption lft slide_item_right" 
                              data-x="865" 
@@ -166,7 +151,7 @@
                              data-speed="500" 
                              data-start="5000" 
                              data-easing="easeOutBack">
-                             <img src="assets/img/sliders/revolution/hint1-blue.png" id="rev-hint1" alt="Image 1">
+                             <img src="frontend/img/sliders/revolution/hint1-blue.png" id="rev-hint1" alt="Image 1">
                         </div>                        
                         <div class="caption lfb slide_item_right" 
                              data-x="355" 
@@ -174,14 +159,14 @@
                              data-speed="500" 
                              data-start="5500" 
                              data-easing="easeOutBack">
-                             <img src="assets/img/sliders/revolution/hint2-blue.png" id="rev-hint2" alt="Image 1">
+                             <img src="frontend/img/sliders/revolution/hint2-blue.png" id="rev-hint2" alt="Image 1">
                         </div>
 
                     </li>
                     
                     <!-- THE THIRD SLIDE -->
-                    <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="9400" data-thumb="assets/img/sliders/revolution/thumbs/thumb2.jpg">
-                        <img src="assets/img/sliders/revolution/bg3.jpg" alt="">
+                    <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="9400" data-thumb="frontend/img/sliders/revolution/thumbs/thumb2.jpg">
+                        <img src="frontend/img/sliders/revolution/bg3.jpg" alt="">
                         <div class="caption lfl slide_item_left" 
                              data-x="20" 
                              data-y="95" 
@@ -225,9 +210,9 @@
                     </li>               
                     
                     <!-- THE FORTH SLIDE -->
-                    <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="9400" data-thumb="assets/img/sliders/revolution/thumbs/thumb2.jpg">
+                    <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="9400" data-thumb="frontend/img/sliders/revolution/thumbs/thumb2.jpg">
                         <!-- THE MAIN IMAGE IN THE FIRST SLIDE -->
-                        <img src="assets/img/sliders/revolution/bg4.jpg" alt="">                        
+                        <img src="frontend/img/sliders/revolution/bg4.jpg" alt="">                        
                          <div class="caption lft slide_title"
                              data-x="0"
                              data-y="125"
@@ -266,7 +251,7 @@
                              data-speed="400" 
                              data-start="2000" 
                              data-easing="easeOutBack"  >
-                             <img src="assets/img/sliders/revolution/iphone_left.png" alt="Image 2">
+                             <img src="frontend/img/sliders/revolution/iphone_left.png" alt="Image 2">
                         </div>
                         
                         <div class="caption lft start"  
@@ -275,7 +260,7 @@
                              data-speed="400" 
                              data-start="2400" 
                              data-easing="easeOutBack"  >
-                             <img src="assets/img/sliders/revolution/iphone_right.png" alt="Image 3">
+                             <img src="frontend/img/sliders/revolution/iphone_right.png" alt="Image 3">
                         </div>                        
                     </li>
             </ul>
@@ -312,18 +297,6 @@
         </div>
         <!-- END SERVICE BOX -->  
 
-        <!-- BEGIN BLOCKQUOTE BLOCK -->   
-        <div class="row-fluid quote-v1">
-            <div class="span9 quote-v1-inner">
-                <span>Metronic - The Most Complete & Popular Admin & Frontend Theme</span>
-            </div>
-            <div class="span3 quote-v1-inner text-right">
-                <a class="btn-transparent" href="http://www.keenthemes.com/preview/index.php?theme=metronic_admin" target="_blank"><i class="icon-rocket margin-right-10"></i>Preview Admin</a>
-                <!--<a class="btn-transparent" href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469"><i class="icon-gift margin-right-10"></i>Purchase 2 in 1</a>-->
-            </div>
-        </div>
-        <!-- END BLOCKQUOTE BLOCK -->
-
         <div class="clearfix"></div>
 
         <!-- BEGIN RECENT WORKS -->
@@ -336,9 +309,9 @@
                 <ul class="bxslider">
                     <li>
                         <em>
-                            <img src="assets/img/works/img1.jpg" alt="" />
+                            <img src="frontend/img/works/img1.jpg" alt="" />
                             <a href="portfolio_item.html"><i class="icon-link icon-hover icon-hover-1"></i></a>
-                            <a href="assets/img/works/img1.jpg" class="fancybox-button" title="Project Name #1" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
+                            <a href="frontend/img/works/img1.jpg" class="fancybox-button" title="Project Name #1" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
                         </em>
                         <a class="bxslider-block" href="#">
                             <strong>Amazing Project</strong>
@@ -347,9 +320,9 @@
                     </li>
                     <li>
                         <em>
-                            <img src="assets/img/works/img2.jpg" alt="" />
+                            <img src="frontend/img/works/img2.jpg" alt="" />
                             <a href="portfolio_item.html"><i class="icon-link icon-hover icon-hover-1"></i></a>
-                            <a href="assets/img/works/img2.jpg" class="fancybox-button" title="Project Name #2" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
+                            <a href="frontend/img/works/img2.jpg" class="fancybox-button" title="Project Name #2" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
                         </em>
                         <a class="bxslider-block" href="#">
                             <strong>Amazing Project</strong>
@@ -358,9 +331,9 @@
                     </li>
                     <li>
                         <em>
-                            <img src="assets/img/works/img3.jpg" alt="" />
+                            <img src="frontend/img/works/img3.jpg" alt="" />
                             <a href="portfolio_item.html"><i class="icon-link icon-hover icon-hover-1"></i></a>
-                            <a href="assets/img/works/img3.jpg" class="fancybox-button" title="Project Name #3" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
+                            <a href="frontend/img/works/img3.jpg" class="fancybox-button" title="Project Name #3" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
                         </em>
                         <a class="bxslider-block" href="#">
                             <strong>Amazing Project</strong>
@@ -369,9 +342,9 @@
                     </li>
                     <li>
                         <em>
-                            <img src="assets/img/works/img4.jpg" alt="" />
+                            <img src="frontend/img/works/img4.jpg" alt="" />
                             <a href="portfolio_item.html"><i class="icon-link icon-hover icon-hover-1"></i></a>
-                            <a href="assets/img/works/img4.jpg" class="fancybox-button" title="Project Name #4" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
+                            <a href="frontend/img/works/img4.jpg" class="fancybox-button" title="Project Name #4" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
                         </em>
                         <a class="bxslider-block" href="#">
                             <strong>Amazing Project</strong>
@@ -380,9 +353,9 @@
                     </li>
                     <li>
                         <em>
-                            <img src="assets/img/works/img5.jpg" alt="" />
+                            <img src="frontend/img/works/img5.jpg" alt="" />
                             <a href="portfolio_item.html"><i class="icon-link icon-hover icon-hover-1"></i></a>
-                            <a href="assets/img/works/img5.jpg" class="fancybox-button" title="Project Name #5" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
+                            <a href="frontend/img/works/img5.jpg" class="fancybox-button" title="Project Name #5" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
                         </em>
                         <a class="bxslider-block" href="#">
                             <strong>Amazing Project</strong>
@@ -391,9 +364,9 @@
                     </li>
                     <li>
                         <em>
-                            <img src="assets/img/works/img6.jpg" alt="" />
+                            <img src="frontend/img/works/img6.jpg" alt="" />
                             <a href="portfolio_item.html"><i class="icon-link icon-hover icon-hover-1"></i></a>
-                            <a href="assets/img/works/img6.jpg" class="fancybox-button" title="Project Name #6" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
+                            <a href="frontend/img/works/img6.jpg" class="fancybox-button" title="Project Name #6" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
                         </em>
                         <a class="bxslider-block" href="#">
                             <strong>Amazing Project</strong>
@@ -402,9 +375,9 @@
                     </li>
                     <li>
                         <em>
-                            <img src="assets/img/works/img3.jpg" alt="" />
+                            <img src="frontend/img/works/img3.jpg" alt="" />
                             <a href="portfolio_item.html"><i class="icon-link icon-hover icon-hover-1"></i></a>
-                            <a href="assets/img/works/img3.jpg" class="fancybox-button" title="Project Name #3" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
+                            <a href="frontend/img/works/img3.jpg" class="fancybox-button" title="Project Name #3" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
                         </em>
                         <a class="bxslider-block" href="#">
                             <strong>Amazing Project</strong>
@@ -413,9 +386,9 @@
                     </li>
                     <li>
                         <em>
-                            <img src="assets/img/works/img4.jpg" alt="" />
+                            <img src="frontend/img/works/img4.jpg" alt="" />
                             <a href="portfolio_item.html"><i class="icon-link icon-hover icon-hover-1"></i></a>
-                            <a href="assets/img/works/img4.jpg" class="fancybox-button" title="Project Name #4" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
+                            <a href="frontend/img/works/img4.jpg" class="fancybox-button" title="Project Name #4" data-rel="fancybox-button"><i class="icon-search icon-hover icon-hover-2"></i></a>
                         </em>
                         <a class="bxslider-block" href="#">
                             <strong>Amazing Project</strong>
@@ -442,8 +415,8 @@
                 <div class="tab-content">
                     <div class="tab-pane row-fluid fade in active" id="tab-1">
                         <div class="span3">
-                            <a href="assets/img/photos/img7.jpg" class="fancybox-button" title="Image Title" data-rel="fancybox-button">
-                                <img class="img-circle" src="assets/img/photos/img7.jpg" alt="" />
+                            <a href="frontend/img/photos/img7.jpg" class="fancybox-button" title="Image Title" data-rel="fancybox-button">
+                                <img class="img-circle" src="frontend/img/photos/img7.jpg" alt="" />
                             </a>
                         </div>
                         <div class="span9">
@@ -456,8 +429,8 @@
                             <p>Food truck fixie locavore, accusamus mcsweeney's marfa nulla single-origin coffee squid. Exercitation +1 labore velit, blog sartorial PBR leggings next level wes anderson artisan four loko farm-to-table craft beer twee. Qui photo booth letterpress, commodo enim craft beer mlkshk aliquip jean shorts ullamco ad vinyl cillum PBR. Homo nostrud organic, assumenda labore aesthetic magna delectus mollit. Keytar helvetica VHS salvia..</p>
                         </div>
                         <div class="span3">
-                            <a href="assets/img/photos/img10.jpg" class="fancybox-button" title="Image Title" data-rel="fancybox-button">
-                                <img class="img-circle" src="assets/img/photos/img10.jpg" alt="" />
+                            <a href="frontend/img/photos/img10.jpg" class="fancybox-button" title="Image Title" data-rel="fancybox-button">
+                                <img class="img-circle" src="frontend/img/photos/img10.jpg" alt="" />
                             </a>
                         </div>
                     </div>
@@ -479,7 +452,7 @@
                         <div class="active item">
                             <span class="testimonials-slide">Denim you probably haven't heard of. Lorem ipsum dolor met consectetur adipisicing sit amet, consectetur adipisicing elit, of them jean shorts sed magna aliqua. Lorem ipsum dolor met consectetur adipisicing sit amet do eiusmod dolore.</span>
                             <div class="carousel-info">
-                                <img class="pull-left" src="assets/img/people/img1-small.jpg" alt="" />
+                                <img class="pull-left" src="frontend/img/people/img1-small.jpg" alt="" />
                                 <div class="pull-left">
                                     <span class="testimonials-name">Lina Mars</span>
                                     <span class="testimonials-post">Commercial Director</span>
@@ -489,7 +462,7 @@
                         <div class="item">
                             <span class="testimonials-slide">Raw denim you Mustache cliche tempor, williamsburg carles vegan helvetica probably haven't heard of them jean shorts austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica.</span>
                             <div class="carousel-info">
-                                <img class="pull-left" src="assets/img/people/img5-small.jpg" alt="" />
+                                <img class="pull-left" src="frontend/img/people/img5-small.jpg" alt="" />
                                 <div class="pull-left">
                                     <span class="testimonials-name">Kate Ford</span>
                                     <span class="testimonials-post">Commercial Director</span>
@@ -499,7 +472,7 @@
                         <div class="item">
                             <span class="testimonials-slide">Reprehenderit butcher stache cliche tempor, williamsburg carles vegan helvetica.retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid Aliquip placeat salvia cillum iphone.</span>
                             <div class="carousel-info">
-                                <img class="pull-left" src="assets/img/people/img2-small.jpg" alt="" />
+                                <img class="pull-left" src="frontend/img/people/img2-small.jpg" alt="" />
                                 <div class="pull-left">
                                     <span class="testimonials-name">Jake Witson</span>
                                     <span class="testimonials-post">Commercial Director</span>
@@ -544,50 +517,50 @@
                 <ul class="bxslider1 clients-list">
                     <li>
                         <a href="#">
-                            <img src="assets/img/clients/client_1_gray.png" alt="" /> 
-                            <img src="assets/img/clients/client_1.png" class="color-img" alt="" />
+                            <img src="frontend/img/clients/client_1_gray.png" alt="" /> 
+                            <img src="frontend/img/clients/client_1.png" class="color-img" alt="" />
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <img src="assets/img/clients/client_2_gray.png" alt="" /> 
-                            <img src="assets/img/clients/client_2.png" class="color-img" alt="" />
+                            <img src="frontend/img/clients/client_2_gray.png" alt="" /> 
+                            <img src="frontend/img/clients/client_2.png" class="color-img" alt="" />
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <img src="assets/img/clients/client_3_gray.png" alt="" /> 
-                            <img src="assets/img/clients/client_3.png" class="color-img" alt="" />
+                            <img src="frontend/img/clients/client_3_gray.png" alt="" /> 
+                            <img src="frontend/img/clients/client_3.png" class="color-img" alt="" />
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <img src="assets/img/clients/client_4_gray.png" alt="" /> 
-                            <img src="assets/img/clients/client_4.png" class="color-img" alt="" />
+                            <img src="frontend/img/clients/client_4_gray.png" alt="" /> 
+                            <img src="frontend/img/clients/client_4.png" class="color-img" alt="" />
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <img src="assets/img/clients/client_5_gray.png" alt="" /> 
-                            <img src="assets/img/clients/client_5.png" class="color-img" alt="" />
+                            <img src="frontend/img/clients/client_5_gray.png" alt="" /> 
+                            <img src="frontend/img/clients/client_5.png" class="color-img" alt="" />
                         </a>
                     </li>
                     <li>
                         <a href="#">                        
-                            <img src="assets/img/clients/client_6_gray.png" alt="" /> 
-                            <img src="assets/img/clients/client_6.png" class="color-img" alt="" />
+                            <img src="frontend/img/clients/client_6_gray.png" alt="" /> 
+                            <img src="frontend/img/clients/client_6.png" class="color-img" alt="" />
                         </a>
                     </li>
                     <li>
                         <a href="#">
-                            <img src="assets/img/clients/client_7_gray.png" alt="" /> 
-                            <img src="assets/img/clients/client_7.png" class="color-img" alt="" />
+                            <img src="frontend/img/clients/client_7_gray.png" alt="" /> 
+                            <img src="frontend/img/clients/client_7.png" class="color-img" alt="" />
                         </a>
                     </li>
                     <li>
                         <a href="#">                        
-                            <img src="assets/img/clients/client_8_gray.png" alt="" /> 
-                            <img src="assets/img/clients/client_8.png" class="color-img" alt="" />
+                            <img src="frontend/img/clients/client_8_gray.png" alt="" /> 
+                            <img src="frontend/img/clients/client_8.png" class="color-img" alt="" />
                         </a>
                     </li>
                 </ul>                        
@@ -601,21 +574,21 @@
 
     <!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
     <!-- BEGIN CORE PLUGINS -->
-    <script src="assets/plugins/jquery-1.10.1.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-    <script src="assets/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-    <script type="text/javascript" src="assets/plugins/back-to-top.js"></script>    
-    <script type="text/javascript" src="assets/plugins/bxslider/jquery.bxslider.js"></script>
-    <script type="text/javascript" src="assets/plugins/fancybox/source/jquery.fancybox.pack.js"></script>    
-    <script type="text/javascript" src="assets/plugins/hover-dropdown.js"></script>
-    <script type="text/javascript" src="assets/plugins/revolution_slider/rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
-    <script type="text/javascript" src="assets/plugins/revolution_slider/rs-plugin/js/jquery.themepunch.revolution.min.js"></script> 
+    <script src="frontend/plugins/jquery-1.10.1.min.js" type="text/javascript"></script>
+    <script src="frontend/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+    <script src="frontend/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+    <script type="text/javascript" src="frontend/plugins/back-to-top.js"></script>    
+    <script type="text/javascript" src="frontend/plugins/bxslider/jquery.bxslider.js"></script>
+    <script type="text/javascript" src="frontend/plugins/fancybox/source/jquery.fancybox.pack.js"></script>    
+    <script type="text/javascript" src="frontend/plugins/hover-dropdown.js"></script>
+    <script type="text/javascript" src="frontend/plugins/revolution_slider/rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
+    <script type="text/javascript" src="frontend/plugins/revolution_slider/rs-plugin/js/jquery.themepunch.revolution.min.js"></script> 
     <!--[if lt IE 9]>
-    <script src="assets/plugins/respond.min.js"></script>  
+    <script src="frontend/plugins/respond.min.js"></script>  
     <![endif]-->   
     <!-- END CORE PLUGINS -->   
-    <script src="assets/scripts/app.js"></script>         
-    <script src="assets/scripts/index.js"></script>    
+    <script src="frontend/scripts/app.js"></script>         
+    <script src="frontend/scripts/index.js"></script>    
     <script type="text/javascript">
         jQuery(document).ready(function() {
             App.init();    

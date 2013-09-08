@@ -5,6 +5,7 @@
 
 	<!-- LAYOUTS -->
 	<definition name="frontend.subPageLayout" template="/WEB-INF/views/layouts/frontend/subPageLayout.jsp" >
+		<put-attribute name="head" value="/WEB-INF/views/tiles/frontend/subPageHead.jsp" />
 		<put-attribute name="header" value="/WEB-INF/views/tiles/frontend/header.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/views/tiles/frontend/footer.jsp" />
 	</definition>
@@ -19,6 +20,17 @@
 	<definition name="frontend.contact" extends="frontend.subPageLayout">
 		<put-attribute name="body" value="/WEB-INF/views/tiles/frontend/contactBody.jsp" />
 		<put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/contactJS.jsp" />
+	</definition>
+	
+	<definition name="frontend.about" extends="frontend.subPageLayout">
+		<put-attribute name="body" value="/WEB-INF/views/tiles/frontend/aboutBody.jsp" />
+		<put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/aboutJS.jsp" />
+	</definition>
+	
+	<definition name="frontend.prices" extends="frontend.subPageLayout">
+		<put-attribute name="head" value="/WEB-INF/views/tiles/frontend/pricesHead.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/tiles/frontend/pricesBody.jsp" />
+		<put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/pricesJS.jsp" />
 	</definition>
 	
 	<!--  -->

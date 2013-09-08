@@ -119,10 +119,10 @@ var App = function () {
 	
         // handle theme colors
         var setColor = function (color) {
-            $('#style_color').attr("href", "assets/css/themes/" + color + (isRTL ? '-rtl' : '') + ".css");
-            $('#logoimg').attr("src", "assets/img/logo_" + color + ".png");
-            $('#rev-hint1').attr("src", "assets/img/sliders/revolution/hint1-" + color + ".png");
-            $('#rev-hint2').attr("src", "assets/img/sliders/revolution/hint2-" + color + ".png");
+            $('#style_color').attr("href", "frontend/css/themes/" + color + (isRTL ? '-rtl' : '') + ".css");
+            $('#logoimg').attr("src", "frontend/img/logo_" + color + ".png");
+            $('#rev-hint1').attr("src", "frontend/img/sliders/revolution/hint1-" + color + ".png");
+            $('#rev-hint2').attr("src", "frontend/img/sliders/revolution/hint2-" + color + ".png");
             //$.cookie('style_color', color);                
         }
 

@@ -14,16 +14,16 @@
                 <!-- BEGIN BLOG PHOTOS STREAM -->
                 <div class="blog-photo-stream margin-bottom-30">
                     <ul class="unstyled">
-                        <li><a href="#"><img src="assets/img/people/img5-small.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="assets/img/works/img1.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="assets/img/people/img4-large.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="assets/img/works/img6.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="assets/img/pics/img1-large.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="assets/img/pics/img2-large.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="assets/img/works/img3.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="assets/img/people/img2-large.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="assets/img/works/img2.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="assets/img/works/img5.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="frontend/img/people/img5-small.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="frontend/img/works/img1.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="frontend/img/people/img4-large.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="frontend/img/works/img6.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="frontend/img/pics/img1-large.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="frontend/img/pics/img2-large.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="frontend/img/works/img3.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="frontend/img/people/img2-large.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="frontend/img/works/img2.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="frontend/img/works/img5.jpg" alt=""></a></li>
                     </ul>                    
                 </div>
                 <!-- END BLOG PHOTOS STREAM -->                              
