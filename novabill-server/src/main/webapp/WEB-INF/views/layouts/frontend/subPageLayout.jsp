@@ -15,6 +15,8 @@
 <!-- BEGIN BODY -->
 <body>
 
+	<tiles:insertAttribute name="analytics" />
+
 	<tiles:insertAttribute name="header" />
 
 	<tiles:insertAttribute name="body" />

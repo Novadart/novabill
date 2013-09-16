@@ -39,5 +39,8 @@ public class FrontendController {
 		return "frontend.prices";
 	}
 	
-	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(){
+		return "frontend.login";
+	}
 }

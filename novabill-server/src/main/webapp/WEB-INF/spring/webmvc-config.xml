@@ -23,6 +23,12 @@
 	<mvc:resources location="/frontend_assets/plugins/" mapping="/frontend/plugins/**" cache-period="${js.cachePeriod}" />
 	<mvc:resources location="/frontend_assets/img/" mapping="/frontend/img/**" cache-period="${images.cachePeriod}" />
 	
+	<mvc:resources location="/private_assets/css/" mapping="/private/css/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/private_assets/fonts/" mapping="/private/fonts/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/private_assets/scripts/" mapping="/private/scripts/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/private_assets/plugins/" mapping="/private/plugins/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/private_assets/img/" mapping="/private/img/**" cache-period="${images.cachePeriod}" />
+	
 	<mvc:resources location="/rpc/" mapping="/rpc/**" cache-period="${rpc.cachePeriod}" />
 	<mvc:resources location="/democode/" mapping="/democode/**" cache-period="${democode.cachePeriod}" />
 

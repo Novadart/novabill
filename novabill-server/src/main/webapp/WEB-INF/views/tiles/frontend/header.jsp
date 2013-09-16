@@ -7,6 +7,7 @@
 <spring:url var="aboutPageUrl" value="/about" />
 <spring:url var="contactPageUrl" value="/contact" />
 <spring:url var="pricesPageUrl" value="/prices" />
+<spring:url var="loginPageUrl" value="/login" />
 
 <%
 	PAGES activePage = (PAGES)request.getAttribute("activePage");
@@ -48,6 +49,7 @@
                             </ul>
                         </li> -->
                         <li class="<%=PAGES.CONTACT.equals(activePage) ? "active" : "" %>"><a href="${contactPageUrl}">Contact</a></li>
+                        <li><a href="${loginPageUrl}">Login / Register</a></li>
                     </ul>
                 </div>
                 <!-- BEGIN TOP NAVIGATION MENU -->

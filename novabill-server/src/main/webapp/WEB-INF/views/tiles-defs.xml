@@ -6,16 +6,26 @@
 	<!-- LAYOUTS -->
 	<definition name="frontend.subPageLayout" template="/WEB-INF/views/layouts/frontend/subPageLayout.jsp" >
 		<put-attribute name="head" value="/WEB-INF/views/tiles/frontend/subPageHead.jsp" />
+		<put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
 		<put-attribute name="header" value="/WEB-INF/views/tiles/frontend/header.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/views/tiles/frontend/footer.jsp" />
+	</definition>
+	
+	<definition name="frontend.indexLayout" template="/WEB-INF/views/layouts/frontend/indexLayout.jsp" >
+		<put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/tiles/frontend/header.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/tiles/frontend/footer.jsp" />
+	</definition>
+	
+	<definition name="frontend.loginLayout" template="/WEB-INF/views/layouts/frontend/loginLayout.jsp" >
+		<put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
 	</definition>
 	<!--  -->
 
 	<!-- PAGES -->
-	<definition name="frontend.index" template="/WEB-INF/views/layouts/frontend/indexLayout.jsp" >
-		<put-attribute name="header" value="/WEB-INF/views/tiles/frontend/header.jsp" />
-		<put-attribute name="footer" value="/WEB-INF/views/tiles/frontend/footer.jsp" />
-	</definition>
+	<definition name="frontend.index" extends="frontend.indexLayout" />
+	
+	<definition name="frontend.login" extends="frontend.loginLayout" />
 	
 	<definition name="frontend.contact" extends="frontend.subPageLayout">
 		<put-attribute name="body" value="/WEB-INF/views/tiles/frontend/contactBody.jsp" />

@@ -32,6 +32,8 @@
 <!-- BEGIN BODY -->
 <body>
 
+	<tiles:insertAttribute name="analytics" />
+
 	<tiles:insertAttribute name="header" />
 
     <!-- BEGIN REVOLUTION SLIDER -->    
