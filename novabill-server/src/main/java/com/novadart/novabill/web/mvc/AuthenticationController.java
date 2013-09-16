@@ -39,10 +39,9 @@ import com.novadart.novabill.service.validator.RegistrationValidator;
  * at the same time.
  */
 @Controller
-@RequestMapping("/register")
 @SessionAttributes("registration")
 @MailMixin
-public class RegisterController{
+public class AuthenticationController{
 	
 	private static final Long MILLISECS_PER_HOUR = 60 * 1000l;
 	
@@ -68,11 +67,11 @@ public class RegisterController{
 		dataBinder.setDisallowedFields("id");
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)
-	public String setupForm(Model model){
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String login(Model model){
 		Registration registration = new Registration();
 		model.addAttribute("registration", registration);
-		return "register";
+		return "frontend.login";
 	}
 	
 	private void sendActivationMail(Registration registration, Locale locale) throws UnsupportedEncodingException{
@@ -84,7 +83,7 @@ public class RegisterController{
 		sendMessage(registration.getEmail(), messageSource.getMessage("activation.notification", null, locale), templateVars, emailTemplateLocation);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/register", method = RequestMethod.POST)
 	public String processSubmit(@ModelAttribute("registration") Registration registration, BindingResult result, SessionStatus status, Locale locale)
 			throws NoSuchAlgorithmException, UnsupportedEncodingException{
 		validator.validate(registration, result);

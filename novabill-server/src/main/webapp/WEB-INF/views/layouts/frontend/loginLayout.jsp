@@ -1,8 +1,10 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="form" uri="http://www.springframework.org/tags/form"%>
 
 <spring:url var="loginUrl" value="/resources/login_check"></spring:url>
+<spring:url var="registerUrl" value="/register"></spring:url>
 
 
 <!DOCTYPE html>
@@ -118,7 +120,7 @@
 		</form>
 		<!-- END FORGOT PASSWORD FORM -->
 		<!-- BEGIN REGISTRATION FORM -->
-		<form class="form-vertical register-form" action="index.html" method="post">
+		<form:form  modelAttribute="registration" class="form-vertical register-form" action="${registerUrl}" method="post">
 			<h3 >Sign Up</h3>
 			<p>Enter your account details below:</p>
 			<div class="control-group">
@@ -126,7 +128,7 @@
 				<div class="controls">
 					<div class="input-icon left">
 						<i class="icon-user"></i>
-						<input class="m-wrap placeholder-no-fix" type="text" autocomplete="off" placeholder="Username" name="username"/>
+						<form:input path="email" class="m-wrap placeholder-no-fix" type="text" autocomplete="off" placeholder="Username"/>
 					</div>
 				</div>
 			</div>
@@ -135,7 +137,7 @@
 				<div class="controls">
 					<div class="input-icon left">
 						<i class="icon-lock"></i>
-						<input class="m-wrap placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="Password" name="password"/>
+						<form:input path="password" class="m-wrap placeholder-no-fix" type="password" autocomplete="off" id="register_password" placeholder="Password"/>
 					</div>
 				</div>
 			</div>
@@ -144,14 +146,14 @@
 				<div class="controls">
 					<div class="input-icon left">
 						<i class="icon-ok"></i>
-						<input class="m-wrap placeholder-no-fix" type="password" autocomplete="off" placeholder="Re-type Your Password" name="rpassword"/>
+						<form:input path="confirmPassword" class="m-wrap placeholder-no-fix" type="password" autocomplete="off" placeholder="Re-type Your Password"/>
 					</div>
 				</div>
 			</div>
 			<div class="control-group">
 				<div class="controls">
 					<label class="checkbox">
-					<input type="checkbox" name="tnc"/> I agree to the <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>
+					<form:checkbox path="agreementAccepted" name="tnc"/> I agree to the <a href="#">Terms of Service</a> and <a href="https://www.iubenda.com/privacy-policy/257554" class="iubenda-embed" title="Privacy Policy">Privacy Policy</a>
 					</label>  
 					<div id="register_tnc_error"></div>
 				</div>
@@ -164,7 +166,7 @@
 				Sign Up <i class="m-icon-swapright m-icon-white"></i>
 				</button>            
 			</div>
-		</form>
+		</form:form>
 		<!-- END REGISTRATION FORM -->
 	</div>
 	<!-- END LOGIN -->
@@ -203,6 +205,23 @@
 		  App.init();
 		  Login.init();
 		});
+	</script>
+	<script type="text/javascript">
+	(function(w, d) {
+		var loader = function() {
+			var s = d.createElement("script"), tag = d
+					.getElementsByTagName("script")[0];
+			s.src = "https://cdn.iubenda.com/iubenda.js";
+			tag.parentNode.insertBefore(s, tag);
+		};
+		if (w.addEventListener) {
+			w.addEventListener("load", loader, false);
+		} else if (w.attachEvent) {
+			w.attachEvent("onload", loader);
+		} else {
+			w.onload = loader;
+		}
+	})(window, document);
 	</script>
 	<!-- END JAVASCRIPTS -->
 </body>
