@@ -2746,7 +2746,8 @@
     
     	
     	function onGWTLoaded(){
-    		GWT_Server.business.get('1',callback);
+    		/* GWT_Server.business.get('1',callback); */
+    		GWT_UI.bootstrapDialog();
     	}
     
     </script>

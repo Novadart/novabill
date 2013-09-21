@@ -9,9 +9,7 @@ public class BusinessServiceJS extends ServiceJS {
 	
 
 	public static void get(String businessID, final JavaScriptObject callback) {
-		
 		SERVER_FACADE.getBusinessService().get(Long.parseLong(businessID), new ManagedAsyncCallback<BusinessDTO>() {
-
 			@Override
 			public void onSuccess(BusinessDTO result) {
 				invokeJSCallback(IBusinessDTO.class, result, callback);				

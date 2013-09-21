@@ -6,10 +6,6 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 
 public class ServerBridge implements ApiBridge {
 
-
-
-
-
 	@Override
 	public void inject(final AsyncCallback<Void> callback){
 		ServerFacade.INSTANCE.setupXsrfProtection(new ManagedAsyncCallback<Void>() {
