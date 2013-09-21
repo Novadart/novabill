@@ -19,6 +19,7 @@ import com.novadart.novabill.frontend.client.view.MainWidget;
 import com.novadart.novabill.frontend.client.view.center.business.BusinessView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.dto.IBusinessDTO;
 import com.novadart.novabill.shared.client.facade.LogoUploadStatus;
 
 public class BusinessPresenter extends AbstractPresenter<BusinessView> implements BusinessView.Presenter {
@@ -149,7 +150,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 	}
 
 	public void onLoad() {
-		BusinessDTO b = Configuration.getBusiness();
+		IBusinessDTO b = Configuration.getBusiness();
 
 		getView().getName().setText(b.getName());
 		getView().getSsn().setText(b.getSsn());

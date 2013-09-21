@@ -23,7 +23,7 @@ public class AccountingDocumentDTO implements IsSerializable{
     
     protected BigDecimal totalBeforeTax;
     
-    protected BusinessDTO business;
+    protected IBusinessDTO business;
     
     protected String paymentNote;
     
@@ -105,11 +105,11 @@ public class AccountingDocumentDTO implements IsSerializable{
 		this.layoutType = layoutType;
 	}
 
-	public BusinessDTO getBusiness() {
+	public IBusinessDTO getBusiness() {
 		return business;
 	}
 
-	public void setBusiness(BusinessDTO business) {
+	public void setBusiness(IBusinessDTO business) {
 		this.business = business;
 	}
 

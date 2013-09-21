@@ -20,6 +20,8 @@
 	<definition name="frontend.loginLayout" template="/WEB-INF/views/layouts/frontend/loginLayout.jsp" >
 		<put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
 	</definition>
+	
+	<definition name="private.layout" template="/WEB-INF/views/layouts/private/privateLayout.jsp" />
 	<!--  -->
 
 	<!-- PAGES -->

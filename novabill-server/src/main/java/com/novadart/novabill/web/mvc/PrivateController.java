@@ -2,6 +2,7 @@ package com.novadart.novabill.web.mvc;
 
 import java.io.StringWriter;
 import java.util.concurrent.TimeUnit;
+
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -9,11 +10,12 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.dto.IBusinessDTO;
 
 @Controller
 public class PrivateController {
@@ -28,11 +30,11 @@ public class PrivateController {
 
 	@RequestMapping(value = "/private", method = RequestMethod.GET)
 	public ModelAndView privateArea(){
-		ModelAndView mav = new ModelAndView("private");
+		ModelAndView mav = new ModelAndView("private.layout");
 		Business business = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId()).getBusiness();
 		String serializedBizz = null;
 		if(business != null) {
-			BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
+			IBusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
 			if (business != null) {
 				StringWriter sw = new StringWriter();
 				try {
