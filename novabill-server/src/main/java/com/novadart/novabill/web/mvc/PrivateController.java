@@ -1,54 +1,24 @@
 package com.novadart.novabill.web.mvc;
 
-import java.io.StringWriter;
-import java.util.concurrent.TimeUnit;
-
-import org.codehaus.jackson.map.ObjectMapper;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
-import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.shared.client.dto.IBusinessDTO;
-
+@RequestMapping("/private")
 @Controller
 public class PrivateController {
 
-	private static final ObjectMapper jsonSerializer = new ObjectMapper();
 
-	@Autowired
-	private UtilsService utilsService;
-
-	@Value("${devMode.enabled}")
-	private boolean devMode;
-
-	@RequestMapping(value = "/private", method = RequestMethod.GET)
-	public ModelAndView privateArea(){
-		ModelAndView mav = new ModelAndView("private.layout");
-		Business business = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId()).getBusiness();
-		String serializedBizz = null;
-		if(business != null) {
-			IBusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
-			if (business != null) {
-				StringWriter sw = new StringWriter();
-				try {
-					jsonSerializer.writeValue(sw, businessDTO);
-					serializedBizz = sw.toString();
-				} catch (Exception e) {
-					return null;
-				}
-			}
-		}
-		mav.addObject("business", serializedBizz);
-		mav.addObject("daysToExpiration", business == null? null: business.getNonFreeExpirationDelta(TimeUnit.DAYS));
-		mav.addObject("notesBitMask", Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId()).getNotesBitMask());
-		mav.addObject("devMode", devMode);
+	@RequestMapping(value = "/", method = RequestMethod.GET)
+	public ModelAndView dashboard(){
+		ModelAndView mav = new ModelAndView("private.dashboard");
+		return mav;
+	}
+	
+	@RequestMapping(value = "/firstrun/", method = RequestMethod.GET)
+	public ModelAndView firstRun(){
+		ModelAndView mav = new ModelAndView("private.firstrun");
 		return mav;
 	}
 

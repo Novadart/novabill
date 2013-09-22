@@ -9,25 +9,23 @@
 
 	<context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
 
-	<context:component-scan base-package="com.novadart.novabill"
-		use-default-filters="false">
-		<context:include-filter expression="org.springframework.stereotype.Controller"
-			type="annotation" />
+	<context:component-scan base-package="com.novadart.novabill" use-default-filters="false">
+		<context:include-filter expression="org.springframework.stereotype.Controller" type="annotation" />
 	</context:component-scan>
-
+	
 	<mvc:annotation-driven />
 
-	<mvc:resources location="/frontend_assets/css/" mapping="/frontend/css/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/fonts/" mapping="/frontend/fonts/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/scripts/" mapping="/frontend/scripts/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/plugins/" mapping="/frontend/plugins/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/img/" mapping="/frontend/img/**" cache-period="${images.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/css/" mapping="/frontend_assets/css/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/fonts/" mapping="/frontend_assets/fonts/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/scripts/" mapping="/frontend_assets/scripts/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/plugins/" mapping="/frontend_assets/plugins/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/img/" mapping="/frontend_assets/img/**" cache-period="${images.cachePeriod}" />
 	
-	<mvc:resources location="/private_assets/css/" mapping="/private/css/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/private_assets/fonts/" mapping="/private/fonts/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/private_assets/scripts/" mapping="/private/scripts/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/private_assets/plugins/" mapping="/private/plugins/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/private_assets/img/" mapping="/private/img/**" cache-period="${images.cachePeriod}" />
+	<mvc:resources location="/private_assets/css/" mapping="/private_assets/css/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/private_assets/fonts/" mapping="/private_assets/fonts/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/private_assets/scripts/" mapping="/private_assets/scripts/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/private_assets/plugins/" mapping="/private_assets/plugins/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/private_assets/img/" mapping="/private_assets/img/**" cache-period="${images.cachePeriod}" />
 	
 	<mvc:resources location="/rpc/" mapping="/rpc/**" cache-period="${rpc.cachePeriod}" />
 	<mvc:resources location="/democode/" mapping="/democode/**" cache-period="${democode.cachePeriod}" />
@@ -94,7 +92,8 @@
 		<property name="definitions">
 			<list>
 				<!-- Scan views directory for Tiles configurations -->
-				<value>/WEB-INF/views/tiles-defs.xml</value>
+				<value>/WEB-INF/views/frontend-tiles-defs.xml</value>
+				<value>/WEB-INF/views/private-tiles-defs.xml</value>
 			</list>
 		</property>
 	</bean>

@@ -3,6 +3,7 @@
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
 <spring:url var="indexPageUrl" value="/" />
+<spring:url value="/frontend_assets" var="frontendAssetsUrl" />
 
 <!-- BEGIN BREADCRUMBS -->   
 <div class="row-fluid breadcrumbs margin-bottom-40">
@@ -56,19 +57,19 @@
                 <!-- Carousel items -->
                 <div class="carousel-inner">
                     <div class="active item">
-                        <img src="frontend/img/pics/img2-medium.jpg" alt="">
+                        <img src="${frontendAssetsUrl}/img/pics/img2-medium.jpg" alt="">
                         <div class="carousel-caption">
                             <p>Excepturi sint occaecati cupiditate non provident</p>
                         </div>
                     </div>
                     <div class="item">
-                        <img src="frontend/img/pics/img1-medium.jpg" alt="">
+                        <img src="${frontendAssetsUrl}/img/pics/img1-medium.jpg" alt="">
                         <div class="carousel-caption">
                             <p>Ducimus qui blanditiis praesentium voluptatum</p>
                         </div>
                     </div>
                     <div class="item">
-                        <img src="frontend/img/pics/img2-medium.jpg" alt="">
+                        <img src="${frontendAssetsUrl}/img/pics/img2-medium.jpg" alt="">
                         <div class="carousel-caption">
                             <p>Ut non libero consectetur adipiscing elit magna</p>
                         </div>
@@ -98,7 +99,7 @@
                     <div class="active item">
                         <span class="testimonials-slide">Denim you probably haven't heard of. Lorem ipsum dolor met consectetur adipisicing sit amet, consectetur adipisicing elit, of them jean shorts sed magna aliqua. Lorem ipsum dolor met consectetur adipisicing sit amet do eiusmod dolore.</span>
                         <div class="carousel-info">
-                            <img class="pull-left" src="frontend/img/people/img3-small.jpg" alt="" />
+                            <img class="pull-left" src="${frontendAssetsUrl}/img/people/img3-small.jpg" alt="" />
                             <div class="pull-left">
                                 <span class="testimonials-name">Lina Doe</span>
                                 <span class="testimonials-post">Commercial Director</span>
@@ -108,7 +109,7 @@
                     <div class="item">
                         <span class="testimonials-slide">Raw denim you Mustache cliche tempor, williamsburg carles vegan helvetica probably haven't heard of them jean shorts austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse. Mustache cliche tempor, williamsburg carles vegan helvetica.</span>
                         <div class="carousel-info">
-                            <img class="pull-left" src="frontend/img/people/img2-small.jpg" alt="" />
+                            <img class="pull-left" src="${frontendAssetsUrl}/img/people/img2-small.jpg" alt="" />
                             <div class="pull-left">
                                 <span class="testimonials-name">Lina Doe</span>
                                 <span class="testimonials-post">Commercial Director</span>
@@ -118,7 +119,7 @@
                     <div class="item">
                         <span class="testimonials-slide">Reprehenderit butcher stache cliche tempor, williamsburg carles vegan helvetica.retro keffiyeh dreamcatcher synth. Cosby sweater eu banh mi, qui irure terry richardson ex squid Aliquip placeat salvia cillum iphone.</span>
                         <div class="carousel-info">
-                            <img class="pull-left" src="frontend/img/people/img5-small.jpg" alt="" />
+                            <img class="pull-left" src="${frontendAssetsUrl}/img/people/img5-small.jpg" alt="" />
                             <div class="pull-left">
                                 <span class="testimonials-name">Lina Doe</span>
                                 <span class="testimonials-post">Commercial Director</span>
@@ -157,7 +158,7 @@
     <div class="row-fluid front-team">
         <ul class="thumbnails">
             <li class="span3 space-mobile">
-                <img src="frontend/img/people/img1-large.jpg" alt="">
+                <img src="${frontendAssetsUrl}/img/people/img1-large.jpg" alt="">
                 <h3>
                     <a>Lina Doe</a> 
                     <small>Chief Executive Officer / CEO</small>
@@ -171,7 +172,7 @@
                 </ul>
             </li>
             <li class="span3 space-mobile">
-                <img src="frontend/img/people/img4-large.jpg" alt="">
+                <img src="${frontendAssetsUrl}/img/people/img4-large.jpg" alt="">
                 <h3>
                     <a>Carles Puyol</a> 
                     <small>Chief Executive Officer / CEO</small>
@@ -185,7 +186,7 @@
                 </ul>
             </li>
             <li class="span3 space-mobile">
-                <img src="frontend/img/people/img2-large.jpg" alt="">
+                <img src="${frontendAssetsUrl}/img/people/img2-large.jpg" alt="">
                 <h3>
                     <a>Andres Iniesta</a> 
                     <small>Chief Executive Officer / CEO</small>
@@ -199,7 +200,7 @@
                 </ul>
             </li>
             <li class="span3">
-                <img src="frontend/img/people/img5-large.jpg" alt="">
+                <img src="${frontendAssetsUrl}/img/people/img5-large.jpg" alt="">
                 <h3>
                     <a>Jessica Alba</a> 
                     <small>Chief Executive Officer / CEO</small>

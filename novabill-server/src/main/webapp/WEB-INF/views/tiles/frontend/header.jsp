@@ -8,6 +8,7 @@
 <spring:url var="contactPageUrl" value="/contact" />
 <spring:url var="pricesPageUrl" value="/prices" />
 <spring:url var="loginPageUrl" value="/login" />
+<spring:url value="/frontend_assets" var="frontendAssetsUrl" />
 
 <%
 	PAGES activePage = (PAGES)request.getAttribute("activePage");
@@ -20,7 +21,7 @@
             <div class="navbar-inner">
                 <!-- BEGIN LOGO (you can use logo image instead of text)-->
                 <a class="brand logo-v1" href="${indexPageUrl}">
-                    <img src="frontend/img/logo_thin.png" id="logoimg" alt="">
+                    <img src="${frontendAssetsUrl}/img/logo_thin.png" id="logoimg" alt="">
                 </a>
                 <!-- END LOGO -->
 

@@ -23,6 +23,8 @@
 	
 	<task:annotation-driven/>
 	
+	<bean class="com.novadart.novabill.filter.BootstrapAccountFilter" id="bootstrapAccountFilter" />
+	
 	<bean class="org.springframework.orm.jpa.JpaTransactionManager"
 		id="transactionManager">
 		<property name="entityManagerFactory" ref="entityManagerFactory" />

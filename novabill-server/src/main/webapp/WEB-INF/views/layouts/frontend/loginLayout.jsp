@@ -5,7 +5,7 @@
 
 <spring:url var="loginUrl" value="/resources/login_check"></spring:url>
 <spring:url var="registerUrl" value="/register"></spring:url>
-
+<spring:url var="privateAssetsUrl" value="/private_assets"></spring:url>
 
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -19,18 +19,18 @@
 	<meta content="" name="description" />
 	<meta content="" name="author" />
 	<!-- BEGIN GLOBAL MANDATORY STYLES -->
-	<link href="private/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
-	<link href="private/plugins/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
-	<link href="private/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
-	<link href="private/css/style-metro.css" rel="stylesheet" type="text/css"/>
-	<link href="private/css/style.css" rel="stylesheet" type="text/css"/>
-	<link href="private/css/style-responsive.css" rel="stylesheet" type="text/css"/>
-	<link href="private/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color"/>
-	<link href="private/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
-	<link rel="stylesheet" type="text/css" href="private/plugins/select2/select2_metro.css" />
+	<link href="${privateAssetsUrl}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
+	<link href="${privateAssetsUrl}/plugins/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
+	<link href="${privateAssetsUrl}/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
+	<link href="${privateAssetsUrl}/css/style-metro.css" rel="stylesheet" type="text/css"/>
+	<link href="${privateAssetsUrl}/css/style.css" rel="stylesheet" type="text/css"/>
+	<link href="${privateAssetsUrl}/css/style-responsive.css" rel="stylesheet" type="text/css"/>
+	<link href="${privateAssetsUrl}/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color"/>
+	<link href="${privateAssetsUrl}/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+	<link rel="stylesheet" type="text/css" href="${privateAssetsUrl}/plugins/select2/select2_metro.css" />
 	<!-- END GLOBAL MANDATORY STYLES -->
 	<!-- BEGIN PAGE LEVEL STYLES -->
-	<link href="private/css/pages/login-soft.css" rel="stylesheet" type="text/css"/>
+	<link href="${privateAssetsUrl}/css/pages/login-soft.css" rel="stylesheet" type="text/css"/>
 	<!-- END PAGE LEVEL STYLES -->
 	<link rel="shortcut icon" href="favicon.ico" />
 </head>
@@ -176,29 +176,29 @@
 	</div>
 	<!-- END COPYRIGHT -->
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-	<!-- BEGIN CORE PLUGINS -->   <script src="private/plugins/jquery-1.10.1.min.js" type="text/javascript"></script>
-	<script src="private/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
+	<!-- BEGIN CORE PLUGINS -->   <script src="${privateAssetsUrl}/plugins/jquery-1.10.1.min.js" type="text/javascript"></script>
+	<script src="${privateAssetsUrl}/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 	<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
-	<script src="private/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>      
-	<script src="private/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-	<script src="private/plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js" type="text/javascript" ></script>
+	<script src="${privateAssetsUrl}/plugins/jquery-ui/jquery-ui-1.10.1.custom.min.js" type="text/javascript"></script>      
+	<script src="${privateAssetsUrl}/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
+	<script src="${privateAssetsUrl}/plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js" type="text/javascript" ></script>
 	<!--[if lt IE 9]>
-	<script src="private/plugins/excanvas.min.js"></script>
-	<script src="private/plugins/respond.min.js"></script>  
+	<script src="${privateAssetsUrl}/plugins/excanvas.min.js"></script>
+	<script src="${privateAssetsUrl}/plugins/respond.min.js"></script>  
 	<![endif]-->   
-	<script src="private/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
-	<script src="private/plugins/jquery.blockui.min.js" type="text/javascript"></script>  
-	<script src="private/plugins/jquery.cookie.min.js" type="text/javascript"></script>
-	<script src="private/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script>
+	<script src="${privateAssetsUrl}/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
+	<script src="${privateAssetsUrl}/plugins/jquery.blockui.min.js" type="text/javascript"></script>  
+	<script src="${privateAssetsUrl}/plugins/jquery.cookie.min.js" type="text/javascript"></script>
+	<script src="${privateAssetsUrl}/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script>
 	<!-- END CORE PLUGINS -->
 	<!-- BEGIN PAGE LEVEL PLUGINS -->
-	<script src="private/plugins/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
-	<script src="private/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
-	<script type="text/javascript" src="private/plugins/select2/select2.min.js"></script>
+	<script src="${privateAssetsUrl}/plugins/jquery-validation/dist/jquery.validate.min.js" type="text/javascript"></script>
+	<script src="${privateAssetsUrl}/plugins/backstretch/jquery.backstretch.min.js" type="text/javascript"></script>
+	<script type="text/javascript" src="${privateAssetsUrl}/plugins/select2/select2.min.js"></script>
 	<!-- END PAGE LEVEL PLUGINS -->
 	<!-- BEGIN PAGE LEVEL SCRIPTS -->
-	<script src="private/scripts/app.js" type="text/javascript"></script>
-	<script src="private/scripts/login-soft.js" type="text/javascript"></script>      
+	<script src="${privateAssetsUrl}/scripts/app.js" type="text/javascript"></script>
+	<script src="${privateAssetsUrl}/scripts/login-soft.js" type="text/javascript"></script>      
 	<!-- END PAGE LEVEL SCRIPTS --> 
 	<script>
 		jQuery(document).ready(function() {     

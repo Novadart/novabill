@@ -21,7 +21,6 @@
 		<put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
 	</definition>
 	
-	<definition name="private.layout" template="/WEB-INF/views/layouts/private/privateLayout.jsp" />
 	<!--  -->
 
 	<!-- PAGES -->

@@ -1,4 +1,8 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+
+<spring:url value="/frontend_assets" var="frontendAssetsUrl" />
+
 <!-- BEGIN FOOTER -->
 <div class="front-footer">
     <div class="container">
@@ -14,16 +18,16 @@
                 <!-- BEGIN BLOG PHOTOS STREAM -->
                 <div class="blog-photo-stream margin-bottom-30">
                     <ul class="unstyled">
-                        <li><a href="#"><img src="frontend/img/people/img5-small.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="frontend/img/works/img1.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="frontend/img/people/img4-large.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="frontend/img/works/img6.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="frontend/img/pics/img1-large.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="frontend/img/pics/img2-large.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="frontend/img/works/img3.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="frontend/img/people/img2-large.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="frontend/img/works/img2.jpg" alt=""></a></li>
-                        <li><a href="#"><img src="frontend/img/works/img5.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="${frontendAssetsUrl}/img/people/img5-small.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="${frontendAssetsUrl}/img/works/img1.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="${frontendAssetsUrl}/img/people/img4-large.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="${frontendAssetsUrl}/img/works/img6.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="${frontendAssetsUrl}/img/pics/img1-large.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="${frontendAssetsUrl}/img/pics/img2-large.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="${frontendAssetsUrl}/img/works/img3.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="${frontendAssetsUrl}/img/people/img2-large.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="${frontendAssetsUrl}/img/works/img2.jpg" alt=""></a></li>
+                        <li><a href="#"><img src="${frontendAssetsUrl}/img/works/img5.jpg" alt=""></a></li>
                     </ul>                    
                 </div>
                 <!-- END BLOG PHOTOS STREAM -->                              

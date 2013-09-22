@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" 
+	"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+
+	<!-- LAYOUTS -->
+	
+	<definition name="private.layout" template="/WEB-INF/views/layouts/private/privateLayout.jsp" />
+
+	<!--  -->
+
+	<!-- PAGES -->
+	<definition name="private.dashboard" extends="private.layout">
+		<put-attribute name="head" value="/WEB-INF/views/tiles/private/dashboardHead.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/tiles/private/dashboardBody.jsp" />
+		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/dashboardJS.jsp" />
+	</definition>
+	
+	<definition name="private.firstrun" extends="private.layout">
+		<put-attribute name="body" value="/WEB-INF/views/tiles/private/firstRunBody.jsp" />
+		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/firstRunJS.jsp" />
+	</definition>
+	
+	<!--  -->
+
+
+
+</tiles-definitions>
