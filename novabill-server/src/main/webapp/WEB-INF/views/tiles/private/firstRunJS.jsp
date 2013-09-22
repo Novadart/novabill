@@ -6,10 +6,6 @@
 <script type="text/javascript" language="javascript" src="${gwtUrl}"></script>
 
 <script type="text/javascript">
-jQuery(document).ready(function() {    
-   App.init();
-});
-
 function onGWTLoaded(){
 	GWT_UI.bootstrapDialog();
 }
