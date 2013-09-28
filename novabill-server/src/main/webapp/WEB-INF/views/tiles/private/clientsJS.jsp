@@ -5,6 +5,11 @@
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="${privateAssetsUrl}/scripts/app.js" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/scripts/pages/clients.js" type="text/javascript">
+<!--
+
+//-->
+</script>
 <!-- END PAGE LEVEL SCRIPTS -->  
 
 <script type="text/javascript">

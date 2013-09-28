@@ -17,7 +17,7 @@
 	</definition>
 	
 	<definition name="private.clients" extends="private.layout">
-		<put-attribute name="body" value="/WEB-INF/views/tiles/private/firstRunBody.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/tiles/private/clientsBody.jsp" />
 		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/clientsJS.jsp" />
 	</definition>
 	
