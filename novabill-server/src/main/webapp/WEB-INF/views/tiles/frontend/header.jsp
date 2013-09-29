@@ -8,7 +8,7 @@
 <spring:url var="contactPageUrl" value="/contact" />
 <spring:url var="pricesPageUrl" value="/prices" />
 <spring:url var="loginPageUrl" value="/login" />
-<spring:url value="/frontend_assets" var="frontendAssetsUrl" />
+<spring:url var="frontendAssetsUrl" value="/frontend_assets" />
 
 <%
 	PAGES activePage = (PAGES)request.getAttribute("activePage");

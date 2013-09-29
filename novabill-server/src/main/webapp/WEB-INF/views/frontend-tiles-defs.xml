@@ -21,12 +21,24 @@
 		<put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
 	</definition>
 	
+	<definition name="frontend.pageNotFoundLayout" template="/WEB-INF/views/layouts/frontend/pageNotFoundLayout.jsp" >
+		<put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
+	</definition>
+	
+	<definition name="frontend.oopsLayout" template="/WEB-INF/views/layouts/frontend/oopsLayout.jsp" >
+		<put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
+	</definition>
+	
 	<!--  -->
 
 	<!-- PAGES -->
 	<definition name="frontend.index" extends="frontend.indexLayout" />
 	
 	<definition name="frontend.login" extends="frontend.loginLayout" />
+	
+	<definition name="frontend.pageNotFound" extends="frontend.pageNotFoundLayout" />
+	
+	<definition name="frontend.oops" extends="frontend.oopsLayout" />
 	
 	<definition name="frontend.contact" extends="frontend.subPageLayout">
 		<put-attribute name="body" value="/WEB-INF/views/tiles/frontend/contactBody.jsp" />

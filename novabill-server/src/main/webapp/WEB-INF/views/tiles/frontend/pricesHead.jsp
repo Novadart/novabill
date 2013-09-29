@@ -8,7 +8,7 @@
 %>
 
 <meta charset="utf-8" />
-<title>Metronic Frotnend | <%=pageName%></title>
+<title>Novabill | <%=pageName%></title>
 <meta content="width=device-width, initial-scale=1.0" name="viewport" />
 <meta content="" name="description" />
 <meta content="" name="author" />
@@ -26,4 +26,4 @@
 <link href="${frontendAssetsUrl}/css/pages/prices.css" rel="stylesheet" type="text/css"/>
 <!-- END PAGE LEVEL STYLES -->    
 <link href="${frontendAssetsUrl}/css/themes/blue.css" rel="stylesheet" type="text/css" id="style_color"/>    
-<link rel="shortcut icon" href="favicon.ico" />
+<link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
