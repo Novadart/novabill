@@ -16,6 +16,7 @@ abstract class ServiceJS {
 		invokeJSCallbackNative(AutoBeanCodex.encode(autobean).getPayload(), callback);
 	}
 	
+	
 	private static native void invokeJSCallbackNative(String json, JavaScriptObject callback)/*-{
 		callback.onSuccess(json);
 	}-*/;

@@ -150,7 +150,6 @@ public class Client implements Serializable, Taxable {
     	@AttributeOverride(name = "phone", column = @Column(name = "contact_phone")),
     	@AttributeOverride(name = "fax", column = @Column(name = "contact_fax")),
     	@AttributeOverride(name = "mobile", column = @Column(name = "contact_mobile")),
-    	@AttributeOverride(name = "note", column = @Column(name = "contact_note"))
     })
     @Embedded
     @IndexedEmbedded(prefix = FTSNamespace.CONTACT_PREFIX)

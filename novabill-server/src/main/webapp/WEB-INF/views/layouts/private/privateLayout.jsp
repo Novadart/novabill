@@ -45,7 +45,7 @@
 	
 	<tiles:insertAttribute ignore="true" name="head" />
 	
-	<link rel="shortcut icon" href="favicon.ico" />
+	<link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->

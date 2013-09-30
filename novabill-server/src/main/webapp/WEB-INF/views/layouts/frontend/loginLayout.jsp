@@ -6,6 +6,7 @@
 <spring:url var="loginUrl" value="/resources/login_check"></spring:url>
 <spring:url var="registerUrl" value="/register"></spring:url>
 <spring:url var="privateAssetsUrl" value="/private_assets"></spring:url>
+<spring:url var="frontendAssetsUrl" value="/frontend_assets"></spring:url>
 
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -42,7 +43,7 @@
 
 	<!-- BEGIN LOGO -->
 	<div class="logo">
-		<img src="frontend/img/logo_thin.png" alt="" /> 
+		<img src="${frontendAssetsUrl}/img/logo_thin.png" alt="" /> 
 	</div>
 	<!-- END LOGO -->
 	<!-- BEGIN LOGIN -->

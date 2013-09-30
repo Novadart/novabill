@@ -16,19 +16,19 @@ public class PesistentLogin {
 	
 	@NotNull
 	@Size(max = 64)
-	public String username;
+	String username;
 	
 	@Size(max = 64)
 	@Id
-	public String series;
+	String series;
 	
 	@Size(max = 64)
 	@NotNull
-	public String token;
+	String token;
 	
 	@Column(name = "last_used")
 	@NotNull
 	@Temporal(TemporalType.TIMESTAMP)
-	public Date lastUsed;
+	Date lastUsed;
 
 }
