@@ -15,17 +15,8 @@ jQuery(document).ready(function() {
    App.init();
 });
 
-var callback = {
-		onSuccess : function(data){
-			alert(data);
-		},
-		
-		onFailure : function(error){
-			
-		}
-};
-
 function onGWTLoaded(){
-	GWT_Server.business.getClients('1',callback);
+	 angular.module('NovabillClientsPage', []);
+     angular.bootstrap(document, ['NovabillClientsPage']);
 }
 </script>
