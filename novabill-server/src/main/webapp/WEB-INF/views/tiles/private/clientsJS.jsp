@@ -26,6 +26,6 @@ var callback = {
 };
 
 function onGWTLoaded(){
-	GWT_Server.client.searchClients('1','','0','100',callback);
+	GWT_Server.business.getClients('1',callback);
 }
 </script>

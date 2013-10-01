@@ -22,8 +22,8 @@ public class ServerBridge implements ApiBridge {
 		$wnd.GWT_Server = {
 
 			business : {
-				get : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::get(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
-
+				get : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::get(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getClients : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::getClients(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			},
 			
 			client : {
