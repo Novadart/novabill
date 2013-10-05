@@ -29,6 +29,6 @@ abstract class ServiceJS {
 	}
 
 	private static native void invokeJSCallbackNative(String json, JavaScriptObject callback)/*-{
-		callback.onSuccess(json);
+		callback.onSuccess(json!=null ? $wnd.$.parseJSON(json) : null);
 	}-*/;
 }
