@@ -53,7 +53,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 		            String authtoken = result.getToken(); 
 		            final Intent res = new Intent();
 		            res.putExtra(AccountManager.KEY_ACCOUNT_NAME, userName);
-		            res.putExtra(AccountManager.KEY_ACCOUNT_TYPE, NovabillAccountAuthenticator.ACCOUNT_TYPE);
+		            res.putExtra(AccountManager.KEY_ACCOUNT_TYPE, NovabillAccountAuthenticator.NOVABILL_ACCOUNT_TYPE);
 		            res.putExtra(AccountManager.KEY_AUTHTOKEN, authtoken);
 		            res.putExtra(PARAM_USER_PASS, userPass);
 		            return res;

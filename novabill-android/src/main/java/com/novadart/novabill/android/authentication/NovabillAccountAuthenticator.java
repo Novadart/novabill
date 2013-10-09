@@ -12,7 +12,7 @@ import android.os.Bundle;
 
 public class NovabillAccountAuthenticator extends AbstractAccountAuthenticator {
 	
-	public static final String ACCOUNT_TYPE = "com.novadart.novabill";
+	public static final String NOVABILL_ACCOUNT_TYPE = "com.novadart.novabill";
 	
 	public static final String AUTH_TOKEN_TYPE = "basic";
 

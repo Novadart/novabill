@@ -1,5 +1,7 @@
 package com.novadart.novabill.android.authentication;
 
+import android.accounts.Account;
+import android.accounts.AccountManager;
 import android.content.Context;
 import android.content.SharedPreferences;
 
@@ -13,8 +15,11 @@ public class SecurityContextManager {
 	
 	private SharedPreferences securityContextPrefs;
 	
+	private AccountManager accountManager;
+	
 	public SecurityContextManager(Context context){
 		securityContextPrefs = context.getSharedPreferences(SECURITY_CONTEXT_PREFS, Context.MODE_PRIVATE);
+		accountManager = AccountManager.get(context);
 	}
 	
 	public boolean isSignIn(){
@@ -46,5 +51,9 @@ public class SecurityContextManager {
 			editor.commit();
 		}
 	}
-
+	
+	public Account[] getNovabillAccounts(){
+		return accountManager.getAccountsByType(NovabillAccountAuthenticator.NOVABILL_ACCOUNT_TYPE);
+	}
+	
 }
