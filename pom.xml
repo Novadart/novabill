@@ -26,7 +26,7 @@
 		<module>novabill-shared</module>
 		<module>novabill-scala-utils</module>
 		<module>novabill-client</module>
-		<module>novabill-android</module> 
+		<module>novabill-android</module>
 		<module>novabill-server</module>
 	</modules>
 
@@ -267,6 +267,16 @@
 				<groupId>com.google.android</groupId>
 				<artifactId>android-test</artifactId>
 				<version>4.1.1.4</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.android</groupId>
+				<artifactId>spring-android-core</artifactId>
+				<version>1.0.1.RELEASE</version>
+			</dependency>
+			<dependency>
+				<groupId>org.springframework.android</groupId>
+				<artifactId>spring-android-rest-template</artifactId>
+				<version>1.0.1.RELEASE</version>
 			</dependency>
 			<!-- -->
 			<dependency>

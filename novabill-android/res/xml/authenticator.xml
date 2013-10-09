@@ -1,0 +1,7 @@
+<account-authenticator xmlns:android="http://schemas.android.com/apk/res/android"
+                       android:accountType="com.novadart.novabill" 
+                       android:label="@string/add_account_label" />
+
+<!-- android:icon="@drawable/ic_udinic"
+                       android:smallIcon="@drawable/ic_udinic"
+                       android:accountPreferences="@xml/prefs" -->
