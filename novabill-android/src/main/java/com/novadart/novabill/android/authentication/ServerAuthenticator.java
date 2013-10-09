@@ -1,5 +1,8 @@
 package com.novadart.novabill.android.authentication;
 
+import java.net.MalformedURLException;
+import java.net.URL;
+
 import org.springframework.http.HttpAuthentication;
 import org.springframework.http.HttpBasicAuthentication;
 import org.springframework.http.HttpEntity;
@@ -9,12 +12,29 @@ import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
 
+import com.novadart.novabill.android.R;
+
+import android.content.Context;
+
 public class ServerAuthenticator {
+	
+	private Context context;
 	
 	public static final String BASIC_TOKEN = "basic token";
 	
-	public AuthenticationResult authenticate(String name, String password, String authTokenType){
-		String url = "http://192.168.0.108:8080/novabill-server/rest/1/authenticate";
+	public ServerAuthenticator(Context context){
+		this.context = context;
+	}
+	
+	public AuthenticationResult authenticate(String name, String password, String authTokenType) {
+		String host = context.getResources().getString(R.string.novabill_host);
+		String protocol = context.getResources().getString(R.string.protocol);
+		int port = Integer.parseInt(context.getResources().getString(R.string.port));
+		String path = context.getResources().getString(R.string.rest_services_path) + context.getResources().getString(R.string.authenticate_relative_path);
+		URL url = null;
+		try {
+			url = new URL(protocol, host, port, path);
+		} catch (MalformedURLException e1) {}
 		HttpAuthentication authHeader = new HttpBasicAuthentication(name, password);
 		HttpHeaders requestHeaders = new HttpHeaders();
 		requestHeaders.setAuthorization(authHeader);
@@ -22,7 +42,7 @@ public class ServerAuthenticator {
 		RestTemplate restTemplate = new RestTemplate();
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 		try {
-			restTemplate.exchange(url, HttpMethod.GET, requestEntity, String.class);
+			restTemplate.exchange(url.toString(), HttpMethod.GET, requestEntity, String.class);
 			return new Success(BASIC_TOKEN, Status.OK);
 		} catch (RestClientException e) {
 			return new Failure(Status.ERROR);

@@ -3,13 +3,13 @@ package com.novadart.novabill.android.authentication;
 import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.TextView;
-import android.widget.Toast;
-
 import com.novadart.novabill.android.R;
 import com.novadart.novabill.android.authentication.ServerAuthenticator.AuthenticationResult;
 
@@ -31,7 +31,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.novadart.novabill.android.R.layout.activity_login);
-        sServerAuthenticate = new ServerAuthenticator();
+        sServerAuthenticate = new ServerAuthenticator(this);
     }
 	
 	
@@ -69,9 +69,21 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 	    }.execute();
 	}
 	
+	private void alertOnBadLogin(){
+		AlertDialog.Builder builder = new AlertDialog.Builder(this);
+		builder.setMessage("Error!")
+		       .setCancelable(false)
+		       .setPositiveButton("OK", new DialogInterface.OnClickListener() {
+				@Override
+				public void onClick(DialogInterface dialog, int which) {}
+			});
+		AlertDialog alert = builder.create();
+		alert.show();
+	}
+	
 	private void finishLogin(Intent intent) {
 		if(intent == null){
-			Toast.makeText(this, "Login failed", Toast.LENGTH_SHORT);
+			alertOnBadLogin();
 			return;
 		}
 	    String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
@@ -87,6 +99,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 	    } else {
 	        mAccountManager.setPassword(account, accountPassword);
 	    }
+	    new SecurityContextManager(this).setSignInName(accountName);
 	    setAccountAuthenticatorResult(intent.getExtras());
 	    setResult(RESULT_OK, intent);
 	    finish();
