@@ -5,15 +5,21 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
+import android.widget.TextView;
 
 import com.novadart.novabill.android.authentication.SecurityContextManager;
 
 public class HomeActivity extends Activity {
 
+	private SecurityContextManager securityContextManager;
+	
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        if(securityContextManager == null)
+        	securityContextManager = new SecurityContextManager(this);
         setContentView(com.novadart.novabill.android.R.layout.activity_home);
+        ((TextView)findViewById(R.id.email_view)).setText(securityContextManager.getSignInName());
     }
 
     @Override
@@ -24,7 +30,7 @@ public class HomeActivity extends Activity {
     }
     
     public void signOut(View view){
-    	new SecurityContextManager(this).clearSignInName();
+    	securityContextManager.clearSignInName();
     	Intent intent = new Intent(this, DispatcherActivity.class);
     	startActivity(intent);
     	finish();
