@@ -13,11 +13,11 @@
         android:text="@string/hello_world" />
 
     <Button
-        android:id="@+id/button1"
+        android:id="@+id/signout_btn"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/textView1"
-        android:text="Button" 
-        android:onClick="startService"/>
+        android:text="@string/signout_btn_lbl" 
+        android:onClick="signOut"/>
 
 </RelativeLayout>

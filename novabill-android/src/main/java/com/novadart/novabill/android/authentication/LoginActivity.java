@@ -9,7 +9,10 @@ import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
+
+import com.novadart.novabill.android.DispatcherActivity;
 import com.novadart.novabill.android.R;
 import com.novadart.novabill.android.authentication.ServerAuthenticator.AuthenticationResult;
 
@@ -21,6 +24,10 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 	
 	public static final String ARG_IS_ADDING_NEW_ACCOUNT = "isAddingNewAccount";
 	
+	public static final String ARG_REDIRECT_TO_DISPATCHER_ACTIVITY = "redirectToDispatcherActivity";
+	
+	public static final String ARG_NAME = "name";
+	
 	public static final String PARAM_USER_PASS = "password";
 	
 	private ServerAuthenticator sServerAuthenticate;
@@ -31,6 +38,11 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.novadart.novabill.android.R.layout.activity_login);
+        if(getIntent().hasExtra(ARG_NAME)){
+        	EditText email = (EditText)findViewById(R.id.email);
+        	if(email.getText().toString().trim().isEmpty())
+        		email.setText(getIntent().getStringExtra(ARG_NAME));
+        }
         sServerAuthenticate = new ServerAuthenticator(this);
     }
 	
@@ -102,6 +114,10 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 	    new SecurityContextManager(this).setSignInName(accountName);
 	    setAccountAuthenticatorResult(intent.getExtras());
 	    setResult(RESULT_OK, intent);
+	    if(getIntent().getBooleanExtra(ARG_REDIRECT_TO_DISPATCHER_ACTIVITY, false)){
+	    	Intent dispatcher = new Intent(this, DispatcherActivity.class);
+	    	startActivity(dispatcher);
+	    }
 	    finish();
 	}
 

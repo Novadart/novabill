@@ -6,6 +6,8 @@ import android.os.Bundle;
 import android.view.Menu;
 import android.view.View;
 
+import com.novadart.novabill.android.authentication.SecurityContextManager;
+
 public class HomeActivity extends Activity {
 
     @Override
@@ -21,9 +23,11 @@ public class HomeActivity extends Activity {
 	return true;
     }
     
-    public void startService(View view){
-    	Intent intent = new Intent(this, ManagerService.class);
-        this.startService(intent);
+    public void signOut(View view){
+    	new SecurityContextManager(this).clearSignInName();
+    	Intent intent = new Intent(this, DispatcherActivity.class);
+    	startActivity(intent);
+    	finish();
     }
 
 }
