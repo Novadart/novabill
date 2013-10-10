@@ -30,8 +30,11 @@ public class NovabillAccountAuthenticator extends AbstractAccountAuthenticator {
 		final Intent intent = new Intent(this.mContext, LoginActivity.class);
 	    intent.putExtra(LoginActivity.ARG_ACCOUNT_TYPE, accountType);
 	    intent.putExtra(LoginActivity.ARG_AUTH_TYPE, authTokenType);
-	    intent.putExtra(LoginActivity.ARG_IS_ADDING_NEW_ACCOUNT, true);
 	    intent.putExtra(AccountManager.KEY_ACCOUNT_AUTHENTICATOR_RESPONSE, response);
+	    intent.putExtra(LoginActivity.ARG_REDIRECT_TO_DISPATCHER_ACTIVITY, options.getBoolean(LoginActivity.ARG_REDIRECT_TO_DISPATCHER_ACTIVITY, false));
+	    intent.putExtra(LoginActivity.ARG_IS_NAME_EDITABLE, options.getBoolean(LoginActivity.ARG_IS_NAME_EDITABLE, true));
+	    if(options.containsKey(LoginActivity.ARG_NAME))
+	    	intent.putExtra(LoginActivity.ARG_NAME, options.getString(LoginActivity.ARG_NAME));
 	    final Bundle bundle = new Bundle();
 	    bundle.putParcelable(AccountManager.KEY_INTENT, intent);
 	    return bundle;

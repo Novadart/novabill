@@ -56,4 +56,11 @@ public class SecurityContextManager {
 		return accountManager.getAccountsByType(NovabillAccountAuthenticator.NOVABILL_ACCOUNT_TYPE);
 	}
 	
+	public boolean existsNovabillAccount(String name){
+		for(Account account: accountManager.getAccountsByType(NovabillAccountAuthenticator.NOVABILL_ACCOUNT_TYPE))
+			if(account.name.equals(name))
+				return true;
+		return false;
+	}
+	
 }

@@ -22,11 +22,11 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 	
 	public static final String ARG_AUTH_TYPE = "authType";
 	
-	public static final String ARG_IS_ADDING_NEW_ACCOUNT = "isAddingNewAccount";
-	
 	public static final String ARG_REDIRECT_TO_DISPATCHER_ACTIVITY = "redirectToDispatcherActivity";
 	
-	public static final String ARG_NAME = "name";
+	public static final String ARG_IS_NAME_EDITABLE = "isNameEditable";
+	
+	public static final String ARG_NAME = "novabillUsername";
 	
 	public static final String PARAM_USER_PASS = "password";
 	
@@ -38,11 +38,12 @@ public class LoginActivity extends AccountAuthenticatorActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(com.novadart.novabill.android.R.layout.activity_login);
+        EditText email = (EditText)findViewById(R.id.email);
         if(getIntent().hasExtra(ARG_NAME)){
-        	EditText email = (EditText)findViewById(R.id.email);
         	if(email.getText().toString().trim().isEmpty())
         		email.setText(getIntent().getStringExtra(ARG_NAME));
         }
+        email.setEnabled(getIntent().getBooleanExtra(ARG_IS_NAME_EDITABLE, true));
         sServerAuthenticate = new ServerAuthenticator(this);
     }
 	
@@ -101,7 +102,8 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 	    String accountName = intent.getStringExtra(AccountManager.KEY_ACCOUNT_NAME);
 	    String accountPassword = intent.getStringExtra(PARAM_USER_PASS);
 	    final Account account = new Account(accountName, intent.getStringExtra(AccountManager.KEY_ACCOUNT_TYPE));
-	    if (getIntent().getBooleanExtra(ARG_IS_ADDING_NEW_ACCOUNT, false)) {
+	    SecurityContextManager secCtxMng = new SecurityContextManager(this);
+	    if (!secCtxMng.existsNovabillAccount(accountName)) {
 	        String authtoken = intent.getStringExtra(AccountManager.KEY_AUTHTOKEN);
 	        String authtokenType = NovabillAccountAuthenticator.AUTH_TOKEN_TYPE;
 	        // Creating the account on the device and setting the auth token we got
@@ -111,7 +113,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 	    } else {
 	        mAccountManager.setPassword(account, accountPassword);
 	    }
-	    new SecurityContextManager(this).setSignInName(accountName);
+	    secCtxMng.setSignInName(accountName);
 	    setAccountAuthenticatorResult(intent.getExtras());
 	    setResult(RESULT_OK, intent);
 	    if(getIntent().getBooleanExtra(ARG_REDIRECT_TO_DISPATCHER_ACTIVITY, false)){

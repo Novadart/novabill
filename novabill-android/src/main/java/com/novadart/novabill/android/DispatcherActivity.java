@@ -17,25 +17,23 @@ public class DispatcherActivity extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		SecurityContextManager secCtxMng = new SecurityContextManager(this);
-		if(secCtxMng.isSignIn()){
+		if(secCtxMng.isSignIn()){ //signed in
 			Intent intent = new Intent(this, HomeActivity.class);
 			startActivity(intent);
 			finish();
-		} else if(secCtxMng.getNovabillAccounts().length == 0){
+		} else if(secCtxMng.getNovabillAccounts().length == 0){ //no accounts, add one
 			final Activity ctx = this;
+			Bundle options = new Bundle();
+			options.putBoolean(LoginActivity.ARG_REDIRECT_TO_DISPATCHER_ACTIVITY, true);
 			AccountManager.get(this).addAccount(NovabillAccountAuthenticator.NOVABILL_ACCOUNT_TYPE,
-					NovabillAccountAuthenticator.AUTH_TOKEN_TYPE, null, null, this, new AccountManagerCallback<Bundle>() {
+					NovabillAccountAuthenticator.AUTH_TOKEN_TYPE, null, options, this, new AccountManagerCallback<Bundle>() {
 						@Override
 						public void run(AccountManagerFuture<Bundle> bundle) {
-							Intent intent = new Intent(ctx, DispatcherActivity.class);
-							startActivity(intent);
 							ctx.finish();
 						}
 					}, null);
-		} else if(secCtxMng.getNovabillAccounts().length == 1){
-			Intent intent = new Intent(this, LoginActivity.class);
-			intent.putExtra(LoginActivity.ARG_REDIRECT_TO_DISPATCHER_ACTIVITY, true);
-			intent.putExtra(LoginActivity.ARG_NAME, secCtxMng.getNovabillAccounts()[0].name);
+		} else { // unsigned and at least one account, select or add one
+			Intent intent = new Intent(this, SelectAccountActivity.class);
 			startActivity(intent);
 			finish();
 		}
