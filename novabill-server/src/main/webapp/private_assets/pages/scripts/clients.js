@@ -1,15 +1,17 @@
-var NovabillClientsPage = angular.module("NovabillClientsPage", []);
+angular.module("clients", ['clients.controllers']).
 
-function ClientsCtrl($scope){
-	GWT_Server.business.getClients('1',{
-		onSuccess : function(data){
-			$scope.$apply(function(){
-				$scope.clients = data.clients;
-			});
-		},
-		
-		onFailure : function(error){
-		}
+config(function($routeProvider, $locationProvider){
+
+	$routeProvider.
+	
+	when('/:clientId', {
+		templateUrl: partialsBaseUrl + '/clients-detail.html',
+		controller: 'ClientDetailsCtrl'
 	});
-};
+	
+//	otherwise ({
+//		redirectTo: '/'
+//	});
 
+
+});

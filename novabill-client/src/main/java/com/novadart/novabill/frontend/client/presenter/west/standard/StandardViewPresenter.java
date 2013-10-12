@@ -7,7 +7,6 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.place.ClientPlace;
 import com.novadart.novabill.frontend.client.presenter.AbstractPresenter;
 import com.novadart.novabill.frontend.client.view.west.standard.StandardWestView;
-import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class StandardViewPresenter extends AbstractPresenter<StandardWestView> implements StandardWestView.Presenter {
@@ -26,7 +25,7 @@ public class StandardViewPresenter extends AbstractPresenter<StandardWestView> i
 
 	@Override
 	public void onAddClientClicked() {
-		ClientDialog.getInstance(getEventBus()).showCentered();
+//		ClientDialog.getInstance(getEventBus()).showCentered();
 	}
 
 	@Override

@@ -18,6 +18,10 @@ abstract class ServiceJS {
 		AutoBean<T> autobean = DOMAIN_FACTORY.create(clazz, domainObject);
 		invokeJSCallbackNative(AutoBeanCodex.encode(autobean).getPayload(), callback);
 	}
+	
+	protected static <T> void invokeJSCallback(JavaScriptObject callback){
+		invokeJSCallbackNative(callback);
+	}
 
 	protected static <T, E extends T> List<T> convertList(Class<T> clazz, List<E> list){
 		// Using workaround detailed here https://groups.google.com/forum/#!msg/google-web-toolkit/nvIotNHy-Io/YcbECPWd-v4J
@@ -30,5 +34,9 @@ abstract class ServiceJS {
 
 	private static native void invokeJSCallbackNative(String json, JavaScriptObject callback)/*-{
 		callback.onSuccess(json!=null ? $wnd.$.parseJSON(json) : null);
+	}-*/;
+	
+	private static native void invokeJSCallbackNative(JavaScriptObject callback)/*-{
+		callback.onSuccess();
 	}-*/;
 }

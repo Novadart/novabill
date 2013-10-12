@@ -2,29 +2,16 @@
 	margin-top: 10px;
 }
 
-
-
 .clients-list li.client-item {
 	position: relative;
 	padding: 10px 5px;
     border-bottom: 1px solid #eaeaea;
 }
 
-
-.clients-list   li.client-item .client-config {
-	display: none;
-}
-
-.clients-list li.client-item .client-config {
-	position: absolute;
-	top: 10px;
-	right: 10px;
-}
-
 .clients-list li.client-item:HOVER {
 	background: #f6f6f6;
 }
 
-.clients-list li.client-item:HOVER .client-config {
-	display: block;
+.new-client {
+	margin-top: 10px;
 }

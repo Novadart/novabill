@@ -22,6 +22,7 @@
 	<mvc:resources location="/frontend_assets/img/" mapping="/frontend_assets/img/**" cache-period="${images.cachePeriod}" />
 	
     <mvc:resources location="/private_assets/pages/css/" mapping="/private_assets/pages/css/**" cache-period="${css.cachePeriod}" />
+    <mvc:resources location="/private_assets/pages/partials/" mapping="/private_assets/pages/partials/**" cache-period="${css.cachePeriod}" />
 	<mvc:resources location="/private_assets/css/" mapping="/private_assets/css/**" cache-period="${css.cachePeriod}" />
 	<mvc:resources location="/private_assets/fonts/" mapping="/private_assets/fonts/**" cache-period="${css.cachePeriod}" />
 	<mvc:resources location="/private_assets/pages/scripts/" mapping="/private_assets/pages/scripts/**" cache-period="${js.cachePeriod}" />
