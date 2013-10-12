@@ -1,19 +1,46 @@
-angular.module('clients.controllers', []).
+angular.module('clients.controllers', ['utils']).
 
 
-controller('ClientsCtrl', function($scope){
+controller('ClientsCtrl', function($scope, Nsorting){
 	
 	$scope.loadClients = function($scope) {
 		GWT_Server.business.getClients(NovabillConf.businessId, {
 			onSuccess : function(data){
 				$scope.$apply(function(){
-					$scope.clients = data.clients;
+					//sort the data
+					data.clients.sort( Nsorting.clientsComparator );
+					
+					//split it alphabetically
+					var clients = {};
+					var lo = '', l = '';
+					var cl;
+					
+					for ( var id in data.clients) {
+						cl = data.clients[id];
+						l = cl.name.charAt(0).toUpperCase();
+						
+						if(l != lo) {
+							clients[l] = [];
+						}
+						
+						clients[l].push(cl);
+						
+						lo = l;
+					}
+					
+					
+					$scope.clients = clients;
 				});
 			},
 
 			onFailure : function(error){}
 		});
 	};
+	
+	$scope.partitionIsEmpty = function (partition){
+		return !partition || partition.length == 0;
+	};
+	
 	
 	$scope.loadClients($scope);
 

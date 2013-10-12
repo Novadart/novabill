@@ -2,7 +2,16 @@
 	margin-top: 10px;
 }
 
-.clients-list li.client-item {
+.new-client {
+    margin-top: 10px;
+}
+
+.partition {
+	
+}
+
+
+/* .clients-list li.client-item {
 	position: relative;
 	padding: 10px 5px;
     border-bottom: 1px solid #eaeaea;
@@ -12,6 +21,5 @@
 	background: #f6f6f6;
 }
 
-.new-client {
-	margin-top: 10px;
-}
+ */
+
