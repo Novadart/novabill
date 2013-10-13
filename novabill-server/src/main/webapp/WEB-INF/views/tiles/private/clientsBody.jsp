@@ -16,9 +16,9 @@
 
 		<div class="partition" ng-repeat="pt in partitions">
 			<div class="letter">
-				<h2>
+				<h4>
 					<strong ng-cloak>{{pt.letter}}</strong>
-				</h2>
+				</h4>
 			</div>
 			<div class="clients">
 				<div class="client" ng-repeat="cl in pt.clients" ng-click="clientClick(cl)">
