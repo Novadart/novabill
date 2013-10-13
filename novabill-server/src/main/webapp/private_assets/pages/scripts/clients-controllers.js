@@ -3,6 +3,8 @@ angular.module('clients.controllers', ['utils']).
 
 controller('ClientsCtrl', function($scope, Nsorting){
 	
+	var partitionsCache = [];
+	
 	$scope.loadClients = function($scope) {
 		GWT_Server.business.getClients(NovabillConf.businessId, {
 			onSuccess : function(data){
@@ -11,8 +13,11 @@ controller('ClientsCtrl', function($scope, Nsorting){
 					data.clients.sort( Nsorting.clientsComparator );
 					
 					//split it alphabetically
-					var clients = {};
-					var lo = '', l = '';
+					var partitions = [];
+					var pt = null;
+					
+					var lo = '', 
+						l = '';
 					var cl;
 					
 					for ( var id in data.clients) {
@@ -20,16 +25,22 @@ controller('ClientsCtrl', function($scope, Nsorting){
 						l = cl.name.charAt(0).toUpperCase();
 						
 						if(l != lo) {
-							clients[l] = [];
+							if(pt != null) {
+								partitions.push(pt);
+							}
+							pt = {
+									letter : l,
+									clients : []
+							};
 						}
 						
-						clients[l].push(cl);
+						pt.clients.push(cl);
 						
 						lo = l;
 					}
 					
-					
-					$scope.clients = clients;
+					partitionsCache = partitions;
+					$scope.filterKeyUp();
 				});
 			},
 
@@ -37,15 +48,20 @@ controller('ClientsCtrl', function($scope, Nsorting){
 		});
 	};
 	
-	$scope.partitionIsEmpty = function (partition){
-		return !partition || partition.length == 0;
+	$scope.address = function(client){
+		var address = (client.address ? client.address+' ' : '') +
+			(client.postcode ? ' - '+client.postcode+' - ' : '') +
+			(client.city ? client.city+' ' : '') +
+			(client.province ? '('+client.province+') ' : '');
+		return address;
 	};
 	
+	$scope.clientClick = function(client){
+		alert(client.name);
+	};
 	
-	$scope.loadClients($scope);
-
 	// fired when new client button is clicked
-	$scope.newClientClicked = function() {
+	$scope.newClientClick = function() {
 		GWT_UI.clientDialog(NovabillConf.businessId, {
 
 			onSuccess : function(){
@@ -56,6 +72,48 @@ controller('ClientsCtrl', function($scope, Nsorting){
 		});
 	};
 
+	$scope.filterKeyUp = function() {
+		var query = $scope.query;
+		
+		if(!query || query.length < 2) {
+			$scope.partitions = partitionsCache;
+			return;
+		}
+		
+		var result = [];
+		var normalizedQuery = query.toLowerCase();
+		
+		function containsQuery(client) {
+			return (client.name && client.name.toLowerCase().indexOf(normalizedQuery) > -1) ||
+			(client.address && client.address.toLowerCase().indexOf(normalizedQuery) > -1) ||
+			(client.city && client.city.toLowerCase().indexOf(normalizedQuery) > -1);
+		}
+		
+		var ptOrig, ptNew, cl;
+		for(var i in partitionsCache){
+			ptOrig = partitionsCache[i];
+			ptNew = {
+					letter : ptOrig.letter,
+					clients : []
+			};
+			
+			for(var i2 in ptOrig.clients) {
+				cl = ptOrig.clients[i2];
+				if(containsQuery(cl)){
+					ptNew.clients.push(cl);
+				}
+			}
+			
+			if(ptNew.clients.length > 0){
+				result.push(ptNew);
+			}
+		}
+		
+		$scope.partitions = result;
+	};
+	
+	
+	$scope.loadClients($scope);
 }).
 
 

@@ -1,25 +1,48 @@
 .clients-filter {
-	margin-top: 10px;
+	margin-top: 20px;
 }
 
 .new-client {
-    margin-top: 10px;
+	margin-top: 10px;
 }
 
 .partition {
-	
 }
 
-
-/* .clients-list li.client-item {
-	position: relative;
-	padding: 10px 5px;
-    border-bottom: 1px solid #eaeaea;
+.partition .letter {
+	float: left;
 }
 
-.clients-list li.client-item:HOVER {
-	background: #f6f6f6;
+.partition .letter h2 {
+    margin-top: 0;
+    display: inline;
 }
 
- */
+.partition .clients {
+	margin-left: 70px;
+}
+
+.partition .clients .client {
+	padding: 0 0 0 20px;
+	cursor: pointer;
+}
+
+.partition .clients .client h3 {
+	display: inline;
+}
+
+.partition .clients .client .address {
+    margin-left: 40px;
+    
+    display: none;
+}
+
+.partition .clients .client:HOVER .address {
+    display: inline;
+}
+
+.partition .clients .client:HOVER {
+	background-color: #555;
+	color: white;
+}
 

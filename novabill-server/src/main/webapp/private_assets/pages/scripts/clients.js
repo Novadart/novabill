@@ -1,4 +1,4 @@
-angular.module("clients", ['clients.controllers']).
+angular.module("clients", ['clients.controllers','ngRoute']).
 
 config(function($routeProvider, $locationProvider){
 
