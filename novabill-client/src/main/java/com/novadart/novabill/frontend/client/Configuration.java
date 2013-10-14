@@ -186,7 +186,7 @@ public class Configuration {
 		return valuesLoaded;
 	}
 
-	private static void injectCss() {
+	public static void injectCss() {
 		GlobalBundle.INSTANCE.dialog().ensureInjected();
 		GlobalBundle.INSTANCE.globalCss().ensureInjected();
 		GlobalBundle.INSTANCE.loaderButton().ensureInjected();

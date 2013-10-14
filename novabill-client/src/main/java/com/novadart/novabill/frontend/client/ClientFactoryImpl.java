@@ -44,19 +44,19 @@ public class ClientFactoryImpl implements ClientFactory {
 	private static final Map<Class<?>, View<?>> views =
 			new HashMap<Class<?>, View<?>>();
 
-	private static final String URL_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo";
-	private static final String URL_THUMB = GWT.getHostPageBaseURL()+"private/businesses/logo/thumbnail";
-	private static final String UPDATE_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo?token=";
-	private static final String DELETE_LOGO = GWT.getHostPageBaseURL()+"private/businesses/logo?token=";
-	private static final String CHANGE_PASSWORD_URL = GWT.getHostPageBaseURL()+"private/change-password";
-	private static final String XSRF_URL = GWT.getHostPageBaseURL() + "private/gwt/xsrf";
-	private static final String POST_FEEDBACK_URL = GWT.getHostPageBaseURL()+"private/feedback";
-	private static final String LOGOUT_URL = GWT.getHostPageBaseURL()+"resources/logout";
-	private static final String DELETE_ACCOUNT_URL = GWT.getHostPageBaseURL()+"private/delete";
-	private static final String EXPORT_REQUEST = GWT.getHostPageBaseURL()
-			+ "private/export?clients={c}&invoices={i}&estimations={e}&creditnotes={cn}&transportdocs={t}&token={token}";
+	private static final String URL_LOGO = GWT.getModuleBaseURL()+"../private/businesses/logo";
+	private static final String URL_THUMB = GWT.getModuleBaseURL()+"../private/businesses/logo/thumbnail";
+	private static final String UPDATE_LOGO = GWT.getModuleBaseURL()+"../private/businesses/logo?token=";
+	private static final String DELETE_LOGO = GWT.getModuleBaseURL()+"../private/businesses/logo?token=";
+	private static final String CHANGE_PASSWORD_URL = GWT.getModuleBaseURL()+"../private/change-password";
+	private static final String XSRF_URL = GWT.getModuleBaseURL() + "../private/gwt/xsrf";
+	private static final String POST_FEEDBACK_URL = GWT.getModuleBaseURL()+"../private/feedback";
+	private static final String LOGOUT_URL = GWT.getModuleBaseURL()+"../resources/logout";
+	private static final String DELETE_ACCOUNT_URL = GWT.getModuleBaseURL()+"../private/delete";
+	private static final String EXPORT_REQUEST = GWT.getModuleBaseURL()
+			+ "../private/export?clients={c}&invoices={i}&estimations={e}&creditnotes={cn}&transportdocs={t}&token={token}";
 	private static final String PDF_REQUEST = 
-			GWT.getHostPageBaseURL()+"private/pdf/{document}/{id}?token={token}";
+			GWT.getModuleBaseURL()+"../private/pdf/{document}/{id}?token={token}";
 			
 	private static String logoUrl = URL_THUMB + "?v=" + new Date().getTime();
 	

@@ -9,7 +9,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.dto.IBusinessDTO;
 
 public aspect BusinessServiceActionsAspect {
 	
@@ -18,10 +18,10 @@ public aspect BusinessServiceActionsAspect {
 	@Autowired
 	private UtilsService utilsService;
 	
-	pointcut update(BusinessDTO businessDTO) :
+	pointcut update(IBusinessDTO businessDTO) :
 		execution(public void com.novadart.novabill.web.gwt.BusinessServiceImpl.update(..)) && args(businessDTO);
 	
-	after(BusinessDTO businessDTO) returning : update(businessDTO){
+	after(IBusinessDTO businessDTO) returning : update(businessDTO){
 		LOGGER.info("[{}, updateBusiness, {}, dto: {}]",
 				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(System.currentTimeMillis()),
 				ReflectionToStringBuilder.toString(businessDTO, ToStringStyle.SHORT_PREFIX_STYLE)});

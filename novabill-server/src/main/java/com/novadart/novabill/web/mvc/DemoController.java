@@ -20,6 +20,7 @@ import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.dto.IBusinessDTO;
 
 @Controller
 @RequestMapping("/demo")
@@ -27,7 +28,7 @@ public class DemoController {
 	
 	private static final ObjectMapper jsonSerializer = new ObjectMapper();
 	
-	private static final BusinessDTO BUSINESS = new BusinessDTO();
+	private static final IBusinessDTO BUSINESS = new BusinessDTO();
 	
 	static {
 		BUSINESS.setAddress("via Novadart, 123");
