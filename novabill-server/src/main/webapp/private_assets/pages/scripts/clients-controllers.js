@@ -1,6 +1,9 @@
 angular.module('clients.controllers', ['utils']).
 
 
+/**
+ * CLIENTS PAGE CONTROLLER
+ */
 controller('ClientsCtrl', function($scope, Nsorting, $location){
 	
 	var partitionsCache = [];
@@ -117,7 +120,45 @@ controller('ClientsCtrl', function($scope, Nsorting, $location){
 }).
 
 
+
+
+/**
+ * CLIENT DETAILS PAGE CONTROLLER
+ */
 controller('ClientDetailsCtrl', function($scope, $route, $routeParams, $location) {
+	
+	$scope.invoices = [];
+	
+	
+	//fired when edit client is clicked
+	$scope.editClient = function(clientId) {
+		GWT_UI.modifyClientDialog(NovabillConf.businessId, clientId, {
+
+			onSuccess : function(){
+				$scope.$apply(function(){
+					$route.reload();
+				});
+			},
+
+			onFailure : function() {}
+		});
+	};
+	
+	
+	//fired when edit client is clicked
+	$scope.removeClient = function(clientId) {
+		GWT_Server.client.remove(NovabillConf.businessId, clientId, {
+			onSuccess : function(data){
+				$scope.$apply(function(){
+					$scope.clients = data.clients;
+				});
+			},
+
+			onFailure : function(error){}
+		});
+	};
+	
+	// load client data
 	GWT_Server.client.get($routeParams.clientId, {
 
 		onSuccess : function(client){
@@ -150,35 +191,19 @@ controller('ClientDetailsCtrl', function($scope, $route, $routeParams, $location
 		onFailure : function(error){
 		}
 	});
-
 	
-	//fired when edit client is clicked
-	$scope.editClient = function(clientId) {
-		GWT_UI.modifyClientDialog(NovabillConf.businessId, clientId, {
+	// load invoices
+	GWT_Server.invoice.getAllForClient($routeParams.clientId, {
 
-			onSuccess : function(){
-				$scope.$apply(function(){
-					$route.reload();
-				});
-			},
+		onSuccess : function(clientData){
+			$scope.$apply(function(){
+				$scope.invoices = clientData.invoices;
+			});
+		},
 
-			onFailure : function() {}
-		});
-	};
-	
-	
-	//fired when edit client is clicked
-	$scope.removeClient = function(clientId) {
-		GWT_Server.client.remove(NovabillConf.businessId, clientId, {
-			onSuccess : function(data){
-				$scope.$apply(function(){
-					$scope.clients = data.clients;
-				});
-			},
-
-			onFailure : function(error){}
-		});
-	};
+		onFailure : function(error){
+		}
+	});
 
 });
 
