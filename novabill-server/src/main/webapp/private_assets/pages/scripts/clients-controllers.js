@@ -1,7 +1,7 @@
 angular.module('clients.controllers', ['utils']).
 
 
-controller('ClientsCtrl', function($scope, Nsorting){
+controller('ClientsCtrl', function($scope, Nsorting, $location){
 	
 	var partitionsCache = [];
 	
@@ -57,7 +57,7 @@ controller('ClientsCtrl', function($scope, Nsorting){
 	};
 	
 	$scope.clientClick = function(client){
-		alert(client.name);
+		$location.path('/'+client.id);
 	};
 	
 	// fired when new client button is clicked
@@ -143,7 +143,7 @@ controller('ClientDetailsCtrl', function($scope, $route, $routeParams, $location
 					(client.phone ? 'Phone: '+client.phone : '');
 
 				
-				$scope.clientId = client.id;
+				$scope.client = client;
 			});
 		},
 
