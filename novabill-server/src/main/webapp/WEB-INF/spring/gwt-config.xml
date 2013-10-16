@@ -56,7 +56,7 @@
 	<bean id="paymentTypeServiceImpl" class="com.novadart.novabill.web.gwt.PaymentTypeServiceImpl"/>
 	
 	
-	<bean id="batchdatafetcher" class="com.novadart.novabill.web.gwt.BatchDataFetcherServiceImpl"/>
+	<bean id="batchdatafetcher" class="com.novadart.novabill.web.gwt.BatchDataFetcherGwtService"/>
 	
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">

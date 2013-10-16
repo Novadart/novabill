@@ -2,10 +2,12 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -25,9 +27,8 @@ import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
-import com.novadart.novabill.shared.client.facade.InvoiceService;
 
-public class InvoiceServiceImpl implements InvoiceService {
+public class InvoiceServiceImpl {
 
 	@Autowired
 	private UtilsService utilsService;
@@ -38,13 +39,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Autowired
 	private BusinessService businessService;
 	
-	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == principal.business.id")
 	public InvoiceDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
 		return DTOUtils.findDocumentInCollection(businessService.getInvoices(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), id);
 	}
 
-	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
 	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
@@ -67,14 +66,12 @@ public class InvoiceServiceImpl implements InvoiceService {
 		
 	}
 	
-	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
 	public List<InvoiceDTO> getAllForClient(Long clientID) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
 		return new ArrayList<InvoiceDTO>(DTOUtils.filter(businessService.getInvoices(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), new EqualsClientIDPredicate(clientID)));
 	}
 	
-	@Override
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == #businessID and " +
@@ -88,7 +85,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 			invoice.getClient().getInvoices().remove(invoice);
 	}
 
-	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	//@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
 	@PreAuthorize("#invoiceDTO?.business?.id == principal.business.id and " +
@@ -108,7 +104,6 @@ public class InvoiceServiceImpl implements InvoiceService {
 		return invoice.getId();
 	}
 
-	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#invoiceDTO?.business?.id == principal.business.id and " +
 	  	  	  	 "T(com.novadart.novabill.domain.Client).findClient(#invoiceDTO?.client?.id)?.business?.id == principal.business.id and " +
@@ -128,19 +123,16 @@ public class InvoiceServiceImpl implements InvoiceService {
 		validator.validate(Invoice.class, persistedInvoice);
 	}
 	
-	@Override
 	public Long getNextInvoiceDocumentID() {
 		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextInvoiceDocumentID();
 	}
 
-	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
 	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer start, Integer length) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
 		List<InvoiceDTO> allInvoices = getAllForClient(clientID);
 		return new PageDTO<InvoiceDTO>(DTOUtils.range(allInvoices, start, length), start, length, new Long(allInvoices.size()));
 	}
 	
-	@Override
 	@Transactional(readOnly = false)
 	//@Restrictions(checkers = {PremiumChecker.class})
 	@PreAuthorize("principal.business.id == #businessID and " +

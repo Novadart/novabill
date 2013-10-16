@@ -1,8 +1,9 @@
 package com.novadart.novabill.web.gwt;
 
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
@@ -19,8 +20,7 @@ public class InvoiceGwtService extends AbstractGwtController implements InvoiceS
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	@Qualifier("invoiceServiceImpl")
-	private InvoiceService invoiceService;
+	private InvoiceServiceImpl invoiceService;
 	
 	public InvoiceDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
 		return invoiceService.get(id);

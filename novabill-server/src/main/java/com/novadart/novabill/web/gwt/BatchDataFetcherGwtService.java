@@ -20,7 +20,7 @@ import com.novadart.novabill.shared.client.facade.TransportDocumentService;
 import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.shared.client.tuple.Triple;
 
-public class BatchDataFetcherServiceImpl extends AbstractGwtController implements BatchDataFetcherService {
+public class BatchDataFetcherGwtService extends AbstractGwtController implements BatchDataFetcherService {
 
 	private static final long serialVersionUID = 1L;
 	

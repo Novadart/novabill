@@ -3,7 +3,7 @@ package com.novadart.novabill.web.gwt;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -19,8 +19,7 @@ public class PaymentTypeGwtService extends AbstractGwtController implements Paym
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	@Qualifier("paymentTypeServiceImpl")
-	private PaymentTypeService paymentTypeService;
+	private PaymentTypeServiceImpl paymentTypeService;
 	
 	@Override
 	public List<PaymentTypeDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {

@@ -20,9 +20,8 @@ import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
-import com.novadart.novabill.shared.client.facade.PaymentTypeService;
 
-public class PaymentTypeServiceImpl implements PaymentTypeService {
+public class PaymentTypeServiceImpl {
 	
 	@Autowired
 	private SimpleValidator validator;
@@ -33,13 +32,11 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 	@Autowired
 	private UtilsService utilsService;
 	
-	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<PaymentTypeDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return businessService.getPaymentTypes(businessID);
 	}
 	
-	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.PaymentType).findPaymentType(#id)?.business?.id == principal.business.id")
 	public PaymentTypeDTO get(Long id) throws NotAuthenticatedException,NoSuchObjectException, DataAccessException {
 		for(PaymentTypeDTO paymentTypeDTO: businessService.getPaymentTypes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()))
@@ -48,7 +45,6 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 		throw new NoSuchObjectException();
 	}
 
-	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#paymentTypeDTO?.business?.id == principal.business.id and " +
 		  	  	  "#paymentTypeDTO != null and #paymentTypeDTO.id == null")
@@ -65,7 +61,6 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 	
 	
 
-	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#paymentTypeDTO?.business?.id == principal.business.id and " +
 	  	  	  	  "#paymentTypeDTO?.id != null")
@@ -79,7 +74,6 @@ public class PaymentTypeServiceImpl implements PaymentTypeService {
 
 
 
-	@Override
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.PaymentType).findPaymentType(#id)?.business?.id == #businessID")

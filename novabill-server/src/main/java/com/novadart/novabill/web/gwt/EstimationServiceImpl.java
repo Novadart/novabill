@@ -2,10 +2,12 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -25,9 +27,8 @@ import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
-import com.novadart.novabill.shared.client.facade.EstimationService;
 
-public class EstimationServiceImpl implements EstimationService {
+public class EstimationServiceImpl {
 	
 	@Autowired
 	private UtilsService utilsService;
@@ -38,7 +39,6 @@ public class EstimationServiceImpl implements EstimationService {
 	@Autowired
 	private AccountingDocumentValidator validator;
 	
-	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Estimation).findEstimation(#id)?.business?.id == principal.business.id")
 	public EstimationDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
 		return DTOUtils.findDocumentInCollection(businessService.getEstimations(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), id);
@@ -59,13 +59,11 @@ public class EstimationServiceImpl implements EstimationService {
 		
 	}
 	
-	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
 	public List<EstimationDTO> getAllForClient(Long clientID) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
 		return new ArrayList<EstimationDTO>(DTOUtils.filter(businessService.getEstimations(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), new EqualsClientIDPredicate(clientID)));
 	}
 
-	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	//@Restrictions(checkers = {NumberOfEstimationsPerYearQuotaReachedChecker.class})
 	@PreAuthorize("#estimationDTO?.business?.id == principal.business.id and " +
@@ -86,7 +84,6 @@ public class EstimationServiceImpl implements EstimationService {
 		return estimation.getId();
 	}
 
-	@Override
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 			  	  "T(com.novadart.novabill.domain.Estimation).findEstimation(#id)?.business?.id == #businessID and " +
@@ -100,7 +97,6 @@ public class EstimationServiceImpl implements EstimationService {
 			estimation.getClient().getEstimations().remove(estimation);
 	}
 
-	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#estimationDTO?.business?.id == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.Client).findClient(#estimationDTO?.client?.id)?.business?.id == principal.business.id and " +
@@ -120,19 +116,16 @@ public class EstimationServiceImpl implements EstimationService {
 		validator.validate(Estimation.class, persistedEstimation);
 	}
 
-	@Override
 	public Long getNextEstimationId() throws NotAuthenticatedException {
 		return utilsService.getAuthenticatedPrincipalDetails().getBusiness().getNextEstimationDocumentID();
 	}
 
-	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
 	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		List<EstimationDTO> allEstimations = getAllForClient(clientID);
 		return new PageDTO<EstimationDTO>(DTOUtils.range(allEstimations, start, length), start, length, new Long(allEstimations.size()));
 	}
 
-	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public PageDTO<EstimationDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException, DataAccessException {
 		List<EstimationDTO> allEstimations = businessService.getEstimations(businessID);

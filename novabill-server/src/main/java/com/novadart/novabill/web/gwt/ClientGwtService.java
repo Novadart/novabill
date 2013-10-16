@@ -1,7 +1,6 @@
 package com.novadart.novabill.web.gwt;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -21,8 +20,7 @@ public class ClientGwtService extends AbstractGwtController implements ClientSer
 	private static final long serialVersionUID = -5418569389456426364L;
 	
 	@Autowired
-	@Qualifier("clientServiceImpl")
-	private ClientService clientService;
+	private ClientServiceImpl clientService;
 	
 	public void remove(Long businessID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, DataAccessException {
 		clientService.remove(businessID, id);

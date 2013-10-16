@@ -2,10 +2,12 @@ package com.novadart.novabill.web.gwt;
 
 import java.util.ArrayList;
 import java.util.List;
+
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.PaymentType;
@@ -22,9 +24,8 @@ import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
-import com.novadart.novabill.shared.client.facade.ClientService;
 
-public class ClientServiceImpl implements ClientService {
+public class ClientServiceImpl {
 
 	@Autowired
 	private TaxableEntityValidator validator;
@@ -35,7 +36,6 @@ public class ClientServiceImpl implements ClientService {
 	@Autowired
 	private UtilsService utilsService;
 	
-	@Override
 	@Transactional(readOnly = false)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id and " +
 				  "principal.business.id == #businessID")
@@ -48,7 +48,6 @@ public class ClientServiceImpl implements ClientService {
 			client.getBusiness().getClients().remove(client);
 	}
 
-	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	//@Restrictions(checkers = {NumberOfClientsQuotaReachedChecker.class})
 	@PreAuthorize("#businessID == principal.business.id and #clientDTO != null and #clientDTO.id == null")
@@ -64,7 +63,6 @@ public class ClientServiceImpl implements ClientService {
 		return client.getId();
 	}
 
-	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("principal.business.id == #businessID and " + 
 				  "T(com.novadart.novabill.domain.Client).findClient(#clientDTO?.id)?.business?.id == principal.business.id and " +
@@ -94,7 +92,6 @@ public class ClientServiceImpl implements ClientService {
 		client.flush();
 	}
 
-	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id")
 	public ClientDTO get(Long id) throws NoSuchObjectException, NotAuthenticatedException, DataAccessException {
@@ -104,7 +101,6 @@ public class ClientServiceImpl implements ClientService {
 		throw new NoSuchObjectException();
 	}
 
-	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public PageDTO<ClientDTO> searchClients(Long businessID, String query, int start, int length) throws InvalidArgumentException {
 		Business business = Business.findBusiness(businessID);
