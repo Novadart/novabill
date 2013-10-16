@@ -14,7 +14,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.PaymentTypeService;
 
 @HandleGWTServiceAccessDenied
-public class PaymentTypeServiceProxy extends AbstractGwtController implements PaymentTypeService {
+public class PaymentTypeGwtService extends AbstractGwtController implements PaymentTypeService {
 
 	private static final long serialVersionUID = 1L;
 	

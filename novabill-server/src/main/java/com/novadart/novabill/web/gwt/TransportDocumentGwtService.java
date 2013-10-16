@@ -15,7 +15,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.TransportDocumentService;
 
 @HandleGWTServiceAccessDenied
-public class TransportDocumentServiceProxy extends AbstractGwtController implements TransportDocumentService {
+public class TransportDocumentGwtService extends AbstractGwtController implements TransportDocumentService {
 	
 	private static final long serialVersionUID = 1L;
 	

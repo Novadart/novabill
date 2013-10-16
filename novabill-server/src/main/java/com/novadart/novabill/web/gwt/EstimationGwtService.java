@@ -16,7 +16,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.EstimationService;
 
 @HandleGWTServiceAccessDenied
-public class EstimationServiceProxy extends AbstractGwtController implements EstimationService {
+public class EstimationGwtService extends AbstractGwtController implements EstimationService {
 	
 	private static final long serialVersionUID = 1L;
 	

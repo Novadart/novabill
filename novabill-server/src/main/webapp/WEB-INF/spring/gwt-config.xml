@@ -32,27 +32,27 @@
 	
 	<security:global-method-security pre-post-annotations="enabled"/>
 
-	<bean id="invoice" class="com.novadart.novabill.web.gwt.InvoiceServiceProxy" primary="true"/>
+	<bean id="invoice" class="com.novadart.novabill.web.gwt.InvoiceGwtService" primary="true"/>
 	<bean id="invoiceServiceImpl" class="com.novadart.novabill.web.gwt.InvoiceServiceImpl"/>
 
-	<bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationServiceProxy" primary="true"/>
+	<bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationGwtService" primary="true"/>
 	<bean id="estimationServiceImpl" class="com.novadart.novabill.web.gwt.EstimationServiceImpl" />
 	
-	<bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteServiceProxy" primary="true"/>
+	<bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteGwtService" primary="true"/>
 	<bean id="creditnoteServiceImpl" class="com.novadart.novabill.web.gwt.CreditNoteServiceImpl" />
 	
-	<bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentServiceProxy" primary="true"/>
+	<bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentGwtService" primary="true"/>
 	<bean id="transportdocImpl" class="com.novadart.novabill.web.gwt.TransportDocumentServiceImpl" />
 
-	<bean id="client" class="com.novadart.novabill.web.gwt.ClientServiceProxy" primary="true"/>
+	<bean id="client" class="com.novadart.novabill.web.gwt.ClientGwtService" primary="true"/>
 	<bean id="clientServiceImpl" class="com.novadart.novabill.web.gwt.ClientServiceImpl" />
 
-	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessServiceProxy" primary="true"/>
+	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtService" primary="true"/>
 	<bean id="businessServiceImpl" class="com.novadart.novabill.web.gwt.BusinessServiceImpl">
 		<lookup-method name="self" bean="businessServiceImpl"/>
 	</bean>
 	
-	<bean id="paymenttype" class="com.novadart.novabill.web.gwt.PaymentTypeServiceProxy" primary="true"/>
+	<bean id="paymenttype" class="com.novadart.novabill.web.gwt.PaymentTypeGwtService" primary="true"/>
 	<bean id="paymentTypeServiceImpl" class="com.novadart.novabill.web.gwt.PaymentTypeServiceImpl"/>
 	
 	
