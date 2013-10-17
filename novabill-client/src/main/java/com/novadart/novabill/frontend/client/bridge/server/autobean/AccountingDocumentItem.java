@@ -1,8 +1,8 @@
-package com.novadart.novabill.shared.client.dto;
+package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
 import java.math.BigDecimal;
 
-public interface IAccountingDocumentItemDTO {
+public interface AccountingDocumentItem {
 
 	public BigDecimal getQuantity();
 

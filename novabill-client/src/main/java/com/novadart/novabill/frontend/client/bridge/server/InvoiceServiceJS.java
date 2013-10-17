@@ -4,13 +4,14 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.novadart.novabill.frontend.client.bridge.server.data.Data;
-import com.novadart.novabill.frontend.client.bridge.server.data.IAutoBeanInvoiceDTO;
-import com.novadart.novabill.frontend.client.bridge.server.data.IInvoicesData;
-import com.novadart.novabill.frontend.client.bridge.server.data.InvoicesData;
+import com.google.web.bindery.autobean.shared.AutoBeanUtils;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanConverter;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.Invoice;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.InvoicesList;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
-import com.novadart.novabill.shared.client.dto.IAccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+
 
 public class InvoiceServiceJS extends ServiceJS {
 
@@ -20,14 +21,16 @@ public class InvoiceServiceJS extends ServiceJS {
 
 			@Override
 			public void onSuccess(List<InvoiceDTO> result) {
-				List<IAutoBeanInvoiceDTO> abi = new ArrayList<IAutoBeanInvoiceDTO>();
-				for (InvoiceDTO i : result) {
-					abi.add(Data.convert(i, convertList(IAccountingDocumentItemDTO.class, i.getItems())));
+				InvoicesList il = AutoBeanMaker.INSTANCE.makeInvoicesList().as();
+				
+				List<Invoice> invoices = new ArrayList<Invoice>(result.size());
+				for (InvoiceDTO id : result) {
+					invoices.add(AutoBeanConverter.convert(id));
 				}
-
-				InvoicesData id = new InvoicesData();
-				id.setInvoices(convertList(IAutoBeanInvoiceDTO.class, abi));
-				invokeJSCallback(IInvoicesData.class, id, callback);
+				
+				il.setInvoices(invoices);
+				
+				invokeJSCallback(AutoBeanUtils.getAutoBean(il), callback);
 			}
 		});
 		

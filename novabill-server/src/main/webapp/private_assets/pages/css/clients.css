@@ -54,3 +54,17 @@
 .client-detail .hero-unit {
     position: relative;
 }
+
+.document {
+	cursor: pointer;
+}
+
+.document:HOVER {
+	border: 1px solid #555;
+}
+
+.document .date {
+	margin-left: 10px;
+}
+
+

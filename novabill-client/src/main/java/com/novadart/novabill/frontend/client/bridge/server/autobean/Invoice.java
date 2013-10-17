@@ -1,16 +1,17 @@
-package com.novadart.novabill.frontend.client.bridge.server.data;
+package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
 import java.math.BigDecimal;
 import java.util.Date;
+import java.util.List;
 
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.data.LayoutType;
+import com.novadart.novabill.shared.client.dto.PaymentDateType;
 
-public interface IAutoBeanInvoiceDTO {
+public interface Invoice {
 
-	public String getPaymentDateGenerator();
+	public PaymentDateType getPaymentDateGenerator();
 
-	public void setPaymentDateGenerator(String paymentDateGenerator);
+	public void setPaymentDateGenerator(PaymentDateType paymentDateGenerator);
 
 	public Integer getPaymentDateDelta();
 
@@ -19,7 +20,7 @@ public interface IAutoBeanInvoiceDTO {
 	public String getPaymentTypeName();
 
 	public void setPaymentTypeName(String paymentTypeName);
-
+	
 	public Date getPaymentDueDate();
 
 	public void setPaymentDueDate(Date paymentDueDate);
@@ -27,7 +28,7 @@ public interface IAutoBeanInvoiceDTO {
 	public boolean getPayed();
 
 	public void setPayed(boolean payed);
-
+	
 	public Long getId();
 
 	public void setId(Long id);
@@ -60,20 +61,19 @@ public interface IAutoBeanInvoiceDTO {
 
 	public void setPaymentNote(String paymentNote);
 
-	public String getLayoutType();
+	public LayoutType getLayoutType();
 
-	public void setLayoutType(String layoutType);
+	public void setLayoutType(LayoutType layoutType);
 
-	public BusinessDTO getBusiness();
+	public Business getBusiness();
 
-	public void setBusiness(BusinessDTO business);
+	public void setBusiness(Business business);
 
-	public ClientDTO getClient();
+	public Client getClient();
 
-	public void setClient(ClientDTO client);
+	public void setClient(Client client);
 
-	public void setItems(IAccountingDocumentItemData items);
+	public List<AccountingDocumentItem> getItems();
 
-	public IAccountingDocumentItemData getItems();
-
+	public void setItems(List<AccountingDocumentItem> items);
 }

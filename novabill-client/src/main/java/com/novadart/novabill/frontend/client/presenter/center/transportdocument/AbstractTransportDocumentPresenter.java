@@ -18,8 +18,8 @@ import com.novadart.novabill.frontend.client.view.center.transportdocument.Trans
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
+import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
-import com.novadart.novabill.shared.client.dto.IBusinessDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public abstract class AbstractTransportDocumentPresenter extends DocumentPresenter<TransportDocumentView> implements TransportDocumentView.Presenter {
@@ -41,7 +41,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 	
 	@Override
 	public void onFromAddressButtonDefaultCLicked() {
-		IBusinessDTO b = Configuration.getBusiness();
+		BusinessDTO b = Configuration.getBusiness();
 		getView().getFromAddrCity().setText(b.getCity());
 		getView().getFromAddrCompanyName().setText(b.getName());
 		getView().getFromAddrPostCode().setText(b.getPostcode());

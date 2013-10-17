@@ -1,15 +1,17 @@
 package com.novadart.novabill.frontend.client.bridge.server;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
-import com.novadart.novabill.frontend.client.bridge.server.data.ClientsData;
-import com.novadart.novabill.frontend.client.bridge.server.data.IClientsData;
+import com.google.web.bindery.autobean.shared.AutoBeanUtils;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanConverter;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.Client;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.ClientsList;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.IBusinessDTO;
-import com.novadart.novabill.shared.client.dto.IClientDTO;
 
 public class BusinessServiceJS extends ServiceJS {
 	
@@ -17,7 +19,7 @@ public class BusinessServiceJS extends ServiceJS {
 		SERVER_FACADE.getBusinessService().get(Long.parseLong(businessID), new ManagedAsyncCallback<BusinessDTO>() {
 			@Override
 			public void onSuccess(BusinessDTO result) {
-				invokeJSCallback(IBusinessDTO.class, result, callback);				
+				invokeJSCallback(AutoBeanConverter.convert(result), callback);		
 			}
 		});
 	}
@@ -27,10 +29,18 @@ public class BusinessServiceJS extends ServiceJS {
 		SERVER_FACADE.getBusinessService().getClients(Long.valueOf(businessID), new ManagedAsyncCallback<List<ClientDTO>>() {
 			@Override
 			public void onSuccess(List<ClientDTO> result) {
-				ClientsData cd = new ClientsData();
-				cd.setClients(convertList(IClientDTO.class, result));
-				invokeJSCallback(IClientsData.class, cd, callback);
+				List<Client> clients = new ArrayList<Client>();
+				for (ClientDTO c : result) {
+					clients.add(AutoBeanConverter.convert(c).as());
+				}
+				
+				ClientsList list = AutoBeanMaker.INSTANCE.makeClientsList().as();
+				list.setClients(clients);
+				
+				invokeJSCallback(AutoBeanUtils.getAutoBean(list), callback);
 			}
 		});
 	}
+	
+	
 }

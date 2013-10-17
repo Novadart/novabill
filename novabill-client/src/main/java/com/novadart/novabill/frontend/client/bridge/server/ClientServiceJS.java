@@ -1,11 +1,14 @@
 package com.novadart.novabill.frontend.client.bridge.server;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.web.bindery.autobean.shared.AutoBean;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanConverter;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.Client;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.Page;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.IClientDTO;
-import com.novadart.novabill.shared.client.dto.IPageDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
+
 
 public class ClientServiceJS extends ServiceJS {
 
@@ -15,7 +18,8 @@ public class ClientServiceJS extends ServiceJS {
 
 			@Override
 			public void onSuccess(final PageDTO<ClientDTO> result) {
-				invokeJSCallback(IPageDTO.class, result, callback);
+				AutoBean<Page<Client>> page = AutoBeanConverter.convert(result);
+				invokeJSCallback(page, callback);
 			}
 		});
 	}
@@ -26,7 +30,7 @@ public class ClientServiceJS extends ServiceJS {
 
 			@Override
 			public void onSuccess(ClientDTO result) {
-				invokeJSCallback(IClientDTO.class, result, callback);
+				invokeJSCallback(AutoBeanConverter.convert(result), callback);
 			}
 		});
 		

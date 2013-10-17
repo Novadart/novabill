@@ -32,8 +32,13 @@
             <li class=""><a href="#tab_credit_notes" data-toggle="tab">Credit Notes</a></li>
         </ul>
         <div class="tab-content">
-            <div class="tab-pane" id="tab_invoices">
-
+            <div class="tab-pane active" id="tab_invoices">
+            
+                <div class="well well-small document" ng-repeat="inv in invoices">
+                    <span class="badge documentId">{{inv.documentID}}</span>
+                    <span class="date">{{inv.accountingDocumentDate | date:'dd MMMM yyyy' }}</span>
+                    <span class="date">{{inv.client.name}}</span>
+                </div>
             </div>
             <div class="tab-pane" id="tab_estimations">
             </div>
