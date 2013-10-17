@@ -36,7 +36,7 @@ public class BusinessGwtService extends AbstractGwtController implements Busines
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private com.novadart.novabill.service.domain.BusinessService businessService;
+	private com.novadart.novabill.service.web.BusinessService businessService;
 	
 	@Autowired
 	private XsrfTokenService xsrfTokenService;

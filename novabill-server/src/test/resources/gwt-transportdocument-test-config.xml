@@ -10,8 +10,7 @@
 						http://www.springframework.org/schema/util
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-    <bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentGwtService" primary="true"/>
-	<bean id="transportdocImpl" class="com.novadart.novabill.web.gwt.TransportDocumentServiceImpl" />
+    <bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentGwtService"/>
 	
 	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtService"/>
     

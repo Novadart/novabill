@@ -10,8 +10,7 @@
 						http://www.springframework.org/schema/util
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-	<bean id="invoice" class="com.novadart.novabill.web.gwt.InvoiceGwtService" primary="true"/>
-    <bean id="invoiceServiceImpl" class="com.novadart.novabill.web.gwt.InvoiceServiceImpl" />
+	<bean id="invoice" class="com.novadart.novabill.web.gwt.InvoiceGwtService"/>
     
     <bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtService"/>
     

@@ -10,8 +10,7 @@
 						http://www.springframework.org/schema/util
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-    <bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteGwtService" primary="true"/>
-	<bean id="creditnoteServiceImpl" class="com.novadart.novabill.web.gwt.CreditNoteServiceImpl" />
+    <bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteGwtService"/>
 	
 	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtService"/>
     

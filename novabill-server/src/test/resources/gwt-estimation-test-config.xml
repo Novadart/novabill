@@ -10,8 +10,7 @@
 						http://www.springframework.org/schema/util
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-    <bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationGwtService" primary="true"/>
-	<bean id="estimationServiceImpl" class="com.novadart.novabill.web.gwt.EstimationServiceImpl" />
+    <bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationGwtService"/>
 	
 	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtService"/>
 	

@@ -169,7 +169,7 @@
 		<property name="ehcacheDiskStore" value="${ehcache.diskStore}"/>
 	</bean>
 	
-	<bean id="businessServiceImpl" class="com.novadart.novabill.service.domain.BusinessServiceImpl">
+	<bean id="businessServiceImpl" class="com.novadart.novabill.service.web.BusinessServiceImpl">
 		<lookup-method name="self" bean="businessServiceImpl"/>
 	</bean>
 	

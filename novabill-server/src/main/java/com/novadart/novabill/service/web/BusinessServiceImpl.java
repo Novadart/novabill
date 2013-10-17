@@ -1,4 +1,4 @@
-package com.novadart.novabill.service.domain;
+package com.novadart.novabill.service.web;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
