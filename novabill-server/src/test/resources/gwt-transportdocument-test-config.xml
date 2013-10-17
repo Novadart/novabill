@@ -13,10 +13,7 @@
     <bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentGwtService" primary="true"/>
 	<bean id="transportdocImpl" class="com.novadart.novabill.web.gwt.TransportDocumentServiceImpl" />
 	
-	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtService" primary="true"/>
-	<bean id="businessServiceImpl" class="com.novadart.novabill.web.gwt.BusinessServiceImpl">
-		<lookup-method name="self" bean="businessServiceImpl"/>
-	</bean>
+	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtService"/>
     
     <util:map map-class="java.util.HashMap" id="testProps" key-type="java.lang.String" value-type="java.lang.String">
     	<entry key="clientWithTransportDocumentsID" value="3"/>

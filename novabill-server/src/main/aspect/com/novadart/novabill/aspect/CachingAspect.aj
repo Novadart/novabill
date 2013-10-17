@@ -49,21 +49,21 @@ public privileged aspect CachingAspect {
 	
 	public static final String PAYMENTTYPE_CACHE = "paymenttype-cache";
 	
-	declare @method : public BusinessDTO com.novadart.novabill.web.gwt.BusinessServiceImpl.get(Long): @Cacheable(value = BUSINESS_CACHE, key = "#businessID");
+	declare @method : public BusinessDTO com.novadart.novabill.service.domain.BusinessServiceImpl.get(Long): @Cacheable(value = BUSINESS_CACHE, key = "#businessID");
 	
-	declare @method : public List<ClientDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getClients(Long): @Cacheable(value = CLIENT_CACHE, key = "#businessID");
+	declare @method : public List<ClientDTO> com.novadart.novabill.service.domain.BusinessServiceImpl.getClients(Long): @Cacheable(value = CLIENT_CACHE, key = "#businessID");
 	
-	declare @method : public List<InvoiceDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getInvoices(Long): @Cacheable(value = INVOICE_CACHE, key = "#businessID");
+	declare @method : public List<InvoiceDTO> com.novadart.novabill.service.domain.BusinessServiceImpl.getInvoices(Long): @Cacheable(value = INVOICE_CACHE, key = "#businessID");
 	
-	declare @method : public List<CreditNoteDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getCreditNotes(Long): @Cacheable(value = CREDITNOTE_CACHE, key = "#businessID");
+	declare @method : public List<CreditNoteDTO> com.novadart.novabill.service.domain.BusinessServiceImpl.getCreditNotes(Long): @Cacheable(value = CREDITNOTE_CACHE, key = "#businessID");
 	
-	declare @method : public List<EstimationDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getEstimations(Long): @Cacheable(value = ESTIMATION_CACHE, key = "#businessID");
+	declare @method : public List<EstimationDTO> com.novadart.novabill.service.domain.BusinessServiceImpl.getEstimations(Long): @Cacheable(value = ESTIMATION_CACHE, key = "#businessID");
 	
-	declare @method : public List<TransportDocumentDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getTransportDocuments(Long): @Cacheable(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID");
+	declare @method : public List<TransportDocumentDTO> com.novadart.novabill.service.domain.BusinessServiceImpl.getTransportDocuments(Long): @Cacheable(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID");
 	
-	declare @method : public List<PaymentTypeDTO> com.novadart.novabill.web.gwt.BusinessServiceImpl.getPaymentTypes(Long): @Cacheable(value = PAYMENTTYPE_CACHE, key = "#businessID");
+	declare @method : public List<PaymentTypeDTO> com.novadart.novabill.service.domain.BusinessServiceImpl.getPaymentTypes(Long): @Cacheable(value = PAYMENTTYPE_CACHE, key = "#businessID");
 	
-	declare @method : public void com.novadart.novabill.web.gwt.BusinessServiceImpl.update(BusinessDTO): @CacheEvict(value = BUSINESS_CACHE, key = "#businessDTO.id");
+	declare @method : public void com.novadart.novabill.service.domain.BusinessServiceImpl.update(BusinessDTO): @CacheEvict(value = BUSINESS_CACHE, key = "#businessDTO.id");
 	
 	
 	/*

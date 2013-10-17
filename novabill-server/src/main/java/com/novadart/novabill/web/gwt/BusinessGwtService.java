@@ -2,13 +2,16 @@ package com.novadart.novabill.web.gwt;
 
 import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
+import com.novadart.novabill.service.XsrfTokenService;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -23,6 +26,9 @@ import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessService;
+import com.novadart.novabill.web.mvc.BusinessLogoController;
+import com.novadart.novabill.web.mvc.ExportController;
+import com.novadart.novabill.web.mvc.PDFController;
 
 @HandleGWTServiceAccessDenied
 public class BusinessGwtService extends AbstractGwtController implements BusinessService {
@@ -30,8 +36,15 @@ public class BusinessGwtService extends AbstractGwtController implements Busines
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	@Qualifier("businessServiceImpl")
-	private BusinessService businessService;
+	private com.novadart.novabill.service.domain.BusinessService businessService;
+	
+	@Autowired
+	private XsrfTokenService xsrfTokenService;
+	
+	private String generateToken(String tokenSessionField) throws NoSuchAlgorithmException{
+		ServletRequestAttributes attr = (ServletRequestAttributes) RequestContextHolder.currentRequestAttributes();
+		return xsrfTokenService.generateToken(attr.getRequest().getSession(), tokenSessionField);
+	}
 	
 	@Override
 	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, DataAccessException {
@@ -65,12 +78,12 @@ public class BusinessGwtService extends AbstractGwtController implements Busines
 	}
 
 	public String generatePDFToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException {
-		return businessService.generatePDFToken();
+		return URLEncoder.encode(generateToken(PDFController.TOKENS_SESSION_FIELD), "UTF-8");
 	}
 
 	@Override
 	public String generateExportToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException {
-		return businessService.generateExportToken();
+		return URLEncoder.encode(generateToken(ExportController.TOKENS_SESSION_FIELD), "UTF-8");
 	}
 
 	@Override
@@ -115,7 +128,7 @@ public class BusinessGwtService extends AbstractGwtController implements Busines
 
 	@Override
 	public String generateLogoOpToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException {
-		return businessService.generateLogoOpToken();
+		return URLEncoder.encode(generateToken(BusinessLogoController.TOKENS_SESSION_FIELD), "UTF-8");
 	}
 
 	@Override
