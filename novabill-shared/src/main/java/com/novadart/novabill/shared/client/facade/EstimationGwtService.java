@@ -14,7 +14,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @XsrfProtect
 @RemoteServiceRelativePath("estimation.rpc")
-public interface EstimationService extends RemoteService {
+public interface EstimationGwtService extends RemoteService {
 	
 	public EstimationDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	

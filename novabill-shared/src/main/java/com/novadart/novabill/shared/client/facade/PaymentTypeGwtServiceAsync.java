@@ -5,7 +5,7 @@ import java.util.List;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
-public interface PaymentTypeServiceAsync {
+public interface PaymentTypeGwtServiceAsync {
 
 	void add(PaymentTypeDTO paymentTypeDTO, AsyncCallback<Long> callback);
 

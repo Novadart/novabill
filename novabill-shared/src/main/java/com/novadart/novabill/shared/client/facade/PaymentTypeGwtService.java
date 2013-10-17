@@ -14,7 +14,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @XsrfProtect
 @RemoteServiceRelativePath("paymenttype.rpc")
-public interface PaymentTypeService extends RemoteService {
+public interface PaymentTypeGwtService extends RemoteService {
 	
 	public List<PaymentTypeDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	

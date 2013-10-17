@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
-import com.novadart.novabill.service.web.CreditNoteServiceImpl;
+import com.novadart.novabill.service.web.CreditNoteService;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -13,15 +13,15 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.CreditNoteService;
+import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
 
 @HandleGWTServiceAccessDenied
-public class CreditNoteGwtController extends AbstractGwtController implements CreditNoteService {
+public class CreditNoteGwtController extends AbstractGwtController implements CreditNoteGwtService {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private CreditNoteServiceImpl creditNoteService;
+	private CreditNoteService creditNoteService;
 
 	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		return creditNoteService.get(id);

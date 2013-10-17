@@ -3,7 +3,7 @@ package com.novadart.novabill.web.gwt;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
-import com.novadart.novabill.service.web.ClientServiceImpl;
+import com.novadart.novabill.service.web.ClientService;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -13,15 +13,15 @@ import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.ClientService;
+import com.novadart.novabill.shared.client.facade.ClientGwtService;
 
 @HandleGWTServiceAccessDenied
-public class ClientGwtController extends AbstractGwtController implements ClientService {
+public class ClientGwtController extends AbstractGwtController implements ClientGwtService {
 	
 	private static final long serialVersionUID = -5418569389456426364L;
 	
 	@Autowired
-	private ClientServiceImpl clientService;
+	private ClientService clientService;
 	
 	public void remove(Long businessID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, DataAccessException {
 		clientService.remove(businessID, id);

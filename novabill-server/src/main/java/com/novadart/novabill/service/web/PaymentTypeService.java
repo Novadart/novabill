@@ -22,7 +22,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @Service
-public class PaymentTypeServiceImpl {
+public class PaymentTypeService {
 	
 	@Autowired
 	private SimpleValidator validator;

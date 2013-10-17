@@ -30,7 +30,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @Service
-public class TransportDocumentServiceImpl {
+public class TransportDocumentService {
 
 
 	@Autowired

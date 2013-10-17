@@ -15,7 +15,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @XsrfProtect
 @RemoteServiceRelativePath("transportdoc.rpc")
-public interface TransportDocumentService extends RemoteService {
+public interface TransportDocumentGwtService extends RemoteService {
 	
 	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	

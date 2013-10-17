@@ -16,7 +16,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @XsrfProtect
 @RemoteServiceRelativePath("creditnote.rpc")
-public interface CreditNoteService extends RemoteService {
+public interface CreditNoteGwtService extends RemoteService {
 	
 	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	

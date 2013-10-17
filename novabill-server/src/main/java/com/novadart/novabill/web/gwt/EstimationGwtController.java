@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
-import com.novadart.novabill.service.web.EstimationServiceImpl;
+import com.novadart.novabill.service.web.EstimationService;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -13,15 +13,15 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.EstimationService;
+import com.novadart.novabill.shared.client.facade.EstimationGwtService;
 
 @HandleGWTServiceAccessDenied
-public class EstimationGwtController extends AbstractGwtController implements EstimationService {
+public class EstimationGwtController extends AbstractGwtController implements EstimationGwtService {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private EstimationServiceImpl estimationService;
+	private EstimationService estimationService;
 	
 	public EstimationDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		return estimationService.get(id);

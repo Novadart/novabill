@@ -15,7 +15,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @XsrfProtect
 @RemoteServiceRelativePath("client.rpc")
-public interface ClientService extends RemoteService{
+public interface ClientGwtService extends RemoteService{
 
 	public void remove(Long businessID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, DataAccessException;
 	

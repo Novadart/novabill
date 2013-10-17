@@ -6,7 +6,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 
-public interface InvoiceServiceAsync {
+public interface InvoiceGwtServiceAsync {
 
 	void add(InvoiceDTO invoiceDTO, AsyncCallback<Long> callback);
 

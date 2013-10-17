@@ -16,7 +16,7 @@ import com.novadart.novabill.shared.client.tuple.Triple;
 
 @XsrfProtect
 @RemoteServiceRelativePath("batchdatafetcher.rpc")
-public interface BatchDataFetcherService extends RemoteService {
+public interface BatchDataFetcherGwtService extends RemoteService {
 	
 	public Triple<Long, ClientDTO, PaymentTypeDTO> fetchNewInvoiceForClientOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	

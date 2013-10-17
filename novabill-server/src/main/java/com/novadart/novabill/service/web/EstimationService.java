@@ -29,7 +29,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @Service
-public class EstimationServiceImpl {
+public class EstimationService {
 	
 	@Autowired
 	private UtilsService utilsService;

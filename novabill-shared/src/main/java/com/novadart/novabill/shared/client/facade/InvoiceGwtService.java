@@ -14,7 +14,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @XsrfProtect
 @RemoteServiceRelativePath("invoice.rpc")
-public interface InvoiceService extends RemoteService {
+public interface InvoiceGwtService extends RemoteService {
 
 	public InvoiceDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
 

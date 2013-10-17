@@ -14,9 +14,9 @@ import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.facade.BusinessServiceAsync;
+import com.novadart.novabill.shared.client.facade.BusinessGwtServiceAsync;
 
-public class DemoBusinessService implements BusinessServiceAsync {
+public class DemoBusinessService implements BusinessGwtServiceAsync {
 
 	@Override
 	public void countClients(Long businessID, AsyncCallback<Long> callback) {

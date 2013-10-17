@@ -13,7 +13,7 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
-public interface BusinessServiceAsync {
+public interface BusinessGwtServiceAsync {
 
 	void countClients(Long businessID, AsyncCallback<Long> callback);
 

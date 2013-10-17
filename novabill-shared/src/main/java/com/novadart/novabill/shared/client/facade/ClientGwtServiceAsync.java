@@ -4,7 +4,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 
-public interface ClientServiceAsync {
+public interface ClientGwtServiceAsync {
 
 	void add(Long businessID, ClientDTO clientDTO, AsyncCallback<Long> callback);
 

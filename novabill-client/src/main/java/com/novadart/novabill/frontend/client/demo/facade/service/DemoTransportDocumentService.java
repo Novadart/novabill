@@ -6,9 +6,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.facade.TransportDocumentServiceAsync;
+import com.novadart.novabill.shared.client.facade.TransportDocumentGwtServiceAsync;
 
-public class DemoTransportDocumentService implements TransportDocumentServiceAsync {
+public class DemoTransportDocumentService implements TransportDocumentGwtServiceAsync {
 
 	@Override
 	public void add(TransportDocumentDTO transportDocDTO, AsyncCallback<Long> callback) {

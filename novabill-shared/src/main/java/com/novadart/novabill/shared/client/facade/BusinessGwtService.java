@@ -23,7 +23,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @XsrfProtect
 @RemoteServiceRelativePath("business.rpc")
-public interface BusinessService extends RemoteService {
+public interface BusinessGwtService extends RemoteService {
 	
 	public Long countClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	

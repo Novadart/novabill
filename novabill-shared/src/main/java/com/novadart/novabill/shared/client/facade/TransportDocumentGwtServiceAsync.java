@@ -5,7 +5,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
-public interface TransportDocumentServiceAsync {
+public interface TransportDocumentGwtServiceAsync {
 
 	void add(TransportDocumentDTO transportDocDTO, AsyncCallback<Long> callback);
 

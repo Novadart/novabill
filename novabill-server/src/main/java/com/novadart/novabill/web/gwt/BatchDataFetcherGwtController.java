@@ -10,37 +10,37 @@ import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
-import com.novadart.novabill.shared.client.facade.BatchDataFetcherService;
-import com.novadart.novabill.shared.client.facade.ClientService;
-import com.novadart.novabill.shared.client.facade.CreditNoteService;
-import com.novadart.novabill.shared.client.facade.EstimationService;
-import com.novadart.novabill.shared.client.facade.InvoiceService;
-import com.novadart.novabill.shared.client.facade.PaymentTypeService;
-import com.novadart.novabill.shared.client.facade.TransportDocumentService;
+import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtService;
+import com.novadart.novabill.shared.client.facade.ClientGwtService;
+import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
+import com.novadart.novabill.shared.client.facade.EstimationGwtService;
+import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
+import com.novadart.novabill.shared.client.facade.PaymentTypeGwtService;
+import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
 import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.shared.client.tuple.Triple;
 
-public class BatchDataFetcherGwtController extends AbstractGwtController implements BatchDataFetcherService {
+public class BatchDataFetcherGwtController extends AbstractGwtController implements BatchDataFetcherGwtService {
 
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private ClientService clientService;
+	private ClientGwtService clientService;
 	
 	@Autowired
-	private InvoiceService invoiceService;
+	private InvoiceGwtService invoiceService;
 	
 	@Autowired
-	private EstimationService estimationService;
+	private EstimationGwtService estimationService;
 	
 	@Autowired
-	private TransportDocumentService transportDocService;
+	private TransportDocumentGwtService transportDocService;
 	
 	@Autowired
-	private CreditNoteService creditNoteService;
+	private CreditNoteGwtService creditNoteService;
 	
 	@Autowired
-	private PaymentTypeService paymentTypeService;
+	private PaymentTypeGwtService paymentTypeService;
 
 	private PaymentTypeDTO getDefaultPaymentTypeDTO(Long paymentTypeID) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
 		return paymentTypeID == null? null: paymentTypeService.get(paymentTypeID);

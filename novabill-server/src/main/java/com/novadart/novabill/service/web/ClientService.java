@@ -26,7 +26,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
 @Service
-public class ClientServiceImpl {
+public class ClientService {
 
 	@Autowired
 	private TaxableEntityValidator validator;

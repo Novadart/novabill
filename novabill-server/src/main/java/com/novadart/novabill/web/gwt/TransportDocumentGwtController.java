@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
-import com.novadart.novabill.service.web.TransportDocumentServiceImpl;
+import com.novadart.novabill.service.web.TransportDocumentService;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -13,15 +13,15 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.TransportDocumentService;
+import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
 
 @HandleGWTServiceAccessDenied
-public class TransportDocumentGwtController extends AbstractGwtController implements TransportDocumentService {
+public class TransportDocumentGwtController extends AbstractGwtController implements TransportDocumentGwtService {
 	
 	private static final long serialVersionUID = 1L;
 	
 	@Autowired
-	private TransportDocumentServiceImpl transportDocService;
+	private TransportDocumentService transportDocService;
 	
 	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		return transportDocService.get(id);

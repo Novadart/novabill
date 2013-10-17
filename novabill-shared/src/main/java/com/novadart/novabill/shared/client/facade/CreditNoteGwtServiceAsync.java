@@ -6,7 +6,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 
-public interface CreditNoteServiceAsync {
+public interface CreditNoteGwtServiceAsync {
 
 	void add(CreditNoteDTO creditNoteDTO, AsyncCallback<Long> callback);
 

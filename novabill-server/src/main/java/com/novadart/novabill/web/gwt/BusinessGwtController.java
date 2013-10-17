@@ -25,13 +25,13 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.BusinessService;
+import com.novadart.novabill.shared.client.facade.BusinessGwtService;
 import com.novadart.novabill.web.mvc.BusinessLogoController;
 import com.novadart.novabill.web.mvc.ExportController;
 import com.novadart.novabill.web.mvc.PDFController;
 
 @HandleGWTServiceAccessDenied
-public class BusinessGwtController extends AbstractGwtController implements BusinessService {
+public class BusinessGwtController extends AbstractGwtController implements BusinessGwtService {
 	
 	private static final long serialVersionUID = 1L;
 

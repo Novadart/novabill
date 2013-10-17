@@ -71,35 +71,35 @@ public privileged aspect CachingAspect {
 	 * Dependencies: None
 	 */
 	
-	declare @method : public Long com.novadart.novabill.service.web.ClientServiceImpl.add(Long, ClientDTO): @CacheEvict(value = CLIENT_CACHE, key = "#businessID");
+	declare @method : public Long com.novadart.novabill.service.web.ClientService.add(Long, ClientDTO): @CacheEvict(value = CLIENT_CACHE, key = "#businessID");
 	
-	declare @method : public void com.novadart.novabill.service.web.ClientServiceImpl.update(Long, ClientDTO): @CacheEvict(value = CLIENT_CACHE, key = "#businessID");
+	declare @method : public void com.novadart.novabill.service.web.ClientService.update(Long, ClientDTO): @CacheEvict(value = CLIENT_CACHE, key = "#businessID");
 	
-	declare @method : public void com.novadart.novabill.service.web.ClientServiceImpl.remove(Long, Long): @CacheEvict(value = CLIENT_CACHE, key = "#businessID");
+	declare @method : public void com.novadart.novabill.service.web.ClientService.remove(Long, Long): @CacheEvict(value = CLIENT_CACHE, key = "#businessID");
 	
 	/*
 	 * Invoice service caching
 	 * Dependencies: None
 	 */
 	
-	declare @method : public void com.novadart.novabill.service.web.InvoiceServiceImpl.remove(Long, Long, Long): @CacheEvict(value = INVOICE_CACHE, key = "#businessID");
+	declare @method : public void com.novadart.novabill.service.web.InvoiceService.remove(Long, Long, Long): @CacheEvict(value = INVOICE_CACHE, key = "#businessID");
 	
-	declare @method : public Long com.novadart.novabill.service.web.InvoiceServiceImpl.add(InvoiceDTO): @CacheEvict(value = INVOICE_CACHE, key = "#invoiceDTO.business.id");
+	declare @method : public Long com.novadart.novabill.service.web.InvoiceService.add(InvoiceDTO): @CacheEvict(value = INVOICE_CACHE, key = "#invoiceDTO.business.id");
 	
-	declare @method : public void com.novadart.novabill.service.web.InvoiceServiceImpl.update(InvoiceDTO): @CacheEvict(value = INVOICE_CACHE, key = "#invoiceDTO.business.id");
+	declare @method : public void com.novadart.novabill.service.web.InvoiceService.update(InvoiceDTO): @CacheEvict(value = INVOICE_CACHE, key = "#invoiceDTO.business.id");
 	
-	declare @method : public void com.novadart.novabill.service.web.InvoiceServiceImpl.setPayed(Long, ..): @CacheEvict(value = INVOICE_CACHE, key = "#businessID");
+	declare @method : public void com.novadart.novabill.service.web.InvoiceService.setPayed(Long, ..): @CacheEvict(value = INVOICE_CACHE, key = "#businessID");
 	
 	/*
 	 * CreditNote caching
 	 * Dependencies: None
 	 */
 	
-	declare @method : public void com.novadart.novabill.service.web.CreditNoteServiceImpl.remove(Long, Long, Long): @CacheEvict(value = CREDITNOTE_CACHE, key = "#businessID");
+	declare @method : public void com.novadart.novabill.service.web.CreditNoteService.remove(Long, Long, Long): @CacheEvict(value = CREDITNOTE_CACHE, key = "#businessID");
 	
-	declare @method : public Long com.novadart.novabill.service.web.CreditNoteServiceImpl.add(CreditNoteDTO): @CacheEvict(value = CREDITNOTE_CACHE, key = "#creditNoteDTO.business.id");
+	declare @method : public Long com.novadart.novabill.service.web.CreditNoteService.add(CreditNoteDTO): @CacheEvict(value = CREDITNOTE_CACHE, key = "#creditNoteDTO.business.id");
 	
-	declare @method : public void com.novadart.novabill.service.web.CreditNoteServiceImpl.update(CreditNoteDTO): @CacheEvict(value = CREDITNOTE_CACHE, key = "#creditNoteDTO.business.id");
+	declare @method : public void com.novadart.novabill.service.web.CreditNoteService.update(CreditNoteDTO): @CacheEvict(value = CREDITNOTE_CACHE, key = "#creditNoteDTO.business.id");
 	
 	
 	/*
@@ -107,33 +107,33 @@ public privileged aspect CachingAspect {
 	 * Dependencies: None
 	 */
 	
-	declare @method : public void com.novadart.novabill.service.web.EstimationServiceImpl.remove(Long, Long, Long): @CacheEvict(value = ESTIMATION_CACHE, key = "#businessID");
+	declare @method : public void com.novadart.novabill.service.web.EstimationService.remove(Long, Long, Long): @CacheEvict(value = ESTIMATION_CACHE, key = "#businessID");
 	
-	declare @method : public Long com.novadart.novabill.service.web.EstimationServiceImpl.add(EstimationDTO): @CacheEvict(value = ESTIMATION_CACHE, key = "#estimationDTO.business.id");
+	declare @method : public Long com.novadart.novabill.service.web.EstimationService.add(EstimationDTO): @CacheEvict(value = ESTIMATION_CACHE, key = "#estimationDTO.business.id");
 	
-	declare @method : public void com.novadart.novabill.service.web.EstimationServiceImpl.update(EstimationDTO): @CacheEvict(value = ESTIMATION_CACHE, key = "#estimationDTO.business.id");
+	declare @method : public void com.novadart.novabill.service.web.EstimationService.update(EstimationDTO): @CacheEvict(value = ESTIMATION_CACHE, key = "#estimationDTO.business.id");
 	
 	/*
 	 * TransportDocument caching
 	 * Dependencies: None
 	 */
 	
-	declare @method : public void com.novadart.novabill.service.web.TransportDocumentServiceImpl.remove(Long, Long, Long): @CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID");
+	declare @method : public void com.novadart.novabill.service.web.TransportDocumentService.remove(Long, Long, Long): @CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID");
 	
-	declare @method : public Long com.novadart.novabill.service.web.TransportDocumentServiceImpl.add(TransportDocumentDTO): @CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#transportDocDTO.business.id");
+	declare @method : public Long com.novadart.novabill.service.web.TransportDocumentService.add(TransportDocumentDTO): @CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#transportDocDTO.business.id");
 	
-	declare @method : public void com.novadart.novabill.service.web.TransportDocumentServiceImpl.update(TransportDocumentDTO): @CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#transportDocDTO.business.id");
+	declare @method : public void com.novadart.novabill.service.web.TransportDocumentService.update(TransportDocumentDTO): @CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#transportDocDTO.business.id");
 	
 	/*
 	 * PaymentType caching
 	 * Dependencies: None
 	 */
 	
-	declare @method : public void com.novadart.novabill.service.web.PaymentTypeServiceImpl.remove(Long, Long): @CacheEvict(value = {PAYMENTTYPE_CACHE, CLIENT_CACHE}, key = "#businessID");
+	declare @method : public void com.novadart.novabill.service.web.PaymentTypeService.remove(Long, Long): @CacheEvict(value = {PAYMENTTYPE_CACHE, CLIENT_CACHE}, key = "#businessID");
 	
-	declare @method : public Long com.novadart.novabill.service.web.PaymentTypeServiceImpl.add(PaymentTypeDTO): @CacheEvict(value = PAYMENTTYPE_CACHE, key = "#paymentTypeDTO.business.id");
+	declare @method : public Long com.novadart.novabill.service.web.PaymentTypeService.add(PaymentTypeDTO): @CacheEvict(value = PAYMENTTYPE_CACHE, key = "#paymentTypeDTO.business.id");
 	
-	declare @method : public void com.novadart.novabill.service.web.PaymentTypeServiceImpl.update(PaymentTypeDTO): @CacheEvict(value = PAYMENTTYPE_CACHE, key = "#paymentTypeDTO.business.id");
+	declare @method : public void com.novadart.novabill.service.web.PaymentTypeService.update(PaymentTypeDTO): @CacheEvict(value = PAYMENTTYPE_CACHE, key = "#paymentTypeDTO.business.id");
 	
 	
 }

@@ -5,7 +5,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 
-public interface EstimationServiceAsync {
+public interface EstimationGwtServiceAsync {
 
 	void add(EstimationDTO estimationDTO, AsyncCallback<Long> callback);
 

@@ -9,7 +9,7 @@ import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.shared.client.tuple.Triple;
 
-public interface BatchDataFetcherServiceAsync {
+public interface BatchDataFetcherGwtServiceAsync {
 
 	void fetchNewInvoiceForClientOpData(Long clientID,
 			AsyncCallback<Triple<Long, ClientDTO, PaymentTypeDTO>> callback);
