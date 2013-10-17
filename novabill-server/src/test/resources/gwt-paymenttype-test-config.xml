@@ -10,8 +10,8 @@
 						http://www.springframework.org/schema/util
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 						
-    <bean id="paymenttype" class="com.novadart.novabill.web.gwt.PaymentTypeGwtService"/>
+    <bean id="paymenttype" class="com.novadart.novabill.web.gwt.PaymentTypeGwtController"/>
 	
-	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtService"/>
+	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtController"/>
     
 </beans>

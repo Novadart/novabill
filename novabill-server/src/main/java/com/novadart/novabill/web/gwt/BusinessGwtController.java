@@ -31,7 +31,7 @@ import com.novadart.novabill.web.mvc.ExportController;
 import com.novadart.novabill.web.mvc.PDFController;
 
 @HandleGWTServiceAccessDenied
-public class BusinessGwtService extends AbstractGwtController implements BusinessService {
+public class BusinessGwtController extends AbstractGwtController implements BusinessService {
 	
 	private static final long serialVersionUID = 1L;
 

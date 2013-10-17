@@ -28,19 +28,19 @@
 		<property name="configLocation" value="classpath:ehcache.xml" />
 	</bean>
 	
-	<bean id="invoice" class="com.novadart.novabill.web.gwt.InvoiceGwtService"/>
+	<bean id="invoice" class="com.novadart.novabill.web.gwt.InvoiceGwtController"/>
 
-	<bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationGwtService"/>
+	<bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationGwtController"/>
 	
-	<bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteGwtService"/>
+	<bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteGwtController"/>
 	
-	<bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentGwtService"/>
+	<bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentGwtController"/>
 
-	<bean id="client" class="com.novadart.novabill.web.gwt.ClientGwtService"/>
+	<bean id="client" class="com.novadart.novabill.web.gwt.ClientGwtController"/>
 
-	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtService"/>
+	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtController"/>
 	
-	<bean id="paymenttype" class="com.novadart.novabill.web.gwt.PaymentTypeGwtService"/>
+	<bean id="paymenttype" class="com.novadart.novabill.web.gwt.PaymentTypeGwtController"/>
 	
 	<util:map map-class="java.util.HashMap" id="testProps" key-type="java.lang.String" value-type="java.lang.String">
     	<entry key="clientWithoutDocsID" value="6"/>

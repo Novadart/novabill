@@ -16,7 +16,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.CreditNoteService;
 
 @HandleGWTServiceAccessDenied
-public class CreditNoteGwtService extends AbstractGwtController implements CreditNoteService {
+public class CreditNoteGwtController extends AbstractGwtController implements CreditNoteService {
 	
 	private static final long serialVersionUID = 1L;
 	

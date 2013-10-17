@@ -16,7 +16,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.ClientService;
 
 @HandleGWTServiceAccessDenied
-public class ClientGwtService extends AbstractGwtController implements ClientService {
+public class ClientGwtController extends AbstractGwtController implements ClientService {
 	
 	private static final long serialVersionUID = -5418569389456426364L;
 	
