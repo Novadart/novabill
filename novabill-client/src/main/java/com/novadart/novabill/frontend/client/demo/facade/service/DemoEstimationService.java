@@ -6,9 +6,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.facade.EstimationServiceAsync;
+import com.novadart.novabill.shared.client.facade.EstimationGwtServiceAsync;
 
-public class DemoEstimationService implements EstimationServiceAsync {
+public class DemoEstimationService implements EstimationGwtServiceAsync {
 
 	@Override
 	public void add(EstimationDTO estimationDTO, AsyncCallback<Long> callback) {

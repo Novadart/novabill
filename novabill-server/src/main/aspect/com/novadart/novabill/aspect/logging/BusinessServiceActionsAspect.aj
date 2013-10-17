@@ -19,7 +19,7 @@ public aspect BusinessServiceActionsAspect {
 	private UtilsService utilsService;
 	
 	pointcut update(IBusinessDTO businessDTO) :
-		execution(public void com.novadart.novabill.web.gwt.BusinessServiceImpl.update(..)) && args(businessDTO);
+		execution(public void com.novadart.novabill.service.web.BusinessServiceImpl.update(..)) && args(businessDTO);
 	
 	after(IBusinessDTO businessDTO) returning : update(businessDTO){
 		LOGGER.info("[{}, updateBusiness, {}, dto: {}]",

@@ -33,7 +33,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.TransportDocumentService;
+import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
 
@@ -45,7 +45,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 public class TransportDocumentServiceTest extends GWTServiceTest {
 	
 	@Autowired
-	private TransportDocumentService transportDocService;
+	private TransportDocumentGwtService transportDocService;
 	
 	@Resource(name = "testProps")
 	private HashMap<String, String> testProps;

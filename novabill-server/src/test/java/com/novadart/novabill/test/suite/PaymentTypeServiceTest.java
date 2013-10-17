@@ -27,7 +27,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.PaymentTypeService;
+import com.novadart.novabill.shared.client.facade.PaymentTypeGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
 
@@ -37,7 +37,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 public class PaymentTypeServiceTest extends GWTServiceTest {
 	
 	@Autowired
-	private PaymentTypeService paymentTypeService;
+	private PaymentTypeGwtService paymentTypeService;
 	
 	@Test
 	public void paymentServiceWiringTest(){
