@@ -169,6 +169,10 @@
 		<property name="ehcacheDiskStore" value="${ehcache.diskStore}"/>
 	</bean>
 	
+	<bean id="businessServiceImpl" class="com.novadart.novabill.service.web.BusinessServiceImpl">
+		<lookup-method name="self" bean="businessServiceImpl"/>
+	</bean>
+	
 	<beans profile="dev">
 		<bean class="org.apache.commons.dbcp.BasicDataSource"
 			destroy-method="close" id="dataSource">

@@ -10,13 +10,9 @@
 						http://www.springframework.org/schema/util
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-    <bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationServiceProxy" primary="true"/>
-	<bean id="estimationServiceImpl" class="com.novadart.novabill.web.gwt.EstimationServiceImpl" />
+    <bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationGwtController"/>
 	
-	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessServiceProxy" primary="true"/>
-	<bean id="businessServiceImpl" class="com.novadart.novabill.web.gwt.BusinessServiceImpl">
-		<lookup-method name="self" bean="businessServiceImpl"/>
-	</bean>
+	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtController"/>
 	
     <util:map map-class="java.util.HashMap" id="testProps" key-type="java.lang.String" value-type="java.lang.String">
     	<entry key="clientWithEstimationsID" value="3"/>

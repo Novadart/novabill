@@ -33,7 +33,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.EstimationService;
+import com.novadart.novabill.shared.client.facade.EstimationGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
 
@@ -44,7 +44,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 public class EstimationServiceTest extends GWTServiceTest {
 	
 	@Autowired
-	private EstimationService estimationService;
+	private EstimationGwtService estimationService;
 	
 	@Resource(name = "testProps")
 	private HashMap<String, String> testProps;

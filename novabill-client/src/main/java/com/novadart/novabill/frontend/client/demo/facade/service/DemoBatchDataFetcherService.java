@@ -8,12 +8,12 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.facade.BatchDataFetcherServiceAsync;
+import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtServiceAsync;
 import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.shared.client.tuple.Triple;
 
 public class DemoBatchDataFetcherService implements
-		BatchDataFetcherServiceAsync {
+		BatchDataFetcherGwtServiceAsync {
 
 	@Override
 	public void fetchNewInvoiceForClientOpData(Long clientID,

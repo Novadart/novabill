@@ -33,7 +33,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.CreditNoteService;
+import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
 
@@ -45,7 +45,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 public class CreditNoteServiceTest extends GWTServiceTest {
 	
 	@Autowired
-	private CreditNoteService creditNoteService;
+	private CreditNoteGwtService creditNoteService;
 	
 	@Resource(name = "testProps")
 	private HashMap<String, String> testProps;

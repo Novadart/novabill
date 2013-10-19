@@ -6,9 +6,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.facade.ClientServiceAsync;
+import com.novadart.novabill.shared.client.facade.ClientGwtServiceAsync;
 
-public class DemoClientService implements ClientServiceAsync {
+public class DemoClientService implements ClientGwtServiceAsync {
 
 	@Override
 	public void add(Long businessID, ClientDTO clientDTO,
