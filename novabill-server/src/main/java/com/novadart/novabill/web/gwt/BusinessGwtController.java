@@ -12,6 +12,7 @@ import org.springframework.web.context.request.ServletRequestAttributes;
 
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.service.XsrfTokenService;
+import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -36,7 +37,7 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 	private static final long serialVersionUID = 1L;
 
 	@Autowired
-	private com.novadart.novabill.service.web.BusinessService businessService;
+	private BusinessService businessService;
 	
 	@Autowired
 	private XsrfTokenService xsrfTokenService;

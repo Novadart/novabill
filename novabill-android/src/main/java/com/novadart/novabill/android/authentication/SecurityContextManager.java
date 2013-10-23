@@ -1,5 +1,7 @@
 package com.novadart.novabill.android.authentication;
 
+import com.novadart.novabill.android.content.provider.NovabillDBHelper;
+
 import android.accounts.Account;
 import android.accounts.AccountManager;
 import android.content.Context;
@@ -13,13 +15,18 @@ public class SecurityContextManager {
 	
 	private static final String SIGNEDIN_ACCOUNT_NAME = "SignInName";
 	
+	private static final String SIGNEDIN_ACCOUNT_ID = "SignInId";
+	
 	private SharedPreferences securityContextPrefs;
 	
 	private AccountManager accountManager;
 	
+	private Context context;
+	
 	public SecurityContextManager(Context context){
 		securityContextPrefs = context.getSharedPreferences(SECURITY_CONTEXT_PREFS, Context.MODE_PRIVATE);
 		accountManager = AccountManager.get(context);
+		this.context = context;
 	}
 	
 	public boolean isSignIn(){
@@ -36,18 +43,28 @@ public class SecurityContextManager {
 		}
 	}
 	
-	public void setSignInName(String name){
+	public Long getSignInId(){
+		synchronized(lock){
+			if(!isSignIn())
+				throw new IllegalStateException();
+			return  securityContextPrefs.getLong(SIGNEDIN_ACCOUNT_ID, -1);
+		}
+	}
+	
+	public void signIn(String name){
 		synchronized(lock){
 			SharedPreferences.Editor editor = securityContextPrefs.edit();
 			editor.putString(SIGNEDIN_ACCOUNT_NAME, name);
+			editor.putLong(SIGNEDIN_ACCOUNT_ID, NovabillDBHelper.getInstance(context).getUserId(name));
 			editor.commit();
 		}
 	}
 	
-	public void clearSignInName(){
+	public void signOut(){
 		synchronized(lock){
 			SharedPreferences.Editor editor = securityContextPrefs.edit();
 			editor.remove(SIGNEDIN_ACCOUNT_NAME);
+			editor.remove(SIGNEDIN_ACCOUNT_ID);
 			editor.commit();
 		}
 	}

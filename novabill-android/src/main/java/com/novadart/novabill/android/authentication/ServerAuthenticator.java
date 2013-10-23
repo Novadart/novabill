@@ -20,8 +20,6 @@ public class ServerAuthenticator {
 	
 	private Context context;
 	
-	public static final String BASIC_TOKEN = "basic token";
-	
 	public ServerAuthenticator(Context context){
 		this.context = context;
 	}
@@ -43,7 +41,7 @@ public class ServerAuthenticator {
 		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
 		try {
 			restTemplate.exchange(url.toString(), HttpMethod.GET, requestEntity, String.class);
-			return new Success(BASIC_TOKEN, Status.OK);
+			return new Success(NovabillAccountAuthenticator.BASIC_TOKEN, Status.OK);
 		} catch (RestClientException e) {
 			return new Failure(Status.ERROR);
 		}

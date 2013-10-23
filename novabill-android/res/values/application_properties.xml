@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="novabill_host">192.168.0.108</string>
+    <string name="novabill_host">192.168.1.3</string>
     <string name="protocol">http</string>
     <string name="port">8080</string>
     <string name="rest_services_path">/novabill-server/rest/1</string>

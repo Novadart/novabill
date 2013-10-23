@@ -15,6 +15,7 @@ import android.widget.TextView;
 import com.novadart.novabill.android.DispatcherActivity;
 import com.novadart.novabill.android.R;
 import com.novadart.novabill.android.authentication.ServerAuthenticator.AuthenticationResult;
+import com.novadart.novabill.android.content.provider.NovabillDBHelper;
 
 public class LoginActivity extends AccountAuthenticatorActivity {
 	
@@ -110,10 +111,11 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 	        // (Not setting the auth token will cause another call to the server to authenticate the user)
 	        mAccountManager.addAccountExplicitly(account, accountPassword, null);
 	        mAccountManager.setAuthToken(account, authtokenType, authtoken);
+	        NovabillDBHelper.getInstance(this).addUser(accountName);
 	    } else {
 	        mAccountManager.setPassword(account, accountPassword);
 	    }
-	    secCtxMng.setSignInName(accountName);
+	    secCtxMng.signIn(accountName);
 	    setAccountAuthenticatorResult(intent.getExtras());
 	    setResult(RESULT_OK, intent);
 	    if(getIntent().getBooleanExtra(ARG_REDIRECT_TO_DISPATCHER_ACTIVITY, false)){

@@ -30,7 +30,7 @@ public class HomeActivity extends Activity {
     }
     
     public void signOut(View view){
-    	securityContextManager.clearSignInName();
+    	securityContextManager.signOut();
     	Intent intent = new Intent(this, DispatcherActivity.class);
     	startActivity(intent);
     	finish();
