@@ -18,11 +18,6 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-			<groupId>com.google.android</groupId>
-			<artifactId>android-test</artifactId>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
 			<groupId>org.springframework.android</groupId>
 			<artifactId>spring-android-core</artifactId>
 		</dependency>
@@ -37,16 +32,6 @@
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
-				<configuration>
-					<sdk>
-						<path>${env.ANDROID_HOME}</path>
-						<platform>17</platform>
-					</sdk>
-					<emulator>
-						<avd>novabill_emulator</avd>
-						<wait>60000</wait>
-					</emulator>
-				</configuration>
 				<executions>
 					<execution>
 						<id>update-manifest</id>
