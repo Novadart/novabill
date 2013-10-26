@@ -2,14 +2,13 @@ package com.novadart.novabill.frontend.client.presenter.center.estimation;
 
 import java.util.List;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
-import com.novadart.novabill.frontend.client.event.DocumentUpdateEvent;
+import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.ClientPlace;
-import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.view.center.estimation.EstimationView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
@@ -19,8 +18,8 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 
-	public ModifyEstimationPresenter(PlaceController placeController, EventBus eventBus, EstimationView view) {
-		super(placeController, eventBus, view);
+	public ModifyEstimationPresenter(PlaceController placeController, EventBus eventBus, EstimationView view, JavaScriptObject callback) {
+		super(placeController, eventBus, view, callback);
 	}
 	
 	@Override
@@ -34,8 +33,6 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 		getView().getDate().setValue(estimation.getAccountingDocumentDate());
 		getView().getValidTill().setValue(estimation.getValidTill());
 		getView().getClientName().setText(estimation.getClient().getName());
-
-		getView().getConvertToInvoice().setVisible(true);
 
 		List<AccountingDocumentItemDTO> items = null;
 		items = estimation.getItems();
@@ -71,8 +68,6 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 
 					getView().getCreateDocument().showLoader(true);
 					getView().setLocked(true);
-					getView().getConvertToInvoice().getButton().setEnabled(false);
-
 
 					final EstimationDTO es = createEstimation(getEstimation());
 
@@ -88,7 +83,6 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 							}
 
 							getView().setLocked(false);
-							getView().getConvertToInvoice().getButton().setEnabled(true);
 						}
 
 						@Override
@@ -99,15 +93,8 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 
 								@Override
 								public void onNotificationClosed(Void value) {
-									getEventBus().fireEvent(new DocumentUpdateEvent(es));
-
-									ClientPlace cp = new ClientPlace();
-									cp.setClientId(es.getClient().getId());
-									cp.setDocs(DOCUMENTS.estimations);
-									goTo(cp);
-
 									getView().setLocked(false);
-									getView().getConvertToInvoice().getButton().setEnabled(true);
+									BridgeUtils.invokeJSCallback(Boolean.TRUE.toString(), getCallback());
 								}
 							});
 						}

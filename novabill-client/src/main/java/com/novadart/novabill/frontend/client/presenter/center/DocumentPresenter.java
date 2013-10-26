@@ -2,6 +2,7 @@ package com.novadart.novabill.frontend.client.presenter.center;
 
 import java.util.List;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -10,7 +11,6 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.presenter.AbstractPresenter;
 import com.novadart.novabill.frontend.client.view.DocumentView;
-import com.novadart.novabill.frontend.client.view.MainWidget;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -22,14 +22,15 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 	private static final DateTimeFormat YEAR_FORMAT = DateTimeFormat.getFormat("yyyy");
 	
 	private ClientDTO client;
+	private final JavaScriptObject callback;
 	
-	public DocumentPresenter(PlaceController placeController, EventBus eventBus, V view) {
+	public DocumentPresenter(PlaceController placeController, EventBus eventBus, V view, JavaScriptObject callback) {
 		super(placeController, eventBus, view);
+		this.callback = callback;				
 	}
 	
 	@Override
 	public void go(AcceptsOneWidget panel) {
-		MainWidget.INSTANCE.setLargeView();
 		super.go(panel);
 	}
 	
@@ -140,5 +141,9 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 	
 	public static DateTimeFormat getYearFormat() {
 		return YEAR_FORMAT;
+	}
+	
+	protected JavaScriptObject getCallback() {
+		return callback;
 	}
 }

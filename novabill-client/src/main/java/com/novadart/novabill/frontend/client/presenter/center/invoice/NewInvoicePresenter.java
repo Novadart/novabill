@@ -4,17 +4,16 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
-import com.novadart.novabill.frontend.client.place.ClientPlace;
-import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
@@ -28,8 +27,8 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
-	public NewInvoicePresenter(PlaceController placeController,	EventBus eventBus, InvoiceView view) {
-		super(placeController, eventBus, view);
+	public NewInvoicePresenter(PlaceController placeController,	EventBus eventBus, InvoiceView view, JavaScriptObject callback) {
+		super(placeController, eventBus, view, callback);
 	}
 
 	@Override
@@ -132,14 +131,8 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
 							@Override
 							public void onNotificationClosed(Void value) {
-								getEventBus().fireEvent(new DocumentAddEvent(invoice));
-
-								ClientPlace cp = new ClientPlace();
-								cp.setClientId(getClient().getId());
-								cp.setDocs(DOCUMENTS.invoices);
-								goTo(cp);
-
 								getView().setLocked(false);
+								BridgeUtils.invokeJSCallback(Boolean.TRUE.toString(), getCallback());
 							}
 						});
 

@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -63,7 +62,7 @@ public class DemoBusinessService implements BusinessGwtServiceAsync {
 
 	@Override
 	public void update(BusinessDTO businessDTO, AsyncCallback<Void> callback) {
-		Configuration.setBusiness(businessDTO);
+//		Configuration.setBusiness(businessDTO);
 		Data.setBusiness(businessDTO);
 		callback.onSuccess(null);
 	}
@@ -120,7 +119,7 @@ public class DemoBusinessService implements BusinessGwtServiceAsync {
 
 	@Override
 	public void add(BusinessDTO businessDTO, AsyncCallback<Long> callback) {
-		Configuration.setBusiness(businessDTO);
+//		Configuration.setBusiness(businessDTO);
 		Data.setBusiness(businessDTO);
 		callback.onSuccess(null);
 	}

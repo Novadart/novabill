@@ -2,9 +2,14 @@ package com.novadart.novabill.frontend.client.bridge;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.activity.center.InvoiceActivity;
+import com.novadart.novabill.frontend.client.bridge.ui.HTMLWrapper;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.view.bootstrap.BootstrapDialog;
 import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
 import com.novadart.novabill.frontend.client.widget.dialog.selectclient.SelectClientDialog;
@@ -21,11 +26,18 @@ public class UiBridge implements ApiBridge {
 	
 	public native void injectNative()/*-{
 		$wnd.GWT_UI = {
+			// bootstrap
 			bootstrapDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showBootstrapDialog(),
+			
+			// clients			
 			clientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewClientDialog(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			modifyClientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyClientDialog(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-			selectClientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showSelectClientDialog(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
-		}
+			selectClientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showSelectClientDialog(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			
+			// invoices
+			showNewInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+			
+		};
 	
 	}-*/;
 	
@@ -60,8 +72,14 @@ public class UiBridge implements ApiBridge {
 		dialog.center();
 	}
 	
-	public static void showNewInvoicePage() {
+	public static void showNewInvoicePage(String wrapperId, String clientId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
 		
+		NewInvoicePlace nip = new NewInvoicePlace();
+		nip.setClientId(Long.parseLong(clientId));
+
+		InvoiceActivity is = new InvoiceActivity(nip, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
 	}
 
 }
