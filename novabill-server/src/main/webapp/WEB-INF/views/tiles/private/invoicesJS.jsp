@@ -7,6 +7,10 @@
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="${gwtUrl}" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/scripts/app.js" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/pages/scripts/utils.js" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/pages/scripts/invoices-controllers.js" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/pages/scripts/invoices.js" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/pages/scripts/directives.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->  
 
 <script type="text/javascript">
@@ -15,12 +19,13 @@ jQuery(document).ready(function() {
 });
 
 function onGWTLoaded(){
-     /* angular.bootstrap(document, ['clients']); */
-	GWT_UI.showNewInvoicePage('test','6',{
-		onSuccess : function(bool){
-			alert(bool);
-		},
-		onFailure : function(err){}
-	});
+    angular.bootstrap(document, ['invoices']);
+    
+    GWT_UI.showModifyInvoicePage('removeme', '94', {
+    	onSuccess : function(bool){
+    	    window.alert(bool ? 'You saved!' : 'You clicked Cancel');  		
+    	},
+    	onFailure : function(){},
+    });
 }
 </script>

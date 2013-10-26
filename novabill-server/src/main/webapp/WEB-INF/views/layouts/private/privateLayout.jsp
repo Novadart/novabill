@@ -38,6 +38,7 @@
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
+	<meta name="gwt:property" content="locale=it_IT">
 	<!-- BEGIN GLOBAL MANDATORY STYLES -->        
 	<link href="${privateAssetsUrl}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 	<link href="${privateAssetsUrl}/plugins/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>

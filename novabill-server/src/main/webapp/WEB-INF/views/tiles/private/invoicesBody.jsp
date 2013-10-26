@@ -1,3 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 
-<div id="test" class="page-content"></div>
+<!-- ng-view -->
+<div class="page-content" >
+
+    <div id="removeme"></div>
+</div>

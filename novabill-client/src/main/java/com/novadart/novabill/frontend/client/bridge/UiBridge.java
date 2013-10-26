@@ -9,6 +9,7 @@ import com.novadart.novabill.frontend.client.activity.center.InvoiceActivity;
 import com.novadart.novabill.frontend.client.bridge.ui.HTMLWrapper;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.view.bootstrap.BootstrapDialog;
 import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
@@ -35,7 +36,8 @@ public class UiBridge implements ApiBridge {
 			selectClientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showSelectClientDialog(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			
 			// invoices
-			showNewInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+			showNewInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			showModifyInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 			
 		};
 	
@@ -79,6 +81,17 @@ public class UiBridge implements ApiBridge {
 		nip.setClientId(Long.parseLong(clientId));
 
 		InvoiceActivity is = new InvoiceActivity(nip, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
+	}
+	
+	
+	public static void showModifyInvoicePage(String wrapperId, String invoiceId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		ModifyInvoicePlace mip = new ModifyInvoicePlace();
+		mip.setInvoiceId(Long.parseLong(invoiceId));
+
+		InvoiceActivity is = new InvoiceActivity(mip, ClientFactory.INSTANCE, callback);
 		is.start(panel, null);
 	}
 
