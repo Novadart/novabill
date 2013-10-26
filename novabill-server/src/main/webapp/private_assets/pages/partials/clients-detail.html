@@ -21,28 +21,36 @@
 	    </div>
 	    <div class="modal-footer">
 	        <button type="button" data-dismiss="modal" class="btn">Cancel</button>
-	        <button type="button" data-dismiss="modal" class="btn green" ng-click="removeClient(client.id)" >Continue</button>
+	        <button type="button" data-dismiss="modal" class="btn green"ng-click="removeClient(client.id)" >Continue</button>
 	    </div>
 	</div>
 	
 	<div class="tabbable tabbable-custom">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab_invoices" data-toggle="tab">Invoice</a></li>
+            <li class=""><a href="#tab_transport_documents" data-toggle="tab">Transport Documents</a></li>
             <li class=""><a href="#tab_estimations" data-toggle="tab">Estimations</a></li>
             <li class=""><a href="#tab_credit_notes" data-toggle="tab">Credit Notes</a></li>
         </ul>
         <div class="tab-content">
             <div class="tab-pane active" id="tab_invoices">
+                <img class="spinner" ng-show="invoices==null" src="../../private_assets/img/ajax-loading.gif">
+                <novabill-invoice invoice="inv" bottom-up-menu="$last" ng-repeat="inv in invoices" />
+            </div>
             
-                <div class="well well-small document" ng-repeat="inv in invoices">
-                    <span class="badge documentId">{{inv.documentID}}</span>
-                    <span class="date">{{inv.accountingDocumentDate | date:'dd MMMM yyyy' }}</span>
-                    <span class="date">{{inv.client.name}}</span>
-                </div>
+            <div class="tab-pane" id="tab_transport_documents">
+                <img class="spinner" ng-show="transportDocuments==null" src="../../private_assets/img/ajax-loading.gif">
+                <novabill-transport-document transport-document="td" ng-repeat="td in transportDocuments" />
             </div>
+            
             <div class="tab-pane" id="tab_estimations">
+                <img class="spinner" ng-show="estimations==null" src="../../private_assets/img/ajax-loading.gif">
+                <estimation estimation="estimation" ng-repeat="estimation in estimations" />
             </div>
+            
             <div class="tab-pane" id="tab_credit_notes">
+                <img class="spinner" ng-show="creditNotes==null" src="../../private_assets/img/ajax-loading.gif">
+                <credit-note credit-note="creditNote" ng-repeat="creditNote in creditNotes" />
             </div>
         </div>
     </div>

@@ -1,21 +1,21 @@
-angular.module("clients", ['clients.controllers','ngRoute']).
+angular.module("clients", ['clients.controllers','ngRoute'])
 
-config(function($routeProvider){
+.config(function($routeProvider){
 
-	$routeProvider.
+	$routeProvider
 	
-	when('/', {
-		templateUrl: partialsBaseUrl + '/clients.html',
+	.when('/', {
+		templateUrl: NovabillConf.partialsBaseUrl + '/clients.html',
 		controller: 'ClientsCtrl'
-	}).
+	})
 	
 	
-	when('/:clientId', {
-		templateUrl: partialsBaseUrl + '/clients-detail.html',
+	.when('/:clientId', {
+		templateUrl: NovabillConf.partialsBaseUrl + '/clients-detail.html',
 		controller: 'ClientDetailsCtrl'
-	}).
+	})
 	
-	otherwise ({
+	.otherwise ({
 		redirectTo: '/'
 	});
 

@@ -1,3 +1,4 @@
+<%@page import="com.novadart.novabill.web.mvc.Urls"%>
 <%@page import="com.novadart.novabill.domain.security.Principal"%>
 <%@page import="com.novadart.novabill.domain.Business"%>
 <%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
@@ -19,6 +20,8 @@
 <spring:url var="itemsUrl" value="/private/items/" />
 <spring:url var="paymentsUrl" value="/private/payments/" />
 <spring:url var="settingsUrl" value="/private/settings/" />
+
+<spring:url var="clientsBaseUrl" value="<%=Urls.PRIVATE_CLIENTS%>" />
 
 <%
 	PAGES activePage = (PAGES)request.getAttribute("activePage");
@@ -495,7 +498,7 @@
 	<script>window.jQuery || document.write('<script src="${privateAssetsUrl}/plugins/jquery-1.10.1.min.js"><\/script>');</script>
 	
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min.js"></script>
-	<script>window.angular || document.write('<script src="${privateAssetsUrl}/plugins/angular-1.2.0-rc.2.min.js"><\/script>');</script>
+	<script>window.angular || document.write('<script src="${privateAssetsUrl}/plugins/angular-1.2.0-rc.3.min.js"><\/script>');</script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.min.js"></script>
 	<script src="${privateAssetsUrl}/plugins/angular-i18n/angular-locale_it-it.js" type="text/javascript"></script>
 	
@@ -521,7 +524,9 @@
 	
 	<script>
 	var NovabillConf = {
-		    businessId : '<%=business.getId()%>'
+		    businessId : '<%=business.getId()%>',
+		    clientsBaseUrl : '${clientsBaseUrl}',
+		    partialsBaseUrl : '${privateAssetsUrl}/pages/partials/'
 	};
 	</script>
 	

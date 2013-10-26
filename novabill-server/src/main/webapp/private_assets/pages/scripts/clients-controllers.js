@@ -1,10 +1,10 @@
-angular.module('clients.controllers', ['utils']).
+angular.module('clients.controllers', ['utils', 'directives'])
 
 
 /**
  * CLIENTS PAGE CONTROLLER
  */
-controller('ClientsCtrl', function($scope, Nsorting, $location){
+.controller('ClientsCtrl', function($scope, Nsorting, $location){
 	
 	var partitionsCache = [];
 	
@@ -117,7 +117,7 @@ controller('ClientsCtrl', function($scope, Nsorting, $location){
 	
 	
 	$scope.loadClients($scope);
-}).
+})
 
 
 
@@ -125,9 +125,12 @@ controller('ClientsCtrl', function($scope, Nsorting, $location){
 /**
  * CLIENT DETAILS PAGE CONTROLLER
  */
-controller('ClientDetailsCtrl', function($scope, $route, $routeParams, $location) {
+.controller('ClientDetailsCtrl', function($scope, $route, $routeParams, $location) {
 	
-	$scope.invoices = [];
+	$scope.invoices = null;
+	$scope.estimations = null;
+	$scope.transportDocuments = null;
+	$scope.creditNotes = null;
 	
 	
 	//fired when edit client is clicked

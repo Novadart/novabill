@@ -55,16 +55,7 @@
     position: relative;
 }
 
-.document {
-	cursor: pointer;
+.client-detail .spinner {
+	margin: 0 auto;
+    display: block;
 }
-
-.document:HOVER {
-	border: 1px solid #555;
-}
-
-.document .date {
-	margin-left: 10px;
-}
-
-
