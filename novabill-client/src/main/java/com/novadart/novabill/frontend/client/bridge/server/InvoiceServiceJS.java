@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
+import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanConverter;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.Invoice;
@@ -30,7 +31,7 @@ public class InvoiceServiceJS extends ServiceJS {
 				
 				il.setInvoices(invoices);
 				
-				invokeJSCallback(AutoBeanUtils.getAutoBean(il), callback);
+				BridgeUtils.invokeJSCallback(AutoBeanUtils.getAutoBean(il), callback);
 			}
 		});
 		
