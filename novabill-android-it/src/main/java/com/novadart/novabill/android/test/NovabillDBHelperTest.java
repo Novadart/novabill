@@ -1,17 +1,14 @@
 package com.novadart.novabill.android.test;
 
-import org.springframework.util.Assert;
+import android.database.Cursor;
+import android.database.sqlite.SQLiteDatabase;
+import android.test.ProviderTestCase2;
+import android.test.RenamingDelegatingContext;
 
 import com.novadart.novabill.android.content.provider.DBSchema;
 import com.novadart.novabill.android.content.provider.NovabillContentProvider;
 import com.novadart.novabill.android.content.provider.NovabillContract;
 import com.novadart.novabill.android.content.provider.NovabillDBHelper;
-
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
-import android.test.AndroidTestCase;
-import android.test.ProviderTestCase2;
-import android.test.RenamingDelegatingContext;
 
 public class NovabillDBHelperTest extends ProviderTestCase2<NovabillContentProvider> {
 

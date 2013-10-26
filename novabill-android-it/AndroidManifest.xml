@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.novadart.novabill.android"
+    package="com.novadart.novabill.android.test"
     android:versionCode="2003000"
     android:versionName="2.3-SNAPSHOT" >
 
