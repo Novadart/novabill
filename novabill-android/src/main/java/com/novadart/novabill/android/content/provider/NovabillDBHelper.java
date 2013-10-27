@@ -7,15 +7,13 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
-
 import com.novadart.novabill.android.R;
-import com.novadart.novabill.android.authentication.SecurityContextManager;
 
 public class NovabillDBHelper extends SQLiteOpenHelper {
 	
-	private static final String DATABASE_NAME = "novabill";
+	public static final String DATABASE_NAME = "novabill";
 	
-    private static final int DATABASE_VERSION = 1;
+    public static final int DATABASE_VERSION = 1;
     
     private static final String ON_UPDATE_ROOT_ELEMENT = "createStatements";
     
@@ -83,7 +81,7 @@ public class NovabillDBHelper extends SQLiteOpenHelper {
 	}
 	
 	public Long addUser(String name){
-		if(TextUtils.isEmpty(name.trim()))
+		if(TextUtils.isEmpty(name))
 			throw new IllegalArgumentException("Empty name!");
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues values = new ContentValues();
@@ -92,7 +90,7 @@ public class NovabillDBHelper extends SQLiteOpenHelper {
 	}
 	
 	public Long getUserId(String name){
-		if(TextUtils.isEmpty(name.trim()))
+		if(TextUtils.isEmpty(name))
 			throw new IllegalArgumentException("Empty name!");
 		SQLiteDatabase db = getReadableDatabase();
 		Cursor cursor = db.query(DBSchema.UserTbl.TABLE_NAME, new String[]{DBSchema.UserTbl._ID}, DBSchema.UserTbl.EMAIL + "=?", new String[]{name}, null, null, null);
@@ -104,15 +102,13 @@ public class NovabillDBHelper extends SQLiteOpenHelper {
 		return cursor.getLong(columnIndex);
 	}
 	
-	public Cursor getClients(String sortOrder){
-		Long userID = new SecurityContextManager(context).getSignInId();
+	public Cursor getClients(Long userID, String sortOrder){
 		SQLiteDatabase db = getReadableDatabase();
 		return db.query(DBSchema.ClientTbl.TABLE_NAME, null, DBSchema.ClientTbl.USER_ID + "=?", new String[]{Long.toString(userID)}, null, null,
 				TextUtils.isEmpty(sortOrder)? null: sortOrder);
 	}
 	
-	public Cursor getClient(Long clientID){
-		Long userID = new SecurityContextManager(context).getSignInId();
+	public Cursor getClient(Long userID, Long clientID){
 		SQLiteDatabase db = getReadableDatabase();
 		return db.query(DBSchema.ClientTbl.TABLE_NAME, null, String.format("%s=? and %s=?", DBSchema.ClientTbl.USER_ID, DBSchema.ClientTbl._ID),
 				new String[]{Long.toString(userID), Long.toString(clientID)}, null, null, null);

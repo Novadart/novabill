@@ -8,8 +8,7 @@ import android.database.Cursor;
 import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.Uri;
-import android.text.TextUtils;
-
+import com.novadart.novabill.android.content.provider.DBSchema.ClientTbl;
 import com.novadart.novabill.android.content.provider.NovabillContract.Clients;
 
 public class NovabillContentProvider extends ContentProvider {
@@ -23,8 +22,8 @@ public class NovabillContentProvider extends ContentProvider {
 	
 	static {
 		URI_MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
-		URI_MATCHER.addURI(NovabillContract.AUTHORITY, "clients", CLIENT_LIST);
-		URI_MATCHER.addURI(NovabillContract.AUTHORITY, "clients/#", CLIENT_ID);
+		URI_MATCHER.addURI(NovabillContract.AUTHORITY, "users/#/clients", CLIENT_LIST);
+		URI_MATCHER.addURI(NovabillContract.AUTHORITY, "users/#/clients/#", CLIENT_ID);
 		URI_MATCHER.addURI(NovabillContract.AUTHORITY, "items", ITEM_LIST);
 		URI_MATCHER.addURI(NovabillContract.AUTHORITY, "items/#", ITEM_ID);
 		
@@ -64,6 +63,8 @@ public class NovabillContentProvider extends ContentProvider {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		switch (URI_MATCHER.match(uri)){
 		case CLIENT_LIST:
+			Long userID = Long.parseLong(uri.getPathSegments().get(1));
+			values.put(ClientTbl.USER_ID, userID);
 			Long id = db.insert(DBSchema.ClientTbl.TABLE_NAME, null, values);
 			return constructUriAndRegisterChange(id, uri);
 		default:
@@ -80,13 +81,16 @@ public class NovabillContentProvider extends ContentProvider {
 	@Override
 	public Cursor query(Uri uri, String[] projection, String selection, String[] selectionArgs, String sortOrder) {
 		Cursor cursor;
+		Long userID;
 		switch (URI_MATCHER.match(uri)) {
 		case CLIENT_LIST:
-			cursor = dbHelper.getClients(TextUtils.isEmpty(sortOrder)?Clients.SORT_ORDER_DEFAULT:null);
+			userID = Long.parseLong(uri.getPathSegments().get(1));
+			cursor = dbHelper.getClients(userID, sortOrder); 
 			break;
 		case CLIENT_ID:
+			userID = Long.parseLong(uri.getPathSegments().get(1));
 			Long clientID = Long.parseLong(uri.getLastPathSegment());
-			cursor = dbHelper.getClient(clientID);
+			cursor = dbHelper.getClient(userID, clientID);
 			break;
 		default:
 			throw new IllegalArgumentException("Unsupported URI: " + uri);

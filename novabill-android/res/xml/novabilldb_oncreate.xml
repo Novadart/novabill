@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <createStatements>
     CREATE TABLE user (_id INTEGER PRIMARY KEY AUTOINCREMENT, email TEXT UNIQUE)
-    CREATE TABLE client (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, address TEXT, postcode TEXT, city TEXT, province TEXT, country TEXT, email TEXT, phone TEXT, mobile TEXT, fax TEXT, web TEXT, vatID TEXT, ssn TEXT, version INTEGER, user_id INTEGER)
+    CREATE TABLE client (_id INTEGER PRIMARY KEY AUTOINCREMENT, name TEXT, address TEXT, postcode TEXT, city TEXT, province TEXT, country TEXT, email TEXT, phone TEXT, mobile TEXT, fax TEXT, web TEXT, vatID TEXT, ssn TEXT, version INTEGER, user_id INTEGER, FOREIGN KEY(user_id) REFERENCES user(_id))
 </createStatements>

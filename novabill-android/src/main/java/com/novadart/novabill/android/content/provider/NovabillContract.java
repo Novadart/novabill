@@ -20,7 +20,7 @@ public final class NovabillContract {
 	
 	public static final class Clients implements BaseColumns {
 		
-		public static final Uri CONTENT_URI = Uri.withAppendedPath(NovabillContract.CONTENT_URI, "clients");
+		public static final Uri CONTENT_URI = Uri.withAppendedPath(NovabillContract.CONTENT_URI, "users/#/clients");
 		
 		public static final String NAME = "name";
 		public static final String ADDRESS = "address";
