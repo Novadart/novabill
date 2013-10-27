@@ -19,16 +19,16 @@ public aspect InvoiceServiceActionsAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceServiceActionsAspect.class);
 	
 	pointcut add(InvoiceDTO invoiceDTO) : 
-		execution(public Long com.novadart.novabill.web.gwt.InvoiceServiceImpl.add(..)) && args(invoiceDTO);
+		execution(public Long com.novadart.novabill.web.gwt.InvoiceGwtController.add(..)) && args(invoiceDTO);
 	
 	pointcut remove(Long businessID, Long clientID, Long id) : 
-		execution(public void com.novadart.novabill.web.gwt.InvoiceServiceImpl.remove(..)) && args(businessID, clientID, id);
+		execution(public void com.novadart.novabill.web.gwt.InvoiceGwtController.remove(..)) && args(businessID, clientID, id);
 	
 	pointcut update(InvoiceDTO invoiceDTO) : 
-		execution(public void com.novadart.novabill.web.gwt.InvoiceServiceImpl.update(..)) && args(invoiceDTO);
+		execution(public void com.novadart.novabill.web.gwt.InvoiceGwtController.update(..)) && args(invoiceDTO);
 	
 	pointcut setPayed(Long businessID, Long clientID, Long id, Boolean value) : 
-		execution(public void com.novadart.novabill.web.gwt.InvoiceServiceImpl.setPayed(..)) && args(businessID, clientID, id, value);
+		execution(public void com.novadart.novabill.web.gwt.InvoiceGwtController.setPayed(..)) && args(businessID, clientID, id, value);
 	
 	after(InvoiceDTO invoiceDTO) returning (Long id) : add(invoiceDTO){
 		LOGGER.info("[{}, addInvoice, {}, id: {}, dto: {}]",

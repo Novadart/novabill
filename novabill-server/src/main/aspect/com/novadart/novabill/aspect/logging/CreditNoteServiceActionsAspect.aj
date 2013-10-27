@@ -17,13 +17,13 @@ public privileged aspect CreditNoteServiceActionsAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CreditNoteServiceActionsAspect.class);
 	
 	pointcut add(CreditNoteDTO creditNoteDTO) :
-		execution(public Long com.novadart.novabill.web.gwt.CreditNoteServiceImpl.add(..)) && args(creditNoteDTO);
+		execution(public Long com.novadart.novabill.web.gwt.CreditNoteGwtController.add(..)) && args(creditNoteDTO);
 	
 	pointcut remove(Long businessID, Long clientID, Long id) : 
-		execution(public void com.novadart.novabill.web.gwt.CreditNoteServiceImpl.remove(..)) && args(businessID, clientID, id);
+		execution(public void com.novadart.novabill.web.gwt.CreditNoteGwtController.remove(..)) && args(businessID, clientID, id);
 	
 	pointcut update(CreditNoteDTO creditNoteDTO) : 
-		execution(public void com.novadart.novabill.web.gwt.CreditNoteServiceImpl.update(..)) && args(creditNoteDTO);
+		execution(public void com.novadart.novabill.web.gwt.CreditNoteGwtController.update(..)) && args(creditNoteDTO);
 	
 	after(CreditNoteDTO creditNoteDTO) returning (Long id) : add(creditNoteDTO){
 		LOGGER.info("[{}, addCreditNote, {}, id: {}, dto: {}]",
