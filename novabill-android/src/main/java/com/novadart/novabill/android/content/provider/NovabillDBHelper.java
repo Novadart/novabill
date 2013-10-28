@@ -11,6 +11,7 @@ import android.text.TextUtils;
 import com.novadart.novabill.android.R;
 import com.novadart.novabill.android.content.provider.DBSchema.ClientTbl;
 import com.novadart.novabill.android.content.provider.DBSchema.UserTbl;
+import com.novadart.novabill.android.content.provider.NovabillContract.Clients;
 
 public class NovabillDBHelper extends SQLiteOpenHelper {
 	
@@ -105,16 +106,45 @@ public class NovabillDBHelper extends SQLiteOpenHelper {
 		return cursor.getLong(columnIndex);
 	}
 	
-	public Cursor getClients(Long userID, String sortOrder){
-		SQLiteDatabase db = getReadableDatabase();
-		return db.query(ClientTbl.TABLE_NAME, null, ClientTbl.USER_ID + "=?", new String[]{Long.toString(userID)}, null, null,
-				TextUtils.isEmpty(sortOrder)? null: sortOrder);
+	private String extendSelectionWithEquality(String selection, String column){
+		String eqClause = column + "=?"; 
+		if(TextUtils.isEmpty(selection))
+			return eqClause;
+		else
+			return selection + " and " + eqClause;
 	}
 	
-	public Cursor getClient(Long userID, Long clientID){
+	private String[] extendSelectionArgs(String[] selectionArgs, String value){
+		if(null == selectionArgs)
+			return new String[]{value};
+		else{
+			String[] extSelectionArgs = new String[selectionArgs.length + 1];
+			System.arraycopy(selectionArgs, 0, extSelectionArgs, 0, selectionArgs.length);
+			extSelectionArgs[extSelectionArgs.length - 1] = value;
+			return extSelectionArgs;
+		}
+	}
+	
+	public Cursor getClients(Long userID, String[] projection, String selection, String[] selectionArgs, String sortOrder){
 		SQLiteDatabase db = getReadableDatabase();
-		return db.query(ClientTbl.TABLE_NAME, null, String.format("%s=? and %s=?", ClientTbl.USER_ID, ClientTbl._ID),
-				new String[]{Long.toString(userID), Long.toString(clientID)}, null, null, null);
+		return db.query(ClientTbl.TABLE_NAME,
+				projection, //Columns
+				extendSelectionWithEquality(selection, ClientTbl.USER_ID), //selection 
+				extendSelectionArgs(selectionArgs, Long.toString(userID)), //selection args
+				null,
+				null,
+				TextUtils.isEmpty(sortOrder)? Clients.SORT_ORDER_DEFAULT: sortOrder); //sort order
+	}
+	
+	public Cursor getClient(Long userID, Long clientID, String[] projection, String selection, String[] selectionArgs, String sortOrder){
+		SQLiteDatabase db = getReadableDatabase();
+		return db.query(ClientTbl.TABLE_NAME,
+				projection, //Columns
+				extendSelectionWithEquality(extendSelectionWithEquality(selection, ClientTbl.USER_ID), ClientTbl._ID), //selection
+				extendSelectionArgs(extendSelectionArgs(selectionArgs, Long.toString(userID)), Long.toString(clientID)), //selection args
+				null,
+				null,
+				TextUtils.isEmpty(sortOrder)? Clients.SORT_ORDER_DEFAULT: sortOrder); //sort order
 	}
 	
 	public int deleteClients(Long userID){

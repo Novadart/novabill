@@ -143,7 +143,7 @@ public class NovabillDBHelperTest extends ProviderTestCase2<NovabillContentProvi
 		client = new ContentValues();
 		client.put(ClientTbl.NAME, "Jane Doe");
 		resolve.insert(clientsUri, client);
-		assertEquals(2, dbHelper.getClients(userID, null).getCount());
+		assertEquals(2, dbHelper.getClients(userID, null, null, null, null).getCount());
 		assertEquals(2, resolve.delete(UriUtils.clientsContentUriBuilder(userID).build(), null, null));
 		
 	}
@@ -154,8 +154,22 @@ public class NovabillDBHelperTest extends ProviderTestCase2<NovabillContentProvi
 		client.put(ClientTbl.NAME, "John Doe");
 		Uri clientsUri = UriUtils.clientsContentUriBuilder(userID).build();
 		Uri clientUri = resolve.insert(clientsUri, client);
-		assertEquals(1, dbHelper.getClient(userID, Long.parseLong(clientUri.getLastPathSegment())).getCount());
+		assertEquals(1, dbHelper.getClient(userID, Long.parseLong(clientUri.getLastPathSegment()), null, null, null, null).getCount());
 		assertEquals(1, resolve.delete(clientUri, null, null));
+	}
+	
+	public void testBulkInsertClients(){
+		Long userID = dbHelper.addUser("foo@bar");
+		Uri clientsUri = UriUtils.clientsContentUriBuilder(userID).build();
+		ContentValues[] values = new ContentValues[2];
+		ContentValues client = new ContentValues();
+		client.put(ClientTbl.NAME, "John Doe");
+		values[0] = client;
+		client = new ContentValues();
+		client.put(ClientTbl.NAME, "Jane Doe");
+		values[1] = client;
+		resolve.bulkInsert(clientsUri, values);
+		assertEquals(2, resolve.query(clientsUri, null, null, null, null).getCount());
 	}
 	
 }

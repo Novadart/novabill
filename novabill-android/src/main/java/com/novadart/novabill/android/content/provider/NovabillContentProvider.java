@@ -80,7 +80,7 @@ public class NovabillContentProvider extends ContentProvider {
 		case CLIENT_LIST:
 			Long userID = Long.parseLong(uri.getPathSegments().get(1));
 			values.put(ClientTbl.USER_ID, userID);
-			Long id = db.insert(DBSchema.ClientTbl.TABLE_NAME, null, values);
+			Long id = db.insert(ClientTbl.TABLE_NAME, null, values);
 			return constructUriAndRegisterChange(id, uri);
 		default:
 			throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -100,12 +100,12 @@ public class NovabillContentProvider extends ContentProvider {
 		switch (URI_MATCHER.match(uri)) {
 		case CLIENT_LIST:
 			userID = Long.parseLong(uri.getPathSegments().get(1));
-			cursor = dbHelper.getClients(userID, sortOrder); 
+			cursor = dbHelper.getClients(userID, projection, selection, selectionArgs, sortOrder); 
 			break;
 		case CLIENT_ID:
 			userID = Long.parseLong(uri.getPathSegments().get(1));
 			Long clientID = Long.parseLong(uri.getLastPathSegment());
-			cursor = dbHelper.getClient(userID, clientID);
+			cursor = dbHelper.getClient(userID, clientID, projection, selection, selectionArgs, sortOrder);
 			break;
 		default:
 			throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -116,8 +116,48 @@ public class NovabillContentProvider extends ContentProvider {
 
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		int updateCount = 0;
+		switch (URI_MATCHER.match(uri)) {
+		case CLIENT_LIST:
+			
+			break;
+		case CLIENT_ID:
+			
+			break;
+		default:
+			throw new IllegalArgumentException("Unsupported URI: " + uri);
+		}
+		return updateCount;
 	}
+
+	@Override
+	public int bulkInsert(Uri uri, ContentValues[] values) {
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		int insertCount = 0;
+		switch (URI_MATCHER.match(uri)) {
+		case CLIENT_LIST:
+			Long userID = Long.parseLong(uri.getPathSegments().get(1));
+			db.beginTransaction();
+			try{
+				for(ContentValues cv: values){
+					cv.put(ClientTbl.USER_ID, userID);
+					if(db.insert(ClientTbl.TABLE_NAME, null, cv) <= 0)
+						throw new SQLException("Error to add: " + uri); 
+					insertCount++;
+				}
+				db.setTransactionSuccessful();
+			} finally {
+				db.endTransaction();
+			}
+			break;
+		default:
+			throw new IllegalArgumentException("Unsupported URI: " + uri);
+		}
+		getContext().getContentResolver().notifyChange(uri, null);
+		return insertCount;
+	}
+	
+	
 
 }
