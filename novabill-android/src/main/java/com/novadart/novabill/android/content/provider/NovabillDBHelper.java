@@ -7,7 +7,10 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.text.TextUtils;
+
 import com.novadart.novabill.android.R;
+import com.novadart.novabill.android.content.provider.DBSchema.ClientTbl;
+import com.novadart.novabill.android.content.provider.DBSchema.UserTbl;
 
 public class NovabillDBHelper extends SQLiteOpenHelper {
 	
@@ -85,33 +88,43 @@ public class NovabillDBHelper extends SQLiteOpenHelper {
 			throw new IllegalArgumentException("Empty name!");
 		SQLiteDatabase db = getWritableDatabase();
 		ContentValues values = new ContentValues();
-		values.put(DBSchema.UserTbl.EMAIL, name);
-		return db.insertOrThrow(DBSchema.UserTbl.TABLE_NAME, null, values);
+		values.put(UserTbl.EMAIL, name);
+		return db.insertOrThrow(UserTbl.TABLE_NAME, null, values);
 	}
 	
 	public Long getUserId(String name){
 		if(TextUtils.isEmpty(name))
 			throw new IllegalArgumentException("Empty name!");
 		SQLiteDatabase db = getReadableDatabase();
-		Cursor cursor = db.query(DBSchema.UserTbl.TABLE_NAME, new String[]{DBSchema.UserTbl._ID}, DBSchema.UserTbl.EMAIL + "=?", new String[]{name}, null, null, null);
+		Cursor cursor = db.query(UserTbl.TABLE_NAME, new String[]{UserTbl._ID}, UserTbl.EMAIL + "=?", new String[]{name}, null, null, null);
 		if(cursor.getCount() > 1)
 			throw new IllegalStateException("More than one user with name " + name);
 		if(!cursor.moveToFirst())
 			throw new IllegalArgumentException("No such user");
-		int columnIndex = cursor.getColumnIndex(DBSchema.UserTbl._ID);
+		int columnIndex = cursor.getColumnIndex(UserTbl._ID);
 		return cursor.getLong(columnIndex);
 	}
 	
 	public Cursor getClients(Long userID, String sortOrder){
 		SQLiteDatabase db = getReadableDatabase();
-		return db.query(DBSchema.ClientTbl.TABLE_NAME, null, DBSchema.ClientTbl.USER_ID + "=?", new String[]{Long.toString(userID)}, null, null,
+		return db.query(ClientTbl.TABLE_NAME, null, ClientTbl.USER_ID + "=?", new String[]{Long.toString(userID)}, null, null,
 				TextUtils.isEmpty(sortOrder)? null: sortOrder);
 	}
 	
 	public Cursor getClient(Long userID, Long clientID){
 		SQLiteDatabase db = getReadableDatabase();
-		return db.query(DBSchema.ClientTbl.TABLE_NAME, null, String.format("%s=? and %s=?", DBSchema.ClientTbl.USER_ID, DBSchema.ClientTbl._ID),
+		return db.query(ClientTbl.TABLE_NAME, null, String.format("%s=? and %s=?", ClientTbl.USER_ID, ClientTbl._ID),
 				new String[]{Long.toString(userID), Long.toString(clientID)}, null, null, null);
+	}
+	
+	public int deleteClients(Long userID){
+		SQLiteDatabase db = getWritableDatabase();
+		return db.delete(ClientTbl.TABLE_NAME, ClientTbl.USER_ID + "=?", new String[]{userID.toString()});
+	}
+	
+	public int deleteClient(Long userID, Long clientID){
+		SQLiteDatabase db = getWritableDatabase();
+		return db.delete(ClientTbl.TABLE_NAME, String.format("%s=? and %s=?", ClientTbl.USER_ID, ClientTbl._ID), new String[]{userID.toString(), clientID.toString()});
 	}
 	
 }

@@ -132,4 +132,30 @@ public class NovabillDBHelperTest extends ProviderTestCase2<NovabillContentProvi
 		assertEquals(userID.longValue(), cursor.getLong(cursor.getColumnIndex(ClientTbl.USER_ID)));
 	}
 	
+	public void testAddDeleteClients(){
+		Long userID = dbHelper.addUser("foo@bar");
+		//insert first client
+		ContentValues client = new ContentValues();
+		client.put(ClientTbl.NAME, "John Doe");
+		Uri clientsUri = UriUtils.clientsContentUriBuilder(userID).build();
+		resolve.insert(clientsUri, client);
+		//insert second client
+		client = new ContentValues();
+		client.put(ClientTbl.NAME, "Jane Doe");
+		resolve.insert(clientsUri, client);
+		assertEquals(2, dbHelper.getClients(userID, null).getCount());
+		assertEquals(2, resolve.delete(UriUtils.clientsContentUriBuilder(userID).build(), null, null));
+		
+	}
+	
+	public void testAddDeleteClient(){
+		Long userID = dbHelper.addUser("foo@bar");
+		ContentValues client = new ContentValues();
+		client.put(ClientTbl.NAME, "John Doe");
+		Uri clientsUri = UriUtils.clientsContentUriBuilder(userID).build();
+		Uri clientUri = resolve.insert(clientsUri, client);
+		assertEquals(1, dbHelper.getClient(userID, Long.parseLong(clientUri.getLastPathSegment())).getCount());
+		assertEquals(1, resolve.delete(clientUri, null, null));
+	}
+	
 }

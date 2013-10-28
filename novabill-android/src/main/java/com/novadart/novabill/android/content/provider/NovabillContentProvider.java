@@ -33,8 +33,23 @@ public class NovabillContentProvider extends ContentProvider {
 
 	@Override
 	public int delete(Uri uri, String selection, String[] selectionArgs) {
-		// TODO Auto-generated method stub
-		return 0;
+		Long userID;
+		int delCount = 0;
+		switch (URI_MATCHER.match(uri)) {
+		case CLIENT_LIST:
+			userID = Long.parseLong(uri.getPathSegments().get(1));
+			delCount = dbHelper.deleteClients(userID);
+			break;
+		case CLIENT_ID:
+			userID = Long.parseLong(uri.getPathSegments().get(1));
+			Long clientID = Long.parseLong(uri.getLastPathSegment());
+			delCount = dbHelper.deleteClient(userID, clientID);
+			break;
+		default:
+			throw new IllegalArgumentException("Unsupported URI: " + uri);
+		}
+		getContext().getContentResolver().notifyChange(uri, null);
+		return delCount;
 	}
 
 	@Override
