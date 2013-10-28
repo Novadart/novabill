@@ -117,13 +117,15 @@ public class NovabillContentProvider extends ContentProvider {
 	@Override
 	public int update(Uri uri, ContentValues values, String selection, String[] selectionArgs) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
-		int updateCount = 0;
+		int updateCount;
 		switch (URI_MATCHER.match(uri)) {
-		case CLIENT_LIST:
-			
-			break;
 		case CLIENT_ID:
-			
+			Long userID = Long.parseLong(uri.getPathSegments().get(1));
+			Long clientID = Long.parseLong(uri.getLastPathSegment());
+			updateCount = db.update(ClientTbl.TABLE_NAME,
+					values,
+					String.format("%s=? and %s=?", ClientTbl.USER_ID, ClientTbl._ID),
+					new String[]{userID.toString(), clientID.toString()});
 			break;
 		default:
 			throw new IllegalArgumentException("Unsupported URI: " + uri);
@@ -157,7 +159,5 @@ public class NovabillContentProvider extends ContentProvider {
 		getContext().getContentResolver().notifyChange(uri, null);
 		return insertCount;
 	}
-	
-	
 
 }

@@ -172,4 +172,17 @@ public class NovabillDBHelperTest extends ProviderTestCase2<NovabillContentProvi
 		assertEquals(2, resolve.query(clientsUri, null, null, null, null).getCount());
 	}
 	
+	public void testUpdateClient(){
+		Long userID = dbHelper.addUser("foo@bar");
+		ContentValues client = new ContentValues();
+		client.put(ClientTbl.NAME, "John Doe");
+		Uri clientsUri = UriUtils.clientsContentUriBuilder(userID).build();
+		Uri clientUri = resolve.insert(clientsUri, client);
+		client.put(ClientTbl.NAME, "Jane Doe");
+		assertEquals(1, resolve.update(clientUri, client, null, null));
+		Cursor cursor = resolve.query(clientUri, null, null, null, null);
+		cursor.moveToFirst();
+		assertEquals("Jane Doe", cursor.getString(cursor.getColumnIndex(ClientTbl.NAME)));
+	}
+	
 }
