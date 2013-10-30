@@ -28,13 +28,8 @@
 		<module>novabill-shared</module>
 		<module>novabill-scala-utils</module>
 		<module>novabill-client</module>
-<<<<<<< HEAD
-<!-- 		<module>novabill-android</module> -->
-<!-- 		<module>novabill-android-it</module> -->
-=======
-		<!-- <module>novabill-android</module>
-		<module>novabill-android-it</module> -->
->>>>>>> 33d3694bc81eba6b201f7d23c5796022773a4ad0
+		<module>novabill-android</module>
+		<module>novabill-android-it</module>
 		<module>novabill-server</module>
 	</modules>
 
@@ -484,7 +479,7 @@
 				<plugin>
 					<groupId>org.apache.maven.plugins</groupId>
 					<artifactId>maven-compiler-plugin</artifactId>
-					<version>2.5.1</version>
+					<version>3.1</version>
 					<configuration>
 						<source>${java.version}</source>
 						<target>${java.version}</target>

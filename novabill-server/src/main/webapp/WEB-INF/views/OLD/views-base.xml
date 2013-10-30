@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" 
+	"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+	
+	<definition name="analytics" template="/WEB-INF/views/analytics.jsp" />
+
+	<definition name="browserAlert" template="/WEB-INF/views/browserAlert.jsp" />
+
+	<definition name="footer" template="/WEB-INF/views/footer.jsp">
+		<put-attribute name="credit" value="/WEB-INF/views/credit.jsp" />
+	</definition>
+	
+	<definition name="commonlinks" template="/WEB-INF/views/commonLinks.jsp" />
+	
+	<definition name="base" template="/WEB-INF/views/base.jsp">
+		<put-attribute name="commonlinks" value="commonlinks" />
+		<put-attribute name="footer" value="footer" />
+		<put-attribute name="analytics" value="analytics" />
+		<put-attribute name="browserAlert" value="browserAlert" />
+	</definition>
+	
+	<definition name="basePrivate" template="/WEB-INF/views/basePrivate.jsp" >
+		<put-attribute name="commonlinks" value="commonlinks" />
+		<put-attribute name="footer" value="footer" />
+		<put-attribute name="analytics" value="analytics" />
+		<put-attribute name="browserAlert" value="browserAlert" />
+	</definition>
+	
+	<definition name="baseFeedback" template="/WEB-INF/views/baseFeedback.jsp" >
+		<put-attribute name="commonlinks" value="commonlinks" />
+		<put-attribute name="footer" value="footer" />
+		<put-attribute name="analytics" value="analytics" />
+		<put-attribute name="browserAlert" value="browserAlert" />
+	</definition>
+
+	<definition name="baseError" template="/WEB-INF/views/baseError.jsp" >
+		<put-attribute name="commonlinks" value="commonlinks" />
+		<put-attribute name="footer" value="footer" />
+		<put-attribute name="analytics" value="analytics" />
+		<put-attribute name="browserAlert" value="browserAlert" />
+	</definition>
+	
+</tiles-definitions>
