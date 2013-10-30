@@ -28,13 +28,8 @@
 		<module>novabill-shared</module>
 		<module>novabill-scala-utils</module>
 		<module>novabill-client</module>
-<<<<<<< HEAD
-<!-- 		<module>novabill-android</module> -->
-<!-- 		<module>novabill-android-it</module> -->
-=======
 		<!-- <module>novabill-android</module>
 		<module>novabill-android-it</module> -->
->>>>>>> 33d3694bc81eba6b201f7d23c5796022773a4ad0
 		<module>novabill-server</module>
 	</modules>
 
