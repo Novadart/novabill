@@ -12,28 +12,14 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.web.bindery.event.shared.EventBus;
 import com.google.web.bindery.event.shared.SimpleEventBus;
 import com.novadart.novabill.frontend.client.view.View;
-import com.novadart.novabill.frontend.client.view.center.business.BusinessView;
-import com.novadart.novabill.frontend.client.view.center.business.BusinessViewImpl;
-import com.novadart.novabill.frontend.client.view.center.client.ClientView;
-import com.novadart.novabill.frontend.client.view.center.client.ClientViewImpl;
 import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteView;
 import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteViewImpl;
 import com.novadart.novabill.frontend.client.view.center.estimation.EstimationView;
 import com.novadart.novabill.frontend.client.view.center.estimation.EstimationViewImpl;
-import com.novadart.novabill.frontend.client.view.center.home.HomeView;
-import com.novadart.novabill.frontend.client.view.center.home.HomeViewImpl;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceViewImpl;
-import com.novadart.novabill.frontend.client.view.center.payment.PaymentView;
-import com.novadart.novabill.frontend.client.view.center.payment.PaymentViewImpl;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentViewImpl;
-import com.novadart.novabill.frontend.client.view.west.configuration.ConfigurationWestView;
-import com.novadart.novabill.frontend.client.view.west.configuration.ConfigurationWestViewImpl;
-import com.novadart.novabill.frontend.client.view.west.empty.EmptyWestView;
-import com.novadart.novabill.frontend.client.view.west.empty.EmptyWestViewImpl;
-import com.novadart.novabill.frontend.client.view.west.standard.StandardWestView;
-import com.novadart.novabill.frontend.client.view.west.standard.StandardWestViewImpl;
 
 public class ClientFactoryImpl implements ClientFactory {
 	private static final EventBus eventBus = 
@@ -154,14 +140,14 @@ public class ClientFactoryImpl implements ClientFactory {
 		return (T)view;
 	}
 	
-	@Override
-	public void getHomeView(AsyncCallback<HomeView> callback) {
-		if(views.containsKey(HomeView.class)){
-			callback.onSuccess((HomeView) getView(HomeView.class));
-		} else {
-			callback.onSuccess((HomeView) getView(HomeView.class, new HomeViewImpl()));
-		}
-	}
+//	@Override
+//	public void getHomeView(AsyncCallback<HomeView> callback) {
+//		if(views.containsKey(HomeView.class)){
+//			callback.onSuccess((HomeView) getView(HomeView.class));
+//		} else {
+//			callback.onSuccess((HomeView) getView(HomeView.class, new HomeViewImpl()));
+//		}
+//	}
 
 	@Override
 	public void getInvoiceView(final AsyncCallback<InvoiceView> callback) {
@@ -203,45 +189,45 @@ public class ClientFactoryImpl implements ClientFactory {
 		}
 	}
 
-	@Override
-	public void getBusinessView(final AsyncCallback<BusinessView> callback) {
-		if(views.containsKey(BusinessView.class)){
-			callback.onSuccess((BusinessView) getView(BusinessView.class));
-		} else {
-			GWT.runAsync(new RunAsyncCallback() {
-				
-				@Override
-				public void onSuccess() {
-					callback.onSuccess((BusinessView) getView(BusinessView.class, new BusinessViewImpl()));
-				}
-				
-				@Override
-				public void onFailure(Throwable reason) {
-					Window.Location.reload();
-				}
-			});
-		}
-	}
-
-	@Override
-	public void getClientView(final AsyncCallback<ClientView> callback) {
-		if(views.containsKey(ClientView.class)){
-			callback.onSuccess((ClientView) getView(ClientView.class));
-		} else {
-			GWT.runAsync(new RunAsyncCallback() {
-				
-				@Override
-				public void onSuccess() {
-					callback.onSuccess((ClientView) getView(ClientView.class, new ClientViewImpl()));
-				}
-				
-				@Override
-				public void onFailure(Throwable reason) {
-					Window.Location.reload();
-				}
-			});
-		}
-	}
+//	@Override
+//	public void getBusinessView(final AsyncCallback<BusinessView> callback) {
+//		if(views.containsKey(BusinessView.class)){
+//			callback.onSuccess((BusinessView) getView(BusinessView.class));
+//		} else {
+//			GWT.runAsync(new RunAsyncCallback() {
+//				
+//				@Override
+//				public void onSuccess() {
+//					callback.onSuccess((BusinessView) getView(BusinessView.class, new BusinessViewImpl()));
+//				}
+//				
+//				@Override
+//				public void onFailure(Throwable reason) {
+//					Window.Location.reload();
+//				}
+//			});
+//		}
+//	}
+//
+//	@Override
+//	public void getClientView(final AsyncCallback<ClientView> callback) {
+//		if(views.containsKey(ClientView.class)){
+//			callback.onSuccess((ClientView) getView(ClientView.class));
+//		} else {
+//			GWT.runAsync(new RunAsyncCallback() {
+//				
+//				@Override
+//				public void onSuccess() {
+//					callback.onSuccess((ClientView) getView(ClientView.class, new ClientViewImpl()));
+//				}
+//				
+//				@Override
+//				public void onFailure(Throwable reason) {
+//					Window.Location.reload();
+//				}
+//			});
+//		}
+//	}
 	
 	@Override
 	public void getCreditNoteView(final AsyncCallback<CreditNoteView> callback) {
@@ -283,51 +269,51 @@ public class ClientFactoryImpl implements ClientFactory {
 		}
 	}
 	
-	@Override
-	public void getPaymentView(final AsyncCallback<PaymentView> callback) {
-		if(views.containsKey(PaymentView.class)){
-			callback.onSuccess((PaymentView) getView(PaymentView.class));
-		} else {
-			GWT.runAsync(new RunAsyncCallback() {
-				
-				@Override
-				public void onSuccess() {
-					callback.onSuccess((PaymentView) getView(PaymentView.class, new PaymentViewImpl()));
-				}
-				
-				@Override
-				public void onFailure(Throwable reason) {
-					Window.Location.reload();
-				}
-			});
-		}
-	}
-
-	@Override
-	public void getStandardWestView(final AsyncCallback<StandardWestView> callback) {
-		if(views.containsKey(StandardWestView.class)){
-			callback.onSuccess((StandardWestView) getView(StandardWestView.class));
-		} else {
-			callback.onSuccess((StandardWestView) getView(StandardWestView.class, new StandardWestViewImpl()));
-		}
-	}
-	
-	@Override
-	public void getEmptyWestView(AsyncCallback<EmptyWestView> callback) {
-		if(views.containsKey(EmptyWestView.class)){
-			callback.onSuccess((EmptyWestView) getView(EmptyWestView.class));
-		} else {
-			callback.onSuccess((EmptyWestView) getView(EmptyWestView.class, new EmptyWestViewImpl()));
-		}
-	}
-	
-	@Override
-	public void getConfigurationWestView(AsyncCallback<ConfigurationWestView> callback) {
-		if(views.containsKey(ConfigurationWestView.class)){
-			callback.onSuccess((ConfigurationWestView) getView(ConfigurationWestView.class));
-		} else {
-			callback.onSuccess((ConfigurationWestView) getView(ConfigurationWestView.class, new ConfigurationWestViewImpl()));
-		}
-	}
+//	@Override
+//	public void getPaymentView(final AsyncCallback<PaymentView> callback) {
+//		if(views.containsKey(PaymentView.class)){
+//			callback.onSuccess((PaymentView) getView(PaymentView.class));
+//		} else {
+//			GWT.runAsync(new RunAsyncCallback() {
+//				
+//				@Override
+//				public void onSuccess() {
+//					callback.onSuccess((PaymentView) getView(PaymentView.class, new PaymentViewImpl()));
+//				}
+//				
+//				@Override
+//				public void onFailure(Throwable reason) {
+//					Window.Location.reload();
+//				}
+//			});
+//		}
+//	}
+//
+//	@Override
+//	public void getStandardWestView(final AsyncCallback<StandardWestView> callback) {
+//		if(views.containsKey(StandardWestView.class)){
+//			callback.onSuccess((StandardWestView) getView(StandardWestView.class));
+//		} else {
+//			callback.onSuccess((StandardWestView) getView(StandardWestView.class, new StandardWestViewImpl()));
+//		}
+//	}
+//	
+//	@Override
+//	public void getEmptyWestView(AsyncCallback<EmptyWestView> callback) {
+//		if(views.containsKey(EmptyWestView.class)){
+//			callback.onSuccess((EmptyWestView) getView(EmptyWestView.class));
+//		} else {
+//			callback.onSuccess((EmptyWestView) getView(EmptyWestView.class, new EmptyWestViewImpl()));
+//		}
+//	}
+//	
+//	@Override
+//	public void getConfigurationWestView(AsyncCallback<ConfigurationWestView> callback) {
+//		if(views.containsKey(ConfigurationWestView.class)){
+//			callback.onSuccess((ConfigurationWestView) getView(ConfigurationWestView.class));
+//		} else {
+//			callback.onSuccess((ConfigurationWestView) getView(ConfigurationWestView.class, new ConfigurationWestViewImpl()));
+//		}
+//	}
 	
 }

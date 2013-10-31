@@ -1,0 +1,17 @@
+<div class="well well-small document-well invoice">
+	<span class="badge documentId">{{invoice.documentID}}</span> 
+	<span class="date">{{invoice.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
+	<span class="clientName">{{invoice.client.name}}</span>
+	<div class="btn-group">
+		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Tools
+			<i class="icon-angle-down"></i>
+		</a>
+		<ul class="dropdown-menu">
+			<li><a href="#">Settings <span class="badge badge-success">3</span></a></li>
+			<li><a href="#">Preferences</a></li>
+			<li><a href="#">Window Options</a></li>
+			<li><a href="#">Help <span class="badge badge-important">7</span></a></li>
+		</ul>
+	</div>
+	<a href="#" class="open btn mini blue">Open</a>
+</div>

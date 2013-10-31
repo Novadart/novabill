@@ -4,3 +4,4 @@
 <spring:url var="privateAssetsUrl" value="/private_assets"></spring:url>
 
 <link href="${privateAssetsUrl}/pages/css/clients.css" rel="stylesheet" type="text/css"/>
+<link href="${privateAssetsUrl}/pages/css/directives.css" rel="stylesheet" type="text/css"/>

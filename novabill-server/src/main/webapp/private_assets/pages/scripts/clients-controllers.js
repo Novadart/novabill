@@ -1,7 +1,10 @@
-angular.module('clients.controllers', ['utils']).
+angular.module('clients.controllers', ['utils', 'directives'])
 
 
-controller('ClientsCtrl', function($scope, Nsorting){
+/**
+ * CLIENTS PAGE CONTROLLER
+ */
+.controller('ClientsCtrl', function($scope, Nsorting, $location){
 	
 	var partitionsCache = [];
 	
@@ -57,7 +60,7 @@ controller('ClientsCtrl', function($scope, Nsorting){
 	};
 	
 	$scope.clientClick = function(client){
-		alert(client.name);
+		$location.path('/'+client.id);
 	};
 	
 	// fired when new client button is clicked
@@ -114,43 +117,21 @@ controller('ClientsCtrl', function($scope, Nsorting){
 	
 	
 	$scope.loadClients($scope);
-}).
+})
 
 
-controller('ClientDetailsCtrl', function($scope, $route, $routeParams, $location) {
-	GWT_Server.client.get($routeParams.clientId, {
 
-		onSuccess : function(client){
-			$scope.$apply(function(){
 
-				$scope.name = client.name;
-
-				$scope.businessDetails = 
-					(client.vatID ? client.vatID : '') +
-					(client.vatID && client.ssn ? ' - ' : '') +
-					(client.ssn ? client.ssn : '');
-
-				$scope.address = 
-					(client.address ? client.address+' ' : '') +
-					(client.postcode ? ' - '+client.postcode+' - ' : '') +
-					(client.city ? client.city+' ' : '') +
-					(client.province ? '('+client.province+') ' : '');
-
-				$scope.contactInfo =
-					(client.email ? 'Email: '+client.email : '') +
-					(client.fax ? 'Fax: '+client.fax : '') +
-					(client.mobile ? 'Mobile: '+client.mobile : '') +
-					(client.phone ? 'Phone: '+client.phone : '');
-
-				
-				$scope.clientId = client.id;
-			});
-		},
-
-		onFailure : function(error){
-		}
-	});
-
+/**
+ * CLIENT DETAILS PAGE CONTROLLER
+ */
+.controller('ClientDetailsCtrl', function($scope, $route, $routeParams, $location) {
+	
+	$scope.invoices = null;
+	$scope.estimations = null;
+	$scope.transportDocuments = null;
+	$scope.creditNotes = null;
+	
 	
 	//fired when edit client is clicked
 	$scope.editClient = function(clientId) {
@@ -179,6 +160,53 @@ controller('ClientDetailsCtrl', function($scope, $route, $routeParams, $location
 			onFailure : function(error){}
 		});
 	};
+	
+	// load client data
+	GWT_Server.client.get($routeParams.clientId, {
+
+		onSuccess : function(client){
+			$scope.$apply(function(){
+
+				$scope.name = client.name;
+
+				$scope.businessDetails = 
+					(client.vatID ? client.vatID : '') +
+					(client.vatID && client.ssn ? ' - ' : '') +
+					(client.ssn ? client.ssn : '');
+
+				$scope.address = 
+					(client.address ? client.address+' ' : '') +
+					(client.postcode ? ' - '+client.postcode+' - ' : '') +
+					(client.city ? client.city+' ' : '') +
+					(client.province ? '('+client.province+') ' : '');
+
+				$scope.contactInfo =
+					(client.email ? 'Email: '+client.email : '') +
+					(client.fax ? 'Fax: '+client.fax : '') +
+					(client.mobile ? 'Mobile: '+client.mobile : '') +
+					(client.phone ? 'Phone: '+client.phone : '');
+
+				
+				$scope.client = client;
+			});
+		},
+
+		onFailure : function(error){
+		}
+	});
+	
+	// load invoices
+	GWT_Server.invoice.getAllForClient($routeParams.clientId, {
+
+		onSuccess : function(clientData){
+			$scope.$apply(function(){
+				$scope.invoices = clientData.invoices;
+			});
+		},
+
+		onFailure : function(error){
+		}
+	});
 
 });
 

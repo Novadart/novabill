@@ -1,3 +1,4 @@
+<%@page import="com.novadart.novabill.web.mvc.Urls"%>
 <%@page import="com.novadart.novabill.domain.security.Principal"%>
 <%@page import="com.novadart.novabill.domain.Business"%>
 <%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
@@ -20,6 +21,8 @@
 <spring:url var="paymentsUrl" value="/private/payments/" />
 <spring:url var="settingsUrl" value="/private/settings/" />
 
+<spring:url var="clientsBaseUrl" value="<%=Urls.PRIVATE_CLIENTS%>" />
+
 <%
 	PAGES activePage = (PAGES)request.getAttribute("activePage");
 %>
@@ -35,6 +38,7 @@
 	<meta content="width=device-width, initial-scale=1.0" name="viewport" />
 	<meta content="" name="description" />
 	<meta content="" name="author" />
+	<meta name="gwt:property" content="locale=it_IT">
 	<!-- BEGIN GLOBAL MANDATORY STYLES -->        
 	<link href="${privateAssetsUrl}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css"/>
 	<link href="${privateAssetsUrl}/plugins/bootstrap/css/bootstrap-responsive.min.css" rel="stylesheet" type="text/css"/>
@@ -495,8 +499,9 @@
 	<script>window.jQuery || document.write('<script src="${privateAssetsUrl}/plugins/jquery-1.10.1.min.js"><\/script>');</script>
 	
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular.min.js"></script>
-	<script>window.angular || document.write('<script src="${privateAssetsUrl}/plugins/angular-1.2.0-rc.2.min.js"><\/script>');</script>
+	<script>window.angular || document.write('<script src="${privateAssetsUrl}/plugins/angular-1.2.0-rc.3.min.js"><\/script>');</script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.2/angular-route.min.js"></script>
+	<script src="${privateAssetsUrl}/plugins/angular-i18n/angular-locale_it-it.js" type="text/javascript"></script>
 	
 	<script src="${privateAssetsUrl}/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 	<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
@@ -520,7 +525,9 @@
 	
 	<script>
 	var NovabillConf = {
-		    businessId : '<%=business.getId()%>'
+		    businessId : '<%=business.getId()%>',
+		    clientsBaseUrl : '${clientsBaseUrl}',
+		    partialsBaseUrl : '${privateAssetsUrl}/pages/partials/'
 	};
 	</script>
 	

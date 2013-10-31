@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.activity.center;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.user.client.ui.Image;
@@ -15,9 +16,21 @@ public abstract class AbstractCenterActivity extends BasicActivity {
 	static{
 		LOADER.setStyleName(GlobalBundle.INSTANCE.globalCss().centerViewLoader());
 	}
-
+	
+	private final JavaScriptObject callback;
+	
 	public AbstractCenterActivity(ClientFactory clientFactory) {
 		super(clientFactory);
+		this.callback = null;
+	}
+	
+	public AbstractCenterActivity(ClientFactory clientFactory, JavaScriptObject callback) {
+		super(clientFactory);
+		this.callback = callback;
+	}
+	
+	public JavaScriptObject getCallback() {
+		return callback;
 	}
 
 	@Override

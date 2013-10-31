@@ -34,7 +34,7 @@ import com.novadart.novabill.frontend.client.widget.list.impl.InvoiceList;
 import com.novadart.novabill.frontend.client.widget.list.impl.TransportDocumentList;
 import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
 import com.novadart.novabill.frontend.client.widget.tip.Tips;
-import com.novadart.novabill.shared.client.dto.IBusinessDTO;
+import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
 public class HomeViewImpl extends Composite implements HomeView {
 
@@ -114,7 +114,7 @@ public class HomeViewImpl extends Composite implements HomeView {
 		tabBar.selectTab(0);
 	}
 	
-	private void updateBusinessDetails(IBusinessDTO business){
+	private void updateBusinessDetails(BusinessDTO business){
 		businessLogo.setUrl(ClientFactory.INSTANCE.getLogoUrl());
 
 		SafeHtmlBuilder shb = new SafeHtmlBuilder();

@@ -24,6 +24,7 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
 import com.novadart.novabill.frontend.client.SharedComparators;
+import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -298,7 +299,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 				public void onSuccess(Long result) {
 					ok.showLoader(false);
 					hide();
-					invokeJSCallbackNative(callback);
+					BridgeUtils.invokeJSCallback(callback);
 					setLocked(false);
 				}
 
@@ -317,7 +318,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 				public void onSuccess(Void result) {
 					ok.showLoader(false);
 					hide();
-					invokeJSCallbackNative(callback);
+					BridgeUtils.invokeJSCallback(callback);
 					setLocked(false);
 				}
 
@@ -444,7 +445,4 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		note.setEnabled(!value);
 	}
 
-	private static native void invokeJSCallbackNative(JavaScriptObject callback)/*-{
-		callback.onSuccess();
-	}-*/;
 }

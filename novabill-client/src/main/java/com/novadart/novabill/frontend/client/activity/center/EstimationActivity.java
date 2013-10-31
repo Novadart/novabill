@@ -67,7 +67,7 @@ public class EstimationActivity extends AbstractCenterActivity {
 			@Override
 			public void onSuccess(Pair<Long, ClientDTO> result) {
 				NewEstimationPresenter p = new NewEstimationPresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view);
+						getClientFactory().getEventBus(), view, getCallback());
 				p.setDataForNewEstimation(result.getSecond(), result.getFirst());
 				p.go(panel);
 			}
@@ -80,7 +80,7 @@ public class EstimationActivity extends AbstractCenterActivity {
 			@Override
 			public void onSuccess(EstimationDTO result) {
 				ModifyEstimationPresenter p = new ModifyEstimationPresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view);
+						getClientFactory().getEventBus(), view, getCallback());
 				p.setData(result);
 				p.go(panel);
 			}
@@ -94,7 +94,7 @@ public class EstimationActivity extends AbstractCenterActivity {
 			@Override
 			public void onSuccess(Triple<Long, ClientDTO, EstimationDTO> result) {
 				NewEstimationPresenter p = new NewEstimationPresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view);
+						getClientFactory().getEventBus(), view, getCallback());
 				p.setDataForNewEstimation(result.getSecond(), result.getFirst(), result.getThird());
 				p.go(panel);
 			}

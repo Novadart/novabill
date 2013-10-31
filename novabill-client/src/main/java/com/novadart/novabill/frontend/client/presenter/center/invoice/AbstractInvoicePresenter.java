@@ -4,15 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.ClientPlace;
-import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.presenter.center.DocumentPresenter;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
@@ -28,8 +28,8 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 	
 	private PaymentTypeDTO cachedDefaultPaymentTypeDTO = null;
 
-	public AbstractInvoicePresenter(PlaceController placeController, EventBus eventBus,	InvoiceView view) {
-		super(placeController, eventBus, view);
+	public AbstractInvoicePresenter(PlaceController placeController, EventBus eventBus,	InvoiceView view, JavaScriptObject callback) {
+		super(placeController, eventBus, view, callback);
 	}
 
 	@Override
@@ -46,10 +46,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
-					ClientPlace cp = new ClientPlace();
-					cp.setClientId(getClient().getId());
-					cp.setDocs(DOCUMENTS.invoices);
-					goTo(cp);
+					BridgeUtils.invokeJSCallback(Boolean.FALSE.toString(), getCallback());
 				}
 			}
 		});

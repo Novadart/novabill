@@ -67,7 +67,7 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 			@Override
 			public void onSuccess(Pair<Long, ClientDTO> result) {
 				NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view);
+						getClientFactory().getEventBus(), view, getCallback());
 				p.setDataForNewCreditNote(result.getSecond(), result.getFirst());
 				p.go(panel);
 			}
@@ -80,7 +80,7 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 			@Override
 			public void onSuccess(Pair<Long, InvoiceDTO> result) {
 				NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view);
+						getClientFactory().getEventBus(), view, getCallback());
 				p.setDataForNewCreditNote(result.getFirst(), result.getSecond());
 				p.go(panel);
 			}
@@ -93,7 +93,7 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 			@Override
 			public void onSuccess(CreditNoteDTO result) {
 				ModifyCreditNotePresenter p = new ModifyCreditNotePresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view);
+						getClientFactory().getEventBus(), view, getCallback());
 				p.setData(result);
 				p.go(panel);
 			}
