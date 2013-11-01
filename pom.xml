@@ -29,7 +29,7 @@
 		<module>novabill-scala-utils</module>
 		<module>novabill-client</module>
 		<module>novabill-android</module>
-		<module>novabill-android-it</module>
+		<!-- <module>novabill-android-it</module> -->
 		<module>novabill-server</module>
 	</modules>
 
