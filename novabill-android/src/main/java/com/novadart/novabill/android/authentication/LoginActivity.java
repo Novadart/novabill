@@ -4,6 +4,7 @@ import android.accounts.Account;
 import android.accounts.AccountAuthenticatorActivity;
 import android.accounts.AccountManager;
 import android.app.AlertDialog;
+import android.content.ContentResolver;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.AsyncTask;
@@ -15,7 +16,9 @@ import android.widget.TextView;
 import com.novadart.novabill.android.DispatcherActivity;
 import com.novadart.novabill.android.R;
 import com.novadart.novabill.android.authentication.ServerAuthenticator.AuthenticationResult;
+import com.novadart.novabill.android.content.provider.NovabillContract;
 import com.novadart.novabill.android.content.provider.NovabillDBHelper;
+import com.novadart.novabill.android.sync.NovabillSyncAdapter;
 
 public class LoginActivity extends AccountAuthenticatorActivity {
 	
@@ -112,6 +115,7 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 	        mAccountManager.addAccountExplicitly(account, accountPassword, null);
 	        mAccountManager.setAuthToken(account, authtokenType, authtoken);
 	        NovabillDBHelper.getInstance(this).addUser(accountName);
+	        NovabillSyncAdapter.setAccountSyncSettings(account);
 	    } else {
 	        mAccountManager.setPassword(account, accountPassword);
 	    }

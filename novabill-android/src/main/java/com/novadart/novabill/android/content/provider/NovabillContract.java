@@ -8,6 +8,10 @@ public final class NovabillContract {
 	
 	public static final String AUTHORITY = "com.novadart.novabill";
 	
+	public static final int DEFAULT_SYNC_STATUS = 1;
+	
+	public static final boolean DEFAULT_AUTOSYNC = true;
+	
 	public static final Uri CONTENT_URI = Uri.parse("content://" + AUTHORITY);
 	
 	public static final class Items implements BaseColumns {
