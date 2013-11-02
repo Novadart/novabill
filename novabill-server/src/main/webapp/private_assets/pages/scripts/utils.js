@@ -1,6 +1,6 @@
-angular.module('utils', []).
+angular.module('utils', [])
 
-factory('Nsorting', function() {
+.factory('Nsorting', function() {
 	return {
 		
 		/**

@@ -1,4 +1,4 @@
-angular.module('directives', [])
+angular.module('directives', ['utils'])
 
 .directive('novabillInvoice', function factory(){
 	
@@ -6,7 +6,7 @@ angular.module('directives', [])
 			templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-invoice.html',
 			scope: { 
 				invoice : '=',
-				bottomUpMenu : '='
+				bottomUpMenu : '=',
 			},
 			restrict: 'E',
 			replace: true,

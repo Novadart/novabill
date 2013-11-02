@@ -59,3 +59,7 @@
 	margin: 0 auto;
     display: block;
 }
+
+.pagination ul > li > a {
+	cursor: pointer;
+}

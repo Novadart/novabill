@@ -34,6 +34,7 @@ public class ServerBridge implements ApiBridge {
 			
 			invoice : {
 				getAllForClient : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::getAllForClient(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getAllInRange : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::getAllInRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 			}
 
 		}

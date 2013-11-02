@@ -23,6 +23,7 @@
 	</definition>
 	
 	<definition name="private.invoices" extends="private.layout">
+		<put-attribute name="head" value="/WEB-INF/views/tiles/private/invoicesHead.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/tiles/private/invoicesBody.jsp" />
 		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/invoicesJS.jsp" />
 	</definition>

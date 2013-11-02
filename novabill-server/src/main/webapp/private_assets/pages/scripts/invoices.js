@@ -10,13 +10,13 @@ angular.module("invoices", ['invoices.controllers','ngRoute'])
 	})
 	
 	
-	.when('/:invoiceId', {
+	.when('/details/:invoiceId', {
 		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-detail.html',
-		controller: 'InvoiceModifyCtrl'
+		controller: 'InvoiceDetailsCtrl'
 	})
 	
 	.when('/create/:clientId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-detail.html',
+		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-create.html',
 		controller: 'InvoiceCreateCtrl'
 	})
 	

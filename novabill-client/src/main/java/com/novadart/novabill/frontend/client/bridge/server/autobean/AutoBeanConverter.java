@@ -76,7 +76,7 @@ public class AutoBeanConverter {
 	}
 	
 	
-	public static AutoBean<Page<Client>> convert(PageDTO<ClientDTO> p) {
+	public static AutoBean<Page<Client>> convertClientPage(PageDTO<ClientDTO> p) {
 		Page<Client> ap = AutoBeanMaker.INSTANCE.makeClientPage().as();
 		
 		List<Client> l = new ArrayList<Client>();
@@ -111,7 +111,7 @@ public class AutoBeanConverter {
 		return result;
 	}
 	
-	public static Invoice convert(InvoiceDTO invoice) {
+	public static AutoBean<Invoice> convert(InvoiceDTO invoice) {
 		Invoice ai = AutoBeanMaker.INSTANCE.makeInvoice().as();
 		
 		ai.setAccountingDocumentDate(invoice.getAccountingDocumentDate());
@@ -132,7 +132,22 @@ public class AutoBeanConverter {
 		ai.setTotalBeforeTax(invoice.getTotalBeforeTax());
 		ai.setTotalTax(invoice.getTotalTax());
 
-		return ai;
+		return AutoBeanUtils.getAutoBean(ai);
+	}
+	
+	
+	public static AutoBean<Page<Invoice>> convertInvoicePage(PageDTO<InvoiceDTO> p) {
+		Page<Invoice> ap = AutoBeanMaker.INSTANCE.makeInvoicePage().as();
+		
+		List<Invoice> l = new ArrayList<Invoice>();
+		for (InvoiceDTO i : p.getItems()) {
+			l.add(convert(i).as());
+		}
+		ap.setItems(l);
+		ap.setLength(p.getLength());
+		ap.setOffset(p.getOffset());
+		ap.setTotal(p.getTotal());
+		return AutoBeanUtils.getAutoBean(ap);
 	}
 
 

@@ -19,6 +19,8 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	
 	AutoBean<Invoice> makeInvoice();
 	
+	AutoBean<Page<Invoice>> makeInvoicePage();
+	
 	AutoBean<InvoicesList> makeInvoicesList();
 	
 	AutoBean<AccountingDocumentItem> makeAccountingDocumentItem();

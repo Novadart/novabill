@@ -4,7 +4,8 @@ angular.module('clients.controllers', ['utils', 'directives'])
 /**
  * CLIENTS PAGE CONTROLLER
  */
-.controller('ClientsCtrl', function($scope, Nsorting, $location){
+.controller('ClientsCtrl', ['$scope', 'Nsorting', '$location', '$anchorScroll', 
+                            function($scope, Nsorting, $location, $anchorScroll){
 	
 	var partitionsCache = [];
 	
@@ -60,7 +61,7 @@ angular.module('clients.controllers', ['utils', 'directives'])
 	};
 	
 	$scope.clientClick = function(client){
-		$location.path('/'+client.id);
+		$location.path('/details/'+client.id);
 	};
 	
 	// fired when new client button is clicked
@@ -115,9 +116,14 @@ angular.module('clients.controllers', ['utils', 'directives'])
 		$scope.partitions = result;
 	};
 	
+	$scope.scrollTo = function(id){
+		$('html, body').animate({
+	        scrollTop: $('#'+id).offset().top - 42
+	    }, 1000);
+	};
 	
 	$scope.loadClients($scope);
-})
+}])
 
 
 

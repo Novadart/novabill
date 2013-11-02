@@ -20,12 +20,5 @@ jQuery(document).ready(function() {
 
 function onGWTLoaded(){
     angular.bootstrap(document, ['invoices']);
-    
-    GWT_UI.showModifyInvoicePage('removeme', '94', {
-    	onSuccess : function(bool){
-    	    window.alert(bool ? 'You saved!' : 'You clicked Cancel');  		
-    	},
-    	onFailure : function(){},
-    });
 }
 </script>

@@ -3,7 +3,7 @@
 	<span class="date">{{invoice.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
 	<span class="clientName">{{invoice.client.name}}</span>
 	
-	<a href="#" class="open btn mini black">Open</a>
+	<a ng-href="{{openBaseUrl}}{{invoice.documentID}}" class="open btn mini black">Open</a>
 	
 	<a href="#" class="print btn mini icn-only"><i class="icon-print"></i></a>
 	

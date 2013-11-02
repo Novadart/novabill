@@ -19,7 +19,7 @@ public class ClientServiceJS extends ServiceJS {
 
 			@Override
 			public void onSuccess(final PageDTO<ClientDTO> result) {
-				AutoBean<Page<Client>> page = AutoBeanConverter.convert(result);
+				AutoBean<Page<Client>> page = AutoBeanConverter.convertClientPage(result);
 				BridgeUtils.invokeJSCallback(page, callback);
 			}
 		});
