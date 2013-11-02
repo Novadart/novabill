@@ -1,6 +1,6 @@
-angular.module('utils', [])
+angular.module('novabill.utils', [])
 
-.factory('Nsorting', function() {
+.factory('NSorting', function() {
 	return {
 		
 		/**

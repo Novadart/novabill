@@ -22,19 +22,36 @@ public class PDFUtils {
 	}
 	
 	public static void generateInvoicePdf(long id){
-		generatePdf("invoices", String.valueOf(id));
+		generateInvoicePdf(String.valueOf(id));
 	}
 
 	public static void generateEstimationPdf(long id){
-		generatePdf("estimations", String.valueOf(id));
+		generateEstimationPdf(String.valueOf(id));
 	}
 
 	public static void generateCreditNotePdf(long id) {
-		generatePdf("creditnotes", String.valueOf(id));
+		generateCreditNotePdf(String.valueOf(id));
 	}
 	
 	public static void generateTransportDocumentPdf(long id) {
-		generatePdf("transportdocs", String.valueOf(id));
+		generateTransportDocumentPdf(String.valueOf(id));
+	}
+	
+	
+	public static void generateInvoicePdf(String id){
+		generatePdf("invoices", id);
+	}
+
+	public static void generateEstimationPdf(String id){
+		generatePdf("estimations", id);
+	}
+
+	public static void generateCreditNotePdf(String id) {
+		generatePdf("creditnotes", id);
+	}
+	
+	public static void generateTransportDocumentPdf(String id) {
+		generatePdf("transportdocs", id);
 	}
 
 }

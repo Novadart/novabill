@@ -37,7 +37,13 @@ public class UiBridge implements ApiBridge {
 			
 			// invoices
 			showNewInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-			showModifyInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+			showModifyInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			
+			//pdf
+			generateInvoicePdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateInvoicePdf(Ljava/lang/String;),
+			generateEstimationPdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateEstimationPdf(Ljava/lang/String;),
+			generateCreditNotePdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateCreditNotePdf(Ljava/lang/String;),
+			generateTransportDocumentPdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateTransportDocumentPdf(Ljava/lang/String;),
 			
 		};
 	
@@ -48,6 +54,10 @@ public class UiBridge implements ApiBridge {
 		dialog.showCentered();
 	}
 	
+	
+	/*
+	 * CLIENTS
+	 */
 	public static void showNewClientDialog(String businessId, JavaScriptObject callback){
 		ClientDialog clientDialog = new ClientDialog(Long.parseLong(businessId), callback);
 		clientDialog.showCentered();
@@ -74,6 +84,10 @@ public class UiBridge implements ApiBridge {
 		dialog.center();
 	}
 	
+	
+	/*
+	 * INVOICES
+	 */
 	public static void showNewInvoicePage(String wrapperId, String clientId, JavaScriptObject callback) {
 		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
 		

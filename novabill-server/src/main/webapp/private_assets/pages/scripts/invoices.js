@@ -1,4 +1,4 @@
-angular.module("invoices", ['invoices.controllers','ngRoute'])
+angular.module("novabill.invoices", ['novabill.invoices.controllers','ngRoute'])
 
 .config(function($routeProvider){
 

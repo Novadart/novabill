@@ -19,6 +19,6 @@ jQuery(document).ready(function() {
 });
 
 function onGWTLoaded(){
-     angular.bootstrap(document, ['clients']);
+     angular.bootstrap(document, ['novabill.clients']);
 }
 </script>

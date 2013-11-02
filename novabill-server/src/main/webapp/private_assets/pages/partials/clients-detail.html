@@ -10,21 +10,10 @@
 		
 		<div style="float: right; margin-top: 10px;">
 		  <a href="javascript: void(0)" ng-click="editClient(client.id)" class="btn mini red"><i class="icon-edit"></i> Edit</a>
-		  <a href="#confirmDelete" data-toggle="modal" class="btn mini red"><i class="icon-trash"></i> Delete</a>
+		  <a href="javascript: void(0)" ng-click="removeClient(name, client.id)"  class="btn mini red"><i class="icon-trash"></i> Delete</a>
 		</div>
 	</div>
 
-
-    <div id=confirmDelete class="modal hide fade" tabindex="-1" data-backdrop="static" data-keyboard="false" style="display: none; margin-top: -61.5px;" aria-hidden="true">
-	    <div class="modal-body">
-	        <p>Are you sure that you want to delete permanently any data associated to "{{name}}"</p>
-	    </div>
-	    <div class="modal-footer">
-	        <button type="button" data-dismiss="modal" class="btn">Cancel</button>
-	        <button type="button" data-dismiss="modal" class="btn green"ng-click="removeClient(client.id)" >Continue</button>
-	    </div>
-	</div>
-	
 	<div class="tabbable tabbable-custom">
         <ul class="nav nav-tabs">
             <li class="active"><a href="#tab_invoices" data-toggle="tab">Invoice</a></li>
@@ -54,5 +43,7 @@
             </div>
         </div>
     </div>
+    
+    <removal-dialog></removal-dialog>
 
 </div>

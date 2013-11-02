@@ -1,11 +1,11 @@
-angular.module('clients.controllers', ['utils', 'directives'])
+angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.directives'])
 
 
 /**
  * CLIENTS PAGE CONTROLLER
  */
-.controller('ClientsCtrl', ['$scope', 'Nsorting', '$location', '$anchorScroll', 
-                            function($scope, Nsorting, $location, $anchorScroll){
+.controller('ClientsCtrl', ['$scope', 'NSorting', '$location', '$anchorScroll', 
+                            function($scope, NSorting, $location, $anchorScroll){
 	
 	var partitionsCache = [];
 	
@@ -14,7 +14,7 @@ angular.module('clients.controllers', ['utils', 'directives'])
 			onSuccess : function(data){
 				$scope.$apply(function(){
 					//sort the data
-					data.clients.sort( Nsorting.clientsComparator );
+					data.clients.sort( NSorting.clientsComparator );
 					
 					//split it alphabetically
 					var partitions = [];
@@ -131,7 +131,8 @@ angular.module('clients.controllers', ['utils', 'directives'])
 /**
  * CLIENT DETAILS PAGE CONTROLLER
  */
-.controller('ClientDetailsCtrl', function($scope, $route, $routeParams, $location) {
+.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', 'NRemovalDialogAPI',
+                                  function($scope, $route, $routeParams, $location, NRemovalDialogAPI) {
 	
 	$scope.invoices = null;
 	$scope.estimations = null;
@@ -154,17 +155,26 @@ angular.module('clients.controllers', ['utils', 'directives'])
 	};
 	
 	
-	//fired when edit client is clicked
-	$scope.removeClient = function(clientId) {
-		GWT_Server.client.remove(NovabillConf.businessId, clientId, {
-			onSuccess : function(data){
-				$scope.$apply(function(){
-					$scope.clients = data.clients;
-				});
-			},
+	//fired when remove client is clicked
+	$scope.removeClient = function(name, clientId) {
+		
+		NRemovalDialogAPI.init('Are you sure that you want to delete permanently any data associated to "'+name+'"',{
+			onOk : function(){
+				GWT_Server.client.remove(NovabillConf.businessId, clientId, {
+					onSuccess : function(data){
+						$scope.$apply(function(){
+							$location.path('/');
+						});
+					},
 
-			onFailure : function(error){}
+					onFailure : function(error){}
+				});
+				
+			},
+			
+			onCancel : function(){}
 		});
+		NRemovalDialogAPI.show();
 	};
 	
 	// load client data
@@ -214,6 +224,6 @@ angular.module('clients.controllers', ['utils', 'directives'])
 		}
 	});
 
-});
+}]);
 
 

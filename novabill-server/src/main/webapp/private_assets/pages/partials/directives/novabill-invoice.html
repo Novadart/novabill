@@ -3,19 +3,19 @@
 	<span class="date">{{invoice.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
 	<span class="clientName">{{invoice.client.name}}</span>
 	
-	<a ng-href="{{openBaseUrl}}{{invoice.documentID}}" class="open btn mini black">Open</a>
+	<a ng-href="{{openUrl}}" class="open btn mini black">Open</a>
 	
-	<a href="#" class="print btn mini icn-only"><i class="icon-print"></i></a>
+	<a href="javascript:void(0);" ng-click="print()" class="print btn mini icn-only"><i class="icon-print"></i></a>
 	
 	<div class="options btn-group">
 		<a class="btn blue mini dropdown-toggle" data-toggle="dropdown" href="#">Options
 			<i class="icon-angle-down"></i>
 		</a>
 		<ul class="dropdown-menu" ng-class="{'bottom-up': bottomUpMenu}">
-			<li><a href="#">Clone</a></li>
-			<li><a href="#">Credit Note</a></li>
+			<li><a href="javascript:void(0);">Clone</a></li>
+			<li><a href="javascript:void(0);">Credit Note</a></li>
 			<li class="divider"></li>
-			<li><a href="#"><i class="icon-remove"></i>Delete</a></li>
+			<li ><a href="javascript:void(0);" ng-click="remove()" ><i class="icon-remove"></i>Delete</a></li>
 		</ul>
 	</div>
 	

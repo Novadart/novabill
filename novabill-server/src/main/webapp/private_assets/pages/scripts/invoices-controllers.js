@@ -1,4 +1,4 @@
-angular.module('invoices.controllers', ['utils', 'directives'])
+angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.directives'])
 
 
 /**

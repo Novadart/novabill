@@ -49,4 +49,15 @@ public class InvoiceServiceJS extends ServiceJS {
 		});
 	}
 	
+	public static void remove(String businessID, String clientId, String invoiceId, final JavaScriptObject callback) {
+		SERVER_FACADE.getInvoiceService().remove(Long.parseLong(businessID), Long.parseLong(clientId), Long.parseLong(invoiceId), 
+				new ManagedAsyncCallback<Void>() {
+
+			@Override
+			public void onSuccess(Void result) {
+				BridgeUtils.invokeJSCallback(callback);
+			}
+		});
+	}
+	
 }
