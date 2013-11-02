@@ -5,14 +5,4 @@
     <novabill-invoice invoice="inv" bottom-up-menu="$last" ng-repeat="inv in invoices" />
 </div>
 
-<div id=confirmDelete class="modal hide fade" tabindex="-1" data-backdrop="static" data-keyboard="false" style="display: none; margin-top: -61.5px;" aria-hidden="true">
-    <div class="modal-body">
-        <p>Are you sure that you want to delete permanently this invoice?</p>
-    </div>
-    <div class="modal-footer">
-        <button type="button" data-dismiss="modal" class="btn">Cancel</button>
-        <button type="button" data-dismiss="modal" class="btn green"ng-click="removeClient(client.id)" >Continue</button>
-    </div>
-</div>
-
 <removal-dialog></removal-dialog>

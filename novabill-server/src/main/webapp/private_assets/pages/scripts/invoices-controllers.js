@@ -4,7 +4,7 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
 /**
  * INVOICES PAGE CONTROLLER
  */
-.controller('InvoicesCtrl', ['$scope', function($scope){
+.controller('InvoicesCtrl', ['$scope', '$location', function($scope, $location){
 	$scope.loadInvoices = function($scope) {
 		GWT_Server.invoice.getAllInRange(NovabillConf.businessId, '0', '1000000', {
 			onSuccess : function(page){
@@ -17,6 +17,19 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
 		});
 	};
 	
+	$scope.newInvoiceClick = function(){
+		GWT_UI.selectClientDialog(NovabillConf.businessId, {
+	    	onSuccess : function(clientId){
+	    		
+	    	    $scope.$apply(function(){
+	    	    	$location.path('/new/'+clientId);
+	    	    });
+	    	    
+	    	},
+	    	onFailure : function(){},
+	    });
+	};
+	
 	$scope.loadInvoices($scope);
 }])
 
@@ -26,10 +39,12 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
 /**
  * INVOICE MODIFY PAGE CONTROLLER
  */
-.controller('InvoiceDetailsCtrl', ['$scope', '$routeParams', function($scope, $routeParams) {
+.controller('InvoiceDetailsCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
     GWT_UI.showModifyInvoicePage('invoice-details', $routeParams.invoiceId, {
     	onSuccess : function(bool){
-    	    window.alert(bool ? 'You saved!' : 'You clicked Cancel');  		
+    	    $scope.$apply(function(){
+    	    	$location.path('/');
+    	    });  		
     	},
     	onFailure : function(){},
     });
@@ -40,10 +55,15 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
 /**
  * INVOICE CREATE PAGE CONTROLLER
  */
-.controller('InvoiceCreateCtrl', ['$scope', '$routeParams', function($scope, $routeParams) {
-	
-	
-
+.controller('InvoiceCreateCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+	GWT_UI.showNewInvoicePage('invoice-details', $routeParams.clientId, {
+    	onSuccess : function(bool){
+    		$scope.$apply(function(){
+    	    	$location.path('/');
+    	    });
+    	},
+    	onFailure : function(){},
+    });
 }]);
 
 

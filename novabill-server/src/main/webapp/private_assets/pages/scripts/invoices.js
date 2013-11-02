@@ -15,8 +15,8 @@ angular.module("novabill.invoices", ['novabill.invoices.controllers','ngRoute'])
 		controller: 'InvoiceDetailsCtrl'
 	})
 	
-	.when('/create/:clientId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-create.html',
+	.when('/new/:clientId', {
+		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-detail.html',
 		controller: 'InvoiceCreateCtrl'
 	})
 	
