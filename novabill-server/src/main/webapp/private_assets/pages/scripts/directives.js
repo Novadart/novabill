@@ -49,25 +49,54 @@ angular.module('novabill.directives', ['novabill.utils'])
 /*
  * Estimation Widget
  */
-.directive('novabillEstimation', function factory(){
+.directive('novabillEstimation', ['NRemovalDialogAPI', function factory(NRemovalDialogAPI){
 	
 	return {
-			templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-estimation.html',
-			scope: { 
-				estimation : '=',
-				bottomUpMenu : '='
-			},
-			restrict: 'E',
-			replace: true,
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-estimation.html',
+		scope: { 
+			estimation : '=',
+			bottomUpMenu : '=',
+			onRemove : '&'
+		},
+		controller : ['$scope', function($scope){
+			$scope.openUrl = NovabillConf.estimationsBaseUrl + '#/details/' + $scope.estimation.documentID;
+			
+			$scope.print = function(){
+				GWT_UI.generateEstimationPdf($scope.estimation.documentID);
+			};
+			
+			$scope.remove = function(id){
+				NRemovalDialogAPI.init('Delete '+$scope.estimation.documentID+' Estimation?', {
+					onOk : function(){
+						GWT_Server.estimation.remove({
+							onSuccess : function(){
+								$scope.onRemove();
+							},
+							onFailure : function(){}
+						});
+					},
+					
+					onCancel : function(){}
+				});
+				NRemovalDialogAPI.show();
+			};
+			
+			$scope.clone = function(){};
+			
+			$scope.convertToInvoice = function(id){};
+			
+		}],
+		restrict: 'E',
+		replace: true,
 	};
 	
-})
+}])
 
 
 /*
  * Transport Document Widget
  */
-.directive('novabillTransportDocument', function factory(){
+.directive('novabillTransportDocument', ['NRemovalDialogAPI', function factory(NRemovalDialogAPI){
 	
 	return {
 			templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-transport-document.html',
@@ -79,13 +108,13 @@ angular.module('novabill.directives', ['novabill.utils'])
 			replace: true,
 	};
 	
-})
+}])
 
 
 /*
  * Credit Note Widget
  */
-.directive('novabillCreditNote', function factory(){
+.directive('novabillCreditNote', ['NRemovalDialogAPI', function factory(NRemovalDialogAPI){
 	
 	return {
 			templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-credit-note.html',
@@ -97,7 +126,7 @@ angular.module('novabill.directives', ['novabill.utils'])
 			replace: true,
 	};
 	
-})
+}])
 
 
 /*

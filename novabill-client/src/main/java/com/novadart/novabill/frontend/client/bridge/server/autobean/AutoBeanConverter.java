@@ -9,6 +9,7 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 
@@ -141,6 +142,44 @@ public class AutoBeanConverter {
 		
 		List<Invoice> l = new ArrayList<Invoice>();
 		for (InvoiceDTO i : p.getItems()) {
+			l.add(convert(i).as());
+		}
+		ap.setItems(l);
+		ap.setLength(p.getLength());
+		ap.setOffset(p.getOffset());
+		ap.setTotal(p.getTotal());
+		return AutoBeanUtils.getAutoBean(ap);
+	}
+	
+	
+	public static AutoBean<Estimation> convert(EstimationDTO estimation) {
+		Estimation ei = AutoBeanMaker.INSTANCE.makeEstimation().as();
+		
+		ei.setLimitations(estimation.getLimitations());
+		ei.setValidTill(estimation.getValidTill());
+		
+		ei.setAccountingDocumentDate(estimation.getAccountingDocumentDate());
+		ei.setItems(convert(estimation.getItems()));
+		ei.setBusiness(convert(estimation.getBusiness()).as());
+		ei.setClient(convert(estimation.getClient()).as());
+		ei.setDocumentID(estimation.getDocumentID());
+		ei.setId(estimation.getId());
+		ei.setLayoutType(estimation.getLayoutType());
+		ei.setNote(estimation.getNote());
+		ei.setPaymentNote(estimation.getPaymentNote());
+		ei.setTotal(estimation.getTotal());
+		ei.setTotalBeforeTax(estimation.getTotalBeforeTax());
+		ei.setTotalTax(estimation.getTotalTax());
+
+		return AutoBeanUtils.getAutoBean(ei);
+	}
+	
+	
+	public static AutoBean<Page<Estimation>> convertEstimationPage(PageDTO<EstimationDTO> p) {
+		Page<Estimation> ap = AutoBeanMaker.INSTANCE.makeEstimationPage().as();
+		
+		List<Estimation> l = new ArrayList<Estimation>();
+		for (EstimationDTO i : p.getItems()) {
 			l.add(convert(i).as());
 		}
 		ap.setItems(l);

@@ -1,17 +1,22 @@
-<div class="well well-small document-well invoice">
-	<span class="badge documentId">{{invoice.documentID}}</span> 
-	<span class="date">{{invoice.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
-	<span class="clientName">{{invoice.client.name}}</span>
-	<div class="btn-group">
-		<a class="btn dropdown-toggle" data-toggle="dropdown" href="#">Tools
-			<i class="icon-angle-down"></i>
-		</a>
-		<ul class="dropdown-menu">
-			<li><a href="#">Settings <span class="badge badge-success">3</span></a></li>
-			<li><a href="#">Preferences</a></li>
-			<li><a href="#">Window Options</a></li>
-			<li><a href="#">Help <span class="badge badge-important">7</span></a></li>
-		</ul>
-	</div>
-	<a href="#" class="open btn mini blue">Open</a>
+<div class="well well-small document-well estimation">
+    <span class="badge documentId">{{estimation.documentID}}</span> 
+    <span class="date">{{estimation.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
+    <span class="clientName">{{estimation.client.name}}</span>
+    
+    <a ng-href="{{openUrl}}" class="open btn mini black">Open</a>
+    
+    <a href="javascript:void(0);" ng-click="print()" class="print btn mini icn-only"><i class="icon-print"></i></a>
+    
+    <div class="options btn-group">
+        <a class="btn blue mini dropdown-toggle" data-toggle="dropdown" href="#">Options
+            <i class="icon-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu" ng-class="{'bottom-up': bottomUpMenu}">
+            <li><a href="javascript:void(0);">Clone</a></li>
+            <li><a href="javascript:void(0);">Convert to Invoice</a></li>
+            <li class="divider"></li>
+            <li ><a href="javascript:void(0);" ng-click="remove()" ><i class="icon-remove"></i>Delete</a></li>
+        </ul>
+    </div>
+    
 </div>

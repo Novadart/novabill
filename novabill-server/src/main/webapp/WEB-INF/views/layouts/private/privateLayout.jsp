@@ -528,6 +528,7 @@
 		    businessId : '<%=business.getId()%>',
 		    clientsBaseUrl : '${clientsBaseUrl}',
 		    invoicesBaseUrl : '${invoicesUrl}',
+		    estimationsBaseUrl : '${estimationsUrl}',
 		    partialsBaseUrl : '${privateAssetsUrl}/pages/partials/'
 	};
 	</script>

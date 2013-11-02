@@ -23,6 +23,12 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	
 	AutoBean<InvoicesList> makeInvoicesList();
 	
+	AutoBean<Estimation> makeEstimation();
+	
+	AutoBean<Page<Estimation>> makeEstimationPage();
+	
+	AutoBean<EstimationList> makeEstimationList();
+	
 	AutoBean<AccountingDocumentItem> makeAccountingDocumentItem();
 	
 }

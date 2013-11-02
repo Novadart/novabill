@@ -5,30 +5,8 @@ import java.util.Date;
 import java.util.List;
 
 import com.novadart.novabill.shared.client.data.LayoutType;
-import com.novadart.novabill.shared.client.dto.PaymentDateType;
 
-public interface Invoice {
-
-	public PaymentDateType getPaymentDateGenerator();
-
-	public void setPaymentDateGenerator(PaymentDateType paymentDateGenerator);
-
-	public Integer getPaymentDateDelta();
-
-	public void setPaymentDateDelta(Integer paymentDateDelta);
-
-	public String getPaymentTypeName();
-
-	public void setPaymentTypeName(String paymentTypeName);
-	
-	public Date getPaymentDueDate();
-
-	public void setPaymentDueDate(Date paymentDueDate);
-
-	public boolean getPayed();
-
-	public void setPayed(boolean payed);
-	
+public interface TransportDocument {
 	
 	/*
 	 * AccountingDocumentDTO interface
@@ -80,4 +58,5 @@ public interface Invoice {
 	public List<AccountingDocumentItem> getItems();
 
 	public void setItems(List<AccountingDocumentItem> items);
+
 }

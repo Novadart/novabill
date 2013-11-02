@@ -5,10 +5,13 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.activity.center.EstimationActivity;
 import com.novadart.novabill.frontend.client.activity.center.InvoiceActivity;
 import com.novadart.novabill.frontend.client.bridge.ui.HTMLWrapper;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.place.estimation.ModifyEstimationPlace;
+import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.view.bootstrap.BootstrapDialog;
@@ -38,6 +41,10 @@ public class UiBridge implements ApiBridge {
 			// invoices
 			showNewInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showModifyInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			
+			// estimations
+			showNewEstimationPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewEstimationPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			showModifyEstimationPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyEstimationPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			
 			//pdf
 			generateInvoicePdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateInvoicePdf(Ljava/lang/String;),
@@ -106,6 +113,31 @@ public class UiBridge implements ApiBridge {
 		mip.setInvoiceId(Long.parseLong(invoiceId));
 
 		InvoiceActivity is = new InvoiceActivity(mip, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
+	}
+	
+	
+	/*
+	 * ESTIMATIONS
+	 */
+	public static void showNewEstimationPage(String wrapperId, String clientId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		NewEstimationPlace nep = new NewEstimationPlace();
+		nep.setClientId(Long.parseLong(clientId));
+
+		EstimationActivity is = new EstimationActivity(nep, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
+	}
+	
+	
+	public static void showModifyEstimationPage(String wrapperId, String estimationId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		ModifyEstimationPlace mep = new ModifyEstimationPlace();
+		mep.setEstimationId(Long.parseLong(estimationId));
+
+		EstimationActivity is = new EstimationActivity(mep, ClientFactory.INSTANCE, callback);
 		is.start(panel, null);
 	}
 

@@ -29,8 +29,9 @@
 	</definition>
 	
 	<definition name="private.estimations" extends="private.layout">
-		<put-attribute name="body" value="/WEB-INF/views/tiles/private/firstRunBody.jsp" />
-		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/clientsJS.jsp" />
+		<put-attribute name="head" value="/WEB-INF/views/tiles/private/estimationsHead.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/tiles/private/estimationsBody.jsp" />
+        <put-attribute name="javascript" value="/WEB-INF/views/tiles/private/estimationsJS.jsp" />
 	</definition>
 	
 	<definition name="private.transportDocuments" extends="private.layout">
