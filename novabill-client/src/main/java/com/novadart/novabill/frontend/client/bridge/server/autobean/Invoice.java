@@ -21,6 +21,9 @@ public interface Invoice {
 
 	public void setPaymentTypeName(String paymentTypeName);
 	
+	/*
+	 * AbstractInvoiceDTO interface
+	 */
 	public Date getPaymentDueDate();
 
 	public void setPaymentDueDate(Date paymentDueDate);

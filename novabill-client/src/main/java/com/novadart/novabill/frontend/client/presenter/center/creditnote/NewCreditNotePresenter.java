@@ -80,7 +80,7 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 
 		getView().setLocked(true);
 		getView().getCreateDocument().showLoader(true);
-		ServerFacade.INSTANCE.getCreditnoteService().add(creditNote, new ManagedAsyncCallback<Long>() {
+		ServerFacade.INSTANCE.getCreditNoteService().add(creditNote, new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {

@@ -4,9 +4,42 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
+
 import com.novadart.novabill.shared.client.data.LayoutType;
 
 public interface TransportDocument {
+	
+	public Integer getNumberOfPackages();
+
+	public void setNumberOfPackages(Integer numberOfPackages);
+
+	public EndPoint getFromEndpoint();
+
+	public void setFromEndpoint(EndPoint fromEndpoint);
+
+	public EndPoint getToEndpoint();
+
+	public void setToEndpoint(EndPoint toEndpoint);
+
+	public String getTransporter();
+
+	public void setTransporter(String transporter);
+
+	public String getTransportationResponsibility();
+
+	public void setTransportationResponsibility(String transportationResponsibility);
+
+	public String getTradeZone();
+
+	public void setTradeZone(String tradeZone);
+
+	public Date getTransportStartDate();
+
+	public void setTransportStartDate(Date transportStartDate);
+
+	public String getCause();
+
+	public void setCause(String cause);
 	
 	/*
 	 * AccountingDocumentDTO interface

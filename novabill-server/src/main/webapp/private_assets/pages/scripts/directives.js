@@ -117,13 +117,38 @@ angular.module('novabill.directives', ['novabill.utils'])
 .directive('novabillCreditNote', ['NRemovalDialogAPI', function factory(NRemovalDialogAPI){
 	
 	return {
-			templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-credit-note.html',
-			scope: { 
-				creditNote : '=',
-				bottomUpMenu : '='
-			},
-			restrict: 'E',
-			replace: true,
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-credit-note.html',
+		scope: { 
+			creditNote : '=',
+			bottomUpMenu : '=',
+			onRemove : '&'
+		},
+		controller : ['$scope', function($scope){
+			$scope.openUrl = NovabillConf.creditNotesBaseUrl + '#/details/' + $scope.creditNote.documentID;
+			
+			$scope.print = function(){
+				GWT_UI.generateCreditNotePdf($scope.creditNote.documentID);
+			};
+			
+			$scope.remove = function(id){
+				NRemovalDialogAPI.init('Delete '+$scope.creditNote.documentID+' Credit Note?', {
+					onOk : function(){
+						GWT_Server.creditNote.remove({
+							onSuccess : function(){
+								$scope.onRemove();
+							},
+							onFailure : function(){}
+						});
+					},
+					
+					onCancel : function(){}
+				});
+				NRemovalDialogAPI.show();
+			};
+			
+		}],
+		restrict: 'E',
+		replace: true,
 	};
 	
 }])

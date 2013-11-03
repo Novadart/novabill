@@ -9,6 +9,17 @@ import com.novadart.novabill.shared.client.data.LayoutType;
 public interface CreditNote {
 	
 	/*
+	 * AbstractInvoiceDTO interface
+	 */
+	public Date getPaymentDueDate();
+
+	public void setPaymentDueDate(Date paymentDueDate);
+
+	public boolean getPayed();
+
+	public void setPayed(boolean payed);
+	
+	/*
 	 * AccountingDocumentDTO interface
 	 */
 	public Long getId();

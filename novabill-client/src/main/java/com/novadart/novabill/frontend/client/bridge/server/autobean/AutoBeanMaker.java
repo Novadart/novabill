@@ -28,6 +28,20 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	AutoBean<Page<Estimation>> makeEstimationPage();
 	
 	AutoBean<EstimationList> makeEstimationList();
+
+	AutoBean<CreditNote> makeCreditNote();
+	
+	AutoBean<Page<CreditNote>> makeCreditNotePage();
+	
+	AutoBean<CreditNoteList> makeCreditNotesList();
+	
+	AutoBean<EndPoint> makeEndPoint();
+	
+	AutoBean<TransportDocument> makeTransportDocument();
+	
+	AutoBean<Page<TransportDocument>> makeTransportDocumentPage();
+	
+	AutoBean<TransportDocumentList> makeTransportDocumentList();
 	
 	AutoBean<AccountingDocumentItem> makeAccountingDocumentItem();
 	

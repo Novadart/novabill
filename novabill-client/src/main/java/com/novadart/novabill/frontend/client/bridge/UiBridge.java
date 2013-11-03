@@ -5,15 +5,21 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.frontend.client.activity.center.CreditNoteActivity;
 import com.novadart.novabill.frontend.client.activity.center.EstimationActivity;
 import com.novadart.novabill.frontend.client.activity.center.InvoiceActivity;
+import com.novadart.novabill.frontend.client.activity.center.TransportDocumentActivity;
 import com.novadart.novabill.frontend.client.bridge.ui.HTMLWrapper;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.place.creditnote.ModifyCreditNotePlace;
+import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.estimation.ModifyEstimationPlace;
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
+import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
+import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.view.bootstrap.BootstrapDialog;
 import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
 import com.novadart.novabill.frontend.client.widget.dialog.selectclient.SelectClientDialog;
@@ -45,6 +51,14 @@ public class UiBridge implements ApiBridge {
 			// estimations
 			showNewEstimationPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewEstimationPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showModifyEstimationPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyEstimationPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			
+			// credit notes
+			showNewCreditNotePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewCreditNotePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			showModifyCreditNotePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyCreditNotePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			
+			// transport documents
+			showNewTransportDocumentPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewTransportDocumentPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			showModifyTransportDocumentPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyTransportDocumentPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			
 			//pdf
 			generateInvoicePdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateInvoicePdf(Ljava/lang/String;),
@@ -138,6 +152,56 @@ public class UiBridge implements ApiBridge {
 		mep.setEstimationId(Long.parseLong(estimationId));
 
 		EstimationActivity is = new EstimationActivity(mep, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
+	}
+	
+	
+	/*
+	 * CREDIT NOTES
+	 */
+	public static void showNewCreditNotePage(String wrapperId, String clientId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		NewCreditNotePlace nep = new NewCreditNotePlace();
+		nep.setClientId(Long.parseLong(clientId));
+
+		CreditNoteActivity is = new CreditNoteActivity(nep, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
+	}
+	
+	
+	public static void showModifyCreditNotePage(String wrapperId, String creditNoteId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		ModifyCreditNotePlace mep = new ModifyCreditNotePlace();
+		mep.setCreditNoteId(Long.parseLong(creditNoteId));
+
+		CreditNoteActivity is = new CreditNoteActivity(mep, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
+	}
+	
+	
+	/*
+	 * TRANSPORT DOCUMENTS
+	 */
+	public static void showNewTransportDocumentPage(String wrapperId, String clientId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		NewTransportDocumentPlace nep = new NewTransportDocumentPlace();
+		nep.setClientId(Long.parseLong(clientId));
+
+		TransportDocumentActivity is = new TransportDocumentActivity(nep, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
+	}
+	
+	
+	public static void showModifyTransportDocumentPage(String wrapperId, String transportDocumentId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		ModifyTransportDocumentPlace mep = new ModifyTransportDocumentPlace();
+		mep.setTransportDocumentId(Long.parseLong(transportDocumentId));
+
+		TransportDocumentActivity is = new TransportDocumentActivity(mep, ClientFactory.INSTANCE, callback);
 		is.start(panel, null);
 	}
 

@@ -206,7 +206,7 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 
 	private void loadCreditNotes(){
-		ServerFacade.INSTANCE.getCreditnoteService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<CreditNoteDTO>>() {
+		ServerFacade.INSTANCE.getCreditNoteService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<CreditNoteDTO>>() {
 
 			@Override
 			public void onSuccess(List<CreditNoteDTO> result) {

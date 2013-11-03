@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.activity.center;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -22,8 +23,8 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 
 	private final TransportDocumentPlace place;
 
-	public TransportDocumentActivity(TransportDocumentPlace place, ClientFactory clientFactory) {
-		super(clientFactory);
+	public TransportDocumentActivity(TransportDocumentPlace place, ClientFactory clientFactory, JavaScriptObject callback) {
+		super(clientFactory, callback);
 		this.place = place;
 	}
 

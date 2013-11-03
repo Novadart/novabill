@@ -40,8 +40,9 @@
 	</definition>
 	
 	<definition name="private.creditNotes" extends="private.layout">
-		<put-attribute name="body" value="/WEB-INF/views/tiles/private/firstRunBody.jsp" />
-		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/clientsJS.jsp" />
+		<put-attribute name="head" value="/WEB-INF/views/tiles/private/creditNotesHead.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/tiles/private/creditNotesBody.jsp" />
+        <put-attribute name="javascript" value="/WEB-INF/views/tiles/private/creditNotesJS.jsp" />
 	</definition>
 	
 	<definition name="private.items" extends="private.layout">

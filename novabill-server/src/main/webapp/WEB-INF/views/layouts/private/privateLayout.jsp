@@ -529,6 +529,7 @@
 		    clientsBaseUrl : '${clientsBaseUrl}',
 		    invoicesBaseUrl : '${invoicesUrl}',
 		    estimationsBaseUrl : '${estimationsUrl}',
+		    creditNotesBaseUrl : '${creditNotesUrl}',
 		    partialsBaseUrl : '${privateAssetsUrl}/pages/partials/'
 	};
 	</script>

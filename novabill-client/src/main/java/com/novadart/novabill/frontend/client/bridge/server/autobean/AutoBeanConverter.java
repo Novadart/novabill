@@ -9,9 +9,12 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
+import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public class AutoBeanConverter {
 	
@@ -188,6 +191,102 @@ public class AutoBeanConverter {
 		ap.setTotal(p.getTotal());
 		return AutoBeanUtils.getAutoBean(ap);
 	}
+	
+	
+	public static AutoBean<CreditNote> convert(CreditNoteDTO creditNote) {
+		CreditNote cni = AutoBeanMaker.INSTANCE.makeCreditNote().as();
+		
+		cni.setAccountingDocumentDate(creditNote.getAccountingDocumentDate());
+		cni.setItems(convert(creditNote.getItems()));
+		cni.setBusiness(convert(creditNote.getBusiness()).as());
+		cni.setClient(convert(creditNote.getClient()).as());
+		cni.setDocumentID(creditNote.getDocumentID());
+		cni.setId(creditNote.getId());
+		cni.setLayoutType(creditNote.getLayoutType());
+		cni.setNote(creditNote.getNote());
+		cni.setPayed(creditNote.getPayed());
+		cni.setPaymentDueDate(creditNote.getPaymentDueDate());
+		cni.setPaymentNote(creditNote.getPaymentNote());
+		cni.setTotal(creditNote.getTotal());
+		cni.setTotalBeforeTax(creditNote.getTotalBeforeTax());
+		cni.setTotalTax(creditNote.getTotalTax());
 
+		return AutoBeanUtils.getAutoBean(cni);
+	}
+	
+	
+	public static AutoBean<Page<CreditNote>> convertCreditNotePage(PageDTO<CreditNoteDTO> p) {
+		Page<CreditNote> ap = AutoBeanMaker.INSTANCE.makeCreditNotePage().as();
+		
+		List<CreditNote> l = new ArrayList<CreditNote>();
+		for (CreditNoteDTO i : p.getItems()) {
+			l.add(convert(i).as());
+		}
+		ap.setItems(l);
+		ap.setLength(p.getLength());
+		ap.setOffset(p.getOffset());
+		ap.setTotal(p.getTotal());
+		return AutoBeanUtils.getAutoBean(ap);
+	}
+
+	
+	public static AutoBean<EndPoint> convert(EndpointDTO p) {
+		if(p == null){
+			return null;
+		}
+		
+		EndPoint ep = AutoBeanMaker.INSTANCE.makeEndPoint().as();
+		
+		ep.setCity(p.getCity());
+		ep.setCompanyName(p.getCompanyName());
+		ep.setCountry(p.getCountry());
+		ep.setPostcode(p.getPostcode());
+		ep.setProvince(p.getProvince());
+		ep.setStreet(p.getStreet());
+		
+		return AutoBeanUtils.getAutoBean(ep);
+	}
+	
+	public static AutoBean<TransportDocument> convert(TransportDocumentDTO transportDocument) {
+		TransportDocument tdai = AutoBeanMaker.INSTANCE.makeTransportDocument().as();
+		tdai.setNumberOfPackages(transportDocument.getNumberOfPackages());
+		tdai.setFromEndpoint(convert(transportDocument.getFromEndpoint()).as());
+		tdai.setToEndpoint(convert(transportDocument.getToEndpoint()).as());
+		tdai.setTransporter(transportDocument.getTransporter());
+		tdai.setTransportationResponsibility(transportDocument.getTransportationResponsibility());
+		tdai.setTradeZone(transportDocument.getTradeZone());
+		tdai.setTransportStartDate(transportDocument.getTransportStartDate());
+		tdai.setCause(transportDocument.getCause());
+		
+		tdai.setAccountingDocumentDate(transportDocument.getAccountingDocumentDate());
+		tdai.setItems(convert(transportDocument.getItems()));
+		tdai.setBusiness(convert(transportDocument.getBusiness()).as());
+		tdai.setClient(convert(transportDocument.getClient()).as());
+		tdai.setDocumentID(transportDocument.getDocumentID());
+		tdai.setId(transportDocument.getId());
+		tdai.setLayoutType(transportDocument.getLayoutType());
+		tdai.setNote(transportDocument.getNote());
+		tdai.setPaymentNote(transportDocument.getPaymentNote());
+		tdai.setTotal(transportDocument.getTotal());
+		tdai.setTotalBeforeTax(transportDocument.getTotalBeforeTax());
+		tdai.setTotalTax(transportDocument.getTotalTax());
+
+		return AutoBeanUtils.getAutoBean(tdai);
+	}
+	
+	
+	public static AutoBean<Page<TransportDocument>> convertTransportDocumentPage(PageDTO<TransportDocumentDTO> p) {
+		Page<TransportDocument> ap = AutoBeanMaker.INSTANCE.makeTransportDocumentPage().as();
+		
+		List<TransportDocument> l = new ArrayList<TransportDocument>();
+		for (TransportDocumentDTO i : p.getItems()) {
+			l.add(convert(i).as());
+		}
+		ap.setItems(l);
+		ap.setLength(p.getLength());
+		ap.setOffset(p.getOffset());
+		ap.setTotal(p.getTotal());
+		return AutoBeanUtils.getAutoBean(ap);
+	}
 
 }

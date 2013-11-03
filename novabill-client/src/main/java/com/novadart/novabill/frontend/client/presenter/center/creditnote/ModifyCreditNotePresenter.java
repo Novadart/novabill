@@ -65,7 +65,7 @@ public class ModifyCreditNotePresenter extends AbstractCreditNotePresenter {
 					getView().setLocked(true);
 					getView().getCreateDocument().showLoader(true);
 
-					ServerFacade.INSTANCE.getCreditnoteService().update(cn, new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getCreditNoteService().update(cn, new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {
