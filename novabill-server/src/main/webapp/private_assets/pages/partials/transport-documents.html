@@ -1,0 +1,7 @@
+<button type="button" class="btn red new-transport-document" ng-click="newTransportDocumentClick()">New Transport Document</button>
+
+<div class="transport-documents">
+    <novabill-transport-document transport-document="td" bottom-up-menu="!$first && $last" ng-repeat="td in transportDocuments"></novabill-transport-document>
+</div>
+
+<removal-dialog></removal-dialog>

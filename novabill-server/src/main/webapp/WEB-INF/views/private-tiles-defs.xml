@@ -35,8 +35,9 @@
 	</definition>
 	
 	<definition name="private.transportDocuments" extends="private.layout">
-		<put-attribute name="body" value="/WEB-INF/views/tiles/private/firstRunBody.jsp" />
-		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/clientsJS.jsp" />
+		<put-attribute name="head" value="/WEB-INF/views/tiles/private/transportDocumentsHead.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/tiles/private/transportDocumentsBody.jsp" />
+        <put-attribute name="javascript" value="/WEB-INF/views/tiles/private/transportDocumentsJS.jsp" />
 	</definition>
 	
 	<definition name="private.creditNotes" extends="private.layout">

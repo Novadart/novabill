@@ -48,6 +48,12 @@ public class ServerBridge implements ApiBridge {
 				getAllForClient : @com.novadart.novabill.frontend.client.bridge.server.CreditNoteServiceJS::getAllForClient(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				getAllInRange : @com.novadart.novabill.frontend.client.bridge.server.CreditNoteServiceJS::getAllInRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				remove : @com.novadart.novabill.frontend.client.bridge.server.CreditNoteServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			},
+			
+			transportDocument : {
+				getAllForClient : @com.novadart.novabill.frontend.client.bridge.server.TransportDocumentServiceJS::getAllForClient(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getAllInRange : @com.novadart.novabill.frontend.client.bridge.server.TransportDocumentServiceJS::getAllInRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				remove : @com.novadart.novabill.frontend.client.bridge.server.TransportDocumentServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			}
 			
 		}

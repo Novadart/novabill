@@ -530,6 +530,7 @@
 		    invoicesBaseUrl : '${invoicesUrl}',
 		    estimationsBaseUrl : '${estimationsUrl}',
 		    creditNotesBaseUrl : '${creditNotesUrl}',
+		    transportDocumentsBaseUrl : '${transportDocumentsUrl}',
 		    partialsBaseUrl : '${privateAssetsUrl}/pages/partials/'
 	};
 	</script>
