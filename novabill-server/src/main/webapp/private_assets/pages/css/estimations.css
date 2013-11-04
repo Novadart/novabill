@@ -5,3 +5,8 @@
 div.estimations {
 	margin-top: 20px;
 }
+
+.estimations .spinner {
+    margin: 0 auto;
+    display: block;
+}

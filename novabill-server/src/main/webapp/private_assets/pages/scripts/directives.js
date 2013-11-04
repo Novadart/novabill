@@ -3,14 +3,13 @@ angular.module('novabill.directives', ['novabill.utils'])
 /*
  * Invoice widget
  */
-.directive('novabillInvoice', ['NRemovalDialogAPI', function factory(NRemovalDialogAPI){
+.directive('novabillInvoice', ['NRemovalDialogAPI', '$rootScope', function factory(NRemovalDialogAPI, $rootScope){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-invoice.html',
 		scope: { 
 			invoice : '=',
 			bottomUpMenu : '=',
-			onRemove : '&'
 		},
 		controller : ['$scope', function($scope){
 			$scope.openUrl = NovabillConf.invoicesBaseUrl + '#/details/' + $scope.invoice.id;
@@ -19,12 +18,12 @@ angular.module('novabill.directives', ['novabill.utils'])
 				GWT_UI.generateInvoicePdf($scope.invoice.id);
 			};
 
-			$scope.remove = function(id){
+			$scope.remove = function(){
 				NRemovalDialogAPI.init('Delete '+$scope.invoice.documentID+' Invoice?', {
 					onOk : function(){
-						GWT_Server.invoice.remove($scope.invoice.id, {
+						GWT_Server.invoice.remove(NovabillConf.businessId, $scope.invoice.client.id, $scope.invoice.id, {
 							onSuccess : function(){
-								$scope.onRemove();
+								$rootScope.$broadcast('invoice.remove');
 							},
 							onFailure : function(){}
 						});
@@ -56,7 +55,6 @@ angular.module('novabill.directives', ['novabill.utils'])
 		scope: { 
 			estimation : '=',
 			bottomUpMenu : '=',
-			onRemove : '&'
 		},
 		controller : ['$scope', function($scope){
 			$scope.openUrl = NovabillConf.estimationsBaseUrl + '#/details/' + $scope.estimation.id;
@@ -65,12 +63,12 @@ angular.module('novabill.directives', ['novabill.utils'])
 				GWT_UI.generateEstimationPdf($scope.estimation.id);
 			};
 
-			$scope.remove = function(id){
+			$scope.remove = function(){
 				NRemovalDialogAPI.init('Delete '+$scope.estimation.documentID+' Estimation?', {
 					onOk : function(){
-						GWT_Server.estimation.remove($scope.estimation.id, {
+						GWT_Server.estimation.remove(NovabillConf.businessId, $scope.estimation.client.id, $scope.estimation.id, {
 							onSuccess : function(){
-								$scope.onRemove();
+								$rootScope.$broadcast('estimation.remove');
 							},
 							onFailure : function(){}
 						});
@@ -103,7 +101,6 @@ angular.module('novabill.directives', ['novabill.utils'])
 		scope: { 
 			transportDocument : '=',
 			bottomUpMenu : '=',
-			onRemove : '&'
 		},
 		controller : ['$scope', function($scope){
 			$scope.openUrl = NovabillConf.transportDocumentsBaseUrl + '#/details/' + $scope.transportDocument.id;
@@ -112,12 +109,12 @@ angular.module('novabill.directives', ['novabill.utils'])
 				GWT_UI.generateTransportDocumentPdf($scope.transportDocument.id);
 			};
 
-			$scope.remove = function(id){
+			$scope.remove = function(){
 				NRemovalDialogAPI.init('Delete '+$scope.transportDocument.documentID+' Transport Document?', {
 					onOk : function(){
-						GWT_Server.transportDocument.remove($scope.transportDocument.id, {
+						GWT_Server.transportDocument.remove(NovabillConf.businessId, $scope.transportDocument.client.id, $scope.transportDocument.id, {
 							onSuccess : function(){
-								$scope.onRemove();
+								$rootScope.$broadcast('transportDocument.remove');
 							},
 							onFailure : function(){}
 						});
@@ -146,7 +143,6 @@ angular.module('novabill.directives', ['novabill.utils'])
 		scope: { 
 			creditNote : '=',
 			bottomUpMenu : '=',
-			onRemove : '&'
 		},
 		controller : ['$scope', function($scope){
 			$scope.openUrl = NovabillConf.creditNotesBaseUrl + '#/details/' + $scope.creditNote.id;
@@ -155,12 +151,12 @@ angular.module('novabill.directives', ['novabill.utils'])
 				GWT_UI.generateCreditNotePdf($scope.creditNote.id);
 			};
 
-			$scope.remove = function(id){
+			$scope.remove = function(){
 				NRemovalDialogAPI.init('Delete '+$scope.creditNote.documentID+' Credit Note?', {
 					onOk : function(){
-						GWT_Server.creditNote.remove($scope.creditNote.id, {
+						GWT_Server.creditNote.remove(NovabillConf.businessId, $scope.creditNote.client.id, $scope.creditNote.id, {
 							onSuccess : function(){
-								$scope.onRemove();
+								$rootScope.$broadcast('creditNote.remove');
 							},
 							onFailure : function(){}
 						});

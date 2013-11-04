@@ -5,3 +5,8 @@
 div.invoices {
 	margin-top: 20px;
 }
+
+.invoices .spinner {
+    margin: 0 auto;
+    display: block;
+}

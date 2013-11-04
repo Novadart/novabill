@@ -63,3 +63,7 @@
 .pagination ul > li > a {
 	cursor: pointer;
 }
+
+.client-detail .tab-content {
+	min-height: 100px;
+}

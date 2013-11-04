@@ -14,6 +14,8 @@
           ng-model="query" ng-keyup="filterKeyUp()">
 </div>
 
+<img class="spinner" ng-show="partitions==null" src="../../private_assets/img/ajax-loading.gif">
+
 <div class="partition" ng-repeat="pt in partitions">
     <span id="{{pt.letter}}"></span>
     <div class="letter">

@@ -7,9 +7,9 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 .controller('ClientsCtrl', ['$scope', 'NSorting', '$location', '$anchorScroll', 
                             function($scope, NSorting, $location, $anchorScroll){
 	
-	var partitionsCache = [];
+	var partitionsCache = null;
 	
-	$scope.loadClients = function($scope) {
+	$scope.loadClients = function() {
 		GWT_Server.business.getClients(NovabillConf.businessId, {
 			onSuccess : function(data){
 				$scope.$apply(function(){
@@ -122,7 +122,7 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 	    }, 1000);
 	};
 	
-	$scope.loadClients($scope);
+	$scope.loadClients();
 }])
 
 
@@ -133,12 +133,6 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
  */
 .controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', 'NRemovalDialogAPI',
                                   function($scope, $route, $routeParams, $location, NRemovalDialogAPI) {
-	
-	$scope.invoices = null;
-	$scope.estimations = null;
-	$scope.transportDocuments = null;
-	$scope.creditNotes = null;
-	
 	
 	//fired when edit client is clicked
 	$scope.editClient = function(clientId) {
@@ -211,18 +205,60 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 		}
 	});
 	
-	// load invoices
-	GWT_Server.invoice.getAllForClient($routeParams.clientId, {
-
-		onSuccess : function(clientData){
-			$scope.$apply(function(){
-				$scope.invoices = clientData.invoices;
-			});
-		},
-
-		onFailure : function(error){
+	
+	/*
+	 * load documents. 
+	 * types = {'invoice','estimation','creditNote','transportDocument'}
+	 */ 
+	var loading = {};
+	
+	$scope.loadDocs = function(type){
+		if(loading[type] || $scope[type+'Data']){
+			return;
 		}
+		
+		loading[type] = true;
+		GWT_Server[type].getAllForClient($routeParams.clientId, {
+
+			onSuccess : function(clientData){
+				$scope.$apply(function(){
+					$scope[type+'Data'] = clientData[type+'s'];
+				});
+				loading[type] = false;
+			},
+
+			onFailure : function(error){
+				loading[type] = false;
+			}
+		});
+	};
+	
+	$scope.$on('invoice.remove', function(event){
+		$scope.invoiceData = null;
+		$scope.$apply();
+		$scope.loadDocs('invoice');
 	});
+	
+	$scope.$on('estimation.remove', function(event){
+		$scope.estimationData = null;
+		$scope.$apply();
+		$scope.loadDocs('estimation');
+	});
+	
+	$scope.$on('creditNote.remove', function(event){
+		$scope.creditNoteData = null;
+		$scope.$apply();
+		$scope.loadDocs('creditNote');
+	});
+	
+	$scope.$on('transportDocument.remove', function(event){
+		$scope.transportDocumentData = null;
+		$scope.$apply();
+		$scope.loadDocs('transportDocument');
+	});
+	
+	
+	$scope.loadDocs('invoice');
 
 }]);
 

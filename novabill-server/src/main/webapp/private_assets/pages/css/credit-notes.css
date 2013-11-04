@@ -5,3 +5,8 @@
 div.credit-notes {
 	margin-top: 20px;
 }
+
+.credit-notes .spinner {
+    margin: 0 auto;
+    display: block;
+}
