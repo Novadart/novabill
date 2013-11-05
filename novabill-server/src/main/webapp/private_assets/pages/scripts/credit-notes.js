@@ -19,6 +19,11 @@ angular.module("novabill.creditNotes", ['novabill.creditNotes.controllers','ngRo
 		controller: 'CreditNoteCreateCtrl'
 	})
 	
+	.when('/from-invoice/:invoiceId', {
+		templateUrl: NovabillConf.partialsBaseUrl + '/credit-notes-detail.html',
+		controller: 'CreditNoteFromInvoiceCtrl'
+	})
+	
 	.otherwise ({
 		redirectTo: '/'
 	});

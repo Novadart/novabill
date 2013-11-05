@@ -20,6 +20,11 @@ angular.module("novabill.invoices", ['novabill.invoices.controllers','ngRoute'])
 		controller: 'InvoiceCreateCtrl'
 	})
 	
+	.when('/new/:clientId/clone/:sourceId', {
+		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-detail.html',
+		controller: 'InvoiceCloneInvoiceCtrl'
+	})
+	
 	.otherwise ({
 		redirectTo: '/'
 	});

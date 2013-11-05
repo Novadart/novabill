@@ -64,6 +64,22 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
     	},
     	onFailure : function(){},
     });
+}])
+
+
+
+/**
+ * INVOICE CLONE PAGE CONTROLLER
+ */
+.controller('InvoiceCloneInvoiceCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+	GWT_UI.showCloneInvoicePage('invoice-details', $routeParams.clientId, $routeParams.sourceId, {
+    	onSuccess : function(bool){
+    	    $scope.$apply(function(){
+    	    	$location.path('/');
+    	    });  		
+    	},
+    	onFailure : function(){},
+    });
 }]);
 
 

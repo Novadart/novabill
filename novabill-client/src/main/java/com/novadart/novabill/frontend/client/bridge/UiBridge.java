@@ -12,10 +12,12 @@ import com.novadart.novabill.frontend.client.activity.center.TransportDocumentAc
 import com.novadart.novabill.frontend.client.bridge.ui.HTMLWrapper;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.place.creditnote.FromInvoiceCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.ModifyCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.estimation.ModifyEstimationPlace;
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
+import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
@@ -47,6 +49,7 @@ public class UiBridge implements ApiBridge {
 			// invoices
 			showNewInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showModifyInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			showCloneInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showCloneInvoicePage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			
 			// estimations
 			showNewEstimationPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewEstimationPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
@@ -55,6 +58,7 @@ public class UiBridge implements ApiBridge {
 			// credit notes
 			showNewCreditNotePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewCreditNotePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showModifyCreditNotePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyCreditNotePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			showFromInvoiceCreditNotePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showFromInvoiceCreditNotePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			
 			// transport documents
 			showNewTransportDocumentPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewTransportDocumentPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
@@ -120,6 +124,18 @@ public class UiBridge implements ApiBridge {
 	}
 	
 	
+	public static void showCloneInvoicePage(String wrapperId, String clientId, String invoiceId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		CloneInvoicePlace cip = new CloneInvoicePlace();
+		cip.setInvoiceId(Long.parseLong(invoiceId));
+		cip.setClientId(Long.parseLong(clientId));
+
+		InvoiceActivity is = new InvoiceActivity(cip, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
+	}
+	
+	
 	public static void showModifyInvoicePage(String wrapperId, String invoiceId, JavaScriptObject callback) {
 		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
 		
@@ -166,6 +182,17 @@ public class UiBridge implements ApiBridge {
 		nep.setClientId(Long.parseLong(clientId));
 
 		CreditNoteActivity is = new CreditNoteActivity(nep, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
+	}
+	
+	
+	public static void showFromInvoiceCreditNotePage(String wrapperId, String invoiceId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		FromInvoiceCreditNotePlace fip = new FromInvoiceCreditNotePlace();
+		fip.setInvoiceId(Long.parseLong(invoiceId));
+
+		CreditNoteActivity is = new CreditNoteActivity(fip, ClientFactory.INSTANCE, callback);
 		is.start(panel, null);
 	}
 	

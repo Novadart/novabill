@@ -3,7 +3,7 @@ angular.module('novabill.directives', ['novabill.utils'])
 /*
  * Invoice widget
  */
-.directive('novabillInvoice', ['NRemovalDialogAPI', '$rootScope', function factory(NRemovalDialogAPI, $rootScope){
+.directive('novabillInvoice', ['NRemovalDialogAPI', '$rootScope', '$location', function factory(NRemovalDialogAPI, $rootScope, $location){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-invoice.html',
@@ -34,9 +34,21 @@ angular.module('novabill.directives', ['novabill.utils'])
 				NRemovalDialogAPI.show();
 			};
 
-			$scope.clone = function(){};
+			$scope.clone = function(){
+				GWT_UI.selectClientDialog(NovabillConf.businessId, {
 
-			$scope.createCreditNote = function(id){};
+					onSuccess : function(clientId){
+						window.location.assign(NovabillConf.invoicesBaseUrl + '#/new/' + clientId + '/clone/' + $scope.invoice.id);
+					},
+
+					onFailure : function(){}
+				});
+
+			};
+
+			$scope.createCreditNote = function(id){
+				window.location.assign(NovabillConf.creditNotesBaseUrl + '#/from-invoice/' + $scope.invoice.id);
+			};
 		}],
 		restrict: 'E',
 		replace: true,

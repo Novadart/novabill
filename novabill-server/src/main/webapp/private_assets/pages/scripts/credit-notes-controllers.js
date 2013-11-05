@@ -64,6 +64,21 @@ angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.
     	},
     	onFailure : function(){},
     });
+}])
+
+
+/**
+ * ESTIMATION CREATE PAGE CONTROLLER
+ */
+.controller('CreditNoteFromInvoiceCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+	GWT_UI.showFromInvoiceCreditNotePage('credit-note-details', $routeParams.invoiceId, {
+    	onSuccess : function(bool){
+    		$scope.$apply(function(){
+    	    	$location.path('/');
+    	    });
+    	},
+    	onFailure : function(){},
+    });
 }]);
 
 
