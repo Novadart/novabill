@@ -45,12 +45,6 @@
 	color: white;
 }
 
-.client-detail .back-button {
-	position: absolute;
-    top: 0px;
-    left: 0px;
-}
-
 .client-detail .hero-unit {
     position: relative;
 }
@@ -67,3 +61,9 @@
 .client-detail .tab-content {
 	min-height: 100px;
 }
+
+.client-detail .no-data-message {
+	text-align: center;
+	padding: 50px 0;
+}
+
