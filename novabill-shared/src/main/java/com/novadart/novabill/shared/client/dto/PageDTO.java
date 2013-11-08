@@ -23,34 +23,42 @@ public class PageDTO<T> implements IsSerializable {
 		this.total = total;
 	}
 
+	
 	public List<T> getItems() {
 		return items;
 	}
 
+	
 	public void setItems(List<T> items) {
 		this.items = items;
 	}
 
+	
 	public Integer getOffset() {
 		return offset;
 	}
 
+	
 	public void setOffset(Integer offset) {
 		this.offset = offset;
 	}
 
+	
 	public Integer getLength() {
 		return length;
 	}
 
+	
 	public void setLength(Integer length) {
 		this.length = length;
 	}
 
+	
 	public Long getTotal() {
 		return total;
 	}
 
+	
 	public void setTotal(Long total) {
 		this.total = total;
 	}

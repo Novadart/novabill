@@ -34,12 +34,12 @@ public class InvoiceCellImpl extends QuickViewCell<InvoiceDTO> implements Invoic
 	protected void renderVisible(
 			com.google.gwt.cell.client.Cell.Context context, InvoiceDTO value,
 			SafeHtmlBuilder sb) {
-
-		if(Configuration.isPremium()) {
-			sb.appendHtmlConstant("<div class='"+QuickViewListBundle.INSTANCE.quickViewListCss().main()+" "+(value.getPayed() ? "invoice-payed" : "invoice-not-payed")+"'>");
-		} else {
-			sb.appendHtmlConstant("<div class='"+QuickViewListBundle.INSTANCE.quickViewListCss().main()+" '>");
-		}
+//
+//		if(Configuration.isPremium()) {
+//			sb.appendHtmlConstant("<div class='"+QuickViewListBundle.INSTANCE.quickViewListCss().main()+" "+(value.getPayed() ? "invoice-payed" : "invoice-not-payed")+"'>");
+//		} else {
+//			sb.appendHtmlConstant("<div class='"+QuickViewListBundle.INSTANCE.quickViewListCss().main()+" '>");
+//		}
 		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().id()+"'>");
 		sb.append(value.getDocumentID());
 		sb.appendHtmlConstant("</span>");
@@ -64,11 +64,11 @@ public class InvoiceCellImpl extends QuickViewCell<InvoiceDTO> implements Invoic
 		sb.appendHtmlConstant("<span class='"+QuickViewListBundle.INSTANCE.quickViewListCss().total()+"'>");
 		sb.appendEscaped(I18N.INSTANCE.totalAfterTaxesForItem()+" "+NumberFormat.getCurrencyFormat().format(value.getTotal()));
 		sb.appendHtmlConstant("</span>");
-		if(Configuration.isPremium()) {
-			sb.appendHtmlConstant("<span class='payed payed-"+value.getPayed()+"'>");
-			sb.appendEscaped(value.getPayed() ? I18N.INSTANCE.payed() : I18N.INSTANCE.notPayed());
-			sb.appendHtmlConstant("</span>");
-		}
+//		if(Configuration.isPremium()) {
+//			sb.appendHtmlConstant("<span class='payed payed-"+value.getPayed()+"'>");
+//			sb.appendEscaped(value.getPayed() ? I18N.INSTANCE.payed() : I18N.INSTANCE.notPayed());
+//			sb.appendHtmlConstant("</span>");
+//		}
 		sb.appendHtmlConstant("</div>");
 
 		sb.appendHtmlConstant("<div class='"+QuickViewListBundle.INSTANCE.quickViewListCss().tools()+"'>");

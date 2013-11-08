@@ -4,10 +4,15 @@
 resources.root=/tmp
 
 #
+# Security
+#
+privateArea.channel.value = http
+
+#
 # Logging
 #
 log.file.value=${resources.root}/logs/novabill.log
-log.fileNamePattern.value=${resources.root}/logs/novabill.%d{yyyy-MM-dd}.log.gz
+log.fileNamePattern.value=${resources.root}/logs/novabill.%d{yyyy-ww}.log.gz
 log.root.value = INFO
 log.com.novadart.novabill.value = DEBUG
 
@@ -31,8 +36,15 @@ smtp.port.value=2525
 smtp.username.value=
 smtp.password.value=
 smtp.mail.registration_completed_sender.value=no-reply@novadart.com
-exception.sendemail.value = false
-validation.error.sendemail.value = false
+
+#
+# Email Notifications
+#
+notification.registration.value=false
+notification.exception.value=false
+notification.validationError.value=false
+notification.accountUpgrade.value=false
+notification.feedback.value=true
 
 #
 # Application Configuration
@@ -72,3 +84,17 @@ quota.numberOfInvoicesPerYear.value=1
 quota.numberOfEstimationsPerYear.value=1
 quota.numberOfCreditNotesPerYear.value=1
 quota.numberOfTransportDocsPerYear.value=1
+
+#
+# Cache Periods
+#
+css.cachePeriod.value=0
+images.cachePeriod.value=0
+js.cachePeriod.value=0
+democode.cachePeriod.value=0
+rpc.cachePeriod.value=0
+
+#
+# Url Rewrite
+#
+urlRewriteFilter.enabled.value=false

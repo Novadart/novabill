@@ -110,7 +110,7 @@ public class TaxWidget extends ValidatedWidget<BigDecimal> implements HasEnabled
 
 	@Override
 	protected void resetUI() {
-		listBox.setSelectedIndex(1);
+		listBox.setSelectedIndex(0);
 		body.setWidget(listBox);
 		customTaxBox.setText("");
 	}

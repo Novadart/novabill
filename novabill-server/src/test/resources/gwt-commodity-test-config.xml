@@ -9,13 +9,8 @@
                                                 http://www.springframework.org/schema/util
                                                 http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-	<bean id="commodity" class="com.novadart.novabill.web.gwt.CommodityServiceProxy" primary="true"/>
-	<bean id="commodityServiceImpl" class="com.novadart.novabill.web.gwt.CommodityServiceImpl" />
+	<bean id="commodity" class="com.novadart.novabill.web.gwt.CommodityGwtController"/>
 	
-	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessServiceProxy"
-		primary="true" />
-	<bean id="businessServiceImpl" class="com.novadart.novabill.web.gwt.BusinessServiceImpl">
-		<lookup-method name="self" bean="businessServiceImpl" />
-	</bean>
+	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtController"/>
 	
 </beans>

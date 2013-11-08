@@ -10,32 +10,32 @@ import com.novadart.novabill.frontend.client.demo.facade.service.DemoInvoiceServ
 import com.novadart.novabill.frontend.client.demo.facade.service.DemoPaymentTypeService;
 import com.novadart.novabill.frontend.client.demo.facade.service.DemoTransportDocumentService;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
-import com.novadart.novabill.shared.client.facade.BatchDataFetcherServiceAsync;
-import com.novadart.novabill.shared.client.facade.BusinessServiceAsync;
-import com.novadart.novabill.shared.client.facade.ClientServiceAsync;
-import com.novadart.novabill.shared.client.facade.CreditNoteServiceAsync;
-import com.novadart.novabill.shared.client.facade.EstimationServiceAsync;
-import com.novadart.novabill.shared.client.facade.InvoiceServiceAsync;
-import com.novadart.novabill.shared.client.facade.PaymentTypeServiceAsync;
-import com.novadart.novabill.shared.client.facade.TransportDocumentServiceAsync;
+import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.BusinessGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.ClientGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.CreditNoteGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.EstimationGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.InvoiceGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.PaymentTypeGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.TransportDocumentGwtServiceAsync;
 
 public class DemoServerFacadeImpl implements ServerFacade {
 	
-	private static final InvoiceServiceAsync INVOICE_SERVICE = new DemoInvoiceService();
+	private static final InvoiceGwtServiceAsync INVOICE_SERVICE = new DemoInvoiceService();
 	
-	private static final ClientServiceAsync CLIENT_SERVICE = new DemoClientService();
+	private static final ClientGwtServiceAsync CLIENT_SERVICE = new DemoClientService();
 	
-	private static final EstimationServiceAsync ESTIMATION_SERVICE = new DemoEstimationService();
+	private static final EstimationGwtServiceAsync ESTIMATION_SERVICE = new DemoEstimationService();
 	
-	private static final BusinessServiceAsync BUSINESS_SERVICE = new DemoBusinessService();
+	private static final BusinessGwtServiceAsync BUSINESS_SERVICE = new DemoBusinessService();
 	
-	private static final TransportDocumentServiceAsync TRANSPORT_DOCUMENT_SERVICE = new DemoTransportDocumentService();
+	private static final TransportDocumentGwtServiceAsync TRANSPORT_DOCUMENT_SERVICE = new DemoTransportDocumentService();
 	
-	private static final CreditNoteServiceAsync CREDIT_NOTE_SERVICE = new DemoCreditNoteService();
+	private static final CreditNoteGwtServiceAsync CREDIT_NOTE_SERVICE = new DemoCreditNoteService();
 	
-	private static final PaymentTypeServiceAsync PAYMENT_TYPE_SERVICE = new DemoPaymentTypeService();
+	private static final PaymentTypeGwtServiceAsync PAYMENT_TYPE_SERVICE = new DemoPaymentTypeService();
 
-	private static final BatchDataFetcherServiceAsync BATCH_DATA_FETCHER_SERVICE = new DemoBatchDataFetcherService();
+	private static final BatchDataFetcherGwtServiceAsync BATCH_DATA_FETCHER_SERVICE = new DemoBatchDataFetcherService();
 	
 	@Override
 	public void setupXsrfProtection(AsyncCallback<Void> callback) {
@@ -54,42 +54,42 @@ public class DemoServerFacadeImpl implements ServerFacade {
 	}
 
 	@Override
-	public InvoiceServiceAsync getInvoiceService() {
+	public InvoiceGwtServiceAsync getInvoiceService() {
 		return INVOICE_SERVICE;
 	}
 
 	@Override
-	public ClientServiceAsync getClientService() {
+	public ClientGwtServiceAsync getClientService() {
 		return CLIENT_SERVICE;
 	}
 
 	@Override
-	public BusinessServiceAsync getBusinessService() {
+	public BusinessGwtServiceAsync getBusinessService() {
 		return BUSINESS_SERVICE;
 	}
 
 	@Override
-	public EstimationServiceAsync getEstimationService() {
+	public EstimationGwtServiceAsync getEstimationService() {
 		return ESTIMATION_SERVICE;
 	}
 
 	@Override
-	public CreditNoteServiceAsync getCreditnoteService() {
+	public CreditNoteGwtServiceAsync getCreditNoteService() {
 		return CREDIT_NOTE_SERVICE;
 	}
 
 	@Override
-	public TransportDocumentServiceAsync getTransportdocumentService() {
+	public TransportDocumentGwtServiceAsync getTransportdocumentService() {
 		return TRANSPORT_DOCUMENT_SERVICE;
 	}
 
 	@Override
-	public PaymentTypeServiceAsync getPaymentService() {
+	public PaymentTypeGwtServiceAsync getPaymentService() {
 		return PAYMENT_TYPE_SERVICE;
 	}
 
 	@Override
-	public BatchDataFetcherServiceAsync getBatchfetcherService() {
+	public BatchDataFetcherGwtServiceAsync getBatchfetcherService() {
 		return BATCH_DATA_FETCHER_SERVICE;
 	}
 

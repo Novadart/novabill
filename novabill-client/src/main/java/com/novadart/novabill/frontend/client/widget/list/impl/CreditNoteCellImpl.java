@@ -155,7 +155,7 @@ public class CreditNoteCellImpl extends QuickViewCell<CreditNoteDTO> implements 
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
-					ServerFacade.INSTANCE.getCreditnoteService().remove(Configuration.getBusinessId(), creditNote.getClient().getId(), creditNote.getId(), new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getCreditNoteService().remove(Configuration.getBusinessId(), creditNote.getClient().getId(), creditNote.getId(), new ManagedAsyncCallback<Void>() {
 
 						@Override
 						public void onSuccess(Void result) {

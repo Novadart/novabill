@@ -96,7 +96,7 @@ public class MainWidgetImpl extends Composite implements MainWidget {
 		logout.setHref(ClientFactory.INSTANCE.getLogoutUrl());
 		logoAnchor.setHref(GWT.getHostPageBaseURL());
 
-		generateStats(Configuration.getStats());
+//		generateStats(Configuration.getStats());
 
 		instance = this;
 	}
@@ -151,7 +151,7 @@ public class MainWidgetImpl extends Composite implements MainWidget {
 					return;
 				}
 				
-				Configuration.setStats(result);
+//				Configuration.setStats(result);
 				
 				generateStats(result);
 			}

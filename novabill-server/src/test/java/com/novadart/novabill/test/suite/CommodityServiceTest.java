@@ -22,7 +22,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.CommodityService;
+import com.novadart.novabill.shared.client.facade.CommodityGwtService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -31,7 +31,7 @@ import com.novadart.novabill.shared.client.facade.CommodityService;
 public class CommodityServiceTest extends GWTServiceTest {
 	
 	@Autowired
-	private CommodityService commodityService;
+	private CommodityGwtService commodityService;
 	
 	@Test
 	public void commodityServiceWiringTest(){

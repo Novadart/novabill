@@ -1,0 +1,22 @@
+<div class="well well-small document-well estimation">
+    <span class="badge documentId">{{estimation.documentID}}</span> 
+    <span class="date">{{estimation.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
+    <span class="clientName">{{estimation.client.name}}</span>
+    
+    <a ng-href="{{openUrl}}" class="open btn mini black">Open</a>
+    
+    <a href="javascript:void(0);" ng-click="print()" class="print btn mini icn-only"><i class="icon-print"></i></a>
+    
+    <div class="options btn-group">
+        <a class="btn blue mini dropdown-toggle" data-toggle="dropdown" href="#">Options
+            <i class="icon-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu" ng-class="{'bottom-up': bottomUpMenu}">
+            <li><a href="javascript:void(0);">Clone</a></li>
+            <li><a href="javascript:void(0);">Convert to Invoice</a></li>
+            <li class="divider"></li>
+            <li ><a href="javascript:void(0);" ng-click="remove()" ><i class="icon-remove"></i>Delete</a></li>
+        </ul>
+    </div>
+    
+</div>

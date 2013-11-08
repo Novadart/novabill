@@ -58,7 +58,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiField Label totalAfterTaxes;
 	
 	@UiField(provided=true) LoaderButton createEstimation;
-	@UiField(provided=true) LoaderButton convertToInvoice;
 	@UiField Button abort;
 	
 	
@@ -83,12 +82,10 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		validTill.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		createEstimation = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
-		convertToInvoice = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
 		
 		createEstimation.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
-		convertToInvoice.getButton().setStyleName(GlobalBundle.INSTANCE.globalCss().button());
 		
 	}
 	
@@ -134,13 +131,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		return number;
 	}
 
-
-	@UiHandler("convertToInvoice")
-	void onConvertToInvoice(ClickEvent e){
-		presenter.onConvertToInvoiceClicked();
-	}
-
-
 	@UiHandler("createEstimation")
 	void onCreateEstimationClicked(ClickEvent e){
 		presenter.onCreateDocumentClicked();
@@ -162,7 +152,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		number.reset();
 
 		//reset widget statuses
-		convertToInvoice.setVisible(false);
 		date.reset();
 		validTill.reset();
 
@@ -176,7 +165,6 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		itemInsertionForm.reset();
 		
 		createEstimation.reset();
-		convertToInvoice.reset();
 		setLocked(false);
 	}
 
@@ -259,10 +247,4 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		return limitations;
 	}
 
-	@Override
-	public LoaderButton getConvertToInvoice() {
-		return convertToInvoice;
-	}
-
-	
 }

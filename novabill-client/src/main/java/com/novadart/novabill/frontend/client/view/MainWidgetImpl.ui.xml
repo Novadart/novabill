@@ -27,6 +27,8 @@
 						ui:field="home"></g:Button>
 					<g:Button styleName="{style.myDataButton} {g.button}" text="{i18n.myData}"
 						ui:field="myData"></g:Button>
+					<g:Button styleName="{style.itemsButton} {g.button}" text="{i18n.items}"
+						ui:field="items"></g:Button>
 					<g:Anchor ui:field="changePasswordAnchor" styleName="{style.changePassword}" />
 					<g:Anchor styleName="{style.exitButton}" text="{i18n.logout}"
 						ui:field="logout"></g:Anchor>

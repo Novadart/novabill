@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.resources.client.CssResource;
@@ -17,16 +18,13 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
-import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.dialog.Dialog;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
-import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.SharedComparators;
-import com.novadart.novabill.frontend.client.event.ClientAddEvent;
-import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
+import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -50,7 +48,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 
 	interface ClientDialogUiBinder extends UiBinder<Widget, ClientDialog> {
 	}
-	
+
 	public interface Style extends CssResource {
 		String wrapper();
 		String title();
@@ -63,17 +61,8 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		String submit();
 	}
 
-	private static final ClientDialog instance = new ClientDialog();
-	private static EventBus eventBus;
-
-	public static ClientDialog getInstance(EventBus eventBus){
-		ClientDialog.eventBus = eventBus;
-		instance.clearData();
-		return instance;
-	}
-	
 	@UiField InlineNotification inlineNotification;
-	
+
 	@UiField Label clientDialogTitle;
 
 	@UiField(provided=true) ValidatedTextBox companyName;
@@ -96,107 +85,113 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	@UiField(provided=true) ValidatedTextBox contactPhone;
 	@UiField(provided=true) ValidatedTextBox contactName;
 	@UiField(provided=true) ValidatedTextBox contactSurname;
-	
+
 	@UiField ListBox selectDefaultPayment;
-	
+
 	@UiField ValidatedTextArea note;
-	
+
 	@UiField(provided=true) LoaderButton ok;
 	@UiField Button cancel;
 	@UiField Style s;
-	
-	private final Map<String, PaymentTypeDTO> paymentTypes = new HashMap<String, PaymentTypeDTO>();
-	
-	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation(); 
-	
-	private ClientDTO client = null;
 
-	private ClientDialog() {
+	private final Map<String, PaymentTypeDTO> paymentTypes = new HashMap<String, PaymentTypeDTO>();
+
+	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation(); 
+
+	private ClientDTO client = null;
+	private final Long businessId;
+	private final JavaScriptObject callback;
+
+
+	public ClientDialog(Long businessId, JavaScriptObject callback) {
 		super(GlobalBundle.INSTANCE.dialog());
 		GlobalBundle.INSTANCE.dialog().ensureInjected();
-		
+
+		this.businessId = businessId;
+		this.callback = callback;
+
 		companyName = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
-		
+
 		vatID =  new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.VAT_ID);
 		vatID.setShowMessageOnError(true);
 		ssn =  new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.SSN_OR_VAT_ID);
 		ssn.setShowMessageOnError(true);
 		ssnOrVatIdValidation.addWidget(vatID);
 		ssnOrVatIdValidation.addWidget(ssn);
-		
+
 		postcode = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
-		
+
 		address = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		city = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		country = LocaleWidgets.createCountryListBox("");
-		
+
 		phone = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		mobile = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		fax = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		contactPhone = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		contactMobile = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		contactFax = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
-		
+
 		web = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		contactName = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		contactSurname = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 
 		email = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_EMAIL);
 		contactEmail = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_EMAIL);
-		
+
 		province = LocaleWidgets.createProvinceListBox("");
-		
-		
+
+
 		ok = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
-		
+
 		setWidget(uiBinder.createAndBindUi(this));
 		addStyleName(GlobalBundle.INSTANCE.globalCss().panel());
-		
+
 		ok.addStyleName(s.submit());
 		ok.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().button());
 	}
-	
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
 		selectDefaultPayment.setEnabled(false);
-		ServerFacade.INSTANCE.getPaymentService().getAll(Configuration.getBusinessId(), 
+		ServerFacade.INSTANCE.getPaymentService().getAll(businessId, 
 				new ManagedAsyncCallback<List<PaymentTypeDTO>>() {
 
-					@Override
-					public void onSuccess(List<PaymentTypeDTO> result) {
-						Collections.sort(result, SharedComparators.PAYMENT_COMPARATOR);
-						
-						selectDefaultPayment.addItem("");
-						
-						Long defaultPaymentId = null;
-						if(client != null && client.getDefaultPaymentTypeID() != null) {
-							defaultPaymentId = client.getDefaultPaymentTypeID();
-						}
-						
-						Integer indexOfDefaultPayment = null; 
-						PaymentTypeDTO p;
-						for (int i=0; i<result.size(); i++) {
-							p = result.get(i);
-							paymentTypes.put(String.valueOf(p.getId()), p);
-							selectDefaultPayment.addItem(p.getName(), String.valueOf(p.getId()));
-							
-							indexOfDefaultPayment = indexOfDefaultPayment == null 
-									? (	defaultPaymentId == null 
-												? null 
-												: (defaultPaymentId.equals(p.getId()) ? i : null) ) 
+			@Override
+			public void onSuccess(List<PaymentTypeDTO> result) {
+				Collections.sort(result, SharedComparators.PAYMENT_COMPARATOR);
+
+				selectDefaultPayment.addItem("");
+
+				Long defaultPaymentId = null;
+				if(client != null && client.getDefaultPaymentTypeID() != null) {
+					defaultPaymentId = client.getDefaultPaymentTypeID();
+				}
+
+				Integer indexOfDefaultPayment = null; 
+				PaymentTypeDTO p;
+				for (int i=0; i<result.size(); i++) {
+					p = result.get(i);
+					paymentTypes.put(String.valueOf(p.getId()), p);
+					selectDefaultPayment.addItem(p.getName(), String.valueOf(p.getId()));
+
+					indexOfDefaultPayment = indexOfDefaultPayment == null 
+							? (	defaultPaymentId == null 
+							? null 
+									: (defaultPaymentId.equals(p.getId()) ? i : null) ) 
 									: indexOfDefaultPayment;
-						}
-						
-						// select the payment type
-						if(indexOfDefaultPayment != null) {
-							// +1 because the first element in list is empty
-							selectDefaultPayment.setSelectedIndex(indexOfDefaultPayment+1);
-						}
-						
-						selectDefaultPayment.setEnabled(true);
-						
-					}
+				}
+
+				// select the payment type
+				if(indexOfDefaultPayment != null) {
+					// +1 because the first element in list is empty
+					selectDefaultPayment.setSelectedIndex(indexOfDefaultPayment+1);
+				}
+
+				selectDefaultPayment.setEnabled(true);
+
+			}
 		});
 	}
 
@@ -204,7 +199,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	I18N getI18N(){
 		return I18N.INSTANCE;
 	}
-	
+
 	@UiFactory
 	GlobalCss getGlobalCss(){
 		return GlobalBundle.INSTANCE.globalCss();
@@ -213,7 +208,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	public void setClient(ClientDTO client) {
 		this.client = client;
 		clientDialogTitle.setText(I18N.INSTANCE.modifyClientTitle());
-		
+
 		boolean isIT = switchValidationByCountry(client.getCountry());
 
 		companyName.setText(client.getName());
@@ -232,7 +227,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		vatID.setText(client.getVatID());
 		ssn.setText(client.getSsn());
 		note.setText(client.getNote());
-		
+
 		ContactDTO ct = client.getContact();
 		contactEmail.setText(ct.getEmail());
 		contactFax.setText(ct.getFax());
@@ -240,7 +235,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		contactName.setText(ct.getFirstName());
 		contactPhone.setText(ct.getPhone());
 		contactSurname.setText(ct.getLastName());
-		
+
 		ok.setText(I18N.INSTANCE.saveModifications());
 	}
 
@@ -262,7 +257,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 			client = this.client;
 			contact = this.client.getContact();
 		}
-		
+
 		client.setAddress(address.getText());
 		client.setCity(city.getText());
 		client.setCountry(country.getSelectedItemValue());
@@ -277,12 +272,12 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		} else {
 			client.setProvince("");
 		}
-		
+
 		if(selectDefaultPayment.getSelectedIndex() > 0){
 			PaymentTypeDTO payment = paymentTypes.get(selectDefaultPayment.getValue(selectDefaultPayment.getSelectedIndex()));
 			client.setDefaultPaymentTypeID(payment.getId());
 		}
-		
+
 		client.setSsn(ssn.getText());
 		client.setVatID(vatID.getText());
 		client.setWeb(web.getText());
@@ -294,17 +289,17 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		contact.setLastName(contactSurname.getText());
 		contact.setMobile(contactMobile.getText());
 		contact.setPhone(contactPhone.getText());
-		
+
 		ok.showLoader(true);
 		setLocked(true);
 		if(this.client == null) {
-			ServerFacade.INSTANCE.getClientService().add(Configuration.getBusinessId(), client, new ManagedAsyncCallback<Long>() {
+			ServerFacade.INSTANCE.getClientService().add(businessId, client, new ManagedAsyncCallback<Long>() {
 
 				@Override
 				public void onSuccess(Long result) {
 					ok.showLoader(false);
-					eventBus.fireEvent(new ClientAddEvent(client));
 					hide();
+					BridgeUtils.invokeJSCallback(callback);
 					setLocked(false);
 				}
 
@@ -316,14 +311,14 @@ public class ClientDialog extends Dialog implements HasUILocking {
 				}
 			});
 		} else {
-			
-			ServerFacade.INSTANCE.getClientService().update(Configuration.getBusinessId(), client, new ManagedAsyncCallback<Void>() {
+
+			ServerFacade.INSTANCE.getClientService().update(businessId, client, new ManagedAsyncCallback<Void>() {
 
 				@Override
 				public void onSuccess(Void result) {
 					ok.showLoader(false);
-					eventBus.fireEvent(new ClientUpdateEvent(client));
 					hide();
+					BridgeUtils.invokeJSCallback(callback);
 					setLocked(false);
 				}
 
@@ -334,7 +329,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 					setLocked(false);
 				}
 			});
-			
+
 		}
 	}
 
@@ -342,12 +337,12 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	void onCancelClicked(ClickEvent e){
 		hide();
 	}
-	
+
 	@UiHandler("country")
 	void onCountryChange(ChangeEvent event){
 		switchValidationByCountry(country.getSelectedItemValue());
 	}
-	
+
 	private boolean switchValidationByCountry(String country){
 		boolean isIT = "IT".equalsIgnoreCase(country);
 		province.setEnabled(isIT);
@@ -359,7 +354,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		postcode.reset();
 		return isIT;
 	}
-	
+
 	private void setVatIdSsnValidation(boolean activate){
 		if(activate){
 			ssn.setValidationBundle(ValidationKit.SSN_OR_VAT_ID);
@@ -370,43 +365,43 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		}
 	}
 
-	private void clearData(){
-		client = null;
-		setVatIdSsnValidation(true);
-		postcode.setValidationBundle(ValidationKit.NUMBER);
-		province.reset();
-		web.setText("");
-		for (ValidatedWidget<?> tb: new ValidatedWidget[]{companyName, 
-				postcode, phone, mobile, fax, email, address, city, web,
-				contactEmail, contactFax, contactMobile, contactName, contactPhone,
-				contactSurname, note}){
-			tb.reset();
-		}
-		ssnOrVatIdValidation.reset();
-		
-		province.setEnabled(true);
-		province.reset();
-		country.reset();
-		country.setSelectedItemByValue("IT");
-		ok.setText(I18N.INSTANCE.submit());
-		inlineNotification.hide();
-		clientDialogTitle.setText(I18N.INSTANCE.addNewClientTitle());
-		ok.reset();
-		selectDefaultPayment.clear();
-		setLocked(false);
-		paymentTypes.clear();
-	}
+	//	private void clearData(){
+	//		client = null;
+	//		setVatIdSsnValidation(true);
+	//		postcode.setValidationBundle(ValidationKit.NUMBER);
+	//		province.reset();
+	//		web.setText("");
+	//		for (ValidatedWidget<?> tb: new ValidatedWidget[]{companyName, 
+	//				postcode, phone, mobile, fax, email, address, city, web,
+	//				contactEmail, contactFax, contactMobile, contactName, contactPhone,
+	//				contactSurname, note}){
+	//			tb.reset();
+	//		}
+	//		ssnOrVatIdValidation.reset();
+	//		
+	//		province.setEnabled(true);
+	//		province.reset();
+	//		country.reset();
+	//		country.setSelectedItemByValue("IT");
+	//		ok.setText(I18N.INSTANCE.submit());
+	//		inlineNotification.hide();
+	//		clientDialogTitle.setText(I18N.INSTANCE.addNewClientTitle());
+	//		ok.reset();
+	//		selectDefaultPayment.clear();
+	//		setLocked(false);
+	//		paymentTypes.clear();
+	//	}
 
 	private boolean validate(){
 		boolean isValid = true;
 		inlineNotification.hide();
-		
+
 		ssnOrVatIdValidation.validate();
 		if(!ssnOrVatIdValidation.isValid()){
 			inlineNotification.showMessage(ssnOrVatIdValidation.getErrorMessage());
 			isValid = false;
 		}
-		
+
 		for (ValidatedWidget<?> tb: new ValidatedWidget[]{companyName, 
 				postcode, phone, mobile, fax, email, address, city, web,
 				contactEmail, contactFax, contactMobile, contactName, contactPhone,
@@ -414,7 +409,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 			tb.validate();
 			isValid = isValid && tb.isValid();
 		}
-		
+
 		country.validate();
 		isValid = isValid && country.isValid();
 		if(country.getSelectedItemValue().equalsIgnoreCase("IT")){

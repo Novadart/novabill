@@ -4,15 +4,12 @@
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:cache="http://www.springframework.org/schema/cache"
-	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
 						http://www.springframework.org/schema/beans/spring-beans-3.2.xsd
 						http://www.springframework.org/schema/context
 						http://www.springframework.org/schema/context/spring-context-3.2.xsd
 						http://www.springframework.org/schema/mvc
 						http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
-						http://www.springframework.org/schema/security
-						http://www.springframework.org/schema/security/spring-security-3.1.xsd
 						http://www.springframework.org/schema/cache
 						http://www.springframework.org/schema/cache/spring-cache-3.2.xsd">
 
@@ -29,48 +26,24 @@
 	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:shared="true">
 		<property name="configLocation" value="classpath:ehcache.xml" />
 	</bean>
-	
-	<!-- Resolves localized messages*.properties and application.properties 
-		files in the application to allow for internationalization. The messages*.properties 
-		files translate Roo generated messages which are part of the admin interface, 
-		the application.properties resource bundle localizes all application specific 
-		messages such as entity names and menu items. -->
-	<bean
-		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
-		id="messageSource" p:basenames="WEB-INF/i18n/messages,WEB-INF/i18n/application"
-		p:fallbackToSystemLocale="false" />
-	
-	<security:global-method-security pre-post-annotations="enabled"/>
-	
 
-	<bean id="invoice" class="com.novadart.novabill.web.gwt.InvoiceServiceProxy" primary="true"/>
-	<bean id="invoiceServiceImpl" class="com.novadart.novabill.web.gwt.InvoiceServiceImpl"/>
+	<bean id="invoice" class="com.novadart.novabill.web.gwt.InvoiceGwtController"/>
 
-	<bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationServiceProxy" primary="true"/>
-	<bean id="estimationServiceImpl" class="com.novadart.novabill.web.gwt.EstimationServiceImpl" />
+	<bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationGwtController"/>
 	
-	<bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteServiceProxy" primary="true"/>
-	<bean id="creditnoteServiceImpl" class="com.novadart.novabill.web.gwt.CreditNoteServiceImpl" />
+	<bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteGwtController"/>
 	
-	<bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentServiceProxy" primary="true"/>
-	<bean id="transportdocImpl" class="com.novadart.novabill.web.gwt.TransportDocumentServiceImpl" />
+	<bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentGwtController"/>
 
-	<bean id="client" class="com.novadart.novabill.web.gwt.ClientServiceProxy" primary="true"/>
-	<bean id="clientServiceImpl" class="com.novadart.novabill.web.gwt.ClientServiceImpl" />
+	<bean id="commodity" class="com.novadart.novabill.web.gwt.CommodityGwtController"/>
 	
-	<bean id="commodity" class="com.novadart.novabill.web.gwt.CommodityServiceProxy" primary="true"/>
-	<bean id="commodityServiceImpl" class="com.novadart.novabill.web.gwt.CommodityServiceImpl" />
+	<bean id="client" class="com.novadart.novabill.web.gwt.ClientGwtController"/>
 
-	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessServiceProxy" primary="true"/>
-	<bean id="businessServiceImpl" class="com.novadart.novabill.web.gwt.BusinessServiceImpl">
-		<lookup-method name="self" bean="businessServiceImpl"/>
-	</bean>
+	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtController"/>
 	
-	<bean id="paymenttype" class="com.novadart.novabill.web.gwt.PaymentTypeServiceProxy" primary="true"/>
-	<bean id="paymentTypeServiceImpl" class="com.novadart.novabill.web.gwt.PaymentTypeServiceImpl"/>
+	<bean id="paymenttype" class="com.novadart.novabill.web.gwt.PaymentTypeGwtController"/>
 	
-	
-	<bean id="batchdatafetcher" class="com.novadart.novabill.web.gwt.BatchDataFetcherServiceImpl"/>
+	<bean id="batchdatafetcher" class="com.novadart.novabill.web.gwt.BatchDataFetcherGwtController"/>
 	
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
 		<property name="mappings">

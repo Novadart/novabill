@@ -73,7 +73,7 @@ public class DeleteAccountTest {
 		String redirectLogoutView = deleteAccountController.processSubmit(deleteAccount, result, mock(SessionStatus.class));
 		Principal.entityManager().flush();
 		assertEquals("deleteAccount", deleteAccountView);
-		assertEquals("redirect:/resources/j_spring_security_logout", redirectLogoutView);
+		assertEquals("redirect:/resources/logout", redirectLogoutView);
 		assertEquals(null, Principal.findByUsername(username));
 		assertEquals(null, Business.findBusiness(businessID));
 	}

@@ -19,13 +19,13 @@ public aspect ClientServiceActionsAspect {
 	private UtilsService utilsService;
 	
 	pointcut add(Long businessID, ClientDTO clientDTO) :
-		execution(public Long com.novadart.novabill.web.gwt.ClientServiceImpl.add(..)) && args(businessID, clientDTO);
+		execution(public Long com.novadart.novabill.web.gwt.ClientGwtController.add(..)) && args(businessID, clientDTO);
 	
 	pointcut remove(Long businessID, Long id) :
-		execution(public void com.novadart.novabill.web.gwt.ClientServiceImpl.remove(..)) && args(businessID, id);
+		execution(public void com.novadart.novabill.web.gwt.ClientGwtController.remove(..)) && args(businessID, id);
 	
 	pointcut update(Long businessID, ClientDTO clientDTO) :
-		execution(public void com.novadart.novabill.web.gwt.ClientServiceImpl.update(..)) && args(businessID, clientDTO);
+		execution(public void com.novadart.novabill.web.gwt.ClientGwtController.update(..)) && args(businessID, clientDTO);
 	
 	after(Long businessID, ClientDTO clientDTO) returning (Long id) : add(businessID, clientDTO){
 		LOGGER.info("[{}, addClient, {}, businessID: {}, id: {}, dto: {}]",

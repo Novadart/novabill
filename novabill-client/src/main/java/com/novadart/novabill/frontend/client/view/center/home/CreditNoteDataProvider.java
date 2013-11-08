@@ -19,7 +19,7 @@ public class CreditNoteDataProvider extends AsyncDataProvider<CreditNoteDTO> {
 		final int start = 0;
 		final int length = display.getVisibleRange().getLength();
 		
-		ServerFacade.INSTANCE.getCreditnoteService().getAllInRange(Configuration.getBusinessId(), start, length, new ManagedAsyncCallback<PageDTO<CreditNoteDTO>>() {
+		ServerFacade.INSTANCE.getCreditNoteService().getAllInRange(Configuration.getBusinessId(), start, length, new ManagedAsyncCallback<PageDTO<CreditNoteDTO>>() {
 
 			@Override
 			public void onSuccess(PageDTO<CreditNoteDTO> result) {

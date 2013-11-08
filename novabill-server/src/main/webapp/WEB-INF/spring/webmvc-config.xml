@@ -9,79 +9,65 @@
 
 	<context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
 
-	<!-- The controllers are autodetected POJOs labeled with the @Controller 
-		annotation. -->
-	<context:component-scan base-package="com.novadart.novabill"
-		use-default-filters="false">
-		<context:include-filter expression="org.springframework.stereotype.Controller"
-			type="annotation" />
+	<context:component-scan base-package="com.novadart.novabill" use-default-filters="false">
+		<context:include-filter expression="org.springframework.stereotype.Controller" type="annotation" />
 	</context:component-scan>
-
-	<!-- Turns on support for mapping requests to Spring MVC @Controller methods 
-		Also registers default Formatters and Validators for use across all @Controllers -->
+	
 	<mvc:annotation-driven />
 
+	<mvc:resources location="/frontend_assets/css/" mapping="/frontend_assets/css/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/fonts/" mapping="/frontend_assets/fonts/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/scripts/" mapping="/frontend_assets/scripts/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/plugins/" mapping="/frontend_assets/plugins/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/img/" mapping="/frontend_assets/img/**" cache-period="${images.cachePeriod}" />
+	
+    <mvc:resources location="/private_assets/pages/css/" mapping="/private_assets/pages/css/**" cache-period="${css.cachePeriod}" />
+    <mvc:resources location="/private_assets/pages/partials/" mapping="/private_assets/pages/partials/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/private_assets/css/" mapping="/private_assets/css/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/private_assets/fonts/" mapping="/private_assets/fonts/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/private_assets/pages/scripts/" mapping="/private_assets/pages/scripts/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/private_assets/scripts/" mapping="/private_assets/scripts/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/private_assets/plugins/" mapping="/private_assets/plugins/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/private_assets/img/" mapping="/private_assets/img/**" cache-period="${images.cachePeriod}" />
+	
+	<mvc:resources location="/rpc/" mapping="/rpc/**" cache-period="${rpc.cachePeriod}" />
+	<mvc:resources location="/democode/" mapping="/democode/**" cache-period="${democode.cachePeriod}" />
 
-	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
-		up static resources -->
-	<mvc:resources location="/, classpath:/META-INF/web-resources/"
-		mapping="/resources/**" />
-
-	<!-- Allows for mapping the DispatcherServlet to "/" by forwarding static 
-		resource requests to the container's default Servlet -->
-	<mvc:default-servlet-handler />
-
-	<!-- register "global" interceptor beans to apply to all registered HandlerMappings -->
 	<mvc:interceptors>
-		<bean class="org.springframework.web.servlet.theme.ThemeChangeInterceptor" />
-		<bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor"
-			p:paramName="lang" />
+		<mvc:interceptor>
+			<mvc:mapping path="/private/**"/>
+			<bean class="com.novadart.novabill.interceptor.AccountBootstrapInterceptor" />
+		</mvc:interceptor>
 	</mvc:interceptors>
 
-	<!-- selects a static view for rendering without the need for an explicit 
-		controller -->
-	<mvc:view-controller path="/login" />
-	<mvc:view-controller path="/" view-name="index" />
-	<mvc:view-controller path="/uncaughtException" />
+	<!-- <mvc:view-controller path="/login" /> -->
+<!-- <mvc:view-controller path="/uncaughtException" />
 	<mvc:view-controller path="/resourceNotFound" />
 	<mvc:view-controller path="/dataAccessFailure" />
 	<mvc:view-controller path="/registrationCompleted" />
 	<mvc:view-controller path="/passwordRecoveryCommenced" />
-	<mvc:view-controller path="/tos" />
+	<mvc:view-controller path="/tos" /> -->
 	<!-- <mvc:view-controller path="/privacyPolicy" /> --> <!-- Not needed, currently we're using iubenda.com -->
 	<!-- <mvc:view-controller path="/premiumInfo"/> -->
 	
 	<!-- TEST view -->
 	<mvc:view-controller path="/resolutionTest" />
 
-	<!-- Resolves localized messages*.properties and application.properties 
-		files in the application to allow for internationalization. The messages*.properties 
-		files translate Roo generated messages which are part of the admin interface, 
-		the application.properties resource bundle localizes all application specific 
-		messages such as entity names and menu items. -->
 	<bean
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
 		id="messageSource" p:basenames="WEB-INF/i18n/messages,WEB-INF/i18n/application"
 		p:fallbackToSystemLocale="false" />
 
-	<!-- store preferred language configuration in a cookie -->
 	<bean class="org.springframework.web.servlet.i18n.CookieLocaleResolver"
 		id="localeResolver" p:cookieName="locale" />
 
-	<!-- resolves localized <theme_name>.properties files in the classpath to 
-		allow for theme support -->
 	<bean
 		class="org.springframework.ui.context.support.ResourceBundleThemeSource"
 		id="themeSource" />
 
-	<!-- store preferred theme configuration in a cookie -->
 	<bean class="org.springframework.web.servlet.theme.CookieThemeResolver"
 		id="themeResolver" p:cookieName="theme" p:defaultThemeName="standard" />
 
-	<!-- This bean resolves specific types of exceptions to corresponding logical 
-		- view names for error views. The default behaviour of DispatcherServlet 
-		- is to propagate all exceptions to the servlet container: this will happen 
-		- here with all other types of exceptions. -->
 	<bean
 		class="org.springframework.web.servlet.handler.SimpleMappingExceptionResolver"
 		p:defaultErrorView="uncaughtException">
@@ -95,7 +81,6 @@
 		</property>
 	</bean>
 
-	<!-- enable this for integration of file upload functionality -->
 	<bean
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
 		id="multipartResolver" />
@@ -111,11 +96,8 @@
 		<property name="definitions">
 			<list>
 				<!-- Scan views directory for Tiles configurations -->
-				<value>/WEB-INF/views/views-base.xml</value>
-				<value>/WEB-INF/views/views-public.xml</value>
-				<value>/WEB-INF/views/views-private.xml</value>
-				<value>/WEB-INF/views/views-error.xml</value>
-				<value>/WEB-INF/views/views-test.xml</value>
+				<value>/WEB-INF/views/frontend-tiles-defs.xml</value>
+				<value>/WEB-INF/views/private-tiles-defs.xml</value>
 			</list>
 		</property>
 	</bean>

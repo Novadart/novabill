@@ -80,6 +80,14 @@
 					<skip>true</skip>
 				</configuration>
 			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 	<profiles>
@@ -117,7 +125,6 @@
 								<configuration>
 									<modules>
 										<module>com.novadart.novabill.frontend.Novabill</module>
-										<module>com.novadart.novabill.frontend.NovabillDemo</module>
 									</modules>
 								</configuration>
 								<goals>
@@ -150,7 +157,6 @@
 								<configuration>
 									<modules>
 										<module>com.novadart.novabill.frontend.Novabill</module>
-										<module>com.novadart.novabill.frontend.NovabillDemo</module>
 									</modules>
 									<optimizationLevel>9</optimizationLevel>
 									<enableClosureCompiler>true</enableClosureCompiler>

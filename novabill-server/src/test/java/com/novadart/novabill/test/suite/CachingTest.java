@@ -47,13 +47,13 @@ import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.BusinessService;
-import com.novadart.novabill.shared.client.facade.ClientService;
-import com.novadart.novabill.shared.client.facade.CreditNoteService;
-import com.novadart.novabill.shared.client.facade.EstimationService;
-import com.novadart.novabill.shared.client.facade.InvoiceService;
-import com.novadart.novabill.shared.client.facade.PaymentTypeService;
-import com.novadart.novabill.shared.client.facade.TransportDocumentService;
+import com.novadart.novabill.shared.client.facade.BusinessGwtService;
+import com.novadart.novabill.shared.client.facade.ClientGwtService;
+import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
+import com.novadart.novabill.shared.client.facade.EstimationGwtService;
+import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
+import com.novadart.novabill.shared.client.facade.PaymentTypeGwtService;
+import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -63,25 +63,25 @@ import com.novadart.novabill.shared.client.facade.TransportDocumentService;
 public class CachingTest extends GWTServiceTest {
 	
 	@Autowired
-	private BusinessService businessService;
+	private BusinessGwtService businessService;
 	
 	@Autowired
-	private ClientService clientService;
+	private ClientGwtService clientService;
 	
 	@Autowired
-	private InvoiceService invoiceService;
+	private InvoiceGwtService invoiceService;
 	
 	@Autowired
-	private CreditNoteService creditNoteService;
+	private CreditNoteGwtService creditNoteService;
 	
 	@Autowired
-	private EstimationService estimationService;
+	private EstimationGwtService estimationService;
 	
 	@Autowired
-	private TransportDocumentService transDocService;
+	private TransportDocumentGwtService transDocService;
 	
 	@Autowired
-	private PaymentTypeService paymentTypeService;
+	private PaymentTypeGwtService paymentTypeService;
 	
 	@Autowired
 	private CacheManager cacheManager;

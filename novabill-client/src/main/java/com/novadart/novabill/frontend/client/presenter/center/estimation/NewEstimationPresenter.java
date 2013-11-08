@@ -4,14 +4,13 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
-import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.ClientPlace;
-import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.view.center.estimation.EstimationView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
@@ -21,8 +20,8 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public class NewEstimationPresenter extends AbstractEstimationPresenter {
 
-	public NewEstimationPresenter(PlaceController placeController, EventBus eventBus, EstimationView view) {
-		super(placeController, eventBus, view);
+	public NewEstimationPresenter(PlaceController placeController, EventBus eventBus, EstimationView view, JavaScriptObject callback) {
+		super(placeController, eventBus, view, callback);
 	}
 	
 	@Override
@@ -40,7 +39,6 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 		getView().getValidTill().setValue(new Date(now.getTime() + 2592000000L));
 
 		getView().getCreateDocument().setVisible(true);
-		getView().getConvertToInvoice().setVisible(true);
 	}
 
 	public void setDataForNewEstimation(ClientDTO client, Long progressiveId, EstimationDTO estimation) {
@@ -72,7 +70,6 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 		
 		getView().getCreateDocument().showLoader(true);
 		getView().setLocked(true);
-		getView().getConvertToInvoice().getButton().setEnabled(false);
 
 		final EstimationDTO estimation = createEstimation(null);
 		ServerFacade.INSTANCE.getEstimationService().add(estimation, new ManagedAsyncCallback<Long>() {
@@ -81,16 +78,8 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 			public void onSuccess(Long result) {
 				getView().getCreateDocument().showLoader(false);
 				Notification.showMessage(I18N.INSTANCE.estimationCreationSuccess());
-
-				getEventBus().fireEvent(new DocumentAddEvent(estimation));
-
-				ClientPlace cp = new ClientPlace();
-				cp.setClientId(getClient().getId());
-				cp.setDocs(DOCUMENTS.estimations);
-				goTo(cp);
-				
 				getView().setLocked(false);
-				getView().getConvertToInvoice().getButton().setEnabled(true);
+				BridgeUtils.invokeJSCallback(Boolean.TRUE.toString(), getCallback());
 			}
 
 			@Override
@@ -103,7 +92,6 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 				}
 				
 				getView().setLocked(false);
-				getView().getConvertToInvoice().getButton().setEnabled(true);
 			}
 		});
 	}

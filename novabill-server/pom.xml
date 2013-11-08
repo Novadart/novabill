@@ -271,10 +271,21 @@
 			</exclusions>
 		</dependency>
 		<dependency>
+			<groupId>com.novadart.jasperreports.fonts</groupId>
+			<artifactId>fonts-arial</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
 		</dependency>
-            
+
+	<!-- Url rewrite filter -->
+		<dependency>
+			<groupId>org.tuckey</groupId>
+			<artifactId>urlrewritefilter</artifactId>
+			<scope>runtime</scope>
+		</dependency>
+
 	</dependencies>
 
 	<build>
@@ -291,7 +302,7 @@
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
 					<warSourceExcludes>**/rpc/**, **/democode/**,
-						WEB-INF/views/analytics.jsp, WEB-INF/web.xml</warSourceExcludes>
+						WEB-INF/views/tiles/frontend/analytics.jsp, WEB-INF/web.xml</warSourceExcludes>
 					<webResources>
 						<resource>
 							<directory>src/main/webapp/WEB-INF/</directory>
@@ -299,7 +310,7 @@
 							<targetPath>WEB-INF</targetPath>
 							<includes>
 								<include>web.xml</include>
-								<include>views/analytics.jsp</include>
+								<include>views/tiles/frontend/analytics.jsp</include>
 							</includes>
 						</resource>
 					</webResources>

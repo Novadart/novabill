@@ -17,13 +17,13 @@ public privileged aspect TransportDocumentServiceActionsAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(TransportDocumentServiceActionsAspect.class);
 	
 	pointcut add(TransportDocumentDTO transportDocDTO) :
-		execution(public Long com.novadart.novabill.web.gwt.TransportDocumentServiceImpl.add(..)) && args(transportDocDTO);
+		execution(public Long com.novadart.novabill.web.gwt.TransportDocumentGwtController.add(..)) && args(transportDocDTO);
 	
 	pointcut remove(Long businessID, Long clientID, Long id) : 
-		execution(public void com.novadart.novabill.web.gwt.TransportDocumentServiceImpl.remove(..)) && args(businessID, clientID, id);
+		execution(public void com.novadart.novabill.web.gwt.TransportDocumentGwtController.remove(..)) && args(businessID, clientID, id);
 	
 	pointcut update(TransportDocumentDTO transportDocDTO) : 
-		execution(public void com.novadart.novabill.web.gwt.TransportDocumentServiceImpl.update(..)) && args(transportDocDTO);
+		execution(public void com.novadart.novabill.web.gwt.TransportDocumentGwtController.update(..)) && args(transportDocDTO);
 	
 	
 	after(TransportDocumentDTO transportDocDTO) returning (Long id) : add(transportDocDTO){

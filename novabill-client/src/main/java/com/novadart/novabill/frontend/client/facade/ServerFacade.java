@@ -2,14 +2,14 @@ package com.novadart.novabill.frontend.client.facade;
 
 import com.google.gwt.core.shared.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.novadart.novabill.shared.client.facade.BatchDataFetcherServiceAsync;
-import com.novadart.novabill.shared.client.facade.BusinessServiceAsync;
-import com.novadart.novabill.shared.client.facade.ClientServiceAsync;
-import com.novadart.novabill.shared.client.facade.CreditNoteServiceAsync;
-import com.novadart.novabill.shared.client.facade.EstimationServiceAsync;
-import com.novadart.novabill.shared.client.facade.InvoiceServiceAsync;
-import com.novadart.novabill.shared.client.facade.PaymentTypeServiceAsync;
-import com.novadart.novabill.shared.client.facade.TransportDocumentServiceAsync;
+import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.BusinessGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.ClientGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.CreditNoteGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.EstimationGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.InvoiceGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.PaymentTypeGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.TransportDocumentGwtServiceAsync;
 
 public interface ServerFacade {
 	
@@ -23,20 +23,20 @@ public interface ServerFacade {
 
 	public void deleteLogo(final AsyncCallback<Boolean> callback);
 
-	public InvoiceServiceAsync getInvoiceService();
+	public InvoiceGwtServiceAsync getInvoiceService();
 
-	public ClientServiceAsync getClientService();
+	public ClientGwtServiceAsync getClientService();
 
-	public BusinessServiceAsync getBusinessService();
+	public BusinessGwtServiceAsync getBusinessService();
 
-	public EstimationServiceAsync getEstimationService();
+	public EstimationGwtServiceAsync getEstimationService();
 
-	public CreditNoteServiceAsync getCreditnoteService();
+	public CreditNoteGwtServiceAsync getCreditNoteService();
 
-	public TransportDocumentServiceAsync getTransportdocumentService();
+	public TransportDocumentGwtServiceAsync getTransportdocumentService();
 
-	public PaymentTypeServiceAsync getPaymentService();
+	public PaymentTypeGwtServiceAsync getPaymentService();
 
-	public BatchDataFetcherServiceAsync getBatchfetcherService();
+	public BatchDataFetcherGwtServiceAsync getBatchfetcherService();
 
 }

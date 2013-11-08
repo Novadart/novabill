@@ -6,9 +6,9 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
-import com.novadart.novabill.shared.client.facade.CreditNoteServiceAsync;
+import com.novadart.novabill.shared.client.facade.CreditNoteGwtServiceAsync;
 
-public class DemoCreditNoteService implements CreditNoteServiceAsync {
+public class DemoCreditNoteService implements CreditNoteGwtServiceAsync {
 
 	@Override
 	public void add(CreditNoteDTO creditNoteDTO, AsyncCallback<Long> callback) {

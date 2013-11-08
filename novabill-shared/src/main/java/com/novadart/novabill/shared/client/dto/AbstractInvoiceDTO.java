@@ -8,18 +8,22 @@ public class AbstractInvoiceDTO extends AccountingDocumentDTO {
     
     private boolean payed;
     
+	
 	public Date getPaymentDueDate() {
 		return paymentDueDate;
 	}
 
+	
 	public void setPaymentDueDate(Date paymentDueDate) {
 		this.paymentDueDate = paymentDueDate;
 	}
 
+	
 	public boolean getPayed() {
 		return payed;
 	}
 
+	
 	public void setPayed(boolean payed) {
 		this.payed = payed;
 	}
