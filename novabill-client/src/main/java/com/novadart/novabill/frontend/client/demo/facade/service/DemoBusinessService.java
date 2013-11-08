@@ -8,6 +8,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -122,6 +123,13 @@ public class DemoBusinessService implements BusinessGwtServiceAsync {
 //		Configuration.setBusiness(businessDTO);
 		Data.setBusiness(businessDTO);
 		callback.onSuccess(null);
+	}
+
+	@Override
+	public void getCommodities(Long businessID,
+			AsyncCallback<List<CommodityDTO>> callback) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }
