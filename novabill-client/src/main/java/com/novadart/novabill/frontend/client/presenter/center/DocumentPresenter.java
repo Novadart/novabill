@@ -108,7 +108,6 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 			
 			switch(eo.getErrorCode()){
 			case INVALID_DOCUMENT_ID:
-				getView().getDocScroll().scrollToTop();
 				StringBuilder sb = new StringBuilder();
 				List<Long> gaps = eo.getGaps();
 

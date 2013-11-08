@@ -124,7 +124,6 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 
 	@Override
 	public void onLoad() {
-		getView().getTitleLabel().setText(I18N.INSTANCE.newTransportDocumentCreation());
 	}
 
 	@Override

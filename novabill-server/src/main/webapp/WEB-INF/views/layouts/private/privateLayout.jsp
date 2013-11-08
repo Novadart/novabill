@@ -502,6 +502,8 @@
 	<script>window.angular || document.write('<script src="${privateAssetsUrl}/plugins/angular-1.2.0-rc.3.min.js"><\/script>');</script>
 	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular-route.min.js"></script>
 	<script src="${privateAssetsUrl}/plugins/angular-i18n/angular-locale_it-it.js" type="text/javascript"></script>
+	<script src="${privateAssetsUrl}/plugins/angular-translate.min.js" type="text/javascript"></script>
+	<script src="${privateAssetsUrl}/pages/scripts/translations.js" type="text/javascript"></script>
 	
 	<script src="${privateAssetsUrl}/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 	<!-- IMPORTANT! Load jquery-ui-1.10.1.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
@@ -526,6 +528,8 @@
 	<script>
 	var NovabillConf = {
 		    businessId : '<%=business.getId()%>',
+		    
+		    dashboardUrl : '${dashboardUrl}',
 		    clientsBaseUrl : '${clientsBaseUrl}',
 		    invoicesBaseUrl : '${invoicesUrl}',
 		    estimationsBaseUrl : '${estimationsUrl}',

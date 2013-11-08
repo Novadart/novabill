@@ -2,7 +2,6 @@ package com.novadart.novabill.frontend.client.view;
 
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
@@ -38,8 +37,6 @@ public interface DocumentView<P extends DocumentView.Presenter> extends View<P>,
 	Label getTotalBeforeTaxes();
 	
 	ItemInsertionForm getItemInsertionForm();
-	
-	ScrollPanel getDocScroll();
 	
 	ValidatedTextArea getNote();
 	

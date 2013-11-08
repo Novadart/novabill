@@ -3,7 +3,6 @@ package com.novadart.novabill.frontend.client.view.center.creditnote;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -13,7 +12,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
@@ -39,10 +37,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	interface CreditNoteViewImplUiBinder extends UiBinder<Widget, CreditNoteViewImpl> {
 	}
 
-	@UiField Label titleLabel;
-
 	@UiField FlowPanel docControls;
-	@UiField ScrollPanel docScroll;
 
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 
@@ -99,16 +94,6 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 
 	}
 
-	@Override
-	protected Element getBody() {
-		return docScroll.getElement();
-	}
-
-	@Override
-	protected Element[] getNonBodyElements() {
-		return new Element[]{titleLabel.getElement(), docControls.getElement()};
-	}
-
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
@@ -117,11 +102,6 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	@UiFactory
 	AccountDocumentCss getAccountDocumentCss(){
 		return CSS;
-	}
-
-	@Override
-	public ScrollPanel getDocScroll() {
-		return docScroll;
 	}
 
 	@Override
@@ -219,11 +199,6 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	@Override
 	public ValidatedTextArea getNote() {
 		return note;
-	}
-
-	@Override
-	public Label getTitleLabel() {
-		return titleLabel;
 	}
 
 }

@@ -1,4 +1,6 @@
-angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.directives'])
+'use strict';
+
+angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.directives', 'novabill.translations'])
 
 
 /**
@@ -39,7 +41,10 @@ angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.
 /**
  * ESTIMATION MODIFY PAGE CONTROLLER
  */
-.controller('CreditNoteDetailsCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+.controller('CreditNoteDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                      function($scope, $routeParams, $location, $translate) {
+	$scope.pageTitle = $translate('MODIFY_CREDIT_NOTE');
+	
     GWT_UI.showModifyCreditNotePage('credit-note-details', $routeParams.creditNoteId, {
     	onSuccess : function(bool){
     	    $scope.$apply(function(){
@@ -55,7 +60,10 @@ angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.
 /**
  * ESTIMATION CREATE PAGE CONTROLLER
  */
-.controller('CreditNoteCreateCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+.controller('CreditNoteCreateCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                     function($scope, $routeParams, $location, $translate) {
+	$scope.pageTitle = $translate('NEW_CREDIT_NOTE');
+	
 	GWT_UI.showNewCreditNotePage('credit-note-details', $routeParams.clientId, {
     	onSuccess : function(bool){
     		$scope.$apply(function(){
@@ -70,7 +78,10 @@ angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.
 /**
  * ESTIMATION CREATE PAGE CONTROLLER
  */
-.controller('CreditNoteFromInvoiceCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+.controller('CreditNoteFromInvoiceCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                          function($scope, $routeParams, $location, $translate) {
+	$scope.pageTitle = $translate('NEW_CREDIT_NOTE');
+	
 	GWT_UI.showFromInvoiceCreditNotePage('credit-note-details', $routeParams.invoiceId, {
     	onSuccess : function(bool){
     		$scope.$apply(function(){

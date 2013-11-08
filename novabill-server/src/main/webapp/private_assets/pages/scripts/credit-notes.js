@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module("novabill.creditNotes", ['novabill.creditNotes.controllers','ngRoute'])
 
 .config(function($routeProvider){

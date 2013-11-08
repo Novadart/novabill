@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module("novabill.transportDocuments", ['novabill.transportDocuments.controllers','ngRoute'])
 
 .config(function($routeProvider){

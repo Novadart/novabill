@@ -38,7 +38,6 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
 	@Override
 	public void onLoad() {
-		getView().getTitleLabel().setText(I18N.INSTANCE.newInvoiceCreation());
 	}
 
 	private void initData(ClientDTO client, Long progressiveId){

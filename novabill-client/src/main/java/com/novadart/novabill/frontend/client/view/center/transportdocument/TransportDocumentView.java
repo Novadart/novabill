@@ -1,7 +1,6 @@
 package com.novadart.novabill.frontend.client.view.center.transportdocument;
 
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
@@ -23,8 +22,6 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 	}
 	
 	
-	Label getTitleLabel();
-
 	RichTextBox getFromAddrCompanyName();
 
 	RichTextBox getFromAddrStreetName();

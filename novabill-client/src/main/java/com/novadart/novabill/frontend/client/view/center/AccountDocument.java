@@ -1,13 +1,9 @@
 package com.novadart.novabill.frontend.client.view.center;
 
-import com.google.gwt.core.client.Scheduler;
 import com.google.gwt.core.shared.GWT;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.resources.client.ClientBundle;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
-import com.novadart.novabill.frontend.client.util.WidgetUtils;
 
 public abstract class AccountDocument extends Composite {
 	
@@ -25,21 +21,21 @@ public abstract class AccountDocument extends Composite {
 	protected void onLoad() {
 		super.onLoad();
 		CSS.ensureInjected();
-		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
-			
-			@Override
-			public void execute() {
-				WidgetUtils.setElementHeightToFillSpace(getBody(), getElement(), getNonBodyElements());
-			}
-		});
+//		Scheduler.get().scheduleDeferred(new Scheduler.ScheduledCommand() {
+//			
+//			@Override
+//			public void execute() {
+//				WidgetUtils.setElementHeightToFillSpace(getBody(), getElement(), getNonBodyElements());
+//			}
+//		});
 	}
 	
-	protected abstract Element[] getNonBodyElements();
-	
-	protected abstract Element getBody();
+//	protected abstract Element[] getNonBodyElements();
+//	
+//	protected abstract Element getBody();
 	
 	protected abstract ValidatedTextBox getNumber();
 	
-	protected abstract ScrollPanel getDocScroll();
+//	protected abstract ScrollPanel getDocScroll();
 	
 }

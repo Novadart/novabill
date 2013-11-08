@@ -1,9 +1,23 @@
-<button type="button" class="btn red new-invoice" ng-click="newInvoiceClick()">New Invoice</button>
+<div class="container-fluid">
+	<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	<h3 class="page-title">Invoices</h3>
+	<ul class="breadcrumb">
+		<li><i class="icon-home"></i> <a href="../">Home</a>
+			<i class="icon-angle-right"></i></li>
+		<li><span>Invoices</span></li>
+	</ul>
+	<!-- END PAGE TITLE & BREADCRUMB-->
 
+	<button type="button" class="btn red new-invoice"
+		ng-click="newInvoiceClick()">New Invoice</button>
 
-<div class="invoices">
-    <img class="spinner" ng-show="invoices==null" src="../../private_assets/img/ajax-loading.gif">
-    <novabill-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoices" />
+	<div class="invoices">
+		<img class="spinner" ng-show="invoices==null"
+			src="../../private_assets/img/ajax-loading.gif">
+		<novabill-invoice invoice="inv" bottom-up-menu="!$first && $last"
+			ng-repeat="inv in invoices" />
+	</div>
+
+	<removal-dialog></removal-dialog>
 </div>
 
-<removal-dialog></removal-dialog>

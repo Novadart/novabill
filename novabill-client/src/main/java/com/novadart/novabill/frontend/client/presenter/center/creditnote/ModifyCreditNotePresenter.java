@@ -39,7 +39,6 @@ public class ModifyCreditNotePresenter extends AbstractCreditNotePresenter {
 
 	@Override
 	public void onLoad() {
-		getView().getTitleLabel().setText(I18N.INSTANCE.modifyCreditNote());
 	}
 
 	@Override

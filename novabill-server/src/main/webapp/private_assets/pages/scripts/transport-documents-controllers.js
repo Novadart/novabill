@@ -1,4 +1,6 @@
-angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'novabill.directives'])
+'use strict';
+
+angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'novabill.directives', 'novabill.translations'])
 
 
 /**
@@ -39,7 +41,10 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 /**
  * ESTIMATION MODIFY PAGE CONTROLLER
  */
-.controller('TransportDocumentDetailsCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+.controller('TransportDocumentDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate', 
+                                             function($scope, $routeParams, $location, $translate) {
+	$scope.pageTitle = $translate('MODIFY_TRANSPORT_DOCUMENT');
+	
     GWT_UI.showModifyTransportDocumentPage('transport-document-details', $routeParams.transportDocumentId, {
     	onSuccess : function(bool){
     	    $scope.$apply(function(){
@@ -55,7 +60,10 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 /**
  * ESTIMATION CREATE PAGE CONTROLLER
  */
-.controller('TransportDocumentCreateCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+.controller('TransportDocumentCreateCtrl', ['$scope', '$routeParams', '$location', '$translate', 
+                                            function($scope, $routeParams, $location, $translate) {
+	$scope.pageTitle = $translate('NEW_TRANSPORT_DOCUMENT');
+	
 	GWT_UI.showNewTransportDocumentPage('transport-document-details', $routeParams.clientId, {
     	onSuccess : function(bool){
     		$scope.$apply(function(){

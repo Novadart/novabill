@@ -1,4 +1,6 @@
-angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.directives'])
+'use strict';
+
+angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.directives', 'novabill.translations'])
 
 
 /**
@@ -39,7 +41,10 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 /**
  * ESTIMATION MODIFY PAGE CONTROLLER
  */
-.controller('EstimationDetailsCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+.controller('EstimationDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                      function($scope, $routeParams, $location, $translate) {
+	$scope.pageTitle = $translate('MODIFY_ESTIMATION');
+	
     GWT_UI.showModifyEstimationPage('estimation-details', $routeParams.estimationId, {
     	onSuccess : function(bool){
     	    $scope.$apply(function(){
@@ -55,7 +60,10 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 /**
  * ESTIMATION CREATE PAGE CONTROLLER
  */
-.controller('EstimationCreateCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+.controller('EstimationCreateCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                     function($scope, $routeParams, $location, $translate) {
+	$scope.pageTitle = $translate('NEW_ESTIMATION');
+	
 	GWT_UI.showNewEstimationPage('estimation-details', $routeParams.clientId, {
     	onSuccess : function(bool){
     		$scope.$apply(function(){

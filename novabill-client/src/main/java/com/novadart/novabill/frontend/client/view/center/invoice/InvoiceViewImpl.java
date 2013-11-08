@@ -4,7 +4,6 @@ import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -15,7 +14,6 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -47,9 +45,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 	
 	@UiField FlowPanel docControls;
-	@UiField ScrollPanel docScroll;
 
-	@UiField Label titleLabel;
 	@UiField(provided=true) SelectPayment payment;
 	@UiField CheckBox makePaymentAsDefault;
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
@@ -116,17 +112,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		presenter.onLoad();
 	}
 	
-	@Override
-	protected Element getBody() {
-		return docScroll.getElement();
-	}
-	
-	@Override
-	protected Element[] getNonBodyElements() {
-		return new Element[]{titleLabel.getElement(), docControls.getElement()};
-	}
-	
-	
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
@@ -140,11 +125,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiFactory
 	GlobalCss getGlobalCss(){
 		return GlobalBundle.INSTANCE.globalCss();
-	}
-	
-	@Override
-	public ScrollPanel getDocScroll() {
-		return docScroll;
 	}
 	
 	@Override
@@ -202,11 +182,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		return note;
 	}
 
-	@Override
-	public Label getTitleLabel() {
-		return titleLabel;
-	}
-	
 	@Override
 	public Label getTotalBeforeTaxes() {
 		return totalBeforeTaxes;

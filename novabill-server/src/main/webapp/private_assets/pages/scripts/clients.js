@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module("novabill.clients", ['novabill.clients.controllers','ngRoute'])
 
 .config(['$routeProvider', function($routeProvider){

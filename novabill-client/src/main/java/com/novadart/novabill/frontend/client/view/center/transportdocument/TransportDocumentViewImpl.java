@@ -3,7 +3,6 @@ package com.novadart.novabill.frontend.client.view.center.transportdocument;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
-import com.google.gwt.dom.client.Element;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
@@ -14,7 +13,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
@@ -45,9 +43,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	interface TransportDocumentViewImplUiBinder extends UiBinder<Widget, TransportDocumentViewImpl> {
 	}
 
-	@UiField Label titleLabel;
 	@UiField FlowPanel docControls;
-	@UiField ScrollPanel docScroll;
 
 	@UiField(provided=true) RichTextBox fromAddrCompanyName;
 	@UiField(provided=true) RichTextBox fromAddrStreetName;
@@ -162,26 +158,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		presenter.onLoad();
 	}
 
-	@Override
-	protected Element getBody() {
-		return docScroll.getElement();
-	}
-
-	@Override
-	protected Element[] getNonBodyElements() {
-		return new Element[]{titleLabel.getElement(), docControls.getElement()};
-	}
-
 	@UiFactory
 	GlobalCss getGlobalCss(){
 		return GlobalBundle.INSTANCE.globalCss();
 	}
 	
-	@Override
-	public ScrollPanel getDocScroll() {
-		return docScroll;
-	}
-
 	@Override
 	public ValidatedTextBox getNumber() {
 		return number;
@@ -356,10 +337,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@Override
 	public ValidatedTextArea getNote() {
 		return note;
-	}
-
-	public Label getTitleLabel() {
-		return titleLabel;
 	}
 
 	public RichTextBox getFromAddrCompanyName() {

@@ -122,7 +122,6 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 
 	@Override
 	public void onLoad() {
-		getView().getTitleLabel().setText(I18N.INSTANCE.modifyTransportDocument());
 	}
 
 	@Override

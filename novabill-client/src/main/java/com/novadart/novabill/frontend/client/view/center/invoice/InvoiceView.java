@@ -28,8 +28,6 @@ public interface InvoiceView extends DocumentView<InvoiceView.Presenter> {
 
 	SelectPayment getPayment();
 
-	Label getTitleLabel();
-
 	CheckBox getMakePaymentAsDefault();
 
 }

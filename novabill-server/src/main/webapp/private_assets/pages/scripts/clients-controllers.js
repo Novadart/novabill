@@ -1,11 +1,13 @@
-angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.directives'])
+'use strict';
+
+angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.directives', 'novabill.translations'])
 
 
 /**
  * CLIENTS PAGE CONTROLLER
  */
-.controller('ClientsCtrl', ['$scope', 'NSorting', '$location', '$anchorScroll', 
-                            function($scope, NSorting, $location, $anchorScroll){
+.controller('ClientsCtrl', ['$scope', 'NSorting', '$location',
+                            function($scope, NSorting, $location){
 	
 	var partitionsCache = null;
 	

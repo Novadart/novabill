@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module("novabill.estimations", ['novabill.estimations.controllers','ngRoute'])
 
 .config(function($routeProvider){

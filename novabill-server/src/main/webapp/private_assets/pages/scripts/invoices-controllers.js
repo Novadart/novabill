@@ -1,4 +1,6 @@
-angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.directives'])
+'use strict';
+
+angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.directives', 'novabill.translations'])
 
 
 /**
@@ -39,7 +41,10 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
 /**
  * INVOICE MODIFY PAGE CONTROLLER
  */
-.controller('InvoiceDetailsCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+.controller('InvoiceDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate', 
+                                   function($scope, $routeParams, $location, $translate) {
+	$scope.pageTitle = $translate('MODIFY_INVOICE');
+	
     GWT_UI.showModifyInvoicePage('invoice-details', $routeParams.invoiceId, {
     	onSuccess : function(bool){
     	    $scope.$apply(function(){
@@ -55,7 +60,10 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
 /**
  * INVOICE CREATE PAGE CONTROLLER
  */
-.controller('InvoiceCreateCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+.controller('InvoiceCreateCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                  function($scope, $routeParams, $location, $translate) {
+	$scope.pageTitle = $translate('NEW_INVOICE');
+	
 	GWT_UI.showNewInvoicePage('invoice-details', $routeParams.clientId, {
     	onSuccess : function(bool){
     		$scope.$apply(function(){
@@ -71,7 +79,10 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
 /**
  * INVOICE CLONE PAGE CONTROLLER
  */
-.controller('InvoiceCloneInvoiceCtrl', ['$scope', '$routeParams', '$location', function($scope, $routeParams, $location) {
+.controller('InvoiceCloneInvoiceCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                        function($scope, $routeParams, $location, $translate) {
+	$scope.pageTitle = $translate('NEW_INVOICE');
+	
 	GWT_UI.showCloneInvoicePage('invoice-details', $routeParams.clientId, $routeParams.sourceId, {
     	onSuccess : function(bool){
     	    $scope.$apply(function(){

@@ -58,7 +58,6 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 
 	@Override
 	public void onLoad() {
-		getView().getTitleLabel().setText(I18N.INSTANCE.newEstimationCreation());
 	}
 	
 	@Override

@@ -1,3 +1,5 @@
+'use strict';
+
 angular.module('novabill.utils', [])
 
 .factory('NSorting', function() {
