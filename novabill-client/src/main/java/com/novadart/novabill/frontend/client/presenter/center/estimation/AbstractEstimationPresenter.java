@@ -3,15 +3,12 @@ package com.novadart.novabill.frontend.client.presenter.center.estimation;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.ClientPlace;
-import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
-import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
 import com.novadart.novabill.frontend.client.presenter.center.DocumentPresenter;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.estimation.EstimationView;
@@ -24,8 +21,8 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 
 	private EstimationDTO estimation;
 	
-	public AbstractEstimationPresenter(PlaceController placeController,	EventBus eventBus, EstimationView view) {
-		super(placeController, eventBus, view);
+	public AbstractEstimationPresenter(PlaceController placeController,	EventBus eventBus, EstimationView view, JavaScriptObject callback) {
+		super(placeController, eventBus, view, callback);
 	}
 	
 	protected void setEstimation(EstimationDTO estimation) {
@@ -43,83 +40,12 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
-					ClientPlace cp = new ClientPlace();
-					cp.setClientId(getClient().getId());
-					cp.setDocs(DOCUMENTS.estimations);
-					goTo(cp);
+					BridgeUtils.invokeJSCallback(Boolean.FALSE.toString(), getCallback());
 				}
 			}
 		});
 	}
-	
 
-	@Override
-	public void onConvertToInvoiceClicked() {
-		if(!validateEstimation()){
-			Notification.showMessage(I18N.INSTANCE.errorDocumentData());
-			return;
-		}
-		
-		getView().getConvertToInvoice().showLoader(true);
-		getView().setLocked(true);
-		getView().getCreateDocument().getButton().setEnabled(false);
-		
-		final EstimationDTO estimation = createEstimation(this.estimation);
-		
-		if(this.estimation == null) {
-			
-			ServerFacade.INSTANCE.getEstimationService().add(estimation, new ManagedAsyncCallback<Long>() {
-
-				@Override
-				public void onSuccess(Long result) {
-					getView().getConvertToInvoice().showLoader(false);
-					FromEstimationInvoicePlace pl = new FromEstimationInvoicePlace();
-					pl.setEstimationId(result);
-					goTo(pl);
-					
-					getView().setLocked(false);
-					getView().getCreateDocument().getButton().setEnabled(true);
-				}
-
-				@Override
-				public void onFailure(Throwable caught) {
-					getView().getConvertToInvoice().showLoader(false);
-					super.onFailure(caught);
-					
-					getView().setLocked(false);
-					getView().getCreateDocument().getButton().setEnabled(true);
-				}
-			});
-			
-		} else {
-			
-			ServerFacade.INSTANCE.getEstimationService().update(estimation, new ManagedAsyncCallback<Void>() {
-
-				@Override
-				public void onSuccess(Void result) {
-					getView().getConvertToInvoice().showLoader(false);
-					FromEstimationInvoicePlace pl = new FromEstimationInvoicePlace();
-					pl.setEstimationId(AbstractEstimationPresenter.this.estimation.getId());
-					goTo(pl);
-					
-					getView().setLocked(false);
-					getView().getCreateDocument().getButton().setEnabled(true);
-				}
-				
-				
-				@Override
-				public void onFailure(Throwable caught) {
-					getView().getConvertToInvoice().showLoader(false);
-					super.onFailure(caught);
-					
-					getView().setLocked(false);
-					getView().getCreateDocument().getButton().setEnabled(true);
-				}
-			});
-			
-		}
-	}
-	
 	protected boolean validateEstimation(){
 		getView().getNumber().validate();
 		getView().getDate().validate();

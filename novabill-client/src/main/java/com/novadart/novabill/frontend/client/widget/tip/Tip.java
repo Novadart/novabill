@@ -9,9 +9,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.Widget;
-import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
-import com.novadart.novabill.frontend.client.facade.ServerFacade;
 
 class Tip extends Composite {
 	
@@ -27,10 +24,10 @@ class Tip extends Composite {
 	
 	@UiField(provided=true) HTML tip;
 	
-	private final Tips tipCode;
+//	private final Tips tipCode;
 
 	Tip(Tips tipCode, SafeHtml message) {
-		this.tipCode = tipCode;
+//		this.tipCode = tipCode;
 		tip = new HTML(message);
 		initWidget(uiBinder.createAndBindUi(this));
 	}
@@ -41,27 +38,27 @@ class Tip extends Composite {
 			return;
 		}
 		pendingCall = true;
-		ServerFacade.INSTANCE.getBusinessService().updateNotesBitMask(unsetBitForTip(tipCode, Configuration.getNotesBitMask()), new ManagedAsyncCallback<Long>() {
-
-			@Override
-			public void onSuccess(Long result) {
-				Configuration.setNotesBitMask(result);
-				removeFromParent();
-				pendingCall = false;
-			}
-			
-			@Override
-			public void onFailure(Throwable caught) {
-				//let's not display errors to the user in this case, let's simply hide the tip
-				removeFromParent();
-				pendingCall = false;
-			}
-		});
+//		ServerFacade.INSTANCE.getBusinessService().updateNotesBitMask(unsetBitForTip(tipCode, Configuration.getNotesBitMask()), new ManagedAsyncCallback<Long>() {
+//
+//			@Override
+//			public void onSuccess(Long result) {
+////				Configuration.setNotesBitMask(result);
+//				removeFromParent();
+//				pendingCall = false;
+//			}
+//			
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				//let's not display errors to the user in this case, let's simply hide the tip
+//				removeFromParent();
+//				pendingCall = false;
+//			}
+//		});
 
 	}
 	
-	private long unsetBitForTip(Tips tip, long bitmap){
-		return bitmap & ~(1 << tip.ordinal());
-	}
-	
+//	private long unsetBitForTip(Tips tip, long bitmap){
+//		return bitmap & ~(1 << tip.ordinal());
+//	}
+//	
 }

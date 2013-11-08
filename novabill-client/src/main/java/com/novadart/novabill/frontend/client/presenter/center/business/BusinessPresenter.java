@@ -131,7 +131,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 				@Override
 				public void onSuccess(Void result) {
 					getView().getSaveData().showLoader(true);
-					Configuration.setBusiness(b);
+//					Configuration.setBusiness(b);
 					goTo(new HomePlace());
 					getEventBus().fireEvent(new BusinessUpdateEvent(b));
 					getView().setLocked(false);

@@ -45,7 +45,7 @@
     </beans:bean>
     
     <beans:bean id="novabillAuthenticationSuccessHandler" class="com.novadart.novabill.springsecurity.AuthenticationSuccessHandler">
-    	<beans:property name="defaultTargetUrl" value="/private"/>
+    	<beans:property name="defaultTargetUrl" value="/private/"/>
     </beans:bean>
     
     <beans:bean id="novabillAuthenticationFailureHandler" class="com.novadart.novabill.springsecurity.AuthenticationFailureHandler">

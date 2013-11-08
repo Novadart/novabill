@@ -1,0 +1,29 @@
+.document-well {
+    cursor: pointer;
+}
+
+.document-well:HOVER {
+    border: 1px solid #555;
+}
+
+.document-well .date {
+    margin-left: 10px;
+}
+
+.document-well .clientName {
+    margin-left: 10px;
+}
+
+.document-well .open {
+	float: right;
+}
+
+.document-well .print {
+    float: right;
+    margin-right: 10px;
+}
+
+.document-well .options {
+	float: right;
+	margin-right: 20px;
+}

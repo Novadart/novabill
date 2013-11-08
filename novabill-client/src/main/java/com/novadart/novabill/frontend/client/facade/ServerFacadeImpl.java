@@ -73,7 +73,7 @@ public class ServerFacadeImpl implements ServerFacade {
 				((HasRpcToken) getClientService()).setRpcToken(xsrfToken);
 				((HasRpcToken) getBusinessService()).setRpcToken(xsrfToken);
 				((HasRpcToken) getEstimationService()).setRpcToken(xsrfToken);
-				((HasRpcToken) getCreditnoteService()).setRpcToken(xsrfToken);
+				((HasRpcToken) getCreditNoteService()).setRpcToken(xsrfToken);
 				((HasRpcToken) getTransportdocumentService()).setRpcToken(xsrfToken);
 				((HasRpcToken) getPaymentService()).setRpcToken(xsrfToken);
 				((HasRpcToken) getBatchfetcherService()).setRpcToken(xsrfToken);
@@ -175,7 +175,7 @@ public class ServerFacadeImpl implements ServerFacade {
 
 
 	@Override
-	public CreditNoteGwtServiceAsync getCreditnoteService() {
+	public CreditNoteGwtServiceAsync getCreditNoteService() {
 		return creditNoteService;
 	}
 

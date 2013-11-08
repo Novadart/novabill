@@ -4,16 +4,15 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
-import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
-import com.novadart.novabill.frontend.client.place.ClientPlace;
-import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
@@ -27,8 +26,8 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 
 
 
-	public NewCreditNotePresenter(PlaceController placeController, EventBus eventBus, CreditNoteView view) {
-		super(placeController, eventBus, view);
+	public NewCreditNotePresenter(PlaceController placeController, EventBus eventBus, CreditNoteView view, JavaScriptObject callback) {
+		super(placeController, eventBus, view, callback);
 	}
 
 
@@ -81,7 +80,7 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 
 		getView().setLocked(true);
 		getView().getCreateDocument().showLoader(true);
-		ServerFacade.INSTANCE.getCreditnoteService().add(creditNote, new ManagedAsyncCallback<Long>() {
+		ServerFacade.INSTANCE.getCreditNoteService().add(creditNote, new ManagedAsyncCallback<Long>() {
 
 			@Override
 			public void onSuccess(Long result) {
@@ -90,13 +89,8 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 					@Override
 					public void onNotificationClosed(Void value) {
 						getView().getCreateDocument().showLoader(false);
-						getEventBus().fireEvent(new DocumentAddEvent(creditNote));
-
-						ClientPlace cp = new ClientPlace();
-						cp.setClientId(getClient().getId());
-						cp.setDocs(DOCUMENTS.creditNotes);
-						goTo(cp);
 						getView().setLocked(false);
+						BridgeUtils.invokeJSCallback(Boolean.TRUE.toString(), getCallback());
 					}
 				});
 			}

@@ -1,0 +1,9 @@
+<button type="button" class="btn red new-invoice" ng-click="newInvoiceClick()">New Invoice</button>
+
+
+<div class="invoices">
+    <img class="spinner" ng-show="invoices==null" src="../../private_assets/img/ajax-loading.gif">
+    <novabill-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoices" />
+</div>
+
+<removal-dialog></removal-dialog>

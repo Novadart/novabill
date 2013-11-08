@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.activity.center;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -22,8 +23,8 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 
 	private final TransportDocumentPlace place;
 
-	public TransportDocumentActivity(TransportDocumentPlace place, ClientFactory clientFactory) {
-		super(clientFactory);
+	public TransportDocumentActivity(TransportDocumentPlace place, ClientFactory clientFactory, JavaScriptObject callback) {
+		super(clientFactory, callback);
 		this.place = place;
 	}
 
@@ -68,7 +69,7 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 			@Override
 			public void onSuccess(Pair<Long, ClientDTO> result) {
 				NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view);
+						getClientFactory().getEventBus(), view, getCallback());
 				p.setDataForNewTransportDocument(result.getSecond(), result.getFirst());
 				p.go(panel);
 			}
@@ -81,7 +82,7 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 			@Override
 			public void onSuccess(TransportDocumentDTO result) {
 				ModifyTransportDocumentPresenter p = new ModifyTransportDocumentPresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view);
+						getClientFactory().getEventBus(), view, getCallback());
 				p.setData(result);
 				p.go(panel);
 			}
@@ -97,7 +98,7 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 					public void onSuccess(
 							Triple<Long, ClientDTO, TransportDocumentDTO> result) {
 						NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view);
+								getClientFactory().getEventBus(), view, getCallback());
 						p.setDataForNewTransportDocument(result.getSecond(), result.getFirst(), result.getThird());
 						p.go(panel);
 					}

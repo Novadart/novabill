@@ -1,0 +1,8 @@
+<button type="button" class="btn red new-estimation" ng-click="newEstimationClick()">New Estimation</button>
+
+<div class="estimations">
+    <img class="spinner" ng-show="estimations==null" src="../../private_assets/img/ajax-loading.gif">
+    <novabill-estimation estimation="est" bottom-up-menu="!$first && $last" ng-repeat="est in estimations"></novabill-estimation>
+</div>
+
+<removal-dialog></removal-dialog>

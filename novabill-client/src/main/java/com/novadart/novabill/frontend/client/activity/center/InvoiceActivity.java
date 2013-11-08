@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.activity.center;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
@@ -27,11 +28,11 @@ public class InvoiceActivity extends AbstractCenterActivity {
 	private final InvoicePlace place;
 
 
-	public InvoiceActivity(InvoicePlace place, ClientFactory clientFactory) {
-		super(clientFactory);
+	public InvoiceActivity(InvoicePlace place, ClientFactory clientFactory, JavaScriptObject callback) {
+		super(clientFactory, callback);
 		this.place = place;
 	}
-
+	
 	@Override
 	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		super.start(panel, eventBus);
@@ -81,7 +82,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 			@Override
 			public void onSuccess(Triple<Long,ClientDTO,PaymentTypeDTO> result) {
 				NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view);
+						getClientFactory().getEventBus(), view, getCallback());
 				p.setDataForNewInvoice(result.getSecond(), result.getFirst(), result.getThird());
 				p.go(panel);
 			}
@@ -94,7 +95,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 			@Override
 			public void onSuccess(Triple<Long, EstimationDTO, PaymentTypeDTO> result) {
 				NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view);
+						getClientFactory().getEventBus(), view, getCallback());
 				p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
 				p.go(panel);
 			}
@@ -111,7 +112,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 					public void onSuccess(
 							Triple<Long, TransportDocumentDTO, PaymentTypeDTO> result) {
 						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view);
+								getClientFactory().getEventBus(), view, getCallback());
 						p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
 						p.go(panel);
 					}
@@ -125,7 +126,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 			@Override
 			public void onSuccess(InvoiceDTO result) {
 				ModifyInvoicePresenter p = new ModifyInvoicePresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view);
+						getClientFactory().getEventBus(), view, getCallback());
 				p.setData(result);
 				p.go(panel);
 			}
@@ -141,7 +142,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 					public void onSuccess(
 							Triple<Long, ClientDTO, InvoiceDTO> result) {
 						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view);
+								getClientFactory().getEventBus(), view, getCallback());
 						p.setDataForNewInvoice(result.getSecond(), result.getFirst(), result.getThird());
 						p.go(panel);
 					}

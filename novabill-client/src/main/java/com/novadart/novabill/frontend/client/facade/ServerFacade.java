@@ -31,7 +31,7 @@ public interface ServerFacade {
 
 	public EstimationGwtServiceAsync getEstimationService();
 
-	public CreditNoteGwtServiceAsync getCreditnoteService();
+	public CreditNoteGwtServiceAsync getCreditNoteService();
 
 	public TransportDocumentGwtServiceAsync getTransportdocumentService();
 

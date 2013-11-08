@@ -4,15 +4,14 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
-import com.novadart.novabill.frontend.client.event.DocumentAddEvent;
+import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.ClientPlace;
-import com.novadart.novabill.frontend.client.place.ClientPlace.DOCUMENTS;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
@@ -25,8 +24,8 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 public class NewTransportDocumentPresenter extends AbstractTransportDocumentPresenter {
 
 
-	public NewTransportDocumentPresenter(PlaceController placeController, EventBus eventBus, TransportDocumentView view) {
-		super(placeController, eventBus, view);
+	public NewTransportDocumentPresenter(PlaceController placeController, EventBus eventBus, TransportDocumentView view, JavaScriptObject callback) {
+		super(placeController, eventBus, view, callback);
 	}
 
 	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId, TransportDocumentDTO document) {
@@ -80,16 +79,12 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 			public void onSuccess(Long result) {
 				getView().getCreateDocument().showLoader(false);
 
-				getEventBus().fireEvent(new DocumentAddEvent(transportDocument));
 				Notification.showMessage(I18N.INSTANCE.transportDocumentCreationSuccess(), new NotificationCallback<Void>() {
 
 					@Override
 					public void onNotificationClosed(Void value) {
-						ClientPlace cp = new ClientPlace();
-						cp.setClientId(getClient().getId());
-						cp.setDocs(DOCUMENTS.transportDocuments);
-						goTo(cp);
 						getView().setLocked(false);
+						BridgeUtils.invokeJSCallback(Boolean.TRUE.toString(), getCallback());
 					}
 				});
 

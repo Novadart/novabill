@@ -74,7 +74,7 @@ public class DemoServerFacadeImpl implements ServerFacade {
 	}
 
 	@Override
-	public CreditNoteGwtServiceAsync getCreditnoteService() {
+	public CreditNoteGwtServiceAsync getCreditNoteService() {
 		return CREDIT_NOTE_SERVICE;
 	}
 
