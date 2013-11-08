@@ -13,6 +13,7 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
 
 public privileged aspect CachingAspect {
 	
@@ -49,6 +50,8 @@ public privileged aspect CachingAspect {
 	
 	public static final String PAYMENTTYPE_CACHE = "paymenttype-cache";
 	
+	public static final String COMMODITY_CACHE = "commodity-cache";
+	
 	declare @method : public BusinessDTO com.novadart.novabill.service.web.BusinessServiceImpl.get(Long): @Cacheable(value = BUSINESS_CACHE, key = "#businessID");
 	
 	declare @method : public List<ClientDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getClients(Long): @Cacheable(value = CLIENT_CACHE, key = "#businessID");
@@ -62,6 +65,8 @@ public privileged aspect CachingAspect {
 	declare @method : public List<TransportDocumentDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getTransportDocuments(Long): @Cacheable(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID");
 	
 	declare @method : public List<PaymentTypeDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getPaymentTypes(Long): @Cacheable(value = PAYMENTTYPE_CACHE, key = "#businessID");
+	
+	declare @method : public List<CommodityDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getCommodities(Long): @Cacheable(value = COMMODITY_CACHE, key = "#businessID");
 	
 	declare @method : public void com.novadart.novabill.service.web.BusinessServiceImpl.update(BusinessDTO): @CacheEvict(value = BUSINESS_CACHE, key = "#businessDTO.id");
 	
@@ -134,6 +139,17 @@ public privileged aspect CachingAspect {
 	declare @method : public Long com.novadart.novabill.service.web.PaymentTypeService.add(PaymentTypeDTO): @CacheEvict(value = PAYMENTTYPE_CACHE, key = "#paymentTypeDTO.business.id");
 	
 	declare @method : public void com.novadart.novabill.service.web.PaymentTypeService.update(PaymentTypeDTO): @CacheEvict(value = PAYMENTTYPE_CACHE, key = "#paymentTypeDTO.business.id");
+	
+	/*
+	 * Commodity caching
+	 * Dependencies: None
+	 */
+	
+	declare @method : public void com.novadart.novabill.service.web.CommodityService.remove(Long, Long): @CacheEvict(value = COMMODITY_CACHE, key = "#businessID");
+	
+	declare @method : public Long com.novadart.novabill.service.web.CommodityService.add(CommodityDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id");
+	
+	declare @method : public void com.novadart.novabill.service.web.CommodityService.update(CommodityDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id");
 	
 	
 }

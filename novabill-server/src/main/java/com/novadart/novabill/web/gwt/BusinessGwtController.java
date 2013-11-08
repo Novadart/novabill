@@ -15,6 +15,7 @@ import com.novadart.novabill.service.XsrfTokenService;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -77,6 +78,7 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 		businessService.update(businessDTO);
 	}
 
+	@Override
 	public String generatePDFToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException {
 		return URLEncoder.encode(generateToken(PDFController.TOKENS_SESSION_FIELD), "UTF-8");
 	}
@@ -109,6 +111,11 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 	@Override
 	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return businessService.getClients(businessID);
+	}
+	
+	@Override
+	public List<CommodityDTO> getCommodities(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return businessService.getCommodities(businessID);
 	}
 	
 	@Override

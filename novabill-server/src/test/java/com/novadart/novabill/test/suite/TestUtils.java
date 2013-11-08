@@ -14,6 +14,7 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
@@ -299,6 +300,15 @@ public class TestUtils {
 		return client;
 	}
 	
+	public static Commodity createCommodity(){
+		Commodity commodity = new Commodity();
+		commodity.setDescription("Test commodity description");
+		commodity.setPrice(new BigDecimal("100.0"));
+		commodity.setTax(new BigDecimal("15.0"));
+		commodity.setUnitOfMeasure("piece");
+		return commodity;
+	}
+		
 	public static com.novadart.novabill.domain.PaymentType createPaymentType(){
 		com.novadart.novabill.domain.PaymentType paymentType = new com.novadart.novabill.domain.PaymentType();
 		paymentType.setName("Payment type test name");

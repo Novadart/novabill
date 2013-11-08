@@ -101,6 +101,7 @@ public class CachingTest extends GWTServiceTest {
 		cacheManager.getCache(CachingAspect.TRANSPORTDOCUMENT_CACHE).flush();
 		cacheManager.getCache(CachingAspect.BUSINESS_CACHE).flush();
 		cacheManager.getCache(CachingAspect.PAYMENTTYPE_CACHE).flush();
+		cacheManager.getCache(CachingAspect.COMMODITY_CACHE).flush();
 	}
 	
 	@Test
