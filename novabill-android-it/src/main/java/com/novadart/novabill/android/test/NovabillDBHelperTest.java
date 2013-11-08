@@ -9,8 +9,9 @@ import android.net.Uri;
 import android.test.ProviderTestCase2;
 import android.test.mock.MockContentResolver;
 
-import com.novadart.novabill.android.content.provider.DBSchema;
 import com.novadart.novabill.android.content.provider.DBSchema.ClientTbl;
+import com.novadart.novabill.android.content.provider.DBSchema.SyncMarkTbl;
+import com.novadart.novabill.android.content.provider.DBSchema.UserTbl;
 import com.novadart.novabill.android.content.provider.NovabillContentProvider;
 import com.novadart.novabill.android.content.provider.NovabillContract;
 import com.novadart.novabill.android.content.provider.NovabillDBHelper;
@@ -32,8 +33,9 @@ public class NovabillDBHelperTest extends ProviderTestCase2<NovabillContentProvi
 	}
 
 	private void clearDB(SQLiteDatabase db){
-		db.delete(DBSchema.ClientTbl.TABLE_NAME, null, null);
-		db.delete(DBSchema.UserTbl.TABLE_NAME, null, null);
+		db.delete(ClientTbl.TABLE_NAME, null, null);
+		db.delete(SyncMarkTbl.TABLE_NAME, null, null);
+		db.delete(UserTbl.TABLE_NAME, null, null);
 	}
 
 
@@ -74,18 +76,21 @@ public class NovabillDBHelperTest extends ProviderTestCase2<NovabillContentProvi
 
 	public void testOnCreate() {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
-		assertTrue(checkIfTableExists(db, DBSchema.UserTbl.TABLE_NAME));
-		assertTrue(checkIfColumnsExist(db, DBSchema.UserTbl.TABLE_NAME, new String[]{DBSchema.UserTbl.EMAIL}));
-		assertTrue(checkIfTableExists(db, DBSchema.ClientTbl.TABLE_NAME));
+		assertTrue(checkIfTableExists(db,UserTbl.TABLE_NAME));
+		assertTrue(checkIfColumnsExist(db, UserTbl.TABLE_NAME, new String[]{UserTbl.EMAIL}));
+		assertTrue(checkIfTableExists(db, SyncMarkTbl.TABLE_NAME));
+		assertTrue(checkIfColumnsExist(db, SyncMarkTbl.TABLE_NAME, new String[]{SyncMarkTbl.MARK}));
+		assertTrue(checkIfTableExists(db, ClientTbl.TABLE_NAME));
 		assertTrue(checkIfColumnsExist(db, ClientTbl.TABLE_NAME, new String[]{ClientTbl.ADDRESS, ClientTbl.CITY, ClientTbl.COUNTRY,
 				ClientTbl.EMAIL, ClientTbl.FAX, ClientTbl.MOBILE, ClientTbl.NAME, ClientTbl.PHONE, ClientTbl.POSTCODE,
-				ClientTbl.PROVINCE, ClientTbl.SSN, ClientTbl.USER_ID, ClientTbl.VAT_ID, ClientTbl.VERSION, ClientTbl.WEB}));
+				ClientTbl.PROVINCE, ClientTbl.SSN, ClientTbl.USER_ID, ClientTbl.VAT_ID, ClientTbl.VERSION, ClientTbl.WEB,
+				ClientTbl.USER_ID, ClientTbl.SERVER_ID}));
 	}
 	
 	public void testAddGetUser() {
 		String username = "foo@bar";
 		Long id = dbHelper.addUser(username);
-		assertEquals(1l, DatabaseUtils.queryNumEntries(dbHelper.getReadableDatabase(), DBSchema.UserTbl.TABLE_NAME));
+		assertEquals(1l, DatabaseUtils.queryNumEntries(dbHelper.getReadableDatabase(), UserTbl.TABLE_NAME));
 		assertEquals(id.longValue(), dbHelper.getUserId(username).longValue());
 	}
 

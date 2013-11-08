@@ -372,6 +372,11 @@
 				<version>1.9.4</version>
 			</dependency>
 			<dependency>
+				<groupId>com.fasterxml.jackson.core</groupId>
+				<artifactId>jackson-databind</artifactId>
+				<version>2.2.3</version>
+			</dependency>
+			<dependency>
 				<groupId>com.novadart.utils</groupId>
 				<artifactId>novadart-utils</artifactId>
 				<version>1.4</version>

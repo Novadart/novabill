@@ -1,20 +1,14 @@
 package com.novadart.novabill.android.authentication;
 
-import java.net.MalformedURLException;
 import java.net.URL;
-
-import org.springframework.http.HttpAuthentication;
-import org.springframework.http.HttpBasicAuthentication;
 import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.converter.StringHttpMessageConverter;
 import org.springframework.web.client.RestClientException;
 import org.springframework.web.client.RestTemplate;
-
-import com.novadart.novabill.android.R;
-
 import android.content.Context;
+import com.novadart.novabill.android.R;
+import com.novadart.novabill.android.authentication.HttpRequestTemplate.HttpRequestExecutor;
 
 public class ServerAuthenticator {
 	
@@ -24,27 +18,35 @@ public class ServerAuthenticator {
 		this.context = context;
 	}
 	
-	public AuthenticationResult authenticate(String name, String password, String authTokenType) {
-		String host = context.getResources().getString(R.string.novabill_host);
-		String protocol = context.getResources().getString(R.string.protocol);
-		int port = Integer.parseInt(context.getResources().getString(R.string.port));
-		String path = context.getResources().getString(R.string.rest_services_path) + context.getResources().getString(R.string.authenticate_relative_path);
-		URL url = null;
-		try {
-			url = new URL(protocol, host, port, path);
-		} catch (MalformedURLException e1) {}
-		HttpAuthentication authHeader = new HttpBasicAuthentication(name, password);
-		HttpHeaders requestHeaders = new HttpHeaders();
-		requestHeaders.setAuthorization(authHeader);
-		HttpEntity<?> requestEntity = new HttpEntity<Object>(requestHeaders);
-		RestTemplate restTemplate = new RestTemplate();
-		restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
-		try {
-			restTemplate.exchange(url.toString(), HttpMethod.GET, requestEntity, String.class);
-			return new Success(NovabillAccountAuthenticator.BASIC_TOKEN, Status.OK);
-		} catch (RestClientException e) {
-			return new Failure(Status.ERROR);
+	private class AuthenticationHelper implements HttpRequestExecutor<AuthenticationResult> {
+
+		@Override
+		public String computePath(String restServicePath) {
+			return restServicePath + context.getResources().getString(R.string.authenticate_relative_path);
 		}
+
+		@Override
+		public AuthenticationResult execute(URL url, HttpEntity<?> requestEntity) {
+			RestTemplate restTemplate = new RestTemplate();
+			restTemplate.getMessageConverters().add(new StringHttpMessageConverter());
+			try {
+				restTemplate.exchange(url.toString(), HttpMethod.GET, requestEntity, String.class);
+				return new Success(NovabillAccountAuthenticator.BASIC_TOKEN, Status.OK);
+			} catch (RestClientException e) {
+				return new Failure(Status.ERROR);
+			}
+		}
+
+		@Override
+		public Object getHttpRequestBody() {
+			return null;
+		}
+		
+	}
+	
+	public AuthenticationResult authenticate(String name, String password, String authTokenType) {
+		HttpRequestTemplate template = new HttpRequestTemplate(context);
+		return template.request(name, password, new AuthenticationHelper());
 	}
 
 	public enum Status {OK, ERROR}

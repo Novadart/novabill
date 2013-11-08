@@ -17,6 +17,8 @@ public class NovabillSyncAdapter extends AbstractThreadedSyncAdapter {
 
 	private AccountManager accountManager;
 	
+	private Context context;
+	
 	public static void setAccountSyncSettings(Account account){
 		ContentResolver.setIsSyncable(account, NovabillContract.AUTHORITY, NovabillContract.DEFAULT_SYNC_STATUS);
         ContentResolver.setSyncAutomatically(account, NovabillContract.AUTHORITY, true);
@@ -24,6 +26,7 @@ public class NovabillSyncAdapter extends AbstractThreadedSyncAdapter {
 	
 	public NovabillSyncAdapter(Context context, boolean autoInitialize) {
 		super(context, autoInitialize);
+		this.context = context;
 		accountManager = AccountManager.get(context);
 	}
 
@@ -31,9 +34,12 @@ public class NovabillSyncAdapter extends AbstractThreadedSyncAdapter {
 	public void onPerformSync(Account account, Bundle bundle, String authority, ContentProviderClient provider, SyncResult syncResult) {
 		
 		try {
-			String authToken = accountManager.blockingGetAuthToken(account, NovabillAccountAuthenticator.NOVABILL_ACCOUNT_TYPE, true);
-			Log.i("Sync adapter", "Syncing...");			
-		} catch (Exception e) {}
+			accountManager.blockingGetAuthToken(account, NovabillAccountAuthenticator.NOVABILL_ACCOUNT_TYPE, true);
+			SyncManager syncManager = new SyncManager(context);
+			syncManager.performSync(account);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 			
 
 	}

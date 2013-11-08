@@ -13,6 +13,16 @@ public final class DBSchema {
 		
 	}
 	
+	public static final class SyncMarkTbl {
+		
+		public static final String TABLE_NAME = "sync_mark";
+		
+		public static final String MARK = "mark";
+		
+		public static final Long ID = 1l;
+		
+	}
+	
 	public static final class ClientTbl {
 		public static final String TABLE_NAME = "client";
 		
@@ -45,6 +55,8 @@ public final class DBSchema {
 		public static final String SSN = "ssn";
 		
 		public static final String VERSION = "version";
+		
+		public static final String SERVER_ID = "server_id";
 		
 		public static final String USER_ID = "user_id";
 	}

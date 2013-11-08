@@ -16,7 +16,8 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
-@Controller("/rest/1/clients")
+@Controller
+@RequestMapping("/rest/1/clients")
 public class ClientController {
 
 	@Autowired

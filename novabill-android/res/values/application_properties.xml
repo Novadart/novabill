@@ -5,4 +5,5 @@
     <string name="port">8080</string>
     <string name="rest_services_path">/novabill-server/rest/1</string>
     <string name="authenticate_relative_path">/authenticate</string>
+    <string name="sync_relative_path">/sync/delta</string>
 </resources>

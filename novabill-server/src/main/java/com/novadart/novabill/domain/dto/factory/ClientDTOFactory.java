@@ -27,6 +27,7 @@ public class ClientDTOFactory {
 		clientDTO.setDefaultPaymentTypeID(client.getDefaultPaymentType() == null? null: client.getDefaultPaymentType().getId());
 		clientDTO.setNote(client.getNote());
 		clientDTO.setContact(ContactDTOFactory.toDTO(client.getContact()));
+		clientDTO.setVersion(client.getVersion());
 		return clientDTO;
 	}
 	
