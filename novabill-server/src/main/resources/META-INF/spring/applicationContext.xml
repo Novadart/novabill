@@ -109,7 +109,7 @@
 		factory-method="aspectOf">
 		<property name="sendEmail" value="${notification.accountUpgrade}" />
 		<property name="emailAddresses">
-			<list>
+				<list>
 				<value>giordano.battilana@novadart.com</value>
 				<value>risto.gligorov@novadart.com</value>
 			</list>

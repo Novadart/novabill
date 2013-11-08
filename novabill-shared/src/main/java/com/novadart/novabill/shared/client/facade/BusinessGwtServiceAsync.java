@@ -7,6 +7,7 @@ import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -51,6 +52,8 @@ public interface BusinessGwtServiceAsync {
 	void updateNotesBitMask(Long notesBitMask, AsyncCallback<Long> callback);
 
 	void generateLogoOpToken(AsyncCallback<String> callback);
+
+	void getCommodities(Long businessID, AsyncCallback<List<CommodityDTO>> callback);
 
 	void getPaymentTypes(Long businessID,
 			AsyncCallback<List<PaymentTypeDTO>> callback);

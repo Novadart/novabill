@@ -3,11 +3,9 @@ package com.novadart.novabill.shared.client.dto;
 import java.math.BigDecimal;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class ItemDTO implements IsSerializable {
+public class CommodityDTO implements IsSerializable {
 	
 	private Long id;
-	
-	private String name;
 	
 	private BigDecimal price;
 	
@@ -16,6 +14,10 @@ public class ItemDTO implements IsSerializable {
 	private String unitOfMeasure;
 	
 	private BigDecimal tax;
+	
+	private boolean service;
+	
+	private BusinessDTO business;
 
 	public Long getId() {
 		return id;
@@ -23,14 +25,6 @@ public class ItemDTO implements IsSerializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public BigDecimal getPrice() {
@@ -63,6 +57,22 @@ public class ItemDTO implements IsSerializable {
 
 	public void setTax(BigDecimal tax) {
 		this.tax = tax;
+	}
+
+	public boolean isService() {
+		return service;
+	}
+
+	public void setService(boolean service) {
+		this.service = service;
+	}
+
+	public BusinessDTO getBusiness() {
+		return business;
+	}
+
+	public void setBusiness(BusinessDTO business) {
+		this.business = business;
 	}
 	
 }

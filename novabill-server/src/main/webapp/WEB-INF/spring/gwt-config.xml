@@ -35,6 +35,8 @@
 	
 	<bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentGwtController"/>
 
+	<bean id="commodity" class="com.novadart.novabill.web.gwt.CommodityGwtController"/>
+	
 	<bean id="client" class="com.novadart.novabill.web.gwt.ClientGwtController"/>
 
 	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtController"/>
@@ -52,6 +54,7 @@
 				/**/estimation.rpc=estimation
 				/**/creditnote.rpc=creditnote
 				/**/transportdoc.rpc=transportdoc
+				/**/commodity.rpc=commodity
 				/**/paymenttype.rpc=paymenttype
 				/**/batchdatafetcher.rpc=batchdatafetcher
 			</value>

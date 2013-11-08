@@ -17,21 +17,43 @@ import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
+import org.apache.solr.analysis.LowerCaseFilterFactory;
+import org.apache.solr.analysis.StandardTokenizerFactory;
 import org.hibernate.annotations.Type;
+import org.hibernate.search.annotations.Analyzer;
+import org.hibernate.search.annotations.AnalyzerDef;
+import org.hibernate.search.annotations.Field;
+import org.hibernate.search.annotations.FullTextFilterDef;
+import org.hibernate.search.annotations.FullTextFilterDefs;
+import org.hibernate.search.annotations.Indexed;
+import org.hibernate.search.annotations.TokenFilterDef;
+import org.hibernate.search.annotations.TokenizerDef;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.utils.fts.TermValueFilterFactory;
+
+@Indexed
+@AnalyzerDef(name = FTSNamespace.DEFAULT_COMMODITY_ANALYZER,
+tokenizer = @TokenizerDef(factory = StandardTokenizerFactory.class),
+filters = {
+	@TokenFilterDef(factory = ASCIIFoldingFilterFactory.class),
+	@TokenFilterDef(factory = LowerCaseFilterFactory.class)
+})
+@Analyzer(definition = FTSNamespace.DEFAULT_COMMODITY_ANALYZER)
+@FullTextFilterDefs({
+	@FullTextFilterDef(name = FTSNamespace.COMMODITY_BY_BUSINESS_ID_FILTER, impl = TermValueFilterFactory.class)
+})
 @Configurable
 @Entity
-public class Item implements Serializable {
+public class Commodity implements Serializable {
 	
 	private static final long serialVersionUID = 4265058605330997015L;
 
-	@Size(max = 255)
-    private String name;
-
     private BigDecimal price;
 
+    @Field(name = FTSNamespace.DESCRIPTION)
     @Type(type = "text")
     private String description;
 
@@ -43,17 +65,11 @@ public class Item implements Serializable {
     @ManyToOne
     private Business business;
     
+    private boolean service;
+    
     /*
      * Getters and setters
      * */
-    
-    public String getName() {
-        return this.name;
-    }
-    
-    public void setName(String name) {
-        this.name = name;
-    }
     
     public BigDecimal getPrice() {
         return this.price;
@@ -87,7 +103,15 @@ public class Item implements Serializable {
         this.tax = tax;
     }
     
-    public Business getBusiness() {
+    public boolean isService() {
+		return service;
+	}
+
+	public void setService(boolean service) {
+		this.service = service;
+	}
+
+	public Business getBusiness() {
         return this.business;
     }
     
@@ -107,26 +131,26 @@ public class Item implements Serializable {
     transient EntityManager entityManager;
     
     public static final EntityManager entityManager() {
-        EntityManager em = new Item().entityManager;
+        EntityManager em = new Commodity().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
     
-    public static long countItems() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM Item o", Long.class).getSingleResult();
+    public static long countCommodities() {
+        return entityManager().createQuery("SELECT COUNT(o) FROM Commodity o", Long.class).getSingleResult();
     }
     
-    public static List<Item> findAllItems() {
-        return entityManager().createQuery("SELECT o FROM Item o", Item.class).getResultList();
+    public static List<Commodity> findAllCommodities() {
+        return entityManager().createQuery("SELECT o FROM Commodity o", Commodity.class).getResultList();
     }
     
-    public static Item findItem(Long id) {
+    public static Commodity findCommodity(Long id) {
         if (id == null) return null;
-        return entityManager().find(Item.class, id);
+        return entityManager().find(Commodity.class, id);
     }
     
-    public static List<Item> findItemEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM Item o", Item.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+    public static List<Commodity> findCommodityEntries(int firstResult, int maxResults) {
+        return entityManager().createQuery("SELECT o FROM Commodity o", Commodity.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
     
     @Transactional
@@ -141,7 +165,7 @@ public class Item implements Serializable {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            Item attached = Item.findItem(this.id);
+            Commodity attached = Commodity.findCommodity(this.id);
             this.entityManager.remove(attached);
         }
     }
@@ -159,9 +183,9 @@ public class Item implements Serializable {
     }
     
     @Transactional
-    public Item merge() {
+    public Commodity merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
-        Item merged = this.entityManager.merge(this);
+        Commodity merged = this.entityManager.merge(this);
         this.entityManager.flush();
         return merged;
     }
