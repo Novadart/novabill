@@ -86,11 +86,12 @@
 					<li class="dropdown user">
 						<a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
 						<img alt="" src="${logoUrl}" width="29px" height="29px" />
+						&nbsp;
 						<span class="username"><%=business.getName()%></span>
 						<i class="icon-angle-down"></i>
 						</a>
 						<ul class="dropdown-menu">
-							<li><a href="${settingsUrl}"><i class="icon-user"></i> My Profile</a></li>
+							<li><a href="${settingsUrl}"><i class="icon-user"></i> Settings</a></li>
 							<li class="divider"></li>
 							<li><a href="javascript:;" id="trigger_fullscreen"><i class="icon-move"></i> Full Screen</a></li>
 							<li><a href="${logoutUrl}"><i class="icon-key"></i> Log Out</a></li>
