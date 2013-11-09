@@ -69,6 +69,13 @@ public class PrivateController {
 		return mav;
 	}
 	
+	@RequestMapping(value = Urls.PRIVATE_SETTINGS, method = RequestMethod.GET)
+	public ModelAndView settings(){
+		ModelAndView mav = new ModelAndView("private.settings");
+		mav.addObject("activePage", PAGES.SETTINGS);
+		return mav;
+	}
+	
 	@RequestMapping(value = Urls.PRIVATE_FIRST_RUN, method = RequestMethod.GET)
 	public ModelAndView firstRun(){
 		ModelAndView mav = new ModelAndView("private.firstrun");

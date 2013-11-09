@@ -77,7 +77,7 @@ public class BusinessLogoController {
 	
 	@Autowired
 	public void setServletContext(ServletContext servletContext){
-		noLogoImage = new ServletContextResource(servletContext, "/images/no_logo.gif");
+		noLogoImage = new ServletContextResource(servletContext, "/frontend_assets/img/no_logo.gif");
 	}
 	
 	@ExceptionHandler(Exception.class)

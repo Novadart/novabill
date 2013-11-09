@@ -57,8 +57,8 @@
 	</definition>
 	
 	<definition name="private.settings" extends="private.layout">
-		<put-attribute name="body" value="/WEB-INF/views/tiles/private/firstRunBody.jsp" />
-		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/clientsJS.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/tiles/private/settingsBody.jsp" />
+		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/settingsJS.jsp" />
 	</definition>
 	
 	<definition name="private.firstrun" extends="private.layout">

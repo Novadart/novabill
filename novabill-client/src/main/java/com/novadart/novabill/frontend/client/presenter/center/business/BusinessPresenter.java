@@ -2,12 +2,12 @@ package com.novadart.novabill.frontend.client.presenter.center.business;
 
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.event.BusinessUpdateEvent;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -133,8 +133,9 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 					getView().getSaveData().showLoader(true);
 //					Configuration.setBusiness(b);
 					goTo(new HomePlace());
-					getEventBus().fireEvent(new BusinessUpdateEvent(b));
+//					getEventBus().fireEvent(new BusinessUpdateEvent(b));
 					getView().setLocked(false);
+					Window.Location.reload();
 				}
 
 				@Override
