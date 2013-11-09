@@ -35,8 +35,6 @@
 	   Index.initCharts(); // init index page's custom scripts
 	   Index.initChat();
 	   Index.initMiniCharts();
-	   Index.initDashboardDaterange();
-	   Index.initIntro();
 	   Tasks.initDashboardWidget();
 	});
 </script>
