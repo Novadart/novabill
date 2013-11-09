@@ -46,7 +46,9 @@ public class CommodityService {
 		Business business = Business.findBusiness(commodityDTO.getBusiness().getId());
 		business.getCommodities().add(commodity);
 		commodity.setBusiness(business);
-		return commodity.merge().getId();
+		commodity.persist();
+		commodity.flush();
+		return commodity.getId();
 	}
 
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})

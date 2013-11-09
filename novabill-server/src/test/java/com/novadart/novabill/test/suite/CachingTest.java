@@ -21,6 +21,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.aspect.CachingAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
@@ -28,6 +29,7 @@ import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
+import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
 import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
@@ -36,6 +38,7 @@ import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -49,6 +52,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessGwtService;
 import com.novadart.novabill.shared.client.facade.ClientGwtService;
+import com.novadart.novabill.shared.client.facade.CommodityGwtService;
 import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
 import com.novadart.novabill.shared.client.facade.EstimationGwtService;
 import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
@@ -82,6 +86,9 @@ public class CachingTest extends GWTServiceTest {
 	
 	@Autowired
 	private PaymentTypeGwtService paymentTypeService;
+	
+	@Autowired
+	private CommodityGwtService commodityService;
 	
 	@Autowired
 	private CacheManager cacheManager;
@@ -499,4 +506,58 @@ public class CachingTest extends GWTServiceTest {
 		assertTrue(paymentTypes.size() == notCachedPaymentTypes.size());
 	}
 
+	@Test
+	public void commodityGetAllCacheTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
+		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		commodityService.add(commodityDTO);
+		Commodity.entityManager().flush();
+		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
+		Set<CommodityDTO> cachedCommodities = new HashSet<CommodityDTO>(businessService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
+		assertTrue(commodities.equals(cachedCommodities));
+	}
+	
+	@Test
+	public void commodityAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException{
+		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
+		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
+		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		commodityService.add(commodityDTO);
+		Commodity.entityManager().flush();
+		Set<CommodityDTO> notCachedCommodities = new HashSet<CommodityDTO>(businessService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
+		assertTrue(!commodities.equals(notCachedCommodities));
+		assertTrue(commodities.size() + 1 == notCachedCommodities.size());
+	}
+	
+	@Test
+	public void commodityUpdateCacheTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
+		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		Long id = commodityService.add(commodityDTO);
+		Commodity.entityManager().flush();
+		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
+		Commodity commodity = Commodity.findCommodity(id);
+		commodity.setDescription("New description");
+		commodityDTO = CommodityDTOFactory.toDTO(commodity);
+		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		commodityService.update(commodityDTO);
+		Set<CommodityDTO> nonCachedCommodities = new HashSet<CommodityDTO>(businessService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
+		assertTrue(!commodities.equals(nonCachedCommodities));
+		assertTrue(commodities.size() == nonCachedCommodities.size());
+	}
+	
+	@Test
+	public void commodityRemoveCacheTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
+		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		Long id = commodityService.add(commodityDTO);
+		Commodity.entityManager().flush();
+		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
+		commodityService.remove(authenticatedPrincipal.getBusiness().getId(), id);
+		Commodity.entityManager().flush();
+		Set<CommodityDTO> nonCachedCommodities = new HashSet<CommodityDTO>(businessService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
+		assertTrue(!commodities.equals(nonCachedCommodities));
+		assertTrue(commodities.size() == nonCachedCommodities.size() + 1);
+	}
+	
 }

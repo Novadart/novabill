@@ -60,6 +60,11 @@
         maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
         timeToIdleSeconds="0" timeToLiveSeconds="600"
         memoryStoreEvictionPolicy="LRU" statistics="true" />
+    
+    <cache name="commodity-cache" eternal="false"
+        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+        timeToIdleSeconds="0" timeToLiveSeconds="600"
+        memoryStoreEvictionPolicy="LRU" statistics="true" />
         
     <cache name="com.novadart.novabill.domain.Client" eternal="false"
     	maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
