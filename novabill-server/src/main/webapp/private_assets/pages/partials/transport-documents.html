@@ -12,10 +12,9 @@
 		ng-click="newTransportDocumentClick()">New Transport Document</button>
 
 	<div class="transport-documents">
-		<img class="spinner" ng-show="transportDocuments==null"
-			src="../../private_assets/img/ajax-loading.gif">
-		<novabill-transport-document transport-document="td"
-			bottom-up-menu="!$first && $last"
+		<img class="spinner" ng-show="transportDocuments==null"	src="../../private_assets/img/ajax-loading.gif">
+		<p class="no-data-message muted" ng-show="transportDocuments && transportDocuments.length===0">No Data</p>
+		<novabill-transport-document transport-document="td" bottom-up-menu="!$first && $last"
 			ng-repeat="td in transportDocuments"></novabill-transport-document>
 	</div>
 

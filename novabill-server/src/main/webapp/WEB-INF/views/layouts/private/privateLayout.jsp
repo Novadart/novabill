@@ -50,6 +50,8 @@
 	<link href="${privateAssetsUrl}/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
 	<!-- END GLOBAL MANDATORY STYLES -->
 	
+	<link href="${privateAssetsUrl}/pages/css/global.css" rel="stylesheet" type="text/css"/>
+	
 	<tiles:insertAttribute ignore="true" name="head" />
 	
 	<link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />

@@ -5,7 +5,8 @@ angular.module('novabill.directives', ['novabill.utils'])
 /*
  * Invoice widget
  */
-.directive('novabillInvoice', ['NRemovalDialogAPI', '$rootScope', '$location', function factory(NRemovalDialogAPI, $rootScope, $location){
+.directive('novabillInvoice', ['NRemovalDialogAPI', '$rootScope', 
+                               function factory(NRemovalDialogAPI, $rootScope){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-invoice.html',
@@ -45,7 +46,6 @@ angular.module('novabill.directives', ['novabill.utils'])
 
 					onFailure : function(){}
 				});
-
 			};
 
 			$scope.createCreditNote = function(id){
@@ -62,7 +62,8 @@ angular.module('novabill.directives', ['novabill.utils'])
 /*
  * Estimation Widget
  */
-.directive('novabillEstimation', ['NRemovalDialogAPI', function factory(NRemovalDialogAPI){
+.directive('novabillEstimation', ['NRemovalDialogAPI', '$rootScope', 
+                                  function factory(NRemovalDialogAPI, $rootScope){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-estimation.html',
@@ -93,9 +94,20 @@ angular.module('novabill.directives', ['novabill.utils'])
 				NRemovalDialogAPI.show();
 			};
 
-			$scope.clone = function(){};
+			$scope.clone = function(){
+				GWT_UI.selectClientDialog(NovabillConf.businessId, {
 
-			$scope.convertToInvoice = function(id){};
+					onSuccess : function(clientId){
+						window.location.assign(NovabillConf.estimationsBaseUrl + '#/new/' + clientId + '/clone/' + $scope.invoice.id);
+					},
+
+					onFailure : function(){}
+				});
+			};
+
+			$scope.convertToInvoice = function(id){
+				window.location.assign(NovabillConf.invoicesBaseUrl + '#/from-estimation/' + $scope.estimation.id);
+			};
 
 		}],
 		restrict: 'E',
@@ -108,7 +120,8 @@ angular.module('novabill.directives', ['novabill.utils'])
 /*
  * Transport Document Widget
  */
-.directive('novabillTransportDocument', ['NRemovalDialogAPI', function factory(NRemovalDialogAPI){
+.directive('novabillTransportDocument', ['NRemovalDialogAPI', '$rootScope', 
+                                         function factory(NRemovalDialogAPI, $rootScope){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-transport-document.html',
@@ -138,6 +151,10 @@ angular.module('novabill.directives', ['novabill.utils'])
 				});
 				NRemovalDialogAPI.show();
 			};
+			
+			$scope.createInvoice = function(id){
+				window.location.assign(NovabillConf.invoicesBaseUrl + '#/from-transport-document/' + $scope.transportDocument.id);
+			};
 
 		}],
 		restrict: 'E',
@@ -150,7 +167,8 @@ angular.module('novabill.directives', ['novabill.utils'])
 /*
  * Credit Note Widget
  */
-.directive('novabillCreditNote', ['NRemovalDialogAPI', function factory(NRemovalDialogAPI){
+.directive('novabillCreditNote', ['NRemovalDialogAPI', '$rootScope', 
+                                  function factory(NRemovalDialogAPI, $rootScope){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-credit-note.html',
@@ -180,7 +198,7 @@ angular.module('novabill.directives', ['novabill.utils'])
 				});
 				NRemovalDialogAPI.show();
 			};
-
+			
 		}],
 		restrict: 'E',
 		replace: true,

@@ -21,6 +21,11 @@ angular.module("novabill.estimations", ['novabill.estimations.controllers','ngRo
 		controller: 'EstimationCreateCtrl'
 	})
 	
+	.when('/new/:clientId/clone/:sourceId', {
+		templateUrl: NovabillConf.partialsBaseUrl + '/estimations-detail.html',
+		controller: 'EstimationCloneEstimationCtrl'
+	})
+	
 	.otherwise ({
 		redirectTo: '/'
 	});

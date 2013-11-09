@@ -72,6 +72,25 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
     	},
     	onFailure : function(){},
     });
+}])
+
+
+
+/**
+ * ESTIMATION CLONE PAGE CONTROLLER
+ */
+.controller('EstimationCloneEstimationCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                        function($scope, $routeParams, $location, $translate) {
+	$scope.pageTitle = $translate('NEW_ESTIMATION');
+	
+	GWT_UI.showCloneEstimationPage('estimation-details', $routeParams.clientId, $routeParams.sourceId, {
+    	onSuccess : function(bool){
+    	    $scope.$apply(function(){
+    	    	$location.path('/');
+    	    });  		
+    	},
+    	onFailure : function(){},
+    });
 }]);
 
 

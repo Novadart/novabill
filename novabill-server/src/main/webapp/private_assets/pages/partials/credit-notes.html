@@ -12,8 +12,8 @@
 		ng-click="newCreditNoteClick()">New Credit Note</button>
 
 	<div class="credit-notes">
-		<img class="spinner" ng-show="creditNotes==null"
-			src="../../private_assets/img/ajax-loading.gif">
+		<img class="spinner" ng-show="creditNotes==null" src="../../private_assets/img/ajax-loading.gif">
+		<p class="no-data-message muted" ng-show="creditNotes && creditNotes.length===0">No Data</p>
 		<novabill-credit-note credit-note="note"
 			bottom-up-menu="!$first && $last" ng-repeat="note in creditNotes"></novabill-credit-note>
 	</div>

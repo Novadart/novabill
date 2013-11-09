@@ -15,9 +15,12 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.creditnote.FromInvoiceCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.ModifyCreditNotePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
+import com.novadart.novabill.frontend.client.place.estimation.CloneEstimationPlace;
 import com.novadart.novabill.frontend.client.place.estimation.ModifyEstimationPlace;
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
+import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
+import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
@@ -50,10 +53,13 @@ public class UiBridge implements ApiBridge {
 			showNewInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showModifyInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showCloneInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showCloneInvoicePage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			showFromEstimationInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showFromEstimationInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			showFromTransportDocumentInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showFromTransportDocumentInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			
 			// estimations
 			showNewEstimationPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewEstimationPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showModifyEstimationPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyEstimationPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			showCloneEstimationPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showCloneEstimationPage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			
 			// credit notes
 			showNewCreditNotePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewCreditNotePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
@@ -147,6 +153,27 @@ public class UiBridge implements ApiBridge {
 	}
 	
 	
+	public static void showFromEstimationInvoicePage(String wrapperId, String estimationId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		FromEstimationInvoicePlace fei = new FromEstimationInvoicePlace();
+		fei.setEstimationId(Long.parseLong(estimationId));
+
+		InvoiceActivity is = new InvoiceActivity(fei, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
+	}
+	
+	
+	public static void showFromTransportDocumentInvoicePage(String wrapperId, String transportDocumentId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		FromTransportDocumentInvoicePlace ftdi = new FromTransportDocumentInvoicePlace();
+		ftdi.setTransportDocumentId(Long.parseLong(transportDocumentId));
+
+		InvoiceActivity is = new InvoiceActivity(ftdi, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
+	}
+	
 	/*
 	 * ESTIMATIONS
 	 */
@@ -158,6 +185,18 @@ public class UiBridge implements ApiBridge {
 
 		EstimationActivity is = new EstimationActivity(nep, ClientFactory.INSTANCE, callback);
 		is.start(panel, null);
+	}
+	
+	
+	public static void showCloneEstimationPage(String wrapperId, String clientId, String estimationId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		CloneEstimationPlace cep = new CloneEstimationPlace();
+		cep.setEstimationId(Long.parseLong(estimationId));
+		cep.setClientId(Long.parseLong(clientId));
+
+		EstimationActivity ea = new EstimationActivity(cep, ClientFactory.INSTANCE, callback);
+		ea.start(panel, null);
 	}
 	
 	

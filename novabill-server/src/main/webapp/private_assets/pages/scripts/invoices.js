@@ -27,6 +27,16 @@ angular.module("novabill.invoices", ['novabill.invoices.controllers','ngRoute'])
 		controller: 'InvoiceCloneInvoiceCtrl'
 	})
 	
+	.when('/from-estimation/:estimationId', {
+		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-detail.html',
+		controller: 'InvoiceFromEstimationCtrl'
+	})
+	
+	.when('/from-transport-document/:transportDocumentId', {
+		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-detail.html',
+		controller: 'InvoiceFromTransportDocumentCtrl'
+	})
+	
 	.otherwise ({
 		redirectTo: '/'
 	});

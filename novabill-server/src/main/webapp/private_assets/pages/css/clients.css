@@ -59,11 +59,5 @@
 }
 
 .client-detail .tab-content {
-	min-height: 100px;
+	min-height: 200px;
 }
-
-.client-detail .no-data-message {
-	text-align: center;
-	padding: 50px 0;
-}
-
