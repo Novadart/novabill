@@ -8,6 +8,7 @@ import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.activity.center.CreditNoteActivity;
 import com.novadart.novabill.frontend.client.activity.center.EstimationActivity;
 import com.novadart.novabill.frontend.client.activity.center.InvoiceActivity;
+import com.novadart.novabill.frontend.client.activity.center.PaymentActivity;
 import com.novadart.novabill.frontend.client.activity.center.TransportDocumentActivity;
 import com.novadart.novabill.frontend.client.bridge.ui.HTMLWrapper;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
@@ -43,6 +44,9 @@ public class UiBridge implements ApiBridge {
 		$wnd.GWT_UI = {
 			// bootstrap
 			bootstrapDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showBootstrapDialog(),
+			
+			// payments
+			showPaymentsPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showPaymentsPage(Ljava/lang/String;),
 			
 			// clients			
 			clientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewClientDialog(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
@@ -80,10 +84,26 @@ public class UiBridge implements ApiBridge {
 	
 	}-*/;
 	
+	
+	/*
+	 * BOOTSTRAP
+	 */
 	public static void showBootstrapDialog(){
 		BootstrapDialog dialog = new BootstrapDialog();
 		dialog.showCentered();
 	}
+	
+	
+	/*
+	 * PAYMENTS
+	 */
+	public static void showPaymentsPage(String wrapperId){
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+
+		PaymentActivity pa = new PaymentActivity(ClientFactory.INSTANCE);
+		pa.start(panel, null);
+	}
+	
 	
 	
 	/*

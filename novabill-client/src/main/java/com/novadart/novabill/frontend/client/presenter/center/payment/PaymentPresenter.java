@@ -6,18 +6,13 @@ import java.util.List;
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.SharedComparators;
-import com.novadart.novabill.frontend.client.event.PaymentAddEvent;
-import com.novadart.novabill.frontend.client.event.PaymentAddHandler;
-import com.novadart.novabill.frontend.client.event.PaymentDeleteEvent;
-import com.novadart.novabill.frontend.client.event.PaymentDeleteHandler;
-import com.novadart.novabill.frontend.client.event.PaymentUpdateEvent;
-import com.novadart.novabill.frontend.client.event.PaymentUpdateHandler;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -54,29 +49,29 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 	}
 
 	private void bind(){
-		getEventBus().addHandler(PaymentAddEvent.TYPE, new PaymentAddHandler() {
-
-			@Override
-			public void onPaymentAdd(PaymentAddEvent event) {
-				reloadPayments();
-			}
-		});
-
-		getEventBus().addHandler(PaymentDeleteEvent.TYPE, new PaymentDeleteHandler() {
-
-			@Override
-			public void onPaymentDelete(PaymentDeleteEvent event) {
-				reloadPayments();
-			}
-		});
-		
-		getEventBus().addHandler(PaymentUpdateEvent.TYPE, new PaymentUpdateHandler() {
-
-			@Override
-			public void onPaymentUpdate(PaymentUpdateEvent event) {
-				reloadPayments();
-			}
-		});
+//		getEventBus().addHandler(PaymentAddEvent.TYPE, new PaymentAddHandler() {
+//
+//			@Override
+//			public void onPaymentAdd(PaymentAddEvent event) {
+//				reloadPayments();
+//			}
+//		});
+//
+//		getEventBus().addHandler(PaymentDeleteEvent.TYPE, new PaymentDeleteHandler() {
+//
+//			@Override
+//			public void onPaymentDelete(PaymentDeleteEvent event) {
+//				reloadPayments();
+//			}
+//		});
+//		
+//		getEventBus().addHandler(PaymentUpdateEvent.TYPE, new PaymentUpdateHandler() {
+//
+//			@Override
+//			public void onPaymentUpdate(PaymentUpdateEvent event) {
+//				reloadPayments();
+//			}
+//		});
 		
 		paymentData.addDataDisplay(getView().getPayments());
 	}
@@ -99,7 +94,8 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 			
 			@Override
 			public void onPaymentAdd(PaymentTypeDTO payment) {
-				getEventBus().fireEvent(new PaymentAddEvent(payment));
+				Window.Location.reload();
+//				getEventBus().fireEvent(new PaymentAddEvent(payment));
 			}
 			
 			@Override
@@ -122,7 +118,8 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 
 						@Override
 						public void onSuccess(Void result) {
-							getEventBus().fireEvent(new PaymentDeleteEvent(payment));
+							Window.Location.reload();
+//							getEventBus().fireEvent(new PaymentDeleteEvent(payment));
 						}
 					});
 				}
@@ -141,7 +138,8 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 			
 			@Override
 			public void onPaymentUpdate(PaymentTypeDTO payment) {
-				getEventBus().fireEvent(new PaymentUpdateEvent(payment));
+				Window.Location.reload();
+//				getEventBus().fireEvent(new PaymentUpdateEvent(payment));
 			}
 		}, value);
 		pd.showCentered();

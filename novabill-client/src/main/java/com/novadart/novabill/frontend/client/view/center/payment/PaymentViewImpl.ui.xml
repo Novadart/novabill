@@ -52,7 +52,7 @@
 			}
 			
 			.deletePaymentImage {
-				width: 16px;
+				width: 40px;
 				cursor: pointer;
 			}
 			
