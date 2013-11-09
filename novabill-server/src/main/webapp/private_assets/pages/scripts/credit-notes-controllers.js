@@ -7,7 +7,7 @@ angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.
  * CREDIT NOTES PAGE CONTROLLER
  */
 .controller('CreditNoteCtrl', ['$scope', '$location', function($scope, $location){
-	$scope.loadCreditNotes = function($scope) {
+	$scope.loadCreditNotes = function() {
 		GWT_Server.creditNote.getAllInRange(NovabillConf.businessId, '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
@@ -32,7 +32,12 @@ angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.
 	    });
 	};
 	
-	$scope.loadCreditNotes($scope);
+	$scope.$on('creditNote.remove', function(){
+		$scope.creditNotes = null;
+		$scope.loadCreditNotes();
+	});
+	
+	$scope.loadCreditNotes();
 }])
 
 

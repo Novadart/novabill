@@ -7,7 +7,7 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
  * CREDIT NOTES PAGE CONTROLLER
  */
 .controller('TransportDocumentCtrl', ['$scope', '$location', function($scope, $location){
-	$scope.loadTransportDocuments = function($scope) {
+	$scope.loadTransportDocuments = function() {
 		GWT_Server.transportDocument.getAllInRange(NovabillConf.businessId, '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
@@ -32,7 +32,12 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 	    });
 	};
 	
-	$scope.loadTransportDocuments($scope);
+	$scope.$on('transportDocument.remove', function(){
+		$scope.transportDocuments = null;
+		$scope.loadTransportDocuments();
+	});
+	
+	$scope.loadTransportDocuments();
 }])
 
 

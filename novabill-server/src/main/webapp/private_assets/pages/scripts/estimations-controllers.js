@@ -7,7 +7,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
  * ESTIMATIONS PAGE CONTROLLER
  */
 .controller('EstimationCtrl', ['$scope', '$location', function($scope, $location){
-	$scope.loadEstimations = function($scope) {
+	$scope.loadEstimations = function() {
 		GWT_Server.estimation.getAllInRange(NovabillConf.businessId, '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
@@ -32,7 +32,12 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 	    });
 	};
 	
-	$scope.loadEstimations($scope);
+	$scope.$on('estimation.remove', function(){
+		$scope.estimations = null;
+		$scope.loadEstimations();
+	});
+	
+	$scope.loadEstimations();
 }])
 
 
