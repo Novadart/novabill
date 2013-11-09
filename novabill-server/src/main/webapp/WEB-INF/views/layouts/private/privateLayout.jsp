@@ -198,10 +198,10 @@
 				</li>
 				
 				<li>
-					<div class="spacer" style="margin: 50px 0;"></div>
+					<div class="spacer" style="margin: 40px 0;"></div>
 				</li>
 				
-				<li class="last <%=PAGES.SETTINGS.equals(activePage) ? "active" : "" %>">
+				<%-- <li class="last <%=PAGES.SETTINGS.equals(activePage) ? "active" : "" %>">
 					<a href="${settingsUrl}">
 					<i class="icon-cogs"></i> 
 					<span class="title">Settings</span>
@@ -209,7 +209,7 @@
 					<span class="selected"></span>
 					<%} %>
 					</a>
-				</li>
+				</li> --%>
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>
