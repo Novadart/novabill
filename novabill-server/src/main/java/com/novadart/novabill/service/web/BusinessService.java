@@ -11,6 +11,7 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -43,6 +44,8 @@ public interface BusinessService {
 	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
 	public List<CommodityDTO> getCommodities(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	
+	public List<PriceListDTO> getPriceLists(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
 	public List<PaymentTypeDTO> getPaymentTypes(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	

@@ -155,6 +155,9 @@ public class Business implements Serializable, Taxable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<PaymentType> paymentTypes = new HashSet<PaymentType>();
     
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+    private Set<PriceList> priceLists = new HashSet<PriceList>();
+    
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
     	return entityManager().createQuery(query, Invoice.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
@@ -553,6 +556,14 @@ public class Business implements Serializable, Taxable {
 
 	public void setPaymentTypes(Set<PaymentType> paymentTypes) {
 		this.paymentTypes = paymentTypes;
+	}
+	
+	public Set<PriceList> getPriceLists() {
+		return priceLists;
+	}
+
+	public void setPriceLists(Set<PriceList> priceLists) {
+		this.priceLists = priceLists;
 	}
     
     /*

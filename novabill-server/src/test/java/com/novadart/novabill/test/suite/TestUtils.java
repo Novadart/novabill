@@ -18,6 +18,7 @@ import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
@@ -339,6 +340,12 @@ public class TestUtils {
 		business.setSsn("IT04534730280");
 		business.setVatID("IT04534730280");
 		return business;
+	}
+	
+	public static PriceList createPriceList(){
+		PriceList priceList = new PriceList();
+		priceList.setName("Default price list");
+		return priceList;
 	}
 	
 }

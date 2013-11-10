@@ -22,11 +22,13 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.PaymentType;
+import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
+import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.TaxableEntityValidator;
@@ -39,6 +41,7 @@ import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -174,6 +177,17 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		for(Commodity commodity: commodities)
 			commodityDTOs.add(CommodityDTOFactory.toDTO(commodity));
 		return commodityDTOs;
+	}
+	
+
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<PriceListDTO> getPriceLists(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		Set<PriceList> priceLists = Business.findBusiness(businessID).getPriceLists();
+		List<PriceListDTO> priceListDTOs = new ArrayList<>(priceLists.size());
+		for(PriceList priceList: priceLists)
+			priceListDTOs.add(PriceListDTOFactory.toDTO(priceList));
+		return priceListDTOs;
 	}
 
 	@Override
