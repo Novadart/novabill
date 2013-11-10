@@ -3,6 +3,7 @@ package com.novadart.novabill.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -20,6 +21,8 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
 import org.apache.solr.analysis.LowerCaseFilterFactory;
 import org.apache.solr.analysis.StandardTokenizerFactory;
+import org.codehaus.jackson.map.ObjectMapper;
+import org.codehaus.jackson.type.TypeReference;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
@@ -66,6 +69,10 @@ public class Commodity implements Serializable {
     private Business business;
     
     private boolean service;
+    
+    private String customPricesJson;
+    
+    transient private Map<String, BigDecimal> customPrices;
     
     /*
      * Getters and setters
@@ -117,6 +124,29 @@ public class Commodity implements Serializable {
     
     public void setBusiness(Business business) {
         this.business = business;
+    }
+    
+    public Map<String, BigDecimal> getCustomPrices(){
+    	if(customPricesJson == null) return null;
+    	if(customPrices == null){
+    		TypeReference<Map<String, BigDecimal>> typeRef = new TypeReference<Map<String,BigDecimal>>() {};
+    		try {
+				customPrices = new ObjectMapper().readValue(customPricesJson, typeRef);
+			} catch (Exception e) {
+				return null;
+			}
+    	}
+    	return customPrices;
+    }
+    
+    public void setCustomPrices(Map<String, BigDecimal> customPrices){
+    	this.customPrices = customPrices;
+    	try {
+			customPricesJson = new ObjectMapper().writeValueAsString(customPrices);
+		} catch (Exception e) {
+			customPricesJson = null;
+			this.customPrices = null;
+		}
     }
     
     /*

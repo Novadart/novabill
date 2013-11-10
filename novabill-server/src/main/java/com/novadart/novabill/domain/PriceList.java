@@ -1,6 +1,8 @@
 package com.novadart.novabill.domain;
 
+import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -10,6 +12,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PreRemove;
+import javax.persistence.TypedQuery;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
@@ -32,6 +36,21 @@ public class PriceList {
 	
 	@ManyToOne
 	private Business business;
+
+	@PreRemove
+	@Transactional
+	public void preremove(){
+		TypedQuery<Commodity> tquery = entityManager().createQuery("select c from Commodity c where c.business.id = :businessID", Commodity.class);
+		tquery.setParameter("businessID", getBusiness().getId());
+		for(Commodity commodity: tquery.getResultList()){
+			Map<String, BigDecimal> customPrices = commodity.getCustomPrices();
+			if(customPrices.containsKey(name)){
+				customPrices.remove(name);
+				commodity.setCustomPrices(customPrices);
+			}
+		}
+	}
+	
 	
 	/*
      * Getters and setters

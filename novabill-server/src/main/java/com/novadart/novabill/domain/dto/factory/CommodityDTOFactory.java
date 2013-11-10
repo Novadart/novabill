@@ -16,6 +16,7 @@ public class CommodityDTOFactory {
 		commodityDTO.setUnitOfMeasure(commodity.getUnitOfMeasure());
 		commodityDTO.setTax(commodity.getTax());
 		commodityDTO.setService(commodity.isService());
+		commodityDTO.setCustomPrices(commodity.getCustomPrices());
 		return commodityDTO;
 	}
 	
@@ -27,6 +28,7 @@ public class CommodityDTOFactory {
 		commodity.setUnitOfMeasure(commodityDTO.getUnitOfMeasure());
 		commodity.setTax(commodityDTO.getTax());
 		commodity.setService(commodityDTO.isService());
+		commodity.setCustomPrices(commodityDTO.getCustomPrices());
 	}
 
 }
