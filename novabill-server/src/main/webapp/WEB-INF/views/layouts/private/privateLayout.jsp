@@ -72,7 +72,7 @@
 			<div class="container-fluid">
 				<!-- BEGIN LOGO -->
 				<a class="brand" href="${dashboardUrl}">
-				<img src="${frontendAssetsUrl}/img/logo_thin.png" alt="logo" />
+				<img src="${frontendAssetsUrl}/img/logo_thin_white.png" alt="logo" />
 				</a>
 				<!-- END LOGO -->
 				<!-- BEGIN RESPONSIVE MENU TOGGLER -->
