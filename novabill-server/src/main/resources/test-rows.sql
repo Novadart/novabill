@@ -255,4 +255,11 @@ insert into payment_type (id, default_payment_note, name, payment_date_delta, pa
 insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (154, 'Pagamento con bonifico bancario entro 60 giorni d.f. f.m.', 'Bonifico Bancario 60GG d.f. f.m.', 2, 1, 1, 2);
 insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (155, 'Pagamento con bonifico bancario entro 90 giorni d.f. f.m.', 'Bonifico Bancario 90GG d.f. f.m.', 3, 1, 1, 2);
 
-alter sequence hibernate_sequence restart with 156;
+--creating commodities
+insert into commodity (id, description, price, service, tax, unit_of_measure, business, version) values (156, 'Computer network configuration', 29.95, 't', 22, 'hour', 1, 1);
+insert into commodity (id, description, price, service, tax, unit_of_measure, business, version) values (157, 'Website building', 24.95, 't', 22, 'hour', 1, 1);
+insert into commodity (id, description, price, service, tax, unit_of_measure, business, version) values (158, 'Mobile apps development', 24.95, 't', 22, 'hour', 1, 1);
+insert into commodity (id, description, price, service, tax, unit_of_measure, business, version) values (159, 'Database administration', 24.95, 't', 22, 'hour', 1, 1);
+insert into commodity (id, description, price, service, tax, unit_of_measure, business, version) values (160, 'Cisco network router', 49.95, 'f', 22, 'piece', 1, 1);
+
+alter sequence hibernate_sequence restart with 161;
