@@ -207,6 +207,33 @@ angular.module('novabill.directives', ['novabill.utils'])
 }])
 
 
+
+/*
+ * Commodity Widget
+ */
+.directive('novabillCommodity', ['NRemovalDialogAPI', '$rootScope', 
+                                  function factory(NRemovalDialogAPI, $rootScope){
+
+	return {
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-commodity.html',
+		scope: { 
+			commodity : '=',
+			bottomUpMenu : '=',
+		},
+		controller : ['$scope', function($scope){
+			$scope.openUrl = NovabillConf.commodityBaseUrl + '#/details/' + $scope.creditNote.id;
+
+			$scope.remove = function(){};
+			
+		}],
+		restrict: 'E',
+		replace: true,
+	};
+
+}])
+
+
+
 /*
  * Removal Dialog
  */

@@ -18,10 +18,11 @@
 <spring:url var="dashboardUrl" value="/private/" />
 <spring:url var="clientsUrl" value="/private/clients/" />
 <spring:url var="invoicesUrl" value="/private/invoices/" />
+<spring:url var="commodityUrl" value="/private/commodity/" />
 <spring:url var="estimationsUrl" value="/private/estimations/" />
 <spring:url var="transportDocumentsUrl" value="/private/transport-documents/" />
 <spring:url var="creditNotesUrl" value="/private/credit-notes/" />
-<spring:url var="itemsUrl" value="/private/items/" />
+<spring:url var="commoditiesUrl" value="/private/commodities/" />
 <spring:url var="paymentsUrl" value="/private/payments/" />
 <spring:url var="settingsUrl" value="/private/settings/" />
 
@@ -178,11 +179,13 @@
 					</ul>
 				</li>
 				
-				<li class="<%=PAGES.ITEMS.equals(activePage) ? "active" : "" %>">
-					<a href="${itemsUrl}">
+				<li class="<%=PAGES.COMMODITIES.equals(activePage) ? "active" : ""%>">
+					<a href="${commoditiesUrl}">
 					<i class="icon-th"></i> 
-					<span class="title">Items</span>
-					<% if(PAGES.ITEMS.equals(activePage)) { %>
+					<span class="title">Commodities</span>
+					<%
+						if(PAGES.COMMODITIES.equals(activePage)) {
+					%>
 					<span class="selected"></span>
 					<%} %>
 					</a>
@@ -226,9 +229,9 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="${privateAssetsUrl}/plugins/jquery-1.10.1.min.js"><\/script>');</script>
 	
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular.min.js"></script>
-	<script>window.angular || document.write('<script src="${privateAssetsUrl}/plugins/angular-1.2.0-rc.3.min.js"><\/script>');</script>
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0-rc.3/angular-route.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
+	<script>window.angular || document.write('<script src="${privateAssetsUrl}/plugins/angular-1.2.0.min.js"><\/script>');</script>
+	<script src="${privateAssetsUrl}/plugins/angular-route-1.2.0.min.js"></script>
 	<script src="${privateAssetsUrl}/plugins/angular-i18n/angular-locale_it-it.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/plugins/angular-translate.min.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/pages/scripts/translations.js" type="text/javascript"></script>
@@ -258,6 +261,8 @@
 		    estimationsBaseUrl : '${estimationsUrl}',
 		    creditNotesBaseUrl : '${creditNotesUrl}',
 		    transportDocumentsBaseUrl : '${transportDocumentsUrl}',
+		    commodityBaseUrl : '${commodityUrl}',
+		    
 		    partialsBaseUrl : '${privateAssetsUrl}/pages/partials/'
 	};
 	</script>

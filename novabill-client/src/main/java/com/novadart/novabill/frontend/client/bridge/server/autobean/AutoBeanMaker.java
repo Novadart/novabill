@@ -45,4 +45,8 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	
 	AutoBean<AccountingDocumentItem> makeAccountingDocumentItem();
 	
+	AutoBean<Commodity> makeCommodity();
+	
+	AutoBean<CommodityList> makeCommodityList();
+	
 }

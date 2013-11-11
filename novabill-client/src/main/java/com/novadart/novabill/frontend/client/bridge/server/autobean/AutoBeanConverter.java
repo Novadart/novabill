@@ -8,6 +8,7 @@ import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
@@ -17,6 +18,21 @@ import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public class AutoBeanConverter {
+	
+	
+	public static AutoBean<Commodity> convert(CommodityDTO c){
+		Commodity cb = AutoBeanMaker.INSTANCE.makeCommodity().as();
+		cb.setBusiness(convert(c.getBusiness()).as());
+		cb.setDescription(c.getDescription());
+		cb.setId(c.getId());
+		cb.setPrice(c.getPrice());
+		cb.setService(c.isService());
+		cb.setTax(c.getTax());
+		cb.setUnitOfMeasure(c.getUnitOfMeasure());
+		cb.setCustomPrices(c.getCustomPrices());
+		return AutoBeanUtils.getAutoBean(cb);
+	}
+	
 	
 	public static AutoBean<Business> convert(BusinessDTO b){
 		Business ab = AutoBeanMaker.INSTANCE.makeBusiness().as();

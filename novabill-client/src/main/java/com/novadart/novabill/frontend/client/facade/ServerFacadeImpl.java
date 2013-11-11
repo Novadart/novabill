@@ -20,6 +20,8 @@ import com.novadart.novabill.shared.client.facade.BusinessGwtService;
 import com.novadart.novabill.shared.client.facade.BusinessGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.ClientGwtService;
 import com.novadart.novabill.shared.client.facade.ClientGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.CommodityGwtService;
+import com.novadart.novabill.shared.client.facade.CommodityGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
 import com.novadart.novabill.shared.client.facade.CreditNoteGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.EstimationGwtService;
@@ -48,6 +50,8 @@ public class ServerFacadeImpl implements ServerFacade {
 	private static final PaymentTypeGwtServiceAsync paymentService = GWT.create(PaymentTypeGwtService.class);
 	
 	private static final BatchDataFetcherGwtServiceAsync batchFetcherService = GWT.create(BatchDataFetcherGwtService.class);
+	
+	private static final CommodityGwtServiceAsync commodityService = GWT.create(CommodityGwtService.class);
 
 	private static final RequestBuilder FEEDBACK_REQUEST =
 			new RequestBuilder(RequestBuilder.POST, ClientFactory.INSTANCE.getPostFeedbackUrl());
@@ -195,6 +199,12 @@ public class ServerFacadeImpl implements ServerFacade {
 	@Override
 	public BatchDataFetcherGwtServiceAsync getBatchfetcherService() {
 		return batchFetcherService;
+	}
+	
+	
+	@Override
+	public CommodityGwtServiceAsync getCommodityGwtService() {
+		return commodityService;
 	}
 
 }

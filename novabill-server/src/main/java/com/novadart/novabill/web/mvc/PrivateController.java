@@ -9,7 +9,7 @@ import org.springframework.web.servlet.ModelAndView;
 public class PrivateController {
 	
 	public static enum PAGES {
-		DASHBOARD, CLIENTS, ITEMS, PAYMENTS, SETTINGS, INVOICES, ESTIMATIONS, TRANSPORT_DOCUMENTS, CREDIT_NOTES
+		DASHBOARD, CLIENTS, COMMODITIES, PAYMENTS, SETTINGS, INVOICES, ESTIMATIONS, TRANSPORT_DOCUMENTS, CREDIT_NOTES
 	}
 
 
@@ -55,10 +55,10 @@ public class PrivateController {
 		return mav;
 	}
 	
-	@RequestMapping(value = Urls.PRIVATE_ITEMS, method = RequestMethod.GET)
+	@RequestMapping(value = Urls.PRIVATE_COMMODITIES, method = RequestMethod.GET)
 	public ModelAndView items(){
-		ModelAndView mav = new ModelAndView("private.items");
-		mav.addObject("activePage", PAGES.ITEMS);
+		ModelAndView mav = new ModelAndView("private.commodities");
+		mav.addObject("activePage", PAGES.COMMODITIES);
 		return mav;
 	}
 	

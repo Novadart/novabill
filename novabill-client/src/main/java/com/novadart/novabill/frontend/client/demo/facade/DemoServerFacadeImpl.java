@@ -13,6 +13,7 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.BusinessGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.ClientGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.CommodityGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.CreditNoteGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.EstimationGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.InvoiceGwtServiceAsync;
@@ -93,4 +94,9 @@ public class DemoServerFacadeImpl implements ServerFacade {
 		return BATCH_DATA_FETCHER_SERVICE;
 	}
 
+	@Override
+	public CommodityGwtServiceAsync getCommodityGwtService() {
+		// TODO Auto-generated method stub
+		return null;
+	}
 }

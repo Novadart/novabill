@@ -20,7 +20,7 @@ public interface Urls {
 	public static final String PRIVATE_DOCS_ESTIMATIONS = "/private/estimations";
 	public static final String PRIVATE_DOCS_TRANSPORT_DOCUMENTS = "/private/transport-documents";
 	public static final String PRIVATE_DOCS_CREDIT_NOTES = "/private/credit-notes";
-	public static final String PRIVATE_ITEMS = "/private/items";
+	public static final String PRIVATE_COMMODITIES = "/private/commodities";
 	public static final String PRIVATE_PAYMENTS = "/private/payments";
 	public static final String PRIVATE_SETTINGS = "/private/settings";
 }

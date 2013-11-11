@@ -46,9 +46,10 @@
         <put-attribute name="javascript" value="/WEB-INF/views/tiles/private/creditNotesJS.jsp" />
 	</definition>
 	
-	<definition name="private.items" extends="private.layout">
-		<put-attribute name="body" value="/WEB-INF/views/tiles/private/firstRunBody.jsp" />
-		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/clientsJS.jsp" />
+	<definition name="private.commodities" extends="private.layout">
+	    <put-attribute name="head" value="/WEB-INF/views/tiles/private/commoditiesHead.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/tiles/private/commoditiesBody.jsp" />
+		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/commoditiesJS.jsp" />
 	</definition>
 	
 	<definition name="private.payments" extends="private.layout">
@@ -67,7 +68,5 @@
 	</definition>
 	
 	<!--  -->
-
-
 
 </tiles-definitions>
