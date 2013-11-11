@@ -198,19 +198,6 @@
 					</a>
 				</li>
 				
-				<li>
-					<div class="spacer" style="margin: 40px 0;"></div>
-				</li>
-				
-				<%-- <li class="last <%=PAGES.SETTINGS.equals(activePage) ? "active" : "" %>">
-					<a href="${settingsUrl}">
-					<i class="icon-cogs"></i> 
-					<span class="title">Settings</span>
-					<% if(PAGES.SETTINGS.equals(activePage)) { %>
-					<span class="selected"></span>
-					<%} %>
-					</a>
-				</li> --%>
 			</ul>
 			<!-- END SIDEBAR MENU -->
 		</div>
