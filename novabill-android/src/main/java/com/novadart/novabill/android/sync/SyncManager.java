@@ -42,16 +42,16 @@ public class SyncManager {
 	}
 
 	
-	private Long getMark(SQLiteDatabase db){
-		Cursor cursor = db.query(SyncMarkTbl.TABLE_NAME, null, "_id = ?", new String[]{SyncMarkTbl.ID.toString()}, null, null, null);
+	private Long getMark(SQLiteDatabase db, Long userID){
+		Cursor cursor = db.query(SyncMarkTbl.TABLE_NAME, null, SyncMarkTbl.USER_ID + "=?", new String[]{userID.toString()}, null, null, null);
 		cursor.moveToFirst();
 		return cursor.getLong(cursor.getColumnIndex(SyncMarkTbl.MARK));
 	}
 	
-	private void updateMark(SQLiteDatabase db, Long mark){
+	private void updateMark(SQLiteDatabase db, Long mark, Long userID){
 		ContentValues values = new ContentValues();
 		values.put(SyncMarkTbl.MARK, mark);
-		db.update(SyncMarkTbl.TABLE_NAME, values, "_id = ?", new String[]{SyncMarkTbl.ID.toString()});
+		db.update(SyncMarkTbl.TABLE_NAME, values, SyncMarkTbl.USER_ID + "=?", new String[]{userID.toString()});
 	}
 	
 	public void performSync(Account account){
@@ -62,7 +62,7 @@ public class SyncManager {
 		Long userId = dbHelper.getUserId(account.name);
 		//read db stage
 		SQLiteDatabase readDb = dbHelper.getReadableDatabase();
-		SyncDeltaStateDTO deltaState = getServerDeltaState(account, getMark(readDb));
+		SyncDeltaStateDTO deltaState = getServerDeltaState(account, getMark(readDb, userId));
 		if(deltaState.getMark() == null || deltaState.getMark() < 1) return;
 		clientSyncMng = new ClientSyncManager(userId, deltaState.getDeltaState().get(SyncEntityType.CLIENT));
 		clientSyncMng.computeServerFetchOrder(readDb, clientsAddIdsList, clientsUpdateIdsMap);
@@ -72,7 +72,7 @@ public class SyncManager {
 		try{
 			writeDb.beginTransaction();
 			clientSyncMng.applyServerChanges(userId, writeDb, serverDeltaObjects.getClients(), clientsAddIdsList, clientsUpdateIdsMap);
-			updateMark(writeDb, deltaState.getMark());
+			updateMark(writeDb, deltaState.getMark(), userId);
 			writeDb.setTransactionSuccessful();
 		} finally {
 			writeDb.endTransaction();

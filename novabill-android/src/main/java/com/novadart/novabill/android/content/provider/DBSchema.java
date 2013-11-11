@@ -19,7 +19,9 @@ public final class DBSchema {
 		
 		public static final String MARK = "mark";
 		
-		public static final Long ID = 1l;
+		public static final String USER_ID = "user_id";
+		
+		public static final Long INIT_MARK = -1l;
 		
 	}
 	

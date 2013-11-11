@@ -114,8 +114,8 @@ public class LoginActivity extends AccountAuthenticatorActivity {
 	        // (Not setting the auth token will cause another call to the server to authenticate the user)
 	        mAccountManager.addAccountExplicitly(account, accountPassword, null);
 	        mAccountManager.setAuthToken(account, authtokenType, authtoken);
-	        NovabillDBHelper.getInstance(this).addUser(accountName);
-	        NovabillSyncAdapter.setAccountSyncSettings(account);
+	        Long userID = NovabillDBHelper.getInstance(this).addUser(accountName);
+	        NovabillSyncAdapter.setAccountSyncSettings(this, account, userID);
 	    } else {
 	        mAccountManager.setPassword(account, accountPassword);
 	    }

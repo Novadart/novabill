@@ -19,4 +19,14 @@
         android:text="@string/signout_btn_lbl" 
         android:onClick="signOut"/>
 
+    <Button
+        android:id="@+id/clients_btn"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignLeft="@+id/signout_btn"
+        android:layout_alignRight="@+id/signout_btn"
+        android:layout_below="@+id/signout_btn"
+        android:text="@string/clients_btn_lbl"
+        android:onClick="clients"/>
+
 </RelativeLayout>
