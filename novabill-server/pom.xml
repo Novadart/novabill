@@ -9,7 +9,7 @@
 	</parent>
 	<artifactId>novabill-server</artifactId>
 	<packaging>war</packaging>
-	<name>Novabill - Server component</name>
+	<name>Novabill - Server Component</name>
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
