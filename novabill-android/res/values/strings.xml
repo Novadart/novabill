@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <string name="app_name">Maven Quickstart</string>
+    <string name="app_name">Novabill</string>
     <string name="hello">Hello novabill-android!</string>
     <string name="action_settings">Settings</string>
     <string name="add_account_label">novabill</string>
