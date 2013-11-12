@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="novabill_host">192.168.1.3</string>
+    <string name="novabill_host">nb.novadart.com</string>
     <string name="protocol">http</string>
-    <string name="port">8080</string>
+    <string name="port">80</string>
     <string name="rest_services_path">/novabill-server/rest/1</string>
     <string name="authenticate_relative_path">/authenticate</string>
     <string name="sync_relative_path">/sync/delta</string>

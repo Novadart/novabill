@@ -558,6 +558,11 @@
 							<avd>novabill_emulator</avd>
 							<wait>60000</wait>
 						</emulator>
+						<dex>
+							<jvmArguments>
+								<jvmArgument>-Xmx2048M</jvmArgument>
+							</jvmArguments>
+						</dex>
 					</configuration>
 					<extensions>true</extensions>
 				</plugin>

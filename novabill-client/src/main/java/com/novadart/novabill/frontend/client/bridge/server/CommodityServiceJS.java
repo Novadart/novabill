@@ -1,12 +1,10 @@
 package com.novadart.novabill.frontend.client.bridge.server;
 
-import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
-import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanConverter;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
@@ -22,31 +20,14 @@ public class CommodityServiceJS extends ServiceJS {
 
 			@Override
 			public void onSuccess(List<CommodityDTO> result) {
-//				CommodityList il = AutoBeanMaker.INSTANCE.makeCommodityList().as();
-//				List<Commodity> commodities = new ArrayList<Commodity>(result.size());
-//				for (CommodityDTO id : result) {
-//					commodities.add(AutoBeanConverter.convert(id).as());
-//				}
-//				il.setCommodities(commodities);
+				CommodityList il = AutoBeanMaker.INSTANCE.makeCommodityList().as();
+				List<Commodity> commodities = new ArrayList<Commodity>(result.size());
+				for (CommodityDTO id : result) {
+					commodities.add(AutoBeanConverter.convert(id).as());
+				}
+				il.setCommodities(commodities);
 				
-				
-				CommodityList cl = AutoBeanMaker.INSTANCE.makeCommodityList().as();
-				
-				Commodity c = AutoBeanMaker.INSTANCE.makeCommodity().as();
-				c.setBusiness(AutoBeanConverter.convert(Configuration.getBusiness()).as());
-				c.setDescription("This is an awesome Commodity");
-				c.setId(1L);
-				c.setPrice(new BigDecimal(30));
-				c.setService(true);
-				c.setTax(new BigDecimal(22));
-				c.setUnitOfMeasure("unit");
-				
-				List<Commodity> cm = new ArrayList<Commodity>();
-				cm.add(c);
-				
-				cl.setCommodities(cm);
-				
-				BridgeUtils.invokeJSCallback(AutoBeanUtils.getAutoBean(cl), callback);
+				BridgeUtils.invokeJSCallback(AutoBeanUtils.getAutoBean(il), callback);
 				
 			}
 		});

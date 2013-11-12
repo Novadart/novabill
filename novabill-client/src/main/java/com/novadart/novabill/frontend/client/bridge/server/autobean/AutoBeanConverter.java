@@ -21,8 +21,10 @@ public class AutoBeanConverter {
 	
 	
 	public static AutoBean<Commodity> convert(CommodityDTO c){
+		if(c == null){
+			return null;
+		}
 		Commodity cb = AutoBeanMaker.INSTANCE.makeCommodity().as();
-		cb.setBusiness(convert(c.getBusiness()).as());
 		cb.setDescription(c.getDescription());
 		cb.setId(c.getId());
 		cb.setPrice(c.getPrice());
@@ -35,6 +37,9 @@ public class AutoBeanConverter {
 	
 	
 	public static AutoBean<Business> convert(BusinessDTO b){
+		if(b == null){
+			return null;
+		}
 		Business ab = AutoBeanMaker.INSTANCE.makeBusiness().as();
 		ab.setAddress(b.getAddress());
 		ab.setCity(b.getCity());
@@ -97,6 +102,10 @@ public class AutoBeanConverter {
 	
 	
 	public static AutoBean<Page<Client>> convertClientPage(PageDTO<ClientDTO> p) {
+		if(p == null){
+			return null;
+		}
+		
 		Page<Client> ap = AutoBeanMaker.INSTANCE.makeClientPage().as();
 		
 		List<Client> l = new ArrayList<Client>();
@@ -111,6 +120,10 @@ public class AutoBeanConverter {
 	}
 	
 	public static List<AccountingDocumentItem> convert(List<AccountingDocumentItemDTO> items){
+		if(items == null){
+			return null;
+		}
+		
 		List<AccountingDocumentItem> result = new ArrayList<AccountingDocumentItem>();
 		AccountingDocumentItem ai;
 		
@@ -132,6 +145,10 @@ public class AutoBeanConverter {
 	}
 	
 	public static AutoBean<Invoice> convert(InvoiceDTO invoice) {
+		if(invoice == null){
+			return null;
+		}
+		
 		Invoice ai = AutoBeanMaker.INSTANCE.makeInvoice().as();
 		
 		ai.setAccountingDocumentDate(invoice.getAccountingDocumentDate());
@@ -157,6 +174,9 @@ public class AutoBeanConverter {
 	
 	
 	public static AutoBean<Page<Invoice>> convertInvoicePage(PageDTO<InvoiceDTO> p) {
+		if(p == null){
+			return null;
+		}
 		Page<Invoice> ap = AutoBeanMaker.INSTANCE.makeInvoicePage().as();
 		
 		List<Invoice> l = new ArrayList<Invoice>();
@@ -172,6 +192,10 @@ public class AutoBeanConverter {
 	
 	
 	public static AutoBean<Estimation> convert(EstimationDTO estimation) {
+		if(estimation == null){
+			return null;
+		}
+		
 		Estimation ei = AutoBeanMaker.INSTANCE.makeEstimation().as();
 		
 		ei.setLimitations(estimation.getLimitations());
@@ -195,6 +219,10 @@ public class AutoBeanConverter {
 	
 	
 	public static AutoBean<Page<Estimation>> convertEstimationPage(PageDTO<EstimationDTO> p) {
+		if(p == null){
+			return null;
+		}
+		
 		Page<Estimation> ap = AutoBeanMaker.INSTANCE.makeEstimationPage().as();
 		
 		List<Estimation> l = new ArrayList<Estimation>();
@@ -210,6 +238,10 @@ public class AutoBeanConverter {
 	
 	
 	public static AutoBean<CreditNote> convert(CreditNoteDTO creditNote) {
+		if(creditNote == null){
+			return null;
+		}
+		
 		CreditNote cni = AutoBeanMaker.INSTANCE.makeCreditNote().as();
 		
 		cni.setAccountingDocumentDate(creditNote.getAccountingDocumentDate());
@@ -232,6 +264,10 @@ public class AutoBeanConverter {
 	
 	
 	public static AutoBean<Page<CreditNote>> convertCreditNotePage(PageDTO<CreditNoteDTO> p) {
+		if(p == null){
+			return null;
+		}
+		
 		Page<CreditNote> ap = AutoBeanMaker.INSTANCE.makeCreditNotePage().as();
 		
 		List<CreditNote> l = new ArrayList<CreditNote>();
@@ -264,6 +300,10 @@ public class AutoBeanConverter {
 	}
 	
 	public static AutoBean<TransportDocument> convert(TransportDocumentDTO transportDocument) {
+		if(transportDocument == null){
+			return null;
+		}
+		
 		TransportDocument tdai = AutoBeanMaker.INSTANCE.makeTransportDocument().as();
 		tdai.setNumberOfPackages(transportDocument.getNumberOfPackages());
 		tdai.setFromEndpoint(convert(transportDocument.getFromEndpoint()).as());
@@ -292,6 +332,10 @@ public class AutoBeanConverter {
 	
 	
 	public static AutoBean<Page<TransportDocument>> convertTransportDocumentPage(PageDTO<TransportDocumentDTO> p) {
+		if(p == null){
+			return null;
+		}
+		
 		Page<TransportDocument> ap = AutoBeanMaker.INSTANCE.makeTransportDocumentPage().as();
 		
 		List<TransportDocument> l = new ArrayList<TransportDocument>();

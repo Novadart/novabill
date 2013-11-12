@@ -81,6 +81,7 @@ public class ServerFacadeImpl implements ServerFacade {
 				((HasRpcToken) getTransportdocumentService()).setRpcToken(xsrfToken);
 				((HasRpcToken) getPaymentService()).setRpcToken(xsrfToken);
 				((HasRpcToken) getBatchfetcherService()).setRpcToken(xsrfToken);
+				((HasRpcToken) getCommodityGwtService()).setRpcToken(xsrfToken);
 				
 				callback.onSuccess(null);
 			}

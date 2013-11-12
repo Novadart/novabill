@@ -467,6 +467,23 @@
 			</build>
 		</profile>
 		<profile>
+            <id>nb</id>
+            <build>
+                <filters>
+                    <filter>profiles/nb.properties</filter>
+                </filters>
+                <plugins>
+                    <plugin>
+                        <groupId>org.apache.maven.plugins</groupId>
+                        <artifactId>maven-war-plugin</artifactId>
+                        <configuration>
+                            <classifier>nb</classifier>
+                        </configuration>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+		<profile>
 			<id>autobuild</id>
 			<build>
 				<filters>

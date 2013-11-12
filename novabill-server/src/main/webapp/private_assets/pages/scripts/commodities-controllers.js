@@ -14,13 +14,15 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 		GWT_Server.commodity.getAll(NovabillConf.businessId, {
 			onSuccess : function(data){
 				$scope.$apply(function(){
-					$scope.commodities = data;
+					$scope.commodities = data.commodities;
 				});
 			},
 
 			onFailure : function(error){}
 		});
 	};
+	
+	$scope.loadCommodities();
 	
 }]);
 

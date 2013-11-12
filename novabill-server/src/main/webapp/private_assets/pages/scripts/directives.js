@@ -221,7 +221,7 @@ angular.module('novabill.directives', ['novabill.utils'])
 			bottomUpMenu : '=',
 		},
 		controller : ['$scope', function($scope){
-			$scope.openUrl = NovabillConf.commodityBaseUrl + '#/details/' + $scope.creditNote.id;
+			$scope.openUrl = NovabillConf.commodityBaseUrl + '#/details/' + $scope.commodity.id;
 
 			$scope.remove = function(){};
 			
