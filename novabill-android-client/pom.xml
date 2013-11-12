@@ -7,58 +7,58 @@
 		<groupId>com.novadart.novabill</groupId>
 		<version>2.3-SNAPSHOT</version>
 	</parent>
-	<artifactId>novabill-android-it</artifactId>
+	<artifactId>novabill-android-client</artifactId>
 	<packaging>apk</packaging>
-	<name>Novabill - Android Client Instrumentation Tests</name>
+	<name>Novabill - Android Client Application</name>
 
 	<dependencies>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
-			<artifactId>novabill-android-client</artifactId>
-			<type>jar</type>
-			<scope>provided</scope>
-		</dependency>
-		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>novabill-android-client</artifactId>
-			<type>apk</type>
-			<scope>provided</scope>
+			<artifactId>novabill-android-shared</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>com.google.android</groupId>
-			<artifactId>android-test</artifactId>
+			<artifactId>android</artifactId>
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.android</groupId>
 			<artifactId>spring-android-core</artifactId>
-			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.android</groupId>
+			<artifactId>spring-android-rest-template</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.codehaus.jackson</groupId>
+			<artifactId>jackson-mapper-asl</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
 		</dependency>
 	</dependencies>
 	<build>
+		<!-- Don't forget to set the ANDROID_HOME variable in .bashrc export ANDROID_HOME=/path/to/android/sdk -->
 		<plugins>
 			<plugin>
 				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
 				<artifactId>android-maven-plugin</artifactId>
-				<configuration>
-					<test>
-						<!--<skip>true|false|auto</skip> -->
-						<!--<instrumentationPackage>packageName</instrumentationPackage> -->
-						<!--<instrumentationRunner>className</instrumentationRunner> -->
-						<!--<debug>true|false</debug> -->
-						<!--<coverage>true|false</coverage> -->
-						<!--<logonly>true|false</logonly> avd -->
-						<!--<testsize>small|medium|large</testsize> -->
-						<createReport>true</createReport>
-						<!--<classes> -->
-						<!--<class>your.package.name.YourTestClass</class> -->
-						<!--</classes> -->
-						<!--<packages> -->
-						<!--<package>your.package.name</package> -->
-						<!--</packages> -->
-					</test>
-				</configuration>
-				<extensions>true</extensions>
+				<executions>
+					<execution>
+						<id>update-manifest</id>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>manifest-update</goal>
+						</goals>
+						<configuration>
+							<manifest>
+								<versionName>${project.version}</versionName>
+								<versionCodeUpdateFromVersion>true</versionCodeUpdateFromVersion>
+							</manifest>
+						</configuration>
+					</execution>
+				</executions>
 			</plugin>
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>

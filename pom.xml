@@ -25,10 +25,11 @@
 	</scm>
 
 	<modules>
-		<module>novabill-shared</module>
 		<module>novabill-scala-utils</module>
-		<module>novabill-client</module>
-		<module>novabill-android</module>
+		<module>novabill-gwt-client</module>
+		<module>novabill-gwt-shared</module>
+		<module>novabill-android-client</module>
+		<module>novabill-android-shared</module>
 		<!-- <module>novabill-android-it</module> -->
 		<module>novabill-server</module>
 	</modules>
@@ -37,24 +38,29 @@
 		<dependencies>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>novabill-shared</artifactId>
+				<artifactId>novabill-gwt-shared</artifactId>
 				<version>${project.version}</version>
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>novabill-client</artifactId>
+				<artifactId>novabill-gwt-client</artifactId>
 				<version>${project.version}</version>
 				<type>war</type>
 			</dependency>
 			<dependency>
+                <groupId>${project.groupId}</groupId>
+                <artifactId>novabill-android-shared</artifactId>
+                <version>${project.version}</version>
+            </dependency>
+			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>novabill-android</artifactId>
+				<artifactId>novabill-android-client</artifactId>
 				<version>${project.version}</version>
 				<type>jar</type>
 			</dependency>
 			<dependency>
 				<groupId>${project.groupId}</groupId>
-				<artifactId>novabill-android</artifactId>
+				<artifactId>novabill-android-client</artifactId>
 				<version>${project.version}</version>
 				<type>apk</type>
 			</dependency>
