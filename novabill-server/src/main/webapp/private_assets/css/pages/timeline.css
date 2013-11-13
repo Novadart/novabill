@@ -2,7 +2,7 @@
 Timeline UI Base
 ***/
 .timeline {
-	margin: 0 0 0 0;
+	margin: 0;
 	padding: 0;
 	list-style: none;
 	position: relative;
@@ -28,7 +28,7 @@ Timeline UI Base
 .timeline > li .timeline-time {
 	display: block;
 	width: 15%;
-	padding-right: 100px;
+	text-align: right;
 	position: absolute;
 }
 
@@ -39,15 +39,15 @@ Timeline UI Base
 
 .timeline > li .timeline-time span.date {
 	font-size: 12px;
-	color: #bdd0db;
+	color: #aaa;
 	display: block;
-	margin-bottom: 5px;
 	font-weight: 300;
 }
 
 .timeline > li .timeline-time span.time {
 	font-weight: 300;
-	font-size: 36px;
+	font-size: 38px;
+	line-height: 38px;
 }
 
 /* Right content */
@@ -162,13 +162,17 @@ Timeline UI Base
 	text-align: center;
 	left: 20%;
 	top: 0;
-	margin: 5px 0 0 -27px;
+	margin: 5px 0 0 -25px;
 	padding-bottom: 3px; 
 	padding-right: 1px;
 	padding-left: 2px;
 	-webkit-border-radius: 30px !important;
 	   -moz-border-radius: 30px !important;
 			border-radius: 30px !important;
+}
+
+.timeline > li .timeline-icon > i {
+	font-size: 18px;
 }
 
 /* Red */

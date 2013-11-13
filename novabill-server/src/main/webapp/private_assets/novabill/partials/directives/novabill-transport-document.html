@@ -1,0 +1,21 @@
+<div class="well well-small document-well transport-document">
+    <span class="badge documentId">{{transportDocument.documentID}}</span> 
+    <span class="date">{{transportDocument.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
+    <span class="clientName">{{transportDocument.client.name}}</span>
+    
+    <a ng-href="{{openUrl}}" class="open btn btn-sm dark">Open</a>
+    
+    <a href="javascript:void(0);" ng-click="print()" class="print btn btn-sm default"><i class="fa fa-print"></i></a>
+    
+    <div class="options btn-group">
+        <a class="btn blue btn-sm dropdown-toggle" data-toggle="dropdown" href="#">Options
+            <i class="fa fa-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu" ng-class="{'bottom-up': bottomUpMenu}">
+            <li><a href="javascript:void(0);" ng-click="createInvoice()">Create Invoice</a></li>
+            <li class="divider"></li>
+            <li ><a href="javascript:void(0);" ng-click="remove()" ><i class="fa fa-trash-o"></i>Delete</a></li>
+        </ul>
+    </div>
+    
+</div>

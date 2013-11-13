@@ -3,7 +3,9 @@ Twitter Bootstrap Wizard
 
 This Twitter Bootstrap plugin builds a wizard using a formatted tabbable structure. It allows to build a wizard functionality using buttons to go through the different wizard steps and using events allows to hook into each step individually.
 
-<a href="http://vadimg.com/twitter-bootstrap-wizard/" target="_blank">Website & Demo</a>
+<a href="http://vadimg.com/twitter-bootstrap-wizard-example/" target="_blank">Website & Demo</a>
+
+<a href='https://twitter.com/gabrielva' target='_blank'>Follow @gabrielva</a>
 
 Code Examples
 -------------
@@ -106,8 +108,12 @@ Events
 			<td>Fired when last button is clicked (return false to disable moving to the last step)</td>
 		</tr>
 		<tr>
+			<td>onTabChange</td>
+			<td>Fired when a tab is changed (return false to disable moving to that tab and showing its contents)</td>
+		</tr>
+		<tr>
 			<td>onTabClick</td>
-			<td>Fired when a tab is clicked (return false to disable moving to that tab and showing it's contents)</td>
+			<td>Fired when a tab is clicked (return false to disable moving to that tab and showing its contents)</td>
 		</tr>
 		<tr>
 			<td>onTabShow</td>
@@ -162,7 +168,58 @@ Methods
 			<td></td>
 			<td>Returns the number of tabs</td>
 		</tr>
+		<tr>
+			<td>enable</td>
+			<td>zero based index</td>
+			<td>Enables a tab, allows a user to click it (removes .disabled if the item has that class)</td>
+		</tr>
+		<tr>
+			<td>disable</td>
+			<td>zero based index</td>
+			<td>Disables a tab, disallows a user to click it (adds .disabled to the li element)</td>
+		</tr>
+		<tr>
+			<td>display</td>
+			<td>zero based index</td>
+			<td>Displays the li element if it was previously hidden</td>
+		</tr>
+		<tr>
+			<td>hide</td>
+			<td>zero based index</td>
+			<td>Hides the li element (will not remove it from the DOM)</td>
+		</tr>
+		<tr>
+			<td>remove</td>
+			<td>zero based index, optinal bool remove tab-pane element or not false by default</td>
+			<td>Removes the li element from the DOM if second argument is true will also remove the tab-pane element</td>
+		</tr>
 	</tbody>	
 </table>
 
-<p>&copy; <a href='http://vadimg.com' target="_blank">Vadim Vincent Gabriel</a> 2012</p>
+<p>&copy; <a href='http://vadimg.com' target="_blank">Vadim Vincent Gabriel</a> <a href='https://twitter.com/gabrielva' target='_blank'>Follow @gabrielva</a> 2012</p>
+
+License
+===============
+The MIT License (MIT)
+
+Copyright (c) 2013 - Vincent Gabriel & Jason Gill
+
+Permission is hereby granted, free of charge, to any person obtaining a copy
+of this software and associated documentation files (the "Software"), to deal
+in the Software without restriction, including without limitation the rights
+to use, copy, modify, merge, publish, distribute, sublicense, and/or sell
+copies of the Software, and to permit persons to whom the Software is
+furnished to do so, subject to the following conditions:
+
+The above copyright notice and this permission notice shall be included in
+all copies or substantial portions of the Software.
+
+THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR
+IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,
+FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE
+AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER
+LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,
+OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN
+THE SOFTWARE.
+
+

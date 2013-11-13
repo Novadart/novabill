@@ -14,9 +14,10 @@
 <script src="${privateAssetsUrl}/plugins/flot/jquery.flot.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/plugins/flot/jquery.flot.resize.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/plugins/jquery.pulsate.min.js" type="text/javascript"></script>
-<script src="${privateAssetsUrl}/plugins/bootstrap-daterangepicker/date.js" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/plugins/bootstrap-daterangepicker/moment.min.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/plugins/bootstrap-daterangepicker/daterangepicker.js" type="text/javascript"></script>     
 <script src="${privateAssetsUrl}/plugins/gritter/js/jquery.gritter.js" type="text/javascript"></script>
+<!-- IMPORTANT! fullcalendar depends on jquery-ui-1.10.3.custom.min.js for drag & drop support -->
 <script src="${privateAssetsUrl}/plugins/fullcalendar/fullcalendar/fullcalendar.min.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/plugins/jquery-easy-pie-chart/jquery.easy-pie-chart.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/plugins/jquery.sparkline.min.js" type="text/javascript"></script>  
@@ -27,16 +28,16 @@
 <script src="${privateAssetsUrl}/scripts/tasks.js" type="text/javascript"></script>        
 <!-- END PAGE LEVEL SCRIPTS -->  
 <script>
-	jQuery(document).ready(function() {    
-	   App.init(); // initlayout and core plugins
-	   Index.init();
-	   Index.initJQVMAP(); // init index page's custom scripts
-	   Index.initCalendar(); // init index page's custom scripts
-	   Index.initCharts(); // init index page's custom scripts
-	   Index.initChat();
-	   Index.initMiniCharts();
-	   Tasks.initDashboardWidget();
-	});
+    jQuery(document).ready(function() {    
+       App.init(); // initlayout and core plugins
+       Index.init();
+       Index.initJQVMAP(); // init index page's custom scripts
+       Index.initCalendar(); // init index page's custom scripts
+       Index.initCharts(); // init index page's custom scripts
+       Index.initChat();
+       Index.initMiniCharts();
+       Index.initDashboardDaterange();
+       Tasks.initDashboardWidget();
+    });
 </script>
-   
 <!-- END JAVASCRIPTS -->

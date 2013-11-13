@@ -1,11 +1,25 @@
-@media (min-width: 980px) and (max-width: 1280px) {  
+/***
+Responsive Theme. 
+Based on http://getbootstrap.com/css/#responsive-utilities-classes
+***/
+
+/***
+Form Medium Devices Up To Large Devices
+***/
+
+@media (min-width: 992px) and (max-width: 1200px) {  
 
 	.page-boxed .header .dropdown .username {
 		display: none;
 	}	
+
 }
 
-@media (min-width: 980px) { 
+/***
+From Medium Devices Up To Larger Devices
+***/
+
+@media (min-width: 992px) { 
 
  	/***
  	Page sidebar
@@ -13,6 +27,10 @@
  	.page-sidebar {
 		position: absolute;
  		width: 225px;
+  	}
+
+  	.page-sidebar.navbar-collapse {
+  		max-height: none !important;
   	}
 
 	.page-sidebar-fixed .page-sidebar {
@@ -42,10 +60,10 @@
 
 	.page-sidebar-fixed .page-sidebar-closed .page-sidebar .sidebar-search .submit,
 	.page-sidebar-fixed .page-sidebar .sidebar-toggler {
-		-webkit-transition: all  0.2s ease;
-	     -moz-transition: all  0.2s ease;
-	       -o-transition: all  0.2s ease;
-	          transition: all  0.2s ease;
+		-webkit-transition: all  0.3s ease;
+	     -moz-transition: all  0.3s ease;
+	       -o-transition: all  0.3s ease;
+	          transition: all  0.3s ease;
 	}
 
 	.page-sidebar-hovering {
@@ -71,6 +89,7 @@
   		margin-left: 225px; 
 		margin-top: 0px;
 		min-height: 760px; 
+		padding: 25px 20px 20px 20px;
 	}
 
 	.page-sidebar-fixed .page-content {
@@ -86,9 +105,31 @@
 	***/
 
 	/* fixed sidebar */
+	.page-footer-fixed .footer {
+	  position: fixed;
+	  left: 0;
+	  right: 0;
+	  z-index: 10000;
+	  bottom: 0;
+	}
+
+	.page-footer-fixed .page-container {
+	  margin-bottom: 32px;
+	}
+
+	.page-footer-fixed.page-sidebar-fixed .footer {
+	  margin-left: 0 !important;
+	}
+	/* end: fixed footer */
+
+	.page-boxed .footer {
+  		padding: 8px 0 5px 0; 
+	}
+
 	.page-sidebar-fixed .footer {
 	  margin-left: 225px;
 	  background-color: #fff;
+	  padding: 8px 20px 5px 20px;
 	}
 
 	.page-sidebar-fixed .footer .footer-inner {
@@ -108,34 +149,52 @@
 	}
 
 	/* boxed layout */
-	.page-boxed	.header .brand {
+	.page-boxed	.header .navbar-brand {
   		margin-left: 0px !important;
   		width: 226px;
 	}
 
-	.page-boxed .header .brand img {
+	.page-boxed .header .navbar-brand img {
 		margin-left: 10px;
 	}
+
+	.page-boxed .header .navbar-nav {
+	  margin-right: 0px;
+	}
+
 }
 
 /***
-For tablets and phones
+Up To Medium Devices
 ***/
-@media (max-width:979px) { 
-	
-	/***
-	Body
-	***/
-	body {
-		margin: 0px !important;
-	}	
 
+@media (max-width:991px) { 
+	
 	/***
  	Page header
  	***/
  	.header {
- 		margin: 0 !important;
+ 		padding: 0 20px 0 20px;
+ 		position: relative;
+ 		clear: both;
  	}
+
+ 	.header .navbar-toggle {
+ 		display: inline-block;
+ 	}
+
+ 	.page-sidebar.navbar-collapse {
+  		max-height: 340px;
+  	}
+
+ 	.page-sidebar.navbar-collapse.collapse {
+	    display: none !important;
+	}
+
+	.page-sidebar.navbar-collapse.in {	 	
+	 	overflow: hidden !important;
+	 	overflow-y: auto !important;
+	 }
 
 	.header .nav li.dropdown i {
 		display: inline-block;
@@ -144,17 +203,32 @@ For tablets and phones
 		right:0px;
 	}
 
-	.header .nav {
+	.header .navbar-nav {
+		display: block;
 		margin-bottom: 0px !important;
 	}
 
-	.header .brand {
+	.header .navbar-nav .open .dropdown-menu  {
+		position: absolute;
+	}
+
+	.header .navbar-nav {
+		display: inline-block;
+    	float: right;
+    	margin: 0;
+  	}
+  
+ 	.header .navbar-nav > li {
+    	float: left;
+  	}
+
+	.header .navbar-brand {
   		margin-left: 0px !important;
   		padding-left: 0px !important; 
 	}
 
-	.header .brand img {
-		margin-left: 2px !important;
+	.header .navbar-brand img {
+		margin-left: 4px !important;
 	}
 
 	/***
@@ -165,16 +239,12 @@ For tablets and phones
 		padding: 0 !important;
 	}
 
-	.page-header-fixed .page-container {
-		margin-top: 0px !important;
-	}
-
 	/***
   	Page content
   	***/
   	.page-content {
   		margin: 0px !important;
-  		padding: 0px !important;  		
+  		padding: 20px 20px 20px 20px !important;  		
 		min-height: 280px; 
   	}
 
@@ -182,11 +252,13 @@ For tablets and phones
 	Page sidebar
 	***/
 	.page-sidebar {
-		margin: 0 10px;
+		border-top: 0 !important;
+		margin: 20px;
 	}
 
 	.page-sidebar.in {
-		margin: 10px;
+		border-top: 0 !important;
+		margin: 20px;
 		position: relative;
 		z-index: 5;
 	}
@@ -204,17 +276,8 @@ For tablets and phones
 		display: none !important;
 	}
 
-	.page-sidebar .sidebar-search {
+	.page-sidebar .sidebar-search .input-box {
 	  width: 220px;
-	  margin-top: 20px;
-	  margin-bottom:20px;
-	}
-
-	/***
-	Page title
-	***/
-	.page-title {
-		margin: 15px 0px;
 	}
 
 	/***
@@ -224,33 +287,25 @@ For tablets and phones
 		top:55px;
 		right:20px;
 	}
+
+	/***
+	Boxed Layout
+	***/
+ 	.page-boxed .header > .container,
+ 	.page-boxed .footer > .container,
+ 	.page-boxed > .container {
+ 		max-width: none !important;
+ 		margin: 0 !important;
+ 		padding: 0 !important;
+ 	}
+
 }
 
-@media (min-width: 768px) and (max-width: 1280px) { 
-
-	/***
-	Form wizard
-	***/
-	.form-wizard .step .desc {
-	  margin-top: 10px;
-	  display: block;
-	}
-
-	/***
-	Pricing tables
-	***/
-
-	.pricing-table .rate .price,
-	.pricing-table2 .rate .price {
-		width: 100%;
-		display: block;
-		text-align: center;
-		margin-bottom: 10px;
-	}
-
-} 
+/***
+From Small Devices Up To Medium Devices
+***/
  
-@media (min-width: 768px) and (max-width: 979px) { 
+@media (min-width: 768px) and (max-width: 991px) { 
 
 	/***
 	Body
@@ -279,16 +334,19 @@ For tablets and phones
 
 } 
  
+/***
+Extra Small Devices Only
+***/
+
 @media (max-width: 767px) { 
 	
 	/***
 	Page header
 	***/
-	.header .navbar-inner .container-fluid,
-	.header .navbar-inner .container {
-		margin-left: 10px !important;
-		margin-right: 10px !important;
-	}
+	
+	.header {
+ 		padding: 0 10px 0 10px;
+ 	}
 
 	.header .top-nav .nav{  
 	 	margin-top: 0px;
@@ -323,7 +381,7 @@ For tablets and phones
 	}
 
   	/* Header logo */
-	.header .brand {
+	.header .navbar-brand {
   		margin-left: 0px !important;
   		width: 110px;
 	}
@@ -332,7 +390,8 @@ For tablets and phones
 	Page content
 	***/
 	.page-content {
-		padding: 10px !important;
+		padding: 20px 10px 10px 10px !important;
+		overflow: hidden;
 	}
 
 	/***
@@ -340,6 +399,12 @@ For tablets and phones
 	***/
 	.page-title {
 		margin-bottom: 20px;
+		font-size: 18px;
+	}
+
+	.page-title small {
+		font-size: 13px;
+		padding-top: 3px;
 	}
 	
 	/***
@@ -365,12 +430,6 @@ For tablets and phones
 	  padding-left: 15px;	
 	} 
 
-	/***
-	Gritter notification
-	***/
-	#gritter-notice-wrapper {
-		right:1px !important;
-	}
 
 	/***
 	Form input validation states
@@ -423,37 +482,44 @@ For tablets and phones
   	}
 }
 
+/***
+The Most Extra Small Devices Landscape Mode Only
+***/
+
 @media (max-width: 480px) {
 
 	/***
 	Header navbar
 	***/
-	.header .nav {
-		clear:both !important;
+
+	.header .navbar-nav {
+		display: block !important;
+		margin-top: 0px !important;
 	}
 
-	.header .nav > li.dropdown .dropdown-toggle {
-  		margin-top:3px !important;
-  	}	
+	.header .navbar-nav > li.dropdown .dropdown-toggle {
+  		margin-top:-1px;
+  		padding-left: 8px;
+	  	padding-right: 8px;
+	}
 
-  	.header .nav li.dropdown .dropdown-toggle .badge {
-  		top: 11px;
+	.header .navbar-nav > li.dropdown.user .dropdown-toggle,
+	.header .navbar-nav > li.dropdown.language .dropdown-toggle {
+		padding-right: 6px;
+		padding-left: 6px;
+	}
+
+  	.header .navbar-nav li.dropdown .dropdown-toggle .badge {
+  		top: 8px;
   	}
 
   	/***
 	Page sidebar
 	***/
+	.page-sidebar,
 	.page-sidebar.in {
-		margin-top: 7px !important;
+		margin: 0 10px 10px 10px;
 	}
-
-	/***
-	Styler panel
-	***/
-	.styler-panel {
-		top:92px;
-		right:12px;
-	}	
 
 	/***
 	Page title
@@ -464,6 +530,13 @@ For tablets and phones
 	}
 
 	/***
+	Forms
+	***/
+  	.portlet .form-horizontal .form-actions {
+  		padding-left: 10px; 	
+  	}
+
+	/***
 	Dashboard date range panel
 	***/
 	.page-content .breadcrumb .dashboard-date-range  {
@@ -472,103 +545,30 @@ For tablets and phones
 
 	.page-content .breadcrumb .dashboard-date-range span {
 		display: none;
-	}
+	}	
 
-	/***
-	Login page
-	***/
-	.login .logo {
-		margin-top:10px;
-	}
-
-	.login .content {
-		padding: 30px; 
-		width: 222px;
-	}
-
-	.login .content h3 {
-		font-size: 22px;
-	}
-
-	.login .content .m-wrap {
-  		width: 180px;
-	}
-
-	.login .checkbox {
-		font-size: 13px;
-	}
-
-	/***
-	Form controls
-	***/	
-	.form-horizontal.form-bordered .control-label {
-	    float: none;
-	    width: auto;
-	    padding-top: 0;
-	    text-align: left;
-	    margin-top: 0;
-	    margin-left: 10px;
-	}
-
-	.form-horizontal.form-bordered .controls {
-		padding-top: 0 !important;
-		border-left: 0 !important;	
-	}
-
-	.form-horizontal.form-bordered.form-label-stripped .control-group:nth-child(even) {
-	  background-color: none !important;
-	} 
-
-	.form-horizontal.form-bordered.form-label-stripped .control-group:nth-child(even) .controls {
-	  background-color: none !important;  
-	}
-
-	.form-horizontal.form-row-seperated .control-label {
-	    float: none;
-	    width: auto;
-	    padding-top: 0;
-	    text-align: left;
-	    margin-left: 10px;
-	}
-
-  	.form-horizontal.form-row-seperated .controls {
-		border-left: 0;
-    	margin-left: 10px;
+  	.page-content .breadcrumb > .btn-group span {
+  		display: none;
   	}
 
-  	.portlet .form-horizontal .form-actions {
-  		padding-left: 10px; 	
+  	.page-content .breadcrumb > .btn-group > .btn {
+  		padding-left: 7px;
+  		padding-right: 7px;
   	}
 
 	/***
 	Hidden phone
 	***/
 	.hidden-480 {
-		display: none;
+		display: none !important;
 	}
-
-	/***
-	Modal header close button fix
-	***/
-	.modal-header .close {
-		margin-top: 5px !important;
-	}
-
-	/***
-	Fix text view
-	***/
-	.control-group .controls .text {
-  		display: block !important;
-  		margin-bottom: 10px;
-  	}
 }
 
-@media (max-width: 320px) {
+/***
+The Most Extra Small Devices Portrait Mode Only
+***/
 
-	.header .nav > li.dropdown .dropdown-toggle {
-	  padding-left: 8px !important;
-	  padding-right: 8px !important;
-	}
+@media (max-width: 320px) {
 
 	/***
 	Hidden phone
@@ -577,7 +577,7 @@ For tablets and phones
 		display: none;
 	}
 
-	.header .brand {
+	.header .navbar-brand {
 		width: 100px;
 	}	
 }	

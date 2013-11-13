@@ -1,5 +1,5 @@
 /*
- * jQuery File Upload Plugin JS Example 7.0
+ * jQuery File Upload Plugin JS Example 8.8.2
  * https://github.com/blueimp/jQuery-File-Upload
  *
  * Copyright 2010, Sebastian Tschan
@@ -9,8 +9,8 @@
  * http://www.opensource.org/licenses/MIT
  */
 
-/*jslint nomen: true, unparam: true, regexp: true */
-/*global $, window, document */
+/*jslint nomen: true, regexp: true */
+/*global $, window, blueimp */
 
 $(function () {
     'use strict';
@@ -19,39 +19,30 @@ $(function () {
     $('#fileupload').fileupload({
         // Uncomment the following to send cross-domain cookies:
         //xhrFields: {withCredentials: true},
-        url: 'assets/jquery-file-upload/server/php/'
+        url: 'server/php/'
     });
 
-    // Enable iframe cross-domain access via redirect option(only if you uplaod to another domain):
-    /*
+    // Enable iframe cross-domain access via redirect option:
     $('#fileupload').fileupload(
         'option',
         'redirect',
-        'assets/jquery-file-upload/cors/result.html?%s'
+        window.location.href.replace(
+            /\/[^\/]*$/,
+            '/cors/result.html?%s'
+        )
     );
-    */
 
-    if (window.location.hostname === 'blueimp.github.com') {
+    if (window.location.hostname === 'blueimp.github.io') {
         // Demo settings:
         $('#fileupload').fileupload('option', {
             url: '//jquery-file-upload.appspot.com/',
+            // Enable image resizing, except for Android and Opera,
+            // which actually support image resizing, but fail to
+            // send Blob objects via XHR requests:
+            disableImageResize: /Android(?!.*Chrome)|Opera/
+                .test(window.navigator.userAgent),
             maxFileSize: 5000000,
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-            process: [
-                {
-                    action: 'load',
-                    fileTypes: /^image\/(gif|jpeg|png)$/,
-                    maxFileSize: 20000000 // 20MB
-                },
-                {
-                    action: 'resize',
-                    maxWidth: 1440,
-                    maxHeight: 900
-                },
-                {
-                    action: 'save'
-                }
-            ]
+            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i
         });
         // Upload server status check for browsers with CORS support:
         if ($.support.cors) {
@@ -59,7 +50,7 @@ $(function () {
                 url: '//jquery-file-upload.appspot.com/',
                 type: 'HEAD'
             }).fail(function () {
-                $('<span class="alert alert-error"/>')
+                $('<div class="alert alert-danger"/>')
                     .text('Upload server currently unavailable - ' +
                             new Date())
                     .appendTo('#fileupload');
@@ -67,47 +58,19 @@ $(function () {
         }
     } else {
         // Load existing files:
-        // Demo settings:
+        $('#fileupload').addClass('fileupload-processing');
         $.ajax({
             // Uncomment the following to send cross-domain cookies:
             //xhrFields: {withCredentials: true},
             url: $('#fileupload').fileupload('option', 'url'),
-            dataType: 'json',            
-            context: $('#fileupload')[0],
-            maxFileSize: 5000000,
-            acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-            process: [
-                {
-                    action: 'load',
-                    fileTypes: /^image\/(gif|jpeg|png)$/,
-                    maxFileSize: 20000000 // 20MB
-                },
-                {
-                    action: 'resize',
-                    maxWidth: 1440,
-                    maxHeight: 900
-                },
-                {
-                    action: 'save'
-                }
-            ]
+            dataType: 'json',
+            context: $('#fileupload')[0]
+        }).always(function () {
+            $(this).removeClass('fileupload-processing');
         }).done(function (result) {
             $(this).fileupload('option', 'done')
                 .call(this, null, {result: result});
         });
-
-        // Upload server status check for browsers with CORS support:
-        if ($.support.cors) {
-            $.ajax({
-                url: 'assets/jquery-file-upload/server/php/',
-                type: 'HEAD'
-            }).fail(function () {
-                $('<span class="alert alert-error"/>')
-                    .text('Upload server currently unavailable - ' +
-                            new Date())
-                    .appendTo('#fileupload');
-            });
-        }
     }
 
 });

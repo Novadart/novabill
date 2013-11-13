@@ -1,5 +1,72 @@
 var FormComponents = function () {
 
+
+    var handleBootstrapTouchSpin = function() {
+
+        $("#touchspin_demo1").TouchSpin({
+            inputGroupClass: 'input-medium',            
+            spinUpClass: 'green',
+            spinDownClass: 'green',
+            min: -1000000000,
+            max: 1000000000,
+            stepinterval: 50,
+            maxboostedstep: 10000000,
+            prefix: '$'
+        }); 
+        
+        $("#touchspin_demo2").TouchSpin({
+            inputGroupClass: 'input-medium',
+            spinUpClass: 'blue',
+            spinDownClass: 'blue',
+            min: 0,
+            max: 100,
+            step: 0.1,
+            decimals: 2,
+            boostat: 5,
+            maxboostedstep: 10,
+            postfix: '%'
+        });         
+    }
+
+    var handleBootstrapMaxlength = function() {
+        $('#maxlength_defaultconfig').maxlength({
+            limitReachedClass: "label label-danger",
+        })
+    
+        $('#maxlength_thresholdconfig').maxlength({
+            limitReachedClass: "label label-danger",
+            threshold: 20
+        });
+
+        $('#maxlength_alloptions').maxlength({
+            alwaysShow: true,
+            warningClass: "label label-success",
+            limitReachedClass: "label label-danger",
+            separator: ' out of ',
+            preText: 'You typed ',
+            postText: ' chars available.',
+            validate: true
+        });
+
+        $('#maxlength_textarea').maxlength({
+            limitReachedClass: "label label-danger",
+            alwaysShow: true
+        });
+
+        $('#maxlength_placement').maxlength({
+            limitReachedClass: "label label-danger",
+            alwaysShow: true,
+            placement: App.isRTL() ? 'top-right' : 'top-left'
+        });
+    }
+
+    var handleSpinners = function () {
+        $('#spinner1').spinner();
+        $('#spinner2').spinner({disabled: true});
+        $('#spinner3').spinner({value:0, min: 0, max: 10});
+        $('#spinner4').spinner({value:0, step: 5, min: 0, max: 200});
+    }
+
     var handleWysihtml5 = function () {
         if (!jQuery().wysihtml5) {
             return;
@@ -10,54 +77,6 @@ var FormComponents = function () {
                 "stylesheets": ["assets/plugins/bootstrap-wysihtml5/wysiwyg-color.css"]
             });
         }
-    }
-
-    var handleToggleButtons = function () {
-        if (!jQuery().toggleButtons) {
-            return;
-        }
-        $('.basic-toggle-button').toggleButtons();
-        $('.text-toggle-button').toggleButtons({
-            width: 200,
-            label: {
-                enabled: "Lorem Ipsum",
-                disabled: "Dolor Sit"
-            }
-        });
-        $('.danger-toggle-button').toggleButtons({
-            style: {
-                // Accepted values ["primary", "danger", "info", "success", "warning"] or nothing
-                enabled: "danger",
-                disabled: "info"
-            }
-        });
-        $('.info-toggle-button').toggleButtons({
-            style: {
-                enabled: "info",
-                disabled: ""
-            }
-        });
-        $('.success-toggle-button').toggleButtons({
-            style: {
-                enabled: "success",
-                disabled: "info"
-            }
-        });
-        $('.warning-toggle-button').toggleButtons({
-            style: {
-                enabled: "warning",
-                disabled: "info"
-            }
-        });
-
-        $('.height-toggle-button').toggleButtons({
-            height: 100,
-            font: {
-                'line-height': '100px',
-                'font-size': '20px',
-                'font-style': 'italic'
-            }
-        });
     }
 
     var handleTagsInput = function () {
@@ -71,7 +90,7 @@ var FormComponents = function () {
             },
         });
         $('#tags_2').tagsInput({
-            width: 240
+            width: 300
         });
     }
 
@@ -79,16 +98,21 @@ var FormComponents = function () {
 
         if (jQuery().datepicker) {
             $('.date-picker').datepicker({
-                rtl : App.isRTL()
+                rtl: App.isRTL(),
+                autoclose: true
             });
+            $('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
         }
     }
 
     var handleTimePickers = function () {
-        
+
         if (jQuery().timepicker) {
-            $('.timepicker-default').timepicker();
+            $('.timepicker-default').timepicker({
+                autoclose: true
+            });
             $('.timepicker-24').timepicker({
+                autoclose: true,
                 minuteStep: 1,
                 showSeconds: true,
                 showMeridian: false
@@ -101,128 +125,77 @@ var FormComponents = function () {
             return;
         }
 
-        $('.date-range').daterangepicker(
-            {
+        $('#defaultrange').daterangepicker({
                 opens: (App.isRTL() ? 'left' : 'right'),
-                format: 'MM/dd/yyyy',
+                format: 'MM/DD/YYYY',
                 separator: ' to ',
-                startDate: Date.today().add({
-                    days: -29
-                }),
-                endDate: Date.today(),
+                startDate: moment().subtract('days', 29),
+                endDate: moment(),
                 minDate: '01/01/2012',
                 maxDate: '12/31/2014',
+            },
+            function (start, end) {
+                console.log("Callback has been called!");
+                $('#defaultrange input').val(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
+            }
+        );        
+
+        $('#reportrange').daterangepicker({
+                opens: (App.isRTL() ? 'left' : 'right'),
+                startDate: moment().subtract('days', 29),
+                endDate: moment(),
+                minDate: '01/01/2012',
+                maxDate: '12/31/2014',
+                dateLimit: {
+                    days: 60
+                },
+                showDropdowns: true,
+                showWeekNumbers: true,
+                timePicker: false,
+                timePickerIncrement: 1,
+                timePicker12Hour: true,
+                ranges: {
+                    'Today': [moment(), moment()],
+                    'Yesterday': [moment().subtract('days', 1), moment().subtract('days', 1)],
+                    'Last 7 Days': [moment().subtract('days', 6), moment()],
+                    'Last 30 Days': [moment().subtract('days', 29), moment()],
+                    'This Month': [moment().startOf('month'), moment().endOf('month')],
+                    'Last Month': [moment().subtract('month', 1).startOf('month'), moment().subtract('month', 1).endOf('month')]
+                },
+                buttonClasses: ['btn'],
+                applyClass: 'green',
+                cancelClass: 'default',
+                format: 'MM/DD/YYYY',
+                separator: ' to ',
+                locale: {
+                    applyLabel: 'Apply',
+                    fromLabel: 'From',
+                    toLabel: 'To',
+                    customRangeLabel: 'Custom Range',
+                    daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
+                    monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
+                    firstDay: 1
+                }
+            },
+            function (start, end) {
+                console.log("Callback has been called!");
+                $('#reportrange span').html(start.format('MMMM D, YYYY') + ' - ' + end.format('MMMM D, YYYY'));
             }
         );
-
-        $('#form-date-range').daterangepicker({
-            ranges: {
-                'Today': ['today', 'today'],
-                'Yesterday': ['yesterday', 'yesterday'],
-                'Last 7 Days': [Date.today().add({
-                        days: -6
-                    }), 'today'],
-                'Last 29 Days': [Date.today().add({
-                        days: -29
-                    }), 'today'],
-                'This Month': [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()],
-                'Last Month': [Date.today().moveToFirstDayOfMonth().add({
-                        months: -1
-                    }), Date.today().moveToFirstDayOfMonth().add({
-                        days: -1
-                    })]
-            },
-            opens: (App.isRTL() ? 'left' : 'right'),
-            format: 'MM/dd/yyyy',
-            separator: ' to ',
-            startDate: Date.today().add({
-                days: -29
-            }),
-            endDate: Date.today(),
-            minDate: '01/01/2012',
-            maxDate: '12/31/2014',
-            locale: {
-                applyLabel: 'Submit',
-                fromLabel: 'From',
-                toLabel: 'To',
-                customRangeLabel: 'Custom Range',
-                daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-                monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                firstDay: 1
-            },
-            showWeekNumbers: true,
-            buttonClasses: ['btn-danger']
-        },
-
-        function (start, end) {
-            $('#form-date-range span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
-        });
-
-        $('#form-date-range span').html(Date.today().add({
-            days: -29
-        }).toString('MMMM d, yyyy') + ' - ' + Date.today().toString('MMMM d, yyyy'));
-
-
-        //modal version:
-
-        $('#form-date-range-modal').daterangepicker({
-            ranges: {
-                'Today': ['today', 'today'],
-                'Yesterday': ['yesterday', 'yesterday'],
-                'Last 7 Days': [Date.today().add({
-                        days: -6
-                    }), 'today'],
-                'Last 29 Days': [Date.today().add({
-                        days: -29
-                    }), 'today'],
-                'This Month': [Date.today().moveToFirstDayOfMonth(), Date.today().moveToLastDayOfMonth()],
-                'Last Month': [Date.today().moveToFirstDayOfMonth().add({
-                        months: -1
-                    }), Date.today().moveToFirstDayOfMonth().add({
-                        days: -1
-                    })]
-            },
-            opens: (App.isRTL() ? 'left' : 'right'),
-            format: 'MM/dd/yyyy',
-            separator: ' to ',
-            startDate: Date.today().add({
-                days: -29
-            }),
-            endDate: Date.today(),
-            minDate: '01/01/2012',
-            maxDate: '12/31/2014',
-            locale: {
-                applyLabel: 'Submit',
-                fromLabel: 'From',
-                toLabel: 'To',
-                customRangeLabel: 'Custom Range',
-                daysOfWeek: ['Su', 'Mo', 'Tu', 'We', 'Th', 'Fr', 'Sa'],
-                monthNames: ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'],
-                firstDay: 1
-            },
-            showWeekNumbers: true,
-            buttonClasses: ['btn-danger']
-        },
-
-        function (start, end) {
-            $('#form-date-range-modal span').html(start.toString('MMMM d, yyyy') + ' - ' + end.toString('MMMM d, yyyy'));
-        });
-
-        $('#form-date-range-modal span').html(Date.today().add({
-            days: -29
-        }).toString('MMMM d, yyyy') + ' - ' + Date.today().toString('MMMM d, yyyy'));
-
+        //Set the initial state of the picker label
+        $('#reportrange span').html(moment().subtract('days', 29).format('MMMM D, YYYY') + ' - ' + moment().format('MMMM D, YYYY'));
     }
 
-    var handleDatetimePicker = function () {        
+    var handleDatetimePicker = function () {
 
         $(".form_datetime").datetimepicker({
+            autoclose: true,
             isRTL: App.isRTL(),
             format: "dd MM yyyy - hh:ii",
             pickerPosition: (App.isRTL() ? "bottom-right" : "bottom-left")
         });
 
-         $(".form_advance_datetime").datetimepicker({
+        $(".form_advance_datetime").datetimepicker({
             isRTL: App.isRTL(),
             format: "dd MM yyyy - hh:ii",
             autoclose: true,
@@ -232,7 +205,7 @@ var FormComponents = function () {
             minuteStep: 10
         });
 
-         $(".form_meridian_datetime").datetimepicker({
+        $(".form_meridian_datetime").datetimepicker({
             isRTL: App.isRTL(),
             format: "dd MM yyyy - HH:ii P",
             showMeridian: true,
@@ -240,6 +213,8 @@ var FormComponents = function () {
             pickerPosition: (App.isRTL() ? "bottom-right" : "bottom-left"),
             todayBtn: true
         });
+
+        $('body').removeClass("modal-open"); // fix bug when inline picker is used in modal
     }
 
     var handleClockfaceTimePickers = function () {
@@ -298,6 +273,7 @@ var FormComponents = function () {
         });
 
         $("#select2_sample3").select2({
+            placeholder: "Select...",
             allowClear: true,
             minimumInputLength: 1,
             query: function (query) {
@@ -323,6 +299,7 @@ var FormComponents = function () {
             return "<img class='flag' src='assets/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
         }
         $("#select2_sample4").select2({
+            placeholder: "Select a Country",
             allowClear: true,
             formatResult: format,
             formatSelection: format,
@@ -519,7 +496,43 @@ var FormComponents = function () {
         $('#my_multi_select1').multiSelect();
         $('#my_multi_select2').multiSelect({
             selectableOptgroup: true
-        });        
+        });
+
+        $('#my_multi_select3').multiSelect({
+            selectableHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+            selectionHeader: "<input type='text' class='form-control search-input' autocomplete='off' placeholder='search...'>",
+            afterInit: function (ms) {
+                var that = this,
+                    $selectableSearch = that.$selectableUl.prev(),
+                    $selectionSearch = that.$selectionUl.prev(),
+                    selectableSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selectable:not(.ms-selected)',
+                    selectionSearchString = '#' + that.$container.attr('id') + ' .ms-elem-selection.ms-selected';
+
+                that.qs1 = $selectableSearch.quicksearch(selectableSearchString)
+                    .on('keydown', function (e) {
+                        if (e.which === 40) {
+                            that.$selectableUl.focus();
+                            return false;
+                        }
+                    });
+
+                that.qs2 = $selectionSearch.quicksearch(selectionSearchString)
+                    .on('keydown', function (e) {
+                        if (e.which == 40) {
+                            that.$selectionUl.focus();
+                            return false;
+                        }
+                    });
+            },
+            afterSelect: function () {
+                this.qs1.cache();
+                this.qs2.cache();
+            },
+            afterDeselect: function () {
+                this.qs1.cache();
+                this.qs2.cache();
+            }
+        });
     }
 
     var handleInputMasks = function () {
@@ -527,29 +540,56 @@ var FormComponents = function () {
             'autounmask': true
         });
 
-        $("#mask_date").inputmask("d/m/y", {autoUnmask: true});  //direct mask        
-        $("#mask_date1").inputmask("d/m/y",{ "placeholder": "*"}); //change the placeholder
-        $("#mask_date2").inputmask("d/m/y",{ "placeholder": "dd/mm/yyyy" }); //multi-char placeholder
-        $("#mask_phone").inputmask("mask", {"mask": "(999) 999-9999"}); //specifying fn & options
-        $("#mask_tin").inputmask({"mask": "99-9999999"}); //specifying options only
-        $("#mask_number").inputmask({ "mask": "9", "repeat": 10, "greedy": false });  // ~ mask "9" or mask "99" or ... mask "9999999999"
-        $("#mask_decimal").inputmask('decimal', { rightAlignNumerics: false }); //disables the right alignment of the decimal input
-        $("#mask_currency").inputmask('€ 999.999.999,99', { numericInput: true });  //123456  =>  € ___.__1.234,56
-       
-        $("#mask_currency2").inputmask('€ 999,999,999.99', { numericInput: true, rightAlignNumerics: false, greedy: false}); //123456  =>  € ___.__1.234,56
-        $("#mask_ssn").inputmask("999-99-9999", {placeholder:" ", clearMaskOnLostFocus: true }); //default
+        $("#mask_date").inputmask("d/m/y", {
+            autoUnmask: true
+        }); //direct mask        
+        $("#mask_date1").inputmask("d/m/y", {
+            "placeholder": "*"
+        }); //change the placeholder
+        $("#mask_date2").inputmask("d/m/y", {
+            "placeholder": "dd/mm/yyyy"
+        }); //multi-char placeholder
+        $("#mask_phone").inputmask("mask", {
+            "mask": "(999) 999-9999"
+        }); //specifying fn & options
+        $("#mask_tin").inputmask({
+            "mask": "99-9999999"
+        }); //specifying options only
+        $("#mask_number").inputmask({
+            "mask": "9",
+            "repeat": 10,
+            "greedy": false
+        }); // ~ mask "9" or mask "99" or ... mask "9999999999"
+        $("#mask_decimal").inputmask('decimal', {
+            rightAlignNumerics: false
+        }); //disables the right alignment of the decimal input
+        $("#mask_currency").inputmask('€ 999.999.999,99', {
+            numericInput: true
+        }); //123456  =>  € ___.__1.234,56
+
+        $("#mask_currency2").inputmask('€ 999,999,999.99', {
+            numericInput: true,
+            rightAlignNumerics: false,
+            greedy: false
+        }); //123456  =>  € ___.__1.234,56
+        $("#mask_ssn").inputmask("999-99-9999", {
+            placeholder: " ",
+            clearMaskOnLostFocus: true
+        }); //default
     }
 
     var handleIPAddressInput = function () {
         $('#input_ipv4').ipAddress();
-        $('#input_ipv6').ipAddress({v:6});
+        $('#input_ipv6').ipAddress({
+            v: 6
+        });
     }
 
     var handlePasswordStrengthChecker = function () {
         var initialized = false;
         var input = $("#password_strength");
 
-        input.keydown(function(){
+        input.keydown(function () {
             if (initialized === false) {
                 // set base options
                 input.pwstrength({
@@ -564,33 +604,33 @@ var FormComponents = function () {
                     return word.match(/[a-z].[0-9]/) && score;
                 }, 10, true);
 
-                // set progress bar's width according to the input width
-                $('.progress', input.parents('.password-strength')).css('width', input.outerWidth() - 2); 
-
                 // set as initialized 
                 initialized = true;
             }
-        });        
+        });
     }
 
     var handleUsernameAvailabilityChecker1 = function () {
         var input = $("#username1_input");
 
-        $("#username1_checker").click(function(e){
+        $("#username1_checker").click(function (e) {
+            var pop = $(this);
 
             if (input.val() === "") {
-                input.popover('destroy');    
-                input.popover({
-                    'placement' : App.isRTL() ? 'left' : 'right',
+                input.closest('.form-group').removeClass('has-success').addClass('has-error');
+
+                pop.popover('destroy');
+                pop.popover({
+                    'placement': (App.isRTL() ? 'left' : 'right'),
                     'html': true,
-                    'title': 'Username Availability',
+                    'container': 'body',
                     'content': 'Please enter a username to check its availability.',
-                });                
+                });
                 // add error class to the popover
-                input.data('popover').tip().addClass('error');
+                pop.data('bs.popover').tip().addClass('error');
                 // set last poped popover to be closed on click(see App.js => handlePopovers function)     
-                App.setLastPopedPopover(input);
-                input.popover('show');
+                App.setLastPopedPopover(pop);
+                pop.popover('show');
                 e.stopPropagation(); // prevent closing the popover
 
                 return;
@@ -601,43 +641,52 @@ var FormComponents = function () {
             btn.attr('disabled', true);
 
             input.attr("readonly", true).
-                attr("disabled", true).
-                addClass("spinner");
+            attr("disabled", true).
+            addClass("spinner");
 
-            $.post('demo/username_checker.php', {username: input.val()}, function(res) {
+            $.post('demo/username_checker.php', {
+                username: input.val()
+            }, function (res) {
                 btn.attr('disabled', false);
 
                 input.attr("readonly", false).
-                    attr("disabled", false).
-                    removeClass("spinner");
+                attr("disabled", false).
+                removeClass("spinner");
 
-                input.popover('destroy');    
-                input.popover({
-                    'placement' : App.isRTL() ? 'left' : 'right',
-                    'html': true,
-                    'title': 'Username Availability',
-                    'content': res.message,
-                });
-
-                // change popover font color based on the result
                 if (res.status == 'OK') {
-                    input.data('popover').tip().addClass('success');
+                    input.closest('.form-group').removeClass('has-error').addClass('has-success');
+
+                    pop.popover('destroy');
+                    pop.popover({
+                        'html': true,
+                        'placement': (App.isRTL() ? 'left' : 'right'),
+                        'container': 'body',
+                        'content': res.message,
+                    });
+                    pop.popover('show');
+                    pop.data('bs.popover').tip().removeClass('error').addClass('success');
                 } else {
-                    input.data('popover').tip().addClass('error');
+                    input.closest('.form-group').removeClass('has-success').addClass('has-error');
+
+                    pop.popover('destroy');
+                    pop.popover({
+                        'html': true,
+                        'placement': (App.isRTL() ? 'left' : 'right'),
+                        'container': 'body',
+                        'content': res.message,
+                    });
+                    pop.popover('show');
+                    pop.data('bs.popover').tip().removeClass('success').addClass('error');
+                    App.setLastPopedPopover(pop);
                 }
-
-                // set last poped popover to be closed on click(see App.js => handlePopovers function)     
-                App.setLastPopedPopover(input);
-
-                input.popover('show');
 
             }, 'json');
 
-        });        
+        });
     }
 
     var handleUsernameAvailabilityChecker2 = function () {
-        $("#username2_input").change(function(){
+        $("#username2_input").change(function () {
             var input = $(this);
 
             if (input.val() === "") {
@@ -645,88 +694,52 @@ var FormComponents = function () {
             }
 
             input.attr("readonly", true).
-                attr("disabled", true).
-                addClass("spinner");
+            attr("disabled", true).
+            addClass("spinner");
 
-            $.post('demo/username_checker.php', {username: input.val()}, function(res) {
+            $.post('demo/username_checker.php', {
+                username: input.val()
+            }, function (res) {
                 input.attr("readonly", false).
-                    attr("disabled", false).
-                    removeClass("spinner");
-
-                input.popover('destroy');    
-                input.popover({
-                    'html': true,
-                    'placement' : App.isRTL() ? 'left' : 'right',
-                    'title': 'Username Availability',
-                    'content': res.message,
-                });
+                attr("disabled", false).
+                removeClass("spinner");
 
                 // change popover font color based on the result
                 if (res.status == 'OK') {
-                    input.data('popover').tip().addClass('success');
+                    input.closest('.form-group').removeClass('has-error').addClass('has-success');
+                    $('.icon-exclamation-sign', input.closest('.form-group')).remove();
+                    input.before('<i class="icon-ok"></i>');
+                    input.data('bs.popover').tip().removeClass('error').addClass('success');
                 } else {
-                    input.data('popover').tip().addClass('error');
+                    input.closest('.form-group').removeClass('has-success').addClass('has-error');
+                    $('.icon-ok', input.closest('.form-group')).remove();
+                    input.before('<i class="icon-exclamation-sign"></i>');
+
+                    input.popover('destroy');
+                    input.popover({
+                        'html': true,
+                        'placement': (App.isRTL() ? 'left' : 'right'),
+                        'container': 'body',
+                        'content': res.message,
+                    });
+                    input.popover('show');
+                    input.data('bs.popover').tip().removeClass('success').addClass('error');
+
+                    App.setLastPopedPopover(input);
                 }
-
-                // set last poped popover to be closed on click(see App.js => handlePopovers function)     
-                App.setLastPopedPopover(input);
-
-                input.popover('show');
 
             }, 'json');
 
-        });        
-    }
-
-    var handleUsernameAvailabilityChecker3 = function () {
-        $("#username3_input").change(function(){
-            var input = $(this);
-
-            if (input.val() === "") {
-                return;
-            }
-
-            input.attr("readonly", true).
-                attr("disabled", true).
-                addClass("spinner");
-
-            $.post('demo/username_checker.php', {username: input.val()}, function(res) {
-                input.attr("readonly", false).
-                    attr("disabled", false).
-                    removeClass("spinner");
-
-                input.popover('destroy');    
-                input.popover({
-                    'html': true,
-                    'placement' : App.isRTL() ? 'left' : 'right',
-                    'title': 'Username Availability',
-                    'content': res.message,
-                });
-
-                // change popover font color based on the result
-                if (res.status == 'OK') {
-                    input.closest('.control-group').removeClass('error').addClass('success');
-                    input.after('<span class="help-inline ok"></span>');                    
-                } else {
-                    input.closest('.control-group').removeClass('success').addClass('error');
-                    $('.help-inline.ok', input.closest('.control-group')).remove();
-                }
-
-                // set last poped popover to be closed on click(see App.js => handlePopovers function)     
-                App.setLastPopedPopover(input);
-
-                input.popover('show');
-
-            }, 'json');
-
-        });        
+        });
     }
 
     return {
         //main function to initiate the module
         init: function () {
+            handleBootstrapTouchSpin();
+            handleBootstrapMaxlength();
+            handleSpinners();
             handleWysihtml5();
-            handleToggleButtons();
             handleTagsInput();
             handleDatePickers();
             handleTimePickers();
@@ -742,9 +755,7 @@ var FormComponents = function () {
             handlePasswordStrengthChecker();
             handleUsernameAvailabilityChecker1();
             handleUsernameAvailabilityChecker2();
-            handleUsernameAvailabilityChecker3();
         }
-
     };
 
 }();

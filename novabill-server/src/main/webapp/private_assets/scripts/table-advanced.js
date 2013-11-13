@@ -47,8 +47,8 @@ var TableAdvanced = function () {
             "iDisplayLength": 10,
         });
 
-        jQuery('#sample_1_wrapper .dataTables_filter input').addClass("m-wrap small"); // modify table search input
-        jQuery('#sample_1_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+        jQuery('#sample_1_wrapper .dataTables_filter input').addClass("form-control input-small"); // modify table search input
+        jQuery('#sample_1_wrapper .dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
         jQuery('#sample_1_wrapper .dataTables_length select').select2(); // initialize select2 dropdown
          
         /* Add event listener for opening and closing details
@@ -86,8 +86,8 @@ var TableAdvanced = function () {
             "iDisplayLength": 10,
         });
 
-        jQuery('#sample_2_wrapper .dataTables_filter input').addClass("m-wrap small"); // modify table search input
-        jQuery('#sample_2_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+        jQuery('#sample_2_wrapper .dataTables_filter input').addClass("form-control input-small"); // modify table search input
+        jQuery('#sample_2_wrapper .dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
         jQuery('#sample_2_wrapper .dataTables_length select').select2(); // initialize select2 dropdown
 
         $('#sample_2_column_toggler input[type="checkbox"]').change(function(){

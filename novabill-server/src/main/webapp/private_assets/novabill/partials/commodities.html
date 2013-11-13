@@ -1,0 +1,15 @@
+
+<div class="container-fluid">
+	<button type="button" class="btn red new-client" ng-click="newItem()">New Commodity</button>
+	        
+	<div class="commodities-filter input-icon left">
+	    <i class="fa fa-search"></i>
+	    <input type="text" class="form-control input-large" autofocus="autofocus" type="text" placeholder="Filter..." 
+	      ng-model="query">
+    </div>
+    
+	<img class="spinner" ng-show="commodities==null" src="../../private_assets/img/ajax-loading.gif">
+	
+	<novabill-commodity class="commodity" commodity="cm" ng-repeat="cm in commodities | filter:query"></novabill-commodity>        
+
+</div>

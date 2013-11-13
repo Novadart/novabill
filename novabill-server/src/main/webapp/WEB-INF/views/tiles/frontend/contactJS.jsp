@@ -3,27 +3,17 @@
 
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
 
-<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
-<!-- BEGIN CORE PLUGINS -->
-<script src="${frontendAssetsUrl}/plugins/jquery-1.10.1.min.js" type="text/javascript"></script>
-<script src="${frontendAssetsUrl}/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
-<script src="${frontendAssetsUrl}/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
-<script type="text/javascript" src="${frontendAssetsUrl}/plugins/back-to-top.js"></script>    
-<script type="text/javascript" src="${frontendAssetsUrl}/plugins/bxslider/jquery.bxslider.js"></script>
-<script type="text/javascript" src="${frontendAssetsUrl}/plugins/fancybox/source/jquery.fancybox.pack.js"></script>    
-<script type="text/javascript" src="${frontendAssetsUrl}/plugins/hover-dropdown.js"></script>
-<!--[if lt IE 9]>
-<script src="${frontendAssetsUrl}/plugins/respond.min.js"></script>  
-<![endif]-->   
-<!-- END CORE PLUGINS -->
+<!-- BEGIN PAGE LEVEL JAVASCRIPTS(REQUIRED ONLY FOR CURRENT PAGE) -->
+<script type="text/javascript" src="${frontendAssetsUrl}/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
+
 <script src="http://maps.google.com/maps/api/js?sensor=true" type="text/javascript"></script>
 <script src="${frontendAssetsUrl}/plugins/gmaps/gmaps.js" type="text/javascript"></script>
 <script src="${frontendAssetsUrl}/scripts/contact-us.js"></script>  
-<script src="${frontendAssetsUrl}/scripts/app.js"></script>      
-<script>
+<script src="${frontendAssetsUrl}/scripts/app.js"></script>  
+<script type="text/javascript">
     jQuery(document).ready(function() {    
        App.init();
        ContactUs.init();
     });
 </script>
-<!-- END JAVASCRIPTS -->
+<!-- END PAGE LEVEL JAVASCRIPTS -->

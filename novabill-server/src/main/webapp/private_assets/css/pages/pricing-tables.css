@@ -375,3 +375,16 @@ Pricing table(Alternative 2)
   -o-transition:color 0.5s ease-in-out;
   transition:color 0.5s ease-in-out;
 }
+
+
+@media (min-width: 768px) and (max-width: 1280px) { 
+
+  .pricing-table .rate .price,
+  .pricing-table2 .rate .price {
+    width: 100%;
+    display: block;
+    text-align: center;
+    margin-bottom: 10px;
+  }
+
+} 

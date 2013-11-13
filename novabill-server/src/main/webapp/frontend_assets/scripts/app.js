@@ -23,19 +23,23 @@ var App = function () {
 
     function handleIEFixes() {
         //fix html5 placeholder attribute for ie7 & ie8
-        if (isIE9 < 9) { // ie7&ie8
-            jQuery('input[placeholder], textarea[placeholder]').each(function () {
+        if (isIE8 || isIE9) { // ie8 & ie9
+            // this is html5 placeholder fix for inputs, inputs with placeholder-no-fix class will be skipped(e.g: we need this for password fields)
+            jQuery('input[placeholder]:not(.placeholder-no-fix), textarea[placeholder]:not(.placeholder-no-fix)').each(function () {
+
                 var input = jQuery(this);
 
-                jQuery(input).val(input.attr('placeholder'));
+                if (input.val() == '' && input.attr("placeholder") != '') {
+                    input.addClass("placeholder").val(input.attr('placeholder'));
+                }
 
-                jQuery(input).focus(function () {
+                input.focus(function () {
                     if (input.val() == input.attr('placeholder')) {
                         input.val('');
                     }
                 });
 
-                jQuery(input).blur(function () {
+                input.blur(function () {
                     if (input.val() == '' || input.val() == input.attr('placeholder')) {
                         input.val(input.attr('placeholder'));
                     }
@@ -43,6 +47,15 @@ var App = function () {
             });
         }
     }
+
+    $(window).scroll(function() {
+        if ($(window).scrollTop()>300){
+            $(".header").addClass("scrolling-fixed").removeClass("no-scrolling-fixed");
+        }
+        else {
+            $(".header").removeClass("scrolling-fixed").addClass("no-scrolling-fixed");
+        };
+    });
 
     function handleBootstrap() {
         jQuery('.carousel').carousel({
@@ -63,7 +76,7 @@ var App = function () {
 
 
     function handleSearch() {    
-        $('.menu-search').click(function () {            
+        $('.search-btn').click(function () {            
             if($('.search-btn').hasClass('show-search-icon')){
                 $('.search-box').fadeOut(300);
                 $('.search-btn').removeClass('show-search-icon');
@@ -112,6 +125,58 @@ var App = function () {
             });
         }
     }
+	
+    var handleFixedHeader = function() {
+
+            if (!window.addEventListener) {
+        window.attachEvent( 'scroll', function( event ) {
+                    if ($('body').hasClass("page-header-fixed") === false) {
+                        return;
+                    }
+        if( !didScroll ) {
+        didScroll = true;
+        setTimeout( scrollPage, 250 );
+        }
+        });
+            } else {
+                window.addEventListener( 'scroll', function( event ) {
+                    if ($('body').hasClass("page-header-fixed") === false) {
+                        return;
+                    }
+                    if( !didScroll ) {
+                        didScroll = true;
+                        setTimeout( scrollPage, 250 );
+                    }
+                }, false );
+            }
+        var docElem = document.documentElement,
+        header = $( '.navbar-inner' ),
+        headerwrap = $( '.front-header' ),
+        slider = $( '.slider-main' ),
+        didScroll = false,
+        changeHeaderOn = 300;
+
+        function scrollPage() {
+        var sy = scrollY();
+        if ( sy >= changeHeaderOn ) {
+                headerwrap.addClass('front-header-shrink');
+                header.addClass('navbar-inner-shrink');
+                $('#logoimg').attr('width', '120px');
+                $('#logoimg').attr('height', '18px');
+            } else {
+                headerwrap.removeClass('front-header-shrink');
+                header.removeClass('navbar-inner-shrink');
+                $('#logoimg').attr('width', '142px');
+                $('#logoimg').attr('height', '21px');
+            }
+            didScroll = false;
+        }
+
+        function scrollY() {
+            return window.pageYOffset || docElem.scrollTop;
+        }
+
+    }
 
     var handleTheme = function () {
 	
@@ -119,11 +184,10 @@ var App = function () {
 	
         // handle theme colors
         var setColor = function (color) {
-            $('#style_color').attr("href", "frontend/css/themes/" + color + (isRTL ? '-rtl' : '') + ".css");
-            $('#logoimg').attr("src", "frontend/img/logo_" + color + ".png");
-            $('#rev-hint1').attr("src", "frontend/img/sliders/revolution/hint1-" + color + ".png");
-            $('#rev-hint2').attr("src", "frontend/img/sliders/revolution/hint2-" + color + ".png");
-            //$.cookie('style_color', color);                
+            $('#style_color').attr("href", "assets/css/themes/" + color + (isRTL ? '-rtl' : '') + ".css");
+            $('#logoimg').attr("src", "assets/img/logo_" + color + ".png");
+            $('#rev-hint1').attr("src", "assets/img/sliders/revolution/hint1-" + color + ".png");
+            $('#rev-hint2').attr("src", "assets/img/sliders/revolution/hint2-" + color + ".png");
         }
 
         $('.icon-color', panel).click(function () {
@@ -143,6 +207,21 @@ var App = function () {
             $(this).addClass("current");
         });
 		
+		$('.header-option', panel).change(function(){
+			if($('.header-option').val() == 'fixed'){
+	            $("body").addClass("page-header-fixed");
+                $('.header').addClass("navbar-fixed-top").removeClass("navbar-static-top");
+				App.scrollTop();
+				
+			} else if($('.header-option').val() == 'default'){
+	            $("body").removeClass("page-header-fixed");
+                $('.header').addClass("navbar-static-top").removeClass("navbar-fixed-top");
+				$('.navbar-inner').removeClass('navbar-inner-shrink');
+				$('.front-header').removeClass('front-header-shrink');
+				App.scrollTop();
+			}
+		});
+		
 	}
 	
     return {
@@ -154,6 +233,7 @@ var App = function () {
             handleSearch();
 			handleTheme(); // handles style customer tool
             handleFancybox();
+			handleFixedHeader();
         },
 
         initUniform: function (els) {
@@ -175,7 +255,9 @@ var App = function () {
                 minSlides: 3,
                 maxSlides: 3,
                 slideWidth: 360,
-                slideMargin: 10
+                slideMargin: 10,
+                moveSlides: 1,
+                responsive: true,
             });
 
             $('.bxslider1').show();            
@@ -183,8 +265,22 @@ var App = function () {
                 minSlides: 6,
                 maxSlides: 6,
                 slideWidth: 360,
-                slideMargin: 2
+                slideMargin: 2,
+                moveSlides: 1,
+                responsive: true,
             });            
+        },
+
+        // wrapper function to scroll to an element
+        scrollTo: function (el, offeset) {
+            pos = el ? el.offset().top : 0;
+            jQuery('html,body').animate({
+                    scrollTop: pos + (offeset ? offeset : 0)
+                }, 'slow');
+        },
+
+        scrollTop: function () {
+            App.scrollTo();
         },
 
         gridOption1: function () {
@@ -194,4 +290,33 @@ var App = function () {
         }
 
     };
+    
+    // Handles Bootstrap Accordions.
+    var handleAccordions = function () {
+        var lastClicked;
+        //add scrollable class name if you need scrollable panes
+        jQuery('body').on('click', '.accordion.scrollable .accordion-toggle', function () {
+            lastClicked = jQuery(this);
+        }); //move to faq section
+
+        jQuery('body').on('show.bs.collapse', '.accordion.scrollable', function () {
+            jQuery('html,body').animate({
+                scrollTop: lastClicked.offset().top - 150
+            }, 'slow');
+        });
+    }
+
+    // Handles Bootstrap Tabs.
+    var handleTabs = function () {
+        // fix content height on tab click
+        $('body').on('shown.bs.tab', '.nav.nav-tabs', function () {
+            handleSidebarAndContentHeight();
+        });
+
+        //activate tab if tab id provided in the URL
+        if (location.hash) {
+            var tabid = location.hash.substr(1);
+            $('a[href="#' + tabid + '"]').click();
+        }
+    }
 }();

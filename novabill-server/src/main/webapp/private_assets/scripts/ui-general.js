@@ -15,20 +15,14 @@ var UIGeneral = function () {
             });
 
             jQuery('#pulsate-once').click(function () {
-                $(this).pulsate({
+                $('#pulsate-once-target').pulsate({
                     color: "#399bc3",
                     repeat: false
                 });
             });
 
-            jQuery('#pulsate-hover').pulsate({
-                color: "#5ebf5e",
-                repeat: false,
-                onHover: true
-            });
-
             jQuery('#pulsate-crazy').click(function () {
-                $(this).pulsate({
+                $('#pulsate-crazy-target').pulsate({
                     color: "#fdbe41",
                     reach: 50,
                     repeat: 10,
@@ -51,7 +45,7 @@ var UIGeneral = function () {
                 // (string | mandatory) the text inside the notification
                 text: 'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#">some link sample</a> montes, nascetur ridiculus mus.',
                 // (string | optional) the image to display on the left
-                image: './private_assets/img/avatar1.jpg',
+                image: './assets/img/avatar1.jpg',
                 // (bool | optional) if you want it to fade out on its own or just sit there
                 sticky: true,
                 // (int | optional) the time you want it to be alive for before fading out
@@ -70,7 +64,7 @@ var UIGeneral = function () {
                 // (string | mandatory) the text inside the notification
                 text: 'This will fade out after a certain amount of time. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#">some link sample</a> montes, nascetur ridiculus mus.',
                 // (string | optional) the image to display on the left
-                image: './private_assets/img/avatar1.jpg',
+                image: './assets/img/avatar1.jpg',
                 // (bool | optional) if you want it to fade out on its own or just sit there
                 sticky: false,
                 // (int | optional) the time you want it to be alive for before fading out
@@ -89,7 +83,7 @@ var UIGeneral = function () {
                 // (string | mandatory) the text inside the notification
                 text: 'This will fade out after a certain amount of time. Vivamus eget tincidunt velit. Cum sociis natoque penatibus et <a href="#">some link sample</a> montes, nascetur ridiculus mus.',
                 // (string | optional) the image to display on the left
-                image: './private_assets/img/avatar1.jpg',
+                image: './assets/img/avatar1.jpg',
                 // (bool | optional) if you want it to fade out on its own or just sit there
                 sticky: false,
                 // (function) before the gritter notice is opened
@@ -137,6 +131,9 @@ var UIGeneral = function () {
 
     var handleDynamicPagination = function() {
         $('#dynamic_pager_demo1').bootpag({
+            paginationClass: 'pagination',
+            next: '<icon class="fa fa-angle-right"></i>',
+            prev: '<icon class="fa fa-angle-left"></i>',
             total: 6,
             page: 1,
         }).on("page", function(event, num){
@@ -144,6 +141,9 @@ var UIGeneral = function () {
         });
 
         $('#dynamic_pager_demo2').bootpag({
+            paginationClass: 'pagination pagination-sm',
+            next: '<icon class="fa fa-angle-right"></i>',
+            prev: '<icon class="fa fa-angle-left"></i>',
             total: 24,
             page: 1,
             maxVisible: 6 

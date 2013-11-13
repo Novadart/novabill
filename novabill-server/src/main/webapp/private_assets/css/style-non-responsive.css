@@ -1,17 +1,88 @@
-	/***
- 	Main container
- 	***/
+	/****************
+ 	Bootstrap changes
+ 	*****************/
  	.container,
 	.navbar-inner .container {
-		width: 1000px !important;
+		max-width: none !important;
+		width: 1170px !important;
 	}
 
- 	/***
+	/* Always float the navbar header */
+	.navbar-header {
+	  float: left;
+	}
+
+	/* Undo the collapsing navbar */
+	.navbar-collapse {
+	  display: block !important;
+	  height: auto !important;
+	  padding-bottom: 0;
+	  overflow: visible !important;
+	}
+
+	/* Always apply the floated nav */
+	.navbar-nav {
+	  display: inline-block !important;
+	  float: left;
+	  margin: 0;
+	}
+	.navbar-nav > li {
+	  float: left;
+	}
+	.navbar-nav > li > a {
+	  padding: 15px;
+	}
+
+	/* Redeclare since we override the float above */
+	.navbar-nav.navbar-right {
+	  float: right;
+	}
+
+	/* Undo custom dropdowns */
+	.navbar .open .dropdown-menu {
+	  position: absolute;
+	  float: left;
+	  background-color: #fff;
+	  border: 1px solid #cccccc;
+	  border: 1px solid rgba(0, 0, 0, 0.15);
+	  border-width: 0 1px 1px;
+	  border-radius: 0 0 4px 4px;
+	  -webkit-box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	          box-shadow: 0 6px 12px rgba(0, 0, 0, 0.175);
+	}
+	.navbar .open .dropdown-menu > li > a {
+	  color: #333;
+	}
+	.navbar .open .dropdown-menu > li > a:hover,
+	.navbar .open .dropdown-menu > li > a:focus,
+	.navbar .open .dropdown-menu > .active > a,
+	.navbar .open .dropdown-menu > .active > a:hover,
+	.navbar .open .dropdown-menu > .active > a:focus {
+	  color: #fff !important;
+	  background-color: #428bca !important;
+	}
+	.navbar .open .dropdown-menu > .disabled > a,
+	.navbar .open .dropdown-menu > .disabled > a:hover,
+	.navbar .open .dropdown-menu > .disabled > a:focus {
+	  color: #999 !important;
+	  background-color: transparent !important;
+	}
+
+	/****************
+ 	Theme changes
+ 	*****************/
+
+	/***
  	Page sidebar
  	***/
+
  	.page-sidebar {
 		position: absolute;
  		width: 225px;
+  	}
+
+  	.page-sidebar.navbar-collapse {
+  		max-height: none !important;
   	}
 
 	.page-sidebar-fixed .page-sidebar {
@@ -41,10 +112,10 @@
 
 	.page-sidebar-fixed .page-sidebar-closed .page-sidebar .sidebar-search .submit,
 	.page-sidebar-fixed .page-sidebar .sidebar-toggler {
-		-webkit-transition: all  0.2s ease;
-	     -moz-transition: all  0.2s ease;
-	       -o-transition: all  0.2s ease;
-	          transition: all  0.2s ease;
+		-webkit-transition: all  0.3s ease;
+	     -moz-transition: all  0.3s ease;
+	       -o-transition: all  0.3s ease;
+	          transition: all  0.3s ease;
 	}
 
 	.page-sidebar-hovering {
@@ -70,6 +141,7 @@
   		margin-left: 225px; 
 		margin-top: 0px;
 		min-height: 760px; 
+		padding: 25px 20px 20px 20px;
 	}
 
 	.page-sidebar-fixed .page-content {
@@ -85,9 +157,32 @@
 	***/
 
 	/* fixed sidebar */
+	.page-footer-fixed .footer {
+	  position: fixed;
+	  left: 0;
+	  right: 0;
+	  z-index: 10000;
+	  bottom: 0;
+	  padding1: 8px 0 5px 0;
+	}
+
+	.page-footer-fixed .page-container {
+	  margin-bottom: 32px;
+	}
+
+	.page-footer-fixed.page-sidebar-fixed .footer {
+	  margin-left: 0 !important;
+	}
+	/* end: fixed footer */
+
+	.page-boxed .footer {
+  		padding: 8px 0 5px 0; 
+	}
+
 	.page-sidebar-fixed .footer {
 	  margin-left: 225px;
 	  background-color: #fff;
+	  padding: 8px 20px 5px 20px;
 	}
 
 	.page-sidebar-fixed .footer .footer-inner {
@@ -107,11 +202,15 @@
 	}
 
 	/* boxed layout */
-	.page-boxed	.header .brand {
+	.page-boxed	.header .navbar-brand {
   		margin-left: 0px !important;
   		width: 226px;
 	}
 
-	.page-boxed .header .brand img {
+	.page-boxed .header .navbar-brand img {
 		margin-left: 10px;
+	}
+
+	.page-boxed .header .navbar-nav {
+	  margin-right: 0px;
 	}

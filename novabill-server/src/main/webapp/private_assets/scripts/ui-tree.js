@@ -3,68 +3,122 @@ var UITree = function () {
     return {
         //main function to initiate the module
         init: function () {
-            // handle collapse/expand for tree_1
-            $('#tree_1_collapse').click(function () {
-                $('.tree-toggle', $('#tree_1 > li > ul')).addClass("closed");
-                $('.branch', $('#tree_1 > li > ul')).removeClass("in");
+
+            var DataSourceTree = function (options) {
+                this._data  = options.data;
+                this._delay = options.delay;
+            };
+
+            DataSourceTree.prototype = {
+
+                data: function (options, callback) {
+                    var self = this;
+
+                    setTimeout(function () {
+                        var data = $.extend(true, [], self._data);
+
+                        callback({ data: data });
+
+                    }, this._delay)
+                }
+            };
+            
+            // INITIALIZING TREE
+            var treeDataSource = new DataSourceTree({
+                data: [
+                    { name: 'Sales', type: 'folder', additionalParameters: { id: 'F1' } },
+                    { name: 'Projects', type: 'folder', additionalParameters: { id: 'F2' } },
+                    { name: 'Reports', type: 'item', additionalParameters: { id: 'I1' } },
+                    { name: 'Finance', type: 'item', additionalParameters: { id: 'I2' } }
+                ],
+                delay: 400
             });
 
-            $('#tree_1_expand').click(function () {
-                $('.tree-toggle', $('#tree_1 > li > ul')).removeClass("closed");
-                $('.branch', $('#tree_1 > li > ul')).addClass("in");
+            var treeDataSource2 = new DataSourceTree({
+                data: [
+                    { name: 'System Logs <div class="tree-actions"></div>', type: 'folder', additionalParameters: { id: 'F11' } },
+                    { name: 'Notifications <div class="tree-actions"></div>', type: 'folder', additionalParameters: { id: 'F12' } },
+                    { name: '<i class="fa fa-bell"></i> Alerts', type: 'item', additionalParameters: { id: 'I11' } },
+                    { name: '<i class="fa fa-bar-chart-o"></i> Tasks', type: 'item', additionalParameters: { id: 'I12' } }
+                ],
+                delay: 400
             });
 
-            // handle collapse/expand for tree_2
-            $('#tree_2_collapse').click(function () {
-                $('.tree-toggle', $('#tree_2 > li > ul')).addClass("closed");
-                $('.branch', $('#tree_2 > li > ul')).removeClass("in");
+            var treeDataSource3 = new DataSourceTree({
+                data: [
+                    { name: 'Resources <div class="tree-actions"></div>', type: 'folder', additionalParameters: { id: 'F11' } },
+                    { name: 'Projects <div class="tree-actions"></div>', type: 'folder', additionalParameters: { id: 'F12' } },
+                    { name: 'Nike Promo 2013', type: 'item', additionalParameters: { id: 'I11' } },
+                    { name: 'IPO Reports', type: 'item', additionalParameters: { id: 'I12' } }
+                ],
+                delay: 400
             });
 
-            $('#tree_2_expand').click(function () {
-                //$('.tree-toggle', $('#tree_2 > li > ul')).removeClass("closed");
-                // iterate tree nodes and exppand all nodes
-                $('.tree-toggle', $('#tree_2 > li > ul')).each(function () {
-                    $(this).click(); //trigger tree node click
-                });
-                $('.branch', $('#tree_2 > li > ul')).addClass("in");
+            var treeDataSource4 = new DataSourceTree({
+                data: [
+                    { name: 'Projects<div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F11' } },
+                    { name: 'Reports<div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F12' } },
+                    { name: '<i class="fa fa-user"></i> Member <div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div><div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I11' } },
+                    { name: '<i class="fa fa-calendar"></i> Events <div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } },
+                    { name: '<i class="fa fa-suitcase"></i> Portfolio <div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } }
+                ],
+                delay: 400
             });
 
-            //This is a quick example of capturing the select event on tree leaves, not branches
-            $("#tree_1").on("nodeselect.tree.data-api", "[data-role=leaf]", function (e) {
-                var output = "";
+            var treeDataSource5 = new DataSourceTree({
+                data: [
+                    { name: 'Projects<div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F11' } },
+                    { name: 'Reports<div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F12' } },
+                    { name: '<i class="fa fa-user"></i> Member <div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div><div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I11' } },
+                    { name: '<i class="fa fa-calendar"></i> Events <div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } },
+                    { name: '<i class="fa fa-suitcase"></i> Portfolio <div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } }
+                ],
+                delay: 400
+            });  
 
-                output += "Node nodeselect event fired:\n";
-                output += "Node Type: leaf\n";
-                output += "Value: " + ((e.node.value) ? e.node.value : e.node.el.text()) + "\n";
-                output += "Parentage: " + e.node.parentage.join("/");
+            var treeDataSource6 = new DataSourceTree({
+                data: [
+                    { name: 'Projects<div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F11' } },
+                    { name: 'Reports<div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'folder', additionalParameters: { id: 'F12' } },
+                    { name: '<i class="fa fa-user"></i> Member <div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div><div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I11' } },
+                    { name: '<i class="fa fa-calendar"></i> Events <div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } },
+                    { name: '<i class="fa fa-suitcase"></i> Portfolio <div class="tree-actions"><i class="fa fa-plus"></i><i class="fa fa-trash-o"></i><i class="fa fa-refresh"></i></div>', type: 'item', additionalParameters: { id: 'I12' } }
+                ],
+                delay: 400
+            });    
 
-                alert(output);
+            $('#MyTree').tree({
+                dataSource: treeDataSource,
+                loadingHTML: '<img src="assets/img/input-spinner.gif"/>',
             });
 
-            //This is a quick example of capturing the select event on tree branches, not leaves
-            $("#tree_1").on("nodeselect.tree.data-api", "[role=branch]", function (e) {
-                var output = "Node nodeselect event fired:\n"; + "Node Type: branch\n" + "Value: " + ((e.node.value) ? e.node.value : e.node.el.text()) + "\n" + "Parentage: " + e.node.parentage.join("/") + "\n"
 
-                alert(output);
+            $('#MyTree2').tree({
+                dataSource: treeDataSource2,
+                loadingHTML: '<img src="assets/img/input-spinner.gif"/>',
             });
 
-            //Listening for the 'openbranch' event. Look for e.node, which is the actual node the user opens
-
-            $("#tree_1").on("openbranch.tree", "[data-toggle=branch]", function (e) {
-
-                var output = "Node openbranch event fired:\n" + "Node Type: branch\n" + "Value: " + ((e.node.value) ? e.node.value : e.node.el.text()) + "\n" + "Parentage: " + e.node.parentage.join("/") + "\n"
-
-                alert(output);
+            $('#MyTree3').tree({
+                dataSource: treeDataSource3,
+                loadingHTML: '<img src="assets/img/input-spinner.gif"/>',
             });
 
+            $('#MyTree4').tree({
+                selectable: false,
+                dataSource: treeDataSource4,
+                loadingHTML: '<img src="assets/img/input-spinner.gif"/>',
+            });
 
-            //Listening for the 'closebranch' event. Look for e.node, which is the actual node the user closed
+            $('#MyTree5').tree({
+                selectable: false,
+                dataSource: treeDataSource5,
+                loadingHTML: '<img src="assets/img/input-spinner.gif"/>',
+            });
 
-            $("#tree_1").on("closebranch.tree", "[data-toggle=branch]", function (e) {
-
-                var output = "Node closebranch event fired:\n" + "Node Type: branch\n" + "Value: " + ((e.node.value) ? e.node.value : e.node.el.text()) + "\n" + "Parentage: " + e.node.parentage.join("/") + "\n"
-
-                alert(output);
+            $('#MyTree6').tree({
+                selectable: false,
+                dataSource: treeDataSource6,
+                loadingHTML: '<img src="assets/img/input-spinner.gif"/>',
             });
         }
 

@@ -149,7 +149,7 @@ var FormImageCrop = function () {
           insertSection(i,sections[i]);
 
         function create_btn(c) {
-          var $o = $('<button />').addClass('btn btn-small');
+          var $o = $('<button />').addClass('btn small');
           if (c) $o.append(c);
           return $o;
         }
@@ -198,7 +198,7 @@ var FormImageCrop = function () {
         function insertSection(k,v) {
           $('#interface').prepend(
             $('<fieldset></fieldset>').attr('id',k).append(
-              $('<legend></legend>').append(v),
+              $('<h4></h4>').append(v),
               '<div class="btn-toolbar"><div class="btn-group"></div></div>'
             )
           );
@@ -485,6 +485,14 @@ var FormImageCrop = function () {
 
     }
 
+    var handleResponsive = function() {
+      if ($(window).width() <= 1024) {
+        $('.responsive-1024').addClass("col-md-12");
+      } else {
+        $('.responsive-1024').removeClass("col-md-12");
+      }
+    }
+
     return {
         //main function to initiate the module
         init: function () {
@@ -492,6 +500,9 @@ var FormImageCrop = function () {
             if (!jQuery().Jcrop) {;
                 return;
             }
+
+            App.addResponsiveHandler(handleResponsive);
+            handleResponsive();
 
             demo1();
             demo2();

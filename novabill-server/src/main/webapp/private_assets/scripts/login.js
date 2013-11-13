@@ -1,9 +1,34 @@
 var Login = function () {
 
 	var handleLogin = function() {
+
+		// ajax login function to be called right after the form validation success
+		var ajaxLogin = function(form) {
+			form = $(form);
+			$.ajax({
+				type: "POST",
+				url: "index.html",
+				data: form.serialize(),
+				dataType: "json",
+				beforeSend:function(){
+					$('.alert-danger,.alert-success').hide();
+				},
+				error: function(jqXHR, textStatus, errorThrown){
+					alert(errorThrown);
+					$('.alert-danger').show();
+					$('.alert-danger span').html(errorThrown);
+				},
+				success: function(data){
+					alert('Success!!!');
+					$('.alert-success').show();
+					$('.alert-success span').html(data);
+				}
+			});
+		}
+
 		$('.login-form').validate({
-	            errorElement: 'label', //default input error message container
-	            errorClass: 'help-inline', // default input error message class
+	            errorElement: 'span', //default input error message container
+	            errorClass: 'help-block', // default input error message class
 	            focusInvalid: false, // do not focus the last invalid input
 	            rules: {
 	                username: {
@@ -27,32 +52,32 @@ var Login = function () {
 	            },
 
 	            invalidHandler: function (event, validator) { //display error alert on form submit   
-	                $('.alert-error', $('.login-form')).show();
+	                $('.alert-danger', $('.login-form')).show();
 	            },
 
 	            highlight: function (element) { // hightlight error inputs
 	                $(element)
-	                    .closest('.control-group').addClass('error'); // set error class to the control group
+	                    .closest('.form-group').addClass('has-error'); // set error class to the control group
 	            },
 
 	            success: function (label) {
-	                label.closest('.control-group').removeClass('error');
+	                label.closest('.form-group').removeClass('has-error');
 	                label.remove();
 	            },
 
 	            errorPlacement: function (error, element) {
-	                error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
+	                error.insertAfter(element.closest('.input-icon'));
 	            },
 
 	            submitHandler: function (form) {
-	                form.submit();
+	                ajaxLogin(form); // form validation success, call ajax form submit
 	            }
 	        });
 
 	        $('.login-form input').keypress(function (e) {
 	            if (e.which == 13) {
 	                if ($('.login-form').validate().form()) {
-	                    $('.login-form').submit();
+	                    ajaxLogin($('.login-form')); //form validation success, call ajax form submit
 	                }
 	                return false;
 	            }
@@ -61,8 +86,8 @@ var Login = function () {
 
 	var handleForgetPassword = function () {
 		$('.forget-form').validate({
-	            errorElement: 'label', //default input error message container
-	            errorClass: 'help-inline', // default input error message class
+	            errorElement: 'span', //default input error message container
+	            errorClass: 'help-block', // default input error message class
 	            focusInvalid: false, // do not focus the last invalid input
 	            ignore: "",
 	            rules: {
@@ -84,16 +109,16 @@ var Login = function () {
 
 	            highlight: function (element) { // hightlight error inputs
 	                $(element)
-	                    .closest('.control-group').addClass('error'); // set error class to the control group
+	                    .closest('.form-group').addClass('has-error'); // set error class to the control group
 	            },
 
 	            success: function (label) {
-	                label.closest('.control-group').removeClass('error');
+	                label.closest('.form-group').removeClass('has-error');
 	                label.remove();
 	            },
 
 	            errorPlacement: function (error, element) {
-	                error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
+	                error.insertAfter(element.closest('.input-icon'));
 	            },
 
 	            submitHandler: function (form) {
@@ -131,7 +156,7 @@ var Login = function () {
 
 
 		$("#select2_sample4").select2({
-		  	placeholder: '<i class="icon-map-marker"></i>&nbsp;Select a Country',
+		  	placeholder: '<i class="fa fa-map-marker"></i>&nbsp;Select a Country',
             allowClear: true,
             formatResult: format,
             formatSelection: format,
@@ -148,8 +173,8 @@ var Login = function () {
 
 
          $('.register-form').validate({
-	            errorElement: 'label', //default input error message container
-	            errorClass: 'help-inline', // default input error message class
+	            errorElement: 'span', //default input error message container
+	            errorClass: 'help-block', // default input error message class
 	            focusInvalid: false, // do not focus the last invalid input
 	            ignore: "",
 	            rules: {
@@ -198,21 +223,21 @@ var Login = function () {
 
 	            highlight: function (element) { // hightlight error inputs
 	                $(element)
-	                    .closest('.control-group').addClass('error'); // set error class to the control group
+	                    .closest('.form-group').addClass('has-error'); // set error class to the control group
 	            },
 
 	            success: function (label) {
-	                label.closest('.control-group').removeClass('error');
+	                label.closest('.form-group').removeClass('has-error');
 	                label.remove();
 	            },
 
 	            errorPlacement: function (error, element) {
 	                if (element.attr("name") == "tnc") { // insert checkbox errors after the container                  
-	                    error.addClass('help-small no-left-padding').insertAfter($('#register_tnc_error'));
+	                    error.insertAfter($('#register_tnc_error'));
 	                } else if (element.closest('.input-icon').size() === 1) {
-	                    error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
+	                    error.insertAfter(element.closest('.input-icon'));
 	                } else {
-	                	error.addClass('help-small no-left-padding').insertAfter(element);
+	                	error.insertAfter(element);
 	                }
 	            },
 

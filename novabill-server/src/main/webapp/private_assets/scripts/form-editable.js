@@ -106,10 +106,8 @@ var FormEditable = function () {
         }
 
         //global settings 
-        $.fn.editable.defaults.inputclass = 'm-wrap';
+        $.fn.editable.defaults.inputclass = 'form-control';
         $.fn.editable.defaults.url = '/post';
-        $.fn.editableform.buttons = '<button type="submit" class="btn blue editable-submit"><i class="icon-ok"></i></button>';
-        $.fn.editableform.buttons += '<button type="button" class="btn editable-cancel"><i class="icon-remove"></i></button>';
 
         //editables element samples 
         $('#username').editable({
@@ -128,7 +126,7 @@ var FormEditable = function () {
 
         $('#sex').editable({
             prepend: "not selected",
-            inputclass: 'm-wrap',
+            inputclass: 'form-control',
             source: [{
                     value: 1,
                     text: 'Male'
@@ -166,7 +164,7 @@ var FormEditable = function () {
         });
 
         $('#dob').editable({
-            inputclass: 'm-wrap',
+            inputclass: 'form-control',
         });
 
         $('#event').editable({
@@ -234,7 +232,7 @@ var FormEditable = function () {
         });
 
         $('#tags').editable({
-            inputclass: 'input-large m-wrap',
+            inputclass: 'form-control input-medium',
             select2: {
                 tags: ['html', 'javascript', 'css', 'ajax'],
                 tokenSeparators: [",", " "]
@@ -503,7 +501,7 @@ var FormEditable = function () {
         });
 
         $('#country').editable({
-            inputclass: 'input-large',
+            inputclass: 'form-control input-medium',
             source: countries
         });
 
@@ -537,8 +535,7 @@ var FormEditable = function () {
 
             // init editable elements
             initEditables();
-
-
+            
             // init editable toggler
             $('#enable').click(function () {
                 $('#user .editable').editable('toggleDisabled');

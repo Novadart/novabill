@@ -7,10 +7,10 @@
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="${gwtUrl}" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/scripts/app.js" type="text/javascript"></script>
-<script src="${privateAssetsUrl}/pages/scripts/utils.js" type="text/javascript"></script>
-<script src="${privateAssetsUrl}/pages/scripts/estimations-controllers.js" type="text/javascript"></script>
-<script src="${privateAssetsUrl}/pages/scripts/estimations.js" type="text/javascript"></script>
-<script src="${privateAssetsUrl}/pages/scripts/directives.js" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/novabill/scripts/utils.js" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/novabill/scripts/estimations-controllers.js" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/novabill/scripts/estimations.js" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/novabill/scripts/directives.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->  
 
 <script type="text/javascript">

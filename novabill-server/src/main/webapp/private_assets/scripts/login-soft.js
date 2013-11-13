@@ -2,8 +2,8 @@ var Login = function () {
 
 	var handleLogin = function() {
 		$('.login-form').validate({
-	            errorElement: 'label', //default input error message container
-	            errorClass: 'help-inline', // default input error message class
+	            errorElement: 'span', //default input error message container
+	            errorClass: 'help-block', // default input error message class
 	            focusInvalid: false, // do not focus the last invalid input
 	            rules: {
 	                username: {
@@ -27,21 +27,21 @@ var Login = function () {
 	            },
 
 	            invalidHandler: function (event, validator) { //display error alert on form submit   
-	                $('.alert-error', $('.login-form')).show();
+	                $('.alert-danger', $('.login-form')).show();
 	            },
 
 	            highlight: function (element) { // hightlight error inputs
 	                $(element)
-	                    .closest('.control-group').addClass('error'); // set error class to the control group
+	                    .closest('.form-group').addClass('has-error'); // set error class to the control group
 	            },
 
 	            success: function (label) {
-	                label.closest('.control-group').removeClass('error');
+	                label.closest('.form-group').removeClass('has-error');
 	                label.remove();
 	            },
 
 	            errorPlacement: function (error, element) {
-	                error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
+	                error.insertAfter(element.closest('.input-icon'));
 	            },
 
 	            submitHandler: function (form) {
@@ -61,8 +61,8 @@ var Login = function () {
 
 	var handleForgetPassword = function () {
 		$('.forget-form').validate({
-	            errorElement: 'label', //default input error message container
-	            errorClass: 'help-inline', // default input error message class
+	            errorElement: 'span', //default input error message container
+	            errorClass: 'help-block', // default input error message class
 	            focusInvalid: false, // do not focus the last invalid input
 	            ignore: "",
 	            rules: {
@@ -84,16 +84,16 @@ var Login = function () {
 
 	            highlight: function (element) { // hightlight error inputs
 	                $(element)
-	                    .closest('.control-group').addClass('error'); // set error class to the control group
+	                    .closest('.form-group').addClass('has-error'); // set error class to the control group
 	            },
 
 	            success: function (label) {
-	                label.closest('.control-group').removeClass('error');
+	                label.closest('.form-group').removeClass('has-error');
 	                label.remove();
 	            },
 
 	            errorPlacement: function (error, element) {
-	                error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
+	                error.insertAfter(element.closest('.input-icon'));
 	            },
 
 	            submitHandler: function (form) {
@@ -126,12 +126,12 @@ var Login = function () {
 
 		function format(state) {
             if (!state.id) return state.text; // optgroup
-            return "<img class='flag' src='private/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
+            return "<img class='flag' src='assets/img/flags/" + state.id.toLowerCase() + ".png'/>&nbsp;&nbsp;" + state.text;
         }
 
 
 		$("#select2_sample4").select2({
-		  	placeholder: '<i class="icon-map-marker"></i>&nbsp;Select a Country',
+		  	placeholder: '<i class="fa fa-map-marker"></i>&nbsp;Select a Country',
             allowClear: true,
             formatResult: format,
             formatSelection: format,
@@ -148,8 +148,8 @@ var Login = function () {
 
 
          $('.register-form').validate({
-	            errorElement: 'label', //default input error message container
-	            errorClass: 'help-inline', // default input error message class
+	            errorElement: 'span', //default input error message container
+	            errorClass: 'help-block', // default input error message class
 	            focusInvalid: false, // do not focus the last invalid input
 	            ignore: "",
 	            rules: {
@@ -198,21 +198,21 @@ var Login = function () {
 
 	            highlight: function (element) { // hightlight error inputs
 	                $(element)
-	                    .closest('.control-group').addClass('error'); // set error class to the control group
+	                    .closest('.form-group').addClass('has-error'); // set error class to the control group
 	            },
 
 	            success: function (label) {
-	                label.closest('.control-group').removeClass('error');
+	                label.closest('.form-group').removeClass('has-error');
 	                label.remove();
 	            },
 
 	            errorPlacement: function (error, element) {
 	                if (element.attr("name") == "tnc") { // insert checkbox errors after the container                  
-	                    error.addClass('help-small no-left-padding').insertAfter($('#register_tnc_error'));
+	                    error.insertAfter($('#register_tnc_error'));
 	                } else if (element.closest('.input-icon').size() === 1) {
-	                    error.addClass('help-small no-left-padding').insertAfter(element.closest('.input-icon'));
+	                    error.insertAfter(element.closest('.input-icon'));
 	                } else {
-	                	error.addClass('help-small no-left-padding').insertAfter(element);
+	                	error.insertAfter(element);
 	                }
 	            },
 
@@ -248,17 +248,16 @@ var Login = function () {
             handleLogin();
             handleForgetPassword();
             handleRegister();        
-
-            $.backstretch([
-		        "private_assets/img/bg/1.jpg",
-		        "private_assets/img/bg/2.jpg",
-		        "private_assets/img/bg/3.jpg",
-		        "private_assets/img/bg/4.jpg"
+	       
+	       	$.backstretch([
+		        "assets/img/bg/1.jpg",
+		        "assets/img/bg/2.jpg",
+		        "assets/img/bg/3.jpg",
+		        "assets/img/bg/4.jpg"
 		        ], {
 		          fade: 1000,
 		          duration: 8000
 		    });
-	       
         }
 
     };

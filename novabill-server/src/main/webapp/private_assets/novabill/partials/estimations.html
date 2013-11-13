@@ -1,0 +1,22 @@
+<div class="container-fluid">
+	<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	<h3 class="page-title">Estimations</h3>
+	<ul class="breadcrumb">
+		<li><i class="icon-home"></i> <a href="../">Home</a>
+			<i class="icon-angle-right"></i></li>
+		<li><span>{{pageTitle}}</span></li>
+	</ul>
+	<!-- END PAGE TITLE & BREADCRUMB-->
+
+	<button type="button" class="btn red new-estimation"
+		ng-click="newEstimationClick()">New Estimation</button>
+
+	<div class="estimations">
+		<img class="spinner" ng-show="estimations==null" src="../../private_assets/img/ajax-loading.gif">
+		<p class="no-data-message text-center text-info" ng-show="estimations && estimations.length===0">No Data</p>
+		<novabill-estimation estimation="est" bottom-up-menu="!$first && $last" ng-repeat="est in estimations"></novabill-estimation>
+	</div>
+
+	<removal-dialog></removal-dialog>
+</div>
+

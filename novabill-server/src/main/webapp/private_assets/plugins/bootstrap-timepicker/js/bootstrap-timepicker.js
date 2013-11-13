@@ -7,6 +7,9 @@
  * Created By:
  * Joris de Wit @joris_dewit
  *
+ * Improved By:
+ * Keenthemes for Bootstrap 3.0 Support
+ *
  * Contributions By:
  * Gilbert @mindeavor
  * Koen Punt info@koenpunt.nl
@@ -54,8 +57,8 @@
         constructor: Timepicker
 
         , init: function () {
-            if (this.$element.parent().hasClass('input-append')) {
-                this.$element.parent('.input-append').find('.add-on').on('click', $.proxy(this.showWidget, this));
+            if (this.$element.parent().hasClass('input-group')) {
+                this.$element.parent('.input-group').find('.btn').on('click', $.proxy(this.showWidget, this));
                 this.$element.on({
                     focus: $.proxy(this.highlightUnit, this),
                     click: $.proxy(this.highlightUnit, this),
@@ -700,16 +703,16 @@
             }
             var templateContent = '<table class="'+ (this.showSeconds ? 'show-seconds' : '') +' '+ (this.showMeridian ? 'show-meridian' : '') +'">'+
                                        '<tr>'+
-                                           '<td><a href="#" data-action="incrementHour"><i class="icon-chevron-up"></i></a></td>'+
+                                           '<td><a href="#" data-action="incrementHour"><i class="fa fa-angle-up"></i></a></td>'+
                                            '<td class="separator">&nbsp;</td>'+
-                                           '<td><a href="#" data-action="incrementMinute"><i class="icon-chevron-up"></i></a></td>'+
+                                           '<td><a href="#" data-action="incrementMinute"><i class="fa fa-angle-up"></i></a></td>'+
                                            (this.showSeconds ?
                                                '<td class="separator">&nbsp;</td>'+
-                                               '<td><a href="#" data-action="incrementSecond"><i class="icon-chevron-up"></i></a></td>'
+                                               '<td><a href="#" data-action="incrementSecond"><i class="fa fa-angle-up"></i></a></td>'
                                            : '') +
                                            (this.showMeridian ?
                                                '<td class="separator">&nbsp;</td>'+
-                                               '<td class="meridian-column"><a href="#" data-action="toggleMeridian"><i class="icon-chevron-up"></i></a></td>'
+                                               '<td class="meridian-column"><a href="#" data-action="toggleMeridian"><i class="fa fa-angle-up"></i></a></td>'
                                            : '') +
                                        '</tr>'+
                                        '<tr>'+
@@ -726,16 +729,16 @@
                                            : '') +
                                        '</tr>'+
                                        '<tr>'+
-                                           '<td><a href="#" data-action="decrementHour"><i class="icon-chevron-down"></i></a></td>'+
+                                           '<td><a href="#" data-action="decrementHour"><i class="fa fa-angle-down"></i></a></td>'+
                                            '<td class="separator"></td>'+
-                                           '<td><a href="#" data-action="decrementMinute"><i class="icon-chevron-down"></i></a></td>'+
+                                           '<td><a href="#" data-action="decrementMinute"><i class="fa fa-angle-down"></i></a></td>'+
                                            (this.showSeconds ?
                                                 '<td class="separator">&nbsp;</td>'+
-                                                '<td><a href="#" data-action="decrementSecond"><i class="icon-chevron-down"></i></a></td>'
+                                                '<td><a href="#" data-action="decrementSecond"><i class="fa fa-angle-down"></i></a></td>'
                                            : '') +
                                            (this.showMeridian ?
                                                 '<td class="separator">&nbsp;</td>'+
-                                                '<td><a href="#" data-action="toggleMeridian"><i class="icon-chevron-down"></i></a></td>'
+                                                '<td><a href="#" data-action="toggleMeridian"><i class="fa fa-angle-down"></i></a></td>'
                                            : '') +
                                        '</tr>'+
                                    '</table>';
