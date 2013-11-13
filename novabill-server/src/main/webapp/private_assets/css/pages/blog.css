@@ -78,7 +78,10 @@ Blog Page
   padding-bottom: 20px;
 }
 
-.blog-page .blog-article h2 {
+.blog-page .blog-article h3,
+.blog-page .blog-article h2,
+.blog-page .blog-article h1,
+.blog-page .blog-article h4 {
   margin-top: 0;
 }
 

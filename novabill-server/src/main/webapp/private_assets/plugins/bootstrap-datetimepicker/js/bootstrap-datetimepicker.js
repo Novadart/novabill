@@ -2,9 +2,11 @@
  * bootstrap-datetimepicker.js
  * =========================================================
  * Copyright 2012 Stefan Petre
- * Improvements by Keenthemes(just navigation icons modified)
  * Improvements by Andrew Rowls
  * Improvements by Sébastien Malot
+ * Improvements by Yun Lai
+ * Improved by Keenthemes for Bootstrap 3.0 Support
+
  * Project URL : http://www.malot.fr/bootstrap-datetimepicker
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
@@ -38,14 +40,14 @@
 		this.element = $(element);
 		this.language = options.language || this.element.data('date-language') || "en";
 		this.language = this.language in dates ? this.language : "en";
-		this.isRTL = dates[this.language].rtl || false;
+		this.isRTL = dates[this.language].rtl || ($('body').css("direction") == 'rtl');
 		this.formatType = options.formatType || this.element.data('format-type') || 'standard';
-		this.format = DPGlobal.parseFormat(options.format || this.element.data('date-format') || DPGlobal.getDefaultFormat(this.formatType, 'input'), this.formatType);
+		this.format = DPGlobal.parseFormat(options.format || this.element.data('date-format') || dates[this.language].format || DPGlobal.getDefaultFormat(this.formatType, 'input'), this.formatType);
 		this.isInline = false;
 		this.isVisible = false;
 		this.isInput = this.element.is('input');
-		this.component = this.element.is('.date') ? this.element.find('.add-on .icon-th, .add-on .icon-time, .add-on .icon-calendar').parent() : false;
-		this.componentReset = this.element.is('.date') ? this.element.find('.add-on .icon-remove').parent() : false;
+		this.component = this.element.is('.date') ? this.element.find('.date-set').parent() : false;
+		this.componentReset = this.element.is('.date') ? this.element.find('.date-reset').parent() : false;
 		this.hasInput = this.component && this.element.find('input').length;
 		if (this.component && this.component.length === 0) {
 			this.component = false;
@@ -82,6 +84,28 @@
 		}
 		this.maxView = DPGlobal.convertViewMode(this.maxView);
 
+        this.wheelViewModeNavigation = false;
+        if('wheelViewModeNavigation' in options){
+            this.wheelViewModeNavigation = options.wheelViewModeNavigation;
+        }else if('wheelViewModeNavigation' in this.element.data()){
+            this.wheelViewModeNavigation = this.element.data('view-mode-wheel-navigation');
+        }
+
+        this.wheelViewModeNavigationInverseDirection = false;
+
+        if('wheelViewModeNavigationInverseDirection' in options){
+            this.wheelViewModeNavigationInverseDirection = options.wheelViewModeNavigationInverseDirection;
+        }else if('wheelViewModeNavigationInverseDirection' in this.element.data()){
+            this.wheelViewModeNavigationInverseDirection = this.element.data('view-mode-wheel-navigation-inverse-dir');
+        }
+
+        this.wheelViewModeNavigationDelay = 100;
+        if('wheelViewModeNavigationDelay' in options){
+            this.wheelViewModeNavigationDelay = options.wheelViewModeNavigationDelay;
+        }else if('wheelViewModeNavigationDelay' in this.element.data()){
+            this.wheelViewModeNavigationDelay = this.element.data('view-mode-wheel-navigation-delay');
+        }
+
 		this.startViewMode = 2;
 		if ('startView' in options) {
 			this.startViewMode = options.startView;
@@ -113,6 +137,17 @@
 								mousedown: $.proxy(this.mousedown, this)
 							});
 
+        if(this.wheelViewModeNavigation)
+        {
+            if($.fn.mousewheel)
+            {
+                this.picker.on({mousewheel: $.proxy(this.mousewheel,this)});
+            }else
+            {
+                console.log("Mouse Wheel event is not supported. Please include the jQuery Mouse Wheel plugin before enabling this option");
+            }
+        }
+
 		if (this.isInline) {
 			this.picker.addClass('datetimepicker-inline');
 		} else {
@@ -121,7 +156,7 @@
 		if (this.isRTL){
 			this.picker.addClass('datetimepicker-rtl');
 			this.picker.find('.prev i, .next i')
-						.toggleClass('icon-arrow-left icon-arrow-right');
+						.toggleClass('fa-arrow-left fa-arrow-right');
 		}
 		$(document).on('mousedown', function (e) {
 			// Clicked outside the datetimepicker, hide it
@@ -273,6 +308,7 @@
 		remove: function() {
 			this._detachEvents();
 			this.picker.remove();
+			delete this.picker;
 			delete this.element.data().datetimepicker;
 		},
 
@@ -304,6 +340,19 @@
 				});
 			}
 		},
+
+        setFormat: function(format) {
+            this.format = DPGlobal.parseFormat(format, this.formatType);
+            var element;
+            if (this.isInput) {
+                element = this.element;
+            } else if (this.component){
+                element = this.element.find('input');
+            }
+            if (element && element.val()) {
+                this.setValue();
+            }
+        },
 
 		setValue: function() {
 			var formatted = this.getFormattedDate();
@@ -389,7 +438,7 @@
 				date = arguments[0];
 				fromArgs = true;
 			} else {
-				date = (this.isInput ? this.element.val() : this.element.data('date') || this.element.find('input').val()) || this.initialDate;
+                date = this.element.data('date') || (this.isInput ? this.element.val() : this.element.find('input').val()) || this.initialDate;
 			}
 
 			if (!date) {
@@ -682,6 +731,41 @@
 			}
 		},
 
+        mousewheel: function(e){
+
+            e.preventDefault();
+            e.stopPropagation();
+
+            if(this.wheelPause)
+            {
+                return;
+            }
+
+            this.wheelPause = true;
+
+            var originalEvent = e.originalEvent;
+
+            var delta = originalEvent.wheelDelta;
+
+            var mode = delta > 0 ? 1:(delta === 0)?0:-1;
+
+            if(this.wheelViewModeNavigationInverseDirection)
+            {
+                mode = -mode;
+            }
+
+            this.showMode(mode);
+
+            setTimeout($.proxy(function(){
+
+                this.wheelPause = false
+
+            },this),this.wheelViewModeNavigationDelay);
+
+
+
+        },
+
 		click: function(e) {
 			e.stopPropagation();
 			e.preventDefault();
@@ -834,9 +918,9 @@
 									month += 1;
 								}
 							}
-														this.viewDate.setUTCDate(day);
-														this.viewDate.setUTCMonth(month);
 														this.viewDate.setUTCFullYear(year);
+														this.viewDate.setUTCMonth(month);
+														this.viewDate.setUTCDate(day);
 														this.element.trigger({
 																type: 'changeDay',
 																date: this.viewDate
@@ -1083,6 +1167,13 @@
 			if (dir) {
 				var newViewMode = Math.max(0, Math.min(DPGlobal.modes.length - 1, this.viewMode + dir));
 				if (newViewMode >= this.minView && newViewMode <= this.maxView) {
+					this.element.trigger({
+						type: 'changeMode',
+						date: this.viewDate,
+						oldViewMode: this.viewMode,
+						newViewMode: newViewMode
+					});
+
 					this.viewMode = newViewMode;
 				}
 			}
@@ -1423,9 +1514,9 @@
 		},
 		headTemplate: '<thead>'+
 							'<tr>'+
-								'<th class="prev"><i class="icon-angle-left"/></th>'+ //icon modifed by keenthemes.
+								'<th class="prev"><i class="fa fa-angle-left"/></th>'+
 								'<th colspan="5" class="switch"></th>'+
-								'<th class="next"><i class="icon-angle-right"/></th>'+//icon modifed by keenthemes.
+								'<th class="next"><i class="fa fa-angle-right"/></th>'+
 							'</tr>'+
 						'</thead>',
 		contTemplate: '<tbody><tr><td colspan="7"></td></tr></tbody>',
@@ -1470,5 +1561,33 @@
 						'</div>';
 
 	$.fn.datetimepicker.DPGlobal = DPGlobal;
+
+
+	/* DATETIMEPICKER NO CONFLICT
+	* =================== */
+
+	$.fn.datetimepicker.noConflict = function () {
+	    $.fn.datetimepicker = old;
+	    return this;
+	};
+
+
+	/* DATETIMEPICKER DATA-API
+	* ================== */
+
+	$(document).on(
+		'focus.datetimepicker.data-api click.datetimepicker.data-api',
+		'[data-provide="datetimepicker"]',
+		function (e) {
+		    var $this = $(this);
+		    if ($this.data('datetimepicker')) return;
+		    e.preventDefault();
+		    // component click requires us to explicitly show it
+		    $this.datetimepicker('show');
+		}
+	);
+	$(function () {
+	    $('[data-provide="datetimepicker-inline"]').datetimepicker();
+	});
 
 }( window.jQuery );

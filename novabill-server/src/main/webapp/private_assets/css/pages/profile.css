@@ -23,11 +23,11 @@ Profile Page
 }
 
 /*profile info*/
-.profile-classic .span2 {
+.profile-classic .profile-image {
   position:relative;
 }
 
-.profile-classic .span2 a {
+.profile-classic .profile-edit {
   top:0;
   right:0;
   margin:0;
@@ -39,7 +39,7 @@ Profile Page
   position:absolute;
   filter:alpha(opacity=60); /*for ie*/
 }
-.profile-classic .span2 img {
+.profile-classic .profile-image img {
   margin-bottom:15px;
 }
 
@@ -98,8 +98,8 @@ Profile Page
   color:#fff;
   opacity:0.6;
   border:none;
-  padding:0 9px;
-  font-size:11px;
+  padding:3px 9px;
+  font-size:12px;
   background:#000;
   position:absolute;
   filter:alpha(opacity=60); /*for ie*/
@@ -113,8 +113,8 @@ Profile Page
   top:0;
   right:0;
   color:#fff;
-  font-size:20px; 
-  padding:8px 13px;
+  font-size:16px; 
+  padding:7px 13px;
   position:absolute;
   background:#169ef4;
 }
@@ -128,7 +128,7 @@ Profile Page
   color:#383839;
   font-size:24px;
   font-weight:400;
-  margin:-11px 0 10px 0;
+  margin:0 0 10px 0;
 }
 
 .profile-info ul {
@@ -197,12 +197,12 @@ Profile Page
   background:url(../../img/icon-img-down.png) no-repeat !important;
 }
 
-.sale-summary .portlet-title h4 {
+.sale-summary .caption h4 {
   color:#383839;
   font-size:18px;
 }
 
-.sale-summary .portlet-title {
+.sale-summary .caption {
   border-color:#c9c9c9;
 }
 
@@ -232,36 +232,28 @@ Profile Page
   overflow:hidden;
   margin-bottom:30px;
   background:#f0f6fa;
+  padding: 12px 14px;
 }
 
-.add-portfolio .pull-left,
-.add-portfolio .pull-right {
-  padding:12px 14px;
+.add-portfolio span {
+  float: left;
+  display: inline-block;
+  font-weight: 300;
+  font-size: 22px;
+  margin-top: 0px;
 }
 
-.add-portfolio .pull-left {
-  color:#555d69;
-  font-size:20px;
-}
-
-.add-portfolio .pull-left span {
-  top:8px;
-  position:relative;
-}
-
-.add-portfolio .pull-right i {
-  margin-left:5px;
+.add-portfolio .btn {
+  margin-left: 20px;
 }
 
 /*portfolio block*/
 .portfolio-block {
   background:#f7f7f7;
   margin-bottom:15px;
-}
-
-.portfolio-block .span5 {
   overflow:hidden;
 }
+
 
 /*portfolio text*/
 .portfolio-text {
@@ -283,7 +275,7 @@ Profile Page
 /*portfolio button*/
 .portfolio-btn a {
   display:block;
-  padding:28px 0;
+  padding:26px 0;
   background:#ddd !important;
 }
 
@@ -302,7 +294,7 @@ Profile Page
   float:left;
   color:#616161;
   font-size:12px;
-  padding:12px 25px;
+  padding:10px 25px;
   margin-bottom:5px;
   text-transform:uppercase;
 }
@@ -310,8 +302,9 @@ Profile Page
 .portfolio-info span {
   color:#16a1f2;
   display:block;
-  font-size:30px;
-  margin-top:5px;
+  font-size:28px;
+  line-height: 28px;
+  margin-top:0px;
   font-weight:200;
   text-transform:uppercase;
 }

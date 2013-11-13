@@ -1,6 +1,7 @@
 /***
 Default theme
 ***/
+
 /***
 Reset and overrides  
 ***/
@@ -10,7 +11,7 @@ body {
 /***
 Page header
 ***/
-.header .navbar-inner {
+.header {
   filter: none !important;
   background-image: none !important;
   background-color: #212121 !important;
@@ -18,11 +19,11 @@ Page header
 .header .btn-navbar {
   background-color: #212121 !important;
 }
-.header .nav .dropdown-toggle:hover,
-.header .nav .dropdown.open .dropdown-toggle {
+.header .navbar-nav .dropdown-toggle:hover,
+.header .navbar-nav .dropdown.open .dropdown-toggle {
   background-color: #383838 !important;
 }
-.header .nav li.dropdown .dropdown-toggle i {
+.header .navbar-nav li.dropdown .dropdown-toggle i {
   color: #8a8a8a !important;
 }
 /***
@@ -124,10 +125,10 @@ Sidebar toggler
   background-color: #242424;
 }
 /* search box bg color on expanded */
-.page-sidebar-closed .page-sidebar .sidebar-search.open {
+.page-sidebar-closed .page-sidebar .sidebar-search.open .form-container {
   background-color: #3d3d3d !important;
 }
-.page-sidebar-closed .page-sidebar .sidebar-search.open .remove {
+.page-sidebar-closed .page-sidebar .sidebar-search.open .form-container .remove {
   background-image: url("../../img/sidebar-search-close.png");
 }
 /* sub menu bg color on hover menu item */
@@ -138,7 +139,7 @@ Sidebar toggler
 Horizontal Menu(new in v1.2)
 ***/
 /*search*/
-.header .hor-menu .hor-menu-search-form-toggler.hide {
+.header .hor-menu .hor-menu-search-form-toggler.off {
   background: #000000 url(../../img/hor-menu-search-close.png) no-repeat center;
 }
 .header .hor-menu .search-form {
@@ -239,7 +240,7 @@ Gritter Notifications
   color: #0b6694;
 }
 /* begin: boxed page */
-@media (min-width: 980px) {
+@media (min-width: 992px) {
   .page-boxed {
     background-color: #2e2e2e !important;
   }
@@ -263,7 +264,7 @@ Gritter Notifications
 /***
 Landscape phone to portrait tablet
 ***/
-@media (max-width: 979px) {
+@media (max-width: 991px) {
   /***
     page sidebar
     ***/

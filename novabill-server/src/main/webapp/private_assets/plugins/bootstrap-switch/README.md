@@ -1,24 +1,25 @@
-Bootstrap-switch
+Bootstrap-switch v.1.8
 ========================
 
-You can now also use radio buttons as switches.
+You can now also use radio buttons and checkboxes as switches.
 
 
 Demo
 ----
-http://www.larentis.eu/switch/
+Hurray! http://www.larentis.eu/switch/ moves to github pages and we are happy to tell you that we have bought a new domain: http://www.bootstrap-switch.org . Some troubles can occur so please, don't hate us :')
+
 
 Usage
 -----
 Just include Twitter Bootstrap, jQuery, Bootstrap Switch CSS and Javascript
 ``` html
 <meta http-equiv="X-UA-Compatible" content="IE=9; IE=8;" />
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.1/css/bootstrap-combined.min.css">
+<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/twitter-bootstrap/2.3.2/css/bootstrap-combined.min.css">
 <link rel="stylesheet" href="bootstrap-switch.css">
 
-<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.0/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
 <script src="bootstrap-switch.js"></script>  // master
-<script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.4/bootstrap-switch.min.js">  // from cdnjs.com
+<script src="http://cdnjs.cloudflare.com/ajax/libs/bootstrap-switch/1.7/bootstrap-switch.min.js">  // from cdnjs.com
 ```
 
 Less
@@ -37,7 +38,7 @@ Basic Example
 checkboxes:
 
 ``` html
-<div class="switch">
+<div class="make-switch">
     <input type="checkbox">
 </div>
 ```
@@ -45,7 +46,7 @@ checkboxes:
 radioboxes:
 
 ``` html
-<div class="switch">
+<div class="make-switch">
     <input type="radio">
 </div>
 ```
@@ -56,7 +57,7 @@ Large, small or mini
 checkboxes:
 
 ``` html
-<div class="switch switch-large">  <!-- switch-large, switch-small or switch-mini -->
+<div class="make-switch switch-large">  <!-- switch-large, switch-small or switch-mini -->
     <input type="checkbox">
 </div>
 ```
@@ -64,7 +65,7 @@ checkboxes:
 radioboxes:
 
 ``` html
-<div class="switch switch-large">  <!-- switch-large, switch-small or switch-mini -->
+<div class="make-switch switch-large">  <!-- switch-large, switch-small or switch-mini -->
     <input type="radio">
 </div>
 ```
@@ -75,7 +76,7 @@ Colors
 checkboxes:
 
 ``` html
-<div class="switch" data-on="danger" data-off="warning">  <!-- primary, info, success, warning, danger and default -->
+<div class="make-switch" data-on="danger" data-off="warning">  <!-- primary, info, success, warning, danger and default -->
     <input type="checkbox">
 </div>
 ```
@@ -83,7 +84,7 @@ checkboxes:
 radioboxes:
 
 ``` html
-<div class="switch" data-on="danger" data-off="warning">  <!-- primary, info, success, warning, danger and default -->
+<div class="make-switch" data-on="danger" data-off="warning">  <!-- primary, info, success, warning, danger and default -->
     <input type="radio">
 </div>
 ```
@@ -94,7 +95,7 @@ Animation
 checkboxes:
 
 ``` html
-<div class="switch" data-animated="false">
+<div class="make-switch" data-animated="false">
     <input type="checkbox">
 </div>
 ```
@@ -102,7 +103,7 @@ checkboxes:
 radioboxes:
 
 ``` html
-<div class="switch" data-animated="false">
+<div class="make-switch" data-animated="false">
     <input type="radio">
 </div>
 ```
@@ -113,7 +114,7 @@ Text
 checkboxes:
 
 ``` html
-<div class="switch" data-on-label="SI" data-off-label="NO">
+<div class="make-switch" data-on-label="SI" data-off-label="NO">
     <input type="checkbox">
 </div>
 ```
@@ -121,7 +122,26 @@ checkboxes:
 radioboxes:
 
 ``` html
-<div class="switch" data-on-label="SI" data-off-label="NO">
+<div class="make-switch" data-on-label="SI" data-off-label="NO">
+    <input type="radio">
+</div>
+```
+
+
+Text Label
+----------
+checkboxes:
+
+``` html
+<div class="make-switch" data-text-label="My Slider Text">
+    <input type="checkbox">
+</div>
+```
+
+radioboxes:
+
+``` html
+<div class="make-switch" data-text-label="My Slider Text">
     <input type="radio">
 </div>
 ```
@@ -132,7 +152,7 @@ HTML Text
 checkboxes:
 
 ``` html
-<div class="switch" data-on-label="<i class='icon-ok icon-white'></i>" data-off-label="<i class='icon-remove'></i>">
+<div class="make-switch" data-on-label="<i class='icon-ok icon-white'></i>" data-off-label="<i class='icon-remove'></i>">
     <input type="checkbox">
 </div>
 ```
@@ -140,7 +160,7 @@ checkboxes:
 radioboxes:
 
 ``` html
-<div class="switch" data-on-label="<i class='icon-ok icon-white'></i>" data-off-label="<i class='icon-remove'></i>">
+<div class="make-switch" data-on-label="<i class='icon-ok icon-white'></i>" data-off-label="<i class='icon-remove'></i>">
     <input type="radio">
 </div>
 ```
@@ -151,7 +171,7 @@ Initial values
 checkboxes:
 
 ``` html
-<div class="switch">
+<div class="make-switch">
     <input type="checkbox" checked="checked" disabled="disabled">
 </div>
 ```
@@ -159,7 +179,7 @@ radioboxes:
 
 
 ``` html
-<div class="switch">
+<div class="make-switch">
     <input type="radio" checked="checked" disabled="disabled">
 </div>
 ```
@@ -183,8 +203,18 @@ $('#mySwitch').bootstrapSwitch('isActive');
 $('#mySwitch').bootstrapSwitch('setActive', false);
 $('#mySwitch').bootstrapSwitch('setActive', true);
 $('#mySwitch').bootstrapSwitch('toggleState');
-$('.mySwitch').bootstrapSwitch('toggleRadioState'); // the radiobuttons need a class not a ID
+$('.mySwitch').bootstrapSwitch('toggleRadioState'); // the radiobuttons need a class not a ID, don't allow uncheck radio switch
+$('.mySwitch').bootstrapSwitch('toggleRadioStateAllowUncheck'); // don't allow uncheck radio switch
+$('.mySwitch').bootstrapSwitch('toggleRadioStateAllowUncheck', false); // don't allow uncheck radio switch
+$('.mySwitch').bootstrapSwitch('toggleRadioStateAllowUncheck', true); // allow uncheck radio switch
 $('#mySwitch').bootstrapSwitch('setState', true);
+$('#mySwitch').bootstrapSwitch('setState', true || false, true); // sets the state without getting the switch-change event
+$('#mySwitch').bootstrapSwitch('setOnLabel', onValue); // sets the text of the "on" label
+$('#mySwitch').bootstrapSwitch('setOffLabel', offValue); // sets the text of the "off" label
+$('#mySwitch').bootstrapSwitch('setOnClass', onClass); // sets the left color class
+$('#mySwitch').bootstrapSwitch('setOffClass', offClass); // sets the right color class
+$('#mySwitch').bootstrapSwitch('setAnimated', animated); // sets true or false for animation
+$('#mySwitch').bootstrapSwitch('setSizeClass', size); // sets 'switch-mini', 'switch-small' or 'switch-large'
 $('#mySwitch').bootstrapSwitch('status');  // returns true or false
 $('#mySwitch').bootstrapSwitch('destroy');
 ```

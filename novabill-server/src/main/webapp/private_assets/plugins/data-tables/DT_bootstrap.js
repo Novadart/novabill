@@ -1,9 +1,9 @@
 /* Set the defaults for DataTables initialisation */
 $.extend( true, $.fn.dataTable.defaults, {
-	"sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+	"sDom": "<'row'<'col-md-6 col-sm-12'l><'col-md-12 col-sm-12'f>r><'table-scrollable't><'row'<'col-md-5 col-sm-12'i><'col-md-7 col-sm-12'p>>",
 	"sPaginationType": "bootstrap",
 	"oLanguage": {
-		"sLengthMenu": "_MENU_ records per page"
+		"sLengthMenu": "_MENU_ records"
 	}
 } );
 
@@ -41,12 +41,23 @@ $.extend( $.fn.dataTableExt.oPagination, {
 				}
 			};
 
-			$(nPaging).addClass('pagination').append(
-				'<ul>'+
-					'<li class="prev disabled"><a href="#">&larr; <span class="hidden-480">'+oLang.sPrevious+'</span></a></li>'+
-					'<li class="next disabled"><a href="#"><span class="hidden-480">'+oLang.sNext+'</span> &rarr; </a></li>'+
+			/**
+			// pagination with prev, next link captions
+			$(nPaging).append(
+				'<ul class="pagination">'+
+					'<li class="prev disabled"><a href="#"><i class="icon-angle-left"></i>'+oLang.sPrevious+'</a></li>'+
+					'<li class="next disabled"><a href="#">'+oLang.sNext+'<i class="icon-angle-right"></i></a></li>'+
 				'</ul>'
 			);
+			**/
+			// pagination with prev, next link icons
+			$(nPaging).append(
+				'<ul class="pagination">'+
+					'<li class="prev disabled"><a href="#" title="'+oLang.sPrevious+'"><i class="fa fa-angle-left"></i></a></li>'+
+					'<li class="next disabled"><a href="#" title="'+oLang.sNext+'"><i class="fa fa-angle-right"></i></a></li>'+
+				'</ul>'
+			);
+
 			var els = $('a', nPaging);
 			$(els[0]).bind( 'click.DT', { action: "previous" }, fnClickHandler );
 			$(els[1]).bind( 'click.DT', { action: "next" }, fnClickHandler );
@@ -116,7 +127,7 @@ if ( $.fn.DataTable.TableTools ) {
 	$.extend( true, $.fn.DataTable.TableTools.classes, {
 		"container": "DTTT btn-group",
 		"buttons": {
-			"normal": "btn",
+			"normal": "btn default",
 			"disabled": "disabled"
 		},
 		"collection": {

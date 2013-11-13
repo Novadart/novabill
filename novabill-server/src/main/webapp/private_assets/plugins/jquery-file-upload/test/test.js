@@ -1,5 +1,5 @@
 /*
- * jQuery File Upload Plugin Test 7.3
+ * jQuery File Upload Plugin Test 8.8.3
  * https://github.com/blueimp/jQuery-File-Upload
  *
  * Copyright 2010, Sebastian Tschan
@@ -91,7 +91,12 @@ $(function () {
         expect(
             $.support.xhrFormDataFileUpload ? 4 : 1
         );
-        var eo = {originalEvent: {}},
+        var eo = {
+                originalEvent: {
+                    dataTransfer: {files: [{}]},
+                    clipboardData: {items: [{}]}
+                }
+            },
             fu = $('#fileupload').fileupload({
                 dragover: function () {
                     ok(true, 'Triggers dragover callback');
@@ -123,7 +128,12 @@ $(function () {
 
     test('destroy', function () {
         expect(4);
-        var eo = {originalEvent: {}},
+        var eo = {
+                originalEvent: {
+                    dataTransfer: {files: [{}]},
+                    clipboardData: {items: [{}]}
+                }
+            },
             options = {
                 dragover: function () {
                     ok(true, 'Triggers dragover callback');
@@ -161,7 +171,12 @@ $(function () {
         expect(
             $.support.xhrFormDataFileUpload ? 4 : 1
         );
-        var eo = {originalEvent: {}},
+        var eo = {
+                originalEvent: {
+                    dataTransfer: {files: [{}]},
+                    clipboardData: {items: [{}]}
+                }
+            },
             fu = $('#fileupload').fileupload({
                 dragover: function () {
                     ok(true, 'Triggers dragover callback');
@@ -199,7 +214,12 @@ $(function () {
         expect(
             $.support.xhrFormDataFileUpload ? 10 : 7
         );
-        var eo = {originalEvent: {}},
+        var eo = {
+                originalEvent: {
+                    dataTransfer: {files: [{}]},
+                    clipboardData: {items: [{}]}
+                }
+            },
             fu = $('#fileupload').fileupload({
                 dragover: function () {
                     ok(true, 'Triggers dragover callback');
@@ -506,7 +526,10 @@ $(function () {
         });
         fuo._onPaste({
             data: {fileupload: fuo},
-            originalEvent: {clipboardData: {}},
+            originalEvent: {
+                dataTransfer: {files: [{}]},
+                clipboardData: {items: [{}]}
+            },
             preventDefault: $.noop
         });
     });
@@ -523,7 +546,10 @@ $(function () {
         });
         fuo._onDrop({
             data: {fileupload: fuo},
-            originalEvent: {dataTransfer: {}},
+            originalEvent: {
+                dataTransfer: {files: [{}]},
+                clipboardData: {items: [{}]}
+            },
             preventDefault: $.noop
         });
     });
@@ -865,11 +891,12 @@ $(function () {
         $('#fileupload').fileupload('add', {files: files});
         buttonbar.find('.start').click();
         buttonbar.find('.cancel').click();
+        files[0].deleteUrl = 'http://example.org/banana.jpg';
         ($('#fileupload').data('blueimp-fileupload') ||
                 $('#fileupload').data('fileupload'))
             ._renderDownload(files)
             .appendTo($('#fileupload .files')).show()
-            .find('.delete input').click();
+            .find('.toggle').click();
         buttonbar.find('.delete').click();
     });
 
@@ -933,12 +960,12 @@ $(function () {
                 $('#fileupload').data('fileupload'))
             ._renderDownload([{
                 name: 'test',
-                delete_url: 'test',
-                delete_type: 'DELETE'
+                deleteUrl: 'test',
+                deleteType: 'DELETE'
             }])
             .appendTo($('#fileupload .files'))
             .show()
-            .find('.delete input').click();
+            .find('.toggle').click();
         $('#fileupload .fileupload-buttonbar .delete').click();
     });
 
@@ -1039,12 +1066,12 @@ $(function () {
                 $('#fileupload').data('fileupload'))
             ._renderDownload([{
                 name: 'test',
-                delete_url: 'test',
-                delete_type: 'DELETE'
+                deleteUrl: '.',
+                deleteType: 'GET'
             }])
             .appendTo($('#fileupload .files'))
             .show()
-            .find('.delete input').click();
+            .find('.toggle').click();
         $('#fileupload .fileupload-buttonbar .delete').click();
     });
 
@@ -1066,13 +1093,13 @@ $(function () {
     });
 
     test('maxNumberOfFiles', function () {
-        expect(4);
+        expect(3);
         var addIndex = 0,
             sendIndex = 0;
         $('#fileupload')
             .fileupload({
                 autoUpload: true,
-                maxNumberOfFiles: 1,
+                maxNumberOfFiles: 3,
                 singleFileUploads: false,
                 send: function (e, data) {
                     strictEqual(
@@ -1086,36 +1113,13 @@ $(function () {
                 stop: $.noop
             })
             .fileupload('add', {files: [{name: (addIndex += 1)}]})
-            .fileupload('add', {files: [{name: 'test'}]})
-            .fileupload('option', 'maxNumberOfFiles', 1)
-            .fileupload('add', {files: [{name: 1}, {name: 2}]})
-            .fileupload({
-                maxNumberOfFiles: 1,
-                send: function (e, data) {
-                    strictEqual(
-                        sendIndex += 1,
-                        addIndex
-                    );
-                    return false;
-                }
-            })
             .fileupload('add', {files: [{name: (addIndex += 1)}]})
             .fileupload('add', {files: [{name: (addIndex += 1)}]})
-            .fileupload({
-                maxNumberOfFiles: 0,
-                send: function (e, data) {
-                    ok(
-                        !$.blueimp.fileupload.prototype.options
-                            .send.call(this, e, data)
-                    );
-                    return false;
-                }
-            })
-            .fileupload('send', {files: [{name: 'test'}]});
+            .fileupload('add', {files: [{name: 'test'}]});
     });
 
     test('maxFileSize', function () {
-        expect(3);
+        expect(2);
         var addIndex = 0,
             sendIndex = 0;
         $('#fileupload')
@@ -1149,15 +1153,11 @@ $(function () {
                     );
                     return false;
                 }
-            })
-            .fileupload('send', {files: [{
-                name: 'test',
-                size: 1001
-            }]});
+            });
     });
 
     test('minFileSize', function () {
-        expect(3);
+        expect(2);
         var addIndex = 0,
             sendIndex = 0;
         $('#fileupload')
@@ -1191,22 +1191,18 @@ $(function () {
                     );
                     return false;
                 }
-            })
-            .fileupload('send', {files: [{
-                name: 'test',
-                size: 999
-            }]});
+            });
     });
 
     test('acceptFileTypes', function () {
-        expect(3);
+        expect(2);
         var addIndex = 0,
             sendIndex = 0;
         $('#fileupload')
             .fileupload({
                 autoUpload: true,
                 acceptFileTypes: /(\.|\/)(gif|jpe?g|png)$/i,
-                previewFileTypes: /none/,
+                disableImageMetaDataLoad: true,
                 send: function (e, data) {
                     strictEqual(
                         sendIndex += 1,
@@ -1234,11 +1230,7 @@ $(function () {
                     );
                     return false;
                 }
-            })
-            .fileupload('send', {files: [{
-                name: 'test.txt',
-                type: 'text/plain'
-            }]});
+            });
     });
 
     test('acceptFileTypes as HTML5 data attribute', function () {

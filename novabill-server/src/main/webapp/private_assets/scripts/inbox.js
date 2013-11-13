@@ -71,22 +71,6 @@ var Inbox = function () {
         });
     }
 
-    var initTags = function (input) {
-        input.tag({
-            autosizedInput: true,
-            containerClasses: 'span12',
-            inputClasses: 'm-wrap',
-            source: function (query, process) {
-                return [
-                    'Bob Nilson <bob.nilson@metronic.com>',
-                    'Lisa Miller <lisa.miller@metronic.com>',
-                    'Test <test@domain.com>',
-                    'Dino <dino@demo.com>',
-                    'Support <support@demo.com>']
-            }
-        });
-    }
-
     var initWysihtml5 = function () {
         $('.inbox-wysihtml5').wysihtml5({
             "stylesheets": ["assets/plugins/bootstrap-wysihtml5/wysiwyg-color.css"]
@@ -139,7 +123,6 @@ var Inbox = function () {
                 loading.hide();
                 content.html(res);
 
-                initTags($('[name="to"]'));
                 initFileupload();
                 initWysihtml5();
 
@@ -179,7 +162,6 @@ var Inbox = function () {
                 content.html(res);
                 $('[name="message"]').val($('#reply_email_content_body').html());
 
-                initTags($('[name="to"]')); // init "TO" input field
                 handleCCInput(); // init "CC" input field
 
                 initFileupload();
@@ -232,7 +214,6 @@ var Inbox = function () {
         var input = $('.inbox-compose .input-cc');
         the.hide();
         input.show();
-        initTags($('[name="cc"]'), -10);
         $('.close', input).click(function () {
             input.hide();
             the.show();
@@ -245,7 +226,6 @@ var Inbox = function () {
         var input = $('.inbox-compose .input-bcc');
         the.hide();
         input.show();
-        initTags($('[name="bcc"]'), -10);
         $('.close', input).click(function () {
             input.hide();
             the.show();
@@ -253,7 +233,7 @@ var Inbox = function () {
     }
 
     var toggleButton = function(el) {
-        if (typeof el != 'undefined') {
+        if (typeof el == 'undefined') {
             return;
         }
         if (el.attr("disabled")) {

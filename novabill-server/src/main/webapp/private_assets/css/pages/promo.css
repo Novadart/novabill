@@ -1,6 +1,13 @@
 /***
 Promo Page
 ***/
+.page-content {
+  padding: 0;
+}
+
+.ie8 .page-content {
+  padding: 0 !important;
+}
 
 .promo-page {
   padding-left: 0;
@@ -8,7 +15,8 @@ Promo Page
   min-height: 650px;
 }
 
-.promo-page h1, .promo-page h2 {
+.promo-page h1, 
+.promo-page h2 {
   font-size: 50px;
   line-height: 60px;
 }
@@ -19,7 +27,7 @@ Promo Page
   margin: 5px 0; 
 }
 
-.promo-page input.m-wrap {
+.promo-page input.form-control {
   background: #fff;
 }
 
@@ -47,3 +55,35 @@ Promo Page
   background: #eeedf2;
 }
 
+/* carousel */
+
+.block-carousel .carousel-inner {
+  padding-top: 70px;
+  padding-bottom: 60px;
+}
+
+.block-carousel .carousel-control i {
+  display: none;
+  position: absolute;
+  top:40%;
+}
+
+.block-carousel .carousel-control.left i {
+  right:30%;
+}
+
+.block-carousel .carousel-control.right i {
+  left:30%;
+}
+
+.block-carousel .carousel:hover .carousel-control i {
+  display: inline-block;
+}
+
+.block-carousel .carousel-indicators li {
+  background-color: #666;
+}
+
+.block-carousel .carousel-indicators li.active {
+  background-color: #333;
+}

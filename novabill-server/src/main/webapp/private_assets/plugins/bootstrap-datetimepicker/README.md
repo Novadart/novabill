@@ -256,7 +256,7 @@ The referer element to place the picker for the component implementation. If you
 
 ### pickerPosition
 
-String. Default: 'bottom-right' (other supported value : 'bottom-left')
+String. Default: 'bottom-right' (supported values are: 'bottom-right', 'bottom-left', 'top-right', 'top-left')
 
 This option allows to place the picker just under the input field for the component implementation instead of the default position which is at the bottom right of the button.
 
@@ -336,9 +336,17 @@ $('#datetimepicker').datetimepicker('hide');
 
 ### update
 
-Arguments: None
+Arguments: 
 
-Update the datetimepicker with the current input value.
+* currentDate (Date).
+
+Update the datetimepicker with the specified date.
+
+```javascript
+$('#datetimepicker').datetimepicker('update', new Date());
+```
+
+Omit currentDate to update the datetimepicker with the current input value.
 
 ```javascript
 $('#datetimepicker').datetimepicker('update');
@@ -443,6 +451,8 @@ Fired when you pick a date before the *startDate* or after the *endDate* or when
 
 The datetimepicker includes some keyboard navigation:
 
+
+
 ### up, down, left, right arrow keys
 
 By themselves, left/right will move backward/forward one day, up/down will move back/forward one week.
@@ -461,6 +471,42 @@ The escape key can be used to hide and re-show the datetimepicker; this is neces
 
 When the picker is visible, enter will simply hide it.  When the picker is not visible, enter will have normal effects -- submitting the current form, etc.
 
+## Mouse Wheel View Navigation
+
+In order to make this plugin easier to set different part of date time, mouse wheel has been used to navigate through different views. Scroll up your mouse wheel to navigate to the decade year view. Scroll down will lead to the minute view. 
+
+### Dependency
+
+To enalbe this feature. [jQuery Mouse Wheel Plugin](https://github.com/brandonaaron/jquery-mousewheel) must be included before using this feature. 
+
+### Options
+
+#### wheelViewModeNavigation
+
+Boolean.  Default: false
+
+Whether or not to enable navigating through different view mode using mouse wheel.
+
+#### wheelViewModeNavigationInverseDirection
+
+Boolean.  Default: false
+
+Whether or not to reverse the direction of scrolling. Default is scroll up to the decade view.
+
+#### wheelViewModeNavigationDelay
+
+Integer.  Default: 100
+
+Time delays between the next respond to the wheel command, it controls the speed between switching in different views. Unit is in million seconds.
+
+#### About viewSelect option
+
+The recommended value for viewSelect option is 4 when this feature is enable. That means you can easily update any the value in every view. This option value is applied in the demo page.
+
+### Feature Demo
+
+A simple [Demo](http://lyonlai.github.io/bootstrap-datetimepicker/demo.html) page is given to show it's simple idea. 
+
 ## I18N
 
 The plugin supports i18n for the month and weekday names and the `weekStart` option.  The default is English ('en'); other available translations are avilable in the `js/locales/` directory, simply include your desired locale after the plugin.  To add more languages, simply add a key to `$.fn.datetimepicker.dates`, before calling `.datetimepicker()`.  Example:
@@ -473,6 +519,15 @@ $.fn.datetimepicker.dates['en'] = {
     months: ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
     monthsShort: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"],
     today: "Today"
+};
+```
+
+You can override the default date format in the language configuration with `format` attribute.
+Example:
+
+```javascript
+$.fn.datetimepicker.dates['pt-BR'] = {
+    format: 'dd/mm/yyyy'
 };
 ```
 

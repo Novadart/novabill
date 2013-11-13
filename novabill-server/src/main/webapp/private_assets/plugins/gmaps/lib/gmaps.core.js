@@ -1,4 +1,4 @@
-if (window.google == undefined && window.google.maps == undefined) {
+if (!(typeof window.google === 'object' && window.google.maps)) {
   throw 'Google Maps API is required. Please register the following JavaScript library http://maps.google.com/maps/api/js?sensor=true.'
 }
 
@@ -49,7 +49,7 @@ var array_map = function(array, callback) {
   else {
     for (i = 0; i < array_length; i++) {
       callback_params = original_callback_params;
-      callback_params = callback_params.splice(0, 0, array[i]);
+      callback_params.splice(0, 0, array[i]);
       array_return.push(callback.apply(this, callback_params));
     }
   }
@@ -272,7 +272,7 @@ var GMaps = (function(global) {
       context_menu_element.style.display = 'block';
     };
 
-    var buildContextMenu = function(control, e) {
+    this.buildContextMenu = function(control, e) {
       if (control === 'marker') {
         e.pixel = {};
 
@@ -374,7 +374,7 @@ var GMaps = (function(global) {
       }
 
       if(window.context_menu[self.el.id]['map'] != undefined) {
-        buildContextMenu('map', e);
+        self.buildContextMenu('map', e);
       }
     });
 

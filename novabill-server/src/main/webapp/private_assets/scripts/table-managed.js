@@ -25,10 +25,9 @@ var TableManaged = function () {
                 ],
                 // set the initial value
                 "iDisplayLength": 5,
-                "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
                 "sPaginationType": "bootstrap",
                 "oLanguage": {
-                    "sLengthMenu": "_MENU_ records per page",
+                    "sLengthMenu": "_MENU_ records",
                     "oPaginate": {
                         "sPrevious": "Prev",
                         "sNext": "Next"
@@ -50,12 +49,18 @@ var TableManaged = function () {
                     } else {
                         $(this).attr("checked", false);
                     }
+                    $(this).parents('tr').toggleClass("active");
                 });
                 jQuery.uniform.update(set);
+
             });
 
-            jQuery('#sample_1_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
-            jQuery('#sample_1_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            jQuery('#sample_1 tbody tr .checkboxes').change(function(){
+                 $(this).parents('tr').toggleClass("active");
+            });
+
+            jQuery('#sample_1_wrapper .dataTables_filter input').addClass("form-control input-medium"); // modify table search input
+            jQuery('#sample_1_wrapper .dataTables_length select').addClass("form-control input-xsmall"); // modify table per page dropdown
             //jQuery('#sample_1_wrapper .dataTables_length select').select2(); // initialize select2 dropdown
 
             // begin second table
@@ -66,10 +71,9 @@ var TableManaged = function () {
                 ],
                 // set the initial value
                 "iDisplayLength": 5,
-                "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
                 "sPaginationType": "bootstrap",
                 "oLanguage": {
-                    "sLengthMenu": "_MENU_ per page",
+                    "sLengthMenu": "_MENU_ records",
                     "oPaginate": {
                         "sPrevious": "Prev",
                         "sNext": "Next"
@@ -95,8 +99,8 @@ var TableManaged = function () {
                 jQuery.uniform.update(set);
             });
 
-            jQuery('#sample_2_wrapper .dataTables_filter input').addClass("m-wrap small"); // modify table search input
-            jQuery('#sample_2_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            jQuery('#sample_2_wrapper .dataTables_filter input').addClass("form-control input-small"); // modify table search input
+            jQuery('#sample_2_wrapper .dataTables_length select').addClass("form-control input-xsmall"); // modify table per page dropdown
             jQuery('#sample_2_wrapper .dataTables_length select').select2(); // initialize select2 dropdown
 
             // begin: third table
@@ -107,10 +111,9 @@ var TableManaged = function () {
                 ],
                 // set the initial value
                 "iDisplayLength": 5,
-                "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
                 "sPaginationType": "bootstrap",
                 "oLanguage": {
-                    "sLengthMenu": "_MENU_ per page",
+                    "sLengthMenu": "_MENU_ records",
                     "oPaginate": {
                         "sPrevious": "Prev",
                         "sNext": "Next"
@@ -136,8 +139,8 @@ var TableManaged = function () {
                 jQuery.uniform.update(set);
             });
 
-            jQuery('#sample_3_wrapper .dataTables_filter input').addClass("m-wrap small"); // modify table search input
-            jQuery('#sample_3_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            jQuery('#sample_3_wrapper .dataTables_filter input').addClass("form-control input-small"); // modify table search input
+            jQuery('#sample_3_wrapper .dataTables_length select').addClass("form-control input-xsmall"); // modify table per page dropdown
             jQuery('#sample_3_wrapper .dataTables_length select').select2(); // initialize select2 dropdown
 
         }

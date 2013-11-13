@@ -40,7 +40,7 @@ body {
    margin-top: 10px;
    text-align: left !important;
    font-size: 12px;
-   color: #333;
+   color: #eaeaea;
 }
 
 .page-lock img.page-lock-img {
@@ -50,6 +50,7 @@ body {
 }
 
 .page-lock .page-lock-info {
+	padding-left: 10px;
 	float: right;
 	width: 280px;
 }
@@ -60,19 +61,21 @@ body {
 	color: #fff;
 	font-size: 28px;
 	line-height: 32px;
+	margin-bottom: 5px;
 }
 
-.page-lock .page-lock-info span {
+.page-lock .page-lock-info .email {
 	color: #eee;
 	display: block;
 	font-size: 14px;
-	margin-top: -5px;
+	line-height: 14px;
 	margin-bottom: 10px;
 } 
 
-.page-lock .page-lock-info span em {
+.page-lock .page-lock-info .locked {
 	color: #333;
-	font-size: 14px;
+	font-size: 14px;	
+	line-height: 14px;
 	font-style: normal;
 }
 
@@ -93,10 +96,10 @@ body {
 }
 
 /*Responsive*/
-@media (max-width: 480px) {
+@media (max-width: 768px) {
 	.page-lock {
 	   top:0px;
-	   width: 260px;
+	   width: 280px;
 	   margin-top: 20px;
 	   margin-left: -140px;
 	}	
@@ -104,7 +107,7 @@ body {
 	.page-lock .page-body {	
 		padding: 10px;
 	    text-align: center;	
-		width: 260px;
+		width: 280px;
 	}
 
 	.page-lock img.page-lock-img {
@@ -119,7 +122,8 @@ body {
 		width: 260px;		
 		margin: 0 auto;
 	}
-	.page-lock .page-lock-info1 form {
-		margin-bottom: 0;
-	}	
+
+	.page-lock .page-lock-info input {
+		width: 200px !important;
+	}
 }

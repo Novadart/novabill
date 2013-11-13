@@ -18,10 +18,10 @@ var TableEditable = function () {
             function editRow(oTable, nRow) {
                 var aData = oTable.fnGetData(nRow);
                 var jqTds = $('>td', nRow);
-                jqTds[0].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[0] + '">';
-                jqTds[1].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[1] + '">';
-                jqTds[2].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[2] + '">';
-                jqTds[3].innerHTML = '<input type="text" class="m-wrap small" value="' + aData[3] + '">';
+                jqTds[0].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[0] + '">';
+                jqTds[1].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[1] + '">';
+                jqTds[2].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[2] + '">';
+                jqTds[3].innerHTML = '<input type="text" class="form-control input-small" value="' + aData[3] + '">';
                 jqTds[4].innerHTML = '<a class="edit" href="">Save</a>';
                 jqTds[5].innerHTML = '<a class="cancel" href="">Cancel</a>';
             }
@@ -54,10 +54,10 @@ var TableEditable = function () {
                 ],
                 // set the initial value
                 "iDisplayLength": 5,
-                "sDom": "<'row-fluid'<'span6'l><'span6'f>r>t<'row-fluid'<'span6'i><'span6'p>>",
+                
                 "sPaginationType": "bootstrap",
                 "oLanguage": {
-                    "sLengthMenu": "_MENU_ records per page",
+                    "sLengthMenu": "_MENU_ records",
                     "oPaginate": {
                         "sPrevious": "Prev",
                         "sNext": "Next"
@@ -70,8 +70,8 @@ var TableEditable = function () {
                 ]
             });
 
-            jQuery('#sample_editable_1_wrapper .dataTables_filter input').addClass("m-wrap medium"); // modify table search input
-            jQuery('#sample_editable_1_wrapper .dataTables_length select').addClass("m-wrap small"); // modify table per page dropdown
+            jQuery('#sample_editable_1_wrapper .dataTables_filter input').addClass("form-control input-medium"); // modify table search input
+            jQuery('#sample_editable_1_wrapper .dataTables_length select').addClass("form-control input-small"); // modify table per page dropdown
             jQuery('#sample_editable_1_wrapper .dataTables_length select').select2({
                 showSearchInput : false //hide search box with special css class
             }); // initialize select2 dropdown

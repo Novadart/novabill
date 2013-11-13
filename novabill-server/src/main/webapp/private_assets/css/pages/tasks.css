@@ -22,6 +22,7 @@ Tasks Widget
 }
 
 .tasks-widget  .task-list {
+  list-style: none;
   padding:0;
   margin:0;
 }
@@ -46,7 +47,6 @@ Tasks Widget
 }
 
 .tasks-widget .task-list  li > .task-title  {
-  overflow:hidden;
   margin-right:10px;
 }
 
@@ -85,7 +85,11 @@ Tasks Widget
   margin-bottom:0 !important;
 }
 
-@media only screen and (max-width: 320px) {
+.tasks-widget .task-config-btn {
+  margin-top: -1px;
+}
+
+@media only screen and (max-width: 480px) {
 
 	.tasks-widget .task-config-btn {
 		float:inherit;

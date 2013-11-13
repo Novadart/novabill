@@ -135,7 +135,7 @@
 		var format = options.format||this.element.data('color-format')||'hex';
 		this.format = CPGlobal.translateFormats[format];
 		this.isInput = this.element.is('input');
-		this.component = this.element.is('.color') ? this.element.find('.add-on') : false;
+		this.component = this.element.is('.color') ? this.element.find('.input-group-btn') : false; // modified by keenthemes for Bootstrap 3.0 support
 		
 		this.picker = $(CPGlobal.template)
 							.appendTo('body')
@@ -345,7 +345,7 @@
 		}
 	}
 
-	$.fn.colorpicker = function ( option ) {
+	$.fn.colorpicker = function ( option, val ) {
 		return this.each(function () {
 			var $this = $(this),
 				data = $this.data('colorpicker'),
@@ -353,7 +353,7 @@
 			if (!data) {
 				$this.data('colorpicker', (data = new Colorpicker(this, $.extend({}, $.fn.colorpicker.defaults,options))));
 			}
-			if (typeof option === 'string') data[option]();
+			if (typeof option === 'string') data[option](val);
 		});
 	};
 

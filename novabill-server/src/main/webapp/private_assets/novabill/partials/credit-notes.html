@@ -1,0 +1,22 @@
+<div class="container-fluid">
+	<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	<h3 class="page-title">Credit Notes</h3>
+	<ul class="breadcrumb">
+		<li><i class="icon-home"></i> <a href="../">Home</a>
+			<i class="icon-angle-right"></i></li>
+		<li><span>Credit Notes</span></li>
+	</ul>
+	<!-- END PAGE TITLE & BREADCRUMB-->
+
+	<button type="button" class="btn red new-credit-note"
+		ng-click="newCreditNoteClick()">New Credit Note</button>
+
+	<div class="credit-notes">
+		<img class="spinner" ng-show="creditNotes==null" src="../../private_assets/img/ajax-loading.gif">
+		<p class="no-data-message text-center text-info" ng-show="creditNotes && creditNotes.length===0">No Data</p>
+		<novabill-credit-note credit-note="note"
+			bottom-up-menu="!$first && $last" ng-repeat="note in creditNotes"></novabill-credit-note>
+	</div>
+
+	<removal-dialog></removal-dialog>
+</div>

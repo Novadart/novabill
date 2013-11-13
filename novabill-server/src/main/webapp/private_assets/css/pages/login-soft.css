@@ -8,7 +8,6 @@ Login page
 }
 
 .login .logo {
-  width: 247px;
   margin: 0 auto;   
   margin-top:60px;
   padding: 15px;
@@ -18,7 +17,7 @@ Login page
 
 .login .content {
   background: url(../../img/bg-white-lock.png) repeat;
-  width: 291px;
+  width: 360px;
   margin: 0 auto; 
   margin-bottom: 0px;
   padding: 30px;  
@@ -44,18 +43,8 @@ Login page
     margin: 0px;
 }
 
-.login .content .m-wrap {
-  width: 249px;
+.login .content .form-control {
   background-color: #fff;
-}
-
-
-.login .content .control-group {
-  margin-bottom: 20px !important;
-}
-
-.login .content .input-icon .m-wrap {  
-  margin: 0px !important;
 }
 
 .login .content .forget-form {
@@ -75,10 +64,14 @@ Login page
   background-color: transparent;
   clear: both;
   border: 0px;
-  border-bottom1: 1px solid #999;
   padding: 0px 30px 25px 30px;
   margin-left: -30px;
   margin-right: -30px;
+}
+
+.login .content .form-actions .checkbox {
+  margin-left: 0;
+  padding-left: 0;
 }
 
 .login .content .forget-form .form-actions {
@@ -120,13 +113,19 @@ Login page
 /* select2 dropdowns */
 .login .content .select2-container i {
   display: inline-block;
+  position: relative;
   color: #ccc;
   z-index: 1;
-  margin: 2px 4px 4px 3px; 
+  top:1px;
+  margin: 4px 4px 0px 3px; 
   width: 16px;
   height: 16px;
   font-size: 16px;
   text-align: center; 
+}
+
+.login .content .has-error .select2-container i {
+  color: #b94a48;
 }
 
 .login .content .select2-container a span {
@@ -140,9 +139,8 @@ Login page
 /* footer copyright */
 .login .copyright {
   text-align: center;
-  width: 270px;
   margin: 0 auto; 
-  padding: 10px 10px 0 10px;
+  padding: 10px;
   color: #eee;
   font-size: 12px;
 }
@@ -162,10 +160,6 @@ Login page
 
   .login .content h3 {
     font-size: 22px;
-  }
-
-  .login .content .m-wrap {
-      width: 180px;
   }
 
   .login .checkbox {

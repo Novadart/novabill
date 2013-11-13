@@ -73,7 +73,7 @@ var Calendar = function () {
 
             var addEvent = function (title) {
                 title = title.length == 0 ? "Untitled Event" : title;
-                var html = $('<div class="external-event label">' + title + '</div>');
+                var html = $('<div class="external-event label label-default">' + title + '</div>');
                 jQuery('#event_box').append(html);
                 initDrag(html);
             }

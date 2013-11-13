@@ -9,11 +9,14 @@ Error Pages
 }
 
 .page-404 .number {
+  position: relative;
+  top: 35px;
   display: inline-block;
   letter-spacing: -10px;
   margin-top: 0px;
+  margin-bottom: 10px;
   line-height: 128px;
-  font-size: 158px;
+  font-size: 128px;
   font-weight: 300;
   color: #7bbbd6;
   text-align: right;
@@ -35,7 +38,7 @@ Error Pages
   display: inline-block;
   letter-spacing: -10px;
   line-height: 128px;
-  font-size: 158px;
+  font-size: 128px;
   font-weight: 300;
   color: #ec8c8c;
   text-align: right;
@@ -49,7 +52,9 @@ Error Pages
 
 /* 404 page option #2*/
 .page-404-full-page {
+  overflow-x: hidden;
   padding: 20px;
+  margin-bottom: 20px;
   background-color: #fafafa !important;
 }
 
@@ -63,6 +68,7 @@ Error Pages
 
 /* 500 page option #2*/
 .page-500-full-page {
+  overflow-x: hidden;
   padding: 20px;
   background-color: #fafafa !important;
 }

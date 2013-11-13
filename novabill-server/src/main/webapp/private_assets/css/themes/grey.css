@@ -10,7 +10,7 @@ body {
 /***
 Page header
 ***/
-.header .navbar-inner {
+.header {
   filter: none !important;
   background-image: none !important;
   background-color: #4a4a4a !important;
@@ -18,11 +18,11 @@ Page header
 .header .btn-navbar {
   background-color: #4a4a4a !important;
 }
-.header .nav .dropdown-toggle:hover,
-.header .nav .dropdown.open .dropdown-toggle {
+.header .navbar-nav .dropdown-toggle:hover,
+.header .navbar-nav .dropdown.open .dropdown-toggle {
   background-color: #616161 !important;
 }
-.header .nav li.dropdown .dropdown-toggle i {
+.header .navbar-nav li.dropdown .dropdown-toggle i {
   color: #b3b3b3 !important;
 }
 /***
@@ -124,10 +124,10 @@ Sidebar toggler
   background-color: #4d4d4d;
 }
 /* search box bg color on expanded */
-.page-sidebar-closed .page-sidebar .sidebar-search.open {
+.page-sidebar-closed .page-sidebar .sidebar-search.open .form-container {
   background-color: #666666 !important;
 }
-.page-sidebar-closed .page-sidebar .sidebar-search.open .remove {
+.page-sidebar-closed .page-sidebar .sidebar-search.open .form-container .remove {
   background-image: url("../../img/sidebar-search-close.png");
 }
 /* sub menu bg color on hover menu item */
@@ -239,7 +239,7 @@ Gritter Notifications
   color: #0b6694;
 }
 /* begin: boxed page */
-@media (min-width: 980px) {
+@media (min-width: 992px) {
   .page-boxed {
     background-color: #575757 !important;
   }
@@ -263,7 +263,7 @@ Gritter Notifications
 /***
 Landscape phone to portrait tablet
 ***/
-@media (max-width: 979px) {
+@media (max-width: 991px) {
   /***
     page sidebar
     ***/

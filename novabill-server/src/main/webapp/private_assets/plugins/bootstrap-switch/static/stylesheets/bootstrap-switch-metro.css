@@ -1,12 +1,10 @@
 /* ============================================================
- * bootstrapSwitch v1.5 by Larentis Mattia @SpiritualGuru
+ * bootstrapSwitch v1.8 by Larentis Mattia @SpiritualGuru
  * http://www.larentis.eu/
  *
  * Enhanced for radiobuttons by Stein, Peter @BdMdesigN
  * http://www.bdmdesign.org/
  *
- * Restyled by KeenThemes for Metronic Theme
- * 
  * Project site:
  * http://www.larentis.eu/switch/
  * ============================================================
@@ -14,6 +12,7 @@
  * http://www.apache.org/licenses/LICENSE-2.0
  * ============================================================ */
 .has-switch {
+  padding: 0;
   display: inline-block;
   cursor: pointer;
   -webkit-border-radius: 5px;
@@ -30,10 +29,20 @@
   -ms-user-select: none;
   -o-user-select: none;
   user-select: none;
+  vertical-align: middle;
   min-width: 100px;
 }
 .has-switch.switch-mini {
   min-width: 72px;
+}
+.has-switch.switch-mini i.switch-mini-icons {
+  height: 1.20em;
+  line-height: 9px;
+  vertical-align: text-top;
+  text-align: center;
+  transform: scale(0.6);
+  margin-top: -1px;
+  margin-bottom: -1px;
 }
 .has-switch.switch-small {
   min-width: 80px;
@@ -64,6 +73,7 @@
 }
 .has-switch > div.switch-off {
   left: -50%;
+  margin-left: 1px !important; /* parent container with float:left issue fix*/
 }
 .has-switch > div.switch-on {
   left: 0%;
@@ -114,7 +124,6 @@
   z-index: 100;
   width: 34%;
   color: #ffffff;
-  background-color: #f3f3f3;
 }
 .has-switch label:hover,
 .has-switch label:focus,
@@ -127,10 +136,10 @@
 }
 .has-switch label:active,
 .has-switch label.active {
-  background-color: #cccccc;
+  background-color: #cccccc \9;
 }
 .has-switch label i {
-  color: #000;
+  color: #666;
   line-height: 18px;
   pointer-events: none;
 }
@@ -167,7 +176,7 @@
 .has-switch span.switch-primary,
 .has-switch span.switch-left {
   color: #ffffff;
-  background-color: #005fcc;
+  background-color: #428bca;
 }
 .has-switch span.switch-primary:hover,
 .has-switch span.switch-left:hover,
@@ -182,18 +191,17 @@
 .has-switch span.switch-primary[disabled],
 .has-switch span.switch-left[disabled] {
   color: #ffffff;
-  background-color: #0088cc;
+  background-color: #68AAE3;
 }
 .has-switch span.switch-primary:active,
 .has-switch span.switch-left:active,
 .has-switch span.switch-primary.active,
 .has-switch span.switch-left.active {
-  background-color: #006699 \9;
+  background-color: #4B9ADE \9;
 }
 .has-switch span.switch-info {
   color: #ffffff;
   background-color: #41a7c5;
-  border-color: #5bc0de;
 }
 .has-switch span.switch-info:hover,
 .has-switch span.switch-info:focus,
@@ -211,7 +219,6 @@
 .has-switch span.switch-success {
   color: #ffffff;
   background-color: #3cc051;
-  border-color: #62c462;
 }
 .has-switch span.switch-success:hover,
 .has-switch span.switch-success:focus,
@@ -228,7 +235,7 @@
 }
 .has-switch span.switch-warning {
   color: #ffffff;
-  background-color: #fcb322;
+  background-color: #f9a123;
   border-color: #fbb450;
 }
 .has-switch span.switch-warning:hover,
@@ -247,7 +254,7 @@
 .has-switch span.switch-danger {
   color: #ffffff;
   background-color: #d14641;
-  border-color: #ee5f5b;
+  border-color: #ee5f5b #ee5f5b #e51d18;
 }
 .has-switch span.switch-danger:hover,
 .has-switch span.switch-danger:focus,
@@ -256,7 +263,7 @@
 .has-switch span.switch-danger.disabled,
 .has-switch span.switch-danger[disabled] {
   color: #ffffff;
-  background-color: #ed4e2a;
+  background-color: #ee5f5b;
 }
 .has-switch span.switch-danger:active,
 .has-switch span.switch-danger.active {
@@ -264,8 +271,7 @@
 }
 .has-switch span.switch-default {
   color: #333333;
-  background-color: #e0e0e0;
-  border-color: #d9d9d9;
+  background-color: #f0f0f0;
 }
 .has-switch span.switch-default:hover,
 .has-switch span.switch-default:focus,
@@ -278,5 +284,5 @@
 }
 .has-switch span.switch-default:active,
 .has-switch span.switch-default.active {
-  background-color: #e3e3e3 \9;
+  background-color: #e6e6e6 \9;
 }

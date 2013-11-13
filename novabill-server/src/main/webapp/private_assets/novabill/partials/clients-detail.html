@@ -1,0 +1,62 @@
+<div class="container-fluid">
+    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
+    <ul class="breadcrumb">
+        <li><i class="icon-home"></i> <a href="../">Home</a> 
+             <i class="icon-angle-right"></i></li>
+        <li><a href=".">Clients</a><i
+        class="icon-angle-right"></i></li>
+        <li><span>{{name}}</span></li>
+    </ul>
+    <!-- END PAGE TITLE & BREADCRUMB-->
+
+	<div class="client-detail">
+	    <div class="jumbotron">
+	        <h1>{{name}}&nbsp;<small>{{businessDetails}}</small></h1>
+	        <p>{{address}}</p>
+	        <p>{{contactInfo}}</p>
+	        <p>{{website}}</p>
+	        
+	        <div style="float: right;">
+	          <a href="javascript: void(0)" ng-click="editClient(client.id)" class="btn btn-sm red"><i class="fa fa-edit"></i> Edit</a>
+	          <a href="javascript: void(0)" ng-click="removeClient(name, client.id)"  class="btn btn-sm red"><i class="fa fa-trash-o"></i> Delete</a>
+	        </div>
+	    </div>
+	
+	    <div class="tabbable tabbable-custom">
+	        <ul class="nav nav-tabs">
+	            <li class="active"><a href="#tab_invoices" data-toggle="tab">Invoice</a></li>
+	            <li class=""><a href="#tab_transport_documents" data-toggle="tab" ng-click="loadDocs('transportDocument')">Transport Documents</a></li>
+	            <li class=""><a href="#tab_estimations" data-toggle="tab" ng-click="loadDocs('estimation')">Estimations</a></li>
+	            <li class=""><a href="#tab_credit_notes" data-toggle="tab" ng-click="loadDocs('creditNote')">Credit Notes</a></li>
+	        </ul>
+	        <div class="tab-content">
+	            <div class="tab-pane active" id="tab_invoices">
+	                <img class="spinner" ng-show="invoiceData===null" src="../../private_assets/img/ajax-loading.gif">
+	                <p class="no-data-message text-center text-info" ng-show="invoiceData && invoiceData.length===0">No Data</p>
+	                <novabill-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoiceData" />
+	            </div>
+	            
+	            <div class="tab-pane" id="tab_transport_documents">
+	                <img class="spinner" ng-show="!transportDocumentData" src="../../private_assets/img/ajax-loading.gif">
+	                <p class="no-data-message text-center text-info" ng-show="transportDocumentData && transportDocumentData.length===0">No Data</p>
+	                <novabill-transport-document transport-document="td" bottom-up-menu="!$first && $last" ng-repeat="td in transportDocumentData" />
+	            </div>
+	            
+	            <div class="tab-pane" id="tab_estimations">
+	                <img class="spinner" ng-show="!estimationData" src="../../private_assets/img/ajax-loading.gif">
+	                <p class="no-data-message text-center text-info" ng-show="estimationData && estimationData.length===0">No Data</p>
+	                <novabill-estimation estimation="est" bottom-up-menu="!$first && $last" ng-repeat="est in estimationData" />
+	            </div>
+	            
+	            <div class="tab-pane" id="tab_credit_notes">
+	                <img class="spinner" ng-show="!creditNoteData" src="../../private_assets/img/ajax-loading.gif">
+	                <p class="no-data-message text-center text-info" ng-show="creditNoteData && creditNoteData.length===0">No Data</p>
+	                <novabill-credit-note credit-note="cn" bottom-up-menu="!$first && $last" ng-repeat="cn in creditNoteData" />
+	            </div>
+	        </div>
+	    </div>
+	    
+	    <removal-dialog></removal-dialog>
+	
+	</div>
+</div>
