@@ -37,7 +37,6 @@
        Index.initChat();
        Index.initMiniCharts();
        Index.initDashboardDaterange();
-       Index.initIntro();
        Tasks.initDashboardWidget();
     });
 </script>
