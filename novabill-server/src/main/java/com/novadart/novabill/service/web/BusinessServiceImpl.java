@@ -160,6 +160,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchTransportDocumentsEagerly()), DTOUtils.transportDocDTOConverter);
 	}
 	
+	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<ClientDTO> getClients(Long businessID){
 		Set<Client> clients = Business.findBusiness(businessID).getClients();

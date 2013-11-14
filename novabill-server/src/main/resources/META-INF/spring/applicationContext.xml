@@ -5,6 +5,7 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:task="http://www.springframework.org/schema/task"
 	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:security="http://www.springframework.org/schema/security"
 	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd         
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd         
@@ -14,7 +15,9 @@
 	http://www.springframework.org/schema/task
 	http://www.springframework.org/schema/task/spring-task-3.2.xsd
 	http://www.springframework.org/schema/cache
-	http://www.springframework.org/schema/cache/spring-cache-3.2.xsd">
+	http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 	<context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
 
@@ -32,15 +35,17 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 	<tx:annotation-driven mode="aspectj"
-		transaction-manager="transactionManager" />
+		transaction-manager="transactionManager" order="3"/>
 	<bean
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
 		id="entityManagerFactory">
 		<property name="persistenceUnitName" value="persistenceUnit" />
 		<property name="dataSource" ref="dataSource" />
 	</bean>
-	
-	<cache:annotation-driven cache-manager="cacheManager" mode="proxy" order="1" />
+
+	<security:global-method-security pre-post-annotations="enabled" order="1"/>
+		
+	<cache:annotation-driven cache-manager="cacheManager" mode="proxy" order="2" />
 	
 	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
 		<property name="cacheManager" ref="ehcache" />
