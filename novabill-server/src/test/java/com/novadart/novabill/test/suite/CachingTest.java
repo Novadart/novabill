@@ -7,8 +7,11 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+
 import javax.annotation.Resource;
+
 import net.sf.ehcache.CacheManager;
+
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
@@ -18,6 +21,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.aspect.CachingAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -533,6 +537,7 @@ public class CachingTest extends GWTServiceTest {
 	public void commodityUpdateCacheTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
 		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		commodityDTO.setSku("12345");
 		Long id = commodityService.add(commodityDTO);
 		Commodity.entityManager().flush();
 		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessService.getCommodities(authenticatedPrincipal.getBusiness().getId()));

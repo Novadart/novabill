@@ -32,9 +32,11 @@ import org.hibernate.search.annotations.FullTextFilterDefs;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
 @Indexed
@@ -53,6 +55,11 @@ filters = {
 public class Commodity implements Serializable {
 	
 	private static final long serialVersionUID = 4265058605330997015L;
+	
+	@NotBlank
+	@Size(max = 50)
+	@Trimmed
+	private String sku;
 
     private BigDecimal price;
 
@@ -72,12 +79,20 @@ public class Commodity implements Serializable {
     
     private String customPricesJson;
     
-    transient private Map<String, BigDecimal> customPrices;
+	transient private Map<String, BigDecimal> customPrices;
     
     /*
      * Getters and setters
      * */
-    
+   
+	public String getSku() {
+		return sku;
+	}
+
+	public void setSku(String sku) {
+		this.sku = sku;
+	}
+	
     public BigDecimal getPrice() {
         return this.price;
     }
