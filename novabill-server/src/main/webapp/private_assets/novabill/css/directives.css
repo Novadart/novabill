@@ -1,3 +1,7 @@
+/*
+ *  DOCUMENTS
+ */
+ 
 .document-well {
     cursor: pointer;
 }
@@ -14,16 +18,30 @@
     margin-left: 10px;
 }
 
-.document-well .open {
-	float: right;
-}
-
 .document-well .print {
-    float: right;
     margin-right: 10px;
 }
 
 .document-well .options {
-	float: right;
 	margin-right: 20px;
+}
+
+
+/*
+ *  COMMODITY
+ */
+ .commodity {
+    cursor: pointer;
+ }
+ 
+ .commodity .id {
+    margin-left: 10px;
+ }
+ 
+ .commodity .type {
+    width: 60px;
+ }
+ 
+ .commodity:HOVER {
+    border: 1px solid #555;
 }

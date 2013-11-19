@@ -182,7 +182,7 @@ angular.module('novabill.directives', ['novabill.utils'])
 			$scope.print = function(){
 				GWT_UI.generateCreditNotePdf($scope.creditNote.id);
 			};
-
+			
 			$scope.remove = function(){
 				NRemovalDialogAPI.init('Delete '+$scope.creditNote.documentID+' Credit Note?', {
 					onOk : function(){
@@ -221,7 +221,6 @@ angular.module('novabill.directives', ['novabill.utils'])
 			bottomUpMenu : '=',
 		},
 		controller : ['$scope', function($scope){
-			$scope.openUrl = NovabillConf.commodityBaseUrl + '#/details/' + $scope.commodity.id;
 
 			$scope.remove = function(){};
 			
