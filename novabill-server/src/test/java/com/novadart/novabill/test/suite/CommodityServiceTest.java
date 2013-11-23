@@ -150,4 +150,33 @@ public class CommodityServiceTest extends GWTServiceTest {
     	 commodityService.getAll(null);
      }
      
+     @Test
+     public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+    	 Long businessID = authenticatedPrincipal.getBusiness().getId();
+    	 CommodityDTO commodityDTO = commodityService.getAll(businessID).iterator().next();
+    	 assertTrue(EqualsBuilder.reflectionEquals(commodityDTO, commodityService.get(businessID, commodityDTO.getId()), "business"));
+     }
+     
+     @Test(expected = DataAccessException.class)
+     public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+    	 CommodityDTO commodityDTO = commodityService.getAll(authenticatedPrincipal.getBusiness().getId()).iterator().next();
+    	 commodityService.get(getUnathorizedBusinessID(), commodityDTO.getId());
+     }
+
+     @Test(expected = DataAccessException.class)
+     public void getAuthorizedNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+    	 commodityService.get(authenticatedPrincipal.getBusiness().getId(), null);
+     }
+     
+     @Test(expected = DataAccessException.class)
+     public void getUnAuthorizedNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+    	 commodityService.get(getUnathorizedBusinessID(), null);
+     }
+     
+     @Test(expected = DataAccessException.class)
+     public void getNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+    	 commodityService.get(null, null);
+     }
+     
+     
 }

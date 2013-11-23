@@ -47,5 +47,10 @@ public class CommodityGwtController extends AbstractGwtController implements Com
 	public PageDTO<CommodityDTO> searchCommodities(Long businessID, String query, int start, int length) throws InvalidArgumentException, NotAuthenticatedException, DataAccessException {
 		return commodityService.searchCommodities(businessID, query, start, length);
 	}
+
+	@Override
+	public CommodityDTO get(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return commodityService.get(businessID, id);
+	}
 	
 }
