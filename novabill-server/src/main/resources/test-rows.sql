@@ -256,10 +256,27 @@ insert into payment_type (id, default_payment_note, name, payment_date_delta, pa
 insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (155, 'Pagamento con bonifico bancario entro 90 giorni d.f. f.m.', 'Bonifico Bancario 90GG d.f. f.m.', 3, 1, 1, 2);
 
 --creating commodities
-insert into commodity (id, sku, description, price, service, tax, unit_of_measure, business, version) values (156, '12345', 'Computer network configuration', 29.95, 't', 22, 'hour', 1, 1);
-insert into commodity (id, sku, description, price, service, tax, unit_of_measure, business, version) values (157, '12345', 'Website building', 24.95, 't', 22, 'hour', 1, 1);
-insert into commodity (id, sku, description, price, service, tax, unit_of_measure, business, version) values (158, '12345', 'Mobile apps development', 24.95, 't', 22, 'hour', 1, 1);
-insert into commodity (id, sku, description, price, service, tax, unit_of_measure, business, version) values (159, '12345', 'Database administration', 24.95, 't', 22, 'hour', 1, 1);
-insert into commodity (id, sku, description, price, service, tax, unit_of_measure, business, version) values (160, '12345', 'Cisco network router', 49.95, 'f', 22, 'piece', 1, 1);
+insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (156, '12345', 'Computer network configuration', 't', 22, 'hour', 1, 1);
+insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (157, '12345', 'Website building', 't', 22, 'hour', 1, 1);
+insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (158, '12345', 'Mobile apps development', 't', 22, 'hour', 1, 1);
+insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (159, '12345', 'Database administration', 't', 22, 'hour', 1, 1);
+insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (160, '12345', 'Cisco network router', 'f', 22, 'piece', 1, 1);
 
-alter sequence hibernate_sequence restart with 161;
+--creating price lists
+insert into price_list (id, name, version, business) values (161, 'public', '1', 1);
+insert into price_list (id, name, version, business) values (162, 'public', '1', 2);
+
+--creating default prices
+insert into price (id, price_type, quantity, version, commodity, price_list) values (163, 1, 24.95, 1, 156, 161);
+insert into price (id, price_type, quantity, version, commodity, price_list) values (164, 1, 19.95, 1, 157, 161);
+insert into price (id, price_type, quantity, version, commodity, price_list) values (165, 1, 24.95, 1, 158, 161);
+insert into price (id, price_type, quantity, version, commodity, price_list) values (167, 1, 24.95, 1, 159, 161);
+insert into price (id, price_type, quantity, version, commodity, price_list) values (168, 1, 39.95, 1, 160, 161);
+
+--creating more commodities
+insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (169, '12345', 'Website building', 't', 22, 'hour', 2, 1);
+
+--creating defauult prices
+insert into price (id, price_type, quantity, version, commodity, price_list) values (170, 1, 19.95, 1, 169, 162);
+
+alter sequence hibernate_sequence restart with 171;

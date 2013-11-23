@@ -35,6 +35,14 @@ public class CommodityService {
 	public List<CommodityDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return businessService.getCommodities(businessID);
 	}
+	
+	@PreAuthorize("T(com.novadart.novabill.domain.Commodity).findCommodity(#id)?.business?.id == principal.business.id")
+	public CommodityDTO get(Long businessID, Long id) throws NoSuchObjectException, NotAuthenticatedException, DataAccessException {
+		for(CommodityDTO commodityDTO: businessService.getCommodities(businessID))
+			if(commodityDTO.getId().equals(id))
+				return commodityDTO;
+		throw new NoSuchObjectException();
+	}
 
 	@PreAuthorize("#commodityDTO?.business?.id == principal.business.id and " +
 				  "#commodityDTO?.id == null" )

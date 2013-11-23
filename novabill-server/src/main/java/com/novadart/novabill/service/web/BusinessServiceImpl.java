@@ -32,6 +32,7 @@ import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.TaxableEntityValidator;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -231,6 +232,9 @@ public abstract class BusinessServiceImpl implements BusinessService {
 			paymentType.setBusiness(business);
 			business.getPaymentTypes().add(paymentType);
 		}
+		PriceList publicPriceList = new PriceList(PriceListConstants.PUBLIC);
+		publicPriceList.setBusiness(business);
+		business.getPriceLists().add(publicPriceList);
 		Principal principal = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId());
 		principal.setBusiness(business);
 		business.getPrincipals().add(principal);

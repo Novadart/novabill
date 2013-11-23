@@ -1,12 +1,10 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
@@ -153,17 +151,32 @@ public class CommodityServiceTest extends GWTServiceTest {
      }
      
      @Test
-     public void customPricesSerializationDeserializationTest() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
-    	 Commodity commodity1 = new Commodity();
-    	 Map<String, BigDecimal> prices = new HashMap<String, BigDecimal>();
-    	 prices.put("TestPriceList", new BigDecimal("100.00"));
-    	 commodity1.setCustomPrices(prices);
-    	 assertTrue(commodity1.getCustomPrices().equals(prices));
-    	 Commodity commodity2 = new Commodity();
-    	 Field f = commodity2.getClass().getDeclaredField("customPricesJson");
-    	 f.setAccessible(true);
-    	 f.set(commodity2, "{\"TestPriceList\":100.00}");
-    	 assertTrue(commodity2.getCustomPrices().equals(prices));
+     public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+    	 Long businessID = authenticatedPrincipal.getBusiness().getId();
+    	 CommodityDTO commodityDTO = commodityService.getAll(businessID).iterator().next();
+    	 assertTrue(EqualsBuilder.reflectionEquals(commodityDTO, commodityService.get(businessID, commodityDTO.getId()), "business"));
      }
-	
+     
+     @Test(expected = DataAccessException.class)
+     public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+    	 CommodityDTO commodityDTO = commodityService.getAll(authenticatedPrincipal.getBusiness().getId()).iterator().next();
+    	 commodityService.get(getUnathorizedBusinessID(), commodityDTO.getId());
+     }
+
+     @Test(expected = DataAccessException.class)
+     public void getAuthorizedNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+    	 commodityService.get(authenticatedPrincipal.getBusiness().getId(), null);
+     }
+     
+     @Test(expected = DataAccessException.class)
+     public void getUnAuthorizedNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+    	 commodityService.get(getUnathorizedBusinessID(), null);
+     }
+     
+     @Test(expected = DataAccessException.class)
+     public void getNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+    	 commodityService.get(null, null);
+     }
+     
+     
 }

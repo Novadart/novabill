@@ -11,8 +11,6 @@ public class CommodityDTO implements IsSerializable {
 	
 	private String sku;
 	
-	private BigDecimal price;
-	
 	private String description;
 	
 	private String unitOfMeasure;
@@ -39,14 +37,6 @@ public class CommodityDTO implements IsSerializable {
 
 	public void setSku(String sku) {
 		this.sku = sku;
-	}
-
-	public BigDecimal getPrice() {
-		return price;
-	}
-
-	public void setPrice(BigDecimal price) {
-		this.price = price;
 	}
 
 	public String getDescription() {

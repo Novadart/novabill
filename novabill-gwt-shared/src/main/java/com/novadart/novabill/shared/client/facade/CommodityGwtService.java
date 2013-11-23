@@ -19,6 +19,8 @@ public interface CommodityGwtService extends RemoteService {
 	
 	public List<CommodityDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
+	public CommodityDTO get(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
+	
 	public Long add(CommodityDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException;
 	
 	public void update(CommodityDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException;

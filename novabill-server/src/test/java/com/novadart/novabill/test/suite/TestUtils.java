@@ -305,7 +305,6 @@ public class TestUtils {
 		Commodity commodity = new Commodity();
 		commodity.setSku("12345");
 		commodity.setDescription("Test commodity description");
-		commodity.setPrice(new BigDecimal("100.0"));
 		commodity.setTax(new BigDecimal("15.0"));
 		commodity.setUnitOfMeasure("piece");
 		return commodity;
