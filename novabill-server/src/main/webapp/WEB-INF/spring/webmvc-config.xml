@@ -9,47 +9,64 @@
 
 	<context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
 
-	<context:component-scan base-package="com.novadart.novabill" use-default-filters="false">
-		<context:include-filter expression="org.springframework.stereotype.Controller" type="annotation" />
+	<context:component-scan base-package="com.novadart.novabill"
+		use-default-filters="false">
+		<context:include-filter expression="org.springframework.stereotype.Controller"
+			type="annotation" />
 	</context:component-scan>
-	
+
 	<mvc:annotation-driven />
 
-	<mvc:resources location="/frontend_assets/css/" mapping="/frontend_assets/css/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/fonts/" mapping="/frontend_assets/fonts/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/scripts/" mapping="/frontend_assets/scripts/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/plugins/" mapping="/frontend_assets/plugins/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/img/" mapping="/frontend_assets/img/**" cache-period="${images.cachePeriod}" />
-	
-    <mvc:resources location="/private_assets/novabill/css/" mapping="/private_assets/novabill/css/**" cache-period="${css.cachePeriod}" />
-    <mvc:resources location="/private_assets/novabill/partials/" mapping="/private_assets/novabill/partials/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/private_assets/css/" mapping="/private_assets/css/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/private_assets/fonts/" mapping="/private_assets/fonts/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/private_assets/novabill/scripts/" mapping="/private_assets/novabill/scripts/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/private_assets/scripts/" mapping="/private_assets/scripts/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/private_assets/plugins/" mapping="/private_assets/plugins/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/private_assets/img/" mapping="/private_assets/img/**" cache-period="${images.cachePeriod}" />
-	
-	<mvc:resources location="/rpc/" mapping="/rpc/**" cache-period="${rpc.cachePeriod}" />
-	<mvc:resources location="/democode/" mapping="/democode/**" cache-period="${democode.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/css/" mapping="/frontend_assets/css/**"
+		cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/fonts/"
+		mapping="/frontend_assets/fonts/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/scripts/"
+		mapping="/frontend_assets/scripts/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/plugins/"
+		mapping="/frontend_assets/plugins/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/img/" mapping="/frontend_assets/img/**"
+		cache-period="${images.cachePeriod}" />
+
+	<mvc:resources location="/private_assets/novabill/css/"
+		mapping="/private_assets/novabill/css/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/private_assets/novabill/partials/"
+		mapping="/private_assets/novabill/partials/**" cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/private_assets/css/" mapping="/private_assets/css/**"
+		cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/private_assets/fonts/" mapping="/private_assets/fonts/**"
+		cache-period="${css.cachePeriod}" />
+	<mvc:resources location="/private_assets/novabill/scripts/"
+		mapping="/private_assets/novabill/scripts/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/private_assets/scripts/"
+		mapping="/private_assets/scripts/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/private_assets/plugins/"
+		mapping="/private_assets/plugins/**" cache-period="${js.cachePeriod}" />
+	<mvc:resources location="/private_assets/img/" mapping="/private_assets/img/**"
+		cache-period="${images.cachePeriod}" />
+
+	<mvc:resources location="/rpc/" mapping="/rpc/**"
+		cache-period="${rpc.cachePeriod}" />
+	<mvc:resources location="/democode/" mapping="/democode/**"
+		cache-period="${democode.cachePeriod}" />
 
 	<mvc:interceptors>
 		<mvc:interceptor>
-			<mvc:mapping path="/private/**"/>
+			<mvc:mapping path="/private/**" />
 			<bean class="com.novadart.novabill.interceptor.AccountBootstrapInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
 
 	<!-- <mvc:view-controller path="/login" /> -->
-<!-- <mvc:view-controller path="/uncaughtException" />
-	<mvc:view-controller path="/resourceNotFound" />
-	<mvc:view-controller path="/dataAccessFailure" />
-	<mvc:view-controller path="/registrationCompleted" />
-	<mvc:view-controller path="/passwordRecoveryCommenced" />
-	<mvc:view-controller path="/tos" /> -->
+	<!-- <mvc:view-controller path="/uncaughtException" />
+		<mvc:view-controller path="/resourceNotFound" />
+		<mvc:view-controller path="/dataAccessFailure" />
+		<mvc:view-controller path="/registrationCompleted" />
+		<mvc:view-controller path="/passwordRecoveryCommenced" />
+		<mvc:view-controller path="/tos" /> -->
 	<!-- <mvc:view-controller path="/privacyPolicy" /> --> <!-- Not needed, currently we're using iubenda.com -->
 	<!-- <mvc:view-controller path="/premiumInfo"/> -->
-	
+
 	<!-- TEST view -->
 	<mvc:view-controller path="/resolutionTest" />
 
@@ -84,13 +101,13 @@
 	<bean
 		class="org.springframework.web.multipart.commons.CommonsMultipartResolver"
 		id="multipartResolver" />
-	
+
 	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver"
 		id="tilesViewResolver">
 		<property name="viewClass"
 			value="org.springframework.web.servlet.view.tiles2.TilesView" />
 	</bean>
-	
+
 	<bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer"
 		id="tilesConfigurer">
 		<property name="definitions">
@@ -101,9 +118,9 @@
 			</list>
 		</property>
 	</bean>
-	
+
 	<bean class="com.novadart.novabill.aspect.XsrfAspect"
 		factory-method="aspectOf">
 	</bean>
-	
+
 </beans>
