@@ -140,6 +140,9 @@ public class Client implements Serializable, Taxable {
     @ManyToOne(optional = true)
     private PaymentType defaultPaymentType;
     
+    @ManyToOne(optional = true)
+    private PriceList defaultPriceList;
+    
     @Size(max = 1500)
 	private String note;
     
@@ -343,6 +346,14 @@ public class Client implements Serializable, Taxable {
 
 	public void setDefaultPaymentType(PaymentType defaultPaymentType) {
 		this.defaultPaymentType = defaultPaymentType;
+	}
+
+	public PriceList getDefaultPriceList() {
+		return defaultPriceList;
+	}
+
+	public void setDefaultPriceList(PriceList defaultPriceList) {
+		this.defaultPriceList = defaultPriceList;
 	}
 
 	public String getNote() {

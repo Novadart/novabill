@@ -3,15 +3,18 @@ package com.novadart.novabill.domain;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
@@ -21,8 +24,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
 import org.apache.solr.analysis.LowerCaseFilterFactory;
 import org.apache.solr.analysis.StandardTokenizerFactory;
-import org.codehaus.jackson.map.ObjectMapper;
-import org.codehaus.jackson.type.TypeReference;
 import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
@@ -61,8 +62,6 @@ public class Commodity implements Serializable {
 	@Trimmed
 	private String sku;
 
-    private BigDecimal price;
-
     @Field(name = FTSNamespace.DESCRIPTION)
     @Type(type = "text")
     private String description;
@@ -77,9 +76,8 @@ public class Commodity implements Serializable {
     
     private boolean service;
     
-    private String customPricesJson;
-    
-	transient private Map<String, BigDecimal> customPrices;
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "commodity")
+    private Set<Price> prices;
     
     /*
      * Getters and setters
@@ -93,14 +91,6 @@ public class Commodity implements Serializable {
 		this.sku = sku;
 	}
 	
-    public BigDecimal getPrice() {
-        return this.price;
-    }
-    
-    public void setPrice(BigDecimal price) {
-        this.price = price;
-    }
-    
     public String getDescription() {
         return this.description;
     }
@@ -133,35 +123,20 @@ public class Commodity implements Serializable {
 		this.service = service;
 	}
 
+	public Set<Price> getPrices() {
+		return prices;
+	}
+
+	public void setPrices(Set<Price> prices) {
+		this.prices = prices;
+	}
+
 	public Business getBusiness() {
         return this.business;
     }
     
     public void setBusiness(Business business) {
         this.business = business;
-    }
-    
-    public Map<String, BigDecimal> getCustomPrices(){
-    	if(customPricesJson == null) return null;
-    	if(customPrices == null){
-    		TypeReference<Map<String, BigDecimal>> typeRef = new TypeReference<Map<String,BigDecimal>>() {};
-    		try {
-				customPrices = new ObjectMapper().readValue(customPricesJson, typeRef);
-			} catch (Exception e) {
-				return null;
-			}
-    	}
-    	return customPrices;
-    }
-    
-    public void setCustomPrices(Map<String, BigDecimal> customPrices){
-    	this.customPrices = customPrices;
-    	try {
-			customPricesJson = new ObjectMapper().writeValueAsString(customPrices);
-		} catch (Exception e) {
-			customPricesJson = null;
-			this.customPrices = null;
-		}
     }
     
     /*

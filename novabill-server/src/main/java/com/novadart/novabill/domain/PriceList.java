@@ -1,19 +1,21 @@
 package com.novadart.novabill.domain;
 
-import java.math.BigDecimal;
 import java.util.List;
-import java.util.Map;
+import java.util.Set;
 
+import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PreRemove;
-import javax.persistence.TypedQuery;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
@@ -27,8 +29,9 @@ import com.novadart.novabill.annotation.Trimmed;
 
 @Configurable
 @Entity
+@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name", "id"}))
 public class PriceList {
-
+	
 	@Size(max = 255)
 	@NotBlank
 	@Trimmed
@@ -36,22 +39,18 @@ public class PriceList {
 	
 	@ManyToOne
 	private Business business;
-
-	@PreRemove
-	@Transactional
-	public void preremove(){
-		TypedQuery<Commodity> tquery = entityManager().createQuery("select c from Commodity c where c.business.id = :businessID", Commodity.class);
-		tquery.setParameter("businessID", getBusiness().getId());
-		for(Commodity commodity: tquery.getResultList()){
-			Map<String, BigDecimal> customPrices = commodity.getCustomPrices();
-			if(customPrices.containsKey(name)){
-				customPrices.remove(name);
-				commodity.setCustomPrices(customPrices);
-			}
-		}
+	
+	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "priceList")
+	private Set<Price> prices;
+	
+	public PriceList() {}
+	
+	public PriceList(String name) {
+		this.name = name;
 	}
-	
-	
+
+
+
 	/*
      * Getters and setters
      * */
@@ -72,6 +71,14 @@ public class PriceList {
 		this.business = business;
 	}
 	
+	public Set<Price> getPrices() {
+		return prices;
+	}
+
+	public void setPrices(Set<Price> prices) {
+		this.prices = prices;
+	}
+	
 	/*
      * End of getters and setters section
      * */
@@ -80,7 +87,7 @@ public class PriceList {
      * Active record functionality
      * */
     
-    @PersistenceContext
+	@PersistenceContext
     transient EntityManager entityManager;
     
     public static final EntityManager entityManager() {

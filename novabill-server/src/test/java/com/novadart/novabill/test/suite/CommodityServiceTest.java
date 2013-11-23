@@ -1,12 +1,10 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
-import java.lang.reflect.Field;
-import java.math.BigDecimal;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
@@ -152,18 +150,4 @@ public class CommodityServiceTest extends GWTServiceTest {
     	 commodityService.getAll(null);
      }
      
-     @Test
-     public void customPricesSerializationDeserializationTest() throws NoSuchFieldException, SecurityException, IllegalArgumentException, IllegalAccessException{
-    	 Commodity commodity1 = new Commodity();
-    	 Map<String, BigDecimal> prices = new HashMap<String, BigDecimal>();
-    	 prices.put("TestPriceList", new BigDecimal("100.00"));
-    	 commodity1.setCustomPrices(prices);
-    	 assertTrue(commodity1.getCustomPrices().equals(prices));
-    	 Commodity commodity2 = new Commodity();
-    	 Field f = commodity2.getClass().getDeclaredField("customPricesJson");
-    	 f.setAccessible(true);
-    	 f.set(commodity2, "{\"TestPriceList\":100.00}");
-    	 assertTrue(commodity2.getCustomPrices().equals(prices));
-     }
-	
 }
