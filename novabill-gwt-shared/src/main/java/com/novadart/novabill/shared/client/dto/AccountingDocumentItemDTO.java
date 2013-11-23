@@ -23,6 +23,7 @@ public class AccountingDocumentItemDTO implements IsSerializable {
 	
 	private BigDecimal total;
 	
+	private BigDecimal discount;
 	
 	public BigDecimal getQuantity() {
 		return quantity;
@@ -114,6 +115,16 @@ public class AccountingDocumentItemDTO implements IsSerializable {
 	}
 	
 	
+	public BigDecimal getDiscount() {
+		return discount;
+	}
+
+
+	public void setDiscount(BigDecimal discount) {
+		this.discount = discount;
+	}
+
+
 	public boolean isDescriptionOnly(){
 		return price == null;
 	}

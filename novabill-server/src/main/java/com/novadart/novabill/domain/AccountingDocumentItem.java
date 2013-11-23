@@ -56,6 +56,8 @@ public class AccountingDocumentItem implements Serializable {
     
     private BigDecimal total;
     
+    private BigDecimal discount;
+    
     @ManyToOne
     private AccountingDocument accountingDocument;
     
@@ -127,7 +129,15 @@ public class AccountingDocumentItem implements Serializable {
         this.total = total;
     }
     
-    public AccountingDocument getAccountingDocument() {
+    public BigDecimal getDiscount() {
+		return discount;
+	}
+
+	public void setDiscount(BigDecimal discount) {
+		this.discount = discount;
+	}
+
+	public AccountingDocument getAccountingDocument() {
         return this.accountingDocument;
     }
     
