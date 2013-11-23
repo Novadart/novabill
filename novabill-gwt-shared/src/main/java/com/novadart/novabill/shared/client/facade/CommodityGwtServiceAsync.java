@@ -8,6 +8,8 @@ import com.novadart.novabill.shared.client.dto.PageDTO;
 
 public interface CommodityGwtServiceAsync {
 
+	void get(Long businessID, Long id, AsyncCallback<CommodityDTO> callback);
+	
 	void getAll(Long businessID, AsyncCallback<List<CommodityDTO>> callback);
 
 	void add(CommodityDTO paymentTypeDTO, AsyncCallback<Long> callback);

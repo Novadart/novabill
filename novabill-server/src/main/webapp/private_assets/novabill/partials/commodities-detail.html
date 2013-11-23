@@ -1,0 +1,53 @@
+<div class="container-fluid commodities-detail">
+	<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+	<ul class="breadcrumb">
+		<li><i class="icon-home"></i> <a href="../">Home</a> <i class="icon-angle-right"></i></li>
+		<li><a href=".">Commodities</a><i class="icon-angle-right"></i></li>
+		<li><span>{{commodity.description}}</span></li>
+	</ul>
+
+	<div class="jumbotron" ng-class="{product: !commodity.service, service: commodity.service}">
+		<span class="type label label-primary" ng-show="commodity.service">Service</span> 
+		<span class="type label label-success" ng-show="!commodity.service">Product</span>
+
+		<h2>{{commodity.description}}</h2>
+
+		<div style="float: right;">
+			<a href="javascript: void(0)" ng-click="editCommodity(commodity.id)" class="btn btn-sm red"><i class="fa fa-edit"></i>
+				Edit</a> <a href="javascript: void(0)" ng-click="removeCommodity(commodity.description, commodity.id)"
+				class="btn btn-sm red"><i class="fa fa-trash-o"></i> Delete</a>
+		</div>
+	</div>
+
+	<div class="form-horizontal" role="form">
+		<div class="form-body">
+			<div class="form-group">
+				<label class="col-md-3 control-label">
+				    <strong>Stock Keeping Unit</strong>
+				</label>
+				<div class="col-md-9">
+					<p class="form-control-static">{{commodity.sku}}</p>
+				</div>
+			</div>
+			<div class="form-group">
+                <label class="col-md-3 control-label">
+                    <strong>Unit of Measure</strong>
+                </label>
+                <div class="col-md-9">
+                    <p class="form-control-static">{{commodity.unitOfMeasure}}</p>
+                </div>
+            </div>
+            <div class="form-group">
+                <label class="col-md-3 control-label">
+                    <strong>Tax</strong>
+                </label>
+                <div class="col-md-9">
+                    <p class="form-control-static">{{commodity.tax}}</p>
+                </div>
+            </div>
+		</div>
+	</div>
+
+</div>
+
+<removal-dialog></removal-dialog>

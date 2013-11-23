@@ -1,3 +1,22 @@
-.commodities-filter {
+.commodities .commodities-filter {
 	margin: 20px 0;
+}
+
+.commodities-detail .type {
+	position: absolute;
+	left: 0;
+	top: 0;
+	font-size: medium;
+}
+
+.commodities-detail .jumbotron {
+	position: relative;
+}
+
+.commodities-detail .jumbotron.service {
+    border-left: 10px solid #428bca;
+}
+
+.commodities-detail .jumbotron.product {
+    border-left: 10px solid #3cc051;
 }

@@ -27,7 +27,6 @@ public class AutoBeanConverter {
 		Commodity cb = AutoBeanMaker.INSTANCE.makeCommodity().as();
 		cb.setDescription(c.getDescription());
 		cb.setId(c.getId());
-		cb.setPrice(c.getPrice());
 		cb.setService(c.isService());
 		cb.setTax(c.getTax());
 		cb.setUnitOfMeasure(c.getUnitOfMeasure());

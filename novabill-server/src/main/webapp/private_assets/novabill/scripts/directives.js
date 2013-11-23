@@ -248,6 +248,10 @@ angular.module('novabill.directives', ['novabill.utils'])
 
 			$scope.ok = function(){
 				NRemovalDialogAPI.hide();
+				
+				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
+				$('body').removeClass('modal-open');
+				$('.modal-backdrop').remove();
 				$scope.api.callback.onOk();
 			};
 

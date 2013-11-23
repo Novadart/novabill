@@ -2,15 +2,5 @@
 	pageEncoding="UTF-8"%>
 
 <div class="page-content">
-    <div class="container-fluid">
-	    <!-- BEGIN PAGE TITLE & BREADCRUMB-->
-	    <h3 class="page-title">Commodities</h3>
-	    <ul class="breadcrumb">
-	        <li><i class="icon-home"></i> <a href="../">Home</a> <i
-	            class="icon-angle-right"></i></li>
-	        <li><span>Commodities</span></li>
-	    </ul>
-	
-		<div ng-view></div>
-	</div>
+	<div ng-view></div>
 </div>

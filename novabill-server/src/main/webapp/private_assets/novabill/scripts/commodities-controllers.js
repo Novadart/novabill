@@ -24,6 +24,54 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 	
 	$scope.loadCommodities();
 	
+}])
+
+
+
+/**
+ * COMMODITIES DETAILS PAGE CONTROLLER
+ */
+.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', 'NRemovalDialogAPI', 
+                                       function($scope, $location, $routeParams, NRemovalDialogAPI){
+	
+	$scope.editCommodity = function(commodityId){
+		
+	};
+	
+	
+	$scope.removeCommodity = function(commodityDescription, commodityId){
+		NRemovalDialogAPI.init('Are you sure that you want to delete permanently any data associated to "'+commodityDescription+'"', {
+			onOk : function(){
+				GWT_Server.commodity.remove(NovabillConf.businessId, commodityId, {
+					onSuccess : function(data){
+						$scope.$apply(function(){
+							$location.path('/');
+						});
+					},
+
+					onFailure : function(error){}
+				});
+				
+			},
+			
+			onCancel : function(){}
+		});
+		NRemovalDialogAPI.show();
+	};
+	
+	
+	GWT_Server.commodity.get(NovabillConf.businessId, $routeParams.commodityId, {
+		
+		onSuccess : function(commodity){
+			$scope.$apply(function(){
+				$scope.commodity = commodity;
+			});
+		},
+		
+		onFailure : function(){}
+		
+	});
+	
 }]);
 
 

@@ -9,10 +9,6 @@ public interface Commodity {
 
 	public void setId(Long id);
 
-	public BigDecimal getPrice();
-
-	public void setPrice(BigDecimal price);
-
 	public String getDescription();
 
 	public void setDescription(String description);
