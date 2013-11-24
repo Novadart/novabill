@@ -235,10 +235,10 @@
     <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
     <script>window.jQuery || document.write('<script src="${privateAssetsUrl}/plugins/jquery-1.10.2.min.js"><\/script>');</script>
     
-    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.0/angular.min.js"></script>
-    <script>window.angular || document.write('<script src="${privateAssetsUrl}/plugins/angular-1.2.0.min.js"><\/script>');</script>
-    <script src="${privateAssetsUrl}/plugins/angular-route-1.2.0.min.js"></script>
-    <script src="${privateAssetsUrl}/plugins/angular-i18n/angular-locale_it-it.js" type="text/javascript"></script>
+    <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.2/angular.min.js"></script>
+    <script>window.angular || document.write('<script src="${privateAssetsUrl}/plugins/angular-1.2.2/angular.min.js"><\/script>');</script>
+    <script src="${privateAssetsUrl}/plugins/angular-1.2.2/angular-route.min.js"></script>
+    <script src="${privateAssetsUrl}/plugins/angular-1.2.2/i18n/angular-locale_it-it.js" type="text/javascript"></script>
     <script src="${privateAssetsUrl}/plugins/angular-translate.min.js" type="text/javascript"></script>
     <script src="${privateAssetsUrl}/novabill/scripts/translations.js" type="text/javascript"></script>
     

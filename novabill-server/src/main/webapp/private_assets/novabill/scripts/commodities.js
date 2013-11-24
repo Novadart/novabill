@@ -11,10 +11,10 @@ angular.module("novabill.commodities", ['novabill.commodities.controllers','ngRo
 		controller: 'CommoditiesCtrl'
 	})
 
-//	.when('/details/:clientId', {
-//		templateUrl: NovabillConf.partialsBaseUrl + '/clients-detail.html',
-//		controller: 'ClientDetailsCtrl'
-//	})
+	.when('/details/:commodityId', {
+		templateUrl: NovabillConf.partialsBaseUrl + '/commodities-detail.html',
+		controller: 'CommoditiesDetailsCtrl'
+	})
 
 	.otherwise ({
 		redirectTo: '/'
