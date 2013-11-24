@@ -49,7 +49,11 @@ public class PriceList {
 		this.name = name;
 	}
 
-
+	public static PriceList getPriceListWithPrices(Long id){
+		String sql = "select pl from PriceList pl join fetch pl.prices p join fetch p.commodity where pl.id = :id";
+		List<PriceList> result = entityManager().createQuery(sql, PriceList.class).setParameter("id", id).getResultList();
+		return result.size() == 0? null: result.get(0);
+	}
 
 	/*
      * Getters and setters

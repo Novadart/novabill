@@ -44,6 +44,8 @@
 	
 	<bean id="commodity" class="com.novadart.novabill.web.gwt.CommodityGwtController"/>
 	
+	<bean id="pricelist" class="com.novadart.novabill.web.gwt.PriceListGwtController"/>
+	
 	<util:map map-class="java.util.HashMap" id="testProps" key-type="java.lang.String" value-type="java.lang.String">
     	<entry key="clientWithoutDocsID" value="6"/>
     	<entry key="clientWithInvoicesID" value="3"/>

@@ -1,12 +1,18 @@
 package com.novadart.novabill.shared.client.dto;
 
-public class PriceListDTO {
+import java.util.List;
+
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class PriceListDTO implements IsSerializable {
 	
 	private Long id;
 	
 	private String name;
 
 	private BusinessDTO business;
+	
+	private List<PriceDTO> prices;
 
 	public Long getId() {
 		return id;
@@ -30,6 +36,14 @@ public class PriceListDTO {
 
 	public void setBusiness(BusinessDTO business) {
 		this.business = business;
+	}
+
+	public List<PriceDTO> getPrices() {
+		return prices;
+	}
+
+	public void setPrices(List<PriceDTO> prices) {
+		this.prices = prices;
 	}
 	
 }
