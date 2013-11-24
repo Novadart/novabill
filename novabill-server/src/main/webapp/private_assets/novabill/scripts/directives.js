@@ -234,13 +234,81 @@ angular.module('novabill.directives', ['novabill.utils'])
 
 
 /*
+ * Edit Commodity Dialog
+ */
+.directive('editCommodityDialog', function factory(){
+
+	return {
+
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/edit-commodity-dialog.html',
+		scope: {},
+
+		controller : function($scope, NEditCommodityDialogAPI){
+			$scope.api = NEditCommodityDialogAPI;
+
+			$scope.save = function(){
+				NEditCommodityDialogAPI.hide();
+				
+				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
+				$('body').removeClass('modal-open');
+				$('.modal-backdrop').remove();
+				$scope.api.callback.onOk();
+			};
+
+			$scope.cancel = function(){
+				NEditCommodityDialogAPI.hide();
+				$scope.api.callback.onCancel();
+			};
+		},
+
+		restrict: 'E',
+		replace: true,
+
+	};
+
+})
+//APIs
+.factory('NEditCommodityDialogAPI', function(){
+	return {
+
+		//instance variables
+		commodity : null,
+
+		callback : {
+			onSave : function(commodity){},
+			onCancel : function(){}
+		},
+
+		//functions
+		init : function(commodity, callback){
+			this.commodity = commodity;
+			this.callback = callback;
+		},
+
+		show : function(){
+			$('#editCommodityDialog').modal('show');
+		},
+
+		hide : function(){
+			$('#editCommodityDialog').modal('hide');
+		}
+
+	};
+})
+
+
+
+
+
+
+/*
  * Removal Dialog
  */
 .directive('removalDialog', function factory(){
 
 	return {
 
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/confirm-removal.html',
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/confirm-removal-dialog.html',
 		scope: {},
 
 		controller : function($scope, NRemovalDialogAPI){

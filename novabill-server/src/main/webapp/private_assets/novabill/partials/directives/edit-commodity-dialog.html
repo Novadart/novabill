@@ -1,0 +1,65 @@
+<div id="editCommodityDialog" class="modal fade" tabindex="-1" aria-hidden="true" data-backdrop="static"
+	data-keyboard="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Add new Commodity</h4>
+				</div>
+
+				<form name="form" role="form" style="margin-top: 20px;" novalidate>
+				
+					<div class="form-group" ng-class="{'has-error': form.sku.$dirty && form.sku.$invalid, 'has-success': form.sku.$dirty && form.sku.$valid}">
+						<label class="control-label" for="sku">Sku</label> 
+						<input type="text" name="sku" maxlength="50" ng-model="commodity.sku" class="form-control" placeholder="e.g. 'T-130'" required>
+						<div ng-show="form.sku.$dirty && form.sku.$invalid">
+							<span class="text-danger" ng-show="form.sku.$error.required">Required</span>
+						</div>
+					</div>
+					
+					<div class="form-group" ng-class="{'has-success': form.service.$dirty}">
+                        <label class="control-label" for="service">Type</label>
+                        <select class="form-control" name="service" ng-model="commodity.service" required>
+                            <option value="false">Product</option>
+                            <option value="true">Service</option>
+                        </select>
+                        <div ng-show="form.service.$dirty && form.service.$invalid">
+                            <span class="text-danger" ng-show="form.service.$error.required">Required</span>
+                        </div>
+                    </div>
+					
+					<div class="form-group" ng-class="{'has-error': form.description.$dirty && form.description.$invalid, 'has-success': form.description.$dirty && form.description.$valid}">
+                        <label class="control-label" for="description">Description</label> 
+                        <input type="text" name="description" maxlength="50" ng-model="commodity.description" class="form-control" placeholder="e.g. 'Office Table 1.30m x 1.00m'" required>
+                        <div ng-show="form.description.$dirty && form.description.$invalid">
+                            <span class="text-danger" ng-show="form.description.$error.required">Required</span>
+                        </div>
+                    </div>
+                    
+                    <div class="form-group" ng-class="{'has-success': form.unitOfMeasure.$dirty && form.unitOfMeasure.$valid}">
+                        <label class="control-label" for="unitOfMeasure">Unit of Measure</label> 
+                        <input type="text" name="unitOfMeasure" maxlength="50" ng-model="commodity.unitOfMeasure" class="form-control" placeholder="e.g. 'pieces'">
+                    </div>
+                    
+                    <div class="form-group" ng-class="{'has-error': form.tax.$dirty && form.tax.$invalid, 'has-success': form.tax.$dirty && form.tax.$valid}">
+                        <label class="control-label" for="tax">Tax</label> 
+                        <input type="text" name="tax" maxlength="50" ng-model="commodity.tax" class="form-control" placeholder="e.g. '21'" required>
+                        <div ng-show="form.tax.$dirty && form.tax.$invalid">
+                            <span class="text-danger" ng-show="form.tax.$error.required">Required</span>
+                        </div>
+                    </div>
+
+				</form>
+
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn" data-dismiss="modal" ng-click="cancel()">Cancel</button>
+				<button type="button" class="btn green" ng-disabled="form.$invalid" ng-click="save()">Save</button>
+			</div>
+
+		</div>
+	</div>
+</div>
