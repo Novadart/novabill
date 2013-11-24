@@ -47,6 +47,7 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -61,6 +62,7 @@ import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
 import com.novadart.novabill.shared.client.facade.EstimationGwtService;
 import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
 import com.novadart.novabill.shared.client.facade.PaymentTypeGwtService;
+import com.novadart.novabill.shared.client.facade.PriceListGwtService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
 
 
@@ -94,6 +96,8 @@ public class CachingTest extends GWTServiceTest {
 	@Autowired
 	private CommodityGwtService commodityService;
 	
+	private PriceListGwtService priceListService;
+	
 	@Autowired
 	private CacheManager cacheManager;
 	
@@ -113,6 +117,7 @@ public class CachingTest extends GWTServiceTest {
 		cacheManager.getCache(CachingAspect.BUSINESS_CACHE).flush();
 		cacheManager.getCache(CachingAspect.PAYMENTTYPE_CACHE).flush();
 		cacheManager.getCache(CachingAspect.COMMODITY_CACHE).flush();
+		cacheManager.getCache(CachingAspect.PRICELIST_CACHE).flush();
 	}
 	
 	@Test
@@ -563,6 +568,13 @@ public class CachingTest extends GWTServiceTest {
 		Set<CommodityDTO> nonCachedCommodities = new HashSet<CommodityDTO>(businessService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!commodities.equals(nonCachedCommodities));
 		assertTrue(commodities.size() == nonCachedCommodities.size() + 1);
+	}
+	
+	public void priceListGetCacheTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
+		Long id = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
+		PriceListDTO priceListDTO = priceListService.get(id);
+		PriceListDTO cachedPriceListDTO = priceListService.get(id);
+		assertTrue(priceListDTO == cachedPriceListDTO);
 	}
 	
 }
