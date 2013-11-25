@@ -55,4 +55,12 @@ public interface BusinessService {
 	
 	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, com.novadart.novabill.shared.client.exception.CloneNotSupportedException;
 	
+	public List<Integer> getInvoceYears(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	
+	public List<Integer> getCreditNoteYears(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	
+	public List<Integer> getEstimationYears(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	
+	public List<Integer> getTransportDocumentYears(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	
 }

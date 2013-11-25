@@ -242,5 +242,29 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		utilsService.setBusinessForPrincipal(mergedBusiness);
 		return mergedBusiness.getId();
 	}
+
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<Integer> getInvoceYears(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return Business.findBusiness(businessID).getInvoiceYears();
+	}
+	
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<Integer> getCreditNoteYears(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return Business.findBusiness(businessID).getCreditNoteYears();
+	}
+	
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<Integer> getEstimationYears(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return Business.findBusiness(businessID).getEstimationYears();
+	}
+	
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<Integer> getTransportDocumentYears(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return Business.findBusiness(businessID).getTransportDocumentYears();
+	}
 	
 }

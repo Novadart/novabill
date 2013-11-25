@@ -228,6 +228,27 @@ public class Business implements Serializable, Taxable {
     	return getCurrentYearDocumentsIDs(Invoice.class);
     }
     
+    private <T extends AccountingDocument> List<Integer> getAccountingDocsYears(Class<T> cls){
+    	String query = String.format("select distinct doc.accountingDocumentYear from %s doc order by doc.accountingDocumentYear", cls.getSimpleName());
+    	return entityManager.createQuery(query, Integer.class).getResultList();
+    }
+    
+    public List<Integer> getInvoiceYears(){
+    	return getAccountingDocsYears(Invoice.class);
+    }
+    
+    public List<Integer> getCreditNoteYears(){
+    	return getAccountingDocsYears(CreditNote.class);
+    }
+    
+    public List<Integer> getEstimationYears(){
+    	return getAccountingDocsYears(Estimation.class);
+    }
+    
+    public List<Integer> getTransportDocumentYears(){
+    	return getAccountingDocsYears(TransportDocument.class);
+    }
+    
     public <T extends AccountingDocument> List<Long> getCurrentYearDocumentsIDs(Class<T> cls){
     	String query = String.format("select o.documentID from %s as o where o.business.id = :businessId and o.accountingDocumentYear = :year order by o.documentID", cls.getSimpleName());
     	return entityManager.createQuery(query, Long.class)
