@@ -17,6 +17,7 @@ import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -64,6 +65,9 @@ public class Commodity implements Serializable {
 
     @Field(name = FTSNamespace.DESCRIPTION)
     @Type(type = "text")
+    @Size(max = 500)
+    @NotNull
+    @Trimmed
     private String description;
 
     @Size(max = 255)
