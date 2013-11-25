@@ -6,9 +6,14 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 /**
  * COMMODITIES PAGE CONTROLLER
  */
-.controller('CommoditiesCtrl', ['$scope', '$location', function($scope, $location){
+.controller('CommoditiesCtrl', ['$scope', '$location', 'NEditCommodityDialogAPI',
+                                function($scope, $location, NEditCommodityDialogAPI){
 	
 	$scope.commodities = null;
+	
+	$scope.newCommodity = function(){
+		NEditCommodityDialogAPI.show();
+	};
 	
 	$scope.loadCommodities = function() {
 		GWT_Server.commodity.getAll(NovabillConf.businessId, {

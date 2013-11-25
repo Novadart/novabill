@@ -6,7 +6,7 @@
 		<li><span>Commodities</span></li>
 	</ul>
 
-	<button type="button" class="btn red new-client" ng-click="newItem()">New Commodity</button>
+	<button type="button" class="btn red new-client" ng-click="newCommodity()">New Commodity</button>
 
 	<div class="commodities-filter input-icon left">
 		<i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
@@ -17,4 +17,7 @@
 
 	<novabill-commodity class="commodity" commodity="cm" ng-repeat="cm in commodities | filter:query"></novabill-commodity>
 
+    <edit-commodity-dialog></edit-commodity-dialog>
 </div>
+
+
