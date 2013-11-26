@@ -100,21 +100,6 @@ public class BusinessServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void countInvoicesAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
-		assertEquals(new Long(authenticatedPrincipal.getBusiness().getInvoices().size()), new Long(businessGwtService.countInvoices(authenticatedPrincipal.getId())));
-	}
-	
-	@Test(expected = DataAccessException.class)
-	public void countInvoicesUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.countInvoices(getUnathorizedBusinessID());
-	}
-	
-	@Test(expected = DataAccessException.class)
-	public void countInvoicesUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.countInvoices(null);
-	}
-	
-	@Test
 	public void countInvoicesForYearAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		long expected = authenticatedPrincipal.getBusiness().getInvoicesForYear(year).size();
@@ -190,62 +175,62 @@ public class BusinessServiceTest extends GWTServiceTest {
 	
 	@Test
 	public void getInvoicesAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId());
+		businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getInvoicesUnauthorizedIDTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getInvoices(getUnathorizedBusinessID());
+		businessGwtService.getInvoices(getUnathorizedBusinessID(), getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getInvoicesUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getInvoices(null);
+		businessGwtService.getInvoices(null, getYear());
 	}
 	
 	@Test
 	public void getCreditNotesAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getCreditNotes(authenticatedPrincipal.getBusiness().getId());
+		businessGwtService.getCreditNotes(authenticatedPrincipal.getBusiness().getId(), getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getCreditNotesUnauthorizedIDTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getCreditNotes(getUnathorizedBusinessID());
+		businessGwtService.getCreditNotes(getUnathorizedBusinessID(), getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getCreditNotesUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getCreditNotes(null);
+		businessGwtService.getCreditNotes(null, getYear());
 	}
 	
 	@Test
 	public void getEstimationsAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getEstimations(authenticatedPrincipal.getBusiness().getId());
+		businessGwtService.getEstimations(authenticatedPrincipal.getBusiness().getId(), getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getEstimationsUnauthorizedIDTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getEstimations(getUnathorizedBusinessID());
+		businessGwtService.getEstimations(getUnathorizedBusinessID(), getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getEstimationsUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getEstimations(null);
+		businessGwtService.getEstimations(null, getYear());
 	}
 	
 	@Test
 	public void getTransportDocumentsAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId());
+		businessGwtService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId(), getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getTransportDocumentsUnauthorizedIDTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getTransportDocuments(getUnathorizedBusinessID());
+		businessGwtService.getTransportDocuments(getUnathorizedBusinessID(), getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getTransportDocumentsUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getTransportDocuments(null);
+		businessGwtService.getTransportDocuments(null, getYear());
 	}
 	
 	@Test

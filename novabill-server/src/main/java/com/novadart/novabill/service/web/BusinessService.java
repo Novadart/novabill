@@ -23,8 +23,6 @@ public interface BusinessService {
 
 	public Long countClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
-	public Long countInvoices(Long businessID) throws NotAuthenticatedException, DataAccessException;
-	
 	public Long countInvoicesForYear(Long BusinessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
 	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
@@ -33,13 +31,13 @@ public interface BusinessService {
 	
 	public void update(BusinessDTO businessDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException;
 	
-	public List<InvoiceDTO> getInvoices(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	public List<InvoiceDTO> getInvoices(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
-	public List<CreditNoteDTO> getCreditNotes(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	public List<CreditNoteDTO> getCreditNotes(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
-	public List<EstimationDTO> getEstimations(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	public List<EstimationDTO> getEstimations(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
-	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	public List<TransportDocumentDTO> getTransportDocuments(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
 	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	

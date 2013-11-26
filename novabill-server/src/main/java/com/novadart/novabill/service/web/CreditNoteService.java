@@ -41,13 +41,13 @@ public class CreditNoteService {
 	private AccountingDocumentValidator validator;
 
 	@PreAuthorize("T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.business?.id == principal.business.id")
-	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return DTOUtils.findDocumentInCollection(businessService.getCreditNotes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), id);
+	public CreditNoteDTO get(Long id, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return DTOUtils.findDocumentInCollection(businessService.getCreditNotes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), id);
 	}
 
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
-		List<CreditNoteDTO> allCreditNotes = businessService.getCreditNotes(businessID);
+	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+		List<CreditNoteDTO> allCreditNotes = businessService.getCreditNotes(businessID, year);
 		return new PageDTO<CreditNoteDTO>(DTOUtils.range(allCreditNotes, start, length), start, length, new Long(allCreditNotes.size()));
 	}
 	
@@ -67,8 +67,8 @@ public class CreditNoteService {
 	}
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public List<CreditNoteDTO> getAllForClient(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return new ArrayList<CreditNoteDTO>(DTOUtils.filter(businessService.getCreditNotes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), new EqualsClientIDPredicate(clientID)));
+	public List<CreditNoteDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return new ArrayList<CreditNoteDTO>(DTOUtils.filter(businessService.getCreditNotes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), new EqualsClientIDPredicate(clientID)));
 	}
 	
 	//@Restrictions(checkers = {NumberOfCreditNotesPerYearQuotaReachedChecker.class})
@@ -91,10 +91,10 @@ public class CreditNoteService {
 	
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
-				  "T(com.novadart.novabill.domain.CreditNote).findCreditNote(#creditNoteID)?.business?.id == #businessID and " +
-				  "T(com.novadart.novabill.domain.CreditNote).findCreditNote(#creditNoteID)?.client?.id == #clientID")
-	public void remove(Long businessID, Long clientID, Long creditNoteID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		CreditNote creditNote = CreditNote.findCreditNote(creditNoteID);
+				  "T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.business?.id == #businessID and " +
+				  "T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.client?.id == #clientID")
+	public void remove(Long businessID, Long clientID, Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		CreditNote creditNote = CreditNote.findCreditNote(id);
 		creditNote.remove(); //removing credit note
 		if(Hibernate.isInitialized(creditNote.getBusiness().getCreditNotes()))
 			creditNote.getBusiness().getCreditNotes().remove(creditNote);
@@ -127,8 +127,8 @@ public class CreditNoteService {
 	}
 
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public PageDTO<CreditNoteDTO> getAllForClientInRange(Long clientID, int start, int length) throws NotAuthenticatedException, DataAccessException,	NoSuchObjectException {
-		List<CreditNoteDTO> allCreditNotes = getAllForClient(clientID);
+	public PageDTO<CreditNoteDTO> getAllForClientInRange(Long clientID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException,	NoSuchObjectException {
+		List<CreditNoteDTO> allCreditNotes = getAllForClient(clientID, year);
 		return new PageDTO<CreditNoteDTO>(DTOUtils.range(allCreditNotes, start, length), start, length, new Long(allCreditNotes.size()));
 	}
 

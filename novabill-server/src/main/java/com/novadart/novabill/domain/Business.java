@@ -203,25 +203,28 @@ public class Business implements Serializable, Taxable {
     	return getNextAccountingDocDocumentID(TransportDocument.class);
     }
     
-    private <T extends AccountingDocument> List<T> fetchAccountingDocsEagerly(Class<T> cls){
-    	String query = String.format("select doc from %s doc join fetch doc.accountingDocumentItems where doc.business.id = :id", cls.getSimpleName());
-    	return entityManager.createQuery(query, cls).setParameter("id", getId()).getResultList();
+    private <T extends AccountingDocument> List<T> fetchAccountingDocsEagerly(Class<T> cls, Integer year){
+    	String query = String.format("select doc from %s doc join fetch doc.accountingDocumentItems " +
+    			"where doc.business.id = :id and doc.accountingDocumentYear = :year", cls.getSimpleName());
+    	return entityManager.createQuery(query, cls).
+    			setParameter("id", getId()).
+    			setParameter("year", year).getResultList();
     }
     
-    public List<Invoice> fetchInvoicesEagerly(){
-    	return fetchAccountingDocsEagerly(Invoice.class);
+    public List<Invoice> fetchInvoicesEagerly(Integer year){
+    	return fetchAccountingDocsEagerly(Invoice.class, year);
     }
     
-    public List<CreditNote> fetchCreditNotesEagerly(){
-    	return fetchAccountingDocsEagerly(CreditNote.class);
+    public List<CreditNote> fetchCreditNotesEagerly(Integer year){
+    	return fetchAccountingDocsEagerly(CreditNote.class, year);
     }
     
-    public List<Estimation> fetchEstimationsEagerly(){
-    	return fetchAccountingDocsEagerly(Estimation.class);
+    public List<Estimation> fetchEstimationsEagerly(Integer year){
+    	return fetchAccountingDocsEagerly(Estimation.class, year);
     }
     
-    public List<TransportDocument> fetchTransportDocumentsEagerly(){
-    	return fetchAccountingDocsEagerly(TransportDocument.class);
+    public List<TransportDocument> fetchTransportDocumentsEagerly(Integer year){
+    	return fetchAccountingDocsEagerly(TransportDocument.class, year);
     }
     
     public List<Long> getCurrentYearInvoicesDocumentIDs(){

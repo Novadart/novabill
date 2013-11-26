@@ -28,7 +28,14 @@ public class GWTServiceTest {
 	@Resource(name = "userPasswordMap")
 	protected HashMap<String, String> userPasswordMap;
 	
+	@Resource(name = "testProps")
+	protected HashMap<String, String> testProps;
+	
 	protected Principal authenticatedPrincipal;
+	
+	protected Integer getYear(){
+		return Integer.valueOf(testProps.get("year"));
+	}
 	
 	/**
 	 * There has to be at least two businesses

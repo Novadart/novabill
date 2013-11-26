@@ -1,14 +1,16 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.Resource;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.TransportDocument;
@@ -47,9 +50,6 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	@Autowired
 	private TransportDocumentGwtService transportDocService;
 	
-	@Resource(name = "testProps")
-	private HashMap<String, String> testProps;
-	
 	@Override
 	@Before
 	public void authenticate() {
@@ -66,41 +66,41 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long transportDocID = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next().getId();
 		TransportDocumentDTO expectedDTO = TransportDocumentDTOFactory.toDTO(TransportDocument.findTransportDocument(transportDocID));
-		TransportDocumentDTO actualDTO = transportDocService.get(transportDocID);
+		TransportDocumentDTO actualDTO = transportDocService.get(transportDocID, getYear());
 		assertTrue(TestUtils.transportDocumentComparator.equal(actualDTO, expectedDTO));
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long transportDocID = Business.findBusiness(getUnathorizedBusinessID()).getTransportDocuments().iterator().next().getId();
-		transportDocService.get(transportDocID);
+		transportDocService.get(transportDocID, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAuthorizedTransportDocIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		transportDocService.get(null);
+		transportDocService.get(null, getYear());
 	}
 	
 	@Test
 	public void getAllInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		PageDTO<TransportDocumentDTO> results = transportDocService.getAllInRange(authenticatedPrincipal.getBusiness().getId(), 0, 10);
+		PageDTO<TransportDocumentDTO> results = transportDocService.getAllInRange(authenticatedPrincipal.getBusiness().getId(), getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
-		transportDocService.getAllInRange(getUnathorizedBusinessID(), 0, 10);
+		transportDocService.getAllInRange(getUnathorizedBusinessID(), getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllInRangeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException{
-		transportDocService.getAllInRange(null, 0, 10);
+		transportDocService.getAllInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test
 	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
-		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(transportDocService.getAllForClient(clientID));
+		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
+		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(transportDocService.getAllForClient(clientID, getYear()));
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		List<AccountingDocumentDTO> expected = DTOUtils.toDTOList(new ArrayList(Client.findClient(clientID).getTransportDocuments()), DTOUtils.transportDocDTOConverter); 
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.transportDocumentComparator));
@@ -109,22 +109,22 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
-		transportDocService.getAllForClient(clientID);
+		transportDocService.getAllForClient(clientID, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		transportDocService.getAllForClient(-1l);
+		transportDocService.getAllForClient(-1l, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		transportDocService.getAllForClient(null);
+		transportDocService.getAllForClient(null, getYear());
 	}
 	
 	@Test
 	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
+		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		Long transportDocID = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, transportDocID);
 		TransportDocument.entityManager().flush();
@@ -133,14 +133,14 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	
 	@Test(expected = DataAccessException.class)
 	public void removeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
+		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		Long transportDocID = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(getUnathorizedBusinessID(), clientID, transportDocID);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
+		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		Long transportDocID = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(null, clientID, transportDocID);
 	}
@@ -153,26 +153,26 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	
 	@Test(expected = DataAccessException.class)
 	public void removeAauthorizedTransportDocIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
+		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		transportDocService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, null);
 	}
 	
 	@Test
 	public void getAllForClientInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
-		PageDTO<TransportDocumentDTO> results = transportDocService.getAllForClientInRange(clientID, 0, 10);
+		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
+		PageDTO<TransportDocumentDTO> results = transportDocService.getAllForClientInRange(clientID, getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
-		transportDocService.getAllForClientInRange(clientID, 0, 10);
+		transportDocService.getAllForClientInRange(clientID, getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		transportDocService.getAllForClientInRange(null, 0, 10);
+		transportDocService.getAllForClientInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test

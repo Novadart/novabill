@@ -1,14 +1,16 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
-import javax.annotation.Resource;
+
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,6 +19,7 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
@@ -47,9 +50,6 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 	@Autowired
 	private CreditNoteGwtService creditNoteService;
 	
-	@Resource(name = "testProps")
-	private HashMap<String, String> testProps;
-	
 	@Test
 	public void creditNoteServiceWiringTest(){
 		assertNotNull(creditNoteService);
@@ -66,41 +66,41 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long creditNoteID = authenticatedPrincipal.getBusiness().getCreditNotes().iterator().next().getId();
 		CreditNoteDTO expectedDTO = CreditNoteDTOFactory.toDTO(CreditNote.findCreditNote(creditNoteID));
-		CreditNoteDTO actualDTO = creditNoteService.get(creditNoteID);
+		CreditNoteDTO actualDTO = creditNoteService.get(creditNoteID, getYear());
 		assertTrue(TestUtils.accountingDocumentComparator.equal(expectedDTO, actualDTO));
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getUnathorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long creditNoteID = Business.findBusiness(getUnathorizedBusinessID()).getCreditNotes().iterator().next().getId();
-		creditNoteService.get(creditNoteID);
+		creditNoteService.get(creditNoteID, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAuthorizedCreditNoteIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		creditNoteService.get(null);
+		creditNoteService.get(null, getYear());
 	}
 	
 	@Test
 	public void getAllInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
-		PageDTO<CreditNoteDTO> results = creditNoteService.getAllInRange(authenticatedPrincipal.getBusiness().getId(), 0, 10);
+		PageDTO<CreditNoteDTO> results = creditNoteService.getAllInRange(authenticatedPrincipal.getBusiness().getId(), getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
-		creditNoteService.getAllInRange(getUnathorizedBusinessID(), 0, 10);
+		creditNoteService.getAllInRange(getUnathorizedBusinessID(), getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllInRangeAuthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException{
-		creditNoteService.getAllInRange(null, 0, 10);
+		creditNoteService.getAllInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test
 	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithCreditNoteID"));
-		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(creditNoteService.getAllForClient(clientID));
+		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
+		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(creditNoteService.getAllForClient(clientID, getYear()));
 		@SuppressWarnings({ "unchecked", "rawtypes" })
 		List<AccountingDocumentDTO> expected = DTOUtils.toDTOList(new ArrayList(Client.findClient(clientID).getCreditNotes()), DTOUtils.creditNoteDTOConverter); 
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.accountingDocumentComparator));
@@ -109,40 +109,41 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
-		creditNoteService.getAllForClient(clientID);
+		creditNoteService.getAllForClient(clientID, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		creditNoteService.getAllForClient(null);
+		Integer year = getYear(); 
+		creditNoteService.getAllForClient(null, year);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		creditNoteService.getAllForClient(-1l);
+		creditNoteService.getAllForClient(-1l, getYear());
 	}
 	
 	@Test
 	public void getAllForClientInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithCreditNoteID"));
-		PageDTO<CreditNoteDTO> results = creditNoteService.getAllForClientInRange(clientID, 0, 10);
+		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
+		PageDTO<CreditNoteDTO> results = creditNoteService.getAllForClientInRange(clientID, getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
-		creditNoteService.getAllForClientInRange(clientID, 0, 10);
+		creditNoteService.getAllForClientInRange(clientID, getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		creditNoteService.getAllForClientInRange(null, 0, 10);
+		creditNoteService.getAllForClientInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test
 	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithCreditNoteID"));
+		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		Long creditNoteID = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, creditNoteID);
 		CreditNote.entityManager().flush();
@@ -151,28 +152,28 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 	
 	@Test(expected = DataAccessException.class)
 	public void removeUnauthorized() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithCreditNoteID"));
+		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		Long creditNoteID = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(getUnathorizedBusinessID(), clientID, creditNoteID);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithCreditNoteID"));
+		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		Long creditNoteID = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(null, clientID, creditNoteID);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void removeAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithCreditNoteID"));
+		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		Long creditNoteID = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(authenticatedPrincipal.getBusiness().getId(), null, creditNoteID);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void removeUnauthorizedCreditNoteIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithCreditNoteID"));
+		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		creditNoteService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, null);
 	}
 	

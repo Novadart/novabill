@@ -23,12 +23,12 @@ public class TransportDocumentGwtController extends AbstractGwtController implem
 	@Autowired
 	private TransportDocumentService transportDocService;
 	
-	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return transportDocService.get(id);
+	public TransportDocumentDTO get(Long id, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return transportDocService.get(id, year);
 	}
 
-	public List<TransportDocumentDTO> getAllForClient(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return transportDocService.getAllForClient(clientID);
+	public List<TransportDocumentDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return transportDocService.getAllForClient(clientID, year);
 	}
 
 	public Long add(TransportDocumentDTO transportDocDTO) throws NotAuthenticatedException, DataAccessException, AuthorizationException, ValidationException {
@@ -47,13 +47,12 @@ public class TransportDocumentGwtController extends AbstractGwtController implem
 		return transportDocService.getNextTransportDocId();
 	}
 
-	public PageDTO<TransportDocumentDTO> getAllForClientInRange(Long clientID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return transportDocService.getAllForClientInRange(clientID, start,
-				length);
+	public PageDTO<TransportDocumentDTO> getAllForClientInRange(Long clientID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return transportDocService.getAllForClientInRange(clientID, year, start, length);
 	}
 
-	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
-		return transportDocService.getAllInRange(businessID, start, length);
+	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+		return transportDocService.getAllInRange(businessID, year, start, length);
 	}
 
 }

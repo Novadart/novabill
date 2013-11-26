@@ -98,6 +98,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	
 	protected abstract BusinessService self();
 	
+	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		BusinessStatsDTO stats = new BusinessStatsDTO();
@@ -108,31 +109,29 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		return stats;
 	}
 	
+	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
 	public Long countClients(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return new Long(self().getClients(businessID).size());
 	}
 	
-	@Transactional(readOnly = true)
-	@PreAuthorize("#businessID == principal.business.id")
-	public Long countInvoices(Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return new Long(self().getInvoices(businessID).size());
-	}
-
+	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public Long countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
-		return new Long(DTOUtils.filter(self().getInvoices(businessID), new DTOUtils.EqualsYearPredicate<InvoiceDTO>(year)).size());
+		return new Long(self().getInvoices(businessID, year).size());
 	}
 
+	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
 		BigDecimal totalAfterTaxes = new BigDecimal("0.0");
-		for(InvoiceDTO invoiceDTO: DTOUtils.filter(self().getInvoices(businessID), new DTOUtils.EqualsYearPredicate<InvoiceDTO>(year)))
+		for(InvoiceDTO invoiceDTO: self().getInvoices(businessID, year))
 			totalAfterTaxes = totalAfterTaxes.add(invoiceDTO.getTotal());
 		return totalAfterTaxes.setScale(2, BigDecimal.ROUND_HALF_EVEN);
 	}
 
+	@Override
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#businessDTO?.id == principal.business.id")
 	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
@@ -141,24 +140,28 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		validator.validate(business);
 	}
 	
+	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<InvoiceDTO> getInvoices(Long businessID){
-		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchInvoicesEagerly()), DTOUtils.invoiceDTOConverter);
+	public List<InvoiceDTO> getInvoices(Long businessID, Integer year){
+		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchInvoicesEagerly(year)), DTOUtils.invoiceDTOConverter);
 	}
 
+	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<CreditNoteDTO> getCreditNotes(Long businessID) throws NotAuthenticatedException {
-		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchCreditNotesEagerly()), DTOUtils.creditNoteDTOConverter);
+	public List<CreditNoteDTO> getCreditNotes(Long businessID, Integer year) throws NotAuthenticatedException {
+		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchCreditNotesEagerly(year)), DTOUtils.creditNoteDTOConverter);
 	}
 
+	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<EstimationDTO> getEstimations(Long businessID) throws NotAuthenticatedException {
-		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchEstimationsEagerly()), DTOUtils.estimationDTOConverter);
+	public List<EstimationDTO> getEstimations(Long businessID, Integer year) throws NotAuthenticatedException {
+		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchEstimationsEagerly(year)), DTOUtils.estimationDTOConverter);
 	}
 
+	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException {
-		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchTransportDocumentsEagerly()), DTOUtils.transportDocDTOConverter);
+	public List<TransportDocumentDTO> getTransportDocuments(Long businessID, Integer year) throws NotAuthenticatedException {
+		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchTransportDocumentsEagerly(year)), DTOUtils.transportDocDTOConverter);
 	}
 	
 	@Override

@@ -23,12 +23,12 @@ public class EstimationGwtController extends AbstractGwtController implements Es
 	@Autowired
 	private EstimationService estimationService;
 	
-	public EstimationDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return estimationService.get(id);
+	public EstimationDTO get(Long id, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return estimationService.get(id, year);
 	}
 
-	public List<EstimationDTO> getAllForClient(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return estimationService.getAllForClient(clientID);
+	public List<EstimationDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return estimationService.getAllForClient(clientID, year);
 	}
 
 	public Long add(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, AuthorizationException, ValidationException {
@@ -47,12 +47,12 @@ public class EstimationGwtController extends AbstractGwtController implements Es
 		return estimationService.getNextEstimationId();
 	}
 
-	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return estimationService.getAllForClientInRange(clientID, start, length);
+	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return estimationService.getAllForClientInRange(clientID, year, start, length);
 	}
 
-	public PageDTO<EstimationDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException, DataAccessException {
-		return estimationService.getAllInRange(businessID, start, length);
+	public PageDTO<EstimationDTO> getAllInRange(Long businessID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException {
+		return estimationService.getAllInRange(businessID, year, start, length);
 	}
 
 }

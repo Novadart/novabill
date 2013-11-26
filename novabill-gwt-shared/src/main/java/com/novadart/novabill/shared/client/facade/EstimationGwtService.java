@@ -16,9 +16,9 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 @RemoteServiceRelativePath("estimation.rpc")
 public interface EstimationGwtService extends RemoteService {
 	
-	public EstimationDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
+	public EstimationDTO get(Long id, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	
-	public List<EstimationDTO> getAllForClient(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
+	public List<EstimationDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	
 	public Long add(EstimationDTO estimationDTO) throws NotAuthenticatedException, DataAccessException, AuthorizationException, ValidationException;
 	
@@ -28,8 +28,8 @@ public interface EstimationGwtService extends RemoteService {
 	
 	public Long getNextEstimationId() throws NotAuthenticatedException, DataAccessException;
 	
-	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
+	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	
-	public PageDTO<EstimationDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException, DataAccessException;
+	public PageDTO<EstimationDTO> getAllInRange(Long businessID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException;
 	
 }

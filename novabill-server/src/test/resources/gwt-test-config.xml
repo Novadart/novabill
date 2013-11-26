@@ -26,5 +26,14 @@
 		</property>
 		<property name="loggingOn" value="false"/>
 	</bean>
+	
+    <util:map map-class="java.util.HashMap" id="testProps" key-type="java.lang.String" value-type="java.lang.String">
+    	<entry key="clientWithoutDocsID" value="6"/>
+    	<entry key="clientWithInvoicesID" value="3"/>
+    	<entry key="clientWithCreditNotesID" value="3"/>
+    	<entry key="clientWithEstimationsID" value="3"/>
+    	<entry key="clientWithTransportDocsID" value="3"/>
+    	<entry key="year" value="2013"/>
+    </util:map>
     
 </beans>

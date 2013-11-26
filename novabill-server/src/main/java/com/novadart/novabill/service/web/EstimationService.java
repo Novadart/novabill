@@ -41,8 +41,8 @@ public class EstimationService {
 	private AccountingDocumentValidator validator;
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.Estimation).findEstimation(#id)?.business?.id == principal.business.id")
-	public EstimationDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
-		return DTOUtils.findDocumentInCollection(businessService.getEstimations(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), id);
+	public EstimationDTO get(Long id, Integer year) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
+		return DTOUtils.findDocumentInCollection(businessService.getEstimations(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), id);
 	}
 	
 	private static class EqualsClientIDPredicate implements Predicate<EstimationDTO>{
@@ -61,8 +61,8 @@ public class EstimationService {
 	}
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public List<EstimationDTO> getAllForClient(Long clientID) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
-		return new ArrayList<EstimationDTO>(DTOUtils.filter(businessService.getEstimations(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()), new EqualsClientIDPredicate(clientID)));
+	public List<EstimationDTO> getAllForClient(Long clientID, Integer year) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
+		return new ArrayList<EstimationDTO>(DTOUtils.filter(businessService.getEstimations(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), new EqualsClientIDPredicate(clientID)));
 	}
 
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
@@ -122,14 +122,14 @@ public class EstimationService {
 	}
 
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
-	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		List<EstimationDTO> allEstimations = getAllForClient(clientID);
+	public PageDTO<EstimationDTO> getAllForClientInRange(Long clientID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		List<EstimationDTO> allEstimations = getAllForClient(clientID, year);
 		return new PageDTO<EstimationDTO>(DTOUtils.range(allEstimations, start, length), start, length, new Long(allEstimations.size()));
 	}
 
 	@PreAuthorize("#businessID == principal.business.id")
-	public PageDTO<EstimationDTO> getAllInRange(Long businessID, int start, int length) throws NotAuthenticatedException, DataAccessException {
-		List<EstimationDTO> allEstimations = businessService.getEstimations(businessID);
+	public PageDTO<EstimationDTO> getAllInRange(Long businessID, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException {
+		List<EstimationDTO> allEstimations = businessService.getEstimations(businessID, year);
 		return new PageDTO<EstimationDTO>(DTOUtils.range(allEstimations, start, length), start, length, new Long(allEstimations.size()));
 	}
 

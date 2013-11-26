@@ -28,8 +28,6 @@ public interface BusinessGwtService extends RemoteService {
 	
 	public Long countClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
-	public Long countInvoices(Long businessID) throws NotAuthenticatedException, DataAccessException;
-	
 	public Long countInvoicesForYear(Long BusinessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
 	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
@@ -42,13 +40,13 @@ public interface BusinessGwtService extends RemoteService {
 	
 	public String generateExportToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException;
 	
-	public List<InvoiceDTO> getInvoices(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	public List<InvoiceDTO> getInvoices(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
-	public List<CreditNoteDTO> getCreditNotes(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	public List<CreditNoteDTO> getCreditNotes(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
-	public List<EstimationDTO> getEstimations(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	public List<EstimationDTO> getEstimations(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
-	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	public List<TransportDocumentDTO> getTransportDocuments(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
 	public List<ClientDTO> getClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	

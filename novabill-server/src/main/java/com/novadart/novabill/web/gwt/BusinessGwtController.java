@@ -59,11 +59,6 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 	}
 
 	@Override
-	public Long countInvoices(Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return businessService.countInvoices(businessID);
-	}
-
-	@Override
 	public Long countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
 		return businessService.countInvoicesForYear(businessID, year);
 	}
@@ -90,23 +85,23 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 	}
 
 	@Override
-	public List<InvoiceDTO> getInvoices(Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return businessService.getInvoices(businessID);
+	public List<InvoiceDTO> getInvoices(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+		return businessService.getInvoices(businessID, year);
 	}
 
 	@Override
-	public List<CreditNoteDTO> getCreditNotes(Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return businessService.getCreditNotes(businessID);
+	public List<CreditNoteDTO> getCreditNotes(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+		return businessService.getCreditNotes(businessID, year);
 	}
 
 	@Override
-	public List<EstimationDTO> getEstimations(Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return businessService.getEstimations(businessID);
+	public List<EstimationDTO> getEstimations(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+		return businessService.getEstimations(businessID, year);
 	}
 
 	@Override
-	public List<TransportDocumentDTO> getTransportDocuments(Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return businessService.getTransportDocuments(businessID);
+	public List<TransportDocumentDTO> getTransportDocuments(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+		return businessService.getTransportDocuments(businessID, year);
 	}
 	
 	@Override

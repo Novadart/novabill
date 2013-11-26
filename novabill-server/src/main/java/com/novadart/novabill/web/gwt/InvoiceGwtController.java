@@ -23,16 +23,16 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 	@Autowired
 	private InvoiceService invoiceService;
 	
-	public InvoiceDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
-		return invoiceService.get(id);
+	public InvoiceDTO get(Long id, Integer year) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+		return invoiceService.get(id, year);
 	}
 
-	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
-		return invoiceService.getAllInRange(businessID, start, length);
+	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+		return invoiceService.getAllInRange(businessID, year, start, length);
 	}
 
-	public List<InvoiceDTO> getAllForClient(Long clientID) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
-		return invoiceService.getAllForClient(clientID);
+	public List<InvoiceDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+		return invoiceService.getAllForClient(clientID, year);
 	}
 
 	public Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
@@ -51,8 +51,8 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 		invoiceService.remove(businessID, clientID, id);
 	}
 
-	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer start, Integer length) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
-		return invoiceService.getAllForClientInRange(clientID, start, length);
+	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+		return invoiceService.getAllForClientInRange(clientID, year, start, length);
 	}
 
 	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException, DataAccessException {

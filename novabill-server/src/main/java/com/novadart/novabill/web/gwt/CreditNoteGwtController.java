@@ -23,20 +23,20 @@ public class CreditNoteGwtController extends AbstractGwtController implements Cr
 	@Autowired
 	private CreditNoteService creditNoteService;
 
-	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return creditNoteService.get(id);
+	public CreditNoteDTO get(Long id, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return creditNoteService.get(id, year);
 	}
 
-	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
-		return creditNoteService.getAllInRange(businessID, start, length);
+	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
+		return creditNoteService.getAllInRange(businessID, year, start, length);
 	}
 
-	public List<CreditNoteDTO> getAllForClient(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return creditNoteService.getAllForClient(clientID);
+	public List<CreditNoteDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return creditNoteService.getAllForClient(clientID, year);
 	}
 
-	public PageDTO<CreditNoteDTO> getAllForClientInRange(Long id, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return creditNoteService.getAllForClientInRange(id, start, length);
+	public PageDTO<CreditNoteDTO> getAllForClientInRange(Long id, Integer year, int start, int length) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return creditNoteService.getAllForClientInRange(id, year, start, length);
 	}
 
 	public Long add(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException {
