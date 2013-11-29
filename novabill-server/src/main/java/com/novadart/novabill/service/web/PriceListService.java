@@ -11,7 +11,9 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -28,6 +30,9 @@ public class PriceListService {
 	@Autowired
 	private BusinessService businessService;
 	
+	@Autowired
+	private UtilsService utilsService;
+	
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<PriceListDTO> getAll(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return businessService.getPriceLists(businessID);
@@ -35,10 +40,19 @@ public class PriceListService {
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.PriceList).findPriceList(#id)?.business?.id == principal.business.id")
 	public PriceListDTO get(Long id) throws NotAuthenticatedException,NoSuchObjectException, DataAccessException {
-		PriceList priceList = PriceList.getPriceListWithPrices(id);
-		if(priceList != null)
+		Long businessID = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
+		PriceList priceList = PriceList.getPriceListWithPrices(businessID, id);
+		if(priceList == null)
+			throw new NoSuchObjectException();
+		if(priceList.getName().equals(PriceListConstants.PUBLIC))
 			return PriceListDTOFactory.toDTO(priceList, true);
-		throw new NoSuchObjectException();
+		PriceListDTO customPL = PriceListDTOFactory.toDTO(priceList, true);
+		priceList = PriceList.getPriceListWithPrices(businessID, PriceListConstants.PUBLIC);
+		if(priceList == null)
+			throw new NoSuchObjectException();
+		PriceListDTO publicPL = PriceListDTOFactory.toDTO(priceList, true);
+		return PriceListDTOFactory.mergePriceListDTOs(publicPL, customPL);
+		
 	}
 	
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})

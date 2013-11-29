@@ -263,8 +263,8 @@ insert into commodity (id, sku, description, service, tax, unit_of_measure, busi
 insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (160, '12345', 'Cisco network router', 'f', 22, 'piece', 1, 1);
 
 --creating price lists
-insert into price_list (id, name, version, business) values (161, 'public', '1', 1);
-insert into price_list (id, name, version, business) values (162, 'public', '1', 2);
+insert into price_list (id, name, version, business) values (161, '__public__', '1', 1);
+insert into price_list (id, name, version, business) values (162, '__public__', '1', 2);
 
 --creating default prices
 insert into price (id, price_type, quantity, version, commodity, price_list) values (163, 1, 24.95, 1, 156, 161);
@@ -276,7 +276,16 @@ insert into price (id, price_type, quantity, version, commodity, price_list) val
 --creating more commodities
 insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (169, '12345', 'Website building', 't', 22, 'hour', 2, 1);
 
---creating defauult prices
+--creating default prices
 insert into price (id, price_type, quantity, version, commodity, price_list) values (170, 1, 19.95, 1, 169, 162);
 
-alter sequence hibernate_sequence restart with 171;
+--creating custom price lists
+insert into price_list (id, name, version, business) values (171, 'custom pricelist', '1', 1);
+insert into price_list (id, name, version, business) values (172, 'custom pricelist', '1', 2);
+
+--creating prices for the custom price list
+insert into price (id, price_type, quantity, version, commodity, price_list) values (173, 1, 20.95, 1, 156, 171);
+
+insert into price (id, price_type, quantity, version, commodity, price_list) values (174, 1, 20.95, 1, 169, 172);
+
+alter sequence hibernate_sequence restart with 175;

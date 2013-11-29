@@ -33,7 +33,17 @@
     	<entry key="clientWithCreditNotesID" value="3"/>
     	<entry key="clientWithEstimationsID" value="3"/>
     	<entry key="clientWithTransportDocsID" value="3"/>
+    	<entry key="customPriceListID" value="171"/>
+    	<entry key="commodityPriceQuantity" value="20.95"/>
+    	<entry key="commodityPriceType" value="FIXED"/>
     	<entry key="year" value="2013"/>
+    </util:map>
+    
+    <util:map map-class="java.util.HashMap" id="testPL" key-type="java.lang.String" value-type="java.lang.String">
+    	<entry key="giordano.battilana@novadart.com" value="171"/>
+    	<entry key="giordano.battilana@novadart.com:commodityID" value="156"/>
+    	<entry key="risto.gligorov@novadart.com" value="172"/>
+    	<entry key="risto.gligorov@novadart.com:commodityID" value="169"/>
     </util:map>
     
 </beans>

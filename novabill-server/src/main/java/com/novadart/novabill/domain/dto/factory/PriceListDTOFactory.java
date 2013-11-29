@@ -1,7 +1,9 @@
 package com.novadart.novabill.domain.dto.factory;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
@@ -23,6 +25,20 @@ public class PriceListDTOFactory {
 			priceListDTO.setPrices(prices);
 		}
 		return priceListDTO;
+	}
+	
+	public static PriceListDTO mergePriceListDTOs(PriceListDTO publicPL, PriceListDTO customPL){
+		Map<Long, PriceDTO> customPrices = new HashMap<Long, PriceDTO>();
+		for(PriceDTO dto: customPL.getPrices())
+			customPrices.put(dto.getCommodityID(), dto);
+		for(PriceDTO dto: publicPL.getPrices()){
+			if(customPrices.containsKey(dto.getCommodityID())){
+				PriceDTO custDto = customPrices.get(dto.getCommodityID());
+				dto.setPriceType(custDto.getPriceType());
+				dto.setQuantity(custDto.getQuatity());
+			}
+		}
+		return publicPL;
 	}
 	
 	public static void copyFromDTO(PriceList priceList, PriceListDTO priceListDTO){

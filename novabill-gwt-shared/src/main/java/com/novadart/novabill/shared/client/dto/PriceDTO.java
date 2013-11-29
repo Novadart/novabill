@@ -7,11 +7,21 @@ import com.novadart.novabill.shared.client.data.PriceType;
 
 public class PriceDTO implements IsSerializable {
 	
+	private Long id;
+	
 	private BigDecimal quantity;
 	
 	private PriceType priceType;
 	
 	private Long commodityID;
+	
+	public Long getId() {
+		return id;
+	}
+
+	public void setId(Long id) {
+		this.id = id;
+	}
 
 	public BigDecimal getQuatity() {
 		return quantity;
