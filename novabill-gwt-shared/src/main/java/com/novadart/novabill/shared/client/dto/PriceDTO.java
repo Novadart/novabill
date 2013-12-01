@@ -15,6 +15,8 @@ public class PriceDTO implements IsSerializable {
 	
 	private Long commodityID;
 	
+	private Long priceListID;
+	
 	public Long getId() {
 		return id;
 	}
@@ -23,7 +25,7 @@ public class PriceDTO implements IsSerializable {
 		this.id = id;
 	}
 
-	public BigDecimal getQuatity() {
+	public BigDecimal getQuantity() {
 		return quantity;
 	}
 
@@ -45,6 +47,14 @@ public class PriceDTO implements IsSerializable {
 
 	public void setCommodityID(Long commodityID) {
 		this.commodityID = commodityID;
+	}
+
+	public Long getPriceListID() {
+		return priceListID;
+	}
+
+	public void setPriceListID(Long priceListID) {
+		this.priceListID = priceListID;
 	}
 	
 }

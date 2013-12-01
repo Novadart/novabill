@@ -8,6 +8,7 @@ import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.service.web.CommodityService;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
@@ -51,6 +52,16 @@ public class CommodityGwtController extends AbstractGwtController implements Com
 	@Override
 	public CommodityDTO get(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		return commodityService.get(businessID, id);
+	}
+	
+	@Override
+	public Long addOrUpdatePrice(Long businessID, PriceDTO priceDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+		return commodityService.addOrUpdatePrice(businessID, priceDTO);
+	}
+
+	@Override
+	public void removePrice(Long businessID, Long priceListID, Long commodityID) throws NotAuthenticatedException, DataAccessException {
+		commodityService.removePrice(businessID, priceListID, commodityID);
 	}
 	
 }

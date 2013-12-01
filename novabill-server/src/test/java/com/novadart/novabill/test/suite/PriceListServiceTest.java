@@ -164,8 +164,9 @@ public class PriceListServiceTest extends GWTServiceTest {
 		for(PriceDTO priceDTO: priceListDTO.getPrices()){
 			assertNotNull(priceDTO.getCommodityID());
 			if(priceDTO.getCommodityID().equals(Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID")))){
-				assertEquals(new BigDecimal(testProps.get("commodityPriceQuantity")), priceDTO.getQuatity());
+				assertEquals(new BigDecimal(testProps.get("commodityPriceQuantity")), priceDTO.getQuantity());
 				assertEquals(PriceType.valueOf(testProps.get("commodityPriceType")), priceDTO.getPriceType());
+				assertEquals(id, priceDTO.getPriceListID());
 				checked = true;
 			}
 		}

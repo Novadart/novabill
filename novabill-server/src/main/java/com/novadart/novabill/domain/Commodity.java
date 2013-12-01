@@ -2,6 +2,7 @@ package com.novadart.novabill.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -81,7 +82,7 @@ public class Commodity implements Serializable {
     private boolean service;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "commodity")
-    private Set<Price> prices;
+    private Set<Price> prices = new HashSet<>();
     
     /*
      * Getters and setters

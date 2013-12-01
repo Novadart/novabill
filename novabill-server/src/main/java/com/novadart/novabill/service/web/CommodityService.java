@@ -11,10 +11,14 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Commodity;
+import com.novadart.novabill.domain.Price;
+import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
+import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
@@ -78,6 +82,45 @@ public class CommodityService {
 		commodity.remove(); //removing commodity
 		if(Hibernate.isInitialized(commodity.getBusiness().getCommodities()))
 			commodity.getBusiness().getCommodities().remove(commodity);
+	}
+	
+	@Transactional(readOnly = false)
+	@PreAuthorize("#businessID == principal.business.id and " +
+			      "T(com.novadart.novabill.domain.Commodity).findCommodity(#priceDTO.commodityID)?.business?.id == #businessID and " +
+			      "T(com.novadart.novabill.domain.PriceList).findPriceList(#priceDTO.priceListID)?.business?.id == #businessID")
+	public Long addOrUpdatePrice(Long businessID, PriceDTO priceDTO){
+		if(priceDTO.getId() == null){ //add
+			Price price = new Price();
+			PriceDTOFactory.copyFromDTO(price, priceDTO);
+			PriceList persistedPriceList = PriceList.findPriceList(priceDTO.getPriceListID());
+			Commodity persistedCommodity = Commodity.findCommodity(priceDTO.getCommodityID());
+			if(Hibernate.isInitialized(persistedCommodity.getPrices()))
+				persistedCommodity.getPrices().add(price);
+			if(Hibernate.isInitialized(persistedPriceList.getPrices()))
+				persistedPriceList.getPrices().add(price);
+			price.setCommodity(persistedCommodity);
+			price.setPriceList(persistedPriceList);
+			price.persist();
+			Price.entityManager().flush();
+			return price.getId();
+		}else{ //update
+			Price persisted = Price.findPrice(priceDTO.getId());
+			PriceDTOFactory.copyFromDTO(persisted, priceDTO);
+			return persisted.merge().getId();
+		}
+	}
+	
+	@Transactional(readOnly = false)
+	@PreAuthorize("#businessID == principal.business.id and " + 
+				"T(com.novadart.novabill.domain.PriceList).findPriceList(#priceListID)?.business?.id == #businessID and " +
+				"T(com.novadart.novabill.domain.Commodity).findCommodity(#commodityID)?.business?.id == #businessID")
+	public void removePrice(Long businessID, Long priceListID, Long commodityID){
+		Price price = Price.findPrice(priceListID, commodityID);
+		price.remove();
+		if(Hibernate.isInitialized(price.getPriceList().getPrices()))
+			price.getPriceList().getPrices().remove(price);
+		if(Hibernate.isInitialized(price.getCommodity().getPrices()))
+			price.getCommodity().getPrices().remove(price);
 	}
 
 	public PageDTO<CommodityDTO> searchCommodities(Long businessID, String query, int start, int length)

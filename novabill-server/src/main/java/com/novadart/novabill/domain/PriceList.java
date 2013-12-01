@@ -1,5 +1,6 @@
 package com.novadart.novabill.domain;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
@@ -41,7 +42,7 @@ public class PriceList {
 	private Business business;
 	
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "priceList")
-	private Set<Price> prices;
+	private Set<Price> prices = new HashSet<>();
 	
 	public PriceList() {}
 	

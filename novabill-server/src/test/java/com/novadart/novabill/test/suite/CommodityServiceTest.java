@@ -1,10 +1,15 @@
 package com.novadart.novabill.test.suite;
 
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.List;
+
+import javax.annotation.Resource;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
@@ -16,9 +21,13 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Commodity;
+import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
+import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
+import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
+import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -34,6 +43,9 @@ public class CommodityServiceTest extends GWTServiceTest {
 	
 	@Autowired
 	private CommodityGwtService commodityService;
+	
+	@Resource(name = "testPL")
+	private HashMap<String, String> testPL;
 	
 	@Test
 	public void commodityServiceWiringTest(){
@@ -178,5 +190,45 @@ public class CommodityServiceTest extends GWTServiceTest {
     	 commodityService.get(null, null);
      }
      
+     @Test
+     public void addOrUpdate1Test() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+    	 Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
+    	 Long priceListID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
+    	 Price price = Price.findPrice(priceListID, commodityID);
+    	 PriceDTO priceDTO = PriceDTOFactory.toDTO(price);
+    	 priceDTO.setPriceType(PriceType.DERIVED);
+    	 priceDTO.setQuantity(new BigDecimal("5.00"));
+    	 commodityService.addOrUpdatePrice(authenticatedPrincipal.getBusiness().getId(), priceDTO);
+    	 price = Price.findPrice(priceListID, commodityID);
+    	 assertEquals(PriceType.DERIVED, price.getPriceType());
+    	 assertEquals(new BigDecimal("5.00"), price.getQuantity());
+     }
+     
+     @Test
+     public void addOrUpdate2Test() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+    	 Long priceListID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
+    	 Long commodityID = addCommodity().getId();
+    	 PriceDTO priceDTO = new PriceDTO();
+    	 priceDTO.setPriceType(PriceType.DERIVED);
+    	 priceDTO.setQuantity(new BigDecimal("5.00"));
+    	 priceDTO.setCommodityID(commodityID);
+    	 priceDTO.setPriceListID(priceListID);
+    	 Long id = commodityService.addOrUpdatePrice(authenticatedPrincipal.getBusiness().getId(), priceDTO);
+    	 Price price = Price.findPrice(priceListID, commodityID);
+    	 assertEquals(PriceType.DERIVED, price.getPriceType());
+    	 assertEquals(new BigDecimal("5.00"), price.getQuantity());
+    	 assertEquals(id, price.getId());
+    	 assertEquals(commodityID, price.getCommodity().getId());
+    	 assertEquals(priceListID, price.getPriceList().getId());
+     }
+    
+     @Test
+     public void removePriceTest() throws NotAuthenticatedException, DataAccessException{
+    	 Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
+    	 Long priceListID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
+    	 commodityService.removePrice(authenticatedPrincipal.getBusiness().getId(), priceListID, commodityID);
+    	 Price price = Price.findPrice(priceListID, commodityID);
+    	 assertNull(price);
+     }
      
 }

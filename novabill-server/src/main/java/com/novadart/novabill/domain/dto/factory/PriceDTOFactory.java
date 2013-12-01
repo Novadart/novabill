@@ -9,10 +9,19 @@ public class PriceDTOFactory {
 		if(price == null)
 			return null;
 		PriceDTO priceDTO = new PriceDTO();
+		priceDTO.setId(price.getId());
 		priceDTO.setPriceType(price.getPriceType());
 		priceDTO.setQuantity(price.getQuantity());
 		priceDTO.setCommodityID(price.getCommodity().getId());
+		priceDTO.setPriceListID(price.getPriceList().getId());
 		return priceDTO;
+	}
+	
+	public static void copyFromDTO(Price price, PriceDTO priceDTO){
+		if(priceDTO == null || price == null)
+			return;
+		price.setPriceType(priceDTO.getPriceType());
+		price.setQuantity(priceDTO.getQuantity());
 	}
 
 }
