@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.annotation.Resource;
 
@@ -25,9 +26,11 @@ import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
+import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -43,6 +46,9 @@ public class CommodityServiceTest extends GWTServiceTest {
 	
 	@Autowired
 	private CommodityGwtService commodityService;
+	
+	@Autowired
+	private BusinessService businessService;
 	
 	@Resource(name = "testPL")
 	private HashMap<String, String> testPL;
@@ -229,6 +235,16 @@ public class CommodityServiceTest extends GWTServiceTest {
     	 commodityService.removePrice(authenticatedPrincipal.getBusiness().getId(), priceListID, commodityID);
     	 Price price = Price.findPrice(priceListID, commodityID);
     	 assertNull(price);
+     }
+     
+     @Test
+     public void getPricesTest() throws NotAuthenticatedException, DataAccessException{
+    	 Long businessID = authenticatedPrincipal.getBusiness().getId();
+    	 Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
+    	 Map<String, PriceDTO> prices = commodityService.getPrices(businessID, commodityID);
+    	 List<PriceListDTO> priceLists = businessService.getPriceLists(businessID);
+    	 for(PriceListDTO pl: priceLists)
+    		 assertTrue(prices.containsKey(pl.getName()));
      }
      
 }

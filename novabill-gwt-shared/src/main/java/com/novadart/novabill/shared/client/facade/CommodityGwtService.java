@@ -1,6 +1,8 @@
 package com.novadart.novabill.shared.client.facade;
 
 import java.util.List;
+import java.util.Map;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
@@ -33,5 +35,7 @@ public interface CommodityGwtService extends RemoteService {
 	public Long addOrUpdatePrice(Long businessID, PriceDTO priceDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException;
 	
 	public void removePrice(Long businessID, Long priceListID, Long commodityID) throws NotAuthenticatedException, DataAccessException;
-
+	
+	public Map<String, PriceDTO> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException;
+	
 }
