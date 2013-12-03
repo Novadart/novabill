@@ -16,4 +16,12 @@ angular.module('novabill.utils', [])
 		}
 		
 	};
+})
+
+.factory('NRegExp', function() {
+	return {
+		
+		float : /^\-?\d+((\.|\,)\d+)?$/
+		
+	};
 });

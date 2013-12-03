@@ -17,10 +17,10 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
-public class AutoBeanConverter {
+public class AutoBeanEncoder {
 	
 	
-	public static AutoBean<Commodity> convert(CommodityDTO c){
+	public static AutoBean<Commodity> encode(CommodityDTO c){
 		if(c == null){
 			return null;
 		}
@@ -28,14 +28,14 @@ public class AutoBeanConverter {
 		cb.setDescription(c.getDescription());
 		cb.setId(c.getId());
 		cb.setService(c.isService());
-		cb.setTax(c.getTax());
+		cb.setTax(c.getTax().doubleValue());
 		cb.setUnitOfMeasure(c.getUnitOfMeasure());
-		cb.setCustomPrices(c.getCustomPrices());
+		cb.setSku(c.getSku());
 		return AutoBeanUtils.getAutoBean(cb);
 	}
 	
 	
-	public static AutoBean<Business> convert(BusinessDTO b){
+	public static AutoBean<Business> encode(BusinessDTO b){
 		if(b == null){
 			return null;
 		}
@@ -59,7 +59,7 @@ public class AutoBeanConverter {
 	}
 	
 	
-	public static AutoBean<Contact> convert(ContactDTO c){
+	public static AutoBean<Contact> encode(ContactDTO c){
 		if(c == null){
 			return null;
 		}
@@ -74,14 +74,14 @@ public class AutoBeanConverter {
 	}
 	
 	
-	public static AutoBean<Client> convert(ClientDTO c){
+	public static AutoBean<Client> encode(ClientDTO c){
 		if(c == null){
 			return null;
 		}
 		Client ac = AutoBeanMaker.INSTANCE.makeClient().as();
 		ac.setAddress(c.getAddress());
 		ac.setCity(c.getCity());
-		ac.setContact(convert(c.getContact()).as());
+		ac.setContact(encode(c.getContact()).as());
 		ac.setCountry(c.getCountry());
 		ac.setDefaultPaymentTypeID(c.getDefaultPaymentTypeID());
 		ac.setEmail(c.getEmail());
@@ -100,7 +100,7 @@ public class AutoBeanConverter {
 	}
 	
 	
-	public static AutoBean<Page<Client>> convertClientPage(PageDTO<ClientDTO> p) {
+	public static AutoBean<Page<Client>> encodeClientPage(PageDTO<ClientDTO> p) {
 		if(p == null){
 			return null;
 		}
@@ -109,7 +109,7 @@ public class AutoBeanConverter {
 		
 		List<Client> l = new ArrayList<Client>();
 		for (ClientDTO c : p.getItems()) {
-			l.add(convert(c).as());
+			l.add(encode(c).as());
 		}
 		ap.setItems(l);
 		ap.setLength(p.getLength());
@@ -118,7 +118,7 @@ public class AutoBeanConverter {
 		return AutoBeanUtils.getAutoBean(ap);
 	}
 	
-	public static List<AccountingDocumentItem> convert(List<AccountingDocumentItemDTO> items){
+	public static List<AccountingDocumentItem> encode(List<AccountingDocumentItemDTO> items){
 		if(items == null){
 			return null;
 		}
@@ -143,7 +143,7 @@ public class AutoBeanConverter {
 		return result;
 	}
 	
-	public static AutoBean<Invoice> convert(InvoiceDTO invoice) {
+	public static AutoBean<Invoice> encode(InvoiceDTO invoice) {
 		if(invoice == null){
 			return null;
 		}
@@ -151,9 +151,9 @@ public class AutoBeanConverter {
 		Invoice ai = AutoBeanMaker.INSTANCE.makeInvoice().as();
 		
 		ai.setAccountingDocumentDate(invoice.getAccountingDocumentDate());
-		ai.setItems(convert(invoice.getItems()));
-		ai.setBusiness(convert(invoice.getBusiness()).as());
-		ai.setClient(convert(invoice.getClient()).as());
+		ai.setItems(encode(invoice.getItems()));
+		ai.setBusiness(encode(invoice.getBusiness()).as());
+		ai.setClient(encode(invoice.getClient()).as());
 		ai.setDocumentID(invoice.getDocumentID());
 		ai.setId(invoice.getId());
 		ai.setLayoutType(invoice.getLayoutType());
@@ -172,7 +172,7 @@ public class AutoBeanConverter {
 	}
 	
 	
-	public static AutoBean<Page<Invoice>> convertInvoicePage(PageDTO<InvoiceDTO> p) {
+	public static AutoBean<Page<Invoice>> encodeInvoicePage(PageDTO<InvoiceDTO> p) {
 		if(p == null){
 			return null;
 		}
@@ -180,7 +180,7 @@ public class AutoBeanConverter {
 		
 		List<Invoice> l = new ArrayList<Invoice>();
 		for (InvoiceDTO i : p.getItems()) {
-			l.add(convert(i).as());
+			l.add(encode(i).as());
 		}
 		ap.setItems(l);
 		ap.setLength(p.getLength());
@@ -190,7 +190,7 @@ public class AutoBeanConverter {
 	}
 	
 	
-	public static AutoBean<Estimation> convert(EstimationDTO estimation) {
+	public static AutoBean<Estimation> encode(EstimationDTO estimation) {
 		if(estimation == null){
 			return null;
 		}
@@ -201,9 +201,9 @@ public class AutoBeanConverter {
 		ei.setValidTill(estimation.getValidTill());
 		
 		ei.setAccountingDocumentDate(estimation.getAccountingDocumentDate());
-		ei.setItems(convert(estimation.getItems()));
-		ei.setBusiness(convert(estimation.getBusiness()).as());
-		ei.setClient(convert(estimation.getClient()).as());
+		ei.setItems(encode(estimation.getItems()));
+		ei.setBusiness(encode(estimation.getBusiness()).as());
+		ei.setClient(encode(estimation.getClient()).as());
 		ei.setDocumentID(estimation.getDocumentID());
 		ei.setId(estimation.getId());
 		ei.setLayoutType(estimation.getLayoutType());
@@ -217,7 +217,7 @@ public class AutoBeanConverter {
 	}
 	
 	
-	public static AutoBean<Page<Estimation>> convertEstimationPage(PageDTO<EstimationDTO> p) {
+	public static AutoBean<Page<Estimation>> encodeEstimationPage(PageDTO<EstimationDTO> p) {
 		if(p == null){
 			return null;
 		}
@@ -226,7 +226,7 @@ public class AutoBeanConverter {
 		
 		List<Estimation> l = new ArrayList<Estimation>();
 		for (EstimationDTO i : p.getItems()) {
-			l.add(convert(i).as());
+			l.add(encode(i).as());
 		}
 		ap.setItems(l);
 		ap.setLength(p.getLength());
@@ -236,7 +236,7 @@ public class AutoBeanConverter {
 	}
 	
 	
-	public static AutoBean<CreditNote> convert(CreditNoteDTO creditNote) {
+	public static AutoBean<CreditNote> encode(CreditNoteDTO creditNote) {
 		if(creditNote == null){
 			return null;
 		}
@@ -244,9 +244,9 @@ public class AutoBeanConverter {
 		CreditNote cni = AutoBeanMaker.INSTANCE.makeCreditNote().as();
 		
 		cni.setAccountingDocumentDate(creditNote.getAccountingDocumentDate());
-		cni.setItems(convert(creditNote.getItems()));
-		cni.setBusiness(convert(creditNote.getBusiness()).as());
-		cni.setClient(convert(creditNote.getClient()).as());
+		cni.setItems(encode(creditNote.getItems()));
+		cni.setBusiness(encode(creditNote.getBusiness()).as());
+		cni.setClient(encode(creditNote.getClient()).as());
 		cni.setDocumentID(creditNote.getDocumentID());
 		cni.setId(creditNote.getId());
 		cni.setLayoutType(creditNote.getLayoutType());
@@ -262,7 +262,7 @@ public class AutoBeanConverter {
 	}
 	
 	
-	public static AutoBean<Page<CreditNote>> convertCreditNotePage(PageDTO<CreditNoteDTO> p) {
+	public static AutoBean<Page<CreditNote>> encodeCreditNotePage(PageDTO<CreditNoteDTO> p) {
 		if(p == null){
 			return null;
 		}
@@ -271,7 +271,7 @@ public class AutoBeanConverter {
 		
 		List<CreditNote> l = new ArrayList<CreditNote>();
 		for (CreditNoteDTO i : p.getItems()) {
-			l.add(convert(i).as());
+			l.add(encode(i).as());
 		}
 		ap.setItems(l);
 		ap.setLength(p.getLength());
@@ -281,7 +281,7 @@ public class AutoBeanConverter {
 	}
 
 	
-	public static AutoBean<EndPoint> convert(EndpointDTO p) {
+	public static AutoBean<EndPoint> encode(EndpointDTO p) {
 		if(p == null){
 			return null;
 		}
@@ -298,15 +298,15 @@ public class AutoBeanConverter {
 		return AutoBeanUtils.getAutoBean(ep);
 	}
 	
-	public static AutoBean<TransportDocument> convert(TransportDocumentDTO transportDocument) {
+	public static AutoBean<TransportDocument> encode(TransportDocumentDTO transportDocument) {
 		if(transportDocument == null){
 			return null;
 		}
 		
 		TransportDocument tdai = AutoBeanMaker.INSTANCE.makeTransportDocument().as();
 		tdai.setNumberOfPackages(transportDocument.getNumberOfPackages());
-		tdai.setFromEndpoint(convert(transportDocument.getFromEndpoint()).as());
-		tdai.setToEndpoint(convert(transportDocument.getToEndpoint()).as());
+		tdai.setFromEndpoint(encode(transportDocument.getFromEndpoint()).as());
+		tdai.setToEndpoint(encode(transportDocument.getToEndpoint()).as());
 		tdai.setTransporter(transportDocument.getTransporter());
 		tdai.setTransportationResponsibility(transportDocument.getTransportationResponsibility());
 		tdai.setTradeZone(transportDocument.getTradeZone());
@@ -314,9 +314,9 @@ public class AutoBeanConverter {
 		tdai.setCause(transportDocument.getCause());
 		
 		tdai.setAccountingDocumentDate(transportDocument.getAccountingDocumentDate());
-		tdai.setItems(convert(transportDocument.getItems()));
-		tdai.setBusiness(convert(transportDocument.getBusiness()).as());
-		tdai.setClient(convert(transportDocument.getClient()).as());
+		tdai.setItems(encode(transportDocument.getItems()));
+		tdai.setBusiness(encode(transportDocument.getBusiness()).as());
+		tdai.setClient(encode(transportDocument.getClient()).as());
 		tdai.setDocumentID(transportDocument.getDocumentID());
 		tdai.setId(transportDocument.getId());
 		tdai.setLayoutType(transportDocument.getLayoutType());
@@ -330,7 +330,7 @@ public class AutoBeanConverter {
 	}
 	
 	
-	public static AutoBean<Page<TransportDocument>> convertTransportDocumentPage(PageDTO<TransportDocumentDTO> p) {
+	public static AutoBean<Page<TransportDocument>> encodeTransportDocumentPage(PageDTO<TransportDocumentDTO> p) {
 		if(p == null){
 			return null;
 		}
@@ -339,7 +339,7 @@ public class AutoBeanConverter {
 		
 		List<TransportDocument> l = new ArrayList<TransportDocument>();
 		for (TransportDocumentDTO i : p.getItems()) {
-			l.add(convert(i).as());
+			l.add(encode(i).as());
 		}
 		ap.setItems(l);
 		ap.setLength(p.getLength());

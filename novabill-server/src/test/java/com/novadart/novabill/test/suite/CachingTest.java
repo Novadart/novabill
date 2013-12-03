@@ -544,7 +544,6 @@ public class CachingTest extends GWTServiceTest {
 	@Test
 	public void commodityGetAllCacheTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		commodityService.add(commodityDTO);
 		Commodity.entityManager().flush();
 		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
@@ -556,7 +555,6 @@ public class CachingTest extends GWTServiceTest {
 	public void commodityAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException{
 		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		commodityService.add(commodityDTO);
 		Commodity.entityManager().flush();
 		Set<CommodityDTO> notCachedCommodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
@@ -567,7 +565,6 @@ public class CachingTest extends GWTServiceTest {
 	@Test
 	public void commodityUpdateCacheTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		commodityDTO.setSku("12345");
 		Long id = commodityService.add(commodityDTO);
 		Commodity.entityManager().flush();
@@ -575,7 +572,6 @@ public class CachingTest extends GWTServiceTest {
 		Commodity commodity = Commodity.findCommodity(id);
 		commodity.setDescription("New description");
 		commodityDTO = CommodityDTOFactory.toDTO(commodity);
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		commodityService.update(commodityDTO);
 		Set<CommodityDTO> nonCachedCommodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!commodities.equals(nonCachedCommodities));
@@ -585,7 +581,6 @@ public class CachingTest extends GWTServiceTest {
 	@Test
 	public void commodityRemoveCacheTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = commodityService.add(commodityDTO);
 		Commodity.entityManager().flush();
 		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));

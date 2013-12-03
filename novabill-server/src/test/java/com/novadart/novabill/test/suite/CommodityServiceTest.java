@@ -20,10 +20,8 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Price;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
 import com.novadart.novabill.service.web.BusinessService;
@@ -61,7 +59,6 @@ public class CommodityServiceTest extends GWTServiceTest {
 	@Test
 	public void addAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		commodityDTO.setSku("12345");
 		Long id = commodityService.add(commodityDTO);
 		Commodity.entityManager().flush();
@@ -72,7 +69,6 @@ public class CommodityServiceTest extends GWTServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void addUnauthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		commodityService.add(commodityDTO);
 	}
 	
@@ -84,14 +80,12 @@ public class CommodityServiceTest extends GWTServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void addAuthorizedIDNotNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		commodityDTO.setId(1l);
 		commodityService.add(commodityDTO);
 	}
 	
 	private CommodityDTO addCommodity() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		commodityDTO.setSku("12345");
 		commodityDTO.setId(commodityService.add(commodityDTO));
 		Commodity.entityManager().flush();
@@ -135,7 +129,6 @@ public class CommodityServiceTest extends GWTServiceTest {
      @Test(expected = DataAccessException.class)
      public void updateUnathorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
     	 CommodityDTO commodityDTO = addCommodity();
-    	 commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
          commodityService.update(commodityDTO);
      }
      

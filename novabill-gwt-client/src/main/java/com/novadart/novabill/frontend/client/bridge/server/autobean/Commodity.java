@@ -1,7 +1,5 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
-import java.math.BigDecimal;
-import java.util.Map;
 
 public interface Commodity {
 	
@@ -12,25 +10,21 @@ public interface Commodity {
 	public String getDescription();
 
 	public void setDescription(String description);
+	
+	public String getSku();
+
+	public void setSku(String sku);
 
 	public String getUnitOfMeasure();
 
 	public void setUnitOfMeasure(String unitOfMeasure);
 
-	public BigDecimal getTax();
+	public double getTax();
 
-	public void setTax(BigDecimal tax);
+	public void setTax(double tax);
 
 	public boolean isService();
 
 	public void setService(boolean service);
-
-	public Business getBusiness();
-
-	public void setBusiness(Business business);
-
-	public Map<String, BigDecimal> getCustomPrices();
-
-	public void setCustomPrices(Map<String, BigDecimal> customPrices);
 
 }

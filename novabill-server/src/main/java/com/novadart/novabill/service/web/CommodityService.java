@@ -58,7 +58,7 @@ public class CommodityService {
 		Commodity commodity = new Commodity();
 		CommodityDTOFactory.copyFromDTO(commodity, commodityDTO);
 		validator.validate(commodity);
-		Business business = Business.findBusiness(commodityDTO.getBusiness().getId());
+		Business business = Business.findBusiness(1L);
 		business.getCommodities().add(commodity);
 		commodity.setBusiness(business);
 		commodity.persist();

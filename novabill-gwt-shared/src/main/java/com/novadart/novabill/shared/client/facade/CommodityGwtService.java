@@ -2,6 +2,7 @@ package com.novadart.novabill.shared.client.facade;
 
 import java.util.List;
 import java.util.Map;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;

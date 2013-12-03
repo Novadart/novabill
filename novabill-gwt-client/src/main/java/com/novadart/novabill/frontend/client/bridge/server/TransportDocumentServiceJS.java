@@ -7,7 +7,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanConverter;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanEncoder;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.Page;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.TransportDocument;
@@ -26,7 +26,7 @@ public class TransportDocumentServiceJS extends ServiceJS {
 				TransportDocumentList il = AutoBeanMaker.INSTANCE.makeTransportDocumentList().as();
 				List<TransportDocument> transportDocuments = new ArrayList<TransportDocument>(result.size());
 				for (TransportDocumentDTO id : result) {
-					transportDocuments.add(AutoBeanConverter.convert(id).as());
+					transportDocuments.add(AutoBeanEncoder.encode(id).as());
 				}
 				il.setTransportDocuments(transportDocuments);
 				BridgeUtils.invokeJSCallback(AutoBeanUtils.getAutoBean(il), callback);
@@ -41,7 +41,7 @@ public class TransportDocumentServiceJS extends ServiceJS {
 
 			@Override
 			public void onSuccess(PageDTO<TransportDocumentDTO> result) {
-				AutoBean<Page<TransportDocument>> page = AutoBeanConverter.convertTransportDocumentPage(result);
+				AutoBean<Page<TransportDocument>> page = AutoBeanEncoder.encodeTransportDocumentPage(result);
 				BridgeUtils.invokeJSCallback(page, callback);
 			}
 		});
