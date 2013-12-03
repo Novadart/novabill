@@ -24,11 +24,6 @@ public class DemoBusinessService implements BusinessGwtServiceAsync {
 	}
 
 	@Override
-	public void countInvoices(Long businessID, AsyncCallback<Long> callback) {
-		callback.onSuccess(Long.valueOf(Data.countInvoices()));
-	}
-
-	@Override
 	public void countInvoicesForYear(Long BusinessID, Integer year,
 			AsyncCallback<Long> callback) {
 		callback.onSuccess(Data.countInvoices());
@@ -69,24 +64,26 @@ public class DemoBusinessService implements BusinessGwtServiceAsync {
 	}
 
 	@Override
-	public void getCreditNotes(Long businessID,	AsyncCallback<List<CreditNoteDTO>> callback) {
+	public void getCreditNotes(Long businessID,	Integer year, AsyncCallback<List<CreditNoteDTO>> callback) {
 		callback.onSuccess(Data.getAllDocs(CreditNoteDTO.class));
 	}
+	
+	
 
 	@Override
-	public void getEstimations(Long businessID,
+	public void getEstimations(Long businessID, Integer year,
 			AsyncCallback<List<EstimationDTO>> callback) {
 		callback.onSuccess(Data.getAllDocs(EstimationDTO.class));
 	}
 
 	@Override
-	public void getInvoices(Long businessID,
+	public void getInvoices(Long businessID, Integer year,
 			AsyncCallback<List<InvoiceDTO>> callback) {
 		callback.onSuccess(Data.getAllDocs(InvoiceDTO.class));
 	}
 
 	@Override
-	public void getTransportDocuments(Long businessID,
+	public void getTransportDocuments(Long businessID, Integer year,
 			AsyncCallback<List<TransportDocumentDTO>> callback) {
 		callback.onSuccess(Data.getAllDocs(TransportDocumentDTO.class));
 	}

@@ -18,8 +18,8 @@ import com.novadart.novabill.shared.client.dto.PageDTO;
 
 public class CreditNoteServiceJS extends ServiceJS {
 	
-	public static void getAllForClient(String id, final JavaScriptObject callback) {
-		SERVER_FACADE.getCreditNoteService().getAllForClient(Long.parseLong(id), new ManagedAsyncCallback<List<CreditNoteDTO>>() {
+	public static void getAllForClient(String id, String year, final JavaScriptObject callback) {
+		SERVER_FACADE.getCreditNoteService().getAllForClient(Long.parseLong(id), Integer.parseInt(year), new ManagedAsyncCallback<List<CreditNoteDTO>>() {
 
 			@Override
 			public void onSuccess(List<CreditNoteDTO> result) {
@@ -35,8 +35,8 @@ public class CreditNoteServiceJS extends ServiceJS {
 	}
 
 	
-	public static void getAllInRange(String businessID, String start, String length, final JavaScriptObject callback) {
-		SERVER_FACADE.getCreditNoteService().getAllInRange(Long.parseLong(businessID), Integer.parseInt(start), Integer.parseInt(length), 
+	public static void getAllInRange(String businessID, String year, String start, String length, final JavaScriptObject callback) {
+		SERVER_FACADE.getCreditNoteService().getAllInRange(Long.parseLong(businessID), Integer.parseInt(year), Integer.parseInt(start), Integer.parseInt(length), 
 				new ManagedAsyncCallback<PageDTO<CreditNoteDTO>>() {
 
 			@Override

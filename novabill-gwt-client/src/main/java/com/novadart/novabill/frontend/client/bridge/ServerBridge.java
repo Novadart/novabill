@@ -33,26 +33,26 @@ public class ServerBridge implements ApiBridge {
 			},
 			
 			invoice : {
-				getAllForClient : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::getAllForClient(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-				getAllInRange : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::getAllInRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getAllForClient : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::getAllForClient(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getAllInRange : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::getAllInRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				remove : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			},
 			
 			estimation : {
-				getAllForClient : @com.novadart.novabill.frontend.client.bridge.server.EstimationServiceJS::getAllForClient(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-				getAllInRange : @com.novadart.novabill.frontend.client.bridge.server.EstimationServiceJS::getAllInRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getAllForClient : @com.novadart.novabill.frontend.client.bridge.server.EstimationServiceJS::getAllForClient(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getAllInRange : @com.novadart.novabill.frontend.client.bridge.server.EstimationServiceJS::getAllInRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				remove : @com.novadart.novabill.frontend.client.bridge.server.EstimationServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			},
 
 			creditNote : {
-				getAllForClient : @com.novadart.novabill.frontend.client.bridge.server.CreditNoteServiceJS::getAllForClient(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-				getAllInRange : @com.novadart.novabill.frontend.client.bridge.server.CreditNoteServiceJS::getAllInRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getAllForClient : @com.novadart.novabill.frontend.client.bridge.server.CreditNoteServiceJS::getAllForClient(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getAllInRange : @com.novadart.novabill.frontend.client.bridge.server.CreditNoteServiceJS::getAllInRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				remove : @com.novadart.novabill.frontend.client.bridge.server.CreditNoteServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			},
 			
 			transportDocument : {
-				getAllForClient : @com.novadart.novabill.frontend.client.bridge.server.TransportDocumentServiceJS::getAllForClient(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-				getAllInRange : @com.novadart.novabill.frontend.client.bridge.server.TransportDocumentServiceJS::getAllInRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getAllForClient : @com.novadart.novabill.frontend.client.bridge.server.TransportDocumentServiceJS::getAllForClient(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getAllInRange : @com.novadart.novabill.frontend.client.bridge.server.TransportDocumentServiceJS::getAllInRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				remove : @com.novadart.novabill.frontend.client.bridge.server.TransportDocumentServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			},
 			

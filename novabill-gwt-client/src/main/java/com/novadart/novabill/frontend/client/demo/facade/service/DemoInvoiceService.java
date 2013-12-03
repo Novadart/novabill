@@ -26,20 +26,20 @@ public class DemoInvoiceService implements InvoiceGwtServiceAsync {
 	}
 
 	@Override
-	public void getAllForClient(Long clientID,
+	public void getAllForClient(Long clientID, Integer year,
 			AsyncCallback<List<InvoiceDTO>> callback) {
 		callback.onSuccess(Data.getDocsList(clientID, InvoiceDTO.class));
 	}
 
 	@Override
-	public void getAllForClientInRange(Long clientID, Integer start,
+	public void getAllForClientInRange(Long clientID, Integer year, Integer start,
 			Integer length, AsyncCallback<PageDTO<InvoiceDTO>> callback) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void getAllInRange(Long businessID, Integer start, Integer length,
+	public void getAllInRange(Long businessID, Integer year, Integer start, Integer length,
 			AsyncCallback<PageDTO<InvoiceDTO>> callback) {
 		PageDTO<InvoiceDTO> page = new PageDTO<InvoiceDTO>();
 		List<InvoiceDTO> docs = Data.getDocsList(InvoiceDTO.class);

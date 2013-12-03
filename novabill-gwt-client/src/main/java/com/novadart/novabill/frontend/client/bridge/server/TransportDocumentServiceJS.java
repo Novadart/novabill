@@ -18,8 +18,8 @@ import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public class TransportDocumentServiceJS extends ServiceJS {
 	
-	public static void getAllForClient(String id, final JavaScriptObject callback) {
-		SERVER_FACADE.getTransportdocumentService().getAllForClient(Long.parseLong(id), new ManagedAsyncCallback<List<TransportDocumentDTO>>() {
+	public static void getAllForClient(String id, String year, final JavaScriptObject callback) {
+		SERVER_FACADE.getTransportdocumentService().getAllForClient(Long.parseLong(id), Integer.parseInt(year), new ManagedAsyncCallback<List<TransportDocumentDTO>>() {
 
 			@Override
 			public void onSuccess(List<TransportDocumentDTO> result) {
@@ -35,8 +35,8 @@ public class TransportDocumentServiceJS extends ServiceJS {
 	}
 
 	
-	public static void getAllInRange(String businessID, String start, String length, final JavaScriptObject callback) {
-		SERVER_FACADE.getTransportdocumentService().getAllInRange(Long.parseLong(businessID), Integer.parseInt(start), Integer.parseInt(length), 
+	public static void getAllInRange(String businessID, String year, String start, String length, final JavaScriptObject callback) {
+		SERVER_FACADE.getTransportdocumentService().getAllInRange(Long.parseLong(businessID), Integer.parseInt(year), Integer.parseInt(start), Integer.parseInt(length), 
 				new ManagedAsyncCallback<PageDTO<TransportDocumentDTO>>() {
 
 			@Override

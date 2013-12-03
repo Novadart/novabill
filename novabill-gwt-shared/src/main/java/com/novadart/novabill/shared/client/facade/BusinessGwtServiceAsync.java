@@ -1,63 +1,156 @@
 package com.novadart.novabill.shared.client.facade;
 
-import java.math.BigDecimal;
-import java.util.List;
-
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
-import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.CommodityDTO;
-import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
-public interface BusinessGwtServiceAsync {
+public interface BusinessGwtServiceAsync
+{
 
-	void countClients(Long businessID, AsyncCallback<Long> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void countClients( java.lang.Long businessID, AsyncCallback<java.lang.Long> callback );
 
-	void countInvoices(Long businessID, AsyncCallback<Long> callback);
 
-	void countInvoicesForYear(Long BusinessID, Integer year,
-			AsyncCallback<Long> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void countInvoicesForYear( java.lang.Long BusinessID, java.lang.Integer year, AsyncCallback<java.lang.Long> callback );
 
-	void generateExportToken(AsyncCallback<String> callback);
 
-	void generatePDFToken(AsyncCallback<String> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void getTotalAfterTaxesForYear( java.lang.Long businessID, java.lang.Integer year, AsyncCallback<java.math.BigDecimal> callback );
 
-	void getStats(Long businessID, AsyncCallback<BusinessStatsDTO> callback);
 
-	void getTotalAfterTaxesForYear(Long businessID, Integer year,
-			AsyncCallback<BigDecimal> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void getStats( java.lang.Long businessID, AsyncCallback<com.novadart.novabill.shared.client.dto.BusinessStatsDTO> callback );
 
-	void update(BusinessDTO businessDTO, AsyncCallback<Void> callback);
 
-	void getCreditNotes(Long businessID,
-			AsyncCallback<List<CreditNoteDTO>> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void update( com.novadart.novabill.shared.client.dto.BusinessDTO businessDTO, AsyncCallback<Void> callback );
 
-	void getEstimations(Long businessID,
-			AsyncCallback<List<EstimationDTO>> callback);
 
-	void getInvoices(Long businessID, AsyncCallback<List<InvoiceDTO>> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void generatePDFToken( AsyncCallback<java.lang.String> callback );
 
-	void getTransportDocuments(Long businessID,
-			AsyncCallback<List<TransportDocumentDTO>> callback);
 
-	void getClients(Long businessID, AsyncCallback<List<ClientDTO>> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void generateExportToken( AsyncCallback<java.lang.String> callback );
 
-	void get(Long businessID, AsyncCallback<BusinessDTO> callback);
 
-	void updateNotesBitMask(Long notesBitMask, AsyncCallback<Long> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void getInvoices( java.lang.Long businessID, java.lang.Integer year, AsyncCallback<java.util.List<com.novadart.novabill.shared.client.dto.InvoiceDTO>> callback );
 
-	void generateLogoOpToken(AsyncCallback<String> callback);
 
-	void getCommodities(Long businessID, AsyncCallback<List<CommodityDTO>> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void getCreditNotes( java.lang.Long businessID, java.lang.Integer year, AsyncCallback<java.util.List<com.novadart.novabill.shared.client.dto.CreditNoteDTO>> callback );
 
-	void getPaymentTypes(Long businessID,
-			AsyncCallback<List<PaymentTypeDTO>> callback);
 
-	void add(BusinessDTO businessDTO, AsyncCallback<Long> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void getEstimations( java.lang.Long businessID, java.lang.Integer year, AsyncCallback<java.util.List<com.novadart.novabill.shared.client.dto.EstimationDTO>> callback );
 
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void getTransportDocuments( java.lang.Long businessID, java.lang.Integer year, AsyncCallback<java.util.List<com.novadart.novabill.shared.client.dto.TransportDocumentDTO>> callback );
+
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void getClients( java.lang.Long businessID, AsyncCallback<java.util.List<com.novadart.novabill.shared.client.dto.ClientDTO>> callback );
+
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void getCommodities( java.lang.Long businessID, AsyncCallback<java.util.List<com.novadart.novabill.shared.client.dto.CommodityDTO>> callback );
+
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void getPaymentTypes( java.lang.Long businessID, AsyncCallback<java.util.List<com.novadart.novabill.shared.client.dto.PaymentTypeDTO>> callback );
+
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void get( java.lang.Long businessID, AsyncCallback<com.novadart.novabill.shared.client.dto.BusinessDTO> callback );
+
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void updateNotesBitMask( java.lang.Long notesBitMask, AsyncCallback<java.lang.Long> callback );
+
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void generateLogoOpToken( AsyncCallback<java.lang.String> callback );
+
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.BusinessGwtService
+     */
+    void add( com.novadart.novabill.shared.client.dto.BusinessDTO businessDTO, AsyncCallback<java.lang.Long> callback );
+
+
+    /**
+     * Utility class to get the RPC Async interface from client-side code
+     */
+    public static final class Util 
+    { 
+        private static BusinessGwtServiceAsync instance;
+
+        public static final BusinessGwtServiceAsync getInstance()
+        {
+            if ( instance == null )
+            {
+                instance = (BusinessGwtServiceAsync) GWT.create( BusinessGwtService.class );
+            }
+            return instance;
+        }
+
+        private Util()
+        {
+            // Utility class should not be instanciated
+        }
+    }
 }

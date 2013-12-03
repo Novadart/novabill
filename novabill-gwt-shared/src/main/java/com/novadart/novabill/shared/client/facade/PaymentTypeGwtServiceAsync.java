@@ -1,20 +1,65 @@
 package com.novadart.novabill.shared.client.facade;
 
-import java.util.List;
-
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
-public interface PaymentTypeGwtServiceAsync {
+public interface PaymentTypeGwtServiceAsync
+{
 
-	void add(PaymentTypeDTO paymentTypeDTO, AsyncCallback<Long> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.PaymentTypeGwtService
+     */
+    void getAll( java.lang.Long businessID, AsyncCallback<java.util.List<com.novadart.novabill.shared.client.dto.PaymentTypeDTO>> callback );
 
-	void update(PaymentTypeDTO paymentTypeDTO, AsyncCallback<Void> callback);
-	
-	void remove(Long businessID, Long id, AsyncCallback<Void> callback);
 
-	void getAll(Long businessID, AsyncCallback<List<PaymentTypeDTO>> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.PaymentTypeGwtService
+     */
+    void get( java.lang.Long id, AsyncCallback<com.novadart.novabill.shared.client.dto.PaymentTypeDTO> callback );
 
-	void get(Long id, AsyncCallback<PaymentTypeDTO> callback);
 
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.PaymentTypeGwtService
+     */
+    void add( com.novadart.novabill.shared.client.dto.PaymentTypeDTO paymentTypeDTO, AsyncCallback<java.lang.Long> callback );
+
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.PaymentTypeGwtService
+     */
+    void update( com.novadart.novabill.shared.client.dto.PaymentTypeDTO paymentTypeDTO, AsyncCallback<Void> callback );
+
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.PaymentTypeGwtService
+     */
+    void remove( java.lang.Long businessID, java.lang.Long id, AsyncCallback<Void> callback );
+
+
+    /**
+     * Utility class to get the RPC Async interface from client-side code
+     */
+    public static final class Util 
+    { 
+        private static PaymentTypeGwtServiceAsync instance;
+
+        public static final PaymentTypeGwtServiceAsync getInstance()
+        {
+            if ( instance == null )
+            {
+                instance = (PaymentTypeGwtServiceAsync) GWT.create( PaymentTypeGwtService.class );
+            }
+            return instance;
+        }
+
+        private Util()
+        {
+            // Utility class should not be instanciated
+        }
+    }
 }

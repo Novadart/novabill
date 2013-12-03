@@ -8,7 +8,7 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
  */
 .controller('InvoicesCtrl', ['$scope', '$location', function($scope, $location){
 	$scope.loadInvoices = function() {
-		GWT_Server.invoice.getAllInRange(NovabillConf.businessId, '0', '1000000', {
+		GWT_Server.invoice.getAllInRange(NovabillConf.businessId, '2013', '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
 					$scope.invoices = page.items;

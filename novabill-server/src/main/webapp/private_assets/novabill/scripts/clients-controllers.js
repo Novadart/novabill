@@ -220,7 +220,7 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 		}
 		
 		loading[type] = true;
-		GWT_Server[type].getAllForClient($routeParams.clientId, {
+		GWT_Server[type].getAllForClient($routeParams.clientId, '2013', {
 
 			onSuccess : function(clientData){
 				$scope.$apply(function(){

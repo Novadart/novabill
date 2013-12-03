@@ -8,7 +8,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
  */
 .controller('EstimationCtrl', ['$scope', '$location', function($scope, $location){
 	$scope.loadEstimations = function() {
-		GWT_Server.estimation.getAllInRange(NovabillConf.businessId, '0', '1000000', {
+		GWT_Server.estimation.getAllInRange(NovabillConf.businessId, '2013', '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
 					$scope.estimations = page.items;
