@@ -7,7 +7,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanConverter;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanEncoder;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.Invoice;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.InvoicesList;
@@ -28,7 +28,7 @@ public class InvoiceServiceJS extends ServiceJS {
 				InvoicesList il = AutoBeanMaker.INSTANCE.makeInvoicesList().as();
 				List<Invoice> invoices = new ArrayList<Invoice>(result.size());
 				for (InvoiceDTO id : result) {
-					invoices.add(AutoBeanConverter.convert(id).as());
+					invoices.add(AutoBeanEncoder.encode(id).as());
 				}
 				il.setInvoices(invoices);
 				BridgeUtils.invokeJSCallback(AutoBeanUtils.getAutoBean(il), callback);
@@ -43,7 +43,7 @@ public class InvoiceServiceJS extends ServiceJS {
 
 			@Override
 			public void onSuccess(PageDTO<InvoiceDTO> result) {
-				AutoBean<Page<Invoice>> page = AutoBeanConverter.convertInvoicePage(result);
+				AutoBean<Page<Invoice>> page = AutoBeanEncoder.encodeInvoicePage(result);
 				BridgeUtils.invokeJSCallback(page, callback);
 			}
 		});

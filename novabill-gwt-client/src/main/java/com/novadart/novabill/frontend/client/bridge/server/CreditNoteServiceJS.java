@@ -7,7 +7,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanConverter;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanEncoder;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.CreditNote;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.CreditNoteList;
@@ -26,7 +26,7 @@ public class CreditNoteServiceJS extends ServiceJS {
 				CreditNoteList il = AutoBeanMaker.INSTANCE.makeCreditNotesList().as();
 				List<CreditNote> creditNotes = new ArrayList<CreditNote>(result.size());
 				for (CreditNoteDTO id : result) {
-					creditNotes.add(AutoBeanConverter.convert(id).as());
+					creditNotes.add(AutoBeanEncoder.encode(id).as());
 				}
 				il.setCreditNotes(creditNotes);
 				BridgeUtils.invokeJSCallback(AutoBeanUtils.getAutoBean(il), callback);
@@ -41,7 +41,7 @@ public class CreditNoteServiceJS extends ServiceJS {
 
 			@Override
 			public void onSuccess(PageDTO<CreditNoteDTO> result) {
-				AutoBean<Page<CreditNote>> page = AutoBeanConverter.convertCreditNotePage(result);
+				AutoBean<Page<CreditNote>> page = AutoBeanEncoder.encodeCreditNotePage(result);
 				BridgeUtils.invokeJSCallback(page, callback);
 			}
 		});

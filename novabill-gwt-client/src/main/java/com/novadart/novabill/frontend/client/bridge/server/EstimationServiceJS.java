@@ -7,7 +7,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanConverter;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanEncoder;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.Estimation;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.EstimationList;
@@ -26,7 +26,7 @@ public class EstimationServiceJS extends ServiceJS {
 				EstimationList il = AutoBeanMaker.INSTANCE.makeEstimationList().as();
 				List<Estimation> estimations = new ArrayList<Estimation>(result.size());
 				for (EstimationDTO id : result) {
-					estimations.add(AutoBeanConverter.convert(id).as());
+					estimations.add(AutoBeanEncoder.encode(id).as());
 				}
 				il.setEstimations(estimations);
 				BridgeUtils.invokeJSCallback(AutoBeanUtils.getAutoBean(il), callback);
@@ -41,7 +41,7 @@ public class EstimationServiceJS extends ServiceJS {
 
 			@Override
 			public void onSuccess(PageDTO<EstimationDTO> result) {
-				AutoBean<Page<Estimation>> page = AutoBeanConverter.convertEstimationPage(result);
+				AutoBean<Page<Estimation>> page = AutoBeanEncoder.encodeEstimationPage(result);
 				BridgeUtils.invokeJSCallback(page, callback);
 			}
 		});

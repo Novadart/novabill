@@ -1,7 +1,6 @@
 package com.novadart.novabill.shared.client.dto;
 
 import java.math.BigDecimal;
-import java.util.Map;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
@@ -19,10 +18,6 @@ public class CommodityDTO implements IsSerializable {
 	
 	private boolean service;
 	
-	private BusinessDTO business;
-	
-	private Map<String, BigDecimal> customPrices;
-
 	public Long getId() {
 		return id;
 	}
@@ -71,20 +66,4 @@ public class CommodityDTO implements IsSerializable {
 		this.service = service;
 	}
 
-	public BusinessDTO getBusiness() {
-		return business;
-	}
-
-	public void setBusiness(BusinessDTO business) {
-		this.business = business;
-	}
-
-	public Map<String, BigDecimal> getCustomPrices() {
-		return customPrices;
-	}
-
-	public void setCustomPrices(Map<String, BigDecimal> customPrices) {
-		this.customPrices = customPrices;
-	}
-	
 }

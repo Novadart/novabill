@@ -5,9 +5,11 @@ import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanConverter;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanDecoder;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanEncoder;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.Commodity;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.CommodityList;
@@ -22,7 +24,7 @@ public class CommodityServiceJS extends ServiceJS {
 
 			@Override
 			public void onSuccess(CommodityDTO result) {
-				AutoBean<Commodity> c = AutoBeanConverter.convert(result);
+				AutoBean<Commodity> c = AutoBeanEncoder.encode(result);
 				BridgeUtils.invokeJSCallback(c, callback);
 			}
 		});
@@ -38,7 +40,7 @@ public class CommodityServiceJS extends ServiceJS {
 				CommodityList il = AutoBeanMaker.INSTANCE.makeCommodityList().as();
 				List<Commodity> commodities = new ArrayList<Commodity>(result.size());
 				for (CommodityDTO id : result) {
-					commodities.add(AutoBeanConverter.convert(id).as());
+					commodities.add(AutoBeanEncoder.encode(id).as());
 				}
 				il.setCommodities(commodities);
 				
@@ -48,9 +50,17 @@ public class CommodityServiceJS extends ServiceJS {
 		});
 	}
 
-	public static void add(String commodityJson, JavaScriptObject callback){
-//		AutoBean<Commodity> bean = AutoBeanCodex.decode(AutoBeanMaker.INSTANCE, Commodity.class, commodityJson);
-//		SERVER_FACADE.getCommodityGwtService().add(bean., callback);
+	public static void add(String commodityJson, final JavaScriptObject callback){
+		AutoBean<Commodity> bean = AutoBeanCodex.decode(AutoBeanMaker.INSTANCE, Commodity.class, commodityJson);
+		CommodityDTO c = AutoBeanDecoder.decode(bean.as());
+		
+		SERVER_FACADE.getCommodityGwtService().add(c, new ManagedAsyncCallback<Long>() {
+
+			@Override
+			public void onSuccess(Long result) {
+				BridgeUtils.invokeJSCallback(String.valueOf(result), callback);
+			}
+		});
 		
 	}
 

@@ -6,7 +6,7 @@ import java.util.List;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanConverter;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanEncoder;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.Client;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.ClientsList;
@@ -20,7 +20,7 @@ public class BusinessServiceJS extends ServiceJS {
 		SERVER_FACADE.getBusinessService().get(Long.parseLong(businessID), new ManagedAsyncCallback<BusinessDTO>() {
 			@Override
 			public void onSuccess(BusinessDTO result) {
-				BridgeUtils.invokeJSCallback(AutoBeanConverter.convert(result), callback);		
+				BridgeUtils.invokeJSCallback(AutoBeanEncoder.encode(result), callback);		
 			}
 		});
 	}
@@ -32,7 +32,7 @@ public class BusinessServiceJS extends ServiceJS {
 			public void onSuccess(List<ClientDTO> result) {
 				List<Client> clients = new ArrayList<Client>();
 				for (ClientDTO c : result) {
-					clients.add(AutoBeanConverter.convert(c).as());
+					clients.add(AutoBeanEncoder.encode(c).as());
 				}
 				
 				ClientsList list = AutoBeanMaker.INSTANCE.makeClientsList().as();

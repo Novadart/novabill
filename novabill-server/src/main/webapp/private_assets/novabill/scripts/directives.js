@@ -232,6 +232,37 @@ angular.module('novabill.directives', ['novabill.utils'])
 }])
 
 
+/*
+ * Smart Tax attribute. 
+ * User can insert , or . to separate decimals
+ * Value mast be between 0 and 100
+ */
+.directive('smartTax', ['NRegExp', function(NRegExp) {
+	return {
+		require: 'ngModel',
+		restrict: 'A',
+		link: function(scope, elm, attrs, ctrl) {
+			ctrl.$parsers.unshift(function(viewValue) {
+				if (NRegExp.float.test(viewValue)) {
+					var floatVal = parseFloat(viewValue.replace(',', '.'));
+					if(floatVal >= 0 && floatVal < 100){
+						ctrl.$setValidity('float', true);
+						return floatVal;
+					} else {
+						ctrl.$setValidity('float', false);
+						return undefined;
+					}
+					
+				} else {
+					ctrl.$setValidity('float', false);
+					return undefined;
+				}
+			});
+		}
+	};
+}])
+
+
 
 /*
  * Edit Commodity Dialog
@@ -246,19 +277,22 @@ angular.module('novabill.directives', ['novabill.utils'])
 		controller : function($scope, NEditCommodityDialogAPI){
 			$scope.api = NEditCommodityDialogAPI;
 
-			$scope.save = function(){
+			function hideAndReset(){
 				NEditCommodityDialogAPI.hide();
-				
-				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
-				$('body').removeClass('modal-open');
-				$('.modal-backdrop').remove();
-				$scope.api.callback.onOk();
+				$scope.commodity = null;
+				$scope.form.$setPristine();
+			};
+			
+			$scope.save = function(){
+				$scope.api.callback.onSave($scope.commodity);
+				hideAndReset();
 			};
 
 			$scope.cancel = function(){
-				NEditCommodityDialogAPI.hide();
+				hideAndReset();
 				$scope.api.callback.onCancel();
 			};
+			
 		},
 
 		restrict: 'E',
@@ -278,7 +312,7 @@ angular.module('novabill.directives', ['novabill.utils'])
 			onSave : function(commodity){},
 			onCancel : function(){}
 		},
-
+		
 		//functions
 		init : function(commodity, callback){
 			this.commodity = commodity;
@@ -291,6 +325,10 @@ angular.module('novabill.directives', ['novabill.utils'])
 
 		hide : function(){
 			$('#editCommodityDialog').modal('hide');
+			
+			// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
+			$('body').removeClass('modal-open');
+			$('.modal-backdrop').remove();
 		}
 
 	};
@@ -316,10 +354,6 @@ angular.module('novabill.directives', ['novabill.utils'])
 
 			$scope.ok = function(){
 				NRemovalDialogAPI.hide();
-				
-				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
-				$('body').removeClass('modal-open');
-				$('.modal-backdrop').remove();
 				$scope.api.callback.onOk();
 			};
 
@@ -343,7 +377,7 @@ angular.module('novabill.directives', ['novabill.utils'])
 		message : '',
 
 		callback : {
-			onOk : function(){},
+			onOk : function(commodity){},
 			onCancel : function(){}
 		},
 
@@ -359,6 +393,10 @@ angular.module('novabill.directives', ['novabill.utils'])
 
 		hide : function(){
 			$('#removalDialog').modal('hide');
+			
+			// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
+			$('body').removeClass('modal-open');
+			$('.modal-backdrop').remove();
 		}
 
 	};

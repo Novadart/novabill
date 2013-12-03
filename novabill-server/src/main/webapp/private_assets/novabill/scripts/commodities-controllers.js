@@ -11,6 +11,21 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 	
 	$scope.commodities = null;
 	
+	NEditCommodityDialogAPI.init(null, {
+		onSave : function(commodity){
+			GWT_Server.commodity.add(JSON.stringify(commodity), {
+				onSuccess : function(newId){
+					console.log('Added new Commodity '+newId);
+					$scope.loadCommodities();
+				},
+
+				onFailure : function(error){}
+			});
+		},
+		
+		onCancel : function(){}
+	});
+	
 	$scope.newCommodity = function(){
 		NEditCommodityDialogAPI.show();
 	};
