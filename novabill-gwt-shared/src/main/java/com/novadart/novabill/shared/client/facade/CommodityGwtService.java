@@ -35,6 +35,4 @@ public interface CommodityGwtService extends RemoteService {
 	
 	public void removePrice(Long businessID, Long priceListID, Long commodityID) throws NotAuthenticatedException, DataAccessException;
 	
-	public Map<String, PriceDTO> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException;
-	
 }

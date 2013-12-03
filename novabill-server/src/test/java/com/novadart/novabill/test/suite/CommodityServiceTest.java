@@ -238,10 +238,10 @@ public class CommodityServiceTest extends GWTServiceTest {
      }
      
      @Test
-     public void getPricesTest() throws NotAuthenticatedException, DataAccessException{
+     public void getPricesTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
     	 Long businessID = authenticatedPrincipal.getBusiness().getId();
     	 Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
-    	 Map<String, PriceDTO> prices = commodityService.getPrices(businessID, commodityID);
+    	 Map<String, PriceDTO> prices = commodityService.get(businessID, commodityID).getPrices();
     	 List<PriceListDTO> priceLists = businessService.getPriceLists(businessID);
     	 for(PriceListDTO pl: priceLists)
     		 assertTrue(prices.containsKey(pl.getName()));
