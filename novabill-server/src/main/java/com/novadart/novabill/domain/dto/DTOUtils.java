@@ -29,42 +29,42 @@ public class DTOUtils {
 	 *	Conversion 
 	 */
 	
-	public static <T1 extends AccountingDocumentDTO, T2 extends AccountingDocument> List<T1> toDTOList(List<T2> docs, ToDTOConverter<T1, T2> converter){
+	public static <T1 extends AccountingDocumentDTO, T2 extends AccountingDocument> List<T1> toDTOList(List<T2> docs, ToDTOConverter<T1, T2> converter, boolean copyItems){
 		List<T1> docDTOs = new ArrayList<T1>();
 		for(T2 doc: docs)
-			docDTOs.add(converter.toDTO(doc));
+			docDTOs.add(converter.toDTO(doc, copyItems));
 		return docDTOs;
 	}
 	
 	public interface ToDTOConverter<T1 extends AccountingDocumentDTO, T2 extends AccountingDocument>{
-		public T1 toDTO(T2 doc);
+		public T1 toDTO(T2 doc, boolean copyItems);
 	}
 	
 	public static ToDTOConverter<InvoiceDTO, Invoice> invoiceDTOConverter = new ToDTOConverter<InvoiceDTO, Invoice>(){
 		@Override
-		public InvoiceDTO toDTO(Invoice doc){
-			return InvoiceDTOFactory.toDTO(doc);
+		public InvoiceDTO toDTO(Invoice doc, boolean copyItems){
+			return InvoiceDTOFactory.toDTO(doc, copyItems);
 		}
 	};
 	
 	public static ToDTOConverter<CreditNoteDTO, CreditNote> creditNoteDTOConverter = new ToDTOConverter<CreditNoteDTO, CreditNote>(){
 		@Override
-		public CreditNoteDTO toDTO(CreditNote doc){
-			return CreditNoteDTOFactory.toDTO(doc);
+		public CreditNoteDTO toDTO(CreditNote doc, boolean copyItems){
+			return CreditNoteDTOFactory.toDTO(doc, copyItems);
 		}
 	};
 	
 	public static ToDTOConverter<EstimationDTO, Estimation> estimationDTOConverter = new ToDTOConverter<EstimationDTO, Estimation>() {
 		@Override
-		public EstimationDTO toDTO(Estimation doc) {
-			return EstimationDTOFactory.toDTO(doc);
+		public EstimationDTO toDTO(Estimation doc, boolean copyItems) {
+			return EstimationDTOFactory.toDTO(doc, copyItems);
 		}
 	};
 	
 	public static ToDTOConverter<TransportDocumentDTO, TransportDocument> transportDocDTOConverter = new ToDTOConverter<TransportDocumentDTO, TransportDocument>() {
 		@Override
-		public TransportDocumentDTO toDTO(TransportDocument doc) {
-			return TransportDocumentDTOFactory.toDTO((TransportDocument)doc);
+		public TransportDocumentDTO toDTO(TransportDocument doc, boolean copyItems) {
+			return TransportDocumentDTOFactory.toDTO((TransportDocument)doc, copyItems);
 		}
 	};
 	/*

@@ -16,7 +16,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 @RemoteServiceRelativePath("invoice.rpc")
 public interface InvoiceGwtService extends RemoteService {
 
-	public InvoiceDTO get(Long id, Integer year) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
+	public InvoiceDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
 
 	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException;
 

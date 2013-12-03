@@ -16,7 +16,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 @RemoteServiceRelativePath("estimation.rpc")
 public interface EstimationGwtService extends RemoteService {
 	
-	public EstimationDTO get(Long id, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
+	public EstimationDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	
 	public List<EstimationDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	

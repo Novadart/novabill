@@ -23,8 +23,8 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 	@Autowired
 	private InvoiceService invoiceService;
 	
-	public InvoiceDTO get(Long id, Integer year) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
-		return invoiceService.get(id, year);
+	public InvoiceDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+		return invoiceService.get(id);
 	}
 
 	public PageDTO<InvoiceDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {

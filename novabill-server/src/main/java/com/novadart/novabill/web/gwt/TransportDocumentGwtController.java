@@ -23,8 +23,8 @@ public class TransportDocumentGwtController extends AbstractGwtController implem
 	@Autowired
 	private TransportDocumentService transportDocService;
 	
-	public TransportDocumentDTO get(Long id, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return transportDocService.get(id, year);
+	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return transportDocService.get(id);
 	}
 
 	public List<TransportDocumentDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {

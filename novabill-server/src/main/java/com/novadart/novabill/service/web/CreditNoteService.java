@@ -41,8 +41,11 @@ public class CreditNoteService {
 	private AccountingDocumentValidator validator;
 
 	@PreAuthorize("T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.business?.id == principal.business.id")
-	public CreditNoteDTO get(Long id, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return DTOUtils.findDocumentInCollection(businessService.getCreditNotes(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), id);
+	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		CreditNote creditNote = CreditNote.findCreditNote(id);
+		if(creditNote == null)
+			throw new NoSuchObjectException();
+		return CreditNoteDTOFactory.toDTO(creditNote, true);
 	}
 
 	@PreAuthorize("#businessID == principal.business.id")

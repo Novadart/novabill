@@ -23,8 +23,8 @@ public class CreditNoteGwtController extends AbstractGwtController implements Cr
 	@Autowired
 	private CreditNoteService creditNoteService;
 
-	public CreditNoteDTO get(Long id, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return creditNoteService.get(id, year);
+	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return creditNoteService.get(id);
 	}
 
 	public PageDTO<CreditNoteDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {

@@ -143,25 +143,25 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<InvoiceDTO> getInvoices(Long businessID, Integer year){
-		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchInvoicesEagerly(year)), DTOUtils.invoiceDTOConverter);
+		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchInvoicesEagerly(year)), DTOUtils.invoiceDTOConverter, false);
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<CreditNoteDTO> getCreditNotes(Long businessID, Integer year) throws NotAuthenticatedException {
-		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchCreditNotesEagerly(year)), DTOUtils.creditNoteDTOConverter);
+		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchCreditNotesEagerly(year)), DTOUtils.creditNoteDTOConverter, false);
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<EstimationDTO> getEstimations(Long businessID, Integer year) throws NotAuthenticatedException {
-		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchEstimationsEagerly(year)), DTOUtils.estimationDTOConverter);
+		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchEstimationsEagerly(year)), DTOUtils.estimationDTOConverter, false);
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<TransportDocumentDTO> getTransportDocuments(Long businessID, Integer year) throws NotAuthenticatedException {
-		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchTransportDocumentsEagerly(year)), DTOUtils.transportDocDTOConverter);
+		return DTOUtils.toDTOList(AccountingDocument.sortAccountingDocuments(Business.findBusiness(businessID).fetchTransportDocumentsEagerly(year)), DTOUtils.transportDocDTOConverter, false);
 	}
 	
 	@Override

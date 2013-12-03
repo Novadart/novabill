@@ -64,20 +64,20 @@ public class EstimationServiceTest extends GWTServiceTest {
 	@Test
 	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long estimationID = authenticatedPrincipal.getBusiness().getEstimations().iterator().next().getId();
-		EstimationDTO expectedDTO = EstimationDTOFactory.toDTO(Estimation.findEstimation(estimationID));
-		EstimationDTO actualDTO = estimationService.get(estimationID, getYear());
+		EstimationDTO expectedDTO = EstimationDTOFactory.toDTO(Estimation.findEstimation(estimationID), true);
+		EstimationDTO actualDTO = estimationService.get(estimationID);
 		assertTrue(TestUtils.accountingDocumentComparator.equal(actualDTO, expectedDTO));
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long estimationID = Business.findBusiness(getUnathorizedBusinessID()).getEstimations().iterator().next().getId();
-		estimationService.get(estimationID, getYear());
+		estimationService.get(estimationID);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAuthorizedEstimationIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		estimationService.get(null, getYear());
+		estimationService.get(null);
 	}
 	
 	@Test
@@ -101,7 +101,7 @@ public class EstimationServiceTest extends GWTServiceTest {
 		Long clientID = new Long(testProps.get("clientWithEstimationsID"));
 		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(estimationService.getAllForClient(clientID, getYear()));
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		List<AccountingDocumentDTO> expected = DTOUtils.toDTOList(new ArrayList(Client.findClient(clientID).getEstimations()), DTOUtils.estimationDTOConverter); 
+		List<AccountingDocumentDTO> expected = DTOUtils.toDTOList(new ArrayList(Client.findClient(clientID).getEstimations()), DTOUtils.estimationDTOConverter, false); 
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.accountingDocumentComparator));
 	}
 	
@@ -178,7 +178,7 @@ public class EstimationServiceTest extends GWTServiceTest {
 	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		Estimation expectedEstimation = authenticatedPrincipal.getBusiness().getEstimations().iterator().next();
 		expectedEstimation.setNote("Temporary note for this estimation");
-		estimationService.update(EstimationDTOFactory.toDTO(expectedEstimation));
+		estimationService.update(EstimationDTOFactory.toDTO(expectedEstimation, true));
 		Estimation.entityManager().flush();
 		Estimation actualEstimation = Estimation.findEstimation(expectedEstimation.getId());
 		assertEquals(actualEstimation.getNote(), "Temporary note for this estimation");
@@ -193,7 +193,7 @@ public class EstimationServiceTest extends GWTServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		Estimation estimation = authenticatedPrincipal.getBusiness().getEstimations().iterator().next();
-		EstimationDTO estDTO = EstimationDTOFactory.toDTO(estimation);
+		EstimationDTO estDTO = EstimationDTOFactory.toDTO(estimation, true);
 		estDTO.setId(null);
 		estimationService.update(estDTO);
 	}
@@ -201,18 +201,18 @@ public class EstimationServiceTest extends GWTServiceTest {
 	@Test
 	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		EstimationDTO estDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()));
+		EstimationDTO estDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
 		estDTO.setClient(ClientDTOFactory.toDTO(client));
 		estDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = estimationService.add(estDTO);
 		Estimation.entityManager().flush();
-		assertTrue(TestUtils.accountingDocumentComparatorIgnoreID.equal(estDTO, EstimationDTOFactory.toDTO(Estimation.findEstimation(id))));
+		assertTrue(TestUtils.accountingDocumentComparatorIgnoreID.equal(estDTO, EstimationDTOFactory.toDTO(Estimation.findEstimation(id), true)));
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void addUnathorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		EstimationDTO estDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(Business.findBusiness(getUnathorizedBusinessID()).getNextEstimationDocumentID()));
+		EstimationDTO estDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(Business.findBusiness(getUnathorizedBusinessID()).getNextEstimationDocumentID()), true);
 		estDTO.setClient(ClientDTOFactory.toDTO(client));
 		estDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		estimationService.add(estDTO);
@@ -226,7 +226,7 @@ public class EstimationServiceTest extends GWTServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void addAuthorizedEstimationDTOIDNotNull() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		EstimationDTO estDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()));
+		EstimationDTO estDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
 		estDTO.setClient(ClientDTOFactory.toDTO(client));
 		estDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		estDTO.setId(1l);
@@ -236,7 +236,7 @@ public class EstimationServiceTest extends GWTServiceTest {
 	@Test
 	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, AuthorizationException, InstantiationException{
 		try{
-			EstimationDTO estDTO = EstimationDTOFactory.toDTO(TestUtils.createInvalidEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()));
+			EstimationDTO estDTO = EstimationDTOFactory.toDTO(TestUtils.createInvalidEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
 			estDTO.setClient(ClientDTOFactory.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
 			estDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 			estimationService.add(estDTO);

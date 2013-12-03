@@ -2,6 +2,7 @@ package com.novadart.novabill.service.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,11 @@ public class EstimationService {
 	private AccountingDocumentValidator validator;
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.Estimation).findEstimation(#id)?.business?.id == principal.business.id")
-	public EstimationDTO get(Long id, Integer year) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
-		return DTOUtils.findDocumentInCollection(businessService.getEstimations(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), id);
+	public EstimationDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
+		Estimation estimation = Estimation.findEstimation(id);
+		if(estimation == null)
+			throw new NoSuchElementException();
+		return EstimationDTOFactory.toDTO(estimation, true);
 	}
 	
 	private static class EqualsClientIDPredicate implements Predicate<EstimationDTO>{

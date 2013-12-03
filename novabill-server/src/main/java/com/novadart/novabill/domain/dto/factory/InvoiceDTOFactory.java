@@ -5,11 +5,11 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
 public class InvoiceDTOFactory extends AbstractInvoiceDTOFactory {
 	
-	public static InvoiceDTO toDTO(Invoice invoice){
+	public static InvoiceDTO toDTO(Invoice invoice, boolean copyItems){
 		if(invoice == null)
 			return null;
 		InvoiceDTO invoiceDTO = new InvoiceDTO(); 
-		AbstractInvoiceDTOFactory.copyToDTO(invoice, invoiceDTO);
+		AbstractInvoiceDTOFactory.copyToDTO(invoice, invoiceDTO, copyItems);
 		invoiceDTO.setPaymentTypeName(invoice.getPaymentTypeName());
 		invoiceDTO.setPaymentDateGenerator(invoice.getPaymentDateGenerator());
 		invoiceDTO.setPaymentDateDelta(invoice.getPaymentDateDelta());

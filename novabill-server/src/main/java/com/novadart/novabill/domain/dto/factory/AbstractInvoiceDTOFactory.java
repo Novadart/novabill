@@ -5,8 +5,8 @@ import com.novadart.novabill.shared.client.dto.AbstractInvoiceDTO;
 
 public class AbstractInvoiceDTOFactory extends AccountingDocumentDTOFactory {
 	
-	protected static void copyToDTO(AbstractInvoice abstractInvoice, AbstractInvoiceDTO abstractInvoiceDTO){
-		AccountingDocumentDTOFactory.copyToDTO(abstractInvoice, abstractInvoiceDTO);
+	protected static void copyToDTO(AbstractInvoice abstractInvoice, AbstractInvoiceDTO abstractInvoiceDTO, boolean copyItems){
+		AccountingDocumentDTOFactory.copyToDTO(abstractInvoice, abstractInvoiceDTO, copyItems);
 		abstractInvoiceDTO.setPaymentDueDate(abstractInvoice.getPaymentDueDate());
 		abstractInvoiceDTO.setPayed(abstractInvoice.getPayed());
 	}

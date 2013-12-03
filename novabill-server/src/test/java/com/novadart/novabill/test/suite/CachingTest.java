@@ -227,7 +227,7 @@ public class CachingTest extends GWTServiceTest {
 		BigDecimal totals = businessGwtService.getTotalAfterTaxesForYear(businessID, new Integer(testProps.get("year")));
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class));
+		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class), true);
 		invDTO.setClient(ClientDTOFactory.toDTO(client));
 		invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		invoiceService.add(invDTO);
@@ -252,7 +252,7 @@ public class CachingTest extends GWTServiceTest {
 		
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		inv.setNote("Temporary note for this invoice");
-		invoiceService.update(InvoiceDTOFactory.toDTO(inv));
+		invoiceService.update(InvoiceDTOFactory.toDTO(inv, true));
 		Invoice.entityManager().flush();
 		
 		Set<InvoiceDTO> nonCachedResult = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear()));
@@ -297,7 +297,7 @@ public class CachingTest extends GWTServiceTest {
 		try {
 			Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 			inv.setNote(StringUtils.leftPad("1", 2000, '1'));
-			invoiceService.update(InvoiceDTOFactory.toDTO(inv));
+			invoiceService.update(InvoiceDTOFactory.toDTO(inv, true));
 			Invoice.entityManager().flush();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -343,7 +343,7 @@ public class CachingTest extends GWTServiceTest {
 		List<CreditNoteDTO> result = businessGwtService.getCreditNotes(businessID, getYear());
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		CreditNoteDTO credNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class));
+		CreditNoteDTO credNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class), true);
 		credNoteDTO.setClient(ClientDTOFactory.toDTO(client));
 		credNoteDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		creditNoteService.add(credNoteDTO);
@@ -363,7 +363,7 @@ public class CachingTest extends GWTServiceTest {
 		
 		CreditNote credNote = authenticatedPrincipal.getBusiness().getCreditNotes().iterator().next();
 		credNote.setNote("Temporary note for this credit note");
-		creditNoteService.update(CreditNoteDTOFactory.toDTO(credNote));
+		creditNoteService.update(CreditNoteDTOFactory.toDTO(credNote, true));
 		CreditNote.entityManager().flush();
 		
 		List<CreditNoteDTO> nonCachedResult = businessGwtService.getCreditNotes(businessID, getYear());
@@ -400,7 +400,7 @@ public class CachingTest extends GWTServiceTest {
 		List<EstimationDTO> result = businessGwtService.getEstimations(businessID, getYear());
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		EstimationDTO estimationDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()));
+		EstimationDTO estimationDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
 		estimationDTO.setClient(ClientDTOFactory.toDTO(client));
 		estimationDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		estimationService.add(estimationDTO);
@@ -419,7 +419,7 @@ public class CachingTest extends GWTServiceTest {
 		
 		Estimation estimation = authenticatedPrincipal.getBusiness().getEstimations().iterator().next();
 		estimation.setNote("Temporary note for this estimation");
-		estimationService.update(EstimationDTOFactory.toDTO(estimation));
+		estimationService.update(EstimationDTOFactory.toDTO(estimation, true));
 		Estimation.entityManager().flush();
 		
 		List<EstimationDTO> nonCachedResult = businessGwtService.getEstimations(businessID, getYear());
@@ -456,7 +456,7 @@ public class CachingTest extends GWTServiceTest {
 		List<TransportDocumentDTO> result = businessGwtService.getTransportDocuments(businessID, getYear());
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()));
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
 		transDocDTO.setClient(ClientDTOFactory.toDTO(client));
 		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		transDocService.add(transDocDTO);
@@ -476,7 +476,7 @@ public class CachingTest extends GWTServiceTest {
 		
 		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		transDoc.setNote("Temporary note for this transport document");
-		transDocService.update(TransportDocumentDTOFactory.toDTO(transDoc));
+		transDocService.update(TransportDocumentDTOFactory.toDTO(transDoc, true));
 		TransportDocument.entityManager().flush();
 		
 		List<TransportDocumentDTO> nonCachedResult = businessGwtService.getTransportDocuments(businessID, getYear());

@@ -23,8 +23,8 @@ public class EstimationGwtController extends AbstractGwtController implements Es
 	@Autowired
 	private EstimationService estimationService;
 	
-	public EstimationDTO get(Long id, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return estimationService.get(id, year);
+	public EstimationDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return estimationService.get(id);
 	}
 
 	public List<EstimationDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {

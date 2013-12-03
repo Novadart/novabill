@@ -43,8 +43,11 @@ public class TransportDocumentService {
 	private AccountingDocumentValidator validator;
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#id)?.business?.id == principal.business.id")
-	public TransportDocumentDTO get(Long id, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return DTOUtils.findDocumentInCollection(businessService.getTransportDocuments(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), id);
+	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		TransportDocument transDoc = TransportDocument.findTransportDocument(id);
+		if(transDoc == null)
+			throw new NoSuchObjectException();
+		return TransportDocumentDTOFactory.toDTO(transDoc, true);
 	}
 	
 	private static class EqualsClientIDPredicate implements Predicate<TransportDocumentDTO>{

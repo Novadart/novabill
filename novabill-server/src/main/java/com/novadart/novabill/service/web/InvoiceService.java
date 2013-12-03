@@ -2,6 +2,7 @@ package com.novadart.novabill.service.web;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.NoSuchElementException;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,8 +42,11 @@ public class InvoiceService {
 	private BusinessService businessService;
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == principal.business.id")
-	public InvoiceDTO get(Long id, Integer year) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
-		return DTOUtils.findDocumentInCollection(businessService.getInvoices(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), id);
+	public InvoiceDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
+		Invoice invoice = Invoice.findInvoice(id);
+		if(invoice == null)
+			throw new NoSuchElementException();
+		return InvoiceDTOFactory.toDTO(invoice, true);
 	}
 
 	@Transactional(readOnly = true)

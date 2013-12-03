@@ -5,11 +5,11 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 
 public class CreditNoteDTOFactory extends AbstractInvoiceDTOFactory {
 	
-	public static CreditNoteDTO toDTO(CreditNote creditNote){
+	public static CreditNoteDTO toDTO(CreditNote creditNote, boolean copyItems){
 		if(creditNote == null)
 			return null;
 		CreditNoteDTO creditNoteDTO = new CreditNoteDTO(); 
-		AbstractInvoiceDTOFactory.copyToDTO(creditNote, creditNoteDTO);
+		AbstractInvoiceDTOFactory.copyToDTO(creditNote, creditNoteDTO, copyItems);
 		creditNoteDTO.setBusiness(BusinessDTOFactory.toDTO(creditNote.getBusiness()));
 		creditNoteDTO.setClient(ClientDTOFactory.toDTO(creditNote.getClient()));
 		return creditNoteDTO;
