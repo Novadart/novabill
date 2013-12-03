@@ -26,13 +26,13 @@ public class DemoTransportDocumentService implements TransportDocumentGwtService
 	}
 
 	@Override
-	public void getAllForClient(Long clientID,
+	public void getAllForClient(Long clientID, Integer year,
 			AsyncCallback<List<TransportDocumentDTO>> callback) {
 		callback.onSuccess(Data.getDocsList(clientID, TransportDocumentDTO.class));
 	}
 
 	@Override
-	public void getAllForClientInRange(Long clientID, Integer start,
+	public void getAllForClientInRange(Long clientID, Integer year, Integer start,
 			Integer length,
 			AsyncCallback<PageDTO<TransportDocumentDTO>> callback) {
 		// TODO Auto-generated method stub
@@ -40,7 +40,7 @@ public class DemoTransportDocumentService implements TransportDocumentGwtService
 	}
 
 	@Override
-	public void getAllInRange(Long businessID, Integer start, Integer length,
+	public void getAllInRange(Long businessID, Integer year, Integer start, Integer length,
 			AsyncCallback<PageDTO<TransportDocumentDTO>> callback) {
 		PageDTO<TransportDocumentDTO> page = new PageDTO<TransportDocumentDTO>();
 		List<TransportDocumentDTO> docs = Data.getDocsList(TransportDocumentDTO.class);

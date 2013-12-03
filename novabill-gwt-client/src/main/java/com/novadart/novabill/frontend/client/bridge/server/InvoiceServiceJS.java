@@ -20,8 +20,8 @@ import com.novadart.novabill.shared.client.dto.PageDTO;
 public class InvoiceServiceJS extends ServiceJS {
 
 	
-	public static void getAllForClient(String id, final JavaScriptObject callback) {
-		SERVER_FACADE.getInvoiceService().getAllForClient(Long.parseLong(id), new ManagedAsyncCallback<List<InvoiceDTO>>() {
+	public static void getAllForClient(String id, String year, final JavaScriptObject callback) {
+		SERVER_FACADE.getInvoiceService().getAllForClient(Long.parseLong(id), Integer.parseInt(year), new ManagedAsyncCallback<List<InvoiceDTO>>() {
 
 			@Override
 			public void onSuccess(List<InvoiceDTO> result) {
@@ -37,8 +37,8 @@ public class InvoiceServiceJS extends ServiceJS {
 	}
 
 	
-	public static void getAllInRange(String businessID, String start, String length, final JavaScriptObject callback) {
-		SERVER_FACADE.getInvoiceService().getAllInRange(Long.parseLong(businessID), Integer.parseInt(start), Integer.parseInt(length), 
+	public static void getAllInRange(String businessID, String year, String start, String length, final JavaScriptObject callback) {
+		SERVER_FACADE.getInvoiceService().getAllInRange(Long.parseLong(businessID), Integer.parseInt(year), Integer.parseInt(start), Integer.parseInt(length), 
 				new ManagedAsyncCallback<PageDTO<InvoiceDTO>>() {
 
 			@Override

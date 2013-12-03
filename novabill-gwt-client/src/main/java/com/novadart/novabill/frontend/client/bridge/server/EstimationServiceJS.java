@@ -18,8 +18,8 @@ import com.novadart.novabill.shared.client.dto.PageDTO;
 
 public class EstimationServiceJS extends ServiceJS {
 	
-	public static void getAllForClient(String id, final JavaScriptObject callback) {
-		SERVER_FACADE.getEstimationService().getAllForClient(Long.parseLong(id), new ManagedAsyncCallback<List<EstimationDTO>>() {
+	public static void getAllForClient(String id, String year, final JavaScriptObject callback) {
+		SERVER_FACADE.getEstimationService().getAllForClient(Long.parseLong(id), Integer.parseInt(year), new ManagedAsyncCallback<List<EstimationDTO>>() {
 
 			@Override
 			public void onSuccess(List<EstimationDTO> result) {
@@ -35,8 +35,8 @@ public class EstimationServiceJS extends ServiceJS {
 	}
 
 	
-	public static void getAllInRange(String businessID, String start, String length, final JavaScriptObject callback) {
-		SERVER_FACADE.getEstimationService().getAllInRange(Long.parseLong(businessID), Integer.parseInt(start), Integer.parseInt(length), 
+	public static void getAllInRange(String businessID, String year, String start, String length, final JavaScriptObject callback) {
+		SERVER_FACADE.getEstimationService().getAllInRange(Long.parseLong(businessID), Integer.parseInt(year), Integer.parseInt(start), Integer.parseInt(length), 
 				new ManagedAsyncCallback<PageDTO<EstimationDTO>>() {
 
 			@Override

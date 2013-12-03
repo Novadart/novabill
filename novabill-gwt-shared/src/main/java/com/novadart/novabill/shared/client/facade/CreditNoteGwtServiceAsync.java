@@ -1,31 +1,86 @@
 package com.novadart.novabill.shared.client.facade;
 
-import java.util.List;
-
+import com.google.gwt.core.client.GWT;
 import com.google.gwt.user.client.rpc.AsyncCallback;
-import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
-import com.novadart.novabill.shared.client.dto.PageDTO;
 
-public interface CreditNoteGwtServiceAsync {
+public interface CreditNoteGwtServiceAsync
+{
 
-	void add(CreditNoteDTO creditNoteDTO, AsyncCallback<Long> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.CreditNoteGwtService
+     */
+    void get( java.lang.Long id, AsyncCallback<com.novadart.novabill.shared.client.dto.CreditNoteDTO> callback );
 
-	void get(Long id, AsyncCallback<CreditNoteDTO> callback);
 
-	void getAllForClient(Long clientID,
-			AsyncCallback<List<CreditNoteDTO>> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.CreditNoteGwtService
+     */
+    void getAllInRange( java.lang.Long businessID, java.lang.Integer year, java.lang.Integer start, java.lang.Integer length, AsyncCallback<com.novadart.novabill.shared.client.dto.PageDTO<com.novadart.novabill.shared.client.dto.CreditNoteDTO>> callback );
 
-	void getAllForClientInRange(Long id, int start, int length,
-			AsyncCallback<PageDTO<CreditNoteDTO>> callback);
 
-	void getAllInRange(Long businessID, Integer start, Integer length,
-			AsyncCallback<PageDTO<CreditNoteDTO>> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.CreditNoteGwtService
+     */
+    void getAllForClient( java.lang.Long clientID, java.lang.Integer year, AsyncCallback<java.util.List<com.novadart.novabill.shared.client.dto.CreditNoteDTO>> callback );
 
-	void remove(Long businessID, Long clientID, Long creditNoteID,
-			AsyncCallback<Void> callback);
 
-	void update(CreditNoteDTO creditNoteDTO, AsyncCallback<Void> callback);
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.CreditNoteGwtService
+     */
+    void getAllForClientInRange( java.lang.Long id, java.lang.Integer year, int start, int length, AsyncCallback<com.novadart.novabill.shared.client.dto.PageDTO<com.novadart.novabill.shared.client.dto.CreditNoteDTO>> callback );
 
-	void getNextCreditNoteDocumentID(AsyncCallback<Long> callback);
-	
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.CreditNoteGwtService
+     */
+    void add( com.novadart.novabill.shared.client.dto.CreditNoteDTO creditNoteDTO, AsyncCallback<java.lang.Long> callback );
+
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.CreditNoteGwtService
+     */
+    void remove( java.lang.Long businessID, java.lang.Long clientID, java.lang.Long creditNoteID, AsyncCallback<Void> callback );
+
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.CreditNoteGwtService
+     */
+    void update( com.novadart.novabill.shared.client.dto.CreditNoteDTO creditNoteDTO, AsyncCallback<Void> callback );
+
+
+    /**
+     * GWT-RPC service  asynchronous (client-side) interface
+     * @see com.novadart.novabill.shared.client.facade.CreditNoteGwtService
+     */
+    void getNextCreditNoteDocumentID( AsyncCallback<java.lang.Long> callback );
+
+
+    /**
+     * Utility class to get the RPC Async interface from client-side code
+     */
+    public static final class Util 
+    { 
+        private static CreditNoteGwtServiceAsync instance;
+
+        public static final CreditNoteGwtServiceAsync getInstance()
+        {
+            if ( instance == null )
+            {
+                instance = (CreditNoteGwtServiceAsync) GWT.create( CreditNoteGwtService.class );
+            }
+            return instance;
+        }
+
+        private Util()
+        {
+            // Utility class should not be instanciated
+        }
+    }
 }

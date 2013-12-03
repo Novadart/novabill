@@ -26,20 +26,20 @@ public class DemoEstimationService implements EstimationGwtServiceAsync {
 	}
 
 	@Override
-	public void getAllForClient(Long clientID,
+	public void getAllForClient(Long clientID, Integer year,
 			AsyncCallback<List<EstimationDTO>> callback) {
 		callback.onSuccess(Data.getDocsList(clientID, EstimationDTO.class));
 	}
 
 	@Override
-	public void getAllForClientInRange(Long clientID, int start, int length,
+	public void getAllForClientInRange(Long clientID, Integer year, int start, int length,
 			AsyncCallback<PageDTO<EstimationDTO>> callback) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void getAllInRange(Long businessID, int start, int length,
+	public void getAllInRange(Long businessID, Integer year, int start, int length,
 			AsyncCallback<PageDTO<EstimationDTO>> callback) {
 		PageDTO<EstimationDTO> page = new PageDTO<EstimationDTO>();
 		List<EstimationDTO> docs = Data.getDocsList(EstimationDTO.class);

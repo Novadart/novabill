@@ -1,8 +1,5 @@
 package com.novadart.novabill.frontend.client.presenter.center.client;
 
-import java.util.Collections;
-import java.util.List;
-
 import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -10,7 +7,6 @@ import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.SharedComparators;
 import com.novadart.novabill.frontend.client.event.ClientDeleteEvent;
 import com.novadart.novabill.frontend.client.event.ClientUpdateEvent;
 import com.novadart.novabill.frontend.client.event.ClientUpdateHandler;
@@ -173,67 +169,67 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 
 	private void loadInvoices(){
-		ServerFacade.INSTANCE.getInvoiceService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<InvoiceDTO>>() {
-
-			@Override
-			public void onSuccess(List<InvoiceDTO> result) {
-				if(result == null){
-					return;
-				}
-				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
-				invoiceDataProvider.setList(result);
-				invoiceDataProvider.refresh();
-			}
-		});
+//		ServerFacade.INSTANCE.getInvoiceService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<InvoiceDTO>>() {
+//
+//			@Override
+//			public void onSuccess(List<InvoiceDTO> result) {
+//				if(result == null){
+//					return;
+//				}
+//				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
+//				invoiceDataProvider.setList(result);
+//				invoiceDataProvider.refresh();
+//			}
+//		});
 	}
 
 
 	private void loadTransportDocuments(){
-		ServerFacade.INSTANCE.getTransportdocumentService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<TransportDocumentDTO>>() {
-
-			@Override
-			public void onSuccess(List<TransportDocumentDTO> result) {
-				if(result == null){
-					return;
-				}
-				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
-				transportDocumentDataProvider.setList(result);
-				transportDocumentDataProvider.refresh();
-			}
-
-		});
+//		ServerFacade.INSTANCE.getTransportdocumentService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<TransportDocumentDTO>>() {
+//
+//			@Override
+//			public void onSuccess(List<TransportDocumentDTO> result) {
+//				if(result == null){
+//					return;
+//				}
+//				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
+//				transportDocumentDataProvider.setList(result);
+//				transportDocumentDataProvider.refresh();
+//			}
+//
+//		});
 	}
 
 
 	private void loadCreditNotes(){
-		ServerFacade.INSTANCE.getCreditNoteService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<CreditNoteDTO>>() {
-
-			@Override
-			public void onSuccess(List<CreditNoteDTO> result) {
-				if(result == null){
-					return;
-				}
-				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
-				creditNoteDataProvider.setList(result);
-				creditNoteDataProvider.refresh();
-			}
-
-		});
+//		ServerFacade.INSTANCE.getCreditNoteService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<CreditNoteDTO>>() {
+//
+//			@Override
+//			public void onSuccess(List<CreditNoteDTO> result) {
+//				if(result == null){
+//					return;
+//				}
+//				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
+//				creditNoteDataProvider.setList(result);
+//				creditNoteDataProvider.refresh();
+//			}
+//
+//		});
 	}
 
 	private void loadEstimations(){
-		ServerFacade.INSTANCE.getEstimationService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<EstimationDTO>>() {
-
-			@Override
-			public void onSuccess(List<EstimationDTO> result) {
-				if(result == null){
-					return;
-				}
-				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
-				estimationDataProvider.setList(result);
-				estimationDataProvider.refresh();
-			}
-		});
+//		ServerFacade.INSTANCE.getEstimationService().getAllForClient(client.getId(), new ManagedAsyncCallback<List<EstimationDTO>>() {
+//
+//			@Override
+//			public void onSuccess(List<EstimationDTO> result) {
+//				if(result == null){
+//					return;
+//				}
+//				Collections.sort(result, SharedComparators.DOCUMENT_COMPARATOR);
+//				estimationDataProvider.setList(result);
+//				estimationDataProvider.refresh();
+//			}
+//		});
 	}
 
 	

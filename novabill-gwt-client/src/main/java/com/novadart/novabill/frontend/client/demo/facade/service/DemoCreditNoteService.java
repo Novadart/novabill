@@ -26,19 +26,19 @@ public class DemoCreditNoteService implements CreditNoteGwtServiceAsync {
 	}
 
 	@Override
-	public void getAllForClient(Long clientID,	AsyncCallback<List<CreditNoteDTO>> callback) {
+	public void getAllForClient(Long clientID, Integer year, AsyncCallback<List<CreditNoteDTO>> callback) {
 		callback.onSuccess(Data.getDocsList(clientID, CreditNoteDTO.class));
 	}
 
 	@Override
-	public void getAllForClientInRange(Long id, int start, int length,
+	public void getAllForClientInRange(Long id, Integer year, int start, int length,
 			AsyncCallback<PageDTO<CreditNoteDTO>> callback) {
 		// TODO Auto-generated method stub
 
 	}
 
 	@Override
-	public void getAllInRange(Long businessID, Integer start, Integer length,
+	public void getAllInRange(Long businessID, Integer year, Integer start, Integer length,
 			AsyncCallback<PageDTO<CreditNoteDTO>> callback) {
 		PageDTO<CreditNoteDTO> page = new PageDTO<CreditNoteDTO>();
 		List<CreditNoteDTO> docs = Data.getDocsList(CreditNoteDTO.class);
