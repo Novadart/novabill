@@ -18,6 +18,16 @@ public class CommodityDTO implements IsSerializable {
 	
 	private boolean service;
 	
+	private BusinessDTO business;
+	
+	public BusinessDTO getBusiness() {
+		return business;
+	}
+
+	public void setBusiness(BusinessDTO business) {
+		this.business = business;
+	}
+
 	public Long getId() {
 		return id;
 	}

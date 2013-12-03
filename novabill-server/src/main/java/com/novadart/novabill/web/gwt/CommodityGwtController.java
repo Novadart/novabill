@@ -1,6 +1,7 @@
 package com.novadart.novabill.web.gwt;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -63,5 +64,10 @@ public class CommodityGwtController extends AbstractGwtController implements Com
 	public void removePrice(Long businessID, Long priceListID, Long commodityID) throws NotAuthenticatedException, DataAccessException {
 		commodityService.removePrice(businessID, priceListID, commodityID);
 	}
-	
+
+	@Override
+	public Map<String, PriceDTO> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+		return commodityService.getPrices(businessID, id);
+	}
+
 }

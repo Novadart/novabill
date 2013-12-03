@@ -47,6 +47,11 @@ public class Price {
 				setParameter("cID", commodityID).getResultList();
 		return r.size() == 0? null: r.get(0);
 	}
+	
+	public static List<Price> findPricesForCommodity(Long id){
+		String sql = "select p from Price p join p.priceList where p.commodity.id = :id";
+		return entityManager().createQuery(sql, Price.class).setParameter("id", id).getResultList();
+	}
 
 	
 	/*

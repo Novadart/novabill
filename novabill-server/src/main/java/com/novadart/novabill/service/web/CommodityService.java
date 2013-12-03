@@ -1,7 +1,9 @@
 package com.novadart.novabill.service.web;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,7 @@ import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
@@ -137,6 +140,22 @@ public class CommodityService {
 		for(Commodity commodity: commodities.getItems())
 			commoditytDTOs.add(CommodityDTOFactory.toDTO(commodity));
 		return new PageDTO<CommodityDTO>(commoditytDTOs, start, length, commodities.getTotal());
+	}
+	
+	@Transactional(readOnly = true)
+	@PreAuthorize("#businessID == principal.business.id and " + 
+				"T(com.novadart.novabill.domain.Commodity).findCommodity(#id)?.business?.id == #businessID")
+	public Map<String, PriceDTO> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException{
+		List<PriceListDTO> priceLists = businessService.getPriceLists(businessID);
+		Map<String, PriceDTO> result = new HashMap<>();
+		Map<Long, String> plMap = new HashMap<>();
+		for(PriceListDTO pl: priceLists){
+			plMap.put(pl.getId(), pl.getName());
+			result.put(pl.getName(), null);
+		}
+		for(Price price: Price.findPricesForCommodity(id))
+			result.put(plMap.get(price.getPriceList().getId()), PriceDTOFactory.toDTO(price));
+		return result;
 	}
 
 }
