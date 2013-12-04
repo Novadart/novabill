@@ -303,10 +303,10 @@ public class TestUtils {
 	
 	public static Commodity createCommodity(){
 		Commodity commodity = new Commodity();
-		commodity.setSku("12345");
 		commodity.setDescription("Test commodity description");
 		commodity.setTax(new BigDecimal("15.0"));
 		commodity.setUnitOfMeasure("piece");
+		commodity.setSku(Commodity.generateSku());
 		return commodity;
 	}
 		

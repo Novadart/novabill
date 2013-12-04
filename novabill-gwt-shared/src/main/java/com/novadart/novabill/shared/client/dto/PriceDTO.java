@@ -9,7 +9,7 @@ public class PriceDTO implements IsSerializable {
 	
 	private Long id;
 	
-	private BigDecimal quantity;
+	private BigDecimal priceValue;
 	
 	private PriceType priceType;
 	
@@ -23,14 +23,6 @@ public class PriceDTO implements IsSerializable {
 
 	public void setId(Long id) {
 		this.id = id;
-	}
-
-	public BigDecimal getQuantity() {
-		return quantity;
-	}
-
-	public void setQuantity(BigDecimal quatity) {
-		this.quantity = quatity;
 	}
 
 	public PriceType getPriceType() {
@@ -55,6 +47,14 @@ public class PriceDTO implements IsSerializable {
 
 	public void setPriceListID(Long priceListID) {
 		this.priceListID = priceListID;
+	}
+
+	public BigDecimal getPriceValue() {
+		return priceValue;
+	}
+
+	public void setPriceValue(BigDecimal priceValue) {
+		this.priceValue = priceValue;
 	}
 	
 }

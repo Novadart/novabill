@@ -40,6 +40,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.Trimmed;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
 @Indexed
@@ -83,6 +84,18 @@ public class Commodity implements Serializable {
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "commodity")
     private Set<Price> prices = new HashSet<>();
+    
+    public boolean skuExists(){
+    	String sql = "select c from Commodity c where c.business.id = :id and c.sku = :sku";
+    	return entityManager().createQuery(sql, Commodity.class).
+    			setParameter("id", getBusiness().getId()).
+    			setParameter("sku", getSku()).
+    			setFirstResult(0).setMaxResults(1).getResultList().size() == 1;
+    }
+    
+    public static String generateSku(){
+    	return PriceListConstants.GENERATED_SKUS_PREFIX + System.currentTimeMillis();
+    }
     
     /*
      * Getters and setters

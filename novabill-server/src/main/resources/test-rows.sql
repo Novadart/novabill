@@ -256,36 +256,36 @@ insert into payment_type (id, default_payment_note, name, payment_date_delta, pa
 insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (155, 'Pagamento con bonifico bancario entro 90 giorni d.f. f.m.', 'Bonifico Bancario 90GG d.f. f.m.', 3, 1, 1, 2);
 
 --creating commodities
-insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (156, '12345', 'Computer network configuration', 't', 22, 'hour', 1, 1);
-insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (157, '12345', 'Website building', 't', 22, 'hour', 1, 1);
-insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (158, '12345', 'Mobile apps development', 't', 22, 'hour', 1, 1);
-insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (159, '12345', 'Database administration', 't', 22, 'hour', 1, 1);
-insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (160, '12345', 'Cisco network router', 'f', 22, 'piece', 1, 1);
+insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (156, 'sku1', 'Computer network configuration', 't', 22, 'hour', 1, 1);
+insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (157, 'sku2', 'Website building', 't', 22, 'hour', 1, 1);
+insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (158, 'sku3', 'Mobile apps development', 't', 22, 'hour', 1, 1);
+insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (159, 'sku4', 'Database administration', 't', 22, 'hour', 1, 1);
+insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (160, 'sku5', 'Cisco network router', 'f', 22, 'piece', 1, 1);
 
 --creating price lists
-insert into price_list (id, name, version, business) values (161, '__public__', '1', 1);
-insert into price_list (id, name, version, business) values (162, '__public__', '1', 2);
+insert into price_list (id, name, version, business) values (161, '$default', '1', 1);
+insert into price_list (id, name, version, business) values (162, '$default', '1', 2);
 
 --creating default prices
-insert into price (id, price_type, quantity, version, commodity, price_list) values (163, 1, 24.95, 1, 156, 161);
-insert into price (id, price_type, quantity, version, commodity, price_list) values (164, 1, 19.95, 1, 157, 161);
-insert into price (id, price_type, quantity, version, commodity, price_list) values (165, 1, 24.95, 1, 158, 161);
-insert into price (id, price_type, quantity, version, commodity, price_list) values (167, 1, 24.95, 1, 159, 161);
-insert into price (id, price_type, quantity, version, commodity, price_list) values (168, 1, 39.95, 1, 160, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (163, 1, 24.95, 1, 156, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (164, 1, 19.95, 1, 157, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (165, 1, 24.95, 1, 158, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (167, 1, 24.95, 1, 159, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (168, 1, 39.95, 1, 160, 161);
 
 --creating more commodities
 insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (169, '12345', 'Website building', 't', 22, 'hour', 2, 1);
 
 --creating default prices
-insert into price (id, price_type, quantity, version, commodity, price_list) values (170, 1, 19.95, 1, 169, 162);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (170, 1, 19.95, 1, 169, 162);
 
 --creating custom price lists
 insert into price_list (id, name, version, business) values (171, 'custom pricelist', '1', 1);
 insert into price_list (id, name, version, business) values (172, 'custom pricelist', '1', 2);
 
 --creating prices for the custom price list
-insert into price (id, price_type, quantity, version, commodity, price_list) values (173, 1, 20.95, 1, 156, 171);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (173, 1, 20.95, 1, 156, 171);
 
-insert into price (id, price_type, quantity, version, commodity, price_list) values (174, 1, 20.95, 1, 169, 172);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (174, 1, 20.95, 1, 169, 172);
 
 alter sequence hibernate_sequence restart with 175;

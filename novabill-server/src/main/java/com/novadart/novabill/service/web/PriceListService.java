@@ -44,10 +44,10 @@ public class PriceListService {
 		PriceList priceList = PriceList.getPriceListWithPrices(businessID, id);
 		if(priceList == null)
 			throw new NoSuchObjectException();
-		if(priceList.getName().equals(PriceListConstants.PUBLIC))
+		if(priceList.getName().equals(PriceListConstants.DEFAULT))
 			return PriceListDTOFactory.toDTO(priceList, true);
 		PriceListDTO customPL = PriceListDTOFactory.toDTO(priceList, true);
-		priceList = PriceList.getPriceListWithPrices(businessID, PriceListConstants.PUBLIC);
+		priceList = PriceList.getPriceListWithPrices(businessID, PriceListConstants.DEFAULT);
 		if(priceList == null)
 			throw new NoSuchObjectException();
 		PriceListDTO publicPL = PriceListDTOFactory.toDTO(priceList, true);
