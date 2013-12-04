@@ -31,7 +31,7 @@ public class CommodityGwtController extends AbstractGwtController implements Com
 	}
 
 	@Override
-	public Long add(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
+	public Long add(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
 		return commodityService.add(commodityDTO);
 	}
 

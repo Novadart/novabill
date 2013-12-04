@@ -20,8 +20,12 @@ import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.TransportDocument;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
+import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
+import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.validation.Field;
 
@@ -310,6 +314,15 @@ public class TestUtils {
 		return commodity;
 	}
 		
+	public static void setDefaultPrice(CommodityDTO commodityDTO, BigDecimal price){
+		Map<String, PriceDTO> prices = new HashMap<>();
+		PriceDTO defaultPrice = new PriceDTO();
+		defaultPrice.setPriceType(PriceType.FIXED);
+		defaultPrice.setPriceValue(price);
+		prices.put(PriceListConstants.DEFAULT, defaultPrice);
+		commodityDTO.setPrices(prices);
+	}
+	
 	public static com.novadart.novabill.domain.PaymentType createPaymentType(){
 		com.novadart.novabill.domain.PaymentType paymentType = new com.novadart.novabill.domain.PaymentType();
 		paymentType.setName("Payment type test name");
