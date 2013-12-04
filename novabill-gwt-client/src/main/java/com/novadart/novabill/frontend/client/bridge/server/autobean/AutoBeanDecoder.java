@@ -37,7 +37,7 @@ public class AutoBeanDecoder {
 		p.setId(price.getId());
 		p.setPriceListID(price.getPriceListID());
 		p.setPriceType(PriceType.valueOf(price.getPriceType()));
-		p.setQuantity(BigDecimal.valueOf(price.getPriceValue()));
+		p.setPriceValue(BigDecimal.valueOf(price.getPriceValue()));
 		return p;
 	}
 

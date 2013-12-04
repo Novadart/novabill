@@ -63,7 +63,7 @@ public class AutoBeanEncoder {
 		p.setId(price.getId());
 		p.setPriceListID(price.getPriceListID());
 		p.setPriceType(price.getPriceType().name());
-		p.setPriceValue(price.getQuantity().doubleValue());
+		p.setPriceValue(price.getPriceValue().doubleValue());
 		return AutoBeanUtils.getAutoBean(p);
 	}
 	
