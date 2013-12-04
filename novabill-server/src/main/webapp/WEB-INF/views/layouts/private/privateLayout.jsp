@@ -273,7 +273,7 @@
     <script>
     var NovabillConf = {
             businessId : '<%=business.getId()%>',
-            defaultPriceListName : '<%=PriceListConstants.PUBLIC%>',
+            defaultPriceListName : '<%=PriceListConstants.DEFAULT%>',
             
             dashboardUrl : '${dashboardUrl}',
             clientsBaseUrl : '${clientsBaseUrl}',

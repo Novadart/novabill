@@ -31,7 +31,7 @@ public class AutoBeanEncoder {
 		cb.setDescription(c.getDescription());
 		cb.setId(c.getId());
 		cb.setService(c.isService());
-		cb.setTax(c.getTax().doubleValue());
+		cb.setTax(c.getTax() != null ? c.getTax().doubleValue() : null);
 		cb.setUnitOfMeasure(c.getUnitOfMeasure());
 		cb.setSku(c.getSku());
 		
@@ -62,8 +62,8 @@ public class AutoBeanEncoder {
 		p.setCommodityID(price.getCommodityID());
 		p.setId(price.getId());
 		p.setPriceListID(price.getPriceListID());
-		p.setPriceType(price.getPriceType().name());
-		p.setPriceValue(price.getPriceValue().doubleValue());
+		p.setPriceType(price.getPriceType() != null ? price.getPriceType().name() : null);
+		p.setPriceValue(price.getPriceValue() != null ? price.getPriceValue().doubleValue() : null);
 		return AutoBeanUtils.getAutoBean(p);
 	}
 	

@@ -17,7 +17,7 @@ public class AutoBeanDecoder {
 		c.setId(commodity.getId());
 		c.setService(commodity.isService());
 		c.setSku(commodity.getSku());
-		c.setTax(BigDecimal.valueOf(commodity.getTax()));
+		c.setTax(commodity.getTax() != null ? BigDecimal.valueOf(commodity.getTax()) : null);
 		c.setUnitOfMeasure(commodity.getUnitOfMeasure());
 		c.setBusiness(Configuration.getBusiness());
 		
@@ -36,8 +36,8 @@ public class AutoBeanDecoder {
 		p.setCommodityID(price.getCommodityID());
 		p.setId(price.getId());
 		p.setPriceListID(price.getPriceListID());
-		p.setPriceType(PriceType.valueOf(price.getPriceType()));
-		p.setPriceValue(BigDecimal.valueOf(price.getPriceValue()));
+		p.setPriceType(price.getPriceType() != null ? PriceType.valueOf(price.getPriceType()) : null);
+		p.setPriceValue(price.getPriceValue() != null ? BigDecimal.valueOf(price.getPriceValue()) : null);
 		return p;
 	}
 

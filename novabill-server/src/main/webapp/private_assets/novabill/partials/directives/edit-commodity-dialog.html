@@ -33,8 +33,11 @@
 					<div class="form-group" 
 					     ng-class="{'has-error': form.sku.$dirty && form.sku.$invalid, 'has-success': form.sku.$dirty && form.sku.$valid}">
 						<label class="control-label" for="sku">Sku</label> 
-						<input type="text" name="sku" maxlength="50" ng-model="commodity.sku" class="form-control" placeholder="e.g. 'T-130'">
-						<span ng-show="!commodity.sku" class="text-info">If you don't set a value we will auto-generate one</span>
+						<input type="text" not-reserved name="sku" maxlength="50" ng-model="commodity.sku" class="form-control" placeholder="e.g. 'T-130'">
+                        <span ng-show="!commodity.sku" class="text-info">If you don't set a value we will auto-generate one</span>
+						<div ng-show="form.sku.$dirty && form.sku.$error.notReserved">
+                            <span class="text-danger" ng-show="form.price.$error.required">Invalid identifier</span>
+                        </div>
 					</div>
 					
                     <div class="form-group" ng-class="{'has-success': form.unitOfMeasure.$dirty && form.unitOfMeasure.$valid}">

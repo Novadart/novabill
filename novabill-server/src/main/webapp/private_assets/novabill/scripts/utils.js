@@ -21,7 +21,8 @@ angular.module('novabill.utils', [])
 .factory('NRegExp', function() {
 	return {
 		
-		float : /^\-?\d+((\.|\,)\d+)?$/
+		float : /^\-?\d+((\.|\,)\d+)?$/,
+		reserved_word : /^\$.*$/
 		
 	};
 });

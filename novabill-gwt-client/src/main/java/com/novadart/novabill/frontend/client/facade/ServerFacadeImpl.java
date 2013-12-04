@@ -14,44 +14,17 @@ import com.google.gwt.user.client.rpc.XsrfToken;
 import com.google.gwt.user.client.rpc.XsrfTokenService;
 import com.google.gwt.user.client.rpc.XsrfTokenServiceAsync;
 import com.novadart.novabill.frontend.client.ClientFactory;
-import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtService;
 import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.BusinessGwtService;
 import com.novadart.novabill.shared.client.facade.BusinessGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.ClientGwtService;
 import com.novadart.novabill.shared.client.facade.ClientGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.CommodityGwtService;
 import com.novadart.novabill.shared.client.facade.CommodityGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
 import com.novadart.novabill.shared.client.facade.CreditNoteGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.EstimationGwtService;
 import com.novadart.novabill.shared.client.facade.EstimationGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
 import com.novadart.novabill.shared.client.facade.InvoiceGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.PaymentTypeGwtService;
 import com.novadart.novabill.shared.client.facade.PaymentTypeGwtServiceAsync;
-import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentGwtServiceAsync;
 
 public class ServerFacadeImpl implements ServerFacade {
-
-	private static final InvoiceGwtServiceAsync invoiceService = GWT.create(InvoiceGwtService.class);
-
-	private static final ClientGwtServiceAsync clientService = GWT.create(ClientGwtService.class);
-
-	private static final BusinessGwtServiceAsync businessService = GWT.create(BusinessGwtService.class);
-
-	private static final EstimationGwtServiceAsync estimationService = GWT.create(EstimationGwtService.class);
-
-	private static final CreditNoteGwtServiceAsync creditNoteService = GWT.create(CreditNoteGwtService.class);
-
-	private static final TransportDocumentGwtServiceAsync transportDocumentService = GWT.create(TransportDocumentGwtService.class);
-
-	private static final PaymentTypeGwtServiceAsync paymentService = GWT.create(PaymentTypeGwtService.class);
-	
-	private static final BatchDataFetcherGwtServiceAsync batchFetcherService = GWT.create(BatchDataFetcherGwtService.class);
-	
-	private static final CommodityGwtServiceAsync commodityService = GWT.create(CommodityGwtService.class);
 
 	private static final RequestBuilder FEEDBACK_REQUEST =
 			new RequestBuilder(RequestBuilder.POST, ClientFactory.INSTANCE.getPostFeedbackUrl());
@@ -157,55 +130,55 @@ public class ServerFacadeImpl implements ServerFacade {
 
 	@Override
 	public InvoiceGwtServiceAsync getInvoiceService() {
-		return invoiceService;
+		return InvoiceGwtServiceAsync.Util.getInstance();
 	}
 
 
 	@Override
 	public ClientGwtServiceAsync getClientService() {
-		return clientService;
+		return ClientGwtServiceAsync.Util.getInstance();
 	}
 
 
 	@Override
 	public BusinessGwtServiceAsync getBusinessService() {
-		return businessService;
+		return BusinessGwtServiceAsync.Util.getInstance();
 	}
 
 
 	@Override
 	public EstimationGwtServiceAsync getEstimationService() {
-		return estimationService;
+		return EstimationGwtServiceAsync.Util.getInstance();
 	}
 
 
 	@Override
 	public CreditNoteGwtServiceAsync getCreditNoteService() {
-		return creditNoteService;
+		return CreditNoteGwtServiceAsync.Util.getInstance();
 	}
 
 
 	@Override
 	public TransportDocumentGwtServiceAsync getTransportdocumentService() {
-		return transportDocumentService;
+		return TransportDocumentGwtServiceAsync.Util.getInstance();
 	}
 
 
 	@Override
 	public PaymentTypeGwtServiceAsync getPaymentService() {
-		return paymentService;
+		return PaymentTypeGwtServiceAsync.Util.getInstance();
 	}
 
 
 	@Override
 	public BatchDataFetcherGwtServiceAsync getBatchfetcherService() {
-		return batchFetcherService;
+		return BatchDataFetcherGwtServiceAsync.Util.getInstance();
 	}
 	
 	
 	@Override
 	public CommodityGwtServiceAsync getCommodityGwtService() {
-		return commodityService;
+		return CommodityGwtServiceAsync.Util.getInstance();
 	}
 
 }

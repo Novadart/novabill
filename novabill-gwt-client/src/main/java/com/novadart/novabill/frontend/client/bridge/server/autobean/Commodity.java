@@ -20,9 +20,9 @@ public interface Commodity {
 
 	public void setUnitOfMeasure(String unitOfMeasure);
 
-	public double getTax();
+	public Double getTax();
 
-	public void setTax(double tax);
+	public void setTax(Double tax);
 
 	public boolean isService();
 

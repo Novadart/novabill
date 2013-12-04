@@ -294,6 +294,29 @@ angular.module('novabill.directives', ['novabill.utils'])
 
 
 /*
+ * Check if the text is not a reserved word
+ */
+.directive('notReserved', ['NRegExp', function(NRegExp) {
+	return {
+		require: 'ngModel',
+		restrict: 'A',
+		link: function(scope, elm, attrs, ctrl) {
+			ctrl.$parsers.unshift(function(viewValue) {
+				if (NRegExp.reserved_word.test(viewValue)) {
+					ctrl.$setValidity('notReserved', false);
+					return undefined;
+					
+				} else {
+					ctrl.$setValidity('notReserved', true);
+					return viewValue;
+				}
+			});
+		}
+	};
+}])
+
+
+/*
  * Edit Commodity Dialog
  */
 .directive('editCommodityDialog', function factory(){
