@@ -235,7 +235,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 			paymentType.setBusiness(business);
 			business.getPaymentTypes().add(paymentType);
 		}
-		PriceList publicPriceList = new PriceList(PriceListConstants.PUBLIC);
+		PriceList publicPriceList = new PriceList(PriceListConstants.DEFAULT);
 		publicPriceList.setBusiness(business);
 		business.getPriceLists().add(publicPriceList);
 		Principal principal = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId());

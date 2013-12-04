@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -17,7 +18,8 @@ import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
-import com.novadart.novabill.service.validator.SimpleValidator;
+import com.novadart.novabill.service.validator.CommodityValidator;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
@@ -33,7 +35,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 public class CommodityService {
 	
 	@Autowired
-	private SimpleValidator validator;
+	private CommodityValidator validator;
 	
 	@Autowired
 	private BusinessService businessService;
@@ -57,10 +59,12 @@ public class CommodityService {
 	public Long add(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
 		Commodity commodity = new Commodity();
 		CommodityDTOFactory.copyFromDTO(commodity, commodityDTO);
-		validator.validate(commodity);
-		Business business = Business.findBusiness(1L);
-		business.getCommodities().add(commodity);
+		if(StringUtils.isBlank(commodity.getSku()))
+			commodity.setSku(Commodity.generateSku());
+		Business business = Business.findBusiness(commodityDTO.getBusiness().getId());
 		commodity.setBusiness(business);
+		validator.validate(commodity, true);
+		business.getCommodities().add(commodity);
 		commodity.persist();
 		commodity.flush();
 		return commodity.getId();
@@ -74,7 +78,7 @@ public class CommodityService {
 		if(persistentCommodity == null)
 			throw new NoSuchObjectException();
 		CommodityDTOFactory.copyFromDTO(persistentCommodity, commodityDTO);
-		validator.validate(persistentCommodity);
+		validator.validate(persistentCommodity, false);
 	}
 
 	@Transactional(readOnly = false)
