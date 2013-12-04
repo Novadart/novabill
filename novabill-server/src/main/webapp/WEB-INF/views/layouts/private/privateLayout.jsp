@@ -253,6 +253,7 @@
     <script src="${privateAssetsUrl}/plugins/angular-1.2.2/i18n/angular-locale_it-it.js" type="text/javascript"></script>
     <script src="${privateAssetsUrl}/plugins/angular-translate.min.js" type="text/javascript"></script>
     <script src="${privateAssetsUrl}/novabill/scripts/translations.js" type="text/javascript"></script>
+    <script src="${privateAssetsUrl}/novabill/scripts/constants.js" type="text/javascript"></script>
     
     
     <!--[if lt IE 9]>

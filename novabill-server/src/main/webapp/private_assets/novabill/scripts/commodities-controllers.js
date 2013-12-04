@@ -1,32 +1,46 @@
 'use strict';
 
-angular.module('novabill.commodities.controllers', ['novabill.directives', 'novabill.translations'])
+angular.module('novabill.commodities.controllers', ['novabill.directives', 'novabill.translations', 'novabill.constants'])
 
 
 /**
  * COMMODITIES PAGE CONTROLLER
  */
-.controller('CommoditiesCtrl', ['$scope', '$location', 'NEditCommodityDialogAPI',
-                                function($scope, $location, NEditCommodityDialogAPI){
+.controller('CommoditiesCtrl', ['$scope', '$location', 'NEditCommodityDialogAPI', 'NConstants',
+                                function($scope, $location, NEditCommodityDialogAPI, NConstants){
 	
 	$scope.commodities = null;
 	
 	NEditCommodityDialogAPI.init(null, {
-		onSave : function(commodity, defaultPrice){
+		onSave : function(commodity, defaultPrice, isService, delegation){
 			
 			commodity['pricesMap'] = { prices : {} };
 			commodity['pricesMap']['prices'][NovabillConf.defaultPriceListName] = {
 					priceValue : defaultPrice,
 					priceType : 'FIXED'
 			};
+			commodity.service = isService;
 			
 			GWT_Server.commodity.add(JSON.stringify(commodity), {
 				onSuccess : function(newId){
+					delegation.finish();
 					console.log('Added new Commodity '+newId);
 					$scope.loadCommodities();
 				},
 
-				onFailure : function(error){}
+				onFailure : function(error){
+					switch(error.exception){
+					case NConstants.exception.VALIDATION:
+						if(error.data === NConstants.validation.NOT_UNIQUE){
+							delegation.invalidSku();
+						}
+						break;
+						
+					default:
+						break;
+					}
+					
+				}
 			});
 		},
 		

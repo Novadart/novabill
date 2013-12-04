@@ -143,7 +143,7 @@ public class UiBridge implements ApiBridge {
 		SelectClientDialog dialog = new SelectClientDialog(new SelectClientDialog.Handler() {
 			@Override
 			public void onClientSelected(ClientDTO client) {
-				BridgeUtils.invokeJSCallback(client.getId().toString(), callback);
+				BridgeUtils.invokeJSCallback(client.getId(), callback);
 			}
 		});
 		dialog.center();

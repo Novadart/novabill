@@ -15,6 +15,7 @@ import com.novadart.novabill.frontend.client.bridge.server.autobean.Commodity;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.CommodityList;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public class CommodityServiceJS extends ServiceJS {
 	
@@ -58,7 +59,17 @@ public class CommodityServiceJS extends ServiceJS {
 
 			@Override
 			public void onSuccess(Long result) {
-				BridgeUtils.invokeJSCallback(String.valueOf(result), callback);
+				BridgeUtils.invokeJSCallback(result, callback);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				if(caught instanceof ValidationException){
+					ValidationException ve = (ValidationException)caught;
+					BridgeUtils.invokeJSCallbackOnException(ve.getClass().getName(), ve.getErrors().get(0).getErrorCode().name(), callback);
+				} else {
+					super.onFailure(caught);
+				}
 			}
 		});
 		

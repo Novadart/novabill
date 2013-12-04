@@ -110,7 +110,7 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 								@Override
 								public void onNotificationClosed(Void value) {
 									getView().setLocked(false);
-									BridgeUtils.invokeJSCallback(Boolean.TRUE.toString(), getCallback());
+									BridgeUtils.invokeJSCallback(Boolean.TRUE, getCallback());
 								}
 							});
 						}

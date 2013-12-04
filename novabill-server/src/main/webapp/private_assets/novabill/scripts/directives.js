@@ -332,12 +332,28 @@ angular.module('novabill.directives', ['novabill.utils'])
 			function hideAndReset(){
 				NEditCommodityDialogAPI.hide();
 				$scope.commodity = null;
+				$scope.isService = null;
+				$scope.defaultPrice = null;
+				$scope.invalidSku = false;
+				$scope.contactingServer = false;
 				$scope.form.$setPristine();
 			};
-			
+
 			$scope.save = function(){
-				$scope.api.callback.onSave($scope.commodity, $scope.defaultPrice);
-				hideAndReset();
+				$scope.contactingServer = true;
+				$scope.api.callback.onSave(
+						$scope.commodity, 
+						$scope.defaultPrice, 
+						$scope.isService==='true',
+						{
+							finish : function(){ hideAndReset(); },
+							invalidSku : function(){ 
+								$scope.$apply(function(){
+									$scope.contactingServer = false;
+									$scope.invalidSku = true;
+								}); 
+							}
+						});
 			};
 
 			$scope.cancel = function(){
@@ -361,7 +377,7 @@ angular.module('novabill.directives', ['novabill.utils'])
 		commodity : null,
 
 		callback : {
-			onSave : function(commodity, defaultPrice){},
+			onSave : function(commodity, defaultPrice, isService){},
 			onCancel : function(){}
 		},
 		

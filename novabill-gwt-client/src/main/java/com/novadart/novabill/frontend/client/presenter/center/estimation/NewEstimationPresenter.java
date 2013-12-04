@@ -78,7 +78,7 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 				getView().getCreateDocument().showLoader(false);
 				Notification.showMessage(I18N.INSTANCE.estimationCreationSuccess());
 				getView().setLocked(false);
-				BridgeUtils.invokeJSCallback(Boolean.TRUE.toString(), getCallback());
+				BridgeUtils.invokeJSCallback(Boolean.TRUE, getCallback());
 			}
 
 			@Override

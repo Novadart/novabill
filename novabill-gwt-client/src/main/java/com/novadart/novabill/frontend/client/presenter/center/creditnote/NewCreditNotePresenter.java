@@ -89,7 +89,7 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 					public void onNotificationClosed(Void value) {
 						getView().getCreateDocument().showLoader(false);
 						getView().setLocked(false);
-						BridgeUtils.invokeJSCallback(Boolean.TRUE.toString(), getCallback());
+						BridgeUtils.invokeJSCallback(Boolean.TRUE, getCallback());
 					}
 				});
 			}

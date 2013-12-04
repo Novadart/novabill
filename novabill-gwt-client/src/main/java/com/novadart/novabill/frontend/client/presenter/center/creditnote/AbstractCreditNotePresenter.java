@@ -40,7 +40,7 @@ public abstract class AbstractCreditNotePresenter extends DocumentPresenter<Cred
 			@Override
 			public void onNotificationClosed(Boolean value) {
 				if(value){
-					BridgeUtils.invokeJSCallback(Boolean.FALSE.toString(), getCallback());
+					BridgeUtils.invokeJSCallback(Boolean.FALSE, getCallback());
 				}
 			}
 		});
