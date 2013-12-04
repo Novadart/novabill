@@ -4,12 +4,14 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Price;
@@ -17,6 +19,7 @@ import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
 import com.novadart.novabill.service.validator.CommodityValidator;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
@@ -44,16 +47,32 @@ public class CommodityService {
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.Commodity).findCommodity(#id)?.business?.id == principal.business.id")
 	public CommodityDTO get(Long businessID, Long id) throws NoSuchObjectException, NotAuthenticatedException, DataAccessException {
-		for(CommodityDTO commodityDTO: businessService.getCommodities(businessID))
+		List<CommodityDTO> commodityDTOs = businessService.getCommodities(businessID); 
+		for(CommodityDTO commodityDTO: commodityDTOs){
 			if(commodityDTO.getId().equals(id))
 				return commodityDTO;
+		}
 		throw new NoSuchObjectException();
 	}
 
+	private PriceList getDefaultPriceList(Business business) throws NoSuchObjectException{
+		for(PriceList priceList: business.getPriceLists())
+			if(priceList.getName().equals(PriceListConstants.DEFAULT))
+				return priceList;
+		throw new NoSuchObjectException();
+	}
+	
+	private void setDefaultPrice(Commodity commodity, PriceDTO priceDTO) throws NoSuchObjectException{
+		PriceList priceList = getDefaultPriceList(commodity.getBusiness());
+		priceDTO.setPriceListID(priceList.getId());
+		priceDTO.setCommodityID(commodity.getId());
+		addOrUpdatePrice(commodity.getBusiness().getId(), priceDTO);
+	}
+	
 	@PreAuthorize("#commodityDTO?.business?.id == principal.business.id and " +
 				  "#commodityDTO?.id == null" )
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	public Long add(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
+	public Long add(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
 		Commodity commodity = new Commodity();
 		CommodityDTOFactory.copyFromDTO(commodity, commodityDTO);
 		if(StringUtils.isBlank(commodity.getSku()))
@@ -64,6 +83,7 @@ public class CommodityService {
 		business.getCommodities().add(commodity);
 		commodity.persist();
 		commodity.flush();
+		setDefaultPrice(commodity, commodityDTO.getPrices().get(PriceListConstants.DEFAULT));
 		return commodity.getId();
 	}
 
