@@ -1,5 +1,4 @@
-<div id="editCommodityDialog" class="modal fade" tabindex="-1" aria-hidden="true" data-backdrop="static"
-	data-keyboard="false">
+<div id="editCommodityDialog" class="modal fade" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
 	<div class="modal-dialog">
 		<div class="modal-content">
 			<div class="modal-body">
@@ -13,7 +12,7 @@
 				
 				    <div class="form-group" ng-class="{'has-success': form.service.$dirty}">
                         <label class="control-label" for="service">Type *</label>
-                        <select class="form-control" name="service" ng-model="isService" required>
+                        <select class="form-control" name="service" ng-model="service" required>
                             <option value="false">Product</option>
                             <option value="true">Service</option>
                         </select>
@@ -47,7 +46,7 @@
                     <div class="form-group" 
                         ng-class="{'has-error': form.price.$dirty && form.price.$invalid && form.price.$error.price, 'has-success': form.price.$dirty && form.price.$valid && !form.price.$error.price}">
                         <label class="control-label" for="price">Default Price (€) *</label> 
-                        <input type="text" smart-price name="price" maxlength="50" ng-model="defaultPrice" class="form-control" placeholder="e.g. '100'" required>
+                        <input type="text" smart-price name="price" maxlength="50" ng-model="price" class="form-control" placeholder="e.g. '100'" required>
                         <div ng-show="form.price.$dirty && form.price.$invalid">
                             <span class="text-danger" ng-show="form.price.$error.required">Required</span>
                         </div>
