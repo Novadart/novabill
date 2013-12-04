@@ -246,15 +246,15 @@ angular.module('novabill.directives', ['novabill.utils'])
 				if (NRegExp.float.test(viewValue)) {
 					var floatVal = parseFloat(viewValue.replace(',', '.'));
 					if(floatVal >= 0 && floatVal < 100){
-						ctrl.$setValidity('float', true);
+						ctrl.$setValidity('tax', true);
 						return floatVal;
 					} else {
-						ctrl.$setValidity('float', false);
+						ctrl.$setValidity('tax', false);
 						return undefined;
 					}
 					
 				} else {
-					ctrl.$setValidity('float', false);
+					ctrl.$setValidity('tax', false);
 					return undefined;
 				}
 			});
@@ -262,6 +262,35 @@ angular.module('novabill.directives', ['novabill.utils'])
 	};
 }])
 
+
+/*
+ * Smart Price attribute. 
+ * User can insert , or . to separate decimals
+ */
+.directive('smartPrice', ['NRegExp', function(NRegExp) {
+	return {
+		require: 'ngModel',
+		restrict: 'A',
+		link: function(scope, elm, attrs, ctrl) {
+			ctrl.$parsers.unshift(function(viewValue) {
+				if (NRegExp.float.test(viewValue)) {
+					var floatVal = parseFloat(viewValue.replace(',', '.'));
+					if(floatVal >= 0){
+						ctrl.$setValidity('price', true);
+						return floatVal;
+					} else {
+						ctrl.$setValidity('price', false);
+						return undefined;
+					}
+					
+				} else {
+					ctrl.$setValidity('price', false);
+					return undefined;
+				}
+			});
+		}
+	};
+}])
 
 
 /*
@@ -284,7 +313,7 @@ angular.module('novabill.directives', ['novabill.utils'])
 			};
 			
 			$scope.save = function(){
-				$scope.api.callback.onSave($scope.commodity);
+				$scope.api.callback.onSave($scope.commodity, $scope.defaultPrice);
 				hideAndReset();
 			};
 
@@ -309,7 +338,7 @@ angular.module('novabill.directives', ['novabill.utils'])
 		commodity : null,
 
 		callback : {
-			onSave : function(commodity){},
+			onSave : function(commodity, defaultPrice){},
 			onCancel : function(){}
 		},
 		

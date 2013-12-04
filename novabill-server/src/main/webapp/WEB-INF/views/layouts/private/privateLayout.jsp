@@ -1,3 +1,4 @@
+<%@page import="com.novadart.novabill.shared.client.data.PriceListConstants"%>
 <%@page import="com.novadart.novabill.web.mvc.Urls"%>
 <%@page import="com.novadart.novabill.domain.security.Principal"%>
 <%@page import="com.novadart.novabill.domain.Business"%>
@@ -272,6 +273,7 @@
     <script>
     var NovabillConf = {
             businessId : '<%=business.getId()%>',
+            defaultPriceListName : '<%=PriceListConstants.PUBLIC%>',
             
             dashboardUrl : '${dashboardUrl}',
             clientsBaseUrl : '${clientsBaseUrl}',

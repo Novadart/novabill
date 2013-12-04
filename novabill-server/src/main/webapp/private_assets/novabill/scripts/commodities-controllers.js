@@ -12,7 +12,14 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 	$scope.commodities = null;
 	
 	NEditCommodityDialogAPI.init(null, {
-		onSave : function(commodity){
+		onSave : function(commodity, defaultPrice){
+			
+			commodity['pricesMap'] = { prices : {} };
+			commodity['pricesMap']['prices'][NovabillConf.defaultPriceListName] = {
+					priceValue : defaultPrice,
+					priceType : 'FIXED'
+			};
+			
 			GWT_Server.commodity.add(JSON.stringify(commodity), {
 				onSuccess : function(newId){
 					console.log('Added new Commodity '+newId);
