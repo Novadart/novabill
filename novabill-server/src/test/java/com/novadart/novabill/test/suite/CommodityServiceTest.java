@@ -198,11 +198,11 @@ public class CommodityServiceTest extends GWTServiceTest {
     	 Price price = Price.findPrice(priceListID, commodityID);
     	 PriceDTO priceDTO = PriceDTOFactory.toDTO(price);
     	 priceDTO.setPriceType(PriceType.DERIVED);
-    	 priceDTO.setQuantity(new BigDecimal("5.00"));
+    	 priceDTO.setPriceValue(new BigDecimal("5.00"));
     	 commodityService.addOrUpdatePrice(authenticatedPrincipal.getBusiness().getId(), priceDTO);
     	 price = Price.findPrice(priceListID, commodityID);
     	 assertEquals(PriceType.DERIVED, price.getPriceType());
-    	 assertEquals(new BigDecimal("5.00"), price.getQuantity());
+    	 assertEquals(new BigDecimal("5.00"), price.getPriceValue());
      }
      
      @Test
@@ -212,13 +212,13 @@ public class CommodityServiceTest extends GWTServiceTest {
     	 Long commodityID = addCommodity(businessID).getId();
     	 PriceDTO priceDTO = new PriceDTO();
     	 priceDTO.setPriceType(PriceType.DERIVED);
-    	 priceDTO.setQuantity(new BigDecimal("5.00"));
+    	 priceDTO.setPriceValue(new BigDecimal("5.00"));
     	 priceDTO.setCommodityID(commodityID);
     	 priceDTO.setPriceListID(priceListID);
     	 Long id = commodityService.addOrUpdatePrice(businessID, priceDTO);
     	 Price price = Price.findPrice(priceListID, commodityID);
     	 assertEquals(PriceType.DERIVED, price.getPriceType());
-    	 assertEquals(new BigDecimal("5.00"), price.getQuantity());
+    	 assertEquals(new BigDecimal("5.00"), price.getPriceValue());
     	 assertEquals(id, price.getId());
     	 assertEquals(commodityID, price.getCommodity().getId());
     	 assertEquals(priceListID, price.getPriceList().getId());
@@ -248,10 +248,8 @@ public class CommodityServiceTest extends GWTServiceTest {
     	CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
  		commodityDTO.setSku("12345");
  		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
- 		Long id = commodityService.add(commodityDTO);
- 		commodityDTO = commodityService.get(authenticatedPrincipal.getBusiness().getId(), id);
- 		commodityDTO.setSku("12345");
- 		commodityService.update(commodityDTO);
+ 		commodityService.add(commodityDTO);
+ 		commodityService.add(commodityDTO);
      }
      
 }

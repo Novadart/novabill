@@ -11,7 +11,7 @@ public class PriceDTOFactory {
 		PriceDTO priceDTO = new PriceDTO();
 		priceDTO.setId(price.getId());
 		priceDTO.setPriceType(price.getPriceType());
-		priceDTO.setQuantity(price.getQuantity());
+		priceDTO.setPriceValue(price.getPriceValue());
 		priceDTO.setCommodityID(price.getCommodity().getId());
 		priceDTO.setPriceListID(price.getPriceList().getId());
 		return priceDTO;
@@ -21,7 +21,7 @@ public class PriceDTOFactory {
 		if(priceDTO == null || price == null)
 			return;
 		price.setPriceType(priceDTO.getPriceType());
-		price.setQuantity(priceDTO.getQuantity());
+		price.setPriceValue(priceDTO.getPriceValue());
 	}
 
 }

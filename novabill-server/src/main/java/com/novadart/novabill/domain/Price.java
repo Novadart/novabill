@@ -38,7 +38,7 @@ public class Price {
 	
 	private PriceType priceType;
 	
-	private BigDecimal quantity;
+	private BigDecimal priceValue;
 	
 	public static Price findPrice(Long priceListID, Long commodityID){
 		String sql = "select p from Price p where p.commodity.id = :cID and p.priceList.id = :pID";
@@ -82,13 +82,14 @@ public class Price {
 		this.priceType = priceType;
 	}
 
-	public BigDecimal getQuantity() {
-		return quantity;
+	public BigDecimal getPriceValue() {
+		return priceValue;
 	}
 
-	public void setQuantity(BigDecimal quantity) {
-		this.quantity = quantity;
+	public void setPriceValue(BigDecimal priceValue) {
+		this.priceValue = priceValue;
 	}
+	
 	/*
 	 * End of getters and setters section
 	 * */
