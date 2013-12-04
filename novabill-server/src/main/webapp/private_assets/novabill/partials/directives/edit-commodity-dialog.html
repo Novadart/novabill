@@ -37,7 +37,22 @@
 						<span ng-show="!commodity.sku" class="text-info">If you don't set a value we will auto-generate one</span>
 					</div>
 					
-					<div class="form-group" ng-class="{'has-error': form.tax.$dirty && form.tax.$invalid && form.tax.$error.float, 'has-success': form.tax.$dirty && form.tax.$valid && !form.tax.$error.float}">
+                    <div class="form-group" ng-class="{'has-success': form.unitOfMeasure.$dirty && form.unitOfMeasure.$valid}">
+                        <label class="control-label" for="unitOfMeasure">Unit of Measure</label> 
+                        <input type="text" name="unitOfMeasure" maxlength="50" ng-model="commodity.unitOfMeasure" class="form-control" placeholder="e.g. 'pieces'">
+                    </div>
+                    
+                    <div class="form-group" 
+                        ng-class="{'has-error': form.price.$dirty && form.price.$invalid && form.price.$error.price, 'has-success': form.price.$dirty && form.price.$valid && !form.price.$error.price}">
+                        <label class="control-label" for="price">Default Price (€) *</label> 
+                        <input type="text" smart-price name="price" maxlength="50" ng-model="defaultPrice" class="form-control" placeholder="e.g. '100'" required>
+                        <div ng-show="form.price.$dirty && form.price.$invalid">
+                            <span class="text-danger" ng-show="form.price.$error.required">Required</span>
+                        </div>
+                    </div>
+					
+					<div class="form-group" 
+					   ng-class="{'has-error': form.tax.$dirty && form.tax.$invalid && form.tax.$error.tax, 'has-success': form.tax.$dirty && form.tax.$valid && !form.tax.$error.tax}">
                         <label class="control-label" for="tax">% Tax *</label> 
                         <input type="text" smart-tax name="tax" maxlength="50" ng-model="commodity.tax" class="form-control" placeholder="e.g. '21'" required>
                         <div ng-show="form.tax.$dirty && form.tax.$invalid">
@@ -45,11 +60,6 @@
                         </div>
                     </div>
 					
-                    <div class="form-group" ng-class="{'has-success': form.unitOfMeasure.$dirty && form.unitOfMeasure.$valid}">
-                        <label class="control-label" for="unitOfMeasure">Unit of Measure</label> 
-                        <input type="text" name="unitOfMeasure" maxlength="50" ng-model="commodity.unitOfMeasure" class="form-control" placeholder="e.g. 'pieces'">
-                    </div>
-                    
 				</form>
 
 			</div>

@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
 
+
 public interface Commodity {
 	
 	public Long getId();
@@ -26,5 +27,9 @@ public interface Commodity {
 	public boolean isService();
 
 	public void setService(boolean service);
+	
+	public PricesMap getPricesMap();
+	
+	public void setPricesMap(PricesMap pricesMap);
 
 }

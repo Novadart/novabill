@@ -48,5 +48,9 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	AutoBean<Commodity> makeCommodity();
 	
 	AutoBean<CommodityList> makeCommodityList();
+
+	AutoBean<Price> makePrice();
+	
+	AutoBean<PricesMap> makePricesMap();
 	
 }

@@ -1,7 +1,9 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
@@ -15,6 +17,7 @@ import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public class AutoBeanEncoder {
@@ -31,9 +34,38 @@ public class AutoBeanEncoder {
 		cb.setTax(c.getTax().doubleValue());
 		cb.setUnitOfMeasure(c.getUnitOfMeasure());
 		cb.setSku(c.getSku());
+		
+		if(c.getPrices() != null) {
+			PricesMap pricesMap = AutoBeanMaker.INSTANCE.makePricesMap().as();
+			Map<String, Price> prices = new HashMap<String, Price>();
+			
+			AutoBean<Price> p;
+			for (String plName : c.getPrices().keySet()) {
+				p = encode(c.getPrices().get(plName));
+				prices.put(plName, p == null ? null : p.as());
+			}
+			
+			pricesMap.setPrices(prices);
+			cb.setPricesMap(pricesMap);
+		}
+		
 		return AutoBeanUtils.getAutoBean(cb);
 	}
 	
+	
+	public static AutoBean<Price> encode(PriceDTO price) {
+		if(price == null) {
+			return null;
+		}
+		
+		Price p = AutoBeanMaker.INSTANCE.makePrice().as();
+		p.setCommodityID(price.getCommodityID());
+		p.setId(price.getId());
+		p.setPriceListID(price.getPriceListID());
+		p.setPriceType(price.getPriceType().name());
+		p.setPriceValue(price.getPriceValue().doubleValue());
+		return AutoBeanUtils.getAutoBean(p);
+	}
 	
 	public static AutoBean<Business> encode(BusinessDTO b){
 		if(b == null){

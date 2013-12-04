@@ -35,7 +35,7 @@ public class PriceListDTOFactory {
 			if(customPrices.containsKey(dto.getCommodityID())){
 				PriceDTO custDto = customPrices.get(dto.getCommodityID());
 				dto.setPriceType(custDto.getPriceType());
-				dto.setQuantity(custDto.getQuantity());
+				dto.setPriceValue(custDto.getPriceValue());
 				dto.setPriceListID(custDto.getPriceListID());
 			}
 		}
