@@ -4,14 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Price;
@@ -19,7 +17,6 @@ import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
 import com.novadart.novabill.service.validator.CommodityValidator;
-import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
@@ -155,7 +152,7 @@ public class CommodityService {
 		Map<Long, String> plMap = new HashMap<>();
 		for(PriceListDTO pl: priceLists){
 			plMap.put(pl.getId(), pl.getName());
-			result.put(pl.getName(), null);
+			result.put(pl.getName(), new PriceDTO(id, pl.getId()));
 		}
 		for(Price price: Price.findPricesForCommodity(id))
 			result.put(plMap.get(price.getPriceList().getId()), PriceDTOFactory.toDTO(price));

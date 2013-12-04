@@ -17,6 +17,13 @@ public class PriceDTO implements IsSerializable {
 	
 	private Long priceListID;
 	
+	public PriceDTO(){}
+	
+	public PriceDTO(Long commodityID, Long priceListID) {
+		this.commodityID = commodityID;
+		this.priceListID = priceListID;
+	}
+
 	public Long getId() {
 		return id;
 	}
