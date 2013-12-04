@@ -52,6 +52,12 @@
 		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/commoditiesJS.jsp" />
 	</definition>
 	
+   <definition name="private.priceLists" extends="private.layout">
+        <put-attribute name="head" value="/WEB-INF/views/tiles/private/priceListsHead.jsp" />
+        <put-attribute name="body" value="/WEB-INF/views/tiles/private/priceListsBody.jsp" />
+        <put-attribute name="javascript" value="/WEB-INF/views/tiles/private/priceListsJS.jsp" />
+    </definition>
+		
 	<definition name="private.payments" extends="private.layout">
 		<put-attribute name="body" value="/WEB-INF/views/tiles/private/paymentsBody.jsp" />
 		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/paymentsJS.jsp" />

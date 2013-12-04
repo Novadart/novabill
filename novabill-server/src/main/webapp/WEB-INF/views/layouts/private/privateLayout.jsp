@@ -19,11 +19,11 @@
 <spring:url var="dashboardUrl" value="/private/" />
 <spring:url var="clientsUrl" value="/private/clients/" />
 <spring:url var="invoicesUrl" value="/private/invoices/" />
-<spring:url var="commodityUrl" value="/private/commodity/" />
 <spring:url var="estimationsUrl" value="/private/estimations/" />
 <spring:url var="transportDocumentsUrl" value="/private/transport-documents/" />
 <spring:url var="creditNotesUrl" value="/private/credit-notes/" />
 <spring:url var="commoditiesUrl" value="/private/commodities/" />
+<spring:url var="priceListsUrl" value="/private/price-lists/" />
 <spring:url var="paymentsUrl" value="/private/payments/" />
 <spring:url var="settingsUrl" value="/private/settings/" />
 
@@ -139,23 +139,15 @@
                     </a>
                 </li>
                 
+                <li>
+                    <div class="spacer" style="margin: 20px 0;"></div>
+                </li>
+                
                 <li class="<%=PAGES.CLIENTS.equals(activePage) ? "active" : "" %>">
                     <a href="${clientsUrl}">
                     <i class="fa fa-user"></i> 
                     <span class="title">Clients</span>
                     <% if(PAGES.CLIENTS.equals(activePage)) { %>
-                    <span class="selected"></span>
-                    <%} %>
-                    </a>
-                </li>
-                
-                <li class="<%=PAGES.COMMODITIES.equals(activePage) ? "active" : ""%>">
-                    <a href="${commoditiesUrl}">
-                    <i class="fa fa-th"></i> 
-                    <span class="title">Commodities</span>
-                    <%
-                        if(PAGES.COMMODITIES.equals(activePage)) {
-                    %>
                     <span class="selected"></span>
                     <%} %>
                     </a>
@@ -206,6 +198,34 @@
                 </li>
                 
                  <li>
+                    <div class="spacer" style="margin: 20px 0;"></div>
+                </li>
+                
+                <li class="<%=PAGES.COMMODITIES.equals(activePage) ? "active" : ""%>">
+                    <a href="${commoditiesUrl}">
+                    <i class="fa fa-th"></i> 
+                    <span class="title">Commodities</span>
+                    <%
+                        if(PAGES.COMMODITIES.equals(activePage)) {
+                    %>
+                    <span class="selected"></span>
+                    <%} %>
+                    </a>
+                </li>
+                
+                <li class="<%=PAGES.PRICE_LISTS.equals(activePage) ? "active" : ""%>">
+                    <a href="${priceListsUrl}">
+                    <i class="fa fa-dollar"></i> 
+                    <span class="title">Price Lists</span>
+                    <%
+                        if(PAGES.PRICE_LISTS.equals(activePage)) {
+                    %>
+                    <span class="selected"></span>
+                    <%} %>
+                    </a>
+                </li>
+                
+                <li>
                     <div class="spacer" style="margin: 20px 0;"></div>
                 </li>
                 
@@ -282,7 +302,7 @@
             estimationsBaseUrl : '${estimationsUrl}',
             creditNotesBaseUrl : '${creditNotesUrl}',
             transportDocumentsBaseUrl : '${transportDocumentsUrl}',
-            commodityBaseUrl : '${commodityUrl}',
+            commoditiesBaseUrl : '${commoditiesUrl}',
             
             partialsBaseUrl : '${privateAssetsUrl}/novabill/partials/'
     };
