@@ -19,6 +19,7 @@ import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
 import com.novadart.novabill.service.validator.CommodityValidator;
+import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
@@ -36,6 +37,9 @@ public class CommodityService {
 	
 	@Autowired
 	private CommodityValidator validator;
+	
+	@Autowired
+	private SimpleValidator simpleValidator;
 	
 	@Autowired
 	private BusinessService businessService;
@@ -62,7 +66,7 @@ public class CommodityService {
 		throw new NoSuchObjectException();
 	}
 	
-	private void setDefaultPrice(Commodity commodity, PriceDTO priceDTO) throws NoSuchObjectException{
+	private void setDefaultPrice(Commodity commodity, PriceDTO priceDTO) throws NoSuchObjectException, ValidationException{
 		PriceList priceList = getDefaultPriceList(commodity.getBusiness());
 		priceDTO.setPriceListID(priceList.getId());
 		priceDTO.setCommodityID(commodity.getId());
@@ -108,28 +112,30 @@ public class CommodityService {
 			commodity.getBusiness().getCommodities().remove(commodity);
 	}
 	
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#businessID == principal.business.id and " +
 			      "T(com.novadart.novabill.domain.Commodity).findCommodity(#priceDTO.commodityID)?.business?.id == #businessID and " +
 			      "T(com.novadart.novabill.domain.PriceList).findPriceList(#priceDTO.priceListID)?.business?.id == #businessID")
-	public Long addOrUpdatePrice(Long businessID, PriceDTO priceDTO){
+	public Long addOrUpdatePrice(Long businessID, PriceDTO priceDTO) throws ValidationException{
 		if(priceDTO.getId() == null){ //add
 			Price price = new Price();
 			PriceDTOFactory.copyFromDTO(price, priceDTO);
+			simpleValidator.validate(price);
 			PriceList persistedPriceList = PriceList.findPriceList(priceDTO.getPriceListID());
 			Commodity persistedCommodity = Commodity.findCommodity(priceDTO.getCommodityID());
+			price.setCommodity(persistedCommodity);
+			price.setPriceList(persistedPriceList);
 			if(Hibernate.isInitialized(persistedCommodity.getPrices()))
 				persistedCommodity.getPrices().add(price);
 			if(Hibernate.isInitialized(persistedPriceList.getPrices()))
 				persistedPriceList.getPrices().add(price);
-			price.setCommodity(persistedCommodity);
-			price.setPriceList(persistedPriceList);
 			price.persist();
 			Price.entityManager().flush();
 			return price.getId();
 		}else{ //update
 			Price persisted = Price.findPrice(priceDTO.getId());
 			PriceDTOFactory.copyFromDTO(persisted, priceDTO);
+			simpleValidator.validate(persisted);
 			return persisted.merge().getId();
 		}
 	}

@@ -23,11 +23,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Estimation;
+import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
@@ -128,6 +131,11 @@ public class EstimationServiceTest extends GWTServiceTest {
 		estimationService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, estimationID);
 		Estimation.entityManager().flush();
 		assertNull(Estimation.findEstimation(estimationID));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.ESTIMATION, rec.getEntityType());
+		assertEquals(estimationID, rec.getEntityID());
+		assertEquals(OperationType.DELETE, rec.getOperationType());
+		assertEquals(Client.findClient(clientID).getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -182,7 +190,11 @@ public class EstimationServiceTest extends GWTServiceTest {
 		Estimation.entityManager().flush();
 		Estimation actualEstimation = Estimation.findEstimation(expectedEstimation.getId());
 		assertEquals(actualEstimation.getNote(), "Temporary note for this estimation");
-		
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.ESTIMATION, rec.getEntityType());
+		assertEquals(expectedEstimation.getId(), rec.getEntityID());
+		assertEquals(OperationType.UPDATE, rec.getOperationType());
+		assertEquals(expectedEstimation.getClient().getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -207,6 +219,11 @@ public class EstimationServiceTest extends GWTServiceTest {
 		Long id = estimationService.add(estDTO);
 		Estimation.entityManager().flush();
 		assertTrue(TestUtils.accountingDocumentComparatorIgnoreID.equal(estDTO, EstimationDTOFactory.toDTO(Estimation.findEstimation(id), true)));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.ESTIMATION, rec.getEntityType());
+		assertEquals(id, rec.getEntityID());
+		assertEquals(OperationType.CREATE, rec.getOperationType());
+		assertEquals(client.getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)

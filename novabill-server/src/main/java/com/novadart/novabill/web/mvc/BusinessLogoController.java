@@ -42,7 +42,7 @@ import com.novadart.utils.image.UnsupportedImageFormatException;
 public class BusinessLogoController {
 	
 	public static final int LOGO_SIZE_LIMIT = 1024 * 1024; // 1MB
-	public static final LogoFormat DEFAULT_FORMAT = LogoFormat.JPEG;
+	public static final LogoFormat DEFAULT_FORMAT = LogoFormat.PNG;
 	public static final String TOKEN_REQUEST_PARAM = "token";
 	public static final String TOKENS_SESSION_FIELD = "business.logo.tokens";
 	

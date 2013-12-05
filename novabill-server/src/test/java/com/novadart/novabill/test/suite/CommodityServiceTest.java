@@ -16,20 +16,21 @@ import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Commodity;
+import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
-import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.CommodityService;
+import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
@@ -85,6 +86,11 @@ public class CommodityServiceTest extends GWTServiceTest {
 		PriceDTO defaultPriceDTO = commodityService.getPrices(authenticatedPrincipal.getBusiness().getId(), persistedDTO.getId()).get(PriceListConstants.DEFAULT);
 		assertEquals(defaultPrice, defaultPriceDTO.getPriceValue());
 		assertEquals(PriceType.FIXED, defaultPriceDTO.getPriceType());
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.COMMODITY, rec.getEntityType());
+		assertEquals(commodityDTO.getId(), rec.getEntityID());
+		assertEquals(OperationType.CREATE, rec.getOperationType());
+		assertEquals(commodityDTO.getDescription(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -108,9 +114,15 @@ public class CommodityServiceTest extends GWTServiceTest {
 	@Test
 	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
 		Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
+		String desc = Commodity.findCommodity(commodityID).getDescription();
 		commodityGwtService.remove(authenticatedPrincipal.getBusiness().getId(), commodityID);
 		Commodity.entityManager().flush();
 	    assertNull(Commodity.findCommodity(commodityID));
+	    LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.COMMODITY, rec.getEntityType());
+		assertEquals(commodityID, rec.getEntityID());
+		assertEquals(OperationType.DELETE, rec.getOperationType());
+		assertEquals(desc, rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -140,6 +152,11 @@ public class CommodityServiceTest extends GWTServiceTest {
          Commodity.entityManager().flush();
          CommodityDTO persistedDTO = CommodityDTOFactory.toDTO(Commodity.findCommodity(commodityDTO.getId()));
          assertEquals("Edited description", persistedDTO.getDescription());
+         LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+         assertEquals(EntityType.COMMODITY, rec.getEntityType());
+         assertEquals(commodityDTO.getId(), rec.getEntityID());
+         assertEquals(OperationType.UPDATE, rec.getOperationType());
+         assertEquals(commodityDTO.getDescription(), rec.getDetails());
      }
      
      @Test(expected = DataAccessException.class)

@@ -24,11 +24,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
@@ -130,6 +133,11 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		invoiceService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, invoiceID);
 		Invoice.entityManager().flush();
 		assertNull(Invoice.findInvoice(invoiceID));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.INVOICE, rec.getEntityType());
+		assertEquals(invoiceID, rec.getEntityID());
+		assertEquals(OperationType.DELETE, rec.getOperationType());
+		assertEquals(Client.findClient(clientID).getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -164,6 +172,11 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		Long invoiceID = Client.findClient(clientID).getInvoices().iterator().next().getId();
 		invoiceService.setPayed(authenticatedPrincipal.getBusiness().getId(), clientID, invoiceID, true);
 		assertTrue(Invoice.findInvoice(invoiceID).getPayed());
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.INVOICE, rec.getEntityType());
+		assertEquals(invoiceID, rec.getEntityID());
+		assertEquals(OperationType.SET_PAYED, rec.getOperationType());
+		assertTrue(rec.getDetails() == null);
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -218,7 +231,11 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		Invoice.entityManager().flush();
 		Invoice actualInvoice = Invoice.findInvoice(expectedInvoice.getId());
 		assertEquals(actualInvoice.getNote(), "Temporary note for this invoice");
-		
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.INVOICE, rec.getEntityType());
+		assertEquals(expectedInvoice.getId(), rec.getEntityID());
+		assertEquals(OperationType.UPDATE, rec.getOperationType());
+		assertEquals(expectedInvoice.getClient().getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -244,6 +261,11 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		Long id = invoiceService.add(invDTO);
 		Invoice.entityManager().flush();
 		assertTrue(TestUtils.accountingDocumentComparatorIgnoreID.equal(invDTO, InvoiceDTOFactory.toDTO(Invoice.findInvoice(id), true)));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.INVOICE, rec.getEntityType());
+		assertEquals(id, rec.getEntityID());
+		assertEquals(OperationType.CREATE, rec.getOperationType());
+		assertEquals(client.getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)

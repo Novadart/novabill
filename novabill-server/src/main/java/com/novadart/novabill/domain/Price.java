@@ -15,6 +15,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -36,8 +37,10 @@ public class Price {
 	@JoinColumn(name = "commodity")
 	private Commodity commodity;
 	
+	@NotNull
 	private PriceType priceType;
 	
+	@NotNull
 	private BigDecimal priceValue;
 	
 	public static Price findPrice(Long priceListID, Long commodityID){

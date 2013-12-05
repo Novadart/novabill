@@ -65,9 +65,8 @@ public class ClientService {
 	}
 
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	@PreAuthorize("principal.business.id == #businessID and " + 
-				  "T(com.novadart.novabill.domain.Client).findClient(#clientDTO?.id)?.business?.id == principal.business.id and " +
-				  "#clientDTO?.id != null")
+	@PreAuthorize("principal.business.id == #businessID and #clientDTO?.id != null and " + 
+				  "T(com.novadart.novabill.domain.Client).findClient(#clientDTO?.id)?.business?.id == principal.business.id")
 	public void update(Long businessID, ClientDTO clientDTO) throws NoSuchObjectException, ValidationException {
 		Client client = Client.findClient(clientDTO.getId());
 		ClientDTOFactory.copyFromDTO(client, clientDTO);

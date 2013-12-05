@@ -22,12 +22,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
@@ -129,6 +132,11 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		transportDocService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, transportDocID);
 		TransportDocument.entityManager().flush();
 		assertNull(TransportDocument.findTransportDocument(transportDocID));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.TRANSPORT_DOCUMENT, rec.getEntityType());
+		assertEquals(transportDocID, rec.getEntityID());
+		assertEquals(OperationType.DELETE, rec.getOperationType());
+		assertEquals(Client.findClient(clientID).getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -183,7 +191,11 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		TransportDocument.entityManager().flush();
 		TransportDocument actual = TransportDocument.findTransportDocument(expected.getId());
 		assertEquals(actual.getNote(), "Temporary note for this transport document");
-		
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.TRANSPORT_DOCUMENT, rec.getEntityType());
+		assertEquals(expected.getId(), rec.getEntityID());
+		assertEquals(OperationType.UPDATE, rec.getOperationType());
+		assertEquals(expected.getClient().getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -208,6 +220,11 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		Long id = transportDocService.add(transDocDTO);
 		TransportDocument.entityManager().flush();
 		assertTrue(TestUtils.transportDocumentComparatorIgnoreID.equal(transDocDTO, TransportDocumentDTOFactory.toDTO(TransportDocument.findTransportDocument(id), true)));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.TRANSPORT_DOCUMENT, rec.getEntityType());
+		assertEquals(id, rec.getEntityID());
+		assertEquals(OperationType.CREATE, rec.getOperationType());
+		assertEquals(client.getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)

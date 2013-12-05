@@ -23,11 +23,14 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
+import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
@@ -148,6 +151,11 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		creditNoteService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, creditNoteID);
 		CreditNote.entityManager().flush();
 		assertNull(CreditNote.findCreditNote(creditNoteID));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.CREDIT_NOTE, rec.getEntityType());
+		assertEquals(creditNoteID, rec.getEntityID());
+		assertEquals(OperationType.DELETE, rec.getOperationType());
+		assertEquals(Client.findClient(clientID).getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -186,6 +194,11 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		Long id = creditNoteService.add(creditNoteDTO);
 		CreditNote.entityManager().flush();
 		assertTrue(TestUtils.accountingDocumentComparatorIgnoreID.equal(creditNoteDTO, CreditNoteDTOFactory.toDTO(CreditNote.findCreditNote(id), true)));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.CREDIT_NOTE, rec.getEntityType());
+		assertEquals(id, rec.getEntityID());
+		assertEquals(OperationType.CREATE, rec.getOperationType());
+		assertEquals(client.getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -220,7 +233,11 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		CreditNote.entityManager().flush();
 		CreditNote actualCreditNote = CreditNote.findCreditNote(expectedCreditNote.getId());
 		assertEquals(actualCreditNote.getNote(), "Temporary note for this credit note");
-		
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.CREDIT_NOTE, rec.getEntityType());
+		assertEquals(expectedCreditNote.getId(), rec.getEntityID());
+		assertEquals(OperationType.UPDATE, rec.getOperationType());
+		assertEquals(expectedCreditNote.getClient().getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)
