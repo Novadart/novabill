@@ -233,6 +233,103 @@ angular.module('novabill.directives', ['novabill.utils'])
 
 
 /*
+ * Update Price Widget
+ */
+.directive('updatePrice', ['NConstants', function factory(NConstants){
+
+	return {
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/update-price.html',
+		scope: { 
+			priceListName : '@',
+			price : '=',
+		},
+		controller : ['$scope', function($scope){
+			$scope.PRICE_TYPE = NConstants.priceType;
+			$scope.DEFAULT_PRICELIST_NAME = NovabillConf.defaultPriceListName;
+			$scope.editMode = false;
+			
+			$scope.$watch('priceType', function(newValue, oldValue){
+				if($scope.editMode && newValue && oldValue && newValue !== oldValue) {
+					$scope.priceValueDerived = null;
+					$scope.priceValueFixed = null;
+				}
+			});
+			
+			$scope.edit = function(){
+				$scope.editMode = true;
+				
+				$scope.priceType = $scope.price.priceType;
+
+				if($scope.priceType === $scope.PRICE_TYPE.FIXED){
+					$scope.priceValueDerived = null;
+					$scope.priceValueFixed = $scope.price.priceValue;
+				} else {
+					$scope.priceValueDerived = $scope.price.priceValue;
+					$scope.priceValueFixed = null;
+				}
+			};
+			
+			$scope.cancel = function(){
+				$scope.editMode = false;
+			};
+			
+			$scope.save = function(){
+				var tempPrice = angular.copy($scope.price);
+				tempPrice.priceType = $scope.priceType;
+				tempPrice.priceValue = $scope.priceValueDerived !== null ? $scope.priceValueDerived : $scope.priceValueFixed;
+				
+				GWT_Server.commodity.addOrUpdatePrice(NovabillConf.businessId, JSON.stringify(tempPrice), {
+					onSuccess : function(){
+						$scope.$apply(function(){
+							$scope.price.priceType = tempPrice.priceType;
+							$scope.price.priceValue = tempPrice.priceValue;
+							$scope.editMode = false;
+						});
+					},
+
+					onFailure : function(error){}
+				});
+			};
+			
+			
+		}],
+		restrict: 'E',
+		replace: true,
+	};
+
+}])
+
+
+
+/*
+ * Smart Percentage attribute. 
+ * User can insert , or . to separate decimals
+ * Value mast be between 0 and 100
+ */
+.directive('smartPercentage', ['NRegExp', function(NRegExp) {
+	return {
+		require: 'ngModel',
+		restrict: 'A',
+		link: function(scope, elm, attrs, ctrl) {
+			ctrl.$parsers.unshift(function(viewValue) {
+				if (NRegExp.float.test(viewValue)) {
+					ctrl.$setValidity('percentage', true);
+					return parseFloat(viewValue.replace(',', '.'));
+				} else {
+					ctrl.$setValidity('percentage', false);
+					return undefined;
+				}
+			});
+			
+			ctrl.$formatters.push(function(modelValue) {
+				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
+			});
+		}
+	};
+}])
+
+
+/*
  * Smart Tax attribute. 
  * User can insert , or . to separate decimals
  * Value mast be between 0 and 100
@@ -321,195 +418,4 @@ angular.module('novabill.directives', ['novabill.utils'])
 			});
 		}
 	};
-}])
-
-
-/*
- * Edit Commodity Dialog
- */
-.directive('editCommodityDialog', function factory(){
-
-	return {
-
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/edit-commodity-dialog.html',
-		scope: {
-			commodity : '=?',
-		},
-
-		controller : function($scope, NEditCommodityDialogAPI){
-			$scope.api = NEditCommodityDialogAPI;
-			
-			//init commodity, if not present, to avoid calls to $watch that will reset service and price
-			$scope.commodity = $scope['commodity'] === undefined ? {} : $scope.commodity;
-						
-			$scope.$watch('commodity', function() {
-				
-				//if prices map is empty, init it
-				if( $scope.commodity ){
-					$scope.price = $scope.commodity.pricesMap ? $scope.commodity.pricesMap.prices[ NovabillConf.defaultPriceListName ].priceValue : null;
-					
-					// NOTE we check for id to workaround GWT removing the property when it is false
-					$scope.service = ($scope.commodity.service === undefined  
-							? ($scope.commodity.id === undefined || $scope.commodity.id === null ? null : 'false') 
-									: $scope.commodity.service.toString());
-				}
-				
-			});
-			
-			function hideAndReset(){
-				if(!$scope.api.keepCommodityOnClose){
-					$scope.commodity = null;
-					$scope.price = null;
-					$scope.service = null;
-				}
-				$scope.api.hide();
-				$scope.invalidSku = false;
-				$scope.contactingServer = false;
-				$scope.form.$setPristine();
-			};
-
-			$scope.save = function(){
-				$scope.contactingServer = true;
-
-				// update service property
-				$scope.commodity.service = $scope.service==='true';
-
-				// if default price is not present, build the structure for storing it
-				if(!$scope.commodity.pricesMap){
-					$scope.commodity['pricesMap'] = { prices : {} };
-					$scope.commodity['pricesMap']['prices'][NovabillConf.defaultPriceListName] = {
-							priceValue : null,
-							priceType : 'FIXED'
-					};
-				}
-
-				// update default price
-				$scope.commodity['pricesMap']['prices'][NovabillConf.defaultPriceListName].priceValue = $scope.price;
-
-				// persist the commodity
-				$scope.api.callback.onSave(
-						$scope.commodity, 
-						{
-							finish : function(keepCommodity){ hideAndReset(keepCommodity); },
-
-							invalidSku : function(){ 
-								$scope.$apply(function(){
-									$scope.contactingServer = false;
-									$scope.invalidSku = true;
-								}); 
-							}
-						});
-			};
-
-			$scope.cancel = function(){
-				hideAndReset();
-				$scope.api.callback.onCancel();
-			};
-			
-		},
-
-		restrict: 'E',
-		replace: true,
-
-	};
-
-})
-//APIs
-.factory('NEditCommodityDialogAPI', function(){
-	return {
-
-		keepCommodityOnClose : false,
-		
-		callback : {
-			onSave : function(commodity){},
-			onCancel : function(){}
-		},
-		
-		//functions
-		init : function(callback, keepCommodityOnClose){
-			this.callback = callback;
-			this.keepCommodityOnClose = keepCommodityOnClose;
-		},
-
-		show : function(){
-			$('#editCommodityDialog').modal('show');
-		},
-
-		hide : function(){
-			$('#editCommodityDialog').modal('hide');
-			
-			// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
-			$('body').removeClass('modal-open');
-			$('.modal-backdrop').remove();
-		}
-
-	};
-})
-
-
-
-
-
-
-/*
- * Removal Dialog
- */
-.directive('removalDialog', function factory(){
-
-	return {
-
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/confirm-removal-dialog.html',
-		scope: {},
-
-		controller : function($scope, NRemovalDialogAPI){
-			$scope.api = NRemovalDialogAPI;
-
-			$scope.ok = function(){
-				NRemovalDialogAPI.hide();
-				$scope.api.callback.onOk();
-			};
-
-			$scope.cancel = function(){
-				NRemovalDialogAPI.hide();
-				$scope.api.callback.onCancel();
-			};
-		},
-
-		restrict: 'E',
-		replace: true,
-
-	};
-
-})
-//APIs
-.factory('NRemovalDialogAPI', function(){
-	return {
-
-		//instance variables
-		message : '',
-
-		callback : {
-			onOk : function(commodity){},
-			onCancel : function(){}
-		},
-
-		//functions
-		init : function(message, callback){
-			this.message = message;
-			this.callback = callback;
-		},
-
-		show : function(){
-			$('#removalDialog').modal('show');
-		},
-
-		hide : function(){
-			$('#removalDialog').modal('hide');
-			
-			// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
-			$('body').removeClass('modal-open');
-			$('.modal-backdrop').remove();
-		}
-
-	};
-});
+}]);

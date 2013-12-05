@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('novabill.commodities.controllers', ['novabill.directives', 'novabill.translations', 'novabill.constants'])
+angular.module('novabill.commodities.controllers', ['novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'novabill.constants'])
 
 
 /**
@@ -8,10 +8,10 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
  */
 .controller('CommoditiesCtrl', ['$scope', '$location', 'NEditCommodityDialogAPI', 'NConstants',
                                 function($scope, $location, NEditCommodityDialogAPI, NConstants){
-	
+
 	$scope.commodities = null;
-	
-	
+
+
 	function loadCommodities() {
 		GWT_Server.commodity.getAll(NovabillConf.businessId, {
 			onSuccess : function(data){
@@ -23,12 +23,12 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 			onFailure : function(error){}
 		});
 	};
-	
-	
-	
+
+
+
 	NEditCommodityDialogAPI.init({
 		onSave : function(commodity, delegation){
-			
+
 			GWT_Server.commodity.add(JSON.stringify(commodity), {
 				onSuccess : function(newId){
 					delegation.finish();
@@ -43,24 +43,24 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 							delegation.invalidSku();
 						}
 						break;
-						
+
 					default:
 						break;
 					}
-					
+
 				}
 			});
 		},
-		
+
 		onCancel : function(){}
 	});
-	
+
 	$scope.newCommodity = function(){
 		NEditCommodityDialogAPI.show();
 	};
-	
+
 	loadCommodities();
-	
+
 }])
 
 
@@ -70,30 +70,30 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
  */
 .controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', 'NEditCommodityDialogAPI', 'NRemovalDialogAPI', 
                                        function($scope, $location, $routeParams, NEditCommodityDialogAPI, NRemovalDialogAPI){
-	
+
 	$scope.commodity = null;
-	
-	
+
+
 	function loadCommodity(){
 		GWT_Server.commodity.get(NovabillConf.businessId, $routeParams.commodityId, {
-			
+
 			onSuccess : function(commodity){
 				$scope.$apply(function(){
 					$scope.commodity = commodity;
 				});
 			},
-			
+
 			onFailure : function(){}
-			
+
 		});
 	}
-	
-	
+
+
 	$scope.editCommodity = function(commodityId){
-		
+
 		NEditCommodityDialogAPI.init({
 			onSave : function(commodity, delegation){
-				
+
 				GWT_Server.commodity.update(JSON.stringify(commodity), {
 					onSuccess : function(newId){
 						delegation.finish(true);
@@ -108,23 +108,23 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 								delegation.invalidSku();
 							}
 							break;
-							
+
 						default:
 							break;
 						}
-						
+
 					}
 				});
 			},
-			
+
 			onCancel : function(){}
 		}, true);
-		
+
 		NEditCommodityDialogAPI.show();
-		
+
 	};
-	
-	
+
+
 	$scope.removeCommodity = function(){
 		NRemovalDialogAPI.init('Are you sure that you want to delete permanently any data associated to "'+$scope.commodity.description+'"', {
 			onOk : function(){
@@ -137,17 +137,17 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 
 					onFailure : function(error){}
 				});
-				
+
 			},
-			
+
 			onCancel : function(){}
 		});
 		NRemovalDialogAPI.show();
 	};
-	
-	
+
+
 	loadCommodity();
-	
+
 }]);
 
 

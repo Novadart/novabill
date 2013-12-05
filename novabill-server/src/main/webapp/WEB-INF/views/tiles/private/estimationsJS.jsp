@@ -11,6 +11,7 @@
 <script src="${privateAssetsUrl}/novabill/scripts/estimations-controllers.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/novabill/scripts/estimations.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/novabill/scripts/directives.js" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/novabill/scripts/directives-dialogs.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->  
 
 <script type="text/javascript">

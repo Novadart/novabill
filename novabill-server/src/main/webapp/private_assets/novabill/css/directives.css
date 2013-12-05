@@ -45,3 +45,20 @@
  .commodity:HOVER {
     border: 1px solid #555;
 }
+
+
+/*
+ *  UPDATE PRICE
+ */
+.update-price input.has-error,
+.update-price select.has-error {
+	border-color: #953b39;
+	color: #953b39;
+}
+
+.update-price input.has-success,
+.update-price select.has-success  {
+    border-color: #356635;
+    color: #356635;
+}
+ 

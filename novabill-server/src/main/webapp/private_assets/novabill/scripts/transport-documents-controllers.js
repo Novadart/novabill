@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'novabill.directives', 'novabill.translations'])
+angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations'])
 
 
 /**

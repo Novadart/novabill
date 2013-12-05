@@ -20,3 +20,7 @@
 .commodities-detail .jumbotron.product {
     border-left: 10px solid #3cc051;
 }
+
+.commodities-detail table.table td{
+	border: none;
+}
