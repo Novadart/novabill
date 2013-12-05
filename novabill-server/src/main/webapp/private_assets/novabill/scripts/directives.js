@@ -258,6 +258,10 @@ angular.module('novabill.directives', ['novabill.utils'])
 					return undefined;
 				}
 			});
+			
+			ctrl.$formatters.push(function(modelValue) {
+				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
+			});
 		}
 	};
 }])
@@ -287,6 +291,10 @@ angular.module('novabill.directives', ['novabill.utils'])
 					ctrl.$setValidity('price', false);
 					return undefined;
 				}
+			});
+			
+			ctrl.$formatters.push(function(modelValue) {
+				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
 			});
 		}
 	};
@@ -324,16 +332,37 @@ angular.module('novabill.directives', ['novabill.utils'])
 	return {
 
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/edit-commodity-dialog.html',
-		scope: {},
+		scope: {
+			commodity : '=?',
+		},
 
 		controller : function($scope, NEditCommodityDialogAPI){
 			$scope.api = NEditCommodityDialogAPI;
-
+			
+			//init commodity, if not present, to avoid calls to $watch that will reset service and price
+			$scope.commodity = $scope['commodity'] === undefined ? {} : $scope.commodity;
+						
+			$scope.$watch('commodity', function() {
+				
+				//if prices map is empty, init it
+				if( $scope.commodity ){
+					$scope.price = $scope.commodity.pricesMap ? $scope.commodity.pricesMap.prices[ NovabillConf.defaultPriceListName ].priceValue : null;
+					
+					// NOTE we check for id to workaround GWT removing the property when it is false
+					$scope.service = ($scope.commodity.service === undefined  
+							? ($scope.commodity.id === undefined || $scope.commodity.id === null ? null : 'false') 
+									: $scope.commodity.service.toString());
+				}
+				
+			});
+			
 			function hideAndReset(){
-				NEditCommodityDialogAPI.hide();
-				$scope.commodity = null;
-				$scope.isService = null;
-				$scope.defaultPrice = null;
+				if(!$scope.api.keepCommodityOnClose){
+					$scope.commodity = null;
+					$scope.price = null;
+					$scope.service = null;
+				}
+				$scope.api.hide();
 				$scope.invalidSku = false;
 				$scope.contactingServer = false;
 				$scope.form.$setPristine();
@@ -341,12 +370,28 @@ angular.module('novabill.directives', ['novabill.utils'])
 
 			$scope.save = function(){
 				$scope.contactingServer = true;
+
+				// update service property
+				$scope.commodity.service = $scope.service==='true';
+
+				// if default price is not present, build the structure for storing it
+				if(!$scope.commodity.pricesMap){
+					$scope.commodity['pricesMap'] = { prices : {} };
+					$scope.commodity['pricesMap']['prices'][NovabillConf.defaultPriceListName] = {
+							priceValue : null,
+							priceType : 'FIXED'
+					};
+				}
+
+				// update default price
+				$scope.commodity['pricesMap']['prices'][NovabillConf.defaultPriceListName].priceValue = $scope.price;
+
+				// persist the commodity
 				$scope.api.callback.onSave(
 						$scope.commodity, 
-						$scope.defaultPrice, 
-						$scope.isService==='true',
 						{
-							finish : function(){ hideAndReset(); },
+							finish : function(keepCommodity){ hideAndReset(keepCommodity); },
+
 							invalidSku : function(){ 
 								$scope.$apply(function(){
 									$scope.contactingServer = false;
@@ -373,18 +418,17 @@ angular.module('novabill.directives', ['novabill.utils'])
 .factory('NEditCommodityDialogAPI', function(){
 	return {
 
-		//instance variables
-		commodity : null,
-
+		keepCommodityOnClose : false,
+		
 		callback : {
-			onSave : function(commodity, defaultPrice, isService){},
+			onSave : function(commodity){},
 			onCancel : function(){}
 		},
 		
 		//functions
-		init : function(commodity, callback){
-			this.commodity = commodity;
+		init : function(callback, keepCommodityOnClose){
 			this.callback = callback;
+			this.keepCommodityOnClose = keepCommodityOnClose;
 		},
 
 		show : function(){

@@ -13,9 +13,12 @@
 		<h2>{{commodity.description}}</h2>
 
 		<div style="float: right;">
-			<a href="javascript: void(0)" ng-click="editCommodity(commodity.id)" class="btn btn-sm red"><i class="fa fa-edit"></i>
-				Edit</a> <a href="javascript: void(0)" ng-click="removeCommodity(commodity.description, commodity.id)"
-				class="btn btn-sm red"><i class="fa fa-trash-o"></i> Delete</a>
+			<a href="javascript: void(0)" ng-disabled="commodity == null" ng-click="editCommodity()" class="btn btn-sm red">
+			     <i class="fa fa-edit"></i>Edit
+		    </a> 
+			<a href="javascript: void(0)" ng-disabled="commodity == null" ng-click="removeCommodity()" class="btn btn-sm red">
+			     <i class="fa fa-trash-o"></i> Delete
+			</a>
 		</div>
 	</div>
 
@@ -50,5 +53,5 @@
 
 </div>
 
-<edit-commodity-dialog></edit-commodity-dialog>
-<removal-dialog></removal-dialog>
+<edit-commodity-dialog commodity="commodity" />
+<removal-dialog />

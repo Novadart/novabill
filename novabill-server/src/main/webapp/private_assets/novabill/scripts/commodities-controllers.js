@@ -11,21 +11,29 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 	
 	$scope.commodities = null;
 	
-	NEditCommodityDialogAPI.init(null, {
-		onSave : function(commodity, defaultPrice, isService, delegation){
-			
-			commodity['pricesMap'] = { prices : {} };
-			commodity['pricesMap']['prices'][NovabillConf.defaultPriceListName] = {
-					priceValue : defaultPrice,
-					priceType : 'FIXED'
-			};
-			commodity.service = isService;
+	
+	function loadCommodities() {
+		GWT_Server.commodity.getAll(NovabillConf.businessId, {
+			onSuccess : function(data){
+				$scope.$apply(function(){
+					$scope.commodities = data.commodities;
+				});
+			},
+
+			onFailure : function(error){}
+		});
+	};
+	
+	
+	
+	NEditCommodityDialogAPI.init({
+		onSave : function(commodity, delegation){
 			
 			GWT_Server.commodity.add(JSON.stringify(commodity), {
 				onSuccess : function(newId){
 					delegation.finish();
 					console.log('Added new Commodity '+newId);
-					$scope.loadCommodities();
+					loadCommodities();
 				},
 
 				onFailure : function(error){
@@ -51,19 +59,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 		NEditCommodityDialogAPI.show();
 	};
 	
-	$scope.loadCommodities = function() {
-		GWT_Server.commodity.getAll(NovabillConf.businessId, {
-			onSuccess : function(data){
-				$scope.$apply(function(){
-					$scope.commodities = data.commodities;
-				});
-			},
-
-			onFailure : function(error){}
-		});
-	};
-	
-	$scope.loadCommodities();
+	loadCommodities();
 	
 }])
 
@@ -72,18 +68,67 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 /**
  * COMMODITIES DETAILS PAGE CONTROLLER
  */
-.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', 'NRemovalDialogAPI', 
-                                       function($scope, $location, $routeParams, NRemovalDialogAPI){
+.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', 'NEditCommodityDialogAPI', 'NRemovalDialogAPI', 
+                                       function($scope, $location, $routeParams, NEditCommodityDialogAPI, NRemovalDialogAPI){
+	
+	$scope.commodity = null;
+	
+	
+	function loadCommodity(){
+		GWT_Server.commodity.get(NovabillConf.businessId, $routeParams.commodityId, {
+			
+			onSuccess : function(commodity){
+				$scope.$apply(function(){
+					$scope.commodity = commodity;
+				});
+			},
+			
+			onFailure : function(){}
+			
+		});
+	}
+	
 	
 	$scope.editCommodity = function(commodityId){
+		
+		NEditCommodityDialogAPI.init({
+			onSave : function(commodity, delegation){
+				
+				GWT_Server.commodity.update(JSON.stringify(commodity), {
+					onSuccess : function(newId){
+						delegation.finish(true);
+						console.log('Updated Commodity '+newId);
+						loadCommodity();
+					},
+
+					onFailure : function(error){
+						switch(error.exception){
+						case NConstants.exception.VALIDATION:
+							if(error.data === NConstants.validation.NOT_UNIQUE){
+								delegation.invalidSku();
+							}
+							break;
+							
+						default:
+							break;
+						}
+						
+					}
+				});
+			},
+			
+			onCancel : function(){}
+		}, true);
+		
+		NEditCommodityDialogAPI.show();
 		
 	};
 	
 	
-	$scope.removeCommodity = function(commodityDescription, commodityId){
-		NRemovalDialogAPI.init('Are you sure that you want to delete permanently any data associated to "'+commodityDescription+'"', {
+	$scope.removeCommodity = function(){
+		NRemovalDialogAPI.init('Are you sure that you want to delete permanently any data associated to "'+$scope.commodity.description+'"', {
 			onOk : function(){
-				GWT_Server.commodity.remove(NovabillConf.businessId, commodityId, {
+				GWT_Server.commodity.remove(NovabillConf.businessId, $scope.commodity.id, {
 					onSuccess : function(data){
 						$scope.$apply(function(){
 							$location.path('/');
@@ -101,17 +146,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 	};
 	
 	
-	GWT_Server.commodity.get(NovabillConf.businessId, $routeParams.commodityId, {
-		
-		onSuccess : function(commodity){
-			$scope.$apply(function(){
-				$scope.commodity = commodity;
-			});
-		},
-		
-		onFailure : function(){}
-		
-	});
+	loadCommodity();
 	
 }]);
 

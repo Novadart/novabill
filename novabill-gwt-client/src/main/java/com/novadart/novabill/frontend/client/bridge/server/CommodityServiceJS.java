@@ -74,6 +74,30 @@ public class CommodityServiceJS extends ServiceJS {
 		});
 		
 	}
+	
+	public static void update(String commodityJson, final JavaScriptObject callback){
+		AutoBean<Commodity> bean = AutoBeanCodex.decode(AutoBeanMaker.INSTANCE, Commodity.class, commodityJson);
+		CommodityDTO c = AutoBeanDecoder.decode(bean.as());
+		
+		SERVER_FACADE.getCommodityGwtService().update(c, new ManagedAsyncCallback<Void>() {
+
+			@Override
+			public void onSuccess(Void result) {
+				BridgeUtils.invokeJSCallback(callback);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				if(caught instanceof ValidationException){
+					ValidationException ve = (ValidationException)caught;
+					BridgeUtils.invokeJSCallbackOnException(ve.getClass().getName(), ve.getErrors().get(0).getErrorCode().name(), callback);
+				} else {
+					super.onFailure(caught);
+				}
+			}
+		});
+		
+	}
 
 	public static void remove(String businessID, String id, final JavaScriptObject callback){
 		SERVER_FACADE.getCommodityGwtService().remove(Long.parseLong(businessID), Long.parseLong(id), new ManagedAsyncCallback<Void>() {
@@ -85,7 +109,5 @@ public class CommodityServiceJS extends ServiceJS {
 		});
 		
 	}
-
-	public static void update(String commodityJson, JavaScriptObject callback){}
 
 }
