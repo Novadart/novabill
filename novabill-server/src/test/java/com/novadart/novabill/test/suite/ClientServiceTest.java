@@ -1,13 +1,18 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Resource;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -19,11 +24,15 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -101,9 +110,15 @@ public class ClientServiceTest extends GWTServiceTest {
 	@Test
 	public void removeAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException{
 		Long clientID = new Long(testProps.get("clientWithoutInvoicesID"));
+		String name = Client.findClient(clientID).getName();
 		clientService.remove(authenticatedPrincipal.getBusiness().getId(), clientID);
 		Client.entityManager().flush();
 		assertNull(Client.findClient(clientID));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.CLIENT, rec.getEntityType());
+		assertEquals(clientID, rec.getEntityID());
+		assertEquals(OperationType.DELETE, rec.getOperationType());
+		assertEquals(name, rec.getDetails());
 	}
 	
 	@Test(expected = DataIntegrityException.class)
@@ -169,6 +184,11 @@ public class ClientServiceTest extends GWTServiceTest {
 		Client.entityManager().flush();
 		Client actualClient = Client.findClient(clientID);
 		assertTrue(EqualsBuilder.reflectionEquals(expectedClient, actualClient, "contact", "invoices", "estimations", "creditNotes", "transportDocuments", "business", "version"));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.CLIENT, rec.getEntityType());
+		assertEquals(clientID, rec.getEntityID());
+		assertEquals(OperationType.CREATE, rec.getOperationType());
+		assertEquals(actualClient.getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -209,6 +229,11 @@ public class ClientServiceTest extends GWTServiceTest {
 		Client.entityManager().flush();
 		Client actualClient = Client.findClient(clientID);
 		assertEquals(actualClient.getName(), "Temporary name for this company");
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.CLIENT, rec.getEntityType());
+		assertEquals(clientID, rec.getEntityID());
+		assertEquals(OperationType.UPDATE, rec.getOperationType());
+		assertEquals(expectedClient.getName(), rec.getDetails());
 	}
 	
 	@Test(expected = DataAccessException.class)
