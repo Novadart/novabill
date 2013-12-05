@@ -61,6 +61,7 @@ public class ServerBridge implements ApiBridge {
 				get : @com.novadart.novabill.frontend.client.bridge.server.CommodityServiceJS::get(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				remove : @com.novadart.novabill.frontend.client.bridge.server.CommodityServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				add : @com.novadart.novabill.frontend.client.bridge.server.CommodityServiceJS::add(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				update : @com.novadart.novabill.frontend.client.bridge.server.CommodityServiceJS::update(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			}
 			
 		}

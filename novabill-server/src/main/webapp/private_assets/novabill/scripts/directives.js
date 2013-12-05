@@ -258,6 +258,10 @@ angular.module('novabill.directives', ['novabill.utils'])
 					return undefined;
 				}
 			});
+			
+			ctrl.$formatters.push(function(modelValue) {
+				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
+			});
 		}
 	};
 }])
@@ -287,6 +291,10 @@ angular.module('novabill.directives', ['novabill.utils'])
 					ctrl.$setValidity('price', false);
 					return undefined;
 				}
+			});
+			
+			ctrl.$formatters.push(function(modelValue) {
+				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
 			});
 		}
 	};
@@ -331,6 +339,9 @@ angular.module('novabill.directives', ['novabill.utils'])
 		controller : function($scope, NEditCommodityDialogAPI){
 			$scope.api = NEditCommodityDialogAPI;
 			
+			//init commodity, if not present, to avoid calls to $watch that will reset service and price
+			$scope.commodity = $scope['commodity'] === undefined ? {} : $scope.commodity;
+						
 			$scope.$watch('commodity', function() {
 				
 				//if prices map is empty, init it
@@ -359,20 +370,28 @@ angular.module('novabill.directives', ['novabill.utils'])
 
 			$scope.save = function(){
 				$scope.contactingServer = true;
-				$scope.commodity = $scope.service==='true';
+
+				// update service property
+				$scope.commodity.service = $scope.service==='true';
+
+				// if default price is not present, build the structure for storing it
 				if(!$scope.commodity.pricesMap){
-					commodity['pricesMap'] = { prices : {} };
-					commodity['pricesMap']['prices'][NovabillConf.defaultPriceListName] = {
-							priceValue : $scope.price,
+					$scope.commodity['pricesMap'] = { prices : {} };
+					$scope.commodity['pricesMap']['prices'][NovabillConf.defaultPriceListName] = {
+							priceValue : null,
 							priceType : 'FIXED'
 					};
 				}
-				
+
+				// update default price
+				$scope.commodity['pricesMap']['prices'][NovabillConf.defaultPriceListName].priceValue = $scope.price;
+
+				// persist the commodity
 				$scope.api.callback.onSave(
 						$scope.commodity, 
 						{
 							finish : function(keepCommodity){ hideAndReset(keepCommodity); },
-							
+
 							invalidSku : function(){ 
 								$scope.$apply(function(){
 									$scope.contactingServer = false;

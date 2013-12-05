@@ -71,6 +71,7 @@ public class AuthenticationController{
 	public String login(Model model){
 		Registration registration = new Registration();
 		model.addAttribute("registration", registration);
+		model.addAttribute("pageName", "Login");
 		return "frontend.login";
 	}
 	
@@ -84,12 +85,14 @@ public class AuthenticationController{
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)
-	public String processSubmit(@ModelAttribute("registration") Registration registration, BindingResult result, SessionStatus status, Locale locale)
+	public String processSubmit(@ModelAttribute("registration") Registration registration, BindingResult result, SessionStatus status, Locale locale, Model model)
 			throws NoSuchAlgorithmException, UnsupportedEncodingException{
 		validator.validate(registration, result);
-		if(result.hasErrors())
+		
+		if(result.hasErrors()) {
+			model.addAttribute("pageName", "Register");
 			return "register";
-		else{
+		} else{
 			String rawRassword = registration.getPassword();
 			registration.setPassword(rawRassword); //force hashing
 			registration.setConfirmPassword(rawRassword); //force hashing

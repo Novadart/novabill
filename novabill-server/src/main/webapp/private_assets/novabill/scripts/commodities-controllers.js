@@ -11,6 +11,21 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 	
 	$scope.commodities = null;
 	
+	
+	function loadCommodities() {
+		GWT_Server.commodity.getAll(NovabillConf.businessId, {
+			onSuccess : function(data){
+				$scope.$apply(function(){
+					$scope.commodities = data.commodities;
+				});
+			},
+
+			onFailure : function(error){}
+		});
+	};
+	
+	
+	
 	NEditCommodityDialogAPI.init({
 		onSave : function(commodity, delegation){
 			
@@ -18,7 +33,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 				onSuccess : function(newId){
 					delegation.finish();
 					console.log('Added new Commodity '+newId);
-					$scope.loadCommodities();
+					loadCommodities();
 				},
 
 				onFailure : function(error){
@@ -44,19 +59,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 		NEditCommodityDialogAPI.show();
 	};
 	
-	$scope.loadCommodities = function() {
-		GWT_Server.commodity.getAll(NovabillConf.businessId, {
-			onSuccess : function(data){
-				$scope.$apply(function(){
-					$scope.commodities = data.commodities;
-				});
-			},
-
-			onFailure : function(error){}
-		});
-	};
-	
-	$scope.loadCommodities();
+	loadCommodities();
 	
 }])
 
@@ -70,8 +73,23 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 	
 	$scope.commodity = null;
 	
+	
+	function loadCommodity(){
+		GWT_Server.commodity.get(NovabillConf.businessId, $routeParams.commodityId, {
+			
+			onSuccess : function(commodity){
+				$scope.$apply(function(){
+					$scope.commodity = commodity;
+				});
+			},
+			
+			onFailure : function(){}
+			
+		});
+	}
+	
+	
 	$scope.editCommodity = function(commodityId){
-		
 		
 		NEditCommodityDialogAPI.init({
 			onSave : function(commodity, delegation){
@@ -80,7 +98,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 					onSuccess : function(newId){
 						delegation.finish(true);
 						console.log('Updated Commodity '+newId);
-						$scope.loadCommodities();
+						loadCommodity();
 					},
 
 					onFailure : function(error){
@@ -128,19 +146,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 	};
 	
 	
-	GWT_Server.commodity.get(NovabillConf.businessId, $routeParams.commodityId, {
-		
-		onSuccess : function(commodity){
-			$scope.$apply(function(){
-				$scope.commodity = commodity;
-			});
-		},
-		
-		onFailure : function(){}
-		
-	});
-	
-	
+	loadCommodity();
 	
 }]);
 

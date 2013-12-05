@@ -2,9 +2,12 @@
 
 angular.module('novabill.utils', [])
 
+/*
+ * FACTORIES
+ */
 .factory('NSorting', function() {
 	return {
-		
+
 		/**
 		 * Compare two clients
 		 * @return -1 if minor, 0 if equal, 1 if major
@@ -14,15 +17,16 @@ angular.module('novabill.utils', [])
 			var s2 = c2.name.toLowerCase();
 			return s1<s2 ? -1 : (s1>s2 ? 1 : 0);
 		}
-		
+
 	};
 })
 
 .factory('NRegExp', function() {
 	return {
-		
+
 		float : /^\-?\d+((\.|\,)\d+)?$/,
+
 		reserved_word : /^\$.*$/
-		
+
 	};
 });
