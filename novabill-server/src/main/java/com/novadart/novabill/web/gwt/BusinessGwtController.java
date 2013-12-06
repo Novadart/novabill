@@ -20,6 +20,7 @@ import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -54,12 +55,12 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 	}
 
 	@Override
-	public Long countClients(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public Integer countClients(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return businessService.countClients(businessID);
 	}
 
 	@Override
-	public Long countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+	public Integer countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
 		return businessService.countInvoicesForYear(businessID, year);
 	}
 
@@ -140,4 +141,10 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 		return businessService.add(businessDTO);
 	}
 
+	@Override
+	public List<LogRecordDTO> getLogRecords(Long businessID, Integer numberOfDays) throws NotAuthenticatedException, DataAccessException {
+		return businessService.getLogRecords(businessID, numberOfDays);
+	}
+	
+	
 }

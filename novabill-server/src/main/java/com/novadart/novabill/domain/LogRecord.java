@@ -57,6 +57,13 @@ public class LogRecord {
 		return entityManager().createQuery(sql, LogRecord.class).setParameter("bizID", businessID).setFirstResult(0).setMaxResults(n).getResultList();
 	}
 	
+	public static List<LogRecord> fetchAllSince(Long businessID, Long threshold){
+		String sql = "select lr from LogRecord lr where lr.business.id = :bizID and lr.time > :threshold order by lr.time desc";
+		return entityManager().createQuery(sql, LogRecord.class).
+				setParameter("bizID", businessID).
+				setParameter("threshold", threshold).getResultList();
+	}
+	
 	/*
 	 * Getters and setters
 	 * */

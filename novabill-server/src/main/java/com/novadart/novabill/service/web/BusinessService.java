@@ -10,6 +10,7 @@ import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
@@ -21,9 +22,9 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public interface BusinessService {
 
-	public Long countClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	public Integer countClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
-	public Long countInvoicesForYear(Long BusinessID, Integer year) throws NotAuthenticatedException, DataAccessException;
+	public Integer countInvoicesForYear(Long BusinessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
 	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
@@ -60,5 +61,7 @@ public interface BusinessService {
 	public List<Integer> getEstimationYears(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
 	public List<Integer> getTransportDocumentYears(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	
+	public List<LogRecordDTO> getLogRecords(Long businessID, Integer numberOfDays) throws NotAuthenticatedException, DataAccessException;
 	
 }
