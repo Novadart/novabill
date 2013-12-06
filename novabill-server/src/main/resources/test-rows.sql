@@ -263,8 +263,8 @@ insert into commodity (id, sku, description, service, tax, unit_of_measure, busi
 insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (160, 'sku5', 'Cisco network router', 'f', 22, 'piece', 1, 1);
 
 --creating price lists
-insert into price_list (id, name, version, business) values (161, '$default', '1', 1);
-insert into price_list (id, name, version, business) values (162, '$default', '1', 2);
+insert into price_list (id, name, version, business) values (161, '::default', '1', 1);
+insert into price_list (id, name, version, business) values (162, '::default', '1', 2);
 
 --creating default prices
 insert into price (id, price_type, price_value, version, commodity, price_list) values (163, 1, 24.95, 1, 156, 161);
