@@ -30,6 +30,15 @@
 
 .commodities-detail tr.defaultPriceList {
 	font-size: 13px;
+	font-weight: bold;
+}
+
+.commodities-detail tr.defaultPriceList.service {
+	color: #428bca;
+}
+
+.commodities-detail tr.defaultPriceList.product {
+    color: #3cc051;
 }
 
 .commodities-detail tr.priceList {

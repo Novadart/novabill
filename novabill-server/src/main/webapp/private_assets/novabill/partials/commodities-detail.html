@@ -57,7 +57,7 @@
             </thead>
 			<tbody>
 				<tr ng-repeat="(priceListName, price) in commodity.pricesMap.prices"
-					ng-class="{defaultPriceList: priceListName===DEFAULT_PRICELIST_NAME, priceList: priceListName!==DEFAULT_PRICELIST_NAME}">
+					ng-class="{defaultPriceList: priceListName===DEFAULT_PRICELIST_NAME, priceList: priceListName!==DEFAULT_PRICELIST_NAME, service: commodity.service, product: !commodity.service}">
 					<td width="40%">{{priceListName | filterDefault}}</td>
 					<td width="60%"><update-price price-list-name="priceListName" price="price"></update-price></td>
 				</tr>
