@@ -6,14 +6,17 @@
 
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="${gwtUrl}" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/plugins/angular-xeditable-0.1.7/js/xeditable.min.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/scripts/app.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/novabill/scripts/utils.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/novabill/scripts/commodities-controllers.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/novabill/scripts/commodities.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/novabill/scripts/directives.js" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/novabill/scripts/directives-dialogs.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->  
 
 <script type="text/javascript">
+
 jQuery(document).ready(function() {    
    App.init();
 });

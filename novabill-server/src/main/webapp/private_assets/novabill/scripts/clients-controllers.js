@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.directives', 'novabill.translations'])
+angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations'])
 
 
 /**

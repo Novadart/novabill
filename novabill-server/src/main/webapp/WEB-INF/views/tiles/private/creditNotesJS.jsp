@@ -11,6 +11,7 @@
 <script src="${privateAssetsUrl}/novabill/scripts/credit-notes-controllers.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/novabill/scripts/credit-notes.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/novabill/scripts/directives.js" type="text/javascript"></script>
+<script src="${privateAssetsUrl}/novabill/scripts/directives-dialogs.js" type="text/javascript"></script>
 <!-- END PAGE LEVEL SCRIPTS -->  
 
 <script type="text/javascript">

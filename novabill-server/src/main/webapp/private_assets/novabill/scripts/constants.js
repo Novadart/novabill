@@ -11,6 +11,11 @@ angular.module('novabill.constants', [])
 		
 		validation : {
 			NOT_UNIQUE : 'NOT_UNIQUE'
+		},
+		
+		priceType : {
+			DERIVED : 'DERIVED', 
+			FIXED : 'FIXED'
 		}
 		
 	};

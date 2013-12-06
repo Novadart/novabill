@@ -1,0 +1,46 @@
+<form name="form" class="update-price" novalidate>
+    
+    <!-- Select price type -->
+    <span ng-show="(!editMode && price.priceType === PRICE_TYPE.FIXED) || (editMode && priceListName === DEFAULT_PRICELIST_NAME)">Prezzo fisso</span>
+    <span ng-show="!editMode && price.priceType === PRICE_TYPE.DERIVED">Variazione Percentuale</span>
+    <select ng-show="editMode && priceListName !== DEFAULT_PRICELIST_NAME" 
+            ng-class="{'has-error' : form.priceType.$invalid, 'has-success' : form.priceType.$valid}"
+            class="form-control input-small" 
+            style="display: inline;" 
+            name="priceType" 
+            ng-model="priceType" 
+            required>
+        <option value="FIXED">Prezzo fisso</option>
+        <option value="DERIVED">Variazione Percentuale</option>
+    </select>
+    
+    <!-- Select price value -->
+    <span ng-show="!editMode">{{price.priceValue}}</span>
+    <input ng-show="editMode && priceType === PRICE_TYPE.DERIVED" 
+           ng-class="{'has-error' : form.priceValueDerived.$invalid, 'has-success' : form.priceValueDerived.$valid}" 
+           type="text"
+           smart-percentage name="priceValueDerived" style="display: inline;" maxlength="50" ng-model="priceValueDerived" class="form-control input-small" 
+           placeholder="e.g. '-10'" required>
+           
+    <input ng-show="editMode && priceType === PRICE_TYPE.FIXED" 
+           ng-class="{'has-error' : form.priceValueFixed.$invalid, 'has-success' : form.priceValueFixed.$valid}"  
+           type="text" smart-price name="priceValueFixed" style="display: inline;"  maxlength="50" ng-model="priceValueFixed" class="form-control input-small" 
+           placeholder="e.g. '23,45'" required>
+    
+    <button 
+        class="btn btn-sm" 
+        ng-show="!editMode" 
+        ng-click="edit()">Edit</button>
+        
+    <button 
+        ng-disabled="(form.priceValueFixed.$valid || form.priceValueDerived.$invalid) && (form.priceValueFixed.$invalid || form.priceValueDerived.$valid)"
+        class="btn btn-sm blue" 
+        ng-show="editMode" 
+        ng-click="save()">Save</button>
+        
+    <button 
+        class="btn btn-sm" 
+        ng-show="editMode" 
+        ng-click="cancel()">Cancel</button>
+
+</form>
