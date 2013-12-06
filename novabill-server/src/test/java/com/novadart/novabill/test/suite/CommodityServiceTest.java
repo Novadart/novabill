@@ -7,6 +7,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
@@ -267,6 +268,20 @@ public class CommodityServiceTest extends GWTServiceTest {
     	 Price price = Price.findPrice(priceListID, commodityID);
     	 assertNull(price);
      }
+     
+     @Test(expected = UnsupportedOperationException.class)
+     public void removeDefaultPriceTest() throws NotAuthenticatedException, DataAccessException{
+    	 Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
+    	 Price defaultPrice = null;
+    	 Iterator<Price> iter = Commodity.findCommodity(commodityID).getPrices().iterator();
+    	 while(iter.hasNext()){
+    		 defaultPrice = iter.next();
+    		 if(defaultPrice.getPriceList().getName().equals(PriceListConstants.DEFAULT))
+    			 break;
+    	 }
+    	 commodityGwtService.removePrice(authenticatedPrincipal.getBusiness().getId(), defaultPrice.getPriceList().getId(), defaultPrice.getCommodity().getId());
+     }
+     
      
      @Test
      public void getPricesTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{

@@ -146,7 +146,7 @@ public class CommodityService {
 	@PreAuthorize("#businessID == principal.business.id and " + 
 				"T(com.novadart.novabill.domain.PriceList).findPriceList(#priceListID)?.business?.id == #businessID and " +
 				"T(com.novadart.novabill.domain.Commodity).findCommodity(#commodityID)?.business?.id == #businessID")
-	public void removePrice(Long businessID, Long priceListID, Long commodityID){
+	public void removePrice(Long businessID, Long priceListID, Long commodityID) throws UnsupportedOperationException {
 		Price price = Price.findPrice(priceListID, commodityID);
 		if(price.getPriceList().getName().equals(PriceListConstants.DEFAULT))
 			throw new UnsupportedOperationException();

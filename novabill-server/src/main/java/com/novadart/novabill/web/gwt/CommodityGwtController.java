@@ -62,7 +62,7 @@ public class CommodityGwtController extends AbstractGwtController implements Com
 	}
 
 	@Override
-	public void removePrice(Long businessID, Long priceListID, Long commodityID) throws NotAuthenticatedException, DataAccessException {
+	public void removePrice(Long businessID, Long priceListID, Long commodityID) throws NotAuthenticatedException, DataAccessException, UnsupportedOperationException {
 		commodityService.removePrice(businessID, priceListID, commodityID);
 	}
 
