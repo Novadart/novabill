@@ -9,6 +9,7 @@ import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
@@ -16,11 +17,51 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public class AutoBeanEncoder {
+	
+	
+	public static AutoBean<BusinessStats> encode(BusinessStatsDTO c){
+		if(c == null){
+			return null;
+		}
+		
+		BusinessStats b = AutoBeanMaker.INSTANCE.makeBusinessStats().as();
+		b.setClientsCount(c.getClientsCount());
+		b.setCommoditiesCount(c.getCommoditiesCount());
+		b.setInvoicesCountForYear(c.getInvoicesCountForYear());
+		b.setTotalAfterTaxesForYear(c.getTotalAfterTaxesForYear().doubleValue());
+		
+		LogRecordList ll = AutoBeanMaker.INSTANCE.makeLogRecordList().as();
+		List<LogRecord> list = new ArrayList<LogRecord>();
+		for (LogRecordDTO logRecord : c.getLogRecords()) {
+			list.add(encode(logRecord).as());
+		}
+		ll.setLogRecords(list);
+		b.setLogRecords(ll);
+
+		return AutoBeanUtils.getAutoBean(b);
+	}
+	
+	
+	public static AutoBean<LogRecord> encode(LogRecordDTO c){
+		if(c == null){
+			return null;
+		}
+		
+		LogRecord l = AutoBeanMaker.INSTANCE.makeLogRecord().as();
+		l.setDetails(c.getDetails());
+		l.setEntityID(c.getEntityID());
+		l.setEntityType(c.getEntityType().name());
+		l.setOperationType(c.getOperationType().name());
+		l.setTime(c.getTime());
+		
+		return AutoBeanUtils.getAutoBean(l);
+	}
 	
 	
 	public static AutoBean<Commodity> encode(CommodityDTO c){

@@ -1,0 +1,137 @@
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
+                    <h3 class="page-title">
+                        Dashboard  <small>statistics and more</small>
+                    </h3>
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="fa fa-home"></i>
+                            <a href=".">Home</a> 
+                        </li>
+                        <li>Dashboard</li>
+                    </ul>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+                </div>
+            </div>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN DASHBOARD STATS -->
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat blue">
+                        <div class="visual">
+                            <i class="fa fa-comments"></i>
+                        </div>
+                        <div class="details">
+                            <div class="number">
+                                {{stats.clientsCount}}
+                            </div>
+                            <div class="desc">                           
+                                Clients
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat green">
+                        <div class="visual">
+                            <i class="fa fa-shopping-cart"></i>
+                        </div>
+                        <div class="details">
+                            <div class="number">{{stats.invoicesCountForYear}}</div>
+                            <div class="desc">Invoices this year</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat purple">
+                        <div class="visual">
+                            <i class="fa fa-globe"></i>
+                        </div>
+                        <div class="details">
+                            <div class="number">{{stats.commoditiesCount}}</div>
+                            <div class="desc">Commodities</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat yellow" ng-click="mouseOverTotal=!mouseOverTotal" ng-mouseenter="mouseOverTotal=true" ng-mouseleave="mouseOverTotal=false">
+                        <div class="visual">
+                            <i class="fa fa-bar-chart-o"></i>
+                        </div>
+                        <div class="details" >
+                            <div class="alert" ng-show="!mouseOverTotal">Mouse over to uncover...</div>
+                            <div ng-show="mouseOverTotal" class="number">{{stats.totalAfterTaxesForYear}} €</div>
+                            <div class="desc">Total after taxes this year</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END DASHBOARD STATS -->
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet solid bordered light-grey">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="fa fa-bar-chart-o"></i>Site Visits</div>
+                            <div class="tools">
+                                <div class="btn-group" data-toggle="buttons">
+                                    <label class="btn default btn-sm active">
+                                    <input type="radio" name="options" class="toggle" id="option1">Users
+                                    </label>
+                                    <label class="btn default btn-sm">
+                                    <input type="radio" name="options" class="toggle" id="option2">Feedbacks
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="portlet-body">
+                            <div id="site_statistics_loading">
+                                <img src="${privateAssetsUrl}/img/loading.gif" alt="loading"/>
+                            </div>
+                            <div id="site_statistics_content" class="display-none">
+                                <div id="site_statistics" class="chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END PORTLET-->
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <div class="portlet box blue">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="fa fa-bell-o"></i>Recent Activities</div>
+                            <!-- <div class="actions">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm default" href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    Filter By
+                                    <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <div class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+                                        <label><input type="checkbox" /> Finance</label>
+                                        <label><input type="checkbox" checked="" /> Membership</label>
+                                        <label><input type="checkbox" /> Customer Support</label>
+                                        <label><input type="checkbox" checked="" /> HR</label>
+                                        <label><input type="checkbox" /> System</label>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="portlet-body">
+                            <div class="scroller" style="min-height: 300px;" data-always-visible="1" data-rail-visible="0">
+                                <ul class="feeds">
+                                    <log-record logRecord="lr" ng-repeat="lr in stats.logRecords.logRecords"></log-record>
+                                </ul>
+                            </div>
+                            <!-- <div class="scroller-footer">
+                                <div class="pull-right">
+                                    <a href="#">See All Records <i class="m-icon-swapright m-icon-gray"></i></a> &nbsp;
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+        </div>
+</div>

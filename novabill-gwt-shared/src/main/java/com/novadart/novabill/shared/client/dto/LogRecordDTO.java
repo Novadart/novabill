@@ -1,9 +1,10 @@
 package com.novadart.novabill.shared.client.dto;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
 
-public class LogRecordDTO {
+public class LogRecordDTO implements IsSerializable{
 	
 	private EntityType entityType;
 	

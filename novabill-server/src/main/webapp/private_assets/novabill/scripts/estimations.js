@@ -2,7 +2,7 @@
 
 angular.module("novabill.estimations", ['novabill.estimations.controllers','ngRoute'])
 
-.config(function($routeProvider){
+.config(['$routeProvider', function($routeProvider){
 
 	$routeProvider
 	
@@ -30,4 +30,4 @@ angular.module("novabill.estimations", ['novabill.estimations.controllers','ngRo
 		redirectTo: '/'
 	});
 
-});
+}]);

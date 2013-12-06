@@ -4,14 +4,17 @@ import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
+import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanEncoder;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.BusinessStats;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.Client;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.ClientsList;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class BusinessServiceJS extends ServiceJS {
@@ -39,6 +42,18 @@ public class BusinessServiceJS extends ServiceJS {
 				list.setClients(clients);
 				
 				BridgeUtils.invokeJSCallback(AutoBeanUtils.getAutoBean(list), callback);
+			}
+		});
+	}
+	
+	
+	public static void getStats(String businessID, final JavaScriptObject callback) {
+		SERVER_FACADE.getBusinessService().getStats(Long.valueOf(businessID), new ManagedAsyncCallback<BusinessStatsDTO>() {
+
+			@Override
+			public void onSuccess(BusinessStatsDTO result) {
+				AutoBean<BusinessStats> b = AutoBeanEncoder.encode(result);
+				BridgeUtils.invokeJSCallback(b, callback);
 			}
 		});
 	}

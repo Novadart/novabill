@@ -2,7 +2,7 @@
 
 angular.module("novabill.transportDocuments", ['novabill.transportDocuments.controllers','ngRoute'])
 
-.config(function($routeProvider){
+.config(['$routeProvider', function($routeProvider){
 
 	$routeProvider
 	
@@ -25,4 +25,4 @@ angular.module("novabill.transportDocuments", ['novabill.transportDocuments.cont
 		redirectTo: '/'
 	});
 
-});
+}]);

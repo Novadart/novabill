@@ -53,4 +53,10 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	
 	AutoBean<PricesMap> makePricesMap();
 	
+	AutoBean<LogRecordList> makeLogRecordList();
+	
+	AutoBean<LogRecord> makeLogRecord();
+	
+	AutoBean<BusinessStats> makeBusinessStats();
+	
 }

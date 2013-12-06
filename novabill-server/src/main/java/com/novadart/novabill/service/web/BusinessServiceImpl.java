@@ -280,7 +280,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<LogRecordDTO> getLogRecords(Long businessID, Integer numberOfDays) throws NotAuthenticatedException, DataAccessException {
-		Long threshold = System.currentTimeMillis() - (numberOfDays * 24 * 60 * 60 * 1000) ;
+		Long threshold = System.currentTimeMillis() - (numberOfDays * 24L * 60L * 60L * 1000L) ;
 		List<LogRecordDTO> result = new ArrayList<>();
 		for(LogRecord lg: LogRecord.fetchAllSince(businessID, threshold))
 			result.add(LogRecordDTOFactory.toDTO(lg));
