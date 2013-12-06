@@ -437,4 +437,35 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 			});
 		}
 	};
-}]);
+}])
+
+
+
+
+/*
+ * Log Record Widget
+ */
+.directive('logRecord', [function factory(){
+
+	return {
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/log-record.html',
+		scope: { 
+			logRecord : '='
+		},
+		controller : ['$scope', function($scope){
+
+		}],
+		restrict: 'E',
+		replace: true,
+	};
+
+}])
+
+
+
+
+
+
+
+
+;
