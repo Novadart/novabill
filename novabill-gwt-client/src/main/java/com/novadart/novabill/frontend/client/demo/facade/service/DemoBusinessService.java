@@ -12,22 +12,13 @@ import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.facade.BusinessGwtServiceAsync;
 
 public class DemoBusinessService implements BusinessGwtServiceAsync {
 
-	@Override
-	public void countClients(Long businessID, AsyncCallback<Long> callback) {
-		callback.onSuccess(Long.valueOf(Data.getClients().size()));
-	}
-
-	@Override
-	public void countInvoicesForYear(Long BusinessID, Integer year,
-			AsyncCallback<Long> callback) {
-		callback.onSuccess(Data.countInvoices());
-	}
 
 	@Override
 	public void generateExportToken(AsyncCallback<String> callback) {
@@ -43,11 +34,11 @@ public class DemoBusinessService implements BusinessGwtServiceAsync {
 	public void getStats(Long businessID,
 			AsyncCallback<BusinessStatsDTO> callback) {
 		
-		BusinessStatsDTO bs = new BusinessStatsDTO();
-		bs.setClientsCount(Long.valueOf(Data.getClients().size()));
-		bs.setInvoicesCountForYear(Data.countInvoices());
-		bs.setTotalAfterTaxesForYear(Data.calcTotal());
-		callback.onSuccess(bs);
+//		BusinessStatsDTO bs = new BusinessStatsDTO();
+//		bs.setClientsCount(Long.valueOf(Data.getClients().size()));
+//		bs.setInvoicesCountForYear(Data.countInvoices());
+//		bs.setTotalAfterTaxesForYear(Data.calcTotal());
+//		callback.onSuccess(bs);
 	}
 
 	@Override
@@ -125,6 +116,26 @@ public class DemoBusinessService implements BusinessGwtServiceAsync {
 	@Override
 	public void getCommodities(Long businessID,
 			AsyncCallback<List<CommodityDTO>> callback) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void countClients(Long businessID, AsyncCallback<Integer> callback) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void countInvoicesForYear(Long BusinessID, Integer year,
+			AsyncCallback<Integer> callback) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getLogRecords(Long businessID, Integer numberOfDays,
+			AsyncCallback<List<LogRecordDTO>> callback) {
 		// TODO Auto-generated method stub
 		
 	}
