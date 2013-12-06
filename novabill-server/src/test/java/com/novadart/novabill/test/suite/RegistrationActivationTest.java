@@ -89,7 +89,7 @@ public class RegistrationActivationTest {
 		Registration registration = initRegistration(token, email, password, password, true);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -108,7 +108,7 @@ public class RegistrationActivationTest {
 		String token = "1", email = "foo@bar.com", password = "password1", confirmPassword = "password2";
 		AuthenticationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, confirmPassword, true);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		assertEquals("register", registerView);
 	}
 	
@@ -117,7 +117,7 @@ public class RegistrationActivationTest {
 		String token = "1", email = "foo.bar.com", password = "password";
 		AuthenticationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		assertEquals("register", registerView);
 	}
 	
@@ -126,7 +126,7 @@ public class RegistrationActivationTest {
 		String token = "1", password = "password";
 		AuthenticationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, userPasswordMap.keySet().iterator().next(), password, password, true);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		assertEquals("register", registerView);
 	}
 	
@@ -135,7 +135,7 @@ public class RegistrationActivationTest {
 		String token = "1", password = "password";
 		AuthenticationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, null, password, password, true);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		assertEquals("register", registerView);
 	}
 	
@@ -144,7 +144,7 @@ public class RegistrationActivationTest {
 		String token = "1", email = "foo@bar.com";
 		AuthenticationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, null, null, true);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		assertEquals("register", registerView);
 	}
 	
@@ -153,7 +153,7 @@ public class RegistrationActivationTest {
 		String token = "1", email = "foo@bar.com";
 		AuthenticationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, "abcd", null, true);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		assertEquals("register", registerView);
 	}
 	
@@ -162,7 +162,7 @@ public class RegistrationActivationTest {
 		String token = "1", email = "foo@bar.com";
 		AuthenticationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, StringUtils.leftPad("1", 20), null, true);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		assertEquals("register", registerView);
 	}
 	
@@ -171,7 +171,7 @@ public class RegistrationActivationTest {
 		String token = "1", email = "foo@bar.com", password = "password";
 		AuthenticationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, false);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		assertEquals("register", registerView);
 	}
 	
@@ -182,7 +182,7 @@ public class RegistrationActivationTest {
 		Registration registration = initRegistration(token, email, password, password, true);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -199,7 +199,7 @@ public class RegistrationActivationTest {
 		Registration registration = initRegistration(token, email, password, password, true);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertEquals(1, smtpServer.getReceivedEmailSize());
 		
@@ -225,7 +225,7 @@ public class RegistrationActivationTest {
 		Registration registration = initRegistration(token1, email, password, password, true);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String registerView1 = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView1 = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -234,7 +234,7 @@ public class RegistrationActivationTest {
 		registration = initRegistration(token2, email, password, password, true);
 		
 		smtpServer = SimpleSmtpServer.start(2525);
-		String registerView2 = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView2 = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -273,7 +273,7 @@ public class RegistrationActivationTest {
 		Registration registration = initRegistration(token, email, password, password, true);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -294,7 +294,7 @@ public class RegistrationActivationTest {
 		Registration registration = initRegistration(token, email, password, password, true);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null);
+		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertEquals(1, smtpServer.getReceivedEmailSize());
 		
