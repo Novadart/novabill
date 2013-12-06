@@ -22,5 +22,24 @@
 }
 
 .commodities-detail table.table td{
-	border: none;
+}
+
+.commodities-detail table.details tbody {
+	font-size: 13px;
+}
+
+.commodities-detail tr.defaultPriceList {
+	font-size: 13px;
+}
+
+.commodities-detail tr.priceList {
+    font-size: 13px;
+}
+
+.commodities-detail tr.priceList td {
+	padding: 20px 8px;
+}
+
+.commodities-detail tr.defaultPriceList td {
+    padding: 20px 8px;
 }

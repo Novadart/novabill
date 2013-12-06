@@ -26,7 +26,7 @@ angular.module('novabill.utils', [])
 
 		float : /^\-?\d+((\.|\,)\d+)?$/,
 
-		reserved_word : /^\$.*$/
+		reserved_word : /^\::.*$/
 
 	};
 });

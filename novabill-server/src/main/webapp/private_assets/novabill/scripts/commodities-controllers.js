@@ -70,7 +70,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
  */
 .controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', 'NEditCommodityDialogAPI', 'NRemovalDialogAPI', 
                                        function($scope, $location, $routeParams, NEditCommodityDialogAPI, NRemovalDialogAPI){
-
+	$scope.DEFAULT_PRICELIST_NAME = NovabillConf.defaultPriceListName;
 	$scope.commodity = null;
 
 
@@ -148,6 +148,13 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 
 	loadCommodity();
 
-}]);
+}])
+
+
+.filter('filterDefault', function() {
+	return function(input) {
+		return input === NovabillConf.defaultPriceListName ? "Default" : input;
+	}
+});;
 
 
