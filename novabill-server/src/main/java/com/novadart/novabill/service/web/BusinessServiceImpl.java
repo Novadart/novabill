@@ -2,6 +2,7 @@ package com.novadart.novabill.service.web;
 
 import java.math.BigDecimal;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
@@ -111,6 +112,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		stats.setCommoditiesCount(self().getCommodities(businessID).size());
 		stats.setTotalAfterTaxesForYear(getTotalAfterTaxesForYear(businessID, year));
 		stats.setLogRecords(self().getLogRecords(businessID, 90));
+		stats.setInvoiceCountsPerMonth(self().getInvoiceMonthCounts(businessID));
 		return stats;
 	}
 	
@@ -283,6 +285,19 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		for(LogRecord lg: LogRecord.fetchAllSince(businessID, threshold))
 			result.add(LogRecordDTOFactory.toDTO(lg));
 		return result;
+	}
+
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<Integer> getInvoiceMonthCounts(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		Calendar cal = Calendar.getInstance();
+		List<Integer> counts = Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		for(InvoiceDTO invoice: self().getInvoices(businessID, cal.get(Calendar.YEAR))){
+			cal.setTime(invoice.getAccountingDocumentDate());
+			int month = cal.get(Calendar.MONTH); 
+			counts.set(month, counts.get(month) + 1);
+		}
+		return counts;
 	}
 	
 }

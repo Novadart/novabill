@@ -17,6 +17,8 @@ public class BusinessStatsDTO implements IsSerializable {
 	
 	private List<LogRecordDTO> logRecords;
 	
+	private List<Integer> invoiceCountsPerMonth;
+	
 	public Integer getClientsCount() {
 		return clientsCount;
 	}
@@ -55,6 +57,14 @@ public class BusinessStatsDTO implements IsSerializable {
 
 	public void setLogRecords(List<LogRecordDTO> logRecords) {
 		this.logRecords = logRecords;
+	}
+
+	public List<Integer> getInvoiceCountsPerMonth() {
+		return invoiceCountsPerMonth;
+	}
+
+	public void setInvoiceCountsPerMonth(List<Integer> invoiceCountsPerMonth) {
+		this.invoiceCountsPerMonth = invoiceCountsPerMonth;
 	}
 	
 }
