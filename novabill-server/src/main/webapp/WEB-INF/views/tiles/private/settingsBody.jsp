@@ -6,8 +6,7 @@
         <!-- BEGIN PAGE TITLE & BREADCRUMB-->
         <h3 class="page-title">Settings</h3>
         <ul class="breadcrumb">
-            <li><i class="icon-home"></i> <a href="../">Home</a> <i
-                class="icon-angle-right"></i></li>
+            <li><i class="fa fa-home"></i> <a href="../">Home</a></li>
             <li><span>Settings</span></li>
         </ul>
         <!-- END PAGE TITLE & BREADCRUMB-->
