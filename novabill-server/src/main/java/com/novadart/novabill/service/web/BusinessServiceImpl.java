@@ -21,12 +21,14 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Commodity;
+import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
+import com.novadart.novabill.domain.dto.factory.LogRecordDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
@@ -40,6 +42,7 @@ import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
@@ -105,21 +108,23 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		stats.setClientsCount(countClients(businessID));
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		stats.setInvoicesCountForYear(countInvoicesForYear(businessID, year));
+		stats.setCommoditiesCount(self().getCommodities(businessID).size());
 		stats.setTotalAfterTaxesForYear(getTotalAfterTaxesForYear(businessID, year));
+		stats.setLogRecords(self().getLogRecords(businessID, 90));
 		return stats;
 	}
 	
 	@Override
 	@Transactional(readOnly = true)
 	@PreAuthorize("#businessID == principal.business.id")
-	public Long countClients(Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return new Long(self().getClients(businessID).size());
+	public Integer countClients(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return self().getClients(businessID).size();
 	}
 	
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public Long countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
-		return new Long(self().getInvoices(businessID, year).size());
+	public Integer countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+		return self().getInvoices(businessID, year).size();
 	}
 
 	@Override
@@ -268,6 +273,16 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<Integer> getTransportDocumentYears(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return Business.findBusiness(businessID).getTransportDocumentYears();
+	}
+
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<LogRecordDTO> getLogRecords(Long businessID, Integer numberOfDays) throws NotAuthenticatedException, DataAccessException {
+		Long threshold = System.currentTimeMillis() - (numberOfDays * 24 * 60 * 60 * 1000) ;
+		List<LogRecordDTO> result = new ArrayList<>();
+		for(LogRecord lg: LogRecord.fetchAllSince(businessID, threshold))
+			result.add(LogRecordDTOFactory.toDTO(lg));
+		return result;
 	}
 	
 }

@@ -148,6 +148,8 @@ public class CommodityService {
 				"T(com.novadart.novabill.domain.Commodity).findCommodity(#commodityID)?.business?.id == #businessID")
 	public void removePrice(Long businessID, Long priceListID, Long commodityID){
 		Price price = Price.findPrice(priceListID, commodityID);
+		if(price.getPriceList().getName().equals(PriceListConstants.DEFAULT))
+			throw new UnsupportedOperationException();
 		price.remove();
 		if(Hibernate.isInitialized(price.getPriceList().getPrices()))
 			price.getPriceList().getPrices().remove(price);
