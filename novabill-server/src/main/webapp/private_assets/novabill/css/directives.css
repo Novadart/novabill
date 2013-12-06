@@ -61,4 +61,30 @@
     border-color: #356635;
     color: #356635;
 }
+
+.update-price .type-input {
+	
+}
+
+.update-price .type-span {
+    min-width: 200px;
+    display: inline-block;
+}
+
+.update-price .price-input {
+    margin-left: 5px;
+}
+
+.update-price .price-span {
+    width: 150px;
+    display: inline-block;
+}
+
+.update-price .btn.save,
+.update-price .btn.edit {
+}
+
+
+
+
  

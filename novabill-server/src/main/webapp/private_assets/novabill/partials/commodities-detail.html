@@ -27,9 +27,9 @@
 	
 
     <h3 style="margin-top: 10px;">Details</h3>
-	<div class="well col-md-5">
+	<div class="well col-md-7">
 		<div class="table-responsive">
-			<table class="table">
+			<table class="table details">
 				<thead>
 					<tr>
 						<th>Stock Keeping Unit</th>
@@ -47,28 +47,25 @@
 			</table>
 		</div>
 	</div>
-	
-	<h3 style="margin-top: 10px; clear: both;">Price Lists</h3>
-    <div class="well col-md-5">
-	    <table class="table">
-		    <tbody>
-		        <tr style="font-weight: bold; font-size: large">
-		            <td>Default</td>
-		            <td>
-	                   <update-price price-list-name="$default" price="commodity.pricesMap.prices.$default" />
-	                </td>
-		        </tr>
-		        <tr>
-                    <td>Another</td>
-                    <td>
-                       <update-price price-list-name="another" price="commodity.pricesMap.prices.$default" />
-                    </td>
-                </tr>
-		    </tbody>
+
+	<h3 style="clear: both;">Price Lists</h3>
+	<div class="well col-md-7">
+		<table class="table">
+            <thead>
+                <th>Price List Name</th>
+                <th>Price</th>
+            </thead>
+			<tbody>
+				<tr ng-repeat="(priceListName, price) in commodity.pricesMap.prices"
+					ng-class="{defaultPriceList: priceListName===DEFAULT_PRICELIST_NAME, priceList: priceListName!==DEFAULT_PRICELIST_NAME}">
+					<td width="40%">{{priceListName | filterDefault}}</td>
+					<td width="60%"><update-price price-list-name="priceListName" price="price"></update-price></td>
+				</tr>
+			</tbody>
 		</table>
-    </div>
-    
+	</div>
+
+	<edit-commodity-dialog commodity="commodity"></edit-commodity-dialog>
+    <removal-dialog></removal-dialog>
 </div>
 
-<edit-commodity-dialog commodity="commodity" />
-<removal-dialog />

@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('novabill.directives', ['novabill.utils'])
+angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.dialogs'])
 
 /*
  * Invoice widget
@@ -235,12 +235,13 @@ angular.module('novabill.directives', ['novabill.utils'])
 /*
  * Update Price Widget
  */
-.directive('updatePrice', ['NConstants', function factory(NConstants){
+.directive('updatePrice', ['$route', 'NConstants', 'NRemovalDialogAPI', 
+                           function factory($route, NConstants, NRemovalDialogAPI){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/update-price.html',
 		scope: { 
-			priceListName : '@',
+			priceListName : '=',
 			price : '=',
 		},
 		controller : ['$scope', function($scope){
@@ -276,19 +277,37 @@ angular.module('novabill.directives', ['novabill.utils'])
 			$scope.save = function(){
 				var tempPrice = angular.copy($scope.price);
 				tempPrice.priceType = $scope.priceType;
-				tempPrice.priceValue = $scope.priceValueDerived !== null ? $scope.priceValueDerived : $scope.priceValueFixed;
+				tempPrice.priceValue = $scope.priceValueDerived !== null && $scope.priceValueDerived !== undefined ? $scope.priceValueDerived : $scope.priceValueFixed;
 				
 				GWT_Server.commodity.addOrUpdatePrice(NovabillConf.businessId, JSON.stringify(tempPrice), {
 					onSuccess : function(){
 						$scope.$apply(function(){
-							$scope.price.priceType = tempPrice.priceType;
-							$scope.price.priceValue = tempPrice.priceValue;
-							$scope.editMode = false;
+							$route.reload();
 						});
 					},
 
 					onFailure : function(error){}
 				});
+			};
+			
+			$scope.remove = function(){
+				NRemovalDialogAPI.init('Are you sure that you want to delete the price in this price list?', {
+					onOk : function(){
+						GWT_Server.commodity.removePrice(NovabillConf.businessId, $scope.price.priceListID, $scope.price.commodityID, {
+							onSuccess : function(data){
+								$scope.$apply(function(){
+									$route.reload();
+								});
+							},
+
+							onFailure : function(error){}
+						});
+
+					},
+
+					onCancel : function(){}
+				});
+				NRemovalDialogAPI.show();
 			};
 			
 			
