@@ -100,6 +100,8 @@ public class CommodityService {
 			throw new NoSuchObjectException();
 		CommodityDTOFactory.copyFromDTO(persistentCommodity, commodityDTO);
 		validator.validate(persistentCommodity, false);
+		PriceDTO defaultPriceDTO = commodityDTO.getPrices().get(PriceListConstants.DEFAULT);
+		addOrUpdatePrice(commodityDTO.getBusiness().getId(), defaultPriceDTO);
 	}
 
 	@Transactional(readOnly = false)
