@@ -597,6 +597,28 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 					break;
 				}
 				break;
+				
+			case nConstants.logRecord.entityType.PAYMENT_TYPE:
+				switch ($scope.record.operationType) {
+				case nConstants.logRecord.operationType.CREATE:
+					$scope.description = tr('LR_PAYMENT_TYPE_CREATE',
+							'{paymentName: "'+ details.paymentTypeName +'", link: "'+nConstants.url.paymentList()+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.UPDATE:
+					$scope.description = tr('LR_PAYMENT_TYPE_UPDATE',
+							'{paymentName: "'+ details.paymentTypeName +'", link: "'+nConstants.url.paymentList()+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.DELETE:
+					$scope.description = tr('LR_PAYMENT_TYPE_DELETE',
+							'{paymentName: "'+ details.paymentTypeName +'"}');
+					break;
+					
+				default:
+					break;
+				}
+				break;
 
 			default:
 				break;

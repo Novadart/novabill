@@ -108,6 +108,10 @@ angular.module('novabill.dashboard.controllers', ['novabill.directives', 'novabi
 			$scope.$apply(function(){
 				$scope.stats = stats;
 				drawInvoicesPerMonthChart(stats.invoiceCountsPerMonth.list);
+				
+				$('.scroller').slimScroll({
+				    height: '300px'
+				});
 			});
 		},
 

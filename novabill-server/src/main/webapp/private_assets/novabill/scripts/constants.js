@@ -26,7 +26,8 @@ angular.module('novabill.constants', [])
 				INVOICE : 'INVOICE', 
 				ESTIMATION : 'ESTIMATION', 
 				CREDIT_NOTE : 'CREDIT_NOTE', 
-				TRANSPORT_DOCUMENT : 'TRANSPORT_DOCUMENT'
+				TRANSPORT_DOCUMENT : 'TRANSPORT_DOCUMENT',
+				PAYMENT_TYPE : 'PAYMENT_TYPE'
 			},
 
 			operationType : {
@@ -40,6 +41,7 @@ angular.module('novabill.constants', [])
 		months : ['JAN', 'FEB', 'MAR', 'APR', 'MAY', 'JUN', 'JUL', 'AUG', 'SEP', 'OCT', 'NOV', 'DEC'],
 		
 		url : {
+			
 			clientList : function(){ return NovabillConf.clientsBaseUrl + '#/'; },
 			clientDetails : function(clientId){ return NovabillConf.clientsBaseUrl + '#/details/'+clientId; },
 			
@@ -60,9 +62,10 @@ angular.module('novabill.constants', [])
 			invoiceFromEstimation : function(estimationId){ return NovabillConf.invoicesBaseUrl + '#/from-estimation/' + estimationId; },
 			invoiceFromTransportDocument : function(transportDocumentId){ return NovabillConf.invoicesBaseUrl + '#/from-transport-document/' + transportDocumentId; },
 			
+			paymentList : function(){ return NovabillConf.paymentsBaseUrl + '#/'; },
+			
 			trasportDocumentList : function(){ return NovabillConf.transportDocumentsBaseUrl + '#/'; },
 			trasportDocumentDetails : function(transportDocumentId){ return NovabillConf.transportDocumentsBaseUrl + '#/details/' + transportDocumentId; },
-			
 			
 		}
 		

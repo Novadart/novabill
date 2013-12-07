@@ -304,6 +304,7 @@
             creditNotesBaseUrl : '${creditNotesUrl}',
             transportDocumentsBaseUrl : '${transportDocumentsUrl}',
             commoditiesBaseUrl : '${commoditiesUrl}',
+            paymentsBaseUrl : '${paymentsUrl}',
             
             partialsBaseUrl : '${privateAssetsUrl}/novabill/partials/'
     };
