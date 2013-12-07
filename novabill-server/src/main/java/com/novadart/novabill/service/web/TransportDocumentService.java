@@ -1,7 +1,9 @@
 package com.novadart.novabill.service.web;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -140,6 +142,18 @@ public class TransportDocumentService {
 	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException {
 		List<TransportDocumentDTO> allTransportDocs = businessService.getTransportDocuments(businessID, year);
 		return new PageDTO<TransportDocumentDTO>(DTOUtils.range(allTransportDocs, start, length), start, length, new Long(allTransportDocs.size()));
+	}
+	
+	public List<TransportDocumentDTO>  getAllWithIDs(List<Long> ids) throws DataAccessException, NoSuchObjectException{
+		Long businessID = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
+		Set<Long> idsSet = new HashSet<>(ids);
+		List<TransportDocument> transportDocs = TransportDocument.getTransportDocumentsWithIDs(ids);
+		for(TransportDocument transDoc: transportDocs){
+			if(!idsSet.contains(transDoc.getId())) throw new IllegalStateException();
+			if(!transDoc.getBusiness().getId().equals(businessID)) throw new DataAccessException(); //authorization
+		}
+		if(transportDocs.size() != ids.size()) throw new NoSuchObjectException(); //cardinality check
+		return DTOUtils.toDTOList(transportDocs, DTOUtils.transportDocDTOConverter, true);
 	}
 
 }

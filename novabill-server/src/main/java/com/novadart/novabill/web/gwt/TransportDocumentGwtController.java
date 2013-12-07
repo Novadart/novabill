@@ -55,4 +55,9 @@ public class TransportDocumentGwtController extends AbstractGwtController implem
 		return transportDocService.getAllInRange(businessID, year, start, length);
 	}
 
+	@Override
+	public List<TransportDocumentDTO> getAllWithIDs(List<Long> ids) throws DataAccessException, NoSuchObjectException {
+		return transportDocService.getAllWithIDs(ids);
+	}
+
 }

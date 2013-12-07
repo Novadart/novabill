@@ -54,7 +54,7 @@ public class GWTServiceTest {
 	}
 	
 	protected void authenticatePrincipal(Principal principal){
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal.getUsername(), userPasswordMap.get(principal.getUsername()));
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, userPasswordMap.get(principal.getUsername()));
 		SecurityContextHolder.getContext().setAuthentication(token);
 	}
 	

@@ -10,8 +10,24 @@
 						http://www.springframework.org/schema/util
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
-    <bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentGwtController"/>
+    <bean id="invoice" class="com.novadart.novabill.web.gwt.InvoiceGwtController"/>
+
+	<bean id="estimation" class="com.novadart.novabill.web.gwt.EstimationGwtController"/>
 	
+	<bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteGwtController"/>
+	
+	<bean id="transportdoc" class="com.novadart.novabill.web.gwt.TransportDocumentGwtController"/>
+
+	<bean id="commodity" class="com.novadart.novabill.web.gwt.CommodityGwtController"/>
+	
+	<bean id="client" class="com.novadart.novabill.web.gwt.ClientGwtController"/>
+
 	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtController"/>
+	
+	<bean id="paymenttype" class="com.novadart.novabill.web.gwt.PaymentTypeGwtController"/>
+	
+	<bean id="pricelist" class="com.novadart.novabill.web.gwt.PriceListGwtController"/>
+	
+	<bean id="batchdatafetcher" class="com.novadart.novabill.web.gwt.BatchDataFetcherGwtController"/>
     
 </beans>

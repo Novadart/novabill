@@ -1,5 +1,7 @@
 package com.novadart.novabill.web.gwt;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -99,6 +101,11 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 	@Override
 	public Pair<Long, InvoiceDTO> fetchNewCreditNoteFromInvoiceOpData(Long invoiceID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		return new Pair<Long, InvoiceDTO>(creditNoteService.getNextCreditNoteDocumentID(), invoiceService.get(invoiceID));
+	}
+
+	@Override
+	public Pair<Long, List<TransportDocumentDTO>> fetchNewInvoiceFromTransportDocumentsOpData(List<Long> transportDocumentIDs) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return new Pair<Long, List<TransportDocumentDTO>>(invoiceService.getNextInvoiceDocumentID(), transportDocService.getAllWithIDs(transportDocumentIDs));
 	}
 	
 }

@@ -33,4 +33,6 @@ public interface TransportDocumentGwtService extends RemoteService {
 	
 	public PageDTO<TransportDocumentDTO> getAllInRange(Long businessID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, DataAccessException;
 	
+	public List<TransportDocumentDTO>  getAllWithIDs(List<Long> ids) throws DataAccessException, NoSuchObjectException;
+	
 }

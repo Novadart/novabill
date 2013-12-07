@@ -94,7 +94,7 @@ public abstract class AccountingDocument {
     }
 	
 	protected static <T> Long countForClient(Class<T> cls, Long id){
-		String query = String.format("select count(o) FROM %s o where o.client.id = :clientID", cls.getSimpleName()); 
+		String query = String.format("select count(d) FROM %s d where d.client.id = :clientID", cls.getSimpleName()); 
     	return entityManager().createQuery(query, Long.class).setParameter("clientID", id).getSingleResult();
 	}
 	
@@ -107,10 +107,9 @@ public abstract class AccountingDocument {
     	return new ArrayList<T>(sortedSet);
     }
 	
-	public static <T extends AccountingDocument> T getAccountingDocument(Class<T> cls, Long documentID, int year){
-		String query = String.format("select o from %s o where o.documentID = :docID and o.accountingDocumentYear = :year", cls.getSimpleName());
-		List<T> result = entityManager().createQuery(query, cls).setParameter("docID", documentID).setParameter("year", year).getResultList();
-		return result.size() > 0? result.get(0): null;
+	protected static <T extends AccountingDocument> List<T> getAccountingDocumentsWithIDs(Class<T> cls, List<Long> ids){
+		String sql = String.format("select d from %s d join fetch d.accountingDocumentItems where d.id in (:ids) order by d.accountingDocumentDate asc", cls.getSimpleName());
+		return entityManager().createQuery(sql, cls).setParameter("ids", ids).getResultList();
 	}
 	
 	/*

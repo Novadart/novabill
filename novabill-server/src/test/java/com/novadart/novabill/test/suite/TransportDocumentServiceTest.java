@@ -7,6 +7,9 @@ import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +18,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -39,7 +43,11 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtService;
+import com.novadart.novabill.shared.client.facade.BusinessGwtService;
+import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
+import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
 
@@ -52,6 +60,15 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	
 	@Autowired
 	private TransportDocumentGwtService transportDocService;
+	
+	@Autowired
+	private InvoiceGwtService invoiceService;
+	
+	@Autowired
+	private BusinessGwtService businessService;
+	
+	@Autowired
+	private BatchDataFetcherGwtService batchDataFetcherService;
 	
 	@Override
 	@Before
@@ -270,6 +287,32 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 				actual.add(error.getField());
 			assertEquals(expected, actual);
 		}
+	}
+	
+	@Test
+	public void getAllWithIDsTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, AuthorizationException, ValidationException, InstantiationException, IllegalAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
+		transDocDTO.setClient(ClientDTOFactory.toDTO(client));
+		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		transportDocService.add(transDocDTO);
+		TransportDocument.entityManager().flush();
+		Long nextInvID = invoiceService.getNextInvoiceDocumentID();
+		List<TransportDocumentDTO> transDocDTOs = businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId(), Calendar.getInstance().get(Calendar.YEAR));
+		List<Long> ids = new ArrayList<>(transDocDTOs.size());
+		for(TransportDocumentDTO dto: transDocDTOs)
+			ids.add(dto.getId());
+		Collections.sort(transDocDTOs, new Comparator<TransportDocumentDTO>() {
+			@Override
+			public int compare(TransportDocumentDTO t1, TransportDocumentDTO t2){
+				return t1.getAccountingDocumentDate().compareTo(t2.getAccountingDocumentDate());
+			}
+		});
+		Pair<Long, List<TransportDocumentDTO>> pack = batchDataFetcherService.fetchNewInvoiceFromTransportDocumentsOpData(ids);
+		assertEquals(nextInvID, pack.getFirst());
+		assertEquals(ids.size(), pack.getSecond().size());
+		for(int i=0; i<transDocDTOs.size(); ++i)
+			assertEquals(transDocDTOs.get(i).getId(), pack.getSecond().get(i).getId());
 	}
 
 }
