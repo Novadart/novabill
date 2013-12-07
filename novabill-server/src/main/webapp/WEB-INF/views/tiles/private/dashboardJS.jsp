@@ -11,7 +11,7 @@
 <!-- END PAGE LEVEL PLUGINS -->
 <!-- BEGIN PAGE LEVEL SCRIPTS -->
 <script src="${privateAssetsUrl}/scripts/app.js" type="text/javascript"></script>
-<script src="${privateAssetsUrl}/scripts/index.js" type="text/javascript"></script>
+
 <script src="${privateAssetsUrl}/novabill/scripts/utils.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/novabill/scripts/directives-dialogs.js" type="text/javascript"></script>
 <script src="${privateAssetsUrl}/novabill/scripts/directives.js" type="text/javascript"></script>
@@ -25,8 +25,6 @@
     
     function onGWTLoaded(){
         angular.bootstrap(document, ['novabill.dashboard']);
-        Index.init();
-        Index.initCharts(); // init index page's custom scripts
     }
 </script>
 <!-- END JAVASCRIPTS -->

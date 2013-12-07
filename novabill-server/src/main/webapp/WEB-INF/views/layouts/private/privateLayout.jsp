@@ -270,6 +270,7 @@
     <script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
     <script>window.angular || document.write('<script src="${privateAssetsUrl}/plugins/angular/angular.min.js"><\/script>');</script>
     <script src="${privateAssetsUrl}/plugins/angular/angular-route.min.js"></script>
+    <script src="${privateAssetsUrl}/plugins/angular/angular-sanitize.min.js"></script>
     <script src="${privateAssetsUrl}/plugins/angular/i18n/angular-locale_it-it.js" type="text/javascript"></script>
     <script src="${privateAssetsUrl}/plugins/angular-translate.min.js" type="text/javascript"></script>
     <script src="${privateAssetsUrl}/novabill/scripts/translations.js" type="text/javascript"></script>
