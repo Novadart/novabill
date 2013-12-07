@@ -5,12 +5,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +24,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Estimation;
@@ -125,7 +130,7 @@ public class EstimationServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
 		Long clientID = new Long(testProps.get("clientWithEstimationsID"));
 		Long estimationID = Client.findClient(clientID).getEstimations().iterator().next().getId();
 		estimationService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, estimationID);
@@ -135,7 +140,8 @@ public class EstimationServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.ESTIMATION, rec.getEntityType());
 		assertEquals(estimationID, rec.getEntityID());
 		assertEquals(OperationType.DELETE, rec.getOperationType());
-		assertEquals(Client.findClient(clientID).getName(), rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(Client.findClient(clientID).getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -183,7 +189,7 @@ public class EstimationServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
 		Estimation expectedEstimation = authenticatedPrincipal.getBusiness().getEstimations().iterator().next();
 		expectedEstimation.setNote("Temporary note for this estimation");
 		estimationService.update(EstimationDTOFactory.toDTO(expectedEstimation, true));
@@ -194,7 +200,9 @@ public class EstimationServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.ESTIMATION, rec.getEntityType());
 		assertEquals(expectedEstimation.getId(), rec.getEntityID());
 		assertEquals(OperationType.UPDATE, rec.getOperationType());
-		assertEquals(expectedEstimation.getClient().getName(), rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(expectedEstimation.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(expectedEstimation.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -211,7 +219,7 @@ public class EstimationServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, JsonParseException, JsonMappingException, IOException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		EstimationDTO estDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
 		estDTO.setClient(ClientDTOFactory.toDTO(client));
@@ -223,7 +231,9 @@ public class EstimationServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.ESTIMATION, rec.getEntityType());
 		assertEquals(id, rec.getEntityID());
 		assertEquals(OperationType.CREATE, rec.getOperationType());
-		assertEquals(client.getName(), rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(client.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(estDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
 	}
 	
 	@Test(expected = DataAccessException.class)

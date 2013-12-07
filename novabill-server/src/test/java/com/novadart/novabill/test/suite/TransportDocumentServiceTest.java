@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -12,18 +13,21 @@ import java.util.Collections;
 import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.LogRecord;
@@ -143,7 +147,7 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
 		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		Long transportDocID = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, transportDocID);
@@ -153,7 +157,8 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.TRANSPORT_DOCUMENT, rec.getEntityType());
 		assertEquals(transportDocID, rec.getEntityID());
 		assertEquals(OperationType.DELETE, rec.getOperationType());
-		assertEquals(Client.findClient(clientID).getName(), rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(Client.findClient(clientID).getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -201,7 +206,7 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
 		TransportDocument expected = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		expected.setNote("Temporary note for this transport document");
 		transportDocService.update(TransportDocumentDTOFactory.toDTO(expected, true));
@@ -212,7 +217,9 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.TRANSPORT_DOCUMENT, rec.getEntityType());
 		assertEquals(expected.getId(), rec.getEntityID());
 		assertEquals(OperationType.UPDATE, rec.getOperationType());
-		assertEquals(expected.getClient().getName(), rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(expected.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(expected.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -229,7 +236,7 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, JsonParseException, JsonMappingException, IOException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
 		transDocDTO.setClient(ClientDTOFactory.toDTO(client));
@@ -241,7 +248,9 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.TRANSPORT_DOCUMENT, rec.getEntityType());
 		assertEquals(id, rec.getEntityID());
 		assertEquals(OperationType.CREATE, rec.getOperationType());
-		assertEquals(client.getName(), rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(transDocDTO.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(transDocDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
 	}
 	
 	@Test(expected = DataAccessException.class)

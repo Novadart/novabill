@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -16,6 +17,8 @@ import javax.annotation.Resource;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -25,6 +28,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.LogRecord;
@@ -108,7 +112,7 @@ public class ClientServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void removeAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException{
+	public void removeAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, JsonParseException, JsonMappingException, IOException{
 		Long clientID = new Long(testProps.get("clientWithoutInvoicesID"));
 		String name = Client.findClient(clientID).getName();
 		clientService.remove(authenticatedPrincipal.getBusiness().getId(), clientID);
@@ -118,7 +122,8 @@ public class ClientServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.CLIENT, rec.getEntityType());
 		assertEquals(clientID, rec.getEntityID());
 		assertEquals(OperationType.DELETE, rec.getOperationType());
-		assertEquals(name, rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(name, details.get(DBLoggerAspect.CLIENT_NAME));
 	}
 	
 	@Test(expected = DataIntegrityException.class)
@@ -176,7 +181,7 @@ public class ClientServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void addAuthenticatedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+	public void addAuthenticatedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, JsonParseException, JsonMappingException, IOException{
 		Client expectedClient = TestUtils.createClient();
 		expectedClient.setBusiness(authenticatedPrincipal.getBusiness());
 		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(expectedClient));
@@ -188,7 +193,8 @@ public class ClientServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.CLIENT, rec.getEntityType());
 		assertEquals(clientID, rec.getEntityID());
 		assertEquals(OperationType.CREATE, rec.getOperationType());
-		assertEquals(actualClient.getName(), rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(actualClient.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -221,7 +227,7 @@ public class ClientServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void updateAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
+	public void updateAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
 		Client expectedClient = Client.findClient(clientID);
 		expectedClient.setName("Temporary name for this company");
@@ -233,7 +239,8 @@ public class ClientServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.CLIENT, rec.getEntityType());
 		assertEquals(clientID, rec.getEntityID());
 		assertEquals(OperationType.UPDATE, rec.getOperationType());
-		assertEquals(expectedClient.getName(), rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(expectedClient.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 	}
 	
 	@Test(expected = DataAccessException.class)

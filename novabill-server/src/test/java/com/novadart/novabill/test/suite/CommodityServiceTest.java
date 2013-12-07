@@ -5,6 +5,7 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -14,6 +15,8 @@ import java.util.Map;
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.LogRecord;
@@ -78,7 +82,7 @@ public class CommodityServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
 		BigDecimal defaultPrice = new BigDecimal("24.95");
 		CommodityDTO commodityDTO = addCommodity(authenticatedPrincipal.getBusiness().getId(), defaultPrice);
 		Commodity.entityManager().flush();
@@ -91,7 +95,8 @@ public class CommodityServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.COMMODITY, rec.getEntityType());
 		assertEquals(commodityDTO.getId(), rec.getEntityID());
 		assertEquals(OperationType.CREATE, rec.getOperationType());
-		assertEquals(commodityDTO.getDescription(), rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(commodityDTO.getDescription(), details.get(DBLoggerAspect.COMMODITY_NAME));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -113,7 +118,7 @@ public class CommodityServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException {
 		Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
 		String desc = Commodity.findCommodity(commodityID).getDescription();
 		commodityGwtService.remove(authenticatedPrincipal.getBusiness().getId(), commodityID);
@@ -123,7 +128,8 @@ public class CommodityServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.COMMODITY, rec.getEntityType());
 		assertEquals(commodityID, rec.getEntityID());
 		assertEquals(OperationType.DELETE, rec.getOperationType());
-		assertEquals(desc, rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(desc, details.get(DBLoggerAspect.COMMODITY_NAME));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -144,7 +150,7 @@ public class CommodityServiceTest extends GWTServiceTest {
      }
      
      @Test
-     public void updateAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+     public void updateAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
     	 Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
          CommodityDTO commodityDTO = commodityGwtService.get(authenticatedPrincipal.getBusiness().getId(), commodityID);
          commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
@@ -157,7 +163,8 @@ public class CommodityServiceTest extends GWTServiceTest {
          assertEquals(EntityType.COMMODITY, rec.getEntityType());
          assertEquals(commodityDTO.getId(), rec.getEntityID());
          assertEquals(OperationType.UPDATE, rec.getOperationType());
-         assertEquals(commodityDTO.getDescription(), rec.getDetails());
+         Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+         assertEquals(commodityDTO.getDescription(), details.get(DBLoggerAspect.COMMODITY_NAME));
      }
      
      @Test(expected = DataAccessException.class)

@@ -5,12 +5,16 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -20,6 +24,7 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.CreditNote;
@@ -145,7 +150,7 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
 		Long clientID = new Long(testProps.get("clientWithCreditNotesID"));
 		Long creditNoteID = Client.findClient(clientID).getCreditNotes().iterator().next().getId();
 		creditNoteService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, creditNoteID);
@@ -155,7 +160,8 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.CREDIT_NOTE, rec.getEntityType());
 		assertEquals(creditNoteID, rec.getEntityID());
 		assertEquals(OperationType.DELETE, rec.getOperationType());
-		assertEquals(Client.findClient(clientID).getName(), rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(Client.findClient(clientID).getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -186,7 +192,7 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, JsonParseException, JsonMappingException, IOException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		CreditNoteDTO creditNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class), true);
 		creditNoteDTO.setClient(ClientDTOFactory.toDTO(client));
@@ -198,7 +204,9 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.CREDIT_NOTE, rec.getEntityType());
 		assertEquals(id, rec.getEntityID());
 		assertEquals(OperationType.CREATE, rec.getOperationType());
-		assertEquals(client.getName(), rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(client.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(creditNoteDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -226,7 +234,7 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
 		CreditNote expectedCreditNote = authenticatedPrincipal.getBusiness().getCreditNotes().iterator().next();
 		expectedCreditNote.setNote("Temporary note for this credit note");
 		creditNoteService.update(CreditNoteDTOFactory.toDTO(expectedCreditNote, true));
@@ -237,7 +245,9 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.CREDIT_NOTE, rec.getEntityType());
 		assertEquals(expectedCreditNote.getId(), rec.getEntityID());
 		assertEquals(OperationType.UPDATE, rec.getOperationType());
-		assertEquals(expectedCreditNote.getClient().getName(), rec.getDetails());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(expectedCreditNote.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(expectedCreditNote.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
 	}
 	
 	@Test(expected = DataAccessException.class)

@@ -1,11 +1,15 @@
 package com.novadart.novabill.aspect.logging;
 
 import java.util.Date;
+import java.util.Map;
+
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+
+import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.data.EntityType;
@@ -33,7 +37,8 @@ public aspect ClientServiceActionsAspect extends DBLoggerAspect {
 		LOGGER.info("[{}, addClient, {}, businessID: {}, id: {}, dto: {}]",
 				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), businessID, id,
 							ReflectionToStringBuilder.toString(clientDTO, ToStringStyle.SHORT_PREFIX_STYLE)});
-		logActionInDB(businessID, EntityType.CLIENT, OperationType.CREATE, id, time, clientDTO.getName());
+		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, clientDTO.getName());
+		logActionInDB(businessID, EntityType.CLIENT, OperationType.CREATE, id, time, details);
 	}
 	
 	void around(Long businessID, Long id) : remove(businessID, id){
@@ -42,7 +47,8 @@ public aspect ClientServiceActionsAspect extends DBLoggerAspect {
 		Long time = System.currentTimeMillis();
 		LOGGER.info("[{}, removeClient, {}, businessID: {}, id: {}]",
 				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), businessID, id});
-		logActionInDB(businessID, EntityType.CLIENT, OperationType.DELETE, id, time, client.getName());
+		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, client.getName());
+		logActionInDB(businessID, EntityType.CLIENT, OperationType.DELETE, id, time, details);
 	}
 	
 	after(Long businessID, ClientDTO clientDTO) returning : update(businessID, clientDTO){
@@ -50,7 +56,8 @@ public aspect ClientServiceActionsAspect extends DBLoggerAspect {
 		LOGGER.info("[{}, updateClient, {}, businessID: {}, dto: {}]",
 				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), businessID,
 							ReflectionToStringBuilder.toString(clientDTO, ToStringStyle.SHORT_PREFIX_STYLE)});
-		logActionInDB(businessID, EntityType.CLIENT, OperationType.UPDATE, clientDTO.getId(), time, clientDTO.getName());
+		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, clientDTO.getName());
+		logActionInDB(businessID, EntityType.CLIENT, OperationType.UPDATE, clientDTO.getId(), time, details);
 	}
 
 }
