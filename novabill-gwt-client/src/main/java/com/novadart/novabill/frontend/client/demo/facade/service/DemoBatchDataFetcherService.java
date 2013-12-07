@@ -1,5 +1,7 @@
 package com.novadart.novabill.frontend.client.demo.facade.service;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
@@ -163,6 +165,14 @@ public class DemoBatchDataFetcherService implements
 		} catch (NoSuchObjectException e) {
 			callback.onFailure(e);
 		}
+	}
+
+	@Override
+	public void fetchNewInvoiceFromTransportDocumentsOpData(
+			List<Long> transportDocumentIDs,
+			AsyncCallback<Pair<Long, List<TransportDocumentDTO>>> callback) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

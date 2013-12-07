@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.dialogs'])
+angular.module('novabill.directives', ['novabill.utils', 'novabill.translations', 'novabill.constants', 'novabill.directives.dialogs', 'ngSanitize'])
 
 /*
  * Invoice widget
  */
-.directive('nInvoice', ['nRemovalDialogAPI', '$rootScope', 
-                               function factory(nRemovalDialogAPI, $rootScope){
+.directive('nInvoice', ['nRemovalDialogAPI', '$rootScope', 'nConstants',
+                        function factory(nRemovalDialogAPI, $rootScope, nConstants){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-invoice.html',
@@ -15,7 +15,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 			bottomUpMenu : '=',
 		},
 		controller : ['$scope', function($scope){
-			$scope.openUrl = NovabillConf.invoicesBaseUrl + '#/details/' + $scope.invoice.id;
+			$scope.openUrl = nConstants.url.invoiceDetails($scope.invoice.id);
 
 			$scope.print = function(){
 				GWT_UI.generateInvoicePdf($scope.invoice.id);
@@ -41,7 +41,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 				GWT_UI.selectClientDialog(NovabillConf.businessId, {
 
 					onSuccess : function(clientId){
-						window.location.assign(NovabillConf.invoicesBaseUrl + '#/new/' + clientId + '/clone/' + $scope.invoice.id);
+						window.location.assign(nConstants.url.invoiceClone(clientId, $scope.invoice.id));
 					},
 
 					onFailure : function(){}
@@ -49,7 +49,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 			};
 
 			$scope.createCreditNote = function(id){
-				window.location.assign(NovabillConf.creditNotesBaseUrl + '#/from-invoice/' + $scope.invoice.id);
+				window.location.assign(nConstants.url.creditNoteFromInvoice($scope.invoice.id));
 			};
 		}],
 		restrict: 'E',
@@ -62,8 +62,8 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 /*
  * Estimation Widget
  */
-.directive('nEstimation', ['nRemovalDialogAPI', '$rootScope', 
-                                  function factory(nRemovalDialogAPI, $rootScope){
+.directive('nEstimation', ['nRemovalDialogAPI', '$rootScope', 'nConstants', 
+                           function factory(nRemovalDialogAPI, $rootScope, nConstants){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-estimation.html',
@@ -72,7 +72,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 			bottomUpMenu : '=',
 		},
 		controller : ['$scope', function($scope){
-			$scope.openUrl = NovabillConf.estimationsBaseUrl + '#/details/' + $scope.estimation.id;
+			$scope.openUrl = nConstants.url.estimationDetails($scope.estimation.id);
 
 			$scope.print = function(){
 				GWT_UI.generateEstimationPdf($scope.estimation.id);
@@ -98,7 +98,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 				GWT_UI.selectClientDialog(NovabillConf.businessId, {
 
 					onSuccess : function(clientId){
-						window.location.assign(NovabillConf.estimationsBaseUrl + '#/new/' + clientId + '/clone/' + $scope.invoice.id);
+						window.location.assign(nConstants.url.estimationClone(clientId, $scope.estimation.id));
 					},
 
 					onFailure : function(){}
@@ -106,7 +106,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 			};
 
 			$scope.convertToInvoice = function(id){
-				window.location.assign(NovabillConf.invoicesBaseUrl + '#/from-estimation/' + $scope.estimation.id);
+				window.location.assign(nConstants.url.invoiceFromEstimation($scope.estimation.id));
 			};
 
 		}],
@@ -120,8 +120,8 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 /*
  * Transport Document Widget
  */
-.directive('nTransportDocument', ['nRemovalDialogAPI', '$rootScope', 
-                                         function factory(nRemovalDialogAPI, $rootScope){
+.directive('nTransportDocument', ['nRemovalDialogAPI', '$rootScope', 'nConstants',
+                                  function factory(nRemovalDialogAPI, $rootScope, nConstants){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-transport-document.html',
@@ -130,7 +130,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 			bottomUpMenu : '=',
 		},
 		controller : ['$scope', function($scope){
-			$scope.openUrl = NovabillConf.transportDocumentsBaseUrl + '#/details/' + $scope.transportDocument.id;
+			$scope.openUrl = nConstants.url.trasportDocumentDetails( $scope.transportDocument.id );
 
 			$scope.print = function(){
 				GWT_UI.generateTransportDocumentPdf($scope.transportDocument.id);
@@ -151,9 +151,9 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 				});
 				nRemovalDialogAPI.show();
 			};
-			
+
 			$scope.createInvoice = function(id){
-				window.location.assign(NovabillConf.invoicesBaseUrl + '#/from-transport-document/' + $scope.transportDocument.id);
+				window.location.assign(nConstants.url.invoiceFromTransportDocument( $scope.transportDocument.id ));
 			};
 
 		}],
@@ -167,8 +167,8 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 /*
  * Credit Note Widget
  */
-.directive('nCreditNote', ['nRemovalDialogAPI', '$rootScope', 
-                                  function factory(nRemovalDialogAPI, $rootScope){
+.directive('nCreditNote', ['nRemovalDialogAPI', '$rootScope', 'nConstants', 
+                           function factory(nRemovalDialogAPI, $rootScope, nConstants){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-credit-note.html',
@@ -177,12 +177,12 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 			bottomUpMenu : '=',
 		},
 		controller : ['$scope', function($scope){
-			$scope.openUrl = NovabillConf.creditNotesBaseUrl + '#/details/' + $scope.creditNote.id;
+			$scope.openUrl = nConstants.url.creditNoteDetails( $scope.creditNote.id );
 
 			$scope.print = function(){
 				GWT_UI.generateCreditNotePdf($scope.creditNote.id);
 			};
-			
+
 			$scope.remove = function(){
 				nRemovalDialogAPI.init('Delete '+$scope.creditNote.documentID+' Credit Note?', {
 					onOk : function(){
@@ -198,7 +198,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 				});
 				nRemovalDialogAPI.show();
 			};
-			
+
 		}],
 		restrict: 'E',
 		replace: true,
@@ -212,7 +212,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
  * Commodity Widget
  */
 .directive('nCommodity', ['nRemovalDialogAPI', '$rootScope', 
-                                  function factory(nRemovalDialogAPI, $rootScope){
+                          function factory(nRemovalDialogAPI, $rootScope){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-commodity.html',
@@ -223,7 +223,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 		controller : ['$scope', function($scope){
 
 			$scope.remove = function(){};
-			
+
 		}],
 		restrict: 'E',
 		replace: true,
@@ -236,7 +236,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
  * Update Price Widget
  */
 .directive('nUpdatePrice', ['$route', 'nConstants', 'nRemovalDialogAPI', 
-                           function factory($route, nConstants, nRemovalDialogAPI){
+                            function factory($route, nConstants, nRemovalDialogAPI){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-update-price.html',
@@ -248,17 +248,17 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 			$scope.PRICE_TYPE = nConstants.priceType;
 			$scope.DEFAULT_PRICELIST_NAME = NovabillConf.defaultPriceListName;
 			$scope.editMode = false;
-			
+
 			$scope.$watch('priceType', function(newValue, oldValue){
 				if($scope.editMode && newValue && oldValue && newValue !== oldValue) {
 					$scope.priceValueDerived = null;
 					$scope.priceValueFixed = null;
 				}
 			});
-			
+
 			$scope.edit = function(){
 				$scope.editMode = true;
-				
+
 				$scope.priceType = $scope.price.priceType;
 
 				if($scope.priceType === $scope.PRICE_TYPE.FIXED){
@@ -269,16 +269,16 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 					$scope.priceValueFixed = null;
 				}
 			};
-			
+
 			$scope.cancel = function(){
 				$scope.editMode = false;
 			};
-			
+
 			$scope.save = function(){
 				var tempPrice = angular.copy($scope.price);
 				tempPrice.priceType = $scope.priceType;
 				tempPrice.priceValue = $scope.priceValueDerived !== null && $scope.priceValueDerived !== undefined ? $scope.priceValueDerived : $scope.priceValueFixed;
-				
+
 				GWT_Server.commodity.addOrUpdatePrice(NovabillConf.businessId, JSON.stringify(tempPrice), {
 					onSuccess : function(){
 						$scope.$apply(function(){
@@ -289,7 +289,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 					onFailure : function(error){}
 				});
 			};
-			
+
 			$scope.remove = function(){
 				nRemovalDialogAPI.init('Are you sure that you want to delete the price in this price list?', {
 					onOk : function(){
@@ -309,8 +309,8 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 				});
 				nRemovalDialogAPI.show();
 			};
-			
-			
+
+
 		}],
 		restrict: 'E',
 		replace: true,
@@ -339,7 +339,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 					return undefined;
 				}
 			});
-			
+
 			ctrl.$formatters.push(function(modelValue) {
 				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
 			});
@@ -368,13 +368,13 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 						ctrl.$setValidity('tax', false);
 						return undefined;
 					}
-					
+
 				} else {
 					ctrl.$setValidity('tax', false);
 					return undefined;
 				}
 			});
-			
+
 			ctrl.$formatters.push(function(modelValue) {
 				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
 			});
@@ -402,13 +402,13 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 						ctrl.$setValidity('price', false);
 						return undefined;
 					}
-					
+
 				} else {
 					ctrl.$setValidity('price', false);
 					return undefined;
 				}
 			});
-			
+
 			ctrl.$formatters.push(function(modelValue) {
 				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
 			});
@@ -429,7 +429,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 				if (nRegExp.reserved_word.test(viewValue)) {
 					ctrl.$setValidity('notReserved', false);
 					return undefined;
-					
+
 				} else {
 					ctrl.$setValidity('notReserved', true);
 					return viewValue;
@@ -438,8 +438,6 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 		}
 	};
 }])
-
-
 
 
 /*
@@ -452,7 +450,157 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 		scope: { 
 			record : '='
 		},
-		controller : ['$scope', function($scope){
+		controller : ['$scope', 'nConstants', '$filter', function($scope, nConstants, $filter){
+			$scope.ENTITY_TYPE = nConstants.logRecord.entityType;
+			$scope.OPERATION_TYPE = nConstants.logRecord.operationType;
+
+			var tr = $filter('translate');
+			var details = angular.fromJson($scope.record.details);
+
+			switch ($scope.record.entityType) {
+
+			case nConstants.logRecord.entityType.CLIENT:
+				switch ($scope.record.operationType) {
+				case nConstants.logRecord.operationType.CREATE:
+					$scope.description = tr('LR_CLIENT_CREATE',
+							'{clientName: "'+ details.clientName +'", link: "'+nConstants.url.clientDetails( $scope.record.entityID )+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.UPDATE:
+					$scope.description = tr('LR_CLIENT_UPDATE',
+							'{clientName: "'+ details.clientName +'", link: "'+nConstants.url.clientDetails( $scope.record.entityID )+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.DELETE:
+					$scope.description = tr('LR_CLIENT_DELETE',
+							'{clientName: "'+ details.clientName +'"}');
+					break;
+
+				default:
+					break;
+				}
+				break;
+
+			case nConstants.logRecord.entityType.COMMODITY:
+				switch ($scope.record.operationType) {
+				case nConstants.logRecord.operationType.CREATE:
+					$scope.description = tr('LR_COMMODITY_CREATE',
+							'{commodityName : "'+ details.commodityName	+'", link : "'+nConstants.url.commodityDetails( $scope.record.entityID )+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.UPDATE:
+					$scope.description = tr('LR_COMMODITY_UPDATE',
+							'{commodityName : "'+ details.commodityName	+'", link : "'+nConstants.url.commodityDetails( $scope.record.entityID )+'"}');
+					break;
+
+
+				case nConstants.logRecord.operationType.DELETE:
+					$scope.description = tr('LR_COMMODITY_DELETE',
+							'{commodityName : "'+ details.commodityName	+'"}');
+					break;
+
+				default:
+					break;
+				}
+
+				break;
+
+			case nConstants.logRecord.entityType.INVOICE:
+				switch ($scope.record.operationType) {
+				case nConstants.logRecord.operationType.CREATE:
+					$scope.description = tr('LR_INVOICE_CREATE',
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.UPDATE:
+					$scope.description = tr('LR_INVOICE_UPDATE',
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.SET_PAYED:
+//					$scope.description = tr('LR_INVOICE_SET_PAYED');
+//					$scope.link = nConstants.url.invoiceDetails( $scope.record.entityID );
+					break;
+
+				case nConstants.logRecord.operationType.DELETE:
+					$scope.description = tr('LR_INVOICE_DELETE',
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'"}');
+					break;
+					
+				default:
+					break;
+				}
+				break;
+
+			case nConstants.logRecord.entityType.ESTIMATION:
+				switch ($scope.record.operationType) {
+				case nConstants.logRecord.operationType.CREATE:
+					$scope.description = tr('LR_ESTIMATION_CREATE',
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.estimationDetails( $scope.record.entityID )+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.UPDATE:
+					$scope.description = tr('LR_ESTIMATION_UPDATE',
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.estimationDetails( $scope.record.entityID )+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.DELETE:
+					$scope.description = tr('LR_ESTIMATION_DELETE',
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'"}');
+					break;
+					
+				default:
+					break;
+				}
+				break;
+
+			case nConstants.logRecord.entityType.CREDIT_NOTE:
+				switch ($scope.record.operationType) {
+				case nConstants.logRecord.operationType.CREATE:
+					$scope.description = tr('LR_CREDIT_NOTE_CREATE',
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.creditNoteDetails( $scope.record.entityID )+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.UPDATE:
+					$scope.description = tr('LR_CREDIT_NOTE_UPDATE',
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.creditNoteDetails( $scope.record.entityID )+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.DELETE:
+					$scope.description = tr('LR_CREDIT_NOTE_DELETE',
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'"}');
+					break;
+					
+				default:
+					break;
+				}
+				break;
+
+			case nConstants.logRecord.entityType.TRANSPORT_DOCUMENT:
+				switch ($scope.record.operationType) {
+				case nConstants.logRecord.operationType.CREATE:
+					$scope.description = tr('LR_TRANSPORT_DOCUMENT_CREATE',
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.trasportDocumentDetails( $scope.record.entityID )+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.UPDATE:
+					$scope.description = tr('LR_TRANSPORT_DOCUMENT_UPDATE',
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.trasportDocumentDetails( $scope.record.entityID )+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.DELETE:
+					$scope.description = tr('LR_TRANSPORT_DOCUMENT_DELETE',
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'"}');
+					break;
+					
+				default:
+					break;
+				}
+				break;
+
+			default:
+				break;
+			}
 
 		}],
 		restrict: 'E',

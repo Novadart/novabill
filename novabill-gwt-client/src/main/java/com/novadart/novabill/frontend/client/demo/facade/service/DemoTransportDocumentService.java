@@ -70,4 +70,11 @@ public class DemoTransportDocumentService implements TransportDocumentGwtService
 		callback.onSuccess(null);
 	}
 
+	@Override
+	public void getAllWithIDs(List<Long> ids,
+			AsyncCallback<List<TransportDocumentDTO>> callback) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
