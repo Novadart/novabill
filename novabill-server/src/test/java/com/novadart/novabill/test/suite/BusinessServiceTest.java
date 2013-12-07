@@ -4,6 +4,7 @@ import static org.junit.Assert.*;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -69,9 +70,10 @@ public class BusinessServiceTest extends GWTServiceTest {
 	@Test
 	public void getStatsAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		BusinessStatsDTO stats = businessGwtService.getStats(authenticatedPrincipal.getBusiness().getId());
-		assertEquals(new Long(authenticatedPrincipal.getBusiness().getClients().size()), stats.getClientsCount());
-		assertEquals(new Long(businessGwtService.countInvoicesForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR))), stats.getInvoicesCountForYear());
+		assertEquals(new Long(authenticatedPrincipal.getBusiness().getClients().size()), new Long(stats.getClientsCount()));
+		assertEquals(new Long(businessGwtService.countInvoicesForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR))), new Long(stats.getInvoicesCountForYear()));
 		assertEquals(businessGwtService.getTotalAfterTaxesForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR)), stats.getTotalAfterTaxesForYear());
+		assertEquals(stats.getInvoiceCountsPerMonth(), Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, authenticatedPrincipal.getBusiness().getId() == 1? 24: 1, 0, 0));
 	}
 	
 	@Test(expected = DataAccessException.class)
