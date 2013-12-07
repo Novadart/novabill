@@ -192,6 +192,10 @@
 		factory-method="aspectOf">
 	</bean>
 	
+	<bean class="com.novadart.novabill.aspect.logging.PriceListServiceActionsAspect"
+		factory-method="aspectOf">
+	</bean>
+	
 	<bean class="com.novadart.novabill.aspect.CachingAspect"
 		factory-method="aspectOf">
 		<property name="ehcacheDiskStore" value="${ehcache.diskStore}"/>

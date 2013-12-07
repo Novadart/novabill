@@ -17,7 +17,7 @@ import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public aspect PaymentTypeServiceActionsAspect extends DBLoggerAspect {
 	
-private static final Logger LOGGER = LoggerFactory.getLogger(PaymentTypeServiceActionsAspect.class);
+	private static final Logger LOGGER = LoggerFactory.getLogger(PaymentTypeServiceActionsAspect.class);
 	
 	@Autowired
 	private UtilsService utilsService;

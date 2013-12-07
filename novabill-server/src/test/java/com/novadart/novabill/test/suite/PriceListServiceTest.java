@@ -5,15 +5,19 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.annotation.Resource;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,11 +26,15 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
+import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
@@ -57,13 +65,20 @@ public class PriceListServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, JsonParseException, JsonMappingException, IOException{
 		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), false);
 		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
 		PriceList.entityManager().flush();
 		PriceListDTO persistedDTO = PriceListDTOFactory.toDTO(PriceList.findPriceList(id), false);
 		assertTrue(EqualsBuilder.reflectionEquals(priceListDTO, persistedDTO, "id", "business"));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.PRICE_LIST, rec.getEntityType());
+		assertEquals(id, rec.getEntityID());
+		assertEquals(OperationType.CREATE, rec.getOperationType());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(priceListDTO.getName(), details.get(DBLoggerAspect.PRICE_LIST_NAME));
+		
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -101,12 +116,18 @@ public class PriceListServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
 		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), false);
 		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
 		priceListService.remove(authenticatedPrincipal.getBusiness().getId(), id);
 		assertNull(PriceList.findPriceList(id));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.PRICE_LIST, rec.getEntityType());
+		assertEquals(id, rec.getEntityID());
+		assertEquals(OperationType.DELETE, rec.getOperationType());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(priceListDTO.getName(), details.get(DBLoggerAspect.PRICE_LIST_NAME));
 	}
 	
 	@Test(expected = DataAccessException.class)
