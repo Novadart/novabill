@@ -17,6 +17,8 @@ public abstract aspect DBLoggerAspect {
 	
 	public static final String DOCUMENT_ID = "documentID";
 	
+	public static final String PAYMENT_TYPE_NAME = "paymentTypeName";
+	
 	private String toJsonString(Map<String, String> jsonObject) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {
