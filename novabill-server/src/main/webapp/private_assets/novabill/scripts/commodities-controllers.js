@@ -6,8 +6,8 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 /**
  * COMMODITIES PAGE CONTROLLER
  */
-.controller('CommoditiesCtrl', ['$scope', '$location', 'NEditCommodityDialogAPI', 'NConstants',
-                                function($scope, $location, NEditCommodityDialogAPI, NConstants){
+.controller('CommoditiesCtrl', ['$scope', '$location', 'nEditCommodityDialogAPI', 'nConstants',
+                                function($scope, $location, nEditCommodityDialogAPI, nConstants){
 
 	$scope.commodities = null;
 
@@ -26,7 +26,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 
 
 
-	NEditCommodityDialogAPI.init({
+	nEditCommodityDialogAPI.init({
 		onSave : function(commodity, delegation){
 
 			GWT_Server.commodity.add(JSON.stringify(commodity), {
@@ -38,8 +38,8 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 
 				onFailure : function(error){
 					switch(error.exception){
-					case NConstants.exception.VALIDATION:
-						if(error.data === NConstants.validation.NOT_UNIQUE){
+					case nConstants.exception.VALIDATION:
+						if(error.data === nConstants.validation.NOT_UNIQUE){
 							delegation.invalidSku();
 						}
 						break;
@@ -56,7 +56,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 	});
 
 	$scope.newCommodity = function(){
-		NEditCommodityDialogAPI.show();
+		nEditCommodityDialogAPI.show();
 	};
 
 	loadCommodities();
@@ -68,8 +68,8 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 /**
  * COMMODITIES DETAILS PAGE CONTROLLER
  */
-.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', 'NEditCommodityDialogAPI', 'NRemovalDialogAPI', 
-                                       function($scope, $location, $routeParams, NEditCommodityDialogAPI, NRemovalDialogAPI){
+.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', 'nEditCommodityDialogAPI', 'nRemovalDialogAPI', 
+                                       function($scope, $location, $routeParams, nEditCommodityDialogAPI, nRemovalDialogAPI){
 	$scope.DEFAULT_PRICELIST_NAME = NovabillConf.defaultPriceListName;
 	$scope.commodity = null;
 
@@ -91,7 +91,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 
 	$scope.editCommodity = function(commodityId){
 
-		NEditCommodityDialogAPI.init({
+		nEditCommodityDialogAPI.init({
 			onSave : function(commodity, delegation){
 
 				GWT_Server.commodity.update(JSON.stringify(commodity), {
@@ -120,13 +120,13 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 			onCancel : function(){}
 		}, true);
 
-		NEditCommodityDialogAPI.show();
+		nEditCommodityDialogAPI.show();
 
 	};
 
 
 	$scope.removeCommodity = function(){
-		NRemovalDialogAPI.init('Are you sure that you want to delete permanently any data associated to "'+$scope.commodity.description+'"', {
+		nRemovalDialogAPI.init('Are you sure that you want to delete permanently any data associated to "'+$scope.commodity.description+'"', {
 			onOk : function(){
 				GWT_Server.commodity.remove(NovabillConf.businessId, $scope.commodity.id, {
 					onSuccess : function(data){
@@ -142,19 +142,12 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 
 			onCancel : function(){}
 		});
-		NRemovalDialogAPI.show();
+		nRemovalDialogAPI.show();
 	};
 
 
 	loadCommodity();
 
-}])
-
-
-.filter('filterDefault', function() {
-	return function(input) {
-		return input === NovabillConf.defaultPriceListName ? "Default" : input;
-	}
-});;
+}]);
 
 

@@ -5,17 +5,17 @@ angular.module('novabill.directives.dialogs', ['novabill.utils'])
 /*
  * Edit Commodity Dialog
  */
-.directive('editCommodityDialog', function factory(){
+.directive('nEditCommodityDialog', function factory(){
 
 	return {
 
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/edit-commodity-dialog.html',
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-edit-commodity-dialog.html',
 		scope: {
 			commodity : '=?',
 		},
 
-		controller : function($scope, NEditCommodityDialogAPI){
-			$scope.api = NEditCommodityDialogAPI;
+		controller : ['$scope', 'nEditCommodityDialogAPI', function($scope, nEditCommodityDialogAPI){
+			$scope.api = nEditCommodityDialogAPI;
 			
 			//init commodity, if not present, to avoid calls to $watch that will reset service and price
 			$scope.commodity = $scope['commodity'] === undefined ? {} : $scope.commodity;
@@ -84,7 +84,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils'])
 				$scope.api.callback.onCancel();
 			};
 			
-		},
+		}],
 
 		restrict: 'E',
 		replace: true,
@@ -93,7 +93,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils'])
 
 })
 //APIs
-.factory('NEditCommodityDialogAPI', function(){
+.factory('nEditCommodityDialogAPI', function(){
 	return {
 
 		keepCommodityOnClose : false,
@@ -132,26 +132,26 @@ angular.module('novabill.directives.dialogs', ['novabill.utils'])
 /*
  * Removal Dialog
  */
-.directive('removalDialog', function factory(){
+.directive('nRemovalDialog', function factory(){
 
 	return {
 
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/confirm-removal-dialog.html',
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-confirm-removal-dialog.html',
 		scope: {},
 
-		controller : function($scope, NRemovalDialogAPI){
-			$scope.api = NRemovalDialogAPI;
+		controller : ['$scope', 'nRemovalDialogAPI', function($scope, nRemovalDialogAPI){
+			$scope.api = nRemovalDialogAPI;
 
 			$scope.ok = function(){
-				NRemovalDialogAPI.hide();
+				nRemovalDialogAPI.hide();
 				$scope.api.callback.onOk();
 			};
 
 			$scope.cancel = function(){
-				NRemovalDialogAPI.hide();
+				nRemovalDialogAPI.hide();
 				$scope.api.callback.onCancel();
 			};
-		},
+		}],
 
 		restrict: 'E',
 		replace: true,
@@ -160,7 +160,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils'])
 
 })
 //APIs
-.factory('NRemovalDialogAPI', function(){
+.factory('nRemovalDialogAPI', function(){
 	return {
 
 		//instance variables

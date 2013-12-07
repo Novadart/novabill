@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('novabill.utils', [])
+angular.module('novabill.utils', ['novabill.translations'])
 
 /*
  * FACTORIES
  */
-.factory('NSorting', function() {
+.factory('nSorting', function() {
 	return {
 
 		/**
@@ -21,7 +21,7 @@ angular.module('novabill.utils', [])
 	};
 })
 
-.factory('NRegExp', function() {
+.factory('nRegExp', function() {
 	return {
 
 		float : /^\-?\d+((\.|\,)\d+)?$/,
@@ -29,4 +29,48 @@ angular.module('novabill.utils', [])
 		reserved_word : /^\::.*$/
 
 	};
-});
+})
+
+
+/*
+ * FILTERS
+ */
+
+.filter('nFriendlyDate',['$filter', function($filter){
+	
+	return function(dateToFormat, format){
+		var target = new Date( parseInt(dateToFormat) );
+		target.setHours(0, 0, 0, 0);
+		
+		var today = new Date();
+	    today.setHours(0, 0, 0, 0);
+	    
+	    if(target.getTime() === today.getTime()){
+	    
+	    	return $filter('translate')('TODAY');
+	    
+	    } else {
+
+	    	var yesterday = new Date();
+		    yesterday.setHours(0, 0, 0, 0);
+		    yesterday.setDate(yesterday.getDate() - 1);
+		    
+		    if(target.getTime() === yesterday.getTime()){
+			    
+		    	return $filter('translate')('YESTERDAY');
+		    
+		    } else {
+		    	
+		    	return $filter('date')(dateToFormat, format);
+		    }
+	    	
+	    }
+	};
+}])
+
+
+.filter('nFilterDefault', ['$filter', function($filter) {
+	return function(input) {
+		return input === NovabillConf.defaultPriceListName ? $filter('translate')('DEFAULT_PRICE_LIST') : input;
+	};
+}]);

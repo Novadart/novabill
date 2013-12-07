@@ -25,7 +25,7 @@
     <input ng-show="editMode && priceType === PRICE_TYPE.DERIVED" 
            ng-class="{'has-error' : form.priceValueDerived.$invalid, 'has-success' : form.priceValueDerived.$valid}" 
            type="text"
-           smart-percentage 
+           n-smart-percentage 
            name="priceValueDerived" 
            style="display: inline;" 
            maxlength="50" 
@@ -37,7 +37,7 @@
     <input ng-show="editMode && priceType === PRICE_TYPE.FIXED" 
            ng-class="{'has-error' : form.priceValueFixed.$invalid, 'has-success' : form.priceValueFixed.$valid}"  
            type="text" 
-           smart-price 
+           n-smart-price 
            name="priceValueFixed" 
            style="display: inline;"  
            maxlength="50" 

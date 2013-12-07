@@ -5,11 +5,11 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 /*
  * Invoice widget
  */
-.directive('novabillInvoice', ['NRemovalDialogAPI', '$rootScope', 
-                               function factory(NRemovalDialogAPI, $rootScope){
+.directive('nInvoice', ['nRemovalDialogAPI', '$rootScope', 
+                               function factory(nRemovalDialogAPI, $rootScope){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-invoice.html',
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-invoice.html',
 		scope: { 
 			invoice : '=',
 			bottomUpMenu : '=',
@@ -22,7 +22,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 			};
 
 			$scope.remove = function(){
-				NRemovalDialogAPI.init('Delete '+$scope.invoice.documentID+' Invoice?', {
+				nRemovalDialogAPI.init('Delete '+$scope.invoice.documentID+' Invoice?', {
 					onOk : function(){
 						GWT_Server.invoice.remove(NovabillConf.businessId, $scope.invoice.client.id, $scope.invoice.id, {
 							onSuccess : function(){
@@ -34,7 +34,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 
 					onCancel : function(){}
 				});
-				NRemovalDialogAPI.show();
+				nRemovalDialogAPI.show();
 			};
 
 			$scope.clone = function(){
@@ -62,11 +62,11 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 /*
  * Estimation Widget
  */
-.directive('novabillEstimation', ['NRemovalDialogAPI', '$rootScope', 
-                                  function factory(NRemovalDialogAPI, $rootScope){
+.directive('nEstimation', ['nRemovalDialogAPI', '$rootScope', 
+                                  function factory(nRemovalDialogAPI, $rootScope){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-estimation.html',
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-estimation.html',
 		scope: { 
 			estimation : '=',
 			bottomUpMenu : '=',
@@ -79,7 +79,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 			};
 
 			$scope.remove = function(){
-				NRemovalDialogAPI.init('Delete '+$scope.estimation.documentID+' Estimation?', {
+				nRemovalDialogAPI.init('Delete '+$scope.estimation.documentID+' Estimation?', {
 					onOk : function(){
 						GWT_Server.estimation.remove(NovabillConf.businessId, $scope.estimation.client.id, $scope.estimation.id, {
 							onSuccess : function(){
@@ -91,7 +91,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 
 					onCancel : function(){}
 				});
-				NRemovalDialogAPI.show();
+				nRemovalDialogAPI.show();
 			};
 
 			$scope.clone = function(){
@@ -120,11 +120,11 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 /*
  * Transport Document Widget
  */
-.directive('novabillTransportDocument', ['NRemovalDialogAPI', '$rootScope', 
-                                         function factory(NRemovalDialogAPI, $rootScope){
+.directive('nTransportDocument', ['nRemovalDialogAPI', '$rootScope', 
+                                         function factory(nRemovalDialogAPI, $rootScope){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-transport-document.html',
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-transport-document.html',
 		scope: { 
 			transportDocument : '=',
 			bottomUpMenu : '=',
@@ -137,7 +137,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 			};
 
 			$scope.remove = function(){
-				NRemovalDialogAPI.init('Delete '+$scope.transportDocument.documentID+' Transport Document?', {
+				nRemovalDialogAPI.init('Delete '+$scope.transportDocument.documentID+' Transport Document?', {
 					onOk : function(){
 						GWT_Server.transportDocument.remove(NovabillConf.businessId, $scope.transportDocument.client.id, $scope.transportDocument.id, {
 							onSuccess : function(){
@@ -149,7 +149,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 
 					onCancel : function(){}
 				});
-				NRemovalDialogAPI.show();
+				nRemovalDialogAPI.show();
 			};
 			
 			$scope.createInvoice = function(id){
@@ -167,11 +167,11 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 /*
  * Credit Note Widget
  */
-.directive('novabillCreditNote', ['NRemovalDialogAPI', '$rootScope', 
-                                  function factory(NRemovalDialogAPI, $rootScope){
+.directive('nCreditNote', ['nRemovalDialogAPI', '$rootScope', 
+                                  function factory(nRemovalDialogAPI, $rootScope){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-credit-note.html',
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-credit-note.html',
 		scope: { 
 			creditNote : '=',
 			bottomUpMenu : '=',
@@ -184,7 +184,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 			};
 			
 			$scope.remove = function(){
-				NRemovalDialogAPI.init('Delete '+$scope.creditNote.documentID+' Credit Note?', {
+				nRemovalDialogAPI.init('Delete '+$scope.creditNote.documentID+' Credit Note?', {
 					onOk : function(){
 						GWT_Server.creditNote.remove(NovabillConf.businessId, $scope.creditNote.client.id, $scope.creditNote.id, {
 							onSuccess : function(){
@@ -196,7 +196,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 
 					onCancel : function(){}
 				});
-				NRemovalDialogAPI.show();
+				nRemovalDialogAPI.show();
 			};
 			
 		}],
@@ -211,11 +211,11 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 /*
  * Commodity Widget
  */
-.directive('novabillCommodity', ['NRemovalDialogAPI', '$rootScope', 
-                                  function factory(NRemovalDialogAPI, $rootScope){
+.directive('nCommodity', ['nRemovalDialogAPI', '$rootScope', 
+                                  function factory(nRemovalDialogAPI, $rootScope){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/novabill-commodity.html',
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-commodity.html',
 		scope: { 
 			commodity : '=',
 			bottomUpMenu : '=',
@@ -235,17 +235,17 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 /*
  * Update Price Widget
  */
-.directive('updatePrice', ['$route', 'NConstants', 'NRemovalDialogAPI', 
-                           function factory($route, NConstants, NRemovalDialogAPI){
+.directive('nUpdatePrice', ['$route', 'nConstants', 'nRemovalDialogAPI', 
+                           function factory($route, nConstants, nRemovalDialogAPI){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/update-price.html',
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-update-price.html',
 		scope: { 
 			priceListName : '=',
 			price : '=',
 		},
 		controller : ['$scope', function($scope){
-			$scope.PRICE_TYPE = NConstants.priceType;
+			$scope.PRICE_TYPE = nConstants.priceType;
 			$scope.DEFAULT_PRICELIST_NAME = NovabillConf.defaultPriceListName;
 			$scope.editMode = false;
 			
@@ -291,7 +291,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 			};
 			
 			$scope.remove = function(){
-				NRemovalDialogAPI.init('Are you sure that you want to delete the price in this price list?', {
+				nRemovalDialogAPI.init('Are you sure that you want to delete the price in this price list?', {
 					onOk : function(){
 						GWT_Server.commodity.removePrice(NovabillConf.businessId, $scope.price.priceListID, $scope.price.commodityID, {
 							onSuccess : function(data){
@@ -307,7 +307,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 
 					onCancel : function(){}
 				});
-				NRemovalDialogAPI.show();
+				nRemovalDialogAPI.show();
 			};
 			
 			
@@ -325,13 +325,13 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
  * User can insert , or . to separate decimals
  * Value mast be between 0 and 100
  */
-.directive('smartPercentage', ['NRegExp', function(NRegExp) {
+.directive('nSmartPercentage', ['nRegExp', function(nRegExp) {
 	return {
 		require: 'ngModel',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (NRegExp.float.test(viewValue)) {
+				if (nRegExp.float.test(viewValue)) {
 					ctrl.$setValidity('percentage', true);
 					return parseFloat(viewValue.replace(',', '.'));
 				} else {
@@ -353,13 +353,13 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
  * User can insert , or . to separate decimals
  * Value mast be between 0 and 100
  */
-.directive('smartTax', ['NRegExp', function(NRegExp) {
+.directive('nSmartTax', ['nRegExp', function(nRegExp) {
 	return {
 		require: 'ngModel',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (NRegExp.float.test(viewValue)) {
+				if (nRegExp.float.test(viewValue)) {
 					var floatVal = parseFloat(viewValue.replace(',', '.'));
 					if(floatVal >= 0 && floatVal < 100){
 						ctrl.$setValidity('tax', true);
@@ -387,13 +387,13 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
  * Smart Price attribute. 
  * User can insert , or . to separate decimals
  */
-.directive('smartPrice', ['NRegExp', function(NRegExp) {
+.directive('nSmartPrice', ['nRegExp', function(nRegExp) {
 	return {
 		require: 'ngModel',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (NRegExp.float.test(viewValue)) {
+				if (nRegExp.float.test(viewValue)) {
 					var floatVal = parseFloat(viewValue.replace(',', '.'));
 					if(floatVal >= 0){
 						ctrl.$setValidity('price', true);
@@ -420,13 +420,13 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 /*
  * Check if the text is not a reserved word
  */
-.directive('notReserved', ['NRegExp', function(NRegExp) {
+.directive('nNotReserved', ['nRegExp', function(nRegExp) {
 	return {
 		require: 'ngModel',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (NRegExp.reserved_word.test(viewValue)) {
+				if (nRegExp.reserved_word.test(viewValue)) {
 					ctrl.$setValidity('notReserved', false);
 					return undefined;
 					
@@ -445,12 +445,12 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 /*
  * Log Record Widget
  */
-.directive('logRecord', [function factory(){
+.directive('nLogRecord', [function factory(){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/log-record.html',
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-log-record.html',
 		scope: { 
-			logRecord : '='
+			record : '='
 		},
 		controller : ['$scope', function($scope){
 
@@ -459,13 +459,4 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.directives.di
 		replace: true,
 	};
 
-}])
-
-
-
-
-
-
-
-
-;
+}]);

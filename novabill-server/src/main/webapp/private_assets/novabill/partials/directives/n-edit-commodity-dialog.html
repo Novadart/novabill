@@ -32,7 +32,7 @@
 					<div class="form-group" 
 					     ng-class="{'has-error': form.sku.$dirty && form.sku.$invalid, 'has-success': form.sku.$dirty && form.sku.$valid}">
 						<label class="control-label" for="sku">Sku <span ng-class="{'text-info': form.sku.$pristine || (form.sku.$dirty && form.sku.$valid), 'has-error': form.sku.$dirty && form.sku.$invalid}">&nbsp;-&nbsp;If you don't set a value we will auto-generate one</span></label> 
-						<input type="text" not-reserved name="sku" maxlength="50" ng-model="commodity.sku" class="form-control" ng-class="{spinner : contactingServer}" placeholder="e.g. 'T-130'">
+						<input type="text" n-not-reserved name="sku" maxlength="50" ng-model="commodity.sku" class="form-control" ng-class="{spinner : contactingServer}" placeholder="e.g. 'T-130'">
                         <span class="text-danger" ng-show="form.sku.$dirty && form.sku.$error.notReserved">Invalid identifier</span>
                         <span class="text-danger" ng-show="form.sku.$dirty && invalidSku">Sku already taken</span>
 					</div>
@@ -45,7 +45,7 @@
                     <div class="form-group" 
                         ng-class="{'has-error': form.price.$dirty && form.price.$invalid && form.price.$error.price, 'has-success': form.price.$dirty && form.price.$valid && !form.price.$error.price}">
                         <label class="control-label" for="price">Default Price (€) *</label> 
-                        <input type="text" smart-price name="price" maxlength="50" ng-model="price" class="form-control" placeholder="e.g. '100'" required>
+                        <input type="text" n-smart-price name="price" maxlength="50" ng-model="price" class="form-control" placeholder="e.g. '100'" required>
                         <div ng-show="form.price.$dirty && form.price.$invalid">
                             <span class="text-danger" ng-show="form.price.$error.required">Required</span>
                             <span class="text-danger" ng-show="!form.price.$error.required && form.price.$error.price">Invalid value</span>
@@ -55,7 +55,7 @@
 					<div class="form-group" 
 					   ng-class="{'has-error': form.tax.$dirty && form.tax.$invalid && form.tax.$error.tax, 'has-success': form.tax.$dirty && form.tax.$valid && !form.tax.$error.tax}">
                         <label class="control-label" for="tax">% Tax *</label> 
-                        <input type="text" smart-tax name="tax" maxlength="50" ng-model="commodity.tax" class="form-control" placeholder="e.g. '21'" required>
+                        <input type="text" n-smart-tax name="tax" maxlength="50" ng-model="commodity.tax" class="form-control" placeholder="e.g. '21'" required>
                         <div ng-show="form.tax.$dirty && form.tax.$invalid">
                             <span class="text-danger" ng-show="form.tax.$error.required">Required</span>
                             <span class="text-danger" ng-show="!form.tax.$error.required && form.tax.$error.tax">Invalid value</span>

@@ -2,7 +2,7 @@
 
 angular.module('novabill.constants', [])
 
-.factory('NConstants', function() {
+.factory('nConstants', function() {
 	return {
 		
 		exception : {

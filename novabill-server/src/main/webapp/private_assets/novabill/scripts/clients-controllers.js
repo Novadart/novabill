@@ -6,8 +6,8 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 /**
  * CLIENTS PAGE CONTROLLER
  */
-.controller('ClientsCtrl', ['$scope', 'NSorting', '$location',
-                            function($scope, NSorting, $location){
+.controller('ClientsCtrl', ['$scope', 'nSorting', '$location',
+                            function($scope, nSorting, $location){
 	
 	var partitionsCache = null;
 	
@@ -16,7 +16,7 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 			onSuccess : function(data){
 				$scope.$apply(function(){
 					//sort the data
-					data.clients.sort( NSorting.clientsComparator );
+					data.clients.sort( nSorting.clientsComparator );
 					
 					//split it alphabetically
 					var partitions = [];
@@ -133,8 +133,8 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 /**
  * CLIENT DETAILS PAGE CONTROLLER
  */
-.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', 'NRemovalDialogAPI',
-                                  function($scope, $route, $routeParams, $location, NRemovalDialogAPI) {
+.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', 'nRemovalDialogAPI',
+                                  function($scope, $route, $routeParams, $location, nRemovalDialogAPI) {
 	
 	//fired when edit client is clicked
 	$scope.editClient = function(clientId) {
@@ -154,7 +154,7 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 	//fired when remove client is clicked
 	$scope.removeClient = function(name, clientId) {
 		
-		NRemovalDialogAPI.init('Are you sure that you want to delete permanently any data associated to "'+name+'"',{
+		nRemovalDialogAPI.init('Are you sure that you want to delete permanently any data associated to "'+name+'"',{
 			onOk : function(){
 				GWT_Server.client.remove(NovabillConf.businessId, clientId, {
 					onSuccess : function(data){
@@ -170,7 +170,7 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 			
 			onCancel : function(){}
 		});
-		NRemovalDialogAPI.show();
+		nRemovalDialogAPI.show();
 	};
 	
 	// load client data

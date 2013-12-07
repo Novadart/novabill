@@ -58,14 +58,14 @@
 			<tbody>
 				<tr ng-repeat="(priceListName, price) in commodity.pricesMap.prices"
 					ng-class="{defaultPriceList: priceListName===DEFAULT_PRICELIST_NAME, priceList: priceListName!==DEFAULT_PRICELIST_NAME, service: commodity.service, product: !commodity.service}">
-					<td width="40%">{{priceListName | filterDefault}}</td>
-					<td width="60%"><update-price price-list-name="priceListName" price="price"></update-price></td>
+					<td width="40%">{{priceListName | nFilterDefault}}</td>
+					<td width="60%"><n-update-price price-list-name="priceListName" price="price"></n-update-price></td>
 				</tr>
 			</tbody>
 		</table>
 	</div>
 
-	<edit-commodity-dialog commodity="commodity"></edit-commodity-dialog>
-    <removal-dialog></removal-dialog>
+	<n-edit-commodity-dialog commodity="commodity"></n-edit-commodity-dialog>
+    <n-removal-dialog></n-removal-dialog>
 </div>
 

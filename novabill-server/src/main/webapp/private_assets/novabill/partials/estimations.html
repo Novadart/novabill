@@ -14,9 +14,9 @@
 	<div class="estimations">
 		<img class="spinner" ng-show="estimations==null" src="../../private_assets/img/ajax-loading.gif">
 		<p class="no-data-message text-center text-info" ng-show="estimations && estimations.length===0">No Data</p>
-		<novabill-estimation estimation="est" bottom-up-menu="!$first && $last" ng-repeat="est in estimations"></novabill-estimation>
+		<n-estimation estimation="est" bottom-up-menu="!$first && $last" ng-repeat="est in estimations"></n-estimation>
 	</div>
 
-	<removal-dialog></removal-dialog>
+	<n-removal-dialog></n-removal-dialog>
 </div>
 

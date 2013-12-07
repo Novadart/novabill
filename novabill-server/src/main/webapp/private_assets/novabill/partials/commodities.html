@@ -15,9 +15,9 @@
 
 	<img class="spinner" ng-show="commodities==null" src="../../private_assets/img/ajax-loading.gif">
 
-	<novabill-commodity class="commodity" commodity="cm" ng-repeat="cm in commodities | filter:query"></novabill-commodity>
+	<n-commodity class="commodity" commodity="cm" ng-repeat="cm in commodities | filter:query"></n-commodity>
 
-    <edit-commodity-dialog />
+    <n-edit-commodity-dialog></n-edit-commodity-dialog>
 </div>
 
 
