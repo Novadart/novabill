@@ -12,7 +12,6 @@ import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
-import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.facade.BusinessGwtServiceAsync;
@@ -133,11 +132,6 @@ public class DemoBusinessService implements BusinessGwtServiceAsync {
 		
 	}
 
-	@Override
-	public void getLogRecords(Long businessID, Integer numberOfDays,
-			AsyncCallback<List<LogRecordDTO>> callback) {
-		// TODO Auto-generated method stub
-		
-	}
+
 
 }

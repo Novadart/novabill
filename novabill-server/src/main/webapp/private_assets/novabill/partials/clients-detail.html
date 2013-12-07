@@ -35,32 +35,31 @@
 				<div class="tab-pane active" id="tab_invoices">
 					<img class="spinner" ng-show="invoiceData===null" src="../../private_assets/img/ajax-loading.gif">
 					<p class="no-data-message text-center text-info" ng-show="invoiceData && invoiceData.length===0">No Data</p>
-					<novabill-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoiceData" />
+					<n-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoiceData"></n-invoice>
 				</div>
 
 				<div class="tab-pane" id="tab_transport_documents">
 					<img class="spinner" ng-show="!transportDocumentData" src="../../private_assets/img/ajax-loading.gif">
 					<p class="no-data-message text-center text-info"
 						ng-show="transportDocumentData && transportDocumentData.length===0">No Data</p>
-					<novabill-transport-document transport-document="td" bottom-up-menu="!$first && $last"
-						ng-repeat="td in transportDocumentData" />
+					<n-transport-document transport-document="td" bottom-up-menu="!$first && $last"	ng-repeat="td in transportDocumentData"></n-transport-document>
 				</div>
 
 				<div class="tab-pane" id="tab_estimations">
 					<img class="spinner" ng-show="!estimationData" src="../../private_assets/img/ajax-loading.gif">
 					<p class="no-data-message text-center text-info" ng-show="estimationData && estimationData.length===0">No Data</p>
-					<novabill-estimation estimation="est" bottom-up-menu="!$first && $last" ng-repeat="est in estimationData" />
+					<n-estimation estimation="est" bottom-up-menu="!$first && $last" ng-repeat="est in estimationData"></n-estimation>
 				</div>
 
 				<div class="tab-pane" id="tab_credit_notes">
 					<img class="spinner" ng-show="!creditNoteData" src="../../private_assets/img/ajax-loading.gif">
 					<p class="no-data-message text-center text-info" ng-show="creditNoteData && creditNoteData.length===0">No Data</p>
-					<novabill-credit-note credit-note="cn" bottom-up-menu="!$first && $last" ng-repeat="cn in creditNoteData" />
+					<n-credit-note credit-note="cn" bottom-up-menu="!$first && $last" ng-repeat="cn in creditNoteData"></n-credit-note>
 				</div>
 			</div>
 		</div>
 
-		<removal-dialog></removal-dialog>
+		<n-removal-dialog></n-removal-dialog>
 
 	</div>
 </div>

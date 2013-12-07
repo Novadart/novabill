@@ -8,14 +8,14 @@
 	        </div>
 	        <div class="cont-col2">
 	            <div class="desc">
-	                {{logRecord.entityType}}
+	                {{record.entityType}}
 	            </div>
 	        </div>
 	    </div>
 	</div>
 	<div class="col2">
 	    <div class="date">
-	        24 mins
+	        {{record.time | nFriendlyDate:'dd MMMM'}}
 	    </div>
 	</div>
 </li>

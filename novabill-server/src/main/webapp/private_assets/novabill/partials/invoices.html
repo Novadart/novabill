@@ -14,9 +14,9 @@
 	<div class="invoices">
 		<img class="spinner" ng-show="invoices==null" src="../../private_assets/img/ajax-loading.gif">
 		<p class="no-data-message text-center text-info" ng-show="invoices && invoices.length===0">No Data</p>
-		<novabill-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoices" />
+		<n-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoices"></n-invoice>
 	</div>
 
-	<removal-dialog></removal-dialog>
+	<n-removal-dialog></n-removal-dialog>
 </div>
 

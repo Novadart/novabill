@@ -4,40 +4,28 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 
 .config(['$translateProvider', function($translateProvider){
 
+	/*
+	 * NOTE: KEEP IT IN ALPHABETICAL ORDER!
+	 */
 	$translateProvider.translations('it_IT', {
 		
-		/*
-		 * CLIENTS PAGE
-		 */
-		NEW_CLIENT: 'Nuovo Cliente',
+		DEFAULT_PRICE_LIST : 'LISTINO BASE',
 		
-		
-		/*
-		 * INVOICES PAGE
-		 */
-		NEW_INVOICE : 'Nuova Fattura',
-		MODIFY_INVOICE: 'Modifica Fattura',
-
-		
-		/*
-		 * ESTIMATIONS PAGE
-		 */
-		NEW_ESTIMATION : 'Nuovo Preventivo',
-		MODIFY_ESTIMATION: 'Modifica Preventivo',
-		
-		
-		/*
-		 * CREDIT NOTES PAGE
-		 */
-		NEW_CREDIT_NOTE : 'Nuova Nota di Credito',
 		MODIFY_CREDIT_NOTE: 'Modifica Nota di Credito',
-		
-		
-		/*
-		 * TRANSPORT DOCUMENTS PAGE
-		 */
-		NEW_TRANSPORT_DOCUMENT: 'Nuovo Documento di Trasporto',
+		MODIFY_ESTIMATION: 'Modifica Preventivo',
+		MODIFY_INVOICE: 'Modifica Fattura',
 		MODIFY_TRANSPORT_DOCUMENT: 'Modifica Documento di Trasporto',
+		
+		NEW_CLIENT: 'Nuovo Cliente',
+		NEW_CREDIT_NOTE : 'Nuova Nota di Credito',
+		NEW_ESTIMATION : 'Nuovo Preventivo',
+		NEW_INVOICE : 'Nuova Fattura',
+		NEW_TRANSPORT_DOCUMENT: 'Nuovo Documento di Trasporto',
+		
+		TODAY : 'Oggi',
+		
+		YESTERDAY : 'Ieri',
+		
 		
 	  });
 
