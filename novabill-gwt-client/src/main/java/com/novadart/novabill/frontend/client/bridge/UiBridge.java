@@ -1,8 +1,12 @@
 package com.novadart.novabill.frontend.client.bridge;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.activity.center.BusinessActivity;
@@ -11,6 +15,8 @@ import com.novadart.novabill.frontend.client.activity.center.EstimationActivity;
 import com.novadart.novabill.frontend.client.activity.center.InvoiceActivity;
 import com.novadart.novabill.frontend.client.activity.center.PaymentActivity;
 import com.novadart.novabill.frontend.client.activity.center.TransportDocumentActivity;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.StringList;
 import com.novadart.novabill.frontend.client.bridge.ui.HTMLWrapper;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
@@ -23,6 +29,7 @@ import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace
 import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentInvoicePlace;
+import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentListInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
@@ -63,6 +70,7 @@ public class UiBridge implements ApiBridge {
 			showCloneInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showCloneInvoicePage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showFromEstimationInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showFromEstimationInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showFromTransportDocumentInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showFromTransportDocumentInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			showFromTransportDocumentListInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showFromTransportDocumentListInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			
 			// estimations
 			showNewEstimationPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewEstimationPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
@@ -203,6 +211,24 @@ public class UiBridge implements ApiBridge {
 		
 		FromTransportDocumentInvoicePlace ftdi = new FromTransportDocumentInvoicePlace();
 		ftdi.setTransportDocumentId(Long.parseLong(transportDocumentId));
+
+		InvoiceActivity is = new InvoiceActivity(ftdi, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
+	}
+	
+	
+	public static void showFromTransportDocumentListInvoicePage(String wrapperId, String transportDocumentList, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		StringList bean = AutoBeanCodex.decode(AutoBeanMaker.INSTANCE, StringList.class, transportDocumentList).as();
+		
+		List<Long> longs = new ArrayList<Long>(bean.getList().size());
+		for (String str : bean.getList()) {
+			longs.add( Long.parseLong(str) );
+		}
+		
+		FromTransportDocumentListInvoicePlace ftdi = new FromTransportDocumentListInvoicePlace();
+		ftdi.setTransportDocumentList(longs);
 
 		InvoiceActivity is = new InvoiceActivity(ftdi, ClientFactory.INSTANCE, callback);
 		is.start(panel, null);

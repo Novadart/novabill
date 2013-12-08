@@ -61,6 +61,7 @@ angular.module('novabill.constants', [])
 			invoiceDetails : function(invoiceId){ return NovabillConf.invoicesBaseUrl + '#/details/' + invoiceId; },
 			invoiceFromEstimation : function(estimationId){ return NovabillConf.invoicesBaseUrl + '#/from-estimation/' + estimationId; },
 			invoiceFromTransportDocument : function(transportDocumentId){ return NovabillConf.invoicesBaseUrl + '#/from-transport-document/' + transportDocumentId; },
+			invoiceFromTransportDocumentList : function(transportDocumentList){ return NovabillConf.invoicesBaseUrl + '#/from-transport-document-list/' + transportDocumentList; },
 			
 			paymentList : function(){ return NovabillConf.paymentsBaseUrl + '#/'; },
 			

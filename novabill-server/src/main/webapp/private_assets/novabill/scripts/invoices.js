@@ -37,6 +37,11 @@ angular.module("novabill.invoices", ['novabill.invoices.controllers','ngRoute'])
 		controller: 'InvoiceFromTransportDocumentCtrl'
 	})
 	
+	.when('/from-transport-document-list/:transportDocumentList', {
+		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-detail.html',
+		controller: 'InvoiceFromTransportDocumentListCtrl'
+	})
+	
 	.otherwise ({
 		redirectTo: '/'
 	});

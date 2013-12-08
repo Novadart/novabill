@@ -14,6 +14,7 @@ import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
@@ -102,6 +103,36 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(transportDocument.getNote());
+	}
+	
+	
+	public void setDataForNewInvoice(Long progressiveId, List<TransportDocumentDTO> transportDocuments, PaymentTypeDTO paymentType) {
+		initData(transportDocuments.get(0).getClient(), progressiveId);
+		setupPayment(paymentType);
+
+		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>();
+		
+		AccountingDocumentItemDTO item;
+		for(TransportDocumentDTO td : transportDocuments){
+			
+			item = new AccountingDocumentItemDTO();
+			item.setDescription("##  "
+			+ I18N.INSTANCE.transportDocument()
+			+" N. "+td.getDocumentID()
+			+"  "
+			+ I18N.INSTANCE.of()
+			+ DocumentUtils.DOCUMENT_DATE_FORMAT.format(td.getAccountingDocumentDate()) 
+			+ "  ##");
+			
+			items.add(item);
+			
+			for (AccountingDocumentItemDTO i : td.getItems()) {
+				items.add(i.clone());
+			}
+			
+		}
+
+		getView().getItemInsertionForm().setItems(items);
 	}
 
 

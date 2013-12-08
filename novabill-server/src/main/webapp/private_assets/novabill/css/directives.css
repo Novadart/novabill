@@ -1,65 +1,104 @@
 /*
+ *  SELECT MULTIPLE TRANSPORT DOCUMENTS DIALOG
+ */
+.select-multiple-td-dialog .details>strong,.select-multiple-td-dialog .details>span
+	{
+	margin-left: 5px;
+	position: relative;
+	bottom: 5px;
+	display: inline-block;
+	text-align: center;
+}
+
+.select-multiple-td-dialog .details {
+	cursor: pointer;
+}
+
+.select-multiple-td-dialog .details:HOVER {
+    border-color: #555;
+}
+ 
+.select-multiple-td-dialog .details.selected {
+	background-color: #dff0d8;
+}
+
+.select-multiple-td-dialog .details .documentId {
+	min-width: 20px;
+	margin-left: 10px;
+}
+
+.select-multiple-td-dialog .details .total {
+	margin-left: 10px;
+	font-style: italic;
+}
+
+.select-multiple-td-dialog .details .date {
+	margin-left: 10px;
+	min-width: 120px;
+}
+
+.select-multiple-td-dialog .details .n-packages {
+	margin-left: 10px;
+	min-width: 120px;
+}
+
+/*
  *  DOCUMENTS
  */
- 
 .document-well {
-    cursor: pointer;
+	cursor: pointer;
 }
 
 .document-well:HOVER {
-    border: 1px solid #555;
+	border: 1px solid #555;
 }
 
 .document-well .date {
-    margin-left: 10px;
+	margin-left: 10px;
 }
 
 .document-well .clientName {
-    margin-left: 10px;
+	margin-left: 10px;
 }
 
 .document-well .print {
-    margin-right: 10px;
+	margin-right: 10px;
 }
 
 .document-well .options {
 	margin-right: 20px;
 }
 
-
 /*
  *  COMMODITY
  */
- .commodity {
-    cursor: pointer;
- }
- 
- .commodity .id {
-    margin-left: 10px;
- }
- 
- .commodity .type {
-    width: 60px;
- }
- 
- .commodity:HOVER {
-    border: 1px solid #555;
+.commodity {
+	cursor: pointer;
 }
 
+.commodity .id {
+	margin-left: 10px;
+}
+
+.commodity .type {
+	width: 60px;
+}
+
+.commodity:HOVER {
+	border: 1px solid #555;
+}
 
 /*
  *  UPDATE PRICE
  */
-.update-price input.has-error,
-.update-price select.has-error {
+.update-price input.has-error,.update-price select.has-error {
 	border-color: #953b39;
 	color: #953b39;
 }
 
-.update-price input.has-success,
-.update-price select.has-success  {
-    border-color: #356635;
-    color: #356635;
+.update-price input.has-success,.update-price select.has-success {
+	border-color: #356635;
+	color: #356635;
 }
 
 .update-price .type-input {
@@ -67,24 +106,19 @@
 }
 
 .update-price .type-span {
-    min-width: 200px;
-    display: inline-block;
+	min-width: 200px;
+	display: inline-block;
 }
 
 .update-price .price-input {
-    margin-left: 5px;
+	margin-left: 5px;
 }
 
 .update-price .price-span {
-    min-width: 80px;
-    display: inline-block;
+	min-width: 80px;
+	display: inline-block;
 }
 
-.update-price .btn.save,
-.update-price .btn.edit {
+.update-price .btn.save,.update-price .btn.edit {
+	
 }
-
-
-
-
- 

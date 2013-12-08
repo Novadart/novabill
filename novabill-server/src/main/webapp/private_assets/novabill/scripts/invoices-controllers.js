@@ -121,6 +121,24 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
 
 
 /**
+ * INVOICE CREATE FROM TRANSPORT DOCUMENT LIST PAGE CONTROLLER
+ */
+.controller('InvoiceFromTransportDocumentListCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                                 function($scope, $routeParams, $location, $translate) {
+	$scope.pageTitle = $translate('NEW_INVOICE');
+	
+	GWT_UI.showFromTransportDocumentListInvoicePage('invoice-details', $routeParams.transportDocumentList, {
+		onSuccess : function(bool){
+			$scope.$apply(function(){
+				$location.path('/');
+			});
+		},
+		onFailure : function(){},
+	});
+}])
+
+
+/**
  * INVOICE CLONE PAGE CONTROLLER
  */
 .controller('InvoiceCloneInvoiceCtrl', ['$scope', '$routeParams', '$location', '$translate',

@@ -185,7 +185,8 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			};
 
 			$scope.createInvoice = function(id){
-				$rootScope.$broadcast(nConstants.events.SHOW_TRANSPORT_DOCUMENTS_DIALOG, $scope.transportDocument.client.id, $scope.transportDocument.id);
+				$rootScope.$broadcast(nConstants.events.SHOW_TRANSPORT_DOCUMENTS_DIALOG, 
+						$scope.transportDocument.client.id, $scope.transportDocument.id);
 			};
 
 			//activate the dropdown

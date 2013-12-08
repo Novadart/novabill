@@ -40,17 +40,43 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				});
 			});
 			
+			
+			/**
+			 * This function keeps updated a set of selected values.
+			 * If the set is empty, it sets it to null for easier evaluation in the view 
+			 */
 			$scope.toggleElement = function(id){
+				if(!$scope.selectedSet){
+					$scope.selectedSet = {};
+				}
+				
 				if($scope.selectedSet[id]){
 					delete $scope.selectedSet[id];
+					
+					if(angular.element.isEmptyObject($scope.selectedSet)){
+						$scope.selectedSet = null;
+					}
+				} else {
+					$scope.selectedSet[id] = true;
 				}
 			};
 			
-			$scope.openUrl = function(id){
+			$scope.openUrl = function($event, id){
+				$event.stopPropagation();
 				window.open(nConstants.url.trasportDocumentDetails( id ), '_blank');
 			};
 			
 			$scope.ok = function(){
+				var ids = [];
+				for(var id in $scope.selectedSet){
+					ids.push(id);
+				}
+				
+				window.location.assign(nConstants.url.invoiceFromTransportDocumentList( 
+						encodeURIComponent( 
+								JSON.stringify({
+									list : ids
+								}) ) ));
 			};
 			
 			

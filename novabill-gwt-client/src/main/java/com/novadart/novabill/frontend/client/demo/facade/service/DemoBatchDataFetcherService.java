@@ -167,10 +167,11 @@ public class DemoBatchDataFetcherService implements
 		}
 	}
 
+	
 	@Override
 	public void fetchNewInvoiceFromTransportDocumentsOpData(
 			List<Long> transportDocumentIDs,
-			AsyncCallback<Pair<Long, List<TransportDocumentDTO>>> callback) {
+			AsyncCallback<Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO>> callback) {
 		// TODO Auto-generated method stub
 		
 	}

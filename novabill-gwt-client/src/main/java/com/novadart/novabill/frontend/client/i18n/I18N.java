@@ -6,6 +6,7 @@ import com.google.gwt.i18n.client.Constants;
 public interface I18N extends Constants {
 	public static final I18N INSTANCE = GWT.create(I18N.class);
 	
+	public String transportDocument();
 	public String items();
 	public String errorAddAtLeastOneItem();
 	public String other();
@@ -223,4 +224,5 @@ public interface I18N extends Constants {
 	public String tipInvoicePayment();
 	public String tipItemInsertionForm();
 	public String paymentDeletionConfirm();
+	public String of();
 }

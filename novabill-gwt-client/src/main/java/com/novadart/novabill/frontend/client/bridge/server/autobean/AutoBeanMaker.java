@@ -61,4 +61,6 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	
 	AutoBean<BusinessStats> makeBusinessStats();
 	
+	AutoBean<StringList> makeStringList();
+	
 }
