@@ -13,24 +13,25 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-select-transport-documents-dialog.html',
 		scope: {},
 
-		controller : ['$scope', 'nConstants', function($scope, nConstants){
-			
-			function show(){
-				$('#editCommodityDialog').modal('show');
-			};
-			
+		controller : ['$scope', 'nConstants', '$element', function($scope, nConstants, $element){
 			
 			$scope.$on(nConstants.events.SHOW_TRANSPORT_DOCUMENTS_DIALOG, 
 					function(event, clientId, preSelectedId){
 				
-				var currentYear = new Date().getFullYear();
+				var currentYear = new Date().getFullYear().toString();
 				
 				GWT_Server.transportDocument.getAllForClient(clientId, currentYear, {
 					
 					onSuccess : function(result){
 						$scope.$apply(function(){
-							$scope.docs = result;
-							show();
+							$scope.selectedSet = {};
+							$scope.selectedSet[preSelectedId] = true;
+							$scope.docs = result.transportDocuments;
+							
+							$('#selectTransportDocumentsDialog').modal('show');
+							$('#selectTransportDocumentsDialog .scroller').slimScroll({
+						        height: '400px'
+						    });
 						});
 					},
 					
@@ -38,6 +39,19 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 					
 				});
 			});
+			
+			$scope.toggleElement = function(id){
+				if($scope.selectedSet[id]){
+					delete $scope.selectedSet[id];
+				}
+			};
+			
+			$scope.openUrl = function(id){
+				window.open(nConstants.url.trasportDocumentDetails( id ), '_blank');
+			};
+			
+			$scope.ok = function(){
+			};
 			
 			
 		}],
@@ -79,7 +93,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				
 				//if prices map is empty, init it
 				if( $scope.commodity ){
-					$scope.price = $scope.commodity.pricesMap 
+					$scope.price = $scope.commodity.pricesMap && $scope.commodity.pricesMap.prices
 						? $scope.commodity.pricesMap.prices[ NovabillConf.defaultPriceListName ].priceValue 
 								: null;
 					
@@ -91,21 +105,19 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				
 			});
 			
-			function hide(){
-				$('#editCommodityDialog').modal('hide');
-				
-				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
-				$('body').removeClass('modal-open');
-				$('.modal-backdrop').remove();
-			};
-			
 			function hideAndReset(){
 				if(!$scope.keepCommodityOnClose){
 					$scope.commodity = null;
 					$scope.price = null;
 					$scope.service = null;
 				}
-				hide();
+				
+				$('#editCommodityDialog').modal('hide');
+				
+				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
+				$('body').removeClass('modal-open');
+				$('.modal-backdrop').remove();
+				
 				$scope.invalidSku = false;
 				$scope.contactingServer = false;
 				$scope.form.$setPristine();
