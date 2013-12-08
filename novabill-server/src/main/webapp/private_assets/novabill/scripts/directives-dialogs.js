@@ -93,7 +93,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				
 				//if prices map is empty, init it
 				if( $scope.commodity ){
-					$scope.price = $scope.commodity.pricesMap && $scope.commodity.pricesMap.prices
+					$scope.price = $scope.commodity.pricesMap.prices[ NovabillConf.defaultPriceListName ]
 						? $scope.commodity.pricesMap.prices[ NovabillConf.defaultPriceListName ].priceValue 
 								: null;
 					

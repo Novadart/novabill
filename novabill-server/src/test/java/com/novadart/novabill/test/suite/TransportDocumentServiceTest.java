@@ -41,6 +41,7 @@ import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -51,7 +52,7 @@ import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtService;
 import com.novadart.novabill.shared.client.facade.BusinessGwtService;
 import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
-import com.novadart.novabill.shared.client.tuple.Pair;
+import com.novadart.novabill.shared.client.tuple.Triple;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
 
@@ -317,11 +318,15 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 				return t1.getAccountingDocumentDate().compareTo(t2.getAccountingDocumentDate());
 			}
 		});
-		Pair<Long, List<TransportDocumentDTO>> pack = batchDataFetcherService.fetchNewInvoiceFromTransportDocumentsOpData(ids);
+		Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO> pack = batchDataFetcherService.fetchNewInvoiceFromTransportDocumentsOpData(ids);
 		assertEquals(nextInvID, pack.getFirst());
 		assertEquals(ids.size(), pack.getSecond().size());
 		for(int i=0; i<transDocDTOs.size(); ++i)
 			assertEquals(transDocDTOs.get(i).getId(), pack.getSecond().get(i).getId());
+		if(transDocDTOs.get(0).getClient().getDefaultPaymentTypeID() != null)
+			assertNotNull(pack.getThird());
+		else
+			assertTrue(pack.getThird() == null);
 	}
 
 }

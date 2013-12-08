@@ -104,8 +104,13 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 	}
 
 	@Override
-	public Pair<Long, List<TransportDocumentDTO>> fetchNewInvoiceFromTransportDocumentsOpData(List<Long> transportDocumentIDs) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
-		return new Pair<Long, List<TransportDocumentDTO>>(invoiceService.getNextInvoiceDocumentID(), transportDocService.getAllWithIDs(transportDocumentIDs));
+	public Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO> fetchNewInvoiceFromTransportDocumentsOpData(List<Long> transportDocumentIDs) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		if(transportDocumentIDs.size() == 0)
+			throw new IllegalArgumentException();
+		List<TransportDocumentDTO> transportDocDTOs = transportDocService.getAllWithIDs(transportDocumentIDs);
+		Long defaultPaymentTypeID = transportDocDTOs.get(0).getClient().getDefaultPaymentTypeID(); 
+		return new Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(),
+				transportDocDTOs, defaultPaymentTypeID == null? null: paymentTypeService.get(defaultPaymentTypeID));
 	}
 	
 }
