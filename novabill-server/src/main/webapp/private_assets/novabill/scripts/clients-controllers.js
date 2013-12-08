@@ -8,28 +8,28 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
  */
 .controller('ClientsCtrl', ['$scope', 'nSorting', '$location',
                             function($scope, nSorting, $location){
-	
+
 	var partitionsCache = null;
-	
+
 	$scope.loadClients = function() {
 		GWT_Server.business.getClients(NovabillConf.businessId, {
 			onSuccess : function(data){
 				$scope.$apply(function(){
 					//sort the data
 					data.clients.sort( nSorting.clientsComparator );
-					
+
 					//split it alphabetically
 					var partitions = [];
 					var pt = null;
-					
+
 					var lo = '', 
-						l = '';
+					l = '';
 					var cl;
-					
+
 					for ( var id in data.clients) {
 						cl = data.clients[id];
 						l = cl.name.charAt(0).toUpperCase();
-						
+
 						if(l != lo) {
 							if(pt != null) {
 								partitions.push(pt);
@@ -39,12 +39,12 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 									clients : []
 							};
 						}
-						
+
 						pt.clients.push(cl);
-						
+
 						lo = l;
 					}
-					
+
 					partitionsCache = partitions;
 					$scope.filterKeyUp();
 				});
@@ -53,19 +53,19 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 			onFailure : function(error){}
 		});
 	};
-	
+
 	$scope.address = function(client){
 		var address = (client.address ? client.address+' ' : '') +
-			(client.postcode ? ' - '+client.postcode+' - ' : '') +
-			(client.city ? client.city+' ' : '') +
-			(client.province ? '('+client.province+') ' : '');
+		(client.postcode ? ' - '+client.postcode+' - ' : '') +
+		(client.city ? client.city+' ' : '') +
+		(client.province ? '('+client.province+') ' : '');
 		return address;
 	};
-	
+
 	$scope.clientClick = function(client){
 		$location.path('/details/'+client.id);
 	};
-	
+
 	// fired when new client button is clicked
 	$scope.newClientClick = function() {
 		GWT_UI.clientDialog(NovabillConf.businessId, {
@@ -80,21 +80,21 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 
 	$scope.filterKeyUp = function() {
 		var query = $scope.query;
-		
+
 		if(!query || query.length < 2) {
 			$scope.partitions = partitionsCache;
 			return;
 		}
-		
+
 		var result = [];
 		var normalizedQuery = query.toLowerCase();
-		
+
 		function containsQuery(client) {
 			return (client.name && client.name.toLowerCase().indexOf(normalizedQuery) > -1) ||
 			(client.address && client.address.toLowerCase().indexOf(normalizedQuery) > -1) ||
 			(client.city && client.city.toLowerCase().indexOf(normalizedQuery) > -1);
 		}
-		
+
 		var ptOrig, ptNew, cl;
 		for(var i in partitionsCache){
 			ptOrig = partitionsCache[i];
@@ -102,28 +102,28 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 					letter : ptOrig.letter,
 					clients : []
 			};
-			
+
 			for(var i2 in ptOrig.clients) {
 				cl = ptOrig.clients[i2];
 				if(containsQuery(cl)){
 					ptNew.clients.push(cl);
 				}
 			}
-			
+
 			if(ptNew.clients.length > 0){
 				result.push(ptNew);
 			}
 		}
-		
+
 		$scope.partitions = result;
 	};
-	
+
 	$scope.scrollTo = function(id){
 		$('html, body').animate({
-	        scrollTop: $('#'+id).offset().top - 42
-	    }, 1000);
+			scrollTop: $('#'+id).offset().top - 42
+		}, 1000);
 	};
-	
+
 	$scope.loadClients();
 }])
 
@@ -133,9 +133,9 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 /**
  * CLIENT DETAILS PAGE CONTROLLER
  */
-.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', 'nRemovalDialogAPI',
-                                  function($scope, $route, $routeParams, $location, nRemovalDialogAPI) {
-	
+.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'nConstants',
+                                  function($scope, $route, $routeParams, $location, $rootScope, nConstants) {
+
 	//fired when edit client is clicked
 	$scope.editClient = function(clientId) {
 		GWT_UI.modifyClientDialog(NovabillConf.businessId, clientId, {
@@ -149,13 +149,17 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 			onFailure : function() {}
 		});
 	};
-	
-	
+
+
 	//fired when remove client is clicked
 	$scope.removeClient = function(name, clientId) {
-		
-		nRemovalDialogAPI.init('Are you sure that you want to delete permanently any data associated to "'+name+'"',{
+
+		$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
+				'Are you sure that you want to delete permanently any data associated to "'+name+'"',
+				{
+			
 			onOk : function(){
+
 				GWT_Server.client.remove(NovabillConf.businessId, clientId, {
 					onSuccess : function(data){
 						$scope.$apply(function(){
@@ -165,14 +169,14 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 
 					onFailure : function(error){}
 				});
-				
 			},
-			
+
 			onCancel : function(){}
-		});
-		nRemovalDialogAPI.show();
+			
+				});
+
 	};
-	
+
 	// load client data
 	GWT_Server.client.get($routeParams.clientId, {
 
@@ -198,7 +202,7 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 					(client.mobile ? 'Mobile: '+client.mobile : '') +
 					(client.phone ? 'Phone: '+client.phone : '');
 
-				
+
 				$scope.client = client;
 			});
 		},
@@ -206,19 +210,19 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 		onFailure : function(error){
 		}
 	});
-	
-	
+
+
 	/*
 	 * load documents. 
 	 * types = {'invoice','estimation','creditNote','transportDocument'}
 	 */ 
 	var loading = {};
-	
+
 	$scope.loadDocs = function(type){
 		if(loading[type] || $scope[type+'Data']){
 			return;
 		}
-		
+
 		loading[type] = true;
 		GWT_Server[type].getAllForClient($routeParams.clientId, '2013', {
 
@@ -234,32 +238,32 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 			}
 		});
 	};
-	
+
 	$scope.$on('invoice.remove', function(event){
 		$scope.invoiceData = null;
 		$scope.$apply();
 		$scope.loadDocs('invoice');
 	});
-	
+
 	$scope.$on('estimation.remove', function(event){
 		$scope.estimationData = null;
 		$scope.$apply();
 		$scope.loadDocs('estimation');
 	});
-	
+
 	$scope.$on('creditNote.remove', function(event){
 		$scope.creditNoteData = null;
 		$scope.$apply();
 		$scope.loadDocs('creditNote');
 	});
-	
+
 	$scope.$on('transportDocument.remove', function(event){
 		$scope.transportDocumentData = null;
 		$scope.$apply();
 		$scope.loadDocs('transportDocument');
 	});
-	
-	
+
+
 	$scope.loadDocs('invoice');
 
 }]);

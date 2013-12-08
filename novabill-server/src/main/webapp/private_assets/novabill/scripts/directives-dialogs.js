@@ -1,6 +1,54 @@
 'use strict';
 
-angular.module('novabill.directives.dialogs', ['novabill.utils'])
+angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.constants'])
+
+
+/*
+ * Select Transport Documents Dialog
+ */
+.directive('nSelectTransportDocumentsDialog', function factory(){
+
+	return {
+
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-select-transport-documents-dialog.html',
+		scope: {},
+
+		controller : ['$scope', 'nConstants', function($scope, nConstants){
+			
+			function show(){
+				$('#editCommodityDialog').modal('show');
+			};
+			
+			
+			$scope.$on(nConstants.events.SHOW_TRANSPORT_DOCUMENTS_DIALOG, 
+					function(event, clientId, preSelectedId){
+				
+				var currentYear = new Date().getFullYear();
+				
+				GWT_Server.transportDocument.getAllForClient(clientId, currentYear, {
+					
+					onSuccess : function(result){
+						$scope.$apply(function(){
+							$scope.docs = result;
+							show();
+						});
+					},
+					
+					onFailure : function(){}
+					
+				});
+			});
+			
+			
+		}],
+
+		restrict: 'E',
+		replace: true,
+
+	};
+
+})
+
 
 /*
  * Edit Commodity Dialog
@@ -14,8 +62,15 @@ angular.module('novabill.directives.dialogs', ['novabill.utils'])
 			commodity : '=?',
 		},
 
-		controller : ['$scope', 'nEditCommodityDialogAPI', function($scope, nEditCommodityDialogAPI){
-			$scope.api = nEditCommodityDialogAPI;
+		controller : ['$scope', 'nConstants', function($scope, nConstants){
+			
+			$scope.$on(nConstants.events.SHOW_EDIT_COMMODITY_DIALOG, 
+					function(event, keepCommodityOnClose, callback){
+				$scope.keepCommodityOnClose = keepCommodityOnClose;
+				$scope.callback = callback;
+				
+				$('#editCommodityDialog').modal('show');
+			});
 			
 			//init commodity, if not present, to avoid calls to $watch that will reset service and price
 			$scope.commodity = $scope['commodity'] === undefined ? {} : $scope.commodity;
@@ -24,7 +79,9 @@ angular.module('novabill.directives.dialogs', ['novabill.utils'])
 				
 				//if prices map is empty, init it
 				if( $scope.commodity ){
-					$scope.price = $scope.commodity.pricesMap ? $scope.commodity.pricesMap.prices[ NovabillConf.defaultPriceListName ].priceValue : null;
+					$scope.price = $scope.commodity.pricesMap 
+						? $scope.commodity.pricesMap.prices[ NovabillConf.defaultPriceListName ].priceValue 
+								: null;
 					
 					// NOTE we check for id to workaround GWT removing the property when it is false
 					$scope.service = ($scope.commodity.service === undefined  
@@ -34,13 +91,21 @@ angular.module('novabill.directives.dialogs', ['novabill.utils'])
 				
 			});
 			
+			function hide(){
+				$('#editCommodityDialog').modal('hide');
+				
+				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
+				$('body').removeClass('modal-open');
+				$('.modal-backdrop').remove();
+			};
+			
 			function hideAndReset(){
-				if(!$scope.api.keepCommodityOnClose){
+				if(!$scope.keepCommodityOnClose){
 					$scope.commodity = null;
 					$scope.price = null;
 					$scope.service = null;
 				}
-				$scope.api.hide();
+				hide();
 				$scope.invalidSku = false;
 				$scope.contactingServer = false;
 				$scope.form.$setPristine();
@@ -65,7 +130,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils'])
 				$scope.commodity['pricesMap']['prices'][NovabillConf.defaultPriceListName].priceValue = $scope.price;
 
 				// persist the commodity
-				$scope.api.callback.onSave(
+				$scope.callback.onSave(
 						$scope.commodity, 
 						{
 							finish : function(keepCommodity){ hideAndReset(keepCommodity); },
@@ -81,7 +146,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils'])
 
 			$scope.cancel = function(){
 				hideAndReset();
-				$scope.api.callback.onCancel();
+				$scope.callback.onCancel();
 			};
 			
 		}],
@@ -92,41 +157,6 @@ angular.module('novabill.directives.dialogs', ['novabill.utils'])
 	};
 
 })
-//APIs
-.factory('nEditCommodityDialogAPI', function(){
-	return {
-
-		keepCommodityOnClose : false,
-		
-		callback : {
-			onSave : function(commodity){},
-			onCancel : function(){}
-		},
-		
-		//functions
-		init : function(callback, keepCommodityOnClose){
-			this.callback = callback;
-			this.keepCommodityOnClose = keepCommodityOnClose;
-		},
-
-		show : function(){
-			$('#editCommodityDialog').modal('show');
-		},
-
-		hide : function(){
-			$('#editCommodityDialog').modal('hide');
-			
-			// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
-			$('body').removeClass('modal-open');
-			$('.modal-backdrop').remove();
-		}
-
-	};
-})
-
-
-
-
 
 
 /*
@@ -139,17 +169,31 @@ angular.module('novabill.directives.dialogs', ['novabill.utils'])
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-confirm-removal-dialog.html',
 		scope: {},
 
-		controller : ['$scope', 'nRemovalDialogAPI', function($scope, nRemovalDialogAPI){
-			$scope.api = nRemovalDialogAPI;
-
+		controller : ['$scope', 'nConstants', function($scope, nConstants){
+			
+			$scope.$on(nConstants.events.SHOW_REMOVAL_DIALOG, function(event, message, callback){
+				$scope.message = message;
+				$scope.callback = callback;
+				
+				$('#removalDialog').modal('show');
+			});
+			
+			function hide(){
+				$('#removalDialog').modal('hide');
+				
+				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
+				$('body').removeClass('modal-open');
+				$('.modal-backdrop').remove();
+			};
+			
 			$scope.ok = function(){
-				nRemovalDialogAPI.hide();
-				$scope.api.callback.onOk();
+				hide();
+				$scope.callback.onOk();
 			};
 
 			$scope.cancel = function(){
-				nRemovalDialogAPI.hide();
-				$scope.api.callback.onCancel();
+				hide();
+				$scope.callback.onCancel();
 			};
 		}],
 
@@ -158,36 +202,4 @@ angular.module('novabill.directives.dialogs', ['novabill.utils'])
 
 	};
 
-})
-//APIs
-.factory('nRemovalDialogAPI', function(){
-	return {
-
-		//instance variables
-		message : '',
-
-		callback : {
-			onOk : function(commodity){},
-			onCancel : function(){}
-		},
-
-		//functions
-		init : function(message, callback){
-			this.message = message;
-			this.callback = callback;
-		},
-
-		show : function(){
-			$('#removalDialog').modal('show');
-		},
-
-		hide : function(){
-			$('#removalDialog').modal('hide');
-			
-			// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
-			$('body').removeClass('modal-open');
-			$('.modal-backdrop').remove();
-		}
-
-	};
 });

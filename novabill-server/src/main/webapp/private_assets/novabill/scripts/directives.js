@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('novabill.directives', ['novabill.utils', 'novabill.translations', 'novabill.constants', 'novabill.directives.dialogs', 'ngSanitize'])
+angular.module('novabill.directives', ['novabill.utils', 'novabill.translations', 'novabill.constants', 'ngSanitize'])
 
 /*
  * Invoice widget
  */
-.directive('nInvoice', ['nRemovalDialogAPI', '$rootScope', 'nConstants',
-                        function factory(nRemovalDialogAPI, $rootScope, nConstants){
+.directive('nInvoice', ['$rootScope', 'nConstants',
+                        function factory($rootScope, nConstants){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-invoice.html',
@@ -15,25 +15,26 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			bottomUpMenu : '=',
 		},
 		controller : ['$scope', '$element', function($scope, $element){
-			
+
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.invoiceDetails($scope.invoice.id) );
 			};
-			
+
 			$scope.stopProp = function($event){
 				$event.stopPropagation();
 			};
-			
+
 			$scope.print = function($event){
 				GWT_UI.generateInvoicePdf($scope.invoice.id);
 			};
 
 			$scope.remove = function(){
-				nRemovalDialogAPI.init('Delete '+$scope.invoice.documentID+' Invoice?', {
+				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
+						'Delete '+$scope.invoice.documentID+' Invoice?', {
 					onOk : function(){
 						GWT_Server.invoice.remove(NovabillConf.businessId, $scope.invoice.client.id, $scope.invoice.id, {
 							onSuccess : function(){
-								$rootScope.$broadcast('invoice.remove');
+								$rootScope.$broadcast(nConstants.events.INVOICE_REMOVED);
 							},
 							onFailure : function(){}
 						});
@@ -41,7 +42,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 
 					onCancel : function(){}
 				});
-				nRemovalDialogAPI.show();
+
 			};
 
 			$scope.clone = function(){
@@ -58,10 +59,10 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			$scope.createCreditNote = function(id){
 				window.location.assign(nConstants.url.creditNoteFromInvoice($scope.invoice.id));
 			};
-			
+
 			//activate the dropdown
 			angular.element($element).find('.dropdown-toggle').dropdown();
-			
+
 		}],
 		restrict: 'E',
 		replace: true,
@@ -73,8 +74,8 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 /*
  * Estimation Widget
  */
-.directive('nEstimation', ['nRemovalDialogAPI', '$rootScope', 'nConstants', 
-                           function factory(nRemovalDialogAPI, $rootScope, nConstants){
+.directive('nEstimation', ['$rootScope', 'nConstants', 
+                           function factory($rootScope, nConstants){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-estimation.html',
@@ -83,7 +84,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			bottomUpMenu : '=',
 		},
 		controller : ['$scope', '$element', function($scope, $element){
-			
+
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.estimationDetails($scope.estimation.id) );
 			};
@@ -91,18 +92,19 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			$scope.stopProp = function($event){
 				$event.stopPropagation();
 			};
-			
+
 			$scope.print = function(){
 				GWT_UI.generateEstimationPdf($scope.estimation.id);
 				$event.stopPropagation();
 			};
 
 			$scope.remove = function(){
-				nRemovalDialogAPI.init('Delete '+$scope.estimation.documentID+' Estimation?', {
+				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
+						'Delete '+$scope.estimation.documentID+' Estimation?', {
 					onOk : function(){
 						GWT_Server.estimation.remove(NovabillConf.businessId, $scope.estimation.client.id, $scope.estimation.id, {
 							onSuccess : function(){
-								$rootScope.$broadcast('estimation.remove');
+								$rootScope.$broadcast(nConstants.events.ESTIMATION_REMOVED);
 							},
 							onFailure : function(){}
 						});
@@ -110,7 +112,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 
 					onCancel : function(){}
 				});
-				nRemovalDialogAPI.show();
+
 			};
 
 			$scope.clone = function(){
@@ -127,7 +129,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			$scope.convertToInvoice = function(id){
 				window.location.assign(nConstants.url.invoiceFromEstimation($scope.estimation.id));
 			};
-			
+
 			//activate the dropdown
 			angular.element($element).find('.dropdown-toggle').dropdown();
 
@@ -142,8 +144,8 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 /*
  * Transport Document Widget
  */
-.directive('nTransportDocument', ['nRemovalDialogAPI', '$rootScope', 'nConstants',
-                                  function factory(nRemovalDialogAPI, $rootScope, nConstants){
+.directive('nTransportDocument', ['$rootScope', 'nConstants',
+                                  function factory($rootScope, nConstants){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-transport-document.html',
@@ -152,11 +154,11 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			bottomUpMenu : '=',
 		},
 		controller : ['$scope', '$element', function($scope, $element){
-			
+
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.trasportDocumentDetails( $scope.transportDocument.id ) );
 			};
-			
+
 			$scope.stopProp = function($event){
 				$event.stopPropagation();
 			};
@@ -167,11 +169,12 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			};
 
 			$scope.remove = function(){
-				nRemovalDialogAPI.init('Delete '+$scope.transportDocument.documentID+' Transport Document?', {
+				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
+						'Delete '+$scope.transportDocument.documentID+' Transport Document?', {
 					onOk : function(){
 						GWT_Server.transportDocument.remove(NovabillConf.businessId, $scope.transportDocument.client.id, $scope.transportDocument.id, {
 							onSuccess : function(){
-								$rootScope.$broadcast('transportDocument.remove');
+								$rootScope.$broadcast(nConstants.events.TRANSPORT_DOCUMENT_REMOVED);
 							},
 							onFailure : function(){}
 						});
@@ -179,13 +182,12 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 
 					onCancel : function(){}
 				});
-				nRemovalDialogAPI.show();
 			};
 
 			$scope.createInvoice = function(id){
-				window.location.assign(nConstants.url.invoiceFromTransportDocument( $scope.transportDocument.id ));
+				$rootScope.$broadcast(nConstants.events.SHOW_TRANSPORT_DOCUMENTS_DIALOG, $scope.transportDocument.client.id, $scope.transportDocument.id);
 			};
-			
+
 			//activate the dropdown
 			angular.element($element).find('.dropdown-toggle').dropdown();
 
@@ -200,8 +202,8 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 /*
  * Credit Note Widget
  */
-.directive('nCreditNote', ['nRemovalDialogAPI', '$rootScope', 'nConstants', 
-                           function factory(nRemovalDialogAPI, $rootScope, nConstants){
+.directive('nCreditNote', ['$rootScope', 'nConstants', 
+                           function factory($rootScope, nConstants){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-credit-note.html',
@@ -210,11 +212,11 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			bottomUpMenu : '=',
 		},
 		controller : ['$scope', '$element', function($scope, $element){
-			
+
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.creditNoteDetails( $scope.creditNote.id ) );
 			};
-			
+
 			$scope.stopProp = function($event){
 				$event.stopPropagation();
 			};
@@ -225,11 +227,12 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			};
 
 			$scope.remove = function(){
-				nRemovalDialogAPI.init('Delete '+$scope.creditNote.documentID+' Credit Note?', {
+				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
+						'Delete '+$scope.creditNote.documentID+' Credit Note?', {
 					onOk : function(){
 						GWT_Server.creditNote.remove(NovabillConf.businessId, $scope.creditNote.client.id, $scope.creditNote.id, {
 							onSuccess : function(){
-								$rootScope.$broadcast('creditNote.remove');
+								$rootScope.$broadcast(nConstants.events.CREDIT_NOTE_REMOVED);
 							},
 							onFailure : function(){}
 						});
@@ -237,9 +240,8 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 
 					onCancel : function(){}
 				});
-				nRemovalDialogAPI.show();
 			};
-			
+
 			//activate the dropdown
 			angular.element($element).find('.dropdown-toggle').dropdown();
 
@@ -255,8 +257,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 /*
  * Commodity Widget
  */
-.directive('nCommodity', ['nRemovalDialogAPI', '$rootScope', 
-                          function factory(nRemovalDialogAPI, $rootScope){
+.directive('nCommodity', ['$rootScope', function factory($rootScope){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-commodity.html',
@@ -269,7 +270,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			$scope.openUrl = function(){
 				window.location.assign( nConstants.url.commodityDetails($scope.commodity.id) );
 			};
-			
+
 		}],
 		restrict: 'E',
 		replace: true,
@@ -281,8 +282,8 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 /*
  * Update Price Widget
  */
-.directive('nUpdatePrice', ['$route', 'nConstants', 'nRemovalDialogAPI', 
-                            function factory($route, nConstants, nRemovalDialogAPI){
+.directive('nUpdatePrice', ['$route', 'nConstants', 
+                            function factory($route, nConstants){
 
 	return {
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-update-price.html',
@@ -337,7 +338,8 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			};
 
 			$scope.remove = function(){
-				nRemovalDialogAPI.init('Are you sure that you want to delete the price in this price list?', {
+				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
+						'Are you sure that you want to delete the price in this price list?', {
 					onOk : function(){
 						GWT_Server.commodity.removePrice(NovabillConf.businessId, $scope.price.priceListID, $scope.price.commodityID, {
 							onSuccess : function(data){
@@ -353,7 +355,6 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 
 					onCancel : function(){}
 				});
-				nRemovalDialogAPI.show();
 			};
 
 
@@ -572,7 +573,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 					$scope.description = tr('LR_INVOICE_DELETE',
 							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'"}');
 					break;
-					
+
 				default:
 					break;
 				}
@@ -594,7 +595,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 					$scope.description = tr('LR_ESTIMATION_DELETE',
 							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'"}');
 					break;
-					
+
 				default:
 					break;
 				}
@@ -616,7 +617,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 					$scope.description = tr('LR_CREDIT_NOTE_DELETE',
 							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'"}');
 					break;
-					
+
 				default:
 					break;
 				}
@@ -638,12 +639,12 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 					$scope.description = tr('LR_TRANSPORT_DOCUMENT_DELETE',
 							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'"}');
 					break;
-					
+
 				default:
 					break;
 				}
 				break;
-				
+
 			case nConstants.logRecord.entityType.PAYMENT_TYPE:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
@@ -660,7 +661,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 					$scope.description = tr('LR_PAYMENT_TYPE_DELETE',
 							'{paymentName: "'+ details.paymentTypeName +'"}');
 					break;
-					
+
 				default:
 					break;
 				}

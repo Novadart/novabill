@@ -67,6 +67,19 @@ angular.module('novabill.constants', [])
 			trasportDocumentList : function(){ return NovabillConf.transportDocumentsBaseUrl + '#/'; },
 			trasportDocumentDetails : function(transportDocumentId){ return NovabillConf.transportDocumentsBaseUrl + '#/details/' + transportDocumentId; },
 			
+		},
+		
+		events : {
+			
+			INVOICE_REMOVED : 'INVOICE_REMOVED',
+			CREDIT_NOTE_REMOVED : 'CREDIT_NOTE_REMOVED',
+			TRANSPORT_DOCUMENT_REMOVED : 'TRANSPORT_DOCUMENT_REMOVED',
+			ESTIMATION_REMOVED : 'ESTIMATION_REMOVED',
+			
+			SHOW_TRANSPORT_DOCUMENTS_DIALOG : 'SHOW_TRANSPORT_DOCUMENTS_DIALOG',
+			SHOW_REMOVAL_DIALOG : 'SHOW_REMOVAL_DIALOG',
+			SHOW_EDIT_COMMODITY_DIALOG : 'SHOW_EDIT_COMMODITY_DIALOG',
+			
 		}
 		
 	};
