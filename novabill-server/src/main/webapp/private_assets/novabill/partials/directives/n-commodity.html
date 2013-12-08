@@ -1,10 +1,8 @@
-<div class="well well-small commodity">
+<div class="well well-small commodity" ng-click="openUrl()">
     <span class="type badge badge-primary" ng-show="commodity.service">Service</span>
     <span class="type badge badge-success" ng-show="!commodity.service">Product</span>
 
 	<span class="id"><strong>{{commodity.sku}}</strong></span> 
     <span style="margin-left: 30px;" class="clientName">{{commodity.description}}</span>
-    
-    <a ng-href="#/details/{{commodity.id}}" class="open btn btn-sm dark pull-right">Open</a>
     
 </div>

@@ -16,7 +16,8 @@
 		<p class="no-data-message text-center text-info" ng-show="invoices && invoices.length===0">No Data</p>
 		<n-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoices"></n-invoice>
 	</div>
-
+	
 	<n-removal-dialog></n-removal-dialog>
+	
 </div>
 

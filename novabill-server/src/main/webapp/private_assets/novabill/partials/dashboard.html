@@ -63,7 +63,7 @@
                         </div>
                         <div class="details" >
                             <div class="alert" ng-show="!mouseOverTotal">Mouse over to uncover...</div>
-                            <div ng-show="mouseOverTotal" class="number">{{stats.totalAfterTaxesForYear}} €</div>
+                            <div ng-show="mouseOverTotal" class="number">{{stats.totalAfterTaxesForYear | currency}}</div>
                             <div class="desc">Total after taxes this year</div>
                         </div>
                     </div>

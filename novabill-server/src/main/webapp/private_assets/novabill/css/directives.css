@@ -76,7 +76,7 @@
 }
 
 .update-price .price-span {
-    width: 150px;
+    min-width: 80px;
     display: inline-block;
 }
 

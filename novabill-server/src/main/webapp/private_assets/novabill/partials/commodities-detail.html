@@ -1,71 +1,91 @@
 <div class="container-fluid commodities-detail">
-	<!-- BEGIN PAGE TITLE & BREADCRUMB-->
-	<ul class="breadcrumb">
-		<li><i class="fa fa-home"></i> <a href="../">Home</a> </li>
-		<li><a href=".">Commodities</a><i class="icon-angle-right"></i></li>
-		<li><span>{{commodity.description}}</span></li>
-	</ul>
 
-     
-	<div class="jumbotron" ng-class="{product: !commodity.service, service: commodity.service}">
-		<span class="type label label-primary" ng-show="commodity.service">Service</span> <span
-			class="type label label-success" ng-show="!commodity.service">Product</span>
+	<div class="row">
+		<div class="col-md-12">
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<ul class="breadcrumb">
+				<li><i class="fa fa-home"></i> <a href="../">Home</a></li>
+				<li><a href=".">Commodities</a><i class="icon-angle-right"></i></li>
+				<li><span>{{commodity.description}}</span></li>
+			</ul>
 
-		<h2>{{commodity.description}}</h2>
 
-	</div>
+			<div class="jumbotron" ng-class="{product: !commodity.service, service: commodity.service}">
+				<span class="type label label-primary" ng-show="commodity.service">Service</span> <span
+					class="type label label-success" ng-show="!commodity.service">Product</span>
 
-	<div style="height: 28px;" class="col-md-2 col-md-offset-10">
-		<div class="pull-right">
-			<a href="javascript: void(0)" ng-disabled="commodity == null" ng-click="editCommodity()" class="btn btn-sm red">
-				<i class="fa fa-edit"></i>Edit
-			</a> <a href="javascript: void(0)" ng-disabled="commodity == null" ng-click="removeCommodity()" class="btn btn-sm red">
-				<i class="fa fa-trash-o"></i> Delete
-			</a>
-		</div>
-	</div>
-	
+				<h2>{{commodity.description}}</h2>
 
-    <h3 style="margin-top: 10px;">Details</h3>
-	<div class="well col-md-7">
-		<div class="table-responsive">
-			<table class="table details">
-				<thead>
-					<tr>
-						<th>Stock Keeping Unit</th>
-						<th>Unit of Measure</th>
-						<th>Tax</th>
-					</tr>
-				</thead>
-				<tbody>
-					<tr>
-						<td>{{commodity.sku}}</td>
-						<td>{{commodity.unitOfMeasure}}</td>
-						<td>{{commodity.tax}}</td>
-					</tr>
-				</tbody>
-			</table>
+			</div>
+
+			<div style="height: 28px;" class="col-md-2 col-md-offset-10">
+				<div class="pull-right">
+					<a href="javascript: void(0)" ng-disabled="commodity == null" ng-click="editCommodity()" class="btn btn-sm red">
+						<i class="fa fa-edit"></i>Edit
+					</a> <a href="javascript: void(0)" ng-disabled="commodity == null" ng-click="removeCommodity()" class="btn btn-sm red">
+						<i class="fa fa-trash-o"></i> Delete
+					</a>
+				</div>
+			</div>
 		</div>
 	</div>
 
-	<h3 style="clear: both;">Price Lists</h3>
-	<div class="well col-md-7">
-		<table class="table">
-            <thead>
-                <th>Price List Name</th>
-                <th>Price</th>
-            </thead>
-			<tbody>
-				<tr ng-repeat="(priceListName, price) in commodity.pricesMap.prices"
-					ng-class="{defaultPriceList: priceListName===DEFAULT_PRICELIST_NAME, priceList: priceListName!==DEFAULT_PRICELIST_NAME, service: commodity.service, product: !commodity.service}">
-					<td width="40%">{{priceListName | nFilterDefault}}</td>
-					<td width="60%"><n-update-price price-list-name="priceListName" price="price"></n-update-price></td>
-				</tr>
-			</tbody>
-		</table>
+	<div class="clearfix"></div>
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<h3 style="margin-top: 10px;">Details</h3>
+			<div class="well col-md-7">
+				<div class="table-responsive">
+					<table class="table details">
+						<thead>
+							<tr>
+								<th>Stock Keeping Unit</th>
+								<th>Unit of Measure</th>
+								<th>Tax</th>
+							</tr>
+						</thead>
+						<tbody>
+							<tr>
+								<td>{{commodity.sku}}</td>
+								<td>{{commodity.unitOfMeasure}}</td>
+								<td>{{commodity.tax}}</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<h3 style="clear: both;">Price Lists</h3>
+			<div class="well col-md-7">
+				<table class="table">
+					<thead>
+						<th>Price List Name</th>
+						<th>Price</th>
+					</thead>
+					<tbody>
+						<tr ng-repeat="(priceListName, price) in commodity.pricesMap.prices"
+							ng-class="{defaultPriceList: priceListName===DEFAULT_PRICELIST_NAME, priceList: priceListName!==DEFAULT_PRICELIST_NAME, service: commodity.service, product: !commodity.service}">
+							<td width="40%">{{priceListName | nFilterDefault}}</td>
+							<td width="60%"><n-update-price price-list-name="priceListName" price="price"></n-update-price></td>
+						</tr>
+					</tbody>
+				</table>
+			</div>
+
+		</div>
 	</div>
 
 	<n-edit-commodity-dialog commodity="commodity"></n-edit-commodity-dialog>
-    <n-removal-dialog></n-removal-dialog>
+	<n-removal-dialog></n-removal-dialog>
 </div>
 

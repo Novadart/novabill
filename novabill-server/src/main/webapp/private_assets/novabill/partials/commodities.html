@@ -1,23 +1,34 @@
 <div class="container-fluid commodities">
-	<!-- BEGIN PAGE TITLE & BREADCRUMB-->
-	<h3 class="page-title">Commodities</h3>
-	<ul class="breadcrumb">
-		<li><i class="fa fa-home"></i> <a href="../">Home</a> </li>
-		<li><span>Commodities</span></li>
-	</ul>
+	<div class="row">
+		<div class="col-md-12">
 
-	<button type="button" class="btn red new-client" ng-click="newCommodity()">New Commodity</button>
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<h3 class="page-title">Commodities</h3>
+			<ul class="breadcrumb">
+				<li><i class="fa fa-home"></i> <a href="../">Home</a></li>
+				<li><span>Commodities</span></li>
+			</ul>
 
-	<div class="commodities-filter input-icon left">
-		<i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
-			placeholder="Filter..." ng-model="query">
+			<button type="button" class="btn red new-client" ng-click="newCommodity()">New Commodity</button>
+
+			<div class="commodities-filter input-icon left">
+				<i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
+					placeholder="Filter..." ng-model="query">
+			</div>
+		</div>
 	</div>
 
-	<img class="spinner" ng-show="commodities==null" src="../../private_assets/img/ajax-loading.gif">
+	<div class="clearfix"></div>
 
-	<n-commodity class="commodity" commodity="cm" ng-repeat="cm in commodities | filter:query"></n-commodity>
+	<div class="row">
+		<div class="col-md-12">
 
-    <n-edit-commodity-dialog></n-edit-commodity-dialog>
+			<img class="spinner" ng-show="commodities==null" src="../../private_assets/img/ajax-loading.gif">
+
+			<n-commodity class="commodity" commodity="cm" ng-repeat="cm in commodities | filter:query"></n-commodity>
+		</div>
+	</div>
+
+
+	<n-edit-commodity-dialog></n-edit-commodity-dialog>
 </div>
-
-

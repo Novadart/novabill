@@ -14,10 +14,17 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			invoice : '=',
 			bottomUpMenu : '=',
 		},
-		controller : ['$scope', function($scope){
-			$scope.openUrl = nConstants.url.invoiceDetails($scope.invoice.id);
-
-			$scope.print = function(){
+		controller : ['$scope', '$element', function($scope, $element){
+			
+			$scope.openUrl = function() {
+				window.location.assign( nConstants.url.invoiceDetails($scope.invoice.id) );
+			};
+			
+			$scope.stopProp = function($event){
+				$event.stopPropagation();
+			};
+			
+			$scope.print = function($event){
 				GWT_UI.generateInvoicePdf($scope.invoice.id);
 			};
 
@@ -51,6 +58,10 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			$scope.createCreditNote = function(id){
 				window.location.assign(nConstants.url.creditNoteFromInvoice($scope.invoice.id));
 			};
+			
+			//activate the dropdown
+			angular.element($element).find('.dropdown-toggle').dropdown();
+			
 		}],
 		restrict: 'E',
 		replace: true,
@@ -71,11 +82,19 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			estimation : '=',
 			bottomUpMenu : '=',
 		},
-		controller : ['$scope', function($scope){
-			$scope.openUrl = nConstants.url.estimationDetails($scope.estimation.id);
+		controller : ['$scope', '$element', function($scope, $element){
+			
+			$scope.openUrl = function() {
+				window.location.assign( nConstants.url.estimationDetails($scope.estimation.id) );
+			};
 
+			$scope.stopProp = function($event){
+				$event.stopPropagation();
+			};
+			
 			$scope.print = function(){
 				GWT_UI.generateEstimationPdf($scope.estimation.id);
+				$event.stopPropagation();
 			};
 
 			$scope.remove = function(){
@@ -108,6 +127,9 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			$scope.convertToInvoice = function(id){
 				window.location.assign(nConstants.url.invoiceFromEstimation($scope.estimation.id));
 			};
+			
+			//activate the dropdown
+			angular.element($element).find('.dropdown-toggle').dropdown();
 
 		}],
 		restrict: 'E',
@@ -129,11 +151,19 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			transportDocument : '=',
 			bottomUpMenu : '=',
 		},
-		controller : ['$scope', function($scope){
-			$scope.openUrl = nConstants.url.trasportDocumentDetails( $scope.transportDocument.id );
+		controller : ['$scope', '$element', function($scope, $element){
+			
+			$scope.openUrl = function() {
+				window.location.assign( nConstants.url.trasportDocumentDetails( $scope.transportDocument.id ) );
+			};
+			
+			$scope.stopProp = function($event){
+				$event.stopPropagation();
+			};
 
 			$scope.print = function(){
 				GWT_UI.generateTransportDocumentPdf($scope.transportDocument.id);
+				$event.stopPropagation();
 			};
 
 			$scope.remove = function(){
@@ -155,6 +185,9 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			$scope.createInvoice = function(id){
 				window.location.assign(nConstants.url.invoiceFromTransportDocument( $scope.transportDocument.id ));
 			};
+			
+			//activate the dropdown
+			angular.element($element).find('.dropdown-toggle').dropdown();
 
 		}],
 		restrict: 'E',
@@ -176,11 +209,19 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			creditNote : '=',
 			bottomUpMenu : '=',
 		},
-		controller : ['$scope', function($scope){
-			$scope.openUrl = nConstants.url.creditNoteDetails( $scope.creditNote.id );
+		controller : ['$scope', '$element', function($scope, $element){
+			
+			$scope.openUrl = function() {
+				window.location.assign( nConstants.url.creditNoteDetails( $scope.creditNote.id ) );
+			};
+			
+			$scope.stopProp = function($event){
+				$event.stopPropagation();
+			};
 
 			$scope.print = function(){
 				GWT_UI.generateCreditNotePdf($scope.creditNote.id);
+				$event.stopPropagation();
 			};
 
 			$scope.remove = function(){
@@ -198,6 +239,9 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 				});
 				nRemovalDialogAPI.show();
 			};
+			
+			//activate the dropdown
+			angular.element($element).find('.dropdown-toggle').dropdown();
 
 		}],
 		restrict: 'E',
@@ -220,10 +264,12 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			commodity : '=',
 			bottomUpMenu : '=',
 		},
-		controller : ['$scope', function($scope){
+		controller : ['$scope', 'nConstants', function($scope, nConstants){
 
-			$scope.remove = function(){};
-
+			$scope.openUrl = function(){
+				window.location.assign( nConstants.url.commodityDetails($scope.commodity.id) );
+			};
+			
 		}],
 		restrict: 'E',
 		replace: true,
