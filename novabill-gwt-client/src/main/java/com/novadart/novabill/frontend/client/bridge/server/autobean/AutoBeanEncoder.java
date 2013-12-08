@@ -38,8 +38,12 @@ public class AutoBeanEncoder {
 		
 		LogRecordList ll = AutoBeanMaker.INSTANCE.makeLogRecordList().as();
 		List<LogRecord> list = new ArrayList<LogRecord>();
+		AutoBean<LogRecord> lr;
 		for (LogRecordDTO logRecord : c.getLogRecords()) {
-			list.add(encode(logRecord).as());
+			lr = encode(logRecord);
+			if(lr != null){
+				list.add(lr.as());
+			}
 		}
 		ll.setLogRecords(list);
 		b.setLogRecords(ll);
@@ -158,7 +162,9 @@ public class AutoBeanEncoder {
 		Client ac = AutoBeanMaker.INSTANCE.makeClient().as();
 		ac.setAddress(c.getAddress());
 		ac.setCity(c.getCity());
-		ac.setContact(encode(c.getContact()).as());
+		
+		AutoBean<Contact> contact = encode(c.getContact());
+		ac.setContact(contact == null ? null : contact.as());
 		ac.setCountry(c.getCountry());
 		ac.setDefaultPaymentTypeID(c.getDefaultPaymentTypeID());
 		ac.setEmail(c.getEmail());
