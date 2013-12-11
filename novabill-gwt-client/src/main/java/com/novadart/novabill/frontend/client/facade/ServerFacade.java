@@ -10,6 +10,7 @@ import com.novadart.novabill.shared.client.facade.CreditNoteGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.EstimationGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.InvoiceGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.PaymentTypeGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.PriceListGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.TransportDocumentGwtServiceAsync;
 
 public interface ServerFacade {
@@ -41,5 +42,7 @@ public interface ServerFacade {
 	public BatchDataFetcherGwtServiceAsync getBatchfetcherService();
 	
 	public CommodityGwtServiceAsync getCommodityGwtService();
+	
+	public PriceListGwtServiceAsync getPriceListGwtService();
 
 }

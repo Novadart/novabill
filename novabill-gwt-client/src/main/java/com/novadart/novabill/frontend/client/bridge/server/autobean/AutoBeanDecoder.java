@@ -1,13 +1,16 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
 
 public class AutoBeanDecoder {
 	
@@ -31,6 +34,7 @@ public class AutoBeanDecoder {
 		return c;
 	}
 	
+	
 	public static PriceDTO decode(Price price) {
 		PriceDTO p = new PriceDTO();
 		p.setCommodityID(price.getCommodityID());
@@ -38,6 +42,21 @@ public class AutoBeanDecoder {
 		p.setPriceListID(price.getPriceListID());
 		p.setPriceType(price.getPriceType() != null ? PriceType.valueOf(price.getPriceType()) : null);
 		p.setPriceValue(price.getPriceValue() != null ? BigDecimal.valueOf(price.getPriceValue()) : null);
+		return p;
+	}
+	
+
+	public static PriceListDTO decode(PriceList as) {
+		PriceListDTO p = new PriceListDTO();
+		p.setBusiness(Configuration.getBusiness());
+		p.setId(as.getId());
+		p.setName(as.getName());
+		
+		List<PriceDTO> prices = new ArrayList<PriceDTO>();
+		for (Price pr : as.getPrices().getList()) {
+			prices.add(decode(pr));
+		}
+		p.setPrices(prices);
 		return p;
 	}
 
