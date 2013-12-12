@@ -22,6 +22,7 @@ import com.novadart.novabill.shared.client.facade.CreditNoteGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.EstimationGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.InvoiceGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.PaymentTypeGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.PriceListGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.TransportDocumentGwtServiceAsync;
 
 public class ServerFacadeImpl implements ServerFacade {
@@ -55,6 +56,7 @@ public class ServerFacadeImpl implements ServerFacade {
 				((HasRpcToken) getPaymentService()).setRpcToken(xsrfToken);
 				((HasRpcToken) getBatchfetcherService()).setRpcToken(xsrfToken);
 				((HasRpcToken) getCommodityGwtService()).setRpcToken(xsrfToken);
+				((HasRpcToken) getPriceListGwtService()).setRpcToken(xsrfToken);
 				
 				callback.onSuccess(null);
 			}
@@ -179,6 +181,11 @@ public class ServerFacadeImpl implements ServerFacade {
 	@Override
 	public CommodityGwtServiceAsync getCommodityGwtService() {
 		return CommodityGwtServiceAsync.Util.getInstance();
+	}
+	
+	@Override
+	public PriceListGwtServiceAsync getPriceListGwtService() {
+		return PriceListGwtServiceAsync.Util.getInstance();
 	}
 
 }

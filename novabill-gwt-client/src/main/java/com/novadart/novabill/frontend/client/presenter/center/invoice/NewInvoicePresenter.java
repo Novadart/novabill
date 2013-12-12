@@ -120,7 +120,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 			+ I18N.INSTANCE.transportDocument()
 			+" N. "+td.getDocumentID()
 			+"  "
-			+ I18N.INSTANCE.of()
+			+ I18N.INSTANCE.of() +" "
 			+ DocumentUtils.DOCUMENT_DATE_FORMAT.format(td.getAccountingDocumentDate()) 
 			+ "  ##");
 			

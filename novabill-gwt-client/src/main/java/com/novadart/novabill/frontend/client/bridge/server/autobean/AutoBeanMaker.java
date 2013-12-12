@@ -63,4 +63,10 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	
 	AutoBean<StringList> makeStringList();
 	
+	AutoBean<PricesList> makePricesList();
+	
+	AutoBean<PriceList> makePriceList();
+	
+	AutoBean<PriceListList> makePriceListList();
+	
 }

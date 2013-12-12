@@ -18,6 +18,7 @@ import com.novadart.novabill.shared.client.facade.CreditNoteGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.EstimationGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.InvoiceGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.PaymentTypeGwtServiceAsync;
+import com.novadart.novabill.shared.client.facade.PriceListGwtServiceAsync;
 import com.novadart.novabill.shared.client.facade.TransportDocumentGwtServiceAsync;
 
 public class DemoServerFacadeImpl implements ServerFacade {
@@ -96,6 +97,12 @@ public class DemoServerFacadeImpl implements ServerFacade {
 
 	@Override
 	public CommodityGwtServiceAsync getCommodityGwtService() {
+		// TODO Auto-generated method stub
+		return null;
+	}
+
+	@Override
+	public PriceListGwtServiceAsync getPriceListGwtService() {
 		// TODO Auto-generated method stub
 		return null;
 	}

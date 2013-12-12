@@ -20,9 +20,33 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public class AutoBeanEncoder {
+	
+	public static AutoBean<PriceList> encode(PriceListDTO c){
+		if(c == null){
+			return null;
+		}
+		
+		PriceList pl = AutoBeanMaker.INSTANCE.makePriceList().as();
+		
+		AutoBean<Business> b = encode(c.getBusiness());
+		pl.setBusiness(b==null ? null : b.as());
+		pl.setId(c.getId());
+		pl.setName(c.getName());
+		
+		PricesList list = AutoBeanMaker.INSTANCE.makePricesList().as();
+		List<Price> prices = new ArrayList<Price>();
+		for (PriceDTO p : c.getPrices()) {
+			prices.add(encode(p).as());
+		}
+		list.setList(prices);
+		pl.setPrices(list);
+		
+		return AutoBeanUtils.getAutoBean(pl);
+	}
 	
 	
 	public static AutoBean<BusinessStats> encode(BusinessStatsDTO c){

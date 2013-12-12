@@ -15,7 +15,8 @@
 						ng-click="toggleElement(d.id)">
 						<input ng-checked="selectedSet[d.id]" type="checkbox"
 							style="width: 20px; height: 20px;"> <strong class="documentId">{{d.documentID}}</strong> <span
-							class="date">{{d.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> <span class="n-packages label label-info">{{d.numberOfPackages}}
+							class="date">{{d.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
+							<span class="n-packages">{{d.numberOfPackages}}
 							<span ng-if="d.numberOfPackages > 1">packages</span><span ng-if="d.numberOfPackages <= 1">package</span>
 						</span> <span class="total">{{d.total | currency }}</span>
 
