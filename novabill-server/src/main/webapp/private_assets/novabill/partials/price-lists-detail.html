@@ -1,9 +1,66 @@
-<div class="container-fluid commodities-detail">
-	<!-- BEGIN PAGE TITLE & BREADCRUMB-->
-	<ul class="breadcrumb">
-		<li><i class="fa fa-home"></i> <a href="../">Home</a> </li>
-		<li><a href=".">Price Lists</a><i class="icon-angle-right"></i></li>
-		<li><span>{{priceList.name}}</span></li>
-	</ul>
+<div class="container-fluid price-list-detail">
+
+	<div class="row">
+		<div class="col-md-12">
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<ul class="breadcrumb">
+				<li><i class="fa fa-home"></i> <a href="../">Home</a></li>
+				<li><a href=".">Price Lists</a><i class="icon-angle-right"></i></li>
+				<li><span>{{priceList.name | nFilterDefault}}</span></li>
+			</ul>
+
+			<div class="jumbotron">
+				<h2>{{priceList.name | nFilterDefault}}</h2>
+			</div>
+
+			<div style="height: 28px;" class="col-md-2 col-md-offset-10">
+				<div class="pull-right">
+					<a href="javascript: void(0)" ng-disabled="priceList == null" ng-click="editPriceList()" class="btn btn-sm red">
+						<i class="fa fa-edit"></i>Edit
+					</a> <a href="javascript: void(0)" ng-disabled="priceList == null" ng-click="removePriceList()" class="btn btn-sm red">
+						<i class="fa fa-trash-o"></i> Delete
+					</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="commodity-filter input-icon left">
+				<i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
+					placeholder="Filter..." ng-model="query">
+			</div>
+
+			<div class="table-responsive">
+				<table class="table">
+					<tbody>
+						<tr ng-repeat="item in commodityPriceList | filter:query">
+							<td width="10%"><span class="type badge badge-success">Product</span></td>
+							<td width="10%"><strong>{{item.sku}}</strong></td>
+							<td width="60%">{{item.description}}</td>
+							<td width="20%" style="text-align: right;">
+							      <span ng-if="priceList.name ==='::default'">
+                                     <strong>€ 100</strong>&nbsp;&nbsp;<button class="btn btn-sm"> <i class="fa fa-edit"></i> </button>
+                                 </span>
+							     <span ng-if="priceList.name !=='::default' && tmp[item.sku]">
+							         <strong>€ 100</strong> &nbsp;&nbsp;<button class="btn btn-sm"> <i class="fa fa-trash-o"></i> </button>
+							     </span>
+							     <span ng-if="priceList.name !=='::default' && !tmp[item.sku]">
+                                     € 123 (Listino Base) &nbsp;&nbsp;<button class="btn btn-sm"> <i class="fa fa-plus"></i> </button>
+                                 </span>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+	</div>
 
 </div>

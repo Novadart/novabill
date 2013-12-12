@@ -73,6 +73,10 @@ public class ServerBridge implements ApiBridge {
 				remove : @com.novadart.novabill.frontend.client.bridge.server.PriceListServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				add : @com.novadart.novabill.frontend.client.bridge.server.PriceListServiceJS::add(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				update : @com.novadart.novabill.frontend.client.bridge.server.PriceListServiceJS::update(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			},
+			
+			batch : {
+				fetchModifyPriceList : @com.novadart.novabill.frontend.client.bridge.server.BatchDataFetcherServiceJS::fetchModifyPriceList(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 			}
 			
 		}

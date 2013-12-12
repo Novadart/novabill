@@ -55,14 +55,23 @@ angular.module('novabill.priceLists.controllers', ['novabill.translations', 'nov
 /**
  * PRICE LISTS DETAILS PAGE CONTROLLER
  */
-.controller('PriceListsDetailsCtrl', ['$scope', '$routeParams', function($scope, $routeParams){
+.controller('PriceListsDetailsCtrl', ['$scope', '$routeParams', 'nSorting', function($scope, $routeParams, nSorting){
 	
 	function loadPriceList(){
-		GWT_Server.priceList.get($routeParams.priceListId, {
+		GWT_Server.batch.fetchModifyPriceList(NovabillConf.businessId, $routeParams.priceListId, {
 
-			onSuccess : function(priceList){
+			onSuccess : function(data){
 				$scope.$apply(function(){
-					$scope.priceList = priceList;
+					$scope.priceList = data.priceList;
+					$scope.commodityPriceList = data.commodityPriceList.sort(nSorting.modifyPriceListPricesComparator);
+					
+					var tmp = {};
+					var n;
+					for(var i=0; i<data.commodityPriceList.length; i++){
+						n = Math.random();
+						tmp[data.commodityPriceList[i].sku] = (n <= 0.3);
+					}
+					$scope.tmp = tmp;
 				});
 			},
 
@@ -70,7 +79,6 @@ angular.module('novabill.priceLists.controllers', ['novabill.translations', 'nov
 
 		});
 	}
-
 	
 	loadPriceList();
 	

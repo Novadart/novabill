@@ -7,6 +7,7 @@ import java.util.Map;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.ModifyPriceList.CommodityPrice;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
@@ -22,8 +23,41 @@ import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.tuple.Pair;
 
 public class AutoBeanEncoder {
+	
+	
+	public static AutoBean<ModifyPriceList> encode(Pair<PriceListDTO, Map<String, Pair<String, PriceDTO>>> data){
+		if(data == null){
+			return null;
+		}
+		
+		ModifyPriceList mpl = AutoBeanMaker.INSTANCE.makeModifyPriceList().as();
+		
+		PriceList pl = encode(data.getFirst()).as();
+		mpl.setPriceList(pl);
+		
+		CommodityPrice cp;
+		Pair<String, PriceDTO> p;
+		List<CommodityPrice> prices = new ArrayList<ModifyPriceList.CommodityPrice>();
+		
+		for (String sku : data.getSecond().keySet()) {
+			p = data.getSecond().get(sku);
+			
+			cp = AutoBeanMaker.INSTANCE.makeCommodityPrice().as();
+			cp.setDescription(p.getFirst());
+			cp.setPrice(encode(p.getSecond()).as());
+			cp.setSku(sku);
+			
+			prices.add(cp);
+		}
+		
+		mpl.setCommodityPriceList(prices);
+		
+		return AutoBeanUtils.getAutoBean(mpl);
+	}
+	
 
 	public static AutoBean<PriceList> encode(PriceListDTO c){
 		if(c == null){

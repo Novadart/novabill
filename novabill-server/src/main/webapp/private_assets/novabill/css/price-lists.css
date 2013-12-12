@@ -5,3 +5,7 @@
 .price-lists .price-list-filter {
     margin: 20px 0;
 }
+
+.price-list-detail .commodity-filter {
+	margin-bottom: 20px;
+}

@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module('novabill.commodities.controllers', ['novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'novabill.constants'])
+angular.module('novabill.commodities.controllers', ['novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'novabill.constants', 'novabill.utils'])
 
 
 /**
  * COMMODITIES PAGE CONTROLLER
  */
-.controller('CommoditiesCtrl', ['$scope', '$location', '$rootScope', 'nConstants',
-                                function($scope, $location, $rootScope, nConstants){
+.controller('CommoditiesCtrl', ['$scope', '$location', '$rootScope', 'nConstants', 'nSorting',
+                                function($scope, $location, $rootScope, nConstants, nSorting){
 
 	$scope.commodities = null;
 
@@ -16,7 +16,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 		GWT_Server.commodity.getAll(NovabillConf.businessId, {
 			onSuccess : function(data){
 				$scope.$apply(function(){
-					$scope.commodities = data.commodities;
+					$scope.commodities = data.commodities.sort(nSorting.modifyPriceListPricesComparator);
 				});
 			},
 
