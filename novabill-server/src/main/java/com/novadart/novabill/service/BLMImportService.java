@@ -143,13 +143,13 @@ public class BLMImportService {
 			if(piva.contains("-")){
 				String[] pivaTkns = piva.split("-");
 				client.setVatID("IT" + Strings.nullToEmpty(pivaTkns[0]));
-				client.setSsn(Strings.nullToEmpty(pivaTkns[1]));
+				client.setSsn(Joiner.on("").join(Strings.nullToEmpty(pivaTkns[1]).split(" ")));
 			}else{
 				String nPiva = Strings.nullToEmpty(piva);
 				if(Strings.isNullOrEmpty(nPiva))
 					client.setVatID(Strings.padEnd("IT", 13, '0'));
 				else
-					client.setSsn(nPiva);
+					client.setSsn(Joiner.on("").join(nPiva.split(" ")));
 			}
 			String nphoneFax = Strings.nullToEmpty(safeGet(row, "Tel_Fax", ""));
 			if(!Strings.isNullOrEmpty(nphoneFax) && !containsAlphanumericChar(nphoneFax)){
