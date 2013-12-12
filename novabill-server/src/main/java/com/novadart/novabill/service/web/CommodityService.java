@@ -21,6 +21,7 @@ import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
 import com.novadart.novabill.service.validator.CommodityValidator;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
+import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
@@ -70,6 +71,7 @@ public class CommodityService {
 		PriceList priceList = getDefaultPriceList(commodity.getBusiness());
 		priceDTO.setPriceListID(priceList.getId());
 		priceDTO.setCommodityID(commodity.getId());
+		priceDTO.setPriceType(PriceType.FIXED);
 		addOrUpdatePrice(commodity.getBusiness().getId(), priceDTO);
 	}
 	
