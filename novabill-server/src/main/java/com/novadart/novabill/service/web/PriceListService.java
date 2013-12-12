@@ -1,6 +1,8 @@
 package com.novadart.novabill.service.web;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.hibernate.Hibernate;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -9,17 +11,22 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
+import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
+import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.tuple.Pair;
 
 @Service
 public class PriceListService {
@@ -89,6 +96,24 @@ public class PriceListService {
 		priceList.remove(); //removing payment type
 		if(Hibernate.isInitialized(priceList.getBusiness().getPriceLists()))
 			priceList.getBusiness().getPaymentTypes().remove(priceList);
+	}
+	
+	@Transactional(readOnly = true)
+	@PreAuthorize("#businessID == principal.business.id and " +
+		  	  	  "T(com.novadart.novabill.domain.PriceList).findPriceList(#id)?.business?.id == #businessID")
+	public Map<String, Pair<String, PriceDTO>> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+		List<CommodityDTO> commodities = businessService.getCommodities(businessID);
+		Map<String, Pair<String, PriceDTO>> result = new HashMap<>();
+		Map<Long, String> commMap = new HashMap<>();
+		for(CommodityDTO comm: commodities){
+			commMap.put(comm.getId(), comm.getSku());
+			result.put(comm.getSku(), new Pair<>(comm.getDescription(), new PriceDTO(comm.getId(), id)));
+		}
+		for(Price price: Price.findPricesForPriceList(id)) {
+			Pair<String, PriceDTO> pair = result.get(commMap.get(price.getCommodity().getId()));
+			pair.setSecond(PriceDTOFactory.toDTO(price));
+		}
+		return result;
 	}
 	
 }

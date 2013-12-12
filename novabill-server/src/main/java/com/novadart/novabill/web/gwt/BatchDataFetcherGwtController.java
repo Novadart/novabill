@@ -1,6 +1,7 @@
 package com.novadart.novabill.web.gwt;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -8,6 +9,8 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.PriceDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -18,6 +21,7 @@ import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
 import com.novadart.novabill.shared.client.facade.EstimationGwtService;
 import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
 import com.novadart.novabill.shared.client.facade.PaymentTypeGwtService;
+import com.novadart.novabill.shared.client.facade.PriceListGwtService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
 import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.shared.client.tuple.Triple;
@@ -43,6 +47,9 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 	
 	@Autowired
 	private PaymentTypeGwtService paymentTypeService;
+	
+	@Autowired
+	private PriceListGwtService priceListService;
 
 	private PaymentTypeDTO getDefaultPaymentTypeDTO(Long paymentTypeID) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
 		return paymentTypeID == null? null: paymentTypeService.get(paymentTypeID);
@@ -111,6 +118,15 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 		Long defaultPaymentTypeID = transportDocDTOs.get(0).getClient().getDefaultPaymentTypeID(); 
 		return new Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(),
 				transportDocDTOs, defaultPaymentTypeID == null? null: paymentTypeService.get(defaultPaymentTypeID));
+	}
+
+	@Override
+	public Pair<PriceListDTO, Map<String, Pair<String, PriceDTO>>> fetchModifyPriceList(Long businessID, Long priceListID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		Map<String, Pair<String, PriceDTO>> prices = priceListService.getPrices(businessID, priceListID);
+		for(PriceListDTO priceListDTO: priceListService.getAll(businessID))
+			if(priceListDTO.getId().equals(priceListID))
+				return new Pair<PriceListDTO, Map<String,Pair<String,PriceDTO>>>(priceListDTO, prices);
+		throw new NoSuchObjectException();
 	}
 	
 }

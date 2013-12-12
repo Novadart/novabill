@@ -1,11 +1,13 @@
 package com.novadart.novabill.web.gwt;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.service.web.PriceListService;
+import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -13,6 +15,7 @@ import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.PriceListGwtService;
+import com.novadart.novabill.shared.client.tuple.Pair;
 
 @HandleGWTServiceAccessDenied
 public class PriceListGwtController extends AbstractGwtController implements PriceListGwtService {
@@ -45,6 +48,11 @@ public class PriceListGwtController extends AbstractGwtController implements Pri
 	@Override
 	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
 		priceListService.remove(businessID, id);
+	}
+
+	@Override
+	public Map<String, Pair<String, PriceDTO>> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+		return priceListService.getPrices(businessID, id);
 	}
 
 }

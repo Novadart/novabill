@@ -27,11 +27,11 @@ public class PriceListDTOFactory {
 		return priceListDTO;
 	}
 	
-	public static PriceListDTO mergePriceListDTOs(PriceListDTO publicPL, PriceListDTO customPL){
+	public static PriceListDTO mergePriceListDTOs(PriceListDTO defaultPL, PriceListDTO customPL){
 		Map<Long, PriceDTO> customPrices = new HashMap<Long, PriceDTO>();
 		for(PriceDTO dto: customPL.getPrices())
 			customPrices.put(dto.getCommodityID(), dto);
-		for(PriceDTO dto: publicPL.getPrices()){
+		for(PriceDTO dto: defaultPL.getPrices()){
 			if(customPrices.containsKey(dto.getCommodityID())){
 				PriceDTO custDto = customPrices.get(dto.getCommodityID());
 				dto.setPriceType(custDto.getPriceType());
@@ -39,7 +39,7 @@ public class PriceListDTOFactory {
 				dto.setPriceListID(custDto.getPriceListID());
 			}
 		}
-		return publicPL;
+		return defaultPL;
 	}
 	
 	public static void copyFromDTO(PriceList priceList, PriceListDTO priceListDTO){

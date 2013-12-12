@@ -56,6 +56,11 @@ public class Price {
 		return entityManager().createQuery(sql, Price.class).setParameter("id", id).getResultList();
 	}
 
+	public static List<Price> findPricesForPriceList(Long id){
+		String sql = "select p from Price p join p.commodity where p.priceList.id = :id";
+		return entityManager().createQuery(sql, Price.class).setParameter("id", id).getResultList();
+	}
+	
 	
 	/*
      * Getters and setters
