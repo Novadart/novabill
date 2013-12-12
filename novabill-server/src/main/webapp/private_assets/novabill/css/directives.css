@@ -84,9 +84,14 @@
 	width: 60px;
 }
 
-.commodity:HOVER {
-	border: 1px solid #555;
+
+/*
+ *  PRICE LISTS
+ */
+.price-list {
+    cursor: pointer;
 }
+
 
 /*
  *  UPDATE PRICE

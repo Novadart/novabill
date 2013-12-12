@@ -264,12 +264,36 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-commodity.html',
 		scope: { 
 			commodity : '=',
-			bottomUpMenu : '=',
 		},
 		controller : ['$scope', 'nConstants', function($scope, nConstants){
 
 			$scope.openUrl = function(){
 				window.location.assign( nConstants.url.commodityDetails($scope.commodity.id) );
+			};
+
+		}],
+		restrict: 'E',
+		replace: true,
+	};
+
+}])
+
+
+
+/*
+ * Price List Widget
+ */
+.directive('nPriceList', ['$rootScope', function factory($rootScope){
+
+	return {
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-price-list.html',
+		scope: { 
+			priceList : '=',
+		},
+		controller : ['$scope', 'nConstants', function($scope, nConstants){
+
+			$scope.openUrl = function(){
+				window.location.assign( nConstants.url.priceListDetails($scope.priceList.id) );
 			};
 
 		}],
@@ -645,7 +669,29 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 					break;
 				}
 				break;
+				
+			case nConstants.logRecord.entityType.PRICE_LIST:
+				switch ($scope.record.operationType) {
+				case nConstants.logRecord.operationType.CREATE:
+					$scope.description = tr('LR_PRICE_LIST_CREATE',
+							'{priceListName: "'+ details.priceListName +'", link: "'+nConstants.url.priceListDetails( $scope.record.entityID )+'"}');
+					break;
 
+				case nConstants.logRecord.operationType.UPDATE:
+					$scope.description = tr('LR_PRICE_LIST_UPDATE',
+							'{priceListName: "'+ details.priceListName +'", link: "'+nConstants.url.priceListDetails( $scope.record.entityID )+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.DELETE:
+					$scope.description = tr('LR_PRICE_LIST_DELETE',
+							'{priceListName: "'+ details.priceListName +'"}');
+					break;
+
+				default:
+					break;
+				}
+				break;
+				
 			case nConstants.logRecord.entityType.PAYMENT_TYPE:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:

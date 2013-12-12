@@ -1,0 +1,7 @@
+.price-lists .price-list:HOVER {
+    border: 1px solid #555;
+}
+
+.price-lists .price-list-filter {
+    margin: 20px 0;
+}

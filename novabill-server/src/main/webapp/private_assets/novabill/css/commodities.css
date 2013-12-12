@@ -2,6 +2,10 @@
 	margin: 20px 0;
 }
 
+.commodities .commodity:HOVER {
+    border: 1px solid #555;
+}
+
 .commodities-detail .type {
 	position: absolute;
 	left: 0;

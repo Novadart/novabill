@@ -105,8 +105,8 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 		controller : ['$scope', 'nConstants', function($scope, nConstants){
 			
 			$scope.$on(nConstants.events.SHOW_EDIT_COMMODITY_DIALOG, 
-					function(event, keepCommodityOnClose, callback){
-				$scope.keepCommodityOnClose = keepCommodityOnClose;
+					function(event, editMode, callback){
+				$scope.editMode = editMode;
 				$scope.callback = callback;
 				
 				$('#editCommodityDialog').modal('show');
@@ -132,7 +132,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 			});
 			
 			function hideAndReset(){
-				if(!$scope.keepCommodityOnClose){
+				if(!$scope.editMode){
 					$scope.commodity = null;
 					$scope.price = null;
 					$scope.service = null;
@@ -171,7 +171,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				$scope.callback.onSave(
 						$scope.commodity, 
 						{
-							finish : function(keepCommodity){ hideAndReset(keepCommodity); },
+							finish : hideAndReset,
 
 							invalidSku : function(){ 
 								$scope.$apply(function(){
@@ -179,6 +179,68 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 									$scope.invalidSku = true;
 								}); 
 							}
+						});
+			};
+
+			$scope.cancel = function(){
+				hideAndReset();
+				$scope.callback.onCancel();
+			};
+			
+		}],
+
+		restrict: 'E',
+		replace: true,
+
+	};
+
+})
+
+
+
+/*
+ * Edit Price List Dialog
+ */
+.directive('nEditPriceListDialog', function factory(){
+
+	return {
+
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-edit-price-list-dialog.html',
+		scope: {
+			priceList : '=?',
+		},
+
+		controller : ['$scope', 'nConstants', function($scope, nConstants){
+			
+			$scope.$on(nConstants.events.SHOW_EDIT_PRICE_LIST_DIALOG, 
+					function(event, editMode, callback){
+				$scope.editMode = editMode;
+				$scope.callback = callback;
+				
+				$('#editPriceListDialog').modal('show');
+			});
+			
+			function hideAndReset(){
+				if(!$scope.editMode){
+					$scope.priceList = null;
+				}
+				
+				$('#editPriceListDialog').modal('hide');
+				
+				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
+				$('body').removeClass('modal-open');
+				$('.modal-backdrop').remove();
+				
+				$scope.form.$setPristine();
+			};
+
+			$scope.save = function(){
+
+				// persist the commodity
+				$scope.callback.onSave(
+						$scope.priceList, 
+						{
+							finish : hideAndReset
 						});
 			};
 

@@ -16,7 +16,20 @@ angular.module('novabill.utils', ['novabill.translations'])
 			var s1 = c1.name.toLowerCase();
 			var s2 = c2.name.toLowerCase();
 			return s1<s2 ? -1 : (s1>s2 ? 1 : 0);
-		}
+		},
+		
+		/**
+		 * Compare two price lists
+		 * @return -1 if minor, 0 if equal, 1 if major
+		 */
+		priceListsComparator : function(p1, p2){
+			if(p1.name === NovabillConf.defaultPriceListName){ return -1; }
+			if(p2.name === NovabillConf.defaultPriceListName){ return 1; }
+			
+			var n1 = p1.name.toLowerCase();
+			var n2 = p2.name.toLowerCase();
+			return n1<n2 ? -1 : (n1>n2 ? 1 : 0);
+		},
 
 	};
 })

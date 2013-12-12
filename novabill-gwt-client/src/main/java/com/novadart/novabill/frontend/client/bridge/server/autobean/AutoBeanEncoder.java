@@ -24,42 +24,47 @@ import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public class AutoBeanEncoder {
-	
+
 	public static AutoBean<PriceList> encode(PriceListDTO c){
 		if(c == null){
 			return null;
 		}
-		
+
 		PriceList pl = AutoBeanMaker.INSTANCE.makePriceList().as();
-		
+
 		AutoBean<Business> b = encode(c.getBusiness());
 		pl.setBusiness(b==null ? null : b.as());
 		pl.setId(c.getId());
 		pl.setName(c.getName());
-		
+
 		PricesList list = AutoBeanMaker.INSTANCE.makePricesList().as();
 		List<Price> prices = new ArrayList<Price>();
-		for (PriceDTO p : c.getPrices()) {
-			prices.add(encode(p).as());
+
+		List<PriceDTO> pricesDto = c.getPrices();
+		if(pricesDto != null) {
+
+			for (PriceDTO p : c.getPrices()) {
+				prices.add(encode(p).as());
+			}
+			list.setList(prices);
+			pl.setPrices(list);
 		}
-		list.setList(prices);
-		pl.setPrices(list);
 		
 		return AutoBeanUtils.getAutoBean(pl);
 	}
-	
-	
+
+
 	public static AutoBean<BusinessStats> encode(BusinessStatsDTO c){
 		if(c == null){
 			return null;
 		}
-		
+
 		BusinessStats b = AutoBeanMaker.INSTANCE.makeBusinessStats().as();
 		b.setClientsCount(c.getClientsCount());
 		b.setCommoditiesCount(c.getCommoditiesCount());
 		b.setInvoicesCountForYear(c.getInvoicesCountForYear());
 		b.setTotalAfterTaxesForYear(c.getTotalAfterTaxesForYear().doubleValue());
-		
+
 		LogRecordList ll = AutoBeanMaker.INSTANCE.makeLogRecordList().as();
 		List<LogRecord> list = new ArrayList<LogRecord>();
 		AutoBean<LogRecord> lr;
@@ -71,31 +76,31 @@ public class AutoBeanEncoder {
 		}
 		ll.setLogRecords(list);
 		b.setLogRecords(ll);
-		
+
 		InvoiceCountsPerMonthList il = AutoBeanMaker.INSTANCE.makeInvoiceCountsPerMonthList().as();
 		il.setList(c.getInvoiceCountsPerMonth());
 		b.setInvoiceCountsPerMonth(il);
 
 		return AutoBeanUtils.getAutoBean(b);
 	}
-	
-	
+
+
 	public static AutoBean<LogRecord> encode(LogRecordDTO c){
 		if(c == null){
 			return null;
 		}
-		
+
 		LogRecord l = AutoBeanMaker.INSTANCE.makeLogRecord().as();
 		l.setDetails(c.getDetails());
 		l.setEntityID(c.getEntityID());
 		l.setEntityType(c.getEntityType().name());
 		l.setOperationType(c.getOperationType().name());
 		l.setTime(c.getTime());
-		
+
 		return AutoBeanUtils.getAutoBean(l);
 	}
-	
-	
+
+
 	public static AutoBean<Commodity> encode(CommodityDTO c){
 		if(c == null){
 			return null;
@@ -107,30 +112,30 @@ public class AutoBeanEncoder {
 		cb.setTax(c.getTax() != null ? c.getTax().doubleValue() : null);
 		cb.setUnitOfMeasure(c.getUnitOfMeasure());
 		cb.setSku(c.getSku());
-		
+
 		if(c.getPrices() != null) {
 			PricesMap pricesMap = AutoBeanMaker.INSTANCE.makePricesMap().as();
 			Map<String, Price> prices = new HashMap<String, Price>();
-			
+
 			AutoBean<Price> p;
 			for (String plName : c.getPrices().keySet()) {
 				p = encode(c.getPrices().get(plName));
 				prices.put(plName, p == null ? null : p.as());
 			}
-			
+
 			pricesMap.setPrices(prices);
 			cb.setPricesMap(pricesMap);
 		}
-		
+
 		return AutoBeanUtils.getAutoBean(cb);
 	}
-	
-	
+
+
 	public static AutoBean<Price> encode(PriceDTO price) {
 		if(price == null) {
 			return null;
 		}
-		
+
 		Price p = AutoBeanMaker.INSTANCE.makePrice().as();
 		p.setCommodityID(price.getCommodityID());
 		p.setId(price.getId());
@@ -139,7 +144,7 @@ public class AutoBeanEncoder {
 		p.setPriceValue(price.getPriceValue() != null ? price.getPriceValue().doubleValue() : null);
 		return AutoBeanUtils.getAutoBean(p);
 	}
-	
+
 	public static AutoBean<Business> encode(BusinessDTO b){
 		if(b == null){
 			return null;
@@ -162,8 +167,8 @@ public class AutoBeanEncoder {
 		ab.setWeb(b.getWeb());
 		return AutoBeanUtils.getAutoBean(ab);
 	}
-	
-	
+
+
 	public static AutoBean<Contact> encode(ContactDTO c){
 		if(c == null){
 			return null;
@@ -177,8 +182,8 @@ public class AutoBeanEncoder {
 		ac.setPhone(c.getPhone());
 		return AutoBeanUtils.getAutoBean(ac);
 	}
-	
-	
+
+
 	public static AutoBean<Client> encode(ClientDTO c){
 		if(c == null){
 			return null;
@@ -186,7 +191,7 @@ public class AutoBeanEncoder {
 		Client ac = AutoBeanMaker.INSTANCE.makeClient().as();
 		ac.setAddress(c.getAddress());
 		ac.setCity(c.getCity());
-		
+
 		AutoBean<Contact> contact = encode(c.getContact());
 		ac.setContact(contact == null ? null : contact.as());
 		ac.setCountry(c.getCountry());
@@ -205,15 +210,15 @@ public class AutoBeanEncoder {
 		ac.setWeb(c.getWeb());
 		return AutoBeanUtils.getAutoBean(ac);
 	}
-	
-	
+
+
 	public static AutoBean<Page<Client>> encodeClientPage(PageDTO<ClientDTO> p) {
 		if(p == null){
 			return null;
 		}
-		
+
 		Page<Client> ap = AutoBeanMaker.INSTANCE.makeClientPage().as();
-		
+
 		List<Client> l = new ArrayList<Client>();
 		for (ClientDTO c : p.getItems()) {
 			l.add(encode(c).as());
@@ -224,15 +229,15 @@ public class AutoBeanEncoder {
 		ap.setTotal(p.getTotal());
 		return AutoBeanUtils.getAutoBean(ap);
 	}
-	
+
 	public static List<AccountingDocumentItem> encode(List<AccountingDocumentItemDTO> items){
 		if(items == null){
 			return null;
 		}
-		
+
 		List<AccountingDocumentItem> result = new ArrayList<AccountingDocumentItem>();
 		AccountingDocumentItem ai;
-		
+
 		for (AccountingDocumentItemDTO i : items) {
 			ai = AutoBeanMaker.INSTANCE.makeAccountingDocumentItem().as();
 			ai.setDescription(i.getDescription());
@@ -246,17 +251,17 @@ public class AutoBeanEncoder {
 			ai.setUnitOfMeasure(i.getUnitOfMeasure());
 			result.add(ai);
 		}
-		
+
 		return result;
 	}
-	
+
 	public static AutoBean<Invoice> encode(InvoiceDTO invoice) {
 		if(invoice == null){
 			return null;
 		}
-		
+
 		Invoice ai = AutoBeanMaker.INSTANCE.makeInvoice().as();
-		
+
 		ai.setAccountingDocumentDate(invoice.getAccountingDocumentDate());
 		ai.setItems(encode(invoice.getItems()));
 		ai.setBusiness(encode(invoice.getBusiness()).as());
@@ -277,14 +282,14 @@ public class AutoBeanEncoder {
 
 		return AutoBeanUtils.getAutoBean(ai);
 	}
-	
-	
+
+
 	public static AutoBean<Page<Invoice>> encodeInvoicePage(PageDTO<InvoiceDTO> p) {
 		if(p == null){
 			return null;
 		}
 		Page<Invoice> ap = AutoBeanMaker.INSTANCE.makeInvoicePage().as();
-		
+
 		List<Invoice> l = new ArrayList<Invoice>();
 		for (InvoiceDTO i : p.getItems()) {
 			l.add(encode(i).as());
@@ -295,18 +300,18 @@ public class AutoBeanEncoder {
 		ap.setTotal(p.getTotal());
 		return AutoBeanUtils.getAutoBean(ap);
 	}
-	
-	
+
+
 	public static AutoBean<Estimation> encode(EstimationDTO estimation) {
 		if(estimation == null){
 			return null;
 		}
-		
+
 		Estimation ei = AutoBeanMaker.INSTANCE.makeEstimation().as();
-		
+
 		ei.setLimitations(estimation.getLimitations());
 		ei.setValidTill(estimation.getValidTill());
-		
+
 		ei.setAccountingDocumentDate(estimation.getAccountingDocumentDate());
 		ei.setItems(encode(estimation.getItems()));
 		ei.setBusiness(encode(estimation.getBusiness()).as());
@@ -322,15 +327,15 @@ public class AutoBeanEncoder {
 
 		return AutoBeanUtils.getAutoBean(ei);
 	}
-	
-	
+
+
 	public static AutoBean<Page<Estimation>> encodeEstimationPage(PageDTO<EstimationDTO> p) {
 		if(p == null){
 			return null;
 		}
-		
+
 		Page<Estimation> ap = AutoBeanMaker.INSTANCE.makeEstimationPage().as();
-		
+
 		List<Estimation> l = new ArrayList<Estimation>();
 		for (EstimationDTO i : p.getItems()) {
 			l.add(encode(i).as());
@@ -341,15 +346,15 @@ public class AutoBeanEncoder {
 		ap.setTotal(p.getTotal());
 		return AutoBeanUtils.getAutoBean(ap);
 	}
-	
-	
+
+
 	public static AutoBean<CreditNote> encode(CreditNoteDTO creditNote) {
 		if(creditNote == null){
 			return null;
 		}
-		
+
 		CreditNote cni = AutoBeanMaker.INSTANCE.makeCreditNote().as();
-		
+
 		cni.setAccountingDocumentDate(creditNote.getAccountingDocumentDate());
 		cni.setItems(encode(creditNote.getItems()));
 		cni.setBusiness(encode(creditNote.getBusiness()).as());
@@ -367,15 +372,15 @@ public class AutoBeanEncoder {
 
 		return AutoBeanUtils.getAutoBean(cni);
 	}
-	
-	
+
+
 	public static AutoBean<Page<CreditNote>> encodeCreditNotePage(PageDTO<CreditNoteDTO> p) {
 		if(p == null){
 			return null;
 		}
-		
+
 		Page<CreditNote> ap = AutoBeanMaker.INSTANCE.makeCreditNotePage().as();
-		
+
 		List<CreditNote> l = new ArrayList<CreditNote>();
 		for (CreditNoteDTO i : p.getItems()) {
 			l.add(encode(i).as());
@@ -387,29 +392,29 @@ public class AutoBeanEncoder {
 		return AutoBeanUtils.getAutoBean(ap);
 	}
 
-	
+
 	public static AutoBean<EndPoint> encode(EndpointDTO p) {
 		if(p == null){
 			return null;
 		}
-		
+
 		EndPoint ep = AutoBeanMaker.INSTANCE.makeEndPoint().as();
-		
+
 		ep.setCity(p.getCity());
 		ep.setCompanyName(p.getCompanyName());
 		ep.setCountry(p.getCountry());
 		ep.setPostcode(p.getPostcode());
 		ep.setProvince(p.getProvince());
 		ep.setStreet(p.getStreet());
-		
+
 		return AutoBeanUtils.getAutoBean(ep);
 	}
-	
+
 	public static AutoBean<TransportDocument> encode(TransportDocumentDTO transportDocument) {
 		if(transportDocument == null){
 			return null;
 		}
-		
+
 		TransportDocument tdai = AutoBeanMaker.INSTANCE.makeTransportDocument().as();
 		tdai.setNumberOfPackages(transportDocument.getNumberOfPackages());
 		tdai.setFromEndpoint(encode(transportDocument.getFromEndpoint()).as());
@@ -419,7 +424,7 @@ public class AutoBeanEncoder {
 		tdai.setTradeZone(transportDocument.getTradeZone());
 		tdai.setTransportStartDate(transportDocument.getTransportStartDate());
 		tdai.setCause(transportDocument.getCause());
-		
+
 		tdai.setAccountingDocumentDate(transportDocument.getAccountingDocumentDate());
 		tdai.setItems(encode(transportDocument.getItems()));
 		tdai.setBusiness(encode(transportDocument.getBusiness()).as());
@@ -435,15 +440,15 @@ public class AutoBeanEncoder {
 
 		return AutoBeanUtils.getAutoBean(tdai);
 	}
-	
-	
+
+
 	public static AutoBean<Page<TransportDocument>> encodeTransportDocumentPage(PageDTO<TransportDocumentDTO> p) {
 		if(p == null){
 			return null;
 		}
-		
+
 		Page<TransportDocument> ap = AutoBeanMaker.INSTANCE.makeTransportDocumentPage().as();
-		
+
 		List<TransportDocument> l = new ArrayList<TransportDocument>();
 		for (TransportDocumentDTO i : p.getItems()) {
 			l.add(encode(i).as());

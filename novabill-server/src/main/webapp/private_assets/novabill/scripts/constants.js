@@ -27,7 +27,8 @@ angular.module('novabill.constants', [])
 				ESTIMATION : 'ESTIMATION', 
 				CREDIT_NOTE : 'CREDIT_NOTE', 
 				TRANSPORT_DOCUMENT : 'TRANSPORT_DOCUMENT',
-				PAYMENT_TYPE : 'PAYMENT_TYPE'
+				PAYMENT_TYPE : 'PAYMENT_TYPE',
+				PRICE_LIST : 'PRICE_LIST'
 			},
 
 			operationType : {
@@ -65,6 +66,9 @@ angular.module('novabill.constants', [])
 			
 			paymentList : function(){ return NovabillConf.paymentsBaseUrl + '#/'; },
 			
+			priceListList : function(){ return NovabillConf.priceListsBaseUrl + '#/'; },
+			priceListDetails : function(priceListId){ return NovabillConf.priceListsBaseUrl + '#/details/' + priceListId; },
+			
 			trasportDocumentList : function(){ return NovabillConf.transportDocumentsBaseUrl + '#/'; },
 			trasportDocumentDetails : function(transportDocumentId){ return NovabillConf.transportDocumentsBaseUrl + '#/details/' + transportDocumentId; },
 			
@@ -80,6 +84,7 @@ angular.module('novabill.constants', [])
 			SHOW_TRANSPORT_DOCUMENTS_DIALOG : 'SHOW_TRANSPORT_DOCUMENTS_DIALOG',
 			SHOW_REMOVAL_DIALOG : 'SHOW_REMOVAL_DIALOG',
 			SHOW_EDIT_COMMODITY_DIALOG : 'SHOW_EDIT_COMMODITY_DIALOG',
+			SHOW_EDIT_PRICE_LIST_DIALOG : 'SHOW_EDIT_PRICE_LIST_DIALOG',
 			
 		}
 		

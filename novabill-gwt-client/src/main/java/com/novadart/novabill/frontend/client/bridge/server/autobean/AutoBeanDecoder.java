@@ -13,7 +13,7 @@ import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 
 public class AutoBeanDecoder {
-	
+
 	public static CommodityDTO decode(Commodity commodity){
 		CommodityDTO c = new CommodityDTO();
 		c.setDescription(commodity.getDescription());
@@ -23,18 +23,18 @@ public class AutoBeanDecoder {
 		c.setTax(commodity.getTax() != null ? BigDecimal.valueOf(commodity.getTax()) : null);
 		c.setUnitOfMeasure(commodity.getUnitOfMeasure());
 		c.setBusiness(Configuration.getBusiness());
-		
+
 		Map<String, PriceDTO> prices = new HashMap<String, PriceDTO>();
 		Map<String, Price> tmp = commodity.getPricesMap().getPrices();
 		for (String plName : tmp.keySet()) {
 			prices.put(plName, decode(tmp.get(plName)));
 		}
 		c.setPrices(prices);
-		
+
 		return c;
 	}
-	
-	
+
+
 	public static PriceDTO decode(Price price) {
 		PriceDTO p = new PriceDTO();
 		p.setCommodityID(price.getCommodityID());
@@ -44,19 +44,21 @@ public class AutoBeanDecoder {
 		p.setPriceValue(price.getPriceValue() != null ? BigDecimal.valueOf(price.getPriceValue()) : null);
 		return p;
 	}
-	
+
 
 	public static PriceListDTO decode(PriceList as) {
 		PriceListDTO p = new PriceListDTO();
 		p.setBusiness(Configuration.getBusiness());
 		p.setId(as.getId());
 		p.setName(as.getName());
-		
-		List<PriceDTO> prices = new ArrayList<PriceDTO>();
-		for (Price pr : as.getPrices().getList()) {
-			prices.add(decode(pr));
+
+		if(as.getPrices() != null) {
+			List<PriceDTO> prices = new ArrayList<PriceDTO>();
+			for (Price pr : as.getPrices().getList()) {
+				prices.add(decode(pr));
+			}
+			p.setPrices(prices);
 		}
-		p.setPrices(prices);
 		return p;
 	}
 

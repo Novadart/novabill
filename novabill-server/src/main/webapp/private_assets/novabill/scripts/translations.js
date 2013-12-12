@@ -47,6 +47,9 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		LR_TRANSPORT_DOCUMENT_CREATE : 'Hai creato il <strong><a href="{{link}}">Documento di Trasporto #{{documentID}}</a></strong>, cliente {{clientName}}',
 		LR_TRANSPORT_DOCUMENT_DELETE : 'Hai cancellato il <strong>Documento di Trasporto #{{documentID}}</strong>, cliente {{clientName}}',
 		LR_TRANSPORT_DOCUMENT_UPDATE : 'Hai aggiornato il <strong><a href="{{link}}">Documento di Trasporto #{{documentID}}</a></strong>, cliente {{clientName}}',
+		LR_PRICE_LIST_CREATE : 'Hai creato il Listino <strong><a href="{{link}}">{{priceListName}}</a></strong>',
+		LR_PRICE_LIST_DELETE : 'Hai cancellato il Listino <strong>{{priceListName}}</strong>',
+		LR_PRICE_LIST_UPDATE : 'Hai aggiornato il Listino <strong><a href="{{link}}">{{priceListName}}</a></strong>',
 		
 		MODIFY_CREDIT_NOTE: 'Modifica Nota di Credito',
 		MODIFY_ESTIMATION: 'Modifica Preventivo',

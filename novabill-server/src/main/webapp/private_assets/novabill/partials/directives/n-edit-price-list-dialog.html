@@ -1,0 +1,33 @@
+<div id="editPriceListDialog" class="modal fade" tabindex="-1" aria-hidden="true" data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
+					<h4 class="modal-title">Price List</h4>
+				</div>
+
+				<form name="form" role="form" style="margin-top: 20px;" novalidate>
+				
+				    <div class="form-group" ng-class="{'has-error': form.name.$dirty && form.name.$invalid, 'has-success': form.name.$dirty && form.name.$valid}">
+                        <label class="control-label" for="description">Nome *</label> 
+                        <input n-not-reserved type="text" name="name" maxlength="255" ng-model="priceList.name" class="form-control" placeholder="e.g. Spring Offers" required>
+                        <div ng-show="form.name.$dirty && form.name.$invalid">
+                            <span class="text-danger" ng-show="!form.name.$error.notReserved && form.name.$error.required">Required</span>
+                            <span class="text-danger" ng-show="form.name.$dirty && form.name.$error.notReserved">Invalid identifier</span>
+                        </div>
+                    </div>
+					
+				</form>
+
+			</div>
+
+			<div class="modal-footer">
+				<button type="button" class="btn" data-dismiss="modal" ng-click="cancel()">Cancel</button>
+				<button type="button" class="btn green" ng-disabled="form.$invalid" ng-click="save()">Save</button>
+			</div>
+
+		</div>
+	</div>
+</div>

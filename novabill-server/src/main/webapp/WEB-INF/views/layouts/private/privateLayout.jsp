@@ -303,6 +303,7 @@
             transportDocumentsBaseUrl : '${transportDocumentsUrl}',
             commoditiesBaseUrl : '${commoditiesUrl}',
             paymentsBaseUrl : '${paymentsUrl}',
+            priceListsBaseUrl : '${priceListsUrl}',
             
             partialsBaseUrl : '${privateAssetsUrl}/novabill/partials/'
     };
