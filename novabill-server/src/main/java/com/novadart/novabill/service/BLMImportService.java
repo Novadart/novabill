@@ -5,7 +5,9 @@ import java.io.IOException;
 import java.math.BigDecimal;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -187,6 +189,7 @@ public class BLMImportService {
 		}
 		table = DatabaseBuilder.open(new File(blmDBPath)).getTable("RIGHE_LIST");
 		PriceList defaultPL = business.getPriceLists().iterator().next();
+		Set<String> skus = new HashSet<>();
 		for(Row row:table){
 			Integer id = safeGet(row, "CodListino", -1);
 			if(id == 1){
@@ -196,6 +199,19 @@ public class BLMImportService {
 				Price price = new Price();
 				price.setPriceValue(prezzo);
 				price.setPriceType(PriceType.FIXED);
+				price.setCommodity(commodity);
+				commodity.getPrices().add(price);
+				price.setPriceList(defaultPL);
+				defaultPL.getPrices().add(price);
+				skus.add(sku);
+			}
+		}
+		for(String sku: comMap.keySet()){
+			if(!skus.contains(sku)){
+				Price price = new Price();
+				price.setPriceValue(new BigDecimal("0.0"));
+				price.setPriceType(PriceType.FIXED);
+				Commodity commodity = comMap.get(sku); 
 				price.setCommodity(commodity);
 				commodity.getPrices().add(price);
 				price.setPriceList(defaultPL);
