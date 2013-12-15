@@ -198,7 +198,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Set<PriceList> priceLists = Business.findBusiness(businessID).getPriceLists();
 		List<PriceListDTO> priceListDTOs = new ArrayList<>(priceLists.size());
 		for(PriceList priceList: priceLists)
-			priceListDTOs.add(PriceListDTOFactory.toDTO(priceList, false));
+			priceListDTOs.add(PriceListDTOFactory.toDTO(priceList, null));
 		return priceListDTOs;
 	}
 

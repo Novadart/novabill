@@ -1,7 +1,6 @@
 package com.novadart.novabill.shared.client.facade;
 
 import java.util.List;
-import java.util.Map;
 
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
@@ -10,8 +9,6 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.PriceDTO;
-import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -45,6 +42,4 @@ public interface BatchDataFetcherGwtService extends RemoteService {
 	
 	public Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO> fetchNewInvoiceFromTransportDocumentsOpData(List<Long> transportDocumentIDs) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 
-	public Pair<PriceListDTO, Map<String, Pair<String, PriceDTO>>> fetchModifyPriceList(Long businessID, Long priceListID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
-	
 }

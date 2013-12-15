@@ -52,12 +52,12 @@ public class Price {
 	}
 	
 	public static List<Price> findPricesForCommodity(Long id){
-		String sql = "select p from Price p join p.priceList where p.commodity.id = :id";
+		String sql = "select p from Price p join fetch p.priceList where p.commodity.id = :id";
 		return entityManager().createQuery(sql, Price.class).setParameter("id", id).getResultList();
 	}
 
 	public static List<Price> findPricesForPriceList(Long id){
-		String sql = "select p from Price p join p.commodity where p.priceList.id = :id";
+		String sql = "select p from Price p join fetch p.commodity where p.priceList.id = :id";
 		return entityManager().createQuery(sql, Price.class).setParameter("id", id).getResultList();
 	}
 	

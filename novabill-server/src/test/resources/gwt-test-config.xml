@@ -42,6 +42,7 @@
     <util:map map-class="java.util.HashMap" id="testPL" key-type="java.lang.String" value-type="java.lang.String">
     	<entry key="giordano.battilana@novadart.com" value="171"/>
     	<entry key="giordano.battilana@novadart.com:commodityID" value="156"/>
+    	<entry key="giordano.battilana@novadart.com:pricelistname" value="custom pricelist"/>
     	<entry key="risto.gligorov@novadart.com" value="172"/>
     	<entry key="risto.gligorov@novadart.com:commodityID" value="169"/>
     </util:map>

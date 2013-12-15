@@ -12,8 +12,8 @@ public class PriceListDTO implements IsSerializable {
 
 	private BusinessDTO business;
 	
-	private List<PriceDTO> prices;
-
+	private List<CommodityDTO> commodities;
+	
 	public Long getId() {
 		return id;
 	}
@@ -38,12 +38,12 @@ public class PriceListDTO implements IsSerializable {
 		this.business = business;
 	}
 
-	public List<PriceDTO> getPrices() {
-		return prices;
+	public List<CommodityDTO> getCommodities() {
+		return commodities;
 	}
 
-	public void setPrices(List<PriceDTO> prices) {
-		this.prices = prices;
+	public void setCommodities(List<CommodityDTO> commodities) {
+		this.commodities = commodities;
 	}
-	
+
 }

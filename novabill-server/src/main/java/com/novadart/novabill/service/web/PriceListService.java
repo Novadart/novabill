@@ -1,5 +1,6 @@
 package com.novadart.novabill.service.web;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,6 +14,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
+import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
 import com.novadart.novabill.service.UtilsService;
@@ -48,18 +50,24 @@ public class PriceListService {
 	@PreAuthorize("T(com.novadart.novabill.domain.PriceList).findPriceList(#id)?.business?.id == principal.business.id")
 	public PriceListDTO get(Long id) throws NotAuthenticatedException,NoSuchObjectException, DataAccessException {
 		Long businessID = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
-		PriceList priceList = PriceList.getPriceListWithPrices(businessID, id);
-		if(priceList == null)
-			throw new NoSuchObjectException();
-		if(priceList.getName().equals(PriceListConstants.DEFAULT))
-			return PriceListDTOFactory.toDTO(priceList, true);
-		PriceListDTO customPL = PriceListDTOFactory.toDTO(priceList, true);
-		priceList = PriceList.getPriceListWithPrices(businessID, PriceListConstants.DEFAULT);
-		if(priceList == null)
-			throw new NoSuchObjectException();
-		PriceListDTO publicPL = PriceListDTOFactory.toDTO(priceList, true);
-		return PriceListDTOFactory.mergePriceListDTOs(publicPL, customPL);
-		
+		PriceList defaultPL = PriceList.getDefaultPriceList(businessID);
+		List<Price> defautPLPrices = Price.findPricesForPriceList(defaultPL.getId());
+		List<CommodityDTO> commodities = new ArrayList<>(defautPLPrices.size());
+		Map<String, Map<String, PriceDTO>> commoditiesPricesMap = new HashMap<>();
+		for(Price price: defautPLPrices){
+			CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(price.getCommodity());
+			Map<String, PriceDTO> commodityPrices = new HashMap<>();
+			commodityPrices.put(PriceListConstants.DEFAULT, PriceDTOFactory.toDTO(price));
+			commodityDTO.setPrices(commodityPrices);
+			commoditiesPricesMap.put(price.getCommodity().getSku(), commodityPrices);
+			commodities.add(commodityDTO);
+		}
+		if(defaultPL.getId() == id)
+			return PriceListDTOFactory.toDTO(defaultPL, commodities);
+		PriceList priceList = PriceList.findPriceList(id);
+		for(Price price: Price.findPricesForPriceList(priceList.getId()))
+			commoditiesPricesMap.get(price.getCommodity().getSku()).put(priceList.getName(), PriceDTOFactory.toDTO(price));
+		return PriceListDTOFactory.toDTO(priceList, commodities);
 	}
 	
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})

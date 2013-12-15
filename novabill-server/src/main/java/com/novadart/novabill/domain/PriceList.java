@@ -27,6 +27,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.Trimmed;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
 
 @Configurable
 @Entity
@@ -50,22 +51,14 @@ public class PriceList {
 		this.name = name;
 	}
 	
-	public static PriceList getPriceListWithPrices(Long businessID, Long id) {
-		String sql = "select pl from PriceList pl join fetch pl.prices p join fetch p.commodity where pl.id = :id and pl.business.id = :bizID";
-		List<PriceList> result = entityManager().createQuery(sql, PriceList.class).
-				setParameter("id", id).
-				setParameter("bizID", businessID).getResultList();
-		return result.size() == 0? null: result.get(0);
+	public static PriceList getDefaultPriceList(Long businessID){
+		String sql = "select pl from PriceList pl where pl.business.id = :bizID and pl.name = :name";
+		List<PriceList> r = entityManager().createQuery(sql, PriceList.class).
+				setParameter("bizID", businessID).
+				setParameter("name", PriceListConstants.DEFAULT).getResultList();
+		return r.size() == 0? null: r.get(0);
 	}
 	
-	public static PriceList getPriceListWithPrices(Long businessID, String name){
-		String sql = "select pl from PriceList pl join fetch pl.prices p join fetch p.commodity where pl.business.id = :bizID and pl.name = :defaultName";
-		List<PriceList> result = entityManager().createQuery(sql, PriceList.class).
-				setParameter("defaultName", name).
-				setParameter("bizID", businessID).getResultList();
-		return result.size() == 0? null: result.get(0);
-	}
-
 	/*
      * Getters and setters
      * */
