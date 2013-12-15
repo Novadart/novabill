@@ -17,6 +17,7 @@ import javax.annotation.Resource;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,7 @@ import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.CommodityService;
 import com.novadart.novabill.shared.client.data.EntityType;
@@ -65,6 +67,13 @@ public class CommodityServiceTest extends GWTServiceTest {
 	
 	@Resource(name = "testPL")
 	private HashMap<String, String> testPL;
+	
+	@Override
+	@Before
+	public void authenticate() {
+		authenticatedPrincipal = Principal.findByUsername("giordano.battilana@novadart.com");
+		authenticatePrincipal(authenticatedPrincipal);
+	}
 	
 	@Test
 	public void commodityServiceWiringTest(){

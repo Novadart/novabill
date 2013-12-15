@@ -18,7 +18,7 @@ import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.validator.SimpleValidator;
+import com.novadart.novabill.service.validator.PriceListValidator;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
@@ -34,7 +34,7 @@ import com.novadart.novabill.shared.client.tuple.Pair;
 public class PriceListService {
 	
 	@Autowired
-	private SimpleValidator validator;
+	private PriceListValidator validator;
 
 	@Autowired
 	private BusinessService businessService;
@@ -76,10 +76,10 @@ public class PriceListService {
 	public Long add(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
 		PriceList priceList = new PriceList();
 		PriceListDTOFactory.copyFromDTO(priceList, priceListDTO);
-		validator.validate(priceList);
 		Business business = Business.findBusiness(priceListDTO.getBusiness().getId());
-		business.getPriceLists().add(priceList);
 		priceList.setBusiness(business);
+		validator.validate(priceList, true);
+		business.getPriceLists().add(priceList);
 		priceList.persist();
 		priceList.flush();
 		return priceList.getId();
@@ -92,8 +92,9 @@ public class PriceListService {
 		PriceList persistedPriceList = PriceList.findPriceList(priceListDTO.getId());
 		if(persistedPriceList == null)
 			throw new NoSuchObjectException();
+		String persistedPLName = persistedPriceList.getName();
 		PriceListDTOFactory.copyFromDTO(persistedPriceList, priceListDTO);
-		validator.validate(persistedPriceList);
+		validator.validate(persistedPriceList, !persistedPLName.equals(persistedPriceList.getName()));
 	}
 	
 	@Transactional(readOnly = false)

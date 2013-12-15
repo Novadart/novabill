@@ -115,6 +115,7 @@ public class PriceListServiceTest extends GWTServiceTest {
 	@Test
 	public void addAuthorizedValidationFieldMappingTest() throws NotAuthenticatedException, AuthorizationException, DataAccessException{
 		PriceListDTO priceListDTO = new PriceListDTO();
+		priceListDTO.setName("test price list");
 		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		try{
 			priceListService.add(priceListDTO);
@@ -223,5 +224,12 @@ public class PriceListServiceTest extends GWTServiceTest {
 		priceListService.get(priceList.getId());
 	}
 	
+	@Test(expected = ValidationException.class)
+	public void duplicateNameTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		priceListService.add(priceListDTO);
+		priceListService.add(priceListDTO);
+	}
 	
 }

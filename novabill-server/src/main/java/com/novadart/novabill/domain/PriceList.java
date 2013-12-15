@@ -59,6 +59,14 @@ public class PriceList {
 		return r.size() == 0? null: r.get(0);
 	}
 	
+	public boolean nameExists(){
+    	String sql = "select pl from PriceList pl where pl.business.id = :id and pl.name = :name";
+    	return entityManager().createQuery(sql, PriceList.class).
+    			setParameter("id", getBusiness().getId()).
+    			setParameter("name", getName()).
+    			setFirstResult(0).setMaxResults(1).getResultList().size() == 1;
+    }
+	
 	/*
      * Getters and setters
      * */

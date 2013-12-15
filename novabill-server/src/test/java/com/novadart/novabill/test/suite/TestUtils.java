@@ -357,7 +357,7 @@ public class TestUtils {
 	
 	public static PriceList createPriceList(){
 		PriceList priceList = new PriceList();
-		priceList.setName("Default price list");
+		priceList.setName("Default price list" + Math.random());
 		return priceList;
 	}
 	
