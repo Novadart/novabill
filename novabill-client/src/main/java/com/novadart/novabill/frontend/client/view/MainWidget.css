@@ -46,8 +46,34 @@
 	padding-bottom: 0.5em;
 	padding-top: 0.5em;
 	position: absolute;
-	right: 0.5em;
+	right: 6.5em;
 	top: 0.8em;
+}
+
+.header .totals {
+    font-size: 1.2em;
+    padding-bottom: 0.5em;
+    padding-top: 0.5em;
+    position: absolute;
+    right: 0.5em;
+    top: 0.8em;
+    text-decoration: underline;
+}
+
+.totalsPopup {
+	background-color: white;
+	padding: 1em;
+	border: 1px solid;
+}
+
+.totalsPopup .totalAmount{
+    margin-right: 1em;
+    font-size: 1.2em;
+}
+
+.totalsPopup .value {
+    margin-left: 0.7em;
+    font-weight: bold;
 }
 
 .header .menuBar {
