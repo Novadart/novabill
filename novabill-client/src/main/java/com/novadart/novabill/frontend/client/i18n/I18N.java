@@ -121,7 +121,8 @@ public interface I18N extends Constants {
 	public String logout();
 	public String newInvoice();
 	public String totalClients();
-	public String totalInvoicing();
+	public String totalInvoicingAfterTaxes();
+	public String totalInvoicingBeforeTaxes();
 	public String totalInvoices();
 	public String welcome();
 	public String new_();

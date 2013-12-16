@@ -104,6 +104,13 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	
 	protected abstract BusinessService self();
 	
+	private BigDecimal getTotalBeforeTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+		BigDecimal totalBeforeTaxes = new BigDecimal("0.0");
+		for(InvoiceDTO invoiceDTO: DTOUtils.filter(self().getInvoices(businessID), new DTOUtils.EqualsYearPredicate<InvoiceDTO>(year)))
+			totalBeforeTaxes = totalBeforeTaxes.add(invoiceDTO.getTotalBeforeTax());
+		return totalBeforeTaxes.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+	}
+	
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, DataAccessException {
@@ -112,6 +119,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		stats.setInvoicesCountForYear(countInvoicesForYear(businessID, year));
 		stats.setTotalAfterTaxesForYear(getTotalAfterTaxesForYear(businessID, year));
+		stats.setTotalBeforeTaxesForYear(getTotalBeforeTaxesForYear(businessID, year));
 		return stats;
 	}
 	

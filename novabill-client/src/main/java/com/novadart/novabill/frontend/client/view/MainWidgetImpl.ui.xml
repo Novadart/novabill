@@ -32,6 +32,7 @@
 						ui:field="logout"></g:Anchor>
 				</g:FlowPanel>
 				<g:HTML styleName="{style.stats}" ui:field="stats"></g:HTML>
+				<g:Label styleName="{style.totals}" ui:field="totals" text="Fatturato"></g:Label>
 			</g:FlowPanel>
 		</g:north>
 

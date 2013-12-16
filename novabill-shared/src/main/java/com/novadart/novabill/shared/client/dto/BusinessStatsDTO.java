@@ -9,6 +9,7 @@ public class BusinessStatsDTO implements IsSerializable {
 	private Long clientsCount;
 	private Long invoicesCountForYear;
 	private BigDecimal totalAfterTaxesForYear;
+	private BigDecimal totalBeforeTaxesForYear;
 	
 	public Long getClientsCount() {
 		return clientsCount;
@@ -27,6 +28,12 @@ public class BusinessStatsDTO implements IsSerializable {
 	}
 	public void setTotalAfterTaxesForYear(BigDecimal totalAfterTaxesForYear) {
 		this.totalAfterTaxesForYear = totalAfterTaxesForYear;
+	}
+	public BigDecimal getTotalBeforeTaxesForYear() {
+		return totalBeforeTaxesForYear;
+	}
+	public void setTotalBeforeTaxesForYear(BigDecimal totalBeforeTaxesForYear) {
+		this.totalBeforeTaxesForYear = totalBeforeTaxesForYear;
 	}
 	
 }

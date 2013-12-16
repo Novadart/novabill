@@ -3,6 +3,8 @@ package com.novadart.novabill.frontend.client.view;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.RunAsyncCallback;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.MouseOutEvent;
+import com.google.gwt.event.dom.client.MouseOverEvent;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.resources.client.CssResource;
@@ -16,6 +18,8 @@ import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
+import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.PopupPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.web.bindery.event.shared.EventBus;
@@ -62,6 +66,8 @@ public class MainWidgetImpl extends Composite implements MainWidget {
 		String productName();
 		String clients();
 		String feedbackButton();
+		String totals();
+		String totalsPopup();
 	}
 
 	private static MainWidgetImplUiBinder uiBinder = GWT
@@ -85,6 +91,10 @@ public class MainWidgetImpl extends Composite implements MainWidget {
 	@UiField Anchor logoAnchor;
 	@UiField(provided=true) protected Anchor changePasswordAnchor;
 	@UiField Style style;
+	
+	@UiField Label totals;
+	
+	private final PopupPanel totalsPanel = new PopupPanel(true);
 
 	private PlaceController placeController;
 
@@ -95,7 +105,7 @@ public class MainWidgetImpl extends Composite implements MainWidget {
 		initWidget(uiBinder.createAndBindUi(this));
 		logout.setHref(ClientFactory.INSTANCE.getLogoutUrl());
 		logoAnchor.setHref(GWT.getHostPageBaseURL());
-
+		totalsPanel.addStyleName(style.totalsPopup());
 		generateStats(Configuration.getStats());
 
 		instance = this;
@@ -210,6 +220,16 @@ public class MainWidgetImpl extends Composite implements MainWidget {
 			}
 		});
 	}
+	
+	@UiHandler("totals")
+	void onTotalsOver(MouseOverEvent e){
+		totalsPanel.showRelativeTo(totals);
+	}
+	
+	@UiHandler("totals")
+	void onTotalsOver(MouseOutEvent e){
+		totalsPanel.hide();
+	}
 
 	@UiHandler("myData")
 	void onMyDataClicked(ClickEvent e){
@@ -244,16 +264,31 @@ public class MainWidgetImpl extends Composite implements MainWidget {
 		shb.append(statistics.getInvoicesCountForYear());
 		shb.appendHtmlConstant("</span>");
 		shb.appendHtmlConstant("</span>");
+		
+		stats.setHTML(shb.toSafeHtml());
 
 		//third row
+		shb = new SafeHtmlBuilder();
+		
 		shb.appendHtmlConstant("<span class='"+style.totalAmount()+"'>");
-		shb.appendEscaped(I18N.INSTANCE.totalInvoicing());
+		shb.appendEscaped(I18N.INSTANCE.totalInvoicingBeforeTaxes());
+		shb.appendHtmlConstant("<span class='"+style.value()+"'>");
+		shb.appendEscaped(NumberFormat.getCurrencyFormat().format(statistics.getTotalBeforeTaxesForYear()));
+		shb.appendHtmlConstant("</span>");
+		shb.appendHtmlConstant("</span>");
+
+		shb.appendHtmlConstant("<br>");
+		shb.appendHtmlConstant("<br>");
+		
+		shb.appendHtmlConstant("<span class='"+style.totalAmount()+"'>");
+		shb.appendEscaped(I18N.INSTANCE.totalInvoicingAfterTaxes());
 		shb.appendHtmlConstant("<span class='"+style.value()+"'>");
 		shb.appendEscaped(NumberFormat.getCurrencyFormat().format(statistics.getTotalAfterTaxesForYear()));
 		shb.appendHtmlConstant("</span>");
 		shb.appendHtmlConstant("</span>");
-
-		stats.setHTML(shb.toSafeHtml());
+		
+		totalsPanel.setWidget(new HTML(shb.toSafeHtml()));
+		totalsPanel.hide();
 	}
 	
 	protected FlowPanel getMenuBar() {
