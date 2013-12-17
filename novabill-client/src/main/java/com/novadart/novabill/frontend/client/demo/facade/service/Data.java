@@ -143,6 +143,19 @@ class Data {
 		return total;
 	}
 	
+	public static BigDecimal calcTotalBeforeTaxes(){
+		BigDecimal total = BigDecimal.ZERO;
+		
+		for (Set<InvoiceDTO> si : INVOICES.values()) {
+			for (InvoiceDTO i : si) {
+				if(i.getAccountingDocumentDate().after(REFERENCE_DATE)){
+					total = total.add(i.getTotalBeforeTax());
+				}
+			}
+		}
+		return total;
+	}
+	
 	@SuppressWarnings({ "unchecked", "rawtypes" })
 	public static <T extends AccountingDocumentDTO> T getDoc(Long docId, Class<T> clazz) throws NoSuchObjectException {
 		Map<Long, Set<T>> docsMap = null;
