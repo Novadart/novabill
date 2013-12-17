@@ -1,9 +1,7 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
 import java.math.BigDecimal;
-import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 
 import com.novadart.novabill.frontend.client.Configuration;
@@ -51,14 +49,9 @@ public class AutoBeanDecoder {
 		p.setBusiness(Configuration.getBusiness());
 		p.setId(as.getId());
 		p.setName(as.getName());
-
-		if(as.getPrices() != null) {
-			List<PriceDTO> prices = new ArrayList<PriceDTO>();
-			for (Price pr : as.getPrices().getList()) {
-				prices.add(decode(pr));
-			}
-			p.setPrices(prices);
-		}
+		
+//		TODO
+		
 		return p;
 	}
 

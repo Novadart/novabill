@@ -1,7 +1,6 @@
 package com.novadart.novabill.frontend.client.demo.facade.service;
 
 import java.util.List;
-import java.util.Map;
 
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -9,8 +8,6 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.PriceDTO;
-import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtServiceAsync;
@@ -175,15 +172,6 @@ public class DemoBatchDataFetcherService implements
 	public void fetchNewInvoiceFromTransportDocumentsOpData(
 			List<Long> transportDocumentIDs,
 			AsyncCallback<Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO>> callback) {
-		// TODO Auto-generated method stub
-		
-	}
-
-	@Override
-	public void fetchModifyPriceList(
-			Long businessID,
-			Long priceListID,
-			AsyncCallback<Pair<PriceListDTO, Map<String, Pair<String, PriceDTO>>>> callback) {
 		// TODO Auto-generated method stub
 		
 	}
