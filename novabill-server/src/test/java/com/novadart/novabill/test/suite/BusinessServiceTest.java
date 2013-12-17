@@ -14,6 +14,7 @@ import javax.annotation.Resource;
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,6 +54,13 @@ public class BusinessServiceTest extends GWTServiceTest {
 	@Resource(name = "totalsAfterTax")
 	protected HashMap<String, String> totalsAfterTax;
 	
+	@Override
+	@Before
+	public void authenticate() {
+		authenticatedPrincipal = Principal.findByUsername("giordano.battilana@novadart.com");
+		authenticatePrincipal(authenticatedPrincipal);
+	}
+	
 	@SuppressWarnings("serial")
 	private static Map<String, Field> validationFieldsMap = new HashMap<String, Field>(){{
 		put("name", Field.name); put("address", Field.address); put("postcode", Field.postcode);
@@ -72,7 +80,7 @@ public class BusinessServiceTest extends GWTServiceTest {
 		BusinessStatsDTO stats = businessGwtService.getStats(authenticatedPrincipal.getBusiness().getId());
 		assertEquals(new Long(authenticatedPrincipal.getBusiness().getClients().size()), new Long(stats.getClientsCount()));
 		assertEquals(new Long(businessGwtService.countInvoicesForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR))), new Long(stats.getInvoicesCountForYear()));
-		assertEquals(businessGwtService.getTotalAfterTaxesForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR)), stats.getTotalAfterTaxesForYear());
+		assertEquals(businessGwtService.getTotalsForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR)).getSecond(), stats.getTotalAfterTaxesForYear());
 		assertEquals(stats.getInvoiceCountsPerMonth(), Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, authenticatedPrincipal.getBusiness().getId() == 1? 24: 1, 0, 0));
 	}
 	
@@ -131,18 +139,18 @@ public class BusinessServiceTest extends GWTServiceTest {
 	@Test
 	public void getTotalAfterTaxesForYearAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		BigDecimal expected = new BigDecimal(totalsAfterTax.get(authenticatedPrincipal.getUsername()));
-		BigDecimal actual = businessGwtService.getTotalAfterTaxesForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR));
+		BigDecimal actual = businessGwtService.getTotalsForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR)).getSecond();
 		assertEquals(expected, actual);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getTotalAfterTaxesForYearUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getTotalAfterTaxesForYear(getUnathorizedBusinessID(), Calendar.getInstance().get(Calendar.YEAR));
+		businessGwtService.getTotalsForYear(getUnathorizedBusinessID(), Calendar.getInstance().get(Calendar.YEAR));
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getTotalAfterTaxesForYearUnauthorizedNullTest() throws NotAuthenticatedException, DataAccessException{
-		businessGwtService.getTotalAfterTaxesForYear(null, Calendar.getInstance().get(Calendar.YEAR));
+		businessGwtService.getTotalsForYear(null, Calendar.getInstance().get(Calendar.YEAR));
 	}
 	
 	@Test
