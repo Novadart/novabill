@@ -15,6 +15,7 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.facade.BusinessGwtServiceAsync;
+import com.novadart.novabill.shared.client.tuple.Pair;
 
 public class DemoBusinessService implements BusinessGwtServiceAsync {
 
@@ -38,12 +39,6 @@ public class DemoBusinessService implements BusinessGwtServiceAsync {
 //		bs.setInvoicesCountForYear(Data.countInvoices());
 //		bs.setTotalAfterTaxesForYear(Data.calcTotal());
 //		callback.onSuccess(bs);
-	}
-
-	@Override
-	public void getTotalAfterTaxesForYear(Long businessID, Integer year,
-			AsyncCallback<BigDecimal> callback) {
-		callback.onSuccess(Data.calcTotal());
 	}
 
 	@Override
@@ -128,6 +123,13 @@ public class DemoBusinessService implements BusinessGwtServiceAsync {
 	@Override
 	public void countInvoicesForYear(Long BusinessID, Integer year,
 			AsyncCallback<Integer> callback) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void getTotalsForYear(Long businessID, Integer year,
+			AsyncCallback<Pair<BigDecimal, BigDecimal>> callback) {
 		// TODO Auto-generated method stub
 		
 	}
