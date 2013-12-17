@@ -52,6 +52,7 @@ public class DemoBusinessService implements BusinessServiceAsync {
 		bs.setClientsCount(Long.valueOf(Data.getClients().size()));
 		bs.setInvoicesCountForYear(Data.countInvoices());
 		bs.setTotalAfterTaxesForYear(Data.calcTotal());
+		bs.setTotalBeforeTaxesForYear(Data.calcTotalBeforeTaxes());
 		callback.onSuccess(bs);
 	}
 
