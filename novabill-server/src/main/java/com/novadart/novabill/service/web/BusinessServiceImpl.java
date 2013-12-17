@@ -53,6 +53,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.tuple.Pair;
 
 public abstract class BusinessServiceImpl implements BusinessService {
 
@@ -110,7 +111,9 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		int year = Calendar.getInstance().get(Calendar.YEAR);
 		stats.setInvoicesCountForYear(countInvoicesForYear(businessID, year));
 		stats.setCommoditiesCount(self().getCommodities(businessID).size());
-		stats.setTotalAfterTaxesForYear(getTotalAfterTaxesForYear(businessID, year));
+		Pair<BigDecimal, BigDecimal> totals = getTotalsForYear(businessID, year);
+		stats.setTotalBeforeTaxesForYear(totals.getFirst());
+		stats.setTotalAfterTaxesForYear(totals.getSecond());
 		stats.setLogRecords(self().getLogRecords(businessID, 90));
 		stats.setInvoiceCountsPerMonth(self().getInvoiceMonthCounts(businessID));
 		return stats;
@@ -131,11 +134,14 @@ public abstract class BusinessServiceImpl implements BusinessService {
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+	public Pair<BigDecimal, BigDecimal> getTotalsForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+		BigDecimal totalBeforeTaxes = new BigDecimal("0.0");
 		BigDecimal totalAfterTaxes = new BigDecimal("0.0");
-		for(InvoiceDTO invoiceDTO: self().getInvoices(businessID, year))
+		for(InvoiceDTO invoiceDTO: self().getInvoices(businessID, year)){
+			totalBeforeTaxes = totalBeforeTaxes.add(invoiceDTO.getTotalBeforeTax());
 			totalAfterTaxes = totalAfterTaxes.add(invoiceDTO.getTotal());
-		return totalAfterTaxes.setScale(2, BigDecimal.ROUND_HALF_EVEN);
+		}
+		return new Pair<>(totalBeforeTaxes.setScale(2, BigDecimal.ROUND_HALF_EVEN), totalAfterTaxes.setScale(2, BigDecimal.ROUND_HALF_EVEN));
 	}
 
 	@Override

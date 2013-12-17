@@ -28,6 +28,7 @@ import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessGwtService;
+import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.web.mvc.BusinessLogoController;
 import com.novadart.novabill.web.mvc.ExportController;
 import com.novadart.novabill.web.mvc.PDFController;
@@ -65,8 +66,8 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 
 
 	@Override
-	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
-		return businessService.getTotalAfterTaxesForYear(businessID, year);
+	public Pair<BigDecimal, BigDecimal> getTotalsForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+		return businessService.getTotalsForYear(businessID, year);
 	}
 
 	@Override

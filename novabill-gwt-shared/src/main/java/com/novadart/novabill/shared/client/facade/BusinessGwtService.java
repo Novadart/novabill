@@ -22,6 +22,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.tuple.Pair;
 
 @XsrfProtect
 @RemoteServiceRelativePath("business.rpc")
@@ -31,7 +32,7 @@ public interface BusinessGwtService extends RemoteService {
 	
 	public Integer countInvoicesForYear(Long BusinessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
-	public BigDecimal getTotalAfterTaxesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
+	public Pair<BigDecimal, BigDecimal> getTotalsForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
 	public BusinessStatsDTO getStats(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
