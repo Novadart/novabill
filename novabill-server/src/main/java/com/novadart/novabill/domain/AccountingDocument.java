@@ -108,7 +108,7 @@ public abstract class AccountingDocument {
     }
 	
 	protected static <T extends AccountingDocument> List<T> getAccountingDocumentsWithIDs(Class<T> cls, List<Long> ids){
-		String sql = String.format("select d from %s d join fetch d.accountingDocumentItems where d.id in (:ids) order by d.accountingDocumentDate asc", cls.getSimpleName());
+		String sql = String.format("select distinct d from %s d join fetch d.accountingDocumentItems where d.id in (:ids) order by d.accountingDocumentDate asc", cls.getSimpleName());
 		return entityManager().createQuery(sql, cls).setParameter("ids", ids).getResultList();
 	}
 	
