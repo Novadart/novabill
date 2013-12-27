@@ -34,6 +34,8 @@ public class ClientDTO implements IsSerializable, Versionable {
 	
 	private Long defaultPaymentTypeID;
 	
+	private Long defaultPriceListID;
+	
 	private String note;
 	
 	private ContactDTO contact;
@@ -191,6 +193,16 @@ public class ClientDTO implements IsSerializable, Versionable {
 	}
 
 	
+	public Long getDefaultPriceListID() {
+		return defaultPriceListID;
+	}
+
+
+	public void setDefaultPriceListID(Long defaultPriceListID) {
+		this.defaultPriceListID = defaultPriceListID;
+	}
+
+
 	public String getNote() {
 		return note;
 	}

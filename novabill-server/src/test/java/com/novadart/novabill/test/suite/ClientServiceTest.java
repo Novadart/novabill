@@ -33,6 +33,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
+import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.EntityType;
@@ -327,6 +328,60 @@ public class ClientServiceTest extends GWTServiceTest {
 		clientDTO.setDefaultPaymentTypeID(paymentType.getId());
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
 		assertEquals(paymentType, client.getDefaultPaymentType());
+	}
+	
+	@Test
+	public void updateAuthorizedDefaultPriceListNotNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		PriceList priceList = TestUtils.createPriceList();
+		client.setDefaultPriceList(priceList);
+		priceList.getClients().add(client);
+		priceList.persist();
+		PaymentType.entityManager().flush();
+		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		clientDTO.setDefaultPriceListID(null);
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertNull(client.getDefaultPriceList());
+	}
+	
+	@Test
+	public void updateAuthorizedDefaultPriceListNotNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		PriceList priceList1 = TestUtils.createPriceList();
+		client.setDefaultPriceList(priceList1);
+		priceList1.getClients().add(client);
+		priceList1.persist();
+		PriceList.entityManager().flush();
+		PriceList priceList2 = TestUtils.createPriceList();
+		priceList2.persist();
+		PriceList.entityManager().flush();
+		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		clientDTO.setDefaultPriceListID(priceList2.getId());
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertEquals(priceList2, client.getDefaultPriceList());
+	}
+	
+	@Test
+	public void updateAuthorizedDefaultPriceListNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		client.setDefaultPriceList(null);
+		Client.entityManager().flush();
+		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		clientDTO.setDefaultPriceListID(null);
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertNull(client.getDefaultPriceList());
+	}
+	
+	@Test
+	public void updateAuthorizedDefaultPriceListNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		PriceList priceList = TestUtils.createPriceList();
+		priceList.persist();
+		PriceList.entityManager().flush();
+		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		clientDTO.setDefaultPriceListID(priceList.getId());
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertEquals(priceList, client.getDefaultPriceList());
 	}
 	
 }

@@ -29,6 +29,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
@@ -127,13 +128,24 @@ public class PriceListServiceTest extends GWTServiceTest {
 		}
 	}
 	
+	private void setDefaultPriceList(Long clientID, Long priceListID){
+		Client client = Client.findClient(clientID);
+		PriceList priceList = PriceList.findPriceList(priceListID);
+		client.setDefaultPriceList(priceList);
+		priceList.getClients().add(client);
+		Client.entityManager().flush();
+	}
+	
 	@Test
 	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
 		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
 		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		setDefaultPriceList(client.getId(), id);
 		priceListService.remove(authenticatedPrincipal.getBusiness().getId(), id);
 		assertNull(PriceList.findPriceList(id));
+		assertNull(Client.findClient(client.getId()).getDefaultPriceList());
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
 		assertEquals(EntityType.PRICE_LIST, rec.getEntityType());
 		assertEquals(id, rec.getEntityID());

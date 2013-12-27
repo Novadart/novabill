@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.PaymentType;
+import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.TaxableEntityValidator;
@@ -64,12 +65,8 @@ public class ClientService {
 		return client.getId();
 	}
 
-	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	@PreAuthorize("principal.business.id == #businessID and #clientDTO?.id != null and " + 
-				  "T(com.novadart.novabill.domain.Client).findClient(#clientDTO?.id)?.business?.id == principal.business.id")
-	public void update(Long businessID, ClientDTO clientDTO) throws NoSuchObjectException, ValidationException {
-		Client client = Client.findClient(clientDTO.getId());
-		ClientDTOFactory.copyFromDTO(client, clientDTO);
+	
+	private void updateDefaultPaymentType(ClientDTO clientDTO, Client client) {
 		if(client.getDefaultPaymentType() == null){
 			if(clientDTO.getDefaultPaymentTypeID() != null){
 				PaymentType paymentType = PaymentType.findPaymentType(clientDTO.getDefaultPaymentTypeID());
@@ -88,6 +85,38 @@ public class ClientService {
 				}
 			}
 		}
+	}
+	
+	private void updateDefaultPriceList(ClientDTO clientDTO, Client client){
+		if(client.getDefaultPriceList() == null){
+			if(clientDTO.getDefaultPriceListID() != null){
+				PriceList priceList = PriceList.findPriceList(clientDTO.getDefaultPriceListID());
+				client.setDefaultPriceList(priceList);
+				priceList.getClients().add(client);
+			}
+		} else {
+			if(client.getDefaultPriceList().getId() != clientDTO.getDefaultPriceListID()){
+				if(Hibernate.isInitialized(client.getDefaultPriceList().getClients()))
+					client.getDefaultPriceList().getClients().remove(client);
+				client.setDefaultPriceList(null);
+				if(clientDTO.getDefaultPriceListID() != null){
+					PriceList newDefaultPriceList = PriceList.findPriceList(clientDTO.getDefaultPriceListID());
+					client.setDefaultPriceList(newDefaultPriceList);
+					newDefaultPriceList.getClients().add(client);
+				}
+			}
+		}
+	}
+	
+	
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
+	@PreAuthorize("principal.business.id == #businessID and #clientDTO?.id != null and " + 
+				  "T(com.novadart.novabill.domain.Client).findClient(#clientDTO?.id)?.business?.id == principal.business.id")
+	public void update(Long businessID, ClientDTO clientDTO) throws NoSuchObjectException, ValidationException {
+		Client client = Client.findClient(clientDTO.getId());
+		ClientDTOFactory.copyFromDTO(client, clientDTO);
+		updateDefaultPaymentType(clientDTO, client);
+		updateDefaultPriceList(clientDTO, client);
 		validator.validate(client);
 		client.flush();
 	}

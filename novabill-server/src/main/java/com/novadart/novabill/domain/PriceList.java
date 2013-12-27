@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PreRemove;
 import javax.persistence.Table;
 import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
@@ -45,6 +46,9 @@ public class PriceList {
 	@OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "priceList")
 	private Set<Price> prices = new HashSet<>();
 	
+	@OneToMany(cascade = {}, fetch = FetchType.LAZY, mappedBy = "defaultPriceList")
+	private Set<Client> clients = new HashSet<>();
+	
 	public PriceList() {}
 	
 	public PriceList(String name) {
@@ -66,6 +70,13 @@ public class PriceList {
     			setParameter("name", getName()).
     			setFirstResult(0).setMaxResults(1).getResultList().size() == 1;
     }
+	
+	@SuppressWarnings("unused")
+	@PreRemove
+	private void preRemove(){
+		for(Client client: getClients())
+			client.setDefaultPriceList(null);
+	}
 	
 	/*
      * Getters and setters
@@ -93,6 +104,14 @@ public class PriceList {
 
 	public void setPrices(Set<Price> prices) {
 		this.prices = prices;
+	}
+	
+	public Set<Client> getClients() {
+		return clients;
+	}
+
+	public void setClients(Set<Client> clients) {
+		this.clients = clients;
 	}
 	
 	/*
