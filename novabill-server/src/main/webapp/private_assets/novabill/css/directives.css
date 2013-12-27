@@ -127,3 +127,22 @@
 .update-price .btn.save,.update-price .btn.edit {
 	
 }
+
+/*
+ *  SELECT CLIENT DIALOG
+ */
+ 
+#selectClientDialog div.well.client {
+   margin-bottom: 5px;
+   cursor: pointer;
+}
+
+#selectClientDialog div.well.client.selected {
+	border: 1px solid;
+	background-color: #3d3d3d;
+	color: #fafafa;
+}
+
+#selectClientDialog div.clients-filter {
+   margin: 15px 0;
+}

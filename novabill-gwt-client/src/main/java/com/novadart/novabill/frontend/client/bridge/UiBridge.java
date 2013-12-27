@@ -36,7 +36,6 @@ import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTrans
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.view.bootstrap.BootstrapDialog;
 import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
-import com.novadart.novabill.frontend.client.widget.dialog.selectclient.SelectClientDialog;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class UiBridge implements ApiBridge {
@@ -62,7 +61,6 @@ public class UiBridge implements ApiBridge {
 			// clients			
 			clientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewClientDialog(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			modifyClientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyClientDialog(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-			selectClientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showSelectClientDialog(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			
 			// invoices
 			showNewInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
@@ -145,16 +143,6 @@ public class UiBridge implements ApiBridge {
 				clientDialog.center();
 			}
 		});
-	}
-	
-	public static void showSelectClientDialog(final String businessId, final JavaScriptObject callback) {
-		SelectClientDialog dialog = new SelectClientDialog(new SelectClientDialog.Handler() {
-			@Override
-			public void onClientSelected(ClientDTO client) {
-				BridgeUtils.invokeJSCallback(client.getId(), callback);
-			}
-		});
-		dialog.center();
 	}
 	
 	

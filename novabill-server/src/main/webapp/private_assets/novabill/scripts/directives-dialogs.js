@@ -67,7 +67,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 			};
 			
 			$scope.ok = function(){
-				var ids = [];
+				var ids = new Array();
 				for(var id in $scope.selectedSet){
 					ids.push(id);
 				}
@@ -302,4 +302,76 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 	};
 
+})
+
+
+/*
+ * Select Client Dialog
+ */
+.directive('nSelectClientDialog', function factory(){
+
+	return {
+
+		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-select-client-dialog.html',
+		scope: {},
+
+		controller : ['$scope', 'nConstants', 'nSorting', function($scope, nConstants, nSorting){
+			
+			$scope.selectedId = null;
+			
+			$scope.select = function(id){
+				$scope.selectedId = id;
+			};
+			
+			$scope.$on(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, function(event, callback){
+				$scope.callback = callback;
+				
+				GWT_Server.business.getClients(NovabillConf.businessId, {
+					
+					onSuccess : function(data){
+						$scope.$apply(function(){
+							
+							data.clients.sort( nSorting.clientsComparator );
+							$scope.clients = data.clients;
+							
+							$('#selectClientDialog').modal('show');
+							$('#selectClientDialog .scroller').slimScroll({
+						        height: '400px'
+						    });
+						});
+					},
+					
+					onFailure : function(){}
+					
+				});
+			});
+			
+			function hide(){
+				$scope.selectedId = null;
+				$scope.query = null;
+				
+				$('#selectClientDialog').modal('hide');
+				
+				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
+				$('body').removeClass('modal-open');
+				$('.modal-backdrop').remove();
+			};
+			
+			$scope.ok = function(){
+				$scope.callback.onOk($scope.selectedId);
+				hide();
+			};
+
+			$scope.cancel = function(){
+				$scope.callback.onCancel();
+				hide();
+			};
+		}],
+
+		restrict: 'E',
+		replace: true,
+
+	};
+
 });
+;

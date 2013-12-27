@@ -6,7 +6,7 @@ angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.
 /**
  * CREDIT NOTES PAGE CONTROLLER
  */
-.controller('CreditNoteCtrl', ['$scope', '$location', function($scope, $location){
+.controller('CreditNoteCtrl', ['$scope', '$location', 'nConstants', '$rootScope', function($scope, $location, nConstants, $rootScope){
 	$scope.loadCreditNotes = function() {
 		GWT_Server.creditNote.getAllInRange(NovabillConf.businessId, '2013', '0', '1000000', {
 			onSuccess : function(page){
@@ -20,19 +20,15 @@ angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.
 	};
 	
 	$scope.newCreditNoteClick = function(){
-		GWT_UI.selectClientDialog(NovabillConf.businessId, {
-	    	onSuccess : function(clientId){
-	    		
-	    	    $scope.$apply(function(){
-	    	    	$location.path('/new/'+clientId);
-	    	    });
-	    	    
-	    	},
-	    	onFailure : function(){},
-	    });
+		$rootScope.$broadcast(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, {
+			onOk : function(clientId){
+				$location.path('/new/'+clientId);
+			},
+			onCancel : function(){}
+		});
 	};
 	
-	$scope.$on('creditNote.remove', function(){
+	$scope.$on(nConstants.events.CREDIT_NOTE_REMOVED, function(){
 		$scope.$apply(function(){
 			$scope.creditNotes = null;
 		});

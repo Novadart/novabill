@@ -63,7 +63,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 
 				} else if (place instanceof FromTransportDocumentListInvoicePlace) {
 					FromTransportDocumentListInvoicePlace p = (FromTransportDocumentListInvoicePlace) place;
-					setupFromTransportDocumentInvoiceListView(panel, view, p);
+					setupFromTransportDocumentListInvoiceView(panel, view, p);
 
 				} else if (place instanceof NewInvoicePlace) {
 					NewInvoicePlace p = (NewInvoicePlace) place;
@@ -127,7 +127,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 	}
 	
 	
-	private void setupFromTransportDocumentInvoiceListView(final AcceptsOneWidget panel, final InvoiceView view, 
+	private void setupFromTransportDocumentListInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, 
 			final FromTransportDocumentListInvoicePlace place){
 		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewInvoiceFromTransportDocumentsOpData(place.getTransportDocumentList(), 
 				new DocumentCallack<Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO>>() {

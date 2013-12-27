@@ -1,12 +1,12 @@
 'use strict';
 
-angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations'])
+angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'novabill.constants'])
 
 
 /**
  * CREDIT NOTES PAGE CONTROLLER
  */
-.controller('TransportDocumentCtrl', ['$scope', '$location', function($scope, $location){
+.controller('TransportDocumentCtrl', ['$scope', '$location', 'nConstants', '$rootScope', function($scope, $location, nConstants, $rootScope){
 	$scope.loadTransportDocuments = function() {
 		GWT_Server.transportDocument.getAllInRange(NovabillConf.businessId, '2013', '0', '1000000', {
 			onSuccess : function(page){
@@ -20,19 +20,15 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 	};
 	
 	$scope.newTransportDocumentClick = function(){
-		GWT_UI.selectClientDialog(NovabillConf.businessId, {
-	    	onSuccess : function(clientId){
-	    		
-	    	    $scope.$apply(function(){
-	    	    	$location.path('/new/'+clientId);
-	    	    });
-	    	    
-	    	},
-	    	onFailure : function(){},
-	    });
+		$rootScope.$broadcast(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, {
+			onOk : function(clientId){
+				$location.path('/new/'+clientId);
+			},
+			onCancel : function(){}
+		});
 	};
 	
-	$scope.$on('transportDocument.remove', function(){
+	$scope.$on(nConstants.events.TRANSPORT_DOCUMENT_REMOVED, function(){
 		$scope.$apply(function(){
 			$scope.transportDocuments = null;
 		});

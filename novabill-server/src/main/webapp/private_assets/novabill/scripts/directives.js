@@ -46,13 +46,11 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			};
 
 			$scope.clone = function(){
-				GWT_UI.selectClientDialog(NovabillConf.businessId, {
-
-					onSuccess : function(clientId){
+				$rootScope.$broadcast(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, {
+					onOk : function(clientId){
 						window.location.assign(nConstants.url.invoiceClone(clientId, $scope.invoice.id));
 					},
-
-					onFailure : function(){}
+					onCancel : function(){}
 				});
 			};
 
@@ -116,13 +114,11 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			};
 
 			$scope.clone = function(){
-				GWT_UI.selectClientDialog(NovabillConf.businessId, {
-
-					onSuccess : function(clientId){
+				$rootScope.$broadcast(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, {
+					onOk : function(clientId){
 						window.location.assign(nConstants.url.estimationClone(clientId, $scope.estimation.id));
 					},
-
-					onFailure : function(){}
+					onCancel : function(){}
 				});
 			};
 

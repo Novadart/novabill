@@ -6,7 +6,7 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
 /**
  * INVOICES PAGE CONTROLLER
  */
-.controller('InvoicesCtrl', ['$scope', '$location', function($scope, $location){
+.controller('InvoicesCtrl', ['$scope', '$location', 'nConstants', '$rootScope', function($scope, $location, nConstants, $rootScope){
 	$scope.loadInvoices = function() {
 		GWT_Server.invoice.getAllInRange(NovabillConf.businessId, '2013', '0', '1000000', {
 			onSuccess : function(page){
@@ -20,19 +20,15 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
 	};
 
 	$scope.newInvoiceClick = function(){
-		GWT_UI.selectClientDialog(NovabillConf.businessId, {
-			onSuccess : function(clientId){
-
-				$scope.$apply(function(){
-					$location.path('/new/'+clientId);
-				});
-
+		$rootScope.$broadcast(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, {
+			onOk : function(clientId){
+				$location.path('/new/'+clientId);
 			},
-			onFailure : function(){},
+			onCancel : function(){}
 		});
 	};
 
-	$scope.$on('invoice.remove', function(){
+	$scope.$on(nConstants.events.INVOICE_REMOVED, function(){
 		$scope.$apply(function(){
 			$scope.invoices= null;
 		});

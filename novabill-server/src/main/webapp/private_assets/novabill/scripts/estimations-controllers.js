@@ -6,7 +6,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 /**
  * ESTIMATIONS PAGE CONTROLLER
  */
-.controller('EstimationCtrl', ['$scope', '$location', function($scope, $location){
+.controller('EstimationCtrl', ['$scope', '$location', 'nConstants', '$rootScope', function($scope, $location, nConstants, $rootScope){
 	$scope.loadEstimations = function() {
 		GWT_Server.estimation.getAllInRange(NovabillConf.businessId, '2013', '0', '1000000', {
 			onSuccess : function(page){
@@ -20,19 +20,15 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 	};
 	
 	$scope.newEstimationClick = function(){
-		GWT_UI.selectClientDialog(NovabillConf.businessId, {
-	    	onSuccess : function(clientId){
-	    		
-	    	    $scope.$apply(function(){
-	    	    	$location.path('/new/'+clientId);
-	    	    });
-	    	    
-	    	},
-	    	onFailure : function(){},
-	    });
+		$rootScope.$broadcast(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, {
+			onOk : function(clientId){
+				$location.path('/new/'+clientId);
+			},
+			onCancel : function(){}
+		});
 	};
 	
-	$scope.$on('estimation.remove', function(){
+	$scope.$on(nConstants.events.ESTIMATION_REMOVED, function(){
 		$scope.$apply(function(){
 			$scope.estimations= null;
 		});
