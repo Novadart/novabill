@@ -152,7 +152,7 @@ public class TransportDocumentService {
 			if(!idsSet.contains(transDoc.getId())) throw new IllegalStateException();
 			if(!transDoc.getBusiness().getId().equals(businessID)) throw new DataAccessException(); //authorization
 		}
-		if(transportDocs.size() != ids.size()) throw new NoSuchObjectException(); //cardinality check
+		if(transportDocs.size() < ids.size()) throw new NoSuchObjectException(); //cardinality check
 		return DTOUtils.toDTOList(transportDocs, DTOUtils.transportDocDTOConverter, true);
 	}
 
