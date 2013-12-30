@@ -59,7 +59,7 @@
 	<field name="document.client.country" class="java.lang.String"/>
 	<field name="document.business.vatID" class="java.lang.String"/>
 	<field name="document.client.vatID" class="java.lang.String"/>
-	<field name="document.accountingDocumentItems" class="java.util.Collection"/>
+	<field name="items" class="java.util.Collection"/>
 	<field name="document.note" class="java.lang.String"/>
 	<field name="document.paymentDueDate" class="java.util.Date"/>
 	<field name="document.paymentNote" class="java.lang.String"/>
@@ -160,7 +160,7 @@ $F{document.client.country} +
 				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="206" width="540" height="50" backcolor="#C0BEBE"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
-						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{document.accountingDocumentItems})]]></dataSourceExpression>
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
 					</datasetRun>
 					<jr:column width="300" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">

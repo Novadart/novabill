@@ -47,12 +47,14 @@ public class JasperReportService implements ResourceLoaderAware{
 		new JasperReportDescriptor("tidy.invoice", "classpath:/reports/tidy/tidyInvoice.jrxml", null),
 		new JasperReportDescriptor("tidy.estimation", "classpath:/reports/tidy/tidyEstimation.jrxml", null),
 		new JasperReportDescriptor("tidy.transdoc", "classpath:/reports/tidy/tidyTransDoc.jrxml", null),
-		new JasperReportDescriptor("tidy.crednote", "classpath:/reports/tidy/tidyCredNote.jrxml", null)
+		new JasperReportDescriptor("tidy.crednote", "classpath:/reports/tidy/tidyCredNote.jrxml", null),
+		new JasperReportDescriptor("dense.invoice", "classpath:/reports/dense/denseInvoice.jrxml", null)
 	};
 	
 	private static final Map<LayoutType, String> LAYOUT_RESOURCE_BUNDLES_BASE_NAMES = new HashMap<LayoutType, String>();
 	{
 		LAYOUT_RESOURCE_BUNDLES_BASE_NAMES.put(LayoutType.TIDY, "classpath:/reports/tidy/i18n/tidy.properties");
+		LAYOUT_RESOURCE_BUNDLES_BASE_NAMES.put(LayoutType.DENSE, "classpath:/reports/dense/i18n/dense.properties");
 	}
 	
 	private Map<String, JasperReport> compiledJasperReports;
@@ -110,6 +112,8 @@ public class JasperReportService implements ResourceLoaderAware{
 		if(docType.equals(DocumentType.INVOICE)){
 			if(layoutType.equals(LayoutType.TIDY))
 				return "tidy.invoice";
+			if(layoutType.equals(LayoutType.DENSE))
+				return "dense.invoice";
 		}
 		if(docType.equals(DocumentType.ESTIMATION)){
 			if(layoutType.equals(LayoutType.TIDY))

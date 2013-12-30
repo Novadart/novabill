@@ -26,6 +26,7 @@ public class ClientDTOFactory {
 		clientDTO.setSsn(client.getSsn());
 		clientDTO.setDefaultPaymentTypeID(client.getDefaultPaymentType() == null? null: client.getDefaultPaymentType().getId());
 		clientDTO.setDefaultPriceListID(client.getDefaultPriceList() == null? null: client.getDefaultPriceList().getId());
+		clientDTO.setDefaultLayoutType(client.getDefaultLayoutType());
 		clientDTO.setNote(client.getNote());
 		clientDTO.setContact(ContactDTOFactory.toDTO(client.getContact()));
 		clientDTO.setVersion(client.getVersion());
@@ -49,6 +50,7 @@ public class ClientDTOFactory {
 		client.setVatID(clientDTO.getVatID());
 		client.setSsn(clientDTO.getSsn());
 		client.setContact(new Contact());
+		client.setDefaultLayoutType(clientDTO.getDefaultLayoutType());
 		ContactDTOFactory.copyFromDTO(client.getContact(), clientDTO.getContact());
 		client.setNote(clientDTO.getNote());
 	}

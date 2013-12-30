@@ -28,7 +28,7 @@ public class AccountingDocumentDTO implements IsSerializable {
     
     protected String paymentNote;
     
-    protected LayoutType layoutType = LayoutType.TIDY;
+    protected LayoutType layoutType;
 
     protected ClientDTO client;
 
