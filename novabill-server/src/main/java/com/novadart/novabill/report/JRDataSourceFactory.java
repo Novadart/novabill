@@ -14,11 +14,28 @@ import com.novadart.novabill.shared.client.data.LayoutType;
 
 public class JRDataSourceFactory {
 	
-	public static int DENSE_TABLE_ROWS_NUM = 28;
+	public static int INVOICE_DENSE_TABLE_ROWS_NUM = 28;
+	
+	public static int CREDNOTE_DENSE_TABLE_ROWS_NUM = 30;
+	
+	public static int ESTIMATION_DENSE_TABLE_ROWS_NUM = 28;
 	
 	public static int DENSE_DESC_WIDTH_IN_CHARS = 82;
 	
-	public static <T extends AccountingDocument> JRBeanCollectionDataSource createDataSourceds(T doc, LayoutType layoutType, Long businessID){
+	private static int getRowCount(DocumentType docType){
+		switch (docType) {
+		case INVOICE:
+			return INVOICE_DENSE_TABLE_ROWS_NUM;
+		case CREDIT_NOTE:
+			return CREDNOTE_DENSE_TABLE_ROWS_NUM;
+		case ESTIMATION:
+			return ESTIMATION_DENSE_TABLE_ROWS_NUM;
+		}
+		throw new RuntimeException("Unknown layout type");
+	}
+	
+	
+	public static <T extends AccountingDocument> JRBeanCollectionDataSource createDataSourceds(T doc, LayoutType layoutType, DocumentType docType, Long businessID){
 		if(LayoutType.TIDY.equals(layoutType))
 			return new AccountingDocumentJRDataSource<T>(doc, doc.getAccountingDocumentItems(), businessID).getDataSource();
 		if(LayoutType.DENSE.equals(layoutType)){
@@ -33,9 +50,10 @@ public class JRDataSourceFactory {
 				}
 				rowCnt += Math.max(1, lnCnt / 2);
 			}
-			int r = rowCnt % DENSE_TABLE_ROWS_NUM;
+			int denseTableRowsNum = getRowCount(docType);
+			int r = rowCnt % denseTableRowsNum;
 			Logo logo = Logo.getLogoByBusinessID(businessID);
-			int rowsPerPage = DENSE_TABLE_ROWS_NUM - r - (logo != null? 4: 0);
+			int rowsPerPage = denseTableRowsNum - r - (logo != null? 4: 0);
 			for(int i = 0; i < rowsPerPage; ++i)
 				items.add(new AccountingDocumentItem());
 			return new AccountingDocumentJRDataSource<AccountingDocument>(doc, items, logo).getDataSource();

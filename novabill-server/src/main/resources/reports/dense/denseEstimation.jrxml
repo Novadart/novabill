@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="121"/>
+	<property name="ireport.y" value="95"/>
 	<style name="table" pattern="">
 		<box>
 			<pen lineWidth="0.0" lineColor="#000000"/>
@@ -65,8 +65,6 @@
 	<field name="document.client.vatID" class="java.lang.String"/>
 	<field name="items" class="java.util.Collection"/>
 	<field name="document.note" class="java.lang.String"/>
-	<field name="document.paymentDueDate" class="java.util.Date"/>
-	<field name="document.paymentNote" class="java.lang.String"/>
 	<field name="document.totalBeforeTax" class="java.math.BigDecimal"/>
 	<field name="document.totalTax" class="java.math.BigDecimal"/>
 	<field name="document.total" class="java.math.BigDecimal"/>
@@ -74,6 +72,8 @@
 	<field name="document.business.ssn" class="java.lang.String"/>
 	<field name="document.client.ssn" class="java.lang.String"/>
 	<field name="document.client.id" class="java.lang.Long"/>
+	<field name="document.validTill" class="java.util.Date"/>
+	<field name="document.limitations" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -96,11 +96,11 @@
 				<textFieldExpression><![CDATA[$F{document.business.name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="31a34766-9742-4d92-933a-3c7accb19ff9" x="440" y="0" width="115" height="20"/>
+				<reportElement uuid="31a34766-9742-4d92-933a-3c7accb19ff9" x="478" y="0" width="76" height="20"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.crednote}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{dense.estimation}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="d60122c5-0091-41f6-9b54-1498fff69cec" positionType="Float" x="478" y="19" width="76" height="20"/>
@@ -162,7 +162,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 ($F{document.client.ssn}!=null && !"".equals($F{document.client.ssn}.trim()) ? "\n" + $R{dense.ssn} + " " + $F{document.client.ssn} : "")]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="178" width="540" height="260"/>
+				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="206" width="540" height="240"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
@@ -295,6 +295,34 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 					</jr:column>
 				</jr:table>
 			</componentElement>
+			<textField>
+				<reportElement uuid="0f9c7427-2f91-45e4-a243-deb7e2fb27fb" positionType="Float" x="440" y="173" width="108" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{dense.validUntil}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="e86f9c0b-403e-4f46-9d0c-6d4ee003439e" positionType="Float" x="440" y="188" width="108" height="15"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{document.validTill})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="2998f4f7-0275-415e-82fe-5a91b17b58b7" positionType="Float" x="8" y="173" width="195" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true" isUnderline="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{dense.limitations}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="a5ca9ace-e26b-4e59-90a2-ef3b515c876b" positionType="Float" x="8" y="188" width="406" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.limitations}]]></textFieldExpression>
+			</textField>
 		</band>
 		<band splitType="Prevent"/>
 	</detail>
