@@ -244,4 +244,13 @@ public class PriceListServiceTest extends GWTServiceTest {
 		priceListService.add(priceListDTO);
 	}
 	
+	@Test
+	public void updateSameNameTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		Long id = priceListService.add(priceListDTO);
+		priceListDTO.setId(id);
+		priceListService.update(priceListDTO);
+	}
+	
 }

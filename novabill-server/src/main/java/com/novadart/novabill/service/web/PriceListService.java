@@ -94,7 +94,7 @@ public class PriceListService {
 			throw new NoSuchObjectException();
 		String persistedPLName = persistedPriceList.getName();
 		PriceListDTOFactory.copyFromDTO(persistedPriceList, priceListDTO);
-		validator.validate(persistedPriceList, !persistedPLName.equals(persistedPriceList.getName()));
+		validator.validate(persistedPriceList, !persistedPLName.equals(priceListDTO.getName()));
 	}
 	
 	@Transactional(readOnly = false)
