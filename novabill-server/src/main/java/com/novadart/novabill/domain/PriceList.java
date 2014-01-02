@@ -71,6 +71,13 @@ public class PriceList {
     			setFirstResult(0).setMaxResults(1).getResultList().size() == 1;
     }
 	
+	public PriceList shallowCopy(){
+		PriceList newPriceList = new PriceList();
+		newPriceList.setBusiness(getBusiness());
+		newPriceList.setName(getName());
+		return newPriceList;
+	}
+	
 	@SuppressWarnings("unused")
 	@PreRemove
 	private void preRemove(){

@@ -253,4 +253,12 @@ public class PriceListServiceTest extends GWTServiceTest {
 		priceListService.update(priceListDTO);
 	}
 	
+	@Test
+	public void checkUniquenessTrueTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		Long id = priceListService.add(priceListDTO);
+		assertTrue(PriceList.findPriceList(id).nameExists());
+	}
+	
 }
