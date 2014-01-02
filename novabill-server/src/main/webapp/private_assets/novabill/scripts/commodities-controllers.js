@@ -102,8 +102,8 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 
 					onFailure : function(error){
 						switch(error.exception){
-						case NConstants.exception.VALIDATION:
-							if(error.data === NConstants.validation.NOT_UNIQUE){
+						case nConstants.exception.VALIDATION:
+							if(error.data === nConstants.validation.NOT_UNIQUE){
 								delegation.invalidSku();
 							}
 							break;
