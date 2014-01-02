@@ -1,18 +1,18 @@
 'use strict';
 
-angular.module("novabill.commodities", ['novabill.commodities.controllers','ngRoute'])
+angular.module("novabill.commodities", ['novabill.commodities.controllers','novabill.constants','ngRoute'])
 
-.config(['$routeProvider', function($routeProvider){
+.config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
 
 	$routeProvider
 
 	.when('/', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/commodities.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/commodities.html',
 		controller: 'CommoditiesCtrl'
 	})
 
 	.when('/details/:commodityId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/commodities-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/commodities-detail.html',
 		controller: 'CommoditiesDetailsCtrl'
 	})
 

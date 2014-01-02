@@ -71,19 +71,16 @@ public class AutoBeanEncoder {
 		pl.setId(c.getId());
 		pl.setName(c.getName());
 
-//		TODO
-//		PricesList list = AutoBeanMaker.INSTANCE.makePricesList().as();
-//		List<Price> prices = new ArrayList<Price>();
-//
-//		List<CommodityDTO> commoditiesDto = c.getCommodities();
-//		if(pricesDto != null) {
-//
-//			for (PriceDTO p : c.getPrices()) {
-//				prices.add(encode(p).as());
-//			}
-//			list.setList(prices);
-//			pl.setPrices(list);
-//		}
+		if(c.getCommodities() != null) {
+			CommodityList cl = AutoBeanMaker.INSTANCE.makeCommodityList().as();
+			List<Commodity> commList = new ArrayList<Commodity>();
+			
+			for (CommodityDTO cd : c.getCommodities()) {
+				commList.add(encode(cd).as());
+			}
+			cl.setCommodities(commList);
+			pl.setCommodityList(cl);
+		}
 		
 		return AutoBeanUtils.getAutoBean(pl);
 	}

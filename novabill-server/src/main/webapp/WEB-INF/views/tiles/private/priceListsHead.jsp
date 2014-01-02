@@ -3,5 +3,4 @@
 
 <spring:url var="privateAssetsUrl" value="/private_assets"></spring:url>
 
-<link href="${privateAssetsUrl}/novabill/css/directives.css" rel="stylesheet" type="text/css"/>
 <link href="${privateAssetsUrl}/novabill/css/price-lists.css" rel="stylesheet" type="text/css"/>

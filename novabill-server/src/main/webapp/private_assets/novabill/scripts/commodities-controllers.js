@@ -13,7 +13,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 
 
 	function loadCommodities() {
-		GWT_Server.commodity.getAll(NovabillConf.businessId, {
+		GWT_Server.commodity.getAll(nConstants.conf.businessId, {
 			onSuccess : function(data){
 				$scope.$apply(function(){
 					$scope.commodities = data.commodities.sort(nSorting.modifyPriceListPricesComparator);
@@ -68,12 +68,12 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
  */
 .controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', '$rootScope', 'nConstants', 
                                        function($scope, $location, $routeParams, $rootScope, nConstants){
-	$scope.DEFAULT_PRICELIST_NAME = NovabillConf.defaultPriceListName;
+	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	$scope.commodity = null;
 
 
 	function loadCommodity(){
-		GWT_Server.commodity.get(NovabillConf.businessId, $routeParams.commodityId, {
+		GWT_Server.commodity.get(nConstants.conf.businessId, $routeParams.commodityId, {
 
 			onSuccess : function(commodity){
 				$scope.$apply(function(){
@@ -126,7 +126,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 		$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
 				'Are you sure that you want to delete permanently any data associated to "'+$scope.commodity.description+'"', {
 			onOk : function(){
-				GWT_Server.commodity.remove(NovabillConf.businessId, $scope.commodity.id, {
+				GWT_Server.commodity.remove(nConstants.conf.businessId, $scope.commodity.id, {
 					onSuccess : function(data){
 						$scope.$apply(function(){
 							$location.path('/');

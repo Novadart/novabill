@@ -1,11 +1,11 @@
 'use strict';
 
-angular.module('novabill.utils', ['novabill.translations'])
+angular.module('novabill.utils', ['novabill.translations', 'novabill.constants'])
 
 /*
  * FACTORIES
  */
-.factory('nSorting', function() {
+.factory('nSorting', ['nConstants', function(nConstants) {
 	return {
 
 		/**
@@ -23,8 +23,8 @@ angular.module('novabill.utils', ['novabill.translations'])
 		 * @return -1 if minor, 0 if equal, 1 if major
 		 */
 		priceListsComparator : function(p1, p2){
-			if(p1.name === NovabillConf.defaultPriceListName){ return -1; }
-			if(p2.name === NovabillConf.defaultPriceListName){ return 1; }
+			if(p1.name === nConstants.conf.defaultPriceListName){ return -1; }
+			if(p2.name === nConstants.conf.defaultPriceListName){ return 1; }
 			
 			var n1 = p1.name.toLowerCase();
 			var n2 = p2.name.toLowerCase();
@@ -41,7 +41,7 @@ angular.module('novabill.utils', ['novabill.translations'])
 		},
 
 	};
-})
+}])
 
 .factory('nRegExp', function() {
 	return {
@@ -91,8 +91,8 @@ angular.module('novabill.utils', ['novabill.translations'])
 }])
 
 
-.filter('nFilterDefault', ['$filter', function($filter) {
+.filter('nFilterDefault', ['$filter', 'nConstants', function($filter, nConstants) {
 	return function(input) {
-		return input === NovabillConf.defaultPriceListName ? $filter('translate')('DEFAULT_PRICE_LIST') : input;
+		return input === nConstants.conf.defaultPriceListName ? $filter('translate')('DEFAULT_PRICE_LIST') : input;
 	};
 }]);

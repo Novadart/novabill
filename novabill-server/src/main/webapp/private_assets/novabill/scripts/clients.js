@@ -1,19 +1,19 @@
 'use strict';
 
-angular.module("novabill.clients", ['novabill.clients.controllers','ngRoute'])
+angular.module("novabill.clients", ['novabill.clients.controllers','novabill.constants','ngRoute'])
 
-.config(['$routeProvider', function($routeProvider){
+.config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
 
 	$routeProvider
 
 	.when('/', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/clients.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/clients.html',
 		controller: 'ClientsCtrl'
 	})
 
 
 	.when('/details/:clientId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/clients-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/clients-detail.html',
 		controller: 'ClientDetailsCtrl'
 	})
 

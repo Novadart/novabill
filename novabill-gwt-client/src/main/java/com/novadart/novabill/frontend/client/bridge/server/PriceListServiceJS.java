@@ -2,6 +2,7 @@ package com.novadart.novabill.frontend.client.bridge.server;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
@@ -14,7 +15,9 @@ import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMake
 import com.novadart.novabill.frontend.client.bridge.server.autobean.PriceList;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.PriceListList;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
+import com.novadart.novabill.shared.client.tuple.Pair;
 
 public class PriceListServiceJS extends ServiceJS {
 	
@@ -42,6 +45,19 @@ public class PriceListServiceJS extends ServiceJS {
 			@Override
 			public void onSuccess(PriceListDTO result) {
 				BridgeUtils.invokeJSCallback(AutoBeanEncoder.encode(result), callback);
+			}
+		});
+	}
+	
+	
+	public static void getPrices(String businessID, String priceListId, final JavaScriptObject callback) {
+		SERVER_FACADE.getPriceListGwtService().getPrices(Long.parseLong(businessID), Long.parseLong(priceListId), 
+				new ManagedAsyncCallback<Map<String,Pair<String,PriceDTO>>>() {
+
+			@Override
+			public void onSuccess(Map<String, Pair<String, PriceDTO>> result) {
+				// TODO Auto-generated method stub
+				
 			}
 		});
 	}

@@ -8,7 +8,7 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
  */
 .controller('TransportDocumentCtrl', ['$scope', '$location', 'nConstants', '$rootScope', function($scope, $location, nConstants, $rootScope){
 	$scope.loadTransportDocuments = function() {
-		GWT_Server.transportDocument.getAllInRange(NovabillConf.businessId, '2013', '0', '1000000', {
+		GWT_Server.transportDocument.getAllInRange(nConstants.conf.businessId, '2013', '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
 					$scope.transportDocuments = page.items;

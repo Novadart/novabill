@@ -103,7 +103,7 @@ angular.module('novabill.dashboard.controllers', ['novabill.directives', 'novabi
 
 
 
-	GWT_Server.business.getStats(NovabillConf.businessId, {
+	GWT_Server.business.getStats(nConstants.conf.businessId, {
 		onSuccess : function(stats){
 			$scope.$apply(function(){
 				$scope.stats = stats;

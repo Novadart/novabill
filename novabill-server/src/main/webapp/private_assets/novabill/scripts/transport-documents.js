@@ -1,23 +1,23 @@
 'use strict';
 
-angular.module("novabill.transportDocuments", ['novabill.transportDocuments.controllers','ngRoute'])
+angular.module("novabill.transportDocuments", ['novabill.transportDocuments.controllers', 'novabill.constants', 'ngRoute'])
 
-.config(['$routeProvider', function($routeProvider){
+.config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
 
 	$routeProvider
 	
 	.when('/', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/transport-documents.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/transport-documents.html',
 		controller: 'TransportDocumentCtrl'
 	})
 	
 	.when('/details/:transportDocumentId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/transport-documents-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/transport-documents-detail.html',
 		controller: 'TransportDocumentDetailsCtrl'
 	})
 	
 	.when('/new/:clientId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/transport-documents-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/transport-documents-detail.html',
 		controller: 'TransportDocumentCreateCtrl'
 	})
 	

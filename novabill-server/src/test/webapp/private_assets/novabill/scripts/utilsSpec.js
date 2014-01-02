@@ -18,15 +18,15 @@ describe('novabill.utils', function() {
 		}));
 		
 		
-//		it('should sort price lits ascending', inject(function( nSorting ) {
-//			
-//			var priceLists = [{name : 'Spring Beauty'}, {name : 'Winter Selection'}, {name : 'Fancy Items'}];
-//			
-//			priceLists.sort(nSorting.priceListsComparator);
-//			
-//			expect(priceLists[0].name).toEqual('Fancy Items');
-//			expect(priceLists[2].name).toEqual('Winter Selection');
-//		}));
+		it('should sort price lits ascending', inject(function( nSorting ) {
+			
+			var priceLists = [{name : 'Spring Beauty'}, {name : 'Winter Selection'}, {name : 'Fancy Items'}];
+			
+			priceLists.sort(nSorting.priceListsComparator);
+			
+			expect(priceLists[0].name).toEqual('Fancy Items');
+			expect(priceLists[2].name).toEqual('Winter Selection');
+		}));
 		
 		
 	});

@@ -8,10 +8,10 @@ angular.module('novabill.priceLists.controllers', ['novabill.translations', 'nov
  */
 .controller('PriceListsCtrl', ['$scope', '$rootScope', 'nConstants', 'nSorting', function($scope, $rootScope, nConstants, nSorting){
 	
-	$scope.DEFAULT_PRICELIST_NAME = NovabillConf.defaultPriceListName;
+	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	
 	function loadPriceLists(){
-		GWT_Server.priceList.getAll(NovabillConf.businessId, {
+		GWT_Server.priceList.getAll(nConstants.conf.businessId, {
 			
 			onSuccess : function(priceLists){
 				$scope.$apply(function(){
@@ -55,23 +55,17 @@ angular.module('novabill.priceLists.controllers', ['novabill.translations', 'nov
 /**
  * PRICE LISTS DETAILS PAGE CONTROLLER
  */
-.controller('PriceListsDetailsCtrl', ['$scope', '$routeParams', 'nSorting', function($scope, $routeParams, nSorting){
+.controller('PriceListsDetailsCtrl', ['$scope', '$routeParams', 'nSorting', 'nConstants', function($scope, $routeParams, nSorting, nConstants){
+	
+	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	
 	function loadPriceList(){
-		GWT_Server.batch.fetchModifyPriceList(NovabillConf.businessId, $routeParams.priceListId, {
+		GWT_Server.priceList.get($routeParams.priceListId, {
 
 			onSuccess : function(data){
 				$scope.$apply(function(){
-					$scope.priceList = data.priceList;
-					$scope.commodityPriceList = data.commodityPriceList.sort(nSorting.modifyPriceListPricesComparator);
-					
-					var tmp = {};
-					var n;
-					for(var i=0; i<data.commodityPriceList.length; i++){
-						n = Math.random();
-						tmp[data.commodityPriceList[i].sku] = (n <= 0.3);
-					}
-					$scope.tmp = tmp;
+					$scope.commodities = data.commodityList.commodities.sort(nSorting.modifyPriceListPricesComparator);
+					$scope.priceList = data;
 				});
 			},
 

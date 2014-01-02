@@ -16,9 +16,8 @@ public interface PriceList {
 
 	void setBusiness(Business business);
 
-	PricesList getPrices();
-
-	void setPrices(PricesList prices);
+	CommodityList getCommodityList();
 	
+	void setCommodityList(CommodityList list);
 
 }

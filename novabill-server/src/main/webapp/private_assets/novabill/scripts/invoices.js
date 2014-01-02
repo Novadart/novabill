@@ -1,44 +1,44 @@
 'use strict';
 
-angular.module("novabill.invoices", ['novabill.invoices.controllers','ngRoute'])
+angular.module("novabill.invoices", ['novabill.invoices.controllers', 'novabill.constants', 'ngRoute'])
 
-.config(['$routeProvider', function($routeProvider){
+.config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
 
 	$routeProvider
 	
 	.when('/', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/invoices.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/invoices.html',
 		controller: 'InvoicesCtrl'
 	})
 	
 	
 	.when('/details/:invoiceId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/invoices-detail.html',
 		controller: 'InvoiceDetailsCtrl'
 	})
 	
 	.when('/new/:clientId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/invoices-detail.html',
 		controller: 'InvoiceCreateCtrl'
 	})
 	
 	.when('/new/:clientId/clone/:sourceId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/invoices-detail.html',
 		controller: 'InvoiceCloneInvoiceCtrl'
 	})
 	
 	.when('/from-estimation/:estimationId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/invoices-detail.html',
 		controller: 'InvoiceFromEstimationCtrl'
 	})
 	
 	.when('/from-transport-document/:transportDocumentId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/invoices-detail.html',
 		controller: 'InvoiceFromTransportDocumentCtrl'
 	})
 	
 	.when('/from-transport-document-list/:transportDocumentList', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/invoices-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/invoices-detail.html',
 		controller: 'InvoiceFromTransportDocumentListCtrl'
 	})
 	
