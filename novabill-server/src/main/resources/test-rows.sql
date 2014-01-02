@@ -207,7 +207,7 @@ insert into invoice (id, payment_date_generator, payment_date_delta, payment_typ
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (129, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 129);
 
 --creating creditnote for first registered business
-insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version) values (130, '2013-10-20', 2013, 1, '', '', 121.0, 100.0, 21.0, 0, 1);
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version) values (130, '2013-10-20', 2013, 1, '', '', 121.0, 100.0, 21.0, 1, 1);
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2013-11-20', 130);
 insert into credit_note (id, business, client) values (130, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (131, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 130);
@@ -219,7 +219,7 @@ insert into credit_note (id, business, client) values (132, 2, 128);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (133, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 132);
 
 --creating estimation for first registered business
-insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version) values (134, '2013-10-20', 2013, 1, '', '', 121.0, 100.0, 21.0, 0, 1);
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version) values (134, '2013-10-20', 2013, 1, '', '', 121.0, 100.0, 21.0, 1, 1);
 insert into estimation (limitations, valid_till, id, business, client) values ('', '2013-11-20', 134, 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (135, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 134);
 

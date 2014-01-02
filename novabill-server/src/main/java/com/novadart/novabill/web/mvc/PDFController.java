@@ -75,7 +75,8 @@ public class PDFController{
 		String pdfName = String.format(messageSource.getMessage("export.invoices.name.pattern", null, "invoice_%s_%d_%d.pdf", locale), convertToASCII(invoice.getClient().getName()), 
 				invoice.getAccountingDocumentYear(), invoice.getDocumentID());
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
-		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSourceds(invoice, invoice.getLayoutType(), invoice.getBusiness().getId()), DocumentType.INVOICE, invoice.getLayoutType());
+		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSourceds(invoice, invoice.getLayoutType(), DocumentType.INVOICE, invoice.getBusiness().getId()),
+				DocumentType.INVOICE, invoice.getLayoutType());
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/estimations/{id}", produces = "application/pdf")
@@ -89,7 +90,8 @@ public class PDFController{
 		String pdfName = String.format(messageSource.getMessage("export.estimations.name.pattern", null, "estimation_%s_%d_%d.pdf", locale), convertToASCII(estimation.getClient().getName()),
 				estimation.getAccountingDocumentYear(), estimation.getDocumentID());
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
-		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSourceds(estimation, estimation.getLayoutType(), estimation.getBusiness().getId()), DocumentType.ESTIMATION, estimation.getLayoutType());
+		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSourceds(estimation, estimation.getLayoutType(), DocumentType.ESTIMATION, estimation.getBusiness().getId()),
+				DocumentType.ESTIMATION, estimation.getLayoutType());
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/creditnotes/{id}", produces = "application/pdf")
@@ -103,7 +105,8 @@ public class PDFController{
 		String pdfName = String.format(messageSource.getMessage("export.creditnotes.name.pattern", null, "creditnote_%s_%d_%d.pdf", locale), convertToASCII(creditNote.getClient().getName()),
 				creditNote.getAccountingDocumentYear(), creditNote.getDocumentID());
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
-		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSourceds(creditNote, creditNote.getLayoutType(), creditNote.getBusiness().getId()), DocumentType.CREDIT_NOTE, creditNote.getLayoutType());
+		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSourceds(creditNote, creditNote.getLayoutType(), DocumentType.CREDIT_NOTE, creditNote.getBusiness().getId()),
+				DocumentType.CREDIT_NOTE, creditNote.getLayoutType());
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/transportdocs/{id}", produces = "application/pdf")
@@ -117,7 +120,7 @@ public class PDFController{
 		String pdfName = String.format(messageSource.getMessage("export.transportdocs.name.pattern", null, "transportdoc_%s_%d_%d.pdf", locale), convertToASCII(transportDocument.getClient().getName()),
 				transportDocument.getAccountingDocumentYear(), transportDocument.getDocumentID());
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
-		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSourceds(transportDocument, transportDocument.getLayoutType(), transportDocument.getBusiness().getId()),
+		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSourceds(transportDocument, transportDocument.getLayoutType(), DocumentType.TRANSPORT_DOCUMENT, transportDocument.getBusiness().getId()),
 				DocumentType.TRANSPORT_DOCUMENT, transportDocument.getLayoutType());
 	}
 

@@ -48,7 +48,9 @@ public class JasperReportService implements ResourceLoaderAware{
 		new JasperReportDescriptor("tidy.estimation", "classpath:/reports/tidy/tidyEstimation.jrxml", null),
 		new JasperReportDescriptor("tidy.transdoc", "classpath:/reports/tidy/tidyTransDoc.jrxml", null),
 		new JasperReportDescriptor("tidy.crednote", "classpath:/reports/tidy/tidyCredNote.jrxml", null),
-		new JasperReportDescriptor("dense.invoice", "classpath:/reports/dense/denseInvoice.jrxml", null)
+		new JasperReportDescriptor("dense.invoice", "classpath:/reports/dense/denseInvoice.jrxml", null),
+		new JasperReportDescriptor("dense.crednote", "classpath:/reports/dense/denseCredNote.jrxml", null),
+		new JasperReportDescriptor("dense.estimation", "classpath:/reports/dense/denseEstimation.jrxml", null)
 	};
 	
 	private static final Map<LayoutType, String> LAYOUT_RESOURCE_BUNDLES_BASE_NAMES = new HashMap<LayoutType, String>();
@@ -109,22 +111,26 @@ public class JasperReportService implements ResourceLoaderAware{
 	}
 
 	private String resolveJasperReportKey(DocumentType docType, LayoutType layoutType) throws JasperReportKeyResolutionException{
-		if(docType.equals(DocumentType.INVOICE)){
-			if(layoutType.equals(LayoutType.TIDY))
+		if(DocumentType.INVOICE.equals(docType)){
+			if(LayoutType.TIDY.equals(layoutType))
 				return "tidy.invoice";
-			if(layoutType.equals(LayoutType.DENSE))
+			if(LayoutType.DENSE.equals(layoutType))
 				return "dense.invoice";
 		}
-		if(docType.equals(DocumentType.ESTIMATION)){
-			if(layoutType.equals(LayoutType.TIDY))
+		if(DocumentType.ESTIMATION.equals(docType)){
+			if(LayoutType.TIDY.equals(layoutType))
 				return "tidy.estimation";
+			if(LayoutType.DENSE.equals(layoutType))
+				return "dense.estimation";
 		}
-		if(docType.equals(DocumentType.CREDIT_NOTE)){
-			if(layoutType.equals(LayoutType.TIDY))
+		if(DocumentType.CREDIT_NOTE.equals(docType)){
+			if(LayoutType.TIDY.equals(layoutType))
 				return "tidy.crednote";
+			if(LayoutType.DENSE.equals(layoutType))
+				return "dense.crednote";
 		}
 		if(docType.equals(DocumentType.TRANSPORT_DOCUMENT)){
-			if(layoutType.equals(LayoutType.TIDY))
+			if(LayoutType.TIDY.equals(layoutType))
 				return "tidy.transdoc";
 		}
 		throw new JasperReportKeyResolutionException(String.format("View could not be resolved; document type: %s, layout type: %s", docType.toString(), layoutType.toString()));
