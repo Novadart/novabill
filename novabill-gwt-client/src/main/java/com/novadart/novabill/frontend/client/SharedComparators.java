@@ -6,6 +6,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
 
 public class SharedComparators {
 	
@@ -23,6 +24,15 @@ public class SharedComparators {
 		@Override
 		public int compare(PaymentTypeDTO o1, PaymentTypeDTO o2) {
 			return o1.getName().compareTo(o2.getName());
+		}
+	};
+	
+	public static final Comparator<PriceListDTO> PRICE_LIST_COMPARATOR = new Comparator<PriceListDTO>() {
+		
+		@Override
+		public int compare(PriceListDTO o1, PriceListDTO o2) {
+			return o1.getName().equalsIgnoreCase("::default") ? -1 : 
+				(o2.getName().equalsIgnoreCase("::default") ? 1 : o1.getName().compareTo(o2.getName()));
 		}
 	};
 	
