@@ -141,12 +141,12 @@ button.action2-button:active {
 	background-color: #000;
 	opacity: 0.3;
 	filter: literal("alpha(opacity=30)");
-	z-index: 2;
+	z-index: 99998;
 }
 
 @external gwt-PopupPanel;
 .gwt-PopupPanel {
-	z-index: 2;
+	z-index: 99999;
 }
 
 @external gwt-DatePicker;
