@@ -65,6 +65,8 @@ public class PriceListService {
 		if(defaultPL.getId() == id)
 			return PriceListDTOFactory.toDTO(defaultPL, commodities);
 		PriceList priceList = PriceList.findPriceList(id);
+		for(Map<String, PriceDTO> commPricesMap: commoditiesPricesMap.values())
+			commPricesMap.put(priceList.getName(), new PriceDTO(commPricesMap.get(PriceListConstants.DEFAULT).getCommodityID(), priceList.getId()));
 		for(Price price: Price.findPricesForPriceList(priceList.getId()))
 			commoditiesPricesMap.get(price.getCommodity().getSku()).put(priceList.getName(), PriceDTOFactory.toDTO(price));
 		return PriceListDTOFactory.toDTO(priceList, commodities);
