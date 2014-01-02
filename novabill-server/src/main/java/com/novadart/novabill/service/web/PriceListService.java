@@ -87,7 +87,7 @@ public class PriceListService {
 	
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#priceListDTO?.business?.id == principal.business.id and " +
-	  	  	  	  "#priceListDTOs?.id != null")
+	  	  	  	  "#priceListDTO?.id != null")
 	public void update(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
 		PriceList persistedPriceList = PriceList.findPriceList(priceListDTO.getId());
 		if(persistedPriceList == null)
