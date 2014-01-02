@@ -1,18 +1,18 @@
 'use strict';
 
-angular.module("novabill.priceLists", ['novabill.priceLists.controllers','ngRoute'])
+angular.module("novabill.priceLists", ['novabill.priceLists.controllers', 'novabill.constants', 'ngRoute'])
 
-.config(['$routeProvider', function($routeProvider){
+.config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
 
 	$routeProvider
 
 	.when('/', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/price-lists.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/price-lists.html',
 		controller: 'PriceListsCtrl'
 	})
 
 	.when('/details/:priceListId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/price-lists-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/price-lists-detail.html',
 		controller: 'PriceListsDetailsCtrl'
 	})
 

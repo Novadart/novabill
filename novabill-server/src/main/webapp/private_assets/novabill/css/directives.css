@@ -122,6 +122,15 @@
 .update-price .price-span {
 	min-width: 80px;
 	display: inline-block;
+	margin-right: 20px;
+}
+
+.update-price .price-default {
+    min-width: 80px;
+	margin-right: 20px;
+	display: inline-block;
+	font-style: italic;
+	color: gray;
 }
 
 .update-price .btn.save,.update-price .btn.edit {

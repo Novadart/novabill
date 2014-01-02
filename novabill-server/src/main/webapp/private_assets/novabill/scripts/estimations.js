@@ -1,28 +1,28 @@
 'use strict';
 
-angular.module("novabill.estimations", ['novabill.estimations.controllers','ngRoute'])
+angular.module("novabill.estimations", ['novabill.estimations.controllers', 'novabill.constants', 'ngRoute'])
 
-.config(['$routeProvider', function($routeProvider){
+.config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
 
 	$routeProvider
 	
 	.when('/', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/estimations.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/estimations.html',
 		controller: 'EstimationCtrl'
 	})
 	
 	.when('/details/:estimationId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/estimations-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/estimations-detail.html',
 		controller: 'EstimationDetailsCtrl'
 	})
 	
 	.when('/new/:clientId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/estimations-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/estimations-detail.html',
 		controller: 'EstimationCreateCtrl'
 	})
 	
 	.when('/new/:clientId/clone/:sourceId', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/estimations-detail.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/estimations-detail.html',
 		controller: 'EstimationCloneEstimationCtrl'
 	})
 	

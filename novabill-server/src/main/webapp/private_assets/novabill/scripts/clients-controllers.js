@@ -1,18 +1,18 @@
 'use strict';
 
-angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations'])
+angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.constants', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations'])
 
 
 /**
  * CLIENTS PAGE CONTROLLER
  */
-.controller('ClientsCtrl', ['$scope', 'nSorting', '$location',
-                            function($scope, nSorting, $location){
+.controller('ClientsCtrl', ['$scope', 'nSorting', '$location', 'nConstants',
+                            function($scope, nSorting, $location, nConstants){
 
 	var partitionsCache = null;
 
 	$scope.loadClients = function() {
-		GWT_Server.business.getClients(NovabillConf.businessId, {
+		GWT_Server.business.getClients(nConstants.conf.businessId, {
 			onSuccess : function(data){
 				$scope.$apply(function(){
 					//sort the data
@@ -68,7 +68,7 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 
 	// fired when new client button is clicked
 	$scope.newClientClick = function() {
-		GWT_UI.clientDialog(NovabillConf.businessId, {
+		GWT_UI.clientDialog(nConstants.conf.businessId, {
 
 			onSuccess : function(){
 				$scope.loadClients($scope);
@@ -138,7 +138,7 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 
 	//fired when edit client is clicked
 	$scope.editClient = function(clientId) {
-		GWT_UI.modifyClientDialog(NovabillConf.businessId, clientId, {
+		GWT_UI.modifyClientDialog(nConstants.conf.businessId, clientId, {
 
 			onSuccess : function(){
 				$scope.$apply(function(){
@@ -160,7 +160,7 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.dire
 			
 			onOk : function(){
 
-				GWT_Server.client.remove(NovabillConf.businessId, clientId, {
+				GWT_Server.client.remove(nConstants.conf.businessId, clientId, {
 					onSuccess : function(data){
 						$scope.$apply(function(){
 							$location.path('/');

@@ -6,11 +6,11 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 /*
  * Select Transport Documents Dialog
  */
-.directive('nSelectTransportDocumentsDialog', function factory(){
+.directive('nSelectTransportDocumentsDialog', ['nConstants', function factory(nConstants){
 
 	return {
 
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-select-transport-documents-dialog.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-select-transport-documents-dialog.html',
 		scope: {},
 
 		controller : ['$scope', 'nConstants', '$element', function($scope, nConstants, $element){
@@ -87,17 +87,17 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 	};
 
-})
+}])
 
 
 /*
  * Edit Commodity Dialog
  */
-.directive('nEditCommodityDialog', function factory(){
+.directive('nEditCommodityDialog', ['nConstants', function factory(nConstants){
 
 	return {
 
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-edit-commodity-dialog.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-edit-commodity-dialog.html',
 		scope: {
 			commodity : '=?',
 		},
@@ -119,8 +119,8 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				
 				//if prices map is empty, init it
 				if( $scope.commodity ){
-					$scope.price = $scope.commodity.pricesMap && $scope.commodity.pricesMap.prices[ NovabillConf.defaultPriceListName ]
-						? $scope.commodity.pricesMap.prices[ NovabillConf.defaultPriceListName ].priceValue 
+					$scope.price = $scope.commodity.pricesMap && $scope.commodity.pricesMap.prices[ nConstants.conf.defaultPriceListName ]
+						? $scope.commodity.pricesMap.prices[ nConstants.conf.defaultPriceListName ].priceValue 
 								: null;
 					
 					// NOTE we check for id to workaround GWT removing the property when it is false
@@ -158,14 +158,14 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				// if default price is not present, build the structure for storing it
 				if(!$scope.commodity.pricesMap){
 					$scope.commodity['pricesMap'] = { prices : {} };
-					$scope.commodity['pricesMap']['prices'][NovabillConf.defaultPriceListName] = {
+					$scope.commodity['pricesMap']['prices'][nConstants.conf.defaultPriceListName] = {
 							priceValue : null,
 							priceType : 'FIXED'
 					};
 				}
 
 				// update default price
-				$scope.commodity['pricesMap']['prices'][NovabillConf.defaultPriceListName].priceValue = $scope.price;
+				$scope.commodity['pricesMap']['prices'][nConstants.conf.defaultPriceListName].priceValue = $scope.price;
 
 				// persist the commodity
 				$scope.callback.onSave(
@@ -194,18 +194,18 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 	};
 
-})
+}])
 
 
 
 /*
  * Edit Price List Dialog
  */
-.directive('nEditPriceListDialog', function factory(){
+.directive('nEditPriceListDialog', ['nConstants', function factory(nConstants){
 
 	return {
 
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-edit-price-list-dialog.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-edit-price-list-dialog.html',
 		scope: {
 			priceList : '=?',
 		},
@@ -256,17 +256,17 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 	};
 
-})
+}])
 
 
 /*
  * Removal Dialog
  */
-.directive('nRemovalDialog', function factory(){
+.directive('nRemovalDialog', ['nConstants', function factory(nConstants){
 
 	return {
 
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-confirm-removal-dialog.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-confirm-removal-dialog.html',
 		scope: {},
 
 		controller : ['$scope', 'nConstants', function($scope, nConstants){
@@ -302,17 +302,17 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 	};
 
-})
+}])
 
 
 /*
  * Select Client Dialog
  */
-.directive('nSelectClientDialog', function factory(){
+.directive('nSelectClientDialog', ['nConstants', function factory(nConstants){
 
 	return {
 
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-select-client-dialog.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-select-client-dialog.html',
 		scope: {},
 
 		controller : ['$scope', 'nConstants', 'nSorting', function($scope, nConstants, nSorting){
@@ -326,7 +326,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 			$scope.$on(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, function(event, callback){
 				$scope.callback = callback;
 				
-				GWT_Server.business.getClients(NovabillConf.businessId, {
+				GWT_Server.business.getClients(nConstants.conf.businessId, {
 					
 					onSuccess : function(data){
 						$scope.$apply(function(){
@@ -373,5 +373,4 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 	};
 
-});
-;
+}]);

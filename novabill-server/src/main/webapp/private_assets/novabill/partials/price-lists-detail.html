@@ -13,7 +13,7 @@
 				<h2>{{priceList.name | nFilterDefault}}</h2>
 			</div>
 
-			<div style="height: 28px;" class="col-md-2 col-md-offset-10">
+			<div ng-if="DEFAULT_PRICELIST_NAME!==priceList.name" style="height: 28px;" class="col-md-2 col-md-offset-10">
 				<div class="pull-right">
 					<a href="javascript: void(0)" ng-disabled="priceList == null" ng-click="editPriceList()" class="btn btn-sm red">
 						<i class="fa fa-edit"></i>Edit
@@ -39,20 +39,18 @@
 			<div class="table-responsive">
 				<table class="table">
 					<tbody>
-						<tr ng-repeat="item in commodityPriceList | filter:query">
-							<td width="10%"><span class="type badge badge-success">Product</span></td>
-							<td width="10%"><strong>{{item.sku}}</strong></td>
-							<td width="60%">{{item.description}}</td>
-							<td width="20%" style="text-align: right;">
-							      <span ng-if="priceList.name ==='::default'">
-                                     <strong>€ 100</strong>&nbsp;&nbsp;<button class="btn btn-sm"> <i class="fa fa-edit"></i> </button>
-                                 </span>
-							     <span ng-if="priceList.name !=='::default' && tmp[item.sku]">
-							         <strong>€ 100</strong> &nbsp;&nbsp;<button class="btn btn-sm"> <i class="fa fa-trash-o"></i> </button>
-							     </span>
-							     <span ng-if="priceList.name !=='::default' && !tmp[item.sku]">
-                                     € 123 (Listino Base) &nbsp;&nbsp;<button class="btn btn-sm"> <i class="fa fa-plus"></i> </button>
-                                 </span>
+						<tr ng-repeat="com in commodities | filter:query">
+							<td width="10%">
+							     <span ng-if="!com.service" class="type badge badge-success" >Product</span>
+							     <span ng-if="com.service" class="type badge badge-primary" >Service</span>
+							</td>
+							<td width="10%"><strong>{{com.sku}}</strong></td>
+							<td width="50%">{{com.description}}</td>
+							<td width="30%" style="text-align: right;">
+							      <n-update-price 
+							         price-list-name="priceList.name" 
+							         price="com.pricesMap.prices[priceList.name]"
+							         default-price="com.pricesMap.prices[DEFAULT_PRICELIST_NAME]" ></n-update-price>
 							</td>
 						</tr>
 

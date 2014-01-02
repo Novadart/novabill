@@ -15,11 +15,11 @@
     </select>
     
     <!-- Select price value -->
-    <span class="price-span" ng-show="price.id && !editMode">
+    <span class="price-span" ng-show="!editMode && price.id">
         <span ng-show="price.priceType === PRICE_TYPE.DERIVED && price.priceValue > 0">+</span>
-        {{price.priceValue}}
-        <span ng-show="price.priceType === PRICE_TYPE.DERIVED">%</span>
-        <span ng-show="price.priceType === PRICE_TYPE.FIXED">€</span>
+        <span ng-if="price.priceType === PRICE_TYPE.DERIVED">{{price.priceValue}}</span>
+        <span ng-if="price.priceType === PRICE_TYPE.DERIVED">%</span>
+        <span ng-if="price.priceType === PRICE_TYPE.FIXED">{{price.priceValue | currency}}</span>
     </span>
     
     <input ng-show="editMode && priceType === PRICE_TYPE.DERIVED" 
@@ -45,6 +45,10 @@
            class="form-control input-small price-input" 
            placeholder="e.g. '23,45'" 
            required>
+           
+    <span class="price-default" ng-show="!editMode && !price.id">
+        {{'DEFAULT_PRICE_LIST' | translate}}&nbsp;&nbsp;&nbsp;&nbsp;{{defaultPrice.priceValue | currency}}
+    </span>
            
     <button 
         class="btn btn-sm edit"

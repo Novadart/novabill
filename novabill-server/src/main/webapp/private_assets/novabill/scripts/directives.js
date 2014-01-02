@@ -9,7 +9,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
                         function factory($rootScope, nConstants){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-invoice.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-invoice.html',
 		scope: { 
 			invoice : '=',
 			bottomUpMenu : '=',
@@ -32,7 +32,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
 						'Delete '+$scope.invoice.documentID+' Invoice?', {
 					onOk : function(){
-						GWT_Server.invoice.remove(NovabillConf.businessId, $scope.invoice.client.id, $scope.invoice.id, {
+						GWT_Server.invoice.remove(nConstants.conf.businessId, $scope.invoice.client.id, $scope.invoice.id, {
 							onSuccess : function(){
 								$rootScope.$broadcast(nConstants.events.INVOICE_REMOVED);
 							},
@@ -76,7 +76,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
                            function factory($rootScope, nConstants){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-estimation.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-estimation.html',
 		scope: { 
 			estimation : '=',
 			bottomUpMenu : '=',
@@ -100,7 +100,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
 						'Delete '+$scope.estimation.documentID+' Estimation?', {
 					onOk : function(){
-						GWT_Server.estimation.remove(NovabillConf.businessId, $scope.estimation.client.id, $scope.estimation.id, {
+						GWT_Server.estimation.remove(nConstants.conf.businessId, $scope.estimation.client.id, $scope.estimation.id, {
 							onSuccess : function(){
 								$rootScope.$broadcast(nConstants.events.ESTIMATION_REMOVED);
 							},
@@ -144,7 +144,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
                                   function factory($rootScope, nConstants){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-transport-document.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-transport-document.html',
 		scope: { 
 			transportDocument : '=',
 			bottomUpMenu : '=',
@@ -168,7 +168,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
 						'Delete '+$scope.transportDocument.documentID+' Transport Document?', {
 					onOk : function(){
-						GWT_Server.transportDocument.remove(NovabillConf.businessId, $scope.transportDocument.client.id, $scope.transportDocument.id, {
+						GWT_Server.transportDocument.remove(nConstants.conf.businessId, $scope.transportDocument.client.id, $scope.transportDocument.id, {
 							onSuccess : function(){
 								$rootScope.$broadcast(nConstants.events.TRANSPORT_DOCUMENT_REMOVED);
 							},
@@ -203,7 +203,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
                            function factory($rootScope, nConstants){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-credit-note.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-credit-note.html',
 		scope: { 
 			creditNote : '=',
 			bottomUpMenu : '=',
@@ -227,7 +227,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
 						'Delete '+$scope.creditNote.documentID+' Credit Note?', {
 					onOk : function(){
-						GWT_Server.creditNote.remove(NovabillConf.businessId, $scope.creditNote.client.id, $scope.creditNote.id, {
+						GWT_Server.creditNote.remove(nConstants.conf.businessId, $scope.creditNote.client.id, $scope.creditNote.id, {
 							onSuccess : function(){
 								$rootScope.$broadcast(nConstants.events.CREDIT_NOTE_REMOVED);
 							},
@@ -254,10 +254,10 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 /*
  * Commodity Widget
  */
-.directive('nCommodity', ['$rootScope', function factory($rootScope){
+.directive('nCommodity', ['$rootScope', 'nConstants', function factory($rootScope, nConstants){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-commodity.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-commodity.html',
 		scope: { 
 			commodity : '=',
 		},
@@ -279,10 +279,10 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 /*
  * Price List Widget
  */
-.directive('nPriceList', ['$rootScope', function factory($rootScope){
+.directive('nPriceList', ['$rootScope', 'nConstants', function factory($rootScope, nConstants){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-price-list.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-price-list.html',
 		scope: { 
 			priceList : '=',
 		},
@@ -302,19 +302,28 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 
 /*
  * Update Price Widget
+ * 
+ * REQUIRES: removal dialog
  */
 .directive('nUpdatePrice', ['$route', 'nConstants', 
                             function factory($route, nConstants){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-update-price.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-update-price.html',
 		scope: { 
+			// the price list this price refers to
 			priceListName : '=',
+			
+			// the price for this price list. if a price is not set, the value will be not null 
+			// (a shallow object is returned by the server) but the id of the price will be null
 			price : '=',
+			
+			// the default price for this commodity
+			defaultPrice : '=',
 		},
 		controller : ['$scope', function($scope){
 			$scope.PRICE_TYPE = nConstants.priceType;
-			$scope.DEFAULT_PRICELIST_NAME = NovabillConf.defaultPriceListName;
+			$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 			$scope.editMode = false;
 
 			$scope.$watch('priceType', function(newValue, oldValue){
@@ -347,7 +356,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 				tempPrice.priceType = $scope.priceType;
 				tempPrice.priceValue = $scope.priceValueDerived !== null && $scope.priceValueDerived !== undefined ? $scope.priceValueDerived : $scope.priceValueFixed;
 
-				GWT_Server.commodity.addOrUpdatePrice(NovabillConf.businessId, JSON.stringify(tempPrice), {
+				GWT_Server.commodity.addOrUpdatePrice(nConstants.conf.businessId, JSON.stringify(tempPrice), {
 					onSuccess : function(){
 						$scope.$apply(function(){
 							$route.reload();
@@ -362,7 +371,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
 						'Are you sure that you want to delete the price in this price list?', {
 					onOk : function(){
-						GWT_Server.commodity.removePrice(NovabillConf.businessId, $scope.price.priceListID, $scope.price.commodityID, {
+						GWT_Server.commodity.removePrice(nConstants.conf.businessId, $scope.price.priceListID, $scope.price.commodityID, {
 							onSuccess : function(data){
 								$scope.$apply(function(){
 									$route.reload();
@@ -511,10 +520,10 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 /*
  * Log Record Widget
  */
-.directive('nLogRecord', [function factory(){
+.directive('nLogRecord', ['nConstants', function factory(nConstants){
 
 	return {
-		templateUrl: NovabillConf.partialsBaseUrl+'/directives/n-log-record.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-log-record.html',
 		scope: { 
 			record : '='
 		},

@@ -1,13 +1,13 @@
 'use strict';
 
-angular.module("novabill.dashboard", ['novabill.dashboard.controllers', 'ngRoute'])
+angular.module("novabill.dashboard", ['novabill.dashboard.controllers', 'novabill.constants', 'ngRoute'])
 
-.config(['$routeProvider', function($routeProvider){
+.config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
 
 	$routeProvider
 	
 	.when('/', {
-		templateUrl: NovabillConf.partialsBaseUrl + '/dashboard.html',
+		templateUrl: nConstantsProvider.conf.partialsBaseUrl + '/dashboard.html',
 		controller: 'DashboardCtrl'
 	})
 	

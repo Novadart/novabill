@@ -3,6 +3,5 @@
 
 <spring:url var="privateAssetsUrl" value="/private_assets"></spring:url>
 
-<link href="${privateAssetsUrl}/novabill/css/directives.css" rel="stylesheet" type="text/css"/>
 <link href="${privateAssetsUrl}/novabill/css/commodities.css" rel="stylesheet" type="text/css"/>
 <link href="${privateAssetsUrl}/plugins/angular-xeditable-0.1.7/css/xeditable.css" rel="stylesheet" type="text/css"/>
