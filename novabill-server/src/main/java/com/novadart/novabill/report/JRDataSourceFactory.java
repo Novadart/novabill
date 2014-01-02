@@ -20,6 +20,8 @@ public class JRDataSourceFactory {
 	
 	public static int ESTIMATION_DENSE_TABLE_ROWS_NUM = 28;
 	
+	public static int TRANSPORTDOC_DENSE_TABLE_ROWS_NUM = 23;
+	
 	public static int DENSE_DESC_WIDTH_IN_CHARS = 82;
 	
 	private static int getRowCount(DocumentType docType){
@@ -30,6 +32,8 @@ public class JRDataSourceFactory {
 			return CREDNOTE_DENSE_TABLE_ROWS_NUM;
 		case ESTIMATION:
 			return ESTIMATION_DENSE_TABLE_ROWS_NUM;
+		case TRANSPORT_DOCUMENT:
+			return TRANSPORTDOC_DENSE_TABLE_ROWS_NUM;
 		}
 		throw new RuntimeException("Unknown layout type");
 	}

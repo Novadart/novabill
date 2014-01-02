@@ -50,7 +50,8 @@ public class JasperReportService implements ResourceLoaderAware{
 		new JasperReportDescriptor("tidy.crednote", "classpath:/reports/tidy/tidyCredNote.jrxml", null),
 		new JasperReportDescriptor("dense.invoice", "classpath:/reports/dense/denseInvoice.jrxml", null),
 		new JasperReportDescriptor("dense.crednote", "classpath:/reports/dense/denseCredNote.jrxml", null),
-		new JasperReportDescriptor("dense.estimation", "classpath:/reports/dense/denseEstimation.jrxml", null)
+		new JasperReportDescriptor("dense.estimation", "classpath:/reports/dense/denseEstimation.jrxml", null),
+		new JasperReportDescriptor("dense.transdoc", "classpath:/reports/dense/denseTransDoc.jrxml", null)
 	};
 	
 	private static final Map<LayoutType, String> LAYOUT_RESOURCE_BUNDLES_BASE_NAMES = new HashMap<LayoutType, String>();
@@ -132,6 +133,8 @@ public class JasperReportService implements ResourceLoaderAware{
 		if(docType.equals(DocumentType.TRANSPORT_DOCUMENT)){
 			if(LayoutType.TIDY.equals(layoutType))
 				return "tidy.transdoc";
+			if(LayoutType.DENSE.equals(layoutType))
+				return "dense.transdoc";
 		}
 		throw new JasperReportKeyResolutionException(String.format("View could not be resolved; document type: %s, layout type: %s", docType.toString(), layoutType.toString()));
 	}
