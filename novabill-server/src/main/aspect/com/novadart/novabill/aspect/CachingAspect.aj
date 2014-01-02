@@ -210,6 +210,6 @@ public privileged aspect CachingAspect {
 	
 	public static final String PRICELIST_CACHE = "pricelist-cache";
 	
-	declare @method : public PriceListDTO com.novadart.novabill.service.web.PriceListService.get(Long): @Cacheable(value = PRICELIST_CACHE, key = "#id");
+	//declare @method : public PriceListDTO com.novadart.novabill.service.web.PriceListService.get(Long): @Cacheable(value = PRICELIST_CACHE, key = "#id");
 	
 }
