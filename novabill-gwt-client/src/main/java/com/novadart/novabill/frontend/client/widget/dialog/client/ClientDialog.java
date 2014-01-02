@@ -40,6 +40,7 @@ import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
 
 public class ClientDialog extends Dialog implements HasUILocking {
 
@@ -87,6 +88,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	@UiField(provided=true) ValidatedTextBox contactSurname;
 
 	@UiField ListBox selectDefaultPayment;
+	@UiField ListBox selectDefaultPriceList;
 
 	@UiField ValidatedTextArea note;
 
@@ -95,6 +97,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	@UiField Style s;
 
 	private final Map<String, PaymentTypeDTO> paymentTypes = new HashMap<String, PaymentTypeDTO>();
+	private final Map<String, PriceListDTO> priceLists = new HashMap<String, PriceListDTO>();
 
 	private AlternativeSsnVatIdValidation ssnOrVatIdValidation = new AlternativeSsnVatIdValidation(); 
 
@@ -151,6 +154,10 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		ok.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().button());
 	}
 
+	private String renameDefaultPriceList(String name){
+		return name.equalsIgnoreCase("::default") ? "LISTINO BASE" :  name;
+	}
+	
 	@Override
 	protected void onLoad() {
 		super.onLoad();
@@ -193,6 +200,37 @@ public class ClientDialog extends Dialog implements HasUILocking {
 
 			}
 		});
+		
+		
+		selectDefaultPriceList.setEnabled(false);
+		
+		ServerFacade.INSTANCE.getPriceListGwtService().getAll(businessId, new ManagedAsyncCallback<List<PriceListDTO>>() {
+
+			@Override
+			public void onSuccess(List<PriceListDTO> result) {
+				Collections.sort(result, SharedComparators.PRICE_LIST_COMPARATOR);
+
+				Long defaultPriceListId = null;
+				if(client != null && client.getDefaultPriceListID() != null) {
+					defaultPriceListId = client.getDefaultPriceListID();
+				}
+
+				int indexOfDefaultPriceList = 0; 
+				PriceListDTO p;
+				for (int i=0; i<result.size(); i++) {
+					p = result.get(i);
+					priceLists.put(String.valueOf(p.getId()), p);
+					selectDefaultPriceList.addItem(renameDefaultPriceList(p.getName()), String.valueOf(p.getId()));
+
+					indexOfDefaultPriceList = defaultPriceListId == null ? 0 : (defaultPriceListId.equals(p.getId()) ? i : indexOfDefaultPriceList); 
+				}
+
+				// select the payment type
+				selectDefaultPriceList.setSelectedIndex(indexOfDefaultPriceList);
+				selectDefaultPriceList.setEnabled(true);				
+			}
+		});
+		
 	}
 
 	@UiFactory
@@ -276,6 +314,12 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		if(selectDefaultPayment.getSelectedIndex() > 0){
 			PaymentTypeDTO payment = paymentTypes.get(selectDefaultPayment.getValue(selectDefaultPayment.getSelectedIndex()));
 			client.setDefaultPaymentTypeID(payment.getId());
+		}
+		
+		
+		if(selectDefaultPriceList.getSelectedIndex() > 0){
+			PriceListDTO priceList = priceLists.get(selectDefaultPriceList.getValue(selectDefaultPriceList.getSelectedIndex()));
+			client.setDefaultPriceListID(priceList.getId());
 		}
 
 		client.setSsn(ssn.getText());
@@ -442,6 +486,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		contactSurname.setEnabled(!value);
 		cancel.setEnabled(!value);
 		selectDefaultPayment.setEnabled(!value);
+		selectDefaultPriceList.setEnabled(!value);
 		note.setEnabled(!value);
 	}
 

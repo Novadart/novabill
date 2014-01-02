@@ -273,6 +273,9 @@
 					<g:Label styleName="{s.title2} {s.lowerTitle}" text="{i18n.defaultPaymentType}"></g:Label>
 					<g:ListBox ui:field="selectDefaultPayment" />
 					
+					<g:Label styleName="{s.title2} {s.lowerTitle}" text="{i18n.defaultPriceList}"></g:Label>
+                    <g:ListBox ui:field="selectDefaultPriceList" />
+					
 					<g:Label styleName="{s.title2} {s.lowerTitle}" text="{i18n.note}"></g:Label>
 					<f:ValidatedTextArea styleName="{s.note}" ui:field="note" />
 
