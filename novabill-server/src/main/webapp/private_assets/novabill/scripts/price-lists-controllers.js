@@ -55,7 +55,8 @@ angular.module('novabill.priceLists.controllers', ['novabill.translations', 'nov
 /**
  * PRICE LISTS DETAILS PAGE CONTROLLER
  */
-.controller('PriceListsDetailsCtrl', ['$scope', '$routeParams', 'nSorting', 'nConstants', function($scope, $routeParams, nSorting, nConstants){
+.controller('PriceListsDetailsCtrl', ['$scope', '$routeParams', 'nSorting', 'nConstants', '$rootScope', '$location',
+                                      function($scope, $routeParams, nSorting, nConstants, $rootScope, $location){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	
@@ -73,6 +74,49 @@ angular.module('novabill.priceLists.controllers', ['novabill.translations', 'nov
 
 		});
 	}
+	
+	
+	$scope.editPriceList = function(){
+
+		$rootScope.$broadcast(nConstants.events.SHOW_EDIT_PRICE_LIST_DIALOG, true, {
+
+			onSave : function(priceList, delegation){
+				GWT_Server.priceList.update(JSON.stringify(priceList), {
+
+					onSuccess : function(newId){
+						delegation.finish();
+					},
+
+					onFailure : function(){},
+
+				});
+			},
+
+			onCancel : function(){}
+		});
+
+	};
+
+
+	$scope.removePriceList = function(){
+		$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
+				'Are you sure that you want to delete permanently any data associated to "'+$scope.priceList.name+'"', {
+			onOk : function(){
+				GWT_Server.priceList.remove(nConstants.conf.businessId, $scope.priceList.id, {
+					onSuccess : function(data){
+						$scope.$apply(function(){
+							$location.path('/');
+						});
+					},
+
+					onFailure : function(error){}
+				});
+
+			},
+
+			onCancel : function(){}
+		});
+	};
 	
 	loadPriceList();
 	
