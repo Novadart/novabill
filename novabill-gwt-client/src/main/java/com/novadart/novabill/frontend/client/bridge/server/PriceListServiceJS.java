@@ -17,6 +17,7 @@ import com.novadart.novabill.frontend.client.bridge.server.autobean.PriceListLis
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
+import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.tuple.Pair;
 
 public class PriceListServiceJS extends ServiceJS {
@@ -73,6 +74,16 @@ public class PriceListServiceJS extends ServiceJS {
 			public void onSuccess(Long result) {
 				BridgeUtils.invokeJSCallback(result, callback);
 			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				if(caught instanceof ValidationException){
+					ValidationException ve = (ValidationException)caught;
+					BridgeUtils.invokeJSCallbackOnException(ve.getClass().getName(), ve.getErrors().get(0).getErrorCode().name(), callback);
+				} else {
+					super.onFailure(caught);
+				}
+			}
 		});
 	}
 	
@@ -86,6 +97,16 @@ public class PriceListServiceJS extends ServiceJS {
 			@Override
 			public void onSuccess(Void result) {
 				BridgeUtils.invokeJSCallback(callback);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				if(caught instanceof ValidationException){
+					ValidationException ve = (ValidationException)caught;
+					BridgeUtils.invokeJSCallbackOnException(ve.getClass().getName(), ve.getErrors().get(0).getErrorCode().name(), callback);
+				} else {
+					super.onFailure(caught);
+				}
 			}
 		});
 	}

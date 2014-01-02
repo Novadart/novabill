@@ -12,10 +12,12 @@
 				
 				    <div class="form-group" ng-class="{'has-error': form.name.$dirty && form.name.$invalid, 'has-success': form.name.$dirty && form.name.$valid}">
                         <label class="control-label" for="description">Nome *</label> 
-                        <input n-not-reserved type="text" name="name" maxlength="255" ng-model="priceList.name" class="form-control" placeholder="e.g. Spring Offers" required>
-                        <div ng-show="form.name.$dirty && form.name.$invalid">
-                            <span class="text-danger" ng-show="!form.name.$error.notReserved && form.name.$error.required">Required</span>
-                            <span class="text-danger" ng-show="form.name.$dirty && form.name.$error.notReserved">Invalid identifier</span>
+                        <input n-not-reserved type="text" name="name" maxlength="255" ng-model="priceList.name" class="form-control" 
+                            placeholder="e.g. Spring Offers" ng-class="{spinner : contactingServer}" required>
+                        <div ng-show="form.name.$dirty && form.name.$invalid || invalidIdentifier">
+                            <span class="text-danger" ng-show="!form.name.$error.notReserved && !invalidIdentifier && form.name.$error.required">Required</span>
+                            <span class="text-danger" ng-show="form.name.$error.notReserved">Invalid identifier</span>
+                            <span class="text-danger" ng-show="!form.name.$error.notReserved && invalidIdentifier">Name already taken</span>
                         </div>
                     </div>
 					

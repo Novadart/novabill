@@ -6,7 +6,8 @@ angular.module('novabill.priceLists.controllers', ['novabill.translations', 'nov
 /**
  * PRICE LISTS PAGE CONTROLLER
  */
-.controller('PriceListsCtrl', ['$scope', '$rootScope', 'nConstants', 'nSorting', function($scope, $rootScope, nConstants, nSorting){
+.controller('PriceListsCtrl', ['$scope', '$rootScope', 'nConstants', 'nSorting', 
+                               function($scope, $rootScope, nConstants, nSorting){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	
@@ -37,7 +38,18 @@ angular.module('novabill.priceLists.controllers', ['novabill.translations', 'nov
 						loadPriceLists();
 					},
 					
-					onFailure : function(){},
+					onFailure : function(error){
+						switch(error.exception){
+						case nConstants.exception.VALIDATION:
+							if(error.data === nConstants.validation.NOT_UNIQUE){
+								delegation.invalidIdentifier();
+							}
+							break;
+
+						default:
+							break;
+						}
+					},
 					
 				});
 			},

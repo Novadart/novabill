@@ -231,16 +231,26 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				$('body').removeClass('modal-open');
 				$('.modal-backdrop').remove();
 				
+				$scope.contactingServer = false;
+				$scope.invalidIdentifier = false;
 				$scope.form.$setPristine();
 			};
 
 			$scope.save = function(){
+				$scope.contactingServer = true;
 
 				// persist the commodity
 				$scope.callback.onSave(
 						$scope.priceList, 
 						{
-							finish : hideAndReset
+							finish : hideAndReset,
+							
+							invalidIdentifier : function(){ 
+								$scope.$apply(function(){
+									$scope.contactingServer = false;
+									$scope.invalidIdentifier = true;
+								}); 
+							}
 						});
 			};
 
