@@ -100,9 +100,10 @@ public class CommodityService {
 		Commodity persistentCommodity = Commodity.findCommodity(commodityDTO.getId());
 		if(persistentCommodity == null)
 			throw new NoSuchObjectException();
-		String sku = persistentCommodity.getSku();
+		Commodity copy = persistentCommodity.shallowCopy();
+		CommodityDTOFactory.copyFromDTO(copy, commodityDTO);
+		validator.validate(copy, !copy.getSku().equals(persistentCommodity.getSku()));
 		CommodityDTOFactory.copyFromDTO(persistentCommodity, commodityDTO);
-		validator.validate(persistentCommodity, !sku.equals(persistentCommodity.getSku()));
 		PriceDTO defaultPriceDTO = commodityDTO.getPrices().get(PriceListConstants.DEFAULT);
 		addOrUpdatePrice(commodityDTO.getBusiness().getId(), defaultPriceDTO);
 	}

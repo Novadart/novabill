@@ -82,6 +82,17 @@ public class Commodity implements Serializable {
     
     private boolean service;
     
+    public Commodity shallowCopy(){
+    	Commodity newCommodity = new Commodity();
+    	newCommodity.setSku(getSku());
+    	newCommodity.setDescription(getDescription());
+    	newCommodity.setUnitOfMeasure(getUnitOfMeasure());
+    	newCommodity.setTax(getTax());
+    	newCommodity.setService(isService());
+    	newCommodity.setBusiness(getBusiness());
+    	return newCommodity;
+    }
+    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "commodity")
     private Set<Price> prices = new HashSet<>();
     
