@@ -10,6 +10,8 @@
 
 	<button type="button" class="btn red new-estimation"
 		ng-click="newEstimationClick()">New Estimation</button>
+		
+	<n-year-selector class="pull-right" document-type="estimations" callback="loadEstimations(year)"></n-year-selector>
 
 	<div class="estimations">
 		<img class="spinner" ng-show="estimations==null" src="../../private_assets/img/ajax-loading.gif">

@@ -10,6 +10,8 @@
 
 	<button type="button" class="btn red new-credit-note"
 		ng-click="newCreditNoteClick()">New Credit Note</button>
+		
+	<n-year-selector class="pull-right" document-type="creditNotes" callback="loadCreditNotes(year)"></n-year-selector>
 
 	<div class="credit-notes">
 		<img class="spinner" ng-show="creditNotes==null" src="../../private_assets/img/ajax-loading.gif">

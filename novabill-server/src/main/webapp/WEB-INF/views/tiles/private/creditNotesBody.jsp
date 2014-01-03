@@ -5,3 +5,8 @@
 	<div ng-view></div>
 </div>
 
+<script type="text/javascript">
+var documentYears = {
+        creditNotes : <%=request.getAttribute("creditNoteYears")%>,
+};
+</script>

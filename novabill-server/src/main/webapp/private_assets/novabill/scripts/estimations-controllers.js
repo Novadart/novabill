@@ -7,8 +7,12 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
  * ESTIMATIONS PAGE CONTROLLER
  */
 .controller('EstimationCtrl', ['$scope', '$location', 'nConstants', '$rootScope', function($scope, $location, nConstants, $rootScope){
-	$scope.loadEstimations = function() {
-		GWT_Server.estimation.getAllInRange(nConstants.conf.businessId, '2013', '0', '1000000', {
+	var selectedYear = String(new Date().getFullYear());
+	
+	$scope.loadEstimations = function(year) {
+		selectedYear = year;
+		
+		GWT_Server.estimation.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
 					$scope.estimations = page.items;
@@ -32,10 +36,9 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 		$scope.$apply(function(){
 			$scope.estimations= null;
 		});
-		$scope.loadEstimations();
+		$scope.loadEstimations(selectedYear);
 	});
 	
-	$scope.loadEstimations();
 }])
 
 

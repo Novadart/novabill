@@ -518,6 +518,35 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 
 
 /*
+ * Year selector
+ */
+.directive('nYearSelector', ['nConstants', function(nConstants) {
+	return {
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-year-selector.html',
+		scope: { 
+			callback : '&',
+			documentType : '@'
+		},
+		controller : ['$scope', function($scope){
+			$scope.years = documentYears[$scope.documentType].reverse();
+			$scope.selectedYear = $scope.years.length > 0 ?  $scope.years[0] : null;
+
+			$scope.onChange = function(){
+				$scope.callback({ year : String($scope.selectedYear) });
+			};
+			
+			if($scope.selectedYear){
+				$scope.callback({ year : String($scope.selectedYear) });
+			}
+			
+		}],
+		restrict: 'E',
+		replace: true,
+	};
+}])
+
+
+/*
  * Log Record Widget
  */
 .directive('nLogRecord', ['nConstants', function factory(nConstants){

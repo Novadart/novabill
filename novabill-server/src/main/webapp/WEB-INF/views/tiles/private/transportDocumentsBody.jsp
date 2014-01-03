@@ -3,3 +3,9 @@
 <div class="page-content">
     <div ng-view></div>
 </div>
+
+<script type="text/javascript">
+var documentYears = {
+        transportDocuments : <%=request.getAttribute("transportDocumentYears")%>,
+};
+</script>

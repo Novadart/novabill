@@ -6,9 +6,14 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 /**
  * CREDIT NOTES PAGE CONTROLLER
  */
-.controller('TransportDocumentCtrl', ['$scope', '$location', 'nConstants', '$rootScope', function($scope, $location, nConstants, $rootScope){
-	$scope.loadTransportDocuments = function() {
-		GWT_Server.transportDocument.getAllInRange(nConstants.conf.businessId, '2013', '0', '1000000', {
+.controller('TransportDocumentCtrl', ['$scope', '$location', 'nConstants', '$rootScope', 
+                                      function($scope, $location, nConstants, $rootScope){
+	var selectedYear = String(new Date().getFullYear());
+	
+	$scope.loadTransportDocuments = function(year) {
+		selectedYear = year;
+		
+		GWT_Server.transportDocument.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
 					$scope.transportDocuments = page.items;
@@ -32,10 +37,9 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 		$scope.$apply(function(){
 			$scope.transportDocuments = null;
 		});
-		$scope.loadTransportDocuments();
+		$scope.loadTransportDocuments(selectedYear);
 	});
 	
-	$scope.loadTransportDocuments();
 }])
 
 

@@ -157,7 +157,7 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.cons
 		$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
 				'Are you sure that you want to delete permanently any data associated to "'+name+'"',
 				{
-			
+
 			onOk : function(){
 
 				GWT_Server.client.remove(nConstants.conf.businessId, clientId, {
@@ -172,7 +172,7 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.cons
 			},
 
 			onCancel : function(){}
-			
+
 				});
 
 	};
@@ -217,14 +217,22 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.cons
 	 * types = {'invoice','estimation','creditNote','transportDocument'}
 	 */ 
 	var loading = {};
+	var selectedYear = {};
+	var firstRun = {
+			'estimation' : true,
+			'creditNote' : true,
+			'transportDocument' : true
+	};
 
-	$scope.loadDocs = function(type){
-		if(loading[type] || $scope[type+'Data']){
+	var loadDocs = function(year, type){
+		selectedYear[type] = year;
+
+		if(loading[type]){
 			return;
 		}
 
 		loading[type] = true;
-		GWT_Server[type].getAllForClient($routeParams.clientId, '2013', {
+		GWT_Server[type].getAllForClient($routeParams.clientId, year, {
 
 			onSuccess : function(clientData){
 				$scope.$apply(function(){
@@ -239,32 +247,61 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.cons
 		});
 	};
 
-	$scope.$on('invoice.remove', function(event){
+
+	$scope.loadInvoices = function(year){ 
+		loadDocs(year === undefined ? selectedYear['invoice'] : year, 'invoice'); 
+	};
+	
+	$scope.loadEstimations = function(year){ 
+		if(firstRun['estimation']){
+			firstRun['estimation'] = false;
+			selectedYear['estimation'] = year;
+			return;
+		}
+		loadDocs(year === undefined ? selectedYear['estimation'] : year, 'estimation'); 
+	};
+	
+	$scope.loadCreditNotes = function(year){ 
+		if(firstRun['creditNote']){
+			firstRun['creditNote'] = false;
+			selectedYear['creditNote'] = year;
+			return;
+		}
+		loadDocs(year === undefined ? selectedYear['creditNote'] : year, 'creditNote'); 
+	};
+	
+	$scope.loadTransportDocuments = function(year){ 
+		if(firstRun['transportDocument']){
+			firstRun['transportDocument'] = false;
+			selectedYear['transportDocument'] = year;
+			return;
+		}
+		loadDocs(year === undefined ? selectedYear['transportDocument'] : year, 'transportDocument'); 
+	};
+
+	$scope.$on(nConstants.events.INVOICE_REMOVED, function(event){
 		$scope.invoiceData = null;
 		$scope.$apply();
-		$scope.loadDocs('invoice');
+		$scope.loadInvoices();
 	});
 
-	$scope.$on('estimation.remove', function(event){
+	$scope.$on(nConstants.events.ESTIMATION_REMOVED, function(event){
 		$scope.estimationData = null;
 		$scope.$apply();
-		$scope.loadDocs('estimation');
+		$scope.loadEstimations();
 	});
 
-	$scope.$on('creditNote.remove', function(event){
+	$scope.$on(nConstants.events.CREDIT_NOTE_REMOVED, function(event){
 		$scope.creditNoteData = null;
 		$scope.$apply();
-		$scope.loadDocs('creditNote');
+		$scope.loadCreditNotes();
 	});
 
-	$scope.$on('transportDocument.remove', function(event){
+	$scope.$on(nConstants.events.TRANSPORT_DOCUMENT_REMOVED, function(event){
 		$scope.transportDocumentData = null;
 		$scope.$apply();
-		$scope.loadDocs('transportDocument');
+		$scope.loadTransportDocuments();
 	});
-
-
-	$scope.loadDocs('invoice');
 
 }]);
 

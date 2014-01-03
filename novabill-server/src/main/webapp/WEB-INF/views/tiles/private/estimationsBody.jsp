@@ -4,3 +4,9 @@
 <div class="page-content">
 	<div ng-view></div>
 </div>
+
+<script type="text/javascript">
+var documentYears = {
+        estimations : <%=request.getAttribute("estimationYears")%>,
+};
+</script>

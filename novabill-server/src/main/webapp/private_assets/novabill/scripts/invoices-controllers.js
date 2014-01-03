@@ -7,8 +7,12 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
  * INVOICES PAGE CONTROLLER
  */
 .controller('InvoicesCtrl', ['$scope', '$location', 'nConstants', '$rootScope', function($scope, $location, nConstants, $rootScope){
-	$scope.loadInvoices = function() {
-		GWT_Server.invoice.getAllInRange(nConstants.conf.businessId, '2013', '0', '1000000', {
+	var selectedYear = String(new Date().getFullYear());
+	
+	$scope.loadInvoices = function(year) {
+		selectedYear = year;
+		
+		GWT_Server.invoice.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
 					$scope.invoices = page.items;
@@ -32,10 +36,9 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
 		$scope.$apply(function(){
 			$scope.invoices= null;
 		});
-		$scope.loadInvoices();
+		$scope.loadInvoices(selectedYear);
 	});
 
-	$scope.loadInvoices();
 }])
 
 

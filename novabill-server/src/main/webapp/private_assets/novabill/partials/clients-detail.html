@@ -26,19 +26,22 @@
 		<div class="tabbable tabbable-custom">
 			<ul class="nav nav-tabs">
 				<li class="active"><a href="#tab_invoices" data-toggle="tab">Invoice</a></li>
-				<li class=""><a href="#tab_transport_documents" data-toggle="tab" ng-click="loadDocs('transportDocument')">Transport
+				<li class=""><a href="#tab_transport_documents" data-toggle="tab" ng-click="loadTransportDocuments()">Transport
 						Documents</a></li>
-				<li class=""><a href="#tab_estimations" data-toggle="tab" ng-click="loadDocs('estimation')">Estimations</a></li>
-				<li class=""><a href="#tab_credit_notes" data-toggle="tab" ng-click="loadDocs('creditNote')">Credit Notes</a></li>
+				<li class=""><a href="#tab_estimations" data-toggle="tab" ng-click="loadEstimations()">Estimations</a></li>
+				<li class=""><a href="#tab_credit_notes" data-toggle="tab" ng-click="loadCreditNotes()">Credit Notes</a></li>
 			</ul>
-			<div class="tab-content">
+			<div class="tab-content" style="position: relative;">
+                
 				<div class="tab-pane active" id="tab_invoices">
+				    <n-year-selector style="margin: 10px auto;" document-type="invoices" callback="loadInvoices(year)"></n-year-selector>
 					<img class="spinner" ng-show="invoiceData===null" src="../../private_assets/img/ajax-loading.gif">
 					<p class="no-data-message text-center text-info" ng-show="invoiceData && invoiceData.length===0">No Data</p>
 					<n-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoiceData"></n-invoice>
 				</div>
 
 				<div class="tab-pane" id="tab_transport_documents">
+				    <n-year-selector style="margin: 10px auto;" document-type="transportDocuments" callback="loadTransportDocuments(year)"></n-year-selector>
 					<img class="spinner" ng-show="!transportDocumentData" src="../../private_assets/img/ajax-loading.gif">
 					<p class="no-data-message text-center text-info"
 						ng-show="transportDocumentData && transportDocumentData.length===0">No Data</p>
@@ -46,12 +49,14 @@
 				</div>
 
 				<div class="tab-pane" id="tab_estimations">
+				    <n-year-selector style="margin: 10px auto;" document-type="estimations" callback="loadEstimations(year)"></n-year-selector>
 					<img class="spinner" ng-show="!estimationData" src="../../private_assets/img/ajax-loading.gif">
 					<p class="no-data-message text-center text-info" ng-show="estimationData && estimationData.length===0">No Data</p>
 					<n-estimation estimation="est" bottom-up-menu="!$first && $last" ng-repeat="est in estimationData"></n-estimation>
 				</div>
 
 				<div class="tab-pane" id="tab_credit_notes">
+				    <n-year-selector style="margin: 10px auto;" document-type="creditNotes" callback="loadCreditNotes(year)"></n-year-selector>
 					<img class="spinner" ng-show="!creditNoteData" src="../../private_assets/img/ajax-loading.gif">
 					<p class="no-data-message text-center text-info" ng-show="creditNoteData && creditNoteData.length===0">No Data</p>
 					<n-credit-note credit-note="cn" bottom-up-menu="!$first && $last" ng-repeat="cn in creditNoteData"></n-credit-note>
