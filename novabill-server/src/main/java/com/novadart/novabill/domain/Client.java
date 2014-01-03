@@ -140,7 +140,7 @@ public class Client implements Serializable, Taxable {
     @ManyToOne(optional = true)
     private PaymentType defaultPaymentType;
     
-    @ManyToOne(optional = true)
+    @ManyToOne
     private PriceList defaultPriceList;
     
     @Size(max = 1500)

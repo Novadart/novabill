@@ -56,6 +56,10 @@ public class ClientService {
 	public Long add(Long businessID, ClientDTO clientDTO) throws AuthorizationException, ValidationException {
 		Client client = new Client(); 
 		ClientDTOFactory.copyFromDTO(client, clientDTO);
+		if(clientDTO.getDefaultPriceListID() == null)
+			client.setDefaultPriceList(PriceList.getDefaultPriceList(businessID));
+		else
+			client.setDefaultPriceList(PriceList.findPriceList(clientDTO.getDefaultPriceListID()));
 		validator.validate(client);
 		Business business = Business.findBusiness(businessID);
 		client.setBusiness(business);
