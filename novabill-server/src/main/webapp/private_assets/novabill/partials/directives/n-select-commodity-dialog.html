@@ -1,0 +1,44 @@
+<div id="selectCommodityDialog" class="modal fade select-multiple-td-dialog" tabindex="-1" aria-hidden="true"
+	data-backdrop="static" data-keyboard="false">
+	<div class="modal-dialog">
+		<div class="modal-content">
+			<div class="modal-body">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+					<h4 class="modal-title">Select Commodity</h4>
+				</div>
+
+				<select class="form-control" style="margin: 5px 0 2px" ng-model="selectedPriceList" ng-init="selectedPriceList"
+					ng-change="changePriceList()" ng-options="p.id as (p.name | nFilterDefault) for p in listOfPriceLists">
+				</select>
+				<div class="commodities-filter input-icon left" style="margin: 0 0 10px">
+					<i class="fa fa-search"></i> <input type="text" class="form-control" autofocus="autofocus" type="text"
+						placeholder="Filter..." ng-model="query">
+				</div>
+
+				<div class="scroller" data-always-visible="1" data-rail-visible="0">
+					<div class="table-responsive">
+						<table class="table">
+							<tbody>
+								<tr ng-repeat="c in priceList.commodityList.commodities | filter:query" 
+								    ng-class="{product: !c.service, service: c.service}" ng-click="selectCommodity(c)">
+									<td width="60%">{{c.description}}</td>
+									<td width="40%" style="text-align: right;">
+									   <n-commodity-price commodity="c" price-list-name="priceList.name" read-only="true"></n-commodity-price>
+									</td>
+								</tr>
+
+							</tbody>
+						</table>
+					</div>
+
+				</div>
+
+			</div>
+			<div class="modal-footer">
+				<button type="button" class="btn" data-dismiss="modal" ng-click="cancel()">Cancel</button>
+				<button type="button" class="btn green" ng-disabled="selectedCommodity===null" ng-click="ok()">Continue</button>
+			</div>
+		</div>
+	</div>
+</div>
