@@ -73,4 +73,6 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	
 	AutoBean<ModifyPriceList> makeModifyPriceList();
 	
+	AutoBean<Pair> makePair();
+	
 }

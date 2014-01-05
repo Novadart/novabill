@@ -136,20 +136,6 @@ angular.module('novabill.clients.controllers', ['novabill.utils', 'novabill.cons
 .controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'nConstants',
                                   function($scope, $route, $routeParams, $location, $rootScope, nConstants) {
 
-	
-	$scope.click = function(){
-	// TODO remove me
-	$rootScope.$broadcast(nConstants.events.SHOW_SELECT_COMMODITY_DIALOG, 
-			3,
-			{ onOk : function(commodity, price){
-						alert(commodity.description + ' ' + price.priceValue);
-					},
-			  onCancel : function(){ }
-			});
-	};
-
-
-
 	//fired when edit client is clicked
 	$scope.editClient = function(clientId) {
 		GWT_UI.modifyClientDialog(nConstants.conf.businessId, clientId, {

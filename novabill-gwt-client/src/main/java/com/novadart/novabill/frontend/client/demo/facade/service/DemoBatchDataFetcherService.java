@@ -8,6 +8,7 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtServiceAsync;
@@ -172,6 +173,13 @@ public class DemoBatchDataFetcherService implements
 	public void fetchNewInvoiceFromTransportDocumentsOpData(
 			List<Long> transportDocumentIDs,
 			AsyncCallback<Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO>> callback) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void fetchSelectCommodityForDocItemOpData(Long clientID,
+			AsyncCallback<Pair<PriceListDTO, List<PriceListDTO>>> callback) {
 		// TODO Auto-generated method stub
 		
 	}
