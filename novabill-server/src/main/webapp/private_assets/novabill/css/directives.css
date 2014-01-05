@@ -51,6 +51,7 @@
 
 .document-well:HOVER {
 	border: 1px solid #555;
+	background-color: #f5f5f5;
 }
 
 .document-well .date {
@@ -84,12 +85,33 @@
 	width: 60px;
 }
 
+.commodity.product {
+    cursor: pointer;
+    border-left: 2px solid #3cc051;
+}
+
+.commodity.service {
+    cursor: pointer;
+    border-left: 2px solid #428bca;
+}
+
+.commodity:HOVER {
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #555;
+    border-right: 1px solid #555;
+    background-color: #f5f5f5;
+}
 
 /*
  *  PRICE LISTS
  */
 .price-list {
     cursor: pointer;
+}
+
+.price-list:HOVER {
+    border: 1px solid #555;
+    background-color: #f5f5f5;
 }
 
 
@@ -202,7 +224,7 @@
 }
 
 #selectCommodityDialog tr:HOVER {
-	background-color: #DDD;
+	background-color: #f5f5f5;
 }
  
 #selectCommodityDialog tr.product {

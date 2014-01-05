@@ -1,11 +1,15 @@
-.price-lists .price-list:HOVER {
-    border: 1px solid #555;
-}
-
 .price-lists .price-list-filter {
     margin: 20px 0;
 }
 
 .price-list-detail .commodity-filter {
 	margin-bottom: 20px;
+}
+
+.price-list-detail .price-row.product {
+	border-left: 2px solid #3cc051;
+}
+
+.price-list-detail .price-row.service {
+    border-left: 2px solid #428bca;
 }

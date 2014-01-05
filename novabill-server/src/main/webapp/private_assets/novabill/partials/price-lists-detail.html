@@ -37,16 +37,13 @@
 			</div>
 
 			<div class="table-responsive">
+			    <img class="spinner" ng-show="commodities==null" style="margin: 0 auto; display: block;" src="../../private_assets/img/ajax-loading.gif">
 				<table class="table">
 					<tbody>
-						<tr ng-repeat="com in commodities | filter:query">
-							<td width="10%">
-							     <span ng-if="!com.service" class="type badge badge-success" >Product</span>
-							     <span ng-if="com.service" class="type badge badge-primary" >Service</span>
-							</td>
+						<tr class="price-row" ng-class="{product: !com.service, service: com.service}" ng-repeat="com in commodities | filter:query">
 							<td width="10%"><strong>{{com.sku}}</strong></td>
 							<td width="50%">{{com.description}}</td>
-							<td width="30%" style="text-align: right;">
+							<td width="40%" style="text-align: right;">
 							      <n-commodity-price 
 							         price-list-name="priceList.name" 
 							         commodity="com"></n-commodity-price>
