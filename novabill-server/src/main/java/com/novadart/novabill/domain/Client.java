@@ -21,7 +21,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -46,7 +45,6 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.Trimmed;
-import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
 /*
@@ -142,12 +140,8 @@ public class Client implements Serializable, Taxable {
     @ManyToOne(optional = true)
     private PaymentType defaultPaymentType;
     
-    @ManyToOne(optional = true)
+    @ManyToOne
     private PriceList defaultPriceList;
-    
-    @NotNull
-    @Column(columnDefinition = "integer default 0")
-    private LayoutType defaultLayoutType;
     
     @Size(max = 1500)
 	private String note;
@@ -360,14 +354,6 @@ public class Client implements Serializable, Taxable {
 
 	public void setDefaultPriceList(PriceList defaultPriceList) {
 		this.defaultPriceList = defaultPriceList;
-	}
-
-	public LayoutType getDefaultLayoutType() {
-		return defaultLayoutType;
-	}
-
-	public void setDefaultLayoutType(LayoutType defaultLayoutType) {
-		this.defaultLayoutType = defaultLayoutType;
 	}
 
 	public String getNote() {

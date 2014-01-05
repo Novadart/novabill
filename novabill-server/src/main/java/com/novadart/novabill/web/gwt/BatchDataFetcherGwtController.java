@@ -4,10 +4,14 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
+import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.web.PriceListService;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -43,6 +47,12 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 	
 	@Autowired
 	private PaymentTypeGwtService paymentTypeService;
+
+	@Autowired
+	private PriceListService priceListService;
+	
+	@Autowired
+	private UtilsService utilsService;
 	
 	private PaymentTypeDTO getDefaultPaymentTypeDTO(Long paymentTypeID) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
 		return paymentTypeID == null? null: paymentTypeService.get(paymentTypeID);
@@ -111,6 +121,12 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 		Long defaultPaymentTypeID = transportDocDTOs.get(0).getClient().getDefaultPaymentTypeID(); 
 		return new Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO>(invoiceService.getNextInvoiceDocumentID(),
 				transportDocDTOs, defaultPaymentTypeID == null? null: paymentTypeService.get(defaultPaymentTypeID));
+	}
+
+	@Override
+	public Pair<PriceListDTO, List<PriceListDTO>> fetchSelectCommodityForDocItemOpData(Long clientID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return new Pair<PriceListDTO, List<PriceListDTO>>(priceListService.get(Client.findClient(clientID).getDefaultPriceList().getId()),
+				priceListService.getAll(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()));
 	}
 	
 }

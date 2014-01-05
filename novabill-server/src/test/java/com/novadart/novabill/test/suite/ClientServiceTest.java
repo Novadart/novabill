@@ -38,6 +38,7 @@ import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -87,6 +88,7 @@ public class ClientServiceTest extends GWTServiceTest {
 	
 	@Test
 	public void getAllAuthenticatedTest() throws NotAuthenticatedException, DataAccessException{
+		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
 		Set<ClientDTO> expected = new HashSet<ClientDTO>();
 		for(Client client: authenticatedPrincipal.getBusiness().getClients())
 			expected.add(ClientDTOFactory.toDTO(client));
@@ -189,13 +191,14 @@ public class ClientServiceTest extends GWTServiceTest {
 		expectedClient.setId(clientID);
 		Client.entityManager().flush();
 		Client actualClient = Client.findClient(clientID);
-		assertTrue(EqualsBuilder.reflectionEquals(expectedClient, actualClient, "contact", "invoices", "estimations", "creditNotes", "transportDocuments", "business", "version"));
+		assertTrue(EqualsBuilder.reflectionEquals(expectedClient, actualClient, "contact", "invoices", "estimations", "creditNotes", "transportDocuments", "business", "version", "defaultPriceList"));
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
 		assertEquals(EntityType.CLIENT, rec.getEntityType());
 		assertEquals(clientID, rec.getEntityID());
 		assertEquals(OperationType.CREATE, rec.getOperationType());
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(actualClient.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(PriceListConstants.DEFAULT, actualClient.getDefaultPriceList().getName());
 	}
 	
 	@Test(expected = DataAccessException.class)

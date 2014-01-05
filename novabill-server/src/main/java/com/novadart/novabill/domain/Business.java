@@ -51,6 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
@@ -126,7 +127,11 @@ public class Business implements Serializable, Taxable {
     @Trimmed
     private String ssn;
 
-    private Long nonFreeAccountExpirationTime; 
+    private Long nonFreeAccountExpirationTime;
+
+    @NotNull
+    @Column(columnDefinition = "integer default 0")
+    private LayoutType defaultLayoutType;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Commodity> commodities = new HashSet<Commodity>();
@@ -508,6 +513,14 @@ public class Business implements Serializable, Taxable {
 
 	public void setNonFreeAccountExpirationTime(Long nonFreeAccountExpirationTime) {
 		this.nonFreeAccountExpirationTime = nonFreeAccountExpirationTime;
+	}
+
+	public LayoutType getDefaultLayoutType() {
+		return defaultLayoutType;
+	}
+
+	public void setDefaultLayoutType(LayoutType defaultLayoutType) {
+		this.defaultLayoutType = defaultLayoutType;
 	}
 
 	public Set<Commodity> getCommodities() {

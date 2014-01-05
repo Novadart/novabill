@@ -1,7 +1,6 @@
 package com.novadart.novabill.shared.client.dto;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.novadart.novabill.shared.client.data.LayoutType;
 
 public class ClientDTO implements IsSerializable, Versionable {
 
@@ -36,8 +35,6 @@ public class ClientDTO implements IsSerializable, Versionable {
 	private Long defaultPaymentTypeID;
 	
 	private Long defaultPriceListID;
-	
-	private LayoutType defaultLayoutType;
 	
 	private String note;
 	
@@ -203,16 +200,6 @@ public class ClientDTO implements IsSerializable, Versionable {
 
 	public void setDefaultPriceListID(Long defaultPriceListID) {
 		this.defaultPriceListID = defaultPriceListID;
-	}
-
-
-	public LayoutType getDefaultLayoutType() {
-		return defaultLayoutType;
-	}
-
-
-	public void setDefaultLayoutType(LayoutType defaultLayoutType) {
-		this.defaultLayoutType = defaultLayoutType;
 	}
 
 

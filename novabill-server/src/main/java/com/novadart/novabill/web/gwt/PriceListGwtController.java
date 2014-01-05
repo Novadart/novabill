@@ -11,6 +11,7 @@ import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -46,7 +47,7 @@ public class PriceListGwtController extends AbstractGwtController implements Pri
 	}
 
 	@Override
-	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, DataIntegrityException {
 		priceListService.remove(businessID, id);
 	}
 

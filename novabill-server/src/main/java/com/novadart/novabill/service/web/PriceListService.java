@@ -25,6 +25,7 @@ import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -103,8 +104,10 @@ public class PriceListService {
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.PriceList).findPriceList(#id)?.business?.id == #businessID")
-	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, DataIntegrityException {
 		PriceList priceList = PriceList.findPriceList(id);
+		if(priceList.isUsed())
+			throw new DataIntegrityException();
 		priceList.remove(); //removing payment type
 		if(Hibernate.isInitialized(priceList.getBusiness().getPriceLists()))
 			priceList.getBusiness().getPaymentTypes().remove(priceList);

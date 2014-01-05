@@ -45,6 +45,7 @@ import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -128,24 +129,13 @@ public class PriceListServiceTest extends GWTServiceTest {
 		}
 	}
 	
-	private void setDefaultPriceList(Long clientID, Long priceListID){
-		Client client = Client.findClient(clientID);
-		PriceList priceList = PriceList.findPriceList(priceListID);
-		client.setDefaultPriceList(priceList);
-		priceList.getClients().add(client);
-		Client.entityManager().flush();
-	}
-	
 	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
+	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException, DataIntegrityException{
 		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
 		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
-		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		setDefaultPriceList(client.getId(), id);
 		priceListService.remove(authenticatedPrincipal.getBusiness().getId(), id);
 		assertNull(PriceList.findPriceList(id));
-		assertNull(Client.findClient(client.getId()).getDefaultPriceList());
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
 		assertEquals(EntityType.PRICE_LIST, rec.getEntityType());
 		assertEquals(id, rec.getEntityID());
@@ -155,7 +145,7 @@ public class PriceListServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void removeUnAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException, DataIntegrityException{
 		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
 		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
@@ -163,7 +153,7 @@ public class PriceListServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeBusinessIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void removeBusinessIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException, DataIntegrityException{
 		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
 		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
@@ -171,8 +161,21 @@ public class PriceListServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeAuthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void removeAuthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException, DataIntegrityException{
 		priceListService.remove(getUnathorizedBusinessID(), null);
+	}
+	
+	@Test(expected = DataIntegrityException.class)
+	public void removeAuthorizedUsedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, DataIntegrityException{
+		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		Long id = priceListService.add(priceListDTO);
+		PriceList priceList = PriceList.findPriceList(id);
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		client.setDefaultPriceList(priceList);
+		priceList.getClients().add(client);
+		PriceList.entityManager().flush();
+		priceListService.remove(authenticatedPrincipal.getBusiness().getId(), id);
 	}
 	
 	@Test

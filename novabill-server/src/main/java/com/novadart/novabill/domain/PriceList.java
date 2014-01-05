@@ -78,6 +78,12 @@ public class PriceList {
 		return newPriceList;
 	}
 	
+	public boolean isUsed(){
+		String sql = "select count(c) from Client c where c.defaultPriceList.id = :id";
+		return entityManager().createQuery(sql, Long.class).
+				setParameter("id", getId()).getSingleResult() > 0;
+	}
+	
 	@SuppressWarnings("unused")
 	@PreRemove
 	private void preRemove(){
