@@ -29,12 +29,13 @@ import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 
 
-//@Service
+@Service
 public class BLMImportService {
 	
 	private String blmDBPath = "/tmp/DATI.mdb";
@@ -89,6 +90,7 @@ public class BLMImportService {
 		business.setCity("Campo San Martino");
 		business.setPostcode("35010");
 		business.setProvince("PD");
+		business.setDefaultLayoutType(LayoutType.DENSE);
 		business.setVatID("IT03971280288");
 		business.setSsn("BRSMTT75P10B563Y");
 		business.getPrincipals().add(principal);
