@@ -409,12 +409,17 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 					$scope.$broadcast(nConstants.events.SHOW_SELECT_COMMODITY_DIALOG, clientId, callback);
 				};
 			}
+			
+			function sortCommodities(priceList){
+				priceList.commodityList.commodities.sort(nSorting.descriptionComparator);
+			}
 
 			function loadPriceList(id){
 				GWT_Server.priceList.get(id, {
 
 					onSuccess : function(priceList){
 						$scope.$apply(function(){
+							sortCommodities(priceList);
 							$scope.priceList = priceList;
 						});
 					},
@@ -437,7 +442,10 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 					onSuccess : function(tupleData){
 						$scope.$apply(function(){
-							$scope.priceList = tupleData.first;
+							var priceList = tupleData.first;
+							sortCommodities(priceList);
+							$scope.priceList = priceList;
+							
 							$scope.listOfPriceLists = tupleData.second.list.sort(nSorting.priceListsComparator);
 							$scope.selectedPriceList = $scope.priceList.id;
 
