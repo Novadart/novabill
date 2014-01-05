@@ -14,7 +14,8 @@
 				</div>
 
 				<div class="scroller" data-always-visible="1" data-rail-visible="0">
-					<div ng-repeat="c in clients | filter:query" class="well well-sm client" ng-class="{selected: selectedId === c.id }" ng-click="select(c.id)">{{c.name}}</div>
+					<div ng-repeat="c in clients | filter:query" class="well well-sm client" 
+					     ng-class="{selected: selectedId === c.id }" ng-click="select(c.id)">{{c.name}}</div>
 				</div>
 
 			</div>

@@ -401,10 +401,6 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 		scope: {},
 
 		controller : ['$scope', 'nConstants', 'nSorting', function($scope, nConstants, nSorting){
-			$scope.selectedCommodity = null;
-			$scope.priceList = null;
-			$scope.listOfPriceLists = null;
-			$scope.query = null;
 			
 			function loadPriceList(id){
 				GWT_Server.priceList.get(id, {
@@ -464,7 +460,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 			
 			
 			function hide(){
-				$scope.selectedId = null;
+				$scope.selectedCommodity = null;
 				$scope.query = null;
 				$scope.priceList = null;
 				$scope.listOfPriceLists = null;

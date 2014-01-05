@@ -352,7 +352,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 						default:
 						case nConstants.priceType.FIXED:
 							$scope.priceValue = price.priceValue;
-							$scope.priceDetails = details
+							$scope.priceDetails = details;
 							break;
 						}
 					} else {
