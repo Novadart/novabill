@@ -96,36 +96,36 @@
 /*
  *  UPDATE PRICE
  */
-.update-price input.has-error,.update-price select.has-error {
+.commodity-price input.has-error,.commodity-price select.has-error {
 	border-color: #953b39;
 	color: #953b39;
 }
 
-.update-price input.has-success,.update-price select.has-success {
+.commodity-price input.has-success,.commodity-price select.has-success {
 	border-color: #356635;
 	color: #356635;
 }
 
-.update-price .type-input {
+.commodity-price .type-input {
 	
 }
 
-.update-price .type-span {
+.commodity-price .type-span {
 	min-width: 200px;
 	display: inline-block;
 }
 
-.update-price .price-input {
+.commodity-price .price-input {
 	margin-left: 5px;
 }
 
-.update-price .price-span {
+.commodity-price .price-span {
 	min-width: 80px;
 	display: inline-block;
 	margin-right: 20px;
 }
 
-.update-price .price-default {
+.commodity-price .price-default {
     min-width: 80px;
 	margin-right: 20px;
 	display: inline-block;
@@ -133,9 +133,42 @@
 	color: gray;
 }
 
-.update-price .btn.save,.update-price .btn.edit {
+.commodity-price .btn.save,.commodity-price .btn.edit {
 	
 }
+
+.commodity-price .price-info {
+	min-width: 150px;
+	color: black;
+	font-weight: normal;
+}
+
+.commodity-price .price-info .details {
+    border: 1px solid #DDD;
+    padding: 5px;
+    position: absolute;
+    background-color: #333;
+    color: white;
+}
+
+.commodity-price .price-info .details.ng-hide-remove {
+  -webkit-transition:all linear 0.5s;
+  -moz-transition:all linear 0.5s;
+  -o-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+  display:block!important;
+}
+ 
+.commodity-price .price-info .details.ng-hide-add.ng-hide-add-active,
+.commodity-price .price-info .details.ng-hide-remove {
+  opacity:0;
+}
+ 
+.commodity-price .price-info .details.ng-hide-add,
+.commodity-price .price-info .details.ng-hide-remove.ng-hide-remove-active {
+  opacity:1;
+}
+
 
 /*
  *  SELECT CLIENT DIALOG
@@ -155,3 +188,17 @@
 #selectClientDialog div.clients-filter {
    margin: 15px 0;
 }
+
+/*
+ *  SELECT COMMODITY DIALOG
+ */
+ 
+#selectCommodityDialog tr.product {
+   border-left: 2px solid #3cc051;
+}
+
+#selectCommodityDialog tr.service {
+   border-left: 2px solid #428bca;
+}
+
+

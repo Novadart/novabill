@@ -77,7 +77,7 @@ angular.module('novabill.priceLists.controllers', ['novabill.translations', 'nov
 
 			onSuccess : function(data){
 				$scope.$apply(function(){
-					$scope.commodities = data.commodityList.commodities.sort(nSorting.modifyPriceListPricesComparator);
+					$scope.commodities = data.commodityList.commodities.sort(nSorting.descriptionComparator);
 					$scope.priceList = data;
 				});
 			},

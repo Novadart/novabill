@@ -23,6 +23,8 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		NOV : 'Novembre', 
 		DEC : 'Dicembre',
 		
+		COMMODITY_PRICE_PERCENTAGE : 'Variazione',
+		
 		//Other strings		
 		DEFAULT_PRICE_LIST : 'LISTINO BASE',
 		

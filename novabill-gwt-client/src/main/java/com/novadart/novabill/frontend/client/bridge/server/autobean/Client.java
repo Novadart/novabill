@@ -70,4 +70,9 @@ public interface Client {
 	public Contact getContact();
 
 	public void setContact(Contact contact);
+
+	public Long getDefaultPriceListID();
+
+	public void setDefaultPriceListID(Long defaultPriceListID);
+
 }

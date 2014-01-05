@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('novabill.directives', ['novabill.utils', 'novabill.translations', 'novabill.constants', 'ngSanitize'])
+angular.module('novabill.directives', ['novabill.utils', 'novabill.translations', 'novabill.calc', 'novabill.constants', 'ngSanitize', 'ngAnimate'])
 
 /*
  * Invoice widget
@@ -300,71 +300,110 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 }])
 
 
+
 /*
- * Update Price Widget
+ * Commodity Price Widget
  * 
  * REQUIRES: removal dialog
  */
-.directive('nUpdatePrice', ['$route', 'nConstants', 
-                            function factory($route, nConstants){
+.directive('nCommodityPrice', ['$route', 'nConstants', 
+                               function factory($route, nConstants){
 
 	return {
-		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-update-price.html',
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-commodity-price.html',
 		scope: { 
 			// the price list this price refers to
 			priceListName : '=',
-			
+
 			// the price for this price list. if a price is not set, the value will be not null 
 			// (a shallow object is returned by the server) but the id of the price will be null
-			price : '=',
-			
-			// the default price for this commodity
-			defaultPrice : '=',
+			commodity : '=',
+
+			// if true the price cannot be changed, buttons are hidden
+			readOnly : '@?'
 		},
-		controller : ['$scope', function($scope){
+		controller : ['$scope', '$rootScope', 'nCalc', '$filter', function($scope, $rootScope, nCalc, $filter){
 			$scope.PRICE_TYPE = nConstants.priceType;
 			$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
-			$scope.editMode = false;
 
-			$scope.$watch('priceType', function(newValue, oldValue){
-				if($scope.editMode && newValue && oldValue && newValue !== oldValue) {
-					$scope.priceValueDerived = null;
-					$scope.priceValueFixed = null;
-				}
-			});
+			// making a copy because we want to drop changes in case they are not saved remotely
+			$scope.price = angular.copy( $scope.commodity.pricesMap.prices[$scope.priceListName] );
+			
+			function updatePriceInfo(price){
 
-			$scope.edit = function(){
-				$scope.editMode = true;
+				if($scope.priceListName === nConstants.conf.defaultPriceListName){
 
-				$scope.priceType = $scope.price.priceType;
+					$scope.priceValue = price.priceValue;
+					$scope.priceDetails = $filter('translate')('DEFAULT_PRICE_LIST');
 
-				if($scope.priceType === $scope.PRICE_TYPE.FIXED){
-					$scope.priceValueDerived = null;
-					$scope.priceValueFixed = $scope.price.priceValue;
 				} else {
-					$scope.priceValueDerived = $scope.price.priceValue;
-					$scope.priceValueFixed = null;
-				}
-			};
+					var defaultPrice = $scope.commodity.pricesMap.prices[nConstants.conf.defaultPriceListName];
+					var details = $filter('translate')('DEFAULT_PRICE_LIST')+'&nbsp;&nbsp;&nbsp;'+$filter('currency')(defaultPrice.priceValue);
+					
+					if($scope.price.priceValue) {
+						switch (price.priceType) {
+						case nConstants.priceType.DERIVED:
+							var defaultPrice = $scope.commodity.pricesMap.prices[nConstants.conf.defaultPriceListName];
+							$scope.priceValue = nCalc.calculatePrice(defaultPrice.priceValue, price.priceValue);
+							$scope.priceDetails = details +'<br>'+$filter('translate')('COMMODITY_PRICE_PERCENTAGE')
+												  +'&nbsp;&nbsp;&nbsp;' + (price.priceValue > 0 ? '+'+price.priceValue : price.priceValue)+'%';
+							break;
 
-			$scope.cancel = function(){
-				$scope.editMode = false;
-			};
+						default:
+						case nConstants.priceType.FIXED:
+							$scope.priceValue = price.priceValue;
+							$scope.priceDetails = details
+							break;
+						}
+					} else {
+						var defaultPrice = $scope.commodity.pricesMap.prices[nConstants.conf.defaultPriceListName];
+						$scope.priceValue = defaultPrice.priceValue;
+						$scope.priceDetails = $filter('translate')('DEFAULT_PRICE_LIST');
+					}
+				}
+			}
+			
+			// for displaying info
+			updatePriceInfo( $scope.commodity.pricesMap.prices[$scope.priceListName] );
+
+			$scope.$watch('price', function(newPrice, oldPrice){
+				if(newPrice.priceType !== oldPrice.priceType){
+					$scope.price.priceValue = null;
+				}
+			}, true);
 
 			$scope.save = function(){
-				var tempPrice = angular.copy($scope.price);
-				tempPrice.priceType = $scope.priceType;
-				tempPrice.priceValue = $scope.priceValueDerived !== null && $scope.priceValueDerived !== undefined ? $scope.priceValueDerived : $scope.priceValueFixed;
-
-				GWT_Server.commodity.addOrUpdatePrice(nConstants.conf.businessId, JSON.stringify(tempPrice), {
-					onSuccess : function(){
+				GWT_Server.commodity.addOrUpdatePrice(nConstants.conf.businessId, JSON.stringify($scope.price), {
+					onSuccess : function(id){
 						$scope.$apply(function(){
-							$route.reload();
+							
+							//set the id, needed if the price was freshly added
+							$scope.price.id = id;
+							
+							// data has been saved, update info...
+							updatePriceInfo( $scope.price );
+							
+							// and update the model
+							$scope.commodity.pricesMap.prices[$scope.priceListName] = $scope.price;
+							$scope.editMode = false;
+							
+							if($scope.priceListName === nConstants.conf.defaultPriceListName){
+								$route.reload();
+							}
 						});
 					},
 
 					onFailure : function(error){}
 				});
+			};
+
+			$scope.edit = function(){
+				$scope.price = angular.copy( $scope.commodity.pricesMap.prices[$scope.priceListName] );
+				$scope.editMode = true;
+			};
+
+			$scope.cancel = function(){
+				$scope.editMode = false;
 			};
 
 			$scope.remove = function(){
@@ -386,7 +425,6 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 					onCancel : function(){}
 				});
 			};
-
 
 		}],
 		restrict: 'E',
@@ -534,16 +572,17 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			$scope.onChange = function(){
 				$scope.callback({ year : String($scope.selectedYear) });
 			};
-			
+
 			if($scope.selectedYear){
 				$scope.callback({ year : String($scope.selectedYear) });
 			}
-			
+
 		}],
 		restrict: 'E',
 		replace: true,
 	};
 }])
+
 
 
 /*
@@ -556,7 +595,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 		scope: { 
 			record : '='
 		},
-		controller : ['$scope', 'nConstants', '$filter', function($scope, nConstants, $filter){
+		controller : ['$scope', '$filter', function($scope, $filter){
 			$scope.ENTITY_TYPE = nConstants.logRecord.entityType;
 			$scope.OPERATION_TYPE = nConstants.logRecord.operationType;
 
@@ -703,7 +742,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 					break;
 				}
 				break;
-				
+
 			case nConstants.logRecord.entityType.PRICE_LIST:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
@@ -725,7 +764,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 					break;
 				}
 				break;
-				
+
 			case nConstants.logRecord.entityType.PAYMENT_TYPE:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
