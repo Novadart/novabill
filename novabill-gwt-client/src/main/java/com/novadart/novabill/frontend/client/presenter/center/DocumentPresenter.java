@@ -136,6 +136,7 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 	
 	protected void setClient(ClientDTO client) {
 		this.client = client;
+		getView().getItemInsertionForm().setClientId(client.getId());
 	}
 	
 	public static DateTimeFormat getYearFormat() {

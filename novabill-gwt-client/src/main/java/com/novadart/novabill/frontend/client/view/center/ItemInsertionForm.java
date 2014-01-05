@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.view.center;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
@@ -71,9 +72,12 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 	@UiField Button add;
 	
+	@UiField Button loadCommodity;
+	
 	@UiField NotificationCss nf;
 
 	private final Handler handler;
+	private Long clientId;
 
 	public ItemInsertionForm(Handler handler) {
 		this.handler = handler;
@@ -109,6 +113,10 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 		notification.addStyleName(nf.notification());
 		TipFactory.show(Tips.item_insertion_form, tip);
+	}
+	
+	public void setClientId(Long clientId) {
+		this.clientId = clientId;
 	}
 
 	@UiHandler("add")
@@ -150,8 +158,36 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		unitOfMeasureContainer.setVisible(!event.getValue());
 		priceContainer.setVisible(!event.getValue());
 		taxContainer.setVisible(!event.getValue());
+		loadCommodity.setVisible(!event.getValue());
+	}
+	
+	@UiHandler("loadCommodity")
+	void onLoadCommodityClicked(ClickEvent e){
+		openSelectCommodityDialog(this, clientId.toString());
+	}
+	
+	private void updateItemFromJS(String description, String unitOfMeasure, String price, String vat){
+		item.setText(description);
+		this.unitOfMeasure.setText(unitOfMeasure);
+		this.price.setText(price.replace('.', ','));
+		tax.setValue(new BigDecimal(vat));
 	}
 
+	private native void openSelectCommodityDialog(ItemInsertionForm insForm, String clientId)/*-{
+		$wnd.GWT_Hook_nSelectCommodityDialog(clientId, {
+			onOk : function(commodity, priceValue){
+				insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::updateItemFromJS(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(
+					commodity.description,
+					commodity.unitOfMeasure,
+					String(priceValue),
+					String(commodity.tax)
+				);
+			},
+			onCancel : function(){},
+		});
+	}-*/;
+	
+	
 	private void updateFields(){
 		resetItemTableForm();
 		accountingDocumentItems.refresh();
@@ -170,6 +206,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		unitOfMeasureContainer.setVisible(true);
 		priceContainer.setVisible(true);
 		taxContainer.setVisible(true);
+		loadCommodity.setVisible(true);
 		setLocked(false);
 	}
 
@@ -211,6 +248,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		price.setEnabled(!value);
 		tax.setEnabled(!value);
 		add.setEnabled(!value);
+		loadCommodity.setEnabled(!value);
 	}
 
 }

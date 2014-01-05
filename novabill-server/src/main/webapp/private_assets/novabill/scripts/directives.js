@@ -328,41 +328,33 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 
 			// making a copy because we want to drop changes in case they are not saved remotely
 			$scope.price = angular.copy( $scope.commodity.pricesMap.prices[$scope.priceListName] );
-			
+
 			function updatePriceInfo(price){
 
-				if($scope.priceListName === nConstants.conf.defaultPriceListName){
+				$scope.priceValue = nCalc.calculatePriceForCommodity($scope.commodity, $scope.priceListName);
 
-					$scope.priceValue = price.priceValue;
+				if($scope.priceListName === $scope.DEFAULT_PRICELIST_NAME || !$scope.price.id){
+
 					$scope.priceDetails = $filter('translate')('DEFAULT_PRICE_LIST');
 
 				} else {
-					var defaultPrice = $scope.commodity.pricesMap.prices[nConstants.conf.defaultPriceListName];
-					var details = $filter('translate')('DEFAULT_PRICE_LIST')+'&nbsp;&nbsp;&nbsp;'+$filter('currency')(defaultPrice.priceValue);
-					
-					if($scope.price.priceValue) {
-						switch (price.priceType) {
-						case nConstants.priceType.DERIVED:
-							var defaultPrice = $scope.commodity.pricesMap.prices[nConstants.conf.defaultPriceListName];
-							$scope.priceValue = nCalc.calculatePrice(defaultPrice.priceValue, price.priceValue);
-							$scope.priceDetails = details +'<br>'+$filter('translate')('COMMODITY_PRICE_PERCENTAGE')
-												  +'&nbsp;&nbsp;&nbsp;' + (price.priceValue > 0 ? '+'+price.priceValue : price.priceValue)+'%';
-							break;
+					var details = $filter('translate')('DEFAULT_PRICE_LIST')
+					+'&nbsp;&nbsp;&nbsp;'+$filter('currency')($scope.commodity.pricesMap.prices[$scope.DEFAULT_PRICELIST_NAME].priceValue);
 
-						default:
-						case nConstants.priceType.FIXED:
-							$scope.priceValue = price.priceValue;
-							$scope.priceDetails = details;
-							break;
-						}
-					} else {
-						var defaultPrice = $scope.commodity.pricesMap.prices[nConstants.conf.defaultPriceListName];
-						$scope.priceValue = defaultPrice.priceValue;
-						$scope.priceDetails = $filter('translate')('DEFAULT_PRICE_LIST');
+					switch (price.priceType) {
+					case nConstants.priceType.DERIVED:
+						$scope.priceDetails = details +'<br>'+$filter('translate')('COMMODITY_PRICE_PERCENTAGE')
+						+'&nbsp;&nbsp;&nbsp;' + (price.priceValue > 0 ? '+'+price.priceValue : String(price.priceValue)).replace('\.', ',') +'%';
+						break;
+
+					default:
+					case nConstants.priceType.FIXED:
+						$scope.priceDetails = details;
+						break;
 					}
 				}
 			}
-			
+
 			// for displaying info
 			updatePriceInfo( $scope.commodity.pricesMap.prices[$scope.priceListName] );
 
@@ -376,18 +368,19 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 				GWT_Server.commodity.addOrUpdatePrice(nConstants.conf.businessId, JSON.stringify($scope.price), {
 					onSuccess : function(id){
 						$scope.$apply(function(){
-							
+
 							//set the id, needed if the price was freshly added
 							$scope.price.id = id;
+
+							// and update the model
+							$scope.commodity.pricesMap.prices[$scope.priceListName] = $scope.price;
 							
 							// data has been saved, update info...
 							updatePriceInfo( $scope.price );
 							
-							// and update the model
-							$scope.commodity.pricesMap.prices[$scope.priceListName] = $scope.price;
 							$scope.editMode = false;
-							
-							if($scope.priceListName === nConstants.conf.defaultPriceListName){
+
+							if($scope.priceListName === $scope.DEFAULT_PRICELIST_NAME){
 								$route.reload();
 							}
 						});

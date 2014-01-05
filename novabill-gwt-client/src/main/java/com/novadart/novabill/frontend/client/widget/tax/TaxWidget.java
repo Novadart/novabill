@@ -6,6 +6,7 @@ import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ChangeHandler;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.user.client.ui.HasEnabled;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Image;
@@ -87,7 +88,8 @@ public class TaxWidget extends ValidatedWidget<BigDecimal> implements HasEnabled
 
 	@Override
 	public void setValue(BigDecimal value) {
-		
+		body.setWidget(customTax);
+		customTaxBox.setValue(NumberFormat.getDecimalFormat().format(value));
 	}
 
 	@Override
