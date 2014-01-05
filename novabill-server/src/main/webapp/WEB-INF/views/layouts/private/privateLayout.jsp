@@ -226,14 +226,18 @@
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="${privateAssetsUrl}/plugins/jquery-1.10.2.min.js"><\/script>');</script>
 
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.4/angular.min.js"></script>
+	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
 	<script>window.angular || document.write('<script src="${privateAssetsUrl}/plugins/angular/angular.min.js"><\/script>');</script>
 	<script src="${privateAssetsUrl}/plugins/angular/angular-route.min.js"></script>
 	<script src="${privateAssetsUrl}/plugins/angular/angular-sanitize.min.js"></script>
+	<script src="${privateAssetsUrl}/plugins/angular/angular-animate.min.js"></script>
 	<script src="${privateAssetsUrl}/plugins/angular/i18n/angular-locale_it-it.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/plugins/angular-translate.min.js" type="text/javascript"></script>
+	<script src="${privateAssetsUrl}/plugins/bignumber-1.3.0/bignumber.min.js"></script>
 	<script src="${privateAssetsUrl}/novabill/scripts/translations.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/novabill/scripts/constants.js" type="text/javascript"></script>
+	<script src="${privateAssetsUrl}/novabill/scripts/calc.js" type="text/javascript"></script>
+	
 
 
 	<!--[if lt IE 9]>

@@ -34,7 +34,7 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 		/**
 		 * 
 		 */
-		modifyPriceListPricesComparator : function(i1, i2){
+		descriptionComparator : function(i1, i2){
 			var n1 = i1.description.toLowerCase();
 			var n2 = i2.description.toLowerCase();
 			return n1<n2 ? -1 : (n1>n2 ? 1 : 0);
@@ -46,7 +46,7 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 .factory('nRegExp', function() {
 	return {
 
-		float : /^\-?\d+((\.|\,)\d+)?$/,
+		float : /^(\+|\-)?\d+((\.|\,)\d+)?$/,
 
 		reserved_word : /^\::.*$/
 

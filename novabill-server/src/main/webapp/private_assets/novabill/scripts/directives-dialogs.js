@@ -13,7 +13,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-select-transport-documents-dialog.html',
 		scope: {},
 
-		controller : ['$scope', 'nConstants', '$element', function($scope, nConstants, $element){
+		controller : ['$scope', 'nConstants', function($scope, nConstants){
 			
 			$scope.$on(nConstants.events.SHOW_TRANSPORT_DOCUMENTS_DIALOG, 
 					function(event, clientId, preSelectedId){
@@ -361,6 +361,111 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				$scope.query = null;
 				
 				$('#selectClientDialog').modal('hide');
+				
+				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
+				$('body').removeClass('modal-open');
+				$('.modal-backdrop').remove();
+			};
+			
+			$scope.ok = function(){
+				$scope.callback.onOk($scope.selectedId);
+				hide();
+			};
+
+			$scope.cancel = function(){
+				$scope.callback.onCancel();
+				hide();
+			};
+		}],
+
+		restrict: 'E',
+		replace: true,
+
+	};
+
+}])
+
+/*
+ * Select Commodity Dialog
+ * 
+ * This dialog is used to select a commodity that is then used in the creation of an invoice or another document.
+ * The dialog loads the prices for the default price list assigned to the user.
+ * Once the user has selected a commodity, the details of such commodity are inserted in the document (sku, description, tax, price).
+ * It is possible to change price list within the dialog, to browse other price lists.
+ */
+.directive('nSelectCommodityDialog', ['nConstants', function factory(nConstants){
+
+	return {
+
+		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-select-commodity-dialog.html',
+		scope: {},
+
+		controller : ['$scope', 'nConstants', 'nSorting', function($scope, nConstants, nSorting){
+			
+			function loadPriceList(id){
+				GWT_Server.priceList.get(id, {
+					
+					onSuccess : function(priceList){
+						$scope.$apply(function(){
+							$scope.priceList = priceList;
+						});
+					},
+					onFailure : function(){}
+				});
+			}
+
+			$scope.selectCommodity = function(commodity){
+				$scope.selectedCommodity = commodity;
+			};
+			
+			$scope.changePriceList = function(){
+				loadPriceList($scope.selectedPriceList);
+			};
+			
+			
+			$scope.$on(nConstants.events.SHOW_SELECT_COMMODITY_DIALOG, function(event, clientId, callback){
+				$scope.callback = callback;
+				
+				GWT_Server.priceList.getAll(nConstants.conf.businessId, {
+					
+					onSuccess : function(listOfPriceLists){
+						$scope.$apply(function(){
+							$scope.listOfPriceLists = listOfPriceLists.list.sort(nSorting.priceListsComparator);
+						});
+					},
+					
+					onFailure : function(){}
+					
+				});
+				
+				
+				GWT_Server.client.get(String(clientId), {
+					
+					onSuccess : function(client){
+						$scope.$apply(function(){
+							loadPriceList(client.defaultPriceListID);
+							$scope.selectedPriceList = client.defaultPriceListID;
+							
+							$('#selectCommodityDialog').modal('show');
+							$('#selectCommodityDialog .scroller').slimScroll({
+						        height: '400px'
+						    });
+						});
+					},
+					
+					onFailure : function(){}
+					
+				});
+			});
+			
+			
+			function hide(){
+				$scope.selectedCommodity = null;
+				$scope.query = null;
+				$scope.priceList = null;
+				$scope.listOfPriceLists = null;
+				
+				$('#selectCommodityDialog').modal('hide');
 				
 				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
 				$('body').removeClass('modal-open');

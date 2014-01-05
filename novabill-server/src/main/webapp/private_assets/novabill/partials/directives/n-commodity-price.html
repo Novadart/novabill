@@ -1,0 +1,85 @@
+<form name="form" class="commodity-price" novalidate>
+    
+    <!-- Select price type -->
+    <select ng-show="editMode && priceListName !== DEFAULT_PRICELIST_NAME"
+            ng-if="!readOnly"
+            ng-class="{'has-error' : form.priceType.$invalid, 'has-success' : form.priceType.$valid}"
+            class="form-control input-medium type-input" 
+            style="display: inline;" 
+            name="priceType" 
+            ng-model="price.priceType" 
+            required>
+        <option value="FIXED">Prezzo fisso</option>
+        <option value="DERIVED">Variazione Percentuale</option>
+    </select>
+    
+    <!-- Select price value -->
+    <div class="price-info" style="display: inline-block;"
+         ng-show="!editMode">
+        <span>{{priceValue | currency}}</span>
+        <a href="javascript:void(0);" class="btn btn-xs" ng-mouseenter="showPriceDetails=true" ng-mouseleave="showPriceDetails=false"><i class="fa fa-info-circle"></i></a>
+        <div ng-show="showPriceDetails" class="details" ng-bind-html="priceDetails"></div>
+    </div>
+    
+    <button 
+        class="btn btn-sm edit"
+        ng-class="{'blue': price.id, 'green': !price.id}" 
+        ng-show="!editMode"
+        ng-if="!readOnly"
+        ng-click="edit()">
+        <i ng-show="price.id" class="fa fa-edit"></i>
+        <i ng-show="!price.id" class="fa fa-plus"></i>
+    </button>
+    
+    <input ng-show="editMode && price.priceType === PRICE_TYPE.DERIVED"
+           ng-if="!readOnly"
+           ng-class="{'has-error' : form.priceValueDerived.$invalid, 'has-success' : form.priceValueDerived.$valid}" 
+           type="text"
+           n-smart-percentage 
+           name="priceValueDerived" 
+           style="display: inline;" 
+           maxlength="50" 
+           ng-model="price.priceValue" 
+           class="form-control input-small price-input" 
+           placeholder="e.g. '-10'" 
+           required>
+           
+    <input ng-show="editMode && price.priceType === PRICE_TYPE.FIXED" 
+           ng-if="!readOnly"
+           ng-class="{'has-error' : form.priceValueFixed.$invalid, 'has-success' : form.priceValueFixed.$valid}"  
+           type="text" 
+           n-smart-price 
+           name="priceValueFixed" 
+           style="display: inline;"  
+           maxlength="50" 
+           ng-model="price.priceValue" 
+           class="form-control input-small price-input" 
+           placeholder="e.g. '23,45'" 
+           required>
+           
+    <button 
+        class="btn btn-sm red remove" 
+        ng-show="!editMode && price.id && priceListName !== DEFAULT_PRICELIST_NAME"
+        ng-if="!readOnly"
+        ng-click="remove()">
+        <i class="fa fa-trash-o"></i>
+    </button>
+    
+    <button 
+        ng-disabled="(price.priceType === PRICE_TYPE.FIXED && form.priceValueFixed.$invalid) || (price.priceType === PRICE_TYPE.DERIVED && form.priceValueDerived.$invalid)"
+        class="btn btn-sm blue save" 
+        ng-if="!readOnly"
+        ng-show="editMode" 
+        ng-click="save()">
+        <i class="fa fa-check"></i>
+    </button>
+        
+    <button 
+        class="btn btn-sm cancel"
+        ng-if="!readOnly"
+        ng-show="editMode" 
+        ng-click="cancel()">
+        <i class="fa fa-ban"></i>
+    </button>
+
+</form>

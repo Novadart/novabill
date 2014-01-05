@@ -264,6 +264,7 @@ insert into commodity (id, sku, description, service, tax, unit_of_measure, busi
 
 --creating price lists
 insert into price_list (id, name, version, business) values (161, '::default', '1', 1);
+update client set default_price_list=161 where business=1;
 insert into price_list (id, name, version, business) values (162, '::default', '1', 2);
 
 --creating default prices

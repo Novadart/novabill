@@ -228,6 +228,8 @@ public class AutoBeanEncoder {
 		ac.setContact(contact == null ? null : contact.as());
 		ac.setCountry(c.getCountry());
 		ac.setDefaultPaymentTypeID(c.getDefaultPaymentTypeID());
+		ac.setDefaultPriceListID(c.getDefaultPriceListID());
+		
 		ac.setEmail(c.getEmail());
 		ac.setFax(c.getFax());
 		ac.setId(c.getId());

@@ -16,7 +16,7 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 		GWT_Server.commodity.getAll(nConstants.conf.businessId, {
 			onSuccess : function(data){
 				$scope.$apply(function(){
-					$scope.commodities = data.commodities.sort(nSorting.modifyPriceListPricesComparator);
+					$scope.commodities = data.commodities.sort(nSorting.descriptionComparator);
 				});
 			},
 
