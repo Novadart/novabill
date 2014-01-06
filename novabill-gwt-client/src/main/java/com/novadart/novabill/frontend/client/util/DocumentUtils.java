@@ -18,6 +18,7 @@ import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 public class DocumentUtils {
 	
 	public static DateTimeFormat DOCUMENT_DATE_FORMAT = DateTimeFormat.getFormat("dd MMMM yyyy");
+	private static final BigDecimal BD_100 = BigDecimal.valueOf(100);
 	
 	public static BigDecimal parseValue(String value) throws NumberFormatException {
 		return new BigDecimal( NumberFormat.getDecimalFormat().parse(value) );
@@ -32,37 +33,32 @@ public class DocumentUtils {
 		}
 	}
 	
-	
-	public static BigDecimal calculateTaxesForItem(AccountingDocumentItemDTO item){
-		return item.getPrice() == null 
-				? BigDecimal.ZERO
-				: item.getPrice()
-				.multiply(item.getQuantity())
-				.multiply(item.getTax())
-				.divide(new BigDecimal(100));
-	}
-	
-	
 	public static BigDecimal calculateTotalBeforeTaxesForItem(AccountingDocumentItemDTO item){
-		return item.getPrice() == null 
-				? BigDecimal.ZERO
-				: item.getPrice()
+		if(item.getPrice() == null){
+			return BigDecimal.ZERO;
+		}
+		
+		BigDecimal discount = item.getDiscount()==null ? BigDecimal.ZERO : item.getDiscount().add(BD_100).divide(BD_100);
+		return item.getPrice()
+				.multiply(discount)
 				.multiply(item.getQuantity());
 	}
 	
+	public static BigDecimal calculateTaxesForItem(AccountingDocumentItemDTO item){
+		return calculateTotalBeforeTaxesForItem(item)
+				.multiply(item.getTax())
+				.divide( BD_100 );
+	}
 	
 	public static BigDecimal calculateTotalAfterTaxesForItem(AccountingDocumentItemDTO item){
-		return item.getPrice() == null 
-				? BigDecimal.ZERO
-				: item.getPrice()
-				.multiply(item.getQuantity())
-				.multiply(item.getTax().add(new BigDecimal(100)))
-				.divide(new BigDecimal(100));
+		return calculateTotalBeforeTaxesForItem(item)
+				.multiply( item.getTax().add(BD_100) )
+				.divide( BD_100 );
 	}
 	
 	
 	public static AccountingDocumentItemDTO createAccountingDocumentItem(String description, String price, 
-			String quantity, String unitOfMeasure, BigDecimal tax){
+			String quantity, String unitOfMeasure, BigDecimal tax, String discount){
 		AccountingDocumentItemDTO ii = new AccountingDocumentItemDTO();
 
 		try {
@@ -71,6 +67,7 @@ public class DocumentUtils {
 			ii.setQuantity(parseValue(quantity));
 			ii.setUnitOfMeasure(unitOfMeasure);
 			ii.setTax(tax);
+			ii.setDiscount(discount.isEmpty() ? BigDecimal.ZERO : parseValue(discount));
 		} catch (NumberFormatException ex) {
 			return null;
 		}
@@ -88,7 +85,7 @@ public class DocumentUtils {
 	
 	
 	public static String validateAccountingDocumentItem(String description, String price, 
-			String quantity, String unitOfMeasure, BigDecimal tax){
+			String quantity, String unitOfMeasure, BigDecimal tax, String discount){
 		if(description.isEmpty()) {
 			return I18NM.get.errorCheckField(I18N.INSTANCE.nameDescription());
 		}
@@ -117,6 +114,16 @@ public class DocumentUtils {
 			
 			} catch (NumberFormatException e) {
 				return I18NM.get.errorCheckField(I18N.INSTANCE.quantity());
+			}
+		}
+		
+		if( !discount.isEmpty() ) {
+			try {
+				
+				parseValue(discount);
+			
+			} catch (NumberFormatException e) {
+				return I18NM.get.errorCheckField(I18N.INSTANCE.discount());
 			}
 		}
 		

@@ -46,6 +46,10 @@
 			top: -0.2em;
 		}
 		
+		.discount {
+            width: 4em;
+        }
+		
 		.item {
 			width: 25em;
 			min-height: 5em;
@@ -63,7 +67,7 @@
 			width: 6em;
 		}
 		
-		.quantityContainer,.unitOfMeasureContainer,.priceContainer,.taxContainer
+		.quantityContainer,.unitOfMeasureContainer,.priceContainer,.taxContainer,.discountContainer
 			{
 			margin-left: 1em;
 		}
@@ -130,6 +134,10 @@
 					<g:Label styleName="{s.smallLabel}" text="{i18n.price}*"></g:Label>
 					<g:TextBox ui:field="price" styleName="{s.price}"></g:TextBox>
 				</g:VerticalPanel>
+                <g:VerticalPanel ui:field="discountContainer" styleName="{s.discountContainer}">
+                    <g:Label styleName="{s.smallLabel}" text="{i18n.discountLabel}"></g:Label>
+                    <g:TextBox styleName="{s.discount}" ui:field="discount" />
+                </g:VerticalPanel>
 				<g:VerticalPanel ui:field="taxContainer" styleName="{s.taxContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.vat}"></g:Label>
 					<t:TaxWidget styleName="{s.tax}" ui:field="tax" />
