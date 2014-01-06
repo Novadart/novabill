@@ -359,66 +359,70 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			// for displaying info
 			updatePriceInfo(COMMODITY_PRICES_HACK[$scope.priceListName]);
 
-			$scope.$watch('price', function(newPrice, oldPrice){
-				if(newPrice.priceType !== oldPrice.priceType){
-					$scope.price.priceValue = null;
-				}
-			}, true);
-
-			$scope.save = function(){
-				GWT_Server.commodity.addOrUpdatePrice(nConstants.conf.businessId, JSON.stringify($scope.price), {
-					onSuccess : function(id){
-						$scope.$apply(function(){
-
-							//set the id, needed if the price was freshly added
-							$scope.price.id = id;
-
-							// and update the model
-							COMMODITY_PRICES_HACK[$scope.priceListName] = $scope.price;
-							
-							// data has been saved, update info...
-							updatePriceInfo( $scope.price );
-							
-							$scope.editMode = false;
-
-							if($scope.priceListName === $scope.DEFAULT_PRICELIST_NAME){
-								$route.reload();
-							}
-						});
-					},
-
-					onFailure : function(error){}
-				});
-			};
-
-			$scope.edit = function(){
-				$scope.price = angular.copy( COMMODITY_PRICES_HACK[$scope.priceListName] );
-				$scope.editMode = true;
-			};
-
-			$scope.cancel = function(){
-				$scope.editMode = false;
-			};
-
-			$scope.remove = function(){
-				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
-						'Are you sure that you want to delete the price in this price list?', {
-					onOk : function(){
-						GWT_Server.commodity.removePrice(nConstants.conf.businessId, $scope.price.priceListID, $scope.price.commodityID, {
-							onSuccess : function(data){
-								$scope.$apply(function(){
+			if(!$scope.readOnly) {
+				
+				$scope.$watch('price', function(newPrice, oldPrice){
+					if(newPrice.priceType !== oldPrice.priceType){
+						$scope.price.priceValue = null;
+					}
+				}, true);
+	
+				$scope.save = function(){
+					GWT_Server.commodity.addOrUpdatePrice(nConstants.conf.businessId, JSON.stringify($scope.price), {
+						onSuccess : function(id){
+							$scope.$apply(function(){
+	
+								//set the id, needed if the price was freshly added
+								$scope.price.id = id;
+	
+								// and update the model
+								COMMODITY_PRICES_HACK[$scope.priceListName] = $scope.price;
+								
+								// data has been saved, update info...
+								updatePriceInfo( $scope.price );
+								
+								$scope.editMode = false;
+	
+								if($scope.priceListName === $scope.DEFAULT_PRICELIST_NAME){
 									$route.reload();
-								});
-							},
-
-							onFailure : function(error){}
-						});
-
-					},
-
-					onCancel : function(){}
-				});
-			};
+								}
+							});
+						},
+	
+						onFailure : function(error){}
+					});
+				};
+	
+				$scope.edit = function(){
+					$scope.price = angular.copy( COMMODITY_PRICES_HACK[$scope.priceListName] );
+					$scope.editMode = true;
+				};
+	
+				$scope.cancel = function(){
+					$scope.editMode = false;
+				};
+	
+				$scope.remove = function(){
+					$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
+							'Are you sure that you want to delete the price in this price list?', {
+						onOk : function(){
+							GWT_Server.commodity.removePrice(nConstants.conf.businessId, $scope.price.priceListID, $scope.price.commodityID, {
+								onSuccess : function(data){
+									$scope.$apply(function(){
+										$route.reload();
+									});
+								},
+	
+								onFailure : function(error){}
+							});
+	
+						},
+	
+						onCancel : function(){}
+					});
+				};
+				
+			}
 
 		}],
 		restrict: 'E',
