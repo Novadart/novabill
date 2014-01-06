@@ -325,9 +325,10 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 		controller : ['$scope', '$rootScope', 'nCalc', '$filter', function($scope, $rootScope, nCalc, $filter){
 			$scope.PRICE_TYPE = nConstants.priceType;
 			$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
+			var COMMODITY_PRICES_HACK = $scope.commodity.pricesMap ? $scope.commodity.pricesMap.prices : $scope.commodity.prices;
 
 			// making a copy because we want to drop changes in case they are not saved remotely
-			$scope.price = angular.copy( $scope.commodity.pricesMap.prices[$scope.priceListName] );
+			$scope.price = angular.copy( COMMODITY_PRICES_HACK[$scope.priceListName]);
 
 			function updatePriceInfo(price){
 
@@ -339,7 +340,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 
 				} else {
 					var details = $filter('translate')('DEFAULT_PRICE_LIST')
-					+'&nbsp;&nbsp;&nbsp;'+$filter('currency')($scope.commodity.pricesMap.prices[$scope.DEFAULT_PRICELIST_NAME].priceValue);
+					+'&nbsp;&nbsp;&nbsp;'+$filter('currency')(COMMODITY_PRICES_HACK[$scope.DEFAULT_PRICELIST_NAME].priceValue);
 
 					switch (price.priceType) {
 					case nConstants.priceType.DERIVED:
@@ -356,7 +357,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			}
 
 			// for displaying info
-			updatePriceInfo( $scope.commodity.pricesMap.prices[$scope.priceListName] );
+			updatePriceInfo(COMMODITY_PRICES_HACK[$scope.priceListName]);
 
 			$scope.$watch('price', function(newPrice, oldPrice){
 				if(newPrice.priceType !== oldPrice.priceType){
@@ -373,7 +374,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 							$scope.price.id = id;
 
 							// and update the model
-							$scope.commodity.pricesMap.prices[$scope.priceListName] = $scope.price;
+							COMMODITY_PRICES_HACK[$scope.priceListName] = $scope.price;
 							
 							// data has been saved, update info...
 							updatePriceInfo( $scope.price );
@@ -391,7 +392,7 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			};
 
 			$scope.edit = function(){
-				$scope.price = angular.copy( $scope.commodity.pricesMap.prices[$scope.priceListName] );
+				$scope.price = angular.copy( COMMODITY_PRICES_HACK[$scope.priceListName] );
 				$scope.editMode = true;
 			};
 

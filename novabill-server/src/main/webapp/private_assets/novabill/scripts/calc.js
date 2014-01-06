@@ -23,7 +23,8 @@ angular.module('novabill.calc', ['novabill.constants'])
 		
 		
 		calculatePriceForCommodity : function(commodity, priceListName){
-			var price = commodity.pricesMap.prices[priceListName];
+			var COMMODITY_PRICES_HACK = commodity.pricesMap ? commodity.pricesMap.prices : commodity.prices;
+			var price = COMMODITY_PRICES_HACK[priceListName];
 			
 			if(priceListName === nConstants.conf.defaultPriceListName){
 				return price.priceValue;
@@ -31,15 +32,14 @@ angular.module('novabill.calc', ['novabill.constants'])
 				
 				if(price === undefined || !price.id){
 					//if no price for the given price list, return the default price
-					price = commodity.pricesMap.prices[nConstants.conf.defaultPriceListName];
+					price = COMMODITY_PRICES_HACK[nConstants.conf.defaultPriceListName];
 					return price.priceValue;
 				}
 				
 				switch (price.priceType) {
 				case nConstants.priceType.DERIVED:
-					var defaultPrice = commodity.pricesMap.prices[nConstants.conf.defaultPriceListName];
-					return this.calculatePriceWithPercentageVariation(defaultPrice.priceValue, price.priceValue)
-					break;
+					var defaultPrice = COMMODITY_PRICES_HACK[nConstants.conf.defaultPriceListName];
+					return this.calculatePriceWithPercentageVariation(defaultPrice.priceValue, price.priceValue);
 
 				default:
 				case nConstants.priceType.FIXED:

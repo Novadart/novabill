@@ -23,6 +23,8 @@ angular.module('novabill.constants', [])
 			businessId : businessId,
 			defaultPriceListName : defaultPriceListName,
 
+			privateAreaBaseUrl : basePath + 'private/',
+			
 			dashboardUrl : basePath + 'private/',
 			clientsBaseUrl : basePath + 'private/clients/',
 			invoicesBaseUrl : basePath + 'private/invoices/',

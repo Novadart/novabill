@@ -67,24 +67,17 @@ angular.module('novabill.priceLists.controllers', ['novabill.translations', 'nov
 /**
  * PRICE LISTS DETAILS PAGE CONTROLLER
  */
-.controller('PriceListsDetailsCtrl', ['$scope', '$routeParams', 'nSorting', 'nConstants', '$rootScope', '$location',
-                                      function($scope, $routeParams, nSorting, nConstants, $rootScope, $location){
+.controller('PriceListsDetailsCtrl', ['$scope', '$http', '$routeParams', 'nSorting', 'nConstants', '$rootScope', '$location',
+                                      function($scope, $http, $routeParams, nSorting, nConstants, $rootScope, $location){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	
 	function loadPriceList(){
-		GWT_Server.priceList.get($routeParams.priceListId, {
-
-			onSuccess : function(data){
-				$scope.$apply(function(){
-					$scope.commodities = data.commodityList.commodities.sort(nSorting.descriptionComparator);
-					$scope.priceList = data;
-				});
-			},
-
-			onFailure : function(){}
-
-		});
+		$http.get(nConstants.conf.privateAreaBaseUrl+'pricelists/'+$routeParams.priceListId)
+			.success(function(data, status){
+				$scope.commodities = data.commodities.sort(nSorting.descriptionComparator);
+				$scope.priceList = data;
+			});
 	}
 	
 	
