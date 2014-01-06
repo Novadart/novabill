@@ -403,7 +403,8 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 		},
 
 		controller : ['$scope', 'nConstants', 'nSorting', 'nCalc', function($scope, nConstants, nSorting, nCalc){
-
+			$scope.selectedCommodity = null;
+			
 			if($scope.gwtHook) {
 				window.GWT_Hook_nSelectCommodityDialog = function(clientId, callback){
 					$scope.$broadcast(nConstants.events.SHOW_SELECT_COMMODITY_DIALOG, clientId, callback);
@@ -421,6 +422,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 						$scope.$apply(function(){
 							sortCommodities(priceList);
 							$scope.priceList = priceList;
+							$scope.selectedCommodity = null;
 						});
 					},
 					onFailure : function(){}
