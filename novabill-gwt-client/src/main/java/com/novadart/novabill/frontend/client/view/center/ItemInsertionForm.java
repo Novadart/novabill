@@ -61,6 +61,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField TextBox unitOfMeasure;
 	@UiField TextBox price;
 	@UiField TaxWidget tax;
+	@UiField TextBox discount;
 	@UiField(provided=true) ItemTable itemTable;
 	@UiField SimplePanel tip;
 	@UiField CheckBox textOnlyAccountingItem;
@@ -69,6 +70,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField VerticalPanel unitOfMeasureContainer;
 	@UiField VerticalPanel priceContainer;
 	@UiField VerticalPanel taxContainer;
+	@UiField VerticalPanel discountContainer;
 
 	@UiField Button add;
 	
@@ -130,7 +132,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		} else {
 			tax.validate();
 			validationError = DocumentUtils.validateAccountingDocumentItem(item.getText(), price.getText(), 
-					quantity.getText(), unitOfMeasure.getText(), tax.getValue());
+					quantity.getText(), unitOfMeasure.getText(), tax.getValue(), discount.getText());
 		}
 
 		if(validationError != null) {
@@ -144,7 +146,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			ii = DocumentUtils.createAccountingDocumentItem(item.getText());
 		} else {
 			ii = DocumentUtils.createAccountingDocumentItem(item.getText(), price.getText(), 
-					quantity.getText(), unitOfMeasure.getText(), tax.getValue());
+					quantity.getText(), unitOfMeasure.getText(), tax.getValue(), discount.getText());
 		}
 
 		accountingDocumentItems.getList().add(ii);
@@ -159,6 +161,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		priceContainer.setVisible(!event.getValue());
 		taxContainer.setVisible(!event.getValue());
 		loadCommodity.setVisible(!event.getValue());
+		discountContainer.setVisible(!event.getValue());
 	}
 	
 	@UiHandler("loadCommodity")
@@ -199,6 +202,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		quantity.setText("");
 		unitOfMeasure.setText("");
 		price.setText("");
+		discount.setText("");
 		tax.reset();
 		
 		textOnlyAccountingItem.setValue(false);
@@ -207,6 +211,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		priceContainer.setVisible(true);
 		taxContainer.setVisible(true);
 		loadCommodity.setVisible(true);
+		discountContainer.setVisible(true);
 		setLocked(false);
 	}
 
@@ -246,6 +251,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		quantity.setEnabled(!value);
 		unitOfMeasure.setEnabled(!value);
 		price.setEnabled(!value);
+		discount.setEnabled(!value);
 		tax.setEnabled(!value);
 		add.setEnabled(!value);
 		loadCommodity.setEnabled(!value);

@@ -179,6 +179,45 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			}
 		});
 		addColumn(price, I18N.INSTANCE.price());
+		
+		
+		// discount
+		final EditTextCell discountEditCell = new EditTextCell();
+		Column<AccountingDocumentItemDTO, String> discount =
+				new Column<AccountingDocumentItemDTO, String>(discountEditCell) {
+
+			@Override
+			public String getValue(AccountingDocumentItemDTO object) {
+				if(object.getDiscount() == null) {
+					return "";
+				}
+
+				return NumberFormat.getDecimalFormat().format(object.getDiscount());
+			}
+		};
+		discount.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+
+			@Override
+			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				if(object.getDiscount() != null){
+					try{
+
+						BigDecimal newDiscount = DocumentUtils.parseValue(value);
+						object.setDiscount(newDiscount);
+						ItemTable.this.handler.onUpdate(object);
+
+					} catch(NumberFormatException e){
+
+						Notification.showMessage(I18N.INSTANCE.errorClientData());
+
+					}
+				}			
+
+				discountEditCell.clearViewData(object);
+				redrawRow(index);
+			}
+		});
+		addColumn(discount, I18N.INSTANCE.discountLabel());
 
 
 		//VAT
@@ -294,6 +333,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		setColumnWidth(quantity, 6, Unit.PCT);
 		setColumnWidth(unitOfMeasure, 7, Unit.PCT);
 		setColumnWidth(price, 7, Unit.PCT);
+		setColumnWidth(discount, 6, Unit.PCT);
 		setColumnWidth(tax, 6, Unit.PCT);
 		setColumnWidth(totalBeforeTaxes, 8, Unit.PCT);
 		setColumnWidth(totalVat, 8, Unit.PCT);
