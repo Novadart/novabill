@@ -340,12 +340,12 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 
 				} else {
 					var details = $filter('translate')('DEFAULT_PRICE_LIST')
-					+'&nbsp;&nbsp;&nbsp;'+$filter('currency')(COMMODITY_PRICES_HACK[$scope.DEFAULT_PRICELIST_NAME].priceValue);
+					+'    '+$filter('currency')(COMMODITY_PRICES_HACK[$scope.DEFAULT_PRICELIST_NAME].priceValue);
 
 					switch (price.priceType) {
 					case nConstants.priceType.DERIVED:
-						$scope.priceDetails = details +'<br>'+$filter('translate')('COMMODITY_PRICE_PERCENTAGE')
-						+'&nbsp;&nbsp;&nbsp;' + (price.priceValue > 0 ? '+'+price.priceValue : String(price.priceValue)).replace('\.', ',') +'%';
+						$scope.priceDetails = details +'\n'+$filter('translate')('COMMODITY_PRICE_PERCENTAGE')
+						+'   ' + (price.priceValue > 0 ? '+'+price.priceValue : String(price.priceValue)).replace('\.', ',') +'%';
 						break;
 
 					default:
