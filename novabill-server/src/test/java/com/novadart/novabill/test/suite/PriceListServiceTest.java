@@ -134,6 +134,7 @@ public class PriceListServiceTest extends GWTServiceTest {
 		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
 		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
+		Set<Client> clients = PriceList.findPriceList(id).getClients();
 		priceListService.remove(authenticatedPrincipal.getBusiness().getId(), id);
 		assertNull(PriceList.findPriceList(id));
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
@@ -142,6 +143,8 @@ public class PriceListServiceTest extends GWTServiceTest {
 		assertEquals(OperationType.DELETE, rec.getOperationType());
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(priceListDTO.getName(), details.get(DBLoggerAspect.PRICE_LIST_NAME));
+		for(Client client: clients)
+			assertEquals(PriceListConstants.DEFAULT, client.getDefaultPriceList().getName());
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -165,7 +168,7 @@ public class PriceListServiceTest extends GWTServiceTest {
 		priceListService.remove(getUnathorizedBusinessID(), null);
 	}
 	
-	@Test(expected = DataIntegrityException.class)
+	@Test
 	public void removeAuthorizedUsedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, DataIntegrityException{
 		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
 		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));

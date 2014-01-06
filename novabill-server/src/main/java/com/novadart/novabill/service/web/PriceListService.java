@@ -106,7 +106,7 @@ public class PriceListService {
 		  	  	  "T(com.novadart.novabill.domain.PriceList).findPriceList(#id)?.business?.id == #businessID")
 	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, DataIntegrityException {
 		PriceList priceList = PriceList.findPriceList(id);
-		if(priceList.isUsed())
+		if(priceList.getName().equals(PriceListConstants.DEFAULT)) //removing default pricelist
 			throw new DataIntegrityException();
 		priceList.remove(); //removing payment type
 		if(Hibernate.isInitialized(priceList.getBusiness().getPriceLists()))

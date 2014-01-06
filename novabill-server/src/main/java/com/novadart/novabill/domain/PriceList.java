@@ -23,6 +23,7 @@ import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.Hibernate;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
@@ -87,8 +88,13 @@ public class PriceList {
 	@SuppressWarnings("unused")
 	@PreRemove
 	private void preRemove(){
-		for(Client client: getClients())
-			client.setDefaultPriceList(null);
+		PriceList defaultPriceList = PriceList.getDefaultPriceList(getBusiness().getId());
+		boolean defaultPriceListClientsInitialized = Hibernate.isInitialized(defaultPriceList.getClients());
+		for(Client client: getClients()){
+			client.setDefaultPriceList(defaultPriceList);
+			if(defaultPriceListClientsInitialized)
+				defaultPriceList.getClients().add(client);
+		}
 	}
 	
 	/*

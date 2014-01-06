@@ -88,7 +88,6 @@ public class ClientServiceTest extends GWTServiceTest {
 	
 	@Test
 	public void getAllAuthenticatedTest() throws NotAuthenticatedException, DataAccessException{
-		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
 		Set<ClientDTO> expected = new HashSet<ClientDTO>();
 		for(Client client: authenticatedPrincipal.getBusiness().getClients())
 			expected.add(ClientDTOFactory.toDTO(client));
