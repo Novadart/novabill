@@ -114,6 +114,7 @@ public class BLMImportService {
 	}
 	
 	private void createClients(Business business) throws IOException{
+		PriceList defaultPL = business.getPriceLists().iterator().next();
 		Table table = DatabaseBuilder.open(new File(blmDBPath)).getTable("CLIENTI");
 		for(Row row: table){
 			
@@ -170,6 +171,8 @@ public class BLMImportService {
 			
 			client.setBusiness(business);
 			business.getClients().add(client);
+			client.setDefaultPriceList(defaultPL);
+			defaultPL.getClients().add(client);
 		}
 	}
 	
