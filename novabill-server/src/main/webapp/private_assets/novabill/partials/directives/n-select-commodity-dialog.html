@@ -16,11 +16,11 @@
 						placeholder="Filter..." ng-model="query">
 				</div>
 
-				<div class="scroller" data-always-visible="1" data-rail-visible="0">
-					<div class="table-responsive">
+				<div class="scroller" data-always-visible="1" data-rail-visible="0" n-div-infinite-scroll="loadMoreCommodities()">
+					<div class="table-responsive" >
 						<table class="table">
 							<tbody>
-								<tr ng-repeat="c in priceList.commodityList.commodities | filter:query" 
+								<tr ng-repeat="c in commodities" 
 								    ng-class="{product: !c.service, service: c.service, selected: selectedCommodity.id === c.id}" ng-click="selectCommodity(c)">
 									<td width="60%">{{c.description}}</td>
 									<td width="40%" style="text-align: right;">

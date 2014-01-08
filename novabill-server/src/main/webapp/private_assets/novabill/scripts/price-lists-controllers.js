@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('novabill.priceLists.controllers', ['novabill.translations', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.utils'])
+angular.module('novabill.priceLists.controllers', 
+		['novabill.translations', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.utils', 'infinite-scroll'])
 
 
 /**
@@ -67,18 +68,39 @@ angular.module('novabill.priceLists.controllers', ['novabill.translations', 'nov
 /**
  * PRICE LISTS DETAILS PAGE CONTROLLER
  */
-.controller('PriceListsDetailsCtrl', ['$scope', '$http', '$routeParams', 'nSorting', 'nConstants', '$rootScope', '$location',
-                                      function($scope, $http, $routeParams, nSorting, nConstants, $rootScope, $location){
+.controller('PriceListsDetailsCtrl', ['$scope', '$http', '$routeParams', 'nSorting', 'nConstants', '$rootScope', '$location', '$filter',
+                                      function($scope, $http, $routeParams, nSorting, nConstants, $rootScope, $location, $filter){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	
+	var loadedCommodities = [];
+	var filteredCommodities = [];
+	var PARTITION = 50;
+	
+	function updateFilteredCommodities(){
+		filteredCommodities = $filter('filter')(loadedCommodities, $scope.query);
+		$scope.commodities = filteredCommodities.slice(0, 15);
+	}
+	
+	$scope.$watch('query', function(newValue, oldValue){
+		updateFilteredCommodities();
+	});
+	
 	function loadPriceList(){
-		$http.get(nConstants.conf.privateAreaBaseUrl+'pricelists/'+$routeParams.priceListId)
+		$http.get(nConstants.conf.privateAreaBaseUrl+'json/pricelists/'+$routeParams.priceListId)
 			.success(function(data, status){
-				$scope.commodities = data.commodities.sort(nSorting.descriptionComparator);
+				loadedCommodities = data.commodities.sort(nSorting.descriptionComparator);
 				$scope.priceList = data;
+				updateFilteredCommodities();
 			});
 	}
+	
+	$scope.loadMoreCommodities = function(){
+		if($scope.commodities){
+			var currentIndex = $scope.commodities.length;
+			$scope.commodities = $scope.commodities.concat(filteredCommodities.slice(currentIndex, currentIndex+PARTITION));
+		}
+	};
 	
 	
 	$scope.editPriceList = function(){
