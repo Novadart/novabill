@@ -115,10 +115,7 @@
 			<g:CheckBox ui:field="textOnlyAccountingItem" styleName="{s.textOnlyCheckbox}" text="{i18n.textOnlyAccountingItem}" />
 			<g:HorizontalPanel>
 				<g:VerticalPanel>
-					<g:HorizontalPanel>
-						<g:Label styleName="{s.smallLabel}" text="{i18n.nameDescription}"></g:Label>
-						<g:Button ui:field="loadCommodity" text="{i18n.loadCommodity}" styleName="{s.loadCommodity} btn blue btn-xs"></g:Button>
-					</g:HorizontalPanel>
+					<g:Label styleName="{s.smallLabel}" text="{i18n.nameDescription}"></g:Label>
 					<v:ValidatedTextArea ui:field="item" styleName="{s.item}" />
 				</g:VerticalPanel>
 				<g:VerticalPanel ui:field="quantityContainer" styleName="{s.quantityContainer}">

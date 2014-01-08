@@ -1,10 +1,14 @@
 package com.novadart.novabill.frontend.client.view.center;
 
 import java.math.BigDecimal;
+import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
@@ -20,8 +24,13 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
+import com.google.gwt.view.client.SelectionChangeEvent;
+import com.google.gwt.view.client.SingleSelectionModel;
 import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextArea;
+import com.novadart.novabill.frontend.client.SharedComparators;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
@@ -33,6 +42,9 @@ import com.novadart.novabill.frontend.client.widget.tax.TaxWidget;
 import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
 import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
+import com.novadart.novabill.shared.client.tuple.Pair;
 
 public class ItemInsertionForm extends Composite implements HasUILocking {
 	
@@ -74,12 +86,15 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 	@UiField Button add;
 	
-	@UiField Button loadCommodity;
-	
 	@UiField NotificationCss nf;
 
 	private final Handler handler;
 	private Long clientId;
+	private List<CommodityDTO> commodities;
+	private List<PriceListDTO> listOfPriceLists;
+	private PriceListDTO priceList;
+	
+	private final CommoditySearchPanel commoditySearchPanel = new CommoditySearchPanel(this);
 
 	public ItemInsertionForm(Handler handler) {
 		this.handler = handler;
@@ -115,10 +130,77 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 		notification.addStyleName(nf.notification());
 		TipFactory.show(Tips.item_insertion_form, tip);
+		
+		final SingleSelectionModel<CommodityDTO> model = new SingleSelectionModel<CommodityDTO>();
+		commoditySearchPanel.setSelectionModel(model);
+		
+		model.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+			
+			@Override
+			public void onSelectionChange(SelectionChangeEvent event) {
+				commoditySearchPanel.hide();
+				CommodityDTO com = model.getSelectedObject();
+				updateItemFromJS(com.getDescription(), com.getUnitOfMeasure(), 
+						DocumentUtils.calculatePriceForCommodity(com, priceList.getName()).toString(), com.getTax().toString());
+			}
+		});
 	}
 	
 	public void setClientId(Long clientId) {
 		this.clientId = clientId;
+		commoditySearchPanel.setClientId(clientId.toString());
+	}
+	
+	@Override
+	protected void onLoad() {
+		super.onLoad();
+		
+		setLocked(true);
+		
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchSelectCommodityForDocItemOpData(clientId, 
+				new ManagedAsyncCallback<Pair<PriceListDTO,List<PriceListDTO>>>() {
+
+			@Override
+			public void onSuccess(Pair<PriceListDTO, List<PriceListDTO>> result) {
+				priceList = result.getFirst();
+				commodities = result.getFirst().getCommodities();
+				Collections.sort(commodities, SharedComparators.COMMODITY_COMPARATOR);
+				listOfPriceLists = result.getSecond();
+				setLocked(false);
+			}
+		});
+	}
+	
+	private List<CommodityDTO> filterCommodities(String key){
+		if(key.isEmpty()){
+			return new ArrayList<CommodityDTO>();
+		}
+		String nKey = key.toLowerCase();
+		
+		List<CommodityDTO> result = new ArrayList<CommodityDTO>();
+		for (CommodityDTO c : commodities) {
+			if(c.getSku().toLowerCase().contains(nKey) || c.getDescription().toLowerCase().contains(nKey)){
+				result.add(c);
+			}
+		}
+		return result;
+	}
+	
+	@UiHandler("item")
+	void onKeyUp(KeyUpEvent event){
+		if(event.getNativeKeyCode() == KeyCodes.KEY_UP && commoditySearchPanel.isShowing()){
+			commoditySearchPanel.setFocus(true);
+			return;
+		}
+		
+		List<CommodityDTO> list = filterCommodities(item.getText());
+		if(list.isEmpty()){
+			commoditySearchPanel.hide();
+			return;
+		}
+		
+		commoditySearchPanel.setCommodities(list);
+		commoditySearchPanel.positionOnTop(item);
 	}
 
 	@UiHandler("add")
@@ -160,13 +242,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		unitOfMeasureContainer.setVisible(!event.getValue());
 		priceContainer.setVisible(!event.getValue());
 		taxContainer.setVisible(!event.getValue());
-		loadCommodity.setVisible(!event.getValue());
 		discountContainer.setVisible(!event.getValue());
-	}
-	
-	@UiHandler("loadCommodity")
-	void onLoadCommodityClicked(ClickEvent e){
-		openSelectCommodityDialog(this, clientId.toString());
 	}
 	
 	private void updateItemFromJS(String description, String unitOfMeasure, String price, String vat){
@@ -176,7 +252,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		tax.setValue(new BigDecimal(vat));
 	}
 
-	private native void openSelectCommodityDialog(ItemInsertionForm insForm, String clientId)/*-{
+	native void openSelectCommodityDialog(ItemInsertionForm insForm, String clientId)/*-{
 		$wnd.GWT_Hook_nSelectCommodityDialog(clientId, {
 			onOk : function(commodity, priceValue){
 				insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::updateItemFromJS(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(
@@ -210,7 +286,6 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		unitOfMeasureContainer.setVisible(true);
 		priceContainer.setVisible(true);
 		taxContainer.setVisible(true);
-		loadCommodity.setVisible(true);
 		discountContainer.setVisible(true);
 		setLocked(false);
 	}
@@ -254,7 +329,6 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		discount.setEnabled(!value);
 		tax.setEnabled(!value);
 		add.setEnabled(!value);
-		loadCommodity.setEnabled(!value);
 	}
 
 }

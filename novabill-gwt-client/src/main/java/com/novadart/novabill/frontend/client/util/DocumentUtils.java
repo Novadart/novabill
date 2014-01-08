@@ -12,8 +12,10 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.PriceDTO;
 
 public class DocumentUtils {
 	
@@ -134,6 +136,40 @@ public class DocumentUtils {
 		return null;
 	}
 	
+	
+	/*
+	 * Commodities methods
+	 */
+	
+	public static BigDecimal calculatePriceWithPercentageVariation(BigDecimal priceValue, BigDecimal percentageValue){
+		BigDecimal percentage = percentageValue.add(BD_100).divide(BD_100);
+		return priceValue.multiply(percentage);
+	}
+	
+	public static BigDecimal calculatePriceForCommodity(CommodityDTO commodity, String priceListName){
+		PriceDTO price = commodity.getPrices().get(priceListName);
+		
+		if(priceListName.equalsIgnoreCase("::default")){
+			return price.getPriceValue();
+		} else {
+			
+			if(price == null || price.getId() == null){
+				//if no price for the given price list, return the default price
+				price = commodity.getPrices().get("::default");
+				return price.getPriceValue();
+			}
+			
+			switch (price.getPriceType()) {
+			case DERIVED:
+				PriceDTO defaultPrice = commodity.getPrices().get("::default");
+				return calculatePriceWithPercentageVariation(defaultPrice.getPriceValue(), price.getPriceValue());
+
+			default:
+			case FIXED:
+				return price.getPriceValue();
+			}
+		}
+	}
 	
 	public static void updateTotals(AccountingDocumentItemDTO item){
 		BigDecimal totBeforeTaxesForItem = DocumentUtils.calculateTotalBeforeTaxesForItem(item);
