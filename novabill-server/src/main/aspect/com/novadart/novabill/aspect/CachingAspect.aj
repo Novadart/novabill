@@ -17,6 +17,7 @@ import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.dto.PriceDTO;
 
 public privileged aspect CachingAspect {
 	
@@ -218,6 +219,8 @@ public privileged aspect CachingAspect {
 	declare @method : public Long com.novadart.novabill.service.web.CommodityService.add(CommodityDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id");
 	
 	declare @method : public void com.novadart.novabill.service.web.CommodityService.update(CommodityDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id");
+	
+	declare @method : public Long com.novadart.novabill.service.web.CommodityService.addOrUpdatePrice(Long, PriceDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#businessID");
 	
 	/*
 	 * PriceList caching
