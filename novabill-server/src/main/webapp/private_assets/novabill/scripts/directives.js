@@ -583,6 +583,20 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 
 
 
+.directive('nDivInfiniteScroll', function() {
+	
+    return function(scope, elm, attr) {
+        var raw = elm[0];
+        
+        elm.bind('scroll', function() {
+            if (raw.scrollTop + raw.offsetHeight >= raw.scrollHeight) {
+                scope.$apply(attr.nDivInfiniteScroll);
+            }
+        });
+    };
+})
+
+
 /*
  * Log Record Widget
  */

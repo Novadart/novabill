@@ -402,8 +402,12 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 			gwtHook : '@?'
 		},
 
-		controller : ['$scope', 'nConstants', 'nSorting', 'nCalc', function($scope, nConstants, nSorting, nCalc){
+		controller : ['$scope', 'nConstants', 'nSorting', 'nCalc', '$filter', '$http',
+		              function($scope, nConstants, nSorting, nCalc, $filter, $http){
 			$scope.selectedCommodity = null;
+			
+			var loadedCommodities = new Array();
+			var filteredCommodities = new Array();
 			
 			if($scope.gwtHook) {
 				window.GWT_Hook_nSelectCommodityDialog = function(clientId, callback){
@@ -411,21 +415,29 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				};
 			}
 			
-			function sortCommodities(priceList){
-				priceList.commodityList.commodities.sort(nSorting.descriptionComparator);
+			function updateFilteredCommodities(){
+				filteredCommodities = $filter('filter')(loadedCommodities, $scope.query);
+				$scope.commodities = filteredCommodities.slice(0, 15);
+				$scope.selectedCommodity = null;
 			}
-
+			
+			$scope.$watch('query', function(newValue, oldValue){
+				updateFilteredCommodities();
+			});
+			
+			$scope.loadMoreCommodities = function(){
+				if($scope.commodities){
+					var currentIndex = $scope.commodities.length;
+					$scope.commodities = $scope.commodities.concat(filteredCommodities.slice(currentIndex, currentIndex+50));
+				}
+			};
+			
 			function loadPriceList(id){
-				GWT_Server.priceList.get(id, {
-
-					onSuccess : function(priceList){
-						$scope.$apply(function(){
-							sortCommodities(priceList);
-							$scope.priceList = priceList;
-							$scope.selectedCommodity = null;
-						});
-					},
-					onFailure : function(){}
+				$http.get(nConstants.conf.privateAreaBaseUrl+'json/pricelists/'+id)
+				.success(function(data, status){
+					loadedCommodities = data.commodities.sort(nSorting.descriptionComparator);
+					$scope.priceList = data;
+					updateFilteredCommodities();
 				});
 			}
 
@@ -440,27 +452,22 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 			$scope.$on(nConstants.events.SHOW_SELECT_COMMODITY_DIALOG, function(event, clientId, callback){
 				$scope.callback = callback;
 
-				GWT_Server.batchDataFetcher.fetchSelectCommodityForDocItemOpData(String(clientId), {
+				$http.get(nConstants.conf.privateAreaBaseUrl+'json/comm-select-data/'+String(clientId))
+				.success(function(data, status){
+					//orig
+					var priceList = data.first;
+					loadedCommodities = priceList.commodities.sort(nSorting.descriptionComparator);
+					$scope.priceList = priceList;
+					updateFilteredCommodities();
+					
+					$scope.listOfPriceLists = data.second.sort(nSorting.priceListsComparator);
+					$scope.selectedPriceList = $scope.priceList.id;
 
-					onSuccess : function(tupleData){
-						$scope.$apply(function(){
-							var priceList = tupleData.first;
-							sortCommodities(priceList);
-							$scope.priceList = priceList;
-							
-							$scope.listOfPriceLists = tupleData.second.list.sort(nSorting.priceListsComparator);
-							$scope.selectedPriceList = $scope.priceList.id;
-
-							$('#selectCommodityDialog').modal('show');
-							$('#selectCommodityDialog .scroller').slimScroll({
-								height: '400px'
-							});
-						});
-					},
-
-					onFailure : function(){}
+					$('#selectCommodityDialog').modal('show');
+					$('#selectCommodityDialog .scroller').slimScroll({
+						height: '400px'
+					});
 				});
-
 			});
 
 
