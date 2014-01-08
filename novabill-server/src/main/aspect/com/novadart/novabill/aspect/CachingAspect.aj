@@ -1,21 +1,22 @@
 package com.novadart.novabill.aspect;
 
-import org.apache.commons.io.FileUtils;
-import org.springframework.cache.annotation.Cacheable;
-import org.springframework.cache.annotation.CacheEvict;
-import org.springframework.cache.annotation.Caching;
 import java.io.File;
 import java.io.IOException;
 import java.util.List;
+
+import org.apache.commons.io.FileUtils;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
+import org.springframework.cache.annotation.Caching;
+
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.CommodityDTO;
-import com.novadart.novabill.shared.client.dto.PriceListDTO;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public privileged aspect CachingAspect {
 	
@@ -61,16 +62,20 @@ public privileged aspect CachingAspect {
 	declare @method : public List<ClientDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getClients(Long): @Cacheable(value = CLIENT_CACHE, key = "#businessID");
 	
 	declare @method : public List<InvoiceDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getInvoices(Long, Integer):
-		@Cacheable(value = INVOICE_CACHE, key = "#businessID.toString().concat('-').concat(#year.toString())");
+		@Cacheable(value = INVOICE_CACHE, key = "#businessID.toString().concat('-').concat(#year.toString())",
+				condition = "T(java.lang.Integer).parseInt(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date())) - #year < 2");
 	
 	declare @method : public List<CreditNoteDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getCreditNotes(Long, Integer):
-		@Cacheable(value = CREDITNOTE_CACHE, key = "#businessID.toString().concat('-').concat(#year.toString())");
+		@Cacheable(value = CREDITNOTE_CACHE, key = "#businessID.toString().concat('-').concat(#year.toString())",
+				condition = "T(java.lang.Integer).parseInt(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date())) - #year < 2");
 	
 	declare @method : public List<EstimationDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getEstimations(Long, Integer):
-		@Cacheable(value = ESTIMATION_CACHE, key = "#businessID.toString().concat('-').concat(#year.toString())");
+		@Cacheable(value = ESTIMATION_CACHE, key = "#businessID.toString().concat('-').concat(#year.toString())",
+				condition = "T(java.lang.Integer).parseInt(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date())) - #year < 2");
 	
 	declare @method : public List<TransportDocumentDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getTransportDocuments(Long, Integer):
-		@Cacheable(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID.toString().concat('-').concat(#year.toString())");
+		@Cacheable(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID.toString().concat('-').concat(#year.toString())",
+				condition = "T(java.lang.Integer).parseInt(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date())) - #year < 2");
 	
 	declare @method : public List<PaymentTypeDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getPaymentTypes(Long): @Cacheable(value = PAYMENTTYPE_CACHE, key = "#businessID");
 	
@@ -94,7 +99,18 @@ public privileged aspect CachingAspect {
 	
 	declare @method : public Long com.novadart.novabill.service.web.ClientService.add(Long, ClientDTO): @CacheEvict(value = CLIENT_CACHE, key = "#businessID");
 	
-	declare @method : public void com.novadart.novabill.service.web.ClientService.update(Long, ClientDTO): @CacheEvict(value = CLIENT_CACHE, key = "#businessID");
+	declare @method : public void com.novadart.novabill.service.web.ClientService.update(Long, ClientDTO): @Caching(evict = {
+			@CacheEvict(value = CLIENT_CACHE, key = "#businessID"),
+			@CacheEvict(value = INVOICE_CACHE, key = "#businessID.toString().concat('-').concat(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date()))"),
+			@CacheEvict(value = CREDITNOTE_CACHE, key = "#businessID.toString().concat('-').concat(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date()))"),
+			@CacheEvict(value = ESTIMATION_CACHE, key = "#businessID.toString().concat('-').concat(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date()))"),
+			@CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID.toString().concat('-').concat(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date()))"),
+			@CacheEvict(value = INVOICE_CACHE, key = "#businessID.toString().concat('-').concat(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date()))"),
+			@CacheEvict(value = INVOICE_CACHE, key = "#businessID.toString().concat('-').concat(T(java.lang.Integer).parseInt(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date()))-1)"),
+			@CacheEvict(value = CREDITNOTE_CACHE, key = "#businessID.toString().concat('-').concat(T(java.lang.Integer).parseInt(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date()))-1)"),
+			@CacheEvict(value = ESTIMATION_CACHE, key = "#businessID.toString().concat('-').concat(T(java.lang.Integer).parseInt(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date()))-1)"),
+			@CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID.toString().concat('-').concat(T(java.lang.Integer).parseInt(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date()))-1)"),
+			});
 	
 	declare @method : public void com.novadart.novabill.service.web.ClientService.remove(Long, Long): @CacheEvict(value = CLIENT_CACHE, key = "#businessID");
 	
