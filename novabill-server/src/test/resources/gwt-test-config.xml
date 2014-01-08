@@ -36,7 +36,7 @@
     	<entry key="customPriceListID" value="171"/>
     	<entry key="commodityPriceQuantity" value="20.95"/>
     	<entry key="commodityPriceType" value="FIXED"/>
-    	<entry key="year" value="2013"/>
+    	<entry key="year" value="2014"/>
     </util:map>
     
     <util:map map-class="java.util.HashMap" id="testPL" key-type="java.lang.String" value-type="java.lang.String">
