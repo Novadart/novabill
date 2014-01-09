@@ -12,7 +12,6 @@ import java.util.Set;
 
 import net.sf.ehcache.CacheManager;
 
-import org.apache.commons.lang3.StringUtils;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -31,6 +30,7 @@ import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.Price;
+import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
@@ -40,11 +40,11 @@ import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
+import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
 import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
-import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
@@ -105,6 +105,7 @@ public class CachingTest extends GWTServiceTest {
 	@Autowired
 	private CommodityGwtService commodityService;
 	
+	@Autowired
 	private PriceListGwtService priceListService;
 	
 	@Autowired
@@ -227,7 +228,12 @@ public class CachingTest extends GWTServiceTest {
 		Integer countInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		BigDecimal totals = businessGwtService.getTotalsForYear(businessID, new Integer(testProps.get("year"))).getSecond();
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
-		Long id = Client.findClient(clientID).getInvoices().iterator().next().getId();
+		Long id = null;
+		for(Invoice inv: Client.findClient(clientID).getInvoices())
+			if(inv.getAccountingDocumentYear().equals(getYear())){
+				id = inv.getId();
+				break;
+			}
 		invoiceService.remove(businessID, clientID, id);
 		List<InvoiceDTO> nonCachedResult = businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear());
 		Integer nonCachedCountInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
@@ -270,7 +276,7 @@ public class CachingTest extends GWTServiceTest {
 		Integer countInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		BigDecimal totals = businessGwtService.getTotalsForYear(businessID, new Integer(testProps.get("year"))).getSecond();
 		
-		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		Invoice inv = authenticatedPrincipal.getBusiness().getInvoicesForYear(getYear()).iterator().next();
 		inv.setNote("Temporary note for this invoice");
 		invoiceService.update(InvoiceDTOFactory.toDTO(inv, true));
 		Invoice.entityManager().flush();
@@ -293,7 +299,12 @@ public class CachingTest extends GWTServiceTest {
 		Integer countInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
 		
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
-		Long id = Client.findClient(clientID).getInvoices().iterator().next().getId();
+		Long id = null;
+		for(Invoice inv: Client.findClient(clientID).getInvoices())
+			if(inv.getAccountingDocumentYear().equals(getYear())){
+				id = inv.getId();
+				break;
+			}
 		invoiceService.setPayed(businessID, clientID, id, true);
 		
 		List<InvoiceDTO> nonCachedResult = businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear());
@@ -637,12 +648,69 @@ public class CachingTest extends GWTServiceTest {
 		assertTrue(!commodities.equals(nonCachedCommodities));
 	}
 	
-	
+	@Test
 	public void priceListGetCacheTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
 		Long id = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
 		PriceListDTO priceListDTO = priceListService.get(id);
 		PriceListDTO cachedPriceListDTO = priceListService.get(id);
 		assertTrue(priceListDTO == cachedPriceListDTO);
+	}
+	
+	@Test
+	public void priceListGetAllCacheTest() throws NotAuthenticatedException, DataAccessException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<PriceListDTO> result = priceListService.getAll(businessID);
+		List<PriceListDTO> cachedResult = priceListService.getAll(businessID);
+		assertTrue(result == cachedResult);
+	}
+	
+	@Test
+	public void priceListUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, NoSuchObjectException{
+		Long id = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<PriceListDTO> resultAll = priceListService.getAll(businessID);
+		PriceListDTO resultOne = priceListService.get(id);
+		PriceListDTO pl = PriceListDTOFactory.toDTO(PriceList.findPriceList(id), null);
+		pl.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		priceListService.update(pl);
+		assertTrue(resultAll != priceListService.getAll(businessID));
+		assertTrue(resultOne != priceListService.get(id));
+	}
+	
+	
+	@Test(expected = DataAccessException.class)
+	public void priceListRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, ValidationException, AuthorizationException{
+		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		Long id = priceListService.add(priceListDTO);
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<PriceListDTO> resultAll = priceListService.getAll(businessID);
+		PriceListDTO resultOne = priceListService.get(id);
+		priceListService.remove(businessID, id);
+		PriceList.entityManager().flush();
+		assertTrue(resultAll != priceListService.getAll(businessID));
+		assertTrue(resultOne != null);
+		priceListService.get(id);
+	}
+	
+	@Test
+	public void priceListAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<PriceListDTO> resultAll = priceListService.getAll(businessID);
+		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		priceListService.add(priceListDTO);
+		assertTrue(resultAll != priceListService.getAll(businessID));
+	}
+	
+	@Test
+	public void priceListAddOrUpdateCacheTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, AuthorizationException{
+		Long id = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		PriceListDTO resultOne = priceListService.get(id);
+		PriceDTO priceDTO = PriceDTOFactory.toDTO(PriceList.findPriceList(id).getPrices().iterator().next());
+		commodityService.addOrUpdatePrice(businessID, priceDTO);
+		assertTrue(resultOne != priceListService.get(id));
 	}
 	
 }

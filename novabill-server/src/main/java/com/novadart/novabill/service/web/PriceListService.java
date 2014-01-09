@@ -49,7 +49,7 @@ public class PriceListService {
 	}
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.PriceList).findPriceList(#id)?.business?.id == principal.business.id")
-	public PriceListDTO get(Long id) throws NotAuthenticatedException,NoSuchObjectException, DataAccessException {
+	public PriceListDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
 		Long businessID = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
 		PriceList defaultPL = PriceList.getDefaultPriceList(businessID);
 		List<Price> defautPLPrices = Price.findPricesForPriceList(defaultPL.getId());
@@ -108,9 +108,9 @@ public class PriceListService {
 		PriceList priceList = PriceList.findPriceList(id);
 		if(priceList.getName().equals(PriceListConstants.DEFAULT)) //removing default pricelist
 			throw new DataIntegrityException();
-		priceList.remove(); //removing payment type
+		priceList.remove(); //removing pricelist
 		if(Hibernate.isInitialized(priceList.getBusiness().getPriceLists()))
-			priceList.getBusiness().getPaymentTypes().remove(priceList);
+			priceList.getBusiness().getPriceLists().remove(priceList);
 	}
 	
 	@Transactional(readOnly = true)
