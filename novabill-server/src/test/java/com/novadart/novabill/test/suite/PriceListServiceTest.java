@@ -32,6 +32,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
+import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
@@ -131,18 +132,25 @@ public class PriceListServiceTest extends GWTServiceTest {
 	
 	@Test
 	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException, DataIntegrityException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
-		Long id = priceListService.add(priceListDTO);
-		Set<Client> clients = PriceList.findPriceList(id).getClients();
+		Long id = null;
+		for(PriceList pl: authenticatedPrincipal.getBusiness().getPriceLists())
+			if(!pl.getName().equals(PriceListConstants.DEFAULT)){
+				id = pl.getId();
+				break;
+			}
+		PriceList pl = PriceList.findPriceList(id);
+		Set<Client> clients = pl.getClients();
+		Set<Price> prices = pl.getPrices();
 		priceListService.remove(authenticatedPrincipal.getBusiness().getId(), id);
 		assertNull(PriceList.findPriceList(id));
+		for(Price price:prices)
+			assertNull(Price.findPrice(price.getId()));
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
 		assertEquals(EntityType.PRICE_LIST, rec.getEntityType());
 		assertEquals(id, rec.getEntityID());
 		assertEquals(OperationType.DELETE, rec.getOperationType());
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
-		assertEquals(priceListDTO.getName(), details.get(DBLoggerAspect.PRICE_LIST_NAME));
+		assertEquals(pl.getName(), details.get(DBLoggerAspect.PRICE_LIST_NAME));
 		for(Client client: clients)
 			assertEquals(PriceListConstants.DEFAULT, client.getDefaultPriceList().getName());
 	}

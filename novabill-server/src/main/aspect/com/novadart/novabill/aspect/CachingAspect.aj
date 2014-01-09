@@ -18,6 +18,8 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
+
 
 public privileged aspect CachingAspect {
 	
@@ -38,7 +40,7 @@ public privileged aspect CachingAspect {
 
 	/*
 	 * Business service caching
-	 * Dependencies: Client caching, Invoice caching, CreditNote caching, Estimation caching, TransportDocument caching, PaymentType caching
+	 * Dependencies: Client caching, Invoice caching, CreditNote caching, Estimation caching, TransportDocument caching, PaymentType caching, Commodity caching, PriceList caching
 	 */
 	public static final String BUSINESS_CACHE = "business-cache";
 	
@@ -57,6 +59,8 @@ public privileged aspect CachingAspect {
 	public static final String COMMODITY_CACHE = "commodity-cache";
 	
 	public static final String DOCSYEARS_CACHE = "docsyears-cache";
+	
+	public static final String PRICELIST_CACHE = "pricelist-cache";
 	
 	declare @method : public BusinessDTO com.novadart.novabill.service.web.BusinessServiceImpl.get(Long): @Cacheable(value = BUSINESS_CACHE, key = "#businessID");
 	
@@ -81,6 +85,8 @@ public privileged aspect CachingAspect {
 	declare @method : public List<PaymentTypeDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getPaymentTypes(Long): @Cacheable(value = PAYMENTTYPE_CACHE, key = "#businessID");
 	
 	declare @method : public List<CommodityDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getCommodities(Long): @Cacheable(value = COMMODITY_CACHE, key = "#businessID");
+	
+	declare @method : public List<PriceListDTO>  com.novadart.novabill.service.web.BusinessServiceImpl.getPriceLists(Long): @Cacheable(value = PRICELIST_CACHE, key = "#businessID.toString().concat('-all')");
 	
 	declare @method : public List<Integer> com.novadart.novabill.service.web.BusinessServiceImpl.getInvoceYears(Long): @Cacheable(value = DOCSYEARS_CACHE, key = "#businessID.toString().concat('-invoices')");
 	
@@ -220,15 +226,28 @@ public privileged aspect CachingAspect {
 	
 	declare @method : public void com.novadart.novabill.service.web.CommodityService.update(CommodityDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id");
 	
-	declare @method : public Long com.novadart.novabill.service.web.CommodityService.addOrUpdatePrice(Long, PriceDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#businessID");
+	declare @method : public Long com.novadart.novabill.service.web.CommodityService.addOrUpdatePrice(Long, PriceDTO): @Caching(evict = { 
+		@CacheEvict(value = COMMODITY_CACHE, key = "#businessID"),
+		@CacheEvict(value = PRICELIST_CACHE, key = "#priceDTO.priceListID")
+	});
 	
 	/*
 	 * PriceList caching
-	 * Dependencies: None
+	 * Dependencies: Commodity caching
 	 */
 	
-	public static final String PRICELIST_CACHE = "pricelist-cache";
+	declare @method : public PriceListDTO com.novadart.novabill.service.web.PriceListService.get(Long): @Cacheable(value = PRICELIST_CACHE, key = "#id");
 	
-	//declare @method : public PriceListDTO com.novadart.novabill.service.web.PriceListService.get(Long): @Cacheable(value = PRICELIST_CACHE, key = "#id");
+	declare @method : public void com.novadart.novabill.service.web.PriceListService.remove(Long, Long): @Caching(evict = {
+		@CacheEvict(value = PRICELIST_CACHE, key = "#businessID.toString().concat('-all')"),
+		@CacheEvict(value = PRICELIST_CACHE,  key = "#id")
+	});
+	
+	declare @method : public Long com.novadart.novabill.service.web.PriceListService.add(PriceListDTO): @CacheEvict(value = PRICELIST_CACHE, key = "#priceListDTO.business.id.toString().concat('-all')");
+	
+	declare @method : public void com.novadart.novabill.service.web.PriceListService.update(PriceListDTO): @Caching(evict = {
+		@CacheEvict(value = PRICELIST_CACHE, key = "#priceListDTO.business.id.toString().concat('-all')"),
+		@CacheEvict(value = PRICELIST_CACHE,  key = "#priceListDTO.id")
+	});
 	
 }
