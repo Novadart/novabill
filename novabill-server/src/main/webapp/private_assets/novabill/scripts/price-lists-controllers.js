@@ -129,7 +129,7 @@ angular.module('novabill.priceLists.controllers',
 		$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
 				'Are you sure that you want to delete permanently any data associated to "'+$scope.priceList.name+'"', {
 			onOk : function(){
-				GWT_Server.priceList.remove(nConstants.conf.businessId, $scope.priceList.id, {
+				GWT_Server.priceList.remove(nConstants.conf.businessId, String($scope.priceList.id), {
 					onSuccess : function(data){
 						$scope.$apply(function(){
 							$location.path('/');

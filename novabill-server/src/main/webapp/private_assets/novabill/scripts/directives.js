@@ -564,7 +564,14 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			documentType : '@'
 		},
 		controller : ['$scope', function($scope){
-			$scope.years = documentYears[$scope.documentType].reverse();
+			var years = documentYears[$scope.documentType];
+			var currentYear = new Date().getFullYear();
+			if(years.indexOf(currentYear) == -1){
+				years.push(currentYear);
+			}
+			years.reverse();
+			
+			$scope.years = years;
 			$scope.selectedYear = $scope.years.length > 0 ?  $scope.years[0] : null;
 
 			$scope.onChange = function(){
