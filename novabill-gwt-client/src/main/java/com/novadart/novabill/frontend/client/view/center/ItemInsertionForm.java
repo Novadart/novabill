@@ -95,7 +95,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	private PriceListDTO priceList;
 	
 	private final CommoditySearchPanel commoditySearchPanel = new CommoditySearchPanel(this);
-
+	private final SingleSelectionModel<CommodityDTO> model = new SingleSelectionModel<CommodityDTO>();
+	
 	public ItemInsertionForm(Handler handler) {
 		this.handler = handler;
 
@@ -131,7 +132,6 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		notification.addStyleName(nf.notification());
 		TipFactory.show(Tips.item_insertion_form, tip);
 		
-		final SingleSelectionModel<CommodityDTO> model = new SingleSelectionModel<CommodityDTO>();
 		commoditySearchPanel.setSelectionModel(model);
 		
 		model.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
@@ -280,6 +280,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		price.setText("");
 		discount.setText("");
 		tax.reset();
+		model.clear();
 		
 		textOnlyAccountingItem.setValue(false);
 		quantityContainer.setVisible(true);
