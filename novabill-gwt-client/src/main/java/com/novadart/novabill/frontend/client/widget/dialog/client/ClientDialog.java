@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.dialog.Dialog;
+import com.novadart.gwtshared.client.validation.VatIdValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
@@ -322,8 +323,26 @@ public class ClientDialog extends Dialog implements HasUILocking {
 			client.setDefaultPriceListID(priceList.getId());
 		}
 
-		client.setSsn(ssn.getText());
-		client.setVatID(vatID.getText());
+		
+		if(country.getSelectedItemValue().equalsIgnoreCase("IT")){
+			
+			if(VatIdValidation.isVatId(ssn.getText())) {
+				String ssnValue = ssn.getText();
+				client.setSsn(ssnValue.startsWith("IT") ? ssnValue : "IT"+ssnValue );
+			} else {
+				client.setSsn(ssn.getText());
+			}
+			
+			String vatIDValue = vatID.getText();
+			client.setVatID(vatIDValue.startsWith("IT") ? vatIDValue : "IT"+vatIDValue );
+			
+		} else {
+			
+			client.setSsn(ssn.getText());
+			client.setVatID(vatID.getText());
+			
+		}
+		
 		client.setWeb(web.getText());
 		client.setNote(note.getText());
 

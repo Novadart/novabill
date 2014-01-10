@@ -8,6 +8,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.dialog.Dialog;
+import com.novadart.gwtshared.client.validation.VatIdValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -113,8 +114,17 @@ public class BootstrapDialog extends Dialog {
 			final BusinessDTO b = new BusinessDTO();
 			b.setName(name.getText());
 			b.setAddress(address.getText());
-			b.setSsn(ssn.getText());
-			b.setVatID(vatID.getText());
+			
+			if(VatIdValidation.isVatId(ssn.getText())) {
+				String ssnValue = ssn.getText();
+				b.setSsn(ssnValue.startsWith("IT") ? ssnValue : "IT"+ssnValue );
+			} else {
+				b.setSsn(ssn.getText());
+			}
+			
+			String vatIDValue = vatID.getText();
+			b.setVatID(vatIDValue.startsWith("IT") ? vatIDValue : "IT"+vatIDValue );
+			
 			b.setCity(city.getText());
 			b.setProvince(province.getSelectedItemText());
 			b.setCountry(country.getSelectedItemValue());
