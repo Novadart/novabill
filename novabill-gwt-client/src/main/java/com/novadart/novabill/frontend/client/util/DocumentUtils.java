@@ -40,7 +40,9 @@ public class DocumentUtils {
 			return BigDecimal.ZERO;
 		}
 		
-		BigDecimal discount = item.getDiscount()==null ? BigDecimal.ZERO : item.getDiscount().add(BD_100).divide(BD_100);
+		BigDecimal discount = item.getDiscount()==null ? 
+				BigDecimal.ZERO : 
+					item.getDiscount().multiply(BigDecimal.valueOf(-1)).add(BD_100).divide(BD_100);
 		return item.getPrice()
 				.multiply(discount)
 				.multiply(item.getQuantity());
