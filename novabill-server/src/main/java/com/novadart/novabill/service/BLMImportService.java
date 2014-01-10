@@ -93,6 +93,7 @@ public class BLMImportService {
 		business.setDefaultLayoutType(LayoutType.DENSE);
 		business.setVatID("IT03971280288");
 		business.setSsn("BRSMTT75P10B563Y");
+		business.setCountry("IT");
 		business.getPrincipals().add(principal);
 		principal.setBusiness(business);
 		PriceList publicPriceList = new PriceList(PriceListConstants.DEFAULT);

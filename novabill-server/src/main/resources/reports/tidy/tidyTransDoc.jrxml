@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transport Document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="20" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="117"/>
+	<property name="ireport.y" value="283"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -285,44 +285,7 @@ $F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{docu
 $F{document.toEndpoint.country}]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="70" splitType="Prevent">
-			<textField>
-				<reportElement uuid="14484aea-08e0-4ad3-9f02-b22a8ab01fb0" positionType="Float" x="423" y="40" width="120" height="20"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.total}.doubleValue())]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="e70d9f40-7c6a-41a3-bb67-b65e945623a1" positionType="Float" x="330" y="20" width="93" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d" positionType="Float" x="330" y="40" width="93" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="445b9cab-e35a-417e-bb6b-26d777f9ab90" positionType="Float" x="423" y="0" width="120" height="20"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalBeforeTax}.doubleValue())]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="710f5ddb-4585-4ebc-9edc-ac0e96bcaff7" positionType="Float" x="330" y="0" width="93" height="20"/>
-				<textElement/>
-				<textFieldExpression><![CDATA[$R{tidy.totalWithoutTax}]]></textFieldExpression>
-			</textField>
-			<line>
-				<reportElement uuid="eee7cfe2-a963-4dff-a174-06a9b553a989" positionType="Float" x="8" y="62" width="540" height="1"/>
-				<graphicElement>
-					<pen lineWidth="0.5"/>
-				</graphicElement>
-			</line>
-			<textField>
-				<reportElement uuid="aa3ca53a-89a9-4d3e-ac81-a337716dbba0" positionType="Float" x="423" y="20" width="120" height="20"/>
-				<textElement textAlignment="Right"/>
-				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalTax}.doubleValue())]]></textFieldExpression>
-			</textField>
-		</band>
+		<band splitType="Prevent"/>
 		<band height="140" splitType="Prevent">
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="be2b1952-1fc3-449e-8074-2a6e10133ebf" positionType="Float" x="394" y="98" width="153" height="20"/>
