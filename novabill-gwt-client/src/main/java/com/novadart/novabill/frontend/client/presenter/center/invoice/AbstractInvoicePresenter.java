@@ -87,6 +87,8 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 			inv.setClient(getClient());
 		}
 
+		inv.setLayoutType(Configuration.getBusiness().getDefaultLayoutType());
+		
 		inv.setDocumentID(Long.parseLong(getView().getNumber().getText()));
 		inv.setAccountingDocumentDate(getView().getDate().getValue());
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
