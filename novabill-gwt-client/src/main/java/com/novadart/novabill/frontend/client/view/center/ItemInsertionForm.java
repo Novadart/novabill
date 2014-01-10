@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
+import java.util.Stack;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
@@ -47,7 +48,7 @@ import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.tuple.Pair;
 
 public class ItemInsertionForm extends Composite implements HasUILocking {
-	
+
 	interface NotificationCss extends CssResource {
 		String notification();
 	}
@@ -64,7 +65,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	public static interface Handler {
 		public void onItemListUpdated(List<AccountingDocumentItemDTO> items);
 	}
-	
+
 	@UiField InlineNotification notification;
 
 	@UiField ScrollPanel itemTableScroller;
@@ -85,18 +86,17 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField VerticalPanel discountContainer;
 
 	@UiField Button add;
-	
+
 	@UiField NotificationCss nf;
 
 	private final Handler handler;
 	private Long clientId;
 	private List<CommodityDTO> commodities;
-	private List<PriceListDTO> listOfPriceLists;
 	private PriceListDTO priceList;
-	
+
 	private final CommoditySearchPanel commoditySearchPanel = new CommoditySearchPanel(this);
 	private final SingleSelectionModel<CommodityDTO> model = new SingleSelectionModel<CommodityDTO>();
-	
+
 	public ItemInsertionForm(Handler handler) {
 		this.handler = handler;
 
@@ -131,32 +131,34 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 		notification.addStyleName(nf.notification());
 		TipFactory.show(Tips.item_insertion_form, tip);
-		
+
 		commoditySearchPanel.setSelectionModel(model);
-		
+
 		model.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-			
+
 			@Override
 			public void onSelectionChange(SelectionChangeEvent event) {
 				commoditySearchPanel.hide();
 				CommodityDTO com = model.getSelectedObject();
-				updateItemFromJS(com.getDescription(), com.getUnitOfMeasure(), 
-						DocumentUtils.calculatePriceForCommodity(com, priceList.getName()).toString(), com.getTax().toString());
+				if(com != null){
+					updateItemFromJS(com.getDescription(), com.getUnitOfMeasure(), 
+							DocumentUtils.calculatePriceForCommodity(com, priceList.getName()).toString(), com.getTax().toString());
+				}
 			}
 		});
 	}
-	
+
 	public void setClientId(Long clientId) {
 		this.clientId = clientId;
 		commoditySearchPanel.setClientId(clientId.toString());
 	}
-	
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		
+
 		setLocked(true);
-		
+
 		ServerFacade.INSTANCE.getBatchfetcherService().fetchSelectCommodityForDocItemOpData(clientId, 
 				new ManagedAsyncCallback<Pair<PriceListDTO,List<PriceListDTO>>>() {
 
@@ -165,40 +167,88 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 				priceList = result.getFirst();
 				commodities = result.getFirst().getCommodities();
 				Collections.sort(commodities, SharedComparators.COMMODITY_COMPARATOR);
-				listOfPriceLists = result.getSecond();
 				setLocked(false);
 			}
 		});
 	}
-	
-	private List<CommodityDTO> filterCommodities(String key){
-		if(key.isEmpty()){
-			return new ArrayList<CommodityDTO>();
-		}
-		String nKey = key.toLowerCase();
-		
+
+	private String prevKey = "";
+	private Stack<List<CommodityDTO>> searchStack = new Stack<List<CommodityDTO>>();
+
+
+	private List<CommodityDTO> filterCommodities(String key, List<CommodityDTO> commodities){
+		//assert: key is already lowercase
+
 		List<CommodityDTO> result = new ArrayList<CommodityDTO>();
 		for (CommodityDTO c : commodities) {
-			if(c.getSku().toLowerCase().contains(nKey) || c.getDescription().toLowerCase().contains(nKey)){
+			if(c.getSku().toLowerCase().contains(key) || c.getDescription().toLowerCase().contains(key)){
 				result.add(c);
 			}
 		}
 		return result;
 	}
-	
+
+	private List<CommodityDTO> filterCommodities(String key){
+		if(key.isEmpty()){
+			return new ArrayList<CommodityDTO>();
+		}
+		String nKey = key.toLowerCase();
+
+		int diffSize = nKey.length() - prevKey.length();
+
+		switch (diffSize) {
+		case 0:
+			if(!nKey.equals(prevKey)){
+				searchStack.clear();
+				searchStack.push(filterCommodities(nKey, commodities));
+			}
+			break;
+
+		case 1:
+			if(nKey.startsWith(prevKey)){
+				List<CommodityDTO> prevCommodities = searchStack.isEmpty() ? commodities : searchStack.peek();
+				searchStack.push( filterCommodities(nKey, prevCommodities) );
+			} else {
+				searchStack.clear();
+				searchStack.push(filterCommodities(nKey, commodities));
+			}
+			break;
+
+		case -1:
+			if(prevKey.startsWith(nKey)){
+				searchStack.pop();
+				if(searchStack.isEmpty()){
+					searchStack.push(filterCommodities(nKey, commodities));
+				}
+			} else {
+				searchStack.clear();
+				searchStack.push(filterCommodities(nKey, commodities));
+			}
+			break;
+
+		default:
+			searchStack.clear();
+			searchStack.push(filterCommodities(nKey, commodities));
+			break;
+		}
+
+		prevKey = nKey;
+		return searchStack.peek();
+	}
+
 	@UiHandler("item")
 	void onKeyUp(KeyUpEvent event){
 		if(event.getNativeKeyCode() == KeyCodes.KEY_UP && commoditySearchPanel.isShowing()){
 			commoditySearchPanel.setFocus(true);
 			return;
 		}
-		
+
 		List<CommodityDTO> list = filterCommodities(item.getText());
 		if(list.isEmpty()){
 			commoditySearchPanel.hide();
 			return;
 		}
-		
+
 		commoditySearchPanel.setCommodities(list);
 		commoditySearchPanel.positionOnTop(item);
 	}
@@ -244,7 +294,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		taxContainer.setVisible(!event.getValue());
 		discountContainer.setVisible(!event.getValue());
 	}
-	
+
 	private void updateItemFromJS(String description, String unitOfMeasure, String price, String vat){
 		item.setText(description);
 		this.unitOfMeasure.setText(unitOfMeasure);
@@ -265,8 +315,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			onCancel : function(){},
 		});
 	}-*/;
-	
-	
+
+
 	private void updateFields(){
 		resetItemTableForm();
 		accountingDocumentItems.refresh();
@@ -281,7 +331,10 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		discount.setText("");
 		tax.reset();
 		model.clear();
-		
+		prevKey = "";
+		searchStack.clear();
+		commodities = null;
+
 		textOnlyAccountingItem.setValue(false);
 		quantityContainer.setVisible(true);
 		unitOfMeasureContainer.setVisible(true);
@@ -296,7 +349,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		notification.hide();
 		updateFields();
 	}
-	
+
 	public boolean isValid(){
 		if(getItems().isEmpty()){
 			notification.showMessage(I18N.INSTANCE.errorAddAtLeastOneItem());

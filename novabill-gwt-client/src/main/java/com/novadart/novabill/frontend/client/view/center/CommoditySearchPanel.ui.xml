@@ -7,7 +7,8 @@
 		.panel {
 			background-color: white;
 			height: 300px;
-			max-width: 450px;
+			max-width: 40em;
+			min-width: 25em;
 			border: 1px solid;
 		}
 		
@@ -17,7 +18,8 @@
 		}
 		
 		.line:HOVER {
-			background-color: #DDD;
+			background-color: #333;
+			color: #FFF;
 		}
 		
 		.advancedSearch {
