@@ -5,6 +5,7 @@ import java.io.IOException;
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,9 +14,15 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.web.BusinessService;
+import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
 @Controller
 public class PrivateController {
+	
+	@Autowired
+	private BusinessService businessService;
 	
 	private final ObjectMapper mapper = new ObjectMapper();
 	
@@ -32,16 +39,16 @@ public class PrivateController {
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_CLIENTS, method = RequestMethod.GET)
-	public ModelAndView clients() throws JsonGenerationException, JsonMappingException, IOException{
+	public ModelAndView clients() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.clients");
 		mav.addObject("activePage", PAGES.CLIENTS);
 		
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Business business = principal.getBusiness();
-		mav.addObject("invoiceYears", mapper.writeValueAsString(business.getInvoiceYears()));
-		mav.addObject("estimationYears", mapper.writeValueAsString(business.getEstimationYears()));
-		mav.addObject("creditNoteYears", mapper.writeValueAsString(business.getCreditNoteYears()));
-		mav.addObject("transportDocumentYears", mapper.writeValueAsString(business.getTransportDocumentYears()));
+		Long businessID = principal.getBusiness().getId();
+		mav.addObject("invoiceYears", mapper.writeValueAsString(businessService.getInvoceYears(businessID)));
+		mav.addObject("estimationYears", mapper.writeValueAsString(businessService.getEstimationYears(businessID)));
+		mav.addObject("creditNoteYears", mapper.writeValueAsString(businessService.getCreditNoteYears(businessID)));
+		mav.addObject("transportDocumentYears", mapper.writeValueAsString(businessService.getTransportDocumentYears(businessID)));
 		return mav;
 	}
 	
