@@ -713,4 +713,14 @@ public class CachingTest extends GWTServiceTest {
 		assertTrue(resultOne != priceListService.get(id));
 	}
 	
+	
+	@Test
+	public void docYearsGetTest() throws NotAuthenticatedException, DataAccessException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		assertTrue(businessService.getInvoceYears(businessID) == businessService.getInvoceYears(businessID));
+		assertTrue(businessService.getEstimationYears(businessID) == businessService.getEstimationYears(businessID));
+		assertTrue(businessService.getTransportDocumentYears(businessID) == businessService.getTransportDocumentYears(businessID));
+		assertTrue(businessService.getCreditNoteYears(businessID) == businessService.getCreditNoteYears(businessID));
+	}
+	
 }
