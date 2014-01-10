@@ -215,7 +215,7 @@ insert into accounting_document_item (id, description, price, quantity, tax, tot
 insert into client (address, city, country, email, fax, mobile, name, phone, postcode, province, ssn, vatid, version, web, business, id, contact_first_name, contact_last_name, contact_email, contact_phone, contact_fax, contact_mobile, default_price_list) values ('via Qualche Strada con Nome Lungo, 12', 'Nervesa della Battaglia', 'IT', '', '', '', 'Groovy Butcher', '', '42837', 'PD', '', 'IT04235906211', 1, '', 2, 128, '', '', '', '', '', '', 162);
 
 --creating one invoice for second registered business
-insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version) values (129, '2014-10-20', 2014, 25, '', '', 121.0, 100.0, 21.0, 1, 1);
+insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version) values (129, '2014-10-20', 2014, 25, '', '', 121.0, 100.0, 21.0, 0, 1);
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2014-11-20', 129);
 insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, business, client) values (129, 0, 0, 'default', 2, 128);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (129, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 129);

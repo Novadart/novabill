@@ -38,6 +38,7 @@
 		<field name="price" class="java.math.BigDecimal"/>
 		<field name="tax" class="java.math.BigDecimal"/>
 		<field name="total" class="java.math.BigDecimal"/>
+		<field name="discount" class="java.math.BigDecimal"/>
 	</subDataset>
 	<queryString>
 		<![CDATA[]]>
@@ -165,10 +166,10 @@ $F{document.client.country} +
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="300" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
-						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+					<jr:column width="250" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
+						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
 							<textField>
-								<reportElement uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b" x="0" y="0" width="298" height="18"/>
+								<reportElement uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b" x="0" y="0" width="248" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
@@ -177,7 +178,7 @@ $F{document.client.country} +
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="298" height="18"/>
+								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="248" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
@@ -187,7 +188,7 @@ $F{document.client.country} +
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="40" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
-						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
 							<textField>
 								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="38" height="18"/>
 								<textElement verticalAlignment="Middle">
@@ -208,7 +209,7 @@ $F{document.client.country} +
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="40" uuid="86b69e3c-a251-4e02-b575-373961e6d873">
-						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
 							<textField>
 								<reportElement uuid="6055a8bc-b42d-448e-8026-845b207d6fc2" x="0" y="0" width="38" height="18"/>
 								<textElement verticalAlignment="Middle">
@@ -229,7 +230,7 @@ $F{document.client.country} +
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="60" uuid="1a47a9f7-ac05-45df-84df-a087c255f93a">
-						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
 							<textField>
 								<reportElement uuid="3ef6af2d-0093-4317-ad53-d44814c95531" x="0" y="0" width="58" height="18"/>
 								<textElement verticalAlignment="Middle">
@@ -249,8 +250,32 @@ $F{document.client.country} +
 							</textField>
 						</jr:detailCell>
 					</jr:column>
+					<jr:column width="50" uuid="8bbde3a3-9d1c-4b97-bb3b-b550dd2830cc">
+						<jr:tableHeader height="40" rowSpan="1"/>
+						<jr:tableFooter height="30" rowSpan="1"/>
+						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
+							<textField>
+								<reportElement uuid="9176b54d-d142-4377-b914-db94ed6920d8" x="0" y="0" width="48" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA["%" + $R{tidy.discount}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:columnFooter height="30" rowSpan="1"/>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="b8dc70d2-4356-4606-ab7b-f6c4bf7c352f" x="0" y="0" width="48" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{discount}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
 					<jr:column width="40" uuid="e9882e8d-4ff0-4e61-8aba-0c50007d9133">
-						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
 							<textField>
 								<reportElement uuid="eb7b22df-ab5d-4b2b-a665-3a6aef5aeabe" x="0" y="0" width="38" height="18"/>
 								<textElement verticalAlignment="Middle">
@@ -271,7 +296,7 @@ $F{document.client.country} +
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="60" uuid="bd98899d-5bf0-47a8-ae22-09e6134fecad">
-						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
 							<textField>
 								<reportElement uuid="be14d188-8e94-427d-89f4-3d2be37c0e1e" x="0" y="0" width="58" height="18"/>
 								<textElement verticalAlignment="Middle">
