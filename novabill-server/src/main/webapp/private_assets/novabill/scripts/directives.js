@@ -569,7 +569,9 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			if(years.indexOf(currentYear) == -1){
 				years.push(currentYear);
 			}
-			years.reverse();
+			years.sort(function(a,b){
+				return b-a; 
+			});
 			
 			$scope.years = years;
 			$scope.selectedYear = $scope.years.length > 0 ?  $scope.years[0] : null;

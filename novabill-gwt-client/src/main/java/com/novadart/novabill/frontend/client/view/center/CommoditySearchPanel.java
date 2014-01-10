@@ -3,7 +3,10 @@ package com.novadart.novabill.frontend.client.view.center;
 import java.util.List;
 
 import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.ValueUpdater;
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.dom.client.Element;
+import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -20,7 +23,11 @@ import com.google.gwt.view.client.SingleSelectionModel;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 
 public class CommoditySearchPanel extends PopupPanel implements Focusable {
-	
+
+	interface Handler {
+		void onCommodityClicked(CommodityDTO commodity);
+	}
+
 	interface Style extends CssResource{
 		String line();
 		String panel();
@@ -37,14 +44,16 @@ public class CommoditySearchPanel extends PopupPanel implements Focusable {
 
 	@UiField(provided=true) CellList<CommodityDTO> commodities;
 	@UiField Style style;
-	
+
 	private final ListDataProvider<CommodityDTO> provider = new ListDataProvider<CommodityDTO>();
 	private final ItemInsertionForm itemInsertionForm;
 	private String clientId;
-	
-	public CommoditySearchPanel(ItemInsertionForm form) {
+	private final Handler handler;
+
+	public CommoditySearchPanel(ItemInsertionForm form, Handler handler) {
 		itemInsertionForm = form;
-		commodities = new CellList<CommodityDTO>(new AbstractCell<CommodityDTO>() {
+		this.handler = handler;
+		commodities = new CellList<CommodityDTO>(new AbstractCell<CommodityDTO>("click") {
 
 			@Override
 			public void render(com.google.gwt.cell.client.Cell.Context context,
@@ -56,38 +65,50 @@ public class CommoditySearchPanel extends PopupPanel implements Focusable {
 				sb.appendEscaped(value.getDescription());
 				sb.appendHtmlConstant("</div>");
 			}
+
+			@Override
+			public void onBrowserEvent(
+					com.google.gwt.cell.client.Cell.Context context,
+					Element parent, CommodityDTO value, NativeEvent event,
+					ValueUpdater<CommodityDTO> valueUpdater) {
+				super.onBrowserEvent(context, parent, value, event, valueUpdater);
+
+				if ("click".equals(event.getType())) {
+					CommoditySearchPanel.this.handler.onCommodityClicked(value);
+				}
+			}
 		});
-		
+
 		setWidget(uiBinder.createAndBindUi(this));
 		provider.addDataDisplay(commodities);
 	}
-	
+
 	public void setCommodities(List<CommodityDTO> commodities){
 		provider.setList(commodities);
 	}
-	
+
 	public void setClientId(String clientId) {
 		this.clientId = clientId;
 	}
 
 	public void positionOnTop(final UIObject u){
 		setPopupPositionAndShow(new PositionCallback() {
-			
+
 			@Override
 			public void setPosition(int offsetWidth, int offsetHeight) {
 				int uTop = u.getAbsoluteTop();
 				int uLeft = u.getAbsoluteLeft();
-				
+
 				setPopupPosition(uLeft, uTop-offsetHeight);
 			}
 		});
 	}
-	
+
 	public void setSelectionModel(SingleSelectionModel<CommodityDTO> model){
 		commodities.setSelectionModel(model);
 	}
-	
-	
+
+
 	@UiHandler("advancedSearch")
 	void onLoadCommodityClicked(ClickEvent e){
 		hide();

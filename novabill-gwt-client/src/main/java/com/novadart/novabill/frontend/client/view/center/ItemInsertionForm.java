@@ -25,8 +25,6 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
-import com.google.gwt.view.client.SelectionChangeEvent;
-import com.google.gwt.view.client.SingleSelectionModel;
 import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.SharedComparators;
@@ -94,9 +92,19 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	private List<CommodityDTO> commodities;
 	private PriceListDTO priceList;
 
-	private final CommoditySearchPanel commoditySearchPanel = new CommoditySearchPanel(this);
-	private final SingleSelectionModel<CommodityDTO> model = new SingleSelectionModel<CommodityDTO>();
-
+	private final CommoditySearchPanel commoditySearchPanel = 
+			new CommoditySearchPanel(this, new CommoditySearchPanel.Handler() {
+		
+		@Override
+		public void onCommodityClicked(CommodityDTO commodity) {
+			commoditySearchPanel.hide();
+			if(commodity != null){
+				updateItemFromJS(commodity.getDescription(), commodity.getUnitOfMeasure(), 
+						DocumentUtils.calculatePriceForCommodity(commodity, priceList.getName()).toString(), commodity.getTax().toString());
+			}
+		}
+	} );
+	
 	public ItemInsertionForm(Handler handler) {
 		this.handler = handler;
 
@@ -131,21 +139,6 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 		notification.addStyleName(nf.notification());
 		TipFactory.show(Tips.item_insertion_form, tip);
-
-		commoditySearchPanel.setSelectionModel(model);
-
-		model.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-
-			@Override
-			public void onSelectionChange(SelectionChangeEvent event) {
-				commoditySearchPanel.hide();
-				CommodityDTO com = model.getSelectedObject();
-				if(com != null){
-					updateItemFromJS(com.getDescription(), com.getUnitOfMeasure(), 
-							DocumentUtils.calculatePriceForCommodity(com, priceList.getName()).toString(), com.getTax().toString());
-				}
-			}
-		});
 	}
 
 	public void setClientId(Long clientId) {
@@ -346,10 +339,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		price.setText("");
 		discount.setText("");
 		tax.reset();
-		model.clear();
 		prevKey = "";
 		searchStack.clear();
-		commodities = null;
 
 		textOnlyAccountingItem.setValue(false);
 		quantityContainer.setVisible(true);

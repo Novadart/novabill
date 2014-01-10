@@ -70,6 +70,8 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 			es.setClient(getClient());
 		}
 
+		es.setLayoutType(Configuration.getBusiness().getDefaultLayoutType());
+		
 		es.setDocumentID(Long.parseLong(getView().getNumber().getText()));
 		
 		es.setAccountingDocumentDate(getView().getDate().getValue());
