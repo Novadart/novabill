@@ -251,8 +251,6 @@ $F{document.client.country} +
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="50" uuid="8bbde3a3-9d1c-4b97-bb3b-b550dd2830cc">
-						<jr:tableHeader height="40" rowSpan="1"/>
-						<jr:tableFooter height="30" rowSpan="1"/>
 						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
 							<textField>
 								<reportElement uuid="9176b54d-d142-4377-b914-db94ed6920d8" x="0" y="0" width="48" height="18"/>
@@ -262,7 +260,6 @@ $F{document.client.country} +
 								<textFieldExpression><![CDATA["%" + $R{tidy.discount}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
-						<jr:columnFooter height="30" rowSpan="1"/>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="b8dc70d2-4356-4606-ab7b-f6c4bf7c352f" x="0" y="0" width="48" height="18"/>

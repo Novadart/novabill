@@ -42,6 +42,7 @@
 		<field name="price" class="java.math.BigDecimal"/>
 		<field name="tax" class="java.math.BigDecimal"/>
 		<field name="total" class="java.math.BigDecimal"/>
+		<field name="discount" class="java.math.BigDecimal"/>
 	</subDataset>
 	<queryString>
 		<![CDATA[]]>
@@ -167,10 +168,10 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="300" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
+					<jr:column width="250" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b" x="0" y="0" width="298" height="18"/>
+								<reportElement uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b" x="0" y="0" width="248" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
@@ -179,7 +180,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="17" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="298" height="14"/>
+								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="248" height="14"/>
 								<textElement verticalAlignment="Middle">
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
@@ -248,6 +249,27 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{price} == null? "": java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{price}.doubleValue())]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="288f6e97-157d-4200-af85-4335ecb1b83e">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="9c900f57-0f2c-4ef7-af00-a475c7ca915d" x="0" y="0" width="48" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA["%" + $R{dense.discount}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="17" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="387185c2-1fa8-41b1-82fa-fdfd449c79db" x="0" y="0" width="48" height="14"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="7"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{discount}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

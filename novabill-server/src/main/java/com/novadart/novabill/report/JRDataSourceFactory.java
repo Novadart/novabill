@@ -22,7 +22,7 @@ public class JRDataSourceFactory {
 	
 	public static int TRANSPORTDOC_DENSE_TABLE_ROWS_NUM = 23;
 	
-	public static int DENSE_DESC_WIDTH_IN_CHARS = 82;
+	public static int DENSE_DESC_WIDTH_IN_CHARS = 75;
 	
 	private static int getRowCount(DocumentType docType){
 		switch (docType) {
