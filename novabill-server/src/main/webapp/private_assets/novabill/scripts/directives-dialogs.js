@@ -325,9 +325,29 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-select-client-dialog.html',
 		scope: {},
 
-		controller : ['$scope', 'nConstants', 'nSorting', function($scope, nConstants, nSorting){
+		controller : ['$scope', 'nConstants', 'nSorting', '$filter', 
+		              function($scope, nConstants, nSorting, $filter){
 
 			$scope.selectedId = null;
+			
+			var loadedClients = new Array();
+			var filteredClients = new Array();
+			
+			function updateFilteredClients(){
+				filteredClients = $filter('filter')(loadedClients, $scope.query);
+				$scope.clients = filteredClients.slice(0, 15);
+			}
+			
+			$scope.$watch('query', function(newValue, oldValue){
+				updateFilteredClients();
+			});
+			
+			$scope.loadMoreClients = function(){
+				if($scope.clients){
+					var currentIndex = $scope.clients.length;
+					$scope.clients = $scope.clients.concat(filteredClients.slice(currentIndex, currentIndex+30));
+				}
+			};
 
 			$scope.select = function(id){
 				$scope.selectedId = id;
@@ -340,9 +360,9 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 					onSuccess : function(data){
 						$scope.$apply(function(){
-
-							data.clients.sort( nSorting.clientsComparator );
-							$scope.clients = data.clients;
+							
+							loadedClients = data.clients.sort( nSorting.clientsComparator );
+							updateFilteredClients();
 
 							$('#selectClientDialog').modal('show');
 							$('#selectClientDialog .scroller').slimScroll({

@@ -9,6 +9,8 @@ angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.
 .controller('CreditNoteCtrl', ['$scope', '$location', 'nConstants', '$rootScope', 
                                function($scope, $location, nConstants, $rootScope){
 	var selectedYear = String(new Date().getFullYear());
+	var loadedCreditNotes = [];
+	var PARTITION = 50;
 	
 	$scope.loadCreditNotes = function(year) {
 		selectedYear = year;
@@ -16,12 +18,20 @@ angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.
 		GWT_Server.creditNote.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
-					$scope.creditNotes = page.items;
+					loadedCreditNotes = page.items;
+					$scope.creditNotes = loadedCreditNotes.slice(0, 15);
 				});
 			},
 
 			onFailure : function(error){}
 		});
+	};
+	
+	$scope.loadMoreCreditNotes = function(){
+		if($scope.invoices){
+			var currentIndex = $scope.creditNotes.length;
+			$scope.creditNotes = $scope.creditNotes.concat(loadedCreditNotes.slice(currentIndex, currentIndex+PARTITION));
+		}
 	};
 	
 	$scope.newCreditNoteClick = function(){

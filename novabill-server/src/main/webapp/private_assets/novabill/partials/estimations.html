@@ -13,7 +13,7 @@
 		
 	<n-year-selector class="pull-right" document-type="estimations" callback="loadEstimations(year)"></n-year-selector>
 
-	<div class="estimations">
+	<div class="estimations" infinite-scroll="loadMoreEstimations()">
 		<img class="spinner" ng-show="estimations==null" src="../../private_assets/img/ajax-loading.gif">
 		<p class="no-data-message text-center text-info" ng-show="estimations && estimations.length===0">No Data</p>
 		<n-estimation estimation="est" bottom-up-menu="!$first && $last" ng-repeat="est in estimations"></n-estimation>

@@ -21,11 +21,11 @@
 	<div class="clearfix"></div>
 
 	<div class="row">
-		<div class="col-md-12">
+		<div class="col-md-12" infinite-scroll="loadMoreCommodities()">
 
 			<img class="spinner" ng-show="commodities==null" style="margin: 0 auto; display: block;" src="../../private_assets/img/ajax-loading.gif">
 
-			<n-commodity class="commodity" commodity="cm" ng-repeat="cm in commodities | filter:query"></n-commodity>
+			<n-commodity class="commodity" commodity="cm" ng-repeat="cm in commodities"></n-commodity>
 		</div>
 	</div>
 

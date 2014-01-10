@@ -13,7 +13,7 @@
 		
 	<n-year-selector class="pull-right" document-type="invoices" callback="loadInvoices(year)"></n-year-selector>
 
-	<div class="invoices">
+	<div class="invoices" infinite-scroll="loadMoreInvoices()">
 		<img class="spinner" ng-show="invoices==null" src="../../private_assets/img/ajax-loading.gif">
 		<p class="no-data-message text-center text-info" ng-show="invoices && invoices.length===0">No Data</p>
 		<n-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoices"></n-invoice>

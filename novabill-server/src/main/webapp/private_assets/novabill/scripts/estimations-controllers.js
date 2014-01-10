@@ -8,6 +8,8 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
  */
 .controller('EstimationCtrl', ['$scope', '$location', 'nConstants', '$rootScope', function($scope, $location, nConstants, $rootScope){
 	var selectedYear = String(new Date().getFullYear());
+	var loadedEstimations = [];
+	var PARTITION = 50;
 	
 	$scope.loadEstimations = function(year) {
 		selectedYear = year;
@@ -15,12 +17,20 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 		GWT_Server.estimation.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
-					$scope.estimations = page.items;
+					loadedEstimations = page.items;
+					$scope.estimations = loadedEstimations.slice(0, 15);
 				});
 			},
 
 			onFailure : function(error){}
 		});
+	};
+	
+	$scope.loadMoreEstimations = function(){
+		if($scope.estimations){
+			var currentIndex = $scope.estimations.length;
+			$scope.estimations = $scope.estimations.concat(loadedEstimations.slice(currentIndex, currentIndex+PARTITION));
+		}
 	};
 	
 	$scope.newEstimationClick = function(){

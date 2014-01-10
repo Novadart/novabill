@@ -13,7 +13,7 @@
 		
 	<n-year-selector class="pull-right" document-type="creditNotes" callback="loadCreditNotes(year)"></n-year-selector>
 
-	<div class="credit-notes">
+	<div class="credit-notes" infinite-scroll="loadMoreCreditNotes()">
 		<img class="spinner" ng-show="creditNotes==null" src="../../private_assets/img/ajax-loading.gif">
 		<p class="no-data-message text-center text-info" ng-show="creditNotes && creditNotes.length===0">No Data</p>
 		<n-credit-note credit-note="note" bottom-up-menu="!$first && $last" ng-repeat="note in creditNotes"></n-credit-note>

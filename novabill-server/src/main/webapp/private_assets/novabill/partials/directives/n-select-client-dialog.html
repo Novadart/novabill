@@ -13,8 +13,8 @@
 						placeholder="Filter..." ng-model="query">
 				</div>
 
-				<div class="scroller" data-always-visible="1" data-rail-visible="0">
-					<div ng-repeat="c in clients | filter:query" class="well well-sm client" 
+				<div class="scroller" data-always-visible="1" data-rail-visible="0" n-div-infinite-scroll="loadMoreClients()">
+					<div ng-repeat="c in clients" class="well well-sm client" 
 					     ng-class="{selected: selectedId === c.id }" ng-click="select(c.id)">{{c.name}}</div>
 				</div>
 
