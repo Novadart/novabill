@@ -1,22 +1,37 @@
 'use strict';
 
-angular.module('novabill.commodities.controllers', ['novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'novabill.constants', 'novabill.utils'])
+angular.module('novabill.commodities.controllers', 
+		['novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'novabill.constants', 'novabill.utils', 'infinite-scroll'])
 
 
 /**
  * COMMODITIES PAGE CONTROLLER
  */
-.controller('CommoditiesCtrl', ['$scope', '$location', '$rootScope', 'nConstants', 'nSorting',
-                                function($scope, $location, $rootScope, nConstants, nSorting){
+.controller('CommoditiesCtrl', ['$scope', '$location', '$rootScope', 'nConstants', 'nSorting', '$filter',
+                                function($scope, $location, $rootScope, nConstants, nSorting, $filter){
 
 	$scope.commodities = null;
+	
+	var loadedCommodities = [];
+	var filteredCommodities = [];
+	var PARTITION = 30;
+	
+	function updateFilteredCommodities(){
+		filteredCommodities = $filter('filter')(loadedCommodities, $scope.query);
+		$scope.commodities = filteredCommodities.slice(0, 15);
+	}
+	
+	$scope.$watch('query', function(newValue, oldValue){
+		updateFilteredCommodities();
+	});
 
 
 	function loadCommodities() {
 		GWT_Server.commodity.getAll(nConstants.conf.businessId, {
 			onSuccess : function(data){
 				$scope.$apply(function(){
-					$scope.commodities = data.commodities.sort(nSorting.descriptionComparator);
+					loadedCommodities = data.commodities.sort(nSorting.descriptionComparator);
+					updateFilteredCommodities();
 				});
 			},
 
@@ -24,6 +39,12 @@ angular.module('novabill.commodities.controllers', ['novabill.directives', 'nova
 		});
 	};
 
+	$scope.loadMoreCommodities = function(){
+		if($scope.commodities){
+			var currentIndex = $scope.commodities.length;
+			$scope.commodities = $scope.commodities.concat(filteredCommodities.slice(currentIndex, currentIndex+PARTITION));
+		}
+	};
 
 	$scope.newCommodity = function(){
 		$rootScope.$broadcast(nConstants.events.SHOW_EDIT_COMMODITY_DIALOG, false, 

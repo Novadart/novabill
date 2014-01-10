@@ -13,7 +13,7 @@
 		
 	<n-year-selector class="pull-right" document-type="transportDocuments" callback="loadTransportDocuments(year)"></n-year-selector>
 
-	<div class="transport-documents">
+	<div class="transport-documents" infinite-scroll="loadMoreTransportDocuments()">
 		<img class="spinner" ng-show="transportDocuments==null"	src="../../private_assets/img/ajax-loading.gif">
 		<p class="no-data-message text-center text-info" ng-show="transportDocuments && transportDocuments.length===0">No Data</p>
 		<n-transport-document transport-document="td" bottom-up-menu="!$first && $last"

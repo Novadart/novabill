@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations'])
+angular.module('novabill.invoices.controllers', 
+		['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'infinite-scroll'])
 
 
 /**
@@ -8,6 +9,9 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
  */
 .controller('InvoicesCtrl', ['$scope', '$location', 'nConstants', '$rootScope', function($scope, $location, nConstants, $rootScope){
 	var selectedYear = String(new Date().getFullYear());
+	var loadedInvoices = [];
+	var PARTITION = 50;
+	
 	
 	$scope.loadInvoices = function(year) {
 		selectedYear = year;
@@ -15,12 +19,20 @@ angular.module('novabill.invoices.controllers', ['novabill.utils', 'novabill.dir
 		GWT_Server.invoice.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
-					$scope.invoices = page.items;
+					loadedInvoices = page.items;
+					$scope.invoices = loadedInvoices.slice(0, 15);
 				});
 			},
 
 			onFailure : function(error){}
 		});
+	};
+	
+	$scope.loadMoreInvoices = function(){
+		if($scope.invoices){
+			var currentIndex = $scope.invoices.length;
+			$scope.invoices = $scope.invoices.concat(loadedInvoices.slice(currentIndex, currentIndex+PARTITION));
+		}
 	};
 
 	$scope.newInvoiceClick = function(){
