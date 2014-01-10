@@ -8,7 +8,7 @@ import java.util.Stack;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ClickEvent;
-import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.resources.client.CssResource;
@@ -238,11 +238,6 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 	@UiHandler("item")
 	void onKeyUp(KeyUpEvent event){
-		if(event.getNativeKeyCode() == KeyCodes.KEY_UP && commoditySearchPanel.isShowing()){
-			commoditySearchPanel.setFocus(true);
-			return;
-		}
-
 		List<CommodityDTO> list = filterCommodities(item.getText());
 		if(list.isEmpty()){
 			commoditySearchPanel.hide();
@@ -252,10 +247,31 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		commoditySearchPanel.setCommodities(list);
 		commoditySearchPanel.positionOnTop(item);
 	}
-
+	
+	@UiHandler("quantity")
+	void onQuantityFocus(FocusEvent event){
+		commoditySearchPanel.hide();
+	}
+	
+	@UiHandler("unitOfMeasure")
+	void onUnitOfMeasureFocus(FocusEvent event){
+		commoditySearchPanel.hide();
+	}
+	
+	@UiHandler("price")
+	void onPriceFocus(FocusEvent event){
+		commoditySearchPanel.hide();
+	}
+	
+	@UiHandler("discount")
+	void onDiscountFocus(FocusEvent event){
+		commoditySearchPanel.hide();
+	}
+	
 	@UiHandler("add")
 	void onAddClicked(ClickEvent e){
 		String validationError = null;
+		commoditySearchPanel.hide();
 
 		if(textOnlyAccountingItem.getValue()) {
 			validationError = item.getText().isEmpty() 
