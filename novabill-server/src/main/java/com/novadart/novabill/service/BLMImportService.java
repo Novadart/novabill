@@ -3,9 +3,11 @@ package com.novadart.novabill.service;
 import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -114,13 +116,14 @@ public class BLMImportService {
 		return res == null? defaultVal: (T)res;
 	}
 	
-	private void createClients(Business business) throws IOException{
+	private Set<Client> createClients(Business business) throws IOException{
+		Set<Client> faultyClients = new HashSet<>();
 		PriceList defaultPL = business.getPriceLists().iterator().next();
 		Table table = DatabaseBuilder.open(new File(blmDBPath)).getTable("CLIENTI");
 		for(Row row: table){
 			
-			Integer id = safeGet(row, "CodCli", -1);
-			System.out.println(safeGet(row, "CodCli", -1l));
+//			Integer id = safeGet(row, "CodCli", -1);
+//			System.out.println(safeGet(row, "CodCli", -1l));
 			
 			Client client = new Client();
 			client.setName(safeGet(row, "RagSoc", "")); //Name
@@ -136,12 +139,16 @@ public class BLMImportService {
 					client.setProvince("XX");
 				else
 					client.setProvince(provinceStr);
-				System.out.println(provinceStr);
+				//System.out.println(provinceStr);
 			}
-			if(StringUtils.isEmpty(client.getCity()))
+			if(StringUtils.isEmpty(client.getCity())){
 				client.setCity("BOGUS CITY");
-			if(StringUtils.isEmpty(client.getProvince()))
+				faultyClients.add(client);
+			}
+			if(StringUtils.isEmpty(client.getProvince())){
 				client.setProvince("XX");
+				faultyClients.add(client);
+			}
 				
 			String piva = safeGet(row, "CF_PIVA", ""); //Vat and Ssn
 			if(piva.contains("-")){
@@ -150,9 +157,10 @@ public class BLMImportService {
 				client.setSsn(Joiner.on("").join(Strings.nullToEmpty(pivaTkns[1]).split(" ")));
 			}else{
 				String nPiva = Strings.nullToEmpty(piva);
-				if(Strings.isNullOrEmpty(nPiva))
+				if(Strings.isNullOrEmpty(nPiva)){
 					client.setVatID(Strings.padEnd("IT", 13, '0'));
-				else
+					faultyClients.add(client);
+				}else
 					client.setSsn(Joiner.on("").join(nPiva.split(" ")));
 			}
 			String nphoneFax = Strings.nullToEmpty(safeGet(row, "Tel_Fax", ""));
@@ -168,13 +176,14 @@ public class BLMImportService {
 			
 			client.getContact().setEmail("");
 			
-			System.out.println(client.getPhone());
+			//System.out.println(client.getPhone());
 			
 			client.setBusiness(business);
 			business.getClients().add(client);
 			client.setDefaultPriceList(defaultPL);
 			defaultPL.getClients().add(client);
 		}
+		return faultyClients;
 	}
 	
 	private void createCommodities(Business business) throws IOException{
@@ -189,6 +198,7 @@ public class BLMImportService {
 			commodity.setService(false);
 			commodity.setUnitOfMeasure("Unità");
 			commodity.setDescription(descr + ". Dimensioni: " + dim);
+			commodity.setTax(new BigDecimal("22.00"));
 			commodity.setBusiness(business);
 			business.getCommodities().add(commodity);
 			comMap.put(sku, commodity);
@@ -231,8 +241,11 @@ public class BLMImportService {
 	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException{
 		Principal principal = createPrincipal();
 		Business business = createBusiness(principal);
-		createClients(business);
+		Set<Client> faultyClients = createClients(business);
 		createCommodities(business);
+		Client.entityManager().flush();
+		for(Client client: faultyClients)
+			System.out.println("Faulty Client id:" + client.getId());
 	}
 	
 }
