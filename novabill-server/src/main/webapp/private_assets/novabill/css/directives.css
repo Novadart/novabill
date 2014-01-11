@@ -205,12 +205,6 @@
    background-color: #DDD;
 }
 
-.n-select-client-dialog div.well.client.selected {
-	border: 1px solid;
-	background-color: #3d3d3d;
-	color: #fafafa;
-}
-
 .n-select-client-dialog div.clients-filter {
    margin: 15px 0;
 }
@@ -219,31 +213,18 @@
  *  SELECT COMMODITY DIALOG
  */
  
-#selectCommodityDialog tr {
+.n-select-commodity-dialog tr {
 	cursor: pointer;
 }
 
-#selectCommodityDialog tr:HOVER {
+.n-select-commodity-dialog tr:HOVER {
 	background-color: #f5f5f5;
 }
  
-#selectCommodityDialog tr.product {
+.n-select-commodity-dialog tr.product {
    border-left: 2px solid #3cc051;
 }
 
-#selectCommodityDialog tr.service {
+.n-select-commodity-dialog tr.service {
    border-left: 2px solid #428bca;
 }
-
-#selectCommodityDialog tr.selected {
-   border-bottom: 1px solid;
-   border-top: 1px solid;
-   border-right: 1px solid;
-   background-color: #3d3d3d;
-   color: #fafafa;
-}
-
-#selectCommodityDialog tr.selected *{
-   color: #fafafa;
-}
-

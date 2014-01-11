@@ -61,8 +61,8 @@ angular.module('novabill.creditNotes.controllers',
 /**
  * ESTIMATION MODIFY PAGE CONTROLLER
  */
-.controller('CreditNoteDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate',
-                                      function($scope, $routeParams, $location, $translate) {
+.controller('CreditNoteDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
+                                      function($scope, $routeParams, $location, $translate, gwtHook) {
 	$scope.pageTitle = $translate('MODIFY_CREDIT_NOTE');
 	
     GWT_UI.showModifyCreditNotePage('credit-note-details', $routeParams.creditNoteId, {
@@ -73,6 +73,8 @@ angular.module('novabill.creditNotes.controllers',
     	},
     	onFailure : function(){},
     });
+	
+	gwtHook.injectSelectCommodityDialogHook();
 }])
 
 
@@ -80,8 +82,8 @@ angular.module('novabill.creditNotes.controllers',
 /**
  * ESTIMATION CREATE PAGE CONTROLLER
  */
-.controller('CreditNoteCreateCtrl', ['$scope', '$routeParams', '$location', '$translate',
-                                     function($scope, $routeParams, $location, $translate) {
+.controller('CreditNoteCreateCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
+                                     function($scope, $routeParams, $location, $translate, gwtHook) {
 	$scope.pageTitle = $translate('NEW_CREDIT_NOTE');
 	
 	GWT_UI.showNewCreditNotePage('credit-note-details', $routeParams.clientId, {
@@ -92,14 +94,16 @@ angular.module('novabill.creditNotes.controllers',
     	},
     	onFailure : function(){},
     });
+	
+	gwtHook.injectSelectCommodityDialogHook();
 }])
 
 
 /**
  * ESTIMATION CREATE PAGE CONTROLLER
  */
-.controller('CreditNoteFromInvoiceCtrl', ['$scope', '$routeParams', '$location', '$translate',
-                                          function($scope, $routeParams, $location, $translate) {
+.controller('CreditNoteFromInvoiceCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
+                                          function($scope, $routeParams, $location, $translate, gwtHook) {
 	$scope.pageTitle = $translate('NEW_CREDIT_NOTE');
 	
 	GWT_UI.showFromInvoiceCreditNotePage('credit-note-details', $routeParams.invoiceId, {
@@ -110,6 +114,8 @@ angular.module('novabill.creditNotes.controllers',
     	},
     	onFailure : function(){},
     });
+	
+	gwtHook.injectSelectCommodityDialogHook();
 }]);
 
 

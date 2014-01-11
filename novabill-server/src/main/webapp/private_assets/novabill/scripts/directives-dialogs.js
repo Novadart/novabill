@@ -321,59 +321,60 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 .factory('nSelectClientDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 	return {
-			open : function() {
-				
-				return $modal.open({
+		open : function() {
 
-					templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-select-client-dialog.html',
+			return $modal.open({
 
-					controller: ['$scope', 'nConstants', 'nSorting', '$filter', '$modalInstance',
-					              function($scope, nConstants, nSorting, $filter, $modalInstance){
+				templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-select-client-dialog.html',
 
-						var loadedClients = new Array();
-						var filteredClients = new Array();
-						
-						function updateFilteredClients(){
-							filteredClients = $filter('filter')(loadedClients, $scope.query);
-							$scope.clients = filteredClients.slice(0, 15);
+				controller: ['$scope', 'nConstants', 'nSorting', '$filter', '$modalInstance',
+				             function($scope, nConstants, nSorting, $filter, $modalInstance){
+
+					var loadedClients = new Array();
+					var filteredClients = new Array();
+
+					function updateFilteredClients(){
+						filteredClients = $filter('filter')(loadedClients, $scope.query);
+						$scope.clients = filteredClients.slice(0, 15);
+					}
+
+					$scope.$watch('query', function(newValue, oldValue){
+						updateFilteredClients();
+					});
+
+					$scope.loadMoreClients = function(){
+						if($scope.clients){
+							var currentIndex = $scope.clients.length;
+							$scope.clients = $scope.clients.concat(filteredClients.slice(currentIndex, currentIndex+30));
 						}
-						
-						$scope.$watch('query', function(newValue, oldValue){
-							updateFilteredClients();
-						});
-						
-						$scope.loadMoreClients = function(){
-							if($scope.clients){
-								var currentIndex = $scope.clients.length;
-								$scope.clients = $scope.clients.concat(filteredClients.slice(currentIndex, currentIndex+30));
-							}
-						};
+					};
 
-						$scope.select = function(id){
-							$modalInstance.close(id);
-						};
-						
-						$scope.cancel = function(){
-							$modalInstance.dismiss();
-						};
-						
-						GWT_Server.business.getClients(nConstants.conf.businessId, {
+					$scope.select = function(id){
+						$modalInstance.close(id);
+					};
 
-							onSuccess : function(data){
-								$scope.$apply(function(){
-									
-									loadedClients = data.clients.sort( nSorting.clientsComparator );
-									updateFilteredClients();
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
 
-								});
-							},
+					GWT_Server.business.getClients(nConstants.conf.businessId, {
 
-							onFailure : function(){}
+						onSuccess : function(data){
+							$scope.$apply(function(){
 
-						});
-					}]
-				});
-			}
+								loadedClients = data.clients.sort( nSorting.clientsComparator );
+								updateFilteredClients();
+
+							});
+						},
+
+						onFailure : function(){}
+
+					});
+					
+				}]
+			});
+		}
 	};
 }])
 
@@ -385,114 +386,95 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
  * Once the user has selected a commodity, the details of such commodity are inserted in the document (sku, description, tax, price).
  * It is possible to change price list within the dialog, to browse other price lists.
  */
-.directive('nSelectCommodityDialog', ['nConstants', function factory(nConstants){
+.factory('nSelectCommodityDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 	return {
+		open : function(clientId) {
 
-		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-select-commodity-dialog.html',
-		scope: {
-			gwtHook : '@?'
-		},
+			return $modal.open({
 
-		controller : ['$scope', 'nConstants', 'nSorting', 'nCalc', '$filter', '$http',
-		              function($scope, nConstants, nSorting, nCalc, $filter, $http){
-			$scope.selectedCommodity = null;
+				templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-select-commodity-dialog.html',
 
-			var loadedCommodities = new Array();
-			var filteredCommodities = new Array();
+				controller : ['$scope', 'nConstants', 'nSorting', 'nCalc', '$filter', '$http', '$modalInstance',
+				              function($scope, nConstants, nSorting, nCalc, $filter, $http, $modalInstance) {
 
-			if($scope.gwtHook) {
-				window.GWT_Hook_nSelectCommodityDialog = function(clientId, callback){
-					$scope.$broadcast(nConstants.events.SHOW_SELECT_COMMODITY_DIALOG, clientId, callback);
-				};
-			}
+					var loadedCommodities = new Array();
+					var filteredCommodities = new Array();
 
-			function updateFilteredCommodities(){
-				filteredCommodities = $filter('filter')(loadedCommodities, $scope.query);
-				$scope.commodities = filteredCommodities.slice(0, 15);
-				$scope.selectedCommodity = null;
-			}
+					function updateFilteredCommodities(){
+						filteredCommodities = $filter('filter')(loadedCommodities, $scope.query);
+						$scope.commodities = filteredCommodities.slice(0, 15);
+						$scope.selectedCommodity = null;
+					}
 
-			$scope.$watch('query', function(newValue, oldValue){
-				updateFilteredCommodities();
-			});
-
-			$scope.loadMoreCommodities = function(){
-				if($scope.commodities){
-					var currentIndex = $scope.commodities.length;
-					$scope.commodities = $scope.commodities.concat(filteredCommodities.slice(currentIndex, currentIndex+50));
-				}
-			};
-
-			function loadPriceList(id){
-				$http.get(nConstants.conf.privateAreaBaseUrl+'json/pricelists/'+id)
-				.success(function(data, status){
-					loadedCommodities = data.commodities.sort(nSorting.descriptionComparator);
-					$scope.priceList = data;
-					updateFilteredCommodities();
-				});
-			}
-
-			$scope.selectCommodity = function(commodity){
-				$scope.selectedCommodity = commodity;
-			};
-
-			$scope.changePriceList = function(){
-				loadPriceList($scope.selectedPriceList);
-			};
-
-			$scope.$on(nConstants.events.SHOW_SELECT_COMMODITY_DIALOG, function(event, clientId, callback){
-				$scope.callback = callback;
-
-				$http.get(nConstants.conf.privateAreaBaseUrl+'json/comm-select-data/'+String(clientId))
-				.success(function(data, status){
-					//orig
-					var priceList = data.first;
-					loadedCommodities = priceList.commodities.sort(nSorting.descriptionComparator);
-					$scope.priceList = priceList;
-					updateFilteredCommodities();
-
-					$scope.listOfPriceLists = data.second.sort(nSorting.priceListsComparator);
-					$scope.selectedPriceList = $scope.priceList.id;
-
-					$('#selectCommodityDialog').modal('show');
-					$('#selectCommodityDialog .scroller').slimScroll({
-						height: '400px'
+					$scope.$watch('query', function(newValue, oldValue){
+						updateFilteredCommodities();
 					});
-				});
+
+					$scope.loadMoreCommodities = function(){
+						if($scope.commodities){
+							var currentIndex = $scope.commodities.length;
+							$scope.commodities = $scope.commodities.concat(filteredCommodities.slice(currentIndex, currentIndex+50));
+						}
+					};
+
+					function loadPriceList(id){
+						$http.get(nConstants.conf.privateAreaBaseUrl+'json/pricelists/'+id)
+						.success(function(data, status){
+							loadedCommodities = data.commodities.sort(nSorting.descriptionComparator);
+							$scope.priceList = data;
+							updateFilteredCommodities();
+						});
+					}
+
+					$scope.selectCommodity = function(commodity){
+						$modalInstance.close(
+								commodity, 
+								nCalc.calculatePriceForCommodity(commodity, $scope.priceList.name)
+						);
+					};
+
+					$scope.changePriceList = function(){
+						loadPriceList($scope.selectedPriceList);
+					};
+
+					function hide(){
+						$scope.selectedCommodity = null;
+						$scope.query = null;
+						$scope.priceList = null;
+						$scope.listOfPriceLists = null;
+					};
+
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
+					
+					
+					$http.get(nConstants.conf.privateAreaBaseUrl+'json/comm-select-data/'+String(clientId))
+					.success(function(data, status){
+						//orig
+						var priceList = data.first;
+						loadedCommodities = priceList.commodities.sort(nSorting.descriptionComparator);
+						$scope.priceList = priceList;
+						updateFilteredCommodities();
+
+						$scope.listOfPriceLists = data.second.sort(nSorting.priceListsComparator);
+						$scope.selectedPriceList = $scope.priceList.id;
+					});
+				}]
 			});
-
-
-			function hide(){
-				$scope.selectedCommodity = null;
-				$scope.query = null;
-				$scope.priceList = null;
-				$scope.listOfPriceLists = null;
-
-				$('#selectCommodityDialog').modal('hide');
-
-				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
-				$('body').removeClass('modal-open');
-				$('.modal-backdrop').remove();
-			};
-
-			$scope.ok = function(){
-				$scope.callback.onOk(
-						$scope.selectedCommodity, 
-						nCalc.calculatePriceForCommodity($scope.selectedCommodity, $scope.priceList.name)
-				);
-				hide();
-			};
-
-			$scope.cancel = function(){
-				$scope.callback.onCancel();
-				hide();
-			};
-		}],
-
-		restrict: 'E',
-		replace: true,
-
+		}
 	};
+}])
 
+
+.factory('gwtHook', ['nSelectCommodityDialog', function(nSelectCommodityDialog) {
+	return {
+
+		injectSelectCommodityDialogHook : function(){
+			window.GWT_Hook_nSelectCommodityDialog = function(clientId){
+				return nSelectCommodityDialog.open(clientId);
+			};
+		}
+	};
 }]);

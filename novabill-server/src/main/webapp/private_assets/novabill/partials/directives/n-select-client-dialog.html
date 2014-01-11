@@ -9,7 +9,7 @@
 				placeholder="Filter..." ng-model="$parent.query">
 		</div>
 
-		<div class="scroller" style="height: 300px; overflow: auto;" n-div-infinite-scroll="loadMoreClients()">
+		<div class="scroller" style="height: 350px; overflow: auto;" n-div-infinite-scroll="loadMoreClients()">
 			<div ng-repeat="c in clients" class="well well-sm client" ng-click="select(c.id)">{{c.name}}</div>
 		</div>
 	</div>

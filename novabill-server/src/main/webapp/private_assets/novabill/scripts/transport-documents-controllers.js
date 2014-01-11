@@ -60,8 +60,8 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 /**
  * ESTIMATION MODIFY PAGE CONTROLLER
  */
-.controller('TransportDocumentDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate', 
-                                             function($scope, $routeParams, $location, $translate) {
+.controller('TransportDocumentDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook', 
+                                             function($scope, $routeParams, $location, $translate, gwtHook) {
 	$scope.pageTitle = $translate('MODIFY_TRANSPORT_DOCUMENT');
 	
     GWT_UI.showModifyTransportDocumentPage('transport-document-details', $routeParams.transportDocumentId, {
@@ -72,6 +72,7 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
     	},
     	onFailure : function(){},
     });
+	gwtHook.injectSelectCommodityDialogHook();
 }])
 
 
@@ -79,8 +80,8 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 /**
  * ESTIMATION CREATE PAGE CONTROLLER
  */
-.controller('TransportDocumentCreateCtrl', ['$scope', '$routeParams', '$location', '$translate', 
-                                            function($scope, $routeParams, $location, $translate) {
+.controller('TransportDocumentCreateCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
+                                            function($scope, $routeParams, $location, $translate, gwtHook) {
 	$scope.pageTitle = $translate('NEW_TRANSPORT_DOCUMENT');
 	
 	GWT_UI.showNewTransportDocumentPage('transport-document-details', $routeParams.clientId, {
@@ -91,6 +92,7 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
     	},
     	onFailure : function(){},
     });
+	gwtHook.injectSelectCommodityDialogHook();
 }]);
 
 

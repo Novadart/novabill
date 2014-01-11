@@ -94,17 +94,17 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 	private final CommoditySearchPanel commoditySearchPanel = 
 			new CommoditySearchPanel(this, new CommoditySearchPanel.Handler() {
-		
-		@Override
-		public void onCommodityClicked(CommodityDTO commodity) {
-			commoditySearchPanel.hide();
-			if(commodity != null){
-				updateItemFromJS(commodity.getDescription(), commodity.getUnitOfMeasure(), 
-						DocumentUtils.calculatePriceForCommodity(commodity, priceList.getName()).toString(), commodity.getTax().toString());
-			}
-		}
-	} );
-	
+
+				@Override
+				public void onCommodityClicked(CommodityDTO commodity) {
+					commoditySearchPanel.hide();
+					if(commodity != null){
+						updateItemFromJS(commodity.getDescription(), commodity.getUnitOfMeasure(), 
+								DocumentUtils.calculatePriceForCommodity(commodity, priceList.getName()).toString(), commodity.getTax().toString());
+					}
+				}
+			} );
+
 	public ItemInsertionForm(Handler handler) {
 		this.handler = handler;
 
@@ -240,27 +240,27 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		commoditySearchPanel.setCommodities(list);
 		commoditySearchPanel.positionOnTop(item);
 	}
-	
+
 	@UiHandler("quantity")
 	void onQuantityFocus(FocusEvent event){
 		commoditySearchPanel.hide();
 	}
-	
+
 	@UiHandler("unitOfMeasure")
 	void onUnitOfMeasureFocus(FocusEvent event){
 		commoditySearchPanel.hide();
 	}
-	
+
 	@UiHandler("price")
 	void onPriceFocus(FocusEvent event){
 		commoditySearchPanel.hide();
 	}
-	
+
 	@UiHandler("discount")
 	void onDiscountFocus(FocusEvent event){
 		commoditySearchPanel.hide();
 	}
-	
+
 	@UiHandler("add")
 	void onAddClicked(ClickEvent e){
 		String validationError = null;
@@ -312,17 +312,18 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	}
 
 	native void openSelectCommodityDialog(ItemInsertionForm insForm, String clientId)/*-{
-		$wnd.GWT_Hook_nSelectCommodityDialog(clientId, {
-			onOk : function(commodity, priceValue){
-				insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::updateItemFromJS(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(
-					commodity.description,
-					commodity.unitOfMeasure,
-					String(priceValue),
-					String(commodity.tax)
-				);
+		var instance = $wnd.GWT_Hook_nSelectCommodityDialog(clientId);
+		instance.result.then(
+			function(commodity, priceValue){
+					insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::updateItemFromJS(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(
+						commodity.description,
+						commodity.unitOfMeasure,
+						String(priceValue),
+						String(commodity.tax)
+					);
 			},
-			onCancel : function(){},
-		});
+			function(error){}
+			);
 	}-*/;
 
 
