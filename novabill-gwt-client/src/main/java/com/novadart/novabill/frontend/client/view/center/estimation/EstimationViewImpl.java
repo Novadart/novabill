@@ -81,7 +81,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
 		
-		createEstimation.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
+		createEstimation.getButton().setStyleName(CSS.createButton()+" btn green");
 		
 	}
 	

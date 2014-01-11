@@ -38,7 +38,10 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 		var instance = nSelectClientDialog.open();
 		instance.result.then(
 				function (clientId) {
-					$location.path('/new/'+clientId);
+					//workaround to enable scroll
+					window.location.assign( nConstants.url.transportDocumentNew(clientId) );
+					window.location.reload();
+//					$location.path('/new/'+clientId);
 				},
 				function () {
 				}

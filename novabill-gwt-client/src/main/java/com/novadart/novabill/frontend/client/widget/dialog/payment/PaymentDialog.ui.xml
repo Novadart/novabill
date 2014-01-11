@@ -88,7 +88,7 @@
 		</g:Grid>
 		<g:HorizontalPanel styleName="{style.buttons}">
 			<gwtshared:LoaderButton ui:field="ok" text="{i18n.submit}" />
-			<g:Button ui:field="cancel" text="{i18n.cancel}" styleName="{g.button} {style.cancel}"></g:Button>
+			<g:Button ui:field="cancel" text="{i18n.cancel}" styleName="btn default {style.cancel}"></g:Button>
 		</g:HorizontalPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 

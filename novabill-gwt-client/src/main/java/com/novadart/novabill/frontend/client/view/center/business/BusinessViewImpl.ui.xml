@@ -224,9 +224,9 @@
 							<g:HorizontalPanel>
 								<g:FormPanel visible="false" ui:field="formPanel" />
 								<g:Button ui:field="updateLogo" text="{i18n.updateLogo}"
-									styleName="{g.button}"></g:Button>
+									styleName="btn blue"></g:Button>
 								<g:Button ui:field="removeLogo" text="{i18n.deleteLogo}"
-									styleName="{style.removeLogo} {g.button}"></g:Button>
+									styleName="{style.removeLogo} btn red"></g:Button>
 							</g:HorizontalPanel>
 						</g:VerticalPanel>
 					</g:SimplePanel>
@@ -238,22 +238,22 @@
 			<g:VerticalPanel styleName="{style.exportDataContainer}">
 				<g:Label styleName="{style.sectionLabel}" text="{i18n.exportDataLabel}"></g:Label>
 				<g:HorizontalPanel styleName="{style.exportButtonsContainer}">
-					<g:Button styleName="{style.exportButton} {g.button}" ui:field="exportClientData"
+					<g:Button styleName="{style.exportButton} btn default" ui:field="exportClientData"
 						text="{i18n.exportClientData}"></g:Button>
-					<g:Button styleName="{style.exportButton} {g.button}" ui:field="exportInvoiceData"
+					<g:Button styleName="{style.exportButton} btn default" ui:field="exportInvoiceData"
 						text="{i18n.exportInvoiceData}"></g:Button>
-					<g:Button styleName="{style.exportButton} {g.button}" ui:field="exportEstimationData"
+					<g:Button styleName="{style.exportButton} btn default" ui:field="exportEstimationData"
 						text="{i18n.exportEstimationData}"></g:Button>
-					<g:Button styleName="{style.exportButton} {g.button}" ui:field="exportCreditNoteData"
+					<g:Button styleName="{style.exportButton} btn default" ui:field="exportCreditNoteData"
 						text="{i18n.exportCreditNoteData}"></g:Button>
-					<g:Button styleName="{style.exportButton} {g.button}" ui:field="exportTransportDocumentData"
+					<g:Button styleName="{style.exportButton} btn default" ui:field="exportTransportDocumentData"
 						text="{i18n.exportTransportDocumentData}"></g:Button>
 				</g:HorizontalPanel>
 			</g:VerticalPanel>
 
 			<g:VerticalPanel styleName="{style.cancelDataContainer}">
 				<g:Label styleName="{style.sectionLabel}" text="{i18n.deleteAccountLabel}"></g:Label>
-				<g:Anchor ui:field="deleteAccount" styleName="{style.deleteAccount} {g.button}" text="{i18n.deleteAccount}"></g:Anchor>
+				<g:Anchor ui:field="deleteAccount" styleName="{style.deleteAccount} btn red" text="{i18n.deleteAccount}"></g:Anchor>
 			</g:VerticalPanel>
 
 		</g:FlowPanel>

@@ -74,7 +74,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
 
-		createCreditNote.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
+		createCreditNote.getButton().setStyleName(CSS.createButton()+" btn green");
 	}
 	
 	@Override

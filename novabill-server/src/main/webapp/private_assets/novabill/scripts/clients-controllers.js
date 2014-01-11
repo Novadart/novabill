@@ -84,7 +84,7 @@ angular.module('novabill.clients.controllers',
 				if(generateTillIndex){
 					$scope.partitions = partitionClients( filteredClients.slice(0, generateTillIndex+1) );
 				} else {
-					$scope.partitions = partitionClients( filteredClients.slice(0, 15) );
+					$scope.partitions = partitionClients( filteredClients.slice(0, PARTITION) );
 				}
 			}
 			

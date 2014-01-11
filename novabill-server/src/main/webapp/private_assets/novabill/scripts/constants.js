@@ -89,6 +89,7 @@ angular.module('novabill.constants', [])
 				clientDetails : function(clientId){ return baseConf.clientsBaseUrl + '#/details/'+clientId; },
 
 				creditNoteList : function(){ return baseConf.creditNotesBaseUrl + '#/'; },
+				creditNoteNew : function(clientId){ return baseConf.creditNotesBaseUrl + '#/new/' + clientId; },
 				creditNoteFromInvoice : function(invoiceId){ return baseConf.creditNotesBaseUrl + '#/from-invoice/' + invoiceId; },
 				creditNoteDetails : function(creditNoteId){ return baseConf.creditNotesBaseUrl + '#/details/' + creditNoteId; },
 
@@ -96,10 +97,12 @@ angular.module('novabill.constants', [])
 				commodityDetails : function(commodityId){ return baseConf.commoditiesBaseUrl + '#/details/' + commodityId; },
 
 				estimationList : function(){ return baseConf.estimationsBaseUrl + '#/'; },
+				estimationNew : function(clientId){ return baseConf.estimationsBaseUrl + '#/new/' + clientId; },
 				estimationClone : function(clientId,estimationId){ return baseConf.estimationsBaseUrl + '#/new/' + clientId + '/clone/' + estimationId; },
 				estimationDetails : function(estimationId){ return baseConf.estimationsBaseUrl + '#/details/' + estimationId; },
 
 				invoiceList : function(){ return baseConf.invoicesBaseUrl + '#/'; },
+				invoiceNew : function(clientId){ return baseConf.invoicesBaseUrl + '#/new/' + clientId; },
 				invoiceClone : function(clientId,invoiceId){ return baseConf.invoicesBaseUrl + '#/new/' + clientId + '/clone/' + invoiceId; },
 				invoiceDetails : function(invoiceId){ return baseConf.invoicesBaseUrl + '#/details/' + invoiceId; },
 				invoiceFromEstimation : function(estimationId){ return baseConf.invoicesBaseUrl + '#/from-estimation/' + estimationId; },
@@ -112,6 +115,7 @@ angular.module('novabill.constants', [])
 				priceListDetails : function(priceListId){ return baseConf.priceListsBaseUrl + '#/details/' + priceListId; },
 
 				trasportDocumentList : function(){ return baseConf.transportDocumentsBaseUrl + '#/'; },
+				trasportDocumentNew : function(clientId){ return baseConf.transportDocumentsBaseUrl + '#/new/' + clientId; },
 				trasportDocumentDetails : function(transportDocumentId){ return baseConf.transportDocumentsBaseUrl + '#/details/' + transportDocumentId; },
 
 			},

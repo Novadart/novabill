@@ -80,7 +80,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 		months.addItem("240");
 		
 		ok = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
-		ok.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().button());
+		ok.getButton().addStyleName("btn green");
 		
 		setWidget(uiBinder.createAndBindUi(this));
 		

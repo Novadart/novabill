@@ -101,7 +101,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
 		
-		createInvoice.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
+		createInvoice.getButton().setStyleName(CSS.createButton()+" btn green");
 		
 		TipFactory.show(Tips.center_invoice_payment, tipPayment);
 	}

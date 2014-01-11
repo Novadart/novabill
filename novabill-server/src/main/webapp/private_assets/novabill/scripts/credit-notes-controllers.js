@@ -39,7 +39,10 @@ angular.module('novabill.creditNotes.controllers',
 		var instance = nSelectClientDialog.open();
 		instance.result.then(
 				function (clientId) {
-					$location.path('/new/'+clientId);
+					//workaround to enable scroll
+					window.location.assign( nConstants.url.creditNoteNew(clientId) );
+					window.location.reload();
+//					$location.path('/new/'+clientId);
 				},
 				function () {
 				}

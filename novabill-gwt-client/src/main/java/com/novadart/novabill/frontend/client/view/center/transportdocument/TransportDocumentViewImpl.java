@@ -149,7 +149,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
 
-		createTransportDocument.getButton().setStyleName(CSS.createButton()+" "+GlobalBundle.INSTANCE.globalCss().button());
+		createTransportDocument.getButton().setStyleName(CSS.createButton()+" btn green");
 	}
 	
 	@Override
