@@ -233,6 +233,7 @@
 	<script src="${privateAssetsUrl}/plugins/angular/angular-animate.min.js"></script>
 	<script src="${privateAssetsUrl}/plugins/angular/i18n/angular-locale_it-it.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/plugins/angular-translate.min.js" type="text/javascript"></script>
+	<script src="${privateAssetsUrl}/plugins/angular-ui/ui-bootstrap-custom-tpls-0.9.0.min.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/plugins/bignumber-1.3.0/bignumber.min.js"></script>
 	<script src="${privateAssetsUrl}/plugins/ng-infinite-scroll.min.js"></script>
 	<script src="${privateAssetsUrl}/novabill/scripts/translations.js" type="text/javascript"></script>

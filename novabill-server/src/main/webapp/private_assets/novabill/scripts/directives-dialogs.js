@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.constants', 'novabill.calc'])
+angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.constants', 'novabill.calc', 'ui.bootstrap'])
 
 
 /*
@@ -318,91 +318,63 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 /*
  * Select Client Dialog
  */
-.directive('nSelectClientDialog', ['nConstants', function factory(nConstants){
+.factory('nSelectClientDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 	return {
+			open : function() {
+				
+				return $modal.open({
 
-		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-select-client-dialog.html',
-		scope: {},
+					templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-select-client-dialog.html',
 
-		controller : ['$scope', 'nConstants', 'nSorting', '$filter', 
-		              function($scope, nConstants, nSorting, $filter){
+					controller: ['$scope', 'nConstants', 'nSorting', '$filter', '$modalInstance',
+					              function($scope, nConstants, nSorting, $filter, $modalInstance){
 
-			$scope.selectedId = null;
-			
-			var loadedClients = new Array();
-			var filteredClients = new Array();
-			
-			function updateFilteredClients(){
-				filteredClients = $filter('filter')(loadedClients, $scope.query);
-				$scope.clients = filteredClients.slice(0, 15);
-			}
-			
-			$scope.$watch('query', function(newValue, oldValue){
-				updateFilteredClients();
-			});
-			
-			$scope.loadMoreClients = function(){
-				if($scope.clients){
-					var currentIndex = $scope.clients.length;
-					$scope.clients = $scope.clients.concat(filteredClients.slice(currentIndex, currentIndex+30));
-				}
-			};
-
-			$scope.select = function(id){
-				$scope.selectedId = id;
-			};
-
-			$scope.$on(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, function(event, callback){
-				$scope.callback = callback;
-
-				GWT_Server.business.getClients(nConstants.conf.businessId, {
-
-					onSuccess : function(data){
-						$scope.$apply(function(){
-							
-							loadedClients = data.clients.sort( nSorting.clientsComparator );
+						var loadedClients = new Array();
+						var filteredClients = new Array();
+						
+						function updateFilteredClients(){
+							filteredClients = $filter('filter')(loadedClients, $scope.query);
+							$scope.clients = filteredClients.slice(0, 15);
+						}
+						
+						$scope.$watch('query', function(newValue, oldValue){
 							updateFilteredClients();
-
-							$('#selectClientDialog').modal('show');
-							$('#selectClientDialog .scroller').slimScroll({
-								height: '400px'
-							});
 						});
-					},
+						
+						$scope.loadMoreClients = function(){
+							if($scope.clients){
+								var currentIndex = $scope.clients.length;
+								$scope.clients = $scope.clients.concat(filteredClients.slice(currentIndex, currentIndex+30));
+							}
+						};
 
-					onFailure : function(){}
+						$scope.select = function(id){
+							$modalInstance.close(id);
+						};
+						
+						$scope.cancel = function(){
+							$modalInstance.dismiss();
+						};
+						
+						GWT_Server.business.getClients(nConstants.conf.businessId, {
 
+							onSuccess : function(data){
+								$scope.$apply(function(){
+									
+									loadedClients = data.clients.sort( nSorting.clientsComparator );
+									updateFilteredClients();
+
+								});
+							},
+
+							onFailure : function(){}
+
+						});
+					}]
 				});
-			});
-
-			function hide(){
-				$scope.selectedId = null;
-				$scope.query = null;
-
-				$('#selectClientDialog').modal('hide');
-
-				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
-				$('body').removeClass('modal-open');
-				$('.modal-backdrop').remove();
-			};
-
-			$scope.ok = function(){
-				$scope.callback.onOk($scope.selectedId);
-				hide();
-			};
-
-			$scope.cancel = function(){
-				$scope.callback.onCancel();
-				hide();
-			};
-		}],
-
-		restrict: 'E',
-		replace: true,
-
+			}
 	};
-
 }])
 
 /*
@@ -425,33 +397,33 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 		controller : ['$scope', 'nConstants', 'nSorting', 'nCalc', '$filter', '$http',
 		              function($scope, nConstants, nSorting, nCalc, $filter, $http){
 			$scope.selectedCommodity = null;
-			
+
 			var loadedCommodities = new Array();
 			var filteredCommodities = new Array();
-			
+
 			if($scope.gwtHook) {
 				window.GWT_Hook_nSelectCommodityDialog = function(clientId, callback){
 					$scope.$broadcast(nConstants.events.SHOW_SELECT_COMMODITY_DIALOG, clientId, callback);
 				};
 			}
-			
+
 			function updateFilteredCommodities(){
 				filteredCommodities = $filter('filter')(loadedCommodities, $scope.query);
 				$scope.commodities = filteredCommodities.slice(0, 15);
 				$scope.selectedCommodity = null;
 			}
-			
+
 			$scope.$watch('query', function(newValue, oldValue){
 				updateFilteredCommodities();
 			});
-			
+
 			$scope.loadMoreCommodities = function(){
 				if($scope.commodities){
 					var currentIndex = $scope.commodities.length;
 					$scope.commodities = $scope.commodities.concat(filteredCommodities.slice(currentIndex, currentIndex+50));
 				}
 			};
-			
+
 			function loadPriceList(id){
 				$http.get(nConstants.conf.privateAreaBaseUrl+'json/pricelists/'+id)
 				.success(function(data, status){
@@ -479,7 +451,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 					loadedCommodities = priceList.commodities.sort(nSorting.descriptionComparator);
 					$scope.priceList = priceList;
 					updateFilteredCommodities();
-					
+
 					$scope.listOfPriceLists = data.second.sort(nSorting.priceListsComparator);
 					$scope.selectedPriceList = $scope.priceList.id;
 

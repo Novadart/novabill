@@ -6,7 +6,8 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 /**
  * ESTIMATIONS PAGE CONTROLLER
  */
-.controller('EstimationCtrl', ['$scope', '$location', 'nConstants', '$rootScope', function($scope, $location, nConstants, $rootScope){
+.controller('EstimationCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog',
+                               function($scope, $location, nConstants, nSelectClientDialog){
 	var selectedYear = String(new Date().getFullYear());
 	var loadedEstimations = [];
 	var PARTITION = 50;
@@ -34,12 +35,14 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 	};
 	
 	$scope.newEstimationClick = function(){
-		$rootScope.$broadcast(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, {
-			onOk : function(clientId){
-				$location.path('/new/'+clientId);
-			},
-			onCancel : function(){}
-		});
+		var instance = nSelectClientDialog.open();
+		instance.result.then(
+				function (clientId) {
+					$location.path('/new/'+clientId);
+				},
+				function () {
+				}
+		);
 	};
 	
 	$scope.$on(nConstants.events.ESTIMATION_REMOVED, function(){

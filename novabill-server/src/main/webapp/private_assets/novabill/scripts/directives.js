@@ -1,12 +1,13 @@
 'use strict';
 
-angular.module('novabill.directives', ['novabill.utils', 'novabill.translations', 'novabill.calc', 'novabill.constants', 'ngSanitize', 'ngAnimate'])
+angular.module('novabill.directives', 
+		['novabill.utils', 'novabill.translations', 'novabill.calc', 'novabill.constants', 'ngSanitize', 'ngAnimate'])
 
 /*
  * Invoice widget
  */
-.directive('nInvoice', ['$rootScope', 'nConstants',
-                        function factory($rootScope, nConstants){
+.directive('nInvoice', ['$rootScope', 'nConstants', 'nSelectClientDialog',
+                        function factory($rootScope, nConstants, nSelectClientDialog){
 
 	return {
 		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-invoice.html',
@@ -46,12 +47,14 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			};
 
 			$scope.clone = function(){
-				$rootScope.$broadcast(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, {
-					onOk : function(clientId){
-						window.location.assign(nConstants.url.invoiceClone(clientId, $scope.invoice.id));
-					},
-					onCancel : function(){}
-				});
+				var instance = nSelectClientDialog.open();
+				instance.result.then(
+						function (clientId) {
+							window.location.assign(nConstants.url.invoiceClone(clientId, $scope.invoice.id));
+						},
+						function () {
+						}
+				);
 			};
 
 			$scope.createCreditNote = function(id){
@@ -81,7 +84,8 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			estimation : '=',
 			bottomUpMenu : '=',
 		},
-		controller : ['$scope', '$element', function($scope, $element){
+		controller : ['$scope', '$element', 'nSelectClientDialog',
+		              function($scope, $element, nSelectClientDialog){
 
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.estimationDetails($scope.estimation.id) );
@@ -114,12 +118,14 @@ angular.module('novabill.directives', ['novabill.utils', 'novabill.translations'
 			};
 
 			$scope.clone = function(){
-				$rootScope.$broadcast(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, {
-					onOk : function(clientId){
-						window.location.assign(nConstants.url.estimationClone(clientId, $scope.estimation.id));
-					},
-					onCancel : function(){}
-				});
+				var instance = nSelectClientDialog.open();
+				instance.result.then(
+						function (clientId) {
+							window.location.assign(nConstants.url.estimationClone(clientId, $scope.estimation.id));
+						},
+						function () {
+						}
+				);
 			};
 
 			$scope.convertToInvoice = function(id){

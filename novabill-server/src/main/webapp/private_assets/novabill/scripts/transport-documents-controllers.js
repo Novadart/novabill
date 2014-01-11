@@ -6,8 +6,8 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 /**
  * CREDIT NOTES PAGE CONTROLLER
  */
-.controller('TransportDocumentCtrl', ['$scope', '$location', 'nConstants', '$rootScope', 
-                                      function($scope, $location, nConstants, $rootScope){
+.controller('TransportDocumentCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', 
+                                      function($scope, $location, nConstants, nSelectClientDialog){
 	var selectedYear = String(new Date().getFullYear());
 	var loadedTransportDocuments = [];
 	var PARTITION = 50;
@@ -35,12 +35,14 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 	};
 	
 	$scope.newTransportDocumentClick = function(){
-		$rootScope.$broadcast(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, {
-			onOk : function(clientId){
-				$location.path('/new/'+clientId);
-			},
-			onCancel : function(){}
-		});
+		var instance = nSelectClientDialog.open();
+		instance.result.then(
+				function (clientId) {
+					$location.path('/new/'+clientId);
+				},
+				function () {
+				}
+		);
 	};
 	
 	$scope.$on(nConstants.events.TRANSPORT_DOCUMENT_REMOVED, function(){

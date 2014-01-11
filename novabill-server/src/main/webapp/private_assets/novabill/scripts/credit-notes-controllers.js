@@ -1,13 +1,14 @@
 'use strict';
 
-angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations'])
+angular.module('novabill.creditNotes.controllers', 
+		['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations'])
 
 
 /**
  * CREDIT NOTES PAGE CONTROLLER
  */
-.controller('CreditNoteCtrl', ['$scope', '$location', 'nConstants', '$rootScope', 
-                               function($scope, $location, nConstants, $rootScope){
+.controller('CreditNoteCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', 
+                               function($scope, $location, nConstants, nSelectClientDialog){
 	var selectedYear = String(new Date().getFullYear());
 	var loadedCreditNotes = [];
 	var PARTITION = 50;
@@ -35,12 +36,14 @@ angular.module('novabill.creditNotes.controllers', ['novabill.utils', 'novabill.
 	};
 	
 	$scope.newCreditNoteClick = function(){
-		$rootScope.$broadcast(nConstants.events.SHOW_SELECT_CLIENT_DIALOG, {
-			onOk : function(clientId){
-				$location.path('/new/'+clientId);
-			},
-			onCancel : function(){}
-		});
+		var instance = nSelectClientDialog.open();
+		instance.result.then(
+				function (clientId) {
+					$location.path('/new/'+clientId);
+				},
+				function () {
+				}
+		);
 	};
 	
 	$scope.$on(nConstants.events.CREDIT_NOTE_REMOVED, function(){
