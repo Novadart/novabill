@@ -5,8 +5,9 @@
 	</div>
 	<div class="modal-body">
 
-		<select class="form-control" style="margin: 5px 0 2px" ng-model="$parent.selectedPriceList" ng-init="selectedPriceList"
-			ng-change="changePriceList()" ng-options="p.id as (p.name | nFilterDefault) for p in listOfPriceLists">
+		<select class="form-control" style="margin: 5px 0 2px" ng-model="$parent.selectedPriceList"
+			ng-init="selectedPriceList" ng-change="changePriceList()"
+			ng-options="p.id as (p.name | nFilterDefault) for p in listOfPriceLists">
 		</select>
 
 		<div class="commodities-filter input-icon left" style="margin: 0 0 10px">
@@ -14,7 +15,8 @@
 				placeholder="Filter..." ng-model="$parent.query">
 		</div>
 
-			<div class="table-responsive" style="height: 350px; overflow: auto; width: 550px;" n-div-infinite-scroll="loadMoreCommodities()">
+		<div class="scroller" n-div-infinite-scroll="loadMoreCommodities()">
+			<div class="table-responsive" >
 				<table class="table">
 					<tbody>
 						<tr ng-repeat="c in commodities" ng-class="{product: !c.service, service: c.service}"
@@ -27,6 +29,7 @@
 					</tbody>
 				</table>
 			</div>
+		</div>
 
 	</div>
 </div>

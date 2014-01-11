@@ -323,7 +323,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 	return {
 		open : function() {
 
-			return $modal.open({
+			var instance = $modal.open({
 
 				templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-select-client-dialog.html',
 
@@ -371,9 +371,22 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 						onFailure : function(){}
 
 					});
-					
+
 				}]
 			});
+			
+			instance.opened.then(function(){
+				//workaround: this code gets executed after the dialog has been drawn on the screen
+				setTimeout(function(){
+					$('.n-select-client-dialog .scroller').slimScroll({
+						height: '350px'
+					});
+				}, 1);
+
+			});
+
+			return instance;
+			
 		}
 	};
 }])
@@ -391,7 +404,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 	return {
 		open : function(clientId) {
 
-			return $modal.open({
+			var instance = $modal.open({
 
 				templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-select-commodity-dialog.html',
 
@@ -448,8 +461,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 					$scope.cancel = function(){
 						$modalInstance.dismiss();
 					};
-					
-					
+
 					$http.get(nConstants.conf.privateAreaBaseUrl+'json/comm-select-data/'+String(clientId))
 					.success(function(data, status){
 						//orig
@@ -461,8 +473,22 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 						$scope.listOfPriceLists = data.second.sort(nSorting.priceListsComparator);
 						$scope.selectedPriceList = $scope.priceList.id;
 					});
+
 				}]
 			});
+
+			instance.opened.then(function(){
+				//workaround: this code gets executed after the dialog has been drawn on the screen
+				setTimeout(function(){
+					$('.n-select-commodity-dialog .scroller').slimScroll({
+						height: '350px'
+					});
+				}, 1);
+
+			});
+
+			return instance;
+
 		}
 	};
 }])
