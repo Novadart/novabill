@@ -12,10 +12,10 @@
 
 .partition .letter {
 	float: left;
+	padding-top: 5px;
 }
 
-.partition .letter h2 {
-    margin-top: 0;
+.partition .letter h4 {
     display: inline;
 }
 
@@ -30,7 +30,7 @@
 
 .partition .clients .client h3 {
 	display: inline;
-	line-height: 40px;
+	line-height: 32px;
 }
 
 .partition .clients .client .address {
