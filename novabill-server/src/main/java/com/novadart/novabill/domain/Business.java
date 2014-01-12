@@ -237,8 +237,8 @@ public class Business implements Serializable, Taxable {
     }
     
     private <T extends AccountingDocument> List<Integer> getAccountingDocsYears(Class<T> cls){
-    	String query = String.format("select distinct doc.accountingDocumentYear from %s doc order by doc.accountingDocumentYear", cls.getSimpleName());
-    	return entityManager.createQuery(query, Integer.class).getResultList();
+    	String query = String.format("select distinct doc.accountingDocumentYear from %s doc where doc.business.id = :id order by doc.accountingDocumentYear ", cls.getSimpleName());
+    	return entityManager.createQuery(query, Integer.class).setParameter("id", getId()).getResultList();
     }
     
     public List<Integer> getInvoiceYears(){
