@@ -159,7 +159,7 @@ public class PriceListService {
 		business.getPriceLists().add(clonedPriceList);
 		clonedPriceList.persist();
 		clonedPriceList.flush();
-		return priceList.getId();
+		return clonedPriceList.getId();
 	}
 	
 }
