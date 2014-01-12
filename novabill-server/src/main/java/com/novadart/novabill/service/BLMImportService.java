@@ -156,12 +156,14 @@ public class BLMImportService {
 				client.setVatID("IT" + Strings.nullToEmpty(pivaTkns[0]));
 				client.setSsn(Joiner.on("").join(Strings.nullToEmpty(pivaTkns[1]).split(" ")));
 			}else{
-				String nPiva = Strings.nullToEmpty(piva);
+				String nPiva = Strings.nullToEmpty(Joiner.on("").join(piva.split(" ")));
 				if(Strings.isNullOrEmpty(nPiva)){
 					client.setVatID(Strings.padEnd("IT", 13, '0'));
 					faultyClients.add(client);
-				}else
-					client.setSsn(Joiner.on("").join(nPiva.split(" ")));
+				}else if(StringUtils.isNumeric(nPiva))
+					client.setVatID("IT" + nPiva);
+				else
+					client.setSsn(nPiva);
 			}
 			String nphoneFax = Strings.nullToEmpty(safeGet(row, "Tel_Fax", ""));
 			if(!Strings.isNullOrEmpty(nphoneFax) && !containsAlphanumericChar(nphoneFax)){
