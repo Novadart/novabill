@@ -8,14 +8,14 @@
 	<div class="options btn-group pull-right">
 		<a class="btn blue btn-sm dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">
 	       	<i class="fa fa-ellipsis-horizontal"></i>
-		      Options
+		      {{'OPTIONS' | translate}}
 			<i class="fa fa-angle-down"></i>
 		</a>
 		<ul class="dropdown-menu" ng-class="{'bottom-up': bottomUpMenu}">
-			<li><a href="javascript:void(0);" ng-click="stopProp($event); clone()">Clone</a></li>
-			<li><a href="javascript:void(0);" ng-click="stopProp($event); createCreditNote()">Create Credit Note</a></li>
+			<li><a href="javascript:void(0);" ng-click="stopProp($event); clone()">{{'CLONE' | translate}}</a></li>
+			<li><a href="javascript:void(0);" ng-click="stopProp($event); createCreditNote()">{{'CREATE_CREDIT_NOTE' | translate}}</a></li>
 			<li class="divider"></li>
-			<li ><a href="javascript:void(0);" ng-click="stopProp($event); remove()" ><i class="fa fa-trash-o"></i>Delete</a></li>
+			<li ><a href="javascript:void(0);" ng-click="stopProp($event); remove()" ><i class="fa fa-trash-o"></i>{{'DELETE' | translate}}</a></li>
 		</ul>
 	</div>
 	

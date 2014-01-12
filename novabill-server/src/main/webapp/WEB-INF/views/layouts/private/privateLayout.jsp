@@ -101,10 +101,10 @@
 						class="fa fa-angle-down"></i>
 				</a>
 					<ul class="dropdown-menu">
-						<li><a href="${settingsUrl}"><i class="fa fa-user"></i> Settings</a></li>
+						<li><a href="${settingsUrl}"><i class="fa fa-user"></i> Impostazioni</a></li>
 						<li class="divider"></li>
-						<li><a href="javascript:;" id="trigger_fullscreen"><i class="fa fa-move"></i> Full Screen</a></li>
-						<li><a href="${logoutUrl}"><i class="fa fa-key"></i> Log Out</a></li>
+						<li><a href="javascript:;" id="trigger_fullscreen"><i class="fa fa-move"></i> Schermo Intero</a></li>
+						<li><a href="${logoutUrl}"><i class="fa fa-key"></i> Esci</a></li>
 					</ul></li>
 				<!-- END USER LOGIN DROPDOWN -->
 			</ul>
@@ -139,7 +139,7 @@
 				</li>
 
 				<li class="<%=PAGES.CLIENTS.equals(activePage) ? "active" : "" %>"><a href="${clientsUrl}"> <i
-						class="fa fa-user"></i> <span class="title">Clients</span> <% if(PAGES.CLIENTS.equals(activePage)) { %> <span
+						class="fa fa-user"></i> <span class="title">Clienti</span> <% if(PAGES.CLIENTS.equals(activePage)) { %> <span
 						class="selected"></span> <%} %>
 				</a></li>
 
@@ -148,22 +148,22 @@
 				</li>
 
 				<li class="<%=PAGES.INVOICES.equals(activePage) ? "active" : "" %>"><a href="${invoicesUrl}"> <i
-						class="fa fa-file"></i> <span class="title">Invoices</span> <% if(PAGES.INVOICES.equals(activePage)) { %> <span
+						class="fa fa-file"></i> <span class="title">Fatture</span> <% if(PAGES.INVOICES.equals(activePage)) { %> <span
 						class="selected"></span> <%} %>
 				</a></li>
 
 				<li class="<%=PAGES.TRANSPORT_DOCUMENTS.equals(activePage) ? "active" : "" %>"><a
-					href="${transportDocumentsUrl}"> <i class="fa fa-file"></i> <span class="title">Transport Documents</span> <% if(PAGES.TRANSPORT_DOCUMENTS.equals(activePage)) { %>
+					href="${transportDocumentsUrl}"> <i class="fa fa-file"></i> <span class="title">Documenti di Trasporto</span> <% if(PAGES.TRANSPORT_DOCUMENTS.equals(activePage)) { %>
 						<span class="selected"></span> <%} %>
 				</a></li>
 
 				<li class="<%=PAGES.ESTIMATIONS.equals(activePage) ? "active" : "" %>"><a href="${estimationsUrl}"> <i
-						class="fa fa-file"></i> <span class="title">Estimations</span> <% if(PAGES.ESTIMATIONS.equals(activePage)) { %> <span
+						class="fa fa-file"></i> <span class="title">Offerte</span> <% if(PAGES.ESTIMATIONS.equals(activePage)) { %> <span
 						class="selected"></span> <%} %>
 				</a></li>
 
 				<li class="<%=PAGES.CREDIT_NOTES.equals(activePage) ? "active" : "" %>"><a href="${creditNotesUrl}"> <i
-						class="fa fa-file"></i> <span class="title">Credit Notes</span> <% if(PAGES.CREDIT_NOTES.equals(activePage)) { %> <span
+						class="fa fa-file"></i> <span class="title">Note di Credito</span> <% if(PAGES.CREDIT_NOTES.equals(activePage)) { %> <span
 						class="selected"></span> <%} %>
 				</a></li>
 
@@ -172,13 +172,13 @@
 				</li>
 
 				<li class="<%=PAGES.COMMODITIES.equals(activePage) ? "active" : ""%>"><a href="${commoditiesUrl}"> <i
-						class="fa fa-th"></i> <span class="title">Commodities</span> <%
+						class="fa fa-th"></i> <span class="title">Articoli</span> <%
                         if(PAGES.COMMODITIES.equals(activePage)) {
                     %> <span class="selected"></span> <%} %>
 				</a></li>
 
 				<li class="<%=PAGES.PRICE_LISTS.equals(activePage) ? "active" : ""%>"><a href="${priceListsUrl}"> <i
-						class="fa fa-dollar"></i> <span class="title">Price Lists</span> <%
+						class="fa fa-dollar"></i> <span class="title">Listini</span> <%
                         if(PAGES.PRICE_LISTS.equals(activePage)) {
                     %> <span class="selected"></span> <%} %>
 				</a></li>
@@ -188,7 +188,7 @@
 				</li>
 
 				<li class="<%=PAGES.PAYMENTS.equals(activePage) ? "active last" : "last" %>"><a href="${paymentsUrl}"> <i
-						class="fa fa-briefcase"></i> <span class="title">Payments</span> <% if(PAGES.PAYMENTS.equals(activePage)) { %> <span
+						class="fa fa-briefcase"></i> <span class="title">Tipologie di Pagamento</span> <% if(PAGES.PAYMENTS.equals(activePage)) { %> <span
 						class="selected"></span> <%} %>
 				</a></li>
 

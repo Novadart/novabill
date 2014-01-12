@@ -2,14 +2,14 @@
 	<div class="row">
 		<div class="col-md-12">
 			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
-			<h3 class="page-title">Invoices</h3>
+			<h3 class="page-title">{{'INVOICES' | translate}}</h3>
 			<ul class="breadcrumb">
 				<li><i class="fa fa-home"></i> <a href="../">Home</a></li>
-				<li><span>Invoices</span></li>
+				<li><span>{{'INVOICES' | translate}}</span></li>
 			</ul>
 			<!-- END PAGE TITLE & BREADCRUMB-->
 
-			<button type="button" class="btn green new-invoice" ng-click="newInvoiceClick()">New Invoice</button>
+			<button type="button" class="btn green new-invoice" ng-click="newInvoiceClick()">{{'NEW_INVOICE' | translate}}</button>
 
 			<n-year-selector class="pull-right" document-type="invoices" callback="loadInvoices(year)"></n-year-selector>
 
@@ -23,7 +23,7 @@
 
 			<div class="invoices">
 				<img class="spinner" ng-show="invoices==null" src="../../private_assets/img/ajax-loading.gif">
-				<p class="no-data-message text-center text-info" ng-show="invoices && invoices.length===0">No Data</p>
+				<p class="no-data-message text-center text-info" ng-show="invoices && invoices.length===0">{{'NO_DATA' | translate}}</p>
 				<n-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoices"></n-invoice>
 			</div>
 

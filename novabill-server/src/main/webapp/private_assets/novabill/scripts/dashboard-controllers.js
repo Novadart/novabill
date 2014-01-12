@@ -40,7 +40,7 @@ angular.module('novabill.dashboard.controllers', ['novabill.directives', 'novabi
 
 			$.plot($("#site_statistics"), [{
 				data: points,
-				label: "Number of Invoices"
+				label: $filter('translate')('NUMBER_OF_INVOICES')
 			}
 			], {
 				series: {

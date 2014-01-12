@@ -160,8 +160,8 @@ angular.module('novabill.clients.controllers',
 		/**
 		 * CLIENT DETAILS PAGE CONTROLLER
 		 */
-		.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'nConstants',
-		                                  function($scope, $route, $routeParams, $location, $rootScope, nConstants) {
+		.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'nConstants', '$filter',
+		                                  function($scope, $route, $routeParams, $location, $rootScope, nConstants, $filter) {
 
 			//fired when edit client is clicked
 			$scope.editClient = function(clientId) {
@@ -182,7 +182,7 @@ angular.module('novabill.clients.controllers',
 			$scope.removeClient = function(name, clientId) {
 
 				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
-						'Are you sure that you want to delete permanently any data associated to "'+name+'"',
+						$filter('translate')('REMOVAL_QUESTION',{data : name}),
 						{
 
 					onOk : function(){

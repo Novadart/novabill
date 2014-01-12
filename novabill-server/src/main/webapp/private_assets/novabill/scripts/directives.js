@@ -15,7 +15,7 @@ angular.module('novabill.directives',
 			invoice : '=',
 			bottomUpMenu : '=',
 		},
-		controller : ['$scope', '$element', function($scope, $element){
+		controller : ['$scope', '$element', '$translate', function($scope, $element, $translate){
 
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.invoiceDetails($scope.invoice.id) );
@@ -30,8 +30,7 @@ angular.module('novabill.directives',
 			};
 
 			$scope.remove = function(){
-				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
-						'Delete '+$scope.invoice.documentID+' Invoice?', {
+				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, $translate('REMOVAL_QUESTION'), {
 					onOk : function(){
 						GWT_Server.invoice.remove(nConstants.conf.businessId, $scope.invoice.client.id, $scope.invoice.id, {
 							onSuccess : function(){
@@ -84,8 +83,8 @@ angular.module('novabill.directives',
 			estimation : '=',
 			bottomUpMenu : '=',
 		},
-		controller : ['$scope', '$element', 'nSelectClientDialog',
-		              function($scope, $element, nSelectClientDialog){
+		controller : ['$scope', '$element', '$translate', 'nSelectClientDialog',
+		              function($scope, $element, $translate, nSelectClientDialog){
 
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.estimationDetails($scope.estimation.id) );
@@ -102,7 +101,7 @@ angular.module('novabill.directives',
 
 			$scope.remove = function(){
 				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
-						'Delete '+$scope.estimation.documentID+' Estimation?', {
+						$translate('REMOVAL_QUESTION'), {
 					onOk : function(){
 						GWT_Server.estimation.remove(nConstants.conf.businessId, $scope.estimation.client.id, $scope.estimation.id, {
 							onSuccess : function(){
@@ -155,7 +154,7 @@ angular.module('novabill.directives',
 			transportDocument : '=',
 			bottomUpMenu : '=',
 		},
-		controller : ['$scope', '$element', function($scope, $element){
+		controller : ['$scope', '$element', '$translate', function($scope, $element, $translate){
 
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.transportDocumentDetails( $scope.transportDocument.id ) );
@@ -172,7 +171,7 @@ angular.module('novabill.directives',
 
 			$scope.remove = function(){
 				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
-						'Delete '+$scope.transportDocument.documentID+' Transport Document?', {
+						$translate('REMOVAL_QUESTION'), {
 					onOk : function(){
 						GWT_Server.transportDocument.remove(nConstants.conf.businessId, $scope.transportDocument.client.id, $scope.transportDocument.id, {
 							onSuccess : function(){
@@ -214,7 +213,7 @@ angular.module('novabill.directives',
 			creditNote : '=',
 			bottomUpMenu : '=',
 		},
-		controller : ['$scope', '$element', function($scope, $element){
+		controller : ['$scope', '$element', '$translate', function($scope, $element, $translate){
 
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.creditNoteDetails( $scope.creditNote.id ) );
@@ -231,7 +230,7 @@ angular.module('novabill.directives',
 
 			$scope.remove = function(){
 				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
-						'Delete '+$scope.creditNote.documentID+' Credit Note?', {
+						$translate('REMOVAL_QUESTION'), {
 					onOk : function(){
 						GWT_Server.creditNote.remove(nConstants.conf.businessId, $scope.creditNote.client.id, $scope.creditNote.id, {
 							onSuccess : function(){
@@ -539,13 +538,14 @@ angular.module('novabill.directives',
 /*
  * Check if the text is not a reserved word
  */
-.directive('nNotReserved', ['nRegExp', function(nRegExp) {
+.directive('nNotReserved', ['nRegExp', '$filter', function(nRegExp, $filter) {
 	return {
 		require: 'ngModel',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.reserved_word.test(viewValue)) {
+				if (nRegExp.reserved_word.test(viewValue) ||
+						$filter('translate')('DEFAULT_PRICE_LIST').toLowerCase() == viewValue.toLowerCase()) {
 					ctrl.$setValidity('notReserved', false);
 					return undefined;
 

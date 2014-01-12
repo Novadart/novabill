@@ -54,7 +54,6 @@ angular.module('novabill.commodities.controllers',
 				GWT_Server.commodity.add(JSON.stringify(commodity), {
 					onSuccess : function(newId){
 						delegation.finish();
-						console.log('Added new Commodity '+newId);
 						loadCommodities();
 					},
 
@@ -87,8 +86,8 @@ angular.module('novabill.commodities.controllers',
 /**
  * COMMODITIES DETAILS PAGE CONTROLLER
  */
-.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', '$rootScope', 'nConstants', 
-                                       function($scope, $location, $routeParams, $rootScope, nConstants){
+.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', '$rootScope', 'nConstants', '$filter', 
+                                       function($scope, $location, $routeParams, $rootScope, nConstants, $filter){
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	$scope.commodity = null;
 
@@ -117,7 +116,6 @@ angular.module('novabill.commodities.controllers',
 				GWT_Server.commodity.update(JSON.stringify(commodity), {
 					onSuccess : function(newId){
 						delegation.finish(true);
-						console.log('Updated Commodity '+newId);
 						loadCommodity();
 					},
 
@@ -144,8 +142,7 @@ angular.module('novabill.commodities.controllers',
 
 
 	$scope.removeCommodity = function(){
-		$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
-				'Are you sure that you want to delete permanently any data associated to "'+$scope.commodity.description+'"', {
+		$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, $filter('translate')('REMOVAL_QUESTION',{data : $scope.commodity.description}), {
 			onOk : function(){
 				GWT_Server.commodity.remove(nConstants.conf.businessId, $scope.commodity.id, {
 					onSuccess : function(data){

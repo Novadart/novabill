@@ -5,19 +5,19 @@
 
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
-					<h4 class="modal-title">Price List</h4>
+					<h4 class="modal-title">{{'PRICE_LIST' | translate}}</h4>
 				</div>
 
 				<form name="form" role="form" style="margin-top: 20px;" novalidate>
 				
 				    <div class="form-group" ng-class="{'has-error': form.name.$dirty && form.name.$invalid, 'has-success': form.name.$dirty && form.name.$valid}">
-                        <label class="control-label" for="description">Nome *</label> 
+                        <label class="control-label" for="description">{{'NAME' | translate}} *</label> 
                         <input n-not-reserved type="text" name="name" maxlength="255" ng-model="priceList.name" class="form-control" 
-                            placeholder="e.g. Spring Offers" ng-class="{spinner : contactingServer}" required>
+                            placeholder="{{'NAME_PLACEHOLDER' | translate}}" ng-class="{spinner : contactingServer}" required>
                         <div ng-show="form.name.$dirty && form.name.$invalid || invalidIdentifier">
-                            <span class="text-danger" ng-show="!form.name.$error.notReserved && !invalidIdentifier && form.name.$error.required">Required</span>
-                            <span class="text-danger" ng-show="form.name.$error.notReserved">Invalid identifier</span>
-                            <span class="text-danger" ng-show="!form.name.$error.notReserved && invalidIdentifier">Name already taken</span>
+                            <span class="text-danger" ng-show="!form.name.$error.notReserved && !invalidIdentifier && form.name.$error.required">{{'VALIDATION_REQUIRED' | translate}}</span>
+                            <span class="text-danger" ng-show="form.name.$error.notReserved">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+                            <span class="text-danger" ng-show="!form.name.$error.notReserved && invalidIdentifier">{{'VALIDATION_NAME_TAKEN' | translate}}</span>
                         </div>
                     </div>
 					
@@ -26,8 +26,8 @@
 			</div>
 
 			<div class="modal-footer">
-				<button type="button" class="btn" data-dismiss="modal" ng-click="cancel()">Cancel</button>
-				<button type="button" class="btn green" ng-disabled="form.$invalid" ng-click="save()">Save</button>
+				<button type="button" class="btn green" ng-disabled="form.$invalid" ng-click="save()">{{'CONTINUE' | translate}}</button>
+				<button type="button" class="btn" data-dismiss="modal" ng-click="cancel()">{{'CANCEL' | translate}}</button>
 			</div>
 
 		</div>

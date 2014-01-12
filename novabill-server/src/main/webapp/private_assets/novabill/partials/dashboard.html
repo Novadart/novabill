@@ -4,7 +4,7 @@
                 <div class="col-md-12">
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
                     <h3 class="page-title">
-                        Dashboard  <small>statistics and more</small>
+                        Dashboard  <small>{{'STATISTICS_AND_MORE' | translate}}</small>
                     </h3>
                     <ul class="breadcrumb">
                         <li>
@@ -29,7 +29,7 @@
                                 {{stats.clientsCount}}
                             </div>
                             <div class="desc">                           
-                                Clients
+                                {{'CLIENTS' | translate}}
                             </div>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                         </div>
                         <div class="details">
                             <div class="number">{{stats.invoicesCountForYear}}</div>
-                            <div class="desc">Invoices this year</div>
+                            <div class="desc">{{'INVOICES' | translate}}</div>
                         </div>
                     </div>
                 </div>
@@ -52,19 +52,20 @@
                         </div>
                         <div class="details">
                             <div class="number">{{stats.commoditiesCount}}</div>
-                            <div class="desc">Commodities</div>
+                            <div class="desc">{{'COMMODITIES' | translate}}</div>
                         </div>
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="dashboard-stat yellow" ng-click="mouseOverTotal=!mouseOverTotal" ng-mouseenter="mouseOverTotal=true" ng-mouseleave="mouseOverTotal=false">
+                    <div class="dashboard-stat yellow" ng-click="mouseOverTotal=!mouseOverTotal" 
+                        ng-mouseenter="mouseOverTotal=true" ng-mouseleave="mouseOverTotal=false">
                         <div class="visual">
                             <i class="fa fa-bar-chart-o"></i>
                         </div>
                         <div class="details" >
-                            <div class="alert" ng-show="!mouseOverTotal">Mouse over to uncover...</div>
+                            <img ng-show="!mouseOverTotal" class="hand" src="../private_assets/img/hand.png">
                             <div ng-show="mouseOverTotal" class="number">{{stats.totalAfterTaxesForYear | currency}}</div>
-                            <div class="desc">Total after taxes this year</div>
+                            <div class="desc">{{'TOTAL_BEFORE_TAXES' | translate}}</div>
                         </div>
                     </div>
                 </div>
@@ -76,7 +77,7 @@
                     <!-- BEGIN PORTLET-->
                     <div class="portlet solid bordered light-grey">
                         <div class="portlet-title">
-                            <div class="caption"><i class="fa fa-bar-chart-o"></i>Invoices per Month</div>
+                            <div class="caption"><i class="fa fa-bar-chart-o"></i>{{'INVOICES_PER_MONTH' | translate}}</div>
                         </div>
                         <div class="portlet-body">
                             <div id="site_statistics_loading">
@@ -92,7 +93,7 @@
                 <div class="col-md-6 col-sm-6">
                     <div class="portlet box blue">
                         <div class="portlet-title">
-                            <div class="caption"><i class="fa fa-bell-o"></i>Recent Activities</div>
+                            <div class="caption"><i class="fa fa-bell-o"></i>{{'RECENT_ACTIVITIES' | translate}}</div>
                             <!-- <div class="actions">
                                 <div class="btn-group">
                                     <a class="btn btn-sm default" href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">

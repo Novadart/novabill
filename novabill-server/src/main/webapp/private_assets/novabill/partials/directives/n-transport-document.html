@@ -8,13 +8,13 @@
     <div class="options btn-group pull-right">
         <a class="btn blue btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
             <i class="fa fa-ellipsis-horizontal"></i>
-            Options
+            {{'OPTIONS' | translate}}
             <i class="fa fa-angle-down"></i>
         </a>
         <ul class="dropdown-menu" ng-class="{'bottom-up': bottomUpMenu}">
-            <li><a href="javascript:void(0);" ng-click="stopProp($event); createInvoice()">Create Invoice</a></li>
+            <li><a href="javascript:void(0);" ng-click="stopProp($event); createInvoice()">{{'CREATE_INVOICE' | translate}}</a></li>
             <li class="divider"></li>
-            <li ><a href="javascript:void(0);" ng-click="stopProp($event); remove()" ><i class="fa fa-trash-o"></i>Delete</a></li>
+            <li ><a href="javascript:void(0);" ng-click="stopProp($event); remove()" ><i class="fa fa-trash-o"></i>{{'DELETE' | translate}}</a></li>
         </ul>
     </div>
     

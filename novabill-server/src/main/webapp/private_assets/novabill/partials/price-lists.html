@@ -2,17 +2,17 @@
 	<div class="row">
 		<div class="col-md-12">
 			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
-			<h3 class="page-title">Price Lists</h3>
+			<h3 class="page-title">{{'PRICE_LISTS' | translate}}</h3>
 			<ul class="breadcrumb">
 				<li><i class="fa fa-home"></i> <a href="../">Home</a></li>
-				<li><span>Price Lists</span></li>
+				<li><span>{{'PRICE_LISTS' | translate}}</span></li>
 			</ul>
 			
-			<button type="button" class="btn green new-price-list" ng-click="newPriceList()">New Price List</button>
+			<button type="button" class="btn green new-price-list" ng-click="newPriceList()">{{'NEW_PRICE_LIST' | translate}}</button>
 			
 			<div class="price-list-filter input-icon left">
                 <i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
-                    placeholder="Filter..." ng-model="query">
+                    placeholder="{{'FILTER' | translate}}..." ng-model="query">
             </div>
 
 		</div>
