@@ -103,7 +103,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		TAX : 'IVA',
 		TAX_PLACEHOLDER : 'esempio: 22',
 		TODAY : 'Oggi',
-		TOTAL_BEFORE_TAXES : 'Totale IVA escl.',
+		TOTAL_BEFORE_TAXES : 'Fatturato',
 		TRANSPORT_DOCUMENTS : 'Documenti di Trasporto',
 		TYPE : 'Tipo',
 		UNIT_OF_MEASURE : 'Unità di Misura',

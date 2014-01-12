@@ -96,7 +96,8 @@ public class AutoBeanEncoder {
 		b.setCommoditiesCount(c.getCommoditiesCount());
 		b.setInvoicesCountForYear(c.getInvoicesCountForYear());
 		b.setTotalAfterTaxesForYear(c.getTotalAfterTaxesForYear().doubleValue());
-
+		b.setTotalBeforeTaxesForYear(c.getTotalBeforeTaxesForYear().doubleValue());
+		
 		LogRecordList ll = AutoBeanMaker.INSTANCE.makeLogRecordList().as();
 		List<LogRecord> list = new ArrayList<LogRecord>();
 		AutoBean<LogRecord> lr;
