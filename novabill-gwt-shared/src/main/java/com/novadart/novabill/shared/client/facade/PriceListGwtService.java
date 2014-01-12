@@ -31,5 +31,7 @@ public interface PriceListGwtService extends RemoteService {
 	public void remove(Long businessID, Long id)  throws NotAuthenticatedException, DataAccessException, DataIntegrityException;
 	
 	public Map<String, Pair<String, PriceDTO>> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException;
+	
+	public Long clonePriceList(Long businessID, Long id, String priceListName) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException;
 
 }

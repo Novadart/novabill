@@ -250,4 +250,6 @@ public privileged aspect CachingAspect {
 		@CacheEvict(value = PRICELIST_CACHE,  key = "#priceListDTO.id")
 	});
 	
+	declare @method : public Long com.novadart.novabill.service.web.PriceListService.clonePriceList(Long, Long, String): @CacheEvict(value = PRICELIST_CACHE, key = "#businessID.toString().concat('-all')");
+	
 }

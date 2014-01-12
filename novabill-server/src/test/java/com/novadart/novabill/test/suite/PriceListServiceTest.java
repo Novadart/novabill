@@ -275,4 +275,31 @@ public class PriceListServiceTest extends GWTServiceTest {
 		assertTrue(PriceList.findPriceList(id).nameExists());
 	}
 	
+	@Test
+	public void clonePriceListTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException{
+		Long id = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		Long clonedPLId = priceListService.clonePriceList(businessID, id, "Cloned price list" + System.currentTimeMillis());
+		assertTrue(PriceList.findPriceList(clonedPLId) != null);
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void clonePriceListNullBusinessIDTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException{
+		Long id = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
+		priceListService.clonePriceList(null, id, "Cloned price list" + System.currentTimeMillis());
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void clonePriceListNullIDTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		priceListService.clonePriceList(businessID, null, "Cloned price list" + System.currentTimeMillis());
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void clonePriceListNameNUllTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException{
+		Long id = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		priceListService.clonePriceList(businessID, id, null);
+	}
+	
 }

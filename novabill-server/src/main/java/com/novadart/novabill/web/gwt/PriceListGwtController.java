@@ -56,4 +56,10 @@ public class PriceListGwtController extends AbstractGwtController implements Pri
 		return priceListService.getPrices(businessID, id);
 	}
 
+	@Override
+	public Long clonePriceList(Long businessID, Long id, String priceListName) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException {
+		return priceListService.clonePriceList(businessID, id, priceListName);
+	}
+
+
 }

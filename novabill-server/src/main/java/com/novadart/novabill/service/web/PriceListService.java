@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
@@ -129,6 +130,36 @@ public class PriceListService {
 			pair.setSecond(PriceDTOFactory.toDTO(price));
 		}
 		return result;
+	}
+	
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
+	@PreAuthorize("#businessID == principal.business.id and " + 
+				  "T(com.novadart.novabill.domain.PriceList).findPriceList(#id)?.business?.id == #businessID")
+	public Long clonePriceList(Long businessID, Long id,  String priceListName) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException {
+		PriceList priceList = PriceList.findPriceList(id);
+		if(priceList == null)
+			throw new NoSuchObjectException();
+		PriceList clonedPriceList = new PriceList();
+		clonedPriceList.setName(priceListName);
+		Business business = Business.findBusiness(businessID);
+		clonedPriceList.setBusiness(business);
+		validator.validate(clonedPriceList, true);
+		for(Price price: priceList.getPrices()){
+			Price clonedPrice = new Price();
+			clonedPrice.setPriceType(price.getPriceType());
+			clonedPrice.setPriceValue(price.getPriceValue());
+			//attach to cloned pricelist
+			clonedPriceList.getPrices().add(clonedPrice);
+			clonedPrice.setPriceList(clonedPriceList);
+			//attach to commodity
+			Commodity commodity = price.getCommodity();
+			commodity.getPrices().add(clonedPrice);
+			clonedPrice.setCommodity(commodity);
+		}
+		business.getPriceLists().add(clonedPriceList);
+		clonedPriceList.persist();
+		clonedPriceList.flush();
+		return priceList.getId();
 	}
 	
 }

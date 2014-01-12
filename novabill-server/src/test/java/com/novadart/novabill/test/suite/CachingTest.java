@@ -10,6 +10,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.annotation.Resource;
+
 import net.sf.ehcache.CacheManager;
 
 import org.junit.Before;
@@ -77,6 +79,9 @@ import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
 @Transactional
 @ActiveProfiles("dev")
 public class CachingTest extends GWTServiceTest {
+	
+	@Resource(name = "testPL")
+	private HashMap<String, String> testPL;
 	
 	@Autowired
 	private BusinessGwtService businessGwtService;
@@ -691,6 +696,17 @@ public class CachingTest extends GWTServiceTest {
 		assertTrue(resultAll != priceListService.getAll(businessID));
 		assertTrue(resultOne != null);
 		priceListService.get(id);
+	}
+	
+	@Test
+	public void priceListCloneCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, ValidationException, AuthorizationException{
+		Long id = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<PriceListDTO> resultAll = priceListService.getAll(businessID);
+		assertTrue(resultAll == priceListService.getAll(businessID));
+		priceListService.clonePriceList(businessID, id, "Cloned price list" + System.currentTimeMillis());
+		PriceList.entityManager().flush();
+		assertTrue(resultAll != priceListService.getAll(businessID));
 	}
 	
 	@Test
