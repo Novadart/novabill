@@ -18,6 +18,10 @@ public interface BusinessStats {
 	Double getTotalAfterTaxesForYear();
 
 	void setTotalAfterTaxesForYear(Double totalAfterTaxesForYear);
+	
+	Double getTotalBeforeTaxesForYear();
+
+	void setTotalBeforeTaxesForYear(Double totalBeforeTaxesForYear);
 
 	LogRecordList getLogRecords();
 
