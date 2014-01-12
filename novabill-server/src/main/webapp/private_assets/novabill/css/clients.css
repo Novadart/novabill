@@ -47,11 +47,7 @@
 	color: white;
 }
 
-.client-detail .hero-unit {
-    position: relative;
-}
-
-.client-detail .spinner {
+.clients-detail .spinner {
 	margin: 0 auto;
     display: block;
 }
@@ -60,6 +56,6 @@ ul.pagination > li > a {
 	cursor: pointer;
 }
 
-.client-detail .tab-content {
-	min-height: 200px;
+.clients-detail .tab-content {
+	min-height: 400px;
 }
