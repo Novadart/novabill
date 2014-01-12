@@ -9,10 +9,6 @@
 
 	<ui:style
 		type="com.novadart.novabill.frontend.client.view.center.payment.PaymentViewImpl.Style">
-			.container {
-				padding: 2em;
-			}
-			
 			.paymentTable {
 				margin-top: 2em;
 			}
@@ -64,8 +60,7 @@
 			}
 		</ui:style>
 
-	<g:ScrollPanel height="100%">
-		<g:FlowPanel styleName="{style.container}">
+		<g:FlowPanel>
 			<g:HorizontalPanel styleName="{style.paymentTable}">
 				<g:ScrollPanel styleName="{style.scrollPayments}">
 					<c:CellTable ui:field="payments" />
@@ -76,6 +71,5 @@
 
 			<g:HTML styleName="{style.description}" ui:field="description"></g:HTML>
 		</g:FlowPanel>
-	</g:ScrollPanel>
 
 </ui:UiBinder> 

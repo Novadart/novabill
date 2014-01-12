@@ -290,7 +290,7 @@
 				<g:HorizontalPanel>
 					<gwtshared:LoaderButton ui:field="ok"
 						text="{i18n.submit}"></gwtshared:LoaderButton>
-					<g:Button styleName="cancelButton {g.button}" ui:field="cancel"
+					<g:Button styleName="cancelButton btn default" ui:field="cancel"
 						text="{i18n.cancel}"></g:Button>
 				</g:HorizontalPanel>
 			</g:SimplePanel>

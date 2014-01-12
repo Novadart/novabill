@@ -152,7 +152,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		addStyleName(GlobalBundle.INSTANCE.globalCss().panel());
 
 		ok.addStyleName(s.submit());
-		ok.getButton().addStyleName(GlobalBundle.INSTANCE.globalCss().button());
+		ok.getButton().addStyleName("btn green");
 	}
 
 	private String renameDefaultPriceList(String name){

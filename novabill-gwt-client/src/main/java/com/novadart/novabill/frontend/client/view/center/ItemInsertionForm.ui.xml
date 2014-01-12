@@ -16,7 +16,7 @@
 		}
 		
 		.newItemContainer {
-			margin-top: 2em;
+			margin-top: 4em;
 			background-color: #EEE;
 			padding: 1em;
 			border: 0.1em solid #CCC;
