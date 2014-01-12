@@ -1,3 +1,15 @@
+.price-lists .price-list.default-price-list .name {
+	font-weight: bold;
+}
+
+.price-lists .price-list.default-price-list  {
+	background-color: #eee;
+}
+
+.price-lists .price-list .name {
+    font-size: 16px;
+}
+
 .price-lists .price-list-filter {
     margin: 20px 0;
 }

@@ -291,11 +291,56 @@ angular.module('novabill.directives',
 		scope: { 
 			priceList : '=',
 		},
-		controller : ['$scope', 'nConstants', function($scope, nConstants){
-
+		controller : ['$scope', 'nConstants', '$element', 'nEditPriceListDialog',
+		              function($scope, nConstants, $element, nEditPriceListDialog){
+			$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
+			
 			$scope.openUrl = function(){
 				window.location.assign( nConstants.url.priceListDetails($scope.priceList.id) );
 			};
+			
+			$scope.stopProp = function($event){
+				$event.stopPropagation();
+			};
+			
+			function recursiveCloning(wrongPriceList){
+				var instance = null;
+				
+				if(wrongPriceList){
+					instance = nEditPriceListDialog.open(wrongPriceList, true);
+				} else {
+					instance = nEditPriceListDialog.open();
+				}
+				
+				instance.result.then(function(priceList){
+					GWT_Server.priceList.clonePriceList(nConstants.conf.businessId, String($scope.priceList.id), priceList.name, {
+
+						onSuccess : function(newId){
+							window.location.assign( nConstants.url.priceListDetails(newId) );
+						},
+
+						onFailure : function(error){
+							switch(error.exception){
+							case nConstants.exception.VALIDATION:
+								if(error.data === nConstants.validation.NOT_UNIQUE){
+									recursiveCloning(priceList);
+								}
+								break;
+
+							default:
+								break;
+							}
+						}
+					});
+				});
+			}
+			
+			$scope.clone = function(){
+				recursiveCloning();
+			};
+			
+			//activate the dropdown
+			angular.element($element).find('.dropdown-toggle').dropdown();
 
 		}],
 		restrict: 'E',

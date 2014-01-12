@@ -201,71 +201,32 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 /*
  * Edit Price List Dialog
  */
-.directive('nEditPriceListDialog', ['nConstants', function factory(nConstants){
+.factory('nEditPriceListDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 	return {
+		open : function( priceList, invalidIdentifier ) {
 
-		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-edit-price-list-dialog.html',
-		scope: {
-			priceList : '=?',
-		},
+			return $modal.open({
 
-		controller : ['$scope', 'nConstants', function($scope, nConstants){
+				templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-edit-price-list-dialog.html',
 
-			$scope.$on(nConstants.events.SHOW_EDIT_PRICE_LIST_DIALOG, 
-					function(event, editMode, callback){
-				$scope.editMode = editMode;
-				$scope.callback = callback;
+				controller: ['$scope', '$modalInstance',
+				             function($scope, $modalInstance){
 
-				$('#editPriceListDialog').modal('show');
+					$scope.invalidIdentifier = invalidIdentifier;
+					$scope.priceList = angular.copy(priceList);
+					
+					$scope.save = function(){
+						$modalInstance.close($scope.priceList);
+					};
+
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
+				}]
 			});
-
-			function hideAndReset(){
-				if(!$scope.editMode){
-					$scope.priceList = null;
-				}
-
-				$('#editPriceListDialog').modal('hide');
-
-				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
-				$('body').removeClass('modal-open');
-				$('.modal-backdrop').remove();
-
-				$scope.contactingServer = false;
-				$scope.invalidIdentifier = false;
-				$scope.form.$setPristine();
-			};
-
-			$scope.save = function(){
-				$scope.contactingServer = true;
-
-				// persist the commodity
-				$scope.callback.onSave(
-						$scope.priceList, 
-						{
-							finish : hideAndReset,
-
-							invalidIdentifier : function(){ 
-								$scope.$apply(function(){
-									$scope.contactingServer = false;
-									$scope.invalidIdentifier = true;
-								}); 
-							}
-						});
-			};
-
-			$scope.cancel = function(){
-				hideAndReset();
-				$scope.callback.onCancel();
-			};
-
-		}],
-
-		restrict: 'E',
-		replace: true,
-
+		}
 	};
-
 }])
 
 
@@ -374,7 +335,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 				}]
 			});
-			
+
 			instance.opened.then(function(){
 				//workaround: this code gets executed after the dialog has been drawn on the screen
 				setTimeout(function(){
@@ -386,7 +347,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 			});
 
 			return instance;
-			
+
 		}
 	};
 }])
