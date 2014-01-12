@@ -124,4 +124,25 @@ public class PriceListServiceJS extends ServiceJS {
 	}
 	
 	
+	public static void clonePriceList(String businessId, String priceListId, String priceListName, final JavaScriptObject callback) {
+		SERVER_FACADE.getPriceListGwtService().clonePriceList(Long.parseLong(businessId), Long.parseLong(priceListId), priceListName, 
+				new ManagedAsyncCallback<Long>() {
+
+			@Override
+			public void onSuccess(Long result) {
+				BridgeUtils.invokeJSCallback(result, callback);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				if(caught instanceof ValidationException){
+					ValidationException ve = (ValidationException)caught;
+					BridgeUtils.invokeJSCallbackOnException(ve.getClass().getName(), ve.getErrors().get(0).getErrorCode().name(), callback);
+				} else {
+					super.onFailure(caught);
+				}
+			}
+		});
+	}
+	
 }

@@ -23,14 +23,9 @@
 	<div class="row">
 		<div class="col-md-12">
 
-			<n-price-list ng-repeat="pl in priceLists | filter:query" price-list="pl"
-				ng-class="{'default-price-list': pl.name === DEFAULT_PRICELIST_NAME}"></n-price-list>
+			<n-price-list ng-repeat="pl in priceLists | filter:query" price-list="pl"></n-price-list>
 
 		</div>
 	</div>
 	
-	<n-edit-price-list-dialog></n-edit-price-list-dialog>
-
 </div>
-
-

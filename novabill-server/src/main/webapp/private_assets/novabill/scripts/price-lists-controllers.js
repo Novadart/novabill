@@ -7,8 +7,8 @@ angular.module('novabill.priceLists.controllers',
 /**
  * PRICE LISTS PAGE CONTROLLER
  */
-.controller('PriceListsCtrl', ['$scope', '$rootScope', 'nConstants', 'nSorting', 
-                               function($scope, $rootScope, nConstants, nSorting){
+.controller('PriceListsCtrl', ['$scope', 'nConstants', 'nSorting', 'nEditPriceListDialog', 
+                               function($scope, nConstants, nSorting, nEditPriceListDialog){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	
@@ -28,35 +28,40 @@ angular.module('novabill.priceLists.controllers',
 		});
 	};
 	
-	$scope.newPriceList = function(){
-		$rootScope.$broadcast(nConstants.events.SHOW_EDIT_PRICE_LIST_DIALOG, false, {
-			
-			onSave : function(priceList, delegation){
-				GWT_Server.priceList.add(JSON.stringify(priceList), {
-					
-					onSuccess : function(newId){
-						delegation.finish();
-						loadPriceLists();
-					},
-					
-					onFailure : function(error){
-						switch(error.exception){
-						case nConstants.exception.VALIDATION:
-							if(error.data === nConstants.validation.NOT_UNIQUE){
-								delegation.invalidIdentifier();
-							}
-							break;
+	function recursiveCreation(wrongPriceList){
+		var instance = null;
+		
+		if(wrongPriceList){
+			instance = nEditPriceListDialog.open(wrongPriceList, true);
+		} else {
+			instance = nEditPriceListDialog.open();
+		}
+		
+		instance.result.then(function(priceList){
+			GWT_Server.priceList.add(JSON.stringify(priceList), {
 
-						default:
-							break;
+				onSuccess : function(newId){
+					loadPriceLists();
+				},
+
+				onFailure : function(error){
+					switch(error.exception){
+					case nConstants.exception.VALIDATION:
+						if(error.data === nConstants.validation.NOT_UNIQUE){
+							recursiveCreation(priceList);
 						}
-					},
-					
-				});
-			},
-			
-			onCancel : function(){}
+						break;
+
+					default:
+						break;
+					}
+				}
+			});
 		});
+	}
+	
+	$scope.newPriceList = function(){
+		recursiveCreation();
 	};
 	
 	loadPriceLists();
@@ -68,8 +73,8 @@ angular.module('novabill.priceLists.controllers',
 /**
  * PRICE LISTS DETAILS PAGE CONTROLLER
  */
-.controller('PriceListsDetailsCtrl', ['$scope', '$http', '$routeParams', 'nSorting', 'nConstants', '$rootScope', '$location', '$filter',
-                                      function($scope, $http, $routeParams, nSorting, nConstants, $rootScope, $location, $filter){
+.controller('PriceListsDetailsCtrl', ['$scope', '$http', '$routeParams', 'nSorting', 'nConstants', '$rootScope', '$location', '$filter', 'nEditPriceListDialog',
+                                      function($scope, $http, $routeParams, nSorting, nConstants, $rootScope, $location, $filter, nEditPriceListDialog){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	
@@ -103,25 +108,36 @@ angular.module('novabill.priceLists.controllers',
 	};
 	
 	
-	$scope.editPriceList = function(){
+	function recursiveUpdate(updatedPriceList, invalidIdentifier){
+		var instance = nEditPriceListDialog.open(updatedPriceList, invalidIdentifier);
 
-		$rootScope.$broadcast(nConstants.events.SHOW_EDIT_PRICE_LIST_DIALOG, true, {
+		instance.result.then(function(priceList){
+			GWT_Server.priceList.update(JSON.stringify(priceList), {
 
-			onSave : function(priceList, delegation){
-				GWT_Server.priceList.update(JSON.stringify(priceList), {
+				onSuccess : function(newId){
+					$scope.$apply(function(){
+						$scope.priceList.name = priceList.name;
+					});
+				},
 
-					onSuccess : function(newId){
-						delegation.finish();
-					},
+				onFailure : function(error){
+					switch(error.exception){
+					case nConstants.exception.VALIDATION:
+						if(error.data === nConstants.validation.NOT_UNIQUE){
+							recursiveUpdate(priceList, true);
+						}
+						break;
 
-					onFailure : function(){},
-
-				});
-			},
-
-			onCancel : function(){}
+					default:
+						break;
+					}
+				}
+			});
 		});
-
+	}
+	
+	$scope.editPriceList = function(){
+		recursiveUpdate($scope.priceList, false);
 	};
 
 
