@@ -74,6 +74,7 @@ angular.module('novabill.dashboard.controllers', ['novabill.directives', 'novabi
 					tickDecimals: 0
 				},
 				yaxis: {
+					min: 0,
 					ticks: 11,
 					tickDecimals: 0
 				}

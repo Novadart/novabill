@@ -228,3 +228,19 @@
 .n-select-commodity-dialog tr.service {
    border-left: 2px solid #428bca;
 }
+
+/*
+ *  YEAR SELECTOR
+ */
+ 
+.n-year-selector .year-lbl {
+    display: inline;
+	font-size: 14px;
+	position: relative;
+	top: 3px;
+}
+ 
+.n-year-selector .year-select {
+    display: inline;
+    line-height: 34px;
+}

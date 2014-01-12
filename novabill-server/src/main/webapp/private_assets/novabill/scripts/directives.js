@@ -158,7 +158,7 @@ angular.module('novabill.directives',
 		controller : ['$scope', '$element', function($scope, $element){
 
 			$scope.openUrl = function() {
-				window.location.assign( nConstants.url.trasportDocumentDetails( $scope.transportDocument.id ) );
+				window.location.assign( nConstants.url.transportDocumentDetails( $scope.transportDocument.id ) );
 			};
 
 			$scope.stopProp = function($event){
@@ -752,12 +752,12 @@ angular.module('novabill.directives',
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
 					$scope.description = tr('LR_TRANSPORT_DOCUMENT_CREATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.trasportDocumentDetails( $scope.record.entityID )+'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.transportDocumentDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
 					$scope.description = tr('LR_TRANSPORT_DOCUMENT_UPDATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.trasportDocumentDetails( $scope.record.entityID )+'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.transportDocumentDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:

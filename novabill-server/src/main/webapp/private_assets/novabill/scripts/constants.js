@@ -114,9 +114,9 @@ angular.module('novabill.constants', [])
 				priceListList : function(){ return baseConf.priceListsBaseUrl + '#/'; },
 				priceListDetails : function(priceListId){ return baseConf.priceListsBaseUrl + '#/details/' + priceListId; },
 
-				trasportDocumentList : function(){ return baseConf.transportDocumentsBaseUrl + '#/'; },
-				trasportDocumentNew : function(clientId){ return baseConf.transportDocumentsBaseUrl + '#/new/' + clientId; },
-				trasportDocumentDetails : function(transportDocumentId){ return baseConf.transportDocumentsBaseUrl + '#/details/' + transportDocumentId; },
+				transportDocumentList : function(){ return baseConf.transportDocumentsBaseUrl + '#/'; },
+				transportDocumentNew : function(clientId){ return baseConf.transportDocumentsBaseUrl + '#/new/' + clientId; },
+				transportDocumentDetails : function(transportDocumentId){ return baseConf.transportDocumentsBaseUrl + '#/details/' + transportDocumentId; },
 
 			},
 

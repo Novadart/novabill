@@ -13,7 +13,7 @@ angular.module('novabill.clients.controllers',
 			var loadedClients = [];
 			var filteredClients = [];
 			var displayedClientsCount = 0;
-			var PARTITION = 30;
+			var PARTITION = 50;
 
 			function partitionClients(clients){
 				//split it alphabetically
@@ -84,7 +84,7 @@ angular.module('novabill.clients.controllers',
 				if(generateTillIndex){
 					$scope.partitions = partitionClients( filteredClients.slice(0, generateTillIndex+1) );
 				} else {
-					$scope.partitions = partitionClients( filteredClients.slice(0, PARTITION) );
+					$scope.partitions = partitionClients( filteredClients.slice(0, 20) );
 				}
 			}
 			

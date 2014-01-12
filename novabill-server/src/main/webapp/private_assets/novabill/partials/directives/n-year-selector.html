@@ -1,3 +1,6 @@
-<select class="form-control input-small" ng-model="selectedYear" ng-change="onChange(event)" >
-    <option ng-repeat="y in years">{{y}}</option>
-</select>
+<div class="n-year-selector">
+    <span class="year-lbl">Year&nbsp;&nbsp;</span>
+	<select class="year-select form-control input-small" ng-model="selectedYear" ng-change="onChange(event)">
+		<option ng-repeat="y in years">{{y}}</option>
+	</select>
+</div>

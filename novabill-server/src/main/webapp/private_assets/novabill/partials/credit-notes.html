@@ -1,22 +1,32 @@
 <div class="container-fluid">
-	<!-- BEGIN PAGE TITLE & BREADCRUMB-->
-	<h3 class="page-title">Credit Notes</h3>
-	<ul class="breadcrumb">
-		<li><i class="fa fa-home"></i> <a href="../">Home</a>
-			</li>
-		<li><span>Credit Notes</span></li>
-	</ul>
-	<!-- END PAGE TITLE & BREADCRUMB-->
+	<div class="row">
+		<div class="col-md-12">
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<h3 class="page-title">Credit Notes</h3>
+			<ul class="breadcrumb">
+				<li><i class="fa fa-home"></i> <a href="../">Home</a></li>
+				<li><span>Credit Notes</span></li>
+			</ul>
+			<!-- END PAGE TITLE & BREADCRUMB-->
 
-	<button type="button" class="btn green new-credit-note"
-		ng-click="newCreditNoteClick()">New Credit Note</button>
-		
-	<n-year-selector class="pull-right" document-type="creditNotes" callback="loadCreditNotes(year)"></n-year-selector>
+			<button type="button" class="btn green new-credit-note" ng-click="newCreditNoteClick()">New Credit Note</button>
 
-	<div class="credit-notes" infinite-scroll="loadMoreCreditNotes()">
-		<img class="spinner" ng-show="creditNotes==null" src="../../private_assets/img/ajax-loading.gif">
-		<p class="no-data-message text-center text-info" ng-show="creditNotes && creditNotes.length===0">No Data</p>
-		<n-credit-note credit-note="note" bottom-up-menu="!$first && $last" ng-repeat="note in creditNotes"></n-credit-note>
+			<n-year-selector class="pull-right" document-type="creditNotes" callback="loadCreditNotes(year)"></n-year-selector>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row">
+		<div class="col-md-12" infinite-scroll="loadMoreCreditNotes()">
+
+			<div class="credit-notes">
+				<img class="spinner" ng-show="creditNotes==null" src="../../private_assets/img/ajax-loading.gif">
+				<p class="no-data-message text-center text-info" ng-show="creditNotes && creditNotes.length===0">No Data</p>
+				<n-credit-note credit-note="note" bottom-up-menu="!$first && $last" ng-repeat="note in creditNotes"></n-credit-note>
+			</div>
+		</div>
 	</div>
 
 	<n-removal-dialog></n-removal-dialog>

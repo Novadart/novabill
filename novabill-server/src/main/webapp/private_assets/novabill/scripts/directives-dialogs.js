@@ -63,7 +63,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 			$scope.openUrl = function($event, id){
 				$event.stopPropagation();
-				window.open(nConstants.url.trasportDocumentDetails( id ), '_blank');
+				window.open(nConstants.url.transportDocumentDetails( id ), '_blank');
 			};
 
 			$scope.ok = function(){
