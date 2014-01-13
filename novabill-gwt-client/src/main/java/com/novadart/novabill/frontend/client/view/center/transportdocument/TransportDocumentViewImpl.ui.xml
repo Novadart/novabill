@@ -15,6 +15,23 @@
 		field="s" />
 	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss"
 		field="g"></ui:with>
+		
+	<ui:style>
+	   .forceBold label{
+	       font-weight: bold !important;
+	       margin-left: 5px;
+        }
+        
+        .countItems {
+	       margin-left: 10px;
+	       position: relative;
+           bottom: 5px;
+        }
+        
+        .nopContainer {
+	       margin: 10px 0;
+        }
+	</ui:style>
 
 	<g:FlowPanel>
 
@@ -66,11 +83,15 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.label}" text="{i18n.numberOfPackages}"></g:Label>
+                            <g:Label styleName="{s.label}" text="{i18n.numberOfPackages}"></g:Label>						
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedTextBox styleName="{s.box}"
-							ui:field="numberOfPackages" maxLength="5" />
+					   <g:HorizontalPanel styleName="{style.nopContainer}">
+						  <v:ValidatedTextBox styleName="{s.box}"
+							 ui:field="numberOfPackages" maxLength="5" />
+						<g:Button styleName="{g.button} {style.countItems}"
+                               ui:field="countItems" text="Imposta quantità totale articoli" title="Valore arrotondato in eccesso"></g:Button>
+                        </g:HorizontalPanel>
 					</g:customCell>
 				</g:row>
 				<g:row>
@@ -120,10 +141,10 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.label}" text="{i18n.fromAddress}"></g:Label>
+                        <g:CheckBox ui:field="setFromAddress" styleName="{s.label} {style.forceBold}" text="{i18n.fromAddress}"></g:CheckBox>					   
 					</g:customCell>
 					<g:customCell>
-						<g:HorizontalPanel styleName="{s.addressBox}">
+						<g:HorizontalPanel ui:field="fromAddressContainer" visible="false" styleName="{s.addressBox}">
 							<g:Grid>
 								<g:row>
 									<g:customCell>
@@ -165,10 +186,10 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-						<g:Label styleName="{s.label}" text="{i18n.toAddress}"></g:Label>
+                        <g:CheckBox ui:field="setToAddress" styleName="{s.label} {style.forceBold}" text="{i18n.toAddress}"></g:CheckBox>                     
 					</g:customCell>
 					<g:customCell>
-						<g:HorizontalPanel styleName="{s.addressBox}">
+						<g:HorizontalPanel visible="false" ui:field="toAddressContainer" styleName="{s.addressBox}">
 							<g:Grid>
 								<g:row>
 									<g:customCell>

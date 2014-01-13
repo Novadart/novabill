@@ -48,7 +48,7 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 			getView().getNumber().setText(document.getDocumentID().toString());
 		} 
 
-		getView().getNumberOfPackages().setText(String.valueOf(document.getNumberOfPackages()));
+		getView().getNumberOfPackages().setText(String.valueOf(document.getNumberOfPackages() != null ? document.getNumberOfPackages() : ""));
 		getView().getCause().setText(document.getCause());
 		getView().getTransporter().setText(document.getTransporter());
 		getView().getTradeZone().setText(document.getTradeZone());
@@ -61,7 +61,9 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 		getView().getFromAddrProvince().setSelectedItem(loc.getProvince());
 		getView().getFromAddrStreetName().setText(loc.getStreet());
 		getView().getFromAddrCountry().setSelectedItemByValue(loc.getCountry());
-
+		getView().getSetFromAddress().setValue(true);
+		getView().getFromAddressContainer().setVisible(true);
+		
 		loc = document.getToEndpoint();
 		getView().getToAddrCity().setText(loc.getCity());
 		getView().getToAddrCompanyName().setText(loc.getCompanyName());
@@ -69,6 +71,8 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 		getView().getToAddrProvince().setSelectedItem(loc.getProvince());
 		getView().getToAddrStreetName().setText(loc.getStreet());
 		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
+		getView().getSetToAddress().setValue(true);
+		getView().getToAddressContainer().setVisible(true);
 	}
 
 	@Override

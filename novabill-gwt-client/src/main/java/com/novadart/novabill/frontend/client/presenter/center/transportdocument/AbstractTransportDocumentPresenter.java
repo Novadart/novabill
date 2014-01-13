@@ -1,5 +1,7 @@
 package com.novadart.novabill.frontend.client.presenter.center.transportdocument;
 
+import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -25,8 +27,8 @@ import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 public abstract class AbstractTransportDocumentPresenter extends DocumentPresenter<TransportDocumentView> implements TransportDocumentView.Presenter {
 
 	private TransportDocumentDTO transportDocument;
-	
-	
+
+
 	public AbstractTransportDocumentPresenter(PlaceController placeController, EventBus eventBus, TransportDocumentView view, JavaScriptObject callback) {
 		super(placeController, eventBus, view, callback);
 	}
@@ -34,11 +36,11 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 	protected void setTransportDocument(TransportDocumentDTO transportDocument) {
 		this.transportDocument = transportDocument;
 	}
-	
+
 	protected TransportDocumentDTO getTransportDocument() {
 		return transportDocument;
 	}
-	
+
 	@Override
 	public void onFromAddressButtonDefaultCLicked() {
 		BusinessDTO b = Configuration.getBusiness();
@@ -49,7 +51,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		getView().getFromAddrStreetName().setText(b.getAddress());
 		getView().getFromAddrCountry().setSelectedItemByValue(b.getCountry());
 	}
-	
+
 	@Override
 	public void onToAddressButtonDefaultCLicked() {
 		getView().getToAddrCity().setText(getClient().getCity());
@@ -66,17 +68,30 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 	}
 	
 	@Override
+	public void onCountItemsCLicked() {
+		List<AccountingDocumentItemDTO> items = getView().getItemInsertionForm().getItems();
+		
+		BigDecimal total = BigDecimal.ZERO;
+		for (AccountingDocumentItemDTO i : items) {
+			total = total.add(i.getQuantity());
+		}
+		
+		BigDecimal roundedTotal = total.setScale(0, RoundingMode.CEILING);
+		getView().getNumberOfPackages().setText(String.valueOf(roundedTotal.intValue()));
+	}
+
+	@Override
 	public void onFromCountryChange() {
 		getView().getFromAddrProvince().setEnabled(getView().getFromAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT"));
 		getView().getFromAddrProvince().reset();
 	}
-	
+
 	@Override
 	public void onToCountryChange() {
 		getView().getToAddrProvince().setEnabled(getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT"));
 		getView().getToAddrProvince().reset();
 	}
-	
+
 	@Override
 	public void onCancelClicked() {
 		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback<Boolean>() {
@@ -89,7 +104,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			}
 		});
 	}
-	
+
 	protected TransportDocumentDTO createTransportDocument(TransportDocumentDTO transportDocument){
 		TransportDocumentDTO td;
 
@@ -101,6 +116,16 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			td.setClient(getClient());
 		}
 		
+		// this to auto populate the fields
+		if(!getView().getSetFromAddress().getValue()){
+			onFromAddressButtonDefaultCLicked();
+		}
+		
+		// this to auto populate the fields
+		if(!getView().getSetToAddress().getValue()){
+			onToAddressButtonDefaultCLicked();
+		}
+
 		td.setLayoutType(Configuration.getBusiness().getDefaultLayoutType());
 
 		td.setDocumentID(Long.parseLong(getView().getNumber().getText()));
@@ -138,7 +163,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		td.setTransportStartDate(tsd);
 
 		td.setCause(getView().getCause().getText());
-		td.setNumberOfPackages(Integer.valueOf(getView().getNumberOfPackages().getText()));
+		td.setNumberOfPackages(getView().getNumberOfPackages().getText().isEmpty() ? null : Integer.valueOf(getView().getNumberOfPackages().getText()));
 		td.setTradeZone(getView().getTradeZone().getText());
 		td.setTransportationResponsibility(getView().getTransportationResponsibility().getText());
 		td.setTransporter(getView().getTransporter().getText());
@@ -153,29 +178,46 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		DocumentUtils.calculateTotals(invItems, td);
 		return td;
 	}
-	
+
 	protected boolean validateTransportDocument(){
 		getView().getDate().validate();
 		getView().getTransportStartDate().validate();
-		
+
 		if(!getView().getItemInsertionForm().isValid()){
 			return false;
 		} else {
 			boolean validation = getView().getDate().isValid() && getView().getTransportStartDate().isValid();
-			for (ValidatedWidget<?> vw : new ValidatedWidget<?>[]{getView().getNumber(), getView().getFromAddrCity(), getView().getFromAddrCompanyName(), 
-					getView().getFromAddrPostCode(), getView().getFromAddrStreetName(), getView().getFromAddrCountry(), getView().getToAddrCountry(), 
-					getView().getToAddrCity(), getView().getToAddrCompanyName(), getView().getToAddrPostCode(),	getView().getToAddrStreetName(), 
+			for (ValidatedWidget<?> vw : new ValidatedWidget<?>[]{getView().getNumber(), 
 					getView().getNumberOfPackages(), getView().getHour(), getView().getMinute()}) {
 				vw.validate();
 				validation = validation && vw.isValid();
 			}
 
-			if(getView().getFromAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
+			if(getView().getSetFromAddress().getValue()){
+				for (ValidatedWidget<?> vw : new ValidatedWidget<?>[]{getView().getFromAddrCity(), getView().getFromAddrCompanyName(), 
+						getView().getFromAddrPostCode(), getView().getFromAddrStreetName(), getView().getFromAddrCountry()}) {
+					vw.validate();
+					validation = validation && vw.isValid();
+				}
+
+			}
+			
+			if(getView().getSetToAddress().getValue()){
+				for (ValidatedWidget<?> vw : new ValidatedWidget<?>[]{getView().getToAddrCountry(), getView().getToAddrCity(), 
+						getView().getToAddrCompanyName(), getView().getToAddrPostCode(),	getView().getToAddrStreetName()}) {
+					vw.validate();
+					validation = validation && vw.isValid();
+				}
+
+			}
+
+
+			if(getView().getSetFromAddress().getValue() && getView().getFromAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
 				getView().getFromAddrProvince().validate();
 				validation = validation && getView().getFromAddrProvince().isValid();
 			}
 
-			if(getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
+			if(getView().getSetToAddress().getValue() && getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
 				getView().getToAddrProvince().validate();
 				validation = validation && getView().getToAddrProvince().isValid();
 			}

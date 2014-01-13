@@ -1,6 +1,8 @@
 package com.novadart.novabill.frontend.client.view.center.transportdocument;
 
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
@@ -19,6 +21,8 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 		void onFromAddressButtonDefaultCLicked();
 		
 		void onToAddressButtonDefaultCLicked();
+		
+		void onCountItemsCLicked();
 	}
 	
 	
@@ -65,5 +69,15 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 	TextBox getTradeZone();
 	
 	TextBox getCause();
+
+	CheckBox getSetFromAddress();
+
+	CheckBox getSetToAddress();
+
+	Button getCountItems();
+
+	HorizontalPanel getFromAddressContainer();
+
+	HorizontalPanel getToAddressContainer();
 	
 }

@@ -5,13 +5,16 @@ import java.util.List;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
+import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -45,6 +48,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	@UiField FlowPanel docControls;
 
+	@UiField CheckBox setFromAddress;
+	@UiField HorizontalPanel fromAddressContainer;
 	@UiField(provided=true) RichTextBox fromAddrCompanyName;
 	@UiField(provided=true) RichTextBox fromAddrStreetName;
 	@UiField(provided=true) RichTextBox fromAddrPostCode;
@@ -53,6 +58,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) ValidatedListBox fromAddrCountry;
 	@UiField Button fromAddrButtonDefault;
 	
+	@UiField CheckBox setToAddress;
+	@UiField HorizontalPanel toAddressContainer;
 	@UiField(provided=true) RichTextBox toAddrCompanyName;
 	@UiField(provided=true) RichTextBox toAddrStreetName;
 	@UiField(provided=true) RichTextBox toAddrPostCode;
@@ -82,6 +89,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField Label totalBeforeTaxes;
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
+	
+	@UiField Button countItems;
 
 	@UiField(provided=true) LoaderButton createTransportDocument;
 	@UiField Button abort;
@@ -100,13 +109,13 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
-		numberOfPackages = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
+		numberOfPackages = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_NUMBER);
 		transporter = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), nev);
 
-		fromAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(), nev);
-		fromAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(),nev);
-		fromAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(), nev);
-		fromAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),nev);
+		fromAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city());
+		fromAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName());
+		fromAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode());
+		fromAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address());
 		fromAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		fromAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
@@ -157,7 +166,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		super.onLoad();
 		presenter.onLoad();
 	}
-
+	
 	@UiFactory
 	GlobalCss getGlobalCss(){
 		return GlobalBundle.INSTANCE.globalCss();
@@ -168,6 +177,16 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return number;
 	}
 
+	@UiHandler("setFromAddress")
+	void onSetFromAddress(ValueChangeEvent<Boolean> e){
+		fromAddressContainer.setVisible(e.getValue());
+	}
+	
+	@UiHandler("setToAddress")
+	void onSetToAddress(ValueChangeEvent<Boolean> e){
+		toAddressContainer.setVisible(e.getValue());
+	}
+	
 	@UiHandler("fromAddrCountry")
 	void onFromCountryChange(ChangeEvent event){
 		presenter.onFromCountryChange();
@@ -203,6 +222,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	void onCreateTransportDocumentClicked(ClickEvent e){
 		presenter.onCreateDocumentClicked();
 	}
+	
+	@UiHandler("countItems")
+	void onCountItemsClicked(ClickEvent e){
+		presenter.onCountItemsCLicked();
+	}
 
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
@@ -230,7 +254,9 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		hour.reset();
 		minute.reset();
 		numberOfPackages.reset();
-
+		
+		setFromAddress.setValue(false);
+		fromAddressContainer.setVisible(false);
 		fromAddrCity.reset();
 		fromAddrCompanyName.reset();
 		fromAddrPostCode.reset();
@@ -239,6 +265,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrProvince.reset();
 		fromAddrCountry.reset();
 
+		setToAddress.setValue(false);
+		toAddressContainer.setVisible(false);
 		toAddrCity.reset();
 		toAddrCompanyName.reset();
 		toAddrPostCode.reset();
@@ -266,6 +294,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrProvince.setEnabled(!value);
 		fromAddrCountry.setEnabled(!value);
 		fromAddrButtonDefault.setEnabled(!value);
+		
+		countItems.setEnabled(!value);
 		
 		toAddrCompanyName.setEnabled(!value);
 		toAddrStreetName.setEnabled(!value);
@@ -427,4 +457,28 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return cause;
 	}
 	
+	@Override
+	public CheckBox getSetFromAddress() {
+		return setFromAddress;
+	}
+	
+	@Override
+	public CheckBox getSetToAddress() {
+		return setToAddress;
+	}
+	
+	@Override
+	public HorizontalPanel getFromAddressContainer() {
+		return fromAddressContainer;
+	}
+	
+	@Override
+	public HorizontalPanel getToAddressContainer() {
+		return toAddressContainer;
+	}
+	
+	@Override
+	public Button getCountItems() {
+		return countItems;
+	}
 }
