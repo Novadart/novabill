@@ -33,7 +33,7 @@
    <link href="${frontendAssetsUrl}/css/custom.css" rel="stylesheet" type="text/css"/>
    <!-- END THEME STYLES -->
    
-   <tiles:insertAttribute name="head" />
+   <tiles:insertAttribute ignore="true" name="head" />
 
    <link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
 </head>
@@ -66,7 +66,7 @@
     <script src="${frontendAssetsUrl}/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script>
     <!-- END CORE PLUGINS -->
 
-    <tiles:insertAttribute name="javascript" />
+    <tiles:insertAttribute  ignore="true" name="javascript" />
     
 </body>
 <!-- END BODY -->

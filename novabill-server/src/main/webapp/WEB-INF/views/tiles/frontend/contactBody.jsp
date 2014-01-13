@@ -24,9 +24,9 @@
         <!-- END BREADCRUMBS -->
 
         <!-- BEGIN GOOGLE MAP -->
-        <div class="row">
+<!--         <div class="row">
             <div id="map" class="gmaps margin-bottom-40" style="height:400px;"></div>
-        </div>
+        </div> -->
         <!-- END GOOGLE MAP -->
 
         <!-- BEGIN CONTAINER -->   

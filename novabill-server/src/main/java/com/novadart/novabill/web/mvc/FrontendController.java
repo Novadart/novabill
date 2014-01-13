@@ -25,20 +25,20 @@ public class FrontendController {
 		return "frontend.contact";
 	}
 	
-	@RequestMapping(value = Urls.PUBLIC_ABOUT, method = RequestMethod.GET)
-	public String about(Model model){
-		model.addAttribute("activePage", PAGES.ABOUT);
-		model.addAttribute("pageName", "About");
-		return "frontend.about";
-	}
+//	@RequestMapping(value = Urls.PUBLIC_ABOUT, method = RequestMethod.GET)
+//	public String about(Model model){
+//		model.addAttribute("activePage", PAGES.ABOUT);
+//		model.addAttribute("pageName", "About");
+//		return "frontend.about";
+//	}
 
-	@RequestMapping(value = Urls.PUBLIC_PRICES, method = RequestMethod.GET)
-	public String prices(Model model){
-		model.addAttribute("activePage", PAGES.PRICES);
-		model.addAttribute("pageName", "Prices");
-		return "frontend.prices";
-	}
-	
+//	@RequestMapping(value = Urls.PUBLIC_PRICES, method = RequestMethod.GET)
+//	public String prices(Model model){
+//		model.addAttribute("activePage", PAGES.PRICES);
+//		model.addAttribute("pageName", "Prices");
+//		return "frontend.prices";
+//	}
+//	
 	@RequestMapping(value = Urls.PUBLIC_PAGE_NOT_FOUND, method = RequestMethod.GET)
 	public String pageNotFound(){
 		return "frontend.pageNotFound";
@@ -52,9 +52,8 @@ public class FrontendController {
 	
 	@RequestMapping(value = Urls.PUBLIC_TOS, method = RequestMethod.GET)
 	public String tos(Model model){
-		model.addAttribute("activePage", PAGES.PRICES);
-		model.addAttribute("pageName", "404");
-		return "frontend.prices";
+		model.addAttribute("pageName", "Termini e Condizioni");
+		return "frontend.tos";
 	}
 	
 	

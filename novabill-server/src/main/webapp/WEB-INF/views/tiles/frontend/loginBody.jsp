@@ -3,6 +3,7 @@
 
 <spring:url var="frontendAssetsUrl" value="/frontend_assets" />
 <spring:url var="loginUrl" value="/resources/login_check" />
+<spring:url var="homeUrl" value="/" />
 
 <div class="page-container">
   
@@ -14,7 +15,7 @@
                 </div>
                 <div class="col-md-8 col-sm-8">
                     <ul class="pull-right breadcrumb">
-                        <li><a href="index.html">Home</a></li>
+                        <li><a href="${homeUrl}">Home</a></li>
                         <li><a href="">Pages</a></li>
                         <li class="active">Login</li>
                     </ul>
@@ -24,7 +25,7 @@
         <!-- END BREADCRUMBS -->
 
         <!-- BEGIN CONTAINER -->   
-        <div class="container margin-bottom-40">
+        <div class="container " style="margin-bottom: 150px;"> <!-- margin-bottom-40 -->
           <div class="row">
             <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 login-signup-page">
                 <form action="${loginUrl}" method="post" >           
@@ -53,7 +54,7 @@
 
                     <hr>
 
-                    <div class="login-socio">
+                    <!-- <div class="login-socio">
                         <p class="text-muted">or login using:</p>
                         <ul class="social-icons">
                             <li><a class="facebook" data-original-title="facebook" href="#"></a></li>
@@ -61,7 +62,7 @@
                             <li><a class="googleplus" data-original-title="Goole Plus" href="#"></a></li>
                             <li><a class="linkedin" data-original-title="Linkedin" href="#"></a></li>
                         </ul>
-                    </div>
+                    </div> -->
                 </form>
             </div>
           </div>

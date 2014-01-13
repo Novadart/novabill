@@ -11,7 +11,7 @@
 <!-- BEGIN HEAD -->
 <head>
     <meta charset="utf-8" />
-    <title>Novadart | Homepage</title>
+    <title>Novabill | Homepage</title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
     <meta content="" name="description" />
     <meta content="" name="author" />
@@ -54,7 +54,7 @@
             <div class="fullwidthabnner">
                 <ul id="revolutionul" style="display:none;">            
                         <!-- THE FIRST SLIDE -->
-                        <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="9400" data-thumb="${frontendAssetsUrl}/img/sliders/revolution/thumbs/thumb2.jpg">
+                        <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="15000" data-thumb="${frontendAssetsUrl}/img/sliders/revolution/thumbs/thumb2.jpg">
                             <!-- THE MAIN IMAGE IN THE FIRST SLIDE -->
                             <img src="${frontendAssetsUrl}/img/sliders/revolution/bg1.jpg" alt="">
                             
@@ -64,7 +64,7 @@
                                  data-speed="400"
                                  data-start="1500"
                                  data-easing="easeOutExpo">
-                                 Need a website design ? 
+                                 Gestisci la tua azienda
                             </div>
                             <div class="caption lft slide_subtitle slide_item_left"
                                  data-x="0"
@@ -72,7 +72,7 @@
                                  data-speed="400"
                                  data-start="2000"
                                  data-easing="easeOutExpo">
-                                 This is what you were looking for
+                                 Contabilità semplificata, ovunque ti trovi
                             </div>
                             <div class="caption lft slide_desc slide_item_left"
                                  data-x="0"
@@ -80,17 +80,35 @@
                                  data-speed="400"
                                  data-start="2500"
                                  data-easing="easeOutExpo">
-                                 Lorem ipsum dolor sit amet, dolore eiusmod<br>
-                                 quis tempor incididunt. Sed unde omnis iste.
+                                 <table style="margin-left: 20px;">
+                                    <tr>
+                                        <td>
+                                            <ul style="list-style: circle;">
+			                                    <li>Fatture</li>
+			                                    <li>Documenti di Trasporto</li>
+			                                    <li>Clienti</li>
+			                                    <li>Pagamenti</li>
+			                                 </ul>                                        
+                                        </td>
+                                        <td>
+                                             <ul style="list-style: circle; margin-left: 40px;">
+                                                <li>Listini</li>
+                                                <li>Offerte</li>
+                                                <li>Statistiche</li>
+                                                <li>... molto altro!</li>
+                                             </ul>
+                                        </td>
+                                    </tr>
+                                 </table>
                             </div>
-                            <a class="caption lft btn green slide_btn slide_item_left" href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes"
+<!--                             <a class="caption lft btn green slide_btn slide_item_left" href="http://themeforest.net/item/metronic-responsive-admin-dashboard-template/4021469?ref=keenthemes"
                                  data-x="0"
                                  data-y="290"
                                  data-speed="400"
                                  data-start="3000"
                                  data-easing="easeOutExpo">
                                  Purchase Now!
-                            </a>                        
+                            </a>    -->                     
                             <div class="caption lfb"
                                  data-x="640" 
                                  data-y="55" 
@@ -102,7 +120,7 @@
                         </li>
 
                         <!-- THE SECOND SLIDE -->
-                        <li data-transition="fade" data-slotamount="7" data-masterspeed="300" data-delay="9400" data-thumb="${frontendAssetsUrl}/img/sliders/revolution/thumbs/thumb2.jpg">                        
+                        <li data-transition="fade" data-slotamount="7" data-masterspeed="300" data-delay="15000" data-thumb="${frontendAssetsUrl}/img/sliders/revolution/thumbs/thumb2.jpg">                        
                             <img src="${frontendAssetsUrl}/img/sliders/revolution/bg2.jpg" alt="">
                             <div class="caption lfl slide_title slide_item_left"
                                  data-x="0"
@@ -110,7 +128,7 @@
                                  data-speed="400"
                                  data-start="3500"
                                  data-easing="easeOutExpo">
-                                 Powerfull & Clean
+                                 Interfaccia semplice
                             </div>
                             <div class="caption lfl slide_subtitle slide_item_left"
                                  data-x="0"
@@ -118,7 +136,7 @@
                                  data-speed="400"
                                  data-start="4000"
                                  data-easing="easeOutExpo">
-                                 Responsive Admin & Website Theme
+                                 Supporto desktop, tablet e smartphone
                             </div>
                             <div class="caption lfl slide_desc slide_item_left"
                                  data-x="0"
@@ -126,7 +144,8 @@
                                  data-speed="400"
                                  data-start="4500"
                                  data-easing="easeOutExpo">
-                                 Lorem ipsum dolor sit amet, consectetuer elit sed diam<br> nonummy amet euismod dolore.
+                                 Troverai ciò che ti serve lì dove ti serve.<br>
+                                 Un prodotto che evolve e migliora di giorno in giorno.
                             </div>                        
                             <div class="caption lfr slide_item_right" 
                                  data-x="635" 
@@ -160,7 +179,7 @@
                                  data-easing="easeOutBack">
                                  <img src="${frontendAssetsUrl}/img/sliders/revolution/macbook.png" alt="Image 1">
                             </div>
-                            <div class="caption lft slide_item_right" 
+<%--                             <div class="caption lft slide_item_right" 
                                  data-x="865" 
                                  data-y="45" 
                                  data-speed="500" 
@@ -175,12 +194,12 @@
                                  data-start="5500" 
                                  data-easing="easeOutBack">
                                  <img src="${frontendAssetsUrl}/img/sliders/revolution/hint2-blue.png" id="rev-hint2" alt="Image 1">
-                            </div>
+                            </div> --%>
 
                         </li>
                         
                         <!-- THE THIRD SLIDE -->
-                        <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="9400" data-thumb="${frontendAssetsUrl}/img/sliders/revolution/thumbs/thumb2.jpg">
+<%--                         <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="9400" data-thumb="${frontendAssetsUrl}/img/sliders/revolution/thumbs/thumb2.jpg">
                             <img src="${frontendAssetsUrl}/img/sliders/revolution/bg3.jpg" alt="">
                             <div class="caption lfl slide_item_left" 
                                  data-x="20" 
@@ -222,10 +241,10 @@
                                  data-easing="easeOutExpo">
                                  Watch more Videos!
                             </a>
-                        </li>               
+                        </li>       --%>         
                         
                         <!-- THE FORTH SLIDE -->
-                        <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="9400" data-thumb="${frontendAssetsUrl}/img/sliders/revolution/thumbs/thumb2.jpg">
+                        <%-- <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="9400" data-thumb="${frontendAssetsUrl}/img/sliders/revolution/thumbs/thumb2.jpg">
                             <!-- THE MAIN IMAGE IN THE FIRST SLIDE -->
                             <img src="${frontendAssetsUrl}/img/sliders/revolution/bg4.jpg" alt="">                        
                              <div class="caption lft slide_title"
@@ -277,7 +296,7 @@
                                  data-easing="easeOutBack"  >
                                  <img src="${frontendAssetsUrl}/img/sliders/revolution/iphone_right.png" alt="Image 3">
                             </div>                        
-                        </li>
+                        </li> --%>
                 </ul>
                 <div class="tp-bannertimer tp-bottom"></div>
             </div>
@@ -418,7 +437,7 @@
             <div class="clearfix"></div>
 
             <!-- BEGIN TABS AND TESTIMONIALS -->
-            <div class="row mix-block">
+<%--             <div class="row mix-block">
                 <!-- TABS -->
                 <div class="col-md-7 tab-style-1 margin-bottom-20">
                     <ul class="nav nav-tabs">
@@ -502,11 +521,11 @@
                     </div>
                 </div>
                 <!-- END TESTIMONIALS -->
-            </div>                
+            </div>        --%>         
             <!-- END TABS AND TESTIMONIALS -->
 
             <!-- BEGIN STEPS -->
-            <div class="row no-space-steps margin-bottom-40">
+<!--             <div class="row no-space-steps margin-bottom-40">
                 <div class="col-md-4 col-sm-4">
                     <div class="front-steps front-step-one">
                         <h2>Goal definition</h2>
@@ -525,11 +544,11 @@
                         <p>Lorem ipsum dolor sit amet sit consectetur adipisicing eiusmod tempor.</p>
                     </div>
                 </div>
-            </div>
+            </div> -->
             <!-- END STEPS -->
 
             <!-- BEGIN CLIENTS -->
-            <div class="row margin-bottom-40 our-clients">
+           <%--  <div class="row margin-bottom-40 our-clients">
                 <div class="col-md-3">
                     <h2><a href="#">Our Clients</a></h2>
                     <p>Lorem dipsum folor margade sitede lametep eiusmod psumquis dolore.</p>
@@ -586,7 +605,7 @@
                         </li>
                     </ul>                        
                 </div>
-            </div>
+            </div> --%>
             <!-- END CLIENTS -->
         </div>
         <!-- END CONTAINER -->

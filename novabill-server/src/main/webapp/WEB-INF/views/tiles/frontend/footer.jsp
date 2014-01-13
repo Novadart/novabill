@@ -2,9 +2,10 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
+<spring:url value="/tos" var="tosUrl" />
 
 <!-- BEGIN FOOTER -->
-<div class="footer">
+<%-- <div class="footer">
     <div class="container">
         <div class="row">
             <div class="col-md-4 col-sm-4 space-mobile">
@@ -97,7 +98,7 @@
             </div>
         </div>
     </div>
-</div>
+</div> --%>
 <!-- END FOOTER -->
 
 <!-- BEGIN COPYRIGHT -->
@@ -106,11 +107,30 @@
         <div class="row">
             <div class="col-md-8 col-sm-8">
                 <p>
-                    <span class="margin-right-10">2013 © Metronic. ALL Rights Reserved.</span> 
-                    <a href="#">Privacy Policy</a> | <a href="#">Terms of Service</a>
+                    <span class="margin-right-10">2013-2014 © Novadart. ALL Rights Reserved.</span> 
+                    <a href="https://www.iubenda.com/privacy-policy/257554" class="iubenda-light iubenda-embed" title="Privacy Policy">Privacy Policy</a>
+				    <script type="text/javascript">
+				        (function(w, d) {
+				            var loader = function() {
+				                var s = d.createElement("script"), tag = d
+				                        .getElementsByTagName("script")[0];
+				                s.src = "https://cdn.iubenda.com/iubenda.js";
+				                tag.parentNode.insertBefore(s, tag);
+				            };
+				            if (w.addEventListener) {
+				                w.addEventListener("load", loader, false);
+				            } else if (w.attachEvent) {
+				                w.attachEvent("onload", loader);
+				            } else {
+				                w.onload = loader;
+				            }
+				        })(window, document);
+				    </script>
+                    
+                    | <a href="${tosUrl}">Terms of Service</a>
                 </p>
             </div>
-            <div class="col-md-4 col-sm-4">
+            <!-- <div class="col-md-4 col-sm-4">
                 <ul class="social-footer">
                     <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                     <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
@@ -122,7 +142,7 @@
                     <li><a href="#"><i class="fa fa-youtube"></i></a></li>
                     <li><a href="#"><i class="fa fa-dropbox"></i></a></li>
                 </ul>                
-            </div>
+            </div> -->
         </div>
     </div>
 </div>

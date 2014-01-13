@@ -45,7 +45,11 @@
 	   <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/contactJS.jsp" />
 	</definition>
 	
-	<definition name="frontend.about" extends="frontend.subPageLayout">
+   <definition name="frontend.tos" extends="frontend.subPageLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/tosBody.jsp" />
+    </definition>
+	
+<!-- 	<definition name="frontend.about" extends="frontend.subPageLayout">
 	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/aboutHead.jsp" />
 	   <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/aboutBody.jsp" />
 	   <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/aboutJS.jsp" />
@@ -55,7 +59,7 @@
 		<put-attribute name="head" value="/WEB-INF/views/tiles/frontend/pricesHead.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/tiles/frontend/pricesBody.jsp" />
 		<put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/pricesJS.jsp" />
-	</definition>
+	</definition> -->
 	
 	<!--  -->
 

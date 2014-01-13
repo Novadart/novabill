@@ -29,9 +29,9 @@
                     </div>
                     <div class="col-md-3 col-sm-3 login-reg-links">
                         <ul class="list-unstyled inline">
-                            <li><a href="${loginPageUrl}">Login</a></li>
-                            <li class="sep"><span>|</span></li>
-                            <li><a href="page_signup.html">Signup</a></li>
+                            <li><a href="${loginPageUrl}">Entra</a></li>
+                            <!-- <li class="sep"><span>|</span></li> -->
+                            <!-- <li><a href="#">Registrati</a></li> -->
                         </ul>
                     </div>
                 </div>
@@ -50,6 +50,7 @@
                 <!-- BEGIN LOGO (you can use logo image instead of text)-->
                 <a class="brand logo-v1" href="${indexPageUrl}">
                     <img src="${frontendAssetsUrl}/img/logo_thin.png" id="logoimg" alt="">
+                    <img src="${frontendAssetsUrl}/img/beta-small.png" style="position: relative; top: 10px; right: 2px;" title="beta" alt="">
                 </a>
                 <!-- END LOGO -->
             </div>
@@ -58,8 +59,8 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="<%=PAGES.HOME.equals(activePage) ? "active" : "" %>"><a href="${indexPageUrl}">Home</a></li>
-                    <li class="<%=PAGES.ABOUT.equals(activePage) ? "active" : "" %>"><a href="${aboutPageUrl}">About Us</a></li>
-                    <li class="<%=PAGES.PRICES.equals(activePage) ? "active" : "" %>"><a href="${pricesPageUrl}">Prices</a></li>
+                    <%-- <li class="<%=PAGES.ABOUT.equals(activePage) ? "active" : "" %>"><a href="${aboutPageUrl}">About Us</a></li>
+                    <li class="<%=PAGES.PRICES.equals(activePage) ? "active" : "" %>"><a href="${pricesPageUrl}">Prices</a></li> --%>
     <!--                         <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">
                                     Blog
@@ -70,7 +71,7 @@
                                     <li><a href="blog_item.html">Blog Item</a></li>
                                 </ul>
                             </li> -->
-                    <li class="<%=PAGES.CONTACT.equals(activePage) ? "active" : "" %>"><a href="${contactPageUrl}">Contact</a></li>
+                    <li class="<%=PAGES.CONTACT.equals(activePage) ? "active" : "" %>"><a href="${contactPageUrl}">Contatti</a></li>
                 </ul>                         
             </div>
             <!-- BEGIN TOP NAVIGATION MENU -->
