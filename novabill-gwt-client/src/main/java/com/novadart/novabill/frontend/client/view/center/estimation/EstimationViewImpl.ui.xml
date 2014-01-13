@@ -59,7 +59,7 @@
 						<g:Label styleName="{s.label}" text="{i18n.paymentNote}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<f:ValidatedTextArea styleName="{s.box} {s.note}"
+						<f:ValidatedTextArea styleName="{s.box} {s.note}" visibleLines="3"
 							ui:field="paymentNote"></f:ValidatedTextArea>
 					</g:customCell>
 				</g:row>
@@ -68,7 +68,7 @@
 						<g:Label styleName="{s.label}" text="{i18n.limitations}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<f:ValidatedTextArea styleName="{s.box} {s.note}"
+						<f:ValidatedTextArea styleName="{s.box} {s.note}" visibleLines="3"
 							ui:field="limitations"></f:ValidatedTextArea>
 					</g:customCell>
 				</g:row>
@@ -77,7 +77,7 @@
 						<g:Label styleName="{s.label}" text="{i18n.note}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<f:ValidatedTextArea styleName="{s.box} {s.note}"
+						<f:ValidatedTextArea styleName="{s.box} {s.note}" visibleLines="3"
 							ui:field="note"></f:ValidatedTextArea>
 					</g:customCell>
 				</g:row>
