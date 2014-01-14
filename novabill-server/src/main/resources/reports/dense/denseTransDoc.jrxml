@@ -268,9 +268,9 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 					<font size="9" isBold="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{document.fromEndpoint.companyName} + "\n" +
-$F{document.fromEndpoint.street} + "\n" +
-$F{document.fromEndpoint.postcode} + " " + $F{document.fromEndpoint.city} + ($F{document.fromEndpoint.province}!=null && !"".equals($F{document.fromEndpoint.province}.trim())? " (" + $F{document.fromEndpoint.province} + ")": "") + ", " +$F{document.fromEndpoint.country}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{document.toEndpoint.companyName} + "\n" +
+$F{document.toEndpoint.street} + "\n" +
+$F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{document.toEndpoint.province}!=null && !"".equals($F{document.toEndpoint.province}.trim())? " (" + $F{document.toEndpoint.province} + ")": "") + ", " +$F{document.toEndpoint.country}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="529a3489-fe95-4303-b8a8-26a186627142" positionType="Float" x="8" y="158" width="108" height="15"/>
