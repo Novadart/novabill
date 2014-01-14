@@ -31,7 +31,7 @@ public class FeedbackController {
 			feedback.setEmail(email);
 			feedback.setCategory(category);
 			feedback.setMessage(message);
-			feedback.setUsername(utilsService.getAuthenticatedPrincipalDetails().getUsername());
+			//feedback.setUsername(utilsService.getAuthenticatedPrincipalDetails().getUsername());
 			feedback.merge();
 			response.put("response", "success");
 			return response;
