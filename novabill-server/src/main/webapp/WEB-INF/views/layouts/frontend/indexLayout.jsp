@@ -3,6 +3,8 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
+<spring:url value="/private/feedback" var="feedbackUrl" />
+<spring:url value="/private/" var="privateUrl" />
 
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -37,6 +39,46 @@
    <!-- END THEME STYLES -->
 
    <link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
+	
+    <style type="text/css">
+	/*Countdown*/
+	#defaultCountdown {
+		width: 100%;
+		margin: 10px 0;
+		overflow: hidden;
+	}
+	
+	#defaultCountdown span.countdown_row {
+		overflow: hidden;
+	}
+	
+	#defaultCountdown span.countdown_row span {
+		font-size: 16px;
+		font-weight: 300;
+		line-height: 20px;
+		margin-right: 2px;
+	}
+	
+	#defaultCountdown span.countdown_row>span {
+		float: left;
+	}
+	
+	#defaultCountdown span.countdown_section {
+		color: #444;
+		padding: 7px 15px !important;
+		margin-bottom: 2px;
+		font-weight: 300;
+		/* background: url(frontend_assets/img/bg-opacity.png) repeat; */
+		text-align: center;
+	}
+	
+	#defaultCountdown span.countdown_amount {
+		display: inline-block;
+		font-size: 38px !important;
+		padding: 15px !important;
+		font-weight: 300;
+	}
+	</style>
 </head>
 <!-- END HEAD -->
 
@@ -72,7 +114,7 @@
                                  data-speed="400"
                                  data-start="2000"
                                  data-easing="easeOutExpo">
-                                 Contabilità semplificata, ovunque ti trovi
+                                 Contabilità e non solo, ovunque ti trovi
                             </div>
                             <div class="caption lft slide_desc slide_item_left"
                                  data-x="0"
@@ -310,31 +352,55 @@
                 <div class="col-md-4 col-sm-4">
                     <div class="service-box-heading">
                         <em><i class="fa fa-location-arrow blue"></i></em>
-                        <span>Multipurpose Template</span>
+                        <span>I tuoi documenti, ovunque</span>
                     </div>
-                    <p>Lorem ipsum dolor sit amet, dolore eiusmod quis tempor incididunt ut et dolore Ut veniam unde nostrudlaboris. Sed unde omnis iste natus error sit voluptatem.</p>
+                    <p>Porta i tuoi dati con te, consultali e modificali in ogni luogo, da qualsiasi pc. Il nostro obiettivo è assisterti nel tuo lavoro, ovunque tu sia.</p>
                 </div>
                 <div class="col-md-4 col-sm-4">
                     <div class="service-box-heading">
                         <em><i class="fa fa-check red"></i></em>
-                        <span>Well Documented</span>
+                        <span>Nessuna installazione</span>
                     </div>
-                    <p>Lorem ipsum dolor sit amet, dolore eiusmod quis tempor incididunt ut et dolore Ut veniam unde nostrudlaboris. Sed unde omnis iste natus error sit voluptatem.</p>
+                    <p>Iniziare a utilizzare Novabill è semplice e gratuito, è richiesta solamente una rapida registrazione. Non devi installare nulla sul tuo pc.</p>
                 </div>
                 <div class="col-md-4 col-sm-4">
                     <div class="service-box-heading">
                         <em><i class="fa fa-resize-small green"></i></em>
-                        <span>Responsive Design</span>
+                        <span>Offerta base senza costi</span>
                     </div>
-                    <p>Lorem ipsum dolor sit amet, dolore eiusmod quis tempor incididunt ut et dolore Ut veniam unde nostrudlaboris. Sed unde omnis iste natus error sit voluptatem.</p>
+                    <p>Puoi esplorare e utilizzare Novabill gratuitamente, senza limiti di tempo. Ti offriamo funzionalità avanzate solo se lo desideri e a un costo molto accessibile.</p>
                 </div>
             </div>
             <!-- END SERVICE BOX -->  
 
             <div class="clearfix"></div>
+            
+            <!-- BEGIN COMING SOON -->
+            <div class="row" style="margin-bottom: 50px;">
+	            <div class="col-md-6 coming-soon-content">
+	                <h2>Manca poco...</h2>
+	                <p style="text-align: justify;color: #656565; font-size: 13px;">Stiamo completando l'aggiornamento delle funzionalità le ultime operazioni di test.<br />
+	                Presto sarà possibile creare nuovi account, se invece sei già iscritto <a href="${privateUrl}" style="text-decoration: underline;">puoi entrare e accedere ai tuoi dati</a>. 
+	                </p>
+	                <p class="alertEmailCont" style="color: #656565; font-size: 13px;">Lasciaci la tua email se vuoi essere avvisato quando riapriremo le registrazioni.</p>
+	                <form class="alertEmailCont" class="form-inline">
+	                    <div class="input-group input-large">
+	                        <input id="alertEmail" type="text" class="form-control">
+	                        <span class="input-group-btn">
+	                        <button id="alertEmailButton" class="btn blue" type="button"><span>Avvisami</span> <i class="m-icon-swapright m-icon-white"></i></button>
+	                        </span>
+	                    </div>
+	                </form>
+	            </div>
+	            <div class="col-md-6 coming-soon-countdown">
+	                <div id="defaultCountdown"></div>
+	            </div>
+	        </div>
+	        <!--/end row-->
+            <!-- end COMING SOON -->
 
             <!-- BEGIN RECENT WORKS -->
-            <div class="row recent-work margin-bottom-40">
+<%--             <div class="row recent-work margin-bottom-40">
                 <div class="col-md-3">
                     <h2><a href="portfolio.html">Recent Works</a></h2>
                     <p>Lorem ipsum dolor sit amet, dolore eiusmod quis tempor incididunt ut et dolore Ut veniam unde voluptatem. Sed unde omnis iste natus error sit voluptatem.</p>
@@ -431,7 +497,7 @@
                         </li>
                     </ul>        
                 </div>
-            </div>   
+            </div>    --%>
             <!-- END RECENT WORKS -->
 
             <div class="clearfix"></div>
@@ -631,6 +697,9 @@
     <script type="text/javascript" src="${frontendAssetsUrl}/plugins/revolution_slider/rs-plugin/js/jquery.themepunch.plugins.min.js"></script>
     <script type="text/javascript" src="${frontendAssetsUrl}/plugins/revolution_slider/rs-plugin/js/jquery.themepunch.revolution.min.js"></script> 
     <script type="text/javascript" src="${frontendAssetsUrl}/plugins/bxslider/jquery.bxslider.min.js"></script>
+    <script type="text/javascript" src="${frontendAssetsUrl}/plugins/countdown/jquery.countdown.js"></script>
+    <script type="text/javascript" src="${frontendAssetsUrl}/plugins/countdown/plugin/jquery.countdown-it.js"></script>
+    
     <script src="${frontendAssetsUrl}/scripts/app.js"></script>
     <script src="${frontendAssetsUrl}/scripts/index.js"></script>    
     <script type="text/javascript">
@@ -639,6 +708,41 @@
             App.initBxSlider();
             Index.initRevolutionSlider();                    
         });
+        
+        $(function(){
+            var austDay = new Date();
+            austDay = new Date(2014, 1, 20);
+            $('#defaultCountdown').countdown({until: austDay});
+        });
+        
+        $('#alertEmailButton').click(function(){
+        	var email = $('#alertEmail').val();
+        	var emailTest = /^([a-zA-Z0-9_\.\-])+\@(([a-zA-Z0-9\-])+\.)+([a-zA-Z0-9]{2,4})+$/;
+        	if(! emailTest.test(email) ){
+        		alert('Sembra che l\'email inserita non sia corretta.\nRiprova per favore');
+        		return;
+        	}
+        	
+        	$.ajax({
+                type: 'POST',
+                url: '${feedbackUrl}',
+                data: {
+                    subject:'Novabill3.0 - Alert me by email', 
+                    name:'Anonymous User', 
+                    email: email, 
+                    issue:'-', 
+                    message:'-'
+                },
+                success: function(data) {
+                	alert('Email salvata. Grazie!');
+                	$('.alertEmailCont').hide('slow');
+                },
+                error:function(e){
+                	alert('C\'è stato un problema di rete.\nPer favore riprova.');
+                }
+            });     
+        });
+        
     </script>
     <!-- END PAGE LEVEL JAVASCRIPTS -->
 </body>

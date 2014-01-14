@@ -27,6 +27,10 @@
        <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/loginJS.jsp" />
 	</definition>
 	
+	<definition name="frontend.register" extends="frontend.subPageLayout" >
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/registerBody.jsp" />
+    </definition>
+	
 	<definition name="frontend.pageNotFound" extends="frontend.subPageLayout"  >
 	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/pageNotFoundHead.jsp" />
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/pageNotFoundBody.jsp" />

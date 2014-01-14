@@ -67,8 +67,14 @@ public class AuthenticationController{
 		dataBinder.setDisallowedFields("id");
 	}
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = "/register", method = RequestMethod.GET)
 	public String login(Model model){
+		model.addAttribute("pageName", "Registrazione");
+		return "frontend.register";
+	}
+	
+	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	public String register(Model model){
 		Registration registration = new Registration();
 		model.addAttribute("registration", registration);
 		model.addAttribute("pageName", "Login");

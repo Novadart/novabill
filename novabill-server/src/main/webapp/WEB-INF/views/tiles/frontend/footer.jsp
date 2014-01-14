@@ -106,8 +106,8 @@
     <div class="container">
         <div class="row">
             <div class="col-md-8 col-sm-8">
-                <p>
-                    <span class="margin-right-10">2013-2014 © Novadart. ALL Rights Reserved.</span> 
+                <p style="padding-bottom: 20px;">
+                    <span class="margin-right-10">2013-2014 © <a href="http://www.novadart.com" target="_blank">Novadart</a>. ALL Rights Reserved.</span> 
                     <a href="https://www.iubenda.com/privacy-policy/257554" class="iubenda-light iubenda-embed" title="Privacy Policy">Privacy Policy</a>
 				    <script type="text/javascript">
 				        (function(w, d) {
@@ -127,7 +127,7 @@
 				        })(window, document);
 				    </script>
                     
-                    | <a href="${tosUrl}">Terms of Service</a>
+                    | <a href="${tosUrl}">Termini di Servizio</a>
                 </p>
             </div>
             <!-- <div class="col-md-4 col-sm-4">

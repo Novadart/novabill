@@ -19,6 +19,10 @@
         			authentication-failure-handler-ref="novabillAuthenticationFailureHandler"/>
         <logout logout-url="/resources/logout" logout-success-url="/"/>
         <!-- Configure these elements to secure URIs in your application -->
+        
+        <!-- NOTE exposed till Novabill 3.0 -->
+        <intercept-url pattern="/private/feedback" access="permitAll" />
+        
         <intercept-url pattern="/private/**" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" requires-channel="${privateArea.channel.value}" />
         <intercept-url pattern="/**/business.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" requires-channel="${privateArea.channel.value}" />
         <intercept-url pattern="/**/client.rpc" access="hasAnyRole('ROLE_BUSINESS_FREE', 'ROLE_BUSINESS_PREMIUM')" requires-channel="${privateArea.channel.value}" />
