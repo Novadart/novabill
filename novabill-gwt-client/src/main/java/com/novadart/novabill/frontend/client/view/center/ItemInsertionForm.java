@@ -19,6 +19,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
@@ -67,6 +68,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField InlineNotification notification;
 
 	@UiField ScrollPanel itemTableScroller;
+	@UiField Label sku;
 	@UiField(provided=true) ValidatedTextArea item;
 	@UiField TextBox quantity;
 	@UiField TextBox unitOfMeasure;
@@ -77,6 +79,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField SimplePanel tip;
 	@UiField CheckBox textOnlyAccountingItem;
 
+	@UiField VerticalPanel skuContainer;
 	@UiField VerticalPanel quantityContainer;
 	@UiField VerticalPanel unitOfMeasureContainer;
 	@UiField VerticalPanel priceContainer;
@@ -99,7 +102,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 				public void onCommodityClicked(CommodityDTO commodity) {
 					commoditySearchPanel.hide();
 					if(commodity != null){
-						updateItemFromJS(commodity.getDescription(), commodity.getUnitOfMeasure(), 
+						updateItemFromJS(commodity.getSku(), commodity.getDescription(), commodity.getUnitOfMeasure(), 
 								DocumentUtils.calculatePriceForCommodity(commodity, priceList.getName()).toString(), commodity.getTax().toString());
 					}
 				}
@@ -286,10 +289,11 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		if(textOnlyAccountingItem.getValue()) { 
 			ii = DocumentUtils.createAccountingDocumentItem(item.getText());
 		} else {
-			ii = DocumentUtils.createAccountingDocumentItem(item.getText(), price.getText(), 
+			ii = DocumentUtils.createAccountingDocumentItem(sku.getText(), item.getText(), price.getText(), 
 					quantity.getText(), unitOfMeasure.getText(), tax.getValue(), discount.getText());
 		}
 
+		
 		accountingDocumentItems.getList().add(ii);
 		updateFields();
 		itemTableScroller.scrollToBottom();
@@ -302,9 +306,11 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		priceContainer.setVisible(!event.getValue());
 		taxContainer.setVisible(!event.getValue());
 		discountContainer.setVisible(!event.getValue());
+		skuContainer.setVisible(!event.getValue());
 	}
 
-	private void updateItemFromJS(String description, String unitOfMeasure, String price, String vat){
+	private void updateItemFromJS(String skuVal, String description, String unitOfMeasure, String price, String vat){
+		sku.setText(skuVal.startsWith("::") ? "" : skuVal);
 		item.setText(description);
 		this.unitOfMeasure.setText(unitOfMeasure);
 		this.price.setText(price.replace('.', ','));
@@ -315,7 +321,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		var instance = $wnd.GWT_Hook_nSelectCommodityDialog(clientId);
 		instance.result.then(
 			function(commodity, priceValue){
-					insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::updateItemFromJS(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(
+					insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::updateItemFromJS(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(
+						commodity.sku,
 						commodity.description,
 						commodity.unitOfMeasure,
 						String(priceValue),
@@ -334,6 +341,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	}
 
 	private void resetItemTableForm(){
+		sku.setText("");
 		item.setText("");
 		quantity.setText("");
 		unitOfMeasure.setText("");

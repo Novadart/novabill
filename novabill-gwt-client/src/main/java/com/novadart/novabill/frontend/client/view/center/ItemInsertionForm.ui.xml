@@ -50,6 +50,18 @@
             width: 4em;
         }
 		
+		.sku {
+	       border: 1px solid;
+			padding: 2px;
+			min-width: 4em;
+			background-color: #FFF;
+			color: gray;
+			height: 24px;
+			text-align: center;
+			max-width: 10em;
+			overflow: hidden;
+        }
+		
 		.item {
 			width: 25em;
 			min-height: 5em;
@@ -67,7 +79,7 @@
 			width: 6em;
 		}
 		
-		.quantityContainer,.unitOfMeasureContainer,.priceContainer,.taxContainer,.discountContainer
+		.quantityContainer,.unitOfMeasureContainer,.priceContainer,.taxContainer,.discountContainer, .itemContainer
 			{
 			margin-left: 1em;
 		}
@@ -114,7 +126,11 @@
 			ui:field="newItemContainer">
 			<g:CheckBox ui:field="textOnlyAccountingItem" styleName="{s.textOnlyCheckbox}" text="{i18n.textOnlyAccountingItem}" />
 			<g:HorizontalPanel>
-				<g:VerticalPanel>
+			    <g:VerticalPanel ui:field="skuContainer">
+                    <g:Label styleName="{s.smallLabel}" text="{i18n.sku}"></g:Label>
+                    <g:Label ui:field="sku" styleName="{s.sku}" />
+                </g:VerticalPanel>
+				<g:VerticalPanel styleName="{s.itemContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.nameDescription}"></g:Label>
 					<v:ValidatedTextArea ui:field="item" styleName="{s.item}" />
 				</g:VerticalPanel>

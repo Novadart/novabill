@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
+import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -38,6 +39,21 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 		this.handler = handler;
 
+		
+		//Sku
+		final TextCell skuCell = new TextCell();
+		final Column<AccountingDocumentItemDTO, String> sku = 
+				new Column<AccountingDocumentItemDTO, String>(skuCell) {
+
+			@Override
+			public String getValue(AccountingDocumentItemDTO object) {
+				String sku = object.getSku();
+				return sku==null||sku.startsWith("::") ? "" : sku;
+			}
+
+		};
+		addColumn(sku, I18N.INSTANCE.sku());
+		
 		//Name & Description
 		final LargeEditTextCell descEditCell = new LargeEditTextCell();
 		final Column<AccountingDocumentItemDTO, String> nameDescription = 
@@ -329,10 +345,11 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		addColumn(delete);
 
 		setWidth("99%");
-		setColumnWidth(nameDescription, 40, Unit.PCT);
+		setColumnWidth(sku, 5, Unit.PCT);
+		setColumnWidth(nameDescription, 37, Unit.PCT);
 		setColumnWidth(quantity, 6, Unit.PCT);
-		setColumnWidth(unitOfMeasure, 7, Unit.PCT);
-		setColumnWidth(price, 7, Unit.PCT);
+		setColumnWidth(unitOfMeasure, 6, Unit.PCT);
+		setColumnWidth(price, 6, Unit.PCT);
 		setColumnWidth(discount, 6, Unit.PCT);
 		setColumnWidth(tax, 6, Unit.PCT);
 		setColumnWidth(totalBeforeTaxes, 8, Unit.PCT);

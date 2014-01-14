@@ -61,11 +61,12 @@ public class DocumentUtils {
 	}
 	
 	
-	public static AccountingDocumentItemDTO createAccountingDocumentItem(String description, String price, 
+	public static AccountingDocumentItemDTO createAccountingDocumentItem(String sku, String description, String price, 
 			String quantity, String unitOfMeasure, BigDecimal tax, String discount){
 		AccountingDocumentItemDTO ii = new AccountingDocumentItemDTO();
 
 		try {
+			ii.setSku(sku.isEmpty() ? null : sku);
 			ii.setDescription(description);
 			ii.setPrice(parseCurrency(price));
 			ii.setQuantity(parseValue(quantity));

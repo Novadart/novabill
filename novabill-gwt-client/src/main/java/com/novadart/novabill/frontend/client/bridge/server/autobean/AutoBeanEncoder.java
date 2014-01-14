@@ -277,6 +277,7 @@ public class AutoBeanEncoder {
 			ai = AutoBeanMaker.INSTANCE.makeAccountingDocumentItem().as();
 			ai.setDescription(i.getDescription());
 			ai.setId(i.getId());
+			ai.setSku(i.getSku());
 			ai.setPrice(i.getPrice());
 			ai.setQuantity(i.getQuantity());
 			ai.setTax(i.getTax());

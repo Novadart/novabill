@@ -41,5 +41,9 @@ public interface AccountingDocumentItem {
 	public void setTax(BigDecimal tax);
 
 	public boolean isDescriptionOnly();
+	
+	public String getSku();
+
+	public void setSku(String sku);
 
 }
