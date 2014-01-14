@@ -110,8 +110,10 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(invoiceService.getAllForClient(clientID, getYear()));
-		@SuppressWarnings({ "unchecked", "rawtypes" })
-		List<AccountingDocumentDTO> expected = DTOUtils.toDTOList(new ArrayList(Client.findClient(clientID).getInvoices()), DTOUtils.invoiceDTOConverter, false); 
+		List<AccountingDocumentDTO> expected = new ArrayList<>();
+		for(Invoice doc: Client.findClient(clientID).getInvoices())
+			if(doc.getAccountingDocumentYear().equals(getYear()))
+				expected.add(DTOUtils.invoiceDTOConverter.toDTO(doc, false));
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.accountingDocumentComparator));
 	}
 	

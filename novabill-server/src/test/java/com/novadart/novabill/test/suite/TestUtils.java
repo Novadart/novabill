@@ -20,6 +20,7 @@ import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.TransportDocument;
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
@@ -352,6 +353,7 @@ public class TestUtils {
 		business.setMobile("0498597898");
 		business.setSsn("IT04534730280");
 		business.setVatID("IT04534730280");
+		business.setDefaultLayoutType(LayoutType.DENSE);
 		return business;
 	}
 	
