@@ -58,6 +58,10 @@ public class AccountingDocumentItem implements Serializable {
     
     private BigDecimal discount;
     
+    @Size(max = 50)
+	@Trimmed
+	private String sku;
+    
     @ManyToOne
     private AccountingDocument accountingDocument;
     
@@ -135,6 +139,14 @@ public class AccountingDocumentItem implements Serializable {
 
 	public void setDiscount(BigDecimal discount) {
 		this.discount = discount;
+	}
+
+	public String getSku() {
+		return sku;
+	}
+
+	public void setSku(String sku) {
+		this.sku = sku;
 	}
 
 	public AccountingDocument getAccountingDocument() {
