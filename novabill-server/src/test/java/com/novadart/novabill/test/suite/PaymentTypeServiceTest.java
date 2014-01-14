@@ -14,6 +14,7 @@ import java.util.Set;
 import org.apache.commons.lang3.builder.EqualsBuilder;
 import org.codehaus.jackson.JsonParseException;
 import org.codehaus.jackson.map.JsonMappingException;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +29,7 @@ import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
@@ -51,6 +53,13 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 	@Test
 	public void paymentServiceWiringTest(){
 		assertNotNull(paymentTypeService);
+	}
+	
+	@Override
+	@Before
+	public void authenticate() {
+		authenticatedPrincipal = Principal.findByUsername("giordano.battilana@novadart.com");
+		authenticatePrincipal(authenticatedPrincipal);
 	}
 	
 	@Test
