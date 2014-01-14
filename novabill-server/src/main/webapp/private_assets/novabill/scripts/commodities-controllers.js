@@ -86,8 +86,8 @@ angular.module('novabill.commodities.controllers',
 /**
  * COMMODITIES DETAILS PAGE CONTROLLER
  */
-.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', '$rootScope', 'nConstants', '$filter', 
-                                       function($scope, $location, $routeParams, $rootScope, nConstants, $filter){
+.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', '$rootScope', 'nConstants', '$filter', 'nRegExp',
+                                       function($scope, $location, $routeParams, $rootScope, nConstants, $filter, nRegExp){
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	$scope.commodity = null;
 
@@ -106,6 +106,14 @@ angular.module('novabill.commodities.controllers',
 		});
 	}
 
+	$scope.printSku = function(){
+		if( !nRegExp.reserved_word.test($scope.commodity.sku)){
+			return $scope.commodity.sku;
+		} else {
+			return '';
+		}
+		
+	};
 
 	$scope.editCommodity = function(commodityId){
 
