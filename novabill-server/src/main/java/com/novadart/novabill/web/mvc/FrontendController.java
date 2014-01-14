@@ -18,12 +18,12 @@ public class FrontendController {
 		return "frontend.index";
 	}
 
-	@RequestMapping(value = Urls.PUBLIC_CONTACT, method = RequestMethod.GET)
-	public String contact(Model model){
-		model.addAttribute("activePage", PAGES.CONTACT);
-		model.addAttribute("pageName", "Contact Us");
-		return "frontend.contact";
-	}
+//	@RequestMapping(value = Urls.PUBLIC_CONTACT, method = RequestMethod.GET)
+//	public String contact(Model model){
+//		model.addAttribute("activePage", PAGES.CONTACT);
+//		model.addAttribute("pageName", "Contact Us");
+//		return "frontend.contact";
+//	}
 	
 //	@RequestMapping(value = Urls.PUBLIC_ABOUT, method = RequestMethod.GET)
 //	public String about(Model model){

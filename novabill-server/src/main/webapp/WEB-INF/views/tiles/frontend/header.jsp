@@ -7,7 +7,8 @@
 <spring:url var="aboutPageUrl" value="/about" />
 <spring:url var="contactPageUrl" value="/contact" />
 <spring:url var="pricesPageUrl" value="/prices" />
-<spring:url var="loginPageUrl" value="/login" />
+<spring:url var="privatePageUrl" value="/private/" />
+<spring:url var="registerPageUrl" value="/register" />
 <spring:url var="frontendAssetsUrl" value="/frontend_assets" />
 
 <%
@@ -24,14 +25,14 @@
                         <ul class="list-unstyle inline">
                             <!-- <li><i class="fa fa-phone topbar-info-icon top-2"></i>Call us: <span>(1) 456 6717</span></li>
                             <li class="sep"><span>|</span></li>
-                            <li><i class="fa fa-envelope-o topbar-info-icon top-2"></i>Email: <span>info@keenthemes.com</span></li> -->
+                            <li><i class="fa fa-envelope-o topbar-info-icon top-2"></i>Email: <span>test@test.it</span></li> -->
                         </ul>
                     </div>
                     <div class="col-md-3 col-sm-3 login-reg-links">
                         <ul class="list-unstyled inline">
-                            <li><a href="${loginPageUrl}">Entra</a></li>
-                            <!-- <li class="sep"><span>|</span></li> -->
-                            <!-- <li><a href="#">Registrati</a></li> -->
+                            <li><a href="${privatePageUrl}">Entra</a></li>
+                            <li class="sep"><span>|</span></li>
+                            <li><a href="${registerPageUrl}">Registrati</a></li>
                         </ul>
                     </div>
                 </div>
@@ -60,7 +61,7 @@
                 <ul class="nav navbar-nav">
                     <li class="<%=PAGES.HOME.equals(activePage) ? "active" : "" %>"><a href="${indexPageUrl}">Home</a></li>
                     <%-- <li class="<%=PAGES.ABOUT.equals(activePage) ? "active" : "" %>"><a href="${aboutPageUrl}">About Us</a></li>
-                    <li class="<%=PAGES.PRICES.equals(activePage) ? "active" : "" %>"><a href="${pricesPageUrl}">Prices</a></li> --%>
+                    <li class="<%=PAGES.PRICES.equals(activePage) ? "active" : "" %>"><a href="${pricesPageUrl}">Prices</a></li>
     <!--                         <li class="dropdown">
                                 <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">
                                     Blog
@@ -72,6 +73,7 @@
                                 </ul>
                             </li> -->
                     <li class="<%=PAGES.CONTACT.equals(activePage) ? "active" : "" %>"><a href="${contactPageUrl}">Contatti</a></li>
+                     --%>
                 </ul>                         
             </div>
             <!-- BEGIN TOP NAVIGATION MENU -->
