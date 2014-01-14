@@ -20,7 +20,7 @@ public class JRDataSourceFactory {
 	
 	public static int ESTIMATION_DENSE_TABLE_ROWS_NUM = 28;
 	
-	public static int TRANSPORTDOC_DENSE_TABLE_ROWS_NUM = 25;
+	public static int TRANSPORTDOC_DENSE_TABLE_ROWS_NUM = 26;
 	
 	public static int DENSE_DESC_WIDTH_IN_CHARS = 75;
 	
