@@ -259,15 +259,23 @@ angular.module('novabill.directives',
 /*
  * Commodity Widget
  */
-.directive('nCommodity', ['$rootScope', 'nConstants', function factory($rootScope, nConstants){
+.directive('nCommodity', ['nConstants', function factory(nConstants){
 
 	return {
 		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-commodity.html',
 		scope: { 
 			commodity : '=',
 		},
-		controller : ['$scope', 'nConstants', function($scope, nConstants){
-
+		controller : ['$scope', 'nConstants', 'nRegExp', function($scope, nConstants, nRegExp){
+			
+			$scope.printSku = function(){
+				if( !nRegExp.reserved_word.test($scope.commodity.sku)){
+					return $scope.commodity.sku;
+				} else {
+					return '';
+				}
+			};
+			
 			$scope.openUrl = function(){
 				window.location.assign( nConstants.url.commodityDetails($scope.commodity.id) );
 			};
