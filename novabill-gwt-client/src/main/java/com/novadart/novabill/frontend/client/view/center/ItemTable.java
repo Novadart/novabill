@@ -204,7 +204,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
-				if(object.getDiscount() == null || object.getDiscount().equals(BigDecimal.ZERO) ) {
+				if(object.getDiscount() == null || object.getDiscount().intValue() == 0 ) {
 					return "";
 				}
 

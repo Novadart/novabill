@@ -85,7 +85,7 @@
 		}
 		
 		.addButtonContainer {
-			padding: 1.6em 0 0 0.5em;
+			padding: 1.92em 0 0 0.5em;
 		}
 		
 		.totalContainer.totalTax,.totalContainer.totalAfterTaxes {
@@ -114,8 +114,6 @@
 	</ui:style>
 
 	<g:FlowPanel>
-		<g:SimplePanel styleName="{s.tip}" ui:field="tip"></g:SimplePanel>
-		
 		<n:InlineNotification ui:field="notification" />
 		
 		<g:ScrollPanel ui:field="itemTableScroller" styleName="{s.itemTableScroller}">
@@ -156,7 +154,7 @@
 					<t:TaxWidget styleName="{s.tax}" ui:field="tax" />
 				</g:VerticalPanel>
 				<g:SimplePanel styleName="{s.addButtonContainer}">
-					<g:Button ui:field="add" text="{i18n.add}"></g:Button>
+					<g:Button styleName="btn btn-sm green" ui:field="add" text="{i18n.add}"></g:Button>
 				</g:SimplePanel>
 			</g:HorizontalPanel>
 			

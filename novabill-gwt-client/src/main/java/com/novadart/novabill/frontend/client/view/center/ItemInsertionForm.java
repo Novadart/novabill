@@ -21,7 +21,6 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
-import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.user.client.ui.Widget;
@@ -39,8 +38,6 @@ import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.tax.TaxWidget;
-import com.novadart.novabill.frontend.client.widget.tip.TipFactory;
-import com.novadart.novabill.frontend.client.widget.tip.Tips;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
@@ -76,7 +73,6 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField TaxWidget tax;
 	@UiField TextBox discount;
 	@UiField(provided=true) ItemTable itemTable;
-	@UiField SimplePanel tip;
 	@UiField CheckBox textOnlyAccountingItem;
 
 	@UiField VerticalPanel skuContainer;
@@ -141,7 +137,6 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		initWidget(uiBinder.createAndBindUi(this));
 
 		notification.addStyleName(nf.notification());
-		TipFactory.show(Tips.item_insertion_form, tip);
 	}
 
 	public void setClientId(Long clientId) {

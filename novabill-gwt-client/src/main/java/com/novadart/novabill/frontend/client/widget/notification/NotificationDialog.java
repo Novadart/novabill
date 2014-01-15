@@ -30,6 +30,7 @@ public abstract class NotificationDialog<T> extends Dialog {
 	
 	public NotificationDialog(NotificationCallback<T> onClose) {
 		super(GlobalBundle.INSTANCE.dialog());
+		setScrollWindowOnTop(false);
 		setAutoHideEnabled(false);
 		setWidget(uiBinder.createAndBindUi(this));
 		addButtons(buttons);
