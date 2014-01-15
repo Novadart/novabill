@@ -227,8 +227,9 @@ public privileged aspect CachingAspect {
 	declare @method : public void com.novadart.novabill.service.web.CommodityService.update(CommodityDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id");
 	
 	declare @method : public Long com.novadart.novabill.service.web.CommodityService.addOrUpdatePrice(Long, PriceDTO): @Caching(evict = { 
-		@CacheEvict(value = COMMODITY_CACHE, key = "#businessID"),
-		@CacheEvict(value = PRICELIST_CACHE, key = "#priceDTO.priceListID")
+		//@CacheEvict(value = COMMODITY_CACHE, key = "#businessID"),
+		//@CacheEvict(value = PRICELIST_CACHE, key = "#priceDTO.priceListID")
+			@CacheEvict(value = PRICELIST_CACHE, allEntries = true)
 	});
 	
 	/*
