@@ -131,12 +131,6 @@
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.crednote}]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement uuid="6231901a-478a-4ff0-8d09-d0c3b11b278c" x="8" y="51" width="540" height="1"/>
-				<graphicElement>
-					<pen lineWidth="0.5"/>
-				</graphicElement>
-			</line>
 		</band>
 	</pageHeader>
 	<detail>
@@ -314,7 +308,7 @@
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{discount}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{discount}.compareTo(java.math.BigDecimal.ZERO) == 0? "": $F{discount}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

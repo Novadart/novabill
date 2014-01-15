@@ -96,7 +96,8 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="65">
+		<band height="65" splitType="Prevent">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="2981466b-3f2e-4887-9158-9f57acd33547" positionType="Float" x="8" y="17" width="308" height="16"/>
 				<textElement textAlignment="Left">
@@ -144,12 +145,6 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{document.accountingDocumentDate})]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement uuid="cc362fcd-6488-4eb8-b334-fe08caec763a" x="8" y="49" width="540" height="1"/>
-				<graphicElement>
-					<pen lineWidth="0.5"/>
-				</graphicElement>
-			</line>
 		</band>
 	</pageHeader>
 	<detail>

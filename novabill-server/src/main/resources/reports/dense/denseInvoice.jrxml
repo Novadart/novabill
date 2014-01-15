@@ -82,7 +82,8 @@
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
-		<band height="80">
+		<band height="80" splitType="Prevent">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="4210a258-e7d9-4021-8ded-27a8860612e9" positionType="Float" x="8" y="0" width="308" height="20"/>
 				<textElement>
@@ -137,12 +138,6 @@
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$R{dense.number} + ":"]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement uuid="b3fea23f-9188-470d-a45c-db39e0c990a5" x="8" y="65" width="540" height="1"/>
-				<graphicElement>
-					<pen lineWidth="0.5"/>
-				</graphicElement>
-			</line>
 		</band>
 	</pageHeader>
 	<detail>
@@ -344,7 +339,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{discount}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{discount}.compareTo(java.math.BigDecimal.ZERO) == 0? "": $F{discount}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
