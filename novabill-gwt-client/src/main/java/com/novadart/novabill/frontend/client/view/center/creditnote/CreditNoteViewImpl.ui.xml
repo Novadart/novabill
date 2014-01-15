@@ -64,7 +64,7 @@
 			</g:SimplePanel>
 
 			<g:SimplePanel>
-				<g:HorizontalPanel>
+				<g:HorizontalPanel styleName="{s.totalsContainer}">
 					<g:VerticalPanel styleName="{s.totalContainer} {s.totalBeforeTaxes}">
 						<g:Label styleName="{s.label}" text="{i18n.totalBeforeTaxes}"></g:Label>
 						<g:Label styleName="{s.total}" ui:field="totalBeforeTaxes"></g:Label>
