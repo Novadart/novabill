@@ -81,6 +81,64 @@
 	<background>
 		<band splitType="Stretch"/>
 	</background>
+	<pageHeader>
+		<band height="65" splitType="Prevent">
+			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="cdc0c10f-230f-4333-908d-b3277b57ec6d" positionType="Float" x="8" y="20" width="308" height="16"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.business.address} + " – " + $F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim()) ? " (" + $F{document.business.province} + ")": "") +
+(($F{document.business.phone}!=null && $F{document.business.phone}.trim().length() > 0) || ($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0)? "\n": "") +
+($F{document.business.phone}!=null && $F{document.business.phone}.trim().length() > 0? $R{dense.phone} + ": " + $F{document.business.phone} + " – ": "") +
+($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0? $R{dense.email} + ": " + $F{document.business.email}: "")]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="177c4de2-1558-4fea-b979-446db24089b9" positionType="Float" x="8" y="0" width="308" height="20"/>
+				<textElement>
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.business.name}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f9e89ae6-fe21-45d9-8eb8-996a6530a47a" positionType="Float" x="470" y="34" width="76" height="16"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{document.accountingDocumentDate})]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="60ca13b2-9c18-4ae1-ac87-1f6489c7db3f" positionType="Float" x="418" y="19" width="52" height="16"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$R{dense.number} + ":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="c2f1dd70-50fc-4520-a006-b3cd64e4b7e4" positionType="Float" x="470" y="19" width="76" height="16"/>
+				<textElement textAlignment="Right">
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.documentID} + "/" + $F{document.accountingDocumentYear}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="933f64b4-f2ac-4704-aec1-d27cc7d0d50c" positionType="Float" x="418" y="34" width="52" height="16"/>
+				<textElement textAlignment="Right"/>
+				<textFieldExpression><![CDATA[$R{dense.date} + ":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b4817e01-7181-4d10-83ee-639238541fd7" x="432" y="0" width="115" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{dense.crednote}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="6231901a-478a-4ff0-8d09-d0c3b11b278c" x="8" y="51" width="540" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.5"/>
+				</graphicElement>
+			</line>
+		</band>
+	</pageHeader>
 	<detail>
 		<band height="70" splitType="Prevent">
 			<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null)]]></printWhenExpression>
