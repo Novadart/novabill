@@ -429,7 +429,7 @@
 			<dependency>
 				<groupId>net.sf.jasperreports</groupId>
 				<artifactId>jasperreports</artifactId>
-				<version>5.0.4</version>
+				<version>5.5.0</version>
 			</dependency>
 			<dependency>
 				<groupId>com.novadart.jasperreports.fonts</groupId>
