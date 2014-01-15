@@ -210,7 +210,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{quantity}.doubleValue())]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

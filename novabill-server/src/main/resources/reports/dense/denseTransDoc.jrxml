@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transport document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="22"/>
 	<style name="table" pattern="">
 		<box>
 			<pen lineWidth="0.0" lineColor="#000000"/>
@@ -105,7 +105,7 @@
 				<imageExpression><![CDATA[$F{logoInStream}]]></imageExpression>
 			</image>
 		</band>
-		<band height="450" splitType="Stretch">
+		<band height="257" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="8" y="0" width="308" height="18"/>
 				<textElement>
@@ -143,7 +143,7 @@
 				<textFieldExpression><![CDATA[$R{dense.date} + ":"]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="205" width="540" height="236"/>
+				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="205" width="540" height="50"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
@@ -204,10 +204,10 @@
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="48" height="14"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{quantity}.doubleValue())]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -225,7 +225,7 @@
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="5e9fee78-5a16-4450-9826-0a5cfb53091e" x="0" y="0" width="68" height="14"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{unitOfMeasure}]]></textFieldExpression>
@@ -236,7 +236,7 @@
 			</componentElement>
 			<textField>
 				<reportElement uuid="439d2bb1-1ed1-43f7-b7a7-483327251eea" positionType="Float" mode="Opaque" x="50" y="70" width="200" height="20" backcolor="#C0BEBE"/>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 					<paragraph leftIndent="3"/>
 				</textElement>
@@ -256,7 +256,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 			</textField>
 			<textField>
 				<reportElement uuid="4a2487a7-7443-48f3-a72f-660e843287f7" positionType="Float" mode="Opaque" x="305" y="70" width="200" height="20" backcolor="#C0BEBE"/>
-				<textElement>
+				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 					<paragraph leftIndent="3"/>
 				</textElement>
@@ -421,11 +421,25 @@ $F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{docu
 				<textFieldExpression><![CDATA[$F{document.business.address} + " – " + $F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim()) ? " (" + $F{document.business.province} + ")": "") +
 ($F{document.business.phone}!=null || $F{document.business.email}!=null? "\n": "") +
 ($F{document.business.phone}!=null? $R{dense.phone} + ": " + $F{document.business.phone} + " – ": "") +
-($F{document.business.email}!=null? $R{dense.email} + ": " + $F{document.business.email}: "")
-]]></textFieldExpression>
+($F{document.business.email}!=null? $R{dense.email} + ": " + $F{document.business.email}: "")]]></textFieldExpression>
 			</textField>
 		</band>
-		<band splitType="Prevent"/>
+		<band height="33" splitType="Prevent">
+			<textField>
+				<reportElement uuid="a2476859-ff96-40df-915a-699078bc6147" positionType="Float" x="8" y="0" width="110" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{dense.note}]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="d3de5d01-969a-4b88-bb04-c2e4af24934f" positionType="Float" x="8" y="15" width="540" height="15"/>
+				<textElement verticalAlignment="Middle">
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.note}!=null && !"".equals($F{document.note}.trim()) ? $F{document.note}: $R{dense.nonote}]]></textFieldExpression>
+			</textField>
+		</band>
 	</detail>
 	<pageFooter>
 		<band height="59" splitType="Stretch">
@@ -448,16 +462,16 @@ $F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{docu
 		</band>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="95" splitType="Stretch">
+		<band height="60" splitType="Stretch">
 			<textField evaluationTime="Report">
-				<reportElement uuid="c9380a67-8d5f-4529-9aac-ca610c0dbeea" x="473" y="80" width="75" height="12"/>
+				<reportElement uuid="c9380a67-8d5f-4529-9aac-ca610c0dbeea" x="472" y="45" width="75" height="12"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<staticText>
-				<reportElement uuid="4402a1ba-16a1-45fc-b793-12f2d97ab873" x="140" y="80" width="274" height="12" forecolor="#646464">
+				<reportElement uuid="4402a1ba-16a1-45fc-b793-12f2d97ab873" x="140" y="45" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
@@ -465,59 +479,45 @@ $F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{docu
 				</textElement>
 				<text><![CDATA[<a href="https://www.novabill.it">Powered by Novabill - https://www.novabill.it</a>]]></text>
 			</staticText>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="d3de5d01-969a-4b88-bb04-c2e4af24934f" positionType="Float" x="8" y="22" width="540" height="15"/>
-				<textElement verticalAlignment="Middle">
-					<font size="9"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{document.note}!=null && !"".equals($F{document.note}.trim()) ? $F{document.note}: $R{dense.nonote}]]></textFieldExpression>
-			</textField>
 			<textField>
-				<reportElement uuid="75090ce6-d9c5-4a4e-a7e6-ca263a8af14e" positionType="Float" x="8" y="48" width="100" height="15"/>
+				<reportElement uuid="75090ce6-d9c5-4a4e-a7e6-ca263a8af14e" x="8" y="13" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.firmTransporter}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="5992e26a-708d-4c1e-a8b1-6ccf9451268e" positionType="Float" x="227" y="48" width="100" height="15"/>
+				<reportElement uuid="5992e26a-708d-4c1e-a8b1-6ccf9451268e" x="227" y="13" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.firmDriver}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="96504f55-5cad-450a-a4d0-cada38f8b34c" positionType="Float" x="448" y="48" width="100" height="15"/>
+				<reportElement uuid="96504f55-5cad-450a-a4d0-cada38f8b34c" x="448" y="13" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.firmDestination}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="25d05ec0-a343-4598-a12a-2afb2af059e0" positionType="Float" x="8" y="74" width="100" height="1"/>
+				<reportElement uuid="25d05ec0-a343-4598-a12a-2afb2af059e0" x="8" y="39" width="100" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement uuid="81d98b73-e6d4-45a6-9b3c-00006391ea19" positionType="Float" x="227" y="73" width="100" height="1"/>
+				<reportElement uuid="81d98b73-e6d4-45a6-9b3c-00006391ea19" x="227" y="38" width="100" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement uuid="95a7c075-25cb-462b-8963-e0005ffebd38" positionType="Float" x="448" y="72" width="100" height="1"/>
+				<reportElement uuid="95a7c075-25cb-462b-8963-e0005ffebd38" x="448" y="37" width="100" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
-			<textField>
-				<reportElement uuid="a2476859-ff96-40df-915a-699078bc6147" positionType="Float" x="8" y="6" width="110" height="15"/>
-				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.note}]]></textFieldExpression>
-			</textField>
 		</band>
 	</lastPageFooter>
 </jasperReport>
