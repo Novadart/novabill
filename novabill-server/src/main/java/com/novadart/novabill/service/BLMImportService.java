@@ -67,11 +67,11 @@ public class BLMImportService {
 	
 	private Principal createPrincipal() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
 		Registration registration = new Registration();
-		registration.setEmail("manufattiblm@gmail.com");
-		setPrivateFieldForRegistration(registration, "password", "17f3fdc0520bbf0588b41bf45c0d68ad0da26c80d3dc466a96a8215b2a4de187"); //avoid password hashing
+		registration.setEmail("info@manufattiblm.it");
+		setPrivateFieldForRegistration(registration, "password", "30a385db4f43cff8fdcc3f00633fd294a4c1a1a42eab56e721f242b12d018309"); //avoid password hashing
 		Principal principal = new Principal(registration);
 		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
-		principal.setPassword("novadart");
+		principal.setPassword("m4tte0:590");
 		return principal.merge();
 	}
 	
@@ -238,6 +238,57 @@ public class BLMImportService {
 		}
 	}
 	
+	private void createDefaultPriceListForExistingBusinesses(){
+		for(Business business: Business.findAllBusinesses()){
+			if(business.getPrincipals().iterator().next().getUsername().equals("info@manufattiblm.it"))
+				continue;
+			PriceList publicPriceList = new PriceList(PriceListConstants.DEFAULT);
+			publicPriceList.setBusiness(business);
+			business.getPriceLists().add(publicPriceList);
+			publicPriceList.persist();
+			PriceList.entityManager().flush();
+			for(Client client:business.getClients()){
+				client.setDefaultPriceList(publicPriceList);
+				publicPriceList.getClients().add(client);
+			}
+		}
+	}
+	
+	public void createSecondBusiness() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
+		Registration registration = new Registration();
+		registration.setEmail("info@prmanufatti.it");
+		setPrivateFieldForRegistration(registration, "password", "64c7dba27c3e6d28957471136cc637b87aa10148fe19178f2010cb276df5aba4"); //avoid password hashing
+		Principal principal = new Principal(registration);
+		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
+		principal.setPassword("p3rr3:12oi");
+		Business business = new Business();
+		for(PaymentType pType: paymentTypes){
+			PaymentType paymentType = null;
+			try {
+				paymentType = pType.clone();
+			} catch (CloneNotSupportedException e) {
+				throw new com.novadart.novabill.shared.client.exception.CloneNotSupportedException();
+			}
+			paymentType.setBusiness(business);
+			business.getPaymentTypes().add(paymentType);
+		}
+		// TODO fix this data
+		business.setName("Blm Di Bruseghin Matteo");
+		business.setAddress("Via Leonardo da Vinci 39");
+		business.setCity("Campo San Martino");
+		business.setPostcode("35010");
+		business.setProvince("PD");
+		business.setDefaultLayoutType(LayoutType.DENSE);
+		business.setVatID("IT03971280284");
+		business.setSsn("BRSMTT75P10B563Z");
+		business.setCountry("IT");
+		//up to here
+		business.getPrincipals().add(principal);
+		principal.setBusiness(business);
+		business.persist();
+		
+	}
+	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
 	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException{
@@ -247,7 +298,9 @@ public class BLMImportService {
 		createCommodities(business);
 		Client.entityManager().flush();
 		for(Client client: faultyClients)
-			System.out.println("Faulty Client id:" + client.getId());
+			System.out.println("Faulty Client id:" + client.getId() + " name:" + client.getName());
+		createSecondBusiness();
+		createDefaultPriceListForExistingBusinesses();
 	}
 	
 }
