@@ -84,7 +84,7 @@
 	<detail>
 		<band height="70" splitType="Prevent">
 			<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null)]]></printWhenExpression>
-			<image>
+			<image vAlign="Bottom">
 				<reportElement uuid="ad84ab22-c8c5-403b-9525-8d6a0150fa0d" x="8" y="0" width="250" height="70">
 					<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null)]]></printWhenExpression>
 				</reportElement>
@@ -93,43 +93,43 @@
 		</band>
 		<band height="253" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="8" y="0" width="308" height="20"/>
+				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="8" y="13" width="308" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="31a34766-9742-4d92-933a-3c7accb19ff9" x="472" y="0" width="76" height="20"/>
+				<reportElement uuid="31a34766-9742-4d92-933a-3c7accb19ff9" x="472" y="13" width="76" height="20"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.invoice}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="d60122c5-0091-41f6-9b54-1498fff69cec" positionType="Float" isPrintRepeatedValues="false" x="472" y="19" width="76" height="16"/>
+				<reportElement uuid="d60122c5-0091-41f6-9b54-1498fff69cec" positionType="Float" isPrintRepeatedValues="false" x="472" y="33" width="76" height="16"/>
 				<textElement textAlignment="Right">
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.documentID} + "/" + $F{document.accountingDocumentYear}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="d0f6965d-2485-4a1b-b3c6-ff209b5da55c" positionType="Float" isPrintRepeatedValues="false" x="472" y="35" width="76" height="16"/>
+				<reportElement uuid="d0f6965d-2485-4a1b-b3c6-ff209b5da55c" positionType="Float" isPrintRepeatedValues="false" x="472" y="48" width="76" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{document.accountingDocumentDate})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="9147ae7f-5ccc-49db-87e9-f84eb59575b1" positionType="Float" isPrintRepeatedValues="false" x="420" y="19" width="52" height="16"/>
+				<reportElement uuid="9147ae7f-5ccc-49db-87e9-f84eb59575b1" positionType="Float" isPrintRepeatedValues="false" x="420" y="32" width="52" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$R{dense.number} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="8dcd43cc-187e-4553-a39a-3116e07b1483" positionType="Float" isPrintRepeatedValues="false" x="420" y="34" width="52" height="16"/>
+				<reportElement uuid="8dcd43cc-187e-4553-a39a-3116e07b1483" positionType="Float" isPrintRepeatedValues="false" x="420" y="47" width="52" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$R{dense.date} + ":"]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="50" y="87" width="200" height="56"/>
+				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="50" y="82" width="200" height="56"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
@@ -322,14 +322,14 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 				</jr:table>
 			</componentElement>
 			<textField>
-				<reportElement uuid="0f9c7427-2f91-45e4-a243-deb7e2fb27fb" positionType="Float" isPrintRepeatedValues="false" x="364" y="50" width="108" height="16"/>
+				<reportElement uuid="0f9c7427-2f91-45e4-a243-deb7e2fb27fb" positionType="Float" isPrintRepeatedValues="false" x="364" y="63" width="108" height="16"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.deadline} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e86f9c0b-403e-4f46-9d0c-6d4ee003439e" positionType="Float" x="472" y="50" width="76" height="15"/>
+				<reportElement uuid="e86f9c0b-403e-4f46-9d0c-6d4ee003439e" positionType="Float" x="472" y="63" width="76" height="15"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
@@ -350,7 +350,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 				<textFieldExpression><![CDATA[$F{document.paymentNote}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="ab50832a-c2d5-4f4e-a2c8-33c2e3cd861a" positionType="Float" x="8" y="19" width="308" height="16"/>
+				<reportElement uuid="ab50832a-c2d5-4f4e-a2c8-33c2e3cd861a" positionType="Float" x="8" y="32" width="308" height="16"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
@@ -361,7 +361,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 ($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0? $R{dense.email} + ": " + $F{document.business.email}: "")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="0502c8dd-0f74-4c3d-b789-f5716cbf31ef" positionType="Float" mode="Opaque" x="50" y="67" width="200" height="20" backcolor="#C0BEBE"/>
+				<reportElement uuid="0502c8dd-0f74-4c3d-b789-f5716cbf31ef" positionType="Float" mode="Opaque" x="50" y="63" width="200" height="20" backcolor="#C0BEBE"/>
 				<textElement verticalAlignment="Middle">
 					<font size="12" isBold="true"/>
 					<paragraph leftIndent="3"/>
