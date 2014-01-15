@@ -41,7 +41,7 @@ public class DocumentUtils {
 		}
 		
 		BigDecimal discount = item.getDiscount()==null ? 
-				BigDecimal.ZERO : 
+				BigDecimal.ONE : 
 					item.getDiscount().multiply(BigDecimal.valueOf(-1)).add(BD_100).divide(BD_100);
 		return item.getPrice()
 				.multiply(discount)
@@ -49,12 +49,20 @@ public class DocumentUtils {
 	}
 	
 	public static BigDecimal calculateTaxesForItem(AccountingDocumentItemDTO item){
+		if(item.getPrice() == null){
+			return BigDecimal.ZERO;
+		}
+		
 		return calculateTotalBeforeTaxesForItem(item)
 				.multiply(item.getTax())
 				.divide( BD_100 );
 	}
 	
 	public static BigDecimal calculateTotalAfterTaxesForItem(AccountingDocumentItemDTO item){
+		if(item.getPrice() == null){
+			return BigDecimal.ZERO;
+		}
+		
 		return calculateTotalBeforeTaxesForItem(item)
 				.multiply( item.getTax().add(BD_100) )
 				.divide( BD_100 );

@@ -107,8 +107,12 @@ angular.module('novabill.commodities.controllers',
 	}
 
 	$scope.printSku = function(){
-		if( !nRegExp.reserved_word.test($scope.commodity.sku)){
-			return $scope.commodity.sku;
+		if($scope.commodity){
+			if( !nRegExp.reserved_word.test($scope.commodity.sku)){
+				return $scope.commodity.sku;
+			} else {
+				return '';
+			}
 		} else {
 			return '';
 		}
