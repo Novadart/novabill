@@ -193,7 +193,7 @@
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{quantity}.doubleValue())]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -256,7 +256,7 @@
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{discount}.doubleValue())]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{discount}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -277,7 +277,7 @@
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{tax}.doubleValue())]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{tax}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -311,9 +311,9 @@
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.address} + " – " + $F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim()) ? " (" + $F{document.business.province} + ")": "") +
-($F{document.business.phone}!=null || $F{document.business.email}!=null? "\n": "") +
-($F{document.business.phone}!=null? $R{dense.phone} + ": " + $F{document.business.phone} + " – ": "") +
-($F{document.business.email}!=null? $R{dense.email} + ": " + $F{document.business.email}: "")]]></textFieldExpression>
+(($F{document.business.phone}!=null && $F{document.business.phone}.trim().length() > 0) || ($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0)? "\n": "") +
+($F{document.business.phone}!=null && $F{document.business.phone}.trim().length() > 0? $R{dense.phone} + ": " + $F{document.business.phone} + " – ": "") +
+($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0? $R{dense.email} + ": " + $F{document.business.email}: "")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="dd440861-df5f-4c5d-b5f3-02f503c7fa45" positionType="Float" mode="Opaque" x="50" y="69" width="200" height="20" backcolor="#C0BEBE"/>
