@@ -103,38 +103,45 @@
 ($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0? $R{dense.email} + ": " + $F{document.business.email}: "")]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="843bc9e3-ebdf-43ab-b9d5-6d0e02737b75" x="473" y="0" width="76" height="20"/>
+				<reportElement uuid="da1d0714-a464-42dc-90d4-8d82e5f4a6d6" positionType="Float" isPrintRepeatedValues="false" x="471" y="19" width="76" height="16"/>
 				<textElement textAlignment="Right">
-					<font fontName="Arial" size="12" isBold="true"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.invoice}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{document.documentID} + "/" + $F{document.accountingDocumentYear}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="f457f876-5942-4e2a-8bbb-2a732e3e16ec" positionType="Float" isPrintRepeatedValues="false" x="473" y="33" width="76" height="16"/>
+				<reportElement uuid="7946f9a5-6eda-4df4-91cd-52e01e648105" positionType="Float" isPrintRepeatedValues="false" x="471" y="34" width="76" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{document.accountingDocumentDate})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="655c5d7b-2547-4db7-85bb-e195dd82680d" positionType="Float" isPrintRepeatedValues="false" x="365" y="48" width="108" height="16"/>
-				<textElement textAlignment="Right" verticalAlignment="Middle">
-					<font size="10" isBold="false"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.deadline} + ":"]]></textFieldExpression>
-			</textField>
-			<textField>
-				<reportElement uuid="b552da3d-8805-498c-ba68-3d928d54468d" positionType="Float" x="473" y="48" width="76" height="15"/>
+				<reportElement uuid="1db48346-faa8-47fe-adcf-04cdea96bbba" positionType="Float" x="471" y="49" width="76" height="15"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{document.paymentDueDate})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="9618348a-818e-4956-9eb8-671b99bb06c2" positionType="Float" isPrintRepeatedValues="false" x="421" y="33" width="52" height="16"/>
+				<reportElement uuid="e74c2868-9f4b-4dbb-9d39-c48dcc381a3f" positionType="Float" isPrintRepeatedValues="false" x="363" y="48" width="108" height="16"/>
+				<textElement textAlignment="Right" verticalAlignment="Middle">
+					<font size="10" isBold="false"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{dense.deadline} + ":"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="a4525849-328f-450b-855e-ffe556e5dfa7" x="471" y="0" width="76" height="20"/>
+				<textElement textAlignment="Right">
+					<font fontName="Arial" size="12" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{dense.invoice}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="b706dade-9b2e-4f4c-85dc-68aab904fd92" positionType="Float" isPrintRepeatedValues="false" x="419" y="33" width="52" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$R{dense.date} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="ec993a35-c9a6-44fd-95d9-e391f8457de4" positionType="Float" isPrintRepeatedValues="false" x="422" y="18" width="52" height="16"/>
+				<reportElement uuid="f28e3d59-47b6-4e76-8c78-8e61bc845c36" positionType="Float" isPrintRepeatedValues="false" x="420" y="18" width="52" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$R{dense.number} + ":"]]></textFieldExpression>
 			</textField>
@@ -149,13 +156,6 @@
 				</reportElement>
 				<imageExpression><![CDATA[$F{logoInStream}]]></imageExpression>
 			</image>
-			<textField>
-				<reportElement uuid="ff9d2e05-2361-44ab-bcd5-dca1879e1d28" positionType="Float" isPrintRepeatedValues="false" x="473" y="-61" width="76" height="16"/>
-				<textElement textAlignment="Right">
-					<paragraph lineSpacing="Single"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{document.documentID} + "/" + $F{document.accountingDocumentYear}]]></textFieldExpression>
-			</textField>
 		</band>
 		<band height="253" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
