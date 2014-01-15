@@ -21,7 +21,7 @@ import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
 public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
-	
+
 	private static final int DESCRIPTION_MAX_LENGTH = 500;
 	private static final int UNIT_OF_MEASURE_MAX_SIZE = 255;
 
@@ -39,7 +39,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 		this.handler = handler;
 
-		
+
 		//Sku
 		final TextCell skuCell = new TextCell();
 		final Column<AccountingDocumentItemDTO, String> sku = 
@@ -53,7 +53,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 		};
 		addColumn(sku, I18N.INSTANCE.sku());
-		
+
 		//Name & Description
 		final LargeEditTextCell descEditCell = new LargeEditTextCell();
 		final Column<AccountingDocumentItemDTO, String> nameDescription = 
@@ -195,8 +195,8 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			}
 		});
 		addColumn(price, I18N.INSTANCE.price());
-		
-		
+
+
 		// discount
 		final EditTextCell discountEditCell = new EditTextCell();
 		Column<AccountingDocumentItemDTO, String> discount =
@@ -217,11 +217,13 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
 				if(object.getDiscount() != null){
 					try{
-
-						BigDecimal newDiscount = DocumentUtils.parseValue(value);
-						object.setDiscount(newDiscount);
+						if(value.isEmpty()){
+							object.setDiscount(null);
+						} else {
+							BigDecimal newDiscount = DocumentUtils.parseValue(value);
+							object.setDiscount(newDiscount);
+						}
 						ItemTable.this.handler.onUpdate(object);
-
 					} catch(NumberFormatException e){
 
 						Notification.showMessage(I18N.INSTANCE.errorClientData());

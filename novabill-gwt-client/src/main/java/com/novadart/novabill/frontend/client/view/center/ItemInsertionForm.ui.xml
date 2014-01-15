@@ -8,7 +8,8 @@
 
 	<ui:style field="s">
 		.itemTableScroller {
-			max-height: 400px;
+			max-height: 600px;
+			border: 0.1em solid #EEE;
 		}
 		
 		.itemTable {

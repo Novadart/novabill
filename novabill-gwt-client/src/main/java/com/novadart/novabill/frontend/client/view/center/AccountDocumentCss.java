@@ -21,6 +21,8 @@ public interface AccountDocumentCss extends CssResource {
 	String documentMainDetails();
 
 	String createButton();
+	
+	String totalsContainer();
 
 	String time();
 
