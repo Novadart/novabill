@@ -165,6 +165,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="d667ad12-0247-4094-bdda-0659797f1006" x="0" y="0" width="38" height="14"/>
 								<textElement verticalAlignment="Middle">
+									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{sku} == null || $F{sku}.startsWith("::sku")? "": $F{sku}]]></textFieldExpression>
@@ -206,7 +207,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="28" height="14"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
@@ -227,7 +228,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="5e9fee78-5a16-4450-9826-0a5cfb53091e" x="0" y="0" width="38" height="14"/>
 								<textElement verticalAlignment="Middle">
-									<font size="8"/>
+									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{unitOfMeasure}]]></textFieldExpression>
@@ -385,32 +386,44 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 			</textField>
 			<textField>
 				<reportElement uuid="710f5ddb-4585-4ebc-9edc-ac0e96bcaff7" positionType="Float" x="338" y="4" width="90" height="15"/>
-				<textElement/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.totalWithoutTax}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="e70d9f40-7c6a-41a3-bb67-b65e945623a1" positionType="Float" x="338" y="19" width="90" height="15"/>
-				<textElement/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.totalTax}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d" positionType="Float" x="338" y="34" width="90" height="15"/>
-				<textElement/>
+				<textElement>
+					<font size="9" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.total}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="445b9cab-e35a-417e-bb6b-26d777f9ab90" positionType="Float" x="428" y="4" width="120" height="15"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalBeforeTax}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="14484aea-08e0-4ad3-9f02-b22a8ab01fb0" positionType="Float" x="428" y="34" width="120" height="15"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font size="9" isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.total}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
 				<reportElement uuid="aa3ca53a-89a9-4d3e-ac81-a337716dbba0" positionType="Float" x="422" y="19" width="126" height="15"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font size="9"/>
+				</textElement>
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalTax}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<line>
