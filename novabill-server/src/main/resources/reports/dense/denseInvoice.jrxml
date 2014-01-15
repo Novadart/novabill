@@ -122,7 +122,7 @@
 				<textFieldExpression><![CDATA[$R{dense.deadline} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="b552da3d-8805-498c-ba68-3d928d54468d" positionType="Float" x="473" y="49" width="76" height="15"/>
+				<reportElement uuid="b552da3d-8805-498c-ba68-3d928d54468d" positionType="Float" x="473" y="48" width="76" height="15"/>
 				<textElement textAlignment="Right" verticalAlignment="Middle">
 					<font size="10"/>
 				</textElement>
@@ -150,7 +150,7 @@
 				<imageExpression><![CDATA[$F{logoInStream}]]></imageExpression>
 			</image>
 			<textField>
-				<reportElement uuid="ff9d2e05-2361-44ab-bcd5-dca1879e1d28" positionType="Float" isPrintRepeatedValues="false" x="473" y="-57" width="76" height="16"/>
+				<reportElement uuid="ff9d2e05-2361-44ab-bcd5-dca1879e1d28" positionType="Float" isPrintRepeatedValues="false" x="473" y="-61" width="76" height="16"/>
 				<textElement textAlignment="Right">
 					<paragraph lineSpacing="Single"/>
 				</textElement>
