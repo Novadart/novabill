@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("novabill.creditNotes", ['novabill.creditNotes.controllers','novabill.constants','ngRoute'])
+angular.module("novabill.creditNotes", ['novabill.creditNotes.controllers','novabill.constants','ngRoute', 'novabill.analytics'])
 
 .config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
 
@@ -30,4 +30,6 @@ angular.module("novabill.creditNotes", ['novabill.creditNotes.controllers','nova
 		redirectTo: '/'
 	});
 
-}]);
+}])
+
+.run(['nAnalytics', function(nAnalytics){ }]);

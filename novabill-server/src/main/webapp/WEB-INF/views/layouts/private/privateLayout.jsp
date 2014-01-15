@@ -79,6 +79,9 @@
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
 <body class="page-header-fixed page-sidebar-fixed">
+    
+    <tiles:insertAttribute name="analytics" />
+
 	<!-- BEGIN HEADER -->
 	<div class="header navbar navbar-inverse navbar-fixed-top">
 		<!-- BEGIN TOP NAVIGATION BAR -->
@@ -240,7 +243,7 @@
 	<script src="${privateAssetsUrl}/novabill/scripts/translations.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/novabill/scripts/constants.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/novabill/scripts/calc.js" type="text/javascript"></script>
-	
+	<script src="${privateAssetsUrl}/novabill/scripts/analytics.js" type="text/javascript"></script>
 
 
 	<!--[if lt IE 9]>

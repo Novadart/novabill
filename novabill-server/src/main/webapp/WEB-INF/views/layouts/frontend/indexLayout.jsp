@@ -744,6 +744,10 @@
         });
         
     </script>
+    
+    <script type="text/javascript">
+	_gaq.push(['_trackPageview']);
+	</script>
     <!-- END PAGE LEVEL JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

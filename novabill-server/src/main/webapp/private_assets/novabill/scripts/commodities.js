@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("novabill.commodities", ['novabill.commodities.controllers','novabill.constants','ngRoute'])
+angular.module("novabill.commodities", ['novabill.commodities.controllers','novabill.constants','ngRoute', 'novabill.analytics'])
 
 .config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
 
@@ -20,4 +20,6 @@ angular.module("novabill.commodities", ['novabill.commodities.controllers','nova
 		redirectTo: '/'
 	});
 
-}]);
+}])
+
+.run(['nAnalytics', function(nAnalytics){ }]);

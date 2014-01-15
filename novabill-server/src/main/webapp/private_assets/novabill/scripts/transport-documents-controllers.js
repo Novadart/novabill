@@ -4,7 +4,7 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 
 
 /**
- * CREDIT NOTES PAGE CONTROLLER
+ * TRANSPORT DOCUMENTS PAGE CONTROLLER
  */
 .controller('TransportDocumentCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', 
                                       function($scope, $location, nConstants, nSelectClientDialog){
@@ -61,7 +61,7 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 
 
 /**
- * ESTIMATION MODIFY PAGE CONTROLLER
+ * TRANSPORT DOCUMENTS MODIFY PAGE CONTROLLER
  */
 .controller('TransportDocumentDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook', 
                                              function($scope, $routeParams, $location, $translate, gwtHook) {
@@ -81,7 +81,7 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 
 
 /**
- * ESTIMATION CREATE PAGE CONTROLLER
+ * TRANSPORT DOCUMENTS CREATE PAGE CONTROLLER
  */
 .controller('TransportDocumentCreateCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
                                             function($scope, $routeParams, $location, $translate, gwtHook) {

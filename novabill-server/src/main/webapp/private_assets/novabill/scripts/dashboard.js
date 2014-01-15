@@ -1,9 +1,9 @@
 'use strict';
 
-angular.module("novabill.dashboard", ['novabill.dashboard.controllers', 'novabill.constants', 'ngRoute'])
+angular.module("novabill.dashboard", ['novabill.dashboard.controllers', 'novabill.constants', 'ngRoute', 'novabill.analytics'])
 
 .config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
-
+	
 	$routeProvider
 	
 	.when('/', {
@@ -15,4 +15,6 @@ angular.module("novabill.dashboard", ['novabill.dashboard.controllers', 'novabil
 		redirectTo: '/'
 	});
 
-}]);
+}])
+
+.run(['nAnalytics', function(nAnalytics){ }]);

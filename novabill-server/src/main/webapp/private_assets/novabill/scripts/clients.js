@@ -1,9 +1,10 @@
 'use strict';
 
-angular.module("novabill.clients", ['novabill.clients.controllers','novabill.constants','ngRoute'])
+angular.module("novabill.clients", 
+		['novabill.clients.controllers', 'novabill.constants', 'ngRoute', 'novabill.analytics'])
 
 .config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
-
+	
 	$routeProvider
 
 	.when('/', {
@@ -21,4 +22,6 @@ angular.module("novabill.clients", ['novabill.clients.controllers','novabill.con
 		redirectTo: '/'
 	});
 
-}]);
+}])
+
+.run(['nAnalytics', function(nAnalytics){ }]);

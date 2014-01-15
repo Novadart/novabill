@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("novabill.estimations", ['novabill.estimations.controllers', 'novabill.constants', 'ngRoute'])
+angular.module("novabill.estimations", ['novabill.estimations.controllers', 'novabill.constants', 'ngRoute', 'novabill.analytics'])
 
 .config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
 
@@ -30,4 +30,6 @@ angular.module("novabill.estimations", ['novabill.estimations.controllers', 'nov
 		redirectTo: '/'
 	});
 
-}]);
+}])
+
+.run(['nAnalytics', function(nAnalytics){ }]);

@@ -3,7 +3,7 @@
 if(! eval('${devMode.enabled.value}')) {
 	var _gaq = _gaq || [];
 	_gaq.push(['_setAccount', 'UA-36322447-1']);
-	_gaq.push(['_trackPageview']);
+	/* _gaq.push(['_trackPageview']); */
 	
 	(function() {
 	  var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
