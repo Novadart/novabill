@@ -41,20 +41,19 @@ import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 @Controller
 @RequestMapping("/private/pdf")
 public class PDFController{
-	
+
 	public static final String TOKENS_SESSION_FIELD = "pdf.generation.tokens";
 	public static final String TOKEN_REQUEST_PARAM = "token";
-	
+
 	@Autowired
 	private MessageSource messageSource;
-	
+
 	@Autowired
 	private JasperReportService jrService;
-	
+
 	private String convertToASCII(String text){
 		List<String> tokens = new ArrayList<>();
-		try{
-			TokenStream stream = new ASCIIFoldingFilter(new LowerCaseFilter(Version.LUCENE_35, new WhitespaceTokenizer(Version.LUCENE_35, new StringReader(text))));
+		try (TokenStream stream = new ASCIIFoldingFilter(new LowerCaseFilter(Version.LUCENE_35, new WhitespaceTokenizer(Version.LUCENE_35, new StringReader(text)))) ){
 			stream.reset();
 			while(stream.incrementToken())
 				tokens.add(stream.getAttribute(CharTermAttribute.class).toString());
@@ -63,7 +62,7 @@ public class PDFController{
 		}
 		return Joiner.on("_").join(tokens).toString();
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/invoices/{id}", produces = "application/pdf")
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
 	@ResponseBody
@@ -78,7 +77,7 @@ public class PDFController{
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(invoice, invoice.getBusiness().getId()),
 				DocumentType.INVOICE, invoice.getLayoutType());
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/estimations/{id}", produces = "application/pdf")
 	@ResponseBody
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
@@ -93,7 +92,7 @@ public class PDFController{
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(estimation, estimation.getBusiness().getId()),
 				DocumentType.ESTIMATION, estimation.getLayoutType());
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/creditnotes/{id}", produces = "application/pdf")
 	@ResponseBody
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
@@ -108,7 +107,7 @@ public class PDFController{
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(creditNote, creditNote.getBusiness().getId()),
 				DocumentType.CREDIT_NOTE, creditNote.getLayoutType());
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/transportdocs/{id}", produces = "application/pdf")
 	@ResponseBody
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
