@@ -98,7 +98,7 @@
 	<detail>
 		<band height="70" splitType="Prevent">
 			<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null)]]></printWhenExpression>
-			<image>
+			<image vAlign="Bottom">
 				<reportElement uuid="ad84ab22-c8c5-403b-9525-8d6a0150fa0d" x="8" y="0" width="250" height="70">
 					<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null)]]></printWhenExpression>
 				</reportElement>
@@ -107,38 +107,38 @@
 		</band>
 		<band height="266" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="8" y="0" width="308" height="18"/>
+				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="8" y="8" width="308" height="18"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.name}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="31a34766-9742-4d92-933a-3c7accb19ff9" x="371" y="0" width="177" height="18"/>
+				<reportElement uuid="31a34766-9742-4d92-933a-3c7accb19ff9" x="371" y="8" width="177" height="18"/>
 				<textElement textAlignment="Right">
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.transdoc}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="d60122c5-0091-41f6-9b54-1498fff69cec" positionType="Float" x="472" y="18" width="76" height="16"/>
+				<reportElement uuid="d60122c5-0091-41f6-9b54-1498fff69cec" positionType="Float" x="472" y="25" width="76" height="16"/>
 				<textElement textAlignment="Right">
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.documentID} + "/" + $F{document.accountingDocumentYear}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="d0f6965d-2485-4a1b-b3c6-ff209b5da55c" positionType="Float" x="472" y="34" width="76" height="16"/>
+				<reportElement uuid="d0f6965d-2485-4a1b-b3c6-ff209b5da55c" positionType="Float" x="472" y="39" width="76" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{document.accountingDocumentDate})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="9147ae7f-5ccc-49db-87e9-f84eb59575b1" positionType="Float" x="420" y="18" width="52" height="16"/>
+				<reportElement uuid="9147ae7f-5ccc-49db-87e9-f84eb59575b1" positionType="Float" x="420" y="25" width="52" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$R{dense.number} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="8dcd43cc-187e-4553-a39a-3116e07b1483" positionType="Float" x="421" y="34" width="52" height="16"/>
+				<reportElement uuid="8dcd43cc-187e-4553-a39a-3116e07b1483" positionType="Float" x="421" y="39" width="52" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$R{dense.date} + ":"]]></textFieldExpression>
 			</textField>
@@ -413,7 +413,7 @@ $F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{docu
 				<textFieldExpression><![CDATA[$F{document.cause}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="80ed6c81-de7e-4e0e-ae80-8a3257cff749" positionType="Float" x="8" y="18" width="308" height="16"/>
+				<reportElement uuid="80ed6c81-de7e-4e0e-ae80-8a3257cff749" positionType="Float" x="8" y="25" width="308" height="16"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
