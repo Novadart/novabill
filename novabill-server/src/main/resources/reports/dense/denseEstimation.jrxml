@@ -41,7 +41,7 @@
 		<field name="unitOfMeasure" class="java.lang.String"/>
 		<field name="price" class="java.math.BigDecimal"/>
 		<field name="tax" class="java.math.BigDecimal"/>
-		<field name="total" class="java.math.BigDecimal"/>
+		<field name="totalBeforeTax" class="java.math.BigDecimal"/>
 		<field name="discount" class="java.math.BigDecimal"/>
 		<field name="sku" class="java.lang.String"/>
 	</subDataset>
@@ -283,6 +283,27 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
+					<jr:column width="40" uuid="e9882e8d-4ff0-4e61-8aba-0c50007d9133">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="eb7b22df-ab5d-4b2b-a665-3a6aef5aeabe" x="0" y="0" width="38" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA["%" + $R{dense.tax}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="18" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="e6627f76-468a-4d61-bf30-28da21524f5e" x="0" y="0" width="38" height="14"/>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="7"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{tax}.stripTrailingZeros()]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
 					<jr:column width="40" uuid="1a47a9f7-ac05-45df-84df-a087c255f93a">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
@@ -325,27 +346,6 @@
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="40" uuid="e9882e8d-4ff0-4e61-8aba-0c50007d9133">
-						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
-							<textField>
-								<reportElement uuid="eb7b22df-ab5d-4b2b-a665-3a6aef5aeabe" x="0" y="0" width="38" height="18"/>
-								<textElement verticalAlignment="Middle">
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA["%" + $R{dense.tax}]]></textFieldExpression>
-							</textField>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="18" rowSpan="1">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="e6627f76-468a-4d61-bf30-28da21524f5e" x="0" y="0" width="38" height="14"/>
-								<textElement textAlignment="Left" verticalAlignment="Middle">
-									<font size="7"/>
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{tax}.stripTrailingZeros()]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
 					<jr:column width="60" uuid="bd98899d-5bf0-47a8-ae22-09e6134fecad">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
@@ -353,17 +353,17 @@
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$R{dense.total}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$R{dense.totalBeforeTax}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="18" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="a2f77c65-878e-4827-b80c-31f61b7b5539" x="0" y="0" width="58" height="14"/>
-								<textElement textAlignment="Right" verticalAlignment="Middle">
+								<textElement textAlignment="Left" verticalAlignment="Middle">
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{total}.doubleValue())]]></textFieldExpression>
+								<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{totalBeforeTax}.doubleValue())]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
