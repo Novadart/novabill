@@ -80,6 +80,10 @@
 		
 		.mandatory {
 		}
+		
+		.logoUpdateButtons{
+	       margin-top: 10px;
+        }
 	</ui:style>
 
 	<g:ScrollPanel height="100%">
@@ -221,7 +225,7 @@
 					<g:SimplePanel styleName="{style.logoContainerWrapper}">
 						<g:VerticalPanel>
 							<g:Image ui:field="logo" styleName="{style.logo}"></g:Image>
-							<g:HorizontalPanel>
+							<g:HorizontalPanel styleName="{style.logoUpdateButtons}">
 								<g:FormPanel visible="false" ui:field="formPanel" />
 								<g:Button ui:field="updateLogo" text="{i18n.updateLogo}"
 									styleName="btn blue"></g:Button>
@@ -251,7 +255,8 @@
 				</g:HorizontalPanel>
 			</g:VerticalPanel>
 
-			<g:VerticalPanel styleName="{style.cancelDataContainer}">
+            <!-- TODO reenable -->
+			<g:VerticalPanel visible="false" styleName="{style.cancelDataContainer}">
 				<g:Label styleName="{style.sectionLabel}" text="{i18n.deleteAccountLabel}"></g:Label>
 				<g:Anchor ui:field="deleteAccount" styleName="{style.deleteAccount} btn red" text="{i18n.deleteAccount}"></g:Anchor>
 			</g:VerticalPanel>
