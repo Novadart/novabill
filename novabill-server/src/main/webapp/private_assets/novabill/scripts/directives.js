@@ -390,7 +390,7 @@ angular.module('novabill.directives',
 
 			function updatePriceInfo(price){
 
-				$scope.priceValue = nCalc.calculatePriceForCommodity($scope.commodity, $scope.priceListName);
+				$scope.priceValue = nCalc.calculatePriceForCommodity($scope.commodity, $scope.priceListName).toString();
 
 				if($scope.priceListName === $scope.DEFAULT_PRICELIST_NAME || !$scope.price.id){
 
@@ -502,7 +502,7 @@ angular.module('novabill.directives',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.float.test(viewValue)) {
+				if (nRegExp.fiscalFloat.test(viewValue)) {
 					ctrl.$setValidity('percentage', true);
 					return parseFloat(viewValue.replace(',', '.'));
 				} else {
@@ -530,7 +530,7 @@ angular.module('novabill.directives',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.float.test(viewValue)) {
+				if (nRegExp.positiveFiscalFloat.test(viewValue)) {
 					var floatVal = parseFloat(viewValue.replace(',', '.'));
 					if(floatVal >= 0 && floatVal < 100){
 						ctrl.$setValidity('tax', true);
@@ -564,7 +564,7 @@ angular.module('novabill.directives',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.float.test(viewValue)) {
+				if (nRegExp.positiveFiscalFloat.test(viewValue)) {
 					var floatVal = parseFloat(viewValue.replace(',', '.'));
 					if(floatVal >= 0){
 						ctrl.$setValidity('price', true);

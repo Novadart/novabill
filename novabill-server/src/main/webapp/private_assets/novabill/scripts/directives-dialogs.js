@@ -402,10 +402,11 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 					}
 
 					$scope.selectCommodity = function(commodity){
-						$modalInstance.close(
-								commodity, 
-								nCalc.calculatePriceForCommodity(commodity, $scope.priceList.name)
-						);
+						var priceValue = nCalc.calculatePriceForCommodity(commodity, $scope.priceList.name).toString();
+						$modalInstance.close({
+								commodity : commodity, 
+								priceValue : priceValue
+						});
 					};
 
 					$scope.changePriceList = function(){

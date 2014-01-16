@@ -15,7 +15,7 @@ import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.center.DocumentPresenter;
-import com.novadart.novabill.frontend.client.util.DocumentUtils;
+import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
@@ -175,7 +175,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		}
 		td.setItems(invItems);
 		td.setNote(getView().getNote().getText());
-		DocumentUtils.calculateTotals(invItems, td);
+		CalcUtils.calculateTotals(invItems, td);
 		return td;
 	}
 

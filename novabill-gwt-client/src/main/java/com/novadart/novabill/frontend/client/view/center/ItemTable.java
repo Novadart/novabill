@@ -16,7 +16,7 @@ import com.novadart.gwtshared.client.cell.LargeEditTextCell;
 import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
-import com.novadart.novabill.frontend.client.util.DocumentUtils;
+import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
@@ -108,7 +108,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 				if(object.getQuantity() != null){
 					try{
 
-						BigDecimal newQty = DocumentUtils.parseValue(value);
+						BigDecimal newQty = CalcUtils.parseValue(value);
 						object.setQuantity(newQty);
 						ItemTable.this.handler.onUpdate(object);
 
@@ -158,6 +158,44 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		addColumn(unitOfMeasure, shb.toSafeHtml());
 
 
+		//VAT
+		final EditTextCell taxEditCell = new EditTextCell();
+		Column<AccountingDocumentItemDTO, String> tax =
+				new Column<AccountingDocumentItemDTO, String>(taxEditCell) {
+
+			@Override
+			public String getValue(AccountingDocumentItemDTO object) {
+				if(object.getTax() == null){
+					return null;
+				}
+
+				return NumberFormat.getDecimalFormat().format(object.getTax());
+			}
+		};
+		tax.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+
+			@Override
+			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				if(object.getTax() != null){
+					try{
+
+						BigDecimal newTax = CalcUtils.parseValue(value);
+						object.setTax(newTax);
+						ItemTable.this.handler.onUpdate(object);
+
+					} catch(NumberFormatException e){
+
+						Notification.showMessage(I18N.INSTANCE.errorClientData());
+
+					}
+				}			
+
+				taxEditCell.clearViewData(object);
+				redrawRow(index);
+			}
+		});
+		addColumn(tax, "%"+I18N.INSTANCE.vat());
+
 
 		//price
 		final EditTextCell priceEditCell = new EditTextCell();
@@ -180,7 +218,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 				if(object.getPrice() != null){
 					try{
 
-						BigDecimal newPrice = DocumentUtils.parseCurrency(value);
+						BigDecimal newPrice = CalcUtils.parseCurrency(value);
 						object.setPrice(newPrice);
 						ItemTable.this.handler.onUpdate(object);
 
@@ -220,7 +258,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 						if(value.isEmpty()){
 							object.setDiscount(null);
 						} else {
-							BigDecimal newDiscount = DocumentUtils.parseValue(value);
+							BigDecimal newDiscount = CalcUtils.parseValue(value);
 							object.setDiscount(newDiscount);
 						}
 						ItemTable.this.handler.onUpdate(object);
@@ -238,45 +276,6 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		addColumn(discount, I18N.INSTANCE.discountLabel());
 
 
-		//VAT
-		final EditTextCell taxEditCell = new EditTextCell();
-		Column<AccountingDocumentItemDTO, String> tax =
-				new Column<AccountingDocumentItemDTO, String>(taxEditCell) {
-
-			@Override
-			public String getValue(AccountingDocumentItemDTO object) {
-				if(object.getTax() == null){
-					return null;
-				}
-
-				return NumberFormat.getDecimalFormat().format(object.getTax());
-			}
-		};
-		tax.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
-
-			@Override
-			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				if(object.getTax() != null){
-					try{
-
-						BigDecimal newTax = DocumentUtils.parseValue(value);
-						object.setTax(newTax);
-						ItemTable.this.handler.onUpdate(object);
-
-					} catch(NumberFormatException e){
-
-						Notification.showMessage(I18N.INSTANCE.errorClientData());
-
-					}
-				}			
-
-				taxEditCell.clearViewData(object);
-				redrawRow(index);
-			}
-		});
-		addColumn(tax, "%"+I18N.INSTANCE.vat());
-
-
 		//Total Before Taxes
 		TextColumn<AccountingDocumentItemDTO> totalBeforeTaxes =
 				new TextColumn<AccountingDocumentItemDTO>() {
@@ -287,45 +286,10 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 					return "";
 				}
 
-				BigDecimal totalPrice = DocumentUtils.calculateTotalBeforeTaxesForItem(object);
-				return NumberFormat.getCurrencyFormat().format(totalPrice.doubleValue());
+				return NumberFormat.getCurrencyFormat().format(object.getTotalBeforeTax());
 			}
 		};
 		addColumn(totalBeforeTaxes, I18N.INSTANCE.totalBeforeTaxesForItem());
-
-		//Total Before Taxes
-		TextColumn<AccountingDocumentItemDTO> totalVat =
-				new TextColumn<AccountingDocumentItemDTO>() {
-
-			@Override
-			public String getValue(AccountingDocumentItemDTO object) {
-				if(object.getPrice() == null){
-					return "";
-				}
-
-				BigDecimal totalVat = DocumentUtils.calculateTaxesForItem(object);
-				return NumberFormat.getCurrencyFormat().format(totalVat.doubleValue());
-			}
-		};
-		addColumn(totalVat, I18N.INSTANCE.totalTaxForItem());
-
-
-		//Total Before Taxes
-		TextColumn<AccountingDocumentItemDTO> totalAfterTaxes =
-				new TextColumn<AccountingDocumentItemDTO>() {
-
-			@Override
-			public String getValue(AccountingDocumentItemDTO object) {
-				if(object.getPrice() == null){
-					return "";
-				}
-
-				BigDecimal total = DocumentUtils.calculateTotalAfterTaxesForItem(object); 
-				return NumberFormat.getCurrencyFormat().format(total.doubleValue());
-			}
-		};
-		addColumn(totalAfterTaxes, I18N.INSTANCE.totalAfterTaxesForItem());
-
 
 		//delete button
 		ActionCell.Delegate<AccountingDocumentItemDTO> delegate = new ActionCell.Delegate<AccountingDocumentItemDTO>() {
@@ -355,8 +319,6 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		setColumnWidth(discount, 6, Unit.PCT);
 		setColumnWidth(tax, 6, Unit.PCT);
 		setColumnWidth(totalBeforeTaxes, 8, Unit.PCT);
-		setColumnWidth(totalVat, 8, Unit.PCT);
-		setColumnWidth(totalAfterTaxes, 8, Unit.PCT);
 		setColumnWidth(delete, 10, Unit.PCT);
 
 		setLoadingIndicator(null);

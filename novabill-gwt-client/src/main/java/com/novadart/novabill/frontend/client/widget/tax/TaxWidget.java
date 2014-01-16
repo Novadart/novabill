@@ -19,7 +19,7 @@ import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
-import com.novadart.novabill.frontend.client.util.DocumentUtils;
+import com.novadart.novabill.frontend.client.util.CalcUtils;
 
 public class TaxWidget extends ValidatedWidget<BigDecimal> implements HasEnabled {
 
@@ -96,7 +96,7 @@ public class TaxWidget extends ValidatedWidget<BigDecimal> implements HasEnabled
 	public BigDecimal getValue() {
 		if(body.getWidget().equals(customTax)){
 			try{
-				BigDecimal tax = DocumentUtils.parseValue(customTaxBox.getValue());
+				BigDecimal tax = CalcUtils.parseValue(customTaxBox.getValue());
 				return tax;
 			} catch (NumberFormatException e) {
 				return null;

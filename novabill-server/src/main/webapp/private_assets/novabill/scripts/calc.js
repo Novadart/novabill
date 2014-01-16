@@ -12,28 +12,32 @@ angular.module('novabill.calc', ['novabill.constants'])
 		/**
 		 * Calculates a price given the default price list value and the percentage variation/discount
 		 * 
-		 * @arg priceValue the value price, expressed (float value)
-		 * @arg percentageValue percentage variation (float value)
+		 * @param priceValue the value price, expressed (float value)
+		 * @param percentageValue percentage variation (float value)
+		 * 
+		 * @return the price of the commodity rounded to the second decimal
 		 */
 		calculatePriceWithPercentageVariation : function(priceValue, percentageValue){
 			var value = new BigNumber(priceValue);
 			var percentage = new BigNumber(percentageValue).plus(100).dividedBy(100);
-			return value.times(percentage).toFixed(2);
+			return value.times(percentage).round(2);
 		},
 		
-		
+		/**
+		 * Default prices are already rounded to the 2nd decimal
+		 */
 		calculatePriceForCommodity : function(commodity, priceListName){
 			var COMMODITY_PRICES_HACK = commodity.pricesMap ? commodity.pricesMap.prices : commodity.prices;
 			var price = COMMODITY_PRICES_HACK[priceListName];
 			
 			if(priceListName === nConstants.conf.defaultPriceListName){
-				return price.priceValue;
+				return new BigNumber(price.priceValue);
 			} else {
 				
 				if(price === undefined || !price.id){
 					//if no price for the given price list, return the default price
 					price = COMMODITY_PRICES_HACK[nConstants.conf.defaultPriceListName];
-					return price.priceValue;
+					return new BigNumber(price.priceValue);
 				}
 				
 				switch (price.priceType) {
@@ -43,7 +47,7 @@ angular.module('novabill.calc', ['novabill.constants'])
 
 				default:
 				case nConstants.priceType.FIXED:
-					return price.priceValue;
+					return new BigNumber(price.priceValue);
 				}
 			}
 		},

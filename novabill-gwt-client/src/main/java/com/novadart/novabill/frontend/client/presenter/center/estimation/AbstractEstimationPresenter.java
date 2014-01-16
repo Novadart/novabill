@@ -10,7 +10,7 @@ import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.center.DocumentPresenter;
-import com.novadart.novabill.frontend.client.util.DocumentUtils;
+import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.frontend.client.view.center.estimation.EstimationView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
@@ -84,7 +84,7 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 		es.setNote(getView().getNote().getText());
 		es.setPaymentNote(getView().getPaymentNote().getText());
 		es.setLimitations(getView().getLimitations().getText());
-		DocumentUtils.calculateTotals(invItems, es);
+		CalcUtils.calculateTotals(invItems, es);
 		return es;
 	}
 }

@@ -37,7 +37,7 @@ import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 
 
-@Service
+//@Service
 public class BLMImportService {
 	
 	private String blmDBPath = "/tmp/DATI.mdb";
@@ -87,7 +87,7 @@ public class BLMImportService {
 			paymentType.setBusiness(business);
 			business.getPaymentTypes().add(paymentType);
 		}
-		business.setName("Blm Di Bruseghin Matteo");
+		business.setName("BLM MANUFATTI IN CEMENTO di Bruseghin Matteo");
 		business.setAddress("Via Leonardo da Vinci 39");
 		business.setCity("Campo San Martino");
 		business.setPostcode("35010");

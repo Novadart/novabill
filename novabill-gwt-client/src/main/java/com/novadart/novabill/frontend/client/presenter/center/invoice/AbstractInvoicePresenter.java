@@ -14,7 +14,7 @@ import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.center.DocumentPresenter;
-import com.novadart.novabill.frontend.client.util.DocumentUtils;
+import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
@@ -102,7 +102,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		inv.setPaymentDateGenerator(getView().getPayment().getSelectedPayment().getPaymentDateGenerator());
 		inv.setPaymentDueDate(getView().getPayment().getPaymentDueDate());
 		inv.setPaymentNote(getView().getPaymentNote().getText());
-		DocumentUtils.calculateTotals(invItems, inv);
+		CalcUtils.calculateTotals(invItems, inv);
 		return inv;
 	}
 	

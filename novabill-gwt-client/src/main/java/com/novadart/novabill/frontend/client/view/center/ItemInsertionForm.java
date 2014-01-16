@@ -33,6 +33,7 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
+import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
@@ -99,7 +100,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 					commoditySearchPanel.hide();
 					if(commodity != null){
 						updateItemFromJS(commodity.getSku(), commodity.getDescription(), commodity.getUnitOfMeasure(), 
-								DocumentUtils.calculatePriceForCommodity(commodity, priceList.getName()).toString(), commodity.getTax().toString());
+								CalcUtils.calculatePriceForCommodity(commodity, priceList.getName()).toString(), commodity.getTax().toString());
 					}
 				}
 			} );
@@ -126,7 +127,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			@Override
 			public void onUpdate(AccountingDocumentItemDTO item) {
 				if(!item.isDescriptionOnly()) { 
-					DocumentUtils.updateTotals(item);
+					CalcUtils.updateTotals(item);
 				}
 				ItemInsertionForm.this.handler.onItemListUpdated(getItems());
 			}
@@ -315,13 +316,13 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	native void openSelectCommodityDialog(ItemInsertionForm insForm, String clientId)/*-{
 		var instance = $wnd.GWT_Hook_nSelectCommodityDialog(clientId);
 		instance.result.then(
-			function(commodity, priceValue){
+			function(result){
 					insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::updateItemFromJS(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(
-						commodity.sku,
-						commodity.description,
-						commodity.unitOfMeasure,
-						String(priceValue),
-						String(commodity.tax)
+						result.commodity.sku,
+						result.commodity.description,
+						result.commodity.unitOfMeasure,
+						String(result.priceValue),
+						String(result.commodity.tax)
 					);
 			},
 			function(error){}

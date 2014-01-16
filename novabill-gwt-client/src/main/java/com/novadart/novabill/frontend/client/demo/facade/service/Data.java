@@ -14,7 +14,7 @@ import java.util.TreeSet;
 
 import com.google.gwt.user.client.Random;
 import com.novadart.novabill.frontend.client.SharedComparators;
-import com.novadart.novabill.frontend.client.util.DocumentUtils;
+import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
@@ -426,9 +426,7 @@ class Data {
 		it.setTax(new BigDecimal(21.0));
 		it.setQuantity(new BigDecimal(16.0));
 		it.setUnitOfMeasure("ore");
-		it.setTotalTax(DocumentUtils.calculateTaxesForItem(it));
-		it.setTotalBeforeTax(DocumentUtils.calculateTotalBeforeTaxesForItem(it));
-		it.setTotal(DocumentUtils.calculateTotalAfterTaxesForItem(it));
+		it.setTotalBeforeTax(CalcUtils.calculateTotalBeforeTaxesForItem(it));
 		items.add(it);
 		
 		it = new AccountingDocumentItemDTO();
@@ -438,9 +436,7 @@ class Data {
 		it.setQuantity(new BigDecimal(1.0));
 		it.setTax(new BigDecimal(21.0));
 		it.setUnitOfMeasure("pezzi");
-		it.setTotalTax(DocumentUtils.calculateTaxesForItem(it));
-		it.setTotalBeforeTax(DocumentUtils.calculateTotalBeforeTaxesForItem(it));
-		it.setTotal(DocumentUtils.calculateTotalAfterTaxesForItem(it));
+		it.setTotalBeforeTax(CalcUtils.calculateTotalBeforeTaxesForItem(it));
 		items.add(it);
 		
 		it = new AccountingDocumentItemDTO();
@@ -450,9 +446,7 @@ class Data {
 		it.setQuantity(new BigDecimal(1.0));
 		it.setTax(new BigDecimal(21.0));
 		it.setUnitOfMeasure("pezzi");
-		it.setTotalTax(DocumentUtils.calculateTaxesForItem(it));
-		it.setTotalBeforeTax(DocumentUtils.calculateTotalBeforeTaxesForItem(it));
-		it.setTotal(DocumentUtils.calculateTotalAfterTaxesForItem(it));
+		it.setTotalBeforeTax(CalcUtils.calculateTotalBeforeTaxesForItem(it));
 		items.add(it);
 		
 		i.setItems(items);
@@ -462,10 +456,10 @@ class Data {
 		PaymentTypeDTO payment = PAYMENTS.values().toArray(new PaymentTypeDTO[0])[Random.nextInt(PAYMENTS.values().size())];
 		i.setPaymentDateDelta(payment.getPaymentDateDelta());
 		i.setPaymentDateGenerator(payment.getPaymentDateGenerator());
-		i.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(i.getAccountingDocumentDate(), payment));
+		i.setPaymentDueDate(CalcUtils.calculatePaymentDueDate(i.getAccountingDocumentDate(), payment));
 		i.setPaymentNote(payment.getDefaultPaymentNote());
 		i.setPaymentTypeName(payment.getName());
-		DocumentUtils.calculateTotals(items, i);
+		CalcUtils.calculateTotals(items, i);
 		save(i, InvoiceDTO.class);
 	}
 	

@@ -24,7 +24,7 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
-import com.novadart.novabill.frontend.client.util.DocumentUtils;
+import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
@@ -107,7 +107,7 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 	public void setDocumentCreationDate(Date date){
 		documentCreationDate = date;
 		if(showingSummary){
-			paymentSummary.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(documentCreationDate, selectedPayment));
+			paymentSummary.setPaymentDueDate(CalcUtils.calculatePaymentDueDate(documentCreationDate, selectedPayment));
 		}
 	}
 	
@@ -163,7 +163,7 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 			if(paymentDueDate != null) {
 				paymentSummary.setPaymentDueDate(paymentDueDate);
 			} else {
-				paymentSummary.setPaymentDueDate(DocumentUtils.calculatePaymentDueDate(documentCreationDate, selectedPayment));
+				paymentSummary.setPaymentDueDate(CalcUtils.calculatePaymentDueDate(documentCreationDate, selectedPayment));
 			}
 			break;
 		}
