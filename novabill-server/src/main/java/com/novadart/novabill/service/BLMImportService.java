@@ -272,17 +272,14 @@ public class BLMImportService {
 			paymentType.setBusiness(business);
 			business.getPaymentTypes().add(paymentType);
 		}
-		// TODO fix this data
-		business.setName("Blm Di Bruseghin Matteo");
-		business.setAddress("Via Leonardo da Vinci 39");
-		business.setCity("Campo San Martino");
-		business.setPostcode("35010");
+		business.setName("P.R. Manufatti in Cemento");
+		business.setAddress("Via Levà, 85");
+		business.setCity("Conselve ");
+		business.setPostcode("35026");
 		business.setProvince("PD");
 		business.setDefaultLayoutType(LayoutType.DENSE);
-		business.setVatID("IT03971280284");
-		business.setSsn("BRSMTT75P10B563Z");
+		business.setVatID("IT04254930284");
 		business.setCountry("IT");
-		//up to here
 		business.getPrincipals().add(principal);
 		principal.setBusiness(business);
 		business.persist();
