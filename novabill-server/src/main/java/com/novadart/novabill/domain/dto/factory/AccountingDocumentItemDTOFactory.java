@@ -19,6 +19,8 @@ public class AccountingDocumentItemDTOFactory {
 		itemDTO.setTotalBeforeTax(item.getTotalBeforeTax());
 		itemDTO.setTotalTax(item.getTotalTax());
 		itemDTO.setTotal(item.getTotal());
+		itemDTO.setDiscount(item.getDiscount());
+		itemDTO.setSku(item.getSku());
 		return itemDTO;
 	}
 	
@@ -31,6 +33,8 @@ public class AccountingDocumentItemDTOFactory {
 		accountingDocumentItem.setTotalBeforeTax(accountingDocumentItemDTO.getTotalBeforeTax());
 		accountingDocumentItem.setTotalTax(accountingDocumentItemDTO.getTotalTax());
 		accountingDocumentItem.setTotal(accountingDocumentItemDTO.getTotal());
+		accountingDocumentItem.setDiscount(accountingDocumentItemDTO.getDiscount());
+		accountingDocumentItem.setSku(accountingDocumentItemDTO.getSku());
 	}
 
 }

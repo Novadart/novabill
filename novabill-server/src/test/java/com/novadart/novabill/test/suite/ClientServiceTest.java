@@ -1,16 +1,24 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Resource;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,11 +27,18 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
+import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.OperationType;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -31,8 +46,8 @@ import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.BusinessService;
-import com.novadart.novabill.shared.client.facade.ClientService;
+import com.novadart.novabill.shared.client.facade.BusinessGwtService;
+import com.novadart.novabill.shared.client.facade.ClientGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
 
@@ -43,10 +58,10 @@ import com.novadart.novabill.shared.client.validation.Field;
 public class ClientServiceTest extends GWTServiceTest {
 	
 	@Autowired
-	private ClientService clientService;
+	private ClientGwtService clientService;
 	
 	@Autowired
-	private BusinessService businessService;
+	private BusinessGwtService businessService;
 	
 	@Resource(name = "testProps")
 	private HashMap<String, String> testProps;
@@ -99,11 +114,18 @@ public class ClientServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void removeAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException{
+	public void removeAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, JsonParseException, JsonMappingException, IOException{
 		Long clientID = new Long(testProps.get("clientWithoutInvoicesID"));
+		String name = Client.findClient(clientID).getName();
 		clientService.remove(authenticatedPrincipal.getBusiness().getId(), clientID);
 		Client.entityManager().flush();
 		assertNull(Client.findClient(clientID));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.CLIENT, rec.getEntityType());
+		assertEquals(clientID, rec.getEntityID());
+		assertEquals(OperationType.DELETE, rec.getOperationType());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(name, details.get(DBLoggerAspect.CLIENT_NAME));
 	}
 	
 	@Test(expected = DataIntegrityException.class)
@@ -161,14 +183,21 @@ public class ClientServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void addAuthenticatedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+	public void addAuthenticatedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, JsonParseException, JsonMappingException, IOException{
 		Client expectedClient = TestUtils.createClient();
 		expectedClient.setBusiness(authenticatedPrincipal.getBusiness());
 		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(expectedClient));
 		expectedClient.setId(clientID);
 		Client.entityManager().flush();
 		Client actualClient = Client.findClient(clientID);
-		assertTrue(EqualsBuilder.reflectionEquals(expectedClient, actualClient, "contact", "invoices", "estimations", "creditNotes", "transportDocuments", "business", "version"));
+		assertTrue(EqualsBuilder.reflectionEquals(expectedClient, actualClient, "contact", "invoices", "estimations", "creditNotes", "transportDocuments", "business", "version", "defaultPriceList"));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.CLIENT, rec.getEntityType());
+		assertEquals(clientID, rec.getEntityID());
+		assertEquals(OperationType.CREATE, rec.getOperationType());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(actualClient.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(PriceListConstants.DEFAULT, actualClient.getDefaultPriceList().getName());
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -201,7 +230,7 @@ public class ClientServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void updateAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
+	public void updateAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
 		Client expectedClient = Client.findClient(clientID);
 		expectedClient.setName("Temporary name for this company");
@@ -209,6 +238,12 @@ public class ClientServiceTest extends GWTServiceTest {
 		Client.entityManager().flush();
 		Client actualClient = Client.findClient(clientID);
 		assertEquals(actualClient.getName(), "Temporary name for this company");
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.CLIENT, rec.getEntityType());
+		assertEquals(clientID, rec.getEntityID());
+		assertEquals(OperationType.UPDATE, rec.getOperationType());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(expectedClient.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -295,6 +330,36 @@ public class ClientServiceTest extends GWTServiceTest {
 		clientDTO.setDefaultPaymentTypeID(paymentType.getId());
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
 		assertEquals(paymentType, client.getDefaultPaymentType());
+	}
+	
+	
+	@Test
+	public void updateAuthorizedDefaultPriceListNotNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		PriceList priceList1 = TestUtils.createPriceList();
+		client.setDefaultPriceList(priceList1);
+		priceList1.getClients().add(client);
+		priceList1.persist();
+		PriceList.entityManager().flush();
+		PriceList priceList2 = TestUtils.createPriceList();
+		priceList2.persist();
+		PriceList.entityManager().flush();
+		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		clientDTO.setDefaultPriceListID(priceList2.getId());
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertEquals(priceList2, client.getDefaultPriceList());
+	}
+	
+	@Test
+	public void updateAuthorizedDefaultPriceListNullNotNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		PriceList priceList = TestUtils.createPriceList();
+		priceList.persist();
+		PriceList.entityManager().flush();
+		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		clientDTO.setDefaultPriceListID(priceList.getId());
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
+		assertEquals(priceList, client.getDefaultPriceList());
 	}
 	
 }

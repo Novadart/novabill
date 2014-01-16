@@ -5,11 +5,11 @@ import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public class TransportDocumentDTOFactory extends AccountingDocumentDTOFactory {
 	
-	public static TransportDocumentDTO toDTO(TransportDocument transportDocument) {
+	public static TransportDocumentDTO toDTO(TransportDocument transportDocument, boolean copyItems) {
 		if(transportDocument == null)
 			return null;
 		TransportDocumentDTO transportDocumentDTO = new TransportDocumentDTO();
-		AccountingDocumentDTOFactory.copyToDTO(transportDocument, transportDocumentDTO);
+		AccountingDocumentDTOFactory.copyToDTO(transportDocument, transportDocumentDTO, copyItems);
 		transportDocumentDTO.setBusiness(BusinessDTOFactory.toDTO(transportDocument.getBusiness()));
 		transportDocumentDTO.setClient(ClientDTOFactory.toDTO(transportDocument.getClient()));
 		transportDocumentDTO.setNumberOfPackages(transportDocument.getNumberOfPackages());

@@ -1,0 +1,62 @@
+<div class="container-fluid price-list-detail">
+
+	<div class="row">
+		<div class="col-md-12">
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<ul class="breadcrumb">
+				<li><i class="fa fa-home"></i> <a href="../">Home</a></li>
+				<li><a href=".">{{'PRICE_LISTS' | translate}}</a><i class="icon-angle-right"></i></li>
+				<li><span>{{priceList.name | nFilterDefault}}</span></li>
+			</ul>
+
+			<div class="jumbotron">
+				<h2>{{priceList.name | nFilterDefault}}</h2>
+			</div>
+
+			<div ng-if="DEFAULT_PRICELIST_NAME!==priceList.name" style="height: 28px;" class="col-md-2 col-md-offset-10">
+				<div class="pull-right">
+					<a href="javascript: void(0)" ng-disabled="priceList == null" ng-click="editPriceList()" class="btn btn-sm blue">
+						<i class="fa fa-edit"></i>{{'EDIT' | translate}}
+					</a> <a href="javascript: void(0)" ng-disabled="priceList == null" ng-click="removePriceList()" class="btn btn-sm red">
+						<i class="fa fa-trash-o"></i> {{'DELETE' | translate}}
+					</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="commodity-filter input-icon left">
+				<i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
+					placeholder="{{'FILTER' | translate}}..." ng-model="query">
+			</div>
+
+			<div class="table-responsive" infinite-scroll="loadMoreCommodities()">
+			    <img class="spinner" ng-show="commodities==null" style="margin: 0 auto; display: block;" src="../../private_assets/img/ajax-loading.gif">
+				<table class="table">
+					<tbody>
+						<tr class="price-row" ng-class="{product: !com.service, service: com.service}" ng-repeat="com in commodities">
+							<td width="10%"><strong>{{com.sku}}</strong></td>
+							<td width="50%">{{com.description}}</td>
+							<td width="40%" style="text-align: right;">
+							      <n-commodity-price 
+							         price-list-name="priceList.name" 
+							         commodity="com"></n-commodity-price>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+	</div>
+	
+    <n-removal-dialog></n-removal-dialog>
+
+</div>

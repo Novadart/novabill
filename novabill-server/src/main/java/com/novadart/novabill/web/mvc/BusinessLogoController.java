@@ -42,7 +42,7 @@ import com.novadart.utils.image.UnsupportedImageFormatException;
 public class BusinessLogoController {
 	
 	public static final int LOGO_SIZE_LIMIT = 1024 * 1024; // 1MB
-	public static final LogoFormat DEFAULT_FORMAT = LogoFormat.JPEG;
+	public static final LogoFormat DEFAULT_FORMAT = LogoFormat.PNG;
 	public static final String TOKEN_REQUEST_PARAM = "token";
 	public static final String TOKENS_SESSION_FIELD = "business.logo.tokens";
 	
@@ -77,7 +77,7 @@ public class BusinessLogoController {
 	
 	@Autowired
 	public void setServletContext(ServletContext servletContext){
-		noLogoImage = new ServletContextResource(servletContext, "/images/no_logo.gif");
+		noLogoImage = new ServletContextResource(servletContext, "/frontend_assets/img/no_logo.gif");
 	}
 	
 	@ExceptionHandler(Exception.class)

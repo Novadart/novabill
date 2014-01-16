@@ -4,13 +4,20 @@
 	xmlns:jee="http://www.springframework.org/schema/jee" xmlns:tx="http://www.springframework.org/schema/tx"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xmlns:task="http://www.springframework.org/schema/task"
+	xmlns:cache="http://www.springframework.org/schema/cache"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xmlns:p="http://www.springframework.org/schema/p"
 	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-3.2.xsd         
 	http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd         
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd         
 	http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-3.2.xsd         
 	http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-3.2.xsd
 	http://www.springframework.org/schema/task
-	http://www.springframework.org/schema/task/spring-task-3.2.xsd">
+	http://www.springframework.org/schema/task/spring-task-3.2.xsd
+	http://www.springframework.org/schema/cache
+	http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
+	http://www.springframework.org/schema/security
+	http://www.springframework.org/schema/security/spring-security-3.1.xsd">
 
 	<context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
 
@@ -28,12 +35,25 @@
 		<property name="entityManagerFactory" ref="entityManagerFactory" />
 	</bean>
 	<tx:annotation-driven mode="aspectj"
-		transaction-manager="transactionManager" />
+		transaction-manager="transactionManager" order="3"/>
 	<bean
 		class="org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean"
 		id="entityManagerFactory">
 		<property name="persistenceUnitName" value="persistenceUnit" />
 		<property name="dataSource" ref="dataSource" />
+	</bean>
+
+	<security:global-method-security pre-post-annotations="enabled" order="1"/>
+		
+	<cache:annotation-driven cache-manager="cacheManager" mode="proxy" order="2" />
+	
+	<bean id="cacheManager" class="org.springframework.cache.ehcache.EhCacheCacheManager">
+		<property name="cacheManager" ref="ehcache" />
+	</bean>
+
+	<!-- Ehcache library setup -->
+	<bean id="ehcache" class="org.springframework.cache.ehcache.EhCacheManagerFactoryBean" p:shared="true">
+		<property name="configLocation" value="classpath:ehcache.xml" />
 	</bean>
 
 	<bean id="validator"
@@ -109,7 +129,7 @@
 		factory-method="aspectOf">
 		<property name="sendEmail" value="${notification.accountUpgrade}" />
 		<property name="emailAddresses">
-			<list>
+				<list>
 				<value>giordano.battilana@novadart.com</value>
 				<value>risto.gligorov@novadart.com</value>
 			</list>
@@ -164,9 +184,25 @@
 		factory-method="aspectOf">
 	</bean>
 	
+	<bean class="com.novadart.novabill.aspect.logging.CommodityServiceActionsAspect"
+		factory-method="aspectOf">
+	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.logging.PaymentTypeServiceActionsAspect"
+		factory-method="aspectOf">
+	</bean>
+	
+	<bean class="com.novadart.novabill.aspect.logging.PriceListServiceActionsAspect"
+		factory-method="aspectOf">
+	</bean>
+	
 	<bean class="com.novadart.novabill.aspect.CachingAspect"
 		factory-method="aspectOf">
 		<property name="ehcacheDiskStore" value="${ehcache.diskStore}"/>
+	</bean>
+	
+	<bean id="businessServiceImpl" class="com.novadart.novabill.service.web.BusinessServiceImpl">
+		<lookup-method name="self" bean="businessServiceImpl"/>
 	</bean>
 	
 	<beans profile="dev">
@@ -189,5 +225,5 @@
 	<beans profile="production">
 		<jee:jndi-lookup id="dataSource" jndi-name="jdbc/novabill"/>
 	</beans>
-
+	
 </beans>

@@ -1,0 +1,54 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<h3 class="page-title">{{'CLIENTS' | translate}}</h3>
+			<ul class="breadcrumb">
+				<li><i class="fa fa-home"></i> <a href="../">Home</a></li>
+				<li><span>{{'CLIENTS' | translate}}</span></li>
+			</ul>
+			<!-- END PAGE TITLE & BREADCRUMB-->
+
+			<button type="button" class="btn green new-client" ng-click="newClientClick()">{{'NEW_CLIENT' | translate}}</button>
+
+			<div>
+				<ul class="pagination pagination-lg">
+					<li ng-repeat="(letter, index) in letters"><a ng-click="scrollTo(letter, index)">{{letter}}</a></li>
+				</ul>
+			</div>
+
+			<div class="clients-filter input-icon left">
+				<div class="input-icon">
+					<i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
+						placeholder="{{'FILTER' | translate}}..." ng-model="query">
+				</div>
+			</div>
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row">
+		<div class="col-md-12" infinite-scroll="loadMoreClients()">
+
+			<img class="spinner" ng-show="!partitions" src="../../private_assets/img/ajax-loading.gif">
+
+			<div class="partition" ng-repeat="pt in partitions">
+				<span id="{{pt.letter}}"></span>
+				<div class="letter">
+					<h4>
+						<strong ng-cloak>{{pt.letter}}</strong>
+					</h4>
+				</div>
+				<div class="clients">
+					<div class="client" ng-repeat="cl in pt.clients" ng-click="clientClick(cl)">
+						<h3 ng-cloak>{{cl.name}}</h3>
+						<span class="address">{{address(cl)}}</span>
+					</div>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+</div>

@@ -1,0 +1,165 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.novadart.novabill.frontend.client.view.center"
+	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget" xmlns:t="urn:import:com.novadart.novabill.frontend.client.widget.tax" xmlns:n="urn:import:com.novadart.novabill.frontend.client.widget.notification">
+
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
+		field="i18n"></ui:with>
+
+	<ui:style field="s">
+		.itemTableScroller {
+			max-height: 600px;
+			border: 0.1em solid #EEE;
+		}
+		
+		.itemTable {
+			margin: 0 auto;
+		}
+		
+		.newItemContainer {
+			margin-top: 4em;
+			background-color: #EEE;
+			padding: 1em;
+			border: 0.1em solid #CCC;
+		}
+		
+		.textOnlyCheckbox {
+			margin-top: 0.5em;
+			cursor: pointer;
+		}
+		
+		.textOnlyCheckbox label {
+			margin-left: 0.5em;
+			cursor: pointer;
+		}
+		
+		.textOnlyCheckbox label:HOVER {
+			text-decoration: underline;
+		}
+		
+		.smallLabel {
+			font-weight: bold;
+			padding: 0.4em 0 0.4em 0;
+		}
+		
+		.tax {
+			position: relative;
+			top: -0.2em;
+		}
+		
+		.discount {
+            width: 4em;
+        }
+		
+		.sku {
+	       border: 1px solid;
+			padding: 2px;
+			min-width: 4em;
+			background-color: #FFF;
+			color: gray;
+			height: 24px;
+			text-align: center;
+			max-width: 10em;
+			overflow: hidden;
+        }
+		
+		.item {
+			width: 25em;
+			min-height: 5em;
+		}
+		
+		.quantity {
+			width: 4em;
+		}
+		
+		.unitOfMeasure {
+			width: 6em;
+		}
+		
+		.price {
+			width: 6em;
+		}
+		
+		.quantityContainer,.unitOfMeasureContainer,.priceContainer,.taxContainer,.discountContainer, .itemContainer
+			{
+			margin-left: 1em;
+		}
+		
+		.addButtonContainer {
+			padding: 1.92em 0 0 0.5em;
+		}
+		
+		.totalContainer.totalTax,.totalContainer.totalAfterTaxes {
+			margin-left: 4em;
+		}
+		
+		.decimalSeparatorInfo {
+			margin-top: 1em;
+		}
+		
+		.tip {
+			width: 50em;
+		}
+		
+		.loadCommodity {
+			margin-left: 10px;
+            margin-top: 5px;
+		}
+		
+	</ui:style>
+	
+	<ui:style field="nf" type="com.novadart.novabill.frontend.client.view.center.ItemInsertionForm.NotificationCss">
+		.notification {
+			line-height: 2em;
+		}
+	</ui:style>
+
+	<g:FlowPanel>
+		<n:InlineNotification ui:field="notification" />
+		
+		<g:ScrollPanel ui:field="itemTableScroller" styleName="{s.itemTableScroller}">
+			<c:ItemTable ui:field="itemTable" styleName="{s.itemTable}"></c:ItemTable>
+		</g:ScrollPanel>
+
+		<g:FlowPanel styleName="{s.newItemContainer}"
+			ui:field="newItemContainer">
+			<g:CheckBox ui:field="textOnlyAccountingItem" styleName="{s.textOnlyCheckbox}" text="{i18n.textOnlyAccountingItem}" />
+			<g:HorizontalPanel>
+			    <g:VerticalPanel ui:field="skuContainer">
+                    <g:Label styleName="{s.smallLabel}" text="{i18n.sku}"></g:Label>
+                    <g:Label ui:field="sku" styleName="{s.sku}" />
+                </g:VerticalPanel>
+				<g:VerticalPanel styleName="{s.itemContainer}">
+					<g:Label styleName="{s.smallLabel}" text="{i18n.nameDescription}"></g:Label>
+					<v:ValidatedTextArea ui:field="item" styleName="{s.item}" />
+				</g:VerticalPanel>
+				<g:VerticalPanel ui:field="quantityContainer" styleName="{s.quantityContainer}">
+					<g:Label styleName="{s.smallLabel}" text="{i18n.quantity}*"></g:Label>
+					<g:TextBox ui:field="quantity" styleName="{s.quantity}"></g:TextBox>
+				</g:VerticalPanel>
+				<g:VerticalPanel ui:field="unitOfMeasureContainer" styleName="{s.unitOfMeasureContainer}">
+					<g:Label styleName="{s.smallLabel}" text="{i18n.unityOfMeasure}"></g:Label>
+					<g:TextBox ui:field="unitOfMeasure" styleName="{s.unitOfMeasure}"
+						maxLength="255"></g:TextBox>
+				</g:VerticalPanel>
+				<g:VerticalPanel ui:field="priceContainer" styleName="{s.priceContainer}">
+					<g:Label styleName="{s.smallLabel}" text="{i18n.price}*"></g:Label>
+					<g:TextBox ui:field="price" styleName="{s.price}"></g:TextBox>
+				</g:VerticalPanel>
+                <g:VerticalPanel ui:field="discountContainer" styleName="{s.discountContainer}">
+                    <g:Label styleName="{s.smallLabel}" text="{i18n.discountLabel}"></g:Label>
+                    <g:TextBox styleName="{s.discount}" ui:field="discount" />
+                </g:VerticalPanel>
+				<g:VerticalPanel ui:field="taxContainer" styleName="{s.taxContainer}">
+					<g:Label styleName="{s.smallLabel}" text="{i18n.vat}"></g:Label>
+					<t:TaxWidget styleName="{s.tax}" ui:field="tax" />
+				</g:VerticalPanel>
+				<g:SimplePanel styleName="{s.addButtonContainer}">
+					<g:Button styleName="btn btn-sm green" ui:field="add" text="{i18n.add}"></g:Button>
+				</g:SimplePanel>
+			</g:HorizontalPanel>
+			
+			<g:Label styleName="{s.decimalSeparatorInfo}" text="*{i18n.decimalSeparatorInfo}" />
+		</g:FlowPanel>
+	</g:FlowPanel>
+</ui:UiBinder> 

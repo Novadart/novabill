@@ -23,6 +23,7 @@ public class BusinessDTOFactory {
 		businessDTO.setWeb(business.getWeb());
 		businessDTO.setVatID(business.getVatID());
 		businessDTO.setSsn(business.getSsn());
+		businessDTO.setDefaultLayoutType(business.getDefaultLayoutType());
 		return businessDTO;
 	}
 	
@@ -42,6 +43,7 @@ public class BusinessDTOFactory {
 		business.setWeb(businessDTO.getWeb());
 		business.setVatID(businessDTO.getVatID());
 		business.setSsn(businessDTO.getSsn());
+		business.setDefaultLayoutType(businessDTO.getDefaultLayoutType());
 	}
 
 }

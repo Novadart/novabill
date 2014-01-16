@@ -1,0 +1,131 @@
+<div class="container-fluid">
+	<!-- BEGIN PAGE HEADER-->
+            <div class="row">
+                <div class="col-md-12">
+                    <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
+                    <h3 class="page-title">
+                        Dashboard  <small>{{'STATISTICS_AND_MORE' | translate}}</small>
+                    </h3>
+                    <ul class="breadcrumb">
+                        <li>
+                            <i class="fa fa-home"></i>
+                            <a href=".">Home</a> 
+                        </li>
+                        <li>Dashboard</li>
+                    </ul>
+                    <!-- END PAGE TITLE & BREADCRUMB-->
+                </div>
+            </div>
+            <!-- END PAGE HEADER-->
+            <!-- BEGIN DASHBOARD STATS -->
+            <div class="row">
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat blue">
+                        <div class="visual">
+                            <i class="fa fa-user"></i>
+                        </div>
+                        <div class="details">
+                            <div class="number">
+                                {{stats.clientsCount}}
+                            </div>
+                            <div class="desc">                           
+                                {{'CLIENTS' | translate}}
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat green">
+                        <div class="visual">
+                            <i class="fa fa-file"></i>
+                        </div>
+                        <div class="details">
+                            <div class="number">{{stats.invoicesCountForYear}}</div>
+                            <div class="desc">{{'INVOICES' | translate}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat purple">
+                        <div class="visual">
+                            <i class="fa fa-th"></i>
+                        </div>
+                        <div class="details">
+                            <div class="number">{{stats.commoditiesCount}}</div>
+                            <div class="desc">{{'COMMODITIES' | translate}}</div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
+                    <div class="dashboard-stat yellow" ng-mouseenter="mouseOverTotal=true" ng-mouseleave="mouseOverTotal=false">
+                        <div class="visual" ng-click="mouseOverTotal=!mouseOverTotal" >
+                            <i class="fa fa-bar-chart-o"></i>
+                        </div>
+                        <div class="details" >
+                            <img ng-show="!mouseOverTotal" class="hand" src="../private_assets/img/hand.png">
+                            <div ng-show="mouseOverTotal" class="number">
+                                <span ng-show="!plusTax">{{stats.totalBeforeTaxesForYear | currency}}</span>
+                                <span ng-show="plusTax">{{stats.totalAfterTaxesForYear | currency}}</span>
+                                <label style=""><input type="checkbox" ng-model="plusTax"> + {{'TAX' | translate}}</label>
+                            </div>
+                            <div class="desc">{{'TOTAL_BEFORE_TAXES' | translate}}</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <!-- END DASHBOARD STATS -->
+            <div class="clearfix"></div>
+            <div class="row">
+                <div class="col-md-6 col-sm-6">
+                    <!-- BEGIN PORTLET-->
+                    <div class="portlet solid bordered light-grey">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="fa fa-bar-chart-o"></i>{{'INVOICES_PER_MONTH' | translate}}</div>
+                        </div>
+                        <div class="portlet-body">
+                            <div id="site_statistics_loading">
+                                <img src="../private_assets/img/loading.gif" alt="loading"/>
+                            </div>
+                            <div id="site_statistics_content" class="display-none">
+                                <div id="site_statistics" class="chart"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <!-- END PORTLET-->
+                </div>
+                <div class="col-md-6 col-sm-6">
+                    <div class="portlet box blue">
+                        <div class="portlet-title">
+                            <div class="caption"><i class="fa fa-bell-o"></i>{{'RECENT_ACTIVITIES' | translate}}</div>
+                            <!-- <div class="actions">
+                                <div class="btn-group">
+                                    <a class="btn btn-sm default" href="#" data-toggle="dropdown" data-hover="dropdown" data-close-others="true">
+                                    Filter By
+                                    <i class="fa fa-angle-down"></i>
+                                    </a>
+                                    <div class="dropdown-menu hold-on-click dropdown-checkboxes pull-right">
+                                        <label><input type="checkbox" /> Finance</label>
+                                        <label><input type="checkbox" checked="" /> Membership</label>
+                                        <label><input type="checkbox" /> Customer Support</label>
+                                        <label><input type="checkbox" checked="" /> HR</label>
+                                        <label><input type="checkbox" /> System</label>
+                                    </div>
+                                </div>
+                            </div> -->
+                        </div>
+                        <div class="portlet-body">
+                            <div class="scroller" style="height: 300px;" data-always-visible="1" data-rail-visible="0">
+                                <ul class="feeds">
+                                    <n-log-record record="lr" ng-repeat="lr in stats.logRecords.logRecords"></n-log-record>
+                                </ul>
+                            </div>
+                            <!-- <div class="scroller-footer">
+                                <div class="pull-right">
+                                    <a href="#">See All Records <i class="m-icon-swapright m-icon-gray"></i></a> &nbsp;
+                                </div>
+                            </div> -->
+                        </div>
+                    </div>
+                </div>
+        </div>
+</div>

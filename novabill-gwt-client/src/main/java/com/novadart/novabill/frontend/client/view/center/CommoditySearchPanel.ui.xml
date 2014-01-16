@@ -1,0 +1,49 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:c="urn:import:com.google.gwt.user.cellview.client">
+
+	<ui:style
+		type="com.novadart.novabill.frontend.client.view.center.CommoditySearchPanel.Style">
+		.panel {
+			background-color: white;
+			height: 300px;
+			max-width: 40em;
+			min-width: 25em;
+			border: 1px solid;
+		}
+		
+		.line {
+			padding: 2px;
+			border-bottom: 1px solid #DDD;
+		}
+		
+		.line:HOVER {
+			background-color: #333;
+			color: #FFF;
+		}
+		
+		.advancedSearch {
+			margin: 1px auto;
+			display: block;
+		}
+		
+		.topPanel {
+			height: 22px;
+		}
+		
+		.bottomPanel {
+			height: 278px;
+		}
+		</ui:style>
+
+	<g:FlowPanel styleName="{style.panel}">
+		<g:SimplePanel styleName="{style.topPanel}">
+			<g:Button ui:field="advancedSearch" styleName="{style.advancedSearch} btn dark btn-xs"
+				text="Ricerca Avanzata..."></g:Button>
+		</g:SimplePanel>
+		<g:ScrollPanel styleName="{style.bottomPanel}">
+			<c:CellList ui:field="commodities"></c:CellList>
+		</g:ScrollPanel>
+	</g:FlowPanel>
+
+</ui:UiBinder> 

@@ -11,6 +11,7 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.TimeUnit;
+
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -24,9 +25,8 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Transient;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
+
 import org.apache.commons.lang.StringUtils;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.lucene.analysis.Analyzer;
 import org.apache.lucene.analysis.TokenStream;
 import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
@@ -40,6 +40,7 @@ import org.apache.lucene.search.Query;
 import org.apache.lucene.search.TermQuery;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.search.annotations.Field;
 import org.hibernate.search.bridge.builtin.LongBridge;
 import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
@@ -50,6 +51,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
@@ -125,10 +127,14 @@ public class Business implements Serializable, Taxable {
     @Trimmed
     private String ssn;
 
-    private Long nonFreeAccountExpirationTime; 
+    private Long nonFreeAccountExpirationTime;
+
+    @NotNull
+    @Column(columnDefinition = "integer default 0")
+    private LayoutType defaultLayoutType;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Item> items = new HashSet<Item>();
+    private Set<Commodity> commodities = new HashSet<Commodity>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<BankAccount> accounts = new HashSet<BankAccount>();
@@ -153,6 +159,9 @@ public class Business implements Serializable, Taxable {
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<PaymentType> paymentTypes = new HashSet<PaymentType>();
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+    private Set<PriceList> priceLists = new HashSet<PriceList>();
     
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
@@ -199,29 +208,53 @@ public class Business implements Serializable, Taxable {
     	return getNextAccountingDocDocumentID(TransportDocument.class);
     }
     
-    private <T extends AccountingDocument> List<T> fetchAccountingDocsEagerly(Class<T> cls){
-    	String query = String.format("select doc from %s doc join fetch doc.accountingDocumentItems where doc.business.id = :id", cls.getSimpleName());
-    	return entityManager.createQuery(query, cls).setParameter("id", getId()).getResultList();
+    private <T extends AccountingDocument> List<T> fetchAccountingDocsEagerly(Class<T> cls, Integer year){
+    	String query = String.format("select doc from %s doc join fetch doc.accountingDocumentItems " +
+    			"where doc.business.id = :id and doc.accountingDocumentYear = :year", cls.getSimpleName());
+    	return entityManager.createQuery(query, cls).
+    			setParameter("id", getId()).
+    			setParameter("year", year).getResultList();
     }
     
-    public List<Invoice> fetchInvoicesEagerly(){
-    	return fetchAccountingDocsEagerly(Invoice.class);
+    public List<Invoice> fetchInvoicesEagerly(Integer year){
+    	return fetchAccountingDocsEagerly(Invoice.class, year);
     }
     
-    public List<CreditNote> fetchCreditNotesEagerly(){
-    	return fetchAccountingDocsEagerly(CreditNote.class);
+    public List<CreditNote> fetchCreditNotesEagerly(Integer year){
+    	return fetchAccountingDocsEagerly(CreditNote.class, year);
     }
     
-    public List<Estimation> fetchEstimationsEagerly(){
-    	return fetchAccountingDocsEagerly(Estimation.class);
+    public List<Estimation> fetchEstimationsEagerly(Integer year){
+    	return fetchAccountingDocsEagerly(Estimation.class, year);
     }
     
-    public List<TransportDocument> fetchTransportDocumentsEagerly(){
-    	return fetchAccountingDocsEagerly(TransportDocument.class);
+    public List<TransportDocument> fetchTransportDocumentsEagerly(Integer year){
+    	return fetchAccountingDocsEagerly(TransportDocument.class, year);
     }
     
     public List<Long> getCurrentYearInvoicesDocumentIDs(){
     	return getCurrentYearDocumentsIDs(Invoice.class);
+    }
+    
+    private <T extends AccountingDocument> List<Integer> getAccountingDocsYears(Class<T> cls){
+    	String query = String.format("select distinct doc.accountingDocumentYear from %s doc where doc.business.id = :id order by doc.accountingDocumentYear ", cls.getSimpleName());
+    	return entityManager.createQuery(query, Integer.class).setParameter("id", getId()).getResultList();
+    }
+    
+    public List<Integer> getInvoiceYears(){
+    	return getAccountingDocsYears(Invoice.class);
+    }
+    
+    public List<Integer> getCreditNoteYears(){
+    	return getAccountingDocsYears(CreditNote.class);
+    }
+    
+    public List<Integer> getEstimationYears(){
+    	return getAccountingDocsYears(Estimation.class);
+    }
+    
+    public List<Integer> getTransportDocumentYears(){
+    	return getAccountingDocsYears(TransportDocument.class);
     }
     
     public <T extends AccountingDocument> List<Long> getCurrentYearDocumentsIDs(Class<T> cls){
@@ -281,30 +314,51 @@ public class Business implements Serializable, Taxable {
 		}
 	};
     
-    @SuppressWarnings("unchecked")
-	private PageDTO<Client> searchClients(String query, int start, int length, ClientQueryPreparator queryPreparator) throws ParseException, IOException{
-    	FullTextEntityManager ftEntityManager = Search.getFullTextEntityManager(entityManager);
-    	Analyzer analyzer = ftEntityManager.getSearchFactory().getAnalyzer(FTSNamespace.DEFAULT_CLIENT_ANALYZER);
-    	List<String> queryTokens = new ArrayList<String>();
+	private List<String> chunkQuery(String query, Analyzer analyzer) throws IOException{
+		List<String> queryTokens = new ArrayList<String>();
     	TokenStream tokenStream = analyzer.tokenStream(null, new StringReader(query));
     	while(tokenStream.incrementToken())
     		queryTokens.add(tokenStream.getAttribute(CharTermAttribute.class).toString());
+    	return queryTokens;
+	}
+	
+	@SuppressWarnings("unchecked")
+	private <T> PageDTO<T> preparePageDTO(int start, int length, FullTextQuery ftQuery, Class<T> cls) {
+		PageDTO<T> pageDTO = new PageDTO<T>(null, start, length, null);
+    	pageDTO.setTotal(new Long(ftQuery.getResultSize()));
+    	pageDTO.setItems(ftQuery.setFirstResult(start).setMaxResults(length).getResultList());
+		return pageDTO;
+	}
+	
+	private PageDTO<Client> searchClients(String query, int start, int length, ClientQueryPreparator queryPreparator) throws ParseException, IOException{
+    	FullTextEntityManager ftEntityManager = Search.getFullTextEntityManager(entityManager);
+    	List<String> queryTokens = chunkQuery(query, ftEntityManager.getSearchFactory().getAnalyzer(FTSNamespace.DEFAULT_CLIENT_ANALYZER));
     	FullTextQuery ftQuery = ftEntityManager.createFullTextQuery(queryPreparator.prepareQuery(queryTokens), Client.class);
     	ftQuery.enableFullTextFilter(FTSNamespace.CLIENT_BY_BUSINESS_ID_FILTER)
     		.setParameter(TermValueFilterFactory.FIELD_NAME, StringUtils.join(new Object[]{FTSNamespace.BUSINESS, FTSNamespace.ID}, "."))
     		.setParameter(TermValueFilterFactory.FIELD_VALUE, new LongBridge().objectToString(getId()));
-    	PageDTO<Client> pageDTO = new PageDTO<Client>(null, start, length, null);
-    	pageDTO.setTotal(new Long(ftQuery.getResultSize()));
-    	pageDTO.setItems(ftQuery.setFirstResult(start).setMaxResults(length).getResultList());
-    	return pageDTO;
+    	return preparePageDTO(start, length, ftQuery, Client.class);
     }
-    
+
     public PageDTO<Client> fuzzyClientSearch(String query, int start, int length)  throws ParseException, IOException{
     	return searchClients(query, start, length, fuzzyQueryPreparator);
     }
     
     public PageDTO<Client> prefixClientSearch(String query, int start, int length)  throws ParseException, IOException{
     	return searchClients(query, start, length, prefixQueryPreparator);
+    }
+    
+    public PageDTO<Commodity> prefixCommoditiesSearch(String query, int start, int length) throws IOException{
+    	FullTextEntityManager ftEntityManager = Search.getFullTextEntityManager(entityManager);
+    	List<String> queryTokens = chunkQuery(query, ftEntityManager.getSearchFactory().getAnalyzer(FTSNamespace.DEFAULT_COMMODITY_ANALYZER));
+    	BooleanQuery luceneQuery = new BooleanQuery();
+    	for(String queryToken: queryTokens)
+    		luceneQuery.add(new PrefixQuery(new Term(FTSNamespace.NAME, queryToken)), Occur.SHOULD);
+    	FullTextQuery ftQuery = ftEntityManager.createFullTextQuery(luceneQuery, Commodity.class); 
+    	ftQuery.enableFullTextFilter(FTSNamespace.COMMODITY_BY_BUSINESS_ID_FILTER)
+			.setParameter(TermValueFilterFactory.FIELD_NAME, StringUtils.join(new Object[]{FTSNamespace.BUSINESS, FTSNamespace.ID}, "."))
+			.setParameter(TermValueFilterFactory.FIELD_VALUE, new LongBridge().objectToString(getId()));
+    	return preparePageDTO(start, length, ftQuery, Commodity.class);
     }
     
     private <T extends AccountingDocument> List<T> getAccountingDocumentForYear(Iterator<T> iter, int year){
@@ -461,12 +515,20 @@ public class Business implements Serializable, Taxable {
 		this.nonFreeAccountExpirationTime = nonFreeAccountExpirationTime;
 	}
 
-	public Set<Item> getItems() {
-        return this.items;
+	public LayoutType getDefaultLayoutType() {
+		return defaultLayoutType;
+	}
+
+	public void setDefaultLayoutType(LayoutType defaultLayoutType) {
+		this.defaultLayoutType = defaultLayoutType;
+	}
+
+	public Set<Commodity> getCommodities() {
+        return this.commodities;
     }
     
-    public void setItems(Set<Item> items) {
-        this.items = items;
+    public void setCommodities(Set<Commodity> commodities) {
+        this.commodities = commodities;
     }
     
     public Set<BankAccount> getAccounts() {
@@ -531,6 +593,14 @@ public class Business implements Serializable, Taxable {
 
 	public void setPaymentTypes(Set<PaymentType> paymentTypes) {
 		this.paymentTypes = paymentTypes;
+	}
+	
+	public Set<PriceList> getPriceLists() {
+		return priceLists;
+	}
+
+	public void setPriceLists(Set<PriceList> priceLists) {
+		this.priceLists = priceLists;
 	}
     
     /*
@@ -615,6 +685,7 @@ public class Business implements Serializable, Taxable {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
     @Column(name = "id")
+    @Field(name = FTSNamespace.ID)
     private Long id;
     
     @javax.persistence.Version

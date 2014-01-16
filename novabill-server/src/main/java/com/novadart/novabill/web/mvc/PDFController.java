@@ -1,9 +1,21 @@
 package com.novadart.novabill.web.mvc;
 
 import java.io.IOException;
+import java.io.StringReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Locale;
+
 import javax.servlet.http.HttpServletResponse;
+
 import net.sf.jasperreports.engine.JRException;
+
+import org.apache.lucene.analysis.ASCIIFoldingFilter;
+import org.apache.lucene.analysis.LowerCaseFilter;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.WhitespaceTokenizer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.util.Version;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
@@ -12,31 +24,45 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import com.google.common.base.Joiner;
 import com.novadart.novabill.annotation.Xsrf;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.TransportDocument;
-import com.novadart.novabill.report.AccountingDocumentJRDataSource;
 import com.novadart.novabill.report.DocumentType;
-import com.novadart.novabill.report.JasperReportService;
+import com.novadart.novabill.report.JRDataSourceFactory;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
+import com.novadart.novabill.report.JasperReportService;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 
 @Controller
 @RequestMapping("/private/pdf")
 public class PDFController{
-	
+
 	public static final String TOKENS_SESSION_FIELD = "pdf.generation.tokens";
 	public static final String TOKEN_REQUEST_PARAM = "token";
-	
+
 	@Autowired
 	private MessageSource messageSource;
-	
+
 	@Autowired
 	private JasperReportService jrService;
-	
+
+	private String convertToASCII(String text){
+		List<String> tokens = new ArrayList<>();
+		try (TokenStream stream = new ASCIIFoldingFilter(new LowerCaseFilter(Version.LUCENE_35, new WhitespaceTokenizer(Version.LUCENE_35, new StringReader(text)))) ){
+			stream.reset();
+			while(stream.incrementToken())
+				tokens.add(stream.getAttribute(CharTermAttribute.class).toString());
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+		return Joiner.on("_").join(tokens).toString();
+	}
+
 	@RequestMapping(method = RequestMethod.GET, value = "/invoices/{id}", produces = "application/pdf")
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
 	@ResponseBody
@@ -45,11 +71,13 @@ public class PDFController{
 		Invoice invoice = Invoice.findInvoice(id);
 		if(invoice == null)
 			throw new NoSuchObjectException();
-		String pdfName = String.format(messageSource.getMessage("export.invoices.name.pattern", null, "invoice_%d_%d.pdf", locale), invoice.getAccountingDocumentYear(), invoice.getDocumentID());
+		String pdfName = String.format(messageSource.getMessage("export.invoices.name.pattern", null, "invoice_%s_%d_%d.pdf", locale),  
+				invoice.getAccountingDocumentYear(), invoice.getDocumentID(), convertToASCII(invoice.getClient().getName()));
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
-		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<Invoice>(invoice, invoice.getBusiness().getId()).getDataSource(), DocumentType.INVOICE, invoice.getLayoutType());
+		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(invoice, invoice.getBusiness().getId()),
+				DocumentType.INVOICE, invoice.getLayoutType());
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/estimations/{id}", produces = "application/pdf")
 	@ResponseBody
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
@@ -58,11 +86,13 @@ public class PDFController{
 		Estimation estimation = Estimation.findEstimation(id);
 		if(estimation == null)
 			throw new NoSuchObjectException();
-		String pdfName = String.format(messageSource.getMessage("export.estimations.name.pattern", null, "estimation_%d_%d.pdf", locale), estimation.getAccountingDocumentYear(), estimation.getDocumentID());
+		String pdfName = String.format(messageSource.getMessage("export.estimations.name.pattern", null, "estimation_%s_%d_%d.pdf", locale),
+				estimation.getAccountingDocumentYear(), estimation.getDocumentID(), convertToASCII(estimation.getClient().getName()));
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
-		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<Estimation>(estimation, estimation.getBusiness().getId()).getDataSource(), DocumentType.ESTIMATION, estimation.getLayoutType());
+		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(estimation, estimation.getBusiness().getId()),
+				DocumentType.ESTIMATION, estimation.getLayoutType());
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/creditnotes/{id}", produces = "application/pdf")
 	@ResponseBody
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
@@ -71,11 +101,13 @@ public class PDFController{
 		CreditNote creditNote = CreditNote.findCreditNote(id);
 		if(creditNote == null)
 			throw new NoSuchObjectException();
-		String pdfName = String.format(messageSource.getMessage("export.creditnotes.name.pattern", null, "creditnote_%d_%d.pdf", locale), creditNote.getAccountingDocumentYear(), creditNote.getDocumentID());
+		String pdfName = String.format(messageSource.getMessage("export.creditnotes.name.pattern", null, "creditnote_%s_%d_%d.pdf", locale),
+				creditNote.getAccountingDocumentYear(), creditNote.getDocumentID(), convertToASCII(creditNote.getClient().getName()));
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
-		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<CreditNote>(creditNote, creditNote.getBusiness().getId()).getDataSource(), DocumentType.CREDIT_NOTE, creditNote.getLayoutType());
+		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(creditNote, creditNote.getBusiness().getId()),
+				DocumentType.CREDIT_NOTE, creditNote.getLayoutType());
 	}
-	
+
 	@RequestMapping(method = RequestMethod.GET, value = "/transportdocs/{id}", produces = "application/pdf")
 	@ResponseBody
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
@@ -84,9 +116,11 @@ public class PDFController{
 		TransportDocument transportDocument = TransportDocument.findTransportDocument(id);
 		if(transportDocument == null)
 			throw new NoSuchObjectException();
-		String pdfName = String.format(messageSource.getMessage("export.transportdocs.name.pattern", null, "transportdoc_%d_%d.pdf", locale), transportDocument.getAccountingDocumentYear(), transportDocument.getDocumentID());
+		String pdfName = String.format(messageSource.getMessage("export.transportdocs.name.pattern", null, "transportdoc_%s_%d_%d.pdf", locale),
+				transportDocument.getAccountingDocumentYear(), transportDocument.getDocumentID(), convertToASCII(transportDocument.getClient().getName()));
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
-		return jrService.exportReportToPdf(new AccountingDocumentJRDataSource<TransportDocument>(transportDocument, transportDocument.getBusiness().getId()).getDataSource(), DocumentType.TRANSPORT_DOCUMENT, transportDocument.getLayoutType());
+		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(transportDocument, transportDocument.getBusiness().getId()),
+				DocumentType.TRANSPORT_DOCUMENT, transportDocument.getLayoutType());
 	}
 
 }

@@ -21,6 +21,7 @@ import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.Valid;
+import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
@@ -139,6 +140,10 @@ public class Client implements Serializable, Taxable {
     
     @ManyToOne(optional = true)
     private PaymentType defaultPaymentType;
+    
+    @NotNull
+    @ManyToOne
+    private PriceList defaultPriceList;
     
     @Size(max = 1500)
 	private String note;
@@ -343,6 +348,14 @@ public class Client implements Serializable, Taxable {
 
 	public void setDefaultPaymentType(PaymentType defaultPaymentType) {
 		this.defaultPaymentType = defaultPaymentType;
+	}
+
+	public PriceList getDefaultPriceList() {
+		return defaultPriceList;
+	}
+
+	public void setDefaultPriceList(PriceList defaultPriceList) {
+		this.defaultPriceList = defaultPriceList;
 	}
 
 	public String getNote() {

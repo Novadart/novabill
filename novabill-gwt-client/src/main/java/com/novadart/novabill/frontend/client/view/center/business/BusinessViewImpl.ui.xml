@@ -1,0 +1,267 @@
+<!DOCTYPE ui:UiBinder SYSTEM "http://dl.google.com/gwt/DTD/xhtml.ent">
+<ui:UiBinder xmlns:ui="urn:ui:com.google.gwt.uibinder"
+	xmlns:g="urn:import:com.google.gwt.user.client.ui" xmlns:t="urn:import:com.novadart.gwtshared.client.textbox"
+	xmlns:v="urn:import:com.novadart.gwtshared.client.validation.widget"
+	xmlns:n="urn:import:com.novadart.novabill.frontend.client.widget.notification"
+	xmlns:gwtshared="urn:import:com.novadart.gwtshared.client">
+
+	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
+		field="i18n" />
+		
+	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss" field="g"></ui:with>
+
+	<ui:style>
+		.removeLogo {
+			margin-left: 0.5em;
+		}
+		
+		.validatedBox {
+			width: 25em;
+			margin: 0.3em 0;
+		}
+		
+		.logoContainerWrapper {
+			padding: 1em;
+		}
+		
+		.logoContainerWrapper .logo {
+			max-width: 300px;
+			max-height: 300px;
+		}
+		
+		.gridContainer {
+			padding: 1em;
+		}
+		
+		.LoaderButton {
+			width: 10em;
+			margin: 0 auto;
+		}
+		
+		.businessLabel {
+			margin-right: 1em;
+		}
+		
+		.upperPart {
+			margin-top: 2em;
+		}
+		
+		.exportButtonsContainer {
+			margin-top: 1em;
+		}
+		
+		.exportButtonsContainer .exportButton {
+			margin-right: 1em;
+			text-transform: capitalize;
+		}
+		
+		.exportDataContainer {
+			margin-top: 2em;
+		}
+		
+		.sectionLabel {
+			font-weight: bold;
+			font-size: 1.5em;
+			text-transform: uppercase;
+		}
+		
+		.cancelDataContainer {
+			margin-top: 2em;
+		}
+		
+		.cancelDataContainer .deleteAccount {
+			margin-top: 1em;
+			display: block;
+		}
+		
+		.saveData {
+			text-align: center;
+		}
+		
+		.mandatory {
+		}
+		
+		.logoUpdateButtons{
+	       margin-top: 10px;
+        }
+	</ui:style>
+
+	<g:ScrollPanel height="100%">
+		<g:FlowPanel>
+			<g:HorizontalPanel styleName="{style.upperPart}">
+				<g:VerticalPanel>
+					<g:Label styleName="{style.sectionLabel}" text="{i18n.companyDataLabel}"></g:Label>
+
+					<n:InlineNotification ui:field="inlineNotification"></n:InlineNotification>
+
+					<g:SimplePanel styleName="{style.gridContainer}">
+						<g:Grid>
+							<g:row>
+								<g:customCell>
+									<g:Label styleName="{style.businessLabel}" text="{i18n.companyName} *"></g:Label>
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="name"
+										maxLength="255"></v:ValidatedTextBox>
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label styleName="{style.businessLabel}" text="{i18n.ssn} *"></g:Label>
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="ssn"
+										maxLength="25"></v:ValidatedTextBox>
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label styleName="{style.businessLabel}" text="{i18n.vatID} *"></g:Label>
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="vatID"
+										maxLength="25"></v:ValidatedTextBox>
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label styleName="{style.businessLabel}" text="{i18n.address} *"></g:Label>
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="address"
+										maxLength="255"></v:ValidatedTextBox>
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label styleName="{style.businessLabel}" text="{i18n.city} *"></g:Label>
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="city"
+										maxLength="60"></v:ValidatedTextBox>
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label styleName="{style.businessLabel}" text="{i18n.postcode} *"></g:Label>
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="postcode"
+										maxLength="10"></v:ValidatedTextBox>
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label styleName="{style.businessLabel}" text="{i18n.province} *"></g:Label>
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedListBox	ui:field="province"></v:ValidatedListBox>
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label styleName="{style.businessLabel}" text="{i18n.country} *"></g:Label>
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedListBox ui:field="country"></v:ValidatedListBox>
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label styleName="{style.businessLabel}" text="{i18n.phone}"></g:Label>
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="phone"
+										maxLength="25"></v:ValidatedTextBox>
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label styleName="{style.businessLabel}" text="{i18n.mobile}"></g:Label>
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="mobile"
+										maxLength="25"></v:ValidatedTextBox>
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label styleName="{style.businessLabel}" text="{i18n.email}"></g:Label>
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="email"
+										maxLength="255"></v:ValidatedTextBox>
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label styleName="{style.businessLabel}" text="{i18n.fax}"></g:Label>
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="fax"
+										maxLength="25"></v:ValidatedTextBox>
+								</g:customCell>
+							</g:row>
+							<g:row>
+								<g:customCell>
+									<g:Label styleName="{style.businessLabel}" text="{i18n.web}"></g:Label>
+								</g:customCell>
+								<g:customCell>
+									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="web"
+										maxLength="255"></v:ValidatedTextBox>
+								</g:customCell>
+							</g:row>
+						</g:Grid>
+					</g:SimplePanel>
+					
+					<g:Label styleName="{style.mandatory}" text="* {i18n.mandatory}"/>
+					
+					<gwtshared:LoaderButton styleName="{style.saveData}" ui:field="saveData" text="{i18n.saveModifications}" />
+				</g:VerticalPanel>
+
+				<g:VerticalPanel>
+					<g:Label styleName="{style.sectionLabel}" text="{i18n.logoLabel}"></g:Label>
+
+					<g:SimplePanel styleName="{style.logoContainerWrapper}">
+						<g:VerticalPanel>
+							<g:Image ui:field="logo" styleName="{style.logo}"></g:Image>
+							<g:HorizontalPanel styleName="{style.logoUpdateButtons}">
+								<g:FormPanel visible="false" ui:field="formPanel" />
+								<g:Button ui:field="updateLogo" text="{i18n.updateLogo}"
+									styleName="btn blue"></g:Button>
+								<g:Button ui:field="removeLogo" text="{i18n.deleteLogo}"
+									styleName="{style.removeLogo} btn red"></g:Button>
+							</g:HorizontalPanel>
+						</g:VerticalPanel>
+					</g:SimplePanel>
+
+				</g:VerticalPanel>
+
+			</g:HorizontalPanel>
+
+			<g:VerticalPanel styleName="{style.exportDataContainer}">
+				<g:Label styleName="{style.sectionLabel}" text="{i18n.exportDataLabel}"></g:Label>
+				<g:HorizontalPanel styleName="{style.exportButtonsContainer}">
+					<g:Button styleName="{style.exportButton} btn default" ui:field="exportClientData"
+						text="{i18n.exportClientData}"></g:Button>
+					<g:Button styleName="{style.exportButton} btn default" ui:field="exportInvoiceData"
+						text="{i18n.exportInvoiceData}"></g:Button>
+					<g:Button styleName="{style.exportButton} btn default" ui:field="exportEstimationData"
+						text="{i18n.exportEstimationData}"></g:Button>
+					<g:Button styleName="{style.exportButton} btn default" ui:field="exportCreditNoteData"
+						text="{i18n.exportCreditNoteData}"></g:Button>
+					<g:Button styleName="{style.exportButton} btn default" ui:field="exportTransportDocumentData"
+						text="{i18n.exportTransportDocumentData}"></g:Button>
+				</g:HorizontalPanel>
+			</g:VerticalPanel>
+
+            <!-- TODO reenable -->
+			<g:VerticalPanel visible="false" styleName="{style.cancelDataContainer}">
+				<g:Label styleName="{style.sectionLabel}" text="{i18n.deleteAccountLabel}"></g:Label>
+				<g:Anchor ui:field="deleteAccount" styleName="{style.deleteAccount} btn red" text="{i18n.deleteAccount}"></g:Anchor>
+			</g:VerticalPanel>
+
+		</g:FlowPanel>
+	</g:ScrollPanel>
+
+</ui:UiBinder> 

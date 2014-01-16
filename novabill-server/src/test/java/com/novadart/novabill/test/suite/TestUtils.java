@@ -14,12 +14,19 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.TransportDocument;
+import com.novadart.novabill.shared.client.data.LayoutType;
+import com.novadart.novabill.shared.client.data.PriceListConstants;
+import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
+import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.validation.Field;
 
@@ -299,6 +306,24 @@ public class TestUtils {
 		return client;
 	}
 	
+	public static Commodity createCommodity(){
+		Commodity commodity = new Commodity();
+		commodity.setDescription("Test commodity description");
+		commodity.setTax(new BigDecimal("15.0"));
+		commodity.setUnitOfMeasure("piece");
+		commodity.setSku(Commodity.generateSku());
+		return commodity;
+	}
+		
+	public static void setDefaultPrice(CommodityDTO commodityDTO, BigDecimal price){
+		Map<String, PriceDTO> prices = new HashMap<>();
+		PriceDTO defaultPrice = new PriceDTO();
+		defaultPrice.setPriceType(PriceType.FIXED);
+		defaultPrice.setPriceValue(price);
+		prices.put(PriceListConstants.DEFAULT, defaultPrice);
+		commodityDTO.setPrices(prices);
+	}
+	
 	public static com.novadart.novabill.domain.PaymentType createPaymentType(){
 		com.novadart.novabill.domain.PaymentType paymentType = new com.novadart.novabill.domain.PaymentType();
 		paymentType.setName("Payment type test name");
@@ -328,7 +353,14 @@ public class TestUtils {
 		business.setMobile("0498597898");
 		business.setSsn("IT04534730280");
 		business.setVatID("IT04534730280");
+		business.setDefaultLayoutType(LayoutType.DENSE);
 		return business;
+	}
+	
+	public static PriceList createPriceList(){
+		PriceList priceList = new PriceList();
+		priceList.setName("Default price list" + Math.random());
+		return priceList;
 	}
 	
 }

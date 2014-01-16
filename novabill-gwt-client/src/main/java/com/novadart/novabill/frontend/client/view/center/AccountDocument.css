@@ -1,0 +1,149 @@
+.AccountDocumentView {
+	width: 100%;
+	height: 100%;
+}
+
+.docControls {
+	padding: 0.5em;
+	text-align: center;
+	margin-top: 40px;
+}
+
+.docBody {
+	
+}
+
+.docScroll {
+	width: 100%;
+}
+
+.docScrollBody {
+	
+}
+
+.newEstimation,.newInvoice,.newTransportDocument,.newCreditNote {
+ 	font-weight: bold;
+	font-size: 1.8em;
+	border-bottom: 1px solid;
+	text-align: center;
+	background-color: #CCC;
+	padding: 0.2em;
+}
+
+.docControls .loaderButton {
+	display: inline-block;
+}
+
+.convertToInvoiceLB {
+	margin-left: 2em;
+}
+
+.abortButton {
+	margin-left: 2em;
+}
+
+.documentMainDetails {
+	margin-top: 0.5em;
+}
+
+.clientName {
+	font-size: 1.3em;
+}
+
+.label {
+	font-weight: bold;
+	font-size: 1.1em;
+	padding: 0.2em 2em 0.7em 0;
+	width: 12em;
+}
+
+.sublabel {
+	font-weight: bold;
+	font-size: 1.1em;
+	padding: 0.3em 0.6em 0.2em 0;
+}
+
+.sublabel.date {
+	
+}
+
+input[type=text].box {
+	width: 15em;
+	margin-bottom: 0.5em;
+}
+
+.addressBox .loadDefaultsButton {
+	margin: 0 0 0 3em;
+}
+
+.addressBox {
+	margin: 1.5em 0 0;
+}
+
+.addressBox .box {
+	margin: 0.2em 0.5em 0.2em 0.2em;
+}
+
+select {
+	padding: 0.2em;
+}
+
+.sublabel.time {
+	margin-left: 2em;
+}
+
+.modifyButton {
+	
+}
+
+.createButton {
+}
+
+input[type="text"].box.number {
+	width: 2em;
+	text-align: center;
+}
+
+.invoiceNumberSuffix {
+	padding: 0.4em;
+	font-size: 1.2em;
+}
+
+.note,.paymentNote {
+	width: 40em;
+}
+
+.itemTableContainer {
+	margin: 1em 0;
+}
+
+.totalContainer.totalTax, .totalContainer.totalAfterTaxes {
+	margin-left: 4em;
+}
+
+.totalContainer.totalBeforeTaxes .total, .totalContainer.totalTax .total {
+	border: 1px solid #CCC;
+}
+
+.totalContainer.totalAfterTaxes .total {
+	font-weight: bold;
+	border: 1px solid #333;
+	font-weight: bold;
+}
+
+.totalContainer .label {
+	text-align: center;
+	padding: 0.4em;
+}
+
+.totalContainer .total {
+	font-size: 2em;
+	color: #333;
+	padding: 0.5em;
+	text-align: center;
+	border: 1px solid;
+}
+
+.totalsContainer {
+	margin: 0 auto;
+}

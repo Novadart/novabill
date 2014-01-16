@@ -7,11 +7,11 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 
 public class EstimationDTOFactory extends AccountingDocumentDTOFactory {
 	
-	public static EstimationDTO toDTO(Estimation estimation) {
+	public static EstimationDTO toDTO(Estimation estimation, boolean copyItems) {
 		if(estimation == null)
 			return null;
 		EstimationDTO estimationDTO = new EstimationDTO();
-		AccountingDocumentDTOFactory.copyToDTO(estimation, estimationDTO);
+		AccountingDocumentDTOFactory.copyToDTO(estimation, estimationDTO, copyItems);
 		estimationDTO.setLimitations(estimation.getLimitations());
 		estimationDTO.setValidTill(estimation.getValidTill());
 		estimationDTO.setBusiness(BusinessDTOFactory.toDTO(estimation.getBusiness()));
@@ -25,11 +25,11 @@ public class EstimationDTOFactory extends AccountingDocumentDTOFactory {
 		estimation.setValidTill(estimationDTO.getValidTill());
 	}
 	
-	public static InvoiceDTO toInvoiceDTO(EstimationDTO estimationDTO){
+	public static InvoiceDTO toInvoiceDTO(EstimationDTO estimationDTO, boolean copyItems){
 		AccountingDocument accountingDocument = new Estimation();
 		AccountingDocumentDTOFactory.copyFromDTO(accountingDocument, estimationDTO, true);
 		InvoiceDTO invoiceDTO = new InvoiceDTO();
-		AccountingDocumentDTOFactory.copyToDTO(accountingDocument, invoiceDTO);
+		AccountingDocumentDTOFactory.copyToDTO(accountingDocument, invoiceDTO, copyItems);
 		invoiceDTO.setBusiness(estimationDTO.getBusiness());
 		invoiceDTO.setClient(estimationDTO.getClient());
 		return invoiceDTO;

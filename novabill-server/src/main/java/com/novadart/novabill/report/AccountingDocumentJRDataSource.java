@@ -4,10 +4,12 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Collection;
+import java.util.List;
 
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import com.novadart.novabill.domain.AccountingDocument;
+import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Logo;
 
 public class AccountingDocumentJRDataSource<T extends AccountingDocument> {
@@ -15,6 +17,8 @@ public class AccountingDocumentJRDataSource<T extends AccountingDocument> {
 	private T document;
 	
 	private InputStream logoInStream;
+	
+	private List<AccountingDocumentItem> items;
 	
 	public T getDocument(){
 		return this.document;
@@ -24,12 +28,17 @@ public class AccountingDocumentJRDataSource<T extends AccountingDocument> {
 		return logoInStream;
 	}
 
-	public AccountingDocumentJRDataSource(T document, Long businessID){
-		this(document, Logo.getLogoByBusinessID(businessID));
+	public List<AccountingDocumentItem> getItems() {
+		return items;
+	}
+
+	public AccountingDocumentJRDataSource(T document, List<AccountingDocumentItem> items, Long businessID){
+		this(document, items, Logo.getLogoByBusinessID(businessID));
 	}
 	
-	public AccountingDocumentJRDataSource(T document, Logo logo){
+	public AccountingDocumentJRDataSource(T document, List<AccountingDocumentItem> items, Logo logo){
 		this.document = document;
+		this.items = items;
 		if(logo != null && logo.getData() != null)
 			logoInStream = new ByteArrayInputStream(logo.getData());
 	}

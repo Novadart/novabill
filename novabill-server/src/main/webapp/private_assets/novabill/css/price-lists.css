@@ -1,0 +1,27 @@
+.price-lists .price-list.default-price-list .name {
+	font-weight: bold;
+}
+
+.price-lists .price-list.default-price-list  {
+	background-color: #eee;
+}
+
+.price-lists .price-list .name {
+    font-size: 16px;
+}
+
+.price-lists .price-list-filter {
+    margin: 20px 0;
+}
+
+.price-list-detail .commodity-filter {
+	margin-bottom: 20px;
+}
+
+.price-list-detail .price-row.product {
+	border-left: 2px solid #3cc051;
+}
+
+.price-list-detail .price-row.service {
+    border-left: 2px solid #428bca;
+}

@@ -1,0 +1,248 @@
+/*
+ *  SELECT MULTIPLE TRANSPORT DOCUMENTS DIALOG
+ */
+.select-multiple-td-dialog .details>strong,.select-multiple-td-dialog .details>span
+	{
+	margin-left: 5px;
+	position: relative;
+	bottom: 5px;
+	display: inline-block;
+	text-align: center;
+}
+
+.select-multiple-td-dialog .details {
+	cursor: pointer;
+}
+
+.select-multiple-td-dialog .details:HOVER {
+    border-color: #555;
+}
+ 
+.select-multiple-td-dialog .details.selected {
+	background-color: #dff0d8;
+}
+
+.select-multiple-td-dialog .details .documentId {
+	min-width: 20px;
+	margin-left: 10px;
+}
+
+.select-multiple-td-dialog .details .total {
+	margin-left: 10px;
+	font-style: italic;
+}
+
+.select-multiple-td-dialog .details .date {
+	margin-left: 10px;
+	min-width: 120px;
+}
+
+.select-multiple-td-dialog .details .n-packages {
+	margin-left: 10px;
+	min-width: 120px;
+}
+
+/*
+ *  DOCUMENTS
+ */
+.document-well {
+	cursor: pointer;
+}
+
+.document-well:HOVER {
+	border: 1px solid #555;
+	background-color: #f5f5f5;
+}
+
+.document-well .date {
+	margin-left: 10px;
+}
+
+.document-well .clientName {
+	margin-left: 10px;
+}
+
+.document-well .print {
+	margin-right: 10px;
+}
+
+.document-well .options {
+	margin-right: 20px;
+}
+
+/*
+ *  COMMODITY
+ */
+.commodity {
+	cursor: pointer;
+}
+
+.commodity .id {
+	margin-left: 10px;
+	min-width: 100px;
+    display: inline-block;
+}
+
+.commodity .type {
+	width: 60px;
+}
+
+.commodity.product {
+    cursor: pointer;
+    border-left: 2px solid #3cc051;
+}
+
+.commodity.service {
+    cursor: pointer;
+    border-left: 2px solid #428bca;
+}
+
+.commodity:HOVER {
+    border-top: 1px solid #555;
+    border-bottom: 1px solid #555;
+    border-right: 1px solid #555;
+    background-color: #f5f5f5;
+}
+
+/*
+ *  PRICE LISTS
+ */
+.price-list {
+    cursor: pointer;
+}
+
+.price-list:HOVER {
+    border: 1px solid #555;
+    background-color: #f5f5f5;
+}
+
+
+/*
+ *  UPDATE PRICE
+ */
+.commodity-price input.has-error,.commodity-price select.has-error {
+	border-color: #953b39;
+	color: #953b39;
+}
+
+.commodity-price input.has-success,.commodity-price select.has-success {
+	border-color: #356635;
+	color: #356635;
+}
+
+.commodity-price .type-input {
+	
+}
+
+.commodity-price .type-span {
+	min-width: 200px;
+	display: inline-block;
+}
+
+.commodity-price .price-input {
+	margin-left: 5px;
+}
+
+.commodity-price .price-span {
+	min-width: 80px;
+	display: inline-block;
+	margin-right: 20px;
+}
+
+.commodity-price .price-default {
+    min-width: 80px;
+	margin-right: 20px;
+	display: inline-block;
+	font-style: italic;
+	color: gray;
+}
+
+.commodity-price .btn.save,.commodity-price .btn.edit {
+	
+}
+
+.commodity-price .price-info {
+	min-width: 150px;
+	color: black;
+	font-weight: normal;
+}
+
+.commodity-price .price-info .details {
+    border: 1px solid #DDD;
+    padding: 5px;
+    position: absolute;
+    background-color: #333;
+    color: white;
+}
+
+.commodity-price .price-info .details.ng-hide-remove {
+  -webkit-transition:all linear 0.5s;
+  -moz-transition:all linear 0.5s;
+  -o-transition:all linear 0.5s;
+  transition:all linear 0.5s;
+  display:block!important;
+}
+ 
+.commodity-price .price-info .details.ng-hide-add.ng-hide-add-active,
+.commodity-price .price-info .details.ng-hide-remove {
+  opacity:0;
+}
+ 
+.commodity-price .price-info .details.ng-hide-add,
+.commodity-price .price-info .details.ng-hide-remove.ng-hide-remove-active {
+  opacity:1;
+}
+
+
+/*
+ *  SELECT CLIENT DIALOG
+ */
+ 
+.n-select-client-dialog div.well.client {
+   margin-bottom: 5px;
+   cursor: pointer;
+}
+
+.n-select-client-dialog div.well.client:HOVER {
+   background-color: #DDD;
+}
+
+.n-select-client-dialog div.clients-filter {
+   margin: 15px 0;
+}
+
+/*
+ *  SELECT COMMODITY DIALOG
+ */
+ 
+.n-select-commodity-dialog tr {
+	cursor: pointer;
+}
+
+.n-select-commodity-dialog tr:HOVER {
+	background-color: #f5f5f5;
+}
+ 
+.n-select-commodity-dialog tr.product {
+   border-left: 2px solid #3cc051;
+}
+
+.n-select-commodity-dialog tr.service {
+   border-left: 2px solid #428bca;
+}
+
+/*
+ *  YEAR SELECTOR
+ */
+ 
+.n-year-selector .year-lbl {
+    display: inline;
+	font-size: 14px;
+	position: relative;
+	top: 3px;
+}
+ 
+.n-year-selector .year-select {
+    display: inline;
+    line-height: 34px;
+}

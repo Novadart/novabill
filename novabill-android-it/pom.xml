@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<artifactId>novabill</artifactId>
+		<groupId>com.novadart.novabill</groupId>
+		<version>2.3-SNAPSHOT</version>
+	</parent>
+	<artifactId>novabill-android-it</artifactId>
+	<packaging>apk</packaging>
+	<name>Novabill - Android Client Instrumentation Tests</name>
+
+	<dependencies>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>novabill-android-client</artifactId>
+			<type>jar</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>novabill-android-client</artifactId>
+			<type>apk</type>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>com.google.android</groupId>
+			<artifactId>android-test</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework.android</groupId>
+			<artifactId>spring-android-core</artifactId>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+	<build>
+		<plugins>
+			<plugin>
+				<groupId>com.jayway.maven.plugins.android.generation2</groupId>
+				<artifactId>android-maven-plugin</artifactId>
+				<configuration>
+					<test>
+						<!--<skip>true|false|auto</skip> -->
+						<!--<instrumentationPackage>packageName</instrumentationPackage> -->
+						<!--<instrumentationRunner>className</instrumentationRunner> -->
+						<!--<debug>true|false</debug> -->
+						<!--<coverage>true|false</coverage> -->
+						<!--<logonly>true|false</logonly> avd -->
+						<!--<testsize>small|medium|large</testsize> -->
+						<createReport>true</createReport>
+						<!--<classes> -->
+						<!--<class>your.package.name.YourTestClass</class> -->
+						<!--</classes> -->
+						<!--<packages> -->
+						<!--<package>your.package.name</package> -->
+						<!--</packages> -->
+					</test>
+				</configuration>
+				<extensions>true</extensions>
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<configuration>
+					<source>1.6</source>
+					<target>1.6</target>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>

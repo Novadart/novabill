@@ -10,16 +10,18 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
 public abstract class AccountingDocumentDTOFactory {
 	
-	protected static void copyToDTO(AccountingDocument accountingDocument, AccountingDocumentDTO accountingDocumentDTO) {
+	protected static void copyToDTO(AccountingDocument accountingDocument, AccountingDocumentDTO accountingDocumentDTO, boolean copyItems) {
 		accountingDocumentDTO.setId(accountingDocument.getId());
 		accountingDocumentDTO.setDocumentID(accountingDocument.getDocumentID());
 		accountingDocumentDTO.setAccountingDocumentDate(accountingDocument.getAccountingDocumentDate());
 		accountingDocumentDTO.setNote(accountingDocument.getNote());
 		accountingDocumentDTO.setLayoutType(accountingDocument.getLayoutType());
-		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(accountingDocument.getAccountingDocumentItems().size());
-		for(AccountingDocumentItem item: accountingDocument.getAccountingDocumentItems())
-			items.add(AccountingDocumentItemDTOFactory.toDTO(item));
-		accountingDocumentDTO.setItems(items);
+		if(copyItems){
+			List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(accountingDocument.getAccountingDocumentItems().size());
+			for(AccountingDocumentItem item: accountingDocument.getAccountingDocumentItems())
+				items.add(AccountingDocumentItemDTOFactory.toDTO(item));
+			accountingDocumentDTO.setItems(items);
+		}
 		accountingDocumentDTO.setTotal(accountingDocument.getTotal());
 		accountingDocumentDTO.setTotalTax(accountingDocument.getTotalTax());
 		accountingDocumentDTO.setTotalBeforeTax(accountingDocument.getTotalBeforeTax());

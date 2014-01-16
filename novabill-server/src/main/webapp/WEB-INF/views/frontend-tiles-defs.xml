@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<!DOCTYPE tiles-definitions PUBLIC "-//Apache Software Foundation//DTD Tiles Configuration 2.1//EN" 
+	"http://tiles.apache.org/dtds/tiles-config_2_1.dtd">
+<tiles-definitions>
+
+	<!-- LAYOUTS -->
+	<definition name="frontend.subPageLayout" template="/WEB-INF/views/layouts/frontend/subPageLayout.jsp" >
+		<put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
+		<put-attribute name="header" value="/WEB-INF/views/tiles/frontend/header.jsp" />
+		<put-attribute name="footer" value="/WEB-INF/views/tiles/frontend/footer.jsp" />
+	</definition>
+	
+	<definition name="frontend.indexLayout" template="/WEB-INF/views/layouts/frontend/indexLayout.jsp"/>
+	
+	<!--  -->
+
+	<!-- PAGES -->
+	<definition name="frontend.index" extends="frontend.indexLayout">
+	   <put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
+       <put-attribute name="header" value="/WEB-INF/views/tiles/frontend/header.jsp" />
+       <put-attribute name="footer" value="/WEB-INF/views/tiles/frontend/footer.jsp" />
+	</definition>
+	
+	<definition name="frontend.login" extends="frontend.subPageLayout" >
+	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/loginHead.jsp" />
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/loginBody.jsp" />
+       <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/loginJS.jsp" />
+	</definition>
+	
+	<definition name="frontend.register" extends="frontend.subPageLayout" >
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/registerBody.jsp" />
+    </definition>
+	
+	<definition name="frontend.pageNotFound" extends="frontend.subPageLayout"  >
+	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/pageNotFoundHead.jsp" />
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/pageNotFoundBody.jsp" />
+       <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/pageNotFoundJS.jsp" />
+    </definition>
+	
+	<definition name="frontend.oops" extends="frontend.subPageLayout" >
+	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/oopsHead.jsp" />
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/oopsBody.jsp" />
+       <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/oopsJS.jsp" />
+	</definition>
+	
+	<definition name="frontend.contact" extends="frontend.subPageLayout">
+	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/contactHead.jsp" />
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/contactBody.jsp" />
+	   <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/contactJS.jsp" />
+	</definition>
+	
+   <definition name="frontend.tos" extends="frontend.subPageLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/tosBody.jsp" />
+    </definition>
+	
+<!-- 	<definition name="frontend.about" extends="frontend.subPageLayout">
+	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/aboutHead.jsp" />
+	   <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/aboutBody.jsp" />
+	   <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/aboutJS.jsp" />
+	</definition>
+	
+	<definition name="frontend.prices" extends="frontend.subPageLayout">
+		<put-attribute name="head" value="/WEB-INF/views/tiles/frontend/pricesHead.jsp" />
+		<put-attribute name="body" value="/WEB-INF/views/tiles/frontend/pricesBody.jsp" />
+		<put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/pricesJS.jsp" />
+	</definition> -->
+	
+	<!--  -->
+
+
+
+</tiles-definitions>

@@ -1,0 +1,261 @@
+button.action-button, button.action2-button {
+	font-size: 1.2em !important;
+}
+
+button.action-button {
+	cursor: pointer;
+	display: inline-block;
+	min-width: 140px;
+	height: 30px;
+	margin: 12px 10px;
+	background: #a4ce43;
+	background: \-moz-linear-gradient(top, #a4ce43 0%, #54ba47 100%);
+	background: \-webkit-gradient(linear, left top, left bottom, color-stop(0%, #a4ce43),
+		color-stop(100%, #54ba47) );
+	background: \-webkit-linear-gradient(top, #a4ce43 0%, #54ba47 100%);
+	background: \-o-linear-gradient(top, #a4ce43 0%, #54ba47 100%);
+	background: \-ms-linear-gradient(top, #a4ce43 0%, #54ba47 100%);
+	background: linear-gradient(top, #a4ce43 0%, #54ba47 100%);
+	border: 1px solid #247116;
+	\-moz-border-radius: 5px;
+	\-webkit-border-radius: 5px;
+	border-radius: 5px;
+	box-shadow: inset 0px 1px 0px #CACB80, 0px 1px 2px #777;
+	\-moz-box-shadow: inset 0px 1px 0px #CACB80, 0px 1px 2px #777;
+	\-webkit-box-shadow: inset 0px 1px 0px #CACB80, 0px 1px 2px #777;
+	color: #212A12;
+	font-size: 16px;
+	text-align: center;
+	line-height: 30px;
+	text-decoration: none;
+	font-weight: bold;
+	text-shadow: 0px 1px 1px #DCE298;
+}
+
+button.action-button:hover {
+	background: #b3d43f;
+	background: \-moz-linear-gradient(top, #b3d43f 0%, #60bd46 100%);
+	background: \-webkit-gradient(linear, left top, left bottom, color-stop(0%, #b3d43f),
+		color-stop(100%, #60bd46) );
+	background: \-webkit-linear-gradient(top, #b3d43f 0%, #60bd46 100%);
+	background: \-o-linear-gradient(top, #b3d43f 0%, #60bd46 100%);
+	background: \-ms-linear-gradient(top, #b3d43f 0%, #60bd46 100%);
+	background: linear-gradient(top, #b3d43f 0%, #60bd46 100%);
+}
+
+button.action-button:active {
+	background: #94cb42;
+	background: \-moz-linear-gradient(top, #94cb42 0%, #78ac38 100%);
+	background: \-webkit-gradient(linear, left top, left bottom, color-stop(0%, #94cb42),
+		color-stop(100%, #78ac38) );
+	background: \-webkit-linear-gradient(top, #94cb42 0%, #78ac38 100%);
+	background: \-o-linear-gradient(top, #94cb42 0%, #78ac38 100%);
+	background: \-ms-linear-gradient(top, #94cb42 0%, #78ac38 100%);
+	background: linear-gradient(top, #94cb42 0%, #78ac38 100%);
+}
+
+button.action2-button {
+	cursor: pointer;
+	display: inline-block;
+	min-width: 140px;
+	height: 30px;
+	background: #52a8e8;
+	background: \-moz-linear-gradient(top, #52a8e8 0%, #2e76cf 100%);
+	background: \-webkit-gradient(linear, left top, left bottom, color-stop(0%, #52a8e8),
+		color-stop(100%, #2e76cf) );
+	background: \-webkit-linear-gradient(top, #52a8e8 0%, #2e76cf 100%);
+	background: \-o-linear-gradient(top, #52a8e8 0%, #2e76cf 100%);
+	background: \-ms-linear-gradient(top, #52a8e8 0%, #2e76cf 100%);
+	background: linear-gradient(top, #52a8e8 0%, #2e76cf 100%);
+	border: 1px solid #385B7A;
+	\-moz-border-radius: 5px;
+	\-webkit-border-radius: 5px;
+	border-radius: 5px;
+	box-shadow: inset 0px 1px 0px #93C2E6, 0px 1px 2px #777;
+	\-moz-box-shadow: inset 0px 1px 0px #93C2E6, 0px 1px 2px #777;
+	\-webkit-box-shadow: inset 0px 1px 0px #93C2E6, 0px 1px 2px #777;
+	color: #12202F;
+	font-size: 16px;
+	text-align: center;
+	line-height: 30px;
+	text-decoration: none;
+	font-weight: bold;
+	text-shadow: 0px 1px 1px #B5CFEC;
+}
+
+button.action2-button:hover {
+	background: #5caafb;
+	background: \-moz-linear-gradient(top, #5caafb 0%, #3c85dc 100%);
+	background: \-webkit-gradient(linear, left top, left bottom, color-stop(0%, #5caafb),
+		color-stop(100%, #3c85dc) );
+	background: \-webkit-linear-gradient(top, #5caafb 0%, #3c85dc 100%);
+	background: \-o-linear-gradient(top, #5caafb 0%, #3c85dc 100%);
+	background: \-ms-linear-gradient(top, #5caafb 0%, #3c85dc 100%);
+	background: linear-gradient(top, #5caafb 0%, #3c85dc 100%);
+}
+
+button.action2-button:active {
+	background: #4596df;
+	background: \-moz-linear-gradient(top, #4596df 0%, #2a60b4 100%);
+	background: \-webkit-gradient(linear, left top, left bottom, color-stop(0%, #4596df),
+		color-stop(100%, #2a60b4) );
+	background: \-webkit-linear-gradient(top, #4596df 0%, #2a60b4 100%);
+	background: \-o-linear-gradient(top, #4596df 0%, #2a60b4 100%);
+	background: \-ms-linear-gradient(top, #4596df 0%, #2a60b4 100%);
+	background: linear-gradient(top, #4596df 0%, #2a60b4 100%);
+}
+
+
+.centerViewLoader {
+	display: block;
+	margin: 100px auto 0;
+}
+
+.button {
+	padding: 0.5em;
+	font-size: 1em;
+	cursor: pointer;
+	font-weight: bold;
+	background-color: #EEE;
+	border: 1px solid #DDD;
+	color: #333;
+	margin: 1px;
+}
+
+.button:HOVER {
+	background-color: #DDD;
+	border: 1px solid #EEE;
+	color: #EEE;
+}
+
+
+.panel {
+	border: 1px solid #DDD;
+	padding: 1.5em 2em;
+	background-color: #EEE;
+	margin: 0 auto;
+}
+
+@external gwt-PopupPanelGlass;
+.gwt-PopupPanelGlass {
+	background-color: #000;
+	opacity: 0.3;
+	filter: literal("alpha(opacity=30)");
+	z-index: 99998;
+}
+
+@external gwt-PopupPanel;
+.gwt-PopupPanel {
+	z-index: 99999;
+}
+
+@external gwt-DatePicker;
+.gwt-DatePicker {
+	border: 1px solid #ccc;
+	border-top: 1px solid #999;
+	cursor: default;
+}
+
+@external datePickerMonthSelector;
+.gwt-DatePicker td,.datePickerMonthSelector td:focus {
+	outline: none;
+}
+
+@external datePickerDays;
+.datePickerDays {
+	width: 100%;
+	background: white;
+}
+
+@external datePickerDay,datePickerWeekdayLabel,datePickerWeekendLabel;
+.datePickerDay,.datePickerWeekdayLabel,.datePickerWeekendLabel {
+	font-size: 85%;
+	text-align: center;
+	padding: 4px;
+	outline: none;
+	font-weight: bold;
+	color: #333;
+	border-right: 1px solid #EDEDED;
+	border-bottom: 1px solid #EDEDED;
+}
+
+.datePickerWeekdayLabel,.datePickerWeekendLabel {
+	background: #fff;
+	padding: 0px 4px 2px;
+	cursor: default;
+	color: #666;
+	font-size: 70%;
+	font-weight: normal;
+}
+
+.datePickerDay {
+	padding: 4px 7px;
+	cursor: hand;
+	cursor: pointer;
+}
+
+@external datePickerDayIsWeekend;
+.datePickerDayIsWeekend {
+	background: #f7f7f7;
+}
+
+@external datePickerDayIsFiller;
+.datePickerDayIsFiller {
+	color: #999;
+	font-weight: normal;
+}
+
+@external datePickerDayIsValue;
+.datePickerDayIsValue {
+	background: #d7dfe8;
+}
+
+@external datePickerDayIsDisabled;
+.datePickerDayIsDisabled {
+	color: #AAAAAA;
+	font-style: italic;
+}
+
+@external datePickerDayIsHighlighted;
+.datePickerDayIsHighlighted {
+	background: #F0E68C;
+}
+
+@external datePickerDayIsValueAndHighlighted;
+.datePickerDayIsValueAndHighlighted {
+	background: #d7dfe8;
+}
+
+@external datePickerDayIsToday;
+.datePickerDayIsToday {
+	padding: 3px;
+	color: #fff;
+}
+
+.datePickerMonthSelector {
+	width: 100%;
+	padding: 1px 0 5px 0;
+	background: #fff;
+}
+
+@external datePickerMonth;
+td.datePickerMonth {
+	text-align: center;
+	vertical-align: middle;
+	white-space: nowrap;
+	font-size: 100%;
+	font-weight: bold;
+	color: #333;
+}
+
+@external datePickerPreviousButton, datePickerNextButton;
+.datePickerPreviousButton,.datePickerNextButton {
+	font-size: 120%;
+	line-height: 1em;
+	color: #3a6aad;
+	cursor: hand;
+	cursor: pointer;
+	font-weight: bold;
+	padding: 0px 4px;
+	outline: none;
+}

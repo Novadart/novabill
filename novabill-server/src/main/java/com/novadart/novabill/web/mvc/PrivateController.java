@@ -1,52 +1,128 @@
 package com.novadart.novabill.web.mvc;
 
-import java.io.StringWriter;
-import java.util.concurrent.TimeUnit;
+import java.io.IOException;
+
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
+
 import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.service.web.BusinessService;
+import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
 @Controller
 public class PrivateController {
-
-	private static final ObjectMapper jsonSerializer = new ObjectMapper();
-
+	
 	@Autowired
-	private UtilsService utilsService;
+	private BusinessService businessService;
+	
+	private final ObjectMapper mapper = new ObjectMapper();
+	
+	public static enum PAGES {
+		DASHBOARD, CLIENTS, COMMODITIES, PRICE_LISTS, PAYMENTS, SETTINGS, INVOICES, ESTIMATIONS, TRANSPORT_DOCUMENTS, CREDIT_NOTES
+	}
 
-	@Value("${devMode.enabled}")
-	private boolean devMode;
 
-	@RequestMapping(value = "/private", method = RequestMethod.GET)
-	public ModelAndView privateArea(){
-		ModelAndView mav = new ModelAndView("private");
-		Business business = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId()).getBusiness();
-		String serializedBizz = null;
-		if(business != null) {
-			BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
-			if (business != null) {
-				StringWriter sw = new StringWriter();
-				try {
-					jsonSerializer.writeValue(sw, businessDTO);
-					serializedBizz = sw.toString();
-				} catch (Exception e) {
-					return null;
-				}
-			}
-		}
-		mav.addObject("business", serializedBizz);
-		mav.addObject("daysToExpiration", business == null? null: business.getNonFreeExpirationDelta(TimeUnit.DAYS));
-		mav.addObject("notesBitMask", Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId()).getNotesBitMask());
-		mav.addObject("devMode", devMode);
+	@RequestMapping(value = Urls.PRIVATE_HOME, method = RequestMethod.GET)
+	public ModelAndView dashboard(){
+		ModelAndView mav = new ModelAndView("private.dashboard");
+		mav.addObject("activePage", PAGES.DASHBOARD);
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_CLIENTS, method = RequestMethod.GET)
+	public ModelAndView clients() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
+		ModelAndView mav = new ModelAndView("private.clients");
+		mav.addObject("activePage", PAGES.CLIENTS);
+		
+		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Long businessID = principal.getBusiness().getId();
+		mav.addObject("invoiceYears", mapper.writeValueAsString(businessService.getInvoceYears(businessID)));
+		mav.addObject("estimationYears", mapper.writeValueAsString(businessService.getEstimationYears(businessID)));
+		mav.addObject("creditNoteYears", mapper.writeValueAsString(businessService.getCreditNoteYears(businessID)));
+		mav.addObject("transportDocumentYears", mapper.writeValueAsString(businessService.getTransportDocumentYears(businessID)));
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_DOCS_INVOICES, method = RequestMethod.GET)
+	public ModelAndView invoices() throws JsonGenerationException, JsonMappingException, IOException{
+		ModelAndView mav = new ModelAndView("private.invoices");
+		mav.addObject("activePage", PAGES.INVOICES);
+		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Business business = principal.getBusiness();
+		mav.addObject("invoiceYears", mapper.writeValueAsString(business.getInvoiceYears()));
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_DOCS_ESTIMATIONS, method = RequestMethod.GET)
+	public ModelAndView estimations() throws JsonGenerationException, JsonMappingException, IOException{
+		ModelAndView mav = new ModelAndView("private.estimations");
+		mav.addObject("activePage", PAGES.ESTIMATIONS);
+		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Business business = principal.getBusiness();
+		mav.addObject("estimationYears", mapper.writeValueAsString(business.getEstimationYears()));
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_DOCS_TRANSPORT_DOCUMENTS, method = RequestMethod.GET)
+	public ModelAndView transportDocuments() throws JsonGenerationException, JsonMappingException, IOException{
+		ModelAndView mav = new ModelAndView("private.transportDocuments");
+		mav.addObject("activePage", PAGES.TRANSPORT_DOCUMENTS);
+		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Business business = principal.getBusiness();
+		mav.addObject("transportDocumentYears", mapper.writeValueAsString(business.getTransportDocumentYears()));
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_DOCS_CREDIT_NOTES, method = RequestMethod.GET)
+	public ModelAndView creditNotes() throws JsonGenerationException, JsonMappingException, IOException{
+		ModelAndView mav = new ModelAndView("private.creditNotes");
+		mav.addObject("activePage", PAGES.CREDIT_NOTES);
+		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		Business business = principal.getBusiness();
+		mav.addObject("creditNoteYears", mapper.writeValueAsString(business.getCreditNoteYears()));
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_COMMODITIES, method = RequestMethod.GET)
+	public ModelAndView commodities(){
+		ModelAndView mav = new ModelAndView("private.commodities");
+		mav.addObject("activePage", PAGES.COMMODITIES);
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_PRICE_LISTS, method = RequestMethod.GET)
+	public ModelAndView priceLists(){
+		ModelAndView mav = new ModelAndView("private.priceLists");
+		mav.addObject("activePage", PAGES.PRICE_LISTS);
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_PAYMENTS, method = RequestMethod.GET)
+	public ModelAndView payments(){
+		ModelAndView mav = new ModelAndView("private.payments");
+		mav.addObject("activePage", PAGES.PAYMENTS);
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_SETTINGS, method = RequestMethod.GET)
+	public ModelAndView settings(){
+		ModelAndView mav = new ModelAndView("private.settings");
+		mav.addObject("activePage", PAGES.SETTINGS);
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_FIRST_RUN, method = RequestMethod.GET)
+	public ModelAndView firstRun(){
+		ModelAndView mav = new ModelAndView("private.firstrun");
 		return mav;
 	}
 

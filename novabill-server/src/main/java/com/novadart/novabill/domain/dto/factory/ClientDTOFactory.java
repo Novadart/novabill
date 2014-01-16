@@ -25,8 +25,10 @@ public class ClientDTOFactory {
 		clientDTO.setVatID(client.getVatID());
 		clientDTO.setSsn(client.getSsn());
 		clientDTO.setDefaultPaymentTypeID(client.getDefaultPaymentType() == null? null: client.getDefaultPaymentType().getId());
+		clientDTO.setDefaultPriceListID(client.getDefaultPriceList() == null? null: client.getDefaultPriceList().getId());
 		clientDTO.setNote(client.getNote());
 		clientDTO.setContact(ContactDTOFactory.toDTO(client.getContact()));
+		clientDTO.setVersion(client.getVersion());
 		return clientDTO;
 	}
 	

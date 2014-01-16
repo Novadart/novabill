@@ -75,6 +75,10 @@ public class TransportDocument extends AccountingDocument implements Serializabl
     	return countForClient(TransportDocument.class, id);
     }
     
+    public static List<TransportDocument> getTransportDocumentsWithIDs(List<Long> ids){
+    	return getAccountingDocumentsWithIDs(TransportDocument.class, ids);
+    }
+    
     /*
      *Getters and setters 
      * */

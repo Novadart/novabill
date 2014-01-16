@@ -2,12 +2,17 @@ package com.novadart.novabill.test.suite;
 
 import static org.junit.Assert.assertNotNull;
 
+import java.io.IOException;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Random;
 
 import javax.annotation.Resource;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
+import org.codehaus.jackson.map.ObjectMapper;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Test;
@@ -28,7 +33,20 @@ public class GWTServiceTest {
 	@Resource(name = "userPasswordMap")
 	protected HashMap<String, String> userPasswordMap;
 	
+	@Resource(name = "testProps")
+	protected HashMap<String, String> testProps;
+	
 	protected Principal authenticatedPrincipal;
+	
+	protected Integer getYear(){
+		return Integer.valueOf(testProps.get("year"));
+	}
+	
+	@SuppressWarnings("unchecked")
+	protected Map<String, String> parseLogRecordDetailsJson(String json) throws JsonParseException, JsonMappingException, IOException{
+		ObjectMapper mapper = new ObjectMapper();
+		return mapper.readValue(json, Map.class);
+	}
 	
 	/**
 	 * There has to be at least two businesses
@@ -47,7 +65,7 @@ public class GWTServiceTest {
 	}
 	
 	protected void authenticatePrincipal(Principal principal){
-		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal.getUsername(), userPasswordMap.get(principal.getUsername()));
+		UsernamePasswordAuthenticationToken token = new UsernamePasswordAuthenticationToken(principal, userPasswordMap.get(principal.getUsername()));
 		SecurityContextHolder.getContext().setAuthentication(token);
 	}
 	

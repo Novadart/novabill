@@ -1,0 +1,28 @@
+<li>
+	<div class="col1">
+		<div class="cont">
+			<div class="cont-col1">
+				<div 
+				    class="label label-sm"
+				    ng-class="{'label-success': record.operationType===OPERATION_TYPE.CREATE,
+				               'label-danger': record.operationType===OPERATION_TYPE.DELETE,
+				               'label-info': record.operationType===OPERATION_TYPE.UPDATE||record.operationType===OPERATION_TYPE.SET_PAYED}">
+					<i ng-if="record.entityType === ENTITY_TYPE.CLIENT" class="fa fa-user"></i>
+					<i ng-if="record.entityType === ENTITY_TYPE.COMMODITY" class="fa fa-th"></i>
+					<i ng-if="record.entityType === ENTITY_TYPE.INVOICE" class="fa fa-file"></i>
+					<i ng-if="record.entityType === ENTITY_TYPE.ESTIMATION" class="fa fa-file"></i>
+					<i ng-if="record.entityType === ENTITY_TYPE.CREDIT_NOTE" class="fa fa-file"></i>
+					<i ng-if="record.entityType === ENTITY_TYPE.TRANSPORT_DOCUMENT" class="fa fa-file"></i>
+					<i ng-if="record.entityType === ENTITY_TYPE.PAYMENT_TYPE" class="fa fa-briefcase"></i>
+					<i ng-if="record.entityType === ENTITY_TYPE.PRICE_LIST" class="fa fa-dollar"></i>
+				</div>
+			</div>
+			<div class="cont-col2">
+				<div class="desc" ng-bind-html="description"></div>
+			</div>
+		</div>
+	</div>
+	<div class="col2">
+		<div class="date">{{record.time | nFriendlyDate:'dd MMMM'}}</div>
+	</div>
+</li>

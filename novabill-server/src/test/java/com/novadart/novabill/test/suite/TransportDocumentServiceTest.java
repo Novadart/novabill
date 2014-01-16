@@ -1,14 +1,23 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertNull;
+import static org.junit.Assert.assertTrue;
 
+import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
-import java.util.HashMap;
+import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
-import javax.annotation.Resource;
+
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -17,23 +26,33 @@ import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.shared.client.facade.TransportDocumentService;
+import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtService;
+import com.novadart.novabill.shared.client.facade.BusinessGwtService;
+import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
+import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
+import com.novadart.novabill.shared.client.tuple.Triple;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
 
@@ -45,10 +64,16 @@ import com.novadart.novabill.shared.client.validation.Field;
 public class TransportDocumentServiceTest extends GWTServiceTest {
 	
 	@Autowired
-	private TransportDocumentService transportDocService;
+	private TransportDocumentGwtService transportDocService;
 	
-	@Resource(name = "testProps")
-	private HashMap<String, String> testProps;
+	@Autowired
+	private InvoiceGwtService invoiceService;
+	
+	@Autowired
+	private BusinessGwtService businessService;
+	
+	@Autowired
+	private BatchDataFetcherGwtService batchDataFetcherService;
 	
 	@Override
 	@Before
@@ -65,7 +90,7 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	@Test
 	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long transportDocID = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next().getId();
-		TransportDocumentDTO expectedDTO = TransportDocumentDTOFactory.toDTO(TransportDocument.findTransportDocument(transportDocID));
+		TransportDocumentDTO expectedDTO = TransportDocumentDTOFactory.toDTO(TransportDocument.findTransportDocument(transportDocID), true);
 		TransportDocumentDTO actualDTO = transportDocService.get(transportDocID);
 		assertTrue(TestUtils.transportDocumentComparator.equal(actualDTO, expectedDTO));
 	}
@@ -83,64 +108,70 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	
 	@Test
 	public void getAllInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		PageDTO<TransportDocumentDTO> results = transportDocService.getAllInRange(authenticatedPrincipal.getBusiness().getId(), 0, 10);
+		PageDTO<TransportDocumentDTO> results = transportDocService.getAllInRange(authenticatedPrincipal.getBusiness().getId(), getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
-		transportDocService.getAllInRange(getUnathorizedBusinessID(), 0, 10);
+		transportDocService.getAllInRange(getUnathorizedBusinessID(), getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllInRangeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException{
-		transportDocService.getAllInRange(null, 0, 10);
+		transportDocService.getAllInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test
 	public void getAllForClientAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
-		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(transportDocService.getAllForClient(clientID));
+		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
+		List<AccountingDocumentDTO> actual = new ArrayList<AccountingDocumentDTO>(transportDocService.getAllForClient(clientID, getYear()));
 		@SuppressWarnings({ "unchecked", "rawtypes" })
-		List<AccountingDocumentDTO> expected = DTOUtils.toDTOList(new ArrayList(Client.findClient(clientID).getTransportDocuments()), DTOUtils.transportDocDTOConverter); 
+		List<AccountingDocumentDTO> expected = DTOUtils.toDTOList(new ArrayList(Client.findClient(clientID).getTransportDocuments()), DTOUtils.transportDocDTOConverter, false); 
 		assertTrue(TestUtils.equal(expected, actual, TestUtils.transportDocumentComparator));
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
-		transportDocService.getAllForClient(clientID);
+		transportDocService.getAllForClient(clientID, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientAuthorizedClientIDNotExistTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		transportDocService.getAllForClient(-1l);
+		transportDocService.getAllForClient(-1l, getYear());
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientAuthorizedClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		transportDocService.getAllForClient(null);
+		transportDocService.getAllForClient(null, getYear());
 	}
 	
 	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
+	public void removeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
+		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		Long transportDocID = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, transportDocID);
 		TransportDocument.entityManager().flush();
 		assertNull(TransportDocument.findTransportDocument(transportDocID));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.TRANSPORT_DOCUMENT, rec.getEntityType());
+		assertEquals(transportDocID, rec.getEntityID());
+		assertEquals(OperationType.DELETE, rec.getOperationType());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(Client.findClient(clientID).getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void removeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
+		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		Long transportDocID = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(getUnathorizedBusinessID(), clientID, transportDocID);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void removeUnauthorizedBusinessIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
+		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		Long transportDocID = Client.findClient(clientID).getTransportDocuments().iterator().next().getId();
 		transportDocService.remove(null, clientID, transportDocID);
 	}
@@ -153,37 +184,43 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	
 	@Test(expected = DataAccessException.class)
 	public void removeAauthorizedTransportDocIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
+		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
 		transportDocService.remove(authenticatedPrincipal.getBusiness().getId(), clientID, null);
 	}
 	
 	@Test
 	public void getAllForClientInRangeAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		Long clientID = new Long(testProps.get("clientWithTransportDocumentsID"));
-		PageDTO<TransportDocumentDTO> results = transportDocService.getAllForClientInRange(clientID, 0, 10);
+		Long clientID = new Long(testProps.get("clientWithTransportDocsID"));
+		PageDTO<TransportDocumentDTO> results = transportDocService.getAllForClientInRange(clientID, getYear(), 0, 10);
 		assertTrue(10 == results.getLength() && 0 == results.getOffset() && results.getItems().size() <= 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientInRangeUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long clientID = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next().getId();
-		transportDocService.getAllForClientInRange(clientID, 0, 10);
+		transportDocService.getAllForClientInRange(clientID, getYear(), 0, 10);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllForClientInRangeClientIDNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
-		transportDocService.getAllForClientInRange(null, 0, 10);
+		transportDocService.getAllForClientInRange(null, getYear(), 0, 10);
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
 		TransportDocument expected = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		expected.setNote("Temporary note for this transport document");
-		transportDocService.update(TransportDocumentDTOFactory.toDTO(expected));
+		transportDocService.update(TransportDocumentDTOFactory.toDTO(expected, true));
 		TransportDocument.entityManager().flush();
 		TransportDocument actual = TransportDocument.findTransportDocument(expected.getId());
 		assertEquals(actual.getNote(), "Temporary note for this transport document");
-		
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.TRANSPORT_DOCUMENT, rec.getEntityType());
+		assertEquals(expected.getId(), rec.getEntityID());
+		assertEquals(OperationType.UPDATE, rec.getOperationType());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(expected.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(expected.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -194,26 +231,33 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		TransportDocument transportDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
-		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(transportDoc);
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(transportDoc, true);
 		transDocDTO.setId(null);
 		transportDocService.update(transDocDTO);
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, JsonParseException, JsonMappingException, IOException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()));
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
 		transDocDTO.setClient(ClientDTOFactory.toDTO(client));
 		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = transportDocService.add(transDocDTO);
 		TransportDocument.entityManager().flush();
-		assertTrue(TestUtils.transportDocumentComparatorIgnoreID.equal(transDocDTO, TransportDocumentDTOFactory.toDTO(TransportDocument.findTransportDocument(id))));
+		assertTrue(TestUtils.transportDocumentComparatorIgnoreID.equal(transDocDTO, TransportDocumentDTOFactory.toDTO(TransportDocument.findTransportDocument(id), true)));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.TRANSPORT_DOCUMENT, rec.getEntityType());
+		assertEquals(id, rec.getEntityID());
+		assertEquals(OperationType.CREATE, rec.getOperationType());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(transDocDTO.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(transDocDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void addUnathorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(Business.findBusiness(getUnathorizedBusinessID()).getNextTransportDocDocumentID()));
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(Business.findBusiness(getUnathorizedBusinessID()).getNextTransportDocDocumentID()), true);
 		transDocDTO.setClient(ClientDTOFactory.toDTO(client));
 		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		transportDocService.add(transDocDTO);
@@ -227,7 +271,7 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void addAuthorizedTransportDocDTOIDNotNull() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()));
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
 		transDocDTO.setClient(ClientDTOFactory.toDTO(client));
 		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		transDocDTO.setId(1l);
@@ -237,7 +281,7 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	@Test
 	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, AuthorizationException, InstantiationException{
 		try{
-			TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createInvalidTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()));
+			TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createInvalidTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
 			transDocDTO.setClient(ClientDTOFactory.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
 			transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 			transportDocService.add(transDocDTO);
@@ -253,6 +297,36 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 				actual.add(error.getField());
 			assertEquals(expected, actual);
 		}
+	}
+	
+	@Test
+	public void getAllWithIDsTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, AuthorizationException, ValidationException, InstantiationException, IllegalAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
+		transDocDTO.setClient(ClientDTOFactory.toDTO(client));
+		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		transportDocService.add(transDocDTO);
+		TransportDocument.entityManager().flush();
+		Long nextInvID = invoiceService.getNextInvoiceDocumentID();
+		List<TransportDocumentDTO> transDocDTOs = businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId(), Calendar.getInstance().get(Calendar.YEAR));
+		List<Long> ids = new ArrayList<>(transDocDTOs.size());
+		for(TransportDocumentDTO dto: transDocDTOs)
+			ids.add(dto.getId());
+		Collections.sort(transDocDTOs, new Comparator<TransportDocumentDTO>() {
+			@Override
+			public int compare(TransportDocumentDTO t1, TransportDocumentDTO t2){
+				return t1.getAccountingDocumentDate().compareTo(t2.getAccountingDocumentDate());
+			}
+		});
+		Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO> pack = batchDataFetcherService.fetchNewInvoiceFromTransportDocumentsOpData(ids);
+		assertEquals(nextInvID, pack.getFirst());
+		assertEquals(ids.size(), pack.getSecond().size());
+		for(int i=0; i<transDocDTOs.size(); ++i)
+			assertEquals(transDocDTOs.get(i).getId(), pack.getSecond().get(i).getId());
+		if(transDocDTOs.get(0).getClient().getDefaultPaymentTypeID() != null)
+			assertNotNull(pack.getThird());
+		else
+			assertTrue(pack.getThird() == null);
 	}
 
 }
