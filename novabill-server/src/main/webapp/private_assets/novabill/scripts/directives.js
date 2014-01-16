@@ -370,15 +370,17 @@ angular.module('novabill.directives',
 	return {
 		templateUrl: nConstants.conf.partialsBaseUrl+'/directives/n-commodity-price.html',
 		scope: { 
-			// the price list this price refers to
+			// the price list we are dealing with
 			priceListName : '=',
 
-			// the price for this price list. if a price is not set, the value will be not null 
-			// (a shallow object is returned by the server) but the id of the price will be null
+			// the commodity
 			commodity : '=',
 
 			// if true the price cannot be changed, buttons are hidden
-			readOnly : '@?'
+			readOnly : '@?',
+			
+			//should we reload if the price has been updated?
+			reloadOnUpdate : '='
 		},
 		controller : ['$scope', '$rootScope', 'nCalc', '$filter', function($scope, $rootScope, nCalc, $filter){
 			$scope.PRICE_TYPE = nConstants.priceType;
@@ -441,7 +443,7 @@ angular.module('novabill.directives',
 								
 								$scope.editMode = false;
 	
-								if($scope.priceListName === $scope.DEFAULT_PRICELIST_NAME){
+								if($scope.reloadOnUpdate){
 									$route.reload();
 								}
 							});

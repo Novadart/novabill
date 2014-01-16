@@ -183,6 +183,10 @@ public class CalcUtils {
 		List<AccountingDocumentItemDTO> tmpItems = null;
 		
 		for (AccountingDocumentItemDTO a : items) {
+			if(a.getPrice() == null){
+				continue;
+			}
+			
 			tmpTax = a.getTax();
 			tmpItems = partitions.get(tmpTax);
 			

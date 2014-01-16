@@ -77,7 +77,7 @@
 							ng-class="{defaultPriceList: priceListName===DEFAULT_PRICELIST_NAME, priceList: priceListName!==DEFAULT_PRICELIST_NAME, service: commodity.service, product: !commodity.service}">
 							<td width="40%">{{priceListName | nFilterDefault}}</td>
 							<td width="60%">
-							     <n-commodity-price price-list-name="priceListName" commodity="commodity"></n-commodity-price>
+							     <n-commodity-price price-list-name="priceListName" commodity="commodity" reload-on-update="priceListName===DEFAULT_PRICELIST_NAME"></n-commodity-price>
 							</td>
 						</tr>
 					</tbody>
