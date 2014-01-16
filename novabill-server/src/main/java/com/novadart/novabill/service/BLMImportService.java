@@ -198,7 +198,7 @@ public class BLMImportService {
 			String descr = safeGet(row, "Descr", "");
 			String dim = safeGet(row, "Dim", "");
 			commodity.setService(false);
-			commodity.setUnitOfMeasure("Unità");
+			commodity.setUnitOfMeasure("pz.");
 			commodity.setDescription(descr + ". Dimensioni: " + dim);
 			commodity.setTax(new BigDecimal("22.00"));
 			commodity.setBusiness(business);
