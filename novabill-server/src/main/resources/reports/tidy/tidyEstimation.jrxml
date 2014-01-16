@@ -307,7 +307,7 @@ $F{document.client.country} +
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{total}.doubleValue())]]></textFieldExpression>
+								<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{totalBeforeTax}.doubleValue())]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

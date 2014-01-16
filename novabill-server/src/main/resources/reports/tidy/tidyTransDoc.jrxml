@@ -37,7 +37,7 @@
 		<field name="unitOfMeasure" class="java.lang.String"/>
 		<field name="price" class="java.math.BigDecimal"/>
 		<field name="tax" class="java.math.BigDecimal"/>
-		<field name="total" class="java.math.BigDecimal"/>
+		<field name="totalBeforeTax" class="java.math.BigDecimal"/>
 	</subDataset>
 	<subDataset name="Table Dataset 1" uuid="1d6f1553-114e-4e78-9a25-3dcdcbaad607"/>
 	<queryString>
