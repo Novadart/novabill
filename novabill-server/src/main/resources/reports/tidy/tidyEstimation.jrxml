@@ -37,7 +37,7 @@
 		<field name="unitOfMeasure" class="java.lang.String"/>
 		<field name="price" class="java.math.BigDecimal"/>
 		<field name="tax" class="java.math.BigDecimal"/>
-		<field name="total" class="java.math.BigDecimal"/>
+		<field name="totalBeforeTax" class="java.math.BigDecimal"/>
 		<field name="discount" class="java.math.BigDecimal"/>
 	</subDataset>
 	<queryString>
@@ -202,7 +202,7 @@ $F{document.client.country} +
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{quantity}.stripTrailingZeros()]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -227,48 +227,6 @@ $F{document.client.country} +
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="60" uuid="1a47a9f7-ac05-45df-84df-a087c255f93a">
-						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
-							<textField>
-								<reportElement uuid="3ef6af2d-0093-4317-ad53-d44814c95531" x="0" y="0" width="58" height="18"/>
-								<textElement verticalAlignment="Middle">
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$R{tidy.price}]]></textFieldExpression>
-							</textField>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField isStretchWithOverflow="true">
-								<reportElement uuid="bf637d4a-ae9c-425b-8fb5-cdb0471c422e" x="0" y="0" width="58" height="18"/>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{price} == null? "": java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{price}.doubleValue())]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="50" uuid="db493064-f6b4-4275-a9a4-e9146bbf85e9">
-						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
-							<textField>
-								<reportElement uuid="493d9ef8-2ebb-487f-bd88-ea6b36177553" x="0" y="0" width="48" height="18"/>
-								<textElement verticalAlignment="Middle">
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$R{tidy.price}]]></textFieldExpression>
-							</textField>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="77a9caf1-d59d-4863-9339-e50f2701a2f4" x="0" y="0" width="48" height="18"/>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{discount}]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
 					<jr:column width="40" uuid="e9882e8d-4ff0-4e61-8aba-0c50007d9133">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
@@ -286,7 +244,49 @@ $F{document.client.country} +
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{tax}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{tax}.stripTrailingZeros()]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="60" uuid="1a47a9f7-ac05-45df-84df-a087c255f93a">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="3ef6af2d-0093-4317-ad53-d44814c95531" x="0" y="0" width="58" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{tidy.price}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="bf637d4a-ae9c-425b-8fb5-cdb0471c422e" x="0" y="0" width="58" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{price}.doubleValue())]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="50" uuid="db493064-f6b4-4275-a9a4-e9146bbf85e9">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement uuid="493d9ef8-2ebb-487f-bd88-ea6b36177553" x="0" y="0" width="48" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{tidy.price}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="77a9caf1-d59d-4863-9339-e50f2701a2f4" x="0" y="0" width="48" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{discount}.compareTo(java.math.BigDecimal.ZERO) == 0? "": $F{discount}.stripTrailingZeros()]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -297,17 +297,17 @@ $F{document.client.country} +
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$R{tidy.itemTotalBeforeTax}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="false">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="a2f77c65-878e-4827-b80c-31f61b7b5539" x="0" y="0" width="58" height="18"/>
-								<textElement textAlignment="Right" verticalAlignment="Middle">
+								<textElement textAlignment="Left" verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{total} == null? "": java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{total}.doubleValue())]]></textFieldExpression>
+								<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{total}.doubleValue())]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

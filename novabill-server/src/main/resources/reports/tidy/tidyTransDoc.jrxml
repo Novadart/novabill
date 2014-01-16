@@ -219,7 +219,7 @@ $F{document.client.country} +
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{quantity}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{quantity}.stripTrailingZeros()]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
