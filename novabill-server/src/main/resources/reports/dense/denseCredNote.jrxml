@@ -93,9 +93,9 @@
 				<textFieldExpression><![CDATA[$F{document.business.address} + " – " + $F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim()) ? " (" + $F{document.business.province} + ")": "") +
 (($F{document.business.phone}!=null && $F{document.business.phone}.trim().length() > 0) || ($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0)? "\n": "") +
 ($F{document.business.phone}!=null && $F{document.business.phone}.trim().length() > 0? $R{dense.phone} + ": " + $F{document.business.phone} + " – ": "") +
-($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0? $R{dense.email} + ": " + $F{document.business.email}: "") +
-($F{document.business.vatID}!=null && !"".equals($F{document.business.vatID}.trim()) ? $R{dense.vatID} + ": " + $F{document.business.vatID} : "") + "\n" +
-($F{document.business.ssn}!=null && !"".equals($F{document.business.ssn}.trim()) ? " – " + $R{dense.ssn} + ": " + $F{document.business.ssn} : "")]]></textFieldExpression>
+($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0? $R{dense.email} + ": " + $F{document.business.email}: "") + "\n" +
+($F{document.business.vatID}!=null && !"".equals($F{document.business.vatID}.trim()) ? $R{dense.vatID} + ": " + $F{document.business.vatID} + "  ": "") +
+($F{document.business.ssn}!=null && !"".equals($F{document.business.ssn}.trim()) ? $R{dense.ssn} + ": " + $F{document.business.ssn} : "")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="177c4de2-1558-4fea-b979-446db24089b9" positionType="Float" x="8" y="0" width="308" height="20"/>
@@ -367,9 +367,9 @@
 				<textFieldExpression><![CDATA[$F{document.business.address} + " – " + $F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim()) ? " (" + $F{document.business.province} + ")": "") +
 (($F{document.business.phone}!=null && $F{document.business.phone}.trim().length() > 0) || ($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0)? "\n": "") +
 ($F{document.business.phone}!=null && $F{document.business.phone}.trim().length() > 0? $R{dense.phone} + ": " + $F{document.business.phone} + " – ": "") +
-($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0? $R{dense.email} + ": " + $F{document.business.email}: "") +
-($F{document.business.vatID}!=null && !"".equals($F{document.business.vatID}.trim()) ? $R{dense.vatID} + ": " + $F{document.business.vatID} : "") + "\n" +
-($F{document.business.ssn}!=null && !"".equals($F{document.business.ssn}.trim()) ? " – " + $R{dense.ssn} + ": " + $F{document.business.ssn} : "")]]></textFieldExpression>
+($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0? $R{dense.email} + ": " + $F{document.business.email}: "") + "\n" +
+($F{document.business.vatID}!=null && !"".equals($F{document.business.vatID}.trim()) ? $R{dense.vatID} + ": " + $F{document.business.vatID} + "  ": "") +
+($F{document.business.ssn}!=null && !"".equals($F{document.business.ssn}.trim()) ? $R{dense.ssn} + ": " + $F{document.business.ssn} : "")]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="dd440861-df5f-4c5d-b5f3-02f503c7fa45" positionType="Float" mode="Opaque" x="50" y="69" width="200" height="20" backcolor="#C0BEBE"/>
