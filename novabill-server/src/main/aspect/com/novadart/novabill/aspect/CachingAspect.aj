@@ -220,11 +220,23 @@ public privileged aspect CachingAspect {
 	 * Dependencies: None
 	 */
 	
-	declare @method : public void com.novadart.novabill.service.web.CommodityService.remove(Long, Long): @CacheEvict(value = COMMODITY_CACHE, key = "#businessID");
+	declare @method : public void com.novadart.novabill.service.web.CommodityService.remove(Long, Long): @Caching(evict = {
+			@CacheEvict(value = COMMODITY_CACHE, key = "#businessID"),
+			@CacheEvict(value = PRICELIST_CACHE, allEntries = true)
+	});
+		
 	
-	declare @method : public Long com.novadart.novabill.service.web.CommodityService.add(CommodityDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id");
+	declare @method : public Long com.novadart.novabill.service.web.CommodityService.add(CommodityDTO): @Caching(evict = {
+			@CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id"),
+			@CacheEvict(value = PRICELIST_CACHE, allEntries = true)
+	});
 	
-	declare @method : public void com.novadart.novabill.service.web.CommodityService.update(CommodityDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id");
+	declare @method : public void com.novadart.novabill.service.web.CommodityService.update(CommodityDTO): @Caching(evict = {
+			@CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id"),
+			@CacheEvict(value = PRICELIST_CACHE, allEntries = true)
+	});
+	
+	declare @method : public void com.novadart.novabill.service.web.CommodityService.removePrice(Long, Long, Long): @CacheEvict(value = PRICELIST_CACHE, allEntries = true); 
 	
 	declare @method : public Long com.novadart.novabill.service.web.CommodityService.addOrUpdatePrice(Long, PriceDTO): @Caching(evict = { 
 		//@CacheEvict(value = COMMODITY_CACHE, key = "#businessID"),
