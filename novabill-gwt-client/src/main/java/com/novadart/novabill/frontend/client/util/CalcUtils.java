@@ -54,7 +54,7 @@ public class CalcUtils {
 	 * @return the price rounded HALF UP to the second decimal
 	 */
 	public static BigDecimal calculatePriceWithPercentageVariation(BigDecimal priceValue, BigDecimal percentageValue){
-		BigDecimal percentage = percentageValue.add(BD_100).divide(BD_100);
+		BigDecimal percentage = percentageValue.multiply(new BigDecimal("-1")).add(BD_100).divide(BD_100);
 		return round2Dec(priceValue.multiply(percentage));
 	}
 	
