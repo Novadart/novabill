@@ -247,7 +247,7 @@
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{quantity}.stripTrailingZeros()]]></textFieldExpression>
+								<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.removeTrailingZeros($F{quantity}, Locale.ITALY)]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -289,7 +289,7 @@
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{tax}.stripTrailingZeros()]]></textFieldExpression>
+								<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.removeTrailingZeros($F{tax}, Locale.ITALY)]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
