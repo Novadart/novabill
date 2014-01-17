@@ -355,7 +355,7 @@
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$R{dense.totalBeforeTax}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$R{dense.itemTotalBeforeTax}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="18" rowSpan="1">
