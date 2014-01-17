@@ -1,11 +1,13 @@
 package com.novadart.novabill.frontend.client.view.center.transportdocument;
 
+import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.event.dom.client.ChangeEvent;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.event.logical.shared.ValueChangeHandler;
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -110,7 +112,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
 		numberOfPackages = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_NUMBER);
-		transporter = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), nev);
+		transporter = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 
 		fromAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city());
 		fromAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName());
@@ -142,6 +144,15 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		date = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
+		date.addValueChangeHandler(new ValueChangeHandler<Date>() {
+			
+			@Override
+			public void onValueChange(ValueChangeEvent<Date> event) {
+				transportStartDate.setValue(event.getValue());
+				hour.setSelectedItemByValue("09");
+				minute.setSelectedItemByValue("00");
+			}
+		});
 
 		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
 
@@ -250,6 +261,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		numberOfPackages.reset();
 		transporter.reset();
 		transportationResponsibility.setText("");
+		cause.setText(I18N.INSTANCE.transportDocumentCauseDefaultText());
 		tradeZone.setText("");
 		hour.reset();
 		minute.reset();

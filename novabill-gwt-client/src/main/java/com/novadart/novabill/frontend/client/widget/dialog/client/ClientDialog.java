@@ -24,6 +24,7 @@ import com.novadart.gwtshared.client.validation.VatIdValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.SharedComparators;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
@@ -128,7 +129,8 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		address = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		city = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		country = LocaleWidgets.createCountryListBox("");
-
+		country.setSelectedItemByValue(Configuration.getBusiness().getCountry());
+		
 		phone = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		mobile = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		fax = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
