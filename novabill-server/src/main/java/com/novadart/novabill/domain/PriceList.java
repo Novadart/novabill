@@ -85,18 +85,6 @@ public class PriceList {
 				setParameter("id", getId()).getSingleResult() > 0;
 	}
 	
-	@SuppressWarnings("unused")
-	@PreRemove
-	private void preRemove(){
-		PriceList defaultPriceList = PriceList.getDefaultPriceList(getBusiness().getId());
-		boolean defaultPriceListClientsInitialized = Hibernate.isInitialized(defaultPriceList.getClients());
-		for(Client client: getClients()){
-			client.setDefaultPriceList(defaultPriceList);
-			if(defaultPriceListClientsInitialized)
-				defaultPriceList.getClients().add(client);
-		}
-	}
-	
 	/*
      * Getters and setters
      * */
