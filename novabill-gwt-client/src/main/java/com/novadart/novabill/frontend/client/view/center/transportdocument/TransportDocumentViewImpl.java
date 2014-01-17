@@ -110,7 +110,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
 		numberOfPackages = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_NUMBER);
-		transporter = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), nev);
+		transporter = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 
 		fromAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city());
 		fromAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName());
@@ -250,6 +250,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		numberOfPackages.reset();
 		transporter.reset();
 		transportationResponsibility.setText("");
+		cause.setText(I18N.INSTANCE.transportDocumentCauseDefaultText());
 		tradeZone.setText("");
 		hour.reset();
 		minute.reset();
