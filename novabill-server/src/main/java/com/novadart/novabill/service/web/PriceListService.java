@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
@@ -102,6 +103,16 @@ public class PriceListService {
 		PriceListDTOFactory.copyFromDTO(persistedPriceList, priceListDTO);
 	}
 	
+	private void preRemove(PriceList priceList){
+		PriceList defaultPriceList = PriceList.getDefaultPriceList(priceList.getBusiness().getId());
+		boolean defaultPriceListClientsInitialized = Hibernate.isInitialized(defaultPriceList.getClients());
+		for(Client client: priceList.getClients()){
+			client.setDefaultPriceList(defaultPriceList);
+			if(defaultPriceListClientsInitialized)
+				defaultPriceList.getClients().add(client);
+		}
+	}
+	
 	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.PriceList).findPriceList(#id)?.business?.id == #businessID")
@@ -109,6 +120,7 @@ public class PriceListService {
 		PriceList priceList = PriceList.findPriceList(id);
 		if(priceList.getName().equals(PriceListConstants.DEFAULT)) //removing default pricelist
 			throw new DataIntegrityException();
+		preRemove(priceList);
 		priceList.remove(); //removing pricelist
 		if(Hibernate.isInitialized(priceList.getBusiness().getPriceLists()))
 			priceList.getBusiness().getPriceLists().remove(priceList);
