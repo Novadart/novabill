@@ -35,7 +35,7 @@ import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 
 
-//@Service
+@Service
 public class BLMImportService {
 	
 	private String blmDBPath = "/tmp/DATI.mdb";
