@@ -279,7 +279,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{quantity}.stripTrailingZeros()]]></textFieldExpression>
+								<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.removeTrailingZeros($F{quantity}, Locale.ITALY)]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -321,7 +321,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{tax}.stripTrailingZeros()]]></textFieldExpression>
+								<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.removeTrailingZeros($F{tax}, Locale.ITALY)]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -363,7 +363,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{discount}.compareTo(java.math.BigDecimal.ZERO) == 0? "": $F{discount}.stripTrailingZeros()]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{discount}.compareTo(java.math.BigDecimal.ZERO) == 0? "": com.novadart.novabill.report.ReportUtils.removeTrailingZeros($F{discount}, Locale.ITALY)]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

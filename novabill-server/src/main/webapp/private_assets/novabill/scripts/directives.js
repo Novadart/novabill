@@ -404,8 +404,9 @@ angular.module('novabill.directives',
 
 					switch (price.priceType) {
 					case nConstants.priceType.DERIVED:
-						$scope.priceDetails = details +'\n'+$filter('translate')('COMMODITY_PRICE_PERCENTAGE')
-						+'   ' + (price.priceValue > 0 ? '+'+price.priceValue : String(price.priceValue)).replace('\.', ',') +'%';
+						$scope.priceDetails = details +'\n'
+						+(price.priceValue > 0 ? $filter('translate')('COMMODITY_PRICE_DISCOUNT') : $filter('translate')('COMMODITY_PRICE_OVERCHARGE'))
+						+'   ' + (price.priceValue > 0 ? String(price.priceValue) : String(-price.priceValue)).replace('\.', ',') +'%';
 						break;
 
 					default:
@@ -463,10 +464,9 @@ angular.module('novabill.directives',
 				};
 	
 				$scope.remove = function(){
-					$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
-							'Are you sure that you want to delete the price in this price list?', {
+					$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, $filter('translate')('REMOVAL_QUESTION'), {
 						onOk : function(){
-							GWT_Server.commodity.removePrice(nConstants.conf.businessId, $scope.price.priceListID, $scope.price.commodityID, {
+							GWT_Server.commodity.removePrice(nConstants.conf.businessId, String($scope.price.priceListID), String($scope.price.commodityID), {
 								onSuccess : function(data){
 									$scope.$apply(function(){
 										$route.reload();
