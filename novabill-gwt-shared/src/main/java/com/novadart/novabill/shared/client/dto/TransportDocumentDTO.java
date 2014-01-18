@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class TransportDocumentDTO extends AccountingDocumentDTO {
 	
-	private Integer numberOfPackages;
+	private String numberOfPackages;
 	
 	private EndpointDTO fromEndpoint;
 	
@@ -20,11 +20,11 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 	
 	private String cause;
 	
-	public Integer getNumberOfPackages() {
+	public String getNumberOfPackages() {
 		return numberOfPackages;
 	}
 
-	public void setNumberOfPackages(Integer numberOfPackages) {
+	public void setNumberOfPackages(String numberOfPackages) {
 		this.numberOfPackages = numberOfPackages;
 	}
 

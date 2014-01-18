@@ -25,7 +25,8 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 
 	private static final long serialVersionUID = 9178463460405596881L;
 	
-	private Integer numberOfPackages;
+	@Size(max = 255)
+	private String numberOfPackages;
 	
 	@AttributeOverrides({
 		@AttributeOverride(name = "companyName", column = @Column(name = "from_company_name")),
@@ -99,11 +100,11 @@ public class TransportDocument extends AccountingDocument implements Serializabl
         this.client = client;
     }
 
-    public Integer getNumberOfPackages() {
+    public String getNumberOfPackages() {
 		return numberOfPackages;
 	}
 
-	public void setNumberOfPackages(Integer numberOfPackages) {
+	public void setNumberOfPackages(String numberOfPackages) {
 		this.numberOfPackages = numberOfPackages;
 	}
     
