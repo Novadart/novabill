@@ -93,8 +93,8 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 }])
 
 
-.filter('nFilterDefault', ['$filter', 'nConstants', function($filter, nConstants) {
-	return function(input) {
-		return input === nConstants.conf.defaultPriceListName ? $filter('translate')('DEFAULT_PRICE_LIST') : input;
+.filter('nFilterDefault', ['$filter', 'nRegExp', function($filter, nRegExp) {
+	return function(input, replacement) {
+		return nRegExp.reserved_word.test(input) ? (replacement ? $filter('translate')(replacement) : '') : input;
 	};
 }]);

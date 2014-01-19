@@ -163,6 +163,12 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			}
 		});
 	}
+	
+	@Override
+	protected void onUnload() {
+		super.onUnload();
+		commoditySearchPanel.hide();
+	}
 
 	private String prevKey = "";
 	private Stack<List<CommodityDTO>> searchStack = new Stack<List<CommodityDTO>>();

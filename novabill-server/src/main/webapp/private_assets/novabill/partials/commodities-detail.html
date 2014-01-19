@@ -48,7 +48,7 @@
 						</thead>
 						<tbody>
 							<tr>
-								<td>{{printSku()}}</td>
+								<td>{{commodity.sku | nFilterDefault}}</td>
 								<td>{{commodity.unitOfMeasure}}</td>
 								<td>{{commodity.tax}}</td>
 							</tr>
@@ -75,7 +75,7 @@
 					<tbody>
 						<tr ng-repeat="(priceListName, price) in commodity.pricesMap.prices"
 							ng-class="{defaultPriceList: priceListName===DEFAULT_PRICELIST_NAME, priceList: priceListName!==DEFAULT_PRICELIST_NAME, service: commodity.service, product: !commodity.service}">
-							<td width="40%">{{priceListName | nFilterDefault}}</td>
+							<td width="40%">{{priceListName | nFilterDefault:'DEFAULT_PRICE_LIST'}}</td>
 							<td width="60%">
 							     <n-commodity-price price-list-name="priceListName" commodity="commodity" reload-on-update="priceListName===DEFAULT_PRICELIST_NAME"></n-commodity-price>
 							</td>

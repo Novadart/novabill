@@ -1,6 +1,6 @@
 <div class="well well-small price-list" ng-class="{'default-price-list': priceList.name === DEFAULT_PRICELIST_NAME}" ng-click="openUrl()">
 
-	<span class="name">{{priceList.name | nFilterDefault}}</span>
+	<span class="name">{{priceList.name | nFilterDefault:'DEFAULT_PRICE_LIST'}}</span>
 
 	<div ng-show="priceList.name!==DEFAULT_PRICELIST_NAME" class="options btn-group pull-right">
 		<a class="btn blue btn-sm dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#"> <i

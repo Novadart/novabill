@@ -7,7 +7,7 @@
 
 		<select class="form-control" style="margin: 5px 0 2px" ng-model="$parent.selectedPriceList"
 			ng-init="selectedPriceList" ng-change="changePriceList()"
-			ng-options="p.id as (p.name | nFilterDefault) for p in listOfPriceLists">
+			ng-options="p.id as (p.name | nFilterDefault:'DEFAULT_PRICE_LIST') for p in listOfPriceLists">
 		</select>
 
 		<div class="commodities-filter input-icon left" style="margin: 0 0 10px">

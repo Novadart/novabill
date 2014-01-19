@@ -6,11 +6,11 @@
 			<ul class="breadcrumb">
 				<li><i class="fa fa-home"></i> <a href="../">Home</a></li>
 				<li><a href=".">{{'PRICE_LISTS' | translate}}</a><i class="icon-angle-right"></i></li>
-				<li><span>{{priceList.name | nFilterDefault}}</span></li>
+				<li><span>{{priceList.name | nFilterDefault:'DEFAULT_PRICE_LIST'}}</span></li>
 			</ul>
 
 			<div class="jumbotron">
-				<h2>{{priceList.name | nFilterDefault}}</h2>
+				<h2>{{priceList.name | nFilterDefault:'DEFAULT_PRICE_LIST'}}</h2>
 			</div>
 
 			<div ng-if="DEFAULT_PRICELIST_NAME!==priceList.name" style="height: 28px;" class="col-md-2 col-md-offset-10">
@@ -41,7 +41,7 @@
 				<table class="table">
 					<tbody>
 						<tr class="price-row" ng-class="{product: !com.service, service: com.service}" ng-repeat="com in commodities">
-							<td width="10%"><strong>{{com.sku}}</strong></td>
+							<td width="10%"><strong>{{com.sku | nFilterDefault}}</strong></td>
 							<td width="50%">{{com.description}}</td>
 							<td width="40%" style="text-align: right;">
 							      <n-commodity-price 
