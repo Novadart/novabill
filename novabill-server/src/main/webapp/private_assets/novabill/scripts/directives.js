@@ -469,7 +469,18 @@ angular.module('novabill.directives',
 							GWT_Server.commodity.removePrice(nConstants.conf.businessId, String($scope.price.priceListID), String($scope.price.commodityID), {
 								onSuccess : function(data){
 									$scope.$apply(function(){
-										$route.reload();
+										var deletedPrice = COMMODITY_PRICES_HACK[$scope.priceListName];
+										var emptyPrice = {
+												id: null, 
+												priceValue: null, 
+												priceType: null, 
+												commodityID: deletedPrice.commodityID, 
+												priceListID: deletedPrice.priceListID
+										};
+										COMMODITY_PRICES_HACK[$scope.priceListName] = emptyPrice;
+										$scope.price = emptyPrice;
+										updatePriceInfo( $scope.price );
+										$scope.editMode = false;
 									});
 								},
 	
