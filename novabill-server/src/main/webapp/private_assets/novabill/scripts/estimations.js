@@ -1,9 +1,12 @@
 'use strict';
 
-angular.module("novabill.estimations", ['novabill.estimations.controllers', 'novabill.constants', 'ngRoute', 'novabill.analytics'])
+angular.module("novabill.estimations", ['novabill.estimations.controllers', 'novabill.constants', 'ngRoute', 'novabill.utils'])
 
-.config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
+.config(['$routeProvider', 'nConstantsProvider', 'nAnalyticsProvider',
+         function($routeProvider, nConstantsProvider, nAnalyticsProvider){
 
+	nAnalyticsProvider.urlPath(nConstantsProvider.conf.estimationsBaseUrl);
+	
 	$routeProvider
 	
 	.when('/', {

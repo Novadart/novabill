@@ -1,8 +1,11 @@
 'use strict';
 
-angular.module("novabill.dashboard", ['novabill.dashboard.controllers', 'novabill.constants', 'ngRoute', 'novabill.analytics'])
+angular.module("novabill.dashboard", ['novabill.dashboard.controllers', 'novabill.constants', 'ngRoute', 'novabill.utils'])
 
-.config(['$routeProvider', 'nConstantsProvider', function($routeProvider, nConstantsProvider){
+.config(['$routeProvider', 'nConstantsProvider', 'nAnalyticsProvider',
+         function($routeProvider, nConstantsProvider, nAnalyticsProvider){
+	
+	nAnalyticsProvider.urlPath(nConstantsProvider.conf.dashboardUrl);
 	
 	$routeProvider
 	

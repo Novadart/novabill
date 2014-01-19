@@ -243,7 +243,7 @@
 	<script src="${privateAssetsUrl}/novabill/scripts/translations.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/novabill/scripts/constants.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/novabill/scripts/calc.js" type="text/javascript"></script>
-	<script src="${privateAssetsUrl}/novabill/scripts/analytics.js" type="text/javascript"></script>
+	<script src="${privateAssetsUrl}/novabill/scripts/utils.js" type="text/javascript"></script>
 
 
 	<!--[if lt IE 9]>

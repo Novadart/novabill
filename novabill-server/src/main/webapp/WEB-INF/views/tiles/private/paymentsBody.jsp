@@ -2,7 +2,9 @@
 	pageEncoding="UTF-8"%>
 
 <script type="text/javascript">
-_gaq.push(['_trackPageview']);
+if(_gaq){
+    _gaq.push(['_trackPageview']);
+}
 </script>
 
 <div class="page-content">

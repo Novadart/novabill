@@ -93,8 +93,56 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 }])
 
 
+/**
+ * Replace the reserver word with some custom string. If no string is supplied, return the empty string
+ */
 .filter('nFilterDefault', ['$filter', 'nRegExp', function($filter, nRegExp) {
 	return function(input, replacement) {
 		return nRegExp.reserved_word.test(input) ? (replacement ? $filter('translate')(replacement) : '') : input;
 	};
+}])
+
+
+/**
+ * Analytics Service
+ */
+.provider('nAnalytics', [ function() {
+	
+	var urlPath = "";
+	
+	this.urlPath = function(value){
+		urlPath = value;
+	};
+
+	this.$get = ['$rootScope', '$window', '$location', '$log', function($rootScope, $window, $location, $log){
+		
+		// setup Google Analytics if present, or mock it
+		var GA = $window._gaq ? $window._gaq : {
+			push : function(event){ 
+				$log.debug('Analytics::_trackPageview[ '+ (event.length > 1 ? event[1] : $window.location.href) +' ]');
+			},
+		};
+		
+		//service instance
+		var nAnalyticsInstance = {
+
+				// track apge view
+				trackPageview : function(url){
+					if(url) {
+						GA.push(['_trackPageview', url]);
+					} else {
+						GA.push(['_trackPageview']);
+					}
+				},
+
+		};
+		
+		// automatically track page views
+		$rootScope.$on('$viewContentLoaded', function(){
+			nAnalyticsInstance.trackPageview(urlPath + '#' + $location.path());
+		});
+		
+		return nAnalyticsInstance;
+	}];
+
 }]);
