@@ -12,8 +12,8 @@ if(_gaq) {
         <!-- BEGIN PAGE TITLE & BREADCRUMB-->
         <h3 class="page-title">Settings</h3>
         <ul class="breadcrumb">
-            <li><i class="fa fa-home"></i> <a href="../">Home</a></li>
-            <li><span>Settings</span></li>
+            <li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
+            <li><span>Impostazioni</span></li>
         </ul>
         <!-- END PAGE TITLE & BREADCRUMB-->
         <div id="settings-page"></div>

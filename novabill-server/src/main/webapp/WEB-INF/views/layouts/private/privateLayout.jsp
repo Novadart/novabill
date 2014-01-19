@@ -134,7 +134,7 @@
 				</li>
 
 				<li class="start <%=PAGES.DASHBOARD.equals(activePage) ? "active" : "" %>"><a href="${dashboardUrl}"> <i
-						class="fa fa-home"></i> <span class="title">Dashboard</span> <% if(PAGES.DASHBOARD.equals(activePage)) { %> <span
+						class="fa fa-dashboard"></i> <span class="title">Dashboard</span> <% if(PAGES.DASHBOARD.equals(activePage)) { %> <span
 						class="selected"></span> <%} %>
 				</a></li>
 
