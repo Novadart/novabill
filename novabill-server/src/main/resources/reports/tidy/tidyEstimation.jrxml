@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Estimation" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="153"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -71,6 +71,7 @@
 	<field name="document.validTill" class="java.util.Date"/>
 	<field name="document.business.ssn" class="java.lang.String"/>
 	<field name="document.client.ssn" class="java.lang.String"/>
+	<field name="document.client.id" class="java.lang.Long"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -417,27 +418,22 @@ $F{document.client.country} +
 	</detail>
 	<pageFooter>
 		<band height="60" splitType="Stretch">
-			<textField>
-				<reportElement uuid="58d47b4d-4c45-45ef-a6af-fb7c016bd67e" x="423" y="20" width="80" height="20"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
-			</textField>
-			<textField evaluationTime="Report">
-				<reportElement uuid="3926bbcd-506a-4fc1-aa31-88a8c192b20b" x="503" y="20" width="40" height="20"/>
-				<textElement>
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
 			<staticText>
-				<reportElement uuid="f7393b41-7696-40a3-b364-799c79bb1a2e" x="140" y="45" width="274" height="12" forecolor="#D1D1D1"/>
+				<reportElement uuid="6c4bc98f-70b5-409d-9e0d-3b79333b6a88" x="150" y="45" width="274" height="12" forecolor="#646464">
+					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font size="8"/>
 				</textElement>
 				<text><![CDATA[<a href="https://www.novabill.it">Powered by Novabill - https://www.novabill.it</a>]]></text>
 			</staticText>
+			<textField evaluationTime="Report">
+				<reportElement uuid="e6b3f23b-1b5a-4c4a-ac69-e008fded77a9" x="473" y="45" width="75" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 </jasperReport>
