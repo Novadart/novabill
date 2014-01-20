@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transport document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="122"/>
+	<property name="ireport.y" value="99"/>
 	<style name="table" pattern="">
 		<box>
 			<pen lineWidth="0.0" lineColor="#000000"/>
@@ -330,7 +330,7 @@ $F{document.toEndpoint.street} + "\n" +
 $F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{document.toEndpoint.province}!=null && !"".equals($F{document.toEndpoint.province}.trim())? " (" + $F{document.toEndpoint.province} + ")": "") + ", " +$F{document.toEndpoint.country}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="529a3489-fe95-4303-b8a8-26a186627142" positionType="Float" mode="Opaque" x="8" y="193" width="540" height="17" backcolor="#BEBEBE"/>
+				<reportElement uuid="529a3489-fe95-4303-b8a8-26a186627142" positionType="Float" mode="Opaque" x="8" y="193" width="540" height="17" backcolor="#FFFFFF"/>
 				<box>
 					<topPen lineWidth="0.5"/>
 					<leftPen lineWidth="0.5"/>
@@ -377,7 +377,7 @@ $F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{docu
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(com.novadart.novabill.report.ReportUtils.createTransportDetailsDataSource($F{document}))]]></dataSourceExpression>
 					</datasetRun>
 					<jr:column width="135" uuid="3e6cfa78-32de-4d09-93a3-5d47029c5a9b">
-						<jr:columnHeader style="table_CH" height="17" rowSpan="1">
+						<jr:columnHeader style="table_TD" height="17" rowSpan="1">
 							<textField>
 								<reportElement uuid="c2073e62-4236-4fd8-91ae-3dee253637ce" positionType="Float" x="0" y="0" width="133" height="15"/>
 								<box>
@@ -411,7 +411,7 @@ $F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{docu
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="135" uuid="edd20c85-06d1-4406-a544-79751f15f17a">
-						<jr:columnHeader style="table_CH" height="17" rowSpan="1">
+						<jr:columnHeader style="table_TD" height="17" rowSpan="1">
 							<textField>
 								<reportElement uuid="7b9a3b5b-b057-48b3-b7af-67d3e6c0918a" positionType="Float" x="0" y="0" width="133" height="15"/>
 								<box>
@@ -445,7 +445,7 @@ $F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{docu
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="135" uuid="6b225950-3c57-4375-bb18-8ac9d4a80a17">
-						<jr:columnHeader style="table_CH" height="17" rowSpan="1">
+						<jr:columnHeader style="table_TD" height="17" rowSpan="1">
 							<textField>
 								<reportElement uuid="b531de39-641b-4e44-9861-7859bc21bed6" positionType="Float" x="0" y="0" width="133" height="15"/>
 								<box>
@@ -479,7 +479,7 @@ $F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{docu
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="135" uuid="d1244a71-c0a7-43bf-a940-6df2287ec1ef">
-						<jr:columnHeader style="table_CH" height="17" rowSpan="1">
+						<jr:columnHeader style="table_TD" height="17" rowSpan="1">
 							<textField>
 								<reportElement uuid="f741b14d-43cf-426a-80df-7c2cd65653e7" positionType="Float" x="0" y="0" width="133" height="15"/>
 								<box>
