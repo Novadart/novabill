@@ -17,38 +17,23 @@
 
 	<mvc:annotation-driven />
 
-	<mvc:resources location="/frontend_assets/css/" mapping="/frontend_assets/css/**"
-		cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/fonts/"
-		mapping="/frontend_assets/fonts/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/scripts/"
-		mapping="/frontend_assets/scripts/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/plugins/"
-		mapping="/frontend_assets/plugins/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/frontend_assets/img/" mapping="/frontend_assets/img/**"
-		cache-period="${images.cachePeriod}" />
+	<mvc:resources location="/frontend_assets/css/" mapping="/frontend_assets/css/**" />
+	<mvc:resources location="/frontend_assets/fonts/" mapping="/frontend_assets/fonts/**" />
+	<mvc:resources location="/frontend_assets/scripts/" mapping="/frontend_assets/scripts/**" />
+	<mvc:resources location="/frontend_assets/plugins/" mapping="/frontend_assets/plugins/**" />
+	<mvc:resources location="/frontend_assets/img/" mapping="/frontend_assets/img/**" />
 
-	<mvc:resources location="/private_assets/novabill/css/"
-		mapping="/private_assets/novabill/css/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/private_assets/novabill/partials/"
-		mapping="/private_assets/novabill/partials/**" cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/private_assets/css/" mapping="/private_assets/css/**"
-		cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/private_assets/fonts/" mapping="/private_assets/fonts/**"
-		cache-period="${css.cachePeriod}" />
-	<mvc:resources location="/private_assets/novabill/scripts/"
-		mapping="/private_assets/novabill/scripts/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/private_assets/scripts/"
-		mapping="/private_assets/scripts/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/private_assets/plugins/"
-		mapping="/private_assets/plugins/**" cache-period="${js.cachePeriod}" />
-	<mvc:resources location="/private_assets/img/" mapping="/private_assets/img/**"
-		cache-period="${images.cachePeriod}" />
+	<mvc:resources location="/private_assets/novabill/css/"	mapping="/private_assets/novabill/css/**" />
+	<mvc:resources location="/private_assets/novabill/partials/" mapping="/private_assets/novabill/partials/**" />
+	<mvc:resources location="/private_assets/css/" mapping="/private_assets/css/**"	/>
+	<mvc:resources location="/private_assets/fonts/" mapping="/private_assets/fonts/**" />
+	<mvc:resources location="/private_assets/novabill/scripts/"	mapping="/private_assets/novabill/scripts/**" />
+	<mvc:resources location="/private_assets/scripts/"	mapping="/private_assets/scripts/**" />
+	<mvc:resources location="/private_assets/plugins/" mapping="/private_assets/plugins/**" />
+	<mvc:resources location="/private_assets/img/" mapping="/private_assets/img/**" />
 
-	<mvc:resources location="/rpc/" mapping="/rpc/**"
-		cache-period="${rpc.cachePeriod}" />
-	<mvc:resources location="/democode/" mapping="/democode/**"
-		cache-period="${democode.cachePeriod}" />
+	<mvc:resources location="/rpc/" mapping="/rpc/**" />
+	<mvc:resources location="/democode/" mapping="/democode/**" />
 
 	<mvc:interceptors>
 		<mvc:interceptor>
