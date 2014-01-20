@@ -284,18 +284,54 @@ public class BLMImportService {
 		
 	}
 	
+	private void createThirdBusiness() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
+		Registration registration = new Registration();
+		registration.setEmail("info@cyclostore.it");
+		setPrivateFieldForRegistration(registration, "password", "b02801478c8fa876cb8e487f78ccd20b0ac24e321e00380cfef6f6804d62cb05"); //avoid password hashing
+		Principal principal = new Principal(registration);
+		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
+		principal.setPassword("cyclo2014");
+		Business business = new Business();
+		for(PaymentType pType: paymentTypes){
+			PaymentType paymentType = null;
+			try {
+				paymentType = pType.clone();
+			} catch (CloneNotSupportedException e) {
+				throw new com.novadart.novabill.shared.client.exception.CloneNotSupportedException();
+			}
+			paymentType.setBusiness(business);
+			business.getPaymentTypes().add(paymentType);
+		}
+		business.setName("CYCLOSTORE");
+		business.setAddress("Via Busiago, 69");
+		business.setCity("Campo San Martino");
+		business.setPostcode("35010");
+		business.setProvince("PD");
+		business.setDefaultLayoutType(LayoutType.DENSE);
+		business.setVatID("IT04782700282");
+		business.setSsn("PTTRSE87B03C743C");
+		business.setCountry("IT");
+		business.getPrincipals().add(principal);
+		principal.setBusiness(business);
+		PriceList publicPriceList = new PriceList(PriceListConstants.DEFAULT);
+		publicPriceList.setBusiness(business);
+		business.getPriceLists().add(publicPriceList);
+		business.persist();
+	}
+	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
 	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException{
-		Principal principal = createPrincipal();
-		Business business = createBusiness(principal);
-		Set<Client> faultyClients = createClients(business);
-		createCommodities(business);
-		Client.entityManager().flush();
-		for(Client client: faultyClients)
-			System.out.println("Faulty Client id:" + client.getId() + " name:" + client.getName());
-		createSecondBusiness();
-		createDefaultPriceListForExistingBusinesses();
+//		Principal principal = createPrincipal();
+//		Business business = createBusiness(principal);
+//		Set<Client> faultyClients = createClients(business);
+//		createCommodities(business);
+//		Client.entityManager().flush();
+//		for(Client client: faultyClients)
+//			System.out.println("Faulty Client id:" + client.getId() + " name:" + client.getName());
+		//createSecondBusiness();
+		createThirdBusiness();
+		//createDefaultPriceListForExistingBusinesses();
 	}
 	
 }
