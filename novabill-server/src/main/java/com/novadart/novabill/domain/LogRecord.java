@@ -15,6 +15,7 @@ import javax.validation.constraints.NotNull;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +39,7 @@ public class LogRecord {
 	@NotNull
 	private Long time;
 	
+	@Type(type = "text")
 	private String details;
 	
 	@ManyToOne
