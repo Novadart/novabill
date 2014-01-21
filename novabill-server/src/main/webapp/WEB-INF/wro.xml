@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<groups xmlns="http://www.isdc.ro/wro">
+    
+    <group name="novabil-deps">
+    </group>
+
+	<group name="novabil-core">
+		<js>/novabill/scripts/*.js</js>
+		<css>/novabill/css/*.css</css>
+	</group>
+
+</groups>
