@@ -44,7 +44,7 @@ angular.module('novabill.constants', [])
 	var baseConf = this.conf;
 	
 	this.url = {
-			htmlFragmentUrl : function(path){ return baseConf.partialsBaseUrl + (path.charAt(0)=='/' ? path.substring(1) : path) + '?v=' + baseConf.version; },
+			htmlFragmentUrl : function(path){ return baseConf.partialsBaseUrl + (path.charAt(0)=='/' ? path.substring(1) : path) + '?v=' + baseConf.version; }
 	};
 	
 	// this is the full set of properties, available only after the module is loaded
