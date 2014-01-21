@@ -1,5 +1,6 @@
 package com.novadart.novabill.web.gwt;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -64,6 +65,14 @@ public class CommodityGwtController extends AbstractGwtController implements Com
 	@Override
 	public void removePrice(Long businessID, Long priceListID, Long commodityID) throws NotAuthenticatedException, DataAccessException, UnsupportedOperationException {
 		commodityService.removePrice(businessID, priceListID, commodityID);
+	}
+	
+	@Override
+	public List<Long> addOrUpdatePrices(Long businessID, List<PriceDTO> priceDTOs) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+		List<Long> ids = new ArrayList<>(priceDTOs.size());
+		for(PriceDTO priceDTO: priceDTOs)
+			ids.add(commodityService.addOrUpdatePrice(businessID, priceDTO));
+		return ids;
 	}
 
 }

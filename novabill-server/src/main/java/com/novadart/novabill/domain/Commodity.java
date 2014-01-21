@@ -26,7 +26,6 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
 import org.apache.solr.analysis.LowerCaseFilterFactory;
 import org.apache.solr.analysis.StandardTokenizerFactory;
-import org.hibernate.annotations.Type;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Field;
@@ -66,8 +65,7 @@ public class Commodity implements Serializable {
 	private String sku;
 
     @Field(name = FTSNamespace.DESCRIPTION)
-    @Type(type = "text")
-    @Size(max = 500)
+    @Size(max = 255)
     @NotNull
     @Trimmed
     private String description;
