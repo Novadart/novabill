@@ -681,7 +681,7 @@ angular.module('novabill.directives',
 /*
  * Log Record Widget
  */
-.directive('nLogRecord', ['nConstants', function factory(nConstants){
+.directive('nLogRecord', ['nConstants', '$sanitize', function factory(nConstants, $sanitize){
 
 	return {
 		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-log-record.html'),
@@ -701,17 +701,17 @@ angular.module('novabill.directives',
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
 					$scope.description = tr('LR_CLIENT_CREATE',
-							'{clientName: "'+ details.clientName +'", link: "'+nConstants.url.clientDetails( $scope.record.entityID )+'"}');
+							'{clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.clientDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
 					$scope.description = tr('LR_CLIENT_UPDATE',
-							'{clientName: "'+ details.clientName +'", link: "'+nConstants.url.clientDetails( $scope.record.entityID )+'"}');
+							'{clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.clientDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
 					$scope.description = tr('LR_CLIENT_DELETE',
-							'{clientName: "'+ details.clientName +'"}');
+							'{clientName: "'+ $sanitize(details.clientName) +'"}');
 					break;
 
 				default:
@@ -723,18 +723,18 @@ angular.module('novabill.directives',
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
 					$scope.description = tr('LR_COMMODITY_CREATE',
-							'{commodityName : "'+ details.commodityName	+'", link : "'+nConstants.url.commodityDetails( $scope.record.entityID )+'"}');
+							'{commodityName : "'+ $sanitize(details.commodityName)	+'", link : "'+nConstants.url.commodityDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
 					$scope.description = tr('LR_COMMODITY_UPDATE',
-							'{commodityName : "'+ details.commodityName	+'", link : "'+nConstants.url.commodityDetails( $scope.record.entityID )+'"}');
+							'{commodityName : "'+ $sanitize(details.commodityName)	+'", link : "'+nConstants.url.commodityDetails( $scope.record.entityID )+'"}');
 					break;
 
 
 				case nConstants.logRecord.operationType.DELETE:
 					$scope.description = tr('LR_COMMODITY_DELETE',
-							'{commodityName : "'+ details.commodityName	+'"}');
+							'{commodityName : "'+ $sanitize(details.commodityName)	+'"}');
 					break;
 
 				default:
@@ -747,12 +747,12 @@ angular.module('novabill.directives',
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
 					$scope.description = tr('LR_INVOICE_CREATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
 					$scope.description = tr('LR_INVOICE_UPDATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.SET_PAYED:
@@ -762,7 +762,7 @@ angular.module('novabill.directives',
 
 				case nConstants.logRecord.operationType.DELETE:
 					$scope.description = tr('LR_INVOICE_DELETE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
 					break;
 
 				default:
@@ -774,17 +774,17 @@ angular.module('novabill.directives',
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
 					$scope.description = tr('LR_ESTIMATION_CREATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.estimationDetails( $scope.record.entityID )+'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.estimationDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
 					$scope.description = tr('LR_ESTIMATION_UPDATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.estimationDetails( $scope.record.entityID )+'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.estimationDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
 					$scope.description = tr('LR_ESTIMATION_DELETE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
 					break;
 
 				default:
@@ -796,17 +796,17 @@ angular.module('novabill.directives',
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
 					$scope.description = tr('LR_CREDIT_NOTE_CREATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.creditNoteDetails( $scope.record.entityID )+'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.creditNoteDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
 					$scope.description = tr('LR_CREDIT_NOTE_UPDATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.creditNoteDetails( $scope.record.entityID )+'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.creditNoteDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
 					$scope.description = tr('LR_CREDIT_NOTE_DELETE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
 					break;
 
 				default:
@@ -818,17 +818,17 @@ angular.module('novabill.directives',
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
 					$scope.description = tr('LR_TRANSPORT_DOCUMENT_CREATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.transportDocumentDetails( $scope.record.entityID )+'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.transportDocumentDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
 					$scope.description = tr('LR_TRANSPORT_DOCUMENT_UPDATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'", link: "'+nConstants.url.transportDocumentDetails( $scope.record.entityID )+'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.transportDocumentDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
 					$scope.description = tr('LR_TRANSPORT_DOCUMENT_DELETE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ details.clientName +'"}');
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
 					break;
 
 				default:
@@ -840,17 +840,17 @@ angular.module('novabill.directives',
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
 					$scope.description = tr('LR_PRICE_LIST_CREATE',
-							'{priceListName: "'+ details.priceListName +'", link: "'+nConstants.url.priceListDetails( $scope.record.entityID )+'"}');
+							'{priceListName: "'+ $sanitize(details.priceListName) +'", link: "'+nConstants.url.priceListDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
 					$scope.description = tr('LR_PRICE_LIST_UPDATE',
-							'{priceListName: "'+ details.priceListName +'", link: "'+nConstants.url.priceListDetails( $scope.record.entityID )+'"}');
+							'{priceListName: "'+ $sanitize(details.priceListName) +'", link: "'+nConstants.url.priceListDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
 					$scope.description = tr('LR_PRICE_LIST_DELETE',
-							'{priceListName: "'+ details.priceListName +'"}');
+							'{priceListName: "'+ $sanitize(details.priceListName) +'"}');
 					break;
 
 				default:
@@ -862,17 +862,17 @@ angular.module('novabill.directives',
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
 					$scope.description = tr('LR_PAYMENT_TYPE_CREATE',
-							'{paymentName: "'+ details.paymentTypeName +'", link: "'+nConstants.url.paymentList()+'"}');
+							'{paymentName: "'+ $sanitize(details.paymentTypeName) +'", link: "'+nConstants.url.paymentList()+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
 					$scope.description = tr('LR_PAYMENT_TYPE_UPDATE',
-							'{paymentName: "'+ details.paymentTypeName +'", link: "'+nConstants.url.paymentList()+'"}');
+							'{paymentName: "'+ $sanitize(details.paymentTypeName) +'", link: "'+nConstants.url.paymentList()+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
 					$scope.description = tr('LR_PAYMENT_TYPE_DELETE',
-							'{paymentName: "'+ details.paymentTypeName +'"}');
+							'{paymentName: "'+ $sanitize(details.paymentTypeName) +'"}');
 					break;
 
 				default:
