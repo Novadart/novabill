@@ -78,6 +78,8 @@
 	<field name="document.client.id" class="java.lang.Long"/>
 	<field name="document.business.phone" class="java.lang.String"/>
 	<field name="document.business.email" class="java.lang.String"/>
+	<field name="document.business.web" class="java.lang.String"/>
+	<field name="document.business.fax" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -90,12 +92,20 @@
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{document.business.address} + " – " + $F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim()) ? " (" + $F{document.business.province} + ")": "") +
-(($F{document.business.phone}!=null && $F{document.business.phone}.trim().length() > 0) || ($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0)? "\n": "") +
-($F{document.business.phone}!=null && $F{document.business.phone}.trim().length() > 0? $R{dense.phone} + ": " + $F{document.business.phone} + " – ": "") +
-($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0? $R{dense.email} + ": " + $F{document.business.email}: "") + "\n" +
-($F{document.business.vatID}!=null && !"".equals($F{document.business.vatID}.trim()) ? $R{dense.vatID} + ": " + $F{document.business.vatID} + "  ": "") +
-($F{document.business.ssn}!=null && !"".equals($F{document.business.ssn}.trim()) ? $R{dense.ssn} + ": " + $F{document.business.ssn} : "")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{document.business.address} + " – " + $F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim()) ? " (" + $F{document.business.province} + ")": "") + "\n" +
+com.novadart.novabill.report.ReportUtils.join("\n",
+com.novadart.novabill.report.ReportUtils.join(" – ",
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.phone} + ": %s", $F{document.business.phone}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.fax} + ": %s", $F{document.business.fax})),
+
+com.novadart.novabill.report.ReportUtils.join(" – ",
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.email} + ": %s", $F{document.business.email}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.web} + ": %s", $F{document.business.web})),
+
+com.novadart.novabill.report.ReportUtils.join("  ",
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.vatID} + ": %s", $F{document.business.vatID}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.ssn} + ": %s", $F{document.business.ssn}))
+)]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="177c4de2-1558-4fea-b979-446db24089b9" positionType="Float" x="8" y="0" width="308" height="20"/>
@@ -364,12 +374,20 @@
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{document.business.address} + " – " + $F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim()) ? " (" + $F{document.business.province} + ")": "") +
-(($F{document.business.phone}!=null && $F{document.business.phone}.trim().length() > 0) || ($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0)? "\n": "") +
-($F{document.business.phone}!=null && $F{document.business.phone}.trim().length() > 0? $R{dense.phone} + ": " + $F{document.business.phone} + " – ": "") +
-($F{document.business.email}!=null && $F{document.business.email}.trim().length() > 0? $R{dense.email} + ": " + $F{document.business.email}: "") + "\n" +
-($F{document.business.vatID}!=null && !"".equals($F{document.business.vatID}.trim()) ? $R{dense.vatID} + ": " + $F{document.business.vatID} + "  ": "") +
-($F{document.business.ssn}!=null && !"".equals($F{document.business.ssn}.trim()) ? $R{dense.ssn} + ": " + $F{document.business.ssn} : "")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{document.business.address} + " – " + $F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim()) ? " (" + $F{document.business.province} + ")": "") + "\n" +
+com.novadart.novabill.report.ReportUtils.join("\n",
+com.novadart.novabill.report.ReportUtils.join(" – ",
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.phone} + ": %s", $F{document.business.phone}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.fax} + ": %s", $F{document.business.fax})),
+
+com.novadart.novabill.report.ReportUtils.join(" – ",
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.email} + ": %s", $F{document.business.email}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.web} + ": %s", $F{document.business.web})),
+
+com.novadart.novabill.report.ReportUtils.join("  ",
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.vatID} + ": %s", $F{document.business.vatID}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.ssn} + ": %s", $F{document.business.ssn}))
+)]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="dd440861-df5f-4c5d-b5f3-02f503c7fa45" positionType="Float" mode="Opaque" x="50" y="69" width="200" height="20" backcolor="#C0BEBE"/>
