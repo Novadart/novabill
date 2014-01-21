@@ -23,11 +23,13 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
+import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.ValidationBundle;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
@@ -71,7 +73,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField Button toAddrButtonDefault;
 	
 	@UiField(provided=true) ValidatedTextBox numberOfPackages;
-	@UiField(provided=true) ValidatedTextBox transporter;
+	@UiField(provided=true) com.novadart.gwtshared.client.validation.widget.ValidatedTextArea transporter;
 
 	@UiField(provided=true) ValidatedDateBox transportStartDate;
 	@UiField(provided=true) ValidatedListBox hour;
@@ -112,7 +114,14 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
 		numberOfPackages = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
-		transporter = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		transporter = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), 
+				new TextLengthValidation(255) {
+			
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(255);
+			}
+		});
 
 		fromAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city());
 		fromAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName());
@@ -441,7 +450,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return numberOfPackages;
 	}
 
-	public ValidatedTextBox getTransporter() {
+	public com.novadart.gwtshared.client.validation.widget.ValidatedTextArea getTransporter() {
 		return transporter;
 	}
 
