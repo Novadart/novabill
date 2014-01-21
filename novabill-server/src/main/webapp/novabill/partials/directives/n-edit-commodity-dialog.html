@@ -23,7 +23,7 @@
 				
 				    <div class="form-group" ng-class="{'has-error': form.description.$dirty && form.description.$invalid, 'has-success': form.description.$dirty && form.description.$valid}">
                         <label class="control-label" for="description">{{'DESCRIPTION' | translate}} *</label> 
-                        <input type="text" name="description" maxlength="180" ng-model="commodity.description" class="form-control" placeholder="{{'DESCRIPTION_PLACEHOLDER' | translate}}'" required>
+                        <input type="text" name="description" maxlength="255" ng-model="commodity.description" class="form-control" placeholder="{{'DESCRIPTION_PLACEHOLDER' | translate}}'" required>
                         <div ng-show="form.description.$dirty && form.description.$invalid">
                             <span class="text-danger" ng-show="form.description.$error.required">{{'VALIDATION_REQUIRED' | translate}}</span>
                         </div>
