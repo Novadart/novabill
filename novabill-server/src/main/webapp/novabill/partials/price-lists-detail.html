@@ -13,7 +13,7 @@
 				<h2>{{priceList.name | nFilterDefault:'DEFAULT_PRICE_LIST'}}</h2>
 			</div>
 
-			<div ng-if="DEFAULT_PRICELIST_NAME!==priceList.name" style="height: 28px;" class="col-md-2 col-md-offset-10">
+			<div ng-if="DEFAULT_PRICELIST_NAME!==priceList.name" style="height: 28px;" class="col-md-4 col-md-offset-8 col-sm-4 col-sm-offset-8">
 				<div class="pull-right">
 					<a href="javascript: void(0)" ng-disabled="priceList == null" ng-click="editPriceList()" class="btn btn-sm blue">
 						<i class="fa fa-edit"></i>{{'EDIT' | translate}}
