@@ -307,8 +307,14 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<warSourceExcludes>**/rpc/**, **/democode/**,
-						WEB-INF/views/tiles/frontend/analytics.jsp, WEB-INF/web.xml</warSourceExcludes>
+					<warSourceExcludes>
+						**/rpc/**,
+						WEB-INF/views/tiles/frontend/analytics.jsp,
+						WEB-INF/views/tiles/wro4j/minifiedCSS.jsp,
+						WEB-INF/views/tiles/wro4j/minifiedJS.jsp,
+						WEB-INF/web.xml,
+						WEB-INF/views/private-tiles-defs.xml
+					</warSourceExcludes>
 					<webResources>
 						<resource>
 							<directory>src/main/webapp/WEB-INF/</directory>
@@ -317,6 +323,9 @@
 							<includes>
 								<include>web.xml</include>
 								<include>views/tiles/frontend/analytics.jsp</include>
+								<include>views/private-tiles-defs.xml</include>
+								<include>views/tiles/wro4j/minifiedCSS.jsp</include>
+								<include>views/tiles/wro4j/minifiedJS.jsp</include>
 							</includes>
 						</resource>
 					</webResources>
@@ -326,7 +335,6 @@
 							<artifactId>novabill-gwt-client</artifactId>
 							<includes>
 								<include>rpc/**</include>
-								<include>democode/**</include>
 							</includes>
 						</overlay>
 					</overlays>
@@ -487,10 +495,31 @@
 				</filters>
 				<plugins>
 					<plugin>
+						<groupId>ro.isdc.wro4j</groupId>
+						<artifactId>wro4j-maven-plugin</artifactId>
+						<configuration>
+							<wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+							<destinationFolder>${project.build.directory}/${project.build.finalName}/novabill-min/</destinationFolder>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>
 						<configuration>
 							<classifier>stage</classifier>
+							<warSourceExcludes>
+								novabill/css/**,
+								novabill/scripts/**,
+								novabill-deps/**
+							</warSourceExcludes>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -504,10 +533,31 @@
 				</filters>
 				<plugins>
 					<plugin>
+						<groupId>ro.isdc.wro4j</groupId>
+						<artifactId>wro4j-maven-plugin</artifactId>
+						<configuration>
+							<wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+							<destinationFolder>${project.build.directory}/${project.build.finalName}/novabill-min/</destinationFolder>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>
 						<configuration>
 							<classifier>nb</classifier>
+							<warSourceExcludes>
+								novabill/css/**,
+								novabill/scripts/**,
+								novabill-deps/**
+							</warSourceExcludes>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -538,10 +588,31 @@
 				</filters>
 				<plugins>
 					<plugin>
+						<groupId>ro.isdc.wro4j</groupId>
+						<artifactId>wro4j-maven-plugin</artifactId>
+						<configuration>
+							<wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
+							<destinationFolder>${project.build.directory}/${project.build.finalName}/novabill-min/</destinationFolder>
+						</configuration>
+						<executions>
+							<execution>
+								<phase>compile</phase>
+								<goals>
+									<goal>run</goal>
+								</goals>
+							</execution>
+						</executions>
+					</plugin>
+					<plugin>
 						<groupId>org.apache.maven.plugins</groupId>
 						<artifactId>maven-war-plugin</artifactId>
 						<configuration>
 							<classifier>production</classifier>
+							<warSourceExcludes>
+								novabill/css/**,
+								novabill/scripts/**,
+								novabill-deps/**
+							</warSourceExcludes>
 						</configuration>
 					</plugin>
 				</plugins>

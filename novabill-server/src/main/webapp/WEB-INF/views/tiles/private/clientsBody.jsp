@@ -12,4 +12,8 @@ var documentYears = {
 		transportDocuments : <%=request.getAttribute("transportDocumentYears")%>,
 		creditNotes : <%=request.getAttribute("creditNoteYears")%>,
 };
+
+function onGWTLoaded(){
+     angular.bootstrap(document, ['novabill.clients']);
+}
 </script>

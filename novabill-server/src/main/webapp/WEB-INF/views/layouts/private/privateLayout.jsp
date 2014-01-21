@@ -31,6 +31,8 @@
 
 <spring:url var="clientsBaseUrl" value="<%=Urls.PRIVATE_CLIENTS%>" />
 
+ <spring:url var="gwtUrl" value="/rpc/rpc.nocache.js" />
+
 <%
 	PAGES activePage = (PAGES)request.getAttribute("activePage");
 	Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -69,10 +71,7 @@
 <link href="${privateAssetsUrl}/css/custom.css" rel="stylesheet" type="text/css" />
 <!-- END THEME STYLES -->
 
-<link href="${privateAssetsUrl}/novabill/css/global.css" rel="stylesheet" type="text/css" />
-<link href="${privateAssetsUrl}/novabill/css/directives.css" rel="stylesheet" type="text/css" />
-
-<tiles:insertAttribute ignore="true" name="head" />
+<tiles:insertAttribute name="css" />
 
 <link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
 </head>
@@ -223,47 +222,43 @@
             businessId : '<%=business.getId()%>',
             defaultPriceListName : '<%=PriceListConstants.DEFAULT%>',
             basePath : '${basePath}',
+            version : '<tiles:insertAttribute name="novabill.version" />'
     };
     </script>
-	
-	<!-- BEGIN CORE PLUGINS -->
+    
+    <!-- BEGIN CORE PLUGINS -->
 	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 	<script>window.jQuery || document.write('<script src="${privateAssetsUrl}/plugins/jquery-1.10.2.min.js"><\/script>');</script>
-
-	<script src="//ajax.googleapis.com/ajax/libs/angularjs/1.2.7/angular.min.js"></script>
-	<script>window.angular || document.write('<script src="${privateAssetsUrl}/plugins/angular/angular.min.js"><\/script>');</script>
-	<script src="${privateAssetsUrl}/plugins/angular/angular-route.min.js"></script>
-	<script src="${privateAssetsUrl}/plugins/angular/angular-sanitize.min.js"></script>
-	<script src="${privateAssetsUrl}/plugins/angular/angular-animate.min.js"></script>
-	<script src="${privateAssetsUrl}/plugins/angular/i18n/angular-locale_it-it.js" type="text/javascript"></script>
-	<script src="${privateAssetsUrl}/plugins/angular-translate.min.js" type="text/javascript"></script>
-	<script src="${privateAssetsUrl}/plugins/angular-ui/ui-bootstrap-custom-tpls-0.9.0.min.js" type="text/javascript"></script>
-	<script src="${privateAssetsUrl}/plugins/bignumber-1.3.0/bignumber.min.js"></script>
-	<script src="${privateAssetsUrl}/plugins/ng-infinite-scroll.min.js"></script>
-	<script src="${privateAssetsUrl}/novabill/scripts/translations.js" type="text/javascript"></script>
-	<script src="${privateAssetsUrl}/novabill/scripts/constants.js" type="text/javascript"></script>
-	<script src="${privateAssetsUrl}/novabill/scripts/calc.js" type="text/javascript"></script>
-	<script src="${privateAssetsUrl}/novabill/scripts/utils.js" type="text/javascript"></script>
-
-
+	
+	
 	<!--[if lt IE 9]>
-    <script src="${privateAssetsUrl}/plugins/respond.min.js"></script>
-    <script src="${privateAssetsUrl}/plugins/excanvas.min.js"></script> 
-    <![endif]-->
+	<script src="${privateAssetsUrl}/plugins/respond.min.js"></script>
+	<script src="${privateAssetsUrl}/plugins/excanvas.min.js"></script> 
+	<![endif]-->
 	<script src="${privateAssetsUrl}/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
 	<!-- IMPORTANT! Load jquery-ui-1.10.3.custom.min.js before bootstrap.min.js to fix bootstrap tooltip conflict with jquery ui tooltip -->
 	<script src="${privateAssetsUrl}/plugins/jquery-ui/jquery-ui-1.10.3.custom.min.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/plugins/bootstrap-hover-dropdown/twitter-bootstrap-hover-dropdown.min.js"
-		type="text/javascript"></script>
+	    type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/plugins/jquery-slimscroll/jquery.slimscroll.min.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/plugins/jquery.blockui.min.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/plugins/jquery.cookie.min.js" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
 	<!-- END CORE PLUGINS -->
-
-	<tiles:insertAttribute ignore="true" name="javascript" />
-
+	
+	<script src="${gwtUrl}" type="text/javascript"></script>
+	<script src="${privateAssetsUrl}/scripts/app.js" type="text/javascript"></script>
+	
+	<tiles:insertAttribute name="javascript" />
+	
+	
+	<script type="text/javascript">
+	$(App.init);
+	</script>
+	
+	<tiles:insertAttribute name="javascriptExtra" ignore="true" />
+	
 </body>
 <!-- END BODY -->
 </html>

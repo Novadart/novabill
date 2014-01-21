@@ -8,4 +8,8 @@
 var documentYears = {
         transportDocuments : <%=request.getAttribute("transportDocumentYears")%>,
 };
+
+function onGWTLoaded(){
+    angular.bootstrap(document, ['novabill.transportDocuments']);
+}
 </script>

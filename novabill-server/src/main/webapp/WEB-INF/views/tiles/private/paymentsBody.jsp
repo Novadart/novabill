@@ -5,6 +5,10 @@
 if(_gaq){
     _gaq.push(['_trackPageview']);
 }
+
+function onGWTLoaded(){
+    GWT_UI.showPaymentsPage('payments-page');
+}
 </script>
 
 <div class="page-content">
