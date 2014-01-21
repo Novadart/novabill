@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Estimation" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="153"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -72,6 +72,10 @@
 	<field name="document.business.ssn" class="java.lang.String"/>
 	<field name="document.client.ssn" class="java.lang.String"/>
 	<field name="document.client.id" class="java.lang.Long"/>
+	<field name="document.business.phone" class="java.lang.String"/>
+	<field name="document.business.fax" class="java.lang.String"/>
+	<field name="document.business.email" class="java.lang.String"/>
+	<field name="document.business.web" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -85,9 +89,9 @@
 				<imageExpression><![CDATA[$F{logoInStream}]]></imageExpression>
 			</image>
 		</band>
-		<band height="280" splitType="Stretch">
+		<band height="260" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="0" y="0" width="308" height="20"/>
+				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="8" y="0" width="308" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -101,22 +105,22 @@
 				<textFieldExpression><![CDATA[$R{tidy.estimation}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="d60122c5-0091-41f6-9b54-1498fff69cec" positionType="Float" x="477" y="19" width="76" height="20"/>
+				<reportElement uuid="d60122c5-0091-41f6-9b54-1498fff69cec" positionType="Float" x="477" y="19" width="76" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$F{document.documentID}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="d0f6965d-2485-4a1b-b3c6-ff209b5da55c" positionType="Float" x="477" y="39" width="76" height="20"/>
+				<reportElement uuid="d0f6965d-2485-4a1b-b3c6-ff209b5da55c" positionType="Float" x="477" y="36" width="76" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{document.accountingDocumentDate})]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="9147ae7f-5ccc-49db-87e9-f84eb59575b1" positionType="Float" x="425" y="19" width="52" height="20"/>
+				<reportElement uuid="9147ae7f-5ccc-49db-87e9-f84eb59575b1" positionType="Float" x="425" y="19" width="52" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$R{tidy.number} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="8dcd43cc-187e-4553-a39a-3116e07b1483" positionType="Float" x="425" y="39" width="52" height="20"/>
+				<reportElement uuid="8dcd43cc-187e-4553-a39a-3116e07b1483" positionType="Float" x="425" y="36" width="52" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$R{tidy.date} + ":"]]></textFieldExpression>
 			</textField>
@@ -135,32 +139,30 @@
 				<textFieldExpression><![CDATA[$R{tidy.client}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="b0329e04-13b9-4caf-8d66-fc7a7a5d696f" positionType="Float" x="55" y="111" width="200" height="99"/>
+				<reportElement uuid="b0329e04-13b9-4caf-8d66-fc7a7a5d696f" positionType="Float" x="55" y="111" width="200" height="70"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.name} + "\n" +
 $F{document.business.address} + "\n" +
-$F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim())? " (" + $F{document.business.province} + ")": "") + "\n" +
-$F{document.business.country} +
+$F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim())? " (" + $F{document.business.province} + ")": "") + ", " + $F{document.business.country} +
 ($F{document.business.vatID}!=null && !"".equals($F{document.business.vatID}.trim()) ? "\n" + $R{tidy.vatID} + " " + $F{document.business.vatID} : "") +
 ($F{document.business.ssn}!=null && !"".equals($F{document.business.ssn}.trim()) ? "\n" + $R{tidy.ssn} + " " + $F{document.business.ssn} : "")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="299" y="111" width="200" height="99"/>
+				<reportElement uuid="385c7267-d05a-4da1-bd8d-6018a8863739" positionType="Float" x="299" y="111" width="200" height="70"/>
 				<textElement>
 					<font size="10" isBold="false"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.client.name} + "\n" +
 $F{document.client.address} + "\n" +
-$F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.client.province}!=null && !"".equals($F{document.client.province}.trim())? " (" + $F{document.client.province} + ")": "") + "\n" +
-$F{document.client.country} +
+$F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.client.province}!=null && !"".equals($F{document.client.province}.trim())? " (" + $F{document.client.province} + ")": "") + ", " + $F{document.client.country} +
 ($F{document.client.vatID}!=null && !"".equals($F{document.client.vatID}.trim()) ? "\n" + $R{tidy.vatID} + " " + $F{document.client.vatID} : "") +
 ($F{document.client.ssn}!=null && !"".equals($F{document.client.ssn}.trim()) ? "\n" + $R{tidy.ssn} + " " + $F{document.client.ssn} : "")]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="219" width="545" height="50"/>
+				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="200" width="545" height="50"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
@@ -315,14 +317,35 @@ $F{document.client.country} +
 				</jr:table>
 			</componentElement>
 			<textField>
-				<reportElement uuid="b219b363-5676-40b8-bfe8-287cd3fcfbb0" positionType="Float" x="398" y="59" width="79" height="20"/>
+				<reportElement uuid="b219b363-5676-40b8-bfe8-287cd3fcfbb0" positionType="Float" x="398" y="53" width="79" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[$R{tidy.validUntil} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="04194eee-70d1-4527-85a5-56ff2fd52498" positionType="Float" x="477" y="59" width="76" height="20"/>
+				<reportElement uuid="04194eee-70d1-4527-85a5-56ff2fd52498" positionType="Float" x="477" y="53" width="76" height="16"/>
 				<textElement textAlignment="Right"/>
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{document.validTill})]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true">
+				<reportElement uuid="9bf36810-8b94-43a6-8934-773da2f0d670" positionType="Float" x="8" y="17" width="308" height="16"/>
+				<textElement textAlignment="Left">
+					<font size="8"/>
+					<paragraph lineSpacing="Single"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.business.address} + " – " + $F{document.business.postcode} + " " + $F{document.business.city} + ($F{document.business.province}!=null && !"".equals($F{document.business.province}.trim()) ? " (" + $F{document.business.province} + ")": "") + "\n" +
+com.novadart.novabill.report.ReportUtils.join("\n",
+com.novadart.novabill.report.ReportUtils.join(" – ",
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.phone} + ": %s", $F{document.business.phone}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.fax} + ": %s", $F{document.business.fax})),
+
+com.novadart.novabill.report.ReportUtils.join(" – ",
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.email} + ": %s", $F{document.business.email}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.web} + ": %s", $F{document.business.web})),
+
+com.novadart.novabill.report.ReportUtils.join("  ",
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.vatID} + ": %s", $F{document.business.vatID}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{tidy.ssn} + ": %s", $F{document.business.ssn}))
+)]]></textFieldExpression>
 			</textField>
 		</band>
 		<band height="70" splitType="Prevent">
