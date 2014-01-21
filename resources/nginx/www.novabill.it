@@ -49,6 +49,18 @@ server {
         expires -1;
     }
 
+    location ^~ /novabill/ {
+        add_header Pragma public;
+        add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+        expires 30d;
+    }
+
+    location ^~ /novabill-min/ {
+        add_header Pragma public;
+        add_header Cache-Control "public, must-revalidate, proxy-revalidate";
+        expires 30d;
+    }
+
     location ^~ /frontend_assets/ {
         add_header Pragma public;
         add_header Cache-Control "public, must-revalidate, proxy-revalidate";
