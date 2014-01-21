@@ -4,3 +4,9 @@
 <div class="page-content">
 	<div ng-view></div>
 </div>
+
+<script type="text/javascript">
+function onGWTLoaded(){
+    angular.bootstrap(document, ['novabill.commodities']);
+}
+</script>

@@ -9,4 +9,8 @@
 var documentYears = {
         creditNotes : <%=request.getAttribute("creditNoteYears")%>,
 };
+
+function onGWTLoaded(){
+    angular.bootstrap(document, ['novabill.creditNotes']);
+}
 </script>

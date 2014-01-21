@@ -65,6 +65,8 @@ forgotpassword.expiration.value=48
 pdfgen.service.url.value=http://localhost:8081
 spring.profiles.active.value=dev
 devMode.enabled.value=true
+mvn.tiles.javascript.definition=expandedJS
+mvn.tiles.css.definition=expandedCSS
 
 #
 # Paypal
@@ -85,16 +87,3 @@ quota.numberOfEstimationsPerYear.value=1
 quota.numberOfCreditNotesPerYear.value=1
 quota.numberOfTransportDocsPerYear.value=1
 
-#
-# Cache Periods
-#
-css.cachePeriod.value=0
-images.cachePeriod.value=0
-js.cachePeriod.value=0
-democode.cachePeriod.value=0
-rpc.cachePeriod.value=0
-
-#
-# Url Rewrite
-#
-urlRewriteFilter.enabled.value=false
