@@ -51,14 +51,19 @@ server {
 
     location ^~ /frontend_assets/ {
         add_header Pragma public;
+        add_header Cache-Control "public, must-revalidate, proxy-revalidate";
         expires 30d;
     }
     
     location ^~ /private_assets/ {
+        add_header Pragma public;
+        add_header Cache-Control "public, must-revalidate, proxy-revalidate";
         expires 30d;
     }
 
     location ^~ /rpc/*.(cache.js|gif|jpg|jpeg|png|html)?$ {
+        add_header Pragma public;
+        add_header Cache-Control "public, must-revalidate, proxy-revalidate";
         expires 30d;
     }
 
