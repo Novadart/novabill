@@ -35,4 +35,6 @@ public interface CommodityGwtService extends RemoteService {
 	
 	public void removePrice(Long businessID, Long priceListID, Long commodityID) throws NotAuthenticatedException, DataAccessException, UnsupportedOperationException;
 	
+	public List<Long> addOrUpdatePrices(Long businessID, List<PriceDTO> priceDTOs) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException;
+	
 }
