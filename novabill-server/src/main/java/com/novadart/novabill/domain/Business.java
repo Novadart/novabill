@@ -133,6 +133,9 @@ public class Business implements Serializable, Taxable {
     @Column(columnDefinition = "integer default 0")
     private LayoutType defaultLayoutType;
     
+    @Column(columnDefinition = "boolean default true")
+    private boolean priceDisplayInDocsMonolithic = true;
+    
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Commodity> commodities = new HashSet<Commodity>();
 
@@ -521,6 +524,14 @@ public class Business implements Serializable, Taxable {
 
 	public void setDefaultLayoutType(LayoutType defaultLayoutType) {
 		this.defaultLayoutType = defaultLayoutType;
+	}
+
+	public boolean isPriceDisplayInDocsMonolithic() {
+		return priceDisplayInDocsMonolithic;
+	}
+
+	public void setPriceDisplayInDocsMonolithic(boolean priceDisplayInDocsMonolithic) {
+		this.priceDisplayInDocsMonolithic = priceDisplayInDocsMonolithic;
 	}
 
 	public Set<Commodity> getCommodities() {

@@ -35,8 +35,8 @@ import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 
 
-//@Service
-public class BLMImportService {
+@Service
+public class DBUtilitiesService {
 	
 	private String blmDBPath = "/tmp/DATI.mdb";
 	
@@ -319,6 +319,20 @@ public class BLMImportService {
 		business.persist();
 	}
 	
+	private void fixPrices(){
+		for(Price price: Price.findAllPrices()){
+			if(PriceType.DISCOUNT_PERCENT.equals(price.getPriceType()))
+				price.setPriceType(PriceType.FIXED);
+			else if(PriceType.FIXED.equals(price.getPriceType())){
+				if(price.getPriceValue().compareTo(BigDecimal.ZERO) == -1){ //less than zero
+					price.setPriceType(PriceType.DISCOUNT_PERCENT);
+					price.setPriceValue(price.getPriceValue().negate());
+				}else
+					price.setPriceType(PriceType.OVERCHARGE_PERCENT);
+			}
+		}
+	}
+	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
 	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException{
@@ -330,8 +344,9 @@ public class BLMImportService {
 //		for(Client client: faultyClients)
 //			System.out.println("Faulty Client id:" + client.getId() + " name:" + client.getName());
 		//createSecondBusiness();
-		createThirdBusiness();
+		//createThirdBusiness();
 		//createDefaultPriceListForExistingBusinesses();
+		fixPrices();
 	}
 	
 }
