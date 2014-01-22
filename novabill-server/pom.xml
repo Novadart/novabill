@@ -372,8 +372,8 @@
 						<source>${project.basedir}/src/main/webapp/novabill-deps/angular/i18n/angular-locale_it-it.js</source>
 						<source>${project.basedir}/src/main/webapp/novabill-deps/angular-translate.min.js</source>
 					</preloadSources>
-					<jsSrcDir>${project.basedir}/src/main/webapp/private_assets/novabill/scripts</jsSrcDir>
-					<jsTestSrcDir>${project.basedir}/src/test/webapp/private_assets/novabill/scripts</jsTestSrcDir>
+					<jsSrcDir>${project.basedir}/src/main/webapp/novabill/scripts</jsSrcDir>
+					<jsTestSrcDir>${project.basedir}/src/test/webapp/novabill/scripts</jsTestSrcDir>
 					<specIncludes>
 						<include>*Spec.js</include>
 					</specIncludes>
