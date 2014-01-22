@@ -52,15 +52,8 @@
         }
 		
 		.sku {
-	       border: 1px solid;
-			padding: 2px;
-			min-width: 4em;
-			background-color: #FFF;
-			color: gray;
-			height: 24px;
-			text-align: center;
-			max-width: 10em;
-			overflow: hidden;
+	       width: 8em;
+           min-height: 2em;
         }
 		
 		.item {
@@ -106,6 +99,12 @@
             margin-top: 5px;
 		}
 		
+		.browse {
+	        margin-left: 1em;
+		    position: relative;
+			top: 0.3em;
+        }
+		
 	</ui:style>
 	
 	<ui:style field="nf" type="com.novadart.novabill.frontend.client.view.center.ItemInsertionForm.NotificationCss">
@@ -127,35 +126,38 @@
 			<g:HorizontalPanel>
 			    <g:VerticalPanel ui:field="skuContainer">
                     <g:Label styleName="{s.smallLabel}" text="{i18n.sku}"></g:Label>
-                    <g:Label ui:field="sku" styleName="{s.sku}" />
+                    <v:ValidatedTextArea tabIndex="10" ui:field="sku" styleName="{s.sku}" />
                 </g:VerticalPanel>
 				<g:VerticalPanel styleName="{s.itemContainer}">
-					<g:Label styleName="{s.smallLabel}" text="{i18n.nameDescription}"></g:Label>
-					<v:ValidatedTextArea ui:field="item" styleName="{s.item}" />
+				    <g:HorizontalPanel>
+                        <g:Label styleName="{s.smallLabel}" text="{i18n.nameDescription}"></g:Label>
+                        <g:Button tabIndex="0" styleName="{s.browse} btn btn-xs dark" text="Seleziona..." ui:field="browse"></g:Button>				    
+				    </g:HorizontalPanel>
+					<v:ValidatedTextArea tabIndex="20" ui:field="item" styleName="{s.item}" />
 				</g:VerticalPanel>
 				<g:VerticalPanel ui:field="quantityContainer" styleName="{s.quantityContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.quantity}*"></g:Label>
-					<g:TextBox ui:field="quantity" styleName="{s.quantity}"></g:TextBox>
+					<g:TextBox ui:field="quantity" tabIndex="30" styleName="{s.quantity}"></g:TextBox>
 				</g:VerticalPanel>
 				<g:VerticalPanel ui:field="unitOfMeasureContainer" styleName="{s.unitOfMeasureContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.unityOfMeasure}"></g:Label>
-					<g:TextBox ui:field="unitOfMeasure" styleName="{s.unitOfMeasure}"
+					<g:TextBox ui:field="unitOfMeasure" tabIndex="40" styleName="{s.unitOfMeasure}"
 						maxLength="255"></g:TextBox>
 				</g:VerticalPanel>
 				<g:VerticalPanel ui:field="priceContainer" styleName="{s.priceContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.price}*"></g:Label>
-					<g:TextBox ui:field="price" styleName="{s.price}"></g:TextBox>
+					<g:TextBox ui:field="price" tabIndex="50" styleName="{s.price}"></g:TextBox>
 				</g:VerticalPanel>
                 <g:VerticalPanel ui:field="discountContainer" styleName="{s.discountContainer}">
                     <g:Label styleName="{s.smallLabel}" text="{i18n.discountLabel}"></g:Label>
-                    <g:TextBox styleName="{s.discount}" ui:field="discount" />
+                    <g:TextBox styleName="{s.discount}" tabIndex="60" ui:field="discount" />
                 </g:VerticalPanel>
 				<g:VerticalPanel ui:field="taxContainer" styleName="{s.taxContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.vat}"></g:Label>
-					<t:TaxWidget styleName="{s.tax}" ui:field="tax" />
+					<t:TaxWidget styleName="{s.tax}" tabIndex="70" ui:field="tax" />
 				</g:VerticalPanel>
 				<g:SimplePanel styleName="{s.addButtonContainer}">
-					<g:Button styleName="btn btn-sm green" ui:field="add" text="{i18n.add}"></g:Button>
+					<g:Button styleName="btn btn-sm green" tabIndex="80" ui:field="add" text="{i18n.add}"></g:Button>
 				</g:SimplePanel>
 			</g:HorizontalPanel>
 			

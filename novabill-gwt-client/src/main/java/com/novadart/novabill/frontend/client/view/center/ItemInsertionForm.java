@@ -7,8 +7,11 @@ import java.util.List;
 import java.util.Stack;
 
 import com.google.gwt.core.client.GWT;
+import com.google.gwt.core.client.Scheduler;
+import com.google.gwt.core.client.Scheduler.ScheduledCommand;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.FocusEvent;
+import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
 import com.google.gwt.resources.client.CssResource;
@@ -19,7 +22,6 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
-import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -66,7 +68,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField InlineNotification notification;
 
 	@UiField ScrollPanel itemTableScroller;
-	@UiField Label sku;
+	@UiField(provided=true) ValidatedTextArea sku;
 	@UiField(provided=true) ValidatedTextArea item;
 	@UiField TextBox quantity;
 	@UiField TextBox unitOfMeasure;
@@ -92,6 +94,10 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	private List<CommodityDTO> commodities;
 	private PriceListDTO priceList;
 
+	private enum FILTER_TYPE {
+		SKU, DESCRIPTION
+	};
+
 	private final CommoditySearchPanel commoditySearchPanel = 
 			new CommoditySearchPanel(this, new CommoditySearchPanel.Handler() {
 
@@ -107,6 +113,14 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 	public ItemInsertionForm(Handler handler) {
 		this.handler = handler;
+
+		sku = new ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), new TextLengthValidation(50) {
+
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(50);
+			}
+		});
 
 		item = new ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), new TextLengthValidation(500) {
 
@@ -160,10 +174,12 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 				commodities = result.getFirst().getCommodities();
 				Collections.sort(commodities, SharedComparators.COMMODITY_COMPARATOR);
 				setLocked(false);
+				
+				sku.setFocus(true);
 			}
 		});
 	}
-	
+
 	@Override
 	protected void onUnload() {
 		super.onUnload();
@@ -172,25 +188,45 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 	private String prevKey = "";
 	private Stack<List<CommodityDTO>> searchStack = new Stack<List<CommodityDTO>>();
+	private FILTER_TYPE prevFilterType = null;
 
-
-	private List<CommodityDTO> filterCommodities(String key, List<CommodityDTO> commodities){
+	private List<CommodityDTO> filterCommodities(FILTER_TYPE filterType, String key, List<CommodityDTO> commodities){
 		//assert: key is already lowercase
 
 		List<CommodityDTO> result = new ArrayList<CommodityDTO>();
-		for (CommodityDTO c : commodities) {
-			if(c.getSku().toLowerCase().contains(key) || c.getDescription().toLowerCase().contains(key)){
-				result.add(c);
+
+		switch (filterType) {
+		case DESCRIPTION:
+			for (CommodityDTO c : commodities) {
+				if(c.getDescription().toLowerCase().startsWith(key)){
+					result.add(c);
+				}
 			}
+			break;
+
+		default:
+		case SKU:
+			for (CommodityDTO c : commodities) {
+				if(c.getSku().toLowerCase().startsWith(key)){
+					result.add(c);
+				}
+			}
+			break;
 		}
+
 		return result;
 	}
 
-	private List<CommodityDTO> filterCommodities(String key){
+	private List<CommodityDTO> filterCommodities(FILTER_TYPE filterType, String key){
 		if(key.isEmpty()){
 			return new ArrayList<CommodityDTO>();
 		}
 		String nKey = key.toLowerCase();
+		if(!filterType.equals(prevFilterType)){
+			searchStack.clear();
+			prevFilterType = filterType;
+			prevKey = "";
+		}
 
 		int diffSize = nKey.length() - prevKey.length();
 
@@ -198,17 +234,17 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		case 0:
 			if(!nKey.equals(prevKey)){
 				searchStack.clear();
-				searchStack.push(filterCommodities(nKey, commodities));
+				searchStack.push(filterCommodities(filterType, nKey, commodities));
 			}
 			break;
 
 		case 1:
 			if(nKey.startsWith(prevKey)){
 				List<CommodityDTO> prevCommodities = searchStack.isEmpty() ? commodities : searchStack.peek();
-				searchStack.push( filterCommodities(nKey, prevCommodities) );
+				searchStack.push( filterCommodities(filterType, nKey, prevCommodities) );
 			} else {
 				searchStack.clear();
-				searchStack.push(filterCommodities(nKey, commodities));
+				searchStack.push(filterCommodities(filterType, nKey, commodities));
 			}
 			break;
 
@@ -216,17 +252,17 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			if(prevKey.startsWith(nKey)){
 				searchStack.pop();
 				if(searchStack.isEmpty()){
-					searchStack.push(filterCommodities(nKey, commodities));
+					searchStack.push(filterCommodities(filterType, nKey, commodities));
 				}
 			} else {
 				searchStack.clear();
-				searchStack.push(filterCommodities(nKey, commodities));
+				searchStack.push(filterCommodities(filterType, nKey, commodities));
 			}
 			break;
 
 		default:
 			searchStack.clear();
-			searchStack.push(filterCommodities(nKey, commodities));
+			searchStack.push(filterCommodities(filterType, nKey, commodities));
 			break;
 		}
 
@@ -234,36 +270,180 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		return searchStack.peek();
 	}
 
-	@UiHandler("item")
-	void onKeyUp(KeyUpEvent event){
-		List<CommodityDTO> list = filterCommodities(item.getText());
-		if(list.isEmpty()){
-			commoditySearchPanel.hide();
-			return;
+	private void preloadValues(FILTER_TYPE filterType, String text, CommodityDTO commodity){
+		if(!sku.getText().equals(commodity.getSku()) || !item.getText().equals(commodity.getDescription())) {
+			updateItemFromJS(commodity.getSku(), commodity.getDescription(), commodity.getUnitOfMeasure(), 
+				CalcUtils.calculatePriceForCommodity(commodity, priceList.getName()).toString(), commodity.getTax().toString());
 		}
 
-		commoditySearchPanel.setCommodities(list);
-		commoditySearchPanel.positionOnTop(item);
+
+		switch (filterType) {
+		case DESCRIPTION:
+			if(commodity.getDescription().length() > text.length()){
+				item.setSelectionRange(text.length(), commodity.getDescription().length()-text.length());
+			}
+			break;
+
+		default:
+		case SKU:
+			if(commodity.getSku().length() > text.length()){
+				sku.setSelectionRange(text.length(), commodity.getSku().length()-text.length());
+			}
+			break;
+		}
+	}
+
+	private void handleKeyUpEvent(FILTER_TYPE filterType, KeyUpEvent event){
+		switch (event.getNativeKeyCode()) {
+		case KeyCodes.KEY_SHIFT:
+		case KeyCodes.KEY_ALT:
+		case KeyCodes.KEY_CTRL:
+		case KeyCodes.KEY_UP:
+		case KeyCodes.KEY_RIGHT:
+		case KeyCodes.KEY_PAGEUP:
+		case KeyCodes.KEY_PAGEDOWN:
+		case KeyCodes.KEY_LEFT:
+		case KeyCodes.KEY_HOME:
+		case KeyCodes.KEY_END:
+		case KeyCodes.KEY_DOWN:
+		case KeyCodes.KEY_DELETE:
+			break;
+
+		case KeyCodes.KEY_ESCAPE:
+			commoditySearchPanel.hide();
+			break;
+			
+		case KeyCodes.KEY_TAB:
+		case KeyCodes.KEY_ENTER:
+
+			commoditySearchPanel.hide();
+			List<CommodityDTO> commodities = searchStack.empty() ? new ArrayList<CommodityDTO>() : searchStack.peek();
+			if(!commodities.isEmpty()){
+				CommodityDTO commodity = commodities.get(0);
+				updateItemFromJS(commodity.getSku(), commodity.getDescription(), commodity.getUnitOfMeasure(), 
+						CalcUtils.calculatePriceForCommodity(commodity, priceList.getName()).toString(), commodity.getTax().toString());
+			} 
+			break;
+
+
+		case KeyCodes.KEY_BACKSPACE:
+			commoditySearchPanel.hide();
+			break;
+
+		default:
+			String text = FILTER_TYPE.DESCRIPTION.equals(filterType) ? item.getText() : sku.getText();
+
+			List<CommodityDTO> list = filterCommodities(filterType, text);
+			if(list.isEmpty()){
+				commoditySearchPanel.hide();
+				
+				switch (filterType) {
+				case DESCRIPTION:
+					sku.setText("");
+					tax.reset();
+					quantity.setText("");
+					discount.setText("");
+					price.setText("");
+					unitOfMeasure.setText("");
+					break;
+
+				default:
+				case SKU:
+					item.setText("");
+					tax.reset();
+					quantity.setText("");
+					discount.setText("");
+					price.setText("");
+					unitOfMeasure.setText("");
+					break;
+				}
+				return;
+			}
+
+			commoditySearchPanel.setCommodities(list);
+			commoditySearchPanel.positionOnTop(FILTER_TYPE.DESCRIPTION.equals(filterType) ? item : sku);
+			if(!list.isEmpty()) {
+				preloadValues(filterType, text, list.get(0));
+			}
+			break;
+		}
+	}
+
+	@UiHandler("sku")
+	void onSkuKeyUp(KeyUpEvent event){
+		handleKeyUpEvent(FILTER_TYPE.SKU, event);
+	}
+
+	@UiHandler("item")
+	void onItemKeyUp(KeyUpEvent event){
+		handleKeyUpEvent(FILTER_TYPE.DESCRIPTION, event);
+	}
+
+	@UiHandler("sku")
+	void onSkuFocus(FocusEvent event){
+		commoditySearchPanel.hide();
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				sku.selectAll();
+			}
+		});
+	}
+
+	@UiHandler("item")
+	void onItemFocus(FocusEvent event){
+		commoditySearchPanel.hide();
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				item.selectAll();
+			}
+		});
+		
 	}
 
 	@UiHandler("quantity")
 	void onQuantityFocus(FocusEvent event){
 		commoditySearchPanel.hide();
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				quantity.selectAll();
+			}
+		});
 	}
 
 	@UiHandler("unitOfMeasure")
 	void onUnitOfMeasureFocus(FocusEvent event){
 		commoditySearchPanel.hide();
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				unitOfMeasure.selectAll();
+			}
+		});
 	}
 
 	@UiHandler("price")
 	void onPriceFocus(FocusEvent event){
 		commoditySearchPanel.hide();
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				price.selectAll();
+			}
+		});
 	}
 
 	@UiHandler("discount")
 	void onDiscountFocus(FocusEvent event){
 		commoditySearchPanel.hide();
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				discount.selectAll();
+			}
+		});
 	}
 
 	@UiHandler("add")
@@ -295,10 +475,17 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 					quantity.getText(), unitOfMeasure.getText(), tax.getValue(), discount.getText());
 		}
 
-		
+
 		accountingDocumentItems.getList().add(ii);
 		updateFields();
 		itemTableScroller.scrollToBottom();
+		sku.setFocus(true);
+	}
+	
+	@UiHandler("browse")
+	void onBrowseClicked(ClickEvent e){
+		commoditySearchPanel.hide();
+		openSelectCommodityDialog(this, String.valueOf(this.clientId));
 	}
 
 	@UiHandler("textOnlyAccountingItem")
@@ -352,6 +539,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		tax.reset();
 		prevKey = "";
 		searchStack.clear();
+		prevFilterType = null;
 
 		textOnlyAccountingItem.setValue(false);
 		quantityContainer.setVisible(true);
