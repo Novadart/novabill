@@ -24,6 +24,7 @@ public class BusinessDTOFactory {
 		businessDTO.setVatID(business.getVatID());
 		businessDTO.setSsn(business.getSsn());
 		businessDTO.setDefaultLayoutType(business.getDefaultLayoutType());
+		businessDTO.setPriceDisplayInDocsMonolithic(business.isPriceDisplayInDocsMonolithic());
 		return businessDTO;
 	}
 	
@@ -44,6 +45,7 @@ public class BusinessDTOFactory {
 		business.setVatID(businessDTO.getVatID());
 		business.setSsn(businessDTO.getSsn());
 		business.setDefaultLayoutType(businessDTO.getDefaultLayoutType());
+		business.setPriceDisplayInDocsMonolithic(businessDTO.isPriceDisplayInDocsMonolithic());
 	}
 
 }
