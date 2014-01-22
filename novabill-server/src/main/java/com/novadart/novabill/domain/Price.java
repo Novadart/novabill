@@ -115,6 +115,10 @@ public class Price {
         return em;
     }
     
+    public static List<Price> findAllPrices() {
+        return entityManager().createQuery("SELECT o FROM Price o", Price.class).getResultList();
+    }
+    
     public static Price findPrice(Long id) {
         if (id == null) return null;
         return entityManager().find(Price.class, id);
