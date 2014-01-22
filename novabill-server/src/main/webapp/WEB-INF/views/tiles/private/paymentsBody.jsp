@@ -2,8 +2,8 @@
 	pageEncoding="UTF-8"%>
 
 <script type="text/javascript">
-if(_gaq){
-    _gaq.push(['_trackPageview']);
+if(ga){
+    ga('send', 'pageview');
 }
 
 function onGWTLoaded(){
