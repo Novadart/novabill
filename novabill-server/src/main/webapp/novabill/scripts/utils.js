@@ -115,12 +115,10 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 	};
 
 	this.$get = ['$rootScope', '$window', '$location', '$log', function($rootScope, $window, $location, $log){
-		
+
 		// setup Google Analytics if present, or mock it
-		var GA = $window._gaq ? $window._gaq : {
-			push : function(event){ 
-				$log.debug('Analytics::_trackPageview[ '+ (event.length > 1 ? event[1] : $window.location.href) +' ]');
-			}
+		var GA = $window.ga ? $window.ga : function(action, event, url){
+			$log.debug('Analytics::_trackPageview[ '+ (url ? url : $window.location.href) +' ]');
 		};
 		
 		//service instance
@@ -129,9 +127,9 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 				// track apge view
 				trackPageview : function(url){
 					if(url) {
-						GA.push(['_trackPageview', url]);
+						GA('send', 'pageview', url);
 					} else {
-						GA.push(['_trackPageview']);
+						GA('send', 'pageview');
 					}
 				}
 

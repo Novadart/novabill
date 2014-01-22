@@ -746,7 +746,9 @@
     </script>
     
     <script type="text/javascript">
-	_gaq.push(['_trackPageview']);
+    if(ga){
+    	ga('send', 'pageview');
+    }
 	</script>
     <!-- END PAGE LEVEL JAVASCRIPTS -->
 </body>
