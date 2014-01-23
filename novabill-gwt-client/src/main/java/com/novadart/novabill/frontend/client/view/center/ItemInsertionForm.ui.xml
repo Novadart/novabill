@@ -21,6 +21,7 @@
 			background-color: #EEE;
 			padding: 1em;
 			border: 0.1em solid #CCC;
+			position: relative;
 		}
 		
 		.textOnlyCheckbox {
@@ -104,6 +105,17 @@
 		    position: relative;
 			top: 0.3em;
         }
+        
+        .overrideDiscountInDocsExplicit {
+	        position: absolute;
+			right: 5px;
+			font-size: 0.8em;
+			bottom: 0px;
+        }
+        
+        .overrideDiscountInDocsExplicit label {
+	        font-size: 1.2em;
+        }
 		
 	</ui:style>
 	
@@ -162,6 +174,8 @@
 			</g:HorizontalPanel>
 			
 			<g:Label styleName="{s.decimalSeparatorInfo}" text="*{i18n.decimalSeparatorInfo}" />
+			
+			<g:CheckBox ui:field="overrideDiscountInDocsExplicit" styleName="{s.overrideDiscountInDocsExplicit}" text="{i18n.discountInDocsExplicit}" />
 		</g:FlowPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 

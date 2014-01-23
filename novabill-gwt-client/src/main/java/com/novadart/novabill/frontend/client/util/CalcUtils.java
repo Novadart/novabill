@@ -50,8 +50,6 @@ public class CalcUtils {
 	public static BigDecimal calculatePriceForCommodity(CommodityDTO commodity, String priceListName){
 		PriceDTO price = commodity.getPrices().get(priceListName);
 
-		assert price.getPriceValue().compareTo(BigDecimal.ZERO) >= 0;
-		
 		if(priceListName.equalsIgnoreCase("::default")){
 			return price.getPriceValue();
 		} else {

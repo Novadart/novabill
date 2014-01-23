@@ -69,7 +69,7 @@
     <tiles:insertAttribute  ignore="true" name="javascript" />
     
     <script type="text/javascript">
-    if(ga){
+    if(window.ga){
         ga('send', 'pageview');
     }
     </script>

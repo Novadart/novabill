@@ -84,6 +84,25 @@
 		.logoUpdateButtons{
 	       margin-top: 10px;
         }
+        
+        .optionsSection {
+	       margin-top: 20px;
+        }
+        
+        .option {
+	       display: block;
+           margin-top: 5px;
+           cursor: pointer;
+        }
+        
+        .option label {
+	       margin-left: 10px;
+        }
+        
+        .option input {
+           height: 15px;
+           width: 15px;
+        }
 	</ui:style>
 
 	<g:ScrollPanel height="100%">
@@ -234,7 +253,9 @@
 							</g:HorizontalPanel>
 						</g:VerticalPanel>
 					</g:SimplePanel>
-
+					
+					<g:Label styleName="{style.sectionLabel} {style.optionsSection}" text="Opzioni"></g:Label>
+                    <g:CheckBox ui:field="discountInDocsExplicit" styleName="{style.option}" text="{i18n.discountInDocsExplicit}"></g:CheckBox>
 				</g:VerticalPanel>
 
 			</g:HorizontalPanel>

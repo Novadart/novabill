@@ -130,10 +130,10 @@ public class Configuration {
 	public static Long getBusinessId() {
 		return business.getId();
 	}
-//
-//	public static void setBusiness(BusinessDTO business) {
-//		Configuration.business = business;
-//	}
+
+	public static void setBusiness(BusinessDTO business) {
+		Configuration.business = business;
+	}
 //
 //	public static BusinessStatsDTO getStats() {
 //		return stats;

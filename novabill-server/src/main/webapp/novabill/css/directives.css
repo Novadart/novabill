@@ -130,8 +130,8 @@
 	color: #356635;
 }
 
-.commodity-price .type-input {
-	
+.commodity-price select.type-input {
+	width: 150px;
 }
 
 .commodity-price .type-span {
