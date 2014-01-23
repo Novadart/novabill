@@ -38,14 +38,14 @@
 			
 			<div class="btn-group global-actions">
                <button ng-disabled="selectedCommoditiesCount < 2" class="btn blue dropdown-toggle" type="button" data-toggle="dropdown">
-               Selezionati ({{selectedCommoditiesCount}}) <i class="fa fa-angle-down"></i>
+               {{'SELECTED' | translate}} ({{selectedCommoditiesCount}}) <i class="fa fa-angle-down"></i>
                </button>
                <ul class="dropdown-menu" role="menu">
-                    <li><a href="javascript:void(0);" ng-click="showCommodityPriceDialog()">Imposta Prezzo</a></li>
-                     <li class="divider"></li>
-                     <li><a href="javascript:void(0);" ng-click="selectedCommodities={}">Annulla Selezione</a></li>
+                    <li><a href="javascript:void(0);" ng-click="showCommodityPriceDialog()">{{'SET_PRICE' | translate}}</a></li>
                </ul>
            </div>
+           
+           <button type="button" class="btn blue select-all" ng-bind="selectionButtonText()" ng-click="selectionButtonClick()"></button>
 			
 			<div class="table-responsive" infinite-scroll="loadMoreCommodities()">
 			    <img class="spinner" ng-show="commodities==null" style="margin: 0 auto; display: block;" src="../../private_assets/img/ajax-loading.gif">

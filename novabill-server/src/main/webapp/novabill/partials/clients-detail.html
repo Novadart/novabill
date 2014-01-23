@@ -13,12 +13,14 @@
 
 			<div class="client-detail">
 				<div class="jumbotron">
-					<h1>
-						{{name}}&nbsp;<small>{{businessDetails}}</small>
-					</h1>
+					<h2><strong>
+						{{name}}
+						</strong>
+					</h2>
 					<p>{{address}}</p>
 					<p>{{contactInfo}}</p>
-					<p>{{website}}</p>
+					<p ng-if="website"><a href="{{websiteUrl}}" target="_blank">{{website}}</a></p>
+					<p>{{businessDetails}}</p>
 
 				</div>
 

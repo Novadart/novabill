@@ -26,6 +26,13 @@
 	bottom: 2px;
 }
 
+.price-list-detail .select-all {
+    display: inline-block;
+    margin-left: 10px;
+    position: relative;
+    bottom: 2px;
+}
+
 .price-list-detail .price-row .checkbox {
     margin: 0;
 }

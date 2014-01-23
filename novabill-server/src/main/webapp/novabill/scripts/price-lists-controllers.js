@@ -88,6 +88,7 @@ angular.module('novabill.priceLists.controllers',
 	
 	function updateFilteredCommodities(){
 		$scope.selectedCommodities = {};
+		$scope.selectedCommoditiesCount=0;
 		filteredCommodities = $filter('filter')(loadedCommodities, $scope.query);
 		$scope.commodities = filteredCommodities.slice(0, 15);
 	}
@@ -140,6 +141,24 @@ angular.module('novabill.priceLists.controllers',
 			});
 		});
 	}
+	
+	$scope.selectionButtonClick = function(){
+		if($scope.selectedCommoditiesCount === 0){
+			angular.forEach($scope.commodities, function(com, _){
+				$scope.selectedCommodities[com.id] = true;
+			});
+			$scope.selectedCommoditiesCount = $scope.commodities.length;
+			
+		} else {
+			$scope.selectedCommodities = {};
+			$scope.selectedCommoditiesCount = 0;
+		}
+	};
+	
+	
+	$scope.selectionButtonText = function(){
+		return $scope.selectedCommoditiesCount === 0 ? $filter('translate')('SELECT_ALL'):$filter('translate')('UNSELECT_ALL');
+	};
 	
 	$scope.onSelectionChange = function(id){
 		$scope.selectedCommoditiesCount += $scope.selectedCommodities[id] ? 1 : -1;
