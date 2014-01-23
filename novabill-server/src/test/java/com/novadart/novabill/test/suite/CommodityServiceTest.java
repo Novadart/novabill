@@ -249,11 +249,11 @@ public class CommodityServiceTest extends GWTServiceTest {
     	 Long priceListID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
     	 Price price = Price.findPrice(priceListID, commodityID);
     	 PriceDTO priceDTO = PriceDTOFactory.toDTO(price);
-    	 priceDTO.setPriceType(PriceType.DERIVED);
+    	 priceDTO.setPriceType(PriceType.DISCOUNT_PERCENT);
     	 priceDTO.setPriceValue(new BigDecimal("5.00"));
     	 commodityGwtService.addOrUpdatePrice(authenticatedPrincipal.getBusiness().getId(), priceDTO);
     	 price = Price.findPrice(priceListID, commodityID);
-    	 assertEquals(PriceType.DERIVED, price.getPriceType());
+    	 assertEquals(PriceType.DISCOUNT_PERCENT, price.getPriceType());
     	 assertEquals(new BigDecimal("5.00"), price.getPriceValue());
      }
      
@@ -263,13 +263,13 @@ public class CommodityServiceTest extends GWTServiceTest {
     	 Long businessID = authenticatedPrincipal.getBusiness().getId();
     	 Long commodityID = addCommodity(authenticatedPrincipal.getBusiness().getId(), new BigDecimal("24.95")).getId();
     	 PriceDTO priceDTO = new PriceDTO();
-    	 priceDTO.setPriceType(PriceType.DERIVED);
+    	 priceDTO.setPriceType(PriceType.DISCOUNT_PERCENT);
     	 priceDTO.setPriceValue(new BigDecimal("5.00"));
     	 priceDTO.setCommodityID(commodityID);
     	 priceDTO.setPriceListID(priceListID);
     	 Long id = commodityGwtService.addOrUpdatePrice(businessID, priceDTO);
     	 Price price = Price.findPrice(priceListID, commodityID);
-    	 assertEquals(PriceType.DERIVED, price.getPriceType());
+    	 assertEquals(PriceType.DISCOUNT_PERCENT, price.getPriceType());
     	 assertEquals(new BigDecimal("5.00"), price.getPriceValue());
     	 assertEquals(id, price.getId());
     	 assertEquals(commodityID, price.getCommodity().getId());
