@@ -38,7 +38,7 @@ angular.module('novabill.priceLists.controllers',
 		}
 		
 		instance.result.then(function(priceList){
-			GWT_Server.priceList.add(JSON.stringify(priceList), {
+			GWT_Server.priceList.add(angular.toJson(priceList), {
 
 				onSuccess : function(newId){
 					loadPriceLists();
@@ -73,16 +73,21 @@ angular.module('novabill.priceLists.controllers',
 /**
  * PRICE LISTS DETAILS PAGE CONTROLLER
  */
-.controller('PriceListsDetailsCtrl', ['$scope', '$http', '$routeParams', 'nSorting', 'nConstants', '$rootScope', '$location', '$filter', 'nEditPriceListDialog',
-                                      function($scope, $http, $routeParams, nSorting, nConstants, $rootScope, $location, $filter, nEditPriceListDialog){
+.controller('PriceListsDetailsCtrl', ['$scope', '$http', '$routeParams', 'nSorting', 'nConstants', '$rootScope', 
+                                      '$location', '$filter', 'nEditPriceListDialog', 'nCommodityPriceDialog', '$route',
+                                      function($scope, $http, $routeParams, nSorting, nConstants, $rootScope, 
+                                    		  $location, $filter, nEditPriceListDialog, nCommodityPriceDialog, $route){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
+	$scope.selectedCommodities = {};
+	$scope.selectedCommoditiesCount = 0;
 	
 	var loadedCommodities = [];
 	var filteredCommodities = [];
 	var PARTITION = 50;
 	
 	function updateFilteredCommodities(){
+		$scope.selectedCommodities = {};
 		filteredCommodities = $filter('filter')(loadedCommodities, $scope.query);
 		$scope.commodities = filteredCommodities.slice(0, 15);
 	}
@@ -112,7 +117,7 @@ angular.module('novabill.priceLists.controllers',
 		var instance = nEditPriceListDialog.open(updatedPriceList, invalidIdentifier);
 
 		instance.result.then(function(priceList){
-			GWT_Server.priceList.update(JSON.stringify(priceList), {
+			GWT_Server.priceList.update(angular.toJson(priceList), {
 
 				onSuccess : function(newId){
 					$scope.$apply(function(){
@@ -136,6 +141,10 @@ angular.module('novabill.priceLists.controllers',
 		});
 	}
 	
+	$scope.onSelectionChange = function(id){
+		$scope.selectedCommoditiesCount += $scope.selectedCommodities[id] ? 1 : -1;
+	};
+	
 	$scope.editPriceList = function(){
 		recursiveUpdate($scope.priceList, false);
 	};
@@ -158,6 +167,53 @@ angular.module('novabill.priceLists.controllers',
 
 			onCancel : function(){}
 		});
+	};
+	
+	$scope.showCommodityPriceDialog = function(){
+		var instance = nCommodityPriceDialog.open($scope.priceList.name);
+		instance.result.then(
+				function (result) {
+
+					// find the set of commodities that were selected. We can restrict ourselves only to commodities that are on display
+					var set = [];
+					angular.forEach($scope.commodities, function(com, _){
+						if($scope.selectedCommodities[com.id]){
+							set.push(com);
+						}
+					});
+					
+					// extract and update the prices
+					var prices = { list : [] };
+					var price = null;
+					angular.forEach(set, function(com, _){
+						price = angular.copy(com.prices[$scope.priceList.name]);
+						price.priceType = result.priceType;
+						price.priceValue = result.priceValue;
+						prices.list.push(price);
+					});
+					
+					GWT_Server.commodity.addOrUpdatePrices(nConstants.conf.businessId, angular.toJson(prices), {
+						onSuccess : function(result){
+							$scope.$apply(function(){
+								
+//								var price = null;
+//								angular.forEach(set, function(com, i){
+//									price = prices.list[i];
+//									price.id = parseInt(result.list[i]);
+//									com.prices[$scope.priceList.name] = price;
+//								});
+								$route.reload();
+								
+							});
+						},
+						onFailure : function(){}
+					});
+					
+					
+				},
+				function () {
+				}
+		);
 	};
 	
 	loadPriceList();

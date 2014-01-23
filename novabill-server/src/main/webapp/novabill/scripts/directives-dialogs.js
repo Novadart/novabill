@@ -74,7 +74,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 				window.location.assign(nConstants.url.invoiceFromTransportDocumentList( 
 						encodeURIComponent( 
-								JSON.stringify({
+								angular.toJson({
 									list : ids
 								}) ) ));
 			};
@@ -351,6 +351,50 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 		}
 	};
 }])
+
+
+
+
+/*
+ * Commodity Price Dialog
+ */
+.factory('nCommodityPriceDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+	return {
+		open : function(priceListName) {
+
+			var instance = $modal.open({
+
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-commodity-price-dialog.html'),
+
+				controller: ['$scope', 'nConstants', '$modalInstance',
+				             function($scope, nConstants, $modalInstance){
+					
+					$scope.isDefaultPriceList = nConstants.conf.defaultPriceListName === priceListName;
+					$scope.priceType = $scope.isDefaultPriceList ? nConstants.priceType.FIXED : null;
+
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
+					
+					$scope.ok = function(){
+						$modalInstance.close({
+							priceType : $scope.priceType,
+							priceValue : $scope.priceValue
+						});
+					};
+					
+				}]
+			});
+
+			return instance;
+
+		}
+	};
+}])
+
+
+
 
 /*
  * Select Commodity Dialog

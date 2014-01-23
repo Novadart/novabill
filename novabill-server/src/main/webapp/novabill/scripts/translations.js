@@ -104,6 +104,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		SELECT_CLIENT : 'Seleziona un Cliente',
 		SELECT_COMMODITY : 'Seleziona un Articolo',
 		SERVICE : 'Servizio',
+		SET_PRICE : 'Imposta Prezzo',
 		SKU : 'Codice',
 		SKU_PLACEHOLDER : 'esempio: T-123',
 		STATISTICS_AND_MORE : 'statistiche e novità',

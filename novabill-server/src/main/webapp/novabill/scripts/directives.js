@@ -448,7 +448,7 @@ angular.module('novabill.directives',
 				}, true);
 	
 				$scope.save = function(){
-					GWT_Server.commodity.addOrUpdatePrice(nConstants.conf.businessId, JSON.stringify($scope.price), {
+					GWT_Server.commodity.addOrUpdatePrice(nConstants.conf.businessId, angular.toJson($scope.price), {
 						onSuccess : function(id){
 							$scope.$apply(function(){
 	
@@ -521,34 +521,6 @@ angular.module('novabill.directives',
 
 }])
 
-
-
-/*
- * Smart Percentage attribute. 
- * User can insert , or . to separate decimals
- * Value mast be between 0 and 100
- */
-//.directive('nSmartPercentage', ['nRegExp', function(nRegExp) {
-//	return {
-//		require: 'ngModel',
-//		restrict: 'A',
-//		link: function(scope, elm, attrs, ctrl) {
-//			ctrl.$parsers.unshift(function(viewValue) {
-//				if (nRegExp.fiscalFloat.test(viewValue)) {
-//					ctrl.$setValidity('percentage', true);
-//					return parseFloat(viewValue.replace(',', '.'));
-//				} else {
-//					ctrl.$setValidity('percentage', false);
-//					return undefined;
-//				}
-//			});
-//
-//			ctrl.$formatters.push(function(modelValue) {
-//				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
-//			});
-//		}
-//	};
-//}])
 
 
 /*
