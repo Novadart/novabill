@@ -65,8 +65,11 @@ angular.module('novabill.constants', [])
 			},
 
 			priceType : {
-				DERIVED : 'DERIVED', 
-				FIXED : 'FIXED'
+				FIXED : 'FIXED',
+				DISCOUNT_PERCENT : 'DISCOUNT_PERCENT',
+				DISCOUNT_FIXED : 'DISCOUNT_FIXED',
+				OVERCHARGE_PERCENT : 'OVERCHARGE_PERCENT',
+				OVERCHARGE_FIXED : 'OVERCHARGE_FIXED'
 			},
 
 			logRecord : {

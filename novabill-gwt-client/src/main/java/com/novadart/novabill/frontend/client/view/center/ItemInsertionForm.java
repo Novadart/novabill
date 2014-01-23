@@ -3,7 +3,9 @@ package com.novadart.novabill.frontend.client.view.center;
 import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Stack;
 
 import com.google.gwt.core.client.GWT;
@@ -41,8 +43,10 @@ import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.tax.TaxWidget;
+import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
+import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.tuple.Pair;
 
@@ -105,8 +109,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 				public void onCommodityClicked(CommodityDTO commodity) {
 					commoditySearchPanel.hide();
 					if(commodity != null){
-						updateItemFromJS(commodity.getSku(), commodity.getDescription(), commodity.getUnitOfMeasure(), 
-								CalcUtils.calculatePriceForCommodity(commodity, priceList.getName()).toString(), commodity.getTax().toString());
+						updateItemFromCommodity(commodity, priceList.getName());
 					}
 				}
 			} );
@@ -272,8 +275,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 	private void preloadValues(FILTER_TYPE filterType, String text, CommodityDTO commodity){
 		if(!sku.getText().equals(commodity.getSku()) || !item.getText().equals(commodity.getDescription())) {
-			updateItemFromJS(commodity.getSku(), commodity.getDescription(), commodity.getUnitOfMeasure(), 
-				CalcUtils.calculatePriceForCommodity(commodity, priceList.getName()).toString(), commodity.getTax().toString());
+			updateItemFromCommodity(commodity, priceList.getName());
 		}
 
 
@@ -320,8 +322,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			List<CommodityDTO> commodities = searchStack.empty() ? new ArrayList<CommodityDTO>() : searchStack.peek();
 			if(!commodities.isEmpty()){
 				CommodityDTO commodity = commodities.get(0);
-				updateItemFromJS(commodity.getSku(), commodity.getDescription(), commodity.getUnitOfMeasure(), 
-						CalcUtils.calculatePriceForCommodity(commodity, priceList.getName()).toString(), commodity.getTax().toString());
+				updateItemFromCommodity(commodity, priceList.getName());
 			} 
 			break;
 
@@ -498,24 +499,54 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		skuContainer.setVisible(!event.getValue());
 	}
 
-	private void updateItemFromJS(String skuVal, String description, String unitOfMeasure, String price, String vat){
-		sku.setText(skuVal.startsWith("::") ? "" : skuVal);
-		item.setText(description);
-		this.unitOfMeasure.setText(unitOfMeasure);
-		this.price.setText(price.replace('.', ','));
-		tax.setValue(new BigDecimal(vat));
+	private void updateItemFromJS(String skuVal, String description, String unitOfMeasure, String vat, 
+			String defaultPrice, String priceListName, String priceType, String price){
+		CommodityDTO commodity = new CommodityDTO();
+		commodity.setSku(skuVal);
+		commodity.setDescription(description);
+		commodity.setUnitOfMeasure(unitOfMeasure);
+		commodity.setTax(new BigDecimal(vat));
+		
+		Map<String, PriceDTO> prices = new HashMap<String, PriceDTO>();
+		
+		PriceDTO p = new PriceDTO();
+		p.setId(-1L);
+		p.setPriceType(PriceType.valueOf(priceType));
+		p.setPriceValue(new BigDecimal(price));
+		prices.put(priceListName, p);
+		
+		p = new PriceDTO();
+		p.setPriceType(PriceType.FIXED);
+		p.setPriceValue(new BigDecimal(defaultPrice));
+		prices.put("::default", p);
+		
+		commodity.setPrices(prices);
+		
+		updateItemFromCommodity(commodity, priceListName);
+	}
+	
+	private void updateItemFromCommodity(CommodityDTO commodity, String priceListName){
+		sku.setText(commodity.getSku().startsWith("::") ? "" : commodity.getSku());
+		item.setText(commodity.getDescription());
+		unitOfMeasure.setText(commodity.getUnitOfMeasure());
+		price.setText(CalcUtils.calculatePriceForCommodity(commodity, priceListName).toString().replace('.', ','));
+		discount.setText("");
+		tax.setValue(commodity.getTax());
 	}
 
 	native void openSelectCommodityDialog(ItemInsertionForm insForm, String clientId)/*-{
 		var instance = $wnd.GWT_Hook_nSelectCommodityDialog(clientId);
 		instance.result.then(
 			function(result){
-					insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::updateItemFromJS(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(
+					insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::updateItemFromJS(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(
 						result.commodity.sku,
 						result.commodity.description,
 						result.commodity.unitOfMeasure,
-						String(result.priceValue),
-						String(result.commodity.tax)
+						String(result.commodity.tax),
+						String(result.defaultPriceValue),
+						result.priceListName,
+						result.priceType,
+						String(result.priceValue)
 					);
 			},
 			function(error){}

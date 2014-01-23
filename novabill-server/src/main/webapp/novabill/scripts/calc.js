@@ -10,20 +10,6 @@ angular.module('novabill.calc', ['novabill.constants'])
 	return {
 
 		/**
-		 * Calculates a price given the default price list value and the percentage variation/discount
-		 * 
-		 * @param priceValue the value price, expressed (float value)
-		 * @param percentageValue percentage variation (float value). if positive means discount, if negative means overchargecarge
-		 * 
-		 * @return the price of the commodity rounded to the second decimal
-		 */
-		calculatePriceWithPercentageVariation : function(priceValue, percentageValue){
-			var value = new BigNumber(priceValue);
-			var percentage = new BigNumber(percentageValue).times(new BigNumber('-1')).plus(100).dividedBy(100);
-			return value.times(percentage).round(2);
-		},
-		
-		/**
 		 * Default prices are already rounded to the 2nd decimal
 		 */
 		calculatePriceForCommodity : function(commodity, priceListName){
@@ -40,14 +26,30 @@ angular.module('novabill.calc', ['novabill.constants'])
 					return new BigNumber(price.priceValue);
 				}
 				
+				var defaultPrice = new BigNumber( COMMODITY_PRICES_HACK[nConstants.conf.defaultPriceListName].priceValue );
+				var priceValue = new BigNumber( price.priceValue );
+				var percentValue = null;
+				
 				switch (price.priceType) {
-				case nConstants.priceType.DERIVED:
-					var defaultPrice = COMMODITY_PRICES_HACK[nConstants.conf.defaultPriceListName];
-					return this.calculatePriceWithPercentageVariation(defaultPrice.priceValue, price.priceValue);
+				case nConstants.priceType.DISCOUNT_PERCENT:
+					percentValue = priceValue.times(new BigNumber('-1')).plus(100).dividedBy(100);
+					return defaultPrice.times(percentValue).round(2);
+					
+				case nConstants.priceType.DISCOUNT_FIXED:
+					return defaultPrice.minus(priceValue).round(2);
 
-				default:
+				case nConstants.priceType.OVERCHARGE_PERCENT:
+					percentValue = priceValue.plus(100).dividedBy(100);
+					return defaultPrice.times(percentValue).round(2);
+					
+				case nConstants.priceType.OVERCHARGE_FIXED:
+					return defaultPrice.plus(priceValue).round(2);
+					
 				case nConstants.priceType.FIXED:
-					return new BigNumber(price.priceValue);
+					return priceValue;
+					
+				default:
+					return null;
 				}
 			}
 		}

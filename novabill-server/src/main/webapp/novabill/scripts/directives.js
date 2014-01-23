@@ -403,10 +403,29 @@ angular.module('novabill.directives',
 					+'    '+$filter('currency')(COMMODITY_PRICES_HACK[$scope.DEFAULT_PRICELIST_NAME].priceValue);
 
 					switch (price.priceType) {
-					case nConstants.priceType.DERIVED:
+					case nConstants.priceType.DISCOUNT_PERCENT:
 						$scope.priceDetails = details +'\n'
-						+(price.priceValue > 0 ? $filter('translate')('COMMODITY_PRICE_DISCOUNT') : $filter('translate')('COMMODITY_PRICE_OVERCHARGE'))
-						+'   ' + (price.priceValue > 0 ? String(price.priceValue) : String(-price.priceValue)).replace('\.', ',') +'%';
+						+ $filter('translate')('COMMODITY_PRICE_DISCOUNT')
+						+'  ' + String(price.priceValue).replace('\.', ',') +'%';
+						break;
+						
+					case nConstants.priceType.DISCOUNT_FIXED:
+						$scope.priceDetails = details +'\n'
+						+ $filter('translate')('COMMODITY_PRICE_DISCOUNT')
+						+'  ' + String(price.priceValue).replace('\.', ',') +'€';
+						break;
+						
+					case nConstants.priceType.OVERCHARGE_PERCENT:
+						$scope.priceDetails = details +'\n'
+						+ $filter('translate')('COMMODITY_PRICE_OVERCHARGE')
+						+'  ' + String(price.priceValue).replace('\.', ',') +'%';
+						break;
+						
+						
+					case nConstants.priceType.OVERCHARGE_FIXED:
+						$scope.priceDetails = details +'\n'
+						+ $filter('translate')('COMMODITY_PRICE_OVERCHARGE')
+						+'  ' + String(price.priceValue).replace('\.', ',') +'€';
 						break;
 
 					default:
@@ -509,27 +528,27 @@ angular.module('novabill.directives',
  * User can insert , or . to separate decimals
  * Value mast be between 0 and 100
  */
-.directive('nSmartPercentage', ['nRegExp', function(nRegExp) {
-	return {
-		require: 'ngModel',
-		restrict: 'A',
-		link: function(scope, elm, attrs, ctrl) {
-			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.fiscalFloat.test(viewValue)) {
-					ctrl.$setValidity('percentage', true);
-					return parseFloat(viewValue.replace(',', '.'));
-				} else {
-					ctrl.$setValidity('percentage', false);
-					return undefined;
-				}
-			});
-
-			ctrl.$formatters.push(function(modelValue) {
-				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
-			});
-		}
-	};
-}])
+//.directive('nSmartPercentage', ['nRegExp', function(nRegExp) {
+//	return {
+//		require: 'ngModel',
+//		restrict: 'A',
+//		link: function(scope, elm, attrs, ctrl) {
+//			ctrl.$parsers.unshift(function(viewValue) {
+//				if (nRegExp.fiscalFloat.test(viewValue)) {
+//					ctrl.$setValidity('percentage', true);
+//					return parseFloat(viewValue.replace(',', '.'));
+//				} else {
+//					ctrl.$setValidity('percentage', false);
+//					return undefined;
+//				}
+//			});
+//
+//			ctrl.$formatters.push(function(modelValue) {
+//				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
+//			});
+//		}
+//	};
+//}])
 
 
 /*

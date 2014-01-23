@@ -402,10 +402,15 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 					}
 
 					$scope.selectCommodity = function(commodity){
-						var priceValue = nCalc.calculatePriceForCommodity(commodity, $scope.priceList.name).toString();
+						var defaultPrice = commodity.prices[nConstants.conf.defaultPriceListName];
+						var price = commodity.prices[$scope.priceList.name];
+						
 						$modalInstance.close({
-								commodity : commodity, 
-								priceValue : priceValue
+								commodity : commodity,
+								defaultPriceValue : defaultPrice.priceValue,
+								priceListName : $scope.priceList.name,
+								priceType : price.priceType,
+								priceValue : price.priceValue
 						});
 					};
 

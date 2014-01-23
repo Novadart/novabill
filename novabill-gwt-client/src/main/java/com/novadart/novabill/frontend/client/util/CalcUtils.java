@@ -47,19 +47,10 @@ public class CalcUtils {
 	 * Commodities methods
 	 */
 	
-	/**
-	 * 
-	 * @param priceValue
-	 * @param percentageValue
-	 * @return the price rounded HALF UP to the second decimal
-	 */
-	public static BigDecimal calculatePriceWithPercentageVariation(BigDecimal priceValue, BigDecimal percentageValue){
-		BigDecimal percentage = percentageValue.multiply(new BigDecimal("-1")).add(BD_100).divide(BD_100);
-		return round2Dec(priceValue.multiply(percentage));
-	}
-	
 	public static BigDecimal calculatePriceForCommodity(CommodityDTO commodity, String priceListName){
 		PriceDTO price = commodity.getPrices().get(priceListName);
+
+		assert price.getPriceValue().compareTo(BigDecimal.ZERO) >= 0;
 		
 		if(priceListName.equalsIgnoreCase("::default")){
 			return price.getPriceValue();
@@ -71,14 +62,29 @@ public class CalcUtils {
 				return price.getPriceValue();
 			}
 			
+			PriceDTO defaultPrice = commodity.getPrices().get("::default");
+			BigDecimal percentage = null;
+			
 			switch (price.getPriceType()) {
-			case DERIVED:
-				PriceDTO defaultPrice = commodity.getPrices().get("::default");
-				return calculatePriceWithPercentageVariation(defaultPrice.getPriceValue(), price.getPriceValue());
+			case DISCOUNT_PERCENT:
+				percentage = price.getPriceValue().multiply(new BigDecimal("-1")).add(BD_100).divide(BD_100);
+				return round2Dec(defaultPrice.getPriceValue().multiply(percentage));
 
-			default:
+			case DISCOUNT_FIXED:
+				return round2Dec(defaultPrice.getPriceValue().subtract(price.getPriceValue()));
+				
+			case OVERCHARGE_FIXED:
+				return round2Dec(defaultPrice.getPriceValue().add(price.getPriceValue()));
+				
+			case OVERCHARGE_PERCENT:
+				percentage = price.getPriceValue().add(BD_100).divide(BD_100);
+				return round2Dec(defaultPrice.getPriceValue().multiply(percentage));
+				
 			case FIXED:
 				return price.getPriceValue();
+			
+			default:
+				return null;
 			}
 		}
 	}
