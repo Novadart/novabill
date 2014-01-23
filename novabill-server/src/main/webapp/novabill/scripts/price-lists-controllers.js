@@ -144,6 +144,9 @@ angular.module('novabill.priceLists.controllers',
 	
 	$scope.selectionButtonClick = function(){
 		if($scope.selectedCommoditiesCount === 0){
+			// make sure that all the expected commodities are on screen
+			$scope.commodities = filteredCommodities;
+			
 			angular.forEach($scope.commodities, function(com, _){
 				$scope.selectedCommodities[com.id] = true;
 			});

@@ -101,13 +101,24 @@ angular.module('novabill.dashboard.controllers', ['novabill.directives', 'novabi
 
 	};
 
-
+	var loadedLogRecords = [];
+	$scope.logRecords = [];
+	var PARTITION = 30;
+	
+	$scope.loadMoreLogRecords = function(){
+		if($scope.logRecords){
+			var currentIndex = $scope.logRecords.length;
+			$scope.logRecords = $scope.logRecords.concat(loadedLogRecords.slice(currentIndex, currentIndex+PARTITION));
+		}
+	};
 
 
 	GWT_Server.business.getStats(nConstants.conf.businessId, {
 		onSuccess : function(stats){
 			$scope.$apply(function(){
 				$scope.stats = stats;
+				loadedLogRecords = stats.logRecords.logRecords;
+				$scope.logRecords = loadedLogRecords.slice(0, 10);
 				drawInvoicesPerMonthChart(stats.invoiceCountsPerMonth.list);
 				
 				$('.scroller').slimScroll({

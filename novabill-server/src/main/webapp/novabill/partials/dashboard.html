@@ -113,9 +113,9 @@
                             </div> -->
                         </div>
                         <div class="portlet-body">
-                            <div class="scroller" style="height: 300px;" data-always-visible="1" data-rail-visible="0">
+                            <div class="scroller" style="height: 300px;" data-always-visible="1" data-rail-visible="0" n-div-infinite-scroll="loadMoreLogRecords()">
                                 <ul class="feeds">
-                                    <n-log-record record="lr" ng-repeat="lr in stats.logRecords.logRecords"></n-log-record>
+                                    <n-log-record record="lr" ng-repeat="lr in logRecords"></n-log-record>
                                 </ul>
                             </div>
                             <!-- <div class="scroller-footer">
