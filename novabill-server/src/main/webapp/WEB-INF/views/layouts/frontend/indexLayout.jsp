@@ -746,7 +746,7 @@
     </script>
     
     <script type="text/javascript">
-    if(ga){
+    if(window.ga){
     	ga('send', 'pageview');
     }
 	</script>

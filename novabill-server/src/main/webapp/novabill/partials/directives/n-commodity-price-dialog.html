@@ -1,0 +1,40 @@
+<div class="n-commodity-price-dialog">
+	<div class="modal-header">
+		<button type="button" class="close" ng-click="cancel()">&times;</button>
+		<h4 class="modal-title">{{'SET_PRICE' | translate}}</h4>
+	</div>
+	<div class="modal-body">
+		<form name="form" class="form-inline" style="text-align: center;" novalidate>
+	    
+		    <!-- Select price type -->
+		    <select ng-disabled="isDefaultPriceList"
+		            ng-class="{'has-error' : form.priceType.$invalid, 'has-success' : form.priceType.$valid}"
+		            class="form-control type-input input-medium" 
+		            style="display: inline;" 
+		            name="priceType" 
+		            ng-model="$parent.priceType" 
+		            required>
+		        <option value="DISCOUNT_PERCENT">{{'PRICE_DISCOUNT_PERCENT' | translate}}</option>
+		        <option value="DISCOUNT_FIXED">{{'PRICE_DISCOUNT_FIXED' | translate}}</option>
+		        <option value="OVERCHARGE_PERCENT">{{'PRICE_OVERCHARGE_PERCENT' | translate}}</option>
+		        <option value="OVERCHARGE_FIXED">{{'PRICE_OVERCHARGE_FIXED' | translate}}</option>
+		        <option value="FIXED">{{'PRICE_FIXED' | translate}}</option>
+		    </select>
+		    
+		    <input ng-class="{'has-error' : form.priceValue.$invalid, 'has-success' : form.priceValue.$valid}"  
+		           type="text" 
+		           n-smart-price 
+		           name="priceValue" 
+		           style="display: inline;"  
+		           maxlength="50" 
+		           ng-model="$parent.priceValue" 
+		           class="form-control input-small price-input" 
+		           required>
+		
+		</form>
+	</div>
+	<div class="modal-footer">
+        <button type="button" class="btn green" ng-disabled="form.priceValue.$invalid" ng-click="ok()">{{'CONTINUE' | translate}}</button>
+        <button type="button" class="btn" ng-click="cancel()">{{'CANCEL' | translate}}</button>
+    </div>
+</div>

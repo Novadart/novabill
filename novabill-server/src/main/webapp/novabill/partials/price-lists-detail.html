@@ -35,14 +35,30 @@
 				<i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
 					placeholder="{{'FILTER' | translate}}..." ng-model="query">
 			</div>
-
+			
+			<div class="btn-group global-actions">
+               <button ng-disabled="selectedCommoditiesCount < 2" class="btn blue dropdown-toggle" type="button" data-toggle="dropdown">
+               {{'SELECTED' | translate}} ({{selectedCommoditiesCount}}) <i class="fa fa-angle-down"></i>
+               </button>
+               <ul class="dropdown-menu" role="menu">
+                    <li><a href="javascript:void(0);" ng-click="showCommodityPriceDialog()">{{'SET_PRICE' | translate}}</a></li>
+               </ul>
+           </div>
+           
+           <button type="button" class="btn blue select-all" ng-bind="selectionButtonText()" ng-click="selectionButtonClick()"></button>
+			
 			<div class="table-responsive" infinite-scroll="loadMoreCommodities()">
 			    <img class="spinner" ng-show="commodities==null" style="margin: 0 auto; display: block;" src="../../private_assets/img/ajax-loading.gif">
 				<table class="table">
 					<tbody>
 						<tr class="price-row" ng-class="{product: !com.service, service: com.service}" ng-repeat="com in commodities">
+							<td width="5%">
+								<div class="checkbox">
+									<label> <input type="checkbox" ng-model="selectedCommodities[com.id]" ng-change="onSelectionChange(com.id)"> </label>
+								</div>
+							</td>
 							<td width="10%"><strong>{{com.sku | nFilterDefault}}</strong></td>
-							<td width="50%">{{com.description}}</td>
+							<td width="45%">{{com.description}}</td>
 							<td width="40%" style="text-align: right;">
 							      <n-commodity-price 
 							         price-list-name="priceList.name" 

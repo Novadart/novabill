@@ -213,9 +213,9 @@ angular.module('novabill.clients.controllers',
 						$scope.name = client.name;
 
 						$scope.businessDetails = 
-							(client.vatID ? client.vatID : '') +
+							(client.vatID ? $filter('translate')('VATID')+': '+client.vatID : '') +
 							(client.vatID && client.ssn ? ' - ' : '') +
-							(client.ssn ? client.ssn : '');
+							(client.ssn ? $filter('translate')('SSN')+': '+client.ssn : '');
 
 						$scope.address = 
 							(client.address ? client.address+' ' : '') +
@@ -223,13 +223,29 @@ angular.module('novabill.clients.controllers',
 							(client.city ? client.city+' ' : '') +
 							(client.province ? '('+client.province+') ' : '');
 
-						$scope.contactInfo =
-							(client.email ? 'Email: '+client.email : '') +
-							(client.fax ? 'Fax: '+client.fax : '') +
-							(client.mobile ? 'Mobile: '+client.mobile : '') +
-							(client.phone ? 'Phone: '+client.phone : '');
-
-
+						var a1 = [
+							(client.email ? 'Email: '+client.email : ''),
+							(client.fax ? 'Fax: '+client.fax : ''),
+							(client.mobile ? 'Cell: '+client.mobile : ''),
+							(client.phone ? 'Tel: '+client.phone : '') ];
+						
+						var a2 = [];
+						angular.forEach(a1, function(val, _){
+							if(val){ a2.push(val); };
+						});
+						
+						var contactInfo = "";
+						for(var i=0; i<a2.length-1; i++){
+							contactInfo += a2[i] + ' - '; 
+						}
+						if(a2.length > 0){
+							contactInfo += a2[a2.length-1];
+						}
+						$scope.contactInfo = contactInfo;
+						
+						$scope.website = client.web;
+						$scope.websiteUrl =  client.web ? (client.web.indexOf('http') == 0 ? client.web : 'http://'+client.web) : null;
+						
 						$scope.client = client;
 					});
 				},

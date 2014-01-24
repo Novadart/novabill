@@ -51,7 +51,7 @@ angular.module('novabill.commodities.controllers',
 				{
 			onSave : function(commodity, delegation){
 
-				GWT_Server.commodity.add(JSON.stringify(commodity), {
+				GWT_Server.commodity.add(angular.toJson(commodity), {
 					onSuccess : function(newId){
 						delegation.finish();
 						loadCommodities();
@@ -125,7 +125,7 @@ angular.module('novabill.commodities.controllers',
 				{
 			onSave : function(commodity, delegation){
 
-				GWT_Server.commodity.update(JSON.stringify(commodity), {
+				GWT_Server.commodity.update(angular.toJson(commodity), {
 					onSuccess : function(newId){
 						delegation.finish(true);
 						loadCommodity();

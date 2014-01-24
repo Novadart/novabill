@@ -4,7 +4,7 @@
     <select ng-show="editMode && priceListName !== DEFAULT_PRICELIST_NAME"
             ng-if="!readOnly"
             ng-class="{'has-error' : form.priceType.$invalid, 'has-success' : form.priceType.$valid}"
-            class="form-control input-medium type-input" 
+            class="form-control type-input" 
             style="display: inline;" 
             name="priceType" 
             ng-model="price.priceType" 

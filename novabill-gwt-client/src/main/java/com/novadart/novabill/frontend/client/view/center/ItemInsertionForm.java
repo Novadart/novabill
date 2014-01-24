@@ -31,6 +31,7 @@ import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.view.client.ListDataProvider;
 import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextArea;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.SharedComparators;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
@@ -90,6 +91,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField VerticalPanel discountContainer;
 
 	@UiField Button add;
+
+	@UiField CheckBox overrideDiscountInDocsExplicit;
 
 	@UiField NotificationCss nf;
 
@@ -177,10 +180,17 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 				commodities = result.getFirst().getCommodities();
 				Collections.sort(commodities, SharedComparators.COMMODITY_COMPARATOR);
 				setLocked(false);
-				
+
 				sku.setFocus(true);
 			}
 		});
+
+		overrideDiscountInDocsExplicit.setVisible(!Configuration.getBusiness().isPriceDisplayInDocsMonolithic());
+		overrideDiscountInDocsExplicit.setValue(!Configuration.getBusiness().isPriceDisplayInDocsMonolithic());
+	}
+
+	private boolean discountMustBeExplicit(){
+		return overrideDiscountInDocsExplicit.isVisible() && overrideDiscountInDocsExplicit.getValue();
 	}
 
 	@Override
@@ -314,7 +324,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		case KeyCodes.KEY_ESCAPE:
 			commoditySearchPanel.hide();
 			break;
-			
+
 		case KeyCodes.KEY_TAB:
 		case KeyCodes.KEY_ENTER:
 
@@ -337,7 +347,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			List<CommodityDTO> list = filterCommodities(filterType, text);
 			if(list.isEmpty()){
 				commoditySearchPanel.hide();
-				
+
 				switch (filterType) {
 				case DESCRIPTION:
 					sku.setText("");
@@ -400,7 +410,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 				item.selectAll();
 			}
 		});
-		
+
 	}
 
 	@UiHandler("quantity")
@@ -482,7 +492,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		itemTableScroller.scrollToBottom();
 		sku.setFocus(true);
 	}
-	
+
 	@UiHandler("browse")
 	void onBrowseClicked(ClickEvent e){
 		commoditySearchPanel.hide();
@@ -506,32 +516,45 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		commodity.setDescription(description);
 		commodity.setUnitOfMeasure(unitOfMeasure);
 		commodity.setTax(new BigDecimal(vat));
-		
+
 		Map<String, PriceDTO> prices = new HashMap<String, PriceDTO>();
-		
+
 		PriceDTO p = new PriceDTO();
 		p.setId(-1L);
 		p.setPriceType(PriceType.valueOf(priceType));
 		p.setPriceValue(new BigDecimal(price));
 		prices.put(priceListName, p);
-		
+
 		p = new PriceDTO();
 		p.setPriceType(PriceType.FIXED);
 		p.setPriceValue(new BigDecimal(defaultPrice));
 		prices.put("::default", p);
-		
+
 		commodity.setPrices(prices);
-		
+
 		updateItemFromCommodity(commodity, priceListName);
 	}
-	
+
 	private void updateItemFromCommodity(CommodityDTO commodity, String priceListName){
 		sku.setText(commodity.getSku().startsWith("::") ? "" : commodity.getSku());
 		item.setText(commodity.getDescription());
 		unitOfMeasure.setText(commodity.getUnitOfMeasure());
-		price.setText(CalcUtils.calculatePriceForCommodity(commodity, priceListName).toString().replace('.', ','));
-		discount.setText("");
 		tax.setValue(commodity.getTax());
+
+		PriceType priceType = commodity.getPrices().get(priceListName).getPriceType();
+
+		if(priceType != null && PriceType.DISCOUNT_PERCENT.equals(priceType) && discountMustBeExplicit()) {
+
+			PriceDTO defaultPrice = commodity.getPrices().get("::default");
+			PriceDTO pr = commodity.getPrices().get(priceListName);
+
+			price.setText(defaultPrice.getPriceValue().toString().replace('.', ','));
+			discount.setText(pr.getPriceValue().toString().replace('.', ','));
+
+		} else {
+			price.setText(CalcUtils.calculatePriceForCommodity(commodity, priceListName).toString().replace('.', ','));
+			discount.setText("");
+		}
 	}
 
 	native void openSelectCommodityDialog(ItemInsertionForm insForm, String clientId)/*-{
@@ -584,6 +607,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	public void reset(){
 		accountingDocumentItems.getList().clear();
 		notification.hide();
+		overrideDiscountInDocsExplicit.setVisible(false);
 		updateFields();
 	}
 
@@ -620,6 +644,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		discount.setEnabled(!value);
 		tax.setEnabled(!value);
 		add.setEnabled(!value);
+		overrideDiscountInDocsExplicit.setEnabled(!value);
 	}
 
 }

@@ -130,8 +130,8 @@
 	color: #356635;
 }
 
-.commodity-price .type-input {
-	
+.commodity-price select.type-input {
+	width: 150px;
 }
 
 .commodity-price .type-span {
@@ -245,4 +245,18 @@
 .n-year-selector .year-select {
     display: inline;
     line-height: 34px;
+}
+
+
+/*
+ *  COMMODITY PRICE DIALOG
+ */
+.n-commodity-price-dialog input.has-error,.n-commodity-price-dialog select.has-error {
+    border-color: #953b39;
+    color: #953b39;
+}
+
+.n-commodity-price-dialog input.has-success,.n-commodity-price-dialog select.has-success {
+    border-color: #356635;
+    color: #356635;
 }
