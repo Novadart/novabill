@@ -46,7 +46,7 @@ server {
         proxy_set_header    X-Real-IP $remote_addr;
         proxy_redirect      off;
         
-        expires 8h;
+        expires -1;
     }
 
     location ^~ /frontend_assets/ {
