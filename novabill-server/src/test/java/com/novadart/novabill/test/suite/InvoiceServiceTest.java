@@ -45,6 +45,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.facade.ClientGwtService;
 import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
@@ -58,6 +59,9 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	
 	@Autowired
 	private InvoiceGwtService invoiceService;
+	
+	@Autowired
+	private ClientGwtService clientService;
 	
 	@Override
 	@Before
@@ -280,6 +284,19 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		assertEquals(invDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
 	}
 	
+	@Test(expected = ValidationException.class)
+	public void addAuthorizedForThinClientValidationErrorTest() throws InstantiationException, IllegalAccessException, NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+		Client client = new Client();
+		client.setName("John Doe");
+		client.setBusiness(authenticatedPrincipal.getBusiness());
+		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(client));
+		
+		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class), true);
+		invDTO.setClient(ClientDTOFactory.toDTO(Client.findClient(clientID)));
+		invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		invoiceService.add(invDTO);
+	}
+	
 	@Test(expected = DataAccessException.class)
 	public void addUnathorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
@@ -294,13 +311,12 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		invoiceService.add(null);
 	}
 	
-	@Test(expected = DataAccessException.class)
+	@Test(expected = ValidationException.class)
 	public void addAuthorizedInvoiceDTOIDNotNull() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class), true);
 		invDTO.setClient(ClientDTOFactory.toDTO(client));
 		invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
-		invDTO.setId(1l);
 		invoiceService.add(invDTO);
 	}
 	

@@ -19,6 +19,8 @@ import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory
 import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
+import com.novadart.novabill.service.validator.Groups.HeavyClient;
+import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
@@ -40,6 +42,9 @@ public class CreditNoteService {
 	@Autowired
 	private AccountingDocumentValidator validator;
 
+	@Autowired
+	private SimpleValidator simpleValidator;
+	
 	@PreAuthorize("T(com.novadart.novabill.domain.CreditNote).findCreditNote(#id)?.business?.id == principal.business.id")
 	public CreditNoteDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
 		CreditNote creditNote = CreditNote.findCreditNote(id);
@@ -83,6 +88,7 @@ public class CreditNoteService {
 		CreditNoteDTOFactory.copyFromDTO(creditNote, creditNoteDTO, true);
 		validator.validate(CreditNote.class, creditNote);
 		Client client = Client.findClient(creditNoteDTO.getClient().getId());
+		simpleValidator.validate(client, HeavyClient.class);
 		Business business = Business.findBusiness(creditNoteDTO.getBusiness().getId());
 		creditNote.setClient(client);
 		client.getCreditNotes().add(creditNote);

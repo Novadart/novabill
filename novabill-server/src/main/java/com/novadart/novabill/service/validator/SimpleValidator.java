@@ -24,11 +24,11 @@ public class SimpleValidator {
 	@Autowired
 	private ConstraintViolationToApplicationErrorMapper violationMapper;
 
-	public <T> void validate(T object) throws ValidationException{
+	public <T> void validate(T object, Class<?> ... groups) throws ValidationException{
 		boolean isValid = true;
 		List<ErrorObject> errors = new ArrayList<ErrorObject>();
 		//JSR-303 validation
-		errors.addAll(violationMapper.convert(validator.validate(object)));
+		errors.addAll(violationMapper.convert(validator.validate(object, groups)));
 		isValid &= errors.size() == 0;
 		if(!isValid)
 			throw new ValidationException(errors, object.toString());

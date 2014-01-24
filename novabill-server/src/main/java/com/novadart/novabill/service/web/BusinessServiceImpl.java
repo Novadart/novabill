@@ -34,7 +34,7 @@ import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.validator.TaxableEntityValidator;
+import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
@@ -58,7 +58,7 @@ import com.novadart.novabill.shared.client.tuple.Pair;
 public abstract class BusinessServiceImpl implements BusinessService {
 
 	@Autowired
-	private TaxableEntityValidator validator;
+	private SimpleValidator validator;
 	
 	@Autowired
 	private UtilsService utilsService;

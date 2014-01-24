@@ -200,6 +200,25 @@ public class ClientServiceTest extends GWTServiceTest {
 		assertEquals(PriceListConstants.DEFAULT, actualClient.getDefaultPriceList().getName());
 	}
 	
+	@Test
+	public void addAuthenticatedThinClientTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, JsonParseException, JsonMappingException, IOException{
+		Client expectedClient = new Client();
+		expectedClient.setName("John Doe");
+		expectedClient.setBusiness(authenticatedPrincipal.getBusiness());
+		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(expectedClient));
+		Client.entityManager().flush();
+		Client actualClient = Client.findClient(clientID);
+		assertTrue(actualClient.getName().equals("John Doe"));
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.CLIENT, rec.getEntityType());
+		assertEquals(clientID, rec.getEntityID());
+		assertEquals(OperationType.CREATE, rec.getOperationType());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(actualClient.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(PriceListConstants.DEFAULT, actualClient.getDefaultPriceList().getName());
+	}
+	
+	
 	@Test(expected = DataAccessException.class)
 	public void addAuthenticatedNullClient() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
 		clientService.add(authenticatedPrincipal.getBusiness().getId(), null);
@@ -244,6 +263,14 @@ public class ClientServiceTest extends GWTServiceTest {
 		assertEquals(OperationType.UPDATE, rec.getOperationType());
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(expectedClient.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void updateAuthenticatedValidationErrorTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
+		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
+		Client expectedClient = Client.findClient(clientID);
+		expectedClient.setAddress("");
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(expectedClient));
 	}
 	
 	@Test(expected = DataAccessException.class)

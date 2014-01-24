@@ -22,6 +22,8 @@ import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory
 import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
+import com.novadart.novabill.service.validator.Groups.HeavyClient;
+import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
@@ -43,6 +45,9 @@ public class TransportDocumentService {
 	
 	@Autowired
 	private AccountingDocumentValidator validator;
+	
+	@Autowired
+	private SimpleValidator simpleValidator;
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#id)?.business?.id == principal.business.id")
 	public TransportDocumentDTO get(Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
@@ -84,6 +89,7 @@ public class TransportDocumentService {
 		TransportDocumentDTOFactory.copyFromDTO(transportDoc, transportDocDTO, true);
 		validator.validate(TransportDocument.class, transportDoc);
 		Client client = Client.findClient(transportDocDTO.getClient().getId());
+		simpleValidator.validate(client, HeavyClient.class);
 		transportDoc.setClient(client);
 		client.getTransportDocuments().add(transportDoc);
 		Business business = Business.findBusiness(transportDocDTO.getBusiness().getId());

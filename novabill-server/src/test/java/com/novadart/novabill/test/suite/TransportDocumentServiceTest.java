@@ -50,6 +50,7 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BatchDataFetcherGwtService;
 import com.novadart.novabill.shared.client.facade.BusinessGwtService;
+import com.novadart.novabill.shared.client.facade.ClientGwtService;
 import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
 import com.novadart.novabill.shared.client.tuple.Triple;
@@ -74,6 +75,9 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	
 	@Autowired
 	private BatchDataFetcherGwtService batchDataFetcherService;
+	
+	@Autowired
+	private ClientGwtService clientService;
 	
 	@Override
 	@Before
@@ -252,6 +256,19 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(transDocDTO.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(transDocDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void addAuthorizedForThinClientValidationErrorTest() throws InstantiationException, IllegalAccessException, NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+		Client client = new Client();
+		client.setName("John Doe");
+		client.setBusiness(authenticatedPrincipal.getBusiness());
+		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(client));
+		
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID()), true);
+		transDocDTO.setClient(ClientDTOFactory.toDTO(Client.findClient(clientID)));
+		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		transportDocService.add(transDocDTO);
 	}
 	
 	@Test(expected = DataAccessException.class)

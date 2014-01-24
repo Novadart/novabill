@@ -45,7 +45,9 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.TaxFieldsNotNull;
 import com.novadart.novabill.annotation.Trimmed;
+import com.novadart.novabill.service.validator.Groups.HeavyClient;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
 /*
@@ -67,6 +69,7 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @Configurable
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@TaxFieldsNotNull(groups = {HeavyClient.class})
 public class Client implements Serializable, Taxable {
 	
 	private static final long serialVersionUID = 8383909226336873374L;
@@ -79,19 +82,19 @@ public class Client implements Serializable, Taxable {
 
 	@Field(name = FTSNamespace.ADDRESS)
     @Size(max = 255)
-	@NotBlank
+	@NotBlank(groups = {HeavyClient.class})
 	@Trimmed
     private String address;
 
 	@Field(name = FTSNamespace.POSTCODE)
     @Size(max = 10)
-	@NotBlank
+	@NotBlank(groups = {HeavyClient.class})
 	@Trimmed
     private String postcode;
 
 	@Field(name = FTSNamespace.CITY)
     @Size(max = 60)
-	@NotBlank
+	@NotBlank(groups = HeavyClient.class)
 	@Trimmed
     private String city;
 
@@ -102,7 +105,7 @@ public class Client implements Serializable, Taxable {
 
 	@Field(name = FTSNamespace.COUNTRY)
     @Size(max = 3)
-	@NotBlank
+	@NotBlank(groups = {HeavyClient.class})
 	@Trimmed
     private String country;
 

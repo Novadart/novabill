@@ -14,6 +14,8 @@ import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Service;
+
+import com.novadart.novabill.annotation.TaxFieldsNotNull;
 import com.novadart.novabill.shared.client.validation.ErrorCode;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
@@ -84,6 +86,8 @@ public class ConstraintViolationToApplicationErrorMapper {
 				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.MALFORMED_REGEX_PATTERN, pair.getIndexes()));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(Size.class))
 				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.LENGTH, pair.getIndexes()));
+			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(TaxFieldsNotNull.class))
+				errors.add(new ErrorObject(Field.vatID, ErrorCode.BLANK_OR_NULL));
 			else
 				throw new RuntimeException("No such constraint violation exception!");
 		}

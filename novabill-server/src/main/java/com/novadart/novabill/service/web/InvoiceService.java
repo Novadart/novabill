@@ -20,6 +20,8 @@ import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
+import com.novadart.novabill.service.validator.Groups.HeavyClient;
+import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
@@ -37,6 +39,9 @@ public class InvoiceService {
 	
 	@Autowired
 	private AccountingDocumentValidator validator;
+	
+	@Autowired
+	private SimpleValidator simpleValidator;
 	
 	@Autowired
 	private BusinessService businessService;
@@ -100,6 +105,7 @@ public class InvoiceService {
 		InvoiceDTOFactory.copyFromDTO(invoice, invoiceDTO, true);
 		validator.validate(Invoice.class, invoice);
 		Client client = Client.findClient(invoiceDTO.getClient().getId());
+		simpleValidator.validate(client, HeavyClient.class);
 		Business business = Business.findBusiness(invoiceDTO.getBusiness().getId());
 		invoice.setClient(client);
 		client.getInvoices().add(invoice);

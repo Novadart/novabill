@@ -44,6 +44,7 @@ import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.facade.ClientGwtService;
 import com.novadart.novabill.shared.client.facade.CreditNoteGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
@@ -57,6 +58,9 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 	
 	@Autowired
 	private CreditNoteGwtService creditNoteService;
+	
+	@Autowired
+	private ClientGwtService clientService;
 	
 	@Test
 	public void creditNoteServiceWiringTest(){
@@ -207,6 +211,19 @@ public class CreditNoteServiceTest extends GWTServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(client.getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(creditNoteDTO.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void addAuthorizedForThinClientValidationErrorTest() throws InstantiationException, IllegalAccessException, NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+		Client client = new Client();
+		client.setName("John Doe");
+		client.setBusiness(authenticatedPrincipal.getBusiness());
+		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(client));
+		
+		CreditNoteDTO credNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), CreditNote.class), true);
+		credNoteDTO.setClient(ClientDTOFactory.toDTO(Client.findClient(clientID)));
+		credNoteDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		creditNoteService.add(credNoteDTO);
 	}
 	
 	@Test(expected = DataAccessException.class)

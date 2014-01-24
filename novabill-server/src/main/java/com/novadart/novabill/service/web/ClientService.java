@@ -15,7 +15,8 @@ import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.validator.TaxableEntityValidator;
+import com.novadart.novabill.service.validator.Groups.HeavyClient;
+import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -30,7 +31,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 public class ClientService {
 
 	@Autowired
-	private TaxableEntityValidator validator;
+	private SimpleValidator validator;
 	
 	@Autowired
 	private BusinessService businessService;
@@ -121,7 +122,7 @@ public class ClientService {
 		ClientDTOFactory.copyFromDTO(client, clientDTO);
 		updateDefaultPaymentType(clientDTO, client);
 		updateDefaultPriceList(clientDTO, client);
-		validator.validate(client);
+		validator.validate(client, HeavyClient.class);
 		client.flush();
 	}
 

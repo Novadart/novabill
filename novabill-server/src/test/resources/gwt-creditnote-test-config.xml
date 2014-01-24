@@ -11,6 +11,8 @@
 						http://www.springframework.org/schema/util/spring-util-3.1.xsd">
 
     <bean id="creditnote" class="com.novadart.novabill.web.gwt.CreditNoteGwtController"/>
+    
+    <bean id="client" class="com.novadart.novabill.web.gwt.ClientGwtController"/>
 	
 	<bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtController"/>
     

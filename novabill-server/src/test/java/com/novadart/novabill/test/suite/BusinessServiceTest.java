@@ -177,6 +177,26 @@ public class BusinessServiceTest extends GWTServiceTest {
 		}
 	}
 	
+	@Test
+	public void updateAuthorizedTaxNullValidationErrorTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
+		Business business = authenticatedPrincipal.getBusiness();
+		business.setVatID("");
+		business.setSsn("");
+		boolean validationError = false;
+		boolean containsError = false;
+		try {
+			businessGwtService.update(BusinessDTOFactory.toDTO(business));
+		} catch (ValidationException e) {
+			validationError = true;
+			for(ErrorObject er: e.getErrors())
+				if(er.getField().equals(Field.vatID)){
+					containsError = true;
+					break;
+				}
+		}
+		assertTrue(validationError && containsError);
+	}
+	
 	@Test(expected = ValidationException.class)
 	public void updateAuthorizedValidationErrorTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		authenticatedPrincipal.getBusiness().setName(StringUtils.leftPad("1", 1000, '1'));
