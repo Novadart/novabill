@@ -88,7 +88,7 @@
 					<g:customCell>
 					   <g:HorizontalPanel styleName="{style.nopContainer}">
 						  <v:ValidatedTextBox styleName="{s.box}"
-							 ui:field="numberOfPackages" maxLength="5" />
+							 ui:field="numberOfPackages" maxLength="255" />
 						<g:Button styleName="{g.button} {style.countItems}"
                                ui:field="countItems" text="Imposta quantità totale articoli" title="Valore arrotondato in eccesso"></g:Button>
                         </g:HorizontalPanel>
