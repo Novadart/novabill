@@ -9,9 +9,9 @@ import com.novadart.novabill.shared.client.data.LayoutType;
 
 public interface TransportDocument {
 	
-	public Integer getNumberOfPackages();
+	public String getNumberOfPackages();
 
-	public void setNumberOfPackages(Integer numberOfPackages);
+	public void setNumberOfPackages(String numberOfPackages);
 
 	public EndPoint getFromEndpoint();
 

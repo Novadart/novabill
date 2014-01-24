@@ -13,7 +13,9 @@ import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanEnco
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.Commodity;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.CommodityList;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.LongList;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.Price;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.PricesList;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
@@ -134,6 +136,26 @@ public class CommodityServiceJS extends ServiceJS {
 		});
 	}
 
+	public static void addOrUpdatePrices(String businessID, String prices, final JavaScriptObject callback){
+		AutoBean<PricesList> bean = AutoBeanCodex.decode(AutoBeanMaker.INSTANCE, PricesList.class, prices);
+		List<PriceDTO> priceDTOs = new ArrayList<PriceDTO>();
+		for (Price pr : bean.as().getList()) {
+			priceDTOs.add(AutoBeanDecoder.decode(pr));
+		}
+		
+		SERVER_FACADE.getCommodityGwtService().addOrUpdatePrices(Long.parseLong(businessID), priceDTOs, new ManagedAsyncCallback<List<Long>>() {
 
+			@Override
+			public void onSuccess(List<Long> result) {
+				LongList ll = AutoBeanMaker.INSTANCE.makeLongList().as();
+				List<Long> list = new ArrayList<Long>();
+				for (Long l : result) {
+					list.add(l);
+				}
+				ll.setList(list);
+				BridgeUtils.invokeJSCallback(AutoBeanUtils.getAutoBean(ll), callback);
+			}
+		});
+	}
 
 }

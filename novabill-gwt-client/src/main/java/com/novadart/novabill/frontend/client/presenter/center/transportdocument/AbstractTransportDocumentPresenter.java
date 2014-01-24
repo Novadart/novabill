@@ -163,7 +163,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		td.setTransportStartDate(tsd);
 
 		td.setCause(getView().getCause().getText());
-		td.setNumberOfPackages(getView().getNumberOfPackages().getText().isEmpty() ? null : Integer.valueOf(getView().getNumberOfPackages().getText()));
+		td.setNumberOfPackages(getView().getNumberOfPackages().getText());
 		td.setTradeZone(getView().getTradeZone().getText());
 		td.setTransportationResponsibility(getView().getTransportationResponsibility().getText());
 		td.setTransporter(getView().getTransporter().getText());

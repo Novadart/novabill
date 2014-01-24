@@ -9,4 +9,8 @@
 var documentYears = {
         estimations : <%=request.getAttribute("estimationYears")%>,
 };
+
+function onGWTLoaded(){
+    angular.bootstrap(document, ['novabill.estimations']);
+}
 </script>

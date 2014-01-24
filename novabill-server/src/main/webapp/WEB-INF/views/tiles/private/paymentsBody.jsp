@@ -2,7 +2,13 @@
 	pageEncoding="UTF-8"%>
 
 <script type="text/javascript">
-_gaq.push(['_trackPageview']);
+if(window.ga){
+    ga('send', 'pageview');
+}
+
+function onGWTLoaded(){
+    GWT_UI.showPaymentsPage('payments-page');
+}
 </script>
 
 <div class="page-content">
@@ -10,7 +16,7 @@ _gaq.push(['_trackPageview']);
 		<!-- BEGIN PAGE TITLE & BREADCRUMB-->
 		<h3 class="page-title">Tipologie di Pagamento</h3>
 		<ul class="breadcrumb">
-			<li><i class="fa fa-home"></i> <a href="../">Home</a></li>
+			<li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
 			<li><span>Tipologie di Pagamento</span></li>
 		</ul>
 		<!-- END PAGE TITLE & BREADCRUMB-->

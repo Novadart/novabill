@@ -37,6 +37,8 @@ public class BusinessDTO implements IsSerializable {
 	
 	private LayoutType defaultLayoutType;
 
+	private boolean priceDisplayInDocsMonolithic;
+	
 	public Long getId() {
 		return id;
 	}
@@ -163,6 +165,14 @@ public class BusinessDTO implements IsSerializable {
 
 	public void setDefaultLayoutType(LayoutType defaultLayoutType) {
 		this.defaultLayoutType = defaultLayoutType;
+	}
+
+	public boolean isPriceDisplayInDocsMonolithic() {
+		return priceDisplayInDocsMonolithic;
+	}
+
+	public void setPriceDisplayInDocsMonolithic(boolean priceDisplayInDocsMonolithic) {
+		this.priceDisplayInDocsMonolithic = priceDisplayInDocsMonolithic;
 	}
 	
 }

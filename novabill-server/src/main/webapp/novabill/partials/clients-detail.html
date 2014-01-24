@@ -1,0 +1,95 @@
+<div class="container-fluid clients-detail">
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<ul class="breadcrumb">
+				<li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
+				<li><a href=".">{{'CLIENTS' | translate}}</a><i class="icon-angle-right"></i></li>
+				<li><span>{{name}}</span></li>
+			</ul>
+			<!-- END PAGE TITLE & BREADCRUMB-->
+
+			<div class="client-detail">
+				<div class="jumbotron">
+					<h2><strong>
+						{{name}}
+						</strong>
+					</h2>
+					<p>{{address}}</p>
+					<p>{{contactInfo}}</p>
+					<p ng-if="website"><a href="{{websiteUrl}}" target="_blank">{{website}}</a></p>
+					<p>{{businessDetails}}</p>
+
+				</div>
+
+				<div style="height: 28px;" class="col-md-4 col-md-offset-8 col-sm-4 col-sm-offset-8">
+					<div class="pull-right">
+						<a href="javascript: void(0)" ng-click="editClient(client.id)" class="btn btn-sm blue">
+						  <i class="fa fa-edit"></i>
+							{{'EDIT' | translate}}</a> 
+						<a href="javascript: void(0)" ng-click="removeClient(name, client.id)" class="btn btn-sm red">
+						  <i class="fa fa-trash-o"></i> {{'DELETE' | translate}}
+						</a>
+					</div>
+				</div>
+
+			</div>
+		</div>
+	</div>
+	<div class="clearfix"></div>
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="tabbable tabbable-custom">
+				<ul class="nav nav-tabs">
+					<li class="active"><a href="#tab_invoices" data-toggle="tab">{{'INVOICES' | translate}}</a></li>
+					<li class=""><a href="#tab_transport_documents" data-toggle="tab" ng-click="loadTransportDocuments()">
+					   {{'TRANSPORT_DOCUMENTS' | translate}}</a></li>
+					<li class=""><a href="#tab_estimations" data-toggle="tab" ng-click="loadEstimations()">{{'ESTIMATIONS' | translate}}</a></li>
+					<li class=""><a href="#tab_credit_notes" data-toggle="tab" ng-click="loadCreditNotes()">{{'CREDIT_NOTES' | translate}}</a></li>
+				</ul>
+				<div class="tab-content" style="position: relative;">
+
+					<div class="tab-pane active" id="tab_invoices">
+						<n-year-selector style="margin: 10px auto;" document-type="invoices" callback="loadInvoices(year)"></n-year-selector>
+						<img class="spinner" ng-show="invoiceData===null" src="../../private_assets/img/ajax-loading.gif">
+						<p class="no-data-message text-center text-info" ng-show="invoiceData && invoiceData.length===0">{{'NO_DATA' | translate}}</p>
+						<n-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoiceData"></n-invoice>
+					</div>
+
+					<div class="tab-pane" id="tab_transport_documents">
+						<n-year-selector style="margin: 10px auto;" document-type="transportDocuments"
+							callback="loadTransportDocuments(year)"></n-year-selector>
+						<img class="spinner" ng-show="!transportDocumentData" src="../../private_assets/img/ajax-loading.gif">
+						<p class="no-data-message text-center text-info"
+							ng-show="transportDocumentData && transportDocumentData.length===0">{{'NO_DATA' | translate}}</p>
+						<n-transport-document transport-document="td" bottom-up-menu="!$first && $last"
+							ng-repeat="td in transportDocumentData"></n-transport-document>
+					</div>
+
+					<div class="tab-pane" id="tab_estimations">
+						<n-year-selector style="margin: 10px auto;" document-type="estimations" callback="loadEstimations(year)"></n-year-selector>
+						<img class="spinner" ng-show="!estimationData" src="../../private_assets/img/ajax-loading.gif">
+						<p class="no-data-message text-center text-info" ng-show="estimationData && estimationData.length===0">{{'NO_DATA' | translate}}</p>
+						<n-estimation estimation="est" bottom-up-menu="!$first && $last" ng-repeat="est in estimationData"></n-estimation>
+					</div>
+
+					<div class="tab-pane" id="tab_credit_notes">
+						<n-year-selector style="margin: 10px auto;" document-type="creditNotes" callback="loadCreditNotes(year)"></n-year-selector>
+						<img class="spinner" ng-show="!creditNoteData" src="../../private_assets/img/ajax-loading.gif">
+						<p class="no-data-message text-center text-info" ng-show="creditNoteData && creditNoteData.length===0">{{'NO_DATA' | translate}}</p>
+						<n-credit-note credit-note="cn" bottom-up-menu="!$first && $last" ng-repeat="cn in creditNoteData"></n-credit-note>
+					</div>
+				</div>
+			</div>
+
+
+		</div>
+	</div>
+
+	<n-select-transport-documents-dialog></n-select-transport-documents-dialog>
+	<n-removal-dialog></n-removal-dialog>
+</div>

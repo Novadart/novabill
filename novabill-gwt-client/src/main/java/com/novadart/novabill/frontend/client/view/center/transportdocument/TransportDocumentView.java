@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.TextBox;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
+import com.novadart.gwtshared.client.validation.widget.ValidatedTextArea;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.view.DocumentView;
 
@@ -56,7 +57,7 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 
 	ValidatedTextBox getNumberOfPackages();
 
-	ValidatedTextBox getTransporter();
+	ValidatedTextArea getTransporter();
 
 	ValidatedDateBox getTransportStartDate();
 

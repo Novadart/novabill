@@ -138,5 +138,12 @@ public class TaxWidget extends ValidatedWidget<BigDecimal> implements HasEnabled
 		customTaxBox.setEnabled(enabled);
 	}
 
+	public void setTabIndex(int index){
+		listBox.setTabIndex(index);
+	}
+	
+	public int getTabIndex(){
+		return listBox.getTabIndex();
+	}
 
 }

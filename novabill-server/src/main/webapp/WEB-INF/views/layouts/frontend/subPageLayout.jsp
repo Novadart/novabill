@@ -69,7 +69,9 @@
     <tiles:insertAttribute  ignore="true" name="javascript" />
     
     <script type="text/javascript">
-    _gaq.push(['_trackPageview']);
+    if(window.ga){
+        ga('send', 'pageview');
+    }
     </script>
 </body>
 <!-- END BODY -->

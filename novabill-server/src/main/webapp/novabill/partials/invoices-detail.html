@@ -1,0 +1,27 @@
+<div class="container-fluid">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<h3 class="page-title">{{pageTitle}}</h3>
+			<ul class="breadcrumb">
+				<li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
+				<li><a href=".">{{'INVOICES' | translate}}</a><i class="icon-angle-right"></i></li>
+				<li><span>{{pageTitle}}</span></li>
+			</ul>
+			<!-- END PAGE TITLE & BREADCRUMB-->
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<div id="invoice-details"></div>
+
+		</div>
+	</div>
+
+	<n-select-commodity-dialog gwt-hook="true"></n-select-commodity-dialog>
+</div>
+

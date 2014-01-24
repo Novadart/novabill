@@ -122,6 +122,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 			b.setMobile(getView().getMobile().getText());
 			b.setFax(getView().getFax().getText());
 			b.setWeb(getView().getWeb().getText());
+			b.setPriceDisplayInDocsMonolithic(!getView().getDiscountInDocsExplicit().getValue());
 
 			getView().getSaveData().showLoader(true);
 			getView().setLocked(true);
@@ -131,7 +132,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 				@Override
 				public void onSuccess(Void result) {
 					getView().getSaveData().showLoader(true);
-//					Configuration.setBusiness(b);
+					Configuration.setBusiness(b);
 					goTo(new HomePlace());
 //					getEventBus().fireEvent(new BusinessUpdateEvent(b));
 					getView().setLocked(false);
@@ -165,6 +166,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 		getView().getMobile().setText(b.getMobile());
 		getView().getFax().setText(b.getFax());
 		getView().getWeb().setText(b.getWeb());
+		getView().getDiscountInDocsExplicit().setValue(!b.isPriceDisplayInDocsMonolithic());
 	}
 
 	@Override

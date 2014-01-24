@@ -99,8 +99,7 @@
 						<g:Label styleName="{s.label}" text="{i18n.transporter}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedTextBox styleName="{s.box}"
-							ui:field="transporter" maxLength="255" />
+					   <v:ValidatedTextArea styleName="{s.box} {s.note}" visibleLines="3" ui:field="transporter" />
 					</g:customCell>
 				</g:row>
 				<g:row>

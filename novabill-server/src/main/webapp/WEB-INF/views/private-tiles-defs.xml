@@ -6,73 +6,64 @@
 	<!-- LAYOUTS -->
 	
 	<definition name="private.layout" template="/WEB-INF/views/layouts/private/privateLayout.jsp">
+	   <put-attribute name="novabill.version" value="${project.version}"></put-attribute>
+	   <put-attribute name="css" value="${mvn.tiles.css.definition}" />
 	   <put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
+	   <put-attribute name="javascript" value="${mvn.tiles.javascript.definition}" />
 	</definition>
 
 	<!--  -->
 
+    <!-- WRO4J HELPERS -->
+    <definition name="minifiedJS" template="/WEB-INF/views/tiles/wro4j/minifiedJS.jsp" />
+    <definition name="minifiedCSS" template="/WEB-INF/views/tiles/wro4j/minifiedCSS.jsp" />
+    <definition name="expandedJS" template="/WEB-INF/views/tiles/wro4j/expandedJS.jsp" />
+    <definition name="expandedCSS" template="/WEB-INF/views/tiles/wro4j/expandedCSS.jsp" />
+
 	<!-- PAGES -->
 	<definition name="private.dashboard" extends="private.layout">
-		<put-attribute name="head" value="/WEB-INF/views/tiles/private/dashboardHead.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/tiles/private/dashboardBody.jsp" />
-		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/dashboardJS.jsp" />
+		<put-attribute name="javascriptExtra" value="/WEB-INF/views/tiles/private/dashboardExtraJS.jsp" />
 	</definition>
 	
 	<definition name="private.clients" extends="private.layout">
-	    <put-attribute name="head" value="/WEB-INF/views/tiles/private/clientsHead.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/tiles/private/clientsBody.jsp" />
-		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/clientsJS.jsp" />
 	</definition>
 	
 	<definition name="private.invoices" extends="private.layout">
-		<put-attribute name="head" value="/WEB-INF/views/tiles/private/invoicesHead.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/tiles/private/invoicesBody.jsp" />
-		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/invoicesJS.jsp" />
 	</definition>
 	
 	<definition name="private.estimations" extends="private.layout">
-		<put-attribute name="head" value="/WEB-INF/views/tiles/private/estimationsHead.jsp" />
         <put-attribute name="body" value="/WEB-INF/views/tiles/private/estimationsBody.jsp" />
-        <put-attribute name="javascript" value="/WEB-INF/views/tiles/private/estimationsJS.jsp" />
 	</definition>
 	
 	<definition name="private.transportDocuments" extends="private.layout">
-		<put-attribute name="head" value="/WEB-INF/views/tiles/private/transportDocumentsHead.jsp" />
         <put-attribute name="body" value="/WEB-INF/views/tiles/private/transportDocumentsBody.jsp" />
-        <put-attribute name="javascript" value="/WEB-INF/views/tiles/private/transportDocumentsJS.jsp" />
 	</definition>
 	
 	<definition name="private.creditNotes" extends="private.layout">
-		<put-attribute name="head" value="/WEB-INF/views/tiles/private/creditNotesHead.jsp" />
         <put-attribute name="body" value="/WEB-INF/views/tiles/private/creditNotesBody.jsp" />
-        <put-attribute name="javascript" value="/WEB-INF/views/tiles/private/creditNotesJS.jsp" />
 	</definition>
 	
 	<definition name="private.commodities" extends="private.layout">
-	    <put-attribute name="head" value="/WEB-INF/views/tiles/private/commoditiesHead.jsp" />
 		<put-attribute name="body" value="/WEB-INF/views/tiles/private/commoditiesBody.jsp" />
-		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/commoditiesJS.jsp" />
 	</definition>
 	
    <definition name="private.priceLists" extends="private.layout">
-        <put-attribute name="head" value="/WEB-INF/views/tiles/private/priceListsHead.jsp" />
         <put-attribute name="body" value="/WEB-INF/views/tiles/private/priceListsBody.jsp" />
-        <put-attribute name="javascript" value="/WEB-INF/views/tiles/private/priceListsJS.jsp" />
     </definition>
 		
 	<definition name="private.payments" extends="private.layout">
 		<put-attribute name="body" value="/WEB-INF/views/tiles/private/paymentsBody.jsp" />
-		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/paymentsJS.jsp" />
 	</definition>
 	
 	<definition name="private.settings" extends="private.layout">
 		<put-attribute name="body" value="/WEB-INF/views/tiles/private/settingsBody.jsp" />
-		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/settingsJS.jsp" />
 	</definition>
 	
 	<definition name="private.firstrun" extends="private.layout">
 		<put-attribute name="body" value="/WEB-INF/views/tiles/private/firstRunBody.jsp" />
-		<put-attribute name="javascript" value="/WEB-INF/views/tiles/private/firstRunJS.jsp" />
 	</definition>
 	
 	<!--  -->

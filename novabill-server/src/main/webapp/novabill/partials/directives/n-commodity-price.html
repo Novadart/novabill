@@ -1,0 +1,73 @@
+<form name="form" class="commodity-price" novalidate>
+    
+    <!-- Select price type -->
+    <select ng-show="editMode && priceListName !== DEFAULT_PRICELIST_NAME"
+            ng-if="!readOnly"
+            ng-class="{'has-error' : form.priceType.$invalid, 'has-success' : form.priceType.$valid}"
+            class="form-control type-input" 
+            style="display: inline;" 
+            name="priceType" 
+            ng-model="price.priceType" 
+            required>
+        <option value="DISCOUNT_PERCENT">{{'PRICE_DISCOUNT_PERCENT' | translate}}</option>
+        <option value="DISCOUNT_FIXED">{{'PRICE_DISCOUNT_FIXED' | translate}}</option>
+        <option value="OVERCHARGE_PERCENT">{{'PRICE_OVERCHARGE_PERCENT' | translate}}</option>
+        <option value="OVERCHARGE_FIXED">{{'PRICE_OVERCHARGE_FIXED' | translate}}</option>
+        <option value="FIXED">{{'PRICE_FIXED' | translate}}</option>
+    </select>
+    
+    <!-- Select price value -->
+    <div class="price-info" style="display: inline-block;"
+         ng-show="!editMode">
+        <span>{{priceValue | currency}}</span>
+        <a href="javascript:void(0);" class="btn btn-xs" title="{{priceDetails}}"><i class="fa fa-info-circle"></i></a>
+    </div>
+    
+    <button 
+        class="btn btn-sm edit"
+        ng-class="{'blue': price.id, 'green': !price.id}" 
+        ng-show="!editMode"
+        ng-if="!readOnly"
+        ng-click="edit()">
+        <i ng-show="price.id" class="fa fa-edit"></i>
+        <i ng-show="!price.id" class="fa fa-plus"></i>
+    </button>
+    
+    <input ng-show="editMode" 
+           ng-if="!readOnly"
+           ng-class="{'has-error' : form.priceValue.$invalid, 'has-success' : form.priceValue.$valid}"  
+           type="text" 
+           n-smart-price 
+           name="priceValue" 
+           style="display: inline;"  
+           maxlength="50" 
+           ng-model="price.priceValue" 
+           class="form-control input-small price-input" 
+           required>
+           
+    <button 
+        class="btn btn-sm red remove" 
+        ng-show="!editMode && price.id && priceListName !== DEFAULT_PRICELIST_NAME"
+        ng-if="!readOnly"
+        ng-click="remove()">
+        <i class="fa fa-trash-o"></i>
+    </button>
+    
+    <button 
+        ng-disabled="form.priceValue.$invalid"
+        class="btn btn-sm blue save" 
+        ng-if="!readOnly"
+        ng-show="editMode" 
+        ng-click="save()">
+        <i class="fa fa-check"></i>
+    </button>
+        
+    <button 
+        class="btn btn-sm cancel"
+        ng-if="!readOnly"
+        ng-show="editMode" 
+        ng-click="cancel()">
+        <i class="fa fa-ban"></i>
+    </button>
+
+</form>

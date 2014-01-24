@@ -59,9 +59,12 @@ public class CommoditySearchPanel extends PopupPanel implements Focusable {
 			public void render(com.google.gwt.cell.client.Cell.Context context,
 					CommodityDTO value, SafeHtmlBuilder sb) {
 				sb.appendHtmlConstant("<div class='"+style.line()+"'>");
-				sb.appendHtmlConstant("<span>[<b>");
-				sb.appendEscaped(value.getSku());
-				sb.appendHtmlConstant("</b>]</span>&nbsp;");
+				if(!value.getSku().startsWith("::")){
+					sb.appendHtmlConstant("<span>[<b>");
+					sb.appendEscaped(value.getSku());
+					sb.appendHtmlConstant("</b>]</span>");
+				}
+				sb.appendHtmlConstant("&nbsp;");
 				sb.appendEscaped(value.getDescription());
 				sb.appendHtmlConstant("</div>");
 			}

@@ -10,6 +10,7 @@ import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FileUpload;
 import com.google.gwt.user.client.ui.FormPanel;
@@ -70,6 +71,8 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@UiField Button exportEstimationData;
 	@UiField Button exportCreditNoteData;
 	@UiField Button exportTransportDocumentData;
+	
+	@UiField CheckBox discountInDocsExplicit;
 	
 	@UiField Anchor deleteAccount;
 	
@@ -178,6 +181,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		web.reset();
 		inlineNotification.hide();
 		saveData.reset();
+		discountInDocsExplicit.setValue(false);
 		setLocked(false);
 	}
 
@@ -234,6 +238,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		exportInvoiceData.setEnabled(!value);
 		exportCreditNoteData.setEnabled(!value);
 		exportTransportDocumentData.setEnabled(!value);
+		discountInDocsExplicit.setEnabled(!value);
 	}
 
 	@Override
@@ -369,6 +374,11 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@Override
 	public Anchor getDeleteAccount() {
 		return deleteAccount;
+	}
+	
+	@Override
+	public CheckBox getDiscountInDocsExplicit() {
+		return discountInDocsExplicit;
 	}
 
 }
