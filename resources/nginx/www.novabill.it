@@ -52,36 +52,36 @@ server {
     location ^~ /frontend_assets/ {
         add_header Pragma public;
         add_header Cache-Control "public, must-revalidate, proxy-revalidate";
-        expires 30d;
+        expires 10d;
     }
   
     location ^~ /private_assets/ {
         add_header Pragma public;
         add_header Cache-Control "public, must-revalidate, proxy-revalidate";
-        expires 30d;
+        expires 10d;
     }
 
     location ^~ /novabill/ {
         add_header Pragma public;
         add_header Cache-Control "public, must-revalidate, proxy-revalidate";
-        expires 30d;
+        expires 10d;
     }
 
     location ^~ /novabill-min/ {
         add_header Pragma public;
         add_header Cache-Control "public, must-revalidate, proxy-revalidate";
-        expires 30d;
+        expires 10d;
     }
 
     location ^~ /rpc/*.(cache.js|gif|jpg|jpeg|png|html)?$ {
         add_header Pragma public;
         add_header Cache-Control "public, must-revalidate, proxy-revalidate";
-        expires 30d;
+        expires 10d;
     }
 
     location ^~ /rpc/*.nocache.js$ {
         add_header Pragma public;
         add_header Cache-Control "public, must-revalidate, proxy-revalidate";
-        expires 8h;
+        expires 4h;
     }
 } 
