@@ -10,6 +10,7 @@ import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -58,6 +59,16 @@ public class TransportDocumentGwtController extends AbstractGwtController implem
 	@Override
 	public List<TransportDocumentDTO> getAllWithIDs(List<Long> ids) throws DataAccessException, NoSuchObjectException {
 		return transportDocService.getAllWithIDs(ids);
+	}
+
+	@Override
+	public void setInvoice(Long businessID, Long invoiceID, Long transportDocID) throws DataAccessException, NotAuthenticatedException, DataIntegrityException {
+		transportDocService.setInvoice(businessID, invoiceID, transportDocID);
+	}
+
+	@Override
+	public void clearInvoice(Long businessID, Long transportDocID) throws DataAccessException, NotAuthenticatedException, DataIntegrityException {
+		transportDocService.clearInvoice(businessID, transportDocID);
 	}
 
 }

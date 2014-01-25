@@ -72,6 +72,9 @@ public class TransportDocument extends AccountingDocument implements Serializabl
     @ManyToOne
     protected Client client;
     
+    @ManyToOne
+    private Invoice invoice;
+    
     public static Long countTransportDocumentsForClient(Long id){
     	return countForClient(TransportDocument.class, id);
     }
@@ -100,7 +103,15 @@ public class TransportDocument extends AccountingDocument implements Serializabl
         this.client = client;
     }
 
-    public String getNumberOfPackages() {
+    public Invoice getInvoice() {
+		return invoice;
+	}
+
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
+	}
+
+	public String getNumberOfPackages() {
 		return numberOfPackages;
 	}
 

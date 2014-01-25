@@ -20,6 +20,8 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 	
 	private String cause;
 	
+	private boolean usedInInvoice;
+	
 	public String getNumberOfPackages() {
 		return numberOfPackages;
 	}
@@ -82,6 +84,14 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 
 	public void setCause(String cause) {
 		this.cause = cause;
+	}
+
+	public boolean isUsedInInvoice() {
+		return usedInInvoice;
+	}
+
+	public void setUsedInInvoice(boolean usedInInvoice) {
+		this.usedInInvoice = usedInInvoice;
 	}
 
 }

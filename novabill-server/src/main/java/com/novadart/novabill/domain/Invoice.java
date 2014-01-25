@@ -1,9 +1,15 @@
 package com.novadart.novabill.domain;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
+import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -38,6 +44,9 @@ public class Invoice extends AbstractInvoice implements Serializable {
 
     @ManyToOne
     protected Client client;
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "invoice")
+    private Set<TransportDocument> transportDocuments = new HashSet<TransportDocument>();
     
     public static Long countInvocesForClient(Long id){
     	return countForClient(Invoice.class, id);
@@ -87,6 +96,14 @@ public class Invoice extends AbstractInvoice implements Serializable {
         this.client = client;
     }
     
+    public Set<TransportDocument> getTransportDocuments() {
+		return transportDocuments;
+	}
+
+	public void setTransportDocuments(Set<TransportDocument> transportDocuments) {
+		this.transportDocuments = transportDocuments;
+	}
+    
     /*
      * End of getters and setters section
      * */
@@ -95,7 +112,7 @@ public class Invoice extends AbstractInvoice implements Serializable {
      * Active record functionality
      * */
     
-    public static long countInvoices() {
+	public static long countInvoices() {
         return count(Invoice.class);
     }
     

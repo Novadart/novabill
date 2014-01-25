@@ -204,6 +204,12 @@ public privileged aspect CachingAspect {
 	declare @method : public void com.novadart.novabill.service.web.TransportDocumentService.update(TransportDocumentDTO):
 		@CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#transportDocDTO.business.id.toString().concat('-').concat(new java.text.SimpleDateFormat('yyyy').format(#transportDocDTO.accountingDocumentDate).toString())");
 	
+	declare @method : public void com.novadart.novabill.service.web.TransportDocumentService.setInvoice(Long, Long, Long):
+		@CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID.toString().concat('-').concat(T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#transportDocID).accountingDocumentYear.toString())");
+	
+	declare @method : public void com.novadart.novabill.service.web.TransportDocumentService.clearInvoice(Long, Long):
+		@CacheEvict(value = TRANSPORTDOCUMENT_CACHE, key = "#businessID.toString().concat('-').concat(T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#transportDocID).accountingDocumentYear.toString())");
+	
 	/*
 	 * PaymentType caching
 	 * Dependencies: None

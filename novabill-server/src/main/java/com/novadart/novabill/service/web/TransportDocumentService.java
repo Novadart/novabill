@@ -15,6 +15,7 @@ import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Endpoint;
+import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
@@ -29,6 +30,7 @@ import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -100,6 +102,7 @@ public class TransportDocumentService {
 		return transportDoc.getId();
 	}
 
+	@Transactional(readOnly = false)
 	@PreAuthorize("#businessID == principal.business.id and " +
 		  	  	 "T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#id)?.business?.id == #businessID and " +
 		  	  	 "T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#id)?.client?.id == #clientID")
@@ -161,5 +164,31 @@ public class TransportDocumentService {
 		if(transportDocs.size() < ids.size()) throw new NoSuchObjectException(); //cardinality check
 		return DTOUtils.toDTOList(transportDocs, DTOUtils.transportDocDTOConverter, true);
 	}
+	
+	@Transactional(readOnly = false)
+	@PreAuthorize("#businessID == principal.business.id and " +
+				  "T(com.novadart.novabill.domain.Invoice).findInvoice(#invoiceID)?.business?.id == #businessID and " +
+				  "T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#transportDocID)?.business?.id == #businessID")
+	public void setInvoice(Long businessID, Long invoiceID, Long transportDocID) throws DataAccessException, NotAuthenticatedException, DataIntegrityException {
+		TransportDocument transDoc = TransportDocument.findTransportDocument(transportDocID);
+		if(transDoc.getInvoice() != null)
+			throw new DataIntegrityException();
+		Invoice invoice = Invoice.findInvoice(invoiceID);
+		transDoc.setInvoice(invoice);
+		if(Hibernate.isInitialized(invoice.getTransportDocuments()))
+			invoice.getTransportDocuments().add(transDoc);
+	}
 
+	@Transactional(readOnly = false)
+	@PreAuthorize("#businessID == principal.business.id and " +
+				  "T(com.novadart.novabill.domain.TransportDocument).findTransportDocument(#transportDocID)?.business?.id == #businessID")
+	public void clearInvoice(Long businessID, Long transportDocID) throws DataAccessException, NotAuthenticatedException, DataIntegrityException {
+		TransportDocument transDoc = TransportDocument.findTransportDocument(transportDocID);
+		Invoice invoice = transDoc.getInvoice();
+		if(invoice == null)
+			throw new DataIntegrityException();
+		transDoc.setInvoice(null);
+		invoice.getTransportDocuments().remove(transDoc);
+	}
+	
 }

@@ -30,6 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.DTOUtils;
@@ -45,6 +46,7 @@ import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -234,7 +236,7 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	
 	@Test(expected = DataAccessException.class)
 	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
-		TransportDocument transportDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
+		TransportDocument transportDoc = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getTransportDocuments().iterator().next();
 		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(transportDoc, true);
 		transDocDTO.setId(null);
 		transportDocService.update(transDocDTO);
@@ -345,5 +347,92 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		else
 			assertTrue(pack.getThird() == null);
 	}
+	
+	@Test(expected = DataAccessException.class)
+	public void setInvoiceNullArg1Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
+		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		transportDocService.setInvoice(null, invoice.getId(), transDoc.getId());
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void setInvoiceNullArg2Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
+		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), null, transDoc.getId());
+	}
 
+	@Test(expected = DataAccessException.class)
+	public void setInvoiceNullArg3Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), null);
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void setInvoiceUnauthorized1Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
+		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		transportDocService.setInvoice(getUnathorizedBusinessID(), invoice.getId(), transDoc.getId());
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void setInvoiceUnauthorized2Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
+		Invoice invoice = Business.findBusiness(getUnathorizedBusinessID()).getInvoices().iterator().next();
+		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), transDoc.getId());
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void setInvoiceUnauthorized3Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+		TransportDocument transDoc = Business.findBusiness(getUnathorizedBusinessID()).getTransportDocuments().iterator().next();
+		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), transDoc.getId());
+	}
+	
+	@Test
+	public void setInvoiceAuthrizedTest() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, NoSuchObjectException{
+		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
+		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), transDoc.getId());
+		TransportDocument.entityManager().flush();
+		assertEquals(invoice.getId(), TransportDocument.findTransportDocument(transDoc.getId()).getInvoice().getId());
+		assertTrue(transportDocService.get(transDoc.getId()).isUsedInInvoice());
+		assertTrue(Invoice.findInvoice(invoice.getId()).getTransportDocuments().contains(TransportDocument.findTransportDocument(transDoc.getId())));
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void clearInvoiceNullArg1Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
+		transportDocService.clearInvoice(null, transDoc.getId());
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void clearInvoiceNullArg2Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+		transportDocService.clearInvoice(authenticatedPrincipal.getBusiness().getId(), null);
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void clearInvoiceUnauthrorized1Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException {
+		TransportDocument transDoc = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getTransportDocuments().iterator().next();
+		transportDocService.clearInvoice(getUnathorizedBusinessID(), transDoc.getId());
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void clearInvoiceUnauthrized2Test() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+		TransportDocument transDoc = Business.findBusiness(getUnathorizedBusinessID()).getTransportDocuments().iterator().next();
+		transportDocService.clearInvoice(authenticatedPrincipal.getBusiness().getId(), transDoc.getId());
+	}
+	
+	@Test
+	public void clearInvoiceAuthorizedTest() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, NoSuchObjectException{
+		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
+		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), transDoc.getId());
+		TransportDocument.entityManager().flush();
+		transportDocService.clearInvoice(authenticatedPrincipal.getBusiness().getId(), transDoc.getId());
+		TransportDocument.entityManager().flush();
+		assertTrue(TransportDocument.findTransportDocument(transDoc.getId()).getInvoice() == null);
+		assertTrue(!Invoice.findInvoice(invoice.getId()).getTransportDocuments().contains(TransportDocument.findTransportDocument(transDoc.getId())));
+		assertTrue(!transportDocService.get(transDoc.getId()).isUsedInInvoice());
+	}
+	
 }
