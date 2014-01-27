@@ -395,7 +395,7 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), transDoc.getId());
 		TransportDocument.entityManager().flush();
 		assertEquals(invoice.getId(), TransportDocument.findTransportDocument(transDoc.getId()).getInvoice().getId());
-		assertTrue(transportDocService.get(transDoc.getId()).isUsedInInvoice());
+		assertTrue(transportDocService.get(transDoc.getId()).getInvoice() != null);
 		assertTrue(Invoice.findInvoice(invoice.getId()).getTransportDocuments().contains(TransportDocument.findTransportDocument(transDoc.getId())));
 	}
 	
@@ -432,7 +432,7 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 		TransportDocument.entityManager().flush();
 		assertTrue(TransportDocument.findTransportDocument(transDoc.getId()).getInvoice() == null);
 		assertTrue(!Invoice.findInvoice(invoice.getId()).getTransportDocuments().contains(TransportDocument.findTransportDocument(transDoc.getId())));
-		assertTrue(!transportDocService.get(transDoc.getId()).isUsedInInvoice());
+		assertTrue(transportDocService.get(transDoc.getId()).getInvoice() == null);
 	}
 	
 }
