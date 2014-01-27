@@ -10,6 +10,7 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -35,7 +36,7 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 		return invoiceService.getAllForClient(clientID, year);
 	}
 
-	public Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
+	public Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, DataIntegrityException {
 		return invoiceService.add(invoiceDTO);
 	}
 
@@ -47,7 +48,7 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 		return invoiceService.getNextInvoiceDocumentID();
 	}
 
-	public void remove(Long businessID, Long clientID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+	public void remove(Long businessID, Long clientID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, DataIntegrityException {
 		invoiceService.remove(businessID, clientID, id);
 	}
 
