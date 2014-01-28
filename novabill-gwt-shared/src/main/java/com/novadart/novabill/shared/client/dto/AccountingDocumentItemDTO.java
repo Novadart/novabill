@@ -143,10 +143,12 @@ public class AccountingDocumentItemDTO implements IsSerializable {
 	
 	public AccountingDocumentItemDTO clone(){
 		AccountingDocumentItemDTO i = new AccountingDocumentItemDTO();
+		i.setSku(getSku());
 		i.setDescription(getDescription());
 		i.setPrice(getPrice());
 		i.setQuantity(getQuantity());
 		i.setTax(getTax());
+		i.setDiscount(getDiscount());
 		i.setTotal(getTotal());
 		i.setTotalBeforeTax(getTotalBeforeTax());
 		i.setTotalTax(getTotalTax());
