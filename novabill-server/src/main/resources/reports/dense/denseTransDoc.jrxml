@@ -345,8 +345,8 @@ com.novadart.novabill.report.ReportUtils.join(", ",
 com.novadart.novabill.report.ReportUtils.join(" ",
     com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.toEndpoint.postcode}),
     com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.toEndpoint.city}),
-    com.novadart.novabill.report.ReportUtils.transformIfNotBlank("(%s)", $F{document.toEndpoint.province}))),
-com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.toEndpoint.country}))]]></textFieldExpression>
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank("(%s)", $F{document.toEndpoint.province})),
+com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.toEndpoint.country})))]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="529a3489-fe95-4303-b8a8-26a186627142" positionType="Float" mode="Opaque" x="8" y="193" width="540" height="17" backcolor="#FFFFFF"/>
