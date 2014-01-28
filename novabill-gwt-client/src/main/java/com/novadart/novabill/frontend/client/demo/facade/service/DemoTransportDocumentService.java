@@ -77,4 +77,18 @@ public class DemoTransportDocumentService implements TransportDocumentGwtService
 		
 	}
 
+	@Override
+	public void setInvoice(Long businessID, Long invoiceID,
+			Long transportDocID, AsyncCallback<Void> callback) {
+		// TODO Auto-generated method stub
+		
+	}
+
+	@Override
+	public void clearInvoice(Long businessID, Long transportDocID,
+			AsyncCallback<Void> callback) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
