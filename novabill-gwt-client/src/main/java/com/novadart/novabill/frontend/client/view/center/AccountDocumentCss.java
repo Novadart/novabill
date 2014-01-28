@@ -4,6 +4,8 @@ import com.google.gwt.resources.client.CssResource;
 
 public interface AccountDocumentCss extends CssResource {
 
+	String upDownButton();
+	
 	String total();
 
 	String loadDefaultsButton();

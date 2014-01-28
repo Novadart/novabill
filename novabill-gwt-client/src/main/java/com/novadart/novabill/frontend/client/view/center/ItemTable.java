@@ -29,6 +29,8 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 	public static interface Handler{
 		public void onDelete(AccountingDocumentItemDTO item);
 		public void onUpdate(AccountingDocumentItemDTO item);
+		public void onMoveUp(AccountingDocumentItemDTO value);
+		public void onMoveDown(AccountingDocumentItemDTO value);
 	}
 
 	private final Handler handler;
@@ -38,6 +40,18 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		super(2000);
 
 		this.handler = handler;
+
+
+		final MoveUpDownCell moveUpDownCell = new MoveUpDownCell(this.handler);
+		final Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO> moveUpDown = 
+				new Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO>(moveUpDownCell) {
+
+			@Override
+			public AccountingDocumentItemDTO getValue(AccountingDocumentItemDTO object) {
+				return object;
+			}
+		};
+		addColumn(moveUpDown);
 
 
 		//Sku

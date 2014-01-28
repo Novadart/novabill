@@ -147,3 +147,12 @@ input[type="text"].box.number {
 .totalsContainer {
 	margin: 0 auto;
 }
+
+.upDownButton {
+	cursor: pointer;
+	border: 1px solid transparent;
+}
+
+.upDownButton:HOVER {
+    border: 1px solid #333;
+}
