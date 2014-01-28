@@ -150,9 +150,9 @@ input[type="text"].box.number {
 
 .upDownButton {
 	cursor: pointer;
-	border: 1px solid transparent;
+	opacity: 0.4;
 }
 
 .upDownButton:HOVER {
-    border: 1px solid #333;
+    opacity: 1;
 }
