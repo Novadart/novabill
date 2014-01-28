@@ -20,7 +20,7 @@ public class TransportDocumentDTOFactory extends AccountingDocumentDTOFactory {
 		transportDocumentDTO.setTradeZone(transportDocument.getTradeZone());
 		transportDocumentDTO.setTransportStartDate(transportDocument.getTransportStartDate());
 		transportDocumentDTO.setCause(transportDocument.getCause());
-		transportDocumentDTO.setUsedInInvoice(transportDocument.getInvoice() != null);
+		transportDocumentDTO.setInvoice(transportDocument.getInvoice() == null? null: transportDocument.getInvoice().getId());
 		return transportDocumentDTO; 
 	}
 	
