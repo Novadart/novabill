@@ -226,27 +226,6 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="70" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
-						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
-							<textField>
-								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="68" height="20"/>
-								<textElement verticalAlignment="Middle">
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$R{tidy.quantity}]]></textFieldExpression>
-							</textField>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="22" rowSpan="1">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="68" height="20"/>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{quantity}.stripTrailingZeros()]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
 					<jr:column width="70" uuid="86b69e3c-a251-4e02-b575-373961e6d873">
 						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
 							<textField>
@@ -265,6 +244,27 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{unitOfMeasure}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
+						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
+							<textField>
+								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="68" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{tidy.quantity}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="22" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="68" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{quantity}.stripTrailingZeros()]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

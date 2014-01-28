@@ -259,6 +259,27 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 							</textField>
 						</jr:detailCell>
 					</jr:column>
+					<jr:column width="70" uuid="86b69e3c-a251-4e02-b575-373961e6d873">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="6055a8bc-b42d-448e-8026-845b207d6fc2" x="0" y="0" width="68" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{dense.unitOfMeasure}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="18" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="5e9fee78-5a16-4450-9826-0a5cfb53091e" x="0" y="0" width="68" height="14"/>
+								<textElement verticalAlignment="Middle">
+									<font size="7"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{unitOfMeasure}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
 					<jr:column width="50" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
@@ -277,27 +298,6 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.removeTrailingZeros($F{quantity}, Locale.ITALY)]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
-					<jr:column width="70" uuid="86b69e3c-a251-4e02-b575-373961e6d873">
-						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
-							<textField>
-								<reportElement uuid="6055a8bc-b42d-448e-8026-845b207d6fc2" x="0" y="0" width="38" height="18"/>
-								<textElement verticalAlignment="Middle">
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$R{dense.unitOfMeasure}]]></textFieldExpression>
-							</textField>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="18" rowSpan="1">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="5e9fee78-5a16-4450-9826-0a5cfb53091e" x="0" y="0" width="68" height="14"/>
-								<textElement verticalAlignment="Middle">
-									<font size="7"/>
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{unitOfMeasure}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -598,21 +598,21 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{dense.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="75090ce6-d9c5-4a4e-a7e6-ca263a8af14e" x="8" y="9" width="100" height="15"/>
+				<reportElement uuid="75090ce6-d9c5-4a4e-a7e6-ca263a8af14e" x="8" y="5" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.firmTransporter}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="5992e26a-708d-4c1e-a8b1-6ccf9451268e" x="227" y="9" width="100" height="15"/>
+				<reportElement uuid="5992e26a-708d-4c1e-a8b1-6ccf9451268e" x="227" y="5" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.firmDriver}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="96504f55-5cad-450a-a4d0-cada38f8b34c" x="448" y="9" width="100" height="15"/>
+				<reportElement uuid="96504f55-5cad-450a-a4d0-cada38f8b34c" x="448" y="5" width="100" height="15"/>
 				<textElement verticalAlignment="Middle">
 					<font size="10" isBold="true"/>
 				</textElement>

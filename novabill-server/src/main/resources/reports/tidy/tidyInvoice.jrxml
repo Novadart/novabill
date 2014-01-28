@@ -189,27 +189,6 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="40" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
-						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
-							<textField>
-								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="38" height="18"/>
-								<textElement verticalAlignment="Middle">
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$R{tidy.quantity}]]></textFieldExpression>
-							</textField>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="38" height="18"/>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{quantity}.stripTrailingZeros()]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
 					<jr:column width="40" uuid="86b69e3c-a251-4e02-b575-373961e6d873">
 						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
 							<textField>
@@ -228,6 +207,27 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{unitOfMeasure}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="40" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
+						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
+							<textField>
+								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="38" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{tidy.quantity}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="38" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{quantity}.stripTrailingZeros()]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -273,10 +273,10 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="50" uuid="8bbde3a3-9d1c-4b97-bb3b-b550dd2830cc">
+					<jr:column width="40" uuid="8bbde3a3-9d1c-4b97-bb3b-b550dd2830cc">
 						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
 							<textField>
-								<reportElement uuid="9176b54d-d142-4377-b914-db94ed6920d8" x="0" y="0" width="48" height="18"/>
+								<reportElement uuid="9176b54d-d142-4377-b914-db94ed6920d8" x="0" y="0" width="38" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
@@ -285,7 +285,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="b8dc70d2-4356-4606-ab7b-f6c4bf7c352f" x="0" y="0" width="48" height="18"/>
+								<reportElement uuid="b8dc70d2-4356-4606-ab7b-f6c4bf7c352f" x="0" y="0" width="38" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
@@ -294,10 +294,10 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="60" uuid="bd98899d-5bf0-47a8-ae22-09e6134fecad">
+					<jr:column width="70" uuid="bd98899d-5bf0-47a8-ae22-09e6134fecad">
 						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
 							<textField>
-								<reportElement uuid="be14d188-8e94-427d-89f4-3d2be37c0e1e" x="0" y="0" width="58" height="18"/>
+								<reportElement uuid="be14d188-8e94-427d-89f4-3d2be37c0e1e" x="0" y="0" width="68" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
@@ -306,7 +306,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="a2f77c65-878e-4827-b80c-31f61b7b5539" x="0" y="0" width="58" height="18"/>
+								<reportElement uuid="a2f77c65-878e-4827-b80c-31f61b7b5539" x="0" y="0" width="68" height="18"/>
 								<textElement textAlignment="Left" verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
