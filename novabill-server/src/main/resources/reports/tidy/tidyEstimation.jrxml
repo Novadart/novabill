@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Estimation" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="133"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -441,21 +441,21 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 	</detail>
 	<pageFooter>
 		<band height="60" splitType="Stretch">
-			<staticText>
-				<reportElement uuid="6c4bc98f-70b5-409d-9e0d-3b79333b6a88" x="150" y="45" width="274" height="12" forecolor="#646464">
+			<textField>
+				<reportElement uuid="d6fb970e-5989-4600-b62e-81e89558c855" x="140" y="45" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[<a href="https://www.novabill.it">Powered by Novabill - https://www.novabill.it</a>]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{tidy.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
+			</textField>
 			<textField evaluationTime="Report">
 				<reportElement uuid="e6b3f23b-1b5a-4c4a-ac69-e008fded77a9" x="473" y="45" width="75" height="12"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.lang.String.format($R{tidy.pagenum.pattern}, $V{PAGE_NUMBER}, $V{PAGE_NUMBER})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

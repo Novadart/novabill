@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="45"/>
 	<style name="table" pattern="">
 		<box>
 			<pen lineWidth="0.0" lineColor="#000000"/>
@@ -530,31 +530,22 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 	</detail>
 	<pageFooter>
 		<band height="59" splitType="Stretch">
-			<staticText>
-				<reportElement uuid="f7393b41-7696-40a3-b364-799c79bb1a2e" x="140" y="45" width="274" height="12" forecolor="#646464">
+			<textField>
+				<reportElement uuid="5fe4b5b6-f4e2-49f8-9b76-8531e768d6cf" x="140" y="45" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[<a href="https://www.novabill.it">Powered by Novabill - https://www.novabill.it</a>]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{dense.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
+			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="41a26b49-0798-4051-9c93-240fcf9d8431" x="473" y="46" width="75" height="12"/>
+				<reportElement uuid="41a26b49-0798-4051-9c93-240fcf9d8431" x="473" y="45" width="75" height="12"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+ " of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.lang.String.format($R{dense.pagenum.pattern}, $V{PAGE_NUMBER}, $V{PAGE_NUMBER})]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement uuid="2a2f8ff1-71a6-483f-bbfd-bc1ae41fcc3c" positionType="Float" x="338" y="58" width="210" height="1"/>
-				<graphicElement>
-					<pen lineWidth="0.5"/>
-				</graphicElement>
-			</line>
 		</band>
 	</pageFooter>
-	<lastPageFooter>
-		<band height="70" splitType="Stretch"/>
-	</lastPageFooter>
 </jasperReport>

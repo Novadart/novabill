@@ -489,21 +489,21 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 	</detail>
 	<pageFooter>
 		<band height="59" splitType="Stretch">
-			<staticText>
-				<reportElement uuid="f7393b41-7696-40a3-b364-799c79bb1a2e" x="140" y="45" width="274" height="12" forecolor="#646464">
+			<textField>
+				<reportElement uuid="af9a7260-4fde-41be-9355-a60e3f085f87" x="140" y="45" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[<a href="https://www.novabill.it">Powered by Novabill - https://www.novabill.it</a>]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{dense.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
+			</textField>
 			<textField evaluationTime="Report">
 				<reportElement uuid="41a26b49-0798-4051-9c93-240fcf9d8431" x="472" y="45" width="75" height="12"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+ " of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.lang.String.format($R{dense.pagenum.pattern}, $V{PAGE_NUMBER}, $V{PAGE_NUMBER})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

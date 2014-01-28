@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transport Document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="69"/>
+	<property name="ireport.y" value="288"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -442,15 +442,15 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement uuid="81cb76d5-147b-4bf8-a5d4-a7f582b5fbba" x="150" y="45" width="274" height="12" forecolor="#646464">
+			<textField>
+				<reportElement uuid="d1a3a801-bbe3-4ef0-ad74-a0c81e880529" x="140" y="45" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[<a href="https://www.novabill.it">Powered by Novabill - https://www.novabill.it</a>]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{tidy.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 	<lastPageFooter>
@@ -484,17 +484,17 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.lang.String.format($R{tidy.pagenum.pattern}, $V{PAGE_NUMBER}, $V{PAGE_NUMBER})]]></textFieldExpression>
 			</textField>
-			<staticText>
-				<reportElement uuid="ce2b3718-5401-4913-9630-e011d43d1e4f" x="160" y="98" width="274" height="12" forecolor="#646464">
+			<textField>
+				<reportElement uuid="337f39a5-f5d4-4e61-8912-88074b32d6f5" x="140" y="98" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[<a href="https://www.novabill.it">Powered by Novabill - https://www.novabill.it</a>]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{tidy.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
+			</textField>
 		</band>
 	</lastPageFooter>
 </jasperReport>
