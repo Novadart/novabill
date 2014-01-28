@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Estimation" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="133"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -188,27 +188,6 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="40" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
-						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
-							<textField>
-								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="38" height="18"/>
-								<textElement verticalAlignment="Middle">
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$R{tidy.quantity}]]></textFieldExpression>
-							</textField>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="20" rowSpan="1">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="38" height="18"/>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$F{quantity}.stripTrailingZeros()]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
 					<jr:column width="40" uuid="86b69e3c-a251-4e02-b575-373961e6d873">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
@@ -227,6 +206,27 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{unitOfMeasure}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="40" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="38" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{tidy.quantity}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="38" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{quantity}.stripTrailingZeros()]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -272,19 +272,19 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="50" uuid="db493064-f6b4-4275-a9a4-e9146bbf85e9">
+					<jr:column width="40" uuid="db493064-f6b4-4275-a9a4-e9146bbf85e9">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField isBlankWhenNull="true">
-								<reportElement uuid="493d9ef8-2ebb-487f-bd88-ea6b36177553" x="0" y="0" width="48" height="18"/>
+								<reportElement uuid="493d9ef8-2ebb-487f-bd88-ea6b36177553" x="0" y="0" width="38" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$R{tidy.price}]]></textFieldExpression>
+								<textFieldExpression><![CDATA["%" + $R{tidy.discount}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="77a9caf1-d59d-4863-9339-e50f2701a2f4" x="0" y="0" width="48" height="18"/>
+								<reportElement uuid="77a9caf1-d59d-4863-9339-e50f2701a2f4" x="0" y="0" width="38" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
@@ -293,10 +293,10 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="60" uuid="bd98899d-5bf0-47a8-ae22-09e6134fecad">
+					<jr:column width="70" uuid="bd98899d-5bf0-47a8-ae22-09e6134fecad">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="be14d188-8e94-427d-89f4-3d2be37c0e1e" x="0" y="0" width="58" height="18"/>
+								<reportElement uuid="be14d188-8e94-427d-89f4-3d2be37c0e1e" x="0" y="0" width="68" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
@@ -305,7 +305,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="a2f77c65-878e-4827-b80c-31f61b7b5539" x="0" y="0" width="58" height="18"/>
+								<reportElement uuid="a2f77c65-878e-4827-b80c-31f61b7b5539" x="0" y="0" width="68" height="18"/>
 								<textElement textAlignment="Left" verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
@@ -441,21 +441,21 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 	</detail>
 	<pageFooter>
 		<band height="60" splitType="Stretch">
-			<staticText>
-				<reportElement uuid="6c4bc98f-70b5-409d-9e0d-3b79333b6a88" x="150" y="45" width="274" height="12" forecolor="#646464">
+			<textField>
+				<reportElement uuid="d6fb970e-5989-4600-b62e-81e89558c855" x="140" y="45" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[<a href="https://www.novabill.it">Powered by Novabill - https://www.novabill.it</a>]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{tidy.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
+			</textField>
 			<textField evaluationTime="Report">
 				<reportElement uuid="e6b3f23b-1b5a-4c4a-ac69-e008fded77a9" x="473" y="45" width="75" height="12"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.lang.String.format($R{tidy.pagenum.pattern}, $V{PAGE_NUMBER}, $V{PAGE_NUMBER})]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

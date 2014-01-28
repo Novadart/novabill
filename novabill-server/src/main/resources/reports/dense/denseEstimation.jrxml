@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="45"/>
 	<style name="table" pattern="">
 		<box>
 			<pen lineWidth="0.0" lineColor="#000000"/>
@@ -253,27 +253,6 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="30" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
-						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
-							<textField>
-								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="28" height="18"/>
-								<textElement verticalAlignment="Middle">
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$R{dense.quantity}]]></textFieldExpression>
-							</textField>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="18" rowSpan="1">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="28" height="14"/>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.removeTrailingZeros($F{quantity}, Locale.ITALY)]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
 					<jr:column width="40" uuid="86b69e3c-a251-4e02-b575-373961e6d873">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
@@ -292,6 +271,27 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{unitOfMeasure}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="30" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="28" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{dense.quantity}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="18" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="28" height="14"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.removeTrailingZeros($F{quantity}, Locale.ITALY)]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -337,10 +337,10 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="50" uuid="95b0f6c5-e3f2-425c-9bc5-30fc65e5c46e">
+					<jr:column width="40" uuid="95b0f6c5-e3f2-425c-9bc5-30fc65e5c46e">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="3bd7d13b-9164-43c7-ad73-40e7b1d241b1" x="0" y="0" width="48" height="18"/>
+								<reportElement uuid="3bd7d13b-9164-43c7-ad73-40e7b1d241b1" x="0" y="0" width="38" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
@@ -349,7 +349,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="18" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="afb6a08a-5716-4b3e-9b82-3fb74c302088" x="0" y="0" width="48" height="14"/>
+								<reportElement uuid="afb6a08a-5716-4b3e-9b82-3fb74c302088" x="0" y="0" width="38" height="14"/>
 								<textElement textAlignment="Left" verticalAlignment="Middle">
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
@@ -358,10 +358,10 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="60" uuid="bd98899d-5bf0-47a8-ae22-09e6134fecad">
+					<jr:column width="70" uuid="bd98899d-5bf0-47a8-ae22-09e6134fecad">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="be14d188-8e94-427d-89f4-3d2be37c0e1e" x="0" y="0" width="58" height="18"/>
+								<reportElement uuid="be14d188-8e94-427d-89f4-3d2be37c0e1e" x="0" y="0" width="68" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
@@ -370,7 +370,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="18" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="a2f77c65-878e-4827-b80c-31f61b7b5539" x="0" y="0" width="58" height="14"/>
+								<reportElement uuid="a2f77c65-878e-4827-b80c-31f61b7b5539" x="0" y="0" width="68" height="14"/>
 								<textElement textAlignment="Left" verticalAlignment="Middle">
 									<font size="7"/>
 									<paragraph leftIndent="3"/>
@@ -530,31 +530,22 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 	</detail>
 	<pageFooter>
 		<band height="59" splitType="Stretch">
-			<staticText>
-				<reportElement uuid="f7393b41-7696-40a3-b364-799c79bb1a2e" x="140" y="45" width="274" height="12" forecolor="#646464">
+			<textField>
+				<reportElement uuid="5fe4b5b6-f4e2-49f8-9b76-8531e768d6cf" x="140" y="45" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[<a href="https://www.novabill.it">Powered by Novabill - https://www.novabill.it</a>]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{dense.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
+			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="41a26b49-0798-4051-9c93-240fcf9d8431" x="473" y="46" width="75" height="12"/>
+				<reportElement uuid="41a26b49-0798-4051-9c93-240fcf9d8431" x="473" y="45" width="75" height="12"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+ " of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[java.lang.String.format($R{dense.pagenum.pattern}, $V{PAGE_NUMBER}, $V{PAGE_NUMBER})]]></textFieldExpression>
 			</textField>
-			<line>
-				<reportElement uuid="2a2f8ff1-71a6-483f-bbfd-bc1ae41fcc3c" positionType="Float" x="338" y="58" width="210" height="1"/>
-				<graphicElement>
-					<pen lineWidth="0.5"/>
-				</graphicElement>
-			</line>
 		</band>
 	</pageFooter>
-	<lastPageFooter>
-		<band height="70" splitType="Stretch"/>
-	</lastPageFooter>
 </jasperReport>

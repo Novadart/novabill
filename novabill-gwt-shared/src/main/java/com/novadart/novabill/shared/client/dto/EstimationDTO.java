@@ -8,6 +8,8 @@ public class EstimationDTO extends AccountingDocumentDTO {
 	
 	private Date validTill;
 
+	private boolean incognito;
+	
 	public String getLimitations() {
 		return limitations;
 	}
@@ -22,6 +24,14 @@ public class EstimationDTO extends AccountingDocumentDTO {
 
 	public void setValidTill(Date validTill) {
 		this.validTill = validTill;
+	}
+
+	public boolean isIncognito() {
+		return incognito;
+	}
+
+	public void setIncognito(boolean incognito) {
+		this.incognito = incognito;
 	}
 
 }

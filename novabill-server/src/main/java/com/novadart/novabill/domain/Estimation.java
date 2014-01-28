@@ -3,6 +3,8 @@ package com.novadart.novabill.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
@@ -30,6 +32,9 @@ public class Estimation extends AccountingDocument implements Serializable {
 	@Temporal(TemporalType.TIMESTAMP)
     @DateTimeFormat(style = "S-")
 	private Date validTill;
+	
+	@Column(columnDefinition = "boolean default false")
+	private boolean incognito = false;
 
 	@ManyToOne
     protected Business business;
@@ -59,6 +64,14 @@ public class Estimation extends AccountingDocument implements Serializable {
 
 	public void setValidTill(Date validTill) {
 		this.validTill = validTill;
+	}
+
+	public boolean isIncognito() {
+		return incognito;
+	}
+
+	public void setIncognito(boolean incognito) {
+		this.incognito = incognito;
 	}
 
 	public Business getBusiness() {
