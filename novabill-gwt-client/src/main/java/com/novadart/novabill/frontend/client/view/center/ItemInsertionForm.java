@@ -152,6 +152,24 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 				ItemInsertionForm.this.handler.onItemListUpdated(getItems());
 			}
 
+			@Override
+			public void onMoveUp(AccountingDocumentItemDTO value) {
+				int index = accountingDocumentItems.getList().indexOf(value);
+				if(index > 0){
+					AccountingDocumentItemDTO item = accountingDocumentItems.getList().remove(index);
+					accountingDocumentItems.getList().add(index-1, item);
+				}
+			}
+
+			@Override
+			public void onMoveDown(AccountingDocumentItemDTO value) {
+				int index = accountingDocumentItems.getList().indexOf(value);
+				if(index >= 0 && index < accountingDocumentItems.getList().size()-1){
+					AccountingDocumentItemDTO item = accountingDocumentItems.getList().remove(index);
+					accountingDocumentItems.getList().add(index+1, item);
+				}
+			}
+
 		});
 		accountingDocumentItems.addDataDisplay(itemTable);
 
