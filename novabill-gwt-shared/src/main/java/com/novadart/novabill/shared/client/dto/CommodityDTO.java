@@ -19,6 +19,8 @@ public class CommodityDTO implements IsSerializable {
 	
 	private boolean service;
 	
+	private BigDecimal weight;
+	
 	private BusinessDTO business;
 	
 	private Map<String, PriceDTO> prices;
@@ -69,6 +71,14 @@ public class CommodityDTO implements IsSerializable {
 
 	public void setService(boolean service) {
 		this.service = service;
+	}
+
+	public BigDecimal getWeight() {
+		return weight;
+	}
+
+	public void setWeight(BigDecimal weight) {
+		this.weight = weight;
 	}
 
 	public BusinessDTO getBusiness() {
