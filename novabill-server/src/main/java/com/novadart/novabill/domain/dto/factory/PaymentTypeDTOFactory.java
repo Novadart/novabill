@@ -14,6 +14,7 @@ public class PaymentTypeDTOFactory {
 		paymentTypeDTO.setDefaultPaymentNote(paymentType.getDefaultPaymentNote());
 		paymentTypeDTO.setPaymentDateGenerator(paymentType.getPaymentDateGenerator());
 		paymentTypeDTO.setPaymentDateDelta(paymentType.getPaymentDateDelta());
+		paymentTypeDTO.setSecondaryPaymentDateDelta(paymentType.getSecondaryPaymentDateDelta());
 		return paymentTypeDTO;
 	}
 	
@@ -24,6 +25,7 @@ public class PaymentTypeDTOFactory {
 		paymentType.setDefaultPaymentNote(paymentTypeDTO.getDefaultPaymentNote());
 		paymentType.setPaymentDateGenerator(paymentTypeDTO.getPaymentDateGenerator());
 		paymentType.setPaymentDateDelta(paymentTypeDTO.getPaymentDateDelta());
+		paymentType.setSecondaryPaymentDateDelta(paymentTypeDTO.getSecondaryPaymentDateDelta());
 	}
 
 }

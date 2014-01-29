@@ -49,6 +49,8 @@ public class PaymentType {
 	
 	private Integer paymentDateDelta;
 	
+	private Integer secondaryPaymentDateDelta;
+	
 	@ManyToOne
 	private Business business;
 	
@@ -114,6 +116,14 @@ public class PaymentType {
 
 	public void setPaymentDateDelta(Integer paymentDateDelta) {
 		this.paymentDateDelta = paymentDateDelta;
+	}
+
+	public Integer getSecondaryPaymentDateDelta() {
+		return secondaryPaymentDateDelta;
+	}
+
+	public void setSecondaryPaymentDateDelta(Integer secondaryPaymentDateDelta) {
+		this.secondaryPaymentDateDelta = secondaryPaymentDateDelta;
 	}
 
 	public Business getBusiness() {

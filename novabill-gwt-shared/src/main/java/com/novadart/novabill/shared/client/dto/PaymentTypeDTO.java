@@ -14,6 +14,8 @@ public class PaymentTypeDTO implements IsSerializable {
 	
 	private Integer paymentDateDelta;
 	
+	private Integer secondaryPaymentDateDelta;
+	
 	private BusinessDTO business;
 
 	public Long getId() {
@@ -54,6 +56,14 @@ public class PaymentTypeDTO implements IsSerializable {
 
 	public void setPaymentDateDelta(Integer paymentDateDelta) {
 		this.paymentDateDelta = paymentDateDelta;
+	}
+
+	public Integer getSecondaryPaymentDateDelta() {
+		return secondaryPaymentDateDelta;
+	}
+
+	public void setSecondaryPaymentDateDelta(Integer secondaryPaymentDateDelta) {
+		this.secondaryPaymentDateDelta = secondaryPaymentDateDelta;
 	}
 
 	public BusinessDTO getBusiness() {
