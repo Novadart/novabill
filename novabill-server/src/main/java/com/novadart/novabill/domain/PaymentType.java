@@ -49,6 +49,7 @@ public class PaymentType {
 	
 	private Integer paymentDateDelta;
 	
+	@Column(columnDefinition = "integer default 0")
 	private Integer secondaryPaymentDateDelta;
 	
 	@ManyToOne
@@ -64,21 +65,22 @@ public class PaymentType {
 			client.setDefaultPaymentType(null);
 	}
 	
-	public PaymentType(String name, String defaultPaymentNote, PaymentDateType paymentDateGenerator, Integer paymentDateDelta) {
+	public PaymentType(String name, String defaultPaymentNote, PaymentDateType paymentDateGenerator, Integer paymentDateDelta, Integer secondaryPaymentDateDelta) {
 		this.name = name;
 		this.defaultPaymentNote = defaultPaymentNote;
 		this.paymentDateGenerator = paymentDateGenerator;
 		this.paymentDateDelta = paymentDateDelta;
+		this.secondaryPaymentDateDelta = secondaryPaymentDateDelta;
 	}
 	
 	public PaymentType(){
-		this(null, null, null, null);
+		this(null, null, null, null, null);
 	}
 	
 	
 	@Override
 	public  PaymentType clone() throws CloneNotSupportedException {
-		return new PaymentType(name, defaultPaymentNote, paymentDateGenerator, paymentDateDelta);
+		return new PaymentType(name, defaultPaymentNote, paymentDateGenerator, paymentDateDelta, secondaryPaymentDateDelta);
 	}
 
 
