@@ -1,5 +1,6 @@
 package com.novadart.novabill.shared.client.dto;
 
+import java.math.BigDecimal;
 import java.util.Date;
 
 public class TransportDocumentDTO extends AccountingDocumentDTO {
@@ -19,6 +20,8 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 	private Date transportStartDate;
 	
 	private String cause;
+	
+	private BigDecimal totalWeight;
 	
 	private Long invoice;
 	
@@ -84,6 +87,14 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 
 	public void setCause(String cause) {
 		this.cause = cause;
+	}
+
+	public BigDecimal getTotalWeight() {
+		return totalWeight;
+	}
+
+	public void setTotalWeight(BigDecimal totalWeight) {
+		this.totalWeight = totalWeight;
 	}
 
 	public Long getInvoice() {

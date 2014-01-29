@@ -1,6 +1,7 @@
 package com.novadart.novabill.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 import javax.persistence.AttributeOverride;
@@ -65,6 +66,8 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	
 	@Size(max = 255)
 	private String cause;
+	
+	private BigDecimal totalWeight;
 	
 	@ManyToOne
     protected Business business;
@@ -174,6 +177,14 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	public void setCause(String cause) {
 		this.cause = cause;
 	}
+	
+	public BigDecimal getTotalWeight() {
+		return totalWeight;
+	}
+
+	public void setTotalWeight(BigDecimal totalWeight) {
+		this.totalWeight = totalWeight;
+	}
     
     /*
      * End of getters and setters section
@@ -184,6 +195,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
      * Active record functionality
      * */
     
+
 	public static long countTransportDocuments() {
         return count(TransportDocument.class);
     }
