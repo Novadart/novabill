@@ -6,6 +6,7 @@ import com.google.gwt.dom.client.Element;
 import com.google.gwt.dom.client.EventTarget;
 import com.google.gwt.dom.client.NativeEvent;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
+import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
@@ -51,8 +52,8 @@ public class MoveUpDownCell extends AbstractCell<AccountingDocumentItemDTO> {
 		}
 		
 		sb.appendHtmlConstant("<table><tr>");
-		sb.appendHtmlConstant("<td><img class='moveUp "+AccountDocument.CSS.upDownButton()+"' src='"+ImageResources.INSTANCE.arrow_up().getSafeUri().asString()+"'></td>");
-		sb.appendHtmlConstant("<td><img class='moveDown "+AccountDocument.CSS.upDownButton()+"' src='"+ImageResources.INSTANCE.arrow_down().getSafeUri().asString()+"'></td>");
+		sb.appendHtmlConstant("<td><img title='"+I18N.INSTANCE.moveUp()+"' class='moveUp "+AccountDocument.CSS.upDownButton()+"' src='"+ImageResources.INSTANCE.arrow_up().getSafeUri().asString()+"'></td>");
+		sb.appendHtmlConstant("<td><img title='"+I18N.INSTANCE.moveDown()+"' class='moveDown "+AccountDocument.CSS.upDownButton()+"' src='"+ImageResources.INSTANCE.arrow_down().getSafeUri().asString()+"'></td>");
 		sb.appendHtmlConstant("</tr></table>");
 	}
 
