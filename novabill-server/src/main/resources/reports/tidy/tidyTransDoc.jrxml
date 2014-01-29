@@ -91,6 +91,7 @@
 	<field name="document.business.fax" class="java.lang.String"/>
 	<field name="document.business.email" class="java.lang.String"/>
 	<field name="document.business.web" class="java.lang.String"/>
+	<field name="document.totalWeight" class="java.math.BigDecimal"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -310,7 +311,7 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 			</textField>
 		</band>
 		<band splitType="Prevent"/>
-		<band height="140" splitType="Prevent">
+		<band height="160" splitType="Prevent">
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="be2b1952-1fc3-449e-8074-2a6e10133ebf" positionType="Float" x="394" y="98" width="153" height="20"/>
 				<textElement>
@@ -368,7 +369,7 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{document.transporter}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="434f46a6-275b-4fb1-b2ba-c283c8e373fc" positionType="Float" x="282" y="122" width="264" height="1"/>
+				<reportElement uuid="434f46a6-275b-4fb1-b2ba-c283c8e373fc" positionType="Float" x="282" y="137" width="264" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
@@ -431,6 +432,21 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 					<pen lineWidth="0.0" lineColor="#000000"/>
 				</graphicElement>
 			</line>
+			<textField>
+				<reportElement uuid="b0b943f7-09d2-4d6a-a297-ddeae5b5912a" positionType="Float" x="282" y="118" width="112" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.totalWeight} + ":"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="ca19b5da-2bb9-40f5-ba38-a3b9c43f2174" positionType="Float" x="394" y="118" width="153" height="20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s kg",
+    com.novadart.novabill.report.ReportUtils.removeTrailingZeros($F{document.totalWeight}, Locale.ITALY))]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
