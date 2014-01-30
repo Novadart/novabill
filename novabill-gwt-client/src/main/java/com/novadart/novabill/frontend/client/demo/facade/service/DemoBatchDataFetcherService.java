@@ -184,4 +184,11 @@ public class DemoBatchDataFetcherService implements
 		
 	}
 
+	@Override
+	public void fetchNewTransportDocumentFromEstimationOpData(
+			Long estimationID, AsyncCallback<Pair<Long, EstimationDTO>> callback) {
+		// TODO Auto-generated method stub
+		
+	}
+
 }
