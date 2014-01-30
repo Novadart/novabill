@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.activity.center;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -120,6 +121,9 @@ public class InvoiceActivity extends AbstractCenterActivity {
 							Triple<Long, TransportDocumentDTO, PaymentTypeDTO> result) {
 						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
 								getClientFactory().getEventBus(), view, getCallback());
+						List<Long> transportDocumentIDs = new ArrayList<Long>();
+						transportDocumentIDs.add(place.getTransportDocumentId());
+						p.setTransportDocumentSources(transportDocumentIDs);
 						p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
 						p.go(panel);
 					}
@@ -137,6 +141,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 							Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO> result) {
 						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
 								getClientFactory().getEventBus(), view, getCallback());
+						p.setTransportDocumentSources(place.getTransportDocumentList());
 						p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
 						p.go(panel);
 						

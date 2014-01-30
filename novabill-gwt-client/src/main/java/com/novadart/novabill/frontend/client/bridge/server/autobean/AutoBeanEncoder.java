@@ -460,6 +460,7 @@ public class AutoBeanEncoder {
 		tdai.setTradeZone(transportDocument.getTradeZone());
 		tdai.setTransportStartDate(transportDocument.getTransportStartDate());
 		tdai.setCause(transportDocument.getCause());
+		tdai.setInvoice(transportDocument.getInvoice());
 
 		tdai.setAccountingDocumentDate(transportDocument.getAccountingDocumentDate());
 		tdai.setItems(encode(transportDocument.getItems()));

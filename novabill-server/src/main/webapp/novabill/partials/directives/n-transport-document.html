@@ -17,5 +17,7 @@
             <li ><a href="javascript:void(0);" ng-click="stopProp($event); remove()" ><i class="fa fa-trash-o"></i>{{'DELETE' | translate}}</a></li>
         </ul>
     </div>
+
+    <a ng-if="invoiceRefUrl" title="{{'INVOICE_REF_TITLE' | translate}}" href="{{invoiceRefUrl}}" class="invoice-ref btn btn-sm default pull-right"><i class="fa fa-file-o"></i></a>
     
 </div>

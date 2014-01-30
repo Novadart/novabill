@@ -32,7 +32,7 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 		},
 		
 		/**
-		 * 
+		 * Compare two objects that have a 'description' property
 		 */
 		descriptionComparator : function(i1, i2){
 			var n1 = i1.description.toLowerCase();

@@ -37,9 +37,19 @@
 	min-width: 120px;
 }
 
-.select-multiple-td-dialog .details .n-packages {
-	margin-left: 10px;
-	min-width: 120px;
+.select-multiple-td-dialog .details .invoice-ref {
+	margin-right: 10px;
+}
+
+.select-multiple-td-dialog .details.already-included-in-invoice {
+	opacity: 0.6;
+}
+
+.select-multiple-td-dialog .already-in-invoice-alert {
+    text-align: center;
+	padding: 20px 0;
+	font-style: italic;
+	margin-top: 30px;
 }
 
 /*
@@ -68,6 +78,10 @@
 
 .document-well .options {
 	margin-right: 20px;
+}
+
+.document-well .invoice-ref {
+    margin-right: 20px;
 }
 
 /*

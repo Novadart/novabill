@@ -14,6 +14,23 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 		scope: {},
 
 		controller : ['$scope', 'nConstants', function($scope, nConstants){
+			
+			function partitionTransportDocuments(docs){
+				var result = {
+						neverIncludedInInvoice : [],
+						alreadyIncludedInInvoice : []
+				};
+				
+				angular.forEach(docs, function(tDoc, key){
+					if(tDoc.invoice){
+						result.alreadyIncludedInInvoice.push(tDoc);
+					} else {
+						result.neverIncludedInInvoice.push(tDoc);
+					}
+				});
+				
+				return result;
+			}
 
 			$scope.$on(nConstants.events.SHOW_TRANSPORT_DOCUMENTS_DIALOG, 
 					function(event, clientId, preSelectedId){
@@ -26,7 +43,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 						$scope.$apply(function(){
 							$scope.selectedSet = {};
 							$scope.selectedSet[preSelectedId] = true;
-							$scope.docs = result.transportDocuments;
+							$scope.docs = partitionTransportDocuments(result.transportDocuments);
 
 							$('#selectTransportDocumentsDialog').modal('show');
 							$('#selectTransportDocumentsDialog .scroller').slimScroll({
@@ -64,6 +81,11 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 			$scope.openUrl = function($event, id){
 				$event.stopPropagation();
 				window.open(nConstants.url.transportDocumentDetails( id ), '_blank');
+			};
+			
+			$scope.openInvoice = function($event, invoiceId){
+				$event.stopPropagation();
+				window.open(nConstants.url.invoiceDetails( invoiceId ), '_blank');
 			};
 
 			$scope.ok = function(){

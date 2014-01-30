@@ -10,19 +10,33 @@
 
 				<div class="scroller" data-always-visible="1" data-rail-visible="0">
 				
-					<div ng-repeat="d in docs" class="well well-sm details" 
+					<div ng-repeat="d in docs.neverIncludedInInvoice" class="well well-sm details" 
 					    ng-class="{selected: selectedSet[d.id]}"
 						ng-click="toggleElement(d.id)">
 						<input ng-checked="selectedSet[d.id]" type="checkbox"
-							style="width: 20px; height: 20px;"> <strong class="documentId">{{d.documentID}}</strong> <span
-							class="date">{{d.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
-							<span class="n-packages">{{d.numberOfPackages}}
-							<span ng-if="d.numberOfPackages > 1">packages</span><span ng-if="d.numberOfPackages <= 1">package</span>
-						</span> <span class="total">{{d.total | currency }}</span>
+							style="width: 20px; height: 20px;"> <strong class="documentId">{{d.documentID}}</strong> 
+						<span class="date">{{d.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
+						<span class="total">{{d.total | currency }}</span>
 
 						<button class="btn btn-sm dark pull-right" ng-click="openUrl($event, d.id)">{{'OPEN' | translate}}</button>
 
 					</div>
+					
+					<div class="already-in-invoice-alert" ng-if="docs.alreadyIncludedInInvoice.length > 0">
+					   {{'TRANSPORT_DOCUMENT_AREADY_IN_INVOICE_ALERT' | translate}}
+					</div>
+					
+					<div ng-repeat="d in docs.alreadyIncludedInInvoice" class="well well-sm already-included-in-invoice details" 
+                        ng-class="{selected: selectedSet[d.id]}"
+                        ng-click="toggleElement(d.id)">
+                        <input ng-checked="selectedSet[d.id]" type="checkbox"
+                            style="width: 20px; height: 20px;"> <strong class="documentId">{{d.documentID}}</strong> 
+                        <span class="date">{{d.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
+                        <span class="total">{{d.total | currency }}</span>
+                        
+                        <button class="btn btn-sm dark pull-right" ng-click="openUrl($event, d.id)">{{'OPEN' | translate}}</button>
+                        <a title="{{'INVOICE_REF_TITLE' | translate}}" ng-click="openInvoice($event, d.invoice)" class="invoice-ref pull-right btn btn-sm default"><i class="fa fa-file-o"></i></a>
+                    </div>
 				</div>
 
 			</div>

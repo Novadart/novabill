@@ -28,6 +28,8 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
+	private List<Long> transportDocumentSources = null;
+	
 	public NewInvoicePresenter(PlaceController placeController,	EventBus eventBus, InvoiceView view, JavaScriptObject callback) {
 		super(placeController, eventBus, view, callback);
 	}
@@ -36,7 +38,11 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	protected void setPresenterInView(InvoiceView view) {
 		view.setPresenter(this);
 	}
-
+	
+	public void setTransportDocumentSources(List<Long> transportDocumentSources) {
+		this.transportDocumentSources = transportDocumentSources;
+	}
+	
 	@Override
 	public void onLoad() {
 	}
@@ -147,6 +153,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		getView().setLocked(true);
 
 		final InvoiceDTO invoice = createInvoice(null);
+		invoice.setTransportDocumentIDs(transportDocumentSources);
 
 		final ManagedAsyncCallback<Void> updateClientCallback = new ManagedAsyncCallback<Void>() {
 

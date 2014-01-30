@@ -154,8 +154,10 @@ angular.module('novabill.directives',
 			transportDocument : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$translate', function($scope, $element, $translate){
+		controller : ['$scope', '$element', '$translate', 'nConstants', function($scope, $element, $translate, nConstants){
 
+			$scope.invoiceRefUrl = $scope.transportDocument.invoice ? nConstants.url.invoiceDetails($scope.transportDocument.invoice) : null;
+			
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.transportDocumentDetails( $scope.transportDocument.id ) );
 			};
