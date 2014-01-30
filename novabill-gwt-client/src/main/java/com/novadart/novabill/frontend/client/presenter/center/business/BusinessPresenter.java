@@ -53,12 +53,13 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 			validationOk = false;
 		}
 
-		for (ValidatedTextBox v : new ValidatedTextBox[]{getView().getName(), getView().getAddress(), getView().getCity(), 
+		for (ValidatedTextBox v : new ValidatedTextBox[]{getView().getAddress(), getView().getCity(), 
 				getView().getPostcode(), getView().getPhone(), getView().getEmail(), getView().getMobile(), getView().getFax(), getView().getWeb()}) {
 			v.validate();
 			validationOk = validationOk && v.isValid();
 		}
-
+		getView().getName().validate();
+		validationOk = validationOk && getView().getName().isValid();
 		getView().getProvince().validate();
 		validationOk = validationOk && getView().getProvince().isValid();
 		getView().getCountry().validate();

@@ -98,12 +98,12 @@ public class ValidationKit {
 		}
 	};
 	
-	public static final TextLengthValidation TEXT_LENGTH = new TextLengthValidation(1500) {
+	public static final TextLengthValidation OPTIONAL_TEXT_LENGTH = new TextLengthValidation(1500) {
 		
 		@Override
 		public String getErrorMessage() {
 			return I18NM.get.textLengthError(1500);
 		}
 	}; 
-
+	
 }

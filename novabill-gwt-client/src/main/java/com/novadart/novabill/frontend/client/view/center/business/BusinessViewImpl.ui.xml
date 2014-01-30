@@ -120,8 +120,7 @@
 									<g:Label styleName="{style.businessLabel}" text="{i18n.companyName} *"></g:Label>
 								</g:customCell>
 								<g:customCell>
-									<v:ValidatedTextBox styleName="{style.validatedBox}" ui:field="name"
-										maxLength="255"></v:ValidatedTextBox>
+								    <v:ValidatedTextArea styleName="{style.validatedBox}" ui:field="name"></v:ValidatedTextArea>
 								</g:customCell>
 							</g:row>
 							<g:row>

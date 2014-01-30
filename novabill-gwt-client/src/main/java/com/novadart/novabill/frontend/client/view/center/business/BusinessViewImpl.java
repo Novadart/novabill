@@ -20,6 +20,7 @@ import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
+import com.novadart.gwtshared.client.validation.widget.ValidatedTextArea;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.i18n.I18N;
@@ -30,6 +31,7 @@ import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.widget.validation.AlternativeSsnVatIdValidation;
+import com.novadart.novabill.frontend.client.widget.validation.NotEmptyMaxLengthTextValidation;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 
 public class BusinessViewImpl extends Composite implements BusinessView, HasUILocking {
@@ -51,7 +53,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 
 	@UiField InlineNotification inlineNotification;
 
-	@UiField(provided=true) ValidatedTextBox name;
+	@UiField(provided=true) ValidatedTextArea name;
 	@UiField(provided=true) ValidatedTextBox ssn;
 	@UiField(provided=true) ValidatedTextBox vatID;
 	@UiField(provided=true) ValidatedTextBox address;
@@ -80,7 +82,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 
 	public BusinessViewImpl() {
 
-		name = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
+		name = new ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), new NotEmptyMaxLengthTextValidation(255));
 		ssn = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.SSN_OR_VAT_ID);
 		ssn.setShowMessageOnError(true);
 		vatID = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.VAT_ID);
@@ -171,10 +173,11 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 			}
 		});
 		formPanel.setWidget(fileUpload);
-		for (ValidatedTextBox v : new ValidatedTextBox[]{name,	ssn, vatID, address, city, 
+		for (ValidatedTextBox v : new ValidatedTextBox[]{ssn, vatID, address, city, 
 				postcode, phone, email, mobile, fax, web}) {
 			v.reset();
 		}
+		name.reset();
 		ssnOrVatIdValidation.reset();
 		province.reset();
 		country.reset();
@@ -272,7 +275,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	}
 
 	@Override
-	public ValidatedTextBox getName() {
+	public ValidatedTextArea getName() {
 		return name;
 	}
 
