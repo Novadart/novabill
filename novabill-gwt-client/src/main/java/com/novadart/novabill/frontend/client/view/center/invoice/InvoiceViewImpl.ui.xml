@@ -37,6 +37,16 @@
 	.setDefaultCheckbox label {
 		margin-left: 0.5em;
 	}
+	
+	.unlockItemsTable {
+	    margin: 1em 0;
+        display: block;
+        text-align: right;
+    }
+    
+    .unlockItemsTable label {
+	    margin-left: 1em;
+    }
 	</ui:style>
 
 	<g:FlowPanel>
@@ -111,6 +121,8 @@
 			</g:row>
 		</g:Grid>
 
+        <g:CheckBox ui:field="unlockItemsTable" visible="false" styleName="{style.unlockItemsTable}"
+                            text="{i18n.unlockItemsTable}" title="{i18n.lockedItemsTableAlert}" />
 
 		<g:SimplePanel styleName="{s.itemTableContainer}">
 			<t:ItemInsertionForm ui:field="itemInsertionForm"></t:ItemInsertionForm>

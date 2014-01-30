@@ -34,15 +34,17 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 	}
 
 	private final Handler handler;
+	private boolean locked = false;
 
-
+	private final MoveUpDownCell moveUpDownCell;
+	
 	public ItemTable(Handler handler) {
 		super(2000);
 
 		this.handler = handler;
 
 
-		final MoveUpDownCell moveUpDownCell = new MoveUpDownCell(this.handler);
+		moveUpDownCell = new MoveUpDownCell(this.handler);
 		final Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO> moveUpDown = 
 				new Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO>(moveUpDownCell) {
 
@@ -83,6 +85,12 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				if(locked){
+					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
+					descEditCell.clearViewData(object);
+					redrawRow(index);
+					return;
+				}
 				if(Validation.isEmpty(value)){
 					Notification.showMessage(I18N.INSTANCE.errorClientData());
 				} else if(!Validation.isWithinSize(value, DESCRIPTION_MAX_LENGTH)){
@@ -119,6 +127,13 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				if(locked){
+					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
+					qtyEditCell.clearViewData(object);
+					redrawRow(index);
+					return;
+				}
+				
 				if(object.getQuantity() != null){
 					try{
 
@@ -154,6 +169,13 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				if(locked){
+					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
+					unitEditCell.clearViewData(object);
+					redrawRow(index);
+					return;
+				}
+				
 				if(!Validation.isWithinSize(value, UNIT_OF_MEASURE_MAX_SIZE)){
 					Notification.showMessage(I18NM.get.textLengthError(UNIT_OF_MEASURE_MAX_SIZE));
 				} else if(object.getUnitOfMeasure() != null){
@@ -190,6 +212,13 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				if(locked){
+					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
+					taxEditCell.clearViewData(object);
+					redrawRow(index);
+					return;
+				}
+				
 				if(object.getTax() != null){
 					try{
 
@@ -229,6 +258,13 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				if(locked){
+					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
+					priceEditCell.clearViewData(object);
+					redrawRow(index);
+					return;
+				}
+				
 				if(object.getPrice() != null){
 					try{
 
@@ -267,6 +303,13 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				if(locked){
+					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
+					discountEditCell.clearViewData(object);
+					redrawRow(index);
+					return;
+				}
+				
 				if(object.getDiscount() != null){
 					try{
 						if(value.isEmpty()){
@@ -310,6 +353,10 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public void execute(AccountingDocumentItemDTO object) {
+				if(locked){
+					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
+					return;
+				}
 				ItemTable.this.handler.onDelete(object);
 			}
 		};
@@ -338,4 +385,9 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		setLoadingIndicator(null);
 	}
 
+	public void setLocked(boolean locked) {
+		this.locked = locked;
+		this.moveUpDownCell.setLocked(locked);
+		redraw();
+	}
 }

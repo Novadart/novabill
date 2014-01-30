@@ -11,7 +11,6 @@ import com.novadart.novabill.frontend.client.event.DocumentDeleteEvent;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
-import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentInvoicePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.CloneTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.presenter.Presenter;
@@ -174,9 +173,9 @@ public class TransportDocumentCellImpl extends QuickViewCell<TransportDocumentDT
 	}
 
 	private void onCreateInvoiceClicked(final TransportDocumentDTO transportDocument) {
-		FromTransportDocumentInvoicePlace p = new FromTransportDocumentInvoicePlace();
-		p.setTransportDocumentId(transportDocument.getId());
-		presenter.goTo(p);
+//		FromTransportDocumentInvoicePlace p = new FromTransportDocumentInvoicePlace();
+//		p.setTransportDocumentId(transportDocument.getId());
+//		presenter.goTo(p);
 	}
 
 	private void onDeleteClicked(final TransportDocumentDTO transportDocument) {

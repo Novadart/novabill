@@ -139,8 +139,14 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		}
 
 		getView().getItemInsertionForm().setItems(items);
+		getView().setItemsLock(true);
 	}
 
+	
+	@Override
+	public void onUnlockItemsTableChecked(Boolean value) {
+		getView().setItemsLock(!value);
+	}
 
 	@Override
 	public void onCreateDocumentClicked() {

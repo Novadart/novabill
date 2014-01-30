@@ -24,6 +24,7 @@ import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -89,6 +90,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField VerticalPanel priceContainer;
 	@UiField VerticalPanel taxContainer;
 	@UiField VerticalPanel discountContainer;
+	
+	@UiField FlowPanel newItemContainer;
 
 	@UiField Button add;
 
@@ -620,6 +623,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		taxContainer.setVisible(true);
 		discountContainer.setVisible(true);
 		setLocked(false);
+		
+		setReadOnly(false);
 	}
 
 	public void reset(){
@@ -663,6 +668,12 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		tax.setEnabled(!value);
 		add.setEnabled(!value);
 		overrideDiscountInDocsExplicit.setEnabled(!value);
+	}
+	
+	
+	public void setReadOnly(boolean value){
+		newItemContainer.setVisible(!value);
+		itemTable.setLocked(value);
 	}
 
 }
