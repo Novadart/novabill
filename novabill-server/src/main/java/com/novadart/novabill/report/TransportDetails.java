@@ -16,7 +16,7 @@ public class TransportDetails {
 	public TransportDetails(TransportDocument transDoc){
 		this.transportationResponsibility = transDoc.getTransportationResponsibility();
 		this.tradeZone = transDoc.getTradeZone();
-		this.cause = transDoc.getTradeZone();
+		this.cause = transDoc.getCause();
 		this.numberOfPackages = transDoc.getNumberOfPackages();
 	}
 
