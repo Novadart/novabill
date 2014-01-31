@@ -96,6 +96,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField Label totalAfterTaxes;
 	
 	@UiField Button countItems;
+	@UiField Button totalWeightCalc;
 
 	@UiField(provided=true) LoaderButton createTransportDocument;
 	@UiField Button abort;
@@ -275,6 +276,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		transportStartDate.reset();
 		note.reset();
 		numberOfPackages.reset();
+		totalWeight.reset();
 		transporter.reset();
 		transportationResponsibility.setText("");
 		cause.setText(I18N.INSTANCE.transportDocumentCauseDefaultText());
@@ -323,6 +325,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrCountry.setEnabled(!value);
 		fromAddrButtonDefault.setEnabled(!value);
 		
+		totalWeightCalc.setEnabled(!value);
 		countItems.setEnabled(!value);
 		
 		toAddrCompanyName.setEnabled(!value);
@@ -334,6 +337,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddrButtonDefault.setEnabled(!value);
 
 		numberOfPackages.setEnabled(!value);
+		totalWeight.setEnabled(!value);
 		transporter.setEnabled(!value);
 
 		transportStartDate.setEnabled(!value);
