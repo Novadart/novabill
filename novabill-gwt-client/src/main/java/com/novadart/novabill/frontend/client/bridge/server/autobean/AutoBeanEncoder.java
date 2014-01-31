@@ -279,12 +279,13 @@ public class AutoBeanEncoder {
 			ai.setDescription(i.getDescription());
 			ai.setId(i.getId());
 			ai.setSku(i.getSku());
-			ai.setPrice(i.getPrice());
-			ai.setQuantity(i.getQuantity());
-			ai.setTax(i.getTax());
-			ai.setTotal(i.getTotal());
-			ai.setTotalBeforeTax(i.getTotalBeforeTax());
-			ai.setTotalTax(i.getTotalTax());
+			ai.setPrice(i.getPrice().toPlainString());
+			ai.setQuantity(i.getQuantity().toPlainString());
+			ai.setWeight(i.getWeight() != null ? i.getWeight().toPlainString() : null);
+			ai.setTax(i.getTax().toPlainString());
+			ai.setTotal(i.getTotal().toPlainString());
+			ai.setTotalBeforeTax(i.getTotalBeforeTax().toPlainString());
+			ai.setTotalTax(i.getTotalTax().toPlainString());
 			ai.setUnitOfMeasure(i.getUnitOfMeasure());
 			result.add(ai);
 		}
