@@ -197,7 +197,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			//weight
 			final EditTextCell weightEditCell = new EditTextCell();
-			weight = new Column<AccountingDocumentItemDTO, String>(qtyEditCell) {
+			weight = new Column<AccountingDocumentItemDTO, String>(weightEditCell) {
 
 				@Override
 				public String getValue(AccountingDocumentItemDTO object) {
