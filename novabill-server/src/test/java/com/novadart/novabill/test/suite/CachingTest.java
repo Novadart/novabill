@@ -34,6 +34,7 @@ import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.TransportDocument;
+import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
@@ -44,6 +45,7 @@ import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
 import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
+import com.novadart.novabill.domain.dto.factory.TransporterDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
@@ -57,6 +59,7 @@ import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.dto.TransporterDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
@@ -72,6 +75,7 @@ import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
 import com.novadart.novabill.shared.client.facade.PaymentTypeGwtService;
 import com.novadart.novabill.shared.client.facade.PriceListGwtService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
+import com.novadart.novabill.shared.client.facade.TransporterGwtService;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -114,6 +118,9 @@ public class CachingTest extends GWTServiceTest {
 	private PriceListGwtService priceListService;
 	
 	@Autowired
+	private TransporterGwtService transporterService;
+	
+	@Autowired
 	private CacheManager cacheManager;
 	
 	@Override
@@ -131,6 +138,7 @@ public class CachingTest extends GWTServiceTest {
 		cacheManager.getCache(CachingAspect.COMMODITY_CACHE).flush();
 		cacheManager.getCache(CachingAspect.PRICELIST_CACHE).flush();
 		cacheManager.getCache(CachingAspect.DOCSYEARS_CACHE).flush();
+		cacheManager.getCache(CachingAspect.TRANSPORTER_CACHE).flush();
 	}
 	
 	@Test
@@ -606,6 +614,48 @@ public class CachingTest extends GWTServiceTest {
 		Set<PaymentTypeDTO> notCachedPaymentTypes = new HashSet<PaymentTypeDTO>(businessGwtService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!paymentTypes.equals(notCachedPaymentTypes));
 		assertTrue(paymentTypes.size() == notCachedPaymentTypes.size());
+	}
+	
+	@Test
+	public void transporterGetAllCacheTest() throws NotAuthenticatedException, DataAccessException{
+		Set<TransporterDTO> transporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
+		Set<TransporterDTO> cachedtransporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
+		assertTrue(transporters.equals(cachedtransporters));
+	}
+	
+	@Test
+	public void transporterRemoveCacheTest() throws NotAuthenticatedException, DataAccessException{
+		Set<TransporterDTO> transporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		Long id = authenticatedPrincipal.getBusiness().getTransporters().iterator().next().getId();
+		transporterService.remove(businessID, id);
+		Set<TransporterDTO> nonCachedTransporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
+		assertTrue(!transporters.equals(nonCachedTransporters));
+		assertTrue(nonCachedTransporters.size() + 1 == transporters.size());
+	}
+	
+	@Test
+	public void transporterAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException {
+		Set<TransporterDTO> transporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
+		TransporterDTO transporterDTO = new TransporterDTO();
+		String transporterDesc = "Transporter description";
+		transporterDTO.setDescription(transporterDesc);
+		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterService.add(transporterDTO);
+		Set<TransporterDTO> nonCachedTransporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
+		assertTrue(!transporters.equals(nonCachedTransporters));
+		assertTrue(nonCachedTransporters.size() - 1 == transporters.size());
+	}
+	
+	@Test
+	public void transporterUpdateCache() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, NoSuchObjectException {
+		Set<TransporterDTO> transporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
+		TransporterDTO transDTO = TransporterDTOFactory.toDTO(authenticatedPrincipal.getBusiness().getTransporters().iterator().next());
+		transDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		transporterService.update(transDTO);
+		Set<TransporterDTO> nonCachedTransporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
+		assertTrue(!transporters.equals(nonCachedTransporters));
+		assertTrue(nonCachedTransporters.size() == transporters.size());
 	}
 
 	@Test

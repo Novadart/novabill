@@ -25,6 +25,7 @@ import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
+import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
@@ -32,6 +33,7 @@ import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.LogRecordDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
+import com.novadart.novabill.domain.dto.factory.TransporterDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
@@ -48,6 +50,7 @@ import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.dto.TransporterDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -216,6 +219,16 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		for(PaymentType paymentType: paymentTypes)
 			paymentTypeDTOs.add(PaymentTypeDTOFactory.toDTO(paymentType));
 		return paymentTypeDTOs;
+	}
+	
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<TransporterDTO> getTransporters(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		Set<Transporter> transporters = Business.findBusiness(businessID).getTransporters();
+		List<TransporterDTO> transporterDTOs = new ArrayList<>(transporters.size());
+		for(Transporter transporter: transporters)
+			transporterDTOs.add(TransporterDTOFactory.toDTO(transporter));
+		return transporterDTOs;
 	}
 	
 	@PreAuthorize("#businessID == principal.business.id")

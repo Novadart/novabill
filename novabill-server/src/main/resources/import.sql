@@ -298,7 +298,7 @@ insert into price (id, price_type, price_value, version, commodity, price_list) 
 
 insert into price (id, price_type, price_value, version, commodity, price_list) values (174, 1, 20.95, 1, 169, 172);
 
-
+--creatint accounting documents for previous years
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version) values (175, '2013-10-20', 2013, 3, '', '', 121.0, 100.0, 21.0, 1, 1);
 insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2013-11-20', 175);
 insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, business, client) values (175, 0, 0, 'default', 1, 3);
@@ -319,4 +319,8 @@ insert into abstract_invoice (payed, payment_due_date, id) values ('f', '2009-11
 insert into invoice (id, payment_date_generator, payment_date_delta, payment_type_name, business, client) values (181, 0, 0, 'default', 1, 3);
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (182, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 181);
 
-alter sequence hibernate_sequence restart with 183;
+--creating transporters
+insert into transporter (id, description, business, version) values (183, 'Jason Statham', 1, 1);
+insert into transporter (id, description, business, version) values (184, 'Jason Statham', 2, 1);
+
+alter sequence hibernate_sequence restart with 185;

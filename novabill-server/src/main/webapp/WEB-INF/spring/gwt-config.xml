@@ -31,6 +31,8 @@
 	
 	<bean id="pricelist" class="com.novadart.novabill.web.gwt.PriceListGwtController"/>
 	
+	<bean id="transporter" class="com.novadart.novabill.web.gwt.TransporterGwtController"/>
+	
 	<bean id="batchdatafetcher" class="com.novadart.novabill.web.gwt.BatchDataFetcherGwtController"/>
 	
 	<bean class="org.springframework.web.servlet.handler.SimpleUrlHandlerMapping">
@@ -45,6 +47,7 @@
 				/**/commodity.rpc=commodity
 				/**/paymenttype.rpc=paymenttype
 				/**/pricelist.rpc=pricelist
+				/**/transporter.rpc=transporter
 				/**/batchdatafetcher.rpc=batchdatafetcher
 			</value>
 		</property>

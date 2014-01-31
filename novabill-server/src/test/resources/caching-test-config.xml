@@ -46,4 +46,6 @@
 	
 	<bean id="pricelist" class="com.novadart.novabill.web.gwt.PriceListGwtController"/>
 	
+	<bean id="transporter" class="com.novadart.novabill.web.gwt.TransporterGwtController"/>
+	
 </beans>
