@@ -58,6 +58,8 @@ public class AccountingDocumentItem implements Serializable {
     
     private BigDecimal discount;
     
+    private BigDecimal weight;
+    
     @Size(max = 50)
 	@Trimmed
 	private String sku;
@@ -139,6 +141,14 @@ public class AccountingDocumentItem implements Serializable {
 
 	public void setDiscount(BigDecimal discount) {
 		this.discount = discount;
+	}
+
+	public BigDecimal getWeight() {
+		return weight;
+	}
+
+	public void setWeight(BigDecimal weight) {
+		this.weight = weight;
 	}
 
 	public String getSku() {
