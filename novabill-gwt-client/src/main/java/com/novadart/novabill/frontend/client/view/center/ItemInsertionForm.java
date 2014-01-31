@@ -16,6 +16,7 @@ import com.google.gwt.event.dom.client.FocusEvent;
 import com.google.gwt.event.dom.client.KeyCodes;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.logical.shared.ValueChangeEvent;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.resources.client.CssResource;
 import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
@@ -79,6 +80,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField TextBox quantity;
 	@UiField TextBox unitOfMeasure;
 	@UiField TextBox price;
+	@UiField TextBox weight;
 	@UiField TaxWidget tax;
 	@UiField TextBox discount;
 	@UiField(provided=true) ItemTable itemTable;
@@ -90,6 +92,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField VerticalPanel priceContainer;
 	@UiField VerticalPanel taxContainer;
 	@UiField VerticalPanel discountContainer;
+	@UiField VerticalPanel weightContainer;
 	
 	@UiField FlowPanel newItemContainer;
 
@@ -103,6 +106,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	private Long clientId;
 	private List<CommodityDTO> commodities;
 	private PriceListDTO priceList;
+	private boolean manageWeight;
 
 	private enum FILTER_TYPE {
 		SKU, DESCRIPTION
@@ -121,7 +125,12 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			} );
 
 	public ItemInsertionForm(Handler handler) {
+		this(false, handler);
+	}
+	
+	public ItemInsertionForm(boolean manageWeight, Handler handler) {
 		this.handler = handler;
+		this.manageWeight = manageWeight;
 
 		sku = new ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), new TextLengthValidation(50) {
 
@@ -139,7 +148,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			}
 		});
 
-		itemTable = new ItemTable(new ItemTable.Handler() {
+		itemTable = new ItemTable(manageWeight, new ItemTable.Handler() {
 
 			@Override
 			public void onDelete(AccountingDocumentItemDTO item) {
@@ -189,6 +198,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@Override
 	protected void onLoad() {
 		super.onLoad();
+		
+		weightContainer.setVisible(this.manageWeight);
 
 		setLocked(true);
 
@@ -374,6 +385,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 					sku.setText("");
 					tax.reset();
 					quantity.setText("");
+					weight.setText("");
 					discount.setText("");
 					price.setText("");
 					unitOfMeasure.setText("");
@@ -384,6 +396,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 					item.setText("");
 					tax.reset();
 					quantity.setText("");
+					weight.setText("");
 					discount.setText("");
 					price.setText("");
 					unitOfMeasure.setText("");
@@ -444,6 +457,17 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			}
 		});
 	}
+	
+	@UiHandler("weight")
+	void onWeightFocus(FocusEvent event){
+		commoditySearchPanel.hide();
+		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
+			@Override
+			public void execute() {
+				weight.selectAll();
+			}
+		});
+	}
 
 	@UiHandler("unitOfMeasure")
 	void onUnitOfMeasureFocus(FocusEvent event){
@@ -490,7 +514,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		} else {
 			tax.validate();
 			validationError = DocumentUtils.validateAccountingDocumentItem(item.getText(), price.getText(), 
-					quantity.getText(), unitOfMeasure.getText(), tax.getValue(), discount.getText());
+					quantity.getText(), this.manageWeight ? weight.getText() : null, unitOfMeasure.getText(), tax.getValue(), discount.getText());
 		}
 
 		if(validationError != null) {
@@ -504,7 +528,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			ii = DocumentUtils.createAccountingDocumentItem(item.getText());
 		} else {
 			ii = DocumentUtils.createAccountingDocumentItem(sku.getText(), item.getText(), price.getText(), 
-					quantity.getText(), unitOfMeasure.getText(), tax.getValue(), discount.getText());
+							quantity.getText(), this.manageWeight ? weight.getText() : null, unitOfMeasure.getText(), tax.getValue(), discount.getText());
 		}
 
 
@@ -528,14 +552,16 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		taxContainer.setVisible(!event.getValue());
 		discountContainer.setVisible(!event.getValue());
 		skuContainer.setVisible(!event.getValue());
+		weightContainer.setVisible(this.manageWeight && !event.getValue());
 	}
 
-	private void updateItemFromJS(String skuVal, String description, String unitOfMeasure, String vat, 
+	private void updateItemFromJS(String skuVal, String description, String unitOfMeasure, String weight, String vat, 
 			String defaultPrice, String priceListName, String priceType, String price){
 		CommodityDTO commodity = new CommodityDTO();
 		commodity.setSku(skuVal);
 		commodity.setDescription(description);
 		commodity.setUnitOfMeasure(unitOfMeasure);
+		commodity.setWeight(weight == null ? null : new BigDecimal(weight));
 		commodity.setTax(new BigDecimal(vat));
 
 		Map<String, PriceDTO> prices = new HashMap<String, PriceDTO>();
@@ -561,6 +587,9 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		item.setText(commodity.getDescription());
 		unitOfMeasure.setText(commodity.getUnitOfMeasure());
 		tax.setValue(commodity.getTax());
+		if(this.manageWeight){
+			weight.setText(commodity.getWeight() != null ? NumberFormat.getDecimalFormat().format(commodity.getWeight()) : "");
+		}
 
 		PriceType priceType = commodity.getPrices().get(priceListName).getPriceType();
 
@@ -582,10 +611,11 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		var instance = $wnd.GWT_Hook_nSelectCommodityDialog(clientId);
 		instance.result.then(
 			function(result){
-					insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::updateItemFromJS(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(
+					insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::updateItemFromJS(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(
 						result.commodity.sku,
 						result.commodity.description,
 						result.commodity.unitOfMeasure,
+						result.commodity.weight,
 						String(result.commodity.tax),
 						String(result.defaultPriceValue),
 						result.priceListName,
@@ -608,6 +638,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		sku.setText("");
 		item.setText("");
 		quantity.setText("");
+		weight.setText("");
 		unitOfMeasure.setText("");
 		price.setText("");
 		discount.setText("");
@@ -616,12 +647,14 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		searchStack.clear();
 		prevFilterType = null;
 
+		skuContainer.setVisible(true);
 		textOnlyAccountingItem.setValue(false);
 		quantityContainer.setVisible(true);
 		unitOfMeasureContainer.setVisible(true);
 		priceContainer.setVisible(true);
 		taxContainer.setVisible(true);
 		discountContainer.setVisible(true);
+		weightContainer.setVisible(this.manageWeight);
 		setLocked(false);
 		
 		setReadOnly(false);
@@ -662,6 +695,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	public void setLocked(boolean value) {
 		item.setEnabled(!value);
 		quantity.setEnabled(!value);
+		weight.setEnabled(!value);
 		unitOfMeasure.setEnabled(!value);
 		price.setEnabled(!value);
 		discount.setEnabled(!value);

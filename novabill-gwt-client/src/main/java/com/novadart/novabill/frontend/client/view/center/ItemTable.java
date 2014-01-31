@@ -37,8 +37,8 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 	private boolean locked = false;
 
 	private final MoveUpDownCell moveUpDownCell;
-	
-	public ItemTable(Handler handler) {
+
+	public ItemTable(boolean displayWeight, Handler handler) {
 		super(2000);
 
 		this.handler = handler;
@@ -108,6 +108,44 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		});
 		addColumn(nameDescription, I18N.INSTANCE.nameDescription());
 
+		//unity of measure
+		final EditTextCell unitEditCell = new EditTextCell();
+		Column<AccountingDocumentItemDTO, String> unitOfMeasure =
+				new Column<AccountingDocumentItemDTO, String>(unitEditCell) {
+
+			@Override
+			public String getValue(AccountingDocumentItemDTO object) {
+				return object.getUnitOfMeasure();
+			}
+		};
+		unitOfMeasure.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+
+			@Override
+			public void update(int index, AccountingDocumentItemDTO object, String value) {
+				if(locked){
+					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
+					unitEditCell.clearViewData(object);
+					redrawRow(index);
+					return;
+				}
+
+				if(!Validation.isWithinSize(value, UNIT_OF_MEASURE_MAX_SIZE)){
+					Notification.showMessage(I18NM.get.textLengthError(UNIT_OF_MEASURE_MAX_SIZE));
+				} else if(object.getUnitOfMeasure() != null){
+					object.setUnitOfMeasure(value);
+					ItemTable.this.handler.onUpdate(object);
+				}
+
+				unitEditCell.clearViewData(object);
+				redrawRow(index);
+			}
+		});
+		SafeHtmlBuilder shb = new SafeHtmlBuilder();
+		shb.appendHtmlConstant("<span title=\""+I18N.INSTANCE.unityOfMeasureExtended()+"\">");
+		shb.appendEscaped(I18N.INSTANCE.unityOfMeasure());
+		shb.appendHtmlConstant("</span>");
+		addColumn(unitOfMeasure, shb.toSafeHtml());
+
 
 		//quantity
 		final EditTextCell qtyEditCell = new EditTextCell();
@@ -133,7 +171,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 					redrawRow(index);
 					return;
 				}
-				
+
 				if(object.getQuantity() != null){
 					try{
 
@@ -154,45 +192,53 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		});
 		addColumn(quantity, I18N.INSTANCE.quantity());
 
+		Column<AccountingDocumentItemDTO, String> weight = null;
+		if(displayWeight) {
 
-		//unity of measure
-		final EditTextCell unitEditCell = new EditTextCell();
-		Column<AccountingDocumentItemDTO, String> unitOfMeasure =
-				new Column<AccountingDocumentItemDTO, String>(unitEditCell) {
+			//weight
+			final EditTextCell weightEditCell = new EditTextCell();
+			weight = new Column<AccountingDocumentItemDTO, String>(qtyEditCell) {
 
-			@Override
-			public String getValue(AccountingDocumentItemDTO object) {
-				return object.getUnitOfMeasure();
-			}
-		};
-		unitOfMeasure.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+				@Override
+				public String getValue(AccountingDocumentItemDTO object) {
+					if(object.getWeight() == null) {
+						return "";
+					}
 
-			@Override
-			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				if(locked){
-					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
-					unitEditCell.clearViewData(object);
+					return NumberFormat.getDecimalFormat().format(object.getWeight());
+				}
+			};
+			weight.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+
+				@Override
+				public void update(int index, AccountingDocumentItemDTO object, String value) {
+					if(locked){
+						Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
+						weightEditCell.clearViewData(object);
+						redrawRow(index);
+						return;
+					}
+
+					if(object.getWeight() != null){
+						try{
+
+							BigDecimal newWeight = CalcUtils.parseValue(value);
+							object.setWeight(newWeight);
+							ItemTable.this.handler.onUpdate(object);
+
+						} catch(NumberFormatException e){
+
+							Notification.showMessage(I18N.INSTANCE.errorClientData());
+
+						}
+					}			
+
+					weightEditCell.clearViewData(object);
 					redrawRow(index);
-					return;
 				}
-				
-				if(!Validation.isWithinSize(value, UNIT_OF_MEASURE_MAX_SIZE)){
-					Notification.showMessage(I18NM.get.textLengthError(UNIT_OF_MEASURE_MAX_SIZE));
-				} else if(object.getUnitOfMeasure() != null){
-					object.setUnitOfMeasure(value);
-					ItemTable.this.handler.onUpdate(object);
-				}
-
-				unitEditCell.clearViewData(object);
-				redrawRow(index);
-			}
-		});
-		SafeHtmlBuilder shb = new SafeHtmlBuilder();
-		shb.appendHtmlConstant("<span title=\""+I18N.INSTANCE.unityOfMeasureExtended()+"\">");
-		shb.appendEscaped(I18N.INSTANCE.unityOfMeasure());
-		shb.appendHtmlConstant("</span>");
-		addColumn(unitOfMeasure, shb.toSafeHtml());
-
+			});
+			addColumn(weight, I18N.INSTANCE.weight());
+		}
 
 		//VAT
 		final EditTextCell taxEditCell = new EditTextCell();
@@ -218,7 +264,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 					redrawRow(index);
 					return;
 				}
-				
+
 				if(object.getTax() != null){
 					try{
 
@@ -264,7 +310,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 					redrawRow(index);
 					return;
 				}
-				
+
 				if(object.getPrice() != null){
 					try{
 
@@ -309,7 +355,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 					redrawRow(index);
 					return;
 				}
-				
+
 				if(object.getDiscount() != null){
 					try{
 						if(value.isEmpty()){
@@ -374,8 +420,11 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		setWidth("99%");
 		setColumnWidth(sku, 5, Unit.PCT);
 		setColumnWidth(nameDescription, 37, Unit.PCT);
-		setColumnWidth(quantity, 6, Unit.PCT);
 		setColumnWidth(unitOfMeasure, 6, Unit.PCT);
+		setColumnWidth(quantity, 6, Unit.PCT);
+		if(displayWeight) {
+			setColumnWidth(weight, 6, Unit.PCT);
+		}
 		setColumnWidth(price, 6, Unit.PCT);
 		setColumnWidth(discount, 6, Unit.PCT);
 		setColumnWidth(tax, 6, Unit.PCT);

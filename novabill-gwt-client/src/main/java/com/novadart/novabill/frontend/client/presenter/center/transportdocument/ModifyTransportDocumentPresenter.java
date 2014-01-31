@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
@@ -49,6 +50,7 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 		} 
 
 		getView().getNumberOfPackages().setText(String.valueOf(document.getNumberOfPackages() != null ? document.getNumberOfPackages() : ""));
+		getView().getTotalWeight().setText(document.getTotalWeight() != null ? NumberFormat.getDecimalFormat().format(document.getTotalWeight()) : "");
 		getView().getCause().setText(document.getCause());
 		getView().getTransporter().setText(document.getTransporter());
 		getView().getTradeZone().setText(document.getTradeZone());

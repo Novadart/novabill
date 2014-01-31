@@ -46,10 +46,12 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 .factory('nRegExp', function() {
 	return {
 
-		fiscalFloat : /^(\+|\-)?\d+((\.|\,)\d{1,2})?$/,
+		twoDecimalsFloat : /^(\+|\-)?\d+((\.|\,)\d{1,2})?$/,
+		positiveTwoDecimalsFloat : /^\d+((\.|\,)\d{1,2})?$/,
 		
-		positiveFiscalFloat : /^\d+((\.|\,)\d{1,2})?$/,
-
+		positiveFloat : /^\d+((\.|\,)\d+)?$/,
+		float : /^\-?\d+((\.|\,)\d+)?$/,
+		
 		reserved_word : /^\::.*$/
 
 	};

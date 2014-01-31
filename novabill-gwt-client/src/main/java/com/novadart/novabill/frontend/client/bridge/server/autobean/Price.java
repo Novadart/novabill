@@ -7,9 +7,9 @@ public interface Price {
 
 	public void setId(Long id);
 
-	public Double getPriceValue();
+	public String getPriceValue();
 
-	public void setPriceValue(Double priceValue);
+	public void setPriceValue(String priceValue);
 
 	public String getPriceType();
 

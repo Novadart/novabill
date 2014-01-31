@@ -43,6 +43,7 @@
 							<tr>
 								<th>{{'SKU' | translate}}</th>
 								<th>{{'UNIT_OF_MEASURE' | translate}}</th>
+								<th ng-show="!commodity.service">{{'WEIGHT' | translate}}</th>
 								<th>{{'TAX' | translate}}</th>
 							</tr>
 						</thead>
@@ -50,7 +51,8 @@
 							<tr>
 								<td>{{commodity.sku | nFilterDefault}}</td>
 								<td>{{commodity.unitOfMeasure}}</td>
-								<td>{{commodity.tax}}</td>
+								<td ng-show="!commodity.service">{{commodity.weight}}</td>
+								<td>{{commodity.tax}} %</td>
 							</tr>
 						</tbody>
 					</table>

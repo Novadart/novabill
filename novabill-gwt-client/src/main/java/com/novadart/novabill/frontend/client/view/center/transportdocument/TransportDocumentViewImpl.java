@@ -73,6 +73,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField Button toAddrButtonDefault;
 	
 	@UiField(provided=true) ValidatedTextBox numberOfPackages;
+	@UiField(provided=true) ValidatedTextBox totalWeight;
 	@UiField(provided=true) com.novadart.gwtshared.client.validation.widget.ValidatedTextArea transporter;
 
 	@UiField(provided=true) ValidatedDateBox transportStartDate;
@@ -114,6 +115,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
 		numberOfPackages = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		totalWeight = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		transporter = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), 
 				new TextLengthValidation(255) {
 			
@@ -163,7 +165,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			}
 		});
 
-		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
+		itemInsertionForm = new ItemInsertionForm(true, new ItemInsertionForm.Handler() {
 
 			@Override
 			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
@@ -246,6 +248,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiHandler("countItems")
 	void onCountItemsClicked(ClickEvent e){
 		presenter.onCountItemsCLicked();
+	}
+	
+	@UiHandler("totalWeightCalc")
+	void onTotalWeightCalcClicked(ClickEvent e){
+		presenter.onTotalWeightCalcClicked();
 	}
 
 	@UiHandler("abort")
@@ -448,6 +455,10 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	public ValidatedTextBox getNumberOfPackages() {
 		return numberOfPackages;
+	}
+	
+	public ValidatedTextBox getTotalWeight() {
+		return totalWeight;
 	}
 
 	public com.novadart.gwtshared.client.validation.widget.ValidatedTextArea getTransporter() {
