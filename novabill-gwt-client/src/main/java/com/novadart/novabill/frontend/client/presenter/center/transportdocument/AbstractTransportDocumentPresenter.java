@@ -86,7 +86,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		List<AccountingDocumentItemDTO> items = getView().getItemInsertionForm().getItems();
 
 		BigDecimal total = CalcUtils.calculateTotalWeight(items);
-		BigDecimal roundedTotal = total.setScale(3, RoundingMode.CEILING);
+		BigDecimal roundedTotal = total.setScale(3, RoundingMode.HALF_UP);
 		getView().getTotalWeight().setText(NumberFormat.getDecimalFormat().format(roundedTotal));
 	}
 
