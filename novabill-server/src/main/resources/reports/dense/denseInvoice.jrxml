@@ -87,14 +87,14 @@
 		<band height="57" splitType="Prevent">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="4210a258-e7d9-4021-8ded-27a8860612e9" positionType="Float" x="8" y="0" width="308" height="20"/>
+				<reportElement uuid="4210a258-e7d9-4021-8ded-27a8860612e9" x="8" y="0" width="308" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.name}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="d62d1cd6-ffe0-414b-8cf4-c519465390fd" positionType="Float" x="8" y="19" width="308" height="16"/>
+				<reportElement uuid="d62d1cd6-ffe0-414b-8cf4-c519465390fd" positionType="Float" x="8" y="20" width="308" height="16"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
@@ -157,7 +157,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 		</band>
 		<band height="253" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="8" y="7" width="308" height="20"/>
+				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" x="8" y="7" width="308" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
@@ -408,7 +408,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 				<textFieldExpression><![CDATA[$F{document.paymentNote}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="ab50832a-c2d5-4f4e-a2c8-33c2e3cd861a" positionType="Float" x="8" y="26" width="308" height="16"/>
+				<reportElement uuid="ab50832a-c2d5-4f4e-a2c8-33c2e3cd861a" positionType="Float" x="8" y="27" width="308" height="16"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
