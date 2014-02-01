@@ -139,7 +139,7 @@ public class Business implements Serializable, Taxable {
     private boolean priceDisplayInDocsMonolithic = true;
     
     @Column(columnDefinition = "boolean default false")
-    private boolean enabledIncognito = false;
+    private boolean incognitoEnabled = false;
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Commodity> commodities = new HashSet<Commodity>();
@@ -523,12 +523,12 @@ public class Business implements Serializable, Taxable {
 		this.nonFreeAccountExpirationTime = nonFreeAccountExpirationTime;
 	}
 
-	public boolean isEnabledIncognito() {
-		return enabledIncognito;
+	public boolean isIncognitoEnabled() {
+		return incognitoEnabled;
 	}
 
-	public void setEnabledIncognito(boolean enabledIncognito) {
-		this.enabledIncognito = enabledIncognito;
+	public void setIncognitoEnabled(boolean incognitoEnabled) {
+		this.incognitoEnabled = incognitoEnabled;
 	}
 
 	public LayoutType getDefaultLayoutType() {
