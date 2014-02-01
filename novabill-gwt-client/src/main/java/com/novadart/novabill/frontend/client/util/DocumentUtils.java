@@ -73,7 +73,7 @@ public class DocumentUtils {
 			}
 		}
 		
-		if( !weight.isEmpty() ) {
+		if( weight != null && !weight.isEmpty() ) {
 			
 			try {
 				

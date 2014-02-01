@@ -255,6 +255,7 @@
 					
 					<g:Label styleName="{style.sectionLabel} {style.optionsSection}" text="Opzioni"></g:Label>
                     <g:CheckBox ui:field="discountInDocsExplicit" styleName="{style.option}" text="{i18n.discountInDocsExplicit}"></g:CheckBox>
+                    <g:CheckBox ui:field="incognitoEnabled" styleName="{style.option}" text="{i18n.incognitoEnabled}"></g:CheckBox>
 				</g:VerticalPanel>
 
 			</g:HorizontalPanel>

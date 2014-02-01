@@ -10,6 +10,7 @@ import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
 import com.google.gwt.user.client.ui.Button;
+import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.Widget;
@@ -17,6 +18,7 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
+import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
@@ -48,6 +50,9 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiField ValidatedTextArea limitations;
 	
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
+
+	@UiField Label pdfOptionsLabel;
+	@UiField CheckBox overrideIncognitoModeCheckbox;
 	
 	@UiField Label totalBeforeTaxes;
 	@UiField Label totalTax;
@@ -129,6 +134,10 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 	@Override
 	public void reset() {
+		overrideIncognitoModeCheckbox.setVisible(Configuration.getBusiness().isEnabledIncognito());
+		pdfOptionsLabel.setVisible(Configuration.getBusiness().isEnabledIncognito());
+		overrideIncognitoModeCheckbox.setValue(false);
+		
 		number.reset();
 
 		//reset widget statuses
@@ -158,7 +167,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		limitations.setEnabled(!value);
 		
 		itemInsertionForm.setLocked(value);
-		
+		overrideIncognitoModeCheckbox.setEnabled(!value);
 		abort.setEnabled(!value);
 	}
 
@@ -221,5 +230,9 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	public ValidatedTextArea getLimitations() {
 		return limitations;
 	}
-
+	
+	@Override
+	public CheckBox getOverrideIncognitoModeCheckbox() {
+		return overrideIncognitoModeCheckbox;
+	}
 }

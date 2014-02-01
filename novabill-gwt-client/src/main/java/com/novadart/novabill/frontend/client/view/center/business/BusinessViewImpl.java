@@ -75,6 +75,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@UiField Button exportTransportDocumentData;
 	
 	@UiField CheckBox discountInDocsExplicit;
+	@UiField CheckBox incognitoEnabled;
 	
 	@UiField Anchor deleteAccount;
 	
@@ -185,6 +186,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		inlineNotification.hide();
 		saveData.reset();
 		discountInDocsExplicit.setValue(false);
+		incognitoEnabled.setValue(false);
 		setLocked(false);
 	}
 
@@ -242,6 +244,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		exportCreditNoteData.setEnabled(!value);
 		exportTransportDocumentData.setEnabled(!value);
 		discountInDocsExplicit.setEnabled(!value);
+		incognitoEnabled.setEnabled(!value);
 	}
 
 	@Override
@@ -382,6 +385,11 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@Override
 	public CheckBox getDiscountInDocsExplicit() {
 		return discountInDocsExplicit;
+	}
+	
+	@Override
+	public CheckBox getIncognitoEnabled() {
+		return incognitoEnabled;
 	}
 
 }

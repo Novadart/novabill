@@ -94,4 +94,6 @@ public interface BusinessView extends View<BusinessView.Presenter>, HasUILocking
 
 	CheckBox getDiscountInDocsExplicit();
 
+	CheckBox getIncognitoEnabled();
+
 }
