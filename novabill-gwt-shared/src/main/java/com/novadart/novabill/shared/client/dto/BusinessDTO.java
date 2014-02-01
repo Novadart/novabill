@@ -39,6 +39,8 @@ public class BusinessDTO implements IsSerializable {
 
 	private boolean priceDisplayInDocsMonolithic;
 	
+	private boolean enabledIncognito;
+	
 	public Long getId() {
 		return id;
 	}
@@ -173,6 +175,14 @@ public class BusinessDTO implements IsSerializable {
 
 	public void setPriceDisplayInDocsMonolithic(boolean priceDisplayInDocsMonolithic) {
 		this.priceDisplayInDocsMonolithic = priceDisplayInDocsMonolithic;
+	}
+
+	public boolean isEnabledIncognito() {
+		return enabledIncognito;
+	}
+
+	public void setEnabledIncognito(boolean enabledIncognito) {
+		this.enabledIncognito = enabledIncognito;
 	}
 	
 }
