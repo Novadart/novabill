@@ -136,4 +136,9 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 		});
 	}
 
+	@Override
+	public void onUnlockItemsTableChecked(Boolean value) {
+		
+	}
+
 }

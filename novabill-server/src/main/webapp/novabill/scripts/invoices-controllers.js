@@ -125,27 +125,6 @@ angular.module('novabill.invoices.controllers',
 		}])
 
 
-
-		/**
-		 * INVOICE CREATE FROM TRANSPORT DOCUMENT PAGE CONTROLLER
-		 */
-		.controller('InvoiceFromTransportDocumentCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
-		                                                 function($scope, $routeParams, $location, $translate, gwtHook) {
-			$scope.pageTitle = $translate('NEW_INVOICE');
-
-			GWT_UI.showFromTransportDocumentInvoicePage('invoice-details', $routeParams.transportDocumentId, {
-				onSuccess : function(bool){
-					$scope.$apply(function(){
-						$location.path('/');
-					});
-				},
-				onFailure : function(){}
-			});
-			
-			gwtHook.injectSelectCommodityDialogHook();
-		}])
-
-
 		/**
 		 * INVOICE CREATE FROM TRANSPORT DOCUMENT LIST PAGE CONTROLLER
 		 */

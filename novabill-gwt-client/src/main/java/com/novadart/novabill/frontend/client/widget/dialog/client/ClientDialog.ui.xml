@@ -94,8 +94,7 @@
 								<g:Label styleName="{s.label}" text="{i18n.companyName} *"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<validation:ValidatedTextBox
-									maxLength="255" styleName="{s.value}" ui:field="companyName"></validation:ValidatedTextBox>
+							    <validation:ValidatedTextArea styleName="{s.value}" ui:field="companyName"></validation:ValidatedTextArea>
 							</g:customCell>
 						</g:row>
 						<g:row>

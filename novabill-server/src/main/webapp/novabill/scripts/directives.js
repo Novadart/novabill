@@ -536,7 +536,7 @@ angular.module('novabill.directives',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.positiveFiscalFloat.test(viewValue)) {
+				if (nRegExp.positiveTwoDecimalsFloat.test(viewValue)) {
 					var floatVal = parseFloat(viewValue.replace(',', '.'));
 					if(floatVal >= 0 && floatVal < 100){
 						ctrl.$setValidity('tax', true);
@@ -570,7 +570,7 @@ angular.module('novabill.directives',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.positiveFiscalFloat.test(viewValue)) {
+				if (nRegExp.positiveTwoDecimalsFloat.test(viewValue)) {
 					var floatVal = parseFloat(viewValue.replace(',', '.'));
 					if(floatVal >= 0){
 						ctrl.$setValidity('price', true);
@@ -582,6 +582,39 @@ angular.module('novabill.directives',
 
 				} else {
 					ctrl.$setValidity('price', false);
+					return undefined;
+				}
+			});
+
+			ctrl.$formatters.push(function(modelValue) {
+				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
+			});
+		}
+	};
+}])
+
+
+/*
+ * Smart Float attribute. 
+ * User can insert , or . to separate decimals.
+ * if "positive-float" attribute is set to true the float must be positive
+ */
+.directive('nSmartFloat', ['nRegExp', function(nRegExp) {
+	return {
+		require: 'ngModel',
+		scope : {
+			positiveFloat : '='
+		},
+		restrict: 'A',
+		link: function(scope, elm, attrs, ctrl) {
+			ctrl.$parsers.unshift(function(viewValue) {
+				var testExp = scope.positiveFloat ? nRegExp.positiveFloat : nRegExp.float;
+				
+				if (testExp.test(viewValue)) {
+					ctrl.$setValidity('float', true);
+			        return parseFloat(viewValue.replace(',', '.'));
+				} else {
+					ctrl.$setValidity('float', false);
 					return undefined;
 				}
 			});

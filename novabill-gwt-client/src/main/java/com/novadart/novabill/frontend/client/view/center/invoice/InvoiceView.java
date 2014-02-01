@@ -18,6 +18,8 @@ public interface InvoiceView extends DocumentView<InvoiceView.Presenter> {
 		void onPaymentSelected(PaymentTypeDTO payment);
 
 		void onPaymentClear();
+
+		void onUnlockItemsTableChecked(Boolean value);
 	}
 
 	Label getInvoiceNumberSuffix();
@@ -29,5 +31,7 @@ public interface InvoiceView extends DocumentView<InvoiceView.Presenter> {
 	SelectPayment getPayment();
 
 	CheckBox getMakePaymentAsDefault();
+
+	void setItemsLock(boolean lock);
 
 }

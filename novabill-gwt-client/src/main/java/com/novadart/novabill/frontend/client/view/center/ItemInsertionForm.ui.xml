@@ -66,6 +66,10 @@
 			width: 4em;
 		}
 		
+		.weight {
+            width: 4em;
+        }
+		
 		.unitOfMeasure {
 			width: 6em;
 		}
@@ -74,7 +78,7 @@
 			width: 6em;
 		}
 		
-		.quantityContainer,.unitOfMeasureContainer,.priceContainer,.taxContainer,.discountContainer, .itemContainer
+		.quantityContainer,.weightContainer,.unitOfMeasureContainer,.priceContainer,.taxContainer,.discountContainer, .itemContainer
 			{
 			margin-left: 1em;
 		}
@@ -147,29 +151,33 @@
 				    </g:HorizontalPanel>
 					<v:ValidatedTextArea tabIndex="20" ui:field="item" styleName="{s.item}" />
 				</g:VerticalPanel>
-				<g:VerticalPanel ui:field="quantityContainer" styleName="{s.quantityContainer}">
-					<g:Label styleName="{s.smallLabel}" text="{i18n.quantity}*"></g:Label>
-					<g:TextBox ui:field="quantity" tabIndex="30" styleName="{s.quantity}"></g:TextBox>
-				</g:VerticalPanel>
 				<g:VerticalPanel ui:field="unitOfMeasureContainer" styleName="{s.unitOfMeasureContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.unityOfMeasure}"></g:Label>
-					<g:TextBox ui:field="unitOfMeasure" tabIndex="40" styleName="{s.unitOfMeasure}"
+					<g:TextBox ui:field="unitOfMeasure" tabIndex="30" styleName="{s.unitOfMeasure}"
 						maxLength="255"></g:TextBox>
 				</g:VerticalPanel>
+				<g:VerticalPanel ui:field="quantityContainer" styleName="{s.quantityContainer}">
+                    <g:Label styleName="{s.smallLabel}" text="{i18n.quantity}*"></g:Label>
+                    <g:TextBox ui:field="quantity" tabIndex="40" styleName="{s.quantity}"></g:TextBox>
+                </g:VerticalPanel>
+                <g:VerticalPanel ui:field="weightContainer" styleName="{s.weightContainer}">
+                    <g:Label styleName="{s.smallLabel}" text="{i18n.weight}"></g:Label>
+                    <g:TextBox ui:field="weight" tabIndex="50" styleName="{s.weight}"></g:TextBox>
+                </g:VerticalPanel>
 				<g:VerticalPanel ui:field="priceContainer" styleName="{s.priceContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.price}*"></g:Label>
-					<g:TextBox ui:field="price" tabIndex="50" styleName="{s.price}"></g:TextBox>
+					<g:TextBox ui:field="price" tabIndex="60" styleName="{s.price}"></g:TextBox>
 				</g:VerticalPanel>
                 <g:VerticalPanel ui:field="discountContainer" styleName="{s.discountContainer}">
                     <g:Label styleName="{s.smallLabel}" text="{i18n.discountLabel}"></g:Label>
-                    <g:TextBox styleName="{s.discount}" tabIndex="60" ui:field="discount" />
+                    <g:TextBox styleName="{s.discount}" tabIndex="70" ui:field="discount" />
                 </g:VerticalPanel>
 				<g:VerticalPanel ui:field="taxContainer" styleName="{s.taxContainer}">
 					<g:Label styleName="{s.smallLabel}" text="{i18n.vat}"></g:Label>
-					<t:TaxWidget styleName="{s.tax}" tabIndex="70" ui:field="tax" />
+					<t:TaxWidget styleName="{s.tax}" tabIndex="80" ui:field="tax" />
 				</g:VerticalPanel>
 				<g:SimplePanel styleName="{s.addButtonContainer}">
-					<g:Button styleName="btn btn-sm green" tabIndex="80" ui:field="add" text="{i18n.add}"></g:Button>
+					<g:Button styleName="btn btn-sm green" tabIndex="90" ui:field="add" text="{i18n.add}"></g:Button>
 				</g:SimplePanel>
 			</g:HorizontalPanel>
 			

@@ -128,7 +128,9 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		VALIDATION_SKU_TAKEN : 'Codice già utilizzato per un altro articolo',
 		VATID : 'P.IVA',
 		YEAR : 'Anno',
-		YESTERDAY : 'Ieri'
+		YESTERDAY : 'Ieri',
+		WEIGHT : 'Peso (kg)',
+		WEIGHT_PLACEHOLDER : 'esempio: 2'
 		
 	  });
 

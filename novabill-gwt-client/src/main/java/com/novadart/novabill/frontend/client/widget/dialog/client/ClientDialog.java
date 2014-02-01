@@ -38,6 +38,7 @@ import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.widget.validation.AlternativeSsnVatIdValidation;
+import com.novadart.novabill.frontend.client.widget.validation.NotEmptyMaxLengthTextValidation;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
@@ -68,7 +69,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 
 	@UiField Label clientDialogTitle;
 
-	@UiField(provided=true) ValidatedTextBox companyName;
+	@UiField(provided=true) com.novadart.gwtshared.client.validation.widget.ValidatedTextArea companyName;
 	@UiField(provided=true) ValidatedTextBox address;
 	@UiField(provided=true) ValidatedTextBox city;
 	@UiField(provided=true) ValidatedListBox province;
@@ -115,7 +116,8 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		this.businessId = businessId;
 		this.callback = callback;
 
-		companyName = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
+		companyName = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(
+				GlobalBundle.INSTANCE.validatedWidget(), new NotEmptyMaxLengthTextValidation(255));
 
 		vatID =  new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.VAT_ID);
 		vatID.setShowMessageOnError(true);

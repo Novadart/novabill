@@ -87,7 +87,7 @@
 		<band height="65" splitType="Prevent">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="cdc0c10f-230f-4333-908d-b3277b57ec6d" positionType="Float" x="8" y="20" width="308" height="16"/>
+				<reportElement uuid="cdc0c10f-230f-4333-908d-b3277b57ec6d" positionType="Float" x="8" y="21" width="308" height="16"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
@@ -108,7 +108,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 )]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="177c4de2-1558-4fea-b979-446db24089b9" positionType="Float" x="8" y="0" width="308" height="20"/>
+				<reportElement uuid="177c4de2-1558-4fea-b979-446db24089b9" x="8" y="0" width="308" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
@@ -157,7 +157,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 		</band>
 		<band height="208" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="8" y="8" width="308" height="20"/>
+				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" x="8" y="8" width="308" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
@@ -369,7 +369,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				</jr:table>
 			</componentElement>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="cc6517c3-edcd-4921-9266-0e7869d8182a" positionType="Float" x="8" y="27" width="308" height="16"/>
+				<reportElement uuid="cc6517c3-edcd-4921-9266-0e7869d8182a" positionType="Float" x="8" y="29" width="308" height="16"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>

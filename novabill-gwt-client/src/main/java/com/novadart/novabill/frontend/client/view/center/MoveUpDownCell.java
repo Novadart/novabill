@@ -13,13 +13,17 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 public class MoveUpDownCell extends AbstractCell<AccountingDocumentItemDTO> {
 
 	private final ItemTable.Handler handler;
+	private boolean locked = false;
 	
 	public MoveUpDownCell(ItemTable.Handler handler) {
 		super("click");
 		this.handler = handler;
 	}
 
-
+	public void setLocked(boolean locked) {
+		this.locked = locked;
+	}
+	
 	@Override
 	public void onBrowserEvent(com.google.gwt.cell.client.Cell.Context context,
 			Element parent, AccountingDocumentItemDTO value, NativeEvent event,
@@ -28,7 +32,7 @@ public class MoveUpDownCell extends AbstractCell<AccountingDocumentItemDTO> {
 		super.onBrowserEvent(context, parent, value, event, valueUpdater);
 
 		// Handle the click event.
-		if ("click".equals(event.getType())) {
+		if ( !locked && "click".equals(event.getType())) {
 			// Ignore clicks that occur outside of the outermost element.
 			EventTarget eventTarget = event.getEventTarget();
 			Element elm = Element.as(eventTarget);
@@ -51,10 +55,12 @@ public class MoveUpDownCell extends AbstractCell<AccountingDocumentItemDTO> {
 			return;
 		}
 		
-		sb.appendHtmlConstant("<table><tr>");
-		sb.appendHtmlConstant("<td><img title='"+I18N.INSTANCE.moveUp()+"' class='moveUp "+AccountDocument.CSS.upDownButton()+"' src='"+ImageResources.INSTANCE.arrow_up().getSafeUri().asString()+"'></td>");
-		sb.appendHtmlConstant("<td><img title='"+I18N.INSTANCE.moveDown()+"' class='moveDown "+AccountDocument.CSS.upDownButton()+"' src='"+ImageResources.INSTANCE.arrow_down().getSafeUri().asString()+"'></td>");
-		sb.appendHtmlConstant("</tr></table>");
+		if(!locked) {
+			sb.appendHtmlConstant("<table><tr>");
+			sb.appendHtmlConstant("<td><img title='"+I18N.INSTANCE.moveUp()+"' class='moveUp "+AccountDocument.CSS.upDownButton()+"' src='"+ImageResources.INSTANCE.arrow_up().getSafeUri().asString()+"'></td>");
+			sb.appendHtmlConstant("<td><img title='"+I18N.INSTANCE.moveDown()+"' class='moveDown "+AccountDocument.CSS.upDownButton()+"' src='"+ImageResources.INSTANCE.arrow_down().getSafeUri().asString()+"'></td>");
+			sb.appendHtmlConstant("</tr></table>");
+		}
 	}
 
 }

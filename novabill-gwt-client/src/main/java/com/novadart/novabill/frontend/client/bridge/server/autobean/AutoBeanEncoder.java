@@ -142,9 +142,10 @@ public class AutoBeanEncoder {
 		cb.setDescription(c.getDescription());
 		cb.setId(c.getId());
 		cb.setService(c.isService());
-		cb.setTax(c.getTax() != null ? c.getTax().doubleValue() : null);
+		cb.setTax(c.getTax() != null ? String.valueOf(c.getTax().doubleValue()) : null);
 		cb.setUnitOfMeasure(c.getUnitOfMeasure());
 		cb.setSku(c.getSku());
+		cb.setWeight(c.getWeight() != null ? String.valueOf(c.getWeight().doubleValue()) : null);
 
 		if(c.getPrices() != null) {
 			PricesMap pricesMap = AutoBeanMaker.INSTANCE.makePricesMap().as();
@@ -174,7 +175,7 @@ public class AutoBeanEncoder {
 		p.setId(price.getId());
 		p.setPriceListID(price.getPriceListID());
 		p.setPriceType(price.getPriceType() != null ? price.getPriceType().name() : null);
-		p.setPriceValue(price.getPriceValue() != null ? price.getPriceValue().doubleValue() : null);
+		p.setPriceValue(price.getPriceValue() != null ? String.valueOf(price.getPriceValue().doubleValue()) : null);
 		return AutoBeanUtils.getAutoBean(p);
 	}
 
@@ -278,12 +279,13 @@ public class AutoBeanEncoder {
 			ai.setDescription(i.getDescription());
 			ai.setId(i.getId());
 			ai.setSku(i.getSku());
-			ai.setPrice(i.getPrice());
-			ai.setQuantity(i.getQuantity());
-			ai.setTax(i.getTax());
-			ai.setTotal(i.getTotal());
-			ai.setTotalBeforeTax(i.getTotalBeforeTax());
-			ai.setTotalTax(i.getTotalTax());
+			ai.setPrice(i.getPrice().toPlainString());
+			ai.setQuantity(i.getQuantity().toPlainString());
+			ai.setWeight(i.getWeight() != null ? i.getWeight().toPlainString() : null);
+			ai.setTax(i.getTax().toPlainString());
+			ai.setTotal(i.getTotal().toPlainString());
+			ai.setTotalBeforeTax(i.getTotalBeforeTax().toPlainString());
+			ai.setTotalTax(i.getTotalTax().toPlainString());
 			ai.setUnitOfMeasure(i.getUnitOfMeasure());
 			result.add(ai);
 		}

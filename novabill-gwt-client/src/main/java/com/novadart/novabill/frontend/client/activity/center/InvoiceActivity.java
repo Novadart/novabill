@@ -1,6 +1,5 @@
 package com.novadart.novabill.frontend.client.activity.center;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -12,7 +11,6 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
-import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentListInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.InvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
@@ -57,10 +55,6 @@ public class InvoiceActivity extends AbstractCenterActivity {
 				} else if (place instanceof FromEstimationInvoicePlace) {
 					FromEstimationInvoicePlace p = (FromEstimationInvoicePlace) place;
 					setupFromEstimationInvoiceView(panel, view, p);
-
-				} else if (place instanceof FromTransportDocumentInvoicePlace) {
-					FromTransportDocumentInvoicePlace p = (FromTransportDocumentInvoicePlace) place;
-					setupFromTransportDocumentInvoiceView(panel, view, p);
 
 				} else if (place instanceof FromTransportDocumentListInvoicePlace) {
 					FromTransportDocumentListInvoicePlace p = (FromTransportDocumentListInvoicePlace) place;
@@ -111,25 +105,6 @@ public class InvoiceActivity extends AbstractCenterActivity {
 		});
 	}
 
-	private void setupFromTransportDocumentInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, 
-			final FromTransportDocumentInvoicePlace place){
-		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewInvoiceFromTransportDocumentOpData(place.getTransportDocumentId(), 
-				new DocumentCallack<Triple<Long,TransportDocumentDTO, PaymentTypeDTO>>() {
-
-					@Override
-					public void onSuccess(
-							Triple<Long, TransportDocumentDTO, PaymentTypeDTO> result) {
-						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view, getCallback());
-						List<Long> transportDocumentIDs = new ArrayList<Long>();
-						transportDocumentIDs.add(place.getTransportDocumentId());
-						p.setTransportDocumentSources(transportDocumentIDs);
-						p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
-						p.go(panel);
-					}
-		});
-	}
-	
 	
 	private void setupFromTransportDocumentListInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, 
 			final FromTransportDocumentListInvoicePlace place){

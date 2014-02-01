@@ -73,6 +73,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField Button toAddrButtonDefault;
 	
 	@UiField(provided=true) ValidatedTextBox numberOfPackages;
+	@UiField(provided=true) ValidatedTextBox totalWeight;
 	@UiField(provided=true) com.novadart.gwtshared.client.validation.widget.ValidatedTextArea transporter;
 
 	@UiField(provided=true) ValidatedDateBox transportStartDate;
@@ -95,6 +96,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField Label totalAfterTaxes;
 	
 	@UiField Button countItems;
+	@UiField Button totalWeightCalc;
 
 	@UiField(provided=true) LoaderButton createTransportDocument;
 	@UiField Button abort;
@@ -114,6 +116,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
 		numberOfPackages = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		totalWeight = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		transporter = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), 
 				new TextLengthValidation(255) {
 			
@@ -163,7 +166,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			}
 		});
 
-		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
+		itemInsertionForm = new ItemInsertionForm(true, new ItemInsertionForm.Handler() {
 
 			@Override
 			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
@@ -247,6 +250,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	void onCountItemsClicked(ClickEvent e){
 		presenter.onCountItemsCLicked();
 	}
+	
+	@UiHandler("totalWeightCalc")
+	void onTotalWeightCalcClicked(ClickEvent e){
+		presenter.onTotalWeightCalcClicked();
+	}
 
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
@@ -268,6 +276,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		transportStartDate.reset();
 		note.reset();
 		numberOfPackages.reset();
+		totalWeight.reset();
 		transporter.reset();
 		transportationResponsibility.setText("");
 		cause.setText(I18N.INSTANCE.transportDocumentCauseDefaultText());
@@ -316,6 +325,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrCountry.setEnabled(!value);
 		fromAddrButtonDefault.setEnabled(!value);
 		
+		totalWeightCalc.setEnabled(!value);
 		countItems.setEnabled(!value);
 		
 		toAddrCompanyName.setEnabled(!value);
@@ -327,6 +337,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddrButtonDefault.setEnabled(!value);
 
 		numberOfPackages.setEnabled(!value);
+		totalWeight.setEnabled(!value);
 		transporter.setEnabled(!value);
 
 		transportStartDate.setEnabled(!value);
@@ -448,6 +459,10 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	public ValidatedTextBox getNumberOfPackages() {
 		return numberOfPackages;
+	}
+	
+	public ValidatedTextBox getTotalWeight() {
+		return totalWeight;
 	}
 
 	public com.novadart.gwtshared.client.validation.widget.ValidatedTextArea getTransporter() {

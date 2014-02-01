@@ -7,6 +7,7 @@ import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
+import com.novadart.gwtshared.client.validation.widget.ValidatedTextArea;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.View;
@@ -79,7 +80,7 @@ public interface BusinessView extends View<BusinessView.Presenter>, HasUILocking
 
 	ValidatedTextBox getSsn();
 
-	ValidatedTextBox getName();
+	ValidatedTextArea getName();
 
 	InlineNotification getInlineNotification();
 

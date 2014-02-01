@@ -22,7 +22,7 @@
 	       margin-left: 5px;
         }
         
-        .countItems {
+        .countItems, .totalWeightCalc {
 	       margin-left: 10px;
 	       position: relative;
            bottom: 5px;
@@ -87,13 +87,24 @@
 					</g:customCell>
 					<g:customCell>
 					   <g:HorizontalPanel styleName="{style.nopContainer}">
-						  <v:ValidatedTextBox styleName="{s.box}"
-							 ui:field="numberOfPackages" maxLength="255" />
+						  <v:ValidatedTextBox styleName="{s.box}" ui:field="numberOfPackages" maxLength="255" />
 						<g:Button styleName="{g.button} {style.countItems}"
                                ui:field="countItems" text="Imposta quantità totale articoli" title="Valore arrotondato in eccesso"></g:Button>
                         </g:HorizontalPanel>
 					</g:customCell>
 				</g:row>
+				<g:row>
+                    <g:customCell>
+                            <g:Label styleName="{s.label}" text="{i18n.totalWeight}"></g:Label>                        
+                    </g:customCell>
+                    <g:customCell>
+                       <g:HorizontalPanel styleName="{style.nopContainer}">
+                          <v:ValidatedTextBox styleName="{s.box}" ui:field="totalWeight" maxLength="50" />
+                        <g:Button styleName="{g.button} {style.totalWeightCalc}"
+                               ui:field="totalWeightCalc" text="Imposta peso totale articoli" title="Il totale viene calcolato automaticamente se il campo viene lasciato vuoto"></g:Button>
+                        </g:HorizontalPanel>
+                    </g:customCell>
+                </g:row>
 				<g:row>
 					<g:customCell>
 						<g:Label styleName="{s.label}" text="{i18n.transporter}"></g:Label>

@@ -118,7 +118,6 @@ angular.module('novabill.constants', [])
 				invoiceClone : function(clientId,invoiceId){ return baseConf.invoicesBaseUrl + '#/new/' + clientId + '/clone/' + invoiceId; },
 				invoiceDetails : function(invoiceId){ return baseConf.invoicesBaseUrl + '#/details/' + invoiceId; },
 				invoiceFromEstimation : function(estimationId){ return baseConf.invoicesBaseUrl + '#/from-estimation/' + estimationId; },
-				invoiceFromTransportDocument : function(transportDocumentId){ return baseConf.invoicesBaseUrl + '#/from-transport-document/' + transportDocumentId; },
 				invoiceFromTransportDocumentList : function(transportDocumentList){ return baseConf.invoicesBaseUrl + '#/from-transport-document-list/' + transportDocumentList; },
 
 				htmlFragmentUrl : this.url.htmlFragmentUrl,

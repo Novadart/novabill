@@ -1,20 +1,23 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
-import java.math.BigDecimal;
 
 public interface AccountingDocumentItem {
 
-	public BigDecimal getQuantity();
+	public String getQuantity();
 
-	public void setQuantity(BigDecimal quantity);
+	public void setQuantity(String quantity);
+	
+	public String getWeight();
+
+	public void setWeight(String weight);
 
 	public Long getId();
 
 	public void setId(Long id);
 
-	public BigDecimal getPrice();
+	public String getPrice();
 
-	public void setPrice(BigDecimal price);
+	public void setPrice(String price);
 
 	public String getDescription();
 
@@ -24,21 +27,21 @@ public interface AccountingDocumentItem {
 
 	public void setUnitOfMeasure(String unitOfMeasure);
 
-	public BigDecimal getTotalBeforeTax();
+	public String getTotalBeforeTax();
 
-	public void setTotalBeforeTax(BigDecimal totalBeforeTax);
+	public void setTotalBeforeTax(String totalBeforeTax);
 
-	public BigDecimal getTotalTax();
+	public String getTotalTax();
 
-	public void setTotalTax(BigDecimal totalTax);
+	public void setTotalTax(String totalTax);
 
-	public BigDecimal getTotal();
+	public String getTotal();
 
-	public void setTotal(BigDecimal total);
+	public void setTotal(String total);
 
-	public BigDecimal getTax();
+	public String getTax();
 
-	public void setTax(BigDecimal tax);
+	public void setTax(String tax);
 
 	public boolean isDescriptionOnly();
 	

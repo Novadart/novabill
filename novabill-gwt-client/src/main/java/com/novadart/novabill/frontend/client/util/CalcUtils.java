@@ -51,7 +51,7 @@ public class CalcUtils {
 	/*
 	 * Commodities methods
 	 */
-
+	
 	public static BigDecimal calculatePriceForCommodity(CommodityDTO commodity, String priceListName){
 		PriceDTO price = commodity.getPrices().get(priceListName);
 
@@ -208,6 +208,24 @@ public class CalcUtils {
 		}
 
 		return partitions;
+	}
+	
+	
+	public static BigDecimal calculateTotalWeight(AccountingDocumentItemDTO item){
+		if(item.getWeight() == null){
+			return BigDecimal.ZERO;
+		}
+		
+		return item.getWeight().multiply(item.getQuantity());
+	}
+	
+	
+	public static BigDecimal calculateTotalWeight(List<AccountingDocumentItemDTO> items){
+		BigDecimal total = BigDecimal.ZERO;
+		for (AccountingDocumentItemDTO i : items) {
+			total = total.add(calculateTotalWeight(i));
+		}
+		return total;
 	}
 
 

@@ -24,6 +24,8 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 		void onToAddressButtonDefaultCLicked();
 		
 		void onCountItemsCLicked();
+
+		void onTotalWeightCalcClicked();
 	}
 	
 	
@@ -56,6 +58,8 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 	Button getToAddrButtonDefault();
 
 	ValidatedTextBox getNumberOfPackages();
+	
+	ValidatedTextBox getTotalWeight();
 
 	ValidatedTextArea getTransporter();
 

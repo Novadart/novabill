@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transport document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="122"/>
+	<property name="ireport.y" value="0"/>
 	<style name="table" pattern="">
 		<box>
 			<pen lineWidth="0.0" lineColor="#000000"/>
@@ -107,7 +107,7 @@
 		<band height="65" splitType="Prevent">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="2981466b-3f2e-4887-9158-9f57acd33547" positionType="Float" x="8" y="17" width="308" height="16"/>
+				<reportElement uuid="2981466b-3f2e-4887-9158-9f57acd33547" positionType="Float" x="8" y="19" width="308" height="16"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
@@ -128,7 +128,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 )]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="4b5bd081-9f5c-449a-9350-0dcb8d1d36fb" positionType="Float" x="8" y="0" width="308" height="18"/>
+				<reportElement uuid="4b5bd081-9f5c-449a-9350-0dcb8d1d36fb" x="8" y="0" width="308" height="18"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
@@ -177,7 +177,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 		</band>
 		<band height="289" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="8" y="8" width="308" height="18"/>
+				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" x="8" y="8" width="308" height="18"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
@@ -378,7 +378,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 				<textFieldExpression><![CDATA[$F{document.transporter}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="80ed6c81-de7e-4e0e-ae80-8a3257cff749" positionType="Float" x="8" y="25" width="308" height="16"/>
+				<reportElement uuid="80ed6c81-de7e-4e0e-ae80-8a3257cff749" positionType="Float" x="8" y="27" width="308" height="16"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>

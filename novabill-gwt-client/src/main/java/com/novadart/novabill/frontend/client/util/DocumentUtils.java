@@ -12,7 +12,7 @@ public class DocumentUtils {
 	public static DateTimeFormat DOCUMENT_DATE_FORMAT = DateTimeFormat.getFormat("dd MMMM yyyy");
 	
 	public static AccountingDocumentItemDTO createAccountingDocumentItem(String sku, String description, String price, 
-			String quantity, String unitOfMeasure, BigDecimal tax, String discount){
+			String quantity, String weight, String unitOfMeasure, BigDecimal tax, String discount){
 		AccountingDocumentItemDTO ii = new AccountingDocumentItemDTO();
 
 		try {
@@ -20,6 +20,7 @@ public class DocumentUtils {
 			ii.setDescription(description);
 			ii.setPrice(CalcUtils.parseCurrency(price));
 			ii.setQuantity(CalcUtils.parseValue(quantity));
+			ii.setWeight(weight != null ? CalcUtils.parseValue(weight) : null);
 			ii.setUnitOfMeasure(unitOfMeasure);
 			ii.setTax(tax);
 			ii.setDiscount(discount.isEmpty() ? BigDecimal.ZERO : CalcUtils.parseValue(discount));
@@ -40,7 +41,7 @@ public class DocumentUtils {
 	
 	
 	public static String validateAccountingDocumentItem(String description, String price, 
-			String quantity, String unitOfMeasure, BigDecimal tax, String discount){
+			String quantity, String weight, String unitOfMeasure, BigDecimal tax, String discount){
 		if(description.isEmpty()) {
 			return I18NM.get.errorCheckField(I18N.INSTANCE.nameDescription());
 		}
@@ -72,6 +73,17 @@ public class DocumentUtils {
 			}
 		}
 		
+		if( !weight.isEmpty() ) {
+			
+			try {
+				
+				CalcUtils.parseValue(weight);
+			
+			} catch (NumberFormatException e) {
+				return I18NM.get.errorCheckField(I18N.INSTANCE.weight());
+			}
+		}
+		
 		if( !discount.isEmpty() ) {
 			try {
 				
@@ -88,6 +100,5 @@ public class DocumentUtils {
 		
 		return null;
 	}
-	
 	
 }

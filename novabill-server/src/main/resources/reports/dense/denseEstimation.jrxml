@@ -88,7 +88,7 @@
 		<band height="80" splitType="Prevent">
 			<printWhenExpression><![CDATA[$V{PAGE_NUMBER} > 1]]></printWhenExpression>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="08768073-e411-4a87-b1ea-640012a2f435" positionType="Float" x="8" y="19" width="308" height="16">
+				<reportElement uuid="08768073-e411-4a87-b1ea-640012a2f435" positionType="Float" x="8" y="21" width="308" height="16">
 					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Left">
@@ -111,7 +111,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 )]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="137aa9dd-e0cc-4dbb-88fc-e530759c32ee" positionType="Float" x="8" y="0" width="308" height="20">
+				<reportElement uuid="137aa9dd-e0cc-4dbb-88fc-e530759c32ee" x="8" y="0" width="308" height="20">
 					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -176,7 +176,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 		</band>
 		<band height="250" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="8" y="8" width="308" height="20">
+				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" x="8" y="8" width="308" height="20">
 					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
 				</reportElement>
 				<textElement>
@@ -417,7 +417,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA[$F{document.limitations}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="2a2c37d6-2043-46d1-a67d-11f9547958c6" positionType="Float" x="8" y="27" width="308" height="16">
+				<reportElement uuid="2a2c37d6-2043-46d1-a67d-11f9547958c6" positionType="Float" x="8" y="29" width="308" height="16">
 					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Left">
