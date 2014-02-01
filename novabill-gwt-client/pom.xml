@@ -44,7 +44,7 @@
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-war-plugin</artifactId>
 				<configuration>
-					<warSourceExcludes>rpc/**, demo/**</warSourceExcludes>
+					<warSourceExcludes>rpc/**</warSourceExcludes>
 					<packagingExcludes>WEB-INF/**</packagingExcludes>
 				</configuration>
 			</plugin>
