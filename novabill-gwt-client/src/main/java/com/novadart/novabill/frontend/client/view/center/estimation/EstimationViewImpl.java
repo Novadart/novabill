@@ -134,8 +134,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 	@Override
 	public void reset() {
-		overrideIncognitoModeCheckbox.setVisible(Configuration.getBusiness().isEnabledIncognito());
-		pdfOptionsLabel.setVisible(Configuration.getBusiness().isEnabledIncognito());
+		overrideIncognitoModeCheckbox.setVisible(Configuration.getBusiness().isIncognitoEnabled());
+		pdfOptionsLabel.setVisible(Configuration.getBusiness().isIncognitoEnabled());
 		overrideIncognitoModeCheckbox.setValue(false);
 		
 		number.reset();
