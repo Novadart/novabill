@@ -28,7 +28,6 @@ public class ClientDTOFactory {
 		clientDTO.setDefaultPriceListID(client.getDefaultPriceList() == null? null: client.getDefaultPriceList().getId());
 		clientDTO.setNote(client.getNote());
 		clientDTO.setContact(ContactDTOFactory.toDTO(client.getContact()));
-		clientDTO.setVersion(client.getVersion());
 		return clientDTO;
 	}
 	

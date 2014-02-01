@@ -7,9 +7,9 @@ import java.util.Map;
 
 import org.springframework.jdbc.core.RowCallbackHandler;
 
-import com.novadart.novabill.shared.client.data.CRUDOperationType;
-import com.novadart.novabill.shared.client.data.SyncEntityType;
-import com.novadart.novabill.shared.client.dto.SyncDeltaStateDTO;
+import com.novadart.novabill.android.shared.data.CRUDOperationType;
+import com.novadart.novabill.android.shared.data.SyncEntityType;
+import com.novadart.novabill.android.shared.dto.SyncDeltaStateDTO;
 
 class VersionableStateRowCallbackHandler implements RowCallbackHandler {
 	

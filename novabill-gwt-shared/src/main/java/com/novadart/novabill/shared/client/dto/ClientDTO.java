@@ -2,7 +2,7 @@ package com.novadart.novabill.shared.client.dto;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
 
-public class ClientDTO implements IsSerializable, Versionable {
+public class ClientDTO implements IsSerializable {
 
 	private Long id;
 	
@@ -40,8 +40,6 @@ public class ClientDTO implements IsSerializable, Versionable {
 	
 	private ContactDTO contact;
 	
-	private Integer version;
-
 	
 	public Long getId() {
 		return id;
@@ -222,14 +220,4 @@ public class ClientDTO implements IsSerializable, Versionable {
 		this.contact = contact;
 	}
 
-
-	public Integer getVersion() {
-		return version;
-	}
-
-
-	public void setVersion(Integer version) {
-		this.version = version;
-	}
-	
 }

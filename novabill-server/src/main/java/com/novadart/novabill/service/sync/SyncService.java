@@ -10,8 +10,8 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.jdbc.core.PreparedStatementSetter;
 import org.springframework.stereotype.Service;
 
+import com.novadart.novabill.android.shared.dto.SyncDeltaStateDTO;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.shared.client.dto.SyncDeltaStateDTO;
 
 @Service
 public class SyncService {
