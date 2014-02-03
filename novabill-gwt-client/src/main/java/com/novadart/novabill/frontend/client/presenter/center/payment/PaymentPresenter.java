@@ -212,6 +212,15 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 			shb.appendHtmlConstant("</div></td></tr>");
 		}
 
+		if(PaymentDateType.END_OF_MONTH.equals(payment.getPaymentDateGenerator())) {
+			shb.appendHtmlConstant("<tr><td><div class='"+getView().getStyle().label()+"'>");
+			shb.appendEscaped(I18N.INSTANCE.paymentDelay2());
+			shb.appendHtmlConstant("</div></td>");
+			shb.appendHtmlConstant("<td><div class='"+getView().getStyle().value()+"'>");
+			shb.appendEscaped(payment.getSecondaryPaymentDateDelta() + " "+I18N.INSTANCE.days());
+			shb.appendHtmlConstant("</div></td></tr>");
+		}
+		
 		shb.appendHtmlConstant("</table>");
 
 		getView().getDescription().setHTML(shb.toSafeHtml());
