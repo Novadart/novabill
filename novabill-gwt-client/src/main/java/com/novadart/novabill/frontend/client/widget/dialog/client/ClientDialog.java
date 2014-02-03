@@ -14,6 +14,7 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
@@ -66,6 +67,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	}
 
 	@UiField InlineNotification inlineNotification;
+	@UiField InlineNotification incompleteClientAlert;
 
 	@UiField Label clientDialogTitle;
 
@@ -106,15 +108,34 @@ public class ClientDialog extends Dialog implements HasUILocking {
 
 	private ClientDTO client = null;
 	private final Long businessId;
-	private final JavaScriptObject callback;
+	private final boolean incompleteClient;
+	private final AsyncCallback<ClientDTO> callback;
 
+	public ClientDialog(Long businessId, final JavaScriptObject callback){
+		this(businessId, new AsyncCallback<ClientDTO>() {
 
-	public ClientDialog(Long businessId, JavaScriptObject callback) {
+			@Override
+			public void onFailure(Throwable caught) {}
+
+			@Override
+			public void onSuccess(ClientDTO result) {
+				BridgeUtils.invokeJSCallback(callback);
+			}
+		});
+	}
+	
+	public ClientDialog(Long businessId, AsyncCallback<ClientDTO> callback) {
+		this(businessId, false, callback);
+	}
+	
+	
+	public ClientDialog(Long businessId, boolean incompleteClient, AsyncCallback<ClientDTO> callback) {
 		super(GlobalBundle.INSTANCE.dialog());
 		GlobalBundle.INSTANCE.dialog().ensureInjected();
 
 		this.businessId = businessId;
 		this.callback = callback;
+		this.incompleteClient = incompleteClient;
 
 		companyName = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(
 				GlobalBundle.INSTANCE.validatedWidget(), new NotEmptyMaxLengthTextValidation(255));
@@ -157,6 +178,10 @@ public class ClientDialog extends Dialog implements HasUILocking {
 
 		ok.addStyleName(s.submit());
 		ok.getButton().addStyleName("btn green");
+		
+		if(incompleteClient){
+			incompleteClientAlert.showMessage(I18N.INSTANCE.incompleteClientAlert());
+		}
 	}
 
 	private String renameDefaultPriceList(String name){
@@ -366,7 +391,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 				public void onSuccess(Long result) {
 					ok.showLoader(false);
 					hide();
-					BridgeUtils.invokeJSCallback(callback);
+					callback.onSuccess(client);
 					setLocked(false);
 				}
 
@@ -385,7 +410,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 				public void onSuccess(Void result) {
 					ok.showLoader(false);
 					hide();
-					BridgeUtils.invokeJSCallback(callback);
+					callback.onSuccess(client);
 					setLocked(false);
 				}
 
@@ -403,6 +428,9 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	@UiHandler("cancel")
 	void onCancelClicked(ClickEvent e){
 		hide();
+		if(incompleteClient){
+			callback.onFailure(new IncompleteClientException());
+		}
 	}
 
 	@UiHandler("country")

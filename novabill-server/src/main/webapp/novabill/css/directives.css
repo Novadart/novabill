@@ -223,6 +223,28 @@
 
 .n-select-client-dialog div.clients-filter {
    margin: 15px 0;
+   display: inline-block;
+}
+
+.n-select-client-dialog button.new-client {
+	display: inline-block;
+	position: relative;
+	bottom: 2px;
+	margin-left: 5px;
+}
+
+.n-select-client-dialog button.cancel {
+    display: inline-block;
+    position: relative;
+    bottom: 2px;
+}
+
+.n-select-client-dialog div.similar-clients-message {
+	text-align: center;
+	color: #999;
+	font-style: italic;
+	text-transform: uppercase;
+	margin-top: 10px;
 }
 
 /*

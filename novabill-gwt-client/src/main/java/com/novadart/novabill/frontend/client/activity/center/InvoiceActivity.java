@@ -7,6 +7,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
+import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
@@ -17,6 +18,7 @@ import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.presenter.center.invoice.ModifyInvoicePresenter;
 import com.novadart.novabill.frontend.client.presenter.center.invoice.NewInvoicePresenter;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -34,7 +36,7 @@ public class InvoiceActivity extends AbstractCenterActivity {
 		super(clientFactory, callback);
 		this.place = place;
 	}
-	
+
 	@Override
 	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		super.start(panel, eventBus);
@@ -82,11 +84,23 @@ public class InvoiceActivity extends AbstractCenterActivity {
 		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewInvoiceForClientOpData(place.getClientId(), new DocumentCallack<Triple<Long,ClientDTO,PaymentTypeDTO>>() {
 
 			@Override
-			public void onSuccess(Triple<Long,ClientDTO,PaymentTypeDTO> result) {
-				NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view, getCallback());
-				p.setDataForNewInvoice(result.getSecond(), result.getFirst(), result.getThird());
-				p.go(panel);
+			public void onSuccess(final Triple<Long,ClientDTO,PaymentTypeDTO> result) {
+				DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond(), new AsyncCallback<ClientDTO>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
+					}
+
+					@Override
+					public void onSuccess(ClientDTO newClient) {
+						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view, getCallback());
+						p.setDataForNewInvoice(newClient, result.getFirst(), result.getThird());
+						p.go(panel);
+
+					}
+				});
 			}
 		});
 	}
@@ -95,35 +109,46 @@ public class InvoiceActivity extends AbstractCenterActivity {
 		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewInvoiceFromEstimationOpData(place.getEstimationId(), new DocumentCallack<Triple<Long,EstimationDTO,PaymentTypeDTO>>(){
 
 			@Override
-			public void onSuccess(Triple<Long, EstimationDTO, PaymentTypeDTO> result) {
-				NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view, getCallback());
-				p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
-				p.go(panel);
+			public void onSuccess(final Triple<Long, EstimationDTO, PaymentTypeDTO> result) {
+				DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond().getClient(), new AsyncCallback<ClientDTO>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
+					}
+
+					@Override
+					public void onSuccess(ClientDTO newClient) {
+						result.getSecond().setClient(newClient);
+						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view, getCallback());
+						p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
+						p.go(panel);
+					}
+				});
 			}
-			
+
 		});
 	}
 
-	
+
 	private void setupFromTransportDocumentListInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, 
 			final FromTransportDocumentListInvoicePlace place){
 		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewInvoiceFromTransportDocumentsOpData(place.getTransportDocumentList(), 
 				new DocumentCallack<Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO>>() {
 
-					@Override
-					public void onSuccess(
-							Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO> result) {
-						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view, getCallback());
-						p.setTransportDocumentSources(place.getTransportDocumentList());
-						p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
-						p.go(panel);
-						
-					}
-				});
+			@Override
+			public void onSuccess(Triple<Long, List<TransportDocumentDTO>, PaymentTypeDTO> result) {
+				NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
+						getClientFactory().getEventBus(), view, getCallback());
+				p.setTransportDocumentSources(place.getTransportDocumentList());
+				p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
+				p.go(panel);
+
+			}
+		});
 	}
-	
+
 
 
 	private void setupModifyInvoiceView(final AcceptsOneWidget panel, final InvoiceView view, ModifyInvoicePlace place){
@@ -144,14 +169,25 @@ public class InvoiceActivity extends AbstractCenterActivity {
 		ServerFacade.INSTANCE.getBatchfetcherService().fetchCloneInvoiceOpData(place.getInvoiceId(), place.getClientId(), 
 				new DocumentCallack<Triple<Long,ClientDTO,InvoiceDTO>>() {
 
+			@Override
+			public void onSuccess(final Triple<Long, ClientDTO, InvoiceDTO> result) {
+				DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond(), new AsyncCallback<ClientDTO>() {
+
 					@Override
-					public void onSuccess(
-							Triple<Long, ClientDTO, InvoiceDTO> result) {
+					public void onFailure(Throwable caught) {
+						BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
+					}
+
+					@Override
+					public void onSuccess(ClientDTO newClient) {
 						NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
 								getClientFactory().getEventBus(), view, getCallback());
-						p.setDataForNewInvoice(result.getSecond(), result.getFirst(), result.getThird());
+						p.setDataForNewInvoice(newClient, result.getFirst(), result.getThird());
 						p.go(panel);
+						
 					}
+				});
+			}
 		});
 	}
 
