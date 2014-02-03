@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.DateTimeFormat;
-import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
@@ -43,7 +42,7 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 		
 		getView().getCause().setText(document.getCause());
 		getView().getNumberOfPackages().setText(String.valueOf(document.getNumberOfPackages()));
-		getView().getTotalWeight().setText(NumberFormat.getDecimalFormat().format(document.getTotalWeight()));
+		getView().getTotalWeight().setText(document.getTotalWeight());
 
 		EndpointDTO loc = document.getFromEndpoint();
 		getView().getFromAddrCity().setText(loc.getCity());

@@ -174,10 +174,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 
 		td.setCause(getView().getCause().getText());
 		td.setNumberOfPackages(getView().getNumberOfPackages().getText());
-		if(getView().getTotalWeight().getText().isEmpty()){
-			onTotalWeightCalcClicked();
-		}
-		td.setTotalWeight(new BigDecimal(getView().getTotalWeight().getText()));
+		td.setTotalWeight(getView().getTotalWeight().getText());
 		td.setTradeZone(getView().getTradeZone().getText());
 		td.setTransportationResponsibility(getView().getTransportationResponsibility().getText());
 		td.setTransporter(getView().getTransporter().getText());

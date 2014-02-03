@@ -553,6 +553,9 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 					quantity.getText(), this.manageWeight ? weight.getText() : null, unitOfMeasure.getText(), tax.getValue(), discount.getText());
 		}
 
+		if(ii == null) {
+			return;
+		}
 
 		accountingDocumentItems.getList().add(ii);
 		updateFields();

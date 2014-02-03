@@ -24,7 +24,7 @@ public class DocumentUtils {
 			ii.setDescription(description);
 			ii.setPrice(CalcUtils.parseCurrency(price));
 			ii.setQuantity(CalcUtils.parseValue(quantity));
-			ii.setWeight(weight != null ? CalcUtils.parseValue(weight) : null);
+			ii.setWeight(weight != null && !weight.isEmpty() ? CalcUtils.parseValue(weight) : null);
 			ii.setUnitOfMeasure(unitOfMeasure);
 			ii.setTax(tax);
 			ii.setDiscount(discount.isEmpty() ? BigDecimal.ZERO : CalcUtils.parseValue(discount));
