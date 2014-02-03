@@ -117,6 +117,8 @@ public class CalcUtils {
 			CalendarUtil.setToFirstDayOfMonth(d);
 			CalendarUtil.addMonthsToDate(d, 1);
 			CalendarUtil.addDaysToDate(d, -1);
+			
+			CalendarUtil.addDaysToDate(d, payment.getSecondaryPaymentDateDelta()==null ? 0 : payment.getSecondaryPaymentDateDelta());
 			return d;
 
 		case IMMEDIATE:

@@ -7,7 +7,6 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
-import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
@@ -44,9 +43,10 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 	@UiField(provided=true) ValidatedTextArea paymentNote;
 	@UiField(provided=true) ListBox dateGenerator;
 	@UiField(provided=true) ListBox months;
-	@UiField Label daysLabel;
 	
-	@UiField FlowPanel paymentDelayValue;
+	@UiField Label secondaryPaymentDelayLabel;
+	@UiField(provided=true) ValidatedTextBox days;
+	
 	@UiField Label paymentDelayLabel;
 	@UiField(provided=true) LoaderButton ok;
 	
@@ -68,6 +68,8 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 		dateGenerator.addItem(I18N.INSTANCE.dateGenerationEndOfMonth(), PaymentDateType.END_OF_MONTH.name());
 		dateGenerator.addItem(I18N.INSTANCE.dateGenerationManual(), PaymentDateType.CUSTOM.name());
 
+		days = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
+		
 		months = new ListBox();
 		months.addItem(I18N.INSTANCE.immediate());
 		months.addItem("30");
@@ -89,14 +91,26 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 			name.setText(payment.getName());
 			paymentNote.setText(payment.getDefaultPaymentNote());
 			dateGenerator.setSelectedIndex(payment.getPaymentDateGenerator().ordinal());
-			if(PaymentDateType.CUSTOM.equals(payment.getPaymentDateGenerator())){
-				paymentDelayLabel.setVisible(false);
-				paymentDelayValue.setVisible(false);
-			} else {
-				months.setSelectedIndex(payment.getPaymentDateDelta());
-				daysLabel.setVisible(months.getSelectedIndex()!=0);
-			}
 			
+			switch (payment.getPaymentDateGenerator()) {
+			case CUSTOM:
+				paymentDelayLabel.setVisible(false);
+				months.setVisible(false);
+				break;
+
+			case END_OF_MONTH:
+				secondaryPaymentDelayLabel.setVisible(true);
+				months.setSelectedIndex(payment.getPaymentDateDelta());
+				days.setVisible(true);
+				days.setText(String.valueOf(payment.getSecondaryPaymentDateDelta()));
+				break;
+
+			case IMMEDIATE:
+				months.setSelectedIndex(payment.getPaymentDateDelta());
+				break;
+
+			}
+
 			ok.setText(I18N.INSTANCE.saveModifications());
 		}
 	}
@@ -120,11 +134,6 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 		hide();
 	}
 	
-	@UiHandler("months")
-	void onMonthsChanged(ChangeEvent e){
-		daysLabel.setVisible(months.getSelectedIndex() != 0);
-	}
-	
 	@UiHandler("ok")
 	void onOkClicked(ClickEvent e){
 		if(validate()) {
@@ -142,15 +151,20 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 			p.setPaymentDateGenerator(dt);
 			
 			switch(dt){
-			
+
 			case CUSTOM:
 				break;	
-			
+
 			case END_OF_MONTH:
+				p.setSecondaryPaymentDateDelta(Integer.parseInt(days.getText()));
+				p.setPaymentDateDelta(months.getSelectedIndex());
+				break;
+				
 			case IMMEDIATE:
 				p.setPaymentDateDelta(months.getSelectedIndex());
 				break;
 			}
+
 			
 			if(this.payment == null){
 				
@@ -202,15 +216,26 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 		switch(PaymentDateType.valueOf(dateGenerator.getValue(dateGenerator.getSelectedIndex()))){
 		case CUSTOM:
 			paymentDelayLabel.setVisible(false);
-			paymentDelayValue.setVisible(false);
+			months.setVisible(false);
+			secondaryPaymentDelayLabel.setVisible(false);
+			days.setVisible(false);
+			break;
+
+		case END_OF_MONTH:
+			secondaryPaymentDelayLabel.setVisible(true);
+			days.setVisible(true);
+			paymentDelayLabel.setVisible(true);
+			months.setVisible(true);
 			break;
 			
-		case END_OF_MONTH:
 		case IMMEDIATE:
+			secondaryPaymentDelayLabel.setVisible(false);
+			days.setVisible(false);
 			paymentDelayLabel.setVisible(true);
-			paymentDelayValue.setVisible(true);
+			months.setVisible(true);
 			break;
 		}
+		
 	}
 	
 	private boolean validate(){
@@ -221,6 +246,16 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 		
 		valid = name.isValid() && paymentNote.isValid();
 		
+		switch(PaymentDateType.valueOf(dateGenerator.getValue(dateGenerator.getSelectedIndex()))){
+		case END_OF_MONTH:
+			days.validate();
+			valid = valid && days.isValid();
+			break;
+			
+		default:
+			break;
+		}
+		
 		return valid;
 	}
 
@@ -229,6 +264,7 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 		name.setEnabled(value);
 		paymentNote.setEnabled(value);
 		months.setEnabled(value);
+		days.setEnabled(value);
 	}
 	
 }
