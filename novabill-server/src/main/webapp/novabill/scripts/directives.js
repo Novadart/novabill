@@ -96,7 +96,6 @@ angular.module('novabill.directives',
 
 			$scope.print = function(){
 				GWT_UI.generateEstimationPdf($scope.estimation.id);
-				$event.stopPropagation();
 			};
 
 			$scope.remove = function(){
@@ -168,7 +167,6 @@ angular.module('novabill.directives',
 
 			$scope.print = function(){
 				GWT_UI.generateTransportDocumentPdf($scope.transportDocument.id);
-				$event.stopPropagation();
 			};
 
 			$scope.remove = function(){
@@ -227,7 +225,6 @@ angular.module('novabill.directives',
 
 			$scope.print = function(){
 				GWT_UI.generateCreditNotePdf($scope.creditNote.id);
-				$event.stopPropagation();
 			};
 
 			$scope.remove = function(){
