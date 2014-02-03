@@ -123,7 +123,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 			
 			item = new AccountingDocumentItemDTO();
 			item.setDescription("##  "
-			+ I18N.INSTANCE.transportDocument()
+			+ I18N.INSTANCE.transportDocumentShort()
 			+" N. "+td.getDocumentID()
 			+"  "
 			+ I18N.INSTANCE.of() +" "

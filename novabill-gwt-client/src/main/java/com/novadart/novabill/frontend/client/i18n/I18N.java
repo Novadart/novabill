@@ -6,6 +6,7 @@ import com.google.gwt.i18n.client.Constants;
 public interface I18N extends Constants {
 	public static final I18N INSTANCE = GWT.create(I18N.class);
 	
+	public String transportDocumentShort();
 	public String paymentDelay2();
 	public String incompleteClientAlert();
 	public String pdfOptions();
