@@ -459,11 +459,22 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 					<font size="9" isBold="false"/>
 					<paragraph spacingBefore="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{document.client.name} + "\n" +
-$F{document.client.address} + "\n" +
-$F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.client.province}!=null && !"".equals($F{document.client.province}.trim())? " (" + $F{document.client.province} + ")": "") + ", " + $F{document.client.country} + "\n" +
-($F{document.client.vatID}!=null && !"".equals($F{document.client.vatID}.trim()) ? $R{dense.vatID} + " " + $F{document.client.vatID} : "") +
-($F{document.client.ssn}!=null && !"".equals($F{document.client.ssn}.trim()) ? "\n" + $R{dense.ssn} + " " + $F{document.client.ssn} : "")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.join("\n",
+    $F{document.client.name},
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.address}),
+    com.novadart.novabill.report.ReportUtils.join(" ",
+        com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.postcode}),
+        com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.city}),
+        com.novadart.novabill.report.ReportUtils.join(", ",
+            com.novadart.novabill.report.ReportUtils.transformIfNotBlank("(%s)", $F{document.client.province}),
+            com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.country})
+        )
+    ),
+    com.novadart.novabill.report.ReportUtils.join(" ",
+        com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.vatID} + ":%s", $F{document.client.vatID}),
+        com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.ssn} + ":%s", $F{document.client.ssn})
+    )
+)]]></textFieldExpression>
 			</textField>
 		</band>
 		<band height="57" splitType="Prevent">
