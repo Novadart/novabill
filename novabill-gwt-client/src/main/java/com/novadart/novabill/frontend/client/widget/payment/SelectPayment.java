@@ -128,8 +128,9 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 					public void onChange(ChangeEvent event) {
 						paymentList.validate();
 						if(paymentList.isValid()) {
-							Long id = Long.parseLong(paymentList.getSelectedItemValue());
-							init(payments.get(id));
+							String value = paymentList.getSelectedItemValue();
+							Long id = value.isEmpty() ? null : Long.parseLong(paymentList.getSelectedItemValue());
+							init(id==null ? PaidInFull.instance() : payments.get(id));
 							handler.onPaymentSelected(selectedPayment);
 						}
 					}
@@ -141,6 +142,7 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 					payments.put(p.getId(), p);
 					paymentList.addItem(p.getName(), p.getId().toString());
 				}
+				paymentList.addItem(PaidInFull.instance().getName(), "");
 				
 				container.setWidget(paymentList);
 				showingSummary = false;

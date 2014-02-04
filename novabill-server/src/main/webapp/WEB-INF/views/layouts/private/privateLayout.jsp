@@ -150,20 +150,20 @@
 					<div class="spacer" style="margin: 20px 0;"></div>
 				</li>
 
-				<li class="<%=PAGES.INVOICES.equals(activePage) ? "active" : "" %>"><a href="${invoicesUrl}"> <i
-						class="fa fa-file"></i> <span class="title">Fatture</span> <% if(PAGES.INVOICES.equals(activePage)) { %> <span
-						class="selected"></span> <%} %>
-				</a></li>
-
+                <li class="<%=PAGES.ESTIMATIONS.equals(activePage) ? "active" : "" %>"><a href="${estimationsUrl}"> <i
+                        class="fa fa-file"></i> <span class="title">Offerte</span> <% if(PAGES.ESTIMATIONS.equals(activePage)) { %> <span
+                        class="selected"></span> <%} %>
+                </a></li>
+                
 				<li class="<%=PAGES.TRANSPORT_DOCUMENTS.equals(activePage) ? "active" : "" %>"><a
 					href="${transportDocumentsUrl}"> <i class="fa fa-file"></i> <span class="title">Documenti di Trasporto</span> <% if(PAGES.TRANSPORT_DOCUMENTS.equals(activePage)) { %>
 						<span class="selected"></span> <%} %>
 				</a></li>
 
-				<li class="<%=PAGES.ESTIMATIONS.equals(activePage) ? "active" : "" %>"><a href="${estimationsUrl}"> <i
-						class="fa fa-file"></i> <span class="title">Offerte</span> <% if(PAGES.ESTIMATIONS.equals(activePage)) { %> <span
-						class="selected"></span> <%} %>
-				</a></li>
+                <li class="<%=PAGES.INVOICES.equals(activePage) ? "active" : "" %>"><a href="${invoicesUrl}"> <i
+                        class="fa fa-file"></i> <span class="title">Fatture</span> <% if(PAGES.INVOICES.equals(activePage)) { %> <span
+                        class="selected"></span> <%} %>
+                </a></li>
 
 				<li class="<%=PAGES.CREDIT_NOTES.equals(activePage) ? "active" : "" %>"><a href="${creditNotesUrl}"> <i
 						class="fa fa-file"></i> <span class="title">Note di Credito</span> <% if(PAGES.CREDIT_NOTES.equals(activePage)) { %> <span
