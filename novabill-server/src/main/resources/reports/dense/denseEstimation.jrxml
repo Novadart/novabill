@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Invoice" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="59"/>
 	<style name="table" pattern="">
 		<box>
 			<pen lineWidth="0.0" lineColor="#000000"/>
@@ -548,12 +548,19 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 				</textElement>
 				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{dense.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
 			</textField>
-			<textField evaluationTime="Report">
-				<reportElement uuid="41a26b49-0798-4051-9c93-240fcf9d8431" x="473" y="45" width="75" height="12"/>
+			<textField>
+				<reportElement uuid="65b3e9a0-ca98-4fc3-9af7-4c816f88169a" x="453" y="45" width="80" height="12"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[java.lang.String.format($R{dense.pagenum.pattern}, $V{PAGE_NUMBER}, $V{PAGE_NUMBER})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="1537288e-16af-461c-a158-0fd6fcd04f54" x="533" y="45" width="15" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

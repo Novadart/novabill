@@ -395,13 +395,6 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 	</detail>
 	<pageFooter>
 		<band height="60" splitType="Stretch">
-			<textField evaluationTime="Report">
-				<reportElement uuid="55cb7648-fa1a-4ef6-873c-ca17c0331e41" x="473" y="45" width="75" height="12"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[java.lang.String.format($R{tidy.pagenum.pattern}, $V{PAGE_NUMBER}, $V{PAGE_NUMBER})]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement uuid="c906138b-edcd-4eb8-8b83-3c6ba8a89383" x="140" y="45" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
@@ -410,6 +403,20 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{tidy.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="f6268c43-0382-45b7-8150-7f800bdf46d3" x="453" y="45" width="80" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" di"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="31c3c8ed-2c2e-469f-b2f9-23e043119f40" x="533" y="45" width="15" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

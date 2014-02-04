@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transport document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="122"/>
 	<style name="table" pattern="">
 		<box>
 			<pen lineWidth="0.0" lineColor="#000000"/>
@@ -607,23 +607,23 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{dense.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="41a26b49-0798-4051-9c93-240fcf9d8431" x="479" y="45" width="75" height="12"/>
+				<reportElement uuid="591badb7-5f37-474f-9ea4-2f6352c41a3b" x="533" y="45" width="15" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="965300d9-d210-4357-8c4e-219289173a7e" x="453" y="45" width="80" height="12"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+ " of " + $V{PAGE_NUMBER}]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
 	<lastPageFooter>
 		<band height="60" splitType="Stretch">
-			<textField evaluationTime="Report">
-				<reportElement uuid="c9380a67-8d5f-4529-9aac-ca610c0dbeea" x="472" y="45" width="75" height="12"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[java.lang.String.format($R{dense.pagenum.pattern}, $V{PAGE_NUMBER}, $V{PAGE_NUMBER})]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement uuid="4d53a2dc-232a-4179-93d2-b50ebcf24afa" x="140" y="45" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
@@ -672,6 +672,20 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
+			<textField evaluationTime="Report">
+				<reportElement uuid="f946edf3-0fb2-408b-81d6-556585c5659e" x="533" y="45" width="15" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="cd55ed73-3b51-49b1-9c01-52ac5fd16fa7" x="453" y="45" width="80" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
 		</band>
 	</lastPageFooter>
 </jasperReport>

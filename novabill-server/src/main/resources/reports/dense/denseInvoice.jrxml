@@ -530,11 +530,18 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{dense.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement uuid="41a26b49-0798-4051-9c93-240fcf9d8431" x="473" y="45" width="75" height="12"/>
+				<reportElement uuid="2edf542a-9777-473f-a8f6-007c4151715c" x="533" y="45" width="15" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="20b32070-dc2c-44a3-bbf1-8eaaa53fe8b5" x="453" y="45" width="80" height="12"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[java.lang.String.format($R{dense.pagenum.pattern}, $V{PAGE_NUMBER}, $V{PAGE_NUMBER})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

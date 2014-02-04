@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transport Document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="0"/>
+	<property name="ireport.y" value="308"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -451,13 +451,6 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 	</detail>
 	<pageFooter>
 		<band height="60" splitType="Stretch">
-			<textField evaluationTime="Report">
-				<reportElement uuid="32e860ab-3637-411e-b940-60d5b186affc" x="473" y="45" width="75" height="12"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement uuid="d1a3a801-bbe3-4ef0-ad74-a0c81e880529" x="140" y="45" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
@@ -466,6 +459,20 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{tidy.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="17de0209-e217-477e-ac70-a82b3524ed26" x="453" y="45" width="80" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="49f7af27-9713-462c-a46c-5c0cdacbb115" x="533" y="45" width="15" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>
@@ -495,13 +502,6 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 			<line>
 				<reportElement uuid="4a4e9822-f958-485c-b48b-584d13b410b0" x="420" y="23" width="97" height="1"/>
 			</line>
-			<textField evaluationTime="Report">
-				<reportElement uuid="d1986f44-2301-42cb-9b73-3101c7d1a67a" x="473" y="98" width="75" height="12"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[java.lang.String.format($R{tidy.pagenum.pattern}, $V{PAGE_NUMBER}, $V{PAGE_NUMBER})]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement uuid="337f39a5-f5d4-4e61-8912-88074b32d6f5" x="140" y="98" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
@@ -510,6 +510,20 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{tidy.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="82323eaf-4cfb-45b2-ab0f-11e642d0da3d" x="533" y="98" width="15" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0d8e1b37-5381-4661-9e5a-17826aca0b40" x="453" y="98" width="80" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" di"]]></textFieldExpression>
 			</textField>
 		</band>
 	</lastPageFooter>
