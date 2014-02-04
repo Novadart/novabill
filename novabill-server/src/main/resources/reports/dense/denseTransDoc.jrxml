@@ -51,7 +51,7 @@
 		<field name="tradeZone" class="java.lang.String"/>
 		<field name="cause" class="java.lang.String"/>
 		<field name="numberOfPackages" class="java.lang.String"/>
-		<field name="totalWeight" class="java.math.BigDecimal"/>
+		<field name="totalWeight" class="java.lang.String"/>
 	</subDataset>
 	<queryString>
 		<![CDATA[]]>
@@ -570,8 +570,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 									<font isBold="false"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s kg",
-    com.novadart.novabill.report.ReportUtils.removeTrailingZeros($F{totalWeight}, Locale.ITALY))]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$F{totalWeight}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
