@@ -71,6 +71,9 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	@Size(max = 255)
 	private String totalWeight;
 	
+	@Size(max = 255)
+	private String appearanceOfTheGoods;
+	
 	@ManyToOne
     protected Business business;
 
@@ -180,6 +183,14 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		this.cause = cause;
 	}
 	
+	public String getAppearanceOfTheGoods() {
+		return appearanceOfTheGoods;
+	}
+
+	public void setAppearanceOfTheGoods(String appearanceOfTheGoods) {
+		this.appearanceOfTheGoods = appearanceOfTheGoods;
+	}
+
 	public String getTotalWeight() {
 		return totalWeight;
 	}
