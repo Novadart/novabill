@@ -40,6 +40,7 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(document.getNote());
 		
+		getView().getAppearanceOfTheGoods().setText(document.getAppearanceOfTheGoods());
 		getView().getCause().setText(document.getCause());
 		getView().getNumberOfPackages().setText(String.valueOf(document.getNumberOfPackages()));
 		getView().getTotalWeight().setText(document.getTotalWeight());

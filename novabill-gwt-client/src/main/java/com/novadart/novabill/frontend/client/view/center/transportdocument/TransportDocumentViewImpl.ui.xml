@@ -68,8 +68,8 @@
 						<g:Label styleName="{s.label}" text="{i18n.cause}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<g:TextBox styleName="{s.box}" ui:field="cause"
-							maxLength="255"></g:TextBox>
+						<v:ValidatedTextBox styleName="{s.box}" ui:field="cause"
+							maxLength="255"></v:ValidatedTextBox>
 					</g:customCell>
 				</g:row>
 				<g:row>
@@ -95,8 +95,8 @@
 						<g:Label styleName="{s.label}" text="{i18n.transportationResponsibility}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<g:TextBox styleName="{s.box}" ui:field="transportationResponsibility"
-							maxLength="255"></g:TextBox>
+						<v:ValidatedTextBox styleName="{s.box}" ui:field="transportationResponsibility"
+							maxLength="255"></v:ValidatedTextBox>
 					</g:customCell>
 				</g:row>
 				<g:row>
@@ -104,10 +104,19 @@
 						<g:Label styleName="{s.label}" text="{i18n.tradeZone}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<g:TextBox styleName="{s.box}" ui:field="tradeZone"
-							maxLength="255"></g:TextBox>
+						<v:ValidatedTextBox styleName="{s.box}" ui:field="tradeZone"
+							maxLength="255"></v:ValidatedTextBox>
 					</g:customCell>
 				</g:row>
+				<g:row>
+                    <g:customCell>
+                        <g:Label styleName="{s.label}" text="{i18n.appearanceOfTheGoods}"></g:Label>
+                    </g:customCell>
+                    <g:customCell>
+                        <v:ValidatedTextBox styleName="{s.box}" ui:field="appearanceOfTheGoods"
+                            maxLength="255"></v:ValidatedTextBox>
+                    </g:customCell>
+                </g:row>
 				<g:row>
 					<g:customCell>
 						<g:Label styleName="{s.label}" text="{i18n.transportStartDate}"></g:Label>

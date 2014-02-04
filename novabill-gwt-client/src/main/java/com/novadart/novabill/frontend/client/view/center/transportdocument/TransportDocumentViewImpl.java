@@ -18,7 +18,6 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
@@ -82,13 +81,14 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 
-	@UiField TextBox transportationResponsibility;
-	@UiField TextBox tradeZone;
+	@UiField(provided=true) ValidatedTextBox transportationResponsibility;
+	@UiField(provided=true) ValidatedTextBox tradeZone;
+	@UiField(provided=true) ValidatedTextBox appearanceOfTheGoods;
 
 	@UiField Label clientName;
 	@UiField(provided=true) ValidatedTextBox number;
 	@UiField(provided=true) ValidatedDateBox date;
-	@UiField TextBox cause;
+	@UiField(provided=true) ValidatedTextBox cause;
 	@UiField ValidatedTextArea note;
 
 	@UiField Label totalBeforeTaxes;
@@ -114,7 +114,10 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		};
 
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
-
+		transportationResponsibility = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		tradeZone = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		appearanceOfTheGoods = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		cause = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		numberOfPackages = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		totalWeight = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		transporter = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), 
@@ -278,9 +281,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		numberOfPackages.reset();
 		totalWeight.reset();
 		transporter.reset();
-		transportationResponsibility.setText("");
+		transportationResponsibility.reset();
+		appearanceOfTheGoods.reset();
+		cause.reset();
 		cause.setText(I18N.INSTANCE.transportDocumentCauseDefaultText());
-		tradeZone.setText("");
+		tradeZone.reset();
 		hour.reset();
 		minute.reset();
 		numberOfPackages.reset();
@@ -481,16 +486,20 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return minute;
 	}
 
-	public TextBox getTransportationResponsibility() {
+	public ValidatedTextBox getTransportationResponsibility() {
 		return transportationResponsibility;
 	}
 
-	public TextBox getTradeZone() {
+	public ValidatedTextBox getTradeZone() {
 		return tradeZone;
 	}
 
-	public TextBox getCause() {
+	public ValidatedTextBox getCause() {
 		return cause;
+	}
+	
+	public ValidatedTextBox getAppearanceOfTheGoods() {
+		return appearanceOfTheGoods;
 	}
 	
 	@Override

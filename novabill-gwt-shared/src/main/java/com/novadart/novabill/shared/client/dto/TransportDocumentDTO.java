@@ -22,6 +22,8 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 	
 	private String totalWeight;
 	
+	private String appearanceOfTheGoods;
+	
 	private Long invoice;
 	
 	public String getNumberOfPackages() {
@@ -104,4 +106,11 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 		this.invoice = invoice;
 	}
 
+	public String getAppearanceOfTheGoods() {
+		return appearanceOfTheGoods;
+	}
+
+	public void setAppearanceOfTheGoods(String appearanceOfTheGoods) {
+		this.appearanceOfTheGoods = appearanceOfTheGoods;
+	}
 }
