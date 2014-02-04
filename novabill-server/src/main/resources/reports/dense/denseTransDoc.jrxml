@@ -52,6 +52,8 @@
 		<field name="cause" class="java.lang.String"/>
 		<field name="numberOfPackages" class="java.lang.String"/>
 		<field name="totalWeight" class="java.lang.String"/>
+		<field name="transporter" class="java.lang.String"/>
+		<field name="appearanceOfTheGoods" class="java.lang.String"/>
 	</subDataset>
 	<queryString>
 		<![CDATA[]]>
@@ -349,34 +351,6 @@ com.novadart.novabill.report.ReportUtils.join(" ",
     com.novadart.novabill.report.ReportUtils.transformIfNotBlank("(%s)", $F{document.toEndpoint.province})),
 com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.toEndpoint.country})))]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="529a3489-fe95-4303-b8a8-26a186627142" positionType="Float" mode="Opaque" x="8" y="193" width="540" height="17" backcolor="#FFFFFF"/>
-				<box>
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="10" isBold="true"/>
-					<paragraph leftIndent="3"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.transporter}]]></textFieldExpression>
-			</textField>
-			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="1a670f64-8f2f-44f6-a691-9d8ac0dbcfbf" positionType="Float" x="8" y="210" width="540" height="17"/>
-				<box padding="1">
-					<topPen lineWidth="0.5"/>
-					<leftPen lineWidth="0.5"/>
-					<bottomPen lineWidth="0.5"/>
-					<rightPen lineWidth="0.5"/>
-				</box>
-				<textElement textAlignment="Left" verticalAlignment="Middle">
-					<font size="7" isBold="false"/>
-					<paragraph leftIndent="3"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$F{document.transporter}]]></textFieldExpression>
-			</textField>
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="80ed6c81-de7e-4e0e-ae80-8a3257cff749" positionType="Float" x="8" y="27" width="308" height="16"/>
 				<textElement textAlignment="Left">
@@ -571,6 +545,82 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{totalWeight}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+				</jr:table>
+			</componentElement>
+			<componentElement>
+				<reportElement uuid="491c65a0-51dd-4d39-a8e7-84d1d575862e" key="table 1" style="table" positionType="Float" x="8" y="194" width="540" height="32"/>
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+					<datasetRun subDataset="Tranport Details Dataset" uuid="c4a6ba94-b37e-4c79-b416-320acb6ad5e1">
+						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(com.novadart.novabill.report.ReportUtils.createTransportDetailsDataSource($F{document}))]]></dataSourceExpression>
+					</datasetRun>
+					<jr:column width="324" uuid="328ddf34-976d-4cb1-80a2-3dac317b6e12">
+						<jr:columnHeader style="table_TH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="05d6816f-f993-4a34-964a-1ed270ac9ae5" positionType="Float" x="0" y="0" width="322" height="17"/>
+								<box>
+									<topPen lineWidth="0.0"/>
+									<leftPen lineWidth="0.0"/>
+									<bottomPen lineWidth="0.0"/>
+									<rightPen lineWidth="0.0"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font isBold="true"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{dense.transporter}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement uuid="b59d8b18-6cc6-4189-b8fc-d606b7bd60b1" positionType="Float" x="0" y="0" width="322" height="17"/>
+								<box padding="1" topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+									<topPen lineWidth="0.0"/>
+									<leftPen lineWidth="0.0"/>
+									<bottomPen lineWidth="0.0"/>
+									<rightPen lineWidth="0.0"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="7" isBold="false"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{transportationResponsibility}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="216" uuid="9643d929-cf94-4de4-a510-d35d40b181bb">
+						<jr:columnHeader style="table_TH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="29d9c0ae-7600-4b1b-81d2-0cf0671fcd85" positionType="Float" x="0" y="0" width="214" height="17"/>
+								<box>
+									<topPen lineWidth="0.0"/>
+									<leftPen lineWidth="0.0"/>
+									<bottomPen lineWidth="0.0"/>
+									<rightPen lineWidth="0.0"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font isBold="true"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{dense.appearanceOfTheGoods}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isBlankWhenNull="true">
+								<reportElement uuid="1db5b812-6b83-470e-8526-05e0c93763b8" positionType="Float" x="0" y="0" width="214" height="17"/>
+								<box padding="1" topPadding="1" leftPadding="1" bottomPadding="1" rightPadding="1">
+									<topPen lineWidth="0.0"/>
+									<leftPen lineWidth="0.0"/>
+									<bottomPen lineWidth="0.0"/>
+									<rightPen lineWidth="0.0"/>
+								</box>
+								<textElement textAlignment="Left" verticalAlignment="Middle">
+									<font size="7" isBold="false"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{appearanceOfTheGoods}]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>

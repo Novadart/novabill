@@ -92,6 +92,7 @@
 	<field name="document.business.email" class="java.lang.String"/>
 	<field name="document.business.web" class="java.lang.String"/>
 	<field name="document.totalWeight" class="java.math.BigDecimal"/>
+	<field name="document.appearanceOfTheGoods" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -311,7 +312,7 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 			</textField>
 		</band>
 		<band splitType="Prevent"/>
-		<band height="160" splitType="Prevent">
+		<band height="180" splitType="Prevent">
 			<textField isStretchWithOverflow="true">
 				<reportElement uuid="be2b1952-1fc3-449e-8074-2a6e10133ebf" positionType="Float" x="394" y="98" width="153" height="20"/>
 				<textElement>
@@ -320,21 +321,21 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{document.cause}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="a5358cab-31dd-43d4-9b90-23c130a2e8d5" positionType="Float" x="282" y="98" width="112" height="20"/>
+				<reportElement uuid="a5358cab-31dd-43d4-9b90-23c130a2e8d5" positionType="Float" x="269" y="98" width="125" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.cause} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="c9be55ae-4608-44cd-af9f-c24f22def15e" positionType="Float" x="282" y="33" width="112" height="20"/>
+				<reportElement uuid="c9be55ae-4608-44cd-af9f-c24f22def15e" positionType="Float" x="269" y="33" width="125" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.transportationResponsibility} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="c938101b-b30e-410f-98d5-61e2c88655b4" positionType="Float" x="282" y="54" width="112" height="20"/>
+				<reportElement uuid="c938101b-b30e-410f-98d5-61e2c88655b4" positionType="Float" x="269" y="54" width="125" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -348,7 +349,7 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{document.tradeZone}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="8da1b63c-1058-4c5d-9af1-d281fbcf4222" positionType="Float" x="282" y="76" width="112" height="20"/>
+				<reportElement uuid="8da1b63c-1058-4c5d-9af1-d281fbcf4222" positionType="Float" x="269" y="76" width="125" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -369,7 +370,7 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{document.transporter}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="434f46a6-275b-4fb1-b2ba-c283c8e373fc" positionType="Float" x="282" y="137" width="264" height="1"/>
+				<reportElement uuid="434f46a6-275b-4fb1-b2ba-c283c8e373fc" positionType="Float" x="269" y="157" width="277" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
@@ -382,7 +383,7 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{document.numberOfPackages}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="e5f13ca6-6916-44e4-a17a-cc3113628a1a" x="282" y="12" width="112" height="20"/>
+				<reportElement uuid="e5f13ca6-6916-44e4-a17a-cc3113628a1a" x="269" y="12" width="125" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -403,37 +404,37 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{document.transportationResponsibility}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="17913755-21a8-4342-b245-8e5fb9871c15" x="282" y="7" width="264" height="1"/>
+				<reportElement uuid="17913755-21a8-4342-b245-8e5fb9871c15" x="269" y="7" width="277" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement uuid="3d5d9827-8b5f-4fac-ba5a-b2c2e4035272" positionType="Float" x="286" y="32" width="264" height="1"/>
+				<reportElement uuid="3d5d9827-8b5f-4fac-ba5a-b2c2e4035272" positionType="Float" x="269" y="32" width="277" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineColor="#000000"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement uuid="171cb5fa-9e53-48a4-bc54-0a5832a4103f" positionType="Float" x="282" y="53" width="264" height="1"/>
+				<reportElement uuid="171cb5fa-9e53-48a4-bc54-0a5832a4103f" positionType="Float" x="269" y="53" width="277" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineColor="#000000"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement uuid="69f3a125-3996-44cd-9afb-4e333b5e2a85" positionType="Float" x="282" y="75" width="264" height="1"/>
+				<reportElement uuid="69f3a125-3996-44cd-9afb-4e333b5e2a85" positionType="Float" x="269" y="75" width="277" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineColor="#000000"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement uuid="aa5482e3-f694-4e70-924f-2c367304ad24" positionType="Float" x="282" y="97" width="264" height="1"/>
+				<reportElement uuid="aa5482e3-f694-4e70-924f-2c367304ad24" positionType="Float" x="269" y="97" width="277" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineColor="#000000"/>
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement uuid="b0b943f7-09d2-4d6a-a297-ddeae5b5912a" positionType="Float" x="282" y="118" width="112" height="20"/>
+				<reportElement uuid="b0b943f7-09d2-4d6a-a297-ddeae5b5912a" positionType="Float" x="269" y="118" width="125" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -444,8 +445,27 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textElement>
 					<font size="9"/>
 				</textElement>
-				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s kg",
-    com.novadart.novabill.report.ReportUtils.removeTrailingZeros($F{document.totalWeight}, Locale.ITALY))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{document.totalWeight}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="0be5a16d-c0f8-4639-8973-214ef95ba769" positionType="Float" x="269" y="138" width="277" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineColor="#000000"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement uuid="93985df3-bf32-4379-bf20-7608952cc90d" positionType="Float" x="269" y="138" width="125" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.appearanceOfTheGoods} + ":"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="cbcb9de8-4dc8-4545-894d-66cb043784d0" positionType="Float" x="394" y="138" width="153" height="20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.appearanceOfTheGoods}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
