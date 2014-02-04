@@ -3,7 +3,6 @@ package com.novadart.novabill.frontend.client.view.center.transportdocument;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
-import com.google.gwt.user.client.ui.TextBox;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
@@ -69,11 +68,13 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 
 	ValidatedListBox getMinute();
 
-	TextBox getTransportationResponsibility();
+	ValidatedTextBox getTransportationResponsibility();
 
-	TextBox getTradeZone();
+	ValidatedTextBox getTradeZone();
 	
-	TextBox getCause();
+	ValidatedTextBox getCause();
+	
+	ValidatedTextBox getAppearanceOfTheGoods();
 
 	CheckBox getSetFromAddress();
 

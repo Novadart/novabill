@@ -48,6 +48,7 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 			getView().getNumber().setText(document.getDocumentID().toString());
 		} 
 
+		getView().getAppearanceOfTheGoods().setText(document.getAppearanceOfTheGoods());
 		getView().getNumberOfPackages().setText(String.valueOf(document.getNumberOfPackages() != null ? document.getNumberOfPackages() : ""));
 		getView().getTotalWeight().setText(document.getTotalWeight());
 		getView().getCause().setText(document.getCause());
