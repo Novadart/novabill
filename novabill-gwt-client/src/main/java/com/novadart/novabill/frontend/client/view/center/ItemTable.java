@@ -39,7 +39,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 	private final MoveUpDownCell moveUpDownCell;
 
 	public ItemTable(boolean displayWeight, Handler handler) {
-		super(2000);
+		super(10000);
 
 		this.handler = handler;
 

@@ -78,7 +78,12 @@
 			</g:row>
 			<g:row>
 				<g:customCell><g:Label styleName="{style.label}" ui:field="paymentDelayLabel" text="{i18n.paymentDelay}" /></g:customCell>
-				<g:customCell><g:ListBox styleName="{style.daysVal} {style.value}" ui:field="months" /></g:customCell>
+				<g:customCell>
+				    <g:HorizontalPanel>
+				        <v:ValidatedTextBox styleName="{style.daysVal} {style.value}" ui:field="delay" />
+				        <g:ListBox styleName="{style.daysVal} {style.value}" ui:field="delayType" />    
+				    </g:HorizontalPanel>
+				</g:customCell>
 			</g:row>
 			<g:row>
                 <g:customCell><g:Label styleName="{style.label}" ui:field="secondaryPaymentDelayLabel" text="{i18n.paymentDelay2}" visible="false" /></g:customCell>

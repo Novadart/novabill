@@ -23,6 +23,7 @@ import com.novadart.novabill.frontend.client.widget.dialog.payment.PaymentDialog
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
+import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public class PaymentPresenter extends AbstractPresenter<PaymentView> implements PaymentView.Presenter {
@@ -208,7 +209,8 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 			shb.appendHtmlConstant("</div></td>");
 			shb.appendHtmlConstant("<td><div class='"+getView().getStyle().value()+"'>");
 			shb.appendEscaped(payment.getPaymentDateDelta()==0 
-					? I18N.INSTANCE.immediate() : payment.getPaymentDateDelta()*30 + " "+I18N.INSTANCE.days());
+					? I18N.INSTANCE.immediate() : (payment.getPaymentDateDelta() + " " 
+			+ (PaymentDeltaType.COMMERCIAL_MONTH.equals(payment.getPaymentDeltaType()) ? I18N.INSTANCE.commercialMonths() : I18N.INSTANCE.days())) );
 			shb.appendHtmlConstant("</div></td></tr>");
 		}
 
