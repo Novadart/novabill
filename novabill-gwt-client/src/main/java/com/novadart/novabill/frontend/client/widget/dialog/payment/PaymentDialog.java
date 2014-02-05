@@ -152,7 +152,6 @@ public class PaymentDialog extends Dialog implements HasUILocking {
 			switch(dt){
 
 			case CUSTOM:
-				p.setSecondaryPaymentDateDelta(0);
 				break;	
 
 			case END_OF_MONTH:

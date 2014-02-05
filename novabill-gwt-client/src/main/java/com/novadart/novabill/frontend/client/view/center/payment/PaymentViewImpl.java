@@ -29,6 +29,7 @@ public class PaymentViewImpl extends Composite implements PaymentView {
 
 	public static interface Style extends CssResource {
 		String label();
+		String example();
 		String value();
 		String deletePaymentImage();
 		String noPaymentSelected();

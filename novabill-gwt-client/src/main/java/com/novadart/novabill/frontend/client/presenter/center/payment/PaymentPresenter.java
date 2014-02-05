@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.presenter.center.payment;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.event.shared.EventBus;
@@ -17,6 +18,8 @@ import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.AbstractPresenter;
+import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.MainWidget;
 import com.novadart.novabill.frontend.client.view.center.payment.PaymentView;
 import com.novadart.novabill.frontend.client.widget.dialog.payment.PaymentDialog;
@@ -220,6 +223,22 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 			shb.appendHtmlConstant("</div></td>");
 			shb.appendHtmlConstant("<td><div class='"+getView().getStyle().value()+"'>");
 			shb.appendEscaped(payment.getSecondaryPaymentDateDelta() + " "+I18N.INSTANCE.days());
+			shb.appendHtmlConstant("</div></td></tr>");
+		}
+		
+		if(!PaymentDateType.CUSTOM.equals(payment.getPaymentDateGenerator())) {
+			Date today = new Date();
+			
+			shb.appendHtmlConstant("<tr><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td></tr>");
+			
+			shb.appendHtmlConstant("<tr><td><div class='"+getView().getStyle().example()+"'>");
+			shb.appendEscaped(I18N.INSTANCE.example());
+			shb.appendHtmlConstant("</div></td>");
+			shb.appendHtmlConstant("<td><div class='"+getView().getStyle().value()+"'>");
+			shb.appendHtmlConstant("<table>");
+			shb.appendHtmlConstant("<tr><td>"+I18N.INSTANCE.date()+": <i>"+DocumentUtils.DOCUMENT_DATE_FORMAT.format(today)+"</i></td></tr>");
+			shb.appendHtmlConstant("<tr><td>"+I18N.INSTANCE.dueDate()+": <i>"+DocumentUtils.DOCUMENT_DATE_FORMAT.format(CalcUtils.calculatePaymentDueDate(today, payment))+"</i></td></tr>");
+			shb.appendHtmlConstant("</table>");
 			shb.appendHtmlConstant("</div></td></tr>");
 		}
 		
