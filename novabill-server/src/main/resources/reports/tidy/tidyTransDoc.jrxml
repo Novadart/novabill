@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transport Document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="308"/>
+	<property name="ireport.y" value="225"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -38,6 +38,7 @@
 		<field name="price" class="java.math.BigDecimal"/>
 		<field name="tax" class="java.math.BigDecimal"/>
 		<field name="totalBeforeTax" class="java.math.BigDecimal"/>
+		<field name="sku" class="java.lang.String"/>
 	</subDataset>
 	<subDataset name="Table Dataset 1" uuid="1d6f1553-114e-4e78-9a25-3dcdcbaad607"/>
 	<queryString>
@@ -91,7 +92,7 @@
 	<field name="document.business.fax" class="java.lang.String"/>
 	<field name="document.business.email" class="java.lang.String"/>
 	<field name="document.business.web" class="java.lang.String"/>
-	<field name="document.totalWeight" class="java.math.BigDecimal"/>
+	<field name="document.totalWeight" class="java.lang.String"/>
 	<field name="document.appearanceOfTheGoods" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
@@ -207,19 +208,39 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="400" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
-						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
+					<jr:column width="60" uuid="9411c25a-82f4-48cb-8f07-8eb276d835ca">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b" x="0" y="0" width="398" height="20"/>
+								<reportElement uuid="e376b6a7-3354-4a11-b5ff-7ae2283ff7f8" x="0" y="0" width="58" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{tidy.sku}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="14f788ce-0b8b-457f-9bc3-4c55e7a8a182" x="0" y="0" width="58" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sku} == null || $F{sku}.startsWith("::sku")? "": $F{sku}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="340" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b" x="0" y="0" width="338" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$R{tidy.description}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="22" rowSpan="1">
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="398" height="20"/>
+								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="338" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
@@ -229,18 +250,18 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="70" uuid="86b69e3c-a251-4e02-b575-373961e6d873">
-						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="6055a8bc-b42d-448e-8026-845b207d6fc2" x="0" y="0" width="68" height="20"/>
+								<reportElement uuid="6055a8bc-b42d-448e-8026-845b207d6fc2" x="0" y="0" width="68" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$R{tidy.unitOfMeasure}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="22" rowSpan="1">
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="5e9fee78-5a16-4450-9826-0a5cfb53091e" x="0" y="0" width="68" height="20"/>
+								<reportElement uuid="5e9fee78-5a16-4450-9826-0a5cfb53091e" x="0" y="0" width="68" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
@@ -250,18 +271,18 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="70" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
-						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="68" height="20"/>
+								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="68" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$R{tidy.quantity}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="22" rowSpan="1">
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="68" height="20"/>
+								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="68" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
@@ -296,8 +317,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.fromEndpoint.companyName} + "\n" +
 $F{document.fromEndpoint.street} + "\n" +
-$F{document.fromEndpoint.postcode} + " " + $F{document.fromEndpoint.city} + ($F{document.fromEndpoint.province}!=null && !"".equals($F{document.fromEndpoint.province}.trim())? " (" + $F{document.fromEndpoint.province} + ")": "") + "\n" +
-$F{document.fromEndpoint.country}]]></textFieldExpression>
+$F{document.fromEndpoint.postcode} + " " + $F{document.fromEndpoint.city} + ($F{document.fromEndpoint.province}!=null && !"".equals($F{document.fromEndpoint.province}.trim())? " (" + $F{document.fromEndpoint.province} + ")": "") + ", " + $F{document.fromEndpoint.country}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="9ed7d285-f163-496d-9ea9-e64fe5e2d0c9" positionType="Float" x="299" y="30" width="210" height="80"/>
@@ -307,8 +327,7 @@ $F{document.fromEndpoint.country}]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.toEndpoint.companyName} + "\n" +
 $F{document.toEndpoint.street} + "\n" +
-$F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{document.toEndpoint.province}!=null && !"".equals($F{document.toEndpoint.province}.trim())? " (" + $F{document.toEndpoint.province} + ")": "") + "\n" +
-$F{document.toEndpoint.country}]]></textFieldExpression>
+$F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{document.toEndpoint.province}!=null && !"".equals($F{document.toEndpoint.province}.trim())? " (" + $F{document.toEndpoint.province} + ")": "") + ", " + $F{document.toEndpoint.country}]]></textFieldExpression>
 			</textField>
 		</band>
 		<band splitType="Prevent"/>
