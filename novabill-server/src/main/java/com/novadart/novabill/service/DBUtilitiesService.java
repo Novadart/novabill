@@ -23,6 +23,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.EmailPasswordHolder;
+import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
@@ -348,6 +349,22 @@ public class DBUtilitiesService {
 		}
 	}
 	
+	
+	private void fixInvoices(){
+		for(Invoice invoice: Invoice.findAllInvoices()){
+			switch (invoice.getPaymentDateGenerator()) {
+			case END_OF_MONTH:
+				invoice.setSecondaryPaymentDateDelta(0);
+			case IMMEDIATE:
+				invoice.setPaymentDeltaType(PaymentDeltaType.COMMERCIAL_MONTH);
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
+	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
 	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException{
@@ -363,6 +380,7 @@ public class DBUtilitiesService {
 		//createDefaultPriceListForExistingBusinesses();
 //		fixPrices();
 		fixPaymentTypes();
+		fixInvoices();
 	}
 	
 }
