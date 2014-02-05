@@ -75,7 +75,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		}
 		getView().getPayment().setDocumentCreationDate(getView().getDate().getValue());
 		getView().getPayment().init(invoice.getPaymentTypeName(), invoice.getPaymentDateGenerator(), 
-				invoice.getPaymentDateDelta());
+				invoice.getPaymentDateDelta(), invoice.getPaymentDeltaType(), invoice.getSecondaryPaymentDateDelta());
 		//NOTE we don't show the checkbox to set this as the default payment because we don't know its ID
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(invoice.getNote());

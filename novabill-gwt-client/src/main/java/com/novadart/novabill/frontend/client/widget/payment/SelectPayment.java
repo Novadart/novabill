@@ -26,6 +26,7 @@ import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
+import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public class SelectPayment extends Composite implements PaymentSummary.Handler {
@@ -88,19 +89,25 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 		setupPaymentSummaryView();
 	}
 	
-	public void init(String paymentName, PaymentDateType dateGenerator, Integer paymentDateDelta, Date paymentDueDate){
+	public void init(String paymentName, PaymentDateType dateGenerator, Integer paymentDateDelta, PaymentDeltaType paymentDeltaType, 
+			Integer secondaryPaymentDateDelta, Date paymentDueDate){
 		selectedPayment = new PaymentTypeDTO();
 		selectedPayment.setName(paymentName);
 		selectedPayment.setPaymentDateDelta(paymentDateDelta);
 		selectedPayment.setPaymentDateGenerator(dateGenerator);
+		selectedPayment.setPaymentDeltaType(paymentDeltaType);
+		selectedPayment.setSecondaryPaymentDateDelta(secondaryPaymentDateDelta);
 		setupPaymentSummaryView(paymentDueDate);
 	}
 	
-	public void init(String paymentName, PaymentDateType dateGenerator, Integer paymentDateDelta){
+	public void init(String paymentName, PaymentDateType dateGenerator, Integer paymentDateDelta, PaymentDeltaType paymentDeltaType, 
+			Integer secondaryPaymentDateDelta){
 		selectedPayment = new PaymentTypeDTO();
 		selectedPayment.setName(paymentName);
 		selectedPayment.setPaymentDateDelta(paymentDateDelta);
 		selectedPayment.setPaymentDateGenerator(dateGenerator);
+		selectedPayment.setPaymentDeltaType(paymentDeltaType);
+		selectedPayment.setSecondaryPaymentDateDelta(secondaryPaymentDateDelta);
 		setupPaymentSummaryView();
 	}
 	
