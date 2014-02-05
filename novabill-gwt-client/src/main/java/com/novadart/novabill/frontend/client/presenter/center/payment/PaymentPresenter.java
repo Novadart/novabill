@@ -231,13 +231,12 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 			
 			shb.appendHtmlConstant("<tr><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td></tr>");
 			
-			shb.appendHtmlConstant("<tr><td><div class='"+getView().getStyle().example()+"'>");
+			shb.appendHtmlConstant("<tr><td colspan='2'><div>");
 			shb.appendEscaped(I18N.INSTANCE.example());
-			shb.appendHtmlConstant("</div></td>");
-			shb.appendHtmlConstant("<td><div class='"+getView().getStyle().value()+"'>");
+			shb.appendHtmlConstant(":</div>");
 			shb.appendHtmlConstant("<table>");
-			shb.appendHtmlConstant("<tr><td>"+I18N.INSTANCE.date()+": <i>"+DocumentUtils.DOCUMENT_DATE_FORMAT.format(today)+"</i></td></tr>");
-			shb.appendHtmlConstant("<tr><td>"+I18N.INSTANCE.dueDate()+": <i>"+DocumentUtils.DOCUMENT_DATE_FORMAT.format(CalcUtils.calculatePaymentDueDate(today, payment))+"</i></td></tr>");
+			shb.appendHtmlConstant("<tr><td>"+I18N.INSTANCE.date()+"</td><td>&nbsp;&nbsp;&nbsp;<i>"+DocumentUtils.DOCUMENT_DATE_FORMAT.format(today)+"</i></td></tr>");
+			shb.appendHtmlConstant("<tr><td>"+I18N.INSTANCE.dueDate()+"</td><td>&nbsp;&nbsp;&nbsp;<i>"+DocumentUtils.DOCUMENT_DATE_FORMAT.format(CalcUtils.calculatePaymentDueDate(today, payment))+"</i></td></tr>");
 			shb.appendHtmlConstant("</table>");
 			shb.appendHtmlConstant("</div></td></tr>");
 		}
