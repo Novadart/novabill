@@ -131,7 +131,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 				if(!Validation.isWithinSize(value, UNIT_OF_MEASURE_MAX_SIZE)){
 					Notification.showMessage(I18NM.get.textLengthError(UNIT_OF_MEASURE_MAX_SIZE));
-				} else if(object.getUnitOfMeasure() != null){
+				} else {
 					object.setUnitOfMeasure(value);
 					ItemTable.this.handler.onUpdate(object);
 				}
@@ -172,19 +172,17 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 					return;
 				}
 
-				if(object.getQuantity() != null){
-					try{
+				try{
 
-						BigDecimal newQty = CalcUtils.parseValue(value);
-						object.setQuantity(newQty);
-						ItemTable.this.handler.onUpdate(object);
+					BigDecimal newQty = CalcUtils.parseValue(value);
+					object.setQuantity(newQty);
+					ItemTable.this.handler.onUpdate(object);
 
-					} catch(NumberFormatException e){
+				} catch(NumberFormatException e){
 
-						Notification.showMessage(I18N.INSTANCE.errorClientData());
+					Notification.showMessage(I18N.INSTANCE.errorClientData());
 
-					}
-				}			
+				}
 
 				qtyEditCell.clearViewData(object);
 				redrawRow(index);
@@ -219,19 +217,21 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 						return;
 					}
 
-					if(object.getWeight() != null){
-						try{
+					try{
 
+						if(value.isEmpty()){
+							object.setDiscount(null);
+						}  else {
 							BigDecimal newWeight = CalcUtils.parseValue(value);
 							object.setWeight(newWeight);
 							ItemTable.this.handler.onUpdate(object);
-
-						} catch(NumberFormatException e){
-
-							Notification.showMessage(I18N.INSTANCE.errorClientData());
-
 						}
-					}			
+						
+					} catch(NumberFormatException e){
+
+						Notification.showMessage(I18N.INSTANCE.errorClientData());
+
+					}
 
 					weightEditCell.clearViewData(object);
 					redrawRow(index);
@@ -265,19 +265,17 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 					return;
 				}
 
-				if(object.getTax() != null){
-					try{
+				try{
 
-						BigDecimal newTax = CalcUtils.parseValue(value);
-						object.setTax(newTax);
-						ItemTable.this.handler.onUpdate(object);
+					BigDecimal newTax = CalcUtils.parseValue(value);
+					object.setTax(newTax);
+					ItemTable.this.handler.onUpdate(object);
 
-					} catch(NumberFormatException e){
+				} catch(NumberFormatException e){
 
-						Notification.showMessage(I18N.INSTANCE.errorClientData());
+					Notification.showMessage(I18N.INSTANCE.errorClientData());
 
-					}
-				}			
+				}
 
 				taxEditCell.clearViewData(object);
 				redrawRow(index);
@@ -311,18 +309,16 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 					return;
 				}
 
-				if(object.getPrice() != null){
-					try{
+				try{
 
-						BigDecimal newPrice = CalcUtils.parseCurrency(value);
-						object.setPrice(newPrice);
-						ItemTable.this.handler.onUpdate(object);
+					BigDecimal newPrice = CalcUtils.parseCurrency(value);
+					object.setPrice(newPrice);
+					ItemTable.this.handler.onUpdate(object);
 
-					} catch(NumberFormatException e){
+				} catch(NumberFormatException e){
 
-						Notification.showMessage(I18N.INSTANCE.errorClientData());
+					Notification.showMessage(I18N.INSTANCE.errorClientData());
 
-					}
 				}
 				priceEditCell.clearViewData(object);
 				redrawRow(index);
@@ -356,21 +352,19 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 					return;
 				}
 
-				if(object.getDiscount() != null){
-					try{
-						if(value.isEmpty()){
-							object.setDiscount(null);
-						} else {
-							BigDecimal newDiscount = CalcUtils.parseValue(value);
-							object.setDiscount(newDiscount);
-						}
-						ItemTable.this.handler.onUpdate(object);
-					} catch(NumberFormatException e){
-
-						Notification.showMessage(I18N.INSTANCE.errorClientData());
-
+				try{
+					if(value.isEmpty()){
+						object.setDiscount(null);
+					} else {
+						BigDecimal newDiscount = CalcUtils.parseValue(value);
+						object.setDiscount(newDiscount);
 					}
-				}			
+					ItemTable.this.handler.onUpdate(object);
+				} catch(NumberFormatException e){
+
+					Notification.showMessage(I18N.INSTANCE.errorClientData());
+
+				}
 
 				discountEditCell.clearViewData(object);
 				redrawRow(index);
