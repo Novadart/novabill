@@ -39,6 +39,7 @@
 		<field name="tax" class="java.math.BigDecimal"/>
 		<field name="totalBeforeTax" class="java.math.BigDecimal"/>
 		<field name="discount" class="java.math.BigDecimal"/>
+		<field name="sku" class="java.lang.String"/>
 	</subDataset>
 	<queryString>
 		<![CDATA[]]>
@@ -167,10 +168,30 @@ $F{document.client.country} +
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="250" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
+					<jr:column width="60" uuid="99f08e9c-de62-4763-9278-701b9b01f27b">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b" x="0" y="0" width="248" height="18"/>
+								<reportElement uuid="48a3023c-df7a-48cc-8838-40463676aa6f" x="0" y="0" width="60" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{tidy.sku}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="37244614-0134-43c7-841c-d8cf4dfd8650" x="0" y="0" width="58" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sku} == null || $F{sku}.startsWith("::sku")? "": $F{sku}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="190" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b" x="0" y="0" width="188" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
@@ -179,7 +200,7 @@ $F{document.client.country} +
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="248" height="18"/>
+								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="188" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
@@ -341,7 +362,9 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 		<band height="70" splitType="Prevent">
 			<textField>
 				<reportElement uuid="14484aea-08e0-4ad3-9f02-b22a8ab01fb0" positionType="Float" x="415" y="40" width="120" height="20"/>
-				<textElement textAlignment="Right"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.total}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -372,7 +395,9 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 			</textField>
 			<textField>
 				<reportElement uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d" positionType="Float" x="320" y="40" width="95" height="20"/>
-				<textElement/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
 			</textField>
 		</band>
