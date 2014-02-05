@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Joiner;
@@ -333,6 +334,20 @@ public class DBUtilitiesService {
 		}
 	}
 	
+	private void fixPaymentTypes(){
+		for(PaymentType pType: PaymentType.findAllPaymentTypes()){
+			switch (pType.getPaymentDateGenerator()) {
+			case END_OF_MONTH:
+			case IMMEDIATE:
+				pType.setPaymentDeltaType(PaymentDeltaType.COMMERCIAL_MONTH);
+				break;
+
+			default:
+				break;
+			}
+		}
+	}
+	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
 	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException{
@@ -346,7 +361,8 @@ public class DBUtilitiesService {
 		//createSecondBusiness();
 		//createThirdBusiness();
 		//createDefaultPriceListForExistingBusinesses();
-		fixPrices();
+//		fixPrices();
+		fixPaymentTypes();
 	}
 	
 }

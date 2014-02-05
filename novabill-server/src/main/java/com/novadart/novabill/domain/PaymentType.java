@@ -1,6 +1,7 @@
 package com.novadart.novabill.domain;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -176,6 +177,10 @@ public class PaymentType {
     public static PaymentType findPaymentType(Long id) {
         if (id == null) return null;
         return entityManager().find(PaymentType.class, id);
+    }
+    
+    public static List<PaymentType> findAllPaymentTypes() {
+        return entityManager().createQuery("SELECT p FROM PaymentType p", PaymentType.class).getResultList();
     }
     
     @Transactional
