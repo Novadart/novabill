@@ -74,7 +74,7 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 	
 	ValidatedTextBox getCause();
 	
-	ValidatedTextBox getAppearanceOfTheGoods();
+	ValidatedTextArea getAppearanceOfTheGoods();
 
 	CheckBox getSetFromAddress();
 

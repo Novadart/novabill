@@ -113,8 +113,8 @@
                         <g:Label styleName="{s.label}" text="{i18n.appearanceOfTheGoods}"></g:Label>
                     </g:customCell>
                     <g:customCell>
-                        <v:ValidatedTextBox styleName="{s.box}" ui:field="appearanceOfTheGoods"
-                            maxLength="255"></v:ValidatedTextBox>
+                        <v:ValidatedTextArea styleName="{s.box} {s.note}"
+                            visibleLines="3" ui:field="appearanceOfTheGoods" />
                     </g:customCell>
                 </g:row>
 				<g:row>

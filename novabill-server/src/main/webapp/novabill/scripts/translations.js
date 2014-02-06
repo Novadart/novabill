@@ -25,6 +25,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		
 		//other strings
 		CANCEL : 'Annulla',
+		CLIENT_DELETION_ALERT : 'Non è possibile cancellare questo cliente, in quanto esistono ancora dei documenti ad esso associati',
 		CLIENTS : 'Clienti',
 		CLONE : 'Crea simile',
 		COMMODITY : 'Articolo',
@@ -88,6 +89,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		NEW_PRICE_LIST: 'Nuovo Listino',
 		NEW_TRANSPORT_DOCUMENT: 'Nuovo Documento di Trasporto',
 		NO_DATA : 'Nessun dato',
+		NOTIFICATION : 'Notifica',
 		NUMBER_OF_INVOICES : 'Numero di fatture',
 		OPEN : 'Apri',
 		OPTIONS : 'Opzioni',

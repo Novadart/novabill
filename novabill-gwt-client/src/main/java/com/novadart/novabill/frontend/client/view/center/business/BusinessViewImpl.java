@@ -19,11 +19,13 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
+import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextArea;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
@@ -31,7 +33,6 @@ import com.novadart.novabill.frontend.client.view.HasUILocking;
 import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.widget.validation.AlternativeSsnVatIdValidation;
-import com.novadart.novabill.frontend.client.widget.validation.NotEmptyMaxLengthTextValidation;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 
 public class BusinessViewImpl extends Composite implements BusinessView, HasUILocking {
@@ -83,7 +84,12 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 
 	public BusinessViewImpl() {
 
-		name = new ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), new NotEmptyMaxLengthTextValidation(255));
+		name = new ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), new TextLengthValidation(255) {
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(getMaxLength());
+			}
+		}, ValidationKit.NOT_EMPTY);
 		ssn = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.SSN_OR_VAT_ID);
 		ssn.setShowMessageOnError(true);
 		vatID = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.VAT_ID);

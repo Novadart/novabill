@@ -4,6 +4,34 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 
 /*
+ * Edit Price List Dialog
+ */
+.factory('nAlertDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+	return {
+		open : function( message ) {
+
+			return $modal.open({
+
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-alert-dialog.html'),
+
+				controller: ['$scope', '$modalInstance',
+				             function($scope, $modalInstance){
+
+					$scope.message = message;
+
+					$scope.ok = function(){
+						$modalInstance.close();
+					};
+
+				}]
+			});
+		}
+	};
+}])
+
+
+/*
  * Select Transport Documents Dialog
  */
 .directive('nSelectTransportDocumentsDialog', ['nConstants', function factory(nConstants){

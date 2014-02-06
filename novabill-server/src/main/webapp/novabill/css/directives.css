@@ -1,4 +1,11 @@
 /*
+ *  ALERT DIALOG
+ */
+.n-alert-dialog .alert-message {
+	font-size: 14px;
+}
+
+/*
  *  SELECT MULTIPLE TRANSPORT DOCUMENTS DIALOG
  */
 .select-multiple-td-dialog .details>strong,.select-multiple-td-dialog .details>span

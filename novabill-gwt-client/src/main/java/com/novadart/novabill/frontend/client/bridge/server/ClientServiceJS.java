@@ -12,6 +12,7 @@ import com.novadart.novabill.frontend.client.bridge.server.autobean.Page;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
+import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 
 
 public class ClientServiceJS extends ServiceJS {
@@ -61,6 +62,16 @@ public class ClientServiceJS extends ServiceJS {
 			@Override
 			public void onSuccess(Void result) {
 				BridgeUtils.invokeJSCallback(callback);
+			}
+			
+			@Override
+			public void onFailure(Throwable caught) {
+				if(caught instanceof DataIntegrityException){
+					DataIntegrityException di = (DataIntegrityException)caught;
+					BridgeUtils.invokeJSCallbackOnException(di.getClass().getName(), null, callback);
+				} else {
+					super.onFailure(caught);
+				}
 			}
 		});
 		

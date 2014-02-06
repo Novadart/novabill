@@ -23,7 +23,6 @@ import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.TextLengthValidation;
-import com.novadart.gwtshared.client.validation.ValidationBundle;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
@@ -83,7 +82,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	@UiField(provided=true) ValidatedTextBox transportationResponsibility;
 	@UiField(provided=true) ValidatedTextBox tradeZone;
-	@UiField(provided=true) ValidatedTextBox appearanceOfTheGoods;
+	@UiField(provided=true) com.novadart.gwtshared.client.validation.widget.ValidatedTextArea appearanceOfTheGoods;
 
 	@UiField Label clientName;
 	@UiField(provided=true) ValidatedTextBox number;
@@ -104,19 +103,18 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	private Presenter presenter;
 
 	public TransportDocumentViewImpl() {
-		ValidationBundle<String> nev = new ValidationBundle<String>() {
-
-			@Override
-			public boolean isValid(String value) { 	return !value.isEmpty(); }
-
-			@Override
-			public String getErrorMessage() {	return null; }
-		};
 
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 		transportationResponsibility = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		tradeZone = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
-		appearanceOfTheGoods = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		appearanceOfTheGoods = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), 
+				new TextLengthValidation(255) {
+			
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(255);
+			}
+		});
 		cause = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		numberOfPackages = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		totalWeight = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
@@ -136,10 +134,10 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		fromAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
-		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),nev);
-		toAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(), nev);
-		toAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(),nev);
-		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),nev);
+		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),ValidationKit.DEFAULT);
+		toAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(), ValidationKit.DEFAULT);
+		toAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(),ValidationKit.DEFAULT);
+		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),ValidationKit.DEFAULT);
 		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
@@ -498,7 +496,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return cause;
 	}
 	
-	public ValidatedTextBox getAppearanceOfTheGoods() {
+	public com.novadart.gwtshared.client.validation.widget.ValidatedTextArea getAppearanceOfTheGoods() {
 		return appearanceOfTheGoods;
 	}
 	
