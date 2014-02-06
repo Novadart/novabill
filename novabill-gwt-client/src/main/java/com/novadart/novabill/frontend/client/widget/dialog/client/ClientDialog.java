@@ -291,7 +291,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		if(isIT){
 			province.setSelectedItem(client.getProvince());
 		}
-		country.setSelectedItemByValue(client.getCountry());
+		country.setSelectedItemByValue(client.getCountry()==null ? Configuration.getBusiness().getCountry() : client.getCountry());
 		postcode.setText(client.getPostcode());
 		phone.setText(client.getPhone());
 		mobile.setText(client.getMobile());

@@ -59,7 +59,7 @@ public class CalcUtils {
 			return price.getPriceValue();
 		} else {
 
-			if(price == null || price.getId() == null){
+			if(price.getPriceValue() == null || price.getId() == null){
 				//if no price for the given price list, return the default price
 				price = commodity.getPrices().get("::default");
 				return price.getPriceValue();

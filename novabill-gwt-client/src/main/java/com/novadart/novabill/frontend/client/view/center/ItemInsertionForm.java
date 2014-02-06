@@ -596,8 +596,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 		PriceDTO p = new PriceDTO();
 		p.setId(-1L);
-		p.setPriceType(PriceType.valueOf(priceType));
-		p.setPriceValue(new BigDecimal(price));
+		p.setPriceType(priceType!=null ? PriceType.valueOf(priceType) : null);
+		p.setPriceValue(price != null ? new BigDecimal(price) : null);
 		prices.put(priceListName, p);
 
 		p = new PriceDTO();
@@ -645,12 +645,12 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 						result.commodity.sku,
 						result.commodity.description,
 						result.commodity.unitOfMeasure,
-						result.commodity.weight,
+						result.commodity.weight != null ? String(result.commodity.weight) : null,
 						String(result.commodity.tax),
 						String(result.defaultPriceValue),
 						result.priceListName,
 						result.priceType,
-						String(result.priceValue)
+						result.priceValue != null ? String(result.priceValue) : null
 					);
 			},
 			function(error){}
