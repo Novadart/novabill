@@ -277,26 +277,26 @@ insert into commodity (id, sku, description, service, tax, unit_of_measure, busi
 insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (160, 'sku5', 'Cisco network router', 'f', 22, 'piece', 1, 1);
 
 --creating default prices
-insert into price (id, price_type, price_value, version, commodity, price_list) values (163, 1, 24.95, 1, 156, 161);
-insert into price (id, price_type, price_value, version, commodity, price_list) values (164, 1, 19.95, 1, 157, 161);
-insert into price (id, price_type, price_value, version, commodity, price_list) values (165, 1, 24.95, 1, 158, 161);
-insert into price (id, price_type, price_value, version, commodity, price_list) values (167, 1, 24.95, 1, 159, 161);
-insert into price (id, price_type, price_value, version, commodity, price_list) values (168, 1, 39.95, 1, 160, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (163, 0, 24.95, 1, 156, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (164, 0, 19.95, 1, 157, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (165, 0, 24.95, 1, 158, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (167, 0, 24.95, 1, 159, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (168, 0, 39.95, 1, 160, 161);
 
 --creating more commodities
 insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (169, '12345', 'Website building', 't', 22, 'hour', 2, 1);
 
 --creating default prices
-insert into price (id, price_type, price_value, version, commodity, price_list) values (170, 1, 19.95, 1, 169, 162);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (170, 0, 19.95, 1, 169, 162);
 
 --creating custom price lists
 insert into price_list (id, name, version, business) values (171, 'custom pricelist', '1', 1);
 insert into price_list (id, name, version, business) values (172, 'custom pricelist', '1', 2);
 
 --creating prices for the custom price list
-insert into price (id, price_type, price_value, version, commodity, price_list) values (173, 1, 20.95, 1, 156, 171);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (173, 0, 20.95, 1, 156, 171);
 
-insert into price (id, price_type, price_value, version, commodity, price_list) values (174, 1, 20.95, 1, 169, 172);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (174, 0, 20.95, 1, 169, 172);
 
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version) values (175, '2013-10-20', 2013, 3, '', '', 121.0, 100.0, 21.0, 1, 1);
