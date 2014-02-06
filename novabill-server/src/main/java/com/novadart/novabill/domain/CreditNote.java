@@ -40,6 +40,7 @@ public class CreditNote extends AbstractInvoice implements Serializable {
         this.business = business;
     }
     
+    @Override
     public Client getClient() {
         return this.client;
     }

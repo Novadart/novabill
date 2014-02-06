@@ -103,6 +103,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
         this.business = business;
     }
     
+    @Override
     public Client getClient() {
         return this.client;
     }

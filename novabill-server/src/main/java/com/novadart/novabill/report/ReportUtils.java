@@ -1,11 +1,19 @@
 package com.novadart.novabill.report;
 
+import java.io.StringReader;
 import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
+
+import org.apache.lucene.analysis.ASCIIFoldingFilter;
+import org.apache.lucene.analysis.LowerCaseFilter;
+import org.apache.lucene.analysis.TokenStream;
+import org.apache.lucene.analysis.WhitespaceTokenizer;
+import org.apache.lucene.analysis.tokenattributes.CharTermAttribute;
+import org.apache.lucene.util.Version;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
@@ -41,6 +49,18 @@ public class ReportUtils {
 		if(Strings.isNullOrEmpty(pattern.trim()))
 			throw new IllegalArgumentException();
 		return arg == null || Strings.isNullOrEmpty(arg.toString())? "": String.format(pattern, arg);
+	}
+	
+	public static String convertToASCII(String text){
+		List<String> tokens = new ArrayList<>();
+		try (TokenStream stream = new ASCIIFoldingFilter(new LowerCaseFilter(Version.LUCENE_35, new WhitespaceTokenizer(Version.LUCENE_35, new StringReader(text)))) ){
+			stream.reset();
+			while(stream.incrementToken())
+				tokens.add(stream.getAttribute(CharTermAttribute.class).toString());
+		}catch(Exception e){
+			throw new RuntimeException(e);
+		}
+		return Joiner.on("_").join(tokens).toString();
 	}
 
 }
