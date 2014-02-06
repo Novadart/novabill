@@ -21,6 +21,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.dialog.Dialog;
+import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.VatIdValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
@@ -31,6 +32,7 @@ import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
@@ -39,7 +41,6 @@ import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.widget.validation.AlternativeSsnVatIdValidation;
-import com.novadart.novabill.frontend.client.widget.validation.NotEmptyMaxLengthTextValidation;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
@@ -138,7 +139,12 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		this.incompleteClient = incompleteClient;
 
 		companyName = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(
-				GlobalBundle.INSTANCE.validatedWidget(), new NotEmptyMaxLengthTextValidation(255));
+				GlobalBundle.INSTANCE.validatedWidget(), new TextLengthValidation(255) {
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(getMaxLength());
+			}
+		}, ValidationKit.NOT_EMPTY);
 
 		vatID =  new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.VAT_ID);
 		vatID.setShowMessageOnError(true);
