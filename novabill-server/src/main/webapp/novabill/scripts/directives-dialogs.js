@@ -178,7 +178,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				$scope.commodity.service = $scope.service==='true';
 
 				//set weight to null in case we are dealing with a service
-				$scope.commodity.weight = $scope.commodity.service ? null : new String($scope.commodity.weight);
+				$scope.commodity.weight = $scope.commodity.service ? null : ($scope.commodity.weight ? new String($scope.commodity.weight) : null);
 
 				// if default price is not present, build the structure for storing it
 				if(!$scope.commodity.pricesMap){

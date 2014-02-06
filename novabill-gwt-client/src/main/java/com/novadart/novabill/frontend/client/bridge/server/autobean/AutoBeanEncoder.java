@@ -95,8 +95,8 @@ public class AutoBeanEncoder {
 		b.setClientsCount(c.getClientsCount());
 		b.setCommoditiesCount(c.getCommoditiesCount());
 		b.setInvoicesCountForYear(c.getInvoicesCountForYear());
-		b.setTotalAfterTaxesForYear(c.getTotalAfterTaxesForYear().doubleValue());
-		b.setTotalBeforeTaxesForYear(c.getTotalBeforeTaxesForYear().doubleValue());
+		b.setTotalAfterTaxesForYear(c.getTotalAfterTaxesForYear().toPlainString());
+		b.setTotalBeforeTaxesForYear(c.getTotalBeforeTaxesForYear().toPlainString());
 		
 		LogRecordList ll = AutoBeanMaker.INSTANCE.makeLogRecordList().as();
 		List<LogRecord> list = new ArrayList<LogRecord>();
@@ -142,10 +142,10 @@ public class AutoBeanEncoder {
 		cb.setDescription(c.getDescription());
 		cb.setId(c.getId());
 		cb.setService(c.isService());
-		cb.setTax(c.getTax() != null ? String.valueOf(c.getTax().doubleValue()) : null);
+		cb.setTax(c.getTax() != null ? c.getTax().toPlainString() : null);
 		cb.setUnitOfMeasure(c.getUnitOfMeasure());
 		cb.setSku(c.getSku());
-		cb.setWeight(c.getWeight() != null ? String.valueOf(c.getWeight().doubleValue()) : null);
+		cb.setWeight(c.getWeight() != null ? c.getWeight().toPlainString() : null);
 
 		if(c.getPrices() != null) {
 			PricesMap pricesMap = AutoBeanMaker.INSTANCE.makePricesMap().as();
@@ -175,7 +175,7 @@ public class AutoBeanEncoder {
 		p.setId(price.getId());
 		p.setPriceListID(price.getPriceListID());
 		p.setPriceType(price.getPriceType() != null ? price.getPriceType().name() : null);
-		p.setPriceValue(price.getPriceValue() != null ? String.valueOf(price.getPriceValue().doubleValue()) : null);
+		p.setPriceValue(price.getPriceValue() != null ? price.getPriceValue().toPlainString() : null);
 		return AutoBeanUtils.getAutoBean(p);
 	}
 

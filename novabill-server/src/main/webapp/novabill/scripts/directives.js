@@ -534,10 +534,11 @@ angular.module('novabill.directives',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
 				if (nRegExp.positiveTwoDecimalsFloat.test(viewValue)) {
-					var floatVal = parseFloat(viewValue.replace(',', '.'));
+					var dotVal = viewValue.replace(',', '.');
+					var floatVal = parseFloat(dotVal);
 					if(floatVal >= 0 && floatVal < 100){
 						ctrl.$setValidity('tax', true);
-						return floatVal;
+						return dotVal;
 					} else {
 						ctrl.$setValidity('tax', false);
 						return undefined;
@@ -550,7 +551,7 @@ angular.module('novabill.directives',
 			});
 
 			ctrl.$formatters.push(function(modelValue) {
-				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
+				return modelValue ? new String(modelValue).replace('.', ',') : '';
 			});
 		}
 	};
@@ -568,10 +569,11 @@ angular.module('novabill.directives',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
 				if (nRegExp.positiveTwoDecimalsFloat.test(viewValue)) {
-					var floatVal = parseFloat(viewValue.replace(',', '.'));
+					var dotVal = viewValue.replace(',', '.');
+					var floatVal = parseFloat(dotVal);
 					if(floatVal >= 0){
 						ctrl.$setValidity('price', true);
-						return floatVal;
+						return dotVal;
 					} else {
 						ctrl.$setValidity('price', false);
 						return undefined;
@@ -584,7 +586,7 @@ angular.module('novabill.directives',
 			});
 
 			ctrl.$formatters.push(function(modelValue) {
-				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
+				return modelValue ? new String(modelValue).replace('.', ',') : '';
 			});
 		}
 	};
@@ -609,7 +611,7 @@ angular.module('novabill.directives',
 				
 				if (testExp.test(viewValue)) {
 					ctrl.$setValidity('float', true);
-			        return parseFloat(viewValue.replace(',', '.'));
+			        return viewValue.replace(',', '.');
 				} else {
 					ctrl.$setValidity('float', false);
 					return undefined;
@@ -617,7 +619,7 @@ angular.module('novabill.directives',
 			});
 
 			ctrl.$formatters.push(function(modelValue) {
-				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
+				return modelValue ? new String(modelValue).replace('.', ',') : '';
 			});
 		}
 	};
