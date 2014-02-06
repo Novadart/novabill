@@ -533,7 +533,7 @@ angular.module('novabill.directives',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.positiveTwoDecimalsFloat.test(viewValue)) {
+				if (nRegExp.positiveTwoDecimalsFloatNumber.test(viewValue)) {
 					var dotVal = viewValue.replace(',', '.');
 					var floatVal = parseFloat(dotVal);
 					if(floatVal >= 0 && floatVal < 100){
@@ -568,7 +568,7 @@ angular.module('novabill.directives',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.positiveTwoDecimalsFloat.test(viewValue)) {
+				if (nRegExp.positiveTwoDecimalsFloatNumber.test(viewValue)) {
 					var dotVal = viewValue.replace(',', '.');
 					var floatVal = parseFloat(dotVal);
 					if(floatVal >= 0){
@@ -607,7 +607,7 @@ angular.module('novabill.directives',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				var testExp = scope.positiveFloat ? nRegExp.positiveFloat : nRegExp.float;
+				var testExp = scope.positiveFloatNumber ? nRegExp.positiveFloatNumber : nRegExp.floatNumber;
 				
 				if (testExp.test(viewValue)) {
 					ctrl.$setValidity('float', true);
