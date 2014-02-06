@@ -131,7 +131,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	
 	
 	public ClientDialog(Long businessId, boolean incompleteClient, AsyncCallback<ClientDTO> callback) {
-		super(GlobalBundle.INSTANCE.dialog());
+		super(GlobalBundle.INSTANCE.dialog(), false);
 		GlobalBundle.INSTANCE.dialog().ensureInjected();
 
 		this.businessId = businessId;
