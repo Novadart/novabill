@@ -17,12 +17,9 @@
 	text-align: center;
 }
 
-.select-multiple-td-dialog .details {
-	cursor: pointer;
-}
-
-.select-multiple-td-dialog .details:HOVER {
+.select-multiple-td-dialog .details.never-included-in-invoice:HOVER {
     border-color: #555;
+    cursor: pointer;
 }
  
 .select-multiple-td-dialog .details.selected {
@@ -49,7 +46,18 @@
 }
 
 .select-multiple-td-dialog .details.already-included-in-invoice {
-	opacity: 0.6;
+	color: #757575;
+	height: 48px;
+}
+
+.select-multiple-td-dialog .details.already-included-in-invoice strong,
+.select-multiple-td-dialog .details.already-included-in-invoice span {
+	position: relative;
+    top: 5px;
+}
+
+.select-multiple-td-dialog .details.already-included-in-invoice .documentId {
+	margin-left: 35px;
 }
 
 .select-multiple-td-dialog .already-in-invoice-alert {
