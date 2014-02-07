@@ -4,7 +4,6 @@ import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
 
-
 import com.novadart.novabill.shared.client.data.LayoutType;
 
 public interface TransportDocument {
@@ -40,6 +39,10 @@ public interface TransportDocument {
 	public String getCause();
 
 	public void setCause(String cause);
+	
+	public void setInvoice(Long invoice);
+	
+	public Long getInvoice();
 	
 	/*
 	 * AccountingDocumentDTO interface

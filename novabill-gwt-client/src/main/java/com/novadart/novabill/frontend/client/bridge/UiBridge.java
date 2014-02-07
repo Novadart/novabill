@@ -28,7 +28,6 @@ import com.novadart.novabill.frontend.client.place.estimation.ModifyEstimationPl
 import com.novadart.novabill.frontend.client.place.estimation.NewEstimationPlace;
 import com.novadart.novabill.frontend.client.place.invoice.CloneInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoicePlace;
-import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentListInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
@@ -67,7 +66,6 @@ public class UiBridge implements ApiBridge {
 			showModifyInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showCloneInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showCloneInvoicePage(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showFromEstimationInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showFromEstimationInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-			showFromTransportDocumentInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showFromTransportDocumentInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showFromTransportDocumentListInvoicePage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showFromTransportDocumentListInvoicePage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			
 			// estimations
@@ -192,18 +190,6 @@ public class UiBridge implements ApiBridge {
 		InvoiceActivity is = new InvoiceActivity(fei, ClientFactory.INSTANCE, callback);
 		is.start(panel, null);
 	}
-	
-	
-	public static void showFromTransportDocumentInvoicePage(String wrapperId, String transportDocumentId, JavaScriptObject callback) {
-		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
-		
-		FromTransportDocumentInvoicePlace ftdi = new FromTransportDocumentInvoicePlace();
-		ftdi.setTransportDocumentId(Long.parseLong(transportDocumentId));
-
-		InvoiceActivity is = new InvoiceActivity(ftdi, ClientFactory.INSTANCE, callback);
-		is.start(panel, null);
-	}
-	
 	
 	public static void showFromTransportDocumentListInvoicePage(String wrapperId, String transportDocumentList, JavaScriptObject callback) {
 		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);

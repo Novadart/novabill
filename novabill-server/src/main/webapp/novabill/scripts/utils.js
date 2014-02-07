@@ -32,7 +32,7 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 		},
 		
 		/**
-		 * 
+		 * Compare two objects that have a 'description' property
 		 */
 		descriptionComparator : function(i1, i2){
 			var n1 = i1.description.toLowerCase();
@@ -46,10 +46,12 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 .factory('nRegExp', function() {
 	return {
 
-		fiscalFloat : /^(\+|\-)?\d+((\.|\,)\d{1,2})?$/,
+		twoDecimalsFloatNumber : /^(\+|\-)?\d+((\.|\,)\d{1,2})?$/,
+		positiveTwoDecimalsFloatNumber : /^\d+((\.|\,)\d{1,2})?$/,
 		
-		positiveFiscalFloat : /^\d+((\.|\,)\d{1,2})?$/,
-
+		positiveFloatNumber : /^\d+((\.|\,)\d+)?$/,
+		floatNumber : /^\-?\d+((\.|\,)\d+)?$/,
+		
 		reserved_word : /^\::.*$/
 
 	};

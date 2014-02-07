@@ -3,6 +3,7 @@ package com.novadart.novabill.domain;
 import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -11,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
+
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -66,11 +68,20 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	@Size(max = 255)
 	private String cause;
 	
+	@Size(max = 255)
+	private String totalWeight;
+	
+	@Size(max = 255)
+	private String appearanceOfTheGoods;
+	
 	@ManyToOne
     protected Business business;
 
     @ManyToOne
     protected Client client;
+    
+    @ManyToOne
+    private Invoice invoice;
     
     public static Long countTransportDocumentsForClient(Long id){
     	return countForClient(TransportDocument.class, id);
@@ -92,6 +103,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
         this.business = business;
     }
     
+    @Override
     public Client getClient() {
         return this.client;
     }
@@ -100,7 +112,15 @@ public class TransportDocument extends AccountingDocument implements Serializabl
         this.client = client;
     }
 
-    public String getNumberOfPackages() {
+    public Invoice getInvoice() {
+		return invoice;
+	}
+
+	public void setInvoice(Invoice invoice) {
+		this.invoice = invoice;
+	}
+
+	public String getNumberOfPackages() {
 		return numberOfPackages;
 	}
 
@@ -163,6 +183,22 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	public void setCause(String cause) {
 		this.cause = cause;
 	}
+	
+	public String getAppearanceOfTheGoods() {
+		return appearanceOfTheGoods;
+	}
+
+	public void setAppearanceOfTheGoods(String appearanceOfTheGoods) {
+		this.appearanceOfTheGoods = appearanceOfTheGoods;
+	}
+
+	public String getTotalWeight() {
+		return totalWeight;
+	}
+
+	public void setTotalWeight(String totalWeight) {
+		this.totalWeight = totalWeight;
+	}
     
     /*
      * End of getters and setters section
@@ -173,6 +209,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
      * Active record functionality
      * */
     
+
 	public static long countTransportDocuments() {
         return count(TransportDocument.class);
     }

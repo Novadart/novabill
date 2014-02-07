@@ -14,4 +14,6 @@
     
     <bean id="business" class="com.novadart.novabill.web.gwt.BusinessGwtController"/>
     
+    <bean id="client" class="com.novadart.novabill.web.gwt.ClientGwtController"/>
+    
 </beans>

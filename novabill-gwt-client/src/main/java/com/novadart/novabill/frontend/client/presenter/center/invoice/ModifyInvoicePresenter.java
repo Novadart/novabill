@@ -40,7 +40,8 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 		getView().getPayment().setDocumentCreationDate(invoice.getAccountingDocumentDate());
 		
 		getView().getPayment().init(invoice.getPaymentTypeName(), invoice.getPaymentDateGenerator(), 
-				invoice.getPaymentDateDelta(), invoice.getPaymentDueDate());
+				invoice.getPaymentDateDelta(), invoice.getPaymentDeltaType(), invoice.getSecondaryPaymentDateDelta(), 
+				invoice.getPaymentDueDate());
 		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(invoice.getAccountingDocumentDate()));
 		getView().getClientName().setText(invoice.getClient().getName());
 
@@ -134,6 +135,11 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 				}
 			}
 		});
+	}
+
+	@Override
+	public void onUnlockItemsTableChecked(Boolean value) {
+		
 	}
 
 }

@@ -24,25 +24,25 @@ public class Notification {
 	public static void showMessage(String message, NotificationCallback<Void> onClose){
 		MessageDialog md = new MessageDialog(onClose);
 		md.setMessage(message);
-		md.showCentered();
+		md.center();
 	}
 	
 	public static void showMessage(SafeHtml message, NotificationCallback<Void> onClose){
 		MessageDialog md = new MessageDialog(onClose);
 		md.setMessage(message);
-		md.showCentered();
+		md.center();
 	}
 
 	public static void showConfirm(String message, NotificationCallback<Boolean> onClose){
 		ConfirmDialog cd = new ConfirmDialog(onClose);
 		cd.setMessage(message);
-		cd.showCentered();
+		cd.center();
 	}
 	
 	public static void showConfirm(SafeHtml message, NotificationCallback<Boolean> onClose){
 		ConfirmDialog cd = new ConfirmDialog(onClose);
 		cd.setMessage(message);
-		cd.showCentered();
+		cd.center();
 	}
 	
 }

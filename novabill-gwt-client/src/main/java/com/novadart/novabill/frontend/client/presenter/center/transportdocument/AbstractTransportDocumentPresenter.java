@@ -8,6 +8,7 @@ import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.i18n.client.DateTimeFormat;
+import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
@@ -66,18 +67,27 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		getView().getToAddrStreetName().setText(getClient().getAddress());
 		getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
 	}
-	
+
 	@Override
 	public void onCountItemsCLicked() {
 		List<AccountingDocumentItemDTO> items = getView().getItemInsertionForm().getItems();
-		
+
 		BigDecimal total = BigDecimal.ZERO;
 		for (AccountingDocumentItemDTO i : items) {
 			total = total.add(i.getQuantity());
 		}
-		
+
 		BigDecimal roundedTotal = total.setScale(0, RoundingMode.CEILING);
 		getView().getNumberOfPackages().setText(String.valueOf(roundedTotal.intValue()));
+	}
+
+	@Override
+	public void onTotalWeightCalcClicked() {
+		List<AccountingDocumentItemDTO> items = getView().getItemInsertionForm().getItems();
+
+		BigDecimal total = CalcUtils.calculateTotalWeight(items);
+		BigDecimal roundedTotal = total.setScale(3, RoundingMode.HALF_UP);
+		getView().getTotalWeight().setText(NumberFormat.getDecimalFormat().format(roundedTotal));
 	}
 
 	@Override
@@ -115,12 +125,12 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			td.setBusiness(Configuration.getBusiness());
 			td.setClient(getClient());
 		}
-		
+
 		// this to auto populate the fields
 		if(!getView().getSetFromAddress().getValue()){
 			onFromAddressButtonDefaultCLicked();
 		}
-		
+
 		// this to auto populate the fields
 		if(!getView().getSetToAddress().getValue()){
 			onToAddressButtonDefaultCLicked();
@@ -162,8 +172,10 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		tsd = DateTimeFormat.getFormat("dd MMMM yyyy HH:mm").parse(dateTime);		
 		td.setTransportStartDate(tsd);
 
+		td.setAppearanceOfTheGoods(getView().getAppearanceOfTheGoods().getText());
 		td.setCause(getView().getCause().getText());
 		td.setNumberOfPackages(getView().getNumberOfPackages().getText());
+		td.setTotalWeight(getView().getTotalWeight().getText());
 		td.setTradeZone(getView().getTradeZone().getText());
 		td.setTransportationResponsibility(getView().getTransportationResponsibility().getText());
 		td.setTransporter(getView().getTransporter().getText());
@@ -187,8 +199,9 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			return false;
 		} else {
 			boolean validation = getView().getDate().isValid() && getView().getTransportStartDate().isValid();
-			for (ValidatedWidget<?> vw : new ValidatedWidget<?>[]{getView().getNumber(), 
-					getView().getNumberOfPackages(), getView().getHour(), getView().getMinute()}) {
+			for (ValidatedWidget<?> vw : new ValidatedWidget<?>[]{getView().getNumber(), getView().getCause(), getView().getTradeZone(),
+					getView().getTransportationResponsibility(), getView().getAppearanceOfTheGoods(),
+					getView().getNumberOfPackages(), getView().getTotalWeight(), getView().getHour(), getView().getMinute()}) {
 				vw.validate();
 				validation = validation && vw.isValid();
 			}
@@ -201,7 +214,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 				}
 
 			}
-			
+
 			if(getView().getSetToAddress().getValue()){
 				for (ValidatedWidget<?> vw : new ValidatedWidget<?>[]{getView().getToAddrCountry(), getView().getToAddrCity(), 
 						getView().getToAddrCompanyName(), getView().getToAddrPostCode(),	getView().getToAddrStreetName()}) {
@@ -210,7 +223,6 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 				}
 
 			}
-
 
 			if(getView().getSetFromAddress().getValue() && getView().getFromAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
 				getView().getFromAddrProvince().validate();

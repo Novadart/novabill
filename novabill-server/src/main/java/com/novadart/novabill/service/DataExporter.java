@@ -37,6 +37,7 @@ import com.novadart.novabill.report.DocumentType;
 import com.novadart.novabill.report.JRDataSourceFactory;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.report.JasperReportService;
+import com.novadart.novabill.report.ReportUtils;
 import com.novadart.novabill.shared.client.data.DataExportClasses;
 
 @Service
@@ -100,7 +101,8 @@ public class DataExporter {
 		for(T doc: docs){
 			File docFile;
 				docFile = exportAccountingDocument(outDir, doc, logo, businessID, docType, putWatermark);
-			zipStream.putNextEntry(new ZipEntry(String.format(entryFormat, doc.getAccountingDocumentYear(), doc.getDocumentID())));
+			String clientName = doc.getClient().getName();
+			zipStream.putNextEntry(new ZipEntry(String.format(entryFormat, doc.getAccountingDocumentYear(), doc.getDocumentID(), ReportUtils.convertToASCII(clientName))));
 			FileInputStream invStream = new FileInputStream(docFile);
 			IOUtils.copy(invStream, zipStream);
 			invStream.close();
@@ -130,16 +132,16 @@ public class DataExporter {
 			boolean putWatermark = true;
 			if(classes.contains(DataExportClasses.INVOICE))
 				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, business.getInvoices(), logo, DocumentType.INVOICE, business.getId(), putWatermark,
-						messageSource.getMessage("export.invoices.zipentry.pattern", null, "invoices/invoice_%d_%d.pdf", locale));
+						messageSource.getMessage("export.invoices.zipentry.pattern", null, "invoices/invoice_%d_%d_%s.pdf", locale));
 			if(classes.contains(DataExportClasses.ESTIMATION))
 				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, business.getEstimations(), logo, DocumentType.ESTIMATION, business.getId(), putWatermark,
-						messageSource.getMessage("export.estimations.zipentry.pattern", null, "estimations/estimation_%d_%d.pdf", locale));
+						messageSource.getMessage("export.estimations.zipentry.pattern", null, "estimations/estimation_%d_%d_%s.pdf", locale));
 			if(classes.contains(DataExportClasses.CREDIT_NOTE))
 				creditNoteFiles = exportAccountingDocumentsData(outDir, zipStream, business.getCreditNotes(), logo, DocumentType.CREDIT_NOTE, business.getId(), putWatermark,
-						messageSource.getMessage("export.creditnotes.zipentry.pattern", null, "creditnotes/creditnotes_%d_%d.pdf", locale));
+						messageSource.getMessage("export.creditnotes.zipentry.pattern", null, "creditnotes/creditnotes_%d_%d_%s.pdf", locale));
 			if(classes.contains(DataExportClasses.TRANSPORT_DOCUMENT))
 				transportDocsFiles = exportAccountingDocumentsData(outDir, zipStream, business.getTransportDocuments(), logo, DocumentType.TRANSPORT_DOCUMENT, business.getId(), putWatermark,
-						messageSource.getMessage("export.transportdoc.zipentry.pattern", null, "transportdocs/transportdocs_%d_%d.pdf", locale));
+						messageSource.getMessage("export.transportdoc.zipentry.pattern", null, "transportdocs/transportdocs_%d_%d_%s.pdf", locale));
 				
 			zipStream.close();
 			return zipFile;

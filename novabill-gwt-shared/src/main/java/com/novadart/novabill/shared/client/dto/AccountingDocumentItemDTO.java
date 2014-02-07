@@ -15,6 +15,8 @@ public class AccountingDocumentItemDTO implements IsSerializable {
 	
 	private BigDecimal quantity;
 	
+	private BigDecimal weight;
+	
 	private BigDecimal tax;
 	
 	private BigDecimal totalBeforeTax;
@@ -36,6 +38,16 @@ public class AccountingDocumentItemDTO implements IsSerializable {
 		this.quantity = quantity;
 	}
 
+	
+	public BigDecimal getWeight() {
+		return weight;
+	}
+
+
+	public void setWeight(BigDecimal weight) {
+		this.weight = weight;
+	}
+	
 	
 	public Long getId() {
 		return id;
@@ -155,4 +167,5 @@ public class AccountingDocumentItemDTO implements IsSerializable {
 		i.setUnitOfMeasure(getUnitOfMeasure());
 		return i;
 	}
+
 }

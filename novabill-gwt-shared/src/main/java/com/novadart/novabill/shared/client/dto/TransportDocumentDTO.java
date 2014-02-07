@@ -20,6 +20,12 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 	
 	private String cause;
 	
+	private String totalWeight;
+	
+	private String appearanceOfTheGoods;
+	
+	private Long invoice;
+	
 	public String getNumberOfPackages() {
 		return numberOfPackages;
 	}
@@ -84,4 +90,27 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 		this.cause = cause;
 	}
 
+	public String getTotalWeight() {
+		return totalWeight;
+	}
+
+	public void setTotalWeight(String totalWeight) {
+		this.totalWeight = totalWeight;
+	}
+
+	public Long getInvoice() {
+		return invoice;
+	}
+
+	public void setInvoice(Long invoice) {
+		this.invoice = invoice;
+	}
+
+	public String getAppearanceOfTheGoods() {
+		return appearanceOfTheGoods;
+	}
+
+	public void setAppearanceOfTheGoods(String appearanceOfTheGoods) {
+		this.appearanceOfTheGoods = appearanceOfTheGoods;
+	}
 }

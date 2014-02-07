@@ -21,6 +21,7 @@ public class AccountingDocumentItemDTOFactory {
 		itemDTO.setTotal(item.getTotal());
 		itemDTO.setDiscount(item.getDiscount());
 		itemDTO.setSku(item.getSku());
+		itemDTO.setWeight(item.getWeight());
 		return itemDTO;
 	}
 	
@@ -35,6 +36,7 @@ public class AccountingDocumentItemDTOFactory {
 		accountingDocumentItem.setTotal(accountingDocumentItemDTO.getTotal());
 		accountingDocumentItem.setDiscount(accountingDocumentItemDTO.getDiscount());
 		accountingDocumentItem.setSku(accountingDocumentItemDTO.getSku());
+		accountingDocumentItem.setWeight(accountingDocumentItemDTO.getWeight());
 	}
 
 }

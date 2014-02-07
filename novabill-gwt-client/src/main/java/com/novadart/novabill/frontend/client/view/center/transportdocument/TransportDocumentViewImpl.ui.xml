@@ -15,22 +15,22 @@
 		field="s" />
 	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss"
 		field="g"></ui:with>
-		
+
 	<ui:style>
-	   .forceBold label{
-	       font-weight: bold !important;
-	       margin-left: 5px;
-        }
-        
-        .countItems {
-	       margin-left: 10px;
-	       position: relative;
-           bottom: 5px;
-        }
-        
-        .nopContainer {
-	       margin: 10px 0;
-        }
+	.forceBold label {
+		font-weight: bold !important;
+		margin-left: 5px;
+	}
+	
+	.countItems,.totalWeightCalc {
+		margin-left: 10px;
+		position: relative;
+		bottom: 5px;
+	}
+	
+	.nopContainer {
+		margin: 10px 0;
+	}
 	</ui:style>
 
 	<g:FlowPanel>
@@ -68,8 +68,8 @@
 						<g:Label styleName="{s.label}" text="{i18n.cause}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<g:TextBox styleName="{s.box}" ui:field="cause"
-							maxLength="255"></g:TextBox>
+						<v:ValidatedTextBox styleName="{s.box}" ui:field="cause"
+							maxLength="255"></v:ValidatedTextBox>
 					</g:customCell>
 				</g:row>
 				<g:row>
@@ -77,21 +77,8 @@
 						<g:Label styleName="{s.label}" text="{i18n.note}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<f:ValidatedTextArea styleName="{s.box} {s.note}" visibleLines="3"
-							ui:field="note" />
-					</g:customCell>
-				</g:row>
-				<g:row>
-					<g:customCell>
-                            <g:Label styleName="{s.label}" text="{i18n.numberOfPackages}"></g:Label>						
-					</g:customCell>
-					<g:customCell>
-					   <g:HorizontalPanel styleName="{style.nopContainer}">
-						  <v:ValidatedTextBox styleName="{s.box}"
-							 ui:field="numberOfPackages" maxLength="255" />
-						<g:Button styleName="{g.button} {style.countItems}"
-                               ui:field="countItems" text="Imposta quantità totale articoli" title="Valore arrotondato in eccesso"></g:Button>
-                        </g:HorizontalPanel>
+						<f:ValidatedTextArea styleName="{s.box} {s.note}"
+							visibleLines="3" ui:field="note" />
 					</g:customCell>
 				</g:row>
 				<g:row>
@@ -99,7 +86,8 @@
 						<g:Label styleName="{s.label}" text="{i18n.transporter}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-					   <v:ValidatedTextArea styleName="{s.box} {s.note}" visibleLines="3" ui:field="transporter" />
+						<v:ValidatedTextArea styleName="{s.box} {s.note}"
+							visibleLines="3" ui:field="transporter" />
 					</g:customCell>
 				</g:row>
 				<g:row>
@@ -107,8 +95,8 @@
 						<g:Label styleName="{s.label}" text="{i18n.transportationResponsibility}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<g:TextBox styleName="{s.box}" ui:field="transportationResponsibility"
-							maxLength="255"></g:TextBox>
+						<v:ValidatedTextBox styleName="{s.box}" ui:field="transportationResponsibility"
+							maxLength="255"></v:ValidatedTextBox>
 					</g:customCell>
 				</g:row>
 				<g:row>
@@ -116,10 +104,19 @@
 						<g:Label styleName="{s.label}" text="{i18n.tradeZone}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<g:TextBox styleName="{s.box}" ui:field="tradeZone"
-							maxLength="255"></g:TextBox>
+						<v:ValidatedTextBox styleName="{s.box}" ui:field="tradeZone"
+							maxLength="255"></v:ValidatedTextBox>
 					</g:customCell>
 				</g:row>
+				<g:row>
+                    <g:customCell>
+                        <g:Label styleName="{s.label}" text="{i18n.appearanceOfTheGoods}"></g:Label>
+                    </g:customCell>
+                    <g:customCell>
+                        <v:ValidatedTextArea styleName="{s.box} {s.note}"
+                            visibleLines="3" ui:field="appearanceOfTheGoods" />
+                    </g:customCell>
+                </g:row>
 				<g:row>
 					<g:customCell>
 						<g:Label styleName="{s.label}" text="{i18n.transportStartDate}"></g:Label>
@@ -140,10 +137,12 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-                        <g:CheckBox ui:field="setFromAddress" styleName="{s.label} {style.forceBold}" text="{i18n.fromAddress}"></g:CheckBox>					   
+						<g:CheckBox ui:field="setFromAddress" styleName="{s.label} {style.forceBold}"
+							text="{i18n.fromAddress}"></g:CheckBox>
 					</g:customCell>
 					<g:customCell>
-						<g:HorizontalPanel ui:field="fromAddressContainer" visible="false" styleName="{s.addressBox}">
+						<g:HorizontalPanel ui:field="fromAddressContainer"
+							visible="false" styleName="{s.addressBox}">
 							<g:Grid>
 								<g:row>
 									<g:customCell>
@@ -185,10 +184,12 @@
 				</g:row>
 				<g:row>
 					<g:customCell>
-                        <g:CheckBox ui:field="setToAddress" styleName="{s.label} {style.forceBold}" text="{i18n.toAddress}"></g:CheckBox>                     
+						<g:CheckBox ui:field="setToAddress" styleName="{s.label} {style.forceBold}"
+							text="{i18n.toAddress}"></g:CheckBox>
 					</g:customCell>
 					<g:customCell>
-						<g:HorizontalPanel visible="false" ui:field="toAddressContainer" styleName="{s.addressBox}">
+						<g:HorizontalPanel visible="false" ui:field="toAddressContainer"
+							styleName="{s.addressBox}">
 							<g:Grid>
 								<g:row>
 									<g:customCell>
@@ -234,6 +235,37 @@
 			<g:SimplePanel styleName="{s.itemTableContainer}">
 				<t:ItemInsertionForm ui:field="itemInsertionForm"></t:ItemInsertionForm>
 			</g:SimplePanel>
+
+			<g:Grid>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="{s.label}" text="{i18n.numberOfPackages}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<g:HorizontalPanel styleName="{style.nopContainer}">
+							<v:ValidatedTextBox styleName="{s.box}"
+								ui:field="numberOfPackages" maxLength="255" />
+							<g:Button styleName="{g.button} {style.countItems}"
+								ui:field="countItems" text="Imposta quantità totale articoli"
+								title="Valore arrotondato in eccesso"></g:Button>
+						</g:HorizontalPanel>
+					</g:customCell>
+				</g:row>
+				<g:row>
+					<g:customCell>
+						<g:Label styleName="{s.label}" text="{i18n.totalWeight}"></g:Label>
+					</g:customCell>
+					<g:customCell>
+						<g:HorizontalPanel styleName="{style.nopContainer}">
+							<v:ValidatedTextBox styleName="{s.box}"
+								ui:field="totalWeight" maxLength="255" />
+							<g:Button styleName="{g.button} {style.totalWeightCalc}"
+								ui:field="totalWeightCalc" text="Imposta peso totale articoli"
+								title="Calcola il peso totale degli articoli"></g:Button>
+						</g:HorizontalPanel>
+					</g:customCell>
+				</g:row>
+			</g:Grid>
 
 			<g:SimplePanel>
 				<g:HorizontalPanel styleName="{s.totalsContainer}">

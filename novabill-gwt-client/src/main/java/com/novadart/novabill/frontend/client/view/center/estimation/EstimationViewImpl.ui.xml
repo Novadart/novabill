@@ -14,98 +14,110 @@
 		field="s" />
 	<ui:with type="com.novadart.novabill.frontend.client.resources.GlobalCss"
 		field="g"></ui:with>
+		
+	<ui:style>
+	.overrideIncognitoModeCheckbox label {
+	   margin-left: 5px;
+    }
+	</ui:style>
 
 	<g:FlowPanel>
+		<g:Grid styleName="{s.documentMainDetails}">
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="{s.label}" text="{i18n.client}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<g:Label styleName="{s.box} {s.clientName}" ui:field="clientName"></g:Label>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="{s.label}" text="{i18n.estimationNumber}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<v:ValidatedTextBox styleName="{s.box} {s.number}"
+						ui:field="number"></v:ValidatedTextBox>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="{s.label}" text="{i18n.date}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<v:ValidatedDateBox styleName="{s.box} {s.date}"
+						ui:field="date" />
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="{s.label}" text="{i18n.validTill}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<v:ValidatedDateBox styleName="{s.box} {s.date}"
+						ui:field="validTill" />
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="{s.label}" text="{i18n.paymentNote}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<f:ValidatedTextArea styleName="{s.box} {s.note}"
+						visibleLines="3" ui:field="paymentNote"></f:ValidatedTextArea>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="{s.label}" text="{i18n.limitations}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<f:ValidatedTextArea styleName="{s.box} {s.note}"
+						visibleLines="3" ui:field="limitations"></f:ValidatedTextArea>
+				</g:customCell>
+			</g:row>
+			<g:row>
+				<g:customCell>
+					<g:Label styleName="{s.label}" text="{i18n.note}"></g:Label>
+				</g:customCell>
+				<g:customCell>
+					<f:ValidatedTextArea styleName="{s.box} {s.note}"
+						visibleLines="3" ui:field="note"></f:ValidatedTextArea>
+				</g:customCell>
+			</g:row>
+			<g:row>
+                <g:customCell>
+                    <g:Label styleName="{s.label}" text="{i18n.pdfOptions}" ui:field="pdfOptionsLabel" visible="false"></g:Label>
+                </g:customCell>
+                <g:customCell>
+                    <g:CheckBox ui:field="overrideIncognitoModeCheckbox" styleName="{style.overrideIncognitoModeCheckbox}" visible="false"
+                        text="Stampa l'intestazione nel PDF"></g:CheckBox>
+                </g:customCell>
+            </g:row>
+		</g:Grid>
 
-		<g:FlowPanel styleName="{s.docScrollBody}">
-			<g:Grid styleName="{s.documentMainDetails}">
-				<g:row>
-					<g:customCell>
-						<g:Label styleName="{s.label}" text="{i18n.client}"></g:Label>
-					</g:customCell>
-					<g:customCell>
-						<g:Label styleName="{s.box} {s.clientName}" ui:field="clientName"></g:Label>
-					</g:customCell>
-				</g:row>
-				<g:row>
-					<g:customCell>
-						<g:Label styleName="{s.label}" text="{i18n.estimationNumber}"></g:Label>
-					</g:customCell>
-					<g:customCell>
-						<v:ValidatedTextBox styleName="{s.box} {s.number}"
-							ui:field="number"></v:ValidatedTextBox>
-					</g:customCell>
-				</g:row>
-				<g:row>
-					<g:customCell>
-						<g:Label styleName="{s.label}" text="{i18n.date}"></g:Label>
-					</g:customCell>
-					<g:customCell>
-						<v:ValidatedDateBox styleName="{s.box} {s.date}"
-							ui:field="date" />
-					</g:customCell>
-				</g:row>
-				<g:row>
-					<g:customCell>
-						<g:Label styleName="{s.label}" text="{i18n.validTill}"></g:Label>
-					</g:customCell>
-					<g:customCell>
-						<v:ValidatedDateBox styleName="{s.box} {s.date}"
-							ui:field="validTill" />
-					</g:customCell>
-				</g:row>
-				<g:row>
-					<g:customCell>
-						<g:Label styleName="{s.label}" text="{i18n.paymentNote}"></g:Label>
-					</g:customCell>
-					<g:customCell>
-						<f:ValidatedTextArea styleName="{s.box} {s.note}" visibleLines="3"
-							ui:field="paymentNote"></f:ValidatedTextArea>
-					</g:customCell>
-				</g:row>
-				<g:row>
-					<g:customCell>
-						<g:Label styleName="{s.label}" text="{i18n.limitations}"></g:Label>
-					</g:customCell>
-					<g:customCell>
-						<f:ValidatedTextArea styleName="{s.box} {s.note}" visibleLines="3"
-							ui:field="limitations"></f:ValidatedTextArea>
-					</g:customCell>
-				</g:row>
-				<g:row>
-					<g:customCell>
-						<g:Label styleName="{s.label}" text="{i18n.note}"></g:Label>
-					</g:customCell>
-					<g:customCell>
-						<f:ValidatedTextArea styleName="{s.box} {s.note}" visibleLines="3"
-							ui:field="note"></f:ValidatedTextArea>
-					</g:customCell>
-				</g:row>
-			</g:Grid>
 
+		<g:SimplePanel styleName="{s.itemTableContainer}">
+			<t:ItemInsertionForm ui:field="itemInsertionForm"></t:ItemInsertionForm>
+		</g:SimplePanel>
 
-			<g:SimplePanel styleName="{s.itemTableContainer}">
-				<t:ItemInsertionForm ui:field="itemInsertionForm"></t:ItemInsertionForm>
-			</g:SimplePanel>
+		<g:SimplePanel>
+			<g:HorizontalPanel styleName="{s.totalsContainer}">
+				<g:VerticalPanel styleName="{s.totalContainer} {s.totalBeforeTaxes}">
+					<g:Label styleName="{s.label}" text="{i18n.totalBeforeTaxes}"></g:Label>
+					<g:Label styleName="{s.total}" ui:field="totalBeforeTaxes"></g:Label>
+				</g:VerticalPanel>
+				<g:VerticalPanel styleName="{s.totalContainer} {s.totalTax}">
+					<g:Label styleName="{s.label}" text="{i18n.totalTax}"></g:Label>
+					<g:Label styleName="{s.total}" ui:field="totalTax"></g:Label>
+				</g:VerticalPanel>
+				<g:VerticalPanel styleName="{s.totalContainer} {s.totalAfterTaxes}">
+					<g:Label styleName="{s.label}" text="{i18n.totalAfterTaxes}"></g:Label>
+					<g:Label styleName="{s.total}" ui:field="totalAfterTaxes"></g:Label>
+				</g:VerticalPanel>
+			</g:HorizontalPanel>
+		</g:SimplePanel>
 
-			<g:SimplePanel>
-				<g:HorizontalPanel styleName="{s.totalsContainer}">
-					<g:VerticalPanel styleName="{s.totalContainer} {s.totalBeforeTaxes}">
-						<g:Label styleName="{s.label}" text="{i18n.totalBeforeTaxes}"></g:Label>
-						<g:Label styleName="{s.total}" ui:field="totalBeforeTaxes"></g:Label>
-					</g:VerticalPanel>
-					<g:VerticalPanel styleName="{s.totalContainer} {s.totalTax}">
-						<g:Label styleName="{s.label}" text="{i18n.totalTax}"></g:Label>
-						<g:Label styleName="{s.total}" ui:field="totalTax"></g:Label>
-					</g:VerticalPanel>
-					<g:VerticalPanel styleName="{s.totalContainer} {s.totalAfterTaxes}">
-						<g:Label styleName="{s.label}" text="{i18n.totalAfterTaxes}"></g:Label>
-						<g:Label styleName="{s.total}" ui:field="totalAfterTaxes"></g:Label>
-					</g:VerticalPanel>
-				</g:HorizontalPanel>
-			</g:SimplePanel>
-
-		</g:FlowPanel>
 
 		<g:FlowPanel styleName="{s.docControls}" ui:field="docControls">
 			<gwtshared:LoaderButton styleName="{s.loaderButton}"

@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.presenter.center.payment;
 
 import java.util.Collections;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.event.shared.EventBus;
@@ -17,12 +18,15 @@ import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.AbstractPresenter;
+import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.MainWidget;
 import com.novadart.novabill.frontend.client.view.center.payment.PaymentView;
 import com.novadart.novabill.frontend.client.widget.dialog.payment.PaymentDialog;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
+import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
 public class PaymentPresenter extends AbstractPresenter<PaymentView> implements PaymentView.Presenter {
@@ -208,10 +212,35 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 			shb.appendHtmlConstant("</div></td>");
 			shb.appendHtmlConstant("<td><div class='"+getView().getStyle().value()+"'>");
 			shb.appendEscaped(payment.getPaymentDateDelta()==0 
-					? I18N.INSTANCE.immediate() : payment.getPaymentDateDelta()*30 + " "+I18N.INSTANCE.days());
+					? I18N.INSTANCE.immediate() : (payment.getPaymentDateDelta() + " " 
+			+ (PaymentDeltaType.COMMERCIAL_MONTH.equals(payment.getPaymentDeltaType()) ? I18N.INSTANCE.commercialMonths() : I18N.INSTANCE.days())) );
 			shb.appendHtmlConstant("</div></td></tr>");
 		}
 
+		if(PaymentDateType.END_OF_MONTH.equals(payment.getPaymentDateGenerator())) {
+			shb.appendHtmlConstant("<tr><td><div class='"+getView().getStyle().label()+"'>");
+			shb.appendEscaped(I18N.INSTANCE.paymentDelay2());
+			shb.appendHtmlConstant("</div></td>");
+			shb.appendHtmlConstant("<td><div class='"+getView().getStyle().value()+"'>");
+			shb.appendEscaped(payment.getSecondaryPaymentDateDelta() + " "+I18N.INSTANCE.days());
+			shb.appendHtmlConstant("</div></td></tr>");
+		}
+		
+		if(!PaymentDateType.CUSTOM.equals(payment.getPaymentDateGenerator())) {
+			Date today = new Date();
+			
+			shb.appendHtmlConstant("<tr><td>&nbsp;</td><td>&nbsp;</td></tr><tr><td>&nbsp;</td><td>&nbsp;</td></tr>");
+			
+			shb.appendHtmlConstant("<tr><td colspan='2'><div>");
+			shb.appendEscaped(I18N.INSTANCE.example());
+			shb.appendHtmlConstant(":</div>");
+			shb.appendHtmlConstant("<table>");
+			shb.appendHtmlConstant("<tr><td>"+I18N.INSTANCE.date()+"</td><td>&nbsp;&nbsp;&nbsp;<i>"+DocumentUtils.DOCUMENT_DATE_FORMAT.format(today)+"</i></td></tr>");
+			shb.appendHtmlConstant("<tr><td>"+I18N.INSTANCE.dueDate()+"</td><td>&nbsp;&nbsp;&nbsp;<i>"+DocumentUtils.DOCUMENT_DATE_FORMAT.format(CalcUtils.calculatePaymentDueDate(today, payment))+"</i></td></tr>");
+			shb.appendHtmlConstant("</table>");
+			shb.appendHtmlConstant("</div></td></tr>");
+		}
+		
 		shb.appendHtmlConstant("</table>");
 
 		getView().getDescription().setHTML(shb.toSafeHtml());

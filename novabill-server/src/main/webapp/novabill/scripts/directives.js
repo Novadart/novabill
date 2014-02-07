@@ -96,7 +96,6 @@ angular.module('novabill.directives',
 
 			$scope.print = function(){
 				GWT_UI.generateEstimationPdf($scope.estimation.id);
-				$event.stopPropagation();
 			};
 
 			$scope.remove = function(){
@@ -154,8 +153,10 @@ angular.module('novabill.directives',
 			transportDocument : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$translate', function($scope, $element, $translate){
+		controller : ['$scope', '$element', '$translate', 'nConstants', function($scope, $element, $translate, nConstants){
 
+			$scope.invoiceRefUrl = $scope.transportDocument.invoice ? nConstants.url.invoiceDetails($scope.transportDocument.invoice) : null;
+			
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.transportDocumentDetails( $scope.transportDocument.id ) );
 			};
@@ -166,7 +167,6 @@ angular.module('novabill.directives',
 
 			$scope.print = function(){
 				GWT_UI.generateTransportDocumentPdf($scope.transportDocument.id);
-				$event.stopPropagation();
 			};
 
 			$scope.remove = function(){
@@ -225,7 +225,6 @@ angular.module('novabill.directives',
 
 			$scope.print = function(){
 				GWT_UI.generateCreditNotePdf($scope.creditNote.id);
-				$event.stopPropagation();
 			};
 
 			$scope.remove = function(){
@@ -534,11 +533,12 @@ angular.module('novabill.directives',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.positiveFiscalFloat.test(viewValue)) {
-					var floatVal = parseFloat(viewValue.replace(',', '.'));
+				if (nRegExp.positiveTwoDecimalsFloatNumber.test(viewValue)) {
+					var dotVal = viewValue.replace(',', '.');
+					var floatVal = parseFloat(dotVal);
 					if(floatVal >= 0 && floatVal < 100){
 						ctrl.$setValidity('tax', true);
-						return floatVal;
+						return dotVal;
 					} else {
 						ctrl.$setValidity('tax', false);
 						return undefined;
@@ -551,7 +551,7 @@ angular.module('novabill.directives',
 			});
 
 			ctrl.$formatters.push(function(modelValue) {
-				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
+				return modelValue ? new String(modelValue).replace('.', ',') : '';
 			});
 		}
 	};
@@ -568,11 +568,12 @@ angular.module('novabill.directives',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.positiveFiscalFloat.test(viewValue)) {
-					var floatVal = parseFloat(viewValue.replace(',', '.'));
+				if (nRegExp.positiveTwoDecimalsFloatNumber.test(viewValue)) {
+					var dotVal = viewValue.replace(',', '.');
+					var floatVal = parseFloat(dotVal);
 					if(floatVal >= 0){
 						ctrl.$setValidity('price', true);
-						return floatVal;
+						return dotVal;
 					} else {
 						ctrl.$setValidity('price', false);
 						return undefined;
@@ -585,7 +586,40 @@ angular.module('novabill.directives',
 			});
 
 			ctrl.$formatters.push(function(modelValue) {
-				return modelValue ? new String(modelValue).replace('.', ',') : modelValue;
+				return modelValue ? new String(modelValue).replace('.', ',') : '';
+			});
+		}
+	};
+}])
+
+
+/*
+ * Smart Float attribute. 
+ * User can insert , or . to separate decimals.
+ * if "positive-float" attribute is set to true the float must be positive
+ */
+.directive('nSmartFloat', ['nRegExp', function(nRegExp) {
+	return {
+		require: 'ngModel',
+		scope : {
+			positiveFloat : '='
+		},
+		restrict: 'A',
+		link: function(scope, elm, attrs, ctrl) {
+			ctrl.$parsers.unshift(function(viewValue) {
+				var testExp = scope.positiveFloatNumber ? nRegExp.positiveFloatNumber : nRegExp.floatNumber;
+				
+				if (testExp.test(viewValue)) {
+					ctrl.$setValidity('float', true);
+			        return viewValue.replace(',', '.');
+				} else {
+					ctrl.$setValidity('float', false);
+					return undefined;
+				}
+			});
+
+			ctrl.$formatters.push(function(modelValue) {
+				return modelValue ? new String(modelValue).replace('.', ',') : '';
 			});
 		}
 	};

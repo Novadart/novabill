@@ -12,10 +12,12 @@
             <i class="fa fa-angle-down"></i>
         </a>
         <ul class="dropdown-menu" ng-class="{'bottom-up': bottomUpMenu}">
-            <li><a href="javascript:void(0);" ng-click="stopProp($event); createInvoice()">{{'CREATE_INVOICE' | translate}}</a></li>
-            <li class="divider"></li>
+            <li><a ng-if="!invoiceRefUrl" href="javascript:void(0);" ng-click="stopProp($event); createInvoice()">{{'CREATE_INVOICE' | translate}}</a></li>
+            <li ng-if="!invoiceRefUrl" class="divider"></li>
             <li ><a href="javascript:void(0);" ng-click="stopProp($event); remove()" ><i class="fa fa-trash-o"></i>{{'DELETE' | translate}}</a></li>
         </ul>
     </div>
+
+    <a ng-if="invoiceRefUrl" title="{{'INVOICE_REF_TITLE' | translate}}" href="{{invoiceRefUrl}}" class="invoice-ref btn btn-sm default pull-right"><i class="fa fa-file-o"></i></a>
     
 </div>

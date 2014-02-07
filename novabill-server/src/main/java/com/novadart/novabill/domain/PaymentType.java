@@ -1,6 +1,7 @@
 package com.novadart.novabill.domain;
 
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
 import javax.persistence.Column;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
+import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 
 /*
  * Important note!
@@ -49,6 +51,11 @@ public class PaymentType {
 	
 	private Integer paymentDateDelta;
 	
+	private PaymentDeltaType paymentDeltaType;
+	
+	@Column(columnDefinition = "integer default 0")
+	private Integer secondaryPaymentDateDelta;
+	
 	@ManyToOne
 	private Business business;
 	
@@ -62,21 +69,23 @@ public class PaymentType {
 			client.setDefaultPaymentType(null);
 	}
 	
-	public PaymentType(String name, String defaultPaymentNote, PaymentDateType paymentDateGenerator, Integer paymentDateDelta) {
+	public PaymentType(String name, String defaultPaymentNote, PaymentDateType paymentDateGenerator, Integer paymentDateDelta, PaymentDeltaType paymentDeltaType, Integer secondaryPaymentDateDelta) {
 		this.name = name;
 		this.defaultPaymentNote = defaultPaymentNote;
 		this.paymentDateGenerator = paymentDateGenerator;
 		this.paymentDateDelta = paymentDateDelta;
+		this.paymentDeltaType = paymentDeltaType;
+		this.secondaryPaymentDateDelta = secondaryPaymentDateDelta;
 	}
 	
 	public PaymentType(){
-		this(null, null, null, null);
+		this(null, null, null, null, null, null);
 	}
 	
 	
 	@Override
 	public  PaymentType clone() throws CloneNotSupportedException {
-		return new PaymentType(name, defaultPaymentNote, paymentDateGenerator, paymentDateDelta);
+		return new PaymentType(name, defaultPaymentNote, paymentDateGenerator, paymentDateDelta, paymentDeltaType, secondaryPaymentDateDelta);
 	}
 
 
@@ -116,6 +125,22 @@ public class PaymentType {
 		this.paymentDateDelta = paymentDateDelta;
 	}
 
+	public PaymentDeltaType getPaymentDeltaType() {
+		return paymentDeltaType;
+	}
+	
+	public void setPaymentDeltaType(PaymentDeltaType paymentDeltaType) {
+		this.paymentDeltaType = paymentDeltaType;
+	}
+	
+	public Integer getSecondaryPaymentDateDelta() {
+		return secondaryPaymentDateDelta;
+	}
+
+	public void setSecondaryPaymentDateDelta(Integer secondaryPaymentDateDelta) {
+		this.secondaryPaymentDateDelta = secondaryPaymentDateDelta;
+	}
+
 	public Business getBusiness() {
 		return business;
 	}
@@ -152,6 +177,10 @@ public class PaymentType {
     public static PaymentType findPaymentType(Long id) {
         if (id == null) return null;
         return entityManager().find(PaymentType.class, id);
+    }
+    
+    public static List<PaymentType> findAllPaymentTypes() {
+        return entityManager().createQuery("SELECT p FROM PaymentType p", PaymentType.class).getResultList();
     }
     
     @Transactional

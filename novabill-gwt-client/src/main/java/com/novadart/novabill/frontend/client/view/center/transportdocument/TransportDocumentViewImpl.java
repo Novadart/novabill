@@ -18,13 +18,11 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.TextLengthValidation;
-import com.novadart.gwtshared.client.validation.ValidationBundle;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
@@ -73,6 +71,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField Button toAddrButtonDefault;
 	
 	@UiField(provided=true) ValidatedTextBox numberOfPackages;
+	@UiField(provided=true) ValidatedTextBox totalWeight;
 	@UiField(provided=true) com.novadart.gwtshared.client.validation.widget.ValidatedTextArea transporter;
 
 	@UiField(provided=true) ValidatedDateBox transportStartDate;
@@ -81,13 +80,14 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 
-	@UiField TextBox transportationResponsibility;
-	@UiField TextBox tradeZone;
+	@UiField(provided=true) ValidatedTextBox transportationResponsibility;
+	@UiField(provided=true) ValidatedTextBox tradeZone;
+	@UiField(provided=true) com.novadart.gwtshared.client.validation.widget.ValidatedTextArea appearanceOfTheGoods;
 
 	@UiField Label clientName;
 	@UiField(provided=true) ValidatedTextBox number;
 	@UiField(provided=true) ValidatedDateBox date;
-	@UiField TextBox cause;
+	@UiField(provided=true) ValidatedTextBox cause;
 	@UiField ValidatedTextArea note;
 
 	@UiField Label totalBeforeTaxes;
@@ -95,6 +95,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField Label totalAfterTaxes;
 	
 	@UiField Button countItems;
+	@UiField Button totalWeightCalc;
 
 	@UiField(provided=true) LoaderButton createTransportDocument;
 	@UiField Button abort;
@@ -102,18 +103,21 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	private Presenter presenter;
 
 	public TransportDocumentViewImpl() {
-		ValidationBundle<String> nev = new ValidationBundle<String>() {
-
-			@Override
-			public boolean isValid(String value) { 	return !value.isEmpty(); }
-
-			@Override
-			public String getErrorMessage() {	return null; }
-		};
 
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
-
+		transportationResponsibility = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		tradeZone = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		appearanceOfTheGoods = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), 
+				new TextLengthValidation(255) {
+			
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(255);
+			}
+		});
+		cause = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		numberOfPackages = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
+		totalWeight = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		transporter = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), 
 				new TextLengthValidation(255) {
 			
@@ -130,10 +134,10 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		fromAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
-		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),nev);
-		toAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(), nev);
-		toAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(),nev);
-		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),nev);
+		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),ValidationKit.DEFAULT);
+		toAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(), ValidationKit.DEFAULT);
+		toAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(),ValidationKit.DEFAULT);
+		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),ValidationKit.DEFAULT);
 		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
@@ -163,7 +167,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			}
 		});
 
-		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
+		itemInsertionForm = new ItemInsertionForm(true, new ItemInsertionForm.Handler() {
 
 			@Override
 			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
@@ -247,6 +251,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	void onCountItemsClicked(ClickEvent e){
 		presenter.onCountItemsCLicked();
 	}
+	
+	@UiHandler("totalWeightCalc")
+	void onTotalWeightCalcClicked(ClickEvent e){
+		presenter.onTotalWeightCalcClicked();
+	}
 
 	@UiHandler("abort")
 	void onCancelClicked(ClickEvent e){
@@ -268,10 +277,13 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		transportStartDate.reset();
 		note.reset();
 		numberOfPackages.reset();
+		totalWeight.reset();
 		transporter.reset();
-		transportationResponsibility.setText("");
+		transportationResponsibility.reset();
+		appearanceOfTheGoods.reset();
+		cause.reset();
 		cause.setText(I18N.INSTANCE.transportDocumentCauseDefaultText());
-		tradeZone.setText("");
+		tradeZone.reset();
 		hour.reset();
 		minute.reset();
 		numberOfPackages.reset();
@@ -316,6 +328,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrCountry.setEnabled(!value);
 		fromAddrButtonDefault.setEnabled(!value);
 		
+		totalWeightCalc.setEnabled(!value);
 		countItems.setEnabled(!value);
 		
 		toAddrCompanyName.setEnabled(!value);
@@ -327,6 +340,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddrButtonDefault.setEnabled(!value);
 
 		numberOfPackages.setEnabled(!value);
+		totalWeight.setEnabled(!value);
 		transporter.setEnabled(!value);
 
 		transportStartDate.setEnabled(!value);
@@ -449,6 +463,10 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	public ValidatedTextBox getNumberOfPackages() {
 		return numberOfPackages;
 	}
+	
+	public ValidatedTextBox getTotalWeight() {
+		return totalWeight;
+	}
 
 	public com.novadart.gwtshared.client.validation.widget.ValidatedTextArea getTransporter() {
 		return transporter;
@@ -466,16 +484,20 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return minute;
 	}
 
-	public TextBox getTransportationResponsibility() {
+	public ValidatedTextBox getTransportationResponsibility() {
 		return transportationResponsibility;
 	}
 
-	public TextBox getTradeZone() {
+	public ValidatedTextBox getTradeZone() {
 		return tradeZone;
 	}
 
-	public TextBox getCause() {
+	public ValidatedTextBox getCause() {
 		return cause;
+	}
+	
+	public com.novadart.gwtshared.client.validation.widget.ValidatedTextArea getAppearanceOfTheGoods() {
+		return appearanceOfTheGoods;
 	}
 	
 	@Override

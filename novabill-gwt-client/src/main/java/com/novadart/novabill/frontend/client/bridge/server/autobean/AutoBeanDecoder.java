@@ -6,7 +6,9 @@ import java.util.Map;
 
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.shared.client.data.PriceType;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
+import com.novadart.novabill.shared.client.dto.ContactDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 
@@ -16,9 +18,10 @@ public class AutoBeanDecoder {
 		CommodityDTO c = new CommodityDTO();
 		c.setDescription(commodity.getDescription());
 		c.setId(commodity.getId());
+		c.setWeight(commodity.getWeight() != null ? new BigDecimal(commodity.getWeight()) : null);
 		c.setService(commodity.isService());
 		c.setSku(commodity.getSku());
-		c.setTax(commodity.getTax() != null ? BigDecimal.valueOf(commodity.getTax()) : null);
+		c.setTax(commodity.getTax() != null ? new BigDecimal(commodity.getTax()) : null);
 		c.setUnitOfMeasure(commodity.getUnitOfMeasure());
 		c.setBusiness(Configuration.getBusiness());
 
@@ -39,7 +42,7 @@ public class AutoBeanDecoder {
 		p.setId(price.getId());
 		p.setPriceListID(price.getPriceListID());
 		p.setPriceType(price.getPriceType() != null ? PriceType.valueOf(price.getPriceType()) : null);
-		p.setPriceValue(price.getPriceValue() != null ? BigDecimal.valueOf(price.getPriceValue()) : null);
+		p.setPriceValue(price.getPriceValue() != null ? new BigDecimal(price.getPriceValue()) : null);
 		return p;
 	}
 
@@ -60,4 +63,40 @@ public class AutoBeanDecoder {
 		return p;
 	}
 
+	
+	public static ClientDTO decode(Client client) {
+		ClientDTO c = new ClientDTO();
+		c.setAddress(client.getAddress());
+		c.setCity(client.getCity());
+		c.setContact(client.getContact() != null ? decode(client.getContact()) : null);
+		c.setCountry(client.getCountry());
+		c.setDefaultPaymentTypeID(client.getDefaultPaymentTypeID());
+		c.setDefaultPriceListID(client.getDefaultPriceListID());
+		c.setEmail(client.getEmail());
+		c.setFax(client.getFax());
+		c.setId(client.getId());
+		c.setMobile(client.getMobile());
+		c.setName(client.getName());
+		c.setNote(client.getNote());
+		c.setPhone(client.getPhone());
+		c.setPostcode(client.getPostcode());
+		c.setProvince(client.getProvince());
+		c.setSsn(client.getSsn());
+		c.setVatID(client.getVatID());
+		c.setWeb(client.getWeb());
+		return c;
+	}
+	
+	
+	public static ContactDTO decode(Contact contact) {
+		ContactDTO c = new ContactDTO();
+		c.setEmail(contact.getEmail());
+		c.setFax(contact.getFax());
+		c.setFirstName(contact.getFirstName());
+		c.setLastName(contact.getLastName());
+		c.setMobile(contact.getMobile());
+		c.setPhone(contact.getPhone());
+		return c;
+	}
+	
 }

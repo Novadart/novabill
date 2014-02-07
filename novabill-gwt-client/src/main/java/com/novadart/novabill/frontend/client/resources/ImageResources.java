@@ -20,4 +20,8 @@ public interface ImageResources extends ClientBundle {
 	@Source("large-loader.gif")
 	ImageResource largeLoader();
 
+	ImageResource arrow_down();
+
+	ImageResource arrow_up();
+
 }

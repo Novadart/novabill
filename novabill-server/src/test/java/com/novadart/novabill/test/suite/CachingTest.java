@@ -226,7 +226,7 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void invoiceRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
+	public void invoiceRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
 		Set<InvoiceDTO> result = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(businessID, getYear()));
@@ -250,7 +250,7 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void invoiceAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, ParseException{
+	public void invoiceAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, ParseException, DataIntegrityException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
 		Set<InvoiceDTO> result = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(businessID, getYear()));
@@ -519,6 +519,37 @@ public class CachingTest extends GWTServiceTest {
 		assertTrue(result != nonCachedResult);
 		assertTrue(result.size() == nonCachedResult.size());
 		assertTrue(tranYears == businessService.getTransportDocumentYears(businessID));
+	}
+
+	@Test
+	public void transDocSetInvoiceCacheTest() throws NotAuthenticatedException, DataAccessException, DataIntegrityException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<TransportDocumentDTO> result = businessGwtService.getTransportDocuments(businessID, getYear());
+		
+		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
+		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		transDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), transDoc.getId());
+		
+		List<TransportDocumentDTO> nonCachedResult = businessGwtService.getTransportDocuments(businessID, getYear());
+		assertTrue(result != nonCachedResult);
+		assertTrue(result.size() == nonCachedResult.size());
+	}
+	
+	@Test
+	public void transDocClearInvoiceCacheTest() throws DataAccessException, NotAuthenticatedException, DataIntegrityException{
+		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
+		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		transDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoice.getId(), transDoc.getId());
+		
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<TransportDocumentDTO> result = businessGwtService.getTransportDocuments(businessID, getYear());
+		
+		transDocService.clearInvoice(authenticatedPrincipal.getBusiness().getId(), transDoc.getId());
+		
+		List<TransportDocumentDTO> nonCachedResult = businessGwtService.getTransportDocuments(businessID, getYear());
+		assertTrue(result != nonCachedResult);
+		assertTrue(result.size() == nonCachedResult.size());
+		
 	}
 	
 	@Test

@@ -82,20 +82,21 @@ public abstract class InvoicePlace extends Place {
 				feip.setEstimationId(estimationId);
 				return feip;
 				
-			}  else if(args.containsKey(ARG_TRANSPORT_DOCUMENT)) {
-				
-				Long tdocId = null;
-				try{
-					tdocId = Long.parseLong(args.get(ARG_TRANSPORT_DOCUMENT));
-				} catch(NumberFormatException e){
-					return null;
-				}
-				
-				FromTransportDocumentInvoicePlace ftdip = new FromTransportDocumentInvoicePlace();
-				ftdip.setTransportDocumentId(tdocId);
-				return ftdip;
 			} 
-			
+//			else if(args.containsKey(ARG_TRANSPORT_DOCUMENT)) {
+//				
+//				Long tdocId = null;
+//				try{
+//					tdocId = Long.parseLong(args.get(ARG_TRANSPORT_DOCUMENT));
+//				} catch(NumberFormatException e){
+//					return null;
+//				}
+//				
+//				FromTransportDocumentInvoicePlace ftdip = new FromTransportDocumentInvoicePlace();
+//				ftdip.setTransportDocumentId(tdocId);
+//				return ftdip;
+//			} 
+//			
 			return null;
 			
 		}
@@ -120,10 +121,10 @@ public abstract class InvoicePlace extends Place {
 				return HistoryUtils.serialize(ARG_ESTIMATION, p.getEstimationId());
 			}
 			
-			if (place instanceof FromTransportDocumentInvoicePlace) {
-				FromTransportDocumentInvoicePlace p = (FromTransportDocumentInvoicePlace) place;
-				return HistoryUtils.serialize(ARG_TRANSPORT_DOCUMENT, p.getTransportDocumentId());
-			}
+//			if (place instanceof FromTransportDocumentInvoicePlace) {
+//				FromTransportDocumentInvoicePlace p = (FromTransportDocumentInvoicePlace) place;
+//				return HistoryUtils.serialize(ARG_TRANSPORT_DOCUMENT, p.getTransportDocumentId());
+//			}
 			
 			if (place instanceof NewInvoicePlace) {
 				NewInvoicePlace p = (NewInvoicePlace) place;

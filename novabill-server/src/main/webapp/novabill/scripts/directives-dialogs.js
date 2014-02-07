@@ -4,6 +4,34 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 
 /*
+ * Edit Price List Dialog
+ */
+.factory('nAlertDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+	return {
+		open : function( message ) {
+
+			return $modal.open({
+
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-alert-dialog.html'),
+
+				controller: ['$scope', '$modalInstance',
+				             function($scope, $modalInstance){
+
+					$scope.message = message;
+
+					$scope.ok = function(){
+						$modalInstance.close();
+					};
+
+				}]
+			});
+		}
+	};
+}])
+
+
+/*
  * Select Transport Documents Dialog
  */
 .directive('nSelectTransportDocumentsDialog', ['nConstants', function factory(nConstants){
@@ -14,6 +42,23 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 		scope: {},
 
 		controller : ['$scope', 'nConstants', function($scope, nConstants){
+
+			function partitionTransportDocuments(docs){
+				var result = {
+						neverIncludedInInvoice : [],
+						alreadyIncludedInInvoice : []
+				};
+
+				angular.forEach(docs, function(tDoc, key){
+					if(tDoc.invoice){
+						result.alreadyIncludedInInvoice.push(tDoc);
+					} else {
+						result.neverIncludedInInvoice.push(tDoc);
+					}
+				});
+
+				return result;
+			}
 
 			$scope.$on(nConstants.events.SHOW_TRANSPORT_DOCUMENTS_DIALOG, 
 					function(event, clientId, preSelectedId){
@@ -26,7 +71,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 						$scope.$apply(function(){
 							$scope.selectedSet = {};
 							$scope.selectedSet[preSelectedId] = true;
-							$scope.docs = result.transportDocuments;
+							$scope.docs = partitionTransportDocuments(result.transportDocuments);
 
 							$('#selectTransportDocumentsDialog').modal('show');
 							$('#selectTransportDocumentsDialog .scroller').slimScroll({
@@ -64,6 +109,11 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 			$scope.openUrl = function($event, id){
 				$event.stopPropagation();
 				window.open(nConstants.url.transportDocumentDetails( id ), '_blank');
+			};
+
+			$scope.openInvoice = function($event, invoiceId){
+				$event.stopPropagation();
+				window.open(nConstants.url.invoiceDetails( invoiceId ), '_blank');
 			};
 
 			$scope.ok = function(){
@@ -155,6 +205,9 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				// update service property
 				$scope.commodity.service = $scope.service==='true';
 
+				//set weight to null in case we are dealing with a service
+				$scope.commodity.weight = $scope.commodity.service ? null : ($scope.commodity.weight ? new String($scope.commodity.weight) : null);
+
 				// if default price is not present, build the structure for storing it
 				if(!$scope.commodity.pricesMap){
 					$scope.commodity['pricesMap'] = { prices : {} };
@@ -215,7 +268,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 					$scope.invalidIdentifier = invalidIdentifier;
 					$scope.priceList = angular.copy(priceList);
-					
+
 					$scope.save = function(){
 						$modalInstance.close($scope.priceList);
 					};
@@ -282,7 +335,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 .factory('nSelectClientDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 	return {
-		open : function() {
+		open : function(allowNewClient) {
 
 			var instance = $modal.open({
 
@@ -293,9 +346,18 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 					var loadedClients = new Array();
 					var filteredClients = new Array();
+					$scope.allowNewClient = allowNewClient;
 
 					function updateFilteredClients(){
-						filteredClients = $filter('filter')(loadedClients, $scope.query);
+						if($scope.newClientMode){
+							if(!$scope.query) {
+								filteredClients = [];
+							} else {
+								filteredClients = $filter('filter')(loadedClients, $scope.query);
+							}
+						} else {
+							filteredClients = $filter('filter')(loadedClients, $scope.query);
+						}
 						$scope.clients = filteredClients.slice(0, 15);
 					}
 
@@ -308,6 +370,37 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 							var currentIndex = $scope.clients.length;
 							$scope.clients = $scope.clients.concat(filteredClients.slice(currentIndex, currentIndex+30));
 						}
+					};
+
+					$scope.newClientClick = function(){
+						if($scope.newClientMode) {
+							var newClient = {
+									name : $scope.query,
+									contact : {}
+							};
+							GWT_Server.client.add(nConstants.conf.businessId, angular.toJson(newClient), {
+
+								onSuccess : function(newId){
+									$scope.$apply(function(){
+										$modalInstance.close(newId);
+									});
+								},
+
+								onFailure : function(){}
+
+							});
+							
+						} else {
+							$scope.newClientMode = true;
+							filteredClients = [];
+							$scope.query = '';
+							updateFilteredClients();
+						}
+					};
+
+					$scope.cancelNewClientClick = function(){
+						$scope.newClientMode = false;
+						updateFilteredClients();
 					};
 
 					$scope.select = function(id){
@@ -369,21 +462,21 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 				controller: ['$scope', 'nConstants', '$modalInstance',
 				             function($scope, nConstants, $modalInstance){
-					
+
 					$scope.isDefaultPriceList = nConstants.conf.defaultPriceListName === priceListName;
 					$scope.priceType = $scope.isDefaultPriceList ? nConstants.priceType.FIXED : null;
 
 					$scope.cancel = function(){
 						$modalInstance.dismiss();
 					};
-					
+
 					$scope.ok = function(){
 						$modalInstance.close({
 							priceType : $scope.priceType,
 							priceValue : $scope.priceValue
 						});
 					};
-					
+
 				}]
 			});
 
@@ -448,13 +541,13 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 					$scope.selectCommodity = function(commodity){
 						var defaultPrice = commodity.prices[nConstants.conf.defaultPriceListName];
 						var price = commodity.prices[$scope.priceList.name];
-						
+
 						$modalInstance.close({
-								commodity : commodity,
-								defaultPriceValue : defaultPrice.priceValue,
-								priceListName : $scope.priceList.name,
-								priceType : price.priceType,
-								priceValue : price.priceValue
+							commodity : commodity,
+							defaultPriceValue : defaultPrice.priceValue,
+							priceListName : $scope.priceList.name,
+							priceType : price.priceType,
+							priceValue : price.priceValue
 						});
 					};
 

@@ -97,7 +97,11 @@ angular.module('novabill.invoices.controllers',
 						$location.path('/');
 					});
 				},
-				onFailure : function(){}
+				onFailure : function(){
+					$scope.$apply(function(){
+						$location.path('/');
+					});
+				}
 			});
 			
 			gwtHook.injectSelectCommodityDialogHook();
@@ -118,28 +122,11 @@ angular.module('novabill.invoices.controllers',
 						$location.path('/');
 					});
 				},
-				onFailure : function(){}
-			});
-			
-			gwtHook.injectSelectCommodityDialogHook();
-		}])
-
-
-
-		/**
-		 * INVOICE CREATE FROM TRANSPORT DOCUMENT PAGE CONTROLLER
-		 */
-		.controller('InvoiceFromTransportDocumentCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
-		                                                 function($scope, $routeParams, $location, $translate, gwtHook) {
-			$scope.pageTitle = $translate('NEW_INVOICE');
-
-			GWT_UI.showFromTransportDocumentInvoicePage('invoice-details', $routeParams.transportDocumentId, {
-				onSuccess : function(bool){
+				onFailure : function(){
 					$scope.$apply(function(){
 						$location.path('/');
 					});
-				},
-				onFailure : function(){}
+				}
 			});
 			
 			gwtHook.injectSelectCommodityDialogHook();
@@ -159,7 +146,11 @@ angular.module('novabill.invoices.controllers',
 						$location.path('/');
 					});
 				},
-				onFailure : function(){}
+				onFailure : function(){
+					$scope.$apply(function(){
+						$location.path('/');
+					});
+				}
 			});
 			
 			gwtHook.injectSelectCommodityDialogHook();
@@ -179,7 +170,11 @@ angular.module('novabill.invoices.controllers',
 						$location.path('/');
 					});  		
 				},
-				onFailure : function(){}
+				onFailure : function(){
+					$scope.$apply(function(){
+						$location.path('/');
+					});
+				}
 			});
 			
 			gwtHook.injectSelectCommodityDialogHook();

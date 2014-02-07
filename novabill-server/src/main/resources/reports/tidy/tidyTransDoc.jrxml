@@ -3,7 +3,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transport Document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="69"/>
+	<property name="ireport.y" value="225"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -39,6 +39,7 @@
 		<field name="price" class="java.math.BigDecimal"/>
 		<field name="tax" class="java.math.BigDecimal"/>
 		<field name="totalBeforeTax" class="java.math.BigDecimal"/>
+		<field name="sku" class="java.lang.String"/>
 	</subDataset>
 	<subDataset name="Table Dataset 1" uuid="1d6f1553-114e-4e78-9a25-3dcdcbaad607"/>
 	<queryString>
@@ -92,6 +93,8 @@
 	<field name="document.business.fax" class="java.lang.String"/>
 	<field name="document.business.email" class="java.lang.String"/>
 	<field name="document.business.web" class="java.lang.String"/>
+	<field name="document.totalWeight" class="java.lang.String"/>
+	<field name="document.appearanceOfTheGoods" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -107,7 +110,7 @@
 		</band>
 		<band height="182" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="8" y="0" width="308" height="20" uuid="602635c5-8a47-4651-9d4c-e9177e5f3637"/>
+				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" x="8" y="0" width="308" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -178,7 +181,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 ($F{document.client.ssn}!=null && !"".equals($F{document.client.ssn}.trim()) ? "\n" + $R{tidy.ssn} + " " + $F{document.client.ssn} : "")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="8" y="17" width="308" height="16" uuid="5189c932-bccb-4ee7-b935-d6fc74468ccb"/>
+				<reportElement uuid="5189c932-bccb-4ee7-b935-d6fc74468ccb" positionType="Float" x="8" y="21" width="308" height="16"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
@@ -206,19 +209,39 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="400" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
-						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
+					<jr:column width="60" uuid="9411c25a-82f4-48cb-8f07-8eb276d835ca">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="398" height="20" uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b"/>
+								<reportElement uuid="e376b6a7-3354-4a11-b5ff-7ae2283ff7f8" x="0" y="0" width="58" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{tidy.sku}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="14f788ce-0b8b-457f-9bc3-4c55e7a8a182" x="0" y="0" width="58" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sku} == null || $F{sku}.startsWith("::sku")? "": $F{sku}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="340" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b" x="0" y="0" width="338" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$R{tidy.description}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="22" rowSpan="1">
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="398" height="20" uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d"/>
+								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="338" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
@@ -227,45 +250,45 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 							</textField>
 						</jr:detailCell>
 					</jr:column>
-					<jr:column width="70" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
-						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
-							<textField>
-								<reportElement x="0" y="0" width="68" height="20" uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29"/>
-								<textElement verticalAlignment="Middle">
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[$R{tidy.quantity}]]></textFieldExpression>
-							</textField>
-						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="22" rowSpan="1">
-							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="68" height="20" uuid="7e0a0fd8-e883-4769-925f-4b0063d31140"/>
-								<textElement verticalAlignment="Middle">
-									<font size="8"/>
-									<paragraph leftIndent="3"/>
-								</textElement>
-								<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.removeTrailingZeros($F{quantity}, Locale.ITALY)]]></textFieldExpression>
-							</textField>
-						</jr:detailCell>
-					</jr:column>
 					<jr:column width="70" uuid="86b69e3c-a251-4e02-b575-373961e6d873">
-						<jr:columnHeader style="table_CH" height="22" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="68" height="20" uuid="6055a8bc-b42d-448e-8026-845b207d6fc2"/>
+								<reportElement uuid="6055a8bc-b42d-448e-8026-845b207d6fc2" x="0" y="0" width="68" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$R{tidy.unitOfMeasure}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
-						<jr:detailCell style="table_TD" height="22" rowSpan="1">
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="68" height="20" uuid="5e9fee78-5a16-4450-9826-0a5cfb53091e"/>
+								<reportElement uuid="5e9fee78-5a16-4450-9826-0a5cfb53091e" x="0" y="0" width="68" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{unitOfMeasure}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="70" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29" x="0" y="0" width="68" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{tidy.quantity}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="7e0a0fd8-e883-4769-925f-4b0063d31140" x="0" y="0" width="68" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<font size="8"/>
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.removeTrailingZeros($F{quantity}, Locale.ITALY)]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
@@ -295,8 +318,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.fromEndpoint.companyName} + "\n" +
 $F{document.fromEndpoint.street} + "\n" +
-$F{document.fromEndpoint.postcode} + " " + $F{document.fromEndpoint.city} + ($F{document.fromEndpoint.province}!=null && !"".equals($F{document.fromEndpoint.province}.trim())? " (" + $F{document.fromEndpoint.province} + ")": "") + "\n" +
-$F{document.fromEndpoint.country}]]></textFieldExpression>
+$F{document.fromEndpoint.postcode} + " " + $F{document.fromEndpoint.city} + ($F{document.fromEndpoint.province}!=null && !"".equals($F{document.fromEndpoint.province}.trim())? " (" + $F{document.fromEndpoint.province} + ")": "") + ", " + $F{document.fromEndpoint.country}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement positionType="Float" x="299" y="30" width="210" height="80" uuid="9ed7d285-f163-496d-9ea9-e64fe5e2d0c9"/>
@@ -306,12 +328,11 @@ $F{document.fromEndpoint.country}]]></textFieldExpression>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.toEndpoint.companyName} + "\n" +
 $F{document.toEndpoint.street} + "\n" +
-$F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{document.toEndpoint.province}!=null && !"".equals($F{document.toEndpoint.province}.trim())? " (" + $F{document.toEndpoint.province} + ")": "") + "\n" +
-$F{document.toEndpoint.country}]]></textFieldExpression>
+$F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{document.toEndpoint.province}!=null && !"".equals($F{document.toEndpoint.province}.trim())? " (" + $F{document.toEndpoint.province} + ")": "") + ", " + $F{document.toEndpoint.country}]]></textFieldExpression>
 			</textField>
 		</band>
 		<band splitType="Prevent"/>
-		<band height="140" splitType="Prevent">
+		<band height="180" splitType="Prevent">
 			<textField isStretchWithOverflow="true">
 				<reportElement positionType="Float" x="394" y="98" width="153" height="20" uuid="be2b1952-1fc3-449e-8074-2a6e10133ebf"/>
 				<textElement>
@@ -320,21 +341,21 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{document.cause}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="282" y="98" width="112" height="20" uuid="a5358cab-31dd-43d4-9b90-23c130a2e8d5"/>
+				<reportElement uuid="a5358cab-31dd-43d4-9b90-23c130a2e8d5" positionType="Float" x="269" y="98" width="125" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.cause} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="282" y="33" width="112" height="20" uuid="c9be55ae-4608-44cd-af9f-c24f22def15e"/>
+				<reportElement uuid="c9be55ae-4608-44cd-af9f-c24f22def15e" positionType="Float" x="269" y="33" width="125" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="9" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.transportationResponsibility} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="282" y="54" width="112" height="20" uuid="c938101b-b30e-410f-98d5-61e2c88655b4"/>
+				<reportElement uuid="c938101b-b30e-410f-98d5-61e2c88655b4" positionType="Float" x="269" y="54" width="125" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -348,7 +369,7 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{document.tradeZone}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="282" y="76" width="112" height="20" uuid="8da1b63c-1058-4c5d-9af1-d281fbcf4222"/>
+				<reportElement uuid="8da1b63c-1058-4c5d-9af1-d281fbcf4222" positionType="Float" x="269" y="76" width="125" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -369,7 +390,7 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{document.transporter}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement positionType="Float" x="282" y="122" width="264" height="1" uuid="434f46a6-275b-4fb1-b2ba-c283c8e373fc"/>
+				<reportElement uuid="434f46a6-275b-4fb1-b2ba-c283c8e373fc" positionType="Float" x="269" y="157" width="277" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
@@ -382,7 +403,7 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{document.numberOfPackages}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement x="282" y="12" width="112" height="20" uuid="e5f13ca6-6916-44e4-a17a-cc3113628a1a"/>
+				<reportElement uuid="e5f13ca6-6916-44e4-a17a-cc3113628a1a" x="269" y="12" width="125" height="20"/>
 				<textElement textAlignment="Left">
 					<font size="9" isBold="true"/>
 				</textElement>
@@ -403,55 +424,96 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 				<textFieldExpression><![CDATA[$F{document.transportationResponsibility}]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement x="282" y="7" width="264" height="1" uuid="17913755-21a8-4342-b245-8e5fb9871c15"/>
+				<reportElement uuid="17913755-21a8-4342-b245-8e5fb9871c15" x="269" y="7" width="277" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement positionType="Float" x="286" y="32" width="264" height="1" uuid="3d5d9827-8b5f-4fac-ba5a-b2c2e4035272"/>
+				<reportElement uuid="3d5d9827-8b5f-4fac-ba5a-b2c2e4035272" positionType="Float" x="269" y="32" width="277" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineColor="#000000"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement positionType="Float" x="282" y="53" width="264" height="1" uuid="171cb5fa-9e53-48a4-bc54-0a5832a4103f"/>
+				<reportElement uuid="171cb5fa-9e53-48a4-bc54-0a5832a4103f" positionType="Float" x="269" y="53" width="277" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineColor="#000000"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement positionType="Float" x="282" y="75" width="264" height="1" uuid="69f3a125-3996-44cd-9afb-4e333b5e2a85"/>
+				<reportElement uuid="69f3a125-3996-44cd-9afb-4e333b5e2a85" positionType="Float" x="269" y="75" width="277" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineColor="#000000"/>
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement positionType="Float" x="282" y="97" width="264" height="1" uuid="aa5482e3-f694-4e70-924f-2c367304ad24"/>
+				<reportElement uuid="aa5482e3-f694-4e70-924f-2c367304ad24" positionType="Float" x="269" y="97" width="277" height="1"/>
 				<graphicElement>
 					<pen lineWidth="0.0" lineColor="#000000"/>
 				</graphicElement>
 			</line>
+			<textField>
+				<reportElement uuid="b0b943f7-09d2-4d6a-a297-ddeae5b5912a" positionType="Float" x="269" y="118" width="125" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.totalWeight} + ":"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="ca19b5da-2bb9-40f5-ba38-a3b9c43f2174" positionType="Float" x="394" y="118" width="153" height="20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.totalWeight}]]></textFieldExpression>
+			</textField>
+			<line>
+				<reportElement uuid="0be5a16d-c0f8-4639-8973-214ef95ba769" positionType="Float" x="269" y="138" width="277" height="1"/>
+				<graphicElement>
+					<pen lineWidth="0.0" lineColor="#000000"/>
+				</graphicElement>
+			</line>
+			<textField>
+				<reportElement uuid="93985df3-bf32-4379-bf20-7608952cc90d" positionType="Float" x="269" y="138" width="125" height="20"/>
+				<textElement textAlignment="Left">
+					<font size="9" isBold="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{tidy.appearanceOfTheGoods} + ":"]]></textFieldExpression>
+			</textField>
+			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+				<reportElement uuid="cbcb9de8-4dc8-4545-894d-66cb043784d0" positionType="Float" x="394" y="138" width="153" height="20"/>
+				<textElement>
+					<font size="9"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.appearanceOfTheGoods}]]></textFieldExpression>
+			</textField>
 		</band>
 	</detail>
 	<pageFooter>
 		<band height="60" splitType="Stretch">
-			<textField evaluationTime="Report">
-				<reportElement x="473" y="45" width="75" height="12" uuid="32e860ab-3637-411e-b940-60d5b186affc"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="150" y="45" width="274" height="12" forecolor="#646464" uuid="81cb76d5-147b-4bf8-a5d4-a7f582b5fbba">
+			<textField>
+				<reportElement uuid="d1a3a801-bbe3-4ef0-ad74-a0c81e880529" x="140" y="45" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[<a href="https://www.novabill.it">Powered by Novabill - https://www.novabill.it</a>]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{tidy.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="17de0209-e217-477e-ac70-a82b3524ed26" x="453" y="45" width="80" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="49f7af27-9713-462c-a46c-5c0cdacbb115" x="533" y="45" width="15" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
 		</band>
 	</pageFooter>
 	<lastPageFooter>
@@ -486,22 +548,29 @@ $F{document.toEndpoint.country}]]></textFieldExpression>
 					<property name="com.jaspersoft.studio.unit.y" value="px"/>
 				</reportElement>
 			</line>
-			<textField evaluationTime="Report">
-				<reportElement x="473" y="98" width="75" height="12" uuid="d1986f44-2301-42cb-9b73-3101c7d1a67a"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of " + $V{PAGE_NUMBER}]]></textFieldExpression>
-			</textField>
-			<staticText>
-				<reportElement x="160" y="98" width="274" height="12" forecolor="#646464" uuid="ce2b3718-5401-4913-9630-e011d43d1e4f">
+			<textField>
+				<reportElement uuid="337f39a5-f5d4-4e61-8912-88074b32d6f5" x="140" y="98" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font size="8"/>
 				</textElement>
-				<text><![CDATA[<a href="https://www.novabill.it">Powered by Novabill - https://www.novabill.it</a>]]></text>
-			</staticText>
+				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{tidy.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="82323eaf-4cfb-45b2-ab0f-11e642d0da3d" x="533" y="98" width="15" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="0d8e1b37-5381-4661-9e5a-17826aca0b40" x="453" y="98" width="80" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" di"]]></textFieldExpression>
+			</textField>
 		</band>
 	</lastPageFooter>
 </jasperReport>

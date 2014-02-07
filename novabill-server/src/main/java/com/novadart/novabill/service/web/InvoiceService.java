@@ -14,17 +14,21 @@ import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
 import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
+import com.novadart.novabill.service.validator.Groups.HeavyClient;
+import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -39,7 +43,13 @@ public class InvoiceService {
 	private AccountingDocumentValidator validator;
 	
 	@Autowired
+	private SimpleValidator simpleValidator;
+	
+	@Autowired
 	private BusinessService businessService;
+	
+	@Autowired
+	private TransportDocumentService transportDocService;
 	
 	@PreAuthorize("T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == principal.business.id")
 	public InvoiceDTO get(Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
@@ -77,12 +87,15 @@ public class InvoiceService {
 		return new ArrayList<InvoiceDTO>(DTOUtils.filter(businessService.getInvoices(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), year), new EqualsClientIDPredicate(clientID)));
 	}
 	
-	@Transactional(readOnly = false)
+	@Transactional(readOnly = false, rollbackFor = {Exception.class})
 	@PreAuthorize("#businessID == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == #businessID and " +
 		  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.client?.id == #clientID")
-	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NoSuchObjectException {
+	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, DataIntegrityException {
 		Invoice invoice = Invoice.findInvoice(id);
+		invoice.getTransportDocuments().size(); //force fetching all docs at once
+		for(TransportDocument transDoc: invoice.getTransportDocuments())
+			transportDocService.clearInvoice(businessID, transDoc.getId());
 		invoice.remove(); //removing invoice
 		if(Hibernate.isInitialized(invoice.getBusiness().getInvoices()))
 			invoice.getBusiness().getInvoices().remove(invoice);
@@ -90,22 +103,29 @@ public class InvoiceService {
 			invoice.getClient().getInvoices().remove(invoice);
 	}
 
-	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
+	@Transactional(readOnly = false, rollbackFor = {Exception.class})
 	//@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
 	@PreAuthorize("#invoiceDTO?.business?.id == principal.business.id and " +
 		  	  	 "T(com.novadart.novabill.domain.Client).findClient(#invoiceDTO?.client?.id)?.business?.id == principal.business.id and " +
 		  	  	 "#invoiceDTO != null and #invoiceDTO.id == null")
-	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, AuthorizationException {
+	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, AuthorizationException, NotAuthenticatedException, DataIntegrityException {
 		Invoice invoice = new Invoice();//create new invoice
 		InvoiceDTOFactory.copyFromDTO(invoice, invoiceDTO, true);
 		validator.validate(Invoice.class, invoice);
 		Client client = Client.findClient(invoiceDTO.getClient().getId());
+		simpleValidator.validate(client, HeavyClient.class);
 		Business business = Business.findBusiness(invoiceDTO.getBusiness().getId());
 		invoice.setClient(client);
 		client.getInvoices().add(invoice);
 		invoice.setBusiness(business);
 		business.getInvoices().add(invoice);
+		invoice.persist();
 		invoice.flush();
+		Long businessID = invoiceDTO.getBusiness().getId();
+		if(invoiceDTO.getTransportDocumentIDs() != null){
+			for(Long transDocID: invoiceDTO.getTransportDocumentIDs())
+				transportDocService.setInvoice(businessID, invoice.getId(), transDocID);
+		}
 		return invoice.getId();
 	}
 

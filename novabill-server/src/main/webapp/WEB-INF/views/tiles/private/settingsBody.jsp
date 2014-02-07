@@ -14,7 +14,7 @@ function onGWTLoaded(){
 <div class="page-content">
     <div class="container-fluid">
         <!-- BEGIN PAGE TITLE & BREADCRUMB-->
-        <h3 class="page-title">Settings</h3>
+        <h3 class="page-title">Impostazioni</h3>
         <ul class="breadcrumb">
             <li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
             <li><span>Impostazioni</span></li>

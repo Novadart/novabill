@@ -18,13 +18,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.novadart.novabill.android.shared.data.SyncEntityType;
+import com.novadart.novabill.android.shared.dto.ClientDTO;
+import com.novadart.novabill.android.shared.dto.SyncDeltaObjectsDTO;
+import com.novadart.novabill.android.shared.dto.SyncDeltaStateDTO;
 import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
+import com.novadart.novabill.domain.dto.factory.android.ClientDTOFactory;
 import com.novadart.novabill.service.sync.SyncService;
-import com.novadart.novabill.shared.client.data.SyncEntityType;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.SyncDeltaObjectsDTO;
-import com.novadart.novabill.shared.client.dto.SyncDeltaStateDTO;
 
 @Controller
 @RequestMapping("/rest/1/sync/delta")

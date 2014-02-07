@@ -8,7 +8,7 @@ import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 public class ValidatedTextArea extends com.novadart.gwtshared.client.validation.widget.ValidatedTextArea {
 	
 	public ValidatedTextArea() {
-		super(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.TEXT_LENGTH);
+		super(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_TEXT_LENGTH);
 	}
 	
 }

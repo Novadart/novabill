@@ -35,11 +35,6 @@ angular.module("novabill.invoices", ['novabill.invoices.controllers', 'novabill.
 		controller: 'InvoiceFromEstimationCtrl'
 	})
 	
-	.when('/from-transport-document/:transportDocumentId', {
-		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/invoices-detail.html'),
-		controller: 'InvoiceFromTransportDocumentCtrl'
-	})
-	
 	.when('/from-transport-document-list/:transportDocumentList', {
 		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/invoices-detail.html'),
 		controller: 'InvoiceFromTransportDocumentListCtrl'

@@ -28,6 +28,8 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
+	private List<Long> transportDocumentSources = null;
+	
 	public NewInvoicePresenter(PlaceController placeController,	EventBus eventBus, InvoiceView view, JavaScriptObject callback) {
 		super(placeController, eventBus, view, callback);
 	}
@@ -36,7 +38,11 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	protected void setPresenterInView(InvoiceView view) {
 		view.setPresenter(this);
 	}
-
+	
+	public void setTransportDocumentSources(List<Long> transportDocumentSources) {
+		this.transportDocumentSources = transportDocumentSources;
+	}
+	
 	@Override
 	public void onLoad() {
 	}
@@ -69,7 +75,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		}
 		getView().getPayment().setDocumentCreationDate(getView().getDate().getValue());
 		getView().getPayment().init(invoice.getPaymentTypeName(), invoice.getPaymentDateGenerator(), 
-				invoice.getPaymentDateDelta());
+				invoice.getPaymentDateDelta(), invoice.getPaymentDeltaType(), invoice.getSecondaryPaymentDateDelta());
 		//NOTE we don't show the checkbox to set this as the default payment because we don't know its ID
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(invoice.getNote());
@@ -117,7 +123,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 			
 			item = new AccountingDocumentItemDTO();
 			item.setDescription("##  "
-			+ I18N.INSTANCE.transportDocument()
+			+ I18N.INSTANCE.transportDocumentShort()
 			+" N. "+td.getDocumentID()
 			+"  "
 			+ I18N.INSTANCE.of() +" "
@@ -133,8 +139,14 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		}
 
 		getView().getItemInsertionForm().setItems(items);
+		getView().setItemsLock(true);
 	}
 
+	
+	@Override
+	public void onUnlockItemsTableChecked(Boolean value) {
+		getView().setItemsLock(!value);
+	}
 
 	@Override
 	public void onCreateDocumentClicked() {
@@ -147,6 +159,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		getView().setLocked(true);
 
 		final InvoiceDTO invoice = createInvoice(null);
+		invoice.setTransportDocumentIDs(transportDocumentSources);
 
 		final ManagedAsyncCallback<Void> updateClientCallback = new ManagedAsyncCallback<Void>() {
 

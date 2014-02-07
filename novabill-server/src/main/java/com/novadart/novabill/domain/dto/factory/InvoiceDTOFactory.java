@@ -13,6 +13,8 @@ public class InvoiceDTOFactory extends AbstractInvoiceDTOFactory {
 		invoiceDTO.setPaymentTypeName(invoice.getPaymentTypeName());
 		invoiceDTO.setPaymentDateGenerator(invoice.getPaymentDateGenerator());
 		invoiceDTO.setPaymentDateDelta(invoice.getPaymentDateDelta());
+		invoiceDTO.setPaymentDeltaType(invoice.getPaymentDeltaType());
+		invoiceDTO.setSecondaryPaymentDateDelta(invoice.getSecondaryPaymentDateDelta());
 		invoiceDTO.setBusiness(BusinessDTOFactory.toDTO(invoice.getBusiness()));
 		invoiceDTO.setClient(ClientDTOFactory.toDTO(invoice.getClient()));
 		return invoiceDTO;
@@ -23,6 +25,8 @@ public class InvoiceDTOFactory extends AbstractInvoiceDTOFactory {
 		invoice.setPaymentTypeName(invoiceDTO.getPaymentTypeName());
 		invoice.setPaymentDateGenerator(invoiceDTO.getPaymentDateGenerator());
 		invoice.setPaymentDateDelta(invoiceDTO.getPaymentDateDelta());
+		invoice.setPaymentDeltaType(invoiceDTO.getPaymentDeltaType());
+		invoice.setSecondaryPaymentDateDelta(invoiceDTO.getSecondaryPaymentDateDelta());
 	}
 	
 }

@@ -80,6 +80,8 @@ public class Commodity implements Serializable {
     
     private boolean service;
     
+    private BigDecimal weight;
+    
     public Commodity shallowCopy(){
     	Commodity newCommodity = new Commodity();
     	newCommodity.setSku(getSku());
@@ -142,7 +144,15 @@ public class Commodity implements Serializable {
         this.tax = tax;
     }
     
-    public boolean isService() {
+    public BigDecimal getWeight() {
+		return weight;
+	}
+
+	public void setWeight(BigDecimal weight) {
+		this.weight = weight;
+	}
+
+	public boolean isService() {
 		return service;
 	}
 

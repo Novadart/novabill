@@ -253,21 +253,21 @@ insert into transport_document (cause, from_company_name, from_street, from_city
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (141, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 140);
 
 --creating payment types
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (142, 'Pagamento in Rimessa Diretta', 'Rimessa Diretta', 0, 0, 1, 1);
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (143, 'Pagamento con bonifico bancario entro 30 giorni', 'Bonifico Bancario 30GG', 1, 0, 1, 1);
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (144, 'Pagamento con bonifico bancario entro 60 giorni', 'Bonifico Bancario 60GG', 2, 0, 1, 1);
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (145, 'Pagamento con bonifico bancario entro 90 giorni', 'Bonifico Bancario 90GG', 3, 0, 1, 1);
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (146, 'Pagamento con bonifico bancario entro 30 giorni d.f. f.m.', 'Bonifico Bancario 30GG d.f. f.m.', 1, 1, 1, 1);
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (147, 'Pagamento con bonifico bancario entro 60 giorni d.f. f.m.', 'Bonifico Bancario 60GG d.f. f.m.', 2, 1, 1, 1);
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (148, 'Pagamento con bonifico bancario entro 90 giorni d.f. f.m.', 'Bonifico Bancario 90GG d.f. f.m.', 3, 1, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (142, 'Pagamento in Rimessa Diretta', 'Rimessa Diretta', 0, 0, 0, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (143, 'Pagamento con bonifico bancario entro 30 giorni', 'Bonifico Bancario 30GG', 1, 0, 0, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (144, 'Pagamento con bonifico bancario entro 60 giorni', 'Bonifico Bancario 60GG', 2, 0, 0, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (145, 'Pagamento con bonifico bancario entro 90 giorni', 'Bonifico Bancario 90GG', 3, 0, 0, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (146, 'Pagamento con bonifico bancario entro 30 giorni d.f. f.m.', 'Bonifico Bancario 30GG d.f. f.m.', 1, 1, 0, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (147, 'Pagamento con bonifico bancario entro 60 giorni d.f. f.m.', 'Bonifico Bancario 60GG d.f. f.m.', 2, 1, 0, 1, 1);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (148, 'Pagamento con bonifico bancario entro 90 giorni d.f. f.m.', 'Bonifico Bancario 90GG d.f. f.m.', 3, 1, 0, 1, 1);
 
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (149, 'Pagamento in Rimessa Diretta', 'Rimessa Diretta', 0, 0, 1, 2);
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (150, 'Pagamento con bonifico bancario entro 30 giorni', 'Bonifico Bancario 30GG', 1, 0, 1, 2);
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (151, 'Pagamento con bonifico bancario entro 60 giorni', 'Bonifico Bancario 60GG', 2, 0, 1, 2);
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (152, 'Pagamento con bonifico bancario entro 90 giorni', 'Bonifico Bancario 90GG', 3, 0, 1, 2);
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (153, 'Pagamento con bonifico bancario entro 30 giorni d.f. f.m.', 'Bonifico Bancario 30GG d.f. f.m.', 1, 1, 1, 2);
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (154, 'Pagamento con bonifico bancario entro 60 giorni d.f. f.m.', 'Bonifico Bancario 60GG d.f. f.m.', 2, 1, 1, 2);
-insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, version, business) values (155, 'Pagamento con bonifico bancario entro 90 giorni d.f. f.m.', 'Bonifico Bancario 90GG d.f. f.m.', 3, 1, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (149, 'Pagamento in Rimessa Diretta', 'Rimessa Diretta', 0, 0, 0, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (150, 'Pagamento con bonifico bancario entro 30 giorni', 'Bonifico Bancario 30GG', 1, 0, 0, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (151, 'Pagamento con bonifico bancario entro 60 giorni', 'Bonifico Bancario 60GG', 2, 0, 0, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (152, 'Pagamento con bonifico bancario entro 90 giorni', 'Bonifico Bancario 90GG', 3, 0, 0, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (153, 'Pagamento con bonifico bancario entro 30 giorni d.f. f.m.', 'Bonifico Bancario 30GG d.f. f.m.', 1, 1, 0, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (154, 'Pagamento con bonifico bancario entro 60 giorni d.f. f.m.', 'Bonifico Bancario 60GG d.f. f.m.', 2, 1, 0, 1, 2);
+insert into payment_type (id, default_payment_note, name, payment_date_delta, payment_date_generator, payment_delta_type, version, business) values (155, 'Pagamento con bonifico bancario entro 90 giorni d.f. f.m.', 'Bonifico Bancario 90GG d.f. f.m.', 3, 1, 0, 1, 2);
 
 --creating commodities
 insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (156, 'sku1', 'Computer network configuration', 't', 22, 'hour', 1, 1);
@@ -277,26 +277,26 @@ insert into commodity (id, sku, description, service, tax, unit_of_measure, busi
 insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (160, 'sku5', 'Cisco network router', 'f', 22, 'piece', 1, 1);
 
 --creating default prices
-insert into price (id, price_type, price_value, version, commodity, price_list) values (163, 1, 24.95, 1, 156, 161);
-insert into price (id, price_type, price_value, version, commodity, price_list) values (164, 1, 19.95, 1, 157, 161);
-insert into price (id, price_type, price_value, version, commodity, price_list) values (165, 1, 24.95, 1, 158, 161);
-insert into price (id, price_type, price_value, version, commodity, price_list) values (167, 1, 24.95, 1, 159, 161);
-insert into price (id, price_type, price_value, version, commodity, price_list) values (168, 1, 39.95, 1, 160, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (163, 0, 24.95, 1, 156, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (164, 0, 19.95, 1, 157, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (165, 0, 24.95, 1, 158, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (167, 0, 24.95, 1, 159, 161);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (168, 0, 39.95, 1, 160, 161);
 
 --creating more commodities
 insert into commodity (id, sku, description, service, tax, unit_of_measure, business, version) values (169, '12345', 'Website building', 't', 22, 'hour', 2, 1);
 
 --creating default prices
-insert into price (id, price_type, price_value, version, commodity, price_list) values (170, 1, 19.95, 1, 169, 162);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (170, 0, 19.95, 1, 169, 162);
 
 --creating custom price lists
 insert into price_list (id, name, version, business) values (171, 'custom pricelist', '1', 1);
 insert into price_list (id, name, version, business) values (172, 'custom pricelist', '1', 2);
 
 --creating prices for the custom price list
-insert into price (id, price_type, price_value, version, commodity, price_list) values (173, 1, 20.95, 1, 156, 171);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (173, 0, 20.95, 1, 156, 171);
 
-insert into price (id, price_type, price_value, version, commodity, price_list) values (174, 1, 20.95, 1, 169, 172);
+insert into price (id, price_type, price_value, version, commodity, price_list) values (174, 0, 20.95, 1, 169, 172);
 
 
 insert into accounting_document (id, accounting_document_date, accounting_document_year, documentid, note, payment_note, total, total_before_tax, total_tax, layout_type, version) values (175, '2013-10-20', 2013, 3, '', '', 121.0, 100.0, 21.0, 1, 1);

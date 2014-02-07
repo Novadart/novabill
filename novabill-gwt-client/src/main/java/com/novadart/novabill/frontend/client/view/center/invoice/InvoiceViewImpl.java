@@ -68,6 +68,8 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	
 	@UiField SimplePanel tipPayment;
 
+	@UiField CheckBox unlockItemsTable;
+	
 	private Presenter presenter;
 	
 	public InvoiceViewImpl() {
@@ -111,6 +113,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	protected void onLoad() {
 		super.onLoad();
 		presenter.onLoad();
+	}
+	
+	@UiHandler("unlockItemsTable")
+	void onUnlockItemsTable(ValueChangeEvent<Boolean> event){
+		presenter.onUnlockItemsTableChecked(event.getValue());
 	}
 	
 	@UiFactory
@@ -241,6 +248,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		
 		makePaymentAsDefault.setValue(false);
 		makePaymentAsDefault.setVisible(false);
+		unlockItemsTable.setVisible(false);
 		setLocked(false);
 	}
 
@@ -254,6 +262,14 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		note.setEnabled(!value);
 		makePaymentAsDefault.setEnabled(!value);
 		abort.setEnabled(!value);
+		unlockItemsTable.setEnabled(!value);
 	}
+	
+	@Override
+	public void setItemsLock(boolean value){
+		unlockItemsTable.setVisible(value);
+		itemInsertionForm.setReadOnly(value);
+	}
+	
 	
 }

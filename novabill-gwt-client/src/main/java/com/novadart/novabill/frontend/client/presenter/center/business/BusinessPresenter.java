@@ -53,12 +53,13 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 			validationOk = false;
 		}
 
-		for (ValidatedTextBox v : new ValidatedTextBox[]{getView().getName(), getView().getAddress(), getView().getCity(), 
+		for (ValidatedTextBox v : new ValidatedTextBox[]{getView().getAddress(), getView().getCity(), 
 				getView().getPostcode(), getView().getPhone(), getView().getEmail(), getView().getMobile(), getView().getFax(), getView().getWeb()}) {
 			v.validate();
 			validationOk = validationOk && v.isValid();
 		}
-
+		getView().getName().validate();
+		validationOk = validationOk && getView().getName().isValid();
 		getView().getProvince().validate();
 		validationOk = validationOk && getView().getProvince().isValid();
 		getView().getCountry().validate();
@@ -123,7 +124,8 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 			b.setFax(getView().getFax().getText());
 			b.setWeb(getView().getWeb().getText());
 			b.setPriceDisplayInDocsMonolithic(!getView().getDiscountInDocsExplicit().getValue());
-
+			b.setEnabledIncognito(getView().getIncognitoEnabled().getValue());
+			
 			getView().getSaveData().showLoader(true);
 			getView().setLocked(true);
 
@@ -167,6 +169,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 		getView().getFax().setText(b.getFax());
 		getView().getWeb().setText(b.getWeb());
 		getView().getDiscountInDocsExplicit().setValue(!b.isPriceDisplayInDocsMonolithic());
+		getView().getIncognitoEnabled().setValue(b.isIncognitoEnabled());
 	}
 
 	@Override

@@ -19,10 +19,13 @@ import com.google.gwt.user.client.ui.FormPanel.SubmitEvent;
 import com.google.gwt.user.client.ui.Image;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
+import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
+import com.novadart.gwtshared.client.validation.widget.ValidatedTextArea;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
@@ -51,7 +54,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 
 	@UiField InlineNotification inlineNotification;
 
-	@UiField(provided=true) ValidatedTextBox name;
+	@UiField(provided=true) ValidatedTextArea name;
 	@UiField(provided=true) ValidatedTextBox ssn;
 	@UiField(provided=true) ValidatedTextBox vatID;
 	@UiField(provided=true) ValidatedTextBox address;
@@ -73,6 +76,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@UiField Button exportTransportDocumentData;
 	
 	@UiField CheckBox discountInDocsExplicit;
+	@UiField CheckBox incognitoEnabled;
 	
 	@UiField Anchor deleteAccount;
 	
@@ -80,7 +84,12 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 
 	public BusinessViewImpl() {
 
-		name = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
+		name = new ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), new TextLengthValidation(255) {
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(getMaxLength());
+			}
+		}, ValidationKit.NOT_EMPTY);
 		ssn = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.SSN_OR_VAT_ID);
 		ssn.setShowMessageOnError(true);
 		vatID = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.VAT_ID);
@@ -171,10 +180,11 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 			}
 		});
 		formPanel.setWidget(fileUpload);
-		for (ValidatedTextBox v : new ValidatedTextBox[]{name,	ssn, vatID, address, city, 
+		for (ValidatedTextBox v : new ValidatedTextBox[]{ssn, vatID, address, city, 
 				postcode, phone, email, mobile, fax, web}) {
 			v.reset();
 		}
+		name.reset();
 		ssnOrVatIdValidation.reset();
 		province.reset();
 		country.reset();
@@ -182,6 +192,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		inlineNotification.hide();
 		saveData.reset();
 		discountInDocsExplicit.setValue(false);
+		incognitoEnabled.setValue(false);
 		setLocked(false);
 	}
 
@@ -239,6 +250,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 		exportCreditNoteData.setEnabled(!value);
 		exportTransportDocumentData.setEnabled(!value);
 		discountInDocsExplicit.setEnabled(!value);
+		incognitoEnabled.setEnabled(!value);
 	}
 
 	@Override
@@ -272,7 +284,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	}
 
 	@Override
-	public ValidatedTextBox getName() {
+	public ValidatedTextArea getName() {
 		return name;
 	}
 
@@ -379,6 +391,11 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@Override
 	public CheckBox getDiscountInDocsExplicit() {
 		return discountInDocsExplicit;
+	}
+	
+	@Override
+	public CheckBox getIncognitoEnabled() {
+		return incognitoEnabled;
 	}
 
 }
