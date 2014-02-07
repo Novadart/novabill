@@ -132,7 +132,6 @@ public class Business implements Serializable, Taxable {
     private Long nonFreeAccountExpirationTime;
 
     @NotNull
-    @Column(columnDefinition = "integer default 0")
     private LayoutType defaultLayoutType;
     
     @Column(columnDefinition = "boolean default true")

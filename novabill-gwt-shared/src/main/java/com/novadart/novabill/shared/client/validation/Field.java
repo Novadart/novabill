@@ -34,7 +34,7 @@ public enum Field {
 	contact_firstName, contact_lastName, contact_email, contact_phone, contact_fax, contact_mobile, contact_note,
 	
 	//PaymentType fields
-	defaultPaymentNote, paymentDateGenerator, paymentDateDelta, secondaryPaymentDateDelta,
+	defaultPaymentNote, paymentDateGenerator, paymentDateDelta, secondaryPaymentDateDelta, defaultLayoutType,
 	
 	//Commodity
 	sku, description, unitOfMeasure, tax,

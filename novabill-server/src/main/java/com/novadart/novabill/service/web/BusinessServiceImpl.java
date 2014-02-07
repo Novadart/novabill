@@ -37,6 +37,7 @@ import com.novadart.novabill.domain.dto.factory.TransporterDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
@@ -250,6 +251,8 @@ public abstract class BusinessServiceImpl implements BusinessService {
 													com.novadart.novabill.shared.client.exception.CloneNotSupportedException {
 		Business business = new Business();
 		BusinessDTOFactory.copyFromDTO(business, businessDTO);
+		if(businessDTO.getDefaultLayoutType() == null)
+			business.setDefaultLayoutType(LayoutType.DENSE);
 		validator.validate(business);
 		Locale locale = LocaleContextHolder.getLocale();
 		for(PaymentType pType: paymentTypes.containsKey(locale)? paymentTypes.get(locale): paymentTypes.get(Locale.ITALIAN)){
