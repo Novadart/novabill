@@ -146,7 +146,7 @@
                 </g:VerticalPanel>
 				<g:VerticalPanel styleName="{s.itemContainer}">
 				    <g:HorizontalPanel>
-                        <g:Label styleName="{s.smallLabel}" text="{i18n.nameDescription}"></g:Label>
+                        <g:Label styleName="{s.smallLabel}" text="{i18n.nameDescription}" ui:field="itemLabel"></g:Label>
                         <g:Button tabIndex="0" styleName="{s.browse} btn btn-xs dark" text="Seleziona..." ui:field="browse"></g:Button>				    
 				    </g:HorizontalPanel>
 					<v:ValidatedTextArea tabIndex="20" ui:field="item" styleName="{s.item}" />

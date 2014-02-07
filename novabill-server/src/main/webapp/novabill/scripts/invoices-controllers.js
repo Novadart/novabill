@@ -97,7 +97,11 @@ angular.module('novabill.invoices.controllers',
 						$location.path('/');
 					});
 				},
-				onFailure : function(){}
+				onFailure : function(){
+					$scope.$apply(function(){
+						$location.path('/');
+					});
+				}
 			});
 			
 			gwtHook.injectSelectCommodityDialogHook();
@@ -118,7 +122,11 @@ angular.module('novabill.invoices.controllers',
 						$location.path('/');
 					});
 				},
-				onFailure : function(){}
+				onFailure : function(){
+					$scope.$apply(function(){
+						$location.path('/');
+					});
+				}
 			});
 			
 			gwtHook.injectSelectCommodityDialogHook();
@@ -138,7 +146,11 @@ angular.module('novabill.invoices.controllers',
 						$location.path('/');
 					});
 				},
-				onFailure : function(){}
+				onFailure : function(){
+					$scope.$apply(function(){
+						$location.path('/');
+					});
+				}
 			});
 			
 			gwtHook.injectSelectCommodityDialogHook();
@@ -158,7 +170,11 @@ angular.module('novabill.invoices.controllers',
 						$location.path('/');
 					});  		
 				},
-				onFailure : function(){}
+				onFailure : function(){
+					$scope.$apply(function(){
+						$location.path('/');
+					});
+				}
 			});
 			
 			gwtHook.injectSelectCommodityDialogHook();

@@ -160,8 +160,8 @@ angular.module('novabill.clients.controllers',
 		/**
 		 * CLIENT DETAILS PAGE CONTROLLER
 		 */
-		.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'nConstants', '$filter',
-		                                  function($scope, $route, $routeParams, $location, $rootScope, nConstants, $filter) {
+		.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'nConstants', '$filter', 'nAlertDialog',
+		                                  function($scope, $route, $routeParams, $location, $rootScope, nConstants, $filter, nAlertDialog) {
 
 			//fired when edit client is clicked
 			$scope.editClient = function(clientId) {
@@ -194,7 +194,10 @@ angular.module('novabill.clients.controllers',
 								});
 							},
 
-							onFailure : function(error){}
+							onFailure : function(error){
+								
+								nAlertDialog.open($filter('translate')('CLIENT_DELETION_ALERT'));
+							}
 						});
 					},
 

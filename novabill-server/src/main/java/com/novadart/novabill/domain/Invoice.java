@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
+import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 
 
 /*
@@ -38,6 +39,10 @@ public class Invoice extends AbstractInvoice implements Serializable {
 	private PaymentDateType paymentDateGenerator;
 
 	private Integer paymentDateDelta;
+	
+    private PaymentDeltaType paymentDeltaType;
+	
+	private Integer secondaryPaymentDateDelta;
 
     @ManyToOne
     protected Business business;
@@ -71,6 +76,22 @@ public class Invoice extends AbstractInvoice implements Serializable {
 	public void setPaymentDateDelta(Integer paymentDateDelta) {
 		this.paymentDateDelta = paymentDateDelta;
 	}
+	
+	public PaymentDeltaType getPaymentDeltaType() {
+		return paymentDeltaType;
+	}
+
+	public void setPaymentDeltaType(PaymentDeltaType paymentDeltaType) {
+		this.paymentDeltaType = paymentDeltaType;
+	}
+
+	public Integer getSecondaryPaymentDateDelta() {
+		return secondaryPaymentDateDelta;
+	}
+
+	public void setSecondaryPaymentDateDelta(Integer secondaryPaymentDateDelta) {
+		this.secondaryPaymentDateDelta = secondaryPaymentDateDelta;
+	}
 
 	public String getPaymentTypeName() {
 		return paymentTypeName;
@@ -88,6 +109,7 @@ public class Invoice extends AbstractInvoice implements Serializable {
         this.business = business;
     }
     
+    @Override
     public Client getClient() {
         return this.client;
     }
@@ -132,7 +154,7 @@ public class Invoice extends AbstractInvoice implements Serializable {
     public Invoice merge() {
         return merge(this);
     }
-    
+
     /*
      * End of active record functionality section
      * */

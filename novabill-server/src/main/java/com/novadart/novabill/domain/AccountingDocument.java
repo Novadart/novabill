@@ -117,6 +117,8 @@ public abstract class AccountingDocument {
 	 * *
 	 */
 	
+	public abstract Client getClient();
+	
 	public Long getDocumentID() {
         return this.documentID;
     }
@@ -208,6 +210,10 @@ public abstract class AccountingDocument {
     
     public static final EntityManager entityManager() {
         EntityManager em = new AccountingDocument() {
+			@Override
+			public Client getClient() {
+				return null;
+			}
         }.entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;

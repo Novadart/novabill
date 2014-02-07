@@ -25,7 +25,7 @@ public enum Field {
 	toEndpoint_companyName, toEndpoint_street, toEndpoint_postcode, toEndpoint_city, toEndpoint_province, toEndpoint_country,
 	
 	//Transport document fields
-	transporter, transportationResponsibility, tradeZone, transportStartDate, numberOfPackages, cause,
+	transporter, transportationResponsibility, tradeZone, transportStartDate, numberOfPackages, cause, appearanceOfTheGoods,
 	
 	//Business and Client fields
 	name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatID, ssn, 
@@ -34,8 +34,11 @@ public enum Field {
 	contact_firstName, contact_lastName, contact_email, contact_phone, contact_fax, contact_mobile, contact_note,
 	
 	//PaymentType fields
-	defaultPaymentNote, paymentDateGenerator, paymentDateDelta,
+	defaultPaymentNote, paymentDateGenerator, paymentDateDelta, secondaryPaymentDateDelta,
 	
 	//Commodity
-	sku, description, unitOfMeasure, tax
+	sku, description, unitOfMeasure, tax,
+	
+	//Price
+	priceValue, priceType
 }

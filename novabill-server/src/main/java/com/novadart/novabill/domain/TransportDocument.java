@@ -1,9 +1,9 @@
 package com.novadart.novabill.domain;
 
 import java.io.Serializable;
-import java.math.BigDecimal;
 import java.util.Date;
 import java.util.List;
+
 import javax.persistence.AttributeOverride;
 import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
@@ -12,6 +12,7 @@ import javax.persistence.Entity;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
+
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -67,7 +68,11 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	@Size(max = 255)
 	private String cause;
 	
-	private BigDecimal totalWeight;
+	@Size(max = 255)
+	private String totalWeight;
+	
+	@Size(max = 255)
+	private String appearanceOfTheGoods;
 	
 	@ManyToOne
     protected Business business;
@@ -98,6 +103,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
         this.business = business;
     }
     
+    @Override
     public Client getClient() {
         return this.client;
     }
@@ -178,11 +184,19 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 		this.cause = cause;
 	}
 	
-	public BigDecimal getTotalWeight() {
+	public String getAppearanceOfTheGoods() {
+		return appearanceOfTheGoods;
+	}
+
+	public void setAppearanceOfTheGoods(String appearanceOfTheGoods) {
+		this.appearanceOfTheGoods = appearanceOfTheGoods;
+	}
+
+	public String getTotalWeight() {
 		return totalWeight;
 	}
 
-	public void setTotalWeight(BigDecimal totalWeight) {
+	public void setTotalWeight(String totalWeight) {
 		this.totalWeight = totalWeight;
 	}
     

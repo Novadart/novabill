@@ -59,7 +59,7 @@ public class CalcUtils {
 			return price.getPriceValue();
 		} else {
 
-			if(price == null || price.getId() == null){
+			if(price.getPriceValue() == null || price.getId() == null){
 				//if no price for the given price list, return the default price
 				price = commodity.getPrices().get("::default");
 				return price.getPriceValue();
@@ -110,26 +110,52 @@ public class CalcUtils {
 			return null;
 
 		case END_OF_MONTH:
-			//add the delay	
-			d = calculatePaymentDueDateAddingCommercialMonths(documentDate, payment.getPaymentDateDelta());
-
+			switch (payment.getPaymentDeltaType()) {
+			case COMMERCIAL_MONTH:
+				//add the delay	
+				d = addCommercialMonthsToDate(documentDate, payment.getPaymentDateDelta());
+				break;
+				
+			case DAYS:
+				d = (Date)documentDate.clone();
+				CalendarUtil.addDaysToDate(d, payment.getPaymentDateDelta());
+				break;
+				
+			default:
+				return null;
+			}
+			
 			// move to the end of month	
 			CalendarUtil.setToFirstDayOfMonth(d);
 			CalendarUtil.addMonthsToDate(d, 1);
 			CalendarUtil.addDaysToDate(d, -1);
+			
+			CalendarUtil.addDaysToDate(d, payment.getSecondaryPaymentDateDelta()==null ? 0 : payment.getSecondaryPaymentDateDelta());
 			return d;
+			
 
 		case IMMEDIATE:
-			//add the delay	
-			d = calculatePaymentDueDateAddingCommercialMonths(documentDate, payment.getPaymentDateDelta());
+			switch (payment.getPaymentDeltaType()) {
+			case COMMERCIAL_MONTH:
+				//add the delay	
+				d = addCommercialMonthsToDate(documentDate, payment.getPaymentDateDelta());
+				return d;
+				
+			case DAYS:
+				d = (Date)documentDate.clone();
+				CalendarUtil.addDaysToDate(d, payment.getPaymentDateDelta());
+				return d;
 
-			return d;
+			default:
+				return null;
+			}
+			
 		}
 	}
 
 
 	@SuppressWarnings("deprecation")
-	private static Date calculatePaymentDueDateAddingCommercialMonths(Date date, int months){
+	private static Date addCommercialMonthsToDate(Date date, int months){
 		if(months == 0){
 			return date;
 		}

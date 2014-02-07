@@ -15,13 +15,13 @@ public interface BusinessStats {
 
 	void setCommoditiesCount(Integer commoditiesCount);
 
-	Double getTotalAfterTaxesForYear();
+	String getTotalAfterTaxesForYear();
 
-	void setTotalAfterTaxesForYear(Double totalAfterTaxesForYear);
+	void setTotalAfterTaxesForYear(String totalAfterTaxesForYear);
 	
-	Double getTotalBeforeTaxesForYear();
+	String getTotalBeforeTaxesForYear();
 
-	void setTotalBeforeTaxesForYear(Double totalBeforeTaxesForYear);
+	void setTotalBeforeTaxesForYear(String totalBeforeTaxesForYear);
 
 	LogRecordList getLogRecords();
 

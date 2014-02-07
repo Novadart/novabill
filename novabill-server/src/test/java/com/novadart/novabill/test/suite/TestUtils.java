@@ -26,6 +26,7 @@ import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
+import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.validation.Field;
@@ -329,7 +330,8 @@ public class TestUtils {
 		paymentType.setName("Payment type test name");
 		paymentType.setDefaultPaymentNote("Payment type test defualt note");
 		paymentType.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
-		paymentType.setPaymentDateDelta(30);
+		paymentType.setPaymentDateDelta(1);
+		paymentType.setPaymentDeltaType(PaymentDeltaType.COMMERCIAL_MONTH);
 		return paymentType;
 	}
 	

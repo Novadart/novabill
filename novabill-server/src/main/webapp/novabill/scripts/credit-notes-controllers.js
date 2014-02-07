@@ -74,7 +74,11 @@ angular.module('novabill.creditNotes.controllers',
     	    	$location.path('/');
     	    });  		
     	},
-    	onFailure : function(){}
+    	onFailure : function(){
+			$scope.$apply(function(){
+				$location.path('/');
+			});
+		}
     });
 	
 	gwtHook.injectSelectCommodityDialogHook();
@@ -95,7 +99,11 @@ angular.module('novabill.creditNotes.controllers',
     	    	$location.path('/');
     	    });
     	},
-    	onFailure : function(){}
+    	onFailure : function(){
+			$scope.$apply(function(){
+				$location.path('/');
+			});
+		}
     });
 	
 	gwtHook.injectSelectCommodityDialogHook();
@@ -115,7 +123,11 @@ angular.module('novabill.creditNotes.controllers',
     	    	$location.path('/');
     	    });
     	},
-    	onFailure : function(){}
+    	onFailure : function(){
+			$scope.$apply(function(){
+				$location.path('/');
+			});
+		}
     });
 	
 	gwtHook.injectSelectCommodityDialogHook();

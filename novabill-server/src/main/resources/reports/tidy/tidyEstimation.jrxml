@@ -40,6 +40,7 @@
 		<field name="tax" class="java.math.BigDecimal"/>
 		<field name="totalBeforeTax" class="java.math.BigDecimal"/>
 		<field name="discount" class="java.math.BigDecimal"/>
+		<field name="sku" class="java.lang.String"/>
 	</subDataset>
 	<queryString>
 		<![CDATA[]]>
@@ -77,12 +78,13 @@
 	<field name="document.business.fax" class="java.lang.String"/>
 	<field name="document.business.email" class="java.lang.String"/>
 	<field name="document.business.web" class="java.lang.String"/>
+	<field name="document.incognito" class="java.lang.Boolean"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<detail>
 		<band height="70" splitType="Prevent">
-			<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null)]]></printWhenExpression>
+			<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null && !$F{document.incognito})]]></printWhenExpression>
 			<image>
 				<reportElement x="0" y="0" width="250" height="70" uuid="ad84ab22-c8c5-403b-9525-8d6a0150fa0d">
 					<printWhenExpression><![CDATA[new Boolean($F{logoInStream} != null)]]></printWhenExpression>
@@ -92,7 +94,9 @@
 		</band>
 		<band height="260" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="8" y="0" width="308" height="20" uuid="602635c5-8a47-4651-9d4c-e9177e5f3637"/>
+				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" x="8" y="0" width="308" height="20">
+					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -126,7 +130,9 @@
 				<textFieldExpression><![CDATA[$R{tidy.date} + ":"]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="55" y="91" width="200" height="20" uuid="5ec97103-c13a-49c0-90b7-0cfe4658afe9"/>
+				<reportElement uuid="5ec97103-c13a-49c0-90b7-0cfe4658afe9" positionType="Float" x="55" y="91" width="200" height="20">
+					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -140,7 +146,9 @@
 				<textFieldExpression><![CDATA[$R{tidy.client}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="55" y="111" width="200" height="70" uuid="b0329e04-13b9-4caf-8d66-fc7a7a5d696f"/>
+				<reportElement uuid="b0329e04-13b9-4caf-8d66-fc7a7a5d696f" positionType="Float" x="55" y="111" width="200" height="70">
+					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font size="10" isBold="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -156,11 +164,22 @@ $F{document.business.postcode} + " " + $F{document.business.city} + ($F{document
 				<textElement>
 					<font size="10" isBold="false"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{document.client.name} + "\n" +
-$F{document.client.address} + "\n" +
-$F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.client.province}!=null && !"".equals($F{document.client.province}.trim())? " (" + $F{document.client.province} + ")": "") + ", " + $F{document.client.country} +
-($F{document.client.vatID}!=null && !"".equals($F{document.client.vatID}.trim()) ? "\n" + $R{tidy.vatID} + " " + $F{document.client.vatID} : "") +
-($F{document.client.ssn}!=null && !"".equals($F{document.client.ssn}.trim()) ? "\n" + $R{tidy.ssn} + " " + $F{document.client.ssn} : "")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.join("\n",
+    $F{document.client.name},
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.address}),
+    com.novadart.novabill.report.ReportUtils.join(" ",
+        com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.postcode}),
+        com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.city}),
+        com.novadart.novabill.report.ReportUtils.join(", ",
+            com.novadart.novabill.report.ReportUtils.transformIfNotBlank("(%s)", $F{document.client.province}),
+            com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.country})
+        )
+    ),
+    com.novadart.novabill.report.ReportUtils.join(" ",
+        com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.vatID} + ":%s", $F{document.client.vatID}),
+        com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.ssn} + ":%s", $F{document.client.ssn})
+    )
+)]]></textFieldExpression>
 			</textField>
 			<componentElement>
 				<reportElement key="table" style="table" positionType="Float" x="8" y="200" width="545" height="50" uuid="38e0479d-9be7-43dc-ac09-5bac62781c62"/>
@@ -168,10 +187,30 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="250" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
+					<jr:column width="60" uuid="8f95eac5-763d-45cb-b8a9-f562880782c5">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="248" height="18" uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b"/>
+								<reportElement uuid="d550edb8-f192-477b-a05d-6b9b603fa296" x="0" y="0" width="60" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{tidy.sku}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="cfe66de8-6245-45a6-a9f9-442ed1faffe5" x="0" y="0" width="58" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sku} == null || $F{sku}.startsWith("::sku")? "": $F{sku}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="190" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b" x="0" y="0" width="188" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
@@ -180,7 +219,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="248" height="18" uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d"/>
+								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="188" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
@@ -328,7 +367,9 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{document.validTill})]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="8" y="17" width="308" height="16" uuid="9bf36810-8b94-43a6-8934-773da2f0d670"/>
+				<reportElement uuid="9bf36810-8b94-43a6-8934-773da2f0d670" positionType="Float" x="8" y="21" width="308" height="16">
+					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
@@ -355,12 +396,17 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="330" y="40" width="89" height="20" uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d"/>
+				<reportElement uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d" positionType="Float" x="330" y="40" width="89" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="419" y="40" width="120" height="20" uuid="14484aea-08e0-4ad3-9f02-b22a8ab01fb0"/>
-				<textElement textAlignment="Right"/>
+				<reportElement uuid="14484aea-08e0-4ad3-9f02-b22a8ab01fb0" positionType="Float" x="419" y="40" width="120" height="20"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.total}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<line>
@@ -449,11 +495,18 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{tidy.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
 			</textField>
 			<textField evaluationTime="Report">
-				<reportElement x="473" y="45" width="75" height="12" uuid="e6b3f23b-1b5a-4c4a-ac69-e008fded77a9"/>
+				<reportElement uuid="8e82610e-b0a0-47f8-a7db-cfc8070dca29" x="533" y="45" width="15" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="25ff91c2-11c8-4955-89ae-7a4f56a35080" x="453" y="45" width="80" height="12"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
-				<textFieldExpression><![CDATA[java.lang.String.format($R{tidy.pagenum.pattern}, $V{PAGE_NUMBER}, $V{PAGE_NUMBER})]]></textFieldExpression>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" di"]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

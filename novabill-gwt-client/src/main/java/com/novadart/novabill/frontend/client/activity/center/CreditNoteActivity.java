@@ -5,6 +5,7 @@ import com.google.gwt.event.shared.EventBus;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.novadart.novabill.frontend.client.ClientFactory;
+import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.creditnote.CreditNotePlace;
@@ -13,6 +14,7 @@ import com.novadart.novabill.frontend.client.place.creditnote.ModifyCreditNotePl
 import com.novadart.novabill.frontend.client.place.creditnote.NewCreditNotePlace;
 import com.novadart.novabill.frontend.client.presenter.center.creditnote.ModifyCreditNotePresenter;
 import com.novadart.novabill.frontend.client.presenter.center.creditnote.NewCreditNotePresenter;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
@@ -66,11 +68,23 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewCreditNoteForClientOpData(place.getClientId(), new DocumentCallack<Pair<Long,ClientDTO>>() {
 
 			@Override
-			public void onSuccess(Pair<Long, ClientDTO> result) {
-				NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view, getCallback());
-				p.setDataForNewCreditNote(result.getSecond(), result.getFirst());
-				p.go(panel);
+			public void onSuccess(final Pair<Long, ClientDTO> result) {
+				DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond(), new AsyncCallback<ClientDTO>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
+					}
+
+					@Override
+					public void onSuccess(ClientDTO newClient) {
+						NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view, getCallback());
+						p.setDataForNewCreditNote(newClient, result.getFirst());
+						p.go(panel);
+						
+					}
+				});
 			}
 		});
 	}

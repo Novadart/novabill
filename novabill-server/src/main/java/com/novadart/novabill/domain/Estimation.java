@@ -82,6 +82,7 @@ public class Estimation extends AccountingDocument implements Serializable {
         this.business = business;
     }
     
+    @Override
     public Client getClient() {
         return this.client;
     }

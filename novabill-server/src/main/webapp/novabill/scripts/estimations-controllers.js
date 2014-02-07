@@ -35,7 +35,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 	};
 	
 	$scope.newEstimationClick = function(){
-		var instance = nSelectClientDialog.open();
+		var instance = nSelectClientDialog.open(true);
 		instance.result.then(
 				function (clientId) {
 					//workaround to enable scroll
@@ -73,7 +73,11 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
     	    	$location.path('/');
     	    });  		
     	},
-    	onFailure : function(){}
+    	onFailure : function(){
+			$scope.$apply(function(){
+				$location.path('/');
+			});
+		}
     });
 	gwtHook.injectSelectCommodityDialogHook();
 }])
@@ -93,7 +97,11 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
     	    	$location.path('/');
     	    });
     	},
-    	onFailure : function(){}
+    	onFailure : function(){
+			$scope.$apply(function(){
+				$location.path('/');
+			});
+		}
     });
 	gwtHook.injectSelectCommodityDialogHook();
 }])
@@ -113,7 +121,11 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
     	    	$location.path('/');
     	    });  		
     	},
-    	onFailure : function(){}
+    	onFailure : function(){
+			$scope.$apply(function(){
+				$location.path('/');
+			});
+		}
     });
 	gwtHook.injectSelectCommodityDialogHook();
 }]);

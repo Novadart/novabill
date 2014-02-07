@@ -83,6 +83,8 @@
 	<g:FlowPanel styleName="{s.wrapper}">
 		<g:Label ui:field="clientDialogTitle" styleName="{s.title}"
 			text="{i18n.addNewClientTitle}"></g:Label>
+			
+		<n:InlineNotification ui:field="incompleteClientAlert"></n:InlineNotification>
 
 		<g:FlowPanel styleName="{s.gridWrapper}">
 			<g:HorizontalPanel>

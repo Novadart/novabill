@@ -25,6 +25,7 @@ public class BusinessDTOFactory {
 		businessDTO.setSsn(business.getSsn());
 		businessDTO.setDefaultLayoutType(business.getDefaultLayoutType());
 		businessDTO.setPriceDisplayInDocsMonolithic(business.isPriceDisplayInDocsMonolithic());
+		businessDTO.setEnabledIncognito(business.isIncognitoEnabled());
 		return businessDTO;
 	}
 	
@@ -46,6 +47,7 @@ public class BusinessDTOFactory {
 		business.setSsn(businessDTO.getSsn());
 		business.setDefaultLayoutType(businessDTO.getDefaultLayoutType());
 		business.setPriceDisplayInDocsMonolithic(businessDTO.isPriceDisplayInDocsMonolithic());
+		business.setIncognitoEnabled(businessDTO.isIncognitoEnabled());
 	}
 
 }

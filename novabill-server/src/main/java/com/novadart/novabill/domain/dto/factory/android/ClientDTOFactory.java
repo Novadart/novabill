@@ -1,8 +1,8 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.factory.android;
 
+import com.novadart.novabill.android.shared.dto.ClientDTO;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Contact;
-import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class ClientDTOFactory {
 	
@@ -25,9 +25,9 @@ public class ClientDTOFactory {
 		clientDTO.setVatID(client.getVatID());
 		clientDTO.setSsn(client.getSsn());
 		clientDTO.setDefaultPaymentTypeID(client.getDefaultPaymentType() == null? null: client.getDefaultPaymentType().getId());
-		clientDTO.setDefaultPriceListID(client.getDefaultPriceList() == null? null: client.getDefaultPriceList().getId());
+//		clientDTO.setDefaultPriceListID(client.getDefaultPriceList() == null? null: client.getDefaultPriceList().getId());
 		clientDTO.setNote(client.getNote());
-		clientDTO.setContact(ContactDTOFactory.toDTO(client.getContact() == null? new Contact(): client.getContact()));
+		clientDTO.setContact(ContactDTOFactory.toDTO(client.getContact()));
 		return clientDTO;
 	}
 	

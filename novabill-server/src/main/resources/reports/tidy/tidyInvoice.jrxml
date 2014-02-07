@@ -40,6 +40,7 @@
 		<field name="tax" class="java.math.BigDecimal"/>
 		<field name="totalBeforeTax" class="java.math.BigDecimal"/>
 		<field name="discount" class="java.math.BigDecimal"/>
+		<field name="sku" class="java.lang.String"/>
 	</subDataset>
 	<queryString>
 		<![CDATA[]]>
@@ -169,10 +170,30 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
 					</datasetRun>
-					<jr:column width="250" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
-						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
+					<jr:column width="60" uuid="9de93291-5e07-4e9c-bbd3-945968d98ed0">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="248" height="18" uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b"/>
+								<reportElement uuid="35f1499a-531a-4714-84ce-9ba775564b83" x="0" y="0" width="60" height="20"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$R{tidy.sku}]]></textFieldExpression>
+							</textField>
+						</jr:columnHeader>
+						<jr:detailCell style="table_TD" height="20" rowSpan="1">
+							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
+								<reportElement uuid="fd7d27e2-b7c0-491d-8347-3aa91afdd491" x="0" y="0" width="58" height="18"/>
+								<textElement verticalAlignment="Middle">
+									<paragraph leftIndent="3"/>
+								</textElement>
+								<textFieldExpression><![CDATA[$F{sku} == null || $F{sku}.startsWith("::sku")? "": $F{sku}]]></textFieldExpression>
+							</textField>
+						</jr:detailCell>
+					</jr:column>
+					<jr:column width="190" uuid="f1720489-beab-47b7-ba02-db6925dccbea">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
+							<textField>
+								<reportElement uuid="e7d566af-2fa9-47ed-9850-aa1b052a972b" x="0" y="0" width="188" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
@@ -181,7 +202,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="248" height="18" uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d"/>
+								<reportElement uuid="7bb78828-bd5c-45ad-8a47-5ba20fead60d" x="0" y="0" width="188" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
@@ -191,7 +212,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="40" uuid="86b69e3c-a251-4e02-b575-373961e6d873">
-						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="38" height="18" uuid="6055a8bc-b42d-448e-8026-845b207d6fc2"/>
 								<textElement verticalAlignment="Middle">
@@ -212,7 +233,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="40" uuid="cf2924ea-fd88-4f19-92e2-2fcdf86216cd">
-						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="38" height="18" uuid="1b4b6a73-fb66-4a9a-bd32-c86ee2053e29"/>
 								<textElement verticalAlignment="Middle">
@@ -233,7 +254,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="40" uuid="e9882e8d-4ff0-4e61-8aba-0c50007d9133">
-						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="38" height="18" uuid="eb7b22df-ab5d-4b2b-a665-3a6aef5aeabe"/>
 								<textElement verticalAlignment="Middle">
@@ -254,7 +275,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="60" uuid="1a47a9f7-ac05-45df-84df-a087c255f93a">
-						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="58" height="18" uuid="3ef6af2d-0093-4317-ad53-d44814c95531"/>
 								<textElement verticalAlignment="Middle">
@@ -275,7 +296,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="40" uuid="8bbde3a3-9d1c-4b97-bb3b-b550dd2830cc">
-						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="38" height="18" uuid="9176b54d-d142-4377-b914-db94ed6920d8"/>
 								<textElement verticalAlignment="Middle">
@@ -296,7 +317,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 						</jr:detailCell>
 					</jr:column>
 					<jr:column width="70" uuid="bd98899d-5bf0-47a8-ae22-09e6134fecad">
-						<jr:columnHeader style="table_CH" height="21" rowSpan="1">
+						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
 								<reportElement x="0" y="0" width="68" height="18" uuid="be14d188-8e94-427d-89f4-3d2be37c0e1e"/>
 								<textElement verticalAlignment="Middle">
@@ -346,7 +367,10 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA[$R{tidy.totalTax}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="330" y="40" width="90" height="20" uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d"/>
+				<reportElement uuid="c282c883-0b55-46a3-9ab4-b2a0fd55576d" positionType="Float" x="330" y="40" width="90" height="20"/>
+				<textElement>
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[$R{tidy.total}]]></textFieldExpression>
 			</textField>
 			<textField>
@@ -355,8 +379,10 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalTax}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement positionType="Float" x="419" y="40" width="120" height="20" uuid="14484aea-08e0-4ad3-9f02-b22a8ab01fb0"/>
-				<textElement textAlignment="Right"/>
+				<reportElement uuid="14484aea-08e0-4ad3-9f02-b22a8ab01fb0" positionType="Float" x="419" y="40" width="120" height="20"/>
+				<textElement textAlignment="Right">
+					<font isBold="true"/>
+				</textElement>
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.total}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<line>
@@ -438,13 +464,6 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 	</detail>
 	<pageFooter>
 		<band height="60" splitType="Stretch">
-			<textField evaluationTime="Report">
-				<reportElement x="473" y="45" width="75" height="12" uuid="d63c8c51-e346-4699-af76-f53d2797857e"/>
-				<textElement textAlignment="Right">
-					<font size="8"/>
-				</textElement>
-				<textFieldExpression><![CDATA[java.lang.String.format($R{tidy.pagenum.pattern}, $V{PAGE_NUMBER}, $V{PAGE_NUMBER})]]></textFieldExpression>
-			</textField>
 			<textField>
 				<reportElement x="140" y="45" width="274" height="12" forecolor="#646464" uuid="6fad50e0-0d89-42c7-a5bd-93a45ee5966e">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
@@ -453,6 +472,20 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["<a href=\"https://www.novabill.it\">" + $R{tidy.watermark.novabill} + " – https://www.novabill.it</a>"]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="d3f3d883-f18e-436a-8369-51e9dfaa5b45" x="453" y="45" width="80" height="12"/>
+				<textElement textAlignment="Right">
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" di"]]></textFieldExpression>
+			</textField>
+			<textField evaluationTime="Report">
+				<reportElement uuid="408f10e4-3af9-4f4e-aa8a-42fdf8f8319e" x="533" y="45" width="15" height="12"/>
+				<textElement>
+					<font size="8"/>
+				</textElement>
+				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

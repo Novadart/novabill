@@ -1,7 +1,5 @@
 package com.novadart.novabill.report;
 
-import java.math.BigDecimal;
-
 import com.novadart.novabill.domain.TransportDocument;
 
 
@@ -15,7 +13,11 @@ public class TransportDetails {
 	
 	private String numberOfPackages;
 	
-	private BigDecimal totalWeight;
+	private String totalWeight;
+	
+	private String transporter;
+	
+	private String appearanceOfTheGoods;
 	
 	public TransportDetails(TransportDocument transDoc){
 		this.transportationResponsibility = transDoc.getTransportationResponsibility();
@@ -23,6 +25,8 @@ public class TransportDetails {
 		this.cause = transDoc.getCause();
 		this.numberOfPackages = transDoc.getNumberOfPackages();
 		this.totalWeight = transDoc.getTotalWeight();
+		this.transporter = transDoc.getTransporter();
+		this.appearanceOfTheGoods = transDoc.getAppearanceOfTheGoods();
 	}
 
 	public String getTransportationResponsibility() {
@@ -41,8 +45,16 @@ public class TransportDetails {
 		return numberOfPackages;
 	}
 
-	public BigDecimal getTotalWeight() {
+	public String getTotalWeight() {
 		return totalWeight;
+	}
+
+	public String getTransporter() {
+		return transporter;
+	}
+
+	public String getAppearanceOfTheGoods() {
+		return appearanceOfTheGoods;
 	}
 	
 }

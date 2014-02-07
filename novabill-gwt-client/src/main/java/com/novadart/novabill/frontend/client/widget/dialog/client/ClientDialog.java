@@ -14,12 +14,14 @@ import com.google.gwt.uibinder.client.UiBinder;
 import com.google.gwt.uibinder.client.UiFactory;
 import com.google.gwt.uibinder.client.UiField;
 import com.google.gwt.uibinder.client.UiHandler;
+import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.novadart.gwtshared.client.LoaderButton;
 import com.novadart.gwtshared.client.dialog.Dialog;
+import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.VatIdValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
@@ -30,6 +32,7 @@ import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
@@ -38,7 +41,6 @@ import com.novadart.novabill.frontend.client.view.util.LocaleWidgets;
 import com.novadart.novabill.frontend.client.widget.ValidatedTextArea;
 import com.novadart.novabill.frontend.client.widget.notification.InlineNotification;
 import com.novadart.novabill.frontend.client.widget.validation.AlternativeSsnVatIdValidation;
-import com.novadart.novabill.frontend.client.widget.validation.NotEmptyMaxLengthTextValidation;
 import com.novadart.novabill.frontend.client.widget.validation.ValidationKit;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
@@ -66,6 +68,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	}
 
 	@UiField InlineNotification inlineNotification;
+	@UiField InlineNotification incompleteClientAlert;
 
 	@UiField Label clientDialogTitle;
 
@@ -106,18 +109,42 @@ public class ClientDialog extends Dialog implements HasUILocking {
 
 	private ClientDTO client = null;
 	private final Long businessId;
-	private final JavaScriptObject callback;
+	private final boolean incompleteClient;
+	private final AsyncCallback<ClientDTO> callback;
 
+	public ClientDialog(Long businessId, final JavaScriptObject callback){
+		this(businessId, new AsyncCallback<ClientDTO>() {
 
-	public ClientDialog(Long businessId, JavaScriptObject callback) {
-		super(GlobalBundle.INSTANCE.dialog());
+			@Override
+			public void onFailure(Throwable caught) {}
+
+			@Override
+			public void onSuccess(ClientDTO result) {
+				BridgeUtils.invokeJSCallback(callback);
+			}
+		});
+	}
+	
+	public ClientDialog(Long businessId, AsyncCallback<ClientDTO> callback) {
+		this(businessId, false, callback);
+	}
+	
+	
+	public ClientDialog(Long businessId, boolean incompleteClient, AsyncCallback<ClientDTO> callback) {
+		super(GlobalBundle.INSTANCE.dialog(), false);
 		GlobalBundle.INSTANCE.dialog().ensureInjected();
 
 		this.businessId = businessId;
 		this.callback = callback;
+		this.incompleteClient = incompleteClient;
 
 		companyName = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(
-				GlobalBundle.INSTANCE.validatedWidget(), new NotEmptyMaxLengthTextValidation(255));
+				GlobalBundle.INSTANCE.validatedWidget(), new TextLengthValidation(255) {
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(getMaxLength());
+			}
+		}, ValidationKit.NOT_EMPTY);
 
 		vatID =  new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.VAT_ID);
 		vatID.setShowMessageOnError(true);
@@ -157,6 +184,10 @@ public class ClientDialog extends Dialog implements HasUILocking {
 
 		ok.addStyleName(s.submit());
 		ok.getButton().addStyleName("btn green");
+		
+		if(incompleteClient){
+			incompleteClientAlert.showMessage(I18N.INSTANCE.incompleteClientAlert());
+		}
 	}
 
 	private String renameDefaultPriceList(String name){
@@ -260,7 +291,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		if(isIT){
 			province.setSelectedItem(client.getProvince());
 		}
-		country.setSelectedItemByValue(client.getCountry());
+		country.setSelectedItemByValue(client.getCountry()==null ? Configuration.getBusiness().getCountry() : client.getCountry());
 		postcode.setText(client.getPostcode());
 		phone.setText(client.getPhone());
 		mobile.setText(client.getMobile());
@@ -366,7 +397,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 				public void onSuccess(Long result) {
 					ok.showLoader(false);
 					hide();
-					BridgeUtils.invokeJSCallback(callback);
+					callback.onSuccess(client);
 					setLocked(false);
 				}
 
@@ -385,7 +416,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 				public void onSuccess(Void result) {
 					ok.showLoader(false);
 					hide();
-					BridgeUtils.invokeJSCallback(callback);
+					callback.onSuccess(client);
 					setLocked(false);
 				}
 
@@ -403,6 +434,9 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	@UiHandler("cancel")
 	void onCancelClicked(ClickEvent e){
 		hide();
+		if(incompleteClient){
+			callback.onFailure(new IncompleteClientException());
+		}
 	}
 
 	@UiHandler("country")

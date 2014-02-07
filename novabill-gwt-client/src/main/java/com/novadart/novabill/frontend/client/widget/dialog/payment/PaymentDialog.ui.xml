@@ -79,12 +79,16 @@
 			<g:row>
 				<g:customCell><g:Label styleName="{style.label}" ui:field="paymentDelayLabel" text="{i18n.paymentDelay}" /></g:customCell>
 				<g:customCell>
-					<g:FlowPanel styleName="{style.value} {style.daysCont}" ui:field="paymentDelayValue">
-						<g:ListBox styleName="{style.daysVal}" ui:field="months" />
-						<g:Label styleName="{style.daysLabel}" ui:field="daysLabel" text="{i18n.days}" visible="false" />
-					</g:FlowPanel>
+				    <g:HorizontalPanel>
+				        <v:ValidatedTextBox styleName="{style.daysVal} {style.value}" ui:field="delay" />
+				        <g:ListBox styleName="{style.daysVal} {style.value}" ui:field="delayType" />    
+				    </g:HorizontalPanel>
 				</g:customCell>
 			</g:row>
+			<g:row>
+                <g:customCell><g:Label styleName="{style.label}" ui:field="secondaryPaymentDelayLabel" text="{i18n.paymentDelay2}" visible="false" /></g:customCell>
+                <g:customCell><v:ValidatedTextBox styleName="{style.daysVal} {style.value}" ui:field="days" visible="false"></v:ValidatedTextBox> </g:customCell>
+            </g:row>
 		</g:Grid>
 		<g:HorizontalPanel styleName="{style.buttons}">
 			<gwtshared:LoaderButton ui:field="ok" text="{i18n.submit}" />

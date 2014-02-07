@@ -26,6 +26,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.Composite;
 import com.google.gwt.user.client.ui.FlowPanel;
+import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ScrollPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
@@ -74,6 +75,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 	@UiField InlineNotification notification;
 
+	@UiField Label itemLabel;	
+	
 	@UiField ScrollPanel itemTableScroller;
 	@UiField(provided=true) ValidatedTextArea sku;
 	@UiField(provided=true) ValidatedTextArea item;
@@ -93,10 +96,11 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiField VerticalPanel taxContainer;
 	@UiField VerticalPanel discountContainer;
 	@UiField VerticalPanel weightContainer;
-	
+
 	@UiField FlowPanel newItemContainer;
 
 	@UiField Button add;
+	@UiField Button browse;
 
 	@UiField CheckBox overrideDiscountInDocsExplicit;
 
@@ -107,6 +111,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	private List<CommodityDTO> commodities;
 	private PriceListDTO priceList;
 	private boolean manageWeight;
+	private boolean insertedFromCommoditySearchPanel = false;
+	private boolean contentAssistEnabled = true;
 
 	private enum FILTER_TYPE {
 		SKU, DESCRIPTION
@@ -127,7 +133,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	public ItemInsertionForm(Handler handler) {
 		this(false, handler);
 	}
-	
+
 	public ItemInsertionForm(boolean manageWeight, Handler handler) {
 		this.handler = handler;
 		this.manageWeight = manageWeight;
@@ -198,7 +204,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@Override
 	protected void onLoad() {
 		super.onLoad();
-		
+
 		weightContainer.setVisible(this.manageWeight);
 
 		setLocked(true);
@@ -337,7 +343,37 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		}
 	}
 
+
+	private void resetForm(FILTER_TYPE filterType){
+		switch (filterType) {
+		case DESCRIPTION:
+			sku.setText("");
+			tax.reset();
+			quantity.setText("");
+			weight.setText("");
+			discount.setText("");
+			price.setText("");
+			unitOfMeasure.setText("");
+			break;
+
+		default:
+		case SKU:
+			item.setText("");
+			tax.reset();
+			quantity.setText("");
+			weight.setText("");
+			discount.setText("");
+			price.setText("");
+			unitOfMeasure.setText("");
+			break;
+		}
+	}
+
+
+
 	private void handleKeyUpEvent(FILTER_TYPE filterType, KeyUpEvent event){
+		String text = FILTER_TYPE.DESCRIPTION.equals(filterType) ? item.getText() : sku.getText();;
+
 		switch (event.getNativeKeyCode()) {
 		case KeyCodes.KEY_SHIFT:
 		case KeyCodes.KEY_ALT:
@@ -361,47 +397,29 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		case KeyCodes.KEY_ENTER:
 
 			commoditySearchPanel.hide();
-			List<CommodityDTO> commodities = searchStack.empty() ? new ArrayList<CommodityDTO>() : searchStack.peek();
-			if(!commodities.isEmpty()){
-				CommodityDTO commodity = commodities.get(0);
-				updateItemFromCommodity(commodity, priceList.getName());
+			if(!insertedFromCommoditySearchPanel && !text.isEmpty()){
+				List<CommodityDTO> commodities = filterCommodities(filterType, text);
+				if(!commodities.isEmpty()){
+					CommodityDTO commodity = commodities.get(0);
+					updateItemFromCommodity(commodity, priceList.getName());
+				}
 			} 
 			break;
 
 
 		case KeyCodes.KEY_BACKSPACE:
+			insertedFromCommoditySearchPanel = false;
 			commoditySearchPanel.hide();
+			resetForm(filterType);
 			break;
 
 		default:
-			String text = FILTER_TYPE.DESCRIPTION.equals(filterType) ? item.getText() : sku.getText();
+			insertedFromCommoditySearchPanel = false;
 
 			List<CommodityDTO> list = filterCommodities(filterType, text);
 			if(list.isEmpty()){
 				commoditySearchPanel.hide();
-
-				switch (filterType) {
-				case DESCRIPTION:
-					sku.setText("");
-					tax.reset();
-					quantity.setText("");
-					weight.setText("");
-					discount.setText("");
-					price.setText("");
-					unitOfMeasure.setText("");
-					break;
-
-				default:
-				case SKU:
-					item.setText("");
-					tax.reset();
-					quantity.setText("");
-					weight.setText("");
-					discount.setText("");
-					price.setText("");
-					unitOfMeasure.setText("");
-					break;
-				}
+				resetForm(filterType);
 				return;
 			}
 
@@ -416,12 +434,16 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 	@UiHandler("sku")
 	void onSkuKeyUp(KeyUpEvent event){
-		handleKeyUpEvent(FILTER_TYPE.SKU, event);
+		if(contentAssistEnabled){
+			handleKeyUpEvent(FILTER_TYPE.SKU, event);
+		}
 	}
 
 	@UiHandler("item")
 	void onItemKeyUp(KeyUpEvent event){
-		handleKeyUpEvent(FILTER_TYPE.DESCRIPTION, event);
+		if(contentAssistEnabled){
+			handleKeyUpEvent(FILTER_TYPE.DESCRIPTION, event);
+		}
 	}
 
 	@UiHandler("sku")
@@ -457,7 +479,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			}
 		});
 	}
-	
+
 	@UiHandler("weight")
 	void onWeightFocus(FocusEvent event){
 		commoditySearchPanel.hide();
@@ -528,9 +550,12 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			ii = DocumentUtils.createAccountingDocumentItem(item.getText());
 		} else {
 			ii = DocumentUtils.createAccountingDocumentItem(sku.getText(), item.getText(), price.getText(), 
-							quantity.getText(), this.manageWeight ? weight.getText() : null, unitOfMeasure.getText(), tax.getValue(), discount.getText());
+					quantity.getText(), this.manageWeight ? weight.getText() : null, unitOfMeasure.getText(), tax.getValue(), discount.getText());
 		}
 
+		if(ii == null) {
+			return;
+		}
 
 		accountingDocumentItems.getList().add(ii);
 		updateFields();
@@ -553,6 +578,9 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		discountContainer.setVisible(!event.getValue());
 		skuContainer.setVisible(!event.getValue());
 		weightContainer.setVisible(this.manageWeight && !event.getValue());
+		browse.setVisible(!event.getValue());
+		contentAssistEnabled = !event.getValue();
+		itemLabel.setText(event.getValue() ? I18N.INSTANCE.text() : I18N.INSTANCE.nameDescription());
 	}
 
 	private void updateItemFromJS(String skuVal, String description, String unitOfMeasure, String weight, String vat, 
@@ -568,8 +596,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 		PriceDTO p = new PriceDTO();
 		p.setId(-1L);
-		p.setPriceType(PriceType.valueOf(priceType));
-		p.setPriceValue(new BigDecimal(price));
+		p.setPriceType(priceType!=null ? PriceType.valueOf(priceType) : null);
+		p.setPriceValue(price != null ? new BigDecimal(price) : null);
 		prices.put(priceListName, p);
 
 		p = new PriceDTO();
@@ -605,6 +633,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			price.setText(CalcUtils.calculatePriceForCommodity(commodity, priceListName).toString().replace('.', ','));
 			discount.setText("");
 		}
+
+		insertedFromCommoditySearchPanel = true;
 	}
 
 	native void openSelectCommodityDialog(ItemInsertionForm insForm, String clientId)/*-{
@@ -615,12 +645,12 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 						result.commodity.sku,
 						result.commodity.description,
 						result.commodity.unitOfMeasure,
-						result.commodity.weight,
+						result.commodity.weight != null ? String(result.commodity.weight) : null,
 						String(result.commodity.tax),
 						String(result.defaultPriceValue),
 						result.priceListName,
 						result.priceType,
-						String(result.priceValue)
+						result.priceValue != null ? String(result.priceValue) : null
 					);
 			},
 			function(error){}
@@ -646,7 +676,11 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		prevKey = "";
 		searchStack.clear();
 		prevFilterType = null;
+		
+		itemLabel.setText(I18N.INSTANCE.nameDescription());
 
+		contentAssistEnabled = true;
+		browse.setVisible(true);
 		skuContainer.setVisible(true);
 		textOnlyAccountingItem.setValue(false);
 		quantityContainer.setVisible(true);
@@ -656,8 +690,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		discountContainer.setVisible(true);
 		weightContainer.setVisible(this.manageWeight);
 		setLocked(false);
-		
 		setReadOnly(false);
+		insertedFromCommoditySearchPanel = false;
 	}
 
 	public void reset(){
@@ -693,6 +727,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 	@Override
 	public void setLocked(boolean value) {
+		sku.setEnabled(!value);
+		browse.setEnabled(!value);
 		item.setEnabled(!value);
 		quantity.setEnabled(!value);
 		weight.setEnabled(!value);
@@ -703,8 +739,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		add.setEnabled(!value);
 		overrideDiscountInDocsExplicit.setEnabled(!value);
 	}
-	
-	
+
+
 	public void setReadOnly(boolean value){
 		newItemContainer.setVisible(!value);
 		itemTable.setLocked(value);

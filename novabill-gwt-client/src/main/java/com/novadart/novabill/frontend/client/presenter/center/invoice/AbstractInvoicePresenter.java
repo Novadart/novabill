@@ -25,7 +25,7 @@ import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 public abstract class AbstractInvoicePresenter extends DocumentPresenter<InvoiceView> implements InvoiceView.Presenter {
 
 	private InvoiceDTO invoice;
-	
+
 	private PaymentTypeDTO cachedDefaultPaymentTypeDTO = null;
 
 	public AbstractInvoicePresenter(PlaceController placeController, EventBus eventBus,	InvoiceView view, JavaScriptObject callback) {
@@ -64,7 +64,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 	protected boolean validateInvoice(){
 		getView().getDate().validate();
 		getView().getNumber().validate();
-		
+
 		if(!getView().getItemInsertionForm().isValid()){
 			return false;
 		}
@@ -78,7 +78,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 
 	protected InvoiceDTO createInvoice(InvoiceDTO invoice){
 		InvoiceDTO inv;
-		
+
 		if(invoice != null){
 			inv = invoice;
 		} else {
@@ -88,7 +88,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		}
 
 		inv.setLayoutType(Configuration.getBusiness().getDefaultLayoutType());
-		
+
 		inv.setDocumentID(Long.parseLong(getView().getNumber().getText()));
 		inv.setAccountingDocumentDate(getView().getDate().getValue());
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
@@ -105,46 +105,51 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		CalcUtils.calculateTotals(invItems, inv);
 		return inv;
 	}
-	
+
 	@Override
 	public void onPaymentSelected(final PaymentTypeDTO payment) {
-		/*
-		 * when the payment is selected, we will show the checkbox to make the payment as default, if necessary
-		 */
-		ManagedAsyncCallback<PaymentTypeDTO> cb = new ManagedAsyncCallback<PaymentTypeDTO>() {
 
-			@Override
-			public void onSuccess(PaymentTypeDTO result) {
-				cachedDefaultPaymentTypeDTO = result;
-				if(cachedDefaultPaymentTypeDTO == null || !cachedDefaultPaymentTypeDTO.getId().equals(payment.getId())) {
-					getView().getMakePaymentAsDefault().setVisible(true);
+		//it is null when the "Paid in full" is selected
+		if(payment.getId() != null) {
+			/*
+			 * when the payment is selected, we will show the checkbox to make the payment as default, if necessary
+			 */
+			ManagedAsyncCallback<PaymentTypeDTO> cb = new ManagedAsyncCallback<PaymentTypeDTO>() {
+
+				@Override
+				public void onSuccess(PaymentTypeDTO result) {
+					cachedDefaultPaymentTypeDTO = result;
+					if(cachedDefaultPaymentTypeDTO == null || !cachedDefaultPaymentTypeDTO.getId().equals(payment.getId())) {
+						getView().getMakePaymentAsDefault().setVisible(true);
+					}
 				}
+			};
+
+			//if this client's default payment type was never fetched, we fetch it
+			if(getClient().getDefaultPaymentTypeID() != null && this.cachedDefaultPaymentTypeDTO == null){
+				ServerFacade.INSTANCE.getPaymentService().get(getClient().getDefaultPaymentTypeID(), cb);
+			} else {
+				//otherwise we use the cached one
+				cb.onSuccess(cachedDefaultPaymentTypeDTO);
 			}
-		};
-		
-		//if this client's default payment type was never fetched, we fetch it
-		if(getClient().getDefaultPaymentTypeID() != null && this.cachedDefaultPaymentTypeDTO == null){
-			ServerFacade.INSTANCE.getPaymentService().get(getClient().getDefaultPaymentTypeID(), cb);
-		} else {
-			//otherwise we use the cached one
-			cb.onSuccess(cachedDefaultPaymentTypeDTO);
+
 		}
-		
+
 		/*
 		 * update the payment note if necessary		
 		 */
 		if(payment.getDefaultPaymentNote().trim().isEmpty()){
 			return;
 		}
-		
+
 		if(getView().getPaymentNote().isEmpty()){
 			getView().getPaymentNote().setText(payment.getDefaultPaymentNote());
 		} else {
-			
+
 			if(getView().getPaymentNote().getText().equals(payment.getDefaultPaymentNote())){
 				return;
 			}
-			
+
 			SafeHtmlBuilder shb = new SafeHtmlBuilder();
 			shb.appendHtmlConstant("<div>");
 			shb.appendEscaped(I18N.INSTANCE.overridePaymentNoteQuestion());
@@ -153,7 +158,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 			shb.appendEscaped(payment.getDefaultPaymentNote());
 			shb.appendHtmlConstant("</div>");
 			Notification.showConfirm(shb.toSafeHtml(), new NotificationCallback<Boolean>() {
-				
+
 				@Override
 				public void onNotificationClosed(Boolean value) {
 					if(value){
@@ -163,7 +168,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 			});
 		}
 	}
-	
+
 	@Override
 	public void onPaymentClear() {
 		getView().getMakePaymentAsDefault().setVisible(false);

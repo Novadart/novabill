@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'novabill.constants'])
+angular.module('novabill.transportDocuments.controllers', 
+		['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'novabill.constants', 'infinite-scroll'])
 
 
 /**
@@ -27,7 +28,7 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
 		});
 	};
 	
-	$scope.loadMoreInvoices = function(){
+	$scope.loadMoreTransportDocuments = function(){
 		if($scope.transportDocuments){
 			var currentIndex = $scope.transportDocuments.length;
 			$scope.transportDocuments = $scope.transportDocuments.concat(loadedTransportDocuments.slice(currentIndex, currentIndex+PARTITION));
@@ -73,7 +74,11 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
     	    	$location.path('/');
     	    });  		
     	},
-    	onFailure : function(){}
+    	onFailure : function(){
+			$scope.$apply(function(){
+				$location.path('/');
+			});
+		}
     });
 	gwtHook.injectSelectCommodityDialogHook();
 }])
@@ -93,7 +98,11 @@ angular.module('novabill.transportDocuments.controllers', ['novabill.utils', 'no
     	    	$location.path('/');
     	    });
     	},
-    	onFailure : function(){}
+    	onFailure : function(){
+			$scope.$apply(function(){
+				$location.path('/');
+			});
+		}
     });
 	gwtHook.injectSelectCommodityDialogHook();
 }]);
