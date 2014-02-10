@@ -283,12 +283,12 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		this.client = client;
 		clientDialogTitle.setText(I18N.INSTANCE.modifyClientTitle());
 
-		boolean isIT = switchValidationByCountry(client.getCountry());
+		boolean isIT = client.getCountry() == null ? true :switchValidationByCountry(client.getCountry());
 
 		companyName.setText(client.getName());
 		address.setText(client.getAddress());
 		city.setText(client.getCity());
-		if(isIT){
+		if(isIT && client.getProvince() != null){
 			province.setSelectedItem(client.getProvince());
 		}
 		country.setSelectedItemByValue(client.getCountry()==null ? Configuration.getBusiness().getCountry() : client.getCountry());
