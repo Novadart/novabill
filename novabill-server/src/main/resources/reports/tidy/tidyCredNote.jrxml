@@ -297,7 +297,7 @@ $F{document.client.country} +
 					<jr:column width="40" uuid="05e8b1ce-4ab1-4922-94c2-86634cc4772f">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="38" height="18" uuid="4a146eae-df17-4859-91a2-c317e673366c"/>
+								<reportElement uuid="4a146eae-df17-4859-91a2-c317e673366c" x="0" y="0" width="38" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
@@ -306,7 +306,7 @@ $F{document.client.country} +
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="38" height="18" uuid="9f79f675-d951-4383-8a34-f3d385382e9e"/>
+								<reportElement uuid="9f79f675-d951-4383-8a34-f3d385382e9e" x="0" y="0" width="38" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
@@ -318,7 +318,7 @@ $F{document.client.country} +
 					<jr:column width="70" uuid="bd98899d-5bf0-47a8-ae22-09e6134fecad">
 						<jr:columnHeader style="table_CH" height="20" rowSpan="1">
 							<textField>
-								<reportElement x="0" y="0" width="68" height="18" uuid="be14d188-8e94-427d-89f4-3d2be37c0e1e"/>
+								<reportElement uuid="be14d188-8e94-427d-89f4-3d2be37c0e1e" x="0" y="0" width="68" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
@@ -327,7 +327,7 @@ $F{document.client.country} +
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="20" rowSpan="1">
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-								<reportElement x="0" y="0" width="68" height="18" uuid="a2f77c65-878e-4827-b80c-31f61b7b5539"/>
+								<reportElement uuid="a2f77c65-878e-4827-b80c-31f61b7b5539" x="0" y="0" width="68" height="18"/>
 								<textElement verticalAlignment="Middle">
 									<font size="8"/>
 									<paragraph leftIndent="3"/>
@@ -339,7 +339,7 @@ $F{document.client.country} +
 				</jr:table>
 			</componentElement>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="8" y="17" width="308" height="16" uuid="fa6dc177-2435-4668-bfed-4e75edc61b9b"/>
+				<reportElement uuid="fa6dc177-2435-4668-bfed-4e75edc61b9b" positionType="Float" x="8" y="21" width="308" height="16"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>

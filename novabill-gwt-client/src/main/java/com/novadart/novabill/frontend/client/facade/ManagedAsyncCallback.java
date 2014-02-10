@@ -53,8 +53,16 @@ public abstract class ManagedAsyncCallback<T> implements AsyncCallback<T> {
 			
 		}  else {
 			
-			Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+			//TODO should we be silent about errors
 			
+//			Timer t = new Timer() {
+//				
+//				@Override
+//				public void run() {
+//					Notification.showMessage(I18N.INSTANCE.errorServerCommunication());
+//				}
+//			};
+//			t.schedule(5000);
 		}
 		
 	}

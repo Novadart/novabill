@@ -110,7 +110,7 @@
 		</band>
 		<band height="182" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement positionType="Float" x="8" y="0" width="308" height="20" uuid="602635c5-8a47-4651-9d4c-e9177e5f3637"/>
+				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" x="8" y="0" width="308" height="20"/>
 				<textElement>
 					<font size="12" isBold="true"/>
 				</textElement>
@@ -181,7 +181,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 ($F{document.client.ssn}!=null && !"".equals($F{document.client.ssn}.trim()) ? "\n" + $R{tidy.ssn} + " " + $F{document.client.ssn} : "")]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true">
-				<reportElement positionType="Float" x="8" y="17" width="308" height="16" uuid="5189c932-bccb-4ee7-b935-d6fc74468ccb"/>
+				<reportElement uuid="5189c932-bccb-4ee7-b935-d6fc74468ccb" positionType="Float" x="8" y="21" width="308" height="16"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
