@@ -5,10 +5,15 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.PriceList;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.web.CacheEvictHooksService;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
@@ -16,13 +21,17 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
 
-
 public privileged aspect CachingAspect {
+	
+	@Autowired
+	private UtilsService utilsService;
+	
+	@Autowired
+	private CacheEvictHooksService cacheEvictHooksService;
 	
 	private String ehcacheDiskStore;
 	
@@ -254,29 +263,12 @@ public privileged aspect CachingAspect {
 	 * Dependencies: None
 	 */
 	
-	declare @method : public void com.novadart.novabill.service.web.CommodityService.remove(Long, Long): @Caching(evict = {
-			@CacheEvict(value = COMMODITY_CACHE, key = "#businessID"),
-			@CacheEvict(value = PRICELIST_CACHE, allEntries = true)
-	});
-		
+	declare @method : public void com.novadart.novabill.service.web.CommodityService.remove(Long, Long): @CacheEvict(value = COMMODITY_CACHE, key = "#businessID");
 	
-	declare @method : public Long com.novadart.novabill.service.web.CommodityService.add(CommodityDTO): @Caching(evict = {
-			@CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id"),
-			@CacheEvict(value = PRICELIST_CACHE, allEntries = true)
-	});
+	declare @method : public Long com.novadart.novabill.service.web.CommodityService.add(CommodityDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id");
 	
-	declare @method : public void com.novadart.novabill.service.web.CommodityService.update(CommodityDTO): @Caching(evict = {
-			@CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id"),
-			@CacheEvict(value = PRICELIST_CACHE, allEntries = true)
-	});
+	declare @method : public void com.novadart.novabill.service.web.CommodityService.update(CommodityDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id");
 	
-	declare @method : public void com.novadart.novabill.service.web.CommodityService.removePrice(Long, Long, Long): @CacheEvict(value = PRICELIST_CACHE, allEntries = true); 
-	
-	declare @method : public Long com.novadart.novabill.service.web.CommodityService.addOrUpdatePrice(Long, PriceDTO): @Caching(evict = { 
-		//@CacheEvict(value = COMMODITY_CACHE, key = "#businessID"),
-		//@CacheEvict(value = PRICELIST_CACHE, key = "#priceDTO.priceListID")
-			@CacheEvict(value = PRICELIST_CACHE, allEntries = true)
-	});
 	
 	/*
 	 * PriceList caching
@@ -298,5 +290,18 @@ public privileged aspect CachingAspect {
 	});
 	
 	declare @method : public Long com.novadart.novabill.service.web.PriceListService.clonePriceList(Long, Long, String): @CacheEvict(value = PRICELIST_CACHE, key = "#businessID.toString().concat('-all')");
+	
+	pointcut removeCommodity(): execution(public void com.novadart.novabill.service.web.CommodityService.remove(..));
+	pointcut addCommodity(): execution(public Long com.novadart.novabill.service.web.CommodityService.add(..));
+	pointcut updateCommodity(): execution(public void com.novadart.novabill.service.web.CommodityService.update(..));
+	pointcut removePrice(): execution(public void com.novadart.novabill.service.web.CommodityService.removePrice(..));
+	pointcut addOrUpdatePrice(): execution(public Long com.novadart.novabill.service.web.CommodityService.addOrUpdatePrice(..));
+	
+	after() returning: removeCommodity() || addCommodity() || updateCommodity() || removePrice() || addOrUpdatePrice(){
+		Long businessID = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
+		for(PriceList priceList: Business.findBusiness(businessID).getPriceLists())
+			cacheEvictHooksService.evictPriceList(priceList.getId());
+	}
+	
 	
 }

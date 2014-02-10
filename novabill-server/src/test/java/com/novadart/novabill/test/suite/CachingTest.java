@@ -34,7 +34,6 @@ import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.TransportDocument;
-import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
@@ -671,11 +670,14 @@ public class CachingTest extends GWTServiceTest {
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
 		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		TestUtils.setDefaultPrice(commodityDTO, new BigDecimal("19.95"));
+		Long id = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
+		PriceListDTO resultOne = priceListService.get(id);
 		commodityService.add(commodityDTO);
 		Commodity.entityManager().flush();
 		Set<CommodityDTO> notCachedCommodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!commodities.equals(notCachedCommodities));
 		assertTrue(commodities.size() + 1 == notCachedCommodities.size());
+		assertTrue(resultOne != priceListService.get(id));
 	}
 	
 	@Test
@@ -694,11 +696,15 @@ public class CachingTest extends GWTServiceTest {
 		Map<String, PriceDTO> prices = new HashMap<>();
 		prices.put(PriceListConstants.DEFAULT, PriceDTOFactory.toDTO(commodity.getPrices().iterator().next()));
 		commodityDTO.setPrices(prices);
+
+		Long plid = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
+		PriceListDTO resultOne = priceListService.get(plid);
 		
 		commodityService.update(commodityDTO);
 		Set<CommodityDTO> nonCachedCommodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!commodities.equals(nonCachedCommodities));
 		assertTrue(commodities.size() == nonCachedCommodities.size());
+		assertTrue(resultOne != priceListService.get(plid));
 	}
 	
 	@Test
@@ -709,11 +715,14 @@ public class CachingTest extends GWTServiceTest {
 		Long id = commodityService.add(commodityDTO);
 		Commodity.entityManager().flush();
 		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
+		Long plid = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
+		PriceListDTO resultOne = priceListService.get(plid);
 		commodityService.remove(authenticatedPrincipal.getBusiness().getId(), id);
 		Commodity.entityManager().flush();
 		Set<CommodityDTO> nonCachedCommodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!commodities.equals(nonCachedCommodities));
 		assertTrue(commodities.size() == nonCachedCommodities.size() + 1);
+		assertTrue(resultOne != priceListService.get(plid));
 	}
 	
 	@Test
@@ -728,8 +737,11 @@ public class CachingTest extends GWTServiceTest {
 		Commodity commodity = business.getCommodities().iterator().next();
 		Price price = commodity.getPrices().iterator().next();
 		price.setPriceValue(new BigDecimal("199.95"));
+		Long plid = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
+		PriceListDTO resultOne = priceListService.get(plid);
 		commodityService.addOrUpdatePrice(business.getId(), PriceDTOFactory.toDTO(price));
 		Commodity.entityManager().flush();
+		assertTrue(resultOne != priceListService.get(plid));
 		//Set<CommodityDTO> nonCachedCommodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
 		//assertTrue(!commodities.equals(nonCachedCommodities));
 	}
