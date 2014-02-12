@@ -447,7 +447,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA[$R{dense.client}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="1e51b090-4143-4b36-9636-5d45711599f3" positionType="Float" x="348" y="28" width="200" height="56"/>
+				<reportElement uuid="1e51b090-4143-4b36-9636-5d45711599f3" positionType="Float" x="348" y="28" width="200" height="70"/>
 				<box>
 					<topPen lineWidth="0.0"/>
 					<leftPen lineWidth="0.0"/>
