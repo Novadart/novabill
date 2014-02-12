@@ -339,8 +339,8 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 					<font size="10" isBold="false"/>
 					<paragraph lineSpacing="Single" spacingBefore="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{document.toEndpoint.companyName} + "\n" +
-com.novadart.novabill.report.ReportUtils.join("\n",
+				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.join("\n",
+$F{document.toEndpoint.companyName},
 com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.toEndpoint.street}),
 
 com.novadart.novabill.report.ReportUtils.join(", ",
