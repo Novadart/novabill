@@ -94,7 +94,7 @@ public class InvoiceService {
 	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException, DataIntegrityException {
 		Invoice invoice = Invoice.findInvoice(id);
 		invoice.getTransportDocuments().size(); //force fetching all docs at once
-		for(TransportDocument transDoc: invoice.getTransportDocuments())
+		for(TransportDocument transDoc: new ArrayList<>(invoice.getTransportDocuments()))
 			transportDocService.clearInvoice(businessID, transDoc.getId());
 		invoice.remove(); //removing invoice
 		if(Hibernate.isInitialized(invoice.getBusiness().getInvoices()))
