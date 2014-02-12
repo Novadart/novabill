@@ -205,7 +205,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA[new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{document.accountingDocumentDate})]]></textFieldExpression>
 			</textField>
 		</band>
-		<band height="289" splitType="Stretch">
+		<band height="299" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" x="8" y="8" width="308" height="18"/>
 				<textElement verticalAlignment="Middle">
@@ -214,7 +214,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA[$F{document.business.name}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="230" width="540" height="50"/>
+				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="233" width="540" height="50"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
@@ -314,21 +314,23 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA[$R{dense.client}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="01e9c929-a47e-4f24-96ca-86a03a7bc3d5" positionType="Float" x="50" y="90" width="200" height="59"/>
+				<reportElement uuid="01e9c929-a47e-4f24-96ca-86a03a7bc3d5" positionType="Float" x="50" y="90" width="200" height="69"/>
 				<textElement>
-					<font size="10" isBold="false"/>
+					<font size="9" isBold="false"/>
 					<paragraph lineSpacing="Single" spacingBefore="4"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$F{document.client.name} + "\n" +
-$F{document.client.address} + "\n" +
-$F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.client.province}!=null && !"".equals($F{document.client.province}.trim())? " (" + $F{document.client.province} + ")": "") + ", " + $F{document.client.country} + "\n" +
-($F{document.client.vatID}!=null && !"".equals($F{document.client.vatID}.trim()) ? $R{dense.vatID} + " " + $F{document.client.vatID} : "") +
-($F{document.client.ssn}!=null && !"".equals($F{document.client.ssn}.trim()) ? "\n" + $R{dense.ssn} + " " + $F{document.client.ssn} : "")]]></textFieldExpression>
+				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.join("\n",
+    $F{document.client.name},
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.address}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.client.province}!=null && !"".equals($F{document.client.province}.trim())? " (" + $F{document.client.province} + ")": "") + ", " + $F{document.client.country}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.vatID} + " %s", $F{document.client.vatID}),
+    com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.ssn} + " %s", $F{document.client.ssn})
+)]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="4a2487a7-7443-48f3-a72f-660e843287f7" positionType="Float" mode="Opaque" x="305" y="70" width="200" height="20" backcolor="#C0BEBE"/>
 				<textElement verticalAlignment="Middle">
-					<font size="12" isBold="true"/>
+					<font fontName="Arial" size="10" isBold="true"/>
 					<paragraph leftIndent="3"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.receivingaddress}]]></textFieldExpression>
@@ -336,7 +338,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="2a12f6b0-51fe-4315-b0de-1e00870d709c" positionType="Float" x="305" y="90" width="200" height="59"/>
 				<textElement>
-					<font size="10" isBold="false"/>
+					<font size="9" isBold="false"/>
 					<paragraph lineSpacing="Single" spacingBefore="4"/>
 				</textElement>
 				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.join("\n",
@@ -372,7 +374,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 )]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement uuid="3216c62c-5772-4f8f-938a-7ff1d5bcec2c" key="table 1" style="table" positionType="Float" x="8" y="158" width="540" height="32"/>
+				<reportElement uuid="3216c62c-5772-4f8f-938a-7ff1d5bcec2c" key="table 1" style="table" positionType="Float" x="8" y="161" width="540" height="32"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Tranport Details Dataset" uuid="f9aa437b-c5fc-477d-b434-081465cddd50">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(com.novadart.novabill.report.ReportUtils.createTransportDetailsDataSource($F{document}))]]></dataSourceExpression>
@@ -550,7 +552,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				</jr:table>
 			</componentElement>
 			<componentElement>
-				<reportElement uuid="491c65a0-51dd-4d39-a8e7-84d1d575862e" key="table 1" style="table" positionType="Float" x="8" y="194" width="540" height="32"/>
+				<reportElement uuid="491c65a0-51dd-4d39-a8e7-84d1d575862e" key="table 1" style="table" positionType="Float" x="8" y="197" width="540" height="32"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Tranport Details Dataset" uuid="c4a6ba94-b37e-4c79-b416-320acb6ad5e1">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource(com.novadart.novabill.report.ReportUtils.createTransportDetailsDataSource($F{document}))]]></dataSourceExpression>
