@@ -14,14 +14,9 @@ public class AccountingDocumentComparator implements Comparator<AccountingDocume
 		if(cmpYear > 0) return -1;
 		if(cmpYear < 0) return 1;
 		
-		int cmpInvId;
-		if(abInv1 instanceof Invoice){
-			cmpInvId = abInv1.getDocumentID().compareTo(abInv2.getDocumentID());
-		} else {
-			cmpInvId = abInv1.getId().compareTo(abInv2.getId());
-		}
-		if(cmpInvId > 0) return -1;
-		if(cmpInvId < 0) return 1;
+		int cmpDocId = abInv1.getDocumentID().compareTo(abInv2.getDocumentID());
+		if(cmpDocId > 0) return -1;
+		if(cmpDocId < 0) return 1;
 		return 0;
 	}
 

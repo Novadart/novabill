@@ -68,7 +68,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	
 	@UiField SimplePanel tipPayment;
 
-	@UiField CheckBox unlockItemsTable;
+//	@UiField CheckBox unlockItemsTable;
 	
 	private Presenter presenter;
 	
@@ -115,10 +115,10 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		presenter.onLoad();
 	}
 	
-	@UiHandler("unlockItemsTable")
-	void onUnlockItemsTable(ValueChangeEvent<Boolean> event){
-		presenter.onUnlockItemsTableChecked(event.getValue());
-	}
+//	@UiHandler("unlockItemsTable")
+//	void onUnlockItemsTable(ValueChangeEvent<Boolean> event){
+//		presenter.onUnlockItemsTableChecked(event.getValue());
+//	}
 	
 	@UiFactory
 	I18N getI18N(){
@@ -248,7 +248,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		
 		makePaymentAsDefault.setValue(false);
 		makePaymentAsDefault.setVisible(false);
-		unlockItemsTable.setVisible(false);
+//		unlockItemsTable.setVisible(false);
 		setLocked(false);
 	}
 
@@ -262,12 +262,13 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		note.setEnabled(!value);
 		makePaymentAsDefault.setEnabled(!value);
 		abort.setEnabled(!value);
-		unlockItemsTable.setEnabled(!value);
+//		unlockItemsTable.setEnabled(!value);
 	}
 	
 	@Override
 	public void setItemsLock(boolean value){
-		unlockItemsTable.setVisible(value);
+		//TODO not allowing to unlock the items table.
+//		unlockItemsTable.setVisible(value);
 		itemInsertionForm.setReadOnly(value);
 	}
 	

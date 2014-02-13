@@ -223,6 +223,11 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 			getView().getPayment().init();
 		} else {
 			getView().getPayment().init(defaultPayment);
+			
+			//if the payment note was not inherited from a previous invoice, fill it
+			if(getView().getPaymentNote().isEmpty()){
+				getView().getPaymentNote().setText(defaultPayment.getDefaultPaymentNote());
+			} 
 		}
 	}
 
