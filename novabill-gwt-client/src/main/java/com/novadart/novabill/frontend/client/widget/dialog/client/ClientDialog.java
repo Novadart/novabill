@@ -362,14 +362,14 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		if(country.getSelectedItemValue().equalsIgnoreCase("IT")){
 			
 			if(VatIdValidation.isVatId(ssn.getText())) {
-				String ssnValue = ssn.getText();
-				client.setSsn(ssnValue.startsWith("IT") ? ssnValue : "IT"+ssnValue );
+				String ssnValue = ssn.getText().trim();
+				client.setSsn(ssnValue.isEmpty() || ssnValue.startsWith("IT") ? ssnValue : "IT"+ssnValue );
 			} else {
 				client.setSsn(ssn.getText());
 			}
 			
-			String vatIDValue = vatID.getText();
-			client.setVatID(vatIDValue.startsWith("IT") ? vatIDValue : "IT"+vatIDValue );
+			String vatIDValue = vatID.getText().trim();
+			client.setVatID(vatIDValue.isEmpty() || vatIDValue.startsWith("IT") ? vatIDValue : "IT"+vatIDValue );
 			
 		} else {
 			
