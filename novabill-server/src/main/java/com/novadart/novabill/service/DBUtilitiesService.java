@@ -11,6 +11,7 @@ import java.util.Set;
 
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Joiner;
@@ -36,7 +37,7 @@ import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 
 
-//@Service
+@Service
 public class DBUtilitiesService {
 	
 	private String blmDBPath = "/tmp/DATI.mdb";
@@ -364,6 +365,13 @@ public class DBUtilitiesService {
 		}
 	}
 	
+	private void fixInvoiceCreatedFromTransDocFlag(){
+		for(Invoice invoice: Invoice.findAllInvoices()){
+			if(invoice.getTransportDocuments().size() > 0)
+				invoice.setCreatedFromTransportDocuments(true);
+		}
+	}
+	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
 	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException{
@@ -378,8 +386,9 @@ public class DBUtilitiesService {
 		//createThirdBusiness();
 		//createDefaultPriceListForExistingBusinesses();
 //		fixPrices();
-		fixPaymentTypes();
-		fixInvoices();
+		//fixPaymentTypes();
+		//fixInvoices();
+		fixInvoiceCreatedFromTransDocFlag();
 	}
 	
 }

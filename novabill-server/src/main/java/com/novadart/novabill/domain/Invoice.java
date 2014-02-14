@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
+import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.ManyToOne;
@@ -43,6 +44,9 @@ public class Invoice extends AbstractInvoice implements Serializable {
     private PaymentDeltaType paymentDeltaType;
 	
 	private Integer secondaryPaymentDateDelta;
+	
+	@Column(columnDefinition = "boolean default false")
+	private boolean createdFromTransportDocuments = false;
 
     @ManyToOne
     protected Business business;
@@ -91,6 +95,15 @@ public class Invoice extends AbstractInvoice implements Serializable {
 
 	public void setSecondaryPaymentDateDelta(Integer secondaryPaymentDateDelta) {
 		this.secondaryPaymentDateDelta = secondaryPaymentDateDelta;
+	}
+
+	public boolean isCreatedFromTransportDocuments() {
+		return createdFromTransportDocuments;
+	}
+
+	public void setCreatedFromTransportDocuments(
+			boolean createdFromTransportDocuments) {
+		this.createdFromTransportDocuments = createdFromTransportDocuments;
 	}
 
 	public String getPaymentTypeName() {
