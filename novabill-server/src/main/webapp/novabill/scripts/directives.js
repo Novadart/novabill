@@ -17,6 +17,30 @@ angular.module('novabill.directives',
 		},
 		controller : ['$scope', '$element', '$translate', function($scope, $element, $translate){
 
+			function isExpired(){
+				var today = new Date();
+				today.setHours(0);
+				today.setMinutes(0);
+				today.setSeconds(0);
+				var paymentDueDate = new Date(parseInt($scope.invoice.paymentDueDate));
+				return paymentDueDate < today;
+			}; 
+			
+			$scope.expired = isExpired();
+			
+			$scope.togglePayed = function(){
+				var value = !$scope.invoice.payed;
+				GWT_Server.invoice.setPayed(nConstants.conf.businessId, $scope.invoice.client.id, $scope.invoice.id, value, {
+					onSuccess : function(){
+						$scope.$apply(function(){
+							$scope.invoice.payed = value;
+							$scope.expired = isExpired();
+						});
+					},
+					onFailure : function(){}
+				});
+			};
+			
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.invoiceDetails($scope.invoice.id) );
 			};

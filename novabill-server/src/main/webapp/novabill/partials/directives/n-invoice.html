@@ -1,4 +1,4 @@
-<div class="well well-small document-well invoice" ng-click="openUrl()">
+<div class="well well-small document-well invoice" ng-class="{'payed' : invoice.payed, 'not-payed' : !invoice.payed, 'expired' : expired}" ng-click="openUrl()">
 	<strong class="documentId">{{invoice.documentID}}</strong> 
 	<span class="date">{{invoice.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
 	<span class="clientName">{{invoice.client.name}}</span>
@@ -15,8 +15,25 @@
 			<li><a href="javascript:void(0);" ng-click="stopProp($event); clone()">{{'CLONE' | translate}}</a></li>
 			<li><a href="javascript:void(0);" ng-click="stopProp($event); createCreditNote()">{{'CREATE_CREDIT_NOTE' | translate}}</a></li>
 			<li class="divider"></li>
+			<li><a href="javascript:void(0);" ng-click="stopProp($event); togglePayed()">{{'TOGGLE_PAYED' | translate}}</a></li>
+			<li class="divider"></li>
 			<li ><a href="javascript:void(0);" ng-click="stopProp($event); remove()" ><i class="fa fa-trash-o"></i>{{'DELETE' | translate}}</a></li>
 		</ul>
 	</div>
+	
+	<table class="pull-right payment-details">
+        <tr>
+            <td style="text-align: right;">{{'TOTAL' | translate}}</td><td><strong class="value">{{invoice.total | currency}}</strong></td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">{{'PAYMENT_EXPIRATION' | translate}}</td><td><strong class="value">{{invoice.paymentDueDate | date:"dd MMMM yyyy"}}</strong></td>
+        </tr>      
+    </table>
+    
+    <div class="pull-right payment-status">
+        <span class="payed" ng-if="invoice.payed">{{'PAYED' | translate}}</span>
+        <span class="not-payed" ng-if="!invoice.payed && !expired">{{'NOT_PAYED' | translate}}</span>
+        <span class="expired" ng-if="!invoice.payed && expired">{{'PAYMENT_EXPIRED' | translate}}</span>
+    </div>
 	
 </div>
