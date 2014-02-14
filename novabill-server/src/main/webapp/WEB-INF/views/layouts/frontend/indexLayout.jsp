@@ -711,7 +711,7 @@
         
         $(function(){
             var austDay = new Date();
-            austDay = new Date(2014, 1, 20);
+            austDay = new Date(2014, 3, 10);
             $('#defaultCountdown').countdown({until: austDay});
         });
         
