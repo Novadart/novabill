@@ -165,7 +165,7 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 		paymentSummary.setPaymentName(selectedPayment.getName());
 		switch (selectedPayment.getPaymentDateGenerator()) {
 		case CUSTOM:
-			paymentSummary.setManual();
+			paymentSummary.setManual(paymentDueDate);
 			break;
 
 		default:

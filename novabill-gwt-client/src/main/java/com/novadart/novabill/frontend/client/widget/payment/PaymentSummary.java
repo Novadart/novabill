@@ -69,14 +69,19 @@ public class PaymentSummary extends Composite {
 	public void setPaymentDueDate(Date date){
 		paymentDueDate = date;
 		Label l = new Label();
-		l.setText(DocumentUtils.DOCUMENT_DATE_FORMAT.format(date));
+		if(date != null) {
+			l.setText(DocumentUtils.DOCUMENT_DATE_FORMAT.format(date));
+		}
 		paymentDateContainer.setWidget(l);
 	}
 
-	public void setManual(){
+	public void setManual(Date paymentDueDate){
 		ValidatedDateBox date = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
 		date.setFormat(new DateBox.DefaultFormat
 				(DocumentUtils.DOCUMENT_DATE_FORMAT));
+		if(paymentDueDate != null){
+			date.setValue(paymentDueDate);
+		}
 		paymentDateContainer.setWidget(date);
 	}
 	
