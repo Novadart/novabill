@@ -314,7 +314,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA[$R{dense.client}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="01e9c929-a47e-4f24-96ca-86a03a7bc3d5" positionType="Float" x="50" y="90" width="200" height="69"/>
+				<reportElement uuid="01e9c929-a47e-4f24-96ca-86a03a7bc3d5" positionType="Float" x="50" y="90" width="200" height="70"/>
 				<textElement>
 					<font size="9" isBold="false"/>
 					<paragraph lineSpacing="Single" spacingBefore="4"/>
@@ -336,7 +336,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA[$R{dense.receivingaddress}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="2a12f6b0-51fe-4315-b0de-1e00870d709c" positionType="Float" x="305" y="90" width="200" height="59"/>
+				<reportElement uuid="2a12f6b0-51fe-4315-b0de-1e00870d709c" positionType="Float" x="305" y="90" width="200" height="70"/>
 				<textElement>
 					<font size="9" isBold="false"/>
 					<paragraph lineSpacing="Single" spacingBefore="4"/>

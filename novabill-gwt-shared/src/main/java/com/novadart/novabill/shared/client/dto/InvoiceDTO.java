@@ -16,6 +16,8 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
 	
 	private Integer secondaryPaymentDateDelta;
     
+	private boolean createdFromTransportDocuments;
+	
     private List<Long> transportDocumentIDs;
     
 	public PaymentDateType getPaymentDateGenerator() {
@@ -75,6 +77,17 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
 
 	public void setSecondaryPaymentDateDelta(Integer secondaryPaymentDateDelta) {
 		this.secondaryPaymentDateDelta = secondaryPaymentDateDelta;
+	}
+
+
+	public boolean isCreatedFromTransportDocuments() {
+		return createdFromTransportDocuments;
+	}
+
+
+	public void setCreatedFromTransportDocuments(
+			boolean createdFromTransportDocuments) {
+		this.createdFromTransportDocuments = createdFromTransportDocuments;
 	}
     
 }
