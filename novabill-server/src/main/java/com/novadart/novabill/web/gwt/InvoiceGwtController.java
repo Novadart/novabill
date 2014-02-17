@@ -1,5 +1,6 @@
 package com.novadart.novabill.web.gwt;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -58,6 +59,11 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 
 	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException, DataAccessException {
 		invoiceService.setPayed(businessID, clientID, id, value);
+	}
+
+	@Override
+	public List<InvoiceDTO> getAllUnpaidInDateRange(Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException {
+		return invoiceService.getAllUnpaidInDateRange(startDate, endDate);
 	}
 	
 }

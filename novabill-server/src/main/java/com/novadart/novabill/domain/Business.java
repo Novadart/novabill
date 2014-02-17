@@ -5,6 +5,7 @@ import java.io.Serializable;
 import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
@@ -20,6 +21,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Transient;
@@ -65,6 +67,7 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @TaxFieldsNotNull
+@NamedQuery(name = "business.allUnpaidInvoicesInDateRante", query = "select i from Invoice i where i.payed = false and :startDate < i.paymentDueDate and i.paymentDueDate < :endDate and i.business.id = :bizID")
 public class Business implements Serializable, Taxable {
 
 	private static final long serialVersionUID = 261999997691744944L;
@@ -280,6 +283,15 @@ public class Business implements Serializable, Taxable {
     			.setParameter("businessId", getId())
     			.setParameter("year", year)
     			.setParameter("id", documentID).getResultList();
+    }
+    
+    public List<Invoice> getAllUnpaidInvoicesInDateRange(Date startDate, Date endDate){
+    	if(startDate == null || endDate == null)
+    		throw new IllegalArgumentException();
+    	return entityManager().createNamedQuery("business.allUnpaidInvoicesInDateRante", Invoice.class).
+    			setParameter("bizID", getId()).
+    			setParameter("startDate", startDate).
+    			setParameter("endDate", endDate).getResultList();
     }
     
     private static interface ClientQueryPreparator{

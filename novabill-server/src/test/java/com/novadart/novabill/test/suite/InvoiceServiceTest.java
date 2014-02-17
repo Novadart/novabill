@@ -8,7 +8,11 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.text.DateFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
@@ -47,6 +51,7 @@ import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.shared.client.facade.BusinessGwtService;
 import com.novadart.novabill.shared.client.facade.ClientGwtService;
 import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
@@ -64,6 +69,9 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	
 	@Autowired
 	private ClientGwtService clientService;
+	
+	@Autowired
+	private BusinessGwtService businessService;
 	
 	@Override
 	@Before
@@ -369,6 +377,27 @@ public class InvoiceServiceTest extends GWTServiceTest {
 				actual.add(error.getField());
 			assertEquals(expected, actual);
 		}
+	}
+	
+	private Set<Long> invoiceIDSet(Collection<InvoiceDTO> invDTOs){
+		Set<Long> ids = new HashSet<>(invDTOs.size());
+		for(InvoiceDTO invDTO: invDTOs)
+			ids.add(invDTO.getId());
+		return ids;
+	}
+	
+	@Test
+	public void getAllUnpaidInDateRangeTest() throws NotAuthenticatedException, DataAccessException, ParseException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		Set<Long> ids2013 = invoiceIDSet(businessService.getInvoices(businessID, 2013));
+		Set<Long> ids2012 = invoiceIDSet(businessService.getInvoices(businessID, 2012));
+		Set<Long> ids2010 = invoiceIDSet(businessService.getInvoices(businessID, 2010));
+		Set<Long> ids2009 = invoiceIDSet(businessService.getInvoices(businessID, 2009));
+		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+		assertEquals(ids2013, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(dateFormat.parse("01-01-2013"), dateFormat.parse("31-12-2013"))));
+		assertEquals(ids2012, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(dateFormat.parse("01-01-2012"), dateFormat.parse("31-12-2012"))));
+		assertEquals(ids2010, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(dateFormat.parse("01-01-2010"), dateFormat.parse("31-12-2010"))));
+		assertEquals(ids2009, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(dateFormat.parse("01-01-2009"), dateFormat.parse("31-12-2009"))));
 	}
 	
 }

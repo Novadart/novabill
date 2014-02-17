@@ -1,6 +1,8 @@
 package com.novadart.novabill.web.mvc;
 
 import java.io.IOException;
+import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import javax.servlet.http.HttpServletResponse;
@@ -9,6 +11,8 @@ import net.sf.jasperreports.engine.JRException;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
+import org.springframework.format.annotation.DateTimeFormat;
+import org.springframework.format.annotation.DateTimeFormat.ISO;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -17,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.novadart.novabill.annotation.Xsrf;
+import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
@@ -26,6 +31,8 @@ import com.novadart.novabill.report.JRDataSourceFactory;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.report.JasperReportService;
 import com.novadart.novabill.report.ReportUtils;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 
@@ -42,6 +49,9 @@ public class PDFController{
 	@Autowired
 	private JasperReportService jrService;
 
+	@Autowired
+	private UtilsService utilsService;
+	
 
 	@RequestMapping(method = RequestMethod.GET, value = "/invoices/{id}", produces = "application/pdf")
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
@@ -101,6 +111,19 @@ public class PDFController{
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(transportDocument, transportDocument.getBusiness().getId()),
 				DocumentType.TRANSPORT_DOCUMENT, transportDocument.getLayoutType());
+	}
+	
+	@RequestMapping(method = RequestMethod.GET, value = "/paymentspros/{startDate}/{endDate}", produces = "application/pdf")
+	@ResponseBody
+	//@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
+	public byte[] getPaymentsProspectPDF(@PathVariable @DateTimeFormat(iso = ISO.DATE) Date startDate,
+			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date endDate, @RequestParam(value = "token", required = false) String token, 
+			HttpServletResponse response, Locale locale) throws JRException, JasperReportKeyResolutionException {
+		Business business  = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
+		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(startDate, endDate);
+		String pdfName = messageSource.getMessage("export.paymentspros.name.pattern", null, "Payments_prospect.pdf", locale);
+		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
+		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(invoices, startDate, endDate), DocumentType.PAYMENTS_PROSPECT, LayoutType.DENSE);
 	}
 
 }

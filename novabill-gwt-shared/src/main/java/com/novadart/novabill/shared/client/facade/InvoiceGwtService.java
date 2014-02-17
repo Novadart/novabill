@@ -1,5 +1,6 @@
 package com.novadart.novabill.shared.client.facade;
 
+import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.user.client.rpc.RemoteService;
@@ -35,5 +36,7 @@ public interface InvoiceGwtService extends RemoteService {
 	public PageDTO<InvoiceDTO> getAllForClientInRange(Long clientID, Integer year, Integer start, Integer length) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
 	
 	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException, DataAccessException;
+	
+	public List<InvoiceDTO> getAllUnpaidInDateRange(Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException;
 	
 }

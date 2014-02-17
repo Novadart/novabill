@@ -1,6 +1,7 @@
 package com.novadart.novabill.service.web;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -165,6 +166,15 @@ public class InvoiceService {
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.client?.id == #clientID")
 	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException {
 		Invoice.findInvoice(id).setPayed(value);
+	}
+	
+	public List<InvoiceDTO> getAllUnpaidInDateRange(Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException {
+		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
+		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(startDate, endDate);
+		List<InvoiceDTO> invoiceDTOs = new ArrayList<>(invoices.size());
+		for(Invoice inv: invoices)
+			invoiceDTOs.add(InvoiceDTOFactory.toDTO(inv, false));
+		return invoiceDTOs;
 	}
 	
 }
