@@ -101,7 +101,7 @@ new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{endDate}))]]></textFieldE
 								<textElement verticalAlignment="Middle">
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$R{dense.client}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[$R{dense.client.name}]]></textFieldExpression>
 							</textField>
 						</jr:columnHeader>
 						<jr:detailCell style="table_TD" height="18" rowSpan="1">
