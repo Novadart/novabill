@@ -8,8 +8,6 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 	
 	private EndpointDTO fromEndpoint;
 	
-	private EndpointDTO toEndpoint;
-	
 	private String transporter;
 	
 	private String transportationResponsibility;
@@ -42,13 +40,6 @@ public class TransportDocumentDTO extends AccountingDocumentDTO {
 		this.fromEndpoint = fromEndpoint;
 	}
 
-	public EndpointDTO getToEndpoint() {
-		return toEndpoint;
-	}
-
-	public void setToEndpoint(EndpointDTO toEndpoint) {
-		this.toEndpoint = toEndpoint;
-	}
 
 	public String getTransporter() {
 		return transporter;

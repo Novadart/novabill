@@ -42,18 +42,6 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	@Valid
 	private Endpoint fromEndpoint;
 	
-	@AttributeOverrides({
-		@AttributeOverride(name = "companyName", column = @Column(name = "to_company_name")),
-		@AttributeOverride(name = "street", column = @Column(name = "to_street")),
-		@AttributeOverride(name = "postcode", column = @Column(name = "to_postcode")),
-		@AttributeOverride(name = "city", column = @Column(name = "to_city")),
-		@AttributeOverride(name = "province", column = @Column(name = "to_province")),
-		@AttributeOverride(name = "country", column = @Column(name = "to_country"))
-	})
-	@Embedded
-	@Valid
-	private Endpoint toEndpoint;
-	
 	@Size(max = 255)
 	private String transporter;
 	
@@ -134,14 +122,6 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 
 	public void setFromEndpoint(Endpoint fromEndpoint) {
 		this.fromEndpoint = fromEndpoint;
-	}
-	
-	public Endpoint getToEndpoint() {
-		return toEndpoint;
-	}
-
-	public void setToEndpoint(Endpoint toEndpoint) {
-		this.toEndpoint = toEndpoint;
 	}
 	
 	public String getTransporter() {

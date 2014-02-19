@@ -26,6 +26,8 @@ public abstract class AccountingDocumentDTOFactory {
 		accountingDocumentDTO.setTotalTax(accountingDocument.getTotalTax());
 		accountingDocumentDTO.setTotalBeforeTax(accountingDocument.getTotalBeforeTax());
 		accountingDocumentDTO.setPaymentNote(accountingDocument.getPaymentNote());
+		if(accountingDocument.getToEndpoint() != null)
+			accountingDocumentDTO.setToEndpoint(EndpointDTOFactory.toDTO(accountingDocument.getToEndpoint()));
 	}
 	
 	public static void copyFromDTO(AccountingDocument accountingDocument, AccountingDocumentDTO accountingDocumentDTO, boolean addItems){
@@ -45,6 +47,8 @@ public abstract class AccountingDocumentDTOFactory {
 		accountingDocument.setTotalTax(accountingDocumentDTO.getTotalTax());
 		accountingDocument.setTotalBeforeTax(accountingDocumentDTO.getTotalBeforeTax());
 		accountingDocument.setPaymentNote(accountingDocumentDTO.getPaymentNote());
+		if(accountingDocumentDTO.getToEndpoint() != null)
+			EndpointDTOFactory.copyFromDTO(accountingDocument.getToEndpoint(), accountingDocumentDTO.getToEndpoint());
 	}
 
 }

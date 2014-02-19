@@ -14,7 +14,6 @@ public class TransportDocumentDTOFactory extends AccountingDocumentDTOFactory {
 		transportDocumentDTO.setClient(ClientDTOFactory.toDTO(transportDocument.getClient()));
 		transportDocumentDTO.setNumberOfPackages(transportDocument.getNumberOfPackages());
 		transportDocumentDTO.setFromEndpoint(EndpointDTOFactory.toDTO(transportDocument.getFromEndpoint()));
-		transportDocumentDTO.setToEndpoint(EndpointDTOFactory.toDTO(transportDocument.getToEndpoint()));
 		transportDocumentDTO.setTransporter(transportDocument.getTransporter());
 		transportDocumentDTO.setTransportationResponsibility(transportDocument.getTransportationResponsibility());
 		transportDocumentDTO.setTradeZone(transportDocument.getTradeZone());
@@ -30,7 +29,6 @@ public class TransportDocumentDTOFactory extends AccountingDocumentDTOFactory {
 		AccountingDocumentDTOFactory.copyFromDTO(transportDocument, transportDocumentDTO, addItems);
 		transportDocument.setNumberOfPackages(transportDocumentDTO.getNumberOfPackages());
 		EndpointDTOFactory.copyFromDTO(transportDocument.getFromEndpoint(), transportDocumentDTO.getFromEndpoint());
-		EndpointDTOFactory.copyFromDTO(transportDocument.getToEndpoint(), transportDocumentDTO.getToEndpoint());
 		transportDocument.setTransporter(transportDocumentDTO.getTransporter());
 		transportDocument.setTransportationResponsibility(transportDocumentDTO.getTransportationResponsibility());
 		transportDocument.setTradeZone(transportDocumentDTO.getTradeZone());
