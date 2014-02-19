@@ -11,12 +11,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.ClientAddress;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
+import com.novadart.novabill.domain.dto.factory.ClientAddressDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.Groups.HeavyClient;
 import com.novadart.novabill.service.validator.SimpleValidator;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -123,7 +126,6 @@ public class ClientService {
 		updateDefaultPaymentType(clientDTO, client);
 		updateDefaultPriceList(clientDTO, client);
 		validator.validate(client, HeavyClient.class);
-		client.flush();
 	}
 
 	@Transactional(readOnly = true)
@@ -148,6 +150,53 @@ public class ClientService {
 		for(Client client: clients.getItems())
 			clientDTOs.add(ClientDTOFactory.toDTO(client));
 		return new PageDTO<ClientDTO>(clientDTOs, start, length, clients.getTotal());
+	}
+	
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientAddressDTO?.client?.id)?.business?.id == principal.business.id and " +
+				  "#clientAddressDTO != null and #clientAddressDTO.id == null")
+	public Long addClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException {
+		ClientAddress clientAddress = new ClientAddress();
+		ClientAddressDTOFactory.copyFromDTO(clientAddress, clientAddressDTO);
+		validator.validate(clientAddress);
+		Client client = Client.findClient(clientAddressDTO.getClient().getId());
+		if(Hibernate.isInitialized(client.getAddresses()))
+			client.getAddresses().add(clientAddress);
+		clientAddress.setClient(client);
+		clientAddress.persist();
+		clientAddress.flush();
+		return clientAddress.getId();
+	}
+	
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id")
+	public List<ClientAddressDTO> getClientAddresses(Long clientID) throws NotAuthenticatedException, DataAccessException {
+		Client client = Client.findClient(clientID);
+		List<ClientAddressDTO> clientAddressDTOs = new ArrayList<>(client.getAddresses().size());
+		for(ClientAddress clientAddress: client.getAddresses())
+			clientAddressDTOs.add(ClientAddressDTOFactory.toDTO(clientAddress));
+		return clientAddressDTOs;
+	}
+	
+	@Transactional(readOnly = false)
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == principal.business.id and " +
+				  "T(com.novadart.novabill.domain.ClientAddress).findClientAddress(#id)?.client?.id == #clientID")
+	public void removeClientAddress(Long clientID, Long id) throws NotAuthenticatedException, DataAccessException {
+		ClientAddress clientAddress = ClientAddress.findClientAddress(id);
+		clientAddress.remove();
+		Client client = Client.findClient(clientID);
+		if(Hibernate.isInitialized(client.getAddresses()))
+			client.getAddresses().remove(clientAddress);
+	}
+	
+	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
+	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientAddressDTO?.client?.id)?.business?.id == principal.business.id and " +
+			      "#clientAddressDTO != null and #clientAddressDTO.id != null")
+	public void updateClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, NoSuchObjectException {
+		ClientAddress clientAddress = ClientAddress.findClientAddress(clientAddressDTO.getId());
+		if(clientAddress == null)
+			throw new NoSuchObjectException();
+		ClientAddressDTOFactory.copyFromDTO(clientAddress, clientAddressDTO);
+		validator.validate(clientAddress);
 	}
 	
 }

@@ -14,6 +14,7 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.ClientAddress;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
@@ -363,6 +364,17 @@ public class TestUtils {
 		PriceList priceList = new PriceList();
 		priceList.setName("Default price list" + Math.random());
 		return priceList;
+	}
+	
+	public static ClientAddress createClientAddress(){
+		ClientAddress clientAddress = new ClientAddress();
+		clientAddress.setName("Administration address");
+		clientAddress.setAddress("Via Castagneto 2");
+		clientAddress.setPostcode("81049");
+		clientAddress.setProvince("CE");
+		clientAddress.setCity("Galluccio");
+		clientAddress.setCountry("IT");
+		return clientAddress;
 	}
 	
 }

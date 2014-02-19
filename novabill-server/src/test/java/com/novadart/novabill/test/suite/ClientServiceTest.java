@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -31,14 +32,17 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.ClientAddress;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
+import com.novadart.novabill.domain.dto.factory.ClientAddressDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -387,6 +391,126 @@ public class ClientServiceTest extends GWTServiceTest {
 		clientDTO.setDefaultPriceListID(priceList.getId());
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
 		assertEquals(priceList, client.getDefaultPriceList());
+	}
+	
+	private ClientAddress addClientAddress(Client client) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+		ClientAddress clientAddress = TestUtils.createClientAddress();
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(clientAddress);
+		clientAddressDTO.setClient(ClientDTOFactory.toDTO(client));
+		Long id = clientService.addClientAddress(clientAddressDTO);
+		clientAddress.setId(id);
+		return clientAddress;
+	}
+	
+	@Test
+	public void addClientAddressAuthorizedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		ClientAddress clientAddress = addClientAddress(client);
+		assertTrue(EqualsBuilder.reflectionEquals(ClientAddress.findClientAddress(clientAddress.getId()), clientAddress, "client", "id", "version"));
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void addClientAddressUnAuthorizedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+		Client client = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next();
+		addClientAddress(client);
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void addClientAddressNullTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+		clientService.addClientAddress(null);
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void addClientAddressIDNotNullTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		ClientAddress clientAddress = TestUtils.createClientAddress();
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(clientAddress);
+		clientAddressDTO.setClient(ClientDTOFactory.toDTO(client));
+		clientAddressDTO.setId(1l);
+		clientService.addClientAddress(clientAddressDTO);
+	}
+	
+	@Test
+	public void getClientAddressesAuthorizedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		addClientAddress(client);
+		List<ClientAddressDTO> addresses = clientService.getClientAddresses(client.getId());
+		assertEquals(1, addresses.size());
+		assertEquals(client.getAddresses().iterator().next().getId(), addresses.get(0).getId());
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void getClientAddressesUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
+		Client client = Business.findBusiness(getUnathorizedBusinessID()).getClients().iterator().next();
+		clientService.getClientAddresses(client.getId());
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void getClientAddressesNullTest() throws NotAuthenticatedException, DataAccessException{
+		clientService.getClientAddresses(null);
+	}
+	
+	@Test
+	public void removeClientAddressAuthenticatedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		ClientAddress clientAddress = addClientAddress(client);
+		clientService.removeClientAddress(client.getId(), clientAddress.getId());
+		assertTrue(ClientAddress.findClientAddress(clientAddress.getId()) == null);
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void removeClientAddressNull1Test() throws NotAuthenticatedException, DataAccessException {
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		clientService.removeClientAddress(client.getId(), null);
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void removeClientAddressNull2Test() throws NotAuthenticatedException, DataAccessException, AuthorizationException, ValidationException {
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		ClientAddress clientAddress = addClientAddress(client);
+		clientService.removeClientAddress(null, clientAddress.getId());
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void removeClientAddressUnauthorizedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		ClientAddress clientAddress = addClientAddress(client);
+		clientService.removeClientAddress(getUnathorizedBusinessID(), clientAddress.getId());
+	}
+	
+	@Test
+	public void updateClientAddressAuthorizedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, NoSuchObjectException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		ClientAddress clientAddress = addClientAddress(client);
+		clientAddress.setName("Newest administrative address");
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(clientAddress);
+		clientAddressDTO.setClient(ClientDTOFactory.toDTO(client));
+		clientService.updateClientAddress(clientAddressDTO);
+		assertEquals("Newest administrative address", ClientAddress.findClientAddress(clientAddress.getId()).getName());
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void updateClientAddressNullTest() throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException, ValidationException, DataAccessException{
+		clientService.updateClientAddress(null);
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void updateClientAddressAuthorizedIDNullTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, NoSuchObjectException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		ClientAddress clientAddress = addClientAddress(client);
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(clientAddress);
+		clientAddressDTO.setClient(ClientDTOFactory.toDTO(client));
+		clientAddressDTO.setId(null);
+		clientService.updateClientAddress(clientAddressDTO);
+	}
+	
+	@Test(expected = DataAccessException.class)
+	public void updateClientAddressUnauthorizedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, NoSuchObjectException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		ClientAddress clientAddress = addClientAddress(client);
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(clientAddress);
+		clientAddressDTO.setClient(ClientDTOFactory.toDTO(Client.findClient(getUnathorizedBusinessID())));
+		clientService.updateClientAddress(clientAddressDTO);
 	}
 	
 }
