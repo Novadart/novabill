@@ -209,7 +209,7 @@
 		<bean class="org.apache.commons.dbcp.BasicDataSource"
 			destroy-method="close" id="dataSource">
 			<property name="driverClassName" value="org.postgresql.Driver" />
-			<property name="url" value="jdbc:postgresql://localhost/novabill" />
+			<property name="url" value="jdbc:postgresql://localhost/${mvn.db.name}" />
 			<property name="username" value="${dbuser}" />
 			<property name="password" value="${dbpassword}" />
 			<property name="testOnBorrow" value="true" />
