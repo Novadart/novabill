@@ -76,8 +76,12 @@
         timeToIdleSeconds="0" timeToLiveSeconds="600"
         memoryStoreEvictionPolicy="LRU" statistics="true" />
     
-    
     <cache name="docsyears-cache" eternal="false"
+        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
+        timeToIdleSeconds="0" timeToLiveSeconds="600"
+        memoryStoreEvictionPolicy="LRU" statistics="true" />
+    
+    <cache name="clientaddress-cache" eternal="false"
         maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
         timeToIdleSeconds="0" timeToLiveSeconds="600"
         memoryStoreEvictionPolicy="LRU" statistics="true" />
