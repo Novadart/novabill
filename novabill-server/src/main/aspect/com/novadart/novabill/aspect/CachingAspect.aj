@@ -15,6 +15,7 @@ import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.CacheEvictHooksService;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
@@ -73,6 +74,8 @@ public privileged aspect CachingAspect {
 	public static final String PRICELIST_CACHE = "pricelist-cache";
 	
 	public static final String TRANSPORTER_CACHE = "transporter-cache";
+	
+	public static final String CLIENTADDRESS_CACHE = "clientaddress-cache";
 	
 	declare @method : public BusinessDTO com.novadart.novabill.service.web.BusinessServiceImpl.get(Long): @Cacheable(value = BUSINESS_CACHE, key = "#businessID");
 	
@@ -290,6 +293,19 @@ public privileged aspect CachingAspect {
 	});
 	
 	declare @method : public Long com.novadart.novabill.service.web.PriceListService.clonePriceList(Long, Long, String): @CacheEvict(value = PRICELIST_CACHE, key = "#businessID.toString().concat('-all')");
+	
+	/*
+	 * Client address caching
+	 * Dependencies: None
+	 */
+	
+	declare @method : public List<ClientAddressDTO> com.novadart.novabill.service.web.ClientService.getClientAddresses(Long): @Cacheable(value = CLIENTADDRESS_CACHE, key = "#clientID");
+	
+	declare @method : public Long com.novadart.novabill.service.web.ClientService.addClientAddress(ClientAddressDTO): @CacheEvict(value = CLIENTADDRESS_CACHE, key = "#clientAddressDTO.client.id");
+	
+	declare @method : public void com.novadart.novabill.service.web.ClientService.removeClientAddress(Long, Long): @CacheEvict(value = CLIENTADDRESS_CACHE, key = "#clientID");
+	
+	declare @method : public void com.novadart.novabill.service.web.ClientService.updateClientAddress(ClientAddressDTO): @CacheEvict(value = CLIENTADDRESS_CACHE, key = "#clientAddressDTO.client.id");
 	
 	pointcut removeCommodity(): execution(public void com.novadart.novabill.service.web.CommodityService.remove(..));
 	pointcut addCommodity(): execution(public Long com.novadart.novabill.service.web.CommodityService.add(..));

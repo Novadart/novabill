@@ -26,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.aspect.CachingAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.ClientAddress;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Estimation;
@@ -35,6 +36,7 @@ import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
+import com.novadart.novabill.domain.dto.factory.ClientAddressDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
@@ -49,6 +51,7 @@ import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
@@ -138,6 +141,7 @@ public class CachingTest extends GWTServiceTest {
 		cacheManager.getCache(CachingAspect.PRICELIST_CACHE).flush();
 		cacheManager.getCache(CachingAspect.DOCSYEARS_CACHE).flush();
 		cacheManager.getCache(CachingAspect.TRANSPORTER_CACHE).flush();
+		cacheManager.getCache(CachingAspect.CLIENTADDRESS_CACHE).flush();
 	}
 	
 	@Test
@@ -830,6 +834,59 @@ public class CachingTest extends GWTServiceTest {
 		assertTrue(businessService.getEstimationYears(businessID) == businessService.getEstimationYears(businessID));
 		assertTrue(businessService.getTransportDocumentYears(businessID) == businessService.getTransportDocumentYears(businessID));
 		assertTrue(businessService.getCreditNoteYears(businessID) == businessService.getCreditNoteYears(businessID));
+	}
+	
+	private ClientAddress addClientAddress(Client client){
+		ClientAddress clientAddress = TestUtils.createClientAddress();
+		clientAddress.setClient(client);
+		client.getAddresses().add(clientAddress);
+		ClientAddress.entityManager().flush();
+		return clientAddress;
+	}
+	
+	@Test
+	public void getClientAddressesTest() throws NotAuthenticatedException, DataAccessException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		addClientAddress(client);
+		Long clientID = client.getId();
+		assertTrue(clientService.getClientAddresses(clientID) == clientService.getClientAddresses(clientID));
+	}
+	
+	@Test
+	public void addClientAddressTest() throws NotAuthenticatedException, DataAccessException, AuthorizationException, ValidationException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		addClientAddress(client);
+		Long clientID = client.getId();
+		List<ClientAddressDTO> uncachedRes = clientService.getClientAddresses(clientID);
+		assertTrue(uncachedRes == clientService.getClientAddresses(clientID));
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(TestUtils.createClientAddress());
+		clientAddressDTO.setClient(ClientDTOFactory.toDTO(client));
+		clientService.addClientAddress(clientAddressDTO);
+		assertTrue(uncachedRes != clientService.getClientAddresses(clientID));
+	}
+	
+	@Test
+	public void removeClientAddressTest() throws NotAuthenticatedException, DataAccessException {
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		Long clientAddrID = addClientAddress(client).getId();
+		Long clientID = client.getId();
+		List<ClientAddressDTO> uncachedRes = clientService.getClientAddresses(clientID);
+		assertTrue(uncachedRes == clientService.getClientAddresses(clientID));
+		clientService.removeClientAddress(clientID, clientAddrID);
+		assertTrue(uncachedRes != clientService.getClientAddresses(clientID));
+	}
+	
+	@Test
+	public void updateClientAddressTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, AuthorizationException, ValidationException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		Long clientAddressID = addClientAddress(client).getId();
+		Long clientID = client.getId();
+		List<ClientAddressDTO> uncachedRes = clientService.getClientAddresses(clientID);
+		assertTrue(uncachedRes == clientService.getClientAddresses(clientID));
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(ClientAddress.findClientAddress(clientAddressID));
+		clientAddressDTO.setClient(ClientDTOFactory.toDTO(client));
+		clientService.updateClientAddress(clientAddressDTO);
+		assertTrue(uncachedRes != clientService.getClientAddresses(clientID));
 	}
 	
 }
