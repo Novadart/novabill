@@ -13,6 +13,7 @@
         </a>
         <ul class="dropdown-menu" ng-class="{'bottom-up': bottomUpMenu}">
             <li><a href="javascript:void(0);" ng-click="stopProp($event); clone()">{{'CLONE' | translate}}</a></li>
+            <li><a href="javascript:void(0);" ng-click="stopProp($event); convertToTransportDocument()">{{'CREATE_TRANSPORT_DOCUMENT' | translate}}</a></li>
             <li><a href="javascript:void(0);" ng-click="stopProp($event); convertToInvoice()">{{'CREATE_INVOICE' | translate}}</a></li>
             <li class="divider"></li>
             <li ><a href="javascript:void(0);" ng-click="stopProp($event); remove()" ><i class="fa fa-trash-o"></i>{{'DELETE' | translate}}</a></li>

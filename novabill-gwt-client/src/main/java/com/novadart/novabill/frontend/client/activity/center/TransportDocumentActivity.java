@@ -9,6 +9,7 @@ import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.HomePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.CloneTransportDocumentPlace;
+import com.novadart.novabill.frontend.client.place.transportdocument.FromEstimationTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.TransportDocumentPlace;
@@ -17,6 +18,7 @@ import com.novadart.novabill.frontend.client.presenter.center.transportdocument.
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.shared.client.tuple.Triple;
@@ -46,6 +48,10 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 				} else if (place instanceof CloneTransportDocumentPlace) {
 					CloneTransportDocumentPlace p = (CloneTransportDocumentPlace) place;
 					setupCloneTransportDocumentView(panel, view, p);
+
+				} else if (place instanceof FromEstimationTransportDocumentPlace) {
+					FromEstimationTransportDocumentPlace p = (FromEstimationTransportDocumentPlace) place;
+					setupFromEstimationTransportDocumentView(panel, view, p);
 
 				} else if (place instanceof NewTransportDocumentPlace) {
 					NewTransportDocumentPlace p = (NewTransportDocumentPlace) place;
@@ -89,6 +95,33 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 			}
 		});
 	}
+	
+	
+	private void setupFromEstimationTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, final FromEstimationTransportDocumentPlace place){
+		ServerFacade.INSTANCE.getBatchfetcherService().fetchNewTransportDocumentFromEstimationOpData(place.getEstimationId(), new DocumentCallack<Pair<Long,EstimationDTO>>() {
+
+			@Override
+			public void onSuccess(final Pair<Long, EstimationDTO> result) {
+				DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond().getClient(), new AsyncCallback<ClientDTO>() {
+
+					@Override
+					public void onFailure(Throwable caught) {
+						BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
+					}
+
+					@Override
+					public void onSuccess(final ClientDTO newClient) {
+						result.getSecond().setClient(newClient);
+						NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view, getCallback());
+						p.setDataForNewTransportDocument(newClient, result.getFirst(), result.getSecond());
+						p.go(panel);
+					}
+				});
+			}
+		});
+	}
+	
 
 	private void setupModifyTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, ModifyTransportDocumentPlace place){
 		ServerFacade.INSTANCE.getTransportdocumentService().get(place.getTransportDocumentId(), new DocumentCallack<TransportDocumentDTO>() {

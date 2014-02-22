@@ -18,6 +18,7 @@ import com.novadart.novabill.frontend.client.widget.notification.NotificationCal
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
@@ -62,6 +63,21 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
 
 	}
+	
+	
+	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId, EstimationDTO document) {
+		setDataForNewTransportDocument(client,transportDocumentProgressiveId);
+
+		List<AccountingDocumentItemDTO> items = null;
+		items = new ArrayList<AccountingDocumentItemDTO>(document.getItems().size());
+		for (AccountingDocumentItemDTO i : document.getItems()) {
+			items.add(i.clone());
+		}
+
+		getView().getItemInsertionForm().setItems(items);
+		getView().getNote().setText(document.getNote());
+	}
+	
 
 	@Override
 	public void onCreateDocumentClicked() {

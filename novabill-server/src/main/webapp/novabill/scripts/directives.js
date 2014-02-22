@@ -153,6 +153,10 @@ angular.module('novabill.directives',
 			$scope.convertToInvoice = function(id){
 				window.location.assign(nConstants.url.invoiceFromEstimation($scope.estimation.id));
 			};
+			
+			$scope.convertToTransportDocument = function(id){
+				window.location.assign(nConstants.url.transportDocumentFromEstimation($scope.estimation.id));
+			};
 
 			//activate the dropdown
 			angular.element($element).find('.dropdown-toggle').dropdown();

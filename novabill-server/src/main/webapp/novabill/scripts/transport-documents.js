@@ -19,6 +19,11 @@ angular.module("novabill.transportDocuments", ['novabill.transportDocuments.cont
 		controller: 'TransportDocumentDetailsCtrl'
 	})
 	
+	.when('/from-estimation/:estimationId', {
+		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/transport-documents-detail.html'),
+		controller: 'TransportDocumentFromEstimationCtrl'
+	})
+	
 	.when('/new/:clientId', {
 		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/transport-documents-detail.html'),
 		controller: 'TransportDocumentCreateCtrl'

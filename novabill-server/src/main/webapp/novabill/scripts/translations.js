@@ -36,6 +36,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		CREATE_CREDIT_NOTE : 'Crea Nota di Credito',
 		CREATE_INVOICE : 'Crea Fattura',
 		CREATE_INVOICE_FROM_MULTIPLE_TRANSPORT_DOCUMENTS : 'Seleziona i Documenti di Trasporto da includere in Fattura',
+		CREATE_TRANSPORT_DOCUMENT : 'Crea DDT',
 		CREDIT_NOTES : 'Note di Credito',
 		DEFAULT_PRICE : 'Prezzo Base',
 		DEFAULT_PRICE_PLACEHOLDER : 'esempio: 15',
