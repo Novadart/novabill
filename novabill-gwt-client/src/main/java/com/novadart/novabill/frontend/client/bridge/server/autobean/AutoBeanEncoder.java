@@ -318,6 +318,10 @@ public class AutoBeanEncoder {
 		ai.setTotalBeforeTax(invoice.getTotalBeforeTax());
 		ai.setTotalTax(invoice.getTotalTax());
 
+		LongList ll = AutoBeanMaker.INSTANCE.makeLongList().as();
+		ll.setList(invoice.getTransportDocumentIDs());
+		ai.setTransportDocumentIDs(ll);
+		
 		return AutoBeanUtils.getAutoBean(ai);
 	}
 

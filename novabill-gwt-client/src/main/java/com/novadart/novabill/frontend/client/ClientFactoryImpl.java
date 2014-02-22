@@ -154,7 +154,7 @@ public class ClientFactoryImpl implements ClientFactory {
 //	}
 
 	@Override
-	public void getInvoiceView(final AsyncCallback<InvoiceView> callback) {
+	public void getInvoiceView(final boolean readonly, final AsyncCallback<InvoiceView> callback) {
 		if(views.containsKey(InvoiceView.class)){
 			callback.onSuccess((InvoiceView) getView(InvoiceView.class));
 		} else {
@@ -162,7 +162,7 @@ public class ClientFactoryImpl implements ClientFactory {
 				
 				@Override
 				public void onSuccess() {
-					callback.onSuccess((InvoiceView) getView(InvoiceView.class, new InvoiceViewImpl()));
+					callback.onSuccess((InvoiceView) getView(InvoiceView.class, new InvoiceViewImpl(readonly)));
 				}
 				
 				@Override

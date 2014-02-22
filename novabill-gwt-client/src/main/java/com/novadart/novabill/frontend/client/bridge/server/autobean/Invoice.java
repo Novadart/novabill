@@ -21,6 +21,10 @@ public interface Invoice {
 
 	public void setPaymentTypeName(String paymentTypeName);
 	
+	public LongList getTransportDocumentIDs();
+
+	public void setTransportDocumentIDs(LongList list);
+	
 	/*
 	 * AbstractInvoiceDTO interface
 	 */

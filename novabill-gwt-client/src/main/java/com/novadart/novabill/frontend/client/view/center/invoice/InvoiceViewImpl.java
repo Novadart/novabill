@@ -67,12 +67,10 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiField Button abort;
 	
 	@UiField SimplePanel tipPayment;
-
-//	@UiField CheckBox unlockItemsTable;
 	
 	private Presenter presenter;
 	
-	public InvoiceViewImpl() {
+	public InvoiceViewImpl(boolean readonly) {
 		payment = new SelectPayment(new SelectPayment.Handler() {
 			
 			@Override
@@ -88,7 +86,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 		
-		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
+		itemInsertionForm = new ItemInsertionForm(false, readonly, new ItemInsertionForm.Handler() {
 			
 			@Override
 			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
@@ -114,11 +112,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		super.onLoad();
 		presenter.onLoad();
 	}
-	
-//	@UiHandler("unlockItemsTable")
-//	void onUnlockItemsTable(ValueChangeEvent<Boolean> event){
-//		presenter.onUnlockItemsTableChecked(event.getValue());
-//	}
 	
 	@UiFactory
 	I18N getI18N(){
@@ -248,7 +241,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		
 		makePaymentAsDefault.setValue(false);
 		makePaymentAsDefault.setVisible(false);
-//		unlockItemsTable.setVisible(false);
 		setLocked(false);
 	}
 
@@ -262,15 +254,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		note.setEnabled(!value);
 		makePaymentAsDefault.setEnabled(!value);
 		abort.setEnabled(!value);
-//		unlockItemsTable.setEnabled(!value);
 	}
-	
-	@Override
-	public void setItemsLock(boolean value){
-		//TODO not allowing to unlock the items table.
-//		unlockItemsTable.setVisible(value);
-		itemInsertionForm.setReadOnly(value);
-	}
-	
 	
 }

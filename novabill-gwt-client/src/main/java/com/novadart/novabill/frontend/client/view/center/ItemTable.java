@@ -2,10 +2,13 @@ package com.novadart.novabill.frontend.client.view.center;
 
 import java.math.BigDecimal;
 
+import com.google.gwt.cell.client.AbstractCell;
+import com.google.gwt.cell.client.AbstractEditableCell;
 import com.google.gwt.cell.client.ActionCell;
 import com.google.gwt.cell.client.EditTextCell;
 import com.google.gwt.cell.client.FieldUpdater;
 import com.google.gwt.cell.client.TextCell;
+import com.google.gwt.cell.client.TextInputCell.ViewData;
 import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.i18n.client.NumberFormat;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
@@ -34,27 +37,26 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 	}
 
 	private final Handler handler;
-	private boolean locked = false;
 
-	private final MoveUpDownCell moveUpDownCell;
-
-	public ItemTable(boolean displayWeight, Handler handler) {
+	@SuppressWarnings("unchecked")
+	public ItemTable(boolean displayWeight, boolean readOnly, Handler handler) {
 		super(10000);
 
 		this.handler = handler;
 
+		if(!readOnly) {
 
-		moveUpDownCell = new MoveUpDownCell(this.handler);
-		final Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO> moveUpDown = 
-				new Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO>(moveUpDownCell) {
+			MoveUpDownCell moveUpDownCell = new MoveUpDownCell(this.handler);
+			final Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO> moveUpDown = 
+					new Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO>(moveUpDownCell) {
 
-			@Override
-			public AccountingDocumentItemDTO getValue(AccountingDocumentItemDTO object) {
-				return object;
-			}
-		};
-		addColumn(moveUpDown);
-
+				@Override
+				public AccountingDocumentItemDTO getValue(AccountingDocumentItemDTO object) {
+					return object;
+				}
+			};
+			addColumn(moveUpDown);
+		} 
 
 		//Sku
 		final TextCell skuCell = new TextCell();
@@ -71,7 +73,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		addColumn(sku, I18N.INSTANCE.sku());
 
 		//Name & Description
-		final LargeEditTextCell descEditCell = new LargeEditTextCell();
+		final AbstractCell<String> descEditCell = readOnly ? new TextCell() : new LargeEditTextCell();
 		final Column<AccountingDocumentItemDTO, String> nameDescription = 
 				new Column<AccountingDocumentItemDTO, String>(descEditCell) {
 
@@ -81,35 +83,31 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			}
 
 		};
-		nameDescription.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+		if(!readOnly) {
+			nameDescription.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
 
-			@Override
-			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				if(locked){
-					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
-					descEditCell.clearViewData(object);
+				@Override
+				public void update(int index, AccountingDocumentItemDTO object, String value) {
+					if(Validation.isEmpty(value)){
+						Notification.showMessage(I18N.INSTANCE.errorClientData());
+					} else if(!Validation.isWithinSize(value, DESCRIPTION_MAX_LENGTH)){
+						Notification.showMessage(I18NM.get.textLengthError(DESCRIPTION_MAX_LENGTH));
+					} else {
+						object.setDescription(value);
+						ItemTable.this.handler.onUpdate(object);
+
+					}
+
+					((AbstractEditableCell<String, ViewData>) descEditCell).clearViewData(object);
 					redrawRow(index);
-					return;
-				}
-				if(Validation.isEmpty(value)){
-					Notification.showMessage(I18N.INSTANCE.errorClientData());
-				} else if(!Validation.isWithinSize(value, DESCRIPTION_MAX_LENGTH)){
-					Notification.showMessage(I18NM.get.textLengthError(DESCRIPTION_MAX_LENGTH));
-				} else {
-					object.setDescription(value);
-					ItemTable.this.handler.onUpdate(object);
 
 				}
-
-				descEditCell.clearViewData(object);
-				redrawRow(index);
-
-			}
-		});
+			});
+		}
 		addColumn(nameDescription, I18N.INSTANCE.nameDescription());
 
 		//unity of measure
-		final EditTextCell unitEditCell = new EditTextCell();
+		final AbstractCell<String> unitEditCell = readOnly ? new TextCell() : new EditTextCell();
 		Column<AccountingDocumentItemDTO, String> unitOfMeasure =
 				new Column<AccountingDocumentItemDTO, String>(unitEditCell) {
 
@@ -118,28 +116,23 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 				return object.getUnitOfMeasure();
 			}
 		};
-		unitOfMeasure.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+		if(!readOnly) {
+			unitOfMeasure.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
 
-			@Override
-			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				if(locked){
-					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
-					unitEditCell.clearViewData(object);
+				@Override
+				public void update(int index, AccountingDocumentItemDTO object, String value) {
+					if(!Validation.isWithinSize(value, UNIT_OF_MEASURE_MAX_SIZE)){
+						Notification.showMessage(I18NM.get.textLengthError(UNIT_OF_MEASURE_MAX_SIZE));
+					} else {
+						object.setUnitOfMeasure(value);
+						ItemTable.this.handler.onUpdate(object);
+					}
+
+					((AbstractEditableCell<String, ViewData>) unitEditCell).clearViewData(object);
 					redrawRow(index);
-					return;
 				}
-
-				if(!Validation.isWithinSize(value, UNIT_OF_MEASURE_MAX_SIZE)){
-					Notification.showMessage(I18NM.get.textLengthError(UNIT_OF_MEASURE_MAX_SIZE));
-				} else {
-					object.setUnitOfMeasure(value);
-					ItemTable.this.handler.onUpdate(object);
-				}
-
-				unitEditCell.clearViewData(object);
-				redrawRow(index);
-			}
-		});
+			});
+		}
 		SafeHtmlBuilder shb = new SafeHtmlBuilder();
 		shb.appendHtmlConstant("<span title=\""+I18N.INSTANCE.unityOfMeasureExtended()+"\">");
 		shb.appendEscaped(I18N.INSTANCE.unityOfMeasure());
@@ -148,7 +141,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 
 		//quantity
-		final EditTextCell qtyEditCell = new EditTextCell();
+		final AbstractCell<String> qtyEditCell = readOnly ? new TextCell() : new EditTextCell();
 		Column<AccountingDocumentItemDTO, String> quantity =
 				new Column<AccountingDocumentItemDTO, String>(qtyEditCell) {
 
@@ -161,40 +154,35 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 				return NumberFormat.getDecimalFormat().format(object.getQuantity());
 			}
 		};
-		quantity.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+		if(!readOnly) {
+			quantity.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
 
-			@Override
-			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				if(locked){
-					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
-					qtyEditCell.clearViewData(object);
+				@Override
+				public void update(int index, AccountingDocumentItemDTO object, String value) {
+					try{
+
+						BigDecimal newQty = CalcUtils.parseValue(value);
+						object.setQuantity(newQty);
+						ItemTable.this.handler.onUpdate(object);
+
+					} catch(NumberFormatException e){
+
+						Notification.showMessage(I18N.INSTANCE.errorClientData());
+
+					}
+
+					((AbstractEditableCell<String, ViewData>) qtyEditCell).clearViewData(object);
 					redrawRow(index);
-					return;
 				}
-
-				try{
-
-					BigDecimal newQty = CalcUtils.parseValue(value);
-					object.setQuantity(newQty);
-					ItemTable.this.handler.onUpdate(object);
-
-				} catch(NumberFormatException e){
-
-					Notification.showMessage(I18N.INSTANCE.errorClientData());
-
-				}
-
-				qtyEditCell.clearViewData(object);
-				redrawRow(index);
-			}
-		});
+			});
+		}
 		addColumn(quantity, I18N.INSTANCE.quantity());
 
 		Column<AccountingDocumentItemDTO, String> weight = null;
 		if(displayWeight) {
 
 			//weight
-			final EditTextCell weightEditCell = new EditTextCell();
+			final AbstractCell<String> weightEditCell = readOnly ? new TextCell() : new EditTextCell();
 			weight = new Column<AccountingDocumentItemDTO, String>(weightEditCell) {
 
 				@Override
@@ -206,42 +194,38 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 					return NumberFormat.getDecimalFormat().format(object.getWeight());
 				}
 			};
-			weight.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
 
-				@Override
-				public void update(int index, AccountingDocumentItemDTO object, String value) {
-					if(locked){
-						Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
-						weightEditCell.clearViewData(object);
-						redrawRow(index);
-						return;
-					}
+			if(!readOnly) {
+				weight.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
 
-					try{
+					@Override
+					public void update(int index, AccountingDocumentItemDTO object, String value) {
+						try{
 
-						if(value.isEmpty()){
-							object.setDiscount(null);
-						}  else {
-							BigDecimal newWeight = CalcUtils.parseValue(value);
-							object.setWeight(newWeight);
-							ItemTable.this.handler.onUpdate(object);
+							if(value.isEmpty()){
+								object.setDiscount(null);
+							}  else {
+								BigDecimal newWeight = CalcUtils.parseValue(value);
+								object.setWeight(newWeight);
+								ItemTable.this.handler.onUpdate(object);
+							}
+
+						} catch(NumberFormatException e){
+
+							Notification.showMessage(I18N.INSTANCE.errorClientData());
+
 						}
-						
-					} catch(NumberFormatException e){
 
-						Notification.showMessage(I18N.INSTANCE.errorClientData());
-
+						((AbstractEditableCell<String, ViewData>) weightEditCell).clearViewData(object);
+						redrawRow(index);
 					}
-
-					weightEditCell.clearViewData(object);
-					redrawRow(index);
-				}
-			});
+				});
+			}
 			addColumn(weight, I18N.INSTANCE.weight());
 		}
 
 		//VAT
-		final EditTextCell taxEditCell = new EditTextCell();
+		final AbstractCell<String> taxEditCell = readOnly ? new TextCell() : new EditTextCell();
 		Column<AccountingDocumentItemDTO, String> tax =
 				new Column<AccountingDocumentItemDTO, String>(taxEditCell) {
 
@@ -254,38 +238,34 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 				return NumberFormat.getDecimalFormat().format(object.getTax());
 			}
 		};
-		tax.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+		if(!readOnly) {
+			tax.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
 
-			@Override
-			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				if(locked){
-					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
-					taxEditCell.clearViewData(object);
+				@Override
+				public void update(int index, AccountingDocumentItemDTO object, String value) {
+
+					try{
+
+						BigDecimal newTax = CalcUtils.parseValue(value);
+						object.setTax(newTax);
+						ItemTable.this.handler.onUpdate(object);
+
+					} catch(NumberFormatException e){
+
+						Notification.showMessage(I18N.INSTANCE.errorClientData());
+
+					}
+
+					((AbstractEditableCell<String, ViewData>) taxEditCell).clearViewData(object);
 					redrawRow(index);
-					return;
 				}
-
-				try{
-
-					BigDecimal newTax = CalcUtils.parseValue(value);
-					object.setTax(newTax);
-					ItemTable.this.handler.onUpdate(object);
-
-				} catch(NumberFormatException e){
-
-					Notification.showMessage(I18N.INSTANCE.errorClientData());
-
-				}
-
-				taxEditCell.clearViewData(object);
-				redrawRow(index);
-			}
-		});
+			});
+		}
 		addColumn(tax, "%"+I18N.INSTANCE.vat());
 
 
 		//price
-		final EditTextCell priceEditCell = new EditTextCell();
+		final AbstractCell<String> priceEditCell = readOnly ? new TextCell() : new EditTextCell();
 		Column<AccountingDocumentItemDTO, String> price =
 				new Column<AccountingDocumentItemDTO, String>(priceEditCell) {
 
@@ -298,37 +278,33 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 				return String.valueOf(NumberFormat.getCurrencyFormat().format(object.getPrice()));
 			}
 		};
-		price.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
 
-			@Override
-			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				if(locked){
-					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
-					priceEditCell.clearViewData(object);
+		if(!readOnly) {
+			price.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+
+				@Override
+				public void update(int index, AccountingDocumentItemDTO object, String value) {
+					try{
+
+						BigDecimal newPrice = CalcUtils.parseCurrency(value);
+						object.setPrice(newPrice);
+						ItemTable.this.handler.onUpdate(object);
+
+					} catch(NumberFormatException e){
+
+						Notification.showMessage(I18N.INSTANCE.errorClientData());
+
+					}
+					((AbstractEditableCell<String, ViewData>) priceEditCell).clearViewData(object);
 					redrawRow(index);
-					return;
 				}
-
-				try{
-
-					BigDecimal newPrice = CalcUtils.parseCurrency(value);
-					object.setPrice(newPrice);
-					ItemTable.this.handler.onUpdate(object);
-
-				} catch(NumberFormatException e){
-
-					Notification.showMessage(I18N.INSTANCE.errorClientData());
-
-				}
-				priceEditCell.clearViewData(object);
-				redrawRow(index);
-			}
-		});
+			});
+		}
 		addColumn(price, I18N.INSTANCE.price());
 
 
 		// discount
-		final EditTextCell discountEditCell = new EditTextCell();
+		final AbstractCell<String> discountEditCell = readOnly ? new TextCell() : new EditTextCell();
 		Column<AccountingDocumentItemDTO, String> discount =
 				new Column<AccountingDocumentItemDTO, String>(discountEditCell) {
 
@@ -341,35 +317,31 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 				return NumberFormat.getDecimalFormat().format(object.getDiscount());
 			}
 		};
-		discount.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
+		if(!readOnly) {
+			discount.setFieldUpdater(new FieldUpdater<AccountingDocumentItemDTO, String>() {
 
-			@Override
-			public void update(int index, AccountingDocumentItemDTO object, String value) {
-				if(locked){
-					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
-					discountEditCell.clearViewData(object);
-					redrawRow(index);
-					return;
-				}
+				@Override
+				public void update(int index, AccountingDocumentItemDTO object, String value) {
 
-				try{
-					if(value.isEmpty()){
-						object.setDiscount(null);
-					} else {
-						BigDecimal newDiscount = CalcUtils.parseValue(value);
-						object.setDiscount(newDiscount);
+					try{
+						if(value.isEmpty()){
+							object.setDiscount(null);
+						} else {
+							BigDecimal newDiscount = CalcUtils.parseValue(value);
+							object.setDiscount(newDiscount);
+						}
+						ItemTable.this.handler.onUpdate(object);
+					} catch(NumberFormatException e){
+
+						Notification.showMessage(I18N.INSTANCE.errorClientData());
+
 					}
-					ItemTable.this.handler.onUpdate(object);
-				} catch(NumberFormatException e){
 
-					Notification.showMessage(I18N.INSTANCE.errorClientData());
-
+					((AbstractEditableCell<String, ViewData>) discountEditCell).clearViewData(object);
+					redrawRow(index);
 				}
-
-				discountEditCell.clearViewData(object);
-				redrawRow(index);
-			}
-		});
+			});
+		}
 		addColumn(discount, I18N.INSTANCE.discountLabel());
 
 
@@ -388,31 +360,32 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		};
 		addColumn(totalBeforeTaxes, I18N.INSTANCE.totalBeforeTaxesForItem());
 
-		//delete button
-		ActionCell.Delegate<AccountingDocumentItemDTO> delegate = new ActionCell.Delegate<AccountingDocumentItemDTO>() {
+		Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO> delete = null;
+		if(!readOnly) {
+			//delete button
+			ActionCell.Delegate<AccountingDocumentItemDTO> delegate = new ActionCell.Delegate<AccountingDocumentItemDTO>() {
 
-			@Override
-			public void execute(AccountingDocumentItemDTO object) {
-				if(locked){
-					Notification.showMessage(I18N.INSTANCE.lockedItemsTableAlert());
-					return;
+				@Override
+				public void execute(AccountingDocumentItemDTO object) {
+					ItemTable.this.handler.onDelete(object);
 				}
-				ItemTable.this.handler.onDelete(object);
-			}
-		};
+			};
 
-		Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO> delete =
-				new Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO>(new ActionCell<AccountingDocumentItemDTO>(I18N.INSTANCE.delete(), delegate)) {
+			delete =
+					new Column<AccountingDocumentItemDTO, AccountingDocumentItemDTO>(new ActionCell<AccountingDocumentItemDTO>(I18N.INSTANCE.delete(), delegate)) {
 
-			@Override
-			public AccountingDocumentItemDTO getValue(AccountingDocumentItemDTO object) {
-				return object;
-			}
-		};
-		addColumn(delete);
+				@Override
+				public AccountingDocumentItemDTO getValue(AccountingDocumentItemDTO object) {
+					return object;
+				}
+			};
+			addColumn(delete);
+		}
 
 		setWidth("99%");
-		setColumnWidth(sku, 5, Unit.PCT);
+		if(!readOnly) {
+			setColumnWidth(sku, 5, Unit.PCT);
+		}
 		setColumnWidth(nameDescription, 37, Unit.PCT);
 		setColumnWidth(unitOfMeasure, 6, Unit.PCT);
 		setColumnWidth(quantity, 6, Unit.PCT);
@@ -423,14 +396,11 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 		setColumnWidth(discount, 6, Unit.PCT);
 		setColumnWidth(tax, 6, Unit.PCT);
 		setColumnWidth(totalBeforeTaxes, 8, Unit.PCT);
-		setColumnWidth(delete, 10, Unit.PCT);
+		if(!readOnly) {
+			setColumnWidth(delete, 10, Unit.PCT);
+		}
 
 		setLoadingIndicator(null);
 	}
 
-	public void setLocked(boolean locked) {
-		this.locked = locked;
-		this.moveUpDownCell.setLocked(locked);
-		redraw();
-	}
 }

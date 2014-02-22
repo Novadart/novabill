@@ -167,7 +167,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			}
 		});
 
-		itemInsertionForm = new ItemInsertionForm(true, new ItemInsertionForm.Handler() {
+		itemInsertionForm = new ItemInsertionForm(true, false, new ItemInsertionForm.Handler() {
 
 			@Override
 			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
