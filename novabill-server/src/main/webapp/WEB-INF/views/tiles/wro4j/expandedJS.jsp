@@ -36,3 +36,5 @@
 <script src="${novabillCoreUrl}/scripts/commodities.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/price-lists-controllers.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/price-lists.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/settings.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/settings-controllers.js" type="text/javascript"></script>

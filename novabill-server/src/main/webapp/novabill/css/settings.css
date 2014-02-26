@@ -1,0 +1,23 @@
+.settings .button-save {
+	margin: 40px auto 20px;
+	display: block;
+}
+
+.settings .spinner {
+    margin: 0 auto;
+    display: block;
+}
+
+.settings .tab-pane {
+	padding: 20px;
+}
+
+.settings input[type=checkbox]{
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+
+.settings label {
+	cursor: pointer;
+}

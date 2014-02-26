@@ -5,7 +5,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 import com.novadart.novabill.frontend.client.Configuration;
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.data.PriceType;
+import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
@@ -99,4 +101,27 @@ public class AutoBeanDecoder {
 		return c;
 	}
 	
+	
+	public static BusinessDTO decode(Business bu) {
+		BusinessDTO b = new BusinessDTO();
+		b.setAddress(bu.getAddress());
+		b.setCity(bu.getCity());
+		b.setCountry(bu.getCountry());
+		b.setDefaultLayoutType(LayoutType.valueOf(bu.getDefaultLayoutType()));
+		b.setEmail(bu.getEmail());
+		b.setEnabledIncognito(bu.getIncognitoEnabled());
+		b.setFax(bu.getFax());
+		b.setId(bu.getId());
+		b.setMobile(bu.getMobile());
+		b.setName(bu.getName());
+		b.setPhone(bu.getPhone());
+		b.setPostcode(bu.getPostcode());
+		b.setPremium(bu.getPremium());
+		b.setPriceDisplayInDocsMonolithic(bu.getPriceDisplayInDocsMonolithic());
+		b.setProvince(bu.getProvince());
+		b.setSsn(bu.getSsn());
+		b.setVatID(bu.getVatID());
+		b.setWeb(bu.getWeb());
+		return b;
+	}
 }

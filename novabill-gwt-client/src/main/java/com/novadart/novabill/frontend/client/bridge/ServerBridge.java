@@ -25,6 +25,7 @@ public class ServerBridge implements ApiBridge {
 				get : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::get(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				getClients : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::getClients(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				getStats : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::getStats(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				update : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::update(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			},
 			
 			client : {

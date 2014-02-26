@@ -2,7 +2,6 @@ package com.novadart.novabill.frontend.client.view.center.business;
 
 import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
-import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FormPanel;
 import com.google.gwt.user.client.ui.Image;
 import com.novadart.gwtshared.client.LoaderButton;
@@ -91,9 +90,5 @@ public interface BusinessView extends View<BusinessView.Presenter>, HasUILocking
 	Button getRemoveLogo();
 
 	Anchor getDeleteAccount();
-
-	CheckBox getDiscountInDocsExplicit();
-
-	CheckBox getIncognitoEnabled();
 
 }

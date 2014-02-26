@@ -37,6 +37,7 @@ angular.module('novabill.constants', [])
 			commoditiesBaseUrl : basePath + 'private/commodities/',
 			paymentsBaseUrl : basePath + 'private/payments/',
 			priceListsBaseUrl : basePath + 'private/price-lists/',
+			settingsBaseUrl : basePath + 'private/settings/',
 
 			partialsBaseUrl : basePath + 'novabill/partials/'
 	};

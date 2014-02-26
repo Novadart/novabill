@@ -5,10 +5,13 @@ import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.web.bindery.autobean.shared.AutoBean;
+import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanDecoder;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanEncoder;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.AutoBeanMaker;
+import com.novadart.novabill.frontend.client.bridge.server.autobean.Business;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.BusinessStats;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.Client;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.ClientsList;
@@ -58,5 +61,18 @@ public class BusinessServiceJS extends ServiceJS {
 		});
 	}
 	
+	
+	public static void update(String businessJson, final JavaScriptObject callback) {
+		AutoBean<Business> bean = AutoBeanCodex.decode(AutoBeanMaker.INSTANCE, Business.class, businessJson);
+		BusinessDTO b = AutoBeanDecoder.decode(bean.as());
+		
+		SERVER_FACADE.getBusinessService().update(b, new ManagedAsyncCallback<Void>() {
+
+			@Override
+			public void onSuccess(Void result) {
+				BridgeUtils.invokeJSCallback(callback);
+			}
+		});
+	}
 	
 }

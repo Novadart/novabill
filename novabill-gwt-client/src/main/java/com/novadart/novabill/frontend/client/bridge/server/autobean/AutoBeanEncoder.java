@@ -199,6 +199,9 @@ public class AutoBeanEncoder {
 		ab.setSsn(b.getSsn());
 		ab.setVatID(b.getVatID());
 		ab.setWeb(b.getWeb());
+		ab.setDefaultLayoutType(b.getDefaultLayoutType().name());
+		ab.setPriceDisplayInDocsMonolithic(b.isPriceDisplayInDocsMonolithic());
+		ab.setIncognitoEnabled(b.isIncognitoEnabled());
 		return AutoBeanUtils.getAutoBean(ab);
 	}
 
