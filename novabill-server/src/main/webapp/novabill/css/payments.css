@@ -1,0 +1,16 @@
+.payments .tab-pane {
+    padding: 20px;
+}
+
+.payments #payments_status.tab-pane {
+    min-height: 500px;
+}
+
+.payments .spinner {
+    margin: 100px auto 0;
+    display: block;
+}
+
+.payments .results {
+    margin-top: 80px;
+}

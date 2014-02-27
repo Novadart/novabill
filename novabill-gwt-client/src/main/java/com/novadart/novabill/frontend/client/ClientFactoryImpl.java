@@ -47,6 +47,8 @@ public class ClientFactoryImpl implements ClientFactory {
 			+ "../private/export?clients={c}&invoices={i}&estimations={e}&creditnotes={cn}&transportdocs={t}&token={token}";
 	private static final String PDF_REQUEST = 
 			GWT.getModuleBaseURL()+"../private/pdf/{document}/{id}?token={token}";
+	private static final String PROSPECT_PDF_REQUEST = 
+			GWT.getModuleBaseURL()+"../private/pdf/paymentspros/{startDate}/{endDate}?token={token}";
 			
 	private static String logoUrl = URL_THUMB + "?v=" + new Date().getTime();
 	
@@ -113,6 +115,11 @@ public class ClientFactoryImpl implements ClientFactory {
 	@Override
 	public String getPdfRequest() {
 		return PDF_REQUEST;
+	}
+	
+	@Override
+	public String getPdfProspectRequest() {
+		return PROSPECT_PDF_REQUEST;
 	}
 	
 	@Override

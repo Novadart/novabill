@@ -31,6 +31,7 @@ public interface ClientFactory {
 	String getDeleteAccountUrl();
 	String getExportRequest();
 	String getPdfRequest();
+	String getPdfProspectRequest();
 	String getRegisterAccountUrl();
 	
 	//center

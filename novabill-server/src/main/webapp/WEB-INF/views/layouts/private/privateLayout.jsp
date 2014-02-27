@@ -191,7 +191,7 @@
 				</li>
 
 				<li class="<%=PAGES.PAYMENTS.equals(activePage) ? "active last" : "last" %>"><a href="${paymentsUrl}"> <i
-						class="fa fa-briefcase"></i> <span class="title">Tipologie di Pagamento</span> <% if(PAGES.PAYMENTS.equals(activePage)) { %> <span
+						class="fa fa-briefcase"></i> <span class="title">Pagamenti</span> <% if(PAGES.PAYMENTS.equals(activePage)) { %> <span
 						class="selected"></span> <%} %>
 				</a></li>
 

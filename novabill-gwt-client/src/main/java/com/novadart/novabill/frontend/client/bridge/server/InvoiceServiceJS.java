@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.bridge.server;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -69,6 +70,26 @@ public class InvoiceServiceJS extends ServiceJS {
 				BridgeUtils.invokeJSCallback(callback);
 			}
 		});
+	}
+	
+	public static void getAllUnpaidInDateRange(String startDate, String endDate, final JavaScriptObject callback) {
+		Date sDate = new Date(Long.parseLong(startDate));
+		Date eDate = new Date(Long.parseLong(endDate));
+		
+		SERVER_FACADE.getInvoiceService().getAllUnpaidInDateRange(sDate, eDate, new ManagedAsyncCallback<List<InvoiceDTO>>() {
+
+			@Override
+			public void onSuccess(List<InvoiceDTO> result) {
+				InvoicesList il = AutoBeanMaker.INSTANCE.makeInvoicesList().as();
+				List<Invoice> invoices = new ArrayList<Invoice>(result.size());
+				for (InvoiceDTO i : result) {
+					invoices.add(AutoBeanEncoder.encode(i).as());
+				}
+				il.setInvoices(invoices);
+				BridgeUtils.invokeJSCallback(AutoBeanUtils.getAutoBean(il), callback);
+			}
+		});	
+		
 	}
 	
 }
