@@ -113,11 +113,11 @@ public class PDFController{
 				DocumentType.TRANSPORT_DOCUMENT, transportDocument.getLayoutType());
 	}
 	
-	@RequestMapping(method = RequestMethod.GET, value = "/paymentspros/{startDate}/{endDate}", produces = "application/pdf")
+	@RequestMapping(method = RequestMethod.GET, value = "/paymentspros", produces = "application/pdf")
 	@ResponseBody
-	//@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
-	public byte[] getPaymentsProspectPDF(@PathVariable @DateTimeFormat(iso = ISO.DATE) Date startDate,
-			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date endDate, @RequestParam(value = "token", required = false) String token, 
+	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
+	public byte[] getPaymentsProspectPDF(@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date startDate,
+			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date endDate, @RequestParam(value = "token", required = false) String token, 
 			HttpServletResponse response, Locale locale) throws JRException, JasperReportKeyResolutionException {
 		Business business  = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(startDate, endDate);

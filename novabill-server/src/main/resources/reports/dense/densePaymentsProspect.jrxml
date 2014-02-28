@@ -59,9 +59,22 @@
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
-				<textFieldExpression><![CDATA[java.lang.String.format($R{dense.paymentspros.title},
-new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{startDate}),
-new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{endDate}))]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$F{startDate} == null?
+    ($F{endDate} == null?
+        $R{dense.paymentspros.title.nodates}:
+        java.lang.String.format($R{dense.paymentspros.title.enddate},
+            new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{endDate}))
+    ):
+    ($F{endDate} == null?
+        java.lang.String.format($R{dense.paymentspros.title.startdate},
+            new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{startDate})):
+        java.lang.String.format($R{dense.paymentspros.title.bothdates},
+            new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{startDate}),
+            new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{endDate}))
+    )
+
+
+]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
@@ -69,7 +82,7 @@ new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{endDate}))]]></textFieldE
 		<band height="96" splitType="Stretch">
 			<componentElement>
 				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="7" y="14" width="540" height="50"/>
-				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
+				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{invoices})]]></dataSourceExpression>
 					</datasetRun>

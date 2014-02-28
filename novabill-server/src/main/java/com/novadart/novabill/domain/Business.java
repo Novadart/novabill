@@ -3,6 +3,8 @@ package com.novadart.novabill.domain;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -67,7 +69,7 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @TaxFieldsNotNull
-@NamedQuery(name = "business.allUnpaidInvoicesInDateRante", query = "select i from Invoice i where i.payed = false and :startDate < i.paymentDueDate and i.paymentDueDate < :endDate and i.business.id = :bizID")
+@NamedQuery(name = "business.allUnpaidInvoicesInDateRante", query = "select i from Invoice i where i.payed = false and :startDate < i.paymentDueDate and i.paymentDueDate < :endDate and i.business.id = :bizID order by i.paymentDueDate")
 public class Business implements Serializable, Taxable {
 
 	private static final long serialVersionUID = 261999997691744944L;
@@ -285,13 +287,20 @@ public class Business implements Serializable, Taxable {
     			.setParameter("id", documentID).getResultList();
     }
     
+    private Date createDateFromString(String dateString){
+    	DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    	try {
+			return dateFormat.parse(dateString);
+		} catch (java.text.ParseException e) {
+			return new Date();
+		}
+    }
+    
     public List<Invoice> getAllUnpaidInvoicesInDateRange(Date startDate, Date endDate){
-    	if(startDate == null || endDate == null)
-    		throw new IllegalArgumentException();
     	return entityManager().createNamedQuery("business.allUnpaidInvoicesInDateRante", Invoice.class).
     			setParameter("bizID", getId()).
-    			setParameter("startDate", startDate).
-    			setParameter("endDate", endDate).getResultList();
+    			setParameter("startDate", startDate == null? createDateFromString("1-1-1970"): startDate).
+    			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();
     }
     
     private static interface ClientQueryPreparator{
