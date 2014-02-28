@@ -73,8 +73,8 @@ public class InvoiceServiceJS extends ServiceJS {
 	}
 	
 	public static void getAllUnpaidInDateRange(String startDate, String endDate, final JavaScriptObject callback) {
-		Date sDate = new Date(Long.parseLong(startDate));
-		Date eDate = new Date(Long.parseLong(endDate));
+		Date sDate = startDate != null ? new Date(Long.parseLong(startDate)) : null;
+		Date eDate = endDate != null ? new Date(Long.parseLong(endDate)) : null;
 		
 		SERVER_FACADE.getInvoiceService().getAllUnpaidInDateRange(sDate, eDate, new ManagedAsyncCallback<List<InvoiceDTO>>() {
 
