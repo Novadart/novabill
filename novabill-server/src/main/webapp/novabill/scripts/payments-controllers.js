@@ -59,6 +59,7 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 	$scope.clear = function(){
 		$scope.startDate = null;
 		$scope.endDate = null;
+		$scope.invoices = null;
 		loadInvoices(null, null);
 	};
 	
