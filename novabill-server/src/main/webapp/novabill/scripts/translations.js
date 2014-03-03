@@ -24,6 +24,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		DEC : 'Dicembre',
 		
 		//other strings
+		BUSINESS_OPTION_FOOTER_TEXT : 'Testo da includere in piè di pagina in fattura',
 		BUSINESS_OPTION_INCOGNITO_ENABLED : 'Non stampare l\'intestazione nelle Offerte',
 		BUSINESS_OPTION_PRICE_IN_DOCS_MONOLITHIC : 'Esplicitare lo sconto percentuale quando si aggiunge un articolo da listino',
 		BUSINESS_TAB_BUSINESS : 'Dati Aziendali',
