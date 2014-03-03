@@ -323,7 +323,10 @@ public class UiBridge implements ApiBridge {
 	 */
 	
 	public static void generatePaymentsProspectPdf(String startDate, String endDate){
-		PDFUtils.generatePaymentsProspectPdf(Long.parseLong(startDate), Long.parseLong(endDate));
+		PDFUtils.generatePaymentsProspectPdf(
+				startDate != null ? Long.parseLong(startDate) : null, 
+				endDate != null ? Long.parseLong(endDate) : null
+				);
 	};
 
 }

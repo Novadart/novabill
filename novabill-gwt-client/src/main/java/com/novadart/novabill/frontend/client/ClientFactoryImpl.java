@@ -48,7 +48,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	private static final String PDF_REQUEST = 
 			GWT.getModuleBaseURL()+"../private/pdf/{document}/{id}?token={token}";
 	private static final String PROSPECT_PDF_REQUEST = 
-			GWT.getModuleBaseURL()+"../private/pdf/paymentspros/{startDate}/{endDate}?token={token}";
+			GWT.getModuleBaseURL()+"../private/pdf/paymentspros";
 			
 	private static String logoUrl = URL_THUMB + "?v=" + new Date().getTime();
 	

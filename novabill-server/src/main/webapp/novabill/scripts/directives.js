@@ -809,8 +809,8 @@ angular.module('novabill.directives',
 					break;
 
 				case nConstants.logRecord.operationType.SET_PAYED:
-//					$scope.description = tr('LR_INVOICE_SET_PAYED');
-//					$scope.link = nConstants.url.invoiceDetails( $scope.record.entityID );
+					$scope.description = tr('LR_INVOICE_SET_PAYED',
+							'{documentID: "'+'TODO'+'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:

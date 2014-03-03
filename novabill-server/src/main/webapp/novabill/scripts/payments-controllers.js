@@ -22,10 +22,10 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 	function loadInvoices(startDate,endDate){
 		$scope.loading = true;
 		
-		var sd = startDate ? startDate.getTime() : 0;
-		var ed = endDate ? endDate.getTime() : new Date('01/01/2050').getTime();
+		var sd = startDate ? String(startDate.getTime()) : null;
+		var ed = endDate ? String(endDate.getTime()) : null;
 		
-		GWT_Server.invoice.getAllUnpaidInDateRange(String(sd), String(ed), {
+		GWT_Server.invoice.getAllUnpaidInDateRange(sd, ed, {
 			onSuccess : function(list){
 				$scope.$apply(function(){
 					loadedInvoices = list.invoices;
@@ -59,13 +59,14 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 	$scope.clear = function(){
 		$scope.startDate = null;
 		$scope.endDate = null;
+		$scope.invoices = null;
 		loadInvoices(null, null);
 	};
 	
 	$scope.print = function(){
-		var sd = $scope.startDate ? $scope.startDate.getTime() : 0;
-		var ed = $scope.endDate ? $scope.endDate.getTime() : new Date('01/01/2050').getTime();
-		GWT_UI.generatePaymentsProspectPdf(String(sd), String(ed));
+		var sd = $scope.startDate ? String($scope.startDate.getTime()) : null;
+		var ed = $scope.endDate ? String($scope.endDate.getTime()) : null;
+		GWT_UI.generatePaymentsProspectPdf(sd, ed);
 	};
 
 	$scope.$watch('startDate', function(newValue, oldValue){
