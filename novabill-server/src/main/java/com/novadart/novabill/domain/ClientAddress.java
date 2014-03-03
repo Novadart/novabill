@@ -32,6 +32,11 @@ public class ClientAddress implements Serializable {
 	@Size(max = 50)
 	private String name;
 	
+	@NotBlank
+	@Trimmed
+	@Size(max = 255)
+	private String companyName;
+	
 	@Size(max = 255)
 	@NotBlank
 	@Trimmed
@@ -70,6 +75,14 @@ public class ClientAddress implements Serializable {
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 	public String getAddress() {

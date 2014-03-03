@@ -8,6 +8,8 @@ public class ClientAddressDTO implements IsSerializable{
 	
 	private String name;
 	
+	private String companyName;
+	
 	private String address;
 	
 	private String postcode;
@@ -34,6 +36,14 @@ public class ClientAddressDTO implements IsSerializable{
 
 	public void setName(String name) {
 		this.name = name;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
 	}
 
 	public String getAddress() {

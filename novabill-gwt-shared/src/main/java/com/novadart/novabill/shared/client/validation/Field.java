@@ -40,5 +40,8 @@ public enum Field {
 	sku, description, unitOfMeasure, tax,
 	
 	//Price
-	priceValue, priceType
+	priceValue, priceType,
+	
+	//Client address
+	companyName
 }

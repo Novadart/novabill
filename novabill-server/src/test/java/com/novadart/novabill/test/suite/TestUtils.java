@@ -369,6 +369,7 @@ public class TestUtils {
 	public static ClientAddress createClientAddress(){
 		ClientAddress clientAddress = new ClientAddress();
 		clientAddress.setName("Administration address");
+		clientAddress.setCompanyName("Novadart S.n.c. di Giordano Battilana & C.");
 		clientAddress.setAddress("Via Castagneto 2");
 		clientAddress.setPostcode("81049");
 		clientAddress.setProvince("CE");

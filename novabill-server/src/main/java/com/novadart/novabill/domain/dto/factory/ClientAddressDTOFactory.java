@@ -10,6 +10,7 @@ public class ClientAddressDTOFactory {
 		ClientAddressDTO clientAddressDTO = new ClientAddressDTO();
 		clientAddressDTO.setId(clientAddress.getId());
 		clientAddressDTO.setName(clientAddress.getName());
+		clientAddressDTO.setCompanyName(clientAddress.getCompanyName());
 		clientAddressDTO.setAddress(clientAddress.getAddress());
 		clientAddressDTO.setPostcode(clientAddress.getPostcode());
 		clientAddressDTO.setCity(clientAddress.getCity());
@@ -21,6 +22,7 @@ public class ClientAddressDTOFactory {
 	public static void copyFromDTO(ClientAddress clientAddress, ClientAddressDTO clientAddressDTO){
 		if(clientAddress == null || clientAddressDTO == null) return;
 		clientAddress.setName(clientAddressDTO.getName());
+		clientAddress.setCompanyName(clientAddressDTO.getCompanyName());
 		clientAddress.setAddress(clientAddressDTO.getAddress());
 		clientAddress.setPostcode(clientAddressDTO.getPostcode());
 		clientAddress.setCity(clientAddressDTO.getCity());
