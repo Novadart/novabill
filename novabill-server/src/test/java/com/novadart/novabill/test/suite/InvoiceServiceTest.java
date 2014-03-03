@@ -212,6 +212,7 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(Client.findClient(clientID).getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(Invoice.findInvoice(invoiceID).getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
+		assertEquals("true", details.get(DBLoggerAspect.PAYED_STATUS));
 	}
 	
 	@Test(expected = DataAccessException.class)

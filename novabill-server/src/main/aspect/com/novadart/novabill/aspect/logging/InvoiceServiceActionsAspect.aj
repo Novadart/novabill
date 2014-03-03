@@ -72,7 +72,8 @@ public aspect InvoiceServiceActionsAspect extends DBLoggerAspect {
 		LOGGER.info("[{}, setPayed, {}, businessID: {}, clientID: {}, id: {}, value: {}]",
 				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), businessID, clientID, id, value});
 		Invoice invoice = Invoice.findInvoice(id);
-		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, invoice.getClient().getName(), DOCUMENT_ID, invoice.getDocumentID().toString());
+		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, invoice.getClient().getName(),
+				DOCUMENT_ID, invoice.getDocumentID().toString(), PAYED_STATUS, Boolean.toString(value));
 		logActionInDB(businessID, EntityType.INVOICE, OperationType.SET_PAYED, id, time, details);
 	}
 
