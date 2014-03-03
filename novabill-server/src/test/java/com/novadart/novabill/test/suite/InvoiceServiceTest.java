@@ -200,7 +200,7 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void setPayedAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, AuthorizationException{
+	public void setPayedAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, AuthorizationException, JsonParseException, JsonMappingException, IOException{
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
 		Long invoiceID = Client.findClient(clientID).getInvoices().iterator().next().getId();
 		invoiceService.setPayed(authenticatedPrincipal.getBusiness().getId(), clientID, invoiceID, true);
@@ -209,7 +209,9 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		assertEquals(EntityType.INVOICE, rec.getEntityType());
 		assertEquals(invoiceID, rec.getEntityID());
 		assertEquals(OperationType.SET_PAYED, rec.getOperationType());
-		assertTrue(rec.getDetails() == null);
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(Client.findClient(clientID).getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(Invoice.findInvoice(invoiceID).getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
 	}
 	
 	@Test(expected = DataAccessException.class)
