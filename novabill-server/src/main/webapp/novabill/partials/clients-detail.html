@@ -54,16 +54,16 @@
 				<div class="tab-content" style="position: relative;">
 
 					<div class="tab-pane active" id="tab_invoices">
-					    <button type="button" class="btn green new-invoice" ng-click="newInvoiceClick()">{{'NEW_INVOICE' | translate}}</button>
-						<n-year-selector class="pull-right" style="margin: 10px auto;" document-type="invoices" callback="loadInvoices(year)"></n-year-selector>
+					    <button type="button" class="btn green new-invoice" style="margin: 10px auto;" ng-click="newInvoiceClick()">{{'NEW_INVOICE' | translate}}</button>
+						<n-year-selector class="pull-right" document-type="invoices" callback="loadInvoices(year)"></n-year-selector>
 						<img class="spinner" ng-show="invoiceData===null" src="../../private_assets/img/ajax-loading.gif">
 						<p class="no-data-message text-center text-info" ng-show="invoiceData && invoiceData.length===0">{{'NO_DATA' | translate}}</p>
 						<n-invoice invoice="inv" bottom-up-menu="!$first && $last" ng-repeat="inv in invoiceData"></n-invoice>
 					</div>
 
 					<div class="tab-pane" id="tab_transport_documents">
-					    <button type="button" class="btn green new-credit-note" ng-click="newTransportDocumentClick()">{{'NEW_TRANSPORT_DOCUMENT' | translate}}</button>
-						<n-year-selector class="pull-right" style="margin: 10px auto;" document-type="transportDocuments"
+					    <button type="button" class="btn green new-credit-note" style="margin: 10px auto;" ng-click="newTransportDocumentClick()">{{'NEW_TRANSPORT_DOCUMENT' | translate}}</button>
+						<n-year-selector class="pull-right" document-type="transportDocuments"
 							callback="loadTransportDocuments(year)"></n-year-selector>
 						<img class="spinner" ng-show="!transportDocumentData" src="../../private_assets/img/ajax-loading.gif">
 						<p class="no-data-message text-center text-info"
@@ -73,16 +73,16 @@
 					</div>
 
 					<div class="tab-pane" id="tab_estimations">
-					    <button type="button" class="btn green new-credit-note" ng-click="newEstimationClick()">{{'NEW_ESTIMATION' | translate}}</button>
-						<n-year-selector class="pull-right" style="margin: 10px auto;" document-type="estimations" callback="loadEstimations(year)"></n-year-selector>
+					    <button type="button" class="btn green new-credit-note" style="margin: 10px auto;" ng-click="newEstimationClick()">{{'NEW_ESTIMATION' | translate}}</button>
+						<n-year-selector class="pull-right" document-type="estimations" callback="loadEstimations(year)"></n-year-selector>
 						<img class="spinner" ng-show="!estimationData" src="../../private_assets/img/ajax-loading.gif">
 						<p class="no-data-message text-center text-info" ng-show="estimationData && estimationData.length===0">{{'NO_DATA' | translate}}</p>
 						<n-estimation estimation="est" bottom-up-menu="!$first && $last" ng-repeat="est in estimationData"></n-estimation>
 					</div>
 
 					<div class="tab-pane" id="tab_credit_notes">
-					    <button type="button" class="btn green new-credit-note" ng-click="newCreditNoteClick()">{{'NEW_CREDIT_NOTE' | translate}}</button>
-						<n-year-selector class="pull-right" style="margin: 10px auto;" document-type="creditNotes" callback="loadCreditNotes(year)"></n-year-selector>
+					    <button type="button" class="btn green new-credit-note" style="margin: 10px auto;" ng-click="newCreditNoteClick()">{{'NEW_CREDIT_NOTE' | translate}}</button>
+						<n-year-selector class="pull-right" document-type="creditNotes" callback="loadCreditNotes(year)"></n-year-selector>
 						<img class="spinner" ng-show="!creditNoteData" src="../../private_assets/img/ajax-loading.gif">
 						<p class="no-data-message text-center text-info" ng-show="creditNoteData && creditNoteData.length===0">{{'NO_DATA' | translate}}</p>
 						<n-credit-note credit-note="cn" bottom-up-menu="!$first && $last" ng-repeat="cn in creditNoteData"></n-credit-note>
