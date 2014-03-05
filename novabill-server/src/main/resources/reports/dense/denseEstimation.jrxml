@@ -603,8 +603,8 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="45549eed-34e6-4d5d-a31d-0fd34f0ad0cf" x="8" y="28" width="540" height="12"/>
-				<textElement textAlignment="Center">
+				<reportElement uuid="45549eed-34e6-4d5d-a31d-0fd34f0ad0cf" x="8" y="16" width="540" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.settings.estimationFooterNote}]]></textFieldExpression>

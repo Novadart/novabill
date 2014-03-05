@@ -511,8 +511,8 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" di"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="c04c6858-905a-49bc-a008-5354e431e7d4" x="8" y="28" width="540" height="12"/>
-				<textElement textAlignment="Center">
+				<reportElement uuid="c04c6858-905a-49bc-a008-5354e431e7d4" x="8" y="16" width="540" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.settings.estimationFooterNote}]]></textFieldExpression>

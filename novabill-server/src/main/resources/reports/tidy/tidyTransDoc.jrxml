@@ -515,8 +515,8 @@ $F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{docu
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="11018496-335c-4aec-b1e7-81b33864a00f" x="8" y="28" width="540" height="12"/>
-				<textElement textAlignment="Center">
+				<reportElement uuid="11018496-335c-4aec-b1e7-81b33864a00f" x="8" y="16" width="540" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.settings.transportDocumentFooterNote}]]></textFieldExpression>
@@ -573,8 +573,8 @@ $F{document.toEndpoint.postcode} + " " + $F{document.toEndpoint.city} + ($F{docu
 				<textFieldExpression><![CDATA["Pagina "+$V{PAGE_NUMBER}+" di"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="95762adb-0858-4195-852f-1a5dfe6b7527" x="8" y="81" width="540" height="12"/>
-				<textElement textAlignment="Center">
+				<reportElement uuid="95762adb-0858-4195-852f-1a5dfe6b7527" x="8" y="68" width="540" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.settings.transportDocumentFooterNote}]]></textFieldExpression>
