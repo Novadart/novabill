@@ -40,7 +40,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	})
 	@Embedded
 	@Valid
-	private Endpoint fromEndpoint;
+	private Endpoint fromEndpoint = new Endpoint();
 	
 	@Size(max = 255)
 	private String transporter;

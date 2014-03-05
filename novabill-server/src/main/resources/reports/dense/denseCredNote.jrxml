@@ -86,6 +86,7 @@
 	<field name="document.toEndpoint.province" class="java.lang.String"/>
 	<field name="document.toEndpoint.country" class="java.lang.String"/>
 	<field name="document.toEndpoint.companyName" class="java.lang.String"/>
+	<field name="document.business.settings.creditNoteFooterNote" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -539,6 +540,13 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="43e6dc2d-b872-4eca-a8f4-766435875bfc" x="8" y="28" width="540" height="12"/>
+				<textElement textAlignment="Center">
+					<font size="8" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.business.settings.creditNoteFooterNote}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

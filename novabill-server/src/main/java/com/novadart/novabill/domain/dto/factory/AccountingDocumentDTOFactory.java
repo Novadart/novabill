@@ -5,6 +5,7 @@ import java.util.List;
 
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
+import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
@@ -47,8 +48,11 @@ public abstract class AccountingDocumentDTOFactory {
 		accountingDocument.setTotalTax(accountingDocumentDTO.getTotalTax());
 		accountingDocument.setTotalBeforeTax(accountingDocumentDTO.getTotalBeforeTax());
 		accountingDocument.setPaymentNote(accountingDocumentDTO.getPaymentNote());
-		if(accountingDocumentDTO.getToEndpoint() != null)
+		if(accountingDocumentDTO.getToEndpoint() != null){
+			if(accountingDocument.getToEndpoint() == null)
+				accountingDocument.setToEndpoint(new Endpoint());
 			EndpointDTOFactory.copyFromDTO(accountingDocument.getToEndpoint(), accountingDocumentDTO.getToEndpoint());
+		}
 	}
 
 }

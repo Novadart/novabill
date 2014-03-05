@@ -251,8 +251,8 @@ public abstract class BusinessServiceImpl implements BusinessService {
 													com.novadart.novabill.shared.client.exception.CloneNotSupportedException {
 		Business business = new Business();
 		BusinessDTOFactory.copyFromDTO(business, businessDTO);
-		if(businessDTO.getDefaultLayoutType() == null)
-			business.setDefaultLayoutType(LayoutType.DENSE);
+		if(businessDTO.getSettings().getDefaultLayoutType() == null)
+			business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
 		validator.validate(business);
 		Locale locale = LocaleContextHolder.getLocale();
 		for(PaymentType pType: paymentTypes.containsKey(locale)? paymentTypes.get(locale): paymentTypes.get(Locale.ITALIAN)){

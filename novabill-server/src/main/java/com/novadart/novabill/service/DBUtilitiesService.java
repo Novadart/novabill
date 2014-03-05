@@ -92,7 +92,7 @@ public class DBUtilitiesService {
 		business.setCity("Campo San Martino");
 		business.setPostcode("35010");
 		business.setProvince("PD");
-		business.setDefaultLayoutType(LayoutType.DENSE);
+		business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
 		business.setVatID("IT03971280288");
 		business.setSsn("BRSMTT75P10B563Y");
 		business.setCountry("IT");
@@ -277,7 +277,7 @@ public class DBUtilitiesService {
 		business.setCity("Conselve ");
 		business.setPostcode("35026");
 		business.setProvince("PD");
-		business.setDefaultLayoutType(LayoutType.DENSE);
+		business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
 		business.setVatID("IT04254930284");
 		business.setCountry("IT");
 		business.getPrincipals().add(principal);
@@ -309,7 +309,7 @@ public class DBUtilitiesService {
 		business.setCity("Campo San Martino");
 		business.setPostcode("35010");
 		business.setProvince("PD");
-		business.setDefaultLayoutType(LayoutType.DENSE);
+		business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
 		business.setVatID("IT04782700282");
 		business.setSsn("PTTRSE87B03C743C");
 		business.setCountry("IT");

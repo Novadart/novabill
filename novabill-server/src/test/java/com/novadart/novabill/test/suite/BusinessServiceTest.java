@@ -313,7 +313,8 @@ public class BusinessServiceTest extends GWTServiceTest {
 		Business actualBusiness = Principal.findPrincipal(authenticatedPrincipal.getId()).getBusiness();
 		assertTrue(EqualsBuilder.reflectionEquals(business, actualBusiness, "version", "paymentTypes",
 				"nonFreeAccountExpirationTime", "items", "accounts" , "invoices", "estimations", "creditNotes",
-				"transportDocuments", "clients", "principals", "priceLists"));
+				"transportDocuments", "clients", "principals", "priceLists", "settings"));
+		assertTrue(EqualsBuilder.reflectionEquals(business.getSettings(), actualBusiness.getSettings()));
 	}
 	
 	@Test
@@ -322,11 +323,11 @@ public class BusinessServiceTest extends GWTServiceTest {
 		authenticatedPrincipal.setBusiness(null);
 		Business business = TestUtils.createBusiness();
 		BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
-		businessDTO.setDefaultLayoutType(null);
+		businessDTO.getSettings().setDefaultLayoutType(null);
 		business.setId(businessGwtService.add(businessDTO));
 		Business.entityManager().flush();
 		Business actualBusiness = Principal.findPrincipal(authenticatedPrincipal.getId()).getBusiness();
-		assertEquals(LayoutType.DENSE, actualBusiness.getDefaultLayoutType());
+		assertEquals(LayoutType.DENSE, actualBusiness.getSettings().getDefaultLayoutType());
 	} 
 	
 	@Test(expected = DataAccessException.class)

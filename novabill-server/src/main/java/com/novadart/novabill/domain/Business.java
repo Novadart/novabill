@@ -13,10 +13,10 @@ import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
@@ -27,6 +27,7 @@ import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -56,7 +57,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.TaxFieldsNotNull;
 import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
@@ -134,16 +134,9 @@ public class Business implements Serializable, Taxable {
     @Trimmed
     private String ssn;
 
-    private Long nonFreeAccountExpirationTime;
-
-    @NotNull
-    private LayoutType defaultLayoutType;
-    
-    @Column(columnDefinition = "boolean default true")
-    private boolean priceDisplayInDocsMonolithic = true;
-    
-    @Column(columnDefinition = "boolean default false")
-    private boolean incognitoEnabled = false;
+    @Embedded
+    @Valid
+    private Settings settings = new Settings();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Commodity> commodities = new HashSet<Commodity>();
@@ -423,12 +416,7 @@ public class Business implements Serializable, Taxable {
     	return getAccountingDocumentForYear(getTransportDocuments().iterator(), year);
     }
     
-    public Long getNonFreeExpirationDelta(TimeUnit timeUnit){
-    	Long now = System.currentTimeMillis();
-    	if(nonFreeAccountExpirationTime == null || nonFreeAccountExpirationTime < now)
-    		return null;
-    	return timeUnit.convert(nonFreeAccountExpirationTime, TimeUnit.MILLISECONDS);
-    }
+    
 
 	/*
 	 * Getters and setters
@@ -538,36 +526,12 @@ public class Business implements Serializable, Taxable {
         this.ssn = ssn;
     }
     
-	public Long getNonFreeAccountExpirationTime() {
-		return nonFreeAccountExpirationTime;
+	public Settings getSettings() {
+		return settings;
 	}
 
-	public void setNonFreeAccountExpirationTime(Long nonFreeAccountExpirationTime) {
-		this.nonFreeAccountExpirationTime = nonFreeAccountExpirationTime;
-	}
-
-	public boolean isIncognitoEnabled() {
-		return incognitoEnabled;
-	}
-
-	public void setIncognitoEnabled(boolean incognitoEnabled) {
-		this.incognitoEnabled = incognitoEnabled;
-	}
-
-	public LayoutType getDefaultLayoutType() {
-		return defaultLayoutType;
-	}
-
-	public void setDefaultLayoutType(LayoutType defaultLayoutType) {
-		this.defaultLayoutType = defaultLayoutType;
-	}
-
-	public boolean isPriceDisplayInDocsMonolithic() {
-		return priceDisplayInDocsMonolithic;
-	}
-
-	public void setPriceDisplayInDocsMonolithic(boolean priceDisplayInDocsMonolithic) {
-		this.priceDisplayInDocsMonolithic = priceDisplayInDocsMonolithic;
+	public void setSettings(Settings settings) {
+		this.settings = settings;
 	}
 
 	public Set<Commodity> getCommodities() {

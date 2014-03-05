@@ -97,7 +97,7 @@ public abstract class AccountingDocument {
 	})
 	@Embedded
 	@Valid
-	private Endpoint toEndpoint;
+	private Endpoint toEndpoint = new Endpoint();
     
     protected static int getYear(Date date){
     	Calendar calendar = new GregorianCalendar();

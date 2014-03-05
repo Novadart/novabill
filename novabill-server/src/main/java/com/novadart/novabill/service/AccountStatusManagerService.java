@@ -37,7 +37,7 @@ public class AccountStatusManagerService {
 	@Transactional(readOnly = true)
 	private void notifySoonToExpireAccounts(int days){
 		String query = "select business from Business business, in (business.grantedRoles) gr where " +
-				":lbound < business.nonFreeAccountExpirationTime and business.nonFreeAccountExpirationTime < :rbound and gr = :role";
+				":lbound < business.settings.nonFreeAccountExpirationTime and business.settings.nonFreeAccountExpirationTime < :rbound and gr = :role";
 		Long now = System.currentTimeMillis();
 		Long lbound = now + (days - 1)  *  DAY_IN_MILLIS, rbound = now + days * DAY_IN_MILLIS;
 		List<Business> soonToExpireBusinesses = entityManager.createQuery(query, Business.class)
@@ -55,7 +55,7 @@ public class AccountStatusManagerService {
 	@Async
 	@Transactional(readOnly = false)
 	private void disableExpiredAccounts(){
-		String query = "select business from Business business, in (business.grantedRoles) gr where business.nonFreeAccountExpirationTime < :now and gr = :role";
+		String query = "select business from Business business, in (business.grantedRoles) gr where business.settings.nonFreeAccountExpirationTime < :now and gr = :role";
 		List<Business> expiredBusinesses = entityManager.createQuery(query, Business.class)
 				.setParameter("now", System.currentTimeMillis())
 				.setParameter("role", RoleType.ROLE_BUSINESS_PREMIUM).getResultList();
