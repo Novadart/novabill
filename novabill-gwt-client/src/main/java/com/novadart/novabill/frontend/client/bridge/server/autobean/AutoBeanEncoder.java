@@ -22,6 +22,7 @@ import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
+import com.novadart.novabill.shared.client.dto.SettingsDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.tuple.Pair;
 
@@ -199,9 +200,7 @@ public class AutoBeanEncoder {
 		ab.setSsn(b.getSsn());
 		ab.setVatID(b.getVatID());
 		ab.setWeb(b.getWeb());
-		ab.setDefaultLayoutType(b.getDefaultLayoutType().name());
-		ab.setPriceDisplayInDocsMonolithic(b.isPriceDisplayInDocsMonolithic());
-		ab.setIncognitoEnabled(b.isIncognitoEnabled());
+		ab.setSettings(encode(b.getSettings()).as());
 		return AutoBeanUtils.getAutoBean(ab);
 	}
 
@@ -218,6 +217,22 @@ public class AutoBeanEncoder {
 		ac.setMobile(c.getMobile());
 		ac.setPhone(c.getPhone());
 		return AutoBeanUtils.getAutoBean(ac);
+	}
+	
+	
+	public static AutoBean<Settings> encode(SettingsDTO c){
+		if(c == null){
+			return null;
+		}
+		Settings s = AutoBeanMaker.INSTANCE.makeSettings().as();
+		s.setDefaultLayoutType(c.getDefaultLayoutType());
+		s.setIncognitoEnabled(c.isIncognitoEnabled());
+		s.setPriceDisplayInDocsMonolithic(c.isPriceDisplayInDocsMonolithic());
+		s.setCreditNoteFooterNote(c.getCreditNoteFooterNote());
+		s.setEstimationFooterNote(c.getEstimationFooterNote());
+		s.setInvoiceFooterNote(c.getInvoiceFooterNote());
+		s.setTransportDocumentFooterNote(c.getTransportDocumentFooterNote());
+		return AutoBeanUtils.getAutoBean(s);
 	}
 
 

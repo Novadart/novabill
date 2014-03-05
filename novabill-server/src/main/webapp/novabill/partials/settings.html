@@ -63,7 +63,7 @@
 								<div class="form-group">
 									<label class="col-md-4 control-label">{{'LAYOUT_TYPE' | translate}}</label>
 									<div class="col-md-8">
-										<select class="form-control input-xlarge" ng-model="business.defaultLayoutType">
+										<select class="form-control input-xlarge" ng-model="business.settings.defaultLayoutType">
 											<option value="DENSE">{{'LAYOUT_TYPE_DENSE' | translate}}</option>
 											<option value="TIDY">{{'LAYOUT_TYPE_TIDY' | translate}}</option>
 										</select>
@@ -74,16 +74,23 @@
 									<label for="incognitoEnabled" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_INCOGNITO_ENABLED' | translate }}</label>
 									<div class="col-md-8">
 										<div class="checkbox-list">
-											<label> <input id="incognitoEnabled" type="checkbox" ng-model="business.incognitoEnabled">
+											<label> <input id="incognitoEnabled" type="checkbox" ng-model="business.settings.incognitoEnabled">
 											</label>
 										</div>
 									</div>
 								</div>
 								
 								<div class="form-group">
-                                    <label for="footerText" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_FOOTER_TEXT' | translate }}</label>
+                                    <label for="footerNote" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_FOOTER_TEXT' | translate }}</label>
                                     <div class="col-md-8">
-                                       <input id="footerText" class="form-control input-xlarge" type="text" ng-model="business.footerText">
+                                       <label for="estimationFooterNote" class="control-label">{{ 'ESTIMATION' | translate }}</label>
+                                       <input id="estimationFooterNote" class="form-control input-xlarge" type="text" ng-model="business.settings.estimationFooterNote">
+                                       <label for="transportDocumentFooterNote" style="margin-top: 10px;" class="control-label">{{ 'TRANSPORT_DOCUMENT' | translate }}</label>
+                                       <input id="transportDocumentFooterNote" class="form-control input-xlarge" type="text" ng-model="business.settings.transportDocumentFooterNote">
+                                       <label for="invoiceFooterNote" style="margin-top: 10px;" class="control-label">{{ 'INVOICE' | translate }}</label>
+                                       <input id="invoiceFooterNote" class="form-control input-xlarge" type="text" ng-model="business.settings.invoiceFooterNote">
+                                       <label for="creditNoteFooterNote" style="margin-top: 10px;" class="control-label">{{ 'CREDIT_NOTE' | translate }}</label>
+                                       <input id="creditNoteFooterNote" class="form-control input-xlarge" type="text" ng-model="business.settings.creditNoteFooterNote">
                                     </div>
                                 </div>
 

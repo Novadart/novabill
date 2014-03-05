@@ -224,8 +224,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 			}
 		});
 
-		overrideDiscountInDocsExplicit.setVisible(!Configuration.getBusiness().isPriceDisplayInDocsMonolithic());
-		overrideDiscountInDocsExplicit.setValue(!Configuration.getBusiness().isPriceDisplayInDocsMonolithic());
+		overrideDiscountInDocsExplicit.setVisible(!Configuration.getBusiness().getSettings().isPriceDisplayInDocsMonolithic());
+		overrideDiscountInDocsExplicit.setValue(!Configuration.getBusiness().getSettings().isPriceDisplayInDocsMonolithic());
 	}
 
 	private boolean discountMustBeExplicit(){

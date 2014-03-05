@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
+
 public interface Business {
 
 	public Long getId();
@@ -62,16 +63,8 @@ public interface Business {
 
 	public void setPremium(boolean premium);
 	
-	public void setDefaultLayoutType(String defaultLayoutType);
+	public Settings getSettings();
 
-	public String getDefaultLayoutType();
-	
-	public boolean getPriceDisplayInDocsMonolithic();
-
-	public void setPriceDisplayInDocsMonolithic(boolean priceDisplayInDocsMonolithic);
-
-	public boolean getIncognitoEnabled();
-
-	public void setIncognitoEnabled(boolean incognitoEnabled);
+	public void setSettings(Settings settings);
 
 }

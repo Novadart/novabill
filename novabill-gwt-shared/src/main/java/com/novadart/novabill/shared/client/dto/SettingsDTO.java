@@ -1,8 +1,9 @@
 package com.novadart.novabill.shared.client.dto;
 
+import com.google.gwt.user.client.rpc.IsSerializable;
 import com.novadart.novabill.shared.client.data.LayoutType;
 
-public class SettingsDTO {
+public class SettingsDTO implements IsSerializable {
 	
 	private LayoutType defaultLayoutType;
 	

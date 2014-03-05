@@ -136,7 +136,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			onToAddressButtonDefaultCLicked();
 		}
 
-		td.setLayoutType(Configuration.getBusiness().getDefaultLayoutType());
+		td.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 
 		td.setDocumentID(Long.parseLong(getView().getNumber().getText()));
 

@@ -14,7 +14,7 @@ angular.module('novabill.settings.controllers', ['novabill.translations'])
 		onSuccess : function(business){
 			$scope.$apply(function(){
 				$scope.business = business;
-				$scope.priceDisplayInDocsMonolithic = !business.priceDisplayInDocsMonolithic;
+				$scope.priceDisplayInDocsMonolithic = !business.settings.priceDisplayInDocsMonolithic;
 			});
 		},
 		onFailure : function(){}
@@ -33,7 +33,7 @@ angular.module('novabill.settings.controllers', ['novabill.translations'])
 	
 	$scope.$watch('priceDisplayInDocsMonolithic', function(newValue, oldValue) {
 		if($scope.business){
-			$scope.business.priceDisplayInDocsMonolithic = !newValue;
+			$scope.business.settings.priceDisplayInDocsMonolithic = !newValue;
 		}
 	});
 	

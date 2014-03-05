@@ -70,7 +70,7 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 			es.setClient(getClient());
 		}
 
-		es.setLayoutType(Configuration.getBusiness().getDefaultLayoutType());
+		es.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 		
 		es.setDocumentID(Long.parseLong(getView().getNumber().getText()));
 		
@@ -84,7 +84,7 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 		es.setNote(getView().getNote().getText());
 		es.setPaymentNote(getView().getPaymentNote().getText());
 		es.setLimitations(getView().getLimitations().getText());
-		es.setIncognito(Configuration.getBusiness().isIncognitoEnabled() && !getView().getOverrideIncognitoModeCheckbox().getValue());
+		es.setIncognito(Configuration.getBusiness().getSettings().isIncognitoEnabled() && !getView().getOverrideIncognitoModeCheckbox().getValue());
 		CalcUtils.calculateTotals(invItems, es);
 		return es;
 	}

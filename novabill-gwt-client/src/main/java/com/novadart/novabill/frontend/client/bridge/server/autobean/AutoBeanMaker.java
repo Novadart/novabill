@@ -77,4 +77,6 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	
 	AutoBean<Pair> makePair();
 	
+	AutoBean<Settings> makeSettings();
+	
 }

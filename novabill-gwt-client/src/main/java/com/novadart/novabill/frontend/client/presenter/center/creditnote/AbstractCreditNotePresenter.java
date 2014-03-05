@@ -58,7 +58,7 @@ public abstract class AbstractCreditNotePresenter extends DocumentPresenter<Cred
 			cn.setClient(getClient());
 		}
 
-		cn.setLayoutType(Configuration.getBusiness().getDefaultLayoutType());
+		cn.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 
 		cn.setDocumentID(Long.parseLong(getView().getNumber().getText()));
 		cn.setAccountingDocumentDate(getView().getDate().getValue());
