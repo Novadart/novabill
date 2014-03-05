@@ -445,8 +445,8 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="2aaaeb3d-ce0d-4e92-a282-94f683593662" x="8" y="28" width="540" height="12"/>
-				<textElement textAlignment="Center">
+				<reportElement uuid="2aaaeb3d-ce0d-4e92-a282-94f683593662" x="8" y="16" width="540" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.settings.creditNoteFooterNote}]]></textFieldExpression>

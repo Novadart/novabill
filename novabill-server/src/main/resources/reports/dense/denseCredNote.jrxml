@@ -542,8 +542,8 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="43e6dc2d-b872-4eca-a8f4-766435875bfc" x="8" y="28" width="540" height="12"/>
-				<textElement textAlignment="Center">
+				<reportElement uuid="43e6dc2d-b872-4eca-a8f4-766435875bfc" x="8" y="16" width="540" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.settings.creditNoteFooterNote}]]></textFieldExpression>

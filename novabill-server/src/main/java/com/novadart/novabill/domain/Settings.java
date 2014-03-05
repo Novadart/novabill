@@ -1,5 +1,6 @@
 package com.novadart.novabill.domain;
 
+import java.io.Serializable;
 import java.util.concurrent.TimeUnit;
 
 import javax.persistence.Column;
@@ -10,7 +11,9 @@ import javax.validation.constraints.Size;
 import com.novadart.novabill.shared.client.data.LayoutType;
 
 @Embeddable
-public class Settings {
+public class Settings implements Serializable {
+
+	private static final long serialVersionUID = -5375268375693376554L;
 
 	@NotNull
     private LayoutType defaultLayoutType;
@@ -23,16 +26,16 @@ public class Settings {
     
     private Long nonFreeAccountExpirationTime;
     
-    @Size(max = 255)
+    @Size(max = 300)
     private String invoiceFooterNote;
     
-    @Size(max = 255)
+    @Size(max = 300)
     private String creditNoteFooterNote;
     
-    @Size(max = 255)
+    @Size(max = 300)
     private String estimationFooterNote;
     
-    @Size(max = 255)
+    @Size(max = 300)
     private String transportDocumentFooterNote;
     
     public Long getNonFreeExpirationDelta(TimeUnit timeUnit){

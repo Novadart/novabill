@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transport document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="132"/>
+	<property name="ireport.y" value="153"/>
 	<style name="table" pattern="">
 		<box>
 			<pen lineWidth="0.0" lineColor="#000000"/>
@@ -672,8 +672,8 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="d7cffdf8-46c4-495a-9232-6262d08343ae" x="8" y="28" width="540" height="12"/>
-				<textElement textAlignment="Center">
+				<reportElement uuid="d7cffdf8-46c4-495a-9232-6262d08343ae" x="8" y="16" width="540" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.settings.transportDocumentFooterNote}]]></textFieldExpression>
@@ -681,9 +681,9 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 		</band>
 	</pageFooter>
 	<lastPageFooter>
-		<band height="80" splitType="Stretch">
+		<band height="90" splitType="Stretch">
 			<textField>
-				<reportElement uuid="4d53a2dc-232a-4179-93d2-b50ebcf24afa" x="140" y="65" width="274" height="12" forecolor="#646464">
+				<reportElement uuid="4d53a2dc-232a-4179-93d2-b50ebcf24afa" x="140" y="75" width="274" height="12" forecolor="#646464">
 					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
@@ -740,22 +740,22 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				</graphicElement>
 			</line>
 			<textField evaluationTime="Report">
-				<reportElement uuid="f946edf3-0fb2-408b-81d6-556585c5659e" x="533" y="65" width="15" height="12"/>
+				<reportElement uuid="f946edf3-0fb2-408b-81d6-556585c5659e" x="533" y="75" width="15" height="12"/>
 				<textElement>
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="cd55ed73-3b51-49b1-9c01-52ac5fd16fa7" x="453" y="65" width="80" height="12"/>
+				<reportElement uuid="cd55ed73-3b51-49b1-9c01-52ac5fd16fa7" x="453" y="75" width="80" height="12"/>
 				<textElement textAlignment="Right">
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA["Page "+$V{PAGE_NUMBER}+" of"]]></textFieldExpression>
 			</textField>
 			<textField isBlankWhenNull="true">
-				<reportElement uuid="7ac641f4-ac83-4881-b942-1be3a0b328d9" x="8" y="48" width="540" height="12"/>
-				<textElement textAlignment="Center">
+				<reportElement uuid="7ac641f4-ac83-4881-b942-1be3a0b328d9" x="8" y="48" width="540" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
 					<font size="8" isItalic="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.business.settings.transportDocumentFooterNote}]]></textFieldExpression>
