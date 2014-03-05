@@ -10,6 +10,10 @@ public class SettingsDTOFactory {
 		settingsDTO.setDefaultLayoutType(settings.getDefaultLayoutType());
 		settingsDTO.setIncognitoEnabled(settings.isIncognitoEnabled());
 		settingsDTO.setPriceDisplayInDocsMonolithic(settings.isPriceDisplayInDocsMonolithic());
+		settingsDTO.setInvoiceFooterNote(settings.getInvoiceFooterNote());
+		settingsDTO.setCreditNoteFooterNote(settings.getCreditNoteFooterNote());
+		settingsDTO.setEstimationFooterNote(settings.getEstimationFooterNote());
+		settingsDTO.setTransportDocumentFooterNote(settings.getTransportDocumentFooterNote());
 		return settingsDTO;
 	}
 	
@@ -17,6 +21,10 @@ public class SettingsDTOFactory {
 		settings.setDefaultLayoutType(settingsDTO.getDefaultLayoutType());
 		settings.setIncognitoEnabled(settingsDTO.isIncognitoEnabled());
 		settings.setPriceDisplayInDocsMonolithic(settingsDTO.isPriceDisplayInDocsMonolithic());
+		settings.setInvoiceFooterNote(settingsDTO.getInvoiceFooterNote());
+		settings.setCreditNoteFooterNote(settingsDTO.getCreditNoteFooterNote());
+		settings.setEstimationFooterNote(settingsDTO.getEstimationFooterNote());
+		settings.setTransportDocumentFooterNote(settingsDTO.getTransportDocumentFooterNote());
 	}
 	
 }

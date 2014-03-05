@@ -9,6 +9,14 @@ public class SettingsDTO {
 	private boolean priceDisplayInDocsMonolithic;
 	
 	private boolean incognitoEnabled;
+	
+    private String invoiceFooterNote;
+    
+    private String creditNoteFooterNote;
+    
+    private String estimationFooterNote;
+    
+    private String transportDocumentFooterNote;
 
 	public LayoutType getDefaultLayoutType() {
 		return defaultLayoutType;
@@ -32,6 +40,38 @@ public class SettingsDTO {
 
 	public void setIncognitoEnabled(boolean incognitoEnabled) {
 		this.incognitoEnabled = incognitoEnabled;
+	}
+
+	public String getInvoiceFooterNote() {
+		return invoiceFooterNote;
+	}
+
+	public void setInvoiceFooterNote(String invoiceFooterNote) {
+		this.invoiceFooterNote = invoiceFooterNote;
+	}
+
+	public String getCreditNoteFooterNote() {
+		return creditNoteFooterNote;
+	}
+
+	public void setCreditNoteFooterNote(String creditNoteFooterNote) {
+		this.creditNoteFooterNote = creditNoteFooterNote;
+	}
+
+	public String getEstimationFooterNote() {
+		return estimationFooterNote;
+	}
+
+	public void setEstimationFooterNote(String estimationFooterNote) {
+		this.estimationFooterNote = estimationFooterNote;
+	}
+
+	public String getTransportDocumentFooterNote() {
+		return transportDocumentFooterNote;
+	}
+
+	public void setTransportDocumentFooterNote(String transportDocumentFooterNote) {
+		this.transportDocumentFooterNote = transportDocumentFooterNote;
 	}
 	
 }
