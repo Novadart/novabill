@@ -206,6 +206,22 @@ angular.module('novabill.clients.controllers',
 						});
 
 			};
+			
+			$scope.newInvoiceClick = function(){
+				window.location.assign( nConstants.url.invoiceNew($routeParams.clientId) );
+			};
+			
+			$scope.newTransportDocumentClick = function(){
+				window.location.assign( nConstants.url.transportDocumentNew($routeParams.clientId) );
+			};
+			
+			$scope.newEstimationClick = function(){
+				window.location.assign( nConstants.url.estimationNew($routeParams.clientId) );
+			};
+			
+			$scope.newCreditNoteClick = function(){
+				window.location.assign( nConstants.url.creditNoteNew($routeParams.clientId) );
+			};
 
 			// load client data
 			GWT_Server.client.get($routeParams.clientId, {
