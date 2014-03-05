@@ -32,7 +32,11 @@ public class ServerBridge implements ApiBridge {
 				add : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::add(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				searchClients : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::searchClients(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				get : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::get(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-				remove : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+				remove : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				addClientAddress : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::addClientAddress(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getClientAddresses : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::getClientAddresses(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				removeClientAddress : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::removeClientAddress(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				updateClientAddress : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::updateClientAddress(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 			},
 			
 			invoice : {

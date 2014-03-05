@@ -11,6 +11,7 @@ import com.novadart.novabill.frontend.client.bridge.server.autobean.ModifyPriceL
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
@@ -132,6 +133,25 @@ public class AutoBeanEncoder {
 		l.setTime(c.getTime());
 
 		return AutoBeanUtils.getAutoBean(l);
+	}
+	
+	
+	public static AutoBean<ClientAddress> encode(ClientAddressDTO c){
+		if(c == null){
+			return null;
+		}
+
+		ClientAddress ca = AutoBeanMaker.INSTANCE.makeClientAddress().as();
+		ca.setAddress(c.getAddress());
+		ca.setCity(c.getCity());
+		ca.setClient(c.getClient() != null ? encode(c.getClient()).as() : null);
+		ca.setCompanyName(c.getCompanyName());
+		ca.setCountry(c.getCountry());
+		ca.setId(c.getId());
+		ca.setName(c.getName());
+		ca.setPostcode(c.getPostcode());
+		ca.setProvince(c.getProvince());
+		return AutoBeanUtils.getAutoBean(ca);
 	}
 
 

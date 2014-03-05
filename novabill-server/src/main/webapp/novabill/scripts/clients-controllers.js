@@ -160,12 +160,12 @@ angular.module('novabill.clients.controllers',
 		/**
 		 * CLIENT DETAILS PAGE CONTROLLER
 		 */
-		.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'nConstants', '$filter', 'nAlertDialog',
-		                                  function($scope, $route, $routeParams, $location, $rootScope, nConstants, $filter, nAlertDialog) {
+		.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'nConstants', '$filter', 'nAlertDialog', 'nEditAddressDialog', 'nSorting',
+		                                  function($scope, $route, $routeParams, $location, $rootScope, nConstants, $filter, nAlertDialog, nEditAddressDialog, nSorting) {
 
-			//fired when edit client is clicked
-			$scope.editClient = function(clientId) {
-				GWT_UI.modifyClientDialog(nConstants.conf.businessId, clientId, {
+			
+			$scope.editClient = function() {
+				GWT_UI.modifyClientDialog(nConstants.conf.businessId, $scope.client.id, {
 
 					onSuccess : function(){
 						$scope.$apply(function(){
@@ -179,15 +179,15 @@ angular.module('novabill.clients.controllers',
 
 
 			//fired when remove client is clicked
-			$scope.removeClient = function(name, clientId) {
+			$scope.removeClient = function() {
 
 				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
-						$filter('translate')('REMOVAL_QUESTION',{data : name}),
+						$filter('translate')('REMOVAL_QUESTION',{data : $scope.client.name}),
 						{
 
 					onOk : function(){
 
-						GWT_Server.client.remove(nConstants.conf.businessId, clientId, {
+						GWT_Server.client.remove(nConstants.conf.businessId, $scope.client.id, {
 							onSuccess : function(data){
 								$scope.$apply(function(){
 									$location.path('/');
@@ -222,7 +222,99 @@ angular.module('novabill.clients.controllers',
 			$scope.newCreditNoteClick = function(){
 				window.location.assign( nConstants.url.creditNoteNew($routeParams.clientId) );
 			};
+			
+			
+			$scope.loadClientAddresses = function(force){
+				if(!$scope.clientAddresses || force) {
+					GWT_Server.client.getClientAddresses($routeParams.clientId, {
+						onSuccess: function(addresses){
+							$scope.$apply(function(){
+								$scope.clientAddresses = addresses.clientAddresses.sort( nSorting.clientAddressesComparator );
+							});
+						},
+						onFailure : function(){}
+					});
+				}
+			};
+			
+			$scope.newAddressClick = function(){
+				var instance = nEditAddressDialog.open({
+					companyName : $scope.client.name,
+					country : 'IT',
+					client : { id : $routeParams.clientId }
+				});
+				instance.result.then(function(address){
+					GWT_Server.client.addClientAddress(angular.toJson(address), {
+						onSuccess: function(newId){
+							$scope.loadClientAddresses(true);
+						},
+						onFailure : function(){}
+					});
+				});
+			};
+			
+			$scope.editClientAddress = function(id){
+				var address = null;
+				for(var i in $scope.clientAddresses){
+					if($scope.clientAddresses[i].id === id ){
+						address = $scope.clientAddresses[i];
+						break;
+					}
+				}
+				
+				if(address == null){
+					return;
+				}
+				
+				address.client = { id : $routeParams.clientId };
+				
+				var instance = nEditAddressDialog.open(address);
+				instance.result.then(function(addr){
+					GWT_Server.client.updateClientAddress(angular.toJson(addr), {
+						onSuccess: function(){
+							$scope.loadClientAddresses(true);
+						},
+						onFailure : function(){}
+					});
+				});
+			};
+			
+			$scope.removeClientAddress = function(id){
+				var address = null;
+				for(var i in $scope.clientAddresses){
+					if($scope.clientAddresses[i].id === id ){
+						address = $scope.clientAddresses[i];
+						break;
+					}
+				}
 
+				if(address == null){
+					return;
+				}
+
+				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
+						$filter('translate')('REMOVAL_QUESTION',{data : address.name}),
+						{
+
+					onOk : function(){
+
+						GWT_Server.client.removeClientAddress($routeParams.clientId, String(address.id), {
+							onSuccess : function(data){
+								$scope.$apply(function(){
+									$scope.loadClientAddresses(true);
+								});
+							},
+
+							onFailure : function(error){}
+						});
+					},
+
+					onCancel : function(){}
+
+						});
+
+			};
+			
 			// load client data
 			GWT_Server.client.get($routeParams.clientId, {
 

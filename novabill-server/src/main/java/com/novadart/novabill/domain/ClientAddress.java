@@ -43,16 +43,13 @@ public class ClientAddress implements Serializable {
 	private String address;
 	
 	@Size(max = 10)
-	@NotBlank
 	@Trimmed
 	private String postcode;
 	
-	@NotBlank
 	@Size(max = 60)
 	@Trimmed
 	private String city;
 	
-	@NotBlank
 	@Size(max = 2)
 	@Trimmed
 	private String province;
