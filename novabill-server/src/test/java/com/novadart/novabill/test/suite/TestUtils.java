@@ -117,7 +117,8 @@ public class TestUtils {
 		@Override
 		public boolean equal(AccountingDocumentDTO lhs, AccountingDocumentDTO rhs) {
 			boolean itemsEqual = compareItems(lhs, rhs, false);
-			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business") && itemsEqual;
+			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "toEndpoint") &&
+					EqualsBuilder.reflectionEquals(lhs.getToEndpoint(), rhs.getToEndpoint()) && itemsEqual;
 		}
 	};
 	
@@ -125,7 +126,8 @@ public class TestUtils {
 		@Override
 		public boolean equal(AccountingDocumentDTO lhs, AccountingDocumentDTO rhs) {
 			boolean itemsEqual = compareItems(lhs, rhs, true);
-			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "id") && itemsEqual;
+			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "id", "toEndpoint") &&
+					EqualsBuilder.reflectionEquals(lhs.getToEndpoint(), rhs.getToEndpoint()) && itemsEqual;
 		}
 	};
 	
