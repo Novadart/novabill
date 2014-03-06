@@ -18,6 +18,7 @@ import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
@@ -68,7 +69,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) RichTextBox toAddrCity;
 	@UiField(provided=true) ValidatedListBox toAddrProvince;
 	@UiField(provided=true) ValidatedListBox toAddrCountry;
-	@UiField Button toAddrButtonDefault;
+	@UiField ListBox toAddrButtonDefault;
 	
 	@UiField(provided=true) ValidatedTextBox numberOfPackages;
 	@UiField(provided=true) ValidatedTextBox totalWeight;
@@ -128,16 +129,24 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		});
 
 		fromAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city());
+		fromAddrCity.addStyleName(CSS.box());
 		fromAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName());
+		fromAddrCompanyName.addStyleName(CSS.box());
 		fromAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode());
+		fromAddrPostCode.addStyleName(CSS.box());
 		fromAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address());
+		fromAddrStreetName.addStyleName(CSS.box());
 		fromAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		fromAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
 		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),ValidationKit.DEFAULT);
+		toAddrCity.addStyleName(CSS.box());
 		toAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(), ValidationKit.DEFAULT);
+		toAddrCompanyName.addStyleName(CSS.box());
 		toAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(),ValidationKit.DEFAULT);
+		toAddrPostCode.addStyleName(CSS.box());
 		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),ValidationKit.DEFAULT);
+		toAddrStreetName.addStyleName(CSS.box());
 		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
@@ -237,8 +246,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	}
 
 	@UiHandler("toAddrButtonDefault")
-	void onToAddressButtonDefaultCLicked(ClickEvent e){
-		presenter.onToAddressButtonDefaultCLicked();
+	void onToAddressButtonDefaultChange(ChangeEvent e){
+		presenter.onToAddressButtonDefaultChange();
 	}
 
 
@@ -456,7 +465,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return toAddrCountry;
 	}
 
-	public Button getToAddrButtonDefault() {
+	public ListBox getToAddrButtonDefault() {
 		return toAddrButtonDefault;
 	}
 

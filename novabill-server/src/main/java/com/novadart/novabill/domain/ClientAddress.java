@@ -50,6 +50,7 @@ public class ClientAddress implements Serializable {
 	@Trimmed
 	private String city;
 	
+	@NotBlank
 	@Size(max = 2)
 	@Trimmed
 	private String province;

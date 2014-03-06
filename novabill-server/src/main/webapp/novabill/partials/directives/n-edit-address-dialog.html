@@ -43,8 +43,8 @@
             </div>
             
             <div class="form-group" ng-class="{'has-error': form.province.$dirty && form.province.$invalid, 'has-success': form.province.$dirty && form.province.$valid}">
-                <label class="control-label" for="province">{{'PROVINCE' | translate}}</label> 
-                <select class="form-control" name="province" ng-model="$parent.address.province">
+                <label class="control-label" for="province">{{'PROVINCE' | translate}}<span ng-show="$parent.address.country==='IT'"> *</span> </label> 
+                <select class="form-control" name="province" ng-model="$parent.address.province" ng-required="$parent.address.country==='IT'">
 					<option value=""></option>
 					<option value="AG">AG</option>
 					<option value="AL">AL</option>
@@ -164,7 +164,7 @@
             
             <div class="form-group" ng-class="{'has-error': form.country.$dirty && form.country.$invalid, 'has-success': form.country.$dirty && form.country.$valid}">
                 <label class="control-label" for="country">{{'COUNTRY' | translate}} *</label> 
-                <select  class="form-control" name="country" ng-model="$parent.address.country" required>
+                <select  class="form-control" name="country" ng-model="$parent.address.country" ng-change="onCountryChange()" required>
 					<option value="AF">Afghanistan</option>
 					<option value="AL">Albania</option>
 					<option value="DZ">Algeria</option>

@@ -14,6 +14,8 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.center.DocumentPresenter;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
@@ -22,13 +24,14 @@ import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
 public abstract class AbstractTransportDocumentPresenter extends DocumentPresenter<TransportDocumentView> implements TransportDocumentView.Presenter {
 
 	private TransportDocumentDTO transportDocument;
-
+	private List<ClientAddressDTO> clientAddresses = null;
 
 	public AbstractTransportDocumentPresenter(PlaceController placeController, EventBus eventBus, TransportDocumentView view, JavaScriptObject callback) {
 		super(placeController, eventBus, view, callback);
@@ -43,6 +46,26 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 	}
 
 	@Override
+	public void onLoad() {
+		getView().getToAddrButtonDefault().setEnabled(false);
+		getView().getToAddrButtonDefault().clear();
+		ServerFacade.INSTANCE.getClientService().getClientAddresses(getClient().getId(), new ManagedAsyncCallback<List<ClientAddressDTO>>() {
+
+			@Override
+			public void onSuccess(List<ClientAddressDTO> result) {
+				clientAddresses = result;
+				
+				getView().getToAddrButtonDefault().addItem(I18N.INSTANCE.selectAddress(), "");
+				getView().getToAddrButtonDefault().addItem(I18N.INSTANCE.legalAddress(), "");
+				for (ClientAddressDTO c : result) {
+					getView().getToAddrButtonDefault().addItem(c.getName(), c.getId().toString());
+				}
+				getView().getToAddrButtonDefault().setEnabled(true);
+			}
+		});
+	}
+	
+	@Override
 	public void onFromAddressButtonDefaultCLicked() {
 		BusinessDTO b = Configuration.getBusiness();
 		getView().getFromAddrCity().setText(b.getCity());
@@ -54,18 +77,49 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 	}
 
 	@Override
-	public void onToAddressButtonDefaultCLicked() {
-		getView().getToAddrCity().setText(getClient().getCity());
-		getView().getToAddrCompanyName().setText(getClient().getName());
-		getView().getToAddrPostCode().setText(getClient().getPostcode());
-		if(getClient().getCountry().equalsIgnoreCase("IT")){
-			getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
-		} else {
-			getView().getToAddrProvince().setEnabled(false);
-			getView().getToAddrProvince().setSelectedIndex(0);
+	public void onToAddressButtonDefaultChange() {
+		int selectedIndex = getView().getToAddrButtonDefault().getSelectedIndex();
+		
+		switch (selectedIndex) {
+		case 0:
+			break;
+			
+		case 1:
+			getView().getToAddrCity().setText(getClient().getCity());
+			getView().getToAddrCompanyName().setText(getClient().getName());
+			getView().getToAddrPostCode().setText(getClient().getPostcode());
+			if(getClient().getCountry().equalsIgnoreCase("IT")){
+				getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
+			} else {
+				getView().getToAddrProvince().setEnabled(false);
+				getView().getToAddrProvince().setSelectedIndex(0);
+			}
+			getView().getToAddrStreetName().setText(getClient().getAddress());
+			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
+			break;
+			
+		default:
+			Long selId = Long.parseLong(getView().getToAddrButtonDefault().getValue(selectedIndex));
+			
+			for (ClientAddressDTO c : clientAddresses) {
+				if(c.getId().equals(selId)){
+					getView().getToAddrCity().setText(c.getCity());
+					getView().getToAddrCompanyName().setText(c.getName());
+					getView().getToAddrPostCode().setText(c.getPostcode());
+					if(c.getCountry().equalsIgnoreCase("IT")){
+						getView().getToAddrProvince().setSelectedItem(c.getProvince());
+						getView().getToAddrProvince().setValidationOkStyle();
+					} else {
+						getView().getToAddrProvince().reset();
+						getView().getToAddrProvince().setEnabled(false);
+					}
+					getView().getToAddrStreetName().setText(c.getAddress());
+					getView().getToAddrCountry().setSelectedItemByValue(c.getCountry());
+					break;
+				}
+			}
+			break;
 		}
-		getView().getToAddrStreetName().setText(getClient().getAddress());
-		getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
 	}
 
 	@Override
@@ -133,7 +187,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 
 		// this to auto populate the fields
 		if(!getView().getSetToAddress().getValue()){
-			onToAddressButtonDefaultCLicked();
+			onToAddressButtonDefaultChange();
 		}
 
 		td.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());

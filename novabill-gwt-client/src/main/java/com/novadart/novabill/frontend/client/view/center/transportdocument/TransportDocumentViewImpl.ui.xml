@@ -146,34 +146,28 @@
 							<g:Grid>
 								<g:row>
 									<g:customCell>
-										<textbox:RichTextBox styleName="{s.box} RichTextBox-labelStyle"
-											ui:field="fromAddrCompanyName" maxLength="255" />
+										<textbox:RichTextBox ui:field="fromAddrCompanyName" maxLength="255" />
 									</g:customCell>
 								</g:row>
 								<g:row>
 									<g:customCell>
-										<textbox:RichTextBox styleName="{s.box} RichTextBox-labelStyle"
-											ui:field="fromAddrStreetName" maxLength="255" />
+										<textbox:RichTextBox ui:field="fromAddrStreetName" maxLength="255" />
 									</g:customCell>
 								</g:row>
 								<g:row>
 									<g:customCell>
-										<textbox:RichTextBox styleName="{s.box} RichTextBox-labelStyle"
-											ui:field="fromAddrPostCode" maxLength="10" />
+										<textbox:RichTextBox ui:field="fromAddrPostCode" maxLength="10" />
 									</g:customCell>
 									<g:customCell>
-										<textbox:RichTextBox styleName="{s.box} RichTextBox-labelStyle"
-											ui:field="fromAddrCity" maxLength="60" />
+										<textbox:RichTextBox ui:field="fromAddrCity" maxLength="60" />
 									</g:customCell>
 									<g:customCell>
-										<v:ValidatedListBox styleName="{s.box}"
-											ui:field="fromAddrProvince" />
+										<v:ValidatedListBox styleName="{s.box}"	ui:field="fromAddrProvince" />
 									</g:customCell>
 								</g:row>
 								<g:row>
 									<g:customCell>
-										<v:ValidatedListBox styleName="{s.box}"
-											ui:field="fromAddrCountry" />
+										<v:ValidatedListBox styleName="{s.box}"	ui:field="fromAddrCountry" />
 									</g:customCell>
 								</g:row>
 							</g:Grid>
@@ -193,28 +187,23 @@
 							<g:Grid>
 								<g:row>
 									<g:customCell>
-										<textbox:RichTextBox styleName="{s.box} RichTextBox-labelStyle"
-											ui:field="toAddrCompanyName" maxLength="255" />
+										<textbox:RichTextBox ui:field="toAddrCompanyName" maxLength="255" />
 									</g:customCell>
 								</g:row>
 								<g:row>
 									<g:customCell>
-										<textbox:RichTextBox styleName="{s.box} RichTextBox-labelStyle"
-											ui:field="toAddrStreetName" maxLength="255" />
+										<textbox:RichTextBox ui:field="toAddrStreetName" maxLength="255" />
 									</g:customCell>
 								</g:row>
 								<g:row>
 									<g:customCell>
-										<textbox:RichTextBox styleName="{s.box} RichTextBox-labelStyle"
-											ui:field="toAddrPostCode" maxLength="10" />
+										<textbox:RichTextBox ui:field="toAddrPostCode" maxLength="10" />
 									</g:customCell>
 									<g:customCell>
-										<textbox:RichTextBox styleName="{s.box} RichTextBox-labelStyle"
-											ui:field="toAddrCity" maxLength="60" />
+										<textbox:RichTextBox ui:field="toAddrCity" maxLength="60" />
 									</g:customCell>
 									<g:customCell>
-										<v:ValidatedListBox styleName="{s.box}"
-											ui:field="toAddrProvince" />
+										<v:ValidatedListBox styleName="{s.box}" ui:field="toAddrProvince" />
 									</g:customCell>
 								</g:row>
 								<g:row>
@@ -224,8 +213,7 @@
 									</g:customCell>
 								</g:row>
 							</g:Grid>
-							<g:Button styleName="{g.button} {s.loadDefaultsButton}"
-								ui:field="toAddrButtonDefault" text="{i18n.loadToAddress}"></g:Button>
+							<g:ListBox styleName="{s.loadDefaultsButton}" ui:field="toAddrButtonDefault"></g:ListBox>
 						</g:HorizontalPanel>
 					</g:customCell>
 				</g:row>

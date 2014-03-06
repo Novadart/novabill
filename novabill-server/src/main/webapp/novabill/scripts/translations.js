@@ -162,7 +162,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		TAX : 'IVA',
 		TAX_PLACEHOLDER : 'esempio: 22',
 		TODAY : 'Oggi',
-		TOGGLE_PAYED : 'Incassata / Non Incassata',
+		TOGGLE_PAYED : 'Incassata',
 		TOTAL : 'Totale',
 		TOTAL_BEFORE_TAXES : 'Fatturato',
 		TRANSPORT_DOCUMENT_AREADY_IN_INVOICE_ALERT : 'Documenti già inclusi in fatture precedenti',

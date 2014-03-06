@@ -127,10 +127,6 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 	}
 
 	@Override
-	public void onLoad() {
-	}
-
-	@Override
 	protected void setPresenterInView(TransportDocumentView view) {
 		view.setPresenter(this);
 	}
