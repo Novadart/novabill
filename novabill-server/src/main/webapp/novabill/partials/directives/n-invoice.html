@@ -15,7 +15,8 @@
 			<li><a href="javascript:void(0);" ng-click="clone()">{{'CLONE' | translate}}</a></li>
 			<li><a href="javascript:void(0);" ng-click="createCreditNote()">{{'CREATE_CREDIT_NOTE' | translate}}</a></li>
 			<li class="divider"></li>
-			<li><a href="javascript:void(0);" ng-click="togglePayed()">{{'TOGGLE_PAYED' | translate}}</a></li>
+			<li><a href="javascript:void(0);" ng-click="togglePayed()">
+			     <i ng-class="{'fa-check-square-o': invoice.payed, 'fa-square-o': !invoice.payed}" class="fa" ></i> {{'TOGGLE_PAYED' | translate}}</a></li>
 			<li class="divider"></li>
 			<li ><a href="javascript:void(0);" ng-click="remove()" ><i class="fa fa-trash-o"></i>{{'DELETE' | translate}}</a></li>
 		</ul>
