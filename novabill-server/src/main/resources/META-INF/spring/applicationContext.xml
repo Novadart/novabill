@@ -110,6 +110,7 @@
 				<value>risto.gligorov@novadart.com</value>
 			</list>
 		</property>
+		<property name="loggingOn" value="true"/>
 	</bean>
 
 	<bean
