@@ -516,7 +516,7 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void transDocUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void transDocUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, DataIntegrityException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> tranYears = businessService.getTransportDocumentYears(businessID);
 		List<TransportDocumentDTO> result = businessGwtService.getTransportDocuments(businessID, getYear());
