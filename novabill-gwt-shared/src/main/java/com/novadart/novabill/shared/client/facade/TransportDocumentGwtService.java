@@ -26,7 +26,7 @@ public interface TransportDocumentGwtService extends RemoteService {
 	
 	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException;
 	
-	public void update(TransportDocumentDTO transportDocDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException;
+	public void update(TransportDocumentDTO transportDocDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, DataIntegrityException;
 	
 	public Long getNextTransportDocId() throws NotAuthenticatedException, DataAccessException;
 	

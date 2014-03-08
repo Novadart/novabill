@@ -118,10 +118,12 @@ public class TransportDocumentService {
 	  	  	  	  "T(com.novadart.novabill.domain.Client).findClient(#transportDocDTO?.client?.id)?.business?.id == principal.business.id and " +
 	  	  	  	  "#transportDocDTO?.id != null")
 	public void update(TransportDocumentDTO transportDocDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException,
-			ValidationException {
+			ValidationException, DataIntegrityException {
 		TransportDocument persistedTransportDoc = TransportDocument.findTransportDocument(transportDocDTO.getId());
 		if(persistedTransportDoc == null)
 			throw new NoSuchObjectException();
+		if(persistedTransportDoc.getInvoice() != null)
+			throw new DataIntegrityException();
 		TransportDocumentDTOFactory.copyFromDTO(persistedTransportDoc, transportDocDTO, false);
 		persistedTransportDoc.getAccountingDocumentItems().clear();
 		for(AccountingDocumentItemDTO itemDTO: transportDocDTO.getItems()){
