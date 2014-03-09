@@ -86,8 +86,8 @@ angular.module('novabill.commodities.controllers',
 /**
  * COMMODITIES DETAILS PAGE CONTROLLER
  */
-.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', '$rootScope', 'nConstants', '$filter', 'nRegExp',
-                                       function($scope, $location, $routeParams, $rootScope, nConstants, $filter, nRegExp){
+.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', '$rootScope', 'nConstants', '$filter', '$route', 'nRegExp',
+                                       function($scope, $location, $routeParams, $rootScope, nConstants, $filter, $route, nRegExp){
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	$scope.commodity = null;
 
@@ -128,7 +128,7 @@ angular.module('novabill.commodities.controllers',
 				GWT_Server.commodity.update(angular.toJson(commodity), {
 					onSuccess : function(newId){
 						delegation.finish(true);
-						loadCommodity();
+						$route.reload();
 					},
 
 					onFailure : function(error){
