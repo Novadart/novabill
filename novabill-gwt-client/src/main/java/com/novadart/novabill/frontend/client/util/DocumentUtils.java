@@ -42,7 +42,13 @@ public class DocumentUtils {
 		ii.setDescription(description);
 		return ii;
 	}
+	
+	
+	public static boolean isTextOnly(AccountingDocumentItemDTO item){
+		return item.getPrice() == null;
+	}
 
+	
 	private static boolean isEmpty(String str){
 		return str == null || str.isEmpty();
 	}

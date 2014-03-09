@@ -20,6 +20,7 @@ import com.novadart.gwtshared.client.validation.Validation;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
@@ -113,7 +114,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
-				return object.getUnitOfMeasure();
+				return object.getUnitOfMeasure()==null ? "" : object.getUnitOfMeasure();
 			}
 		};
 		if(!readOnly) {
@@ -121,13 +122,14 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 				@Override
 				public void update(int index, AccountingDocumentItemDTO object, String value) {
-					if(!Validation.isWithinSize(value, UNIT_OF_MEASURE_MAX_SIZE)){
-						Notification.showMessage(I18NM.get.textLengthError(UNIT_OF_MEASURE_MAX_SIZE));
-					} else {
-						object.setUnitOfMeasure(value);
-						ItemTable.this.handler.onUpdate(object);
+					if(!DocumentUtils.isTextOnly(object)){
+						if(!Validation.isWithinSize(value, UNIT_OF_MEASURE_MAX_SIZE)){
+							Notification.showMessage(I18NM.get.textLengthError(UNIT_OF_MEASURE_MAX_SIZE));
+						} else {
+							object.setUnitOfMeasure(value);
+							ItemTable.this.handler.onUpdate(object);
+						}
 					}
-
 					((AbstractEditableCell<String, ViewData>) unitEditCell).clearViewData(object);
 					redrawRow(index);
 				}
@@ -159,18 +161,19 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 				@Override
 				public void update(int index, AccountingDocumentItemDTO object, String value) {
-					try{
+					if(!DocumentUtils.isTextOnly(object)){
+						try{
 
-						BigDecimal newQty = CalcUtils.parseValue(value);
-						object.setQuantity(newQty);
-						ItemTable.this.handler.onUpdate(object);
+							BigDecimal newQty = CalcUtils.parseValue(value);
+							object.setQuantity(newQty);
+							ItemTable.this.handler.onUpdate(object);
 
-					} catch(NumberFormatException e){
+						} catch(NumberFormatException e){
 
-						Notification.showMessage(I18N.INSTANCE.errorClientData());
+							Notification.showMessage(I18N.INSTANCE.errorClientData());
 
+						}
 					}
-
 					((AbstractEditableCell<String, ViewData>) qtyEditCell).clearViewData(object);
 					redrawRow(index);
 				}
@@ -200,22 +203,23 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 					@Override
 					public void update(int index, AccountingDocumentItemDTO object, String value) {
-						try{
+						if(!DocumentUtils.isTextOnly(object)){
+							try{
 
-							if(value.isEmpty()){
-								object.setDiscount(null);
-							}  else {
-								BigDecimal newWeight = CalcUtils.parseValue(value);
-								object.setWeight(newWeight);
-								ItemTable.this.handler.onUpdate(object);
+								if(value.isEmpty()){
+									object.setDiscount(null);
+								}  else {
+									BigDecimal newWeight = CalcUtils.parseValue(value);
+									object.setWeight(newWeight);
+									ItemTable.this.handler.onUpdate(object);
+								}
+
+							} catch(NumberFormatException e){
+
+								Notification.showMessage(I18N.INSTANCE.errorClientData());
+
 							}
-
-						} catch(NumberFormatException e){
-
-							Notification.showMessage(I18N.INSTANCE.errorClientData());
-
 						}
-
 						((AbstractEditableCell<String, ViewData>) weightEditCell).clearViewData(object);
 						redrawRow(index);
 					}
@@ -232,7 +236,7 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 			@Override
 			public String getValue(AccountingDocumentItemDTO object) {
 				if(object.getTax() == null){
-					return null;
+					return "";
 				}
 
 				return NumberFormat.getDecimalFormat().format(object.getTax());
@@ -243,19 +247,19 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 				@Override
 				public void update(int index, AccountingDocumentItemDTO object, String value) {
+					if(!DocumentUtils.isTextOnly(object)){
+						try{
 
-					try{
+							BigDecimal newTax = CalcUtils.parseValue(value);
+							object.setTax(newTax);
+							ItemTable.this.handler.onUpdate(object);
 
-						BigDecimal newTax = CalcUtils.parseValue(value);
-						object.setTax(newTax);
-						ItemTable.this.handler.onUpdate(object);
+						} catch(NumberFormatException e){
 
-					} catch(NumberFormatException e){
+							Notification.showMessage(I18N.INSTANCE.errorClientData());
 
-						Notification.showMessage(I18N.INSTANCE.errorClientData());
-
+						}
 					}
-
 					((AbstractEditableCell<String, ViewData>) taxEditCell).clearViewData(object);
 					redrawRow(index);
 				}
@@ -284,16 +288,18 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 				@Override
 				public void update(int index, AccountingDocumentItemDTO object, String value) {
-					try{
+					if(!DocumentUtils.isTextOnly(object)){
+						try{
 
-						BigDecimal newPrice = CalcUtils.parseCurrency(value);
-						object.setPrice(newPrice);
-						ItemTable.this.handler.onUpdate(object);
+							BigDecimal newPrice = CalcUtils.parseCurrency(value);
+							object.setPrice(newPrice);
+							ItemTable.this.handler.onUpdate(object);
 
-					} catch(NumberFormatException e){
+						} catch(NumberFormatException e){
 
-						Notification.showMessage(I18N.INSTANCE.errorClientData());
+							Notification.showMessage(I18N.INSTANCE.errorClientData());
 
+						}
 					}
 					((AbstractEditableCell<String, ViewData>) priceEditCell).clearViewData(object);
 					redrawRow(index);
@@ -322,19 +328,20 @@ public class ItemTable extends CellTable<AccountingDocumentItemDTO> {
 
 				@Override
 				public void update(int index, AccountingDocumentItemDTO object, String value) {
+					if(!DocumentUtils.isTextOnly(object)){
+						try{
+							if(value.isEmpty()){
+								object.setDiscount(null);
+							} else {
+								BigDecimal newDiscount = CalcUtils.parseValue(value);
+								object.setDiscount(newDiscount);
+							}
+							ItemTable.this.handler.onUpdate(object);
+						} catch(NumberFormatException e){
 
-					try{
-						if(value.isEmpty()){
-							object.setDiscount(null);
-						} else {
-							BigDecimal newDiscount = CalcUtils.parseValue(value);
-							object.setDiscount(newDiscount);
+							Notification.showMessage(I18N.INSTANCE.errorClientData());
+
 						}
-						ItemTable.this.handler.onUpdate(object);
-					} catch(NumberFormatException e){
-
-						Notification.showMessage(I18N.INSTANCE.errorClientData());
-
 					}
 
 					((AbstractEditableCell<String, ViewData>) discountEditCell).clearViewData(object);
