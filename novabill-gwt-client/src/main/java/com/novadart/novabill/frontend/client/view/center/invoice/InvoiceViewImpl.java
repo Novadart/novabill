@@ -239,6 +239,8 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		
 		createInvoice.reset();
 		
+		payment.reset();
+		
 		makePaymentAsDefault.setValue(false);
 		makePaymentAsDefault.setVisible(false);
 		setLocked(false);
