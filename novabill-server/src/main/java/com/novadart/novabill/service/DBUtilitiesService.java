@@ -9,6 +9,9 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -22,7 +25,10 @@ import com.healthmarketscience.jackcess.Table;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Commodity;
+import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.EmailPasswordHolder;
+import com.novadart.novabill.domain.Endpoint;
+import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.Price;
@@ -41,6 +47,9 @@ import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 public class DBUtilitiesService {
 	
 	private String blmDBPath = "/tmp/DATI.mdb";
+	
+	@PersistenceContext
+	private EntityManager em;
 	
 	private PaymentType[] paymentTypes = new PaymentType[]{
 			new PaymentType("Rimessa Diretta", "Pagamento in Rimessa Diretta", PaymentDateType.IMMEDIATE, 0, PaymentDeltaType.COMMERCIAL_MONTH, 0),
@@ -372,6 +381,50 @@ public class DBUtilitiesService {
 		}
 	}
 	
+	private void copyToEndpoint(Endpoint endpoint, Client client){
+		endpoint.setCompanyName(client.getName());
+		endpoint.setStreet(client.getAddress());
+		endpoint.setPostcode(client.getPostcode());
+		endpoint.setCity(client.getCity());
+		endpoint.setProvince(client.getProvince());
+		endpoint.setCountry(client.getCountry());
+	}
+	
+	private void migrate2_5(){
+		em.createNativeQuery("update accounting_document set " +
+				"to_company_name = td.to_company_name, " +
+				"to_street = td.to_street, " +
+				"to_postcode = td.to_postcode, " +
+				"to_city = td.to_city, " +
+				"to_province = td.to_province, " +
+				"to_country = td.to_country " +
+				"from (select * from transport_document) as td " +
+				"where accounting_document.id = td.id").executeUpdate();
+		for(Invoice invoice: Invoice.findAllInvoices()){
+			if(invoice.getToEndpoint() == null)
+				invoice.setToEndpoint(new Endpoint());
+			copyToEndpoint(invoice.getToEndpoint(), invoice.getClient());
+		}
+		for(Estimation estimation: Estimation.findAllEstimations()){
+			if(estimation.getToEndpoint() == null)
+				estimation.setToEndpoint(new Endpoint());
+			copyToEndpoint(estimation.getToEndpoint(), estimation.getClient());
+		}
+		for(CreditNote creditNote: CreditNote.findAllCreditNotes()){
+			if(creditNote.getToEndpoint() == null)
+				creditNote.setToEndpoint(new Endpoint());
+			copyToEndpoint(creditNote.getToEndpoint(), creditNote.getClient());
+		}
+		fixInvoiceCreatedFromTransDocFlag();
+		em.createNativeQuery("alter table transport_document " +
+				"drop column to_company_name, " +
+				"drop column to_street, " +
+				"drop column to_postcode, " +
+				"drop column to_city, " +
+				"drop column to_province, " +
+				"drop column to_country").executeUpdate();
+	}
+	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
 	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException{
@@ -388,7 +441,7 @@ public class DBUtilitiesService {
 //		fixPrices();
 		//fixPaymentTypes();
 		//fixInvoices();
-		fixInvoiceCreatedFromTransDocFlag();
+		migrate2_5();
 	}
 	
 }
