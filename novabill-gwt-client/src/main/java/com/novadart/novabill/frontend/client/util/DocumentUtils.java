@@ -60,7 +60,7 @@ public class DocumentUtils {
 				|| isEmpty(client.getCountry())
 				|| isEmpty(client.getName())
 				|| isEmpty(client.getPostcode())
-				|| isEmpty(client.getProvince())
+				|| ("IT".equalsIgnoreCase(client.getCountry()) && isEmpty(client.getProvince()))
 				|| (isEmpty(client.getSsn()) && isEmpty(client.getVatID()) ) ){
 			
 			ClientDialog clientDialog = new ClientDialog(Configuration.getBusiness().getId(), true, callback);

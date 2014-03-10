@@ -261,7 +261,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 	
 	@Override
-	public void getTransportDocumentView(final AsyncCallback<TransportDocumentView> callback) {
+	public void getTransportDocumentView(final boolean readonly, final AsyncCallback<TransportDocumentView> callback) {
 		if(views.containsKey(TransportDocumentView.class)){
 			callback.onSuccess((TransportDocumentView) getView(TransportDocumentView.class));
 		} else {
@@ -269,7 +269,7 @@ public class ClientFactoryImpl implements ClientFactory {
 				
 				@Override
 				public void onSuccess() {
-					callback.onSuccess((TransportDocumentView) getView(TransportDocumentView.class, new TransportDocumentViewImpl()));
+					callback.onSuccess((TransportDocumentView) getView(TransportDocumentView.class, new TransportDocumentViewImpl(readonly)));
 				}
 				
 				@Override

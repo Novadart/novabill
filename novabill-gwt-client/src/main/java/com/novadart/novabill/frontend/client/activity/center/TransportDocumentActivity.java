@@ -35,39 +35,42 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 	@Override
 	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		super.start(panel, eventBus);
+		
 
-		getClientFactory().getTransportDocumentView(new AsyncCallback<TransportDocumentView>() {
+		if (place instanceof ModifyTransportDocumentPlace) {
+			ModifyTransportDocumentPlace p = (ModifyTransportDocumentPlace) place;
+			setupModifyTransportDocumentView(panel, p);
 
-			@Override
-			public void onSuccess(final TransportDocumentView view) {
+		} else {
 
-				if (place instanceof ModifyTransportDocumentPlace) {
-					ModifyTransportDocumentPlace p = (ModifyTransportDocumentPlace) place;
-					setupModifyTransportDocumentView(panel, view, p);
-
-				} else if (place instanceof CloneTransportDocumentPlace) {
-					CloneTransportDocumentPlace p = (CloneTransportDocumentPlace) place;
-					setupCloneTransportDocumentView(panel, view, p);
-
-				} else if (place instanceof FromEstimationTransportDocumentPlace) {
-					FromEstimationTransportDocumentPlace p = (FromEstimationTransportDocumentPlace) place;
-					setupFromEstimationTransportDocumentView(panel, view, p);
-
-				} else if (place instanceof NewTransportDocumentPlace) {
-					NewTransportDocumentPlace p = (NewTransportDocumentPlace) place;
-					setupNewTransportDocumentView(panel, view, p);
-
-				} else {
-					getClientFactory().getPlaceController().goTo(new HomePlace());
+			getClientFactory().getTransportDocumentView(false, new AsyncCallback<TransportDocumentView>() {
+	
+				@Override
+				public void onSuccess(final TransportDocumentView view) {
+					if (place instanceof CloneTransportDocumentPlace) {
+						CloneTransportDocumentPlace p = (CloneTransportDocumentPlace) place;
+						setupCloneTransportDocumentView(panel, view, p);
+	
+					} else if (place instanceof FromEstimationTransportDocumentPlace) {
+						FromEstimationTransportDocumentPlace p = (FromEstimationTransportDocumentPlace) place;
+						setupFromEstimationTransportDocumentView(panel, view, p);
+	
+					} else if (place instanceof NewTransportDocumentPlace) {
+						NewTransportDocumentPlace p = (NewTransportDocumentPlace) place;
+						setupNewTransportDocumentView(panel, view, p);
+	
+					} else {
+						getClientFactory().getPlaceController().goTo(new HomePlace());
+					}
+	
 				}
-
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				manageError();
-			}
-		});
+	
+				@Override
+				public void onFailure(Throwable caught) {
+					manageError();
+				}
+			});
+		}
 	}
 
 
@@ -123,15 +126,28 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 	}
 	
 
-	private void setupModifyTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, ModifyTransportDocumentPlace place){
+	private void setupModifyTransportDocumentView(final AcceptsOneWidget panel, ModifyTransportDocumentPlace place){
 		ServerFacade.INSTANCE.getTransportdocumentService().get(place.getTransportDocumentId(), new DocumentCallack<TransportDocumentDTO>() {
 
 			@Override
-			public void onSuccess(TransportDocumentDTO result) {
-				ModifyTransportDocumentPresenter p = new ModifyTransportDocumentPresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view, getCallback());
-				p.setData(result);
-				p.go(panel);
+			public void onSuccess(final TransportDocumentDTO result) {
+				
+				getClientFactory().getTransportDocumentView(result.getInvoice()!=null, new AsyncCallback<TransportDocumentView>() {
+					
+					@Override
+					public void onSuccess(final TransportDocumentView view) {
+						ModifyTransportDocumentPresenter p = new ModifyTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view, getCallback());
+						p.setData(result);
+						p.go(panel);
+					}
+		
+					@Override
+					public void onFailure(Throwable caught) {
+						manageError();
+					}
+				});
+				
 			}
 
 		});

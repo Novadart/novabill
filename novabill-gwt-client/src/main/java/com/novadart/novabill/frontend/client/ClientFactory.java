@@ -39,7 +39,7 @@ public interface ClientFactory {
 	void getEstimationView(AsyncCallback<EstimationView> callback);
 	void getBusinessView(AsyncCallback<BusinessView> callback);
 	void getCreditNoteView(AsyncCallback<CreditNoteView> callback);
-	void getTransportDocumentView(AsyncCallback<TransportDocumentView> asyncCallback);
+	void getTransportDocumentView(boolean readonly, AsyncCallback<TransportDocumentView> asyncCallback);
 	void getPaymentView(AsyncCallback<PaymentView> callback);
 	
 }
