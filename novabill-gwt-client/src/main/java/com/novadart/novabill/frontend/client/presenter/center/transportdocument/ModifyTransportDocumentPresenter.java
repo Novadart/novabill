@@ -70,7 +70,11 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 		getView().getToAddrCity().setText(loc.getCity());
 		getView().getToAddrCompanyName().setText(loc.getCompanyName());
 		getView().getToAddrPostCode().setText(loc.getPostcode());
-		getView().getToAddrProvince().setSelectedItem(loc.getProvince());
+		if("IT".equalsIgnoreCase(loc.getProvince())){
+			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
+		} else {
+			getView().getToAddrProvince().setEnabled(false);
+		} 
 		getView().getToAddrStreetName().setText(loc.getStreet());
 		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
 		getView().getSetToAddress().setValue(true);

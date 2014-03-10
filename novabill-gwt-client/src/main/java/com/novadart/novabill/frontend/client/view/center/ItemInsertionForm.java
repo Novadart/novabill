@@ -209,7 +209,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 		weightContainer.setVisible(this.manageWeight);
 
-		setLocked(true);
+		lockUI(true);
 
 		ServerFacade.INSTANCE.getBatchfetcherService().fetchSelectCommodityForDocItemOpData(clientId, 
 				new ManagedAsyncCallback<Pair<PriceListDTO,List<PriceListDTO>>>() {
@@ -729,6 +729,10 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@Override
 	public void setLocked(boolean value) {
 		locked = value;
+		lockUI(value);
+	}
+	
+	private void lockUI(boolean value){
 		sku.setEnabled(!value);
 		browse.setEnabled(!value);
 		item.setEnabled(!value);
@@ -741,6 +745,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		add.setEnabled(!value);
 		overrideDiscountInDocsExplicit.setEnabled(!value);
 	}
+	
 	
 	private void unlockIfNotLocked(){
 		if(!locked) {

@@ -185,9 +185,15 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			onFromAddressButtonDefaultCLicked();
 		}
 
-		// this to auto populate the fields
 		if(!getView().getSetToAddress().getValue()){
-			onToAddressButtonDefaultChange();
+			getView().getToAddrCity().setText(getClient().getCity());
+			getView().getToAddrCompanyName().setText(getClient().getName());
+			getView().getToAddrPostCode().setText(getClient().getPostcode());
+			if(getClient().getCountry().equalsIgnoreCase("IT")){
+				getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
+			}
+			getView().getToAddrStreetName().setText(getClient().getAddress());
+			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
 		}
 
 		td.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
