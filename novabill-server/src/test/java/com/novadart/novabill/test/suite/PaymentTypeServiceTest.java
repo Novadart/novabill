@@ -32,6 +32,7 @@ import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
+import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -77,6 +78,28 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(paymentTypeDTO.getName(), details.get(DBLoggerAspect.PAYMENT_TYPE_NAME));
 		
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void addAuthorizedInvalidImmediateNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, JsonParseException, JsonMappingException, IOException{
+		PaymentType paymentType = new PaymentType();
+		paymentType.setName("Payment type test name");
+		paymentType.setDefaultPaymentNote("Payment type test defualt note");
+		paymentType.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(paymentType);
+		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		paymentTypeService.add(paymentTypeDTO);
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void addAuthorizedInvalidEndOfMonthNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, JsonParseException, JsonMappingException, IOException{
+		PaymentType paymentType = new PaymentType();
+		paymentType.setName("Payment type test name");
+		paymentType.setDefaultPaymentNote("Payment type test defualt note");
+		paymentType.setPaymentDateGenerator(PaymentDateType.END_OF_MONTH);
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(paymentType);
+		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		paymentTypeService.add(paymentTypeDTO);
 	}
 	
 	@Test(expected = DataAccessException.class)
