@@ -50,6 +50,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	}
 
 	@UiField FlowPanel docControls;
+	@UiField Label readonlyWarning;
 
 	@UiField CheckBox setFromAddress;
 	@UiField HorizontalPanel fromAddressContainer;
@@ -60,7 +61,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) ValidatedListBox fromAddrProvince;
 	@UiField(provided=true) ValidatedListBox fromAddrCountry;
 	@UiField Button fromAddrButtonDefault;
-	
+
 	@UiField CheckBox setToAddress;
 	@UiField HorizontalPanel toAddressContainer;
 	@UiField(provided=true) RichTextBox toAddrCompanyName;
@@ -70,7 +71,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) ValidatedListBox toAddrProvince;
 	@UiField(provided=true) ValidatedListBox toAddrCountry;
 	@UiField ListBox toAddrButtonDefault;
-	
+
 	@UiField(provided=true) ValidatedTextBox numberOfPackages;
 	@UiField(provided=true) ValidatedTextBox totalWeight;
 	@UiField(provided=true) com.novadart.gwtshared.client.validation.widget.ValidatedTextArea transporter;
@@ -94,7 +95,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField Label totalBeforeTaxes;
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
-	
+
 	@UiField Button countItems;
 	@UiField Button totalWeightCalc;
 
@@ -103,14 +104,14 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	private Presenter presenter;
 
-	public TransportDocumentViewImpl() {
+	public TransportDocumentViewImpl(boolean readonly) {
 
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 		transportationResponsibility = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		tradeZone = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		appearanceOfTheGoods = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), 
 				new TextLengthValidation(255) {
-			
+
 			@Override
 			public String getErrorMessage() {
 				return I18NM.get.textLengthError(255);
@@ -121,7 +122,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		totalWeight = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 		transporter = new com.novadart.gwtshared.client.validation.widget.ValidatedTextArea(GlobalBundle.INSTANCE.validatedWidget(), 
 				new TextLengthValidation(255) {
-			
+
 			@Override
 			public String getErrorMessage() {
 				return I18NM.get.textLengthError(255);
@@ -167,7 +168,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		date.addValueChangeHandler(new ValueChangeHandler<Date>() {
-			
+
 			@Override
 			public void onValueChange(ValueChangeEvent<Date> event) {
 				transportStartDate.setValue(event.getValue());
@@ -176,7 +177,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 			}
 		});
 
-		itemInsertionForm = new ItemInsertionForm(true, false, new ItemInsertionForm.Handler() {
+		itemInsertionForm = new ItemInsertionForm(true, readonly, new ItemInsertionForm.Handler() {
 
 			@Override
 			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
@@ -193,18 +194,18 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 		createTransportDocument.getButton().setStyleName(CSS.createButton()+" btn green");
 	}
-	
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
 		presenter.onLoad();
 	}
-	
+
 	@UiFactory
 	GlobalCss getGlobalCss(){
 		return GlobalBundle.INSTANCE.globalCss();
 	}
-	
+
 	@Override
 	public ValidatedTextBox getNumber() {
 		return number;
@@ -214,12 +215,12 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	void onSetFromAddress(ValueChangeEvent<Boolean> e){
 		fromAddressContainer.setVisible(e.getValue());
 	}
-	
+
 	@UiHandler("setToAddress")
 	void onSetToAddress(ValueChangeEvent<Boolean> e){
 		toAddressContainer.setVisible(e.getValue());
 	}
-	
+
 	@UiHandler("fromAddrCountry")
 	void onFromCountryChange(ChangeEvent event){
 		presenter.onFromCountryChange();
@@ -234,7 +235,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	I18N getI18N(){
 		return I18N.INSTANCE;
 	}
-	
+
 	@UiFactory
 	AccountDocumentCss getAccountDocumentCss(){
 		return CSS;
@@ -255,12 +256,12 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	void onCreateTransportDocumentClicked(ClickEvent e){
 		presenter.onCreateDocumentClicked();
 	}
-	
+
 	@UiHandler("countItems")
 	void onCountItemsClicked(ClickEvent e){
 		presenter.onCountItemsCLicked();
 	}
-	
+
 	@UiHandler("totalWeightCalc")
 	void onTotalWeightCalcClicked(ClickEvent e){
 		presenter.onTotalWeightCalcClicked();
@@ -271,7 +272,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		presenter.onCancelClicked();
 	}
 
-	
+
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
@@ -280,7 +281,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@Override
 	public void reset() {
 		number.reset();
-
+		readonlyWarning.setVisible(false);
+		
 		//reset widget contents	
 		date.reset();
 		transportStartDate.reset();
@@ -296,7 +298,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		hour.reset();
 		minute.reset();
 		numberOfPackages.reset();
-		
+
 		setFromAddress.setValue(false);
 		fromAddressContainer.setVisible(false);
 		fromAddrCity.reset();
@@ -336,10 +338,10 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrProvince.setEnabled(!value);
 		fromAddrCountry.setEnabled(!value);
 		fromAddrButtonDefault.setEnabled(!value);
-		
+
 		totalWeightCalc.setEnabled(!value);
 		countItems.setEnabled(!value);
-		
+
 		toAddrCompanyName.setEnabled(!value);
 		toAddrStreetName.setEnabled(!value);
 		toAddrPostCode.setEnabled(!value);
@@ -352,6 +354,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		totalWeight.setEnabled(!value);
 		transporter.setEnabled(!value);
 
+		appearanceOfTheGoods.setEnabled(!value);
+		cause.setEnabled(!value);
 		transportStartDate.setEnabled(!value);
 		hour.setEnabled(!value);
 		minute.setEnabled(!value);
@@ -365,6 +369,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		date.setEnabled(!value);
 		note.setEnabled(!value);
 
+		createTransportDocument.setEnabled(!value);
 		abort.setEnabled(!value);
 	}
 
@@ -472,7 +477,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	public ValidatedTextBox getNumberOfPackages() {
 		return numberOfPackages;
 	}
-	
+
 	public ValidatedTextBox getTotalWeight() {
 		return totalWeight;
 	}
@@ -504,33 +509,38 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	public ValidatedTextBox getCause() {
 		return cause;
 	}
-	
+
 	public com.novadart.gwtshared.client.validation.widget.ValidatedTextArea getAppearanceOfTheGoods() {
 		return appearanceOfTheGoods;
 	}
-	
+
 	@Override
 	public CheckBox getSetFromAddress() {
 		return setFromAddress;
 	}
-	
+
 	@Override
 	public CheckBox getSetToAddress() {
 		return setToAddress;
 	}
-	
+
 	@Override
 	public HorizontalPanel getFromAddressContainer() {
 		return fromAddressContainer;
 	}
-	
+
 	@Override
 	public HorizontalPanel getToAddressContainer() {
 		return toAddressContainer;
 	}
-	
+
 	@Override
 	public Button getCountItems() {
 		return countItems;
+	}
+	
+	@Override
+	public Label getReadonlyWarning() {
+		return readonlyWarning;
 	}
 }

@@ -54,7 +54,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			@Override
 			public void onSuccess(List<ClientAddressDTO> result) {
 				clientAddresses = result;
-				
+
 				getView().getToAddrButtonDefault().addItem(I18N.INSTANCE.selectAddress(), "");
 				getView().getToAddrButtonDefault().addItem(I18N.INSTANCE.legalAddress(), "");
 				for (ClientAddressDTO c : result) {
@@ -64,7 +64,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			}
 		});
 	}
-	
+
 	@Override
 	public void onFromAddressButtonDefaultCLicked() {
 		BusinessDTO b = Configuration.getBusiness();
@@ -79,11 +79,11 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 	@Override
 	public void onToAddressButtonDefaultChange() {
 		int selectedIndex = getView().getToAddrButtonDefault().getSelectedIndex();
-		
+
 		switch (selectedIndex) {
 		case 0:
 			break;
-			
+
 		case 1:
 			getView().getToAddrCity().setText(getClient().getCity());
 			getView().getToAddrCompanyName().setText(getClient().getName());
@@ -97,10 +97,10 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			getView().getToAddrStreetName().setText(getClient().getAddress());
 			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
 			break;
-			
+
 		default:
 			Long selId = Long.parseLong(getView().getToAddrButtonDefault().getValue(selectedIndex));
-			
+
 			for (ClientAddressDTO c : clientAddresses) {
 				if(c.getId().equals(selId)){
 					getView().getToAddrCity().setText(c.getCity());
