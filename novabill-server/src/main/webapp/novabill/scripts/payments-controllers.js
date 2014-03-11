@@ -21,6 +21,7 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 	
 	function loadInvoices(filteringDateType, startDate, endDate){
 		$scope.loading = true;
+		$scope.invoices = null;
 		
 		var sd = startDate ? String(startDate.getTime()) : null;
 		var ed = endDate ? String(endDate.getTime()) : null;
