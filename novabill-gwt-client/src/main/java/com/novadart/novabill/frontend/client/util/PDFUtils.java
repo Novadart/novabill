@@ -6,6 +6,7 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 
 public class PDFUtils {
 
@@ -59,14 +60,15 @@ public class PDFUtils {
 		generatePdf("transportdocs", id);
 	}
 
-	public static void generatePaymentsProspectPdf(Long startDate, Long endDate) {
+	public static void generatePaymentsProspectPdf(FilteringDateType filteringDateType, Long startDate, Long endDate) {
 		generatePaymentsProspectPdf(
+				filteringDateType,
 				startDate != null ? new Date(startDate) : null, 
 				endDate != null ? new Date(endDate) : null
 				);
 	}
 
-	public static void generatePaymentsProspectPdf(final Date startDate, final Date endDate) {
+	public static void generatePaymentsProspectPdf(final FilteringDateType filteringDateType, final Date startDate, final Date endDate) {
 		ServerFacade.INSTANCE.getBusinessService().generatePDFToken(new ManagedAsyncCallback<String>() {
 
 			@Override
@@ -75,6 +77,8 @@ public class PDFUtils {
 				sb.append(ClientFactory.INSTANCE.getPdfProspectRequest());
 				sb.append("?token=");
 				sb.append(result);
+				sb.append("&filteringDateType=");
+				sb.append(filteringDateType.name());
 				if(startDate != null){
 					sb.append("&startDate=");
 					sb.append(ISO_DATE_FORMAT.format(startDate));

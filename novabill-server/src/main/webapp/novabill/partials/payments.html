@@ -27,29 +27,41 @@
 					<div class="tab-pane active" id="payments_status" infinite-scroll="loadMoreInvoices()">
 					
 					<div class="row">
-                         <div class="col-md-3">
+					     <div class="col-md-3">
                              <div class="form-group">
-                                 <label class="control-label col-md-4">{{'PAYMENTS_STATUS_START_DATE' | translate}}</label>
+                                 <label class="control-label col-md-4">{{'PAYMENTS_STATUS_FILTERING_DATE_TYPE' | translate}}</label>
                                  <div class="col-md-8">
                                     <p class="input-group input-medium">
-			                          <input ng-disabled="loading" type="text" class="form-control"
-			                             readonly="readonly" 
-			                             datepicker-popup="dd MMMM yyyy" 
-			                             ng-model="startDate" 
-			                             is-open="openSD" 
-			                             datepicker-options="dateOptions"
-			                             show-button-bar="false" />
-			                          <span class="input-group-btn">
-			                            <button ng-disabled="loading" class="btn btn-default" ng-click="openStartDate($event)">
-			                                 <i class="glyphicon glyphicon-calendar"></i>
-			                            </button>
-			                          </span>
-			                        </p>
+                                      <select ng-disabled="loading" class="form-control" ng-model="filteringDateType">
+                                        <option value="PAYMENT_DUEDATE">{{'PAYMENTS_STATUS_FILTERING_PAYMENT_DUEDATE' | translate}}</option>
+                                        <option value="CREATION_DATE">{{'PAYMENTS_STATUS_FILTERING_CREATION_DATE' | translate}}</option>
+                                      </select>
+                                    </p>
                                  </div>
                              </div>
                          </div>
                          <!--/span-->
                          <div class="col-md-3 col-md-offset-1">
+                            <div class="form-group">
+                                 <label class="control-label col-md-4">{{'PAYMENTS_STATUS_START_DATE' | translate}}</label>
+                                 <div class="col-md-8">
+                                    <p class="input-group input-medium">
+                                      <input ng-disabled="loading" type="text" class="form-control"
+                                         readonly="readonly" 
+                                         datepicker-popup="dd MMMM yyyy" 
+                                         ng-model="startDate" 
+                                         is-open="openSD" 
+                                         datepicker-options="dateOptions"
+                                         show-button-bar="false" />
+                                      <span class="input-group-btn">
+                                        <button ng-disabled="loading" class="btn btn-default" ng-click="openStartDate($event)">
+                                             <i class="glyphicon glyphicon-calendar"></i>
+                                        </button>
+                                      </span>
+                                    </p>
+                                 </div>
+                             </div>
+                         
                              <div class="form-group">
                                  <label class="control-label col-md-4">{{'PAYMENTS_STATUS_END_DATE' | translate}}</label>
                                  <div class="col-md-8">

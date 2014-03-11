@@ -37,6 +37,7 @@ import com.novadart.novabill.frontend.client.place.transportdocument.NewTranspor
 import com.novadart.novabill.frontend.client.util.PDFUtils;
 import com.novadart.novabill.frontend.client.view.bootstrap.BootstrapDialog;
 import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class UiBridge implements ApiBridge {
@@ -90,7 +91,7 @@ public class UiBridge implements ApiBridge {
 			generateEstimationPdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateEstimationPdf(Ljava/lang/String;),
 			generateCreditNotePdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateCreditNotePdf(Ljava/lang/String;),
 			generateTransportDocumentPdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateTransportDocumentPdf(Ljava/lang/String;),
-			generatePaymentsProspectPdf : @com.novadart.novabill.frontend.client.bridge.UiBridge::generatePaymentsProspectPdf(Ljava/lang/String;Ljava/lang/String;),
+			generatePaymentsProspectPdf : @com.novadart.novabill.frontend.client.bridge.UiBridge::generatePaymentsProspectPdf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)
 		};
 	
 	}-*/;
@@ -322,8 +323,9 @@ public class UiBridge implements ApiBridge {
 	 * PDF
 	 */
 	
-	public static void generatePaymentsProspectPdf(String startDate, String endDate){
+	public static void generatePaymentsProspectPdf(String filteringDateType, String startDate, String endDate){
 		PDFUtils.generatePaymentsProspectPdf(
+				FilteringDateType.valueOf(filteringDateType),
 				startDate != null ? Long.parseLong(startDate) : null, 
 				endDate != null ? Long.parseLong(endDate) : null
 				);

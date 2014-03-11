@@ -45,7 +45,7 @@ public class ServerBridge implements ApiBridge {
 				getAllInRange : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::getAllInRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				remove : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				setPayed : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::setPayed(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLcom/google/gwt/core/client/JavaScriptObject;),
-				getAllUnpaidInDateRange : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::getAllUnpaidInDateRange(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getAllUnpaidInDateRange : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::getAllUnpaidInDateRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 			},
 			
 			estimation : {
