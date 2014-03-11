@@ -19,6 +19,7 @@ import com.novadart.novabill.frontend.client.widget.notification.NotificationCal
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
@@ -50,15 +51,25 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 		for (AccountingDocumentItemDTO i : invoice.getItems()) {
 			items.add(i.clone());
 		}
+		
+        EndpointDTO loc = invoice.getToEndpoint();
+		getView().getToAddrCity().setText(loc.getCity());
+		getView().getToAddrCompanyName().setText(loc.getCompanyName());
+		getView().getToAddrPostCode().setText(loc.getPostcode());
+		if("IT".equalsIgnoreCase(loc.getCountry())){
+			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
+		} else {
+			getView().getToAddrProvince().setEnabled(false);
+		} 
+		getView().getToAddrStreetName().setText(loc.getStreet());
+		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
+		getView().getSetToAddress().setValue(true);
+		getView().getToAddressContainer().setVisible(true);
+		
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(I18NM.get.generatedFromInvoice(
 				invoice.getDocumentID()+"/"+ getYearFormat().format(invoice.getAccountingDocumentDate()), 
 				DateTimeFormat.getFormat("dd MMMM yyyy").format(invoice.getAccountingDocumentDate())));
-	}
-
-
-	@Override
-	public void onLoad() {
 	}
 
 

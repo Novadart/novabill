@@ -14,6 +14,7 @@ import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
 public class ModifyCreditNotePresenter extends AbstractCreditNotePresenter {
@@ -31,14 +32,24 @@ public class ModifyCreditNotePresenter extends AbstractCreditNotePresenter {
 
 		List<AccountingDocumentItemDTO> items = null;
 		items = creditNote.getItems();
+		
+        EndpointDTO loc = creditNote.getToEndpoint();
+		getView().getToAddrCity().setText(loc.getCity());
+		getView().getToAddrCompanyName().setText(loc.getCompanyName());
+		getView().getToAddrPostCode().setText(loc.getPostcode());
+		if("IT".equalsIgnoreCase(loc.getCountry())){
+			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
+		} else {
+			getView().getToAddrProvince().setEnabled(false);
+		} 
+		getView().getToAddrStreetName().setText(loc.getStreet());
+		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
+		getView().getSetToAddress().setValue(true);
+		getView().getToAddressContainer().setVisible(true);
 
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNumber().setText(creditNote.getDocumentID().toString());
 		getView().getNote().setText(creditNote.getNote());
-	}
-
-	@Override
-	public void onLoad() {
 	}
 
 	@Override

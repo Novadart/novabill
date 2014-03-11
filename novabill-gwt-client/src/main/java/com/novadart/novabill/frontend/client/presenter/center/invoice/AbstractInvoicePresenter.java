@@ -8,6 +8,7 @@ import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
@@ -19,6 +20,7 @@ import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
+import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
@@ -72,8 +74,23 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		if(!getView().getDate().isValid() || !getView().getNumber().isValid() || !getView().getPayment().isValid()){
 			return false;
 		}
+		
+        boolean validation = true;
 
-		return true;
+		if(getView().getSetToAddress().getValue()){
+		    for (ValidatedWidget<?> vw : new ValidatedWidget<?>[]{getView().getToAddrCountry(), getView().getToAddrCity(), 
+				    getView().getToAddrCompanyName(), getView().getToAddrPostCode(),	getView().getToAddrStreetName()}) {
+			    vw.validate();
+			    validation = validation && vw.isValid();
+		    }
+	    }
+
+        if(getView().getSetToAddress().getValue() && getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
+			getView().getToAddrProvince().validate();
+			validation = validation && getView().getToAddrProvince().isValid();
+		}
+
+		return validation;
 	}
 
 	protected InvoiceDTO createInvoice(InvoiceDTO invoice){
@@ -97,6 +114,31 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		}
 		inv.setItems(invItems);
 		inv.setNote(getView().getNote().getText());
+		
+		if(!getView().getSetToAddress().getValue()){
+			getView().getToAddrCity().setText(getClient().getCity());
+			getView().getToAddrCompanyName().setText(getClient().getName());
+			getView().getToAddrPostCode().setText(getClient().getPostcode());
+			if(getClient().getCountry().equalsIgnoreCase("IT")){
+				getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
+			}
+			getView().getToAddrStreetName().setText(getClient().getAddress());
+			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
+		}
+
+		EndpointDTO loc = new EndpointDTO();
+		loc.setCompanyName(getView().getToAddrCompanyName().getText());
+		loc.setCity(getView().getToAddrCity().getText());
+		loc.setPostcode(getView().getToAddrPostCode().getText());
+		if(getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
+			loc.setProvince(getView().getToAddrProvince().getSelectedItemText());
+		} else {
+			loc.setProvince("");
+		}
+		loc.setStreet(getView().getToAddrStreetName().getText());
+		loc.setCountry(getView().getToAddrCountry().getSelectedItemValue());
+		inv.setToEndpoint(loc);
+		
 		inv.setPaymentTypeName(getView().getPayment().getSelectedPayment().getName());
 		inv.setPaymentDateDelta(getView().getPayment().getSelectedPayment().getPaymentDateDelta());
 		inv.setPaymentDateGenerator(getView().getPayment().getSelectedPayment().getPaymentDateGenerator());

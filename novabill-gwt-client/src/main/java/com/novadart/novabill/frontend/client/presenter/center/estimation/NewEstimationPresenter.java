@@ -15,6 +15,7 @@ import com.novadart.novabill.frontend.client.view.center.estimation.EstimationVi
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
@@ -49,6 +50,20 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 		for (AccountingDocumentItemDTO i : estimation.getItems()) {
 			items.add(i.clone());
 		}
+		
+		EndpointDTO loc = estimation.getToEndpoint();
+		getView().getToAddrCity().setText(loc.getCity());
+		getView().getToAddrCompanyName().setText(loc.getCompanyName());
+		getView().getToAddrPostCode().setText(loc.getPostcode());
+		if("IT".equalsIgnoreCase(loc.getCountry())){
+			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
+		} else {
+			getView().getToAddrProvince().setEnabled(false);
+		} 
+		getView().getToAddrStreetName().setText(loc.getStreet());
+		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
+		getView().getSetToAddress().setValue(true);
+		getView().getToAddressContainer().setVisible(true);
 
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(estimation.getNote());
@@ -56,10 +71,6 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 		getView().getLimitations().setText(estimation.getLimitations());
 	}
 
-	@Override
-	public void onLoad() {
-	}
-	
 	@Override
 	public void onCreateDocumentClicked() {
 		if(!validateEstimation()){

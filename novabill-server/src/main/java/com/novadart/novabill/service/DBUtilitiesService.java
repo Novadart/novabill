@@ -43,7 +43,7 @@ import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 
 
-@Service
+//@Service
 public class DBUtilitiesService {
 	
 	private String blmDBPath = "/tmp/DATI.mdb";
