@@ -123,8 +123,7 @@ public class PDFController{
 			@RequestParam(value = "token", required = false) String token, 
 			HttpServletResponse response, Locale locale) throws JRException, JasperReportKeyResolutionException {
 		Business business  = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
-		List<Invoice> invoices = (FilteringDateType.PAYMENT_DUEDATE.equals(filteringDateType)? business.getAllUnpaidInvoicesDueDateInDateRange(startDate, endDate):
-									business.getAllUnpaidInvoicesCreationDateInDateRange(startDate, endDate));
+		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(filteringDateType, startDate, endDate);
 		String pdfName = messageSource.getMessage("export.paymentspros.name.pattern", null, "Payments_prospect.pdf", locale);
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(invoices, startDate, endDate, filteringDateType), DocumentType.PAYMENTS_PROSPECT, LayoutType.DENSE);

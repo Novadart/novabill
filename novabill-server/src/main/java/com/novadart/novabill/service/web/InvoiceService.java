@@ -171,8 +171,7 @@ public class InvoiceService {
 	
 	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException {
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
-		List<Invoice> invoices = (FilteringDateType.PAYMENT_DUEDATE.equals(filteringDateType)? business.getAllUnpaidInvoicesDueDateInDateRange(startDate, endDate):
-									business.getAllUnpaidInvoicesCreationDateInDateRange(startDate, endDate));
+		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(filteringDateType, startDate, endDate);
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<>(invoices.size());
 		for(Invoice inv: invoices)
 			invoiceDTOs.add(InvoiceDTOFactory.toDTO(inv, false));

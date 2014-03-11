@@ -58,6 +58,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.TaxFieldsNotNull;
 import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
@@ -293,21 +294,15 @@ public class Business implements Serializable, Taxable {
 		}
     }
     
-    private List<Invoice> getAllUnpaidInvoicesInDateRange(String namedQuery, Date startDate, Date endDate){
+    public List<Invoice> getAllUnpaidInvoicesInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) {
+    	if(filteringDateType == null)
+    		throw new RuntimeException("Illegal filter date type!");
+    	String namedQuery = FilteringDateType.PAYMENT_DUEDATE.equals(filteringDateType)? "business.allUnpaidInvoicesDueDateInDateRange": "business.allUnpaidInvoicesCreationDateInDateRange";
     	return entityManager().createNamedQuery(namedQuery, Invoice.class).
     			setParameter("bizID", getId()).
     			setParameter("startDate", startDate == null? createDateFromString("1-1-1970"): startDate).
     			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();
     }
-    
-    public List<Invoice> getAllUnpaidInvoicesDueDateInDateRange(Date startDate, Date endDate){
-    	return getAllUnpaidInvoicesInDateRange("business.allUnpaidInvoicesDueDateInDateRange", startDate, endDate);
-    }
-    
-    public List<Invoice> getAllUnpaidInvoicesCreationDateInDateRange(Date startDate, Date endDate){
-    	return getAllUnpaidInvoicesInDateRange("business.allUnpaidInvoicesCreationDateInDateRange", startDate, endDate);
-    }
-    
     
     private static interface ClientQueryPreparator{
     	Query prepareQuery(List<String> queryTokens);
