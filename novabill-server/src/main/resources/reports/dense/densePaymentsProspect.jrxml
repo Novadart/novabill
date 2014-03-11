@@ -49,39 +49,41 @@
 	<field name="startDate" class="java.util.Date"/>
 	<field name="endDate" class="java.util.Date"/>
 	<field name="invoices" class="java.util.Collection"/>
+	<field name="filteringDateType" class="java.lang.Object"/>
+	<variable name="isDueDate" class="java.lang.Boolean">
+		<variableExpression><![CDATA[com.novadart.novabill.shared.client.data.FilteringDateType.PAYMENT_DUEDATE.equals($F{filteringDateType})]]></variableExpression>
+		<initialValueExpression><![CDATA[com.novadart.novabill.shared.client.data.FilteringDateType.PAYMENT_DUEDATE.equals($F{filteringDateType})]]></initialValueExpression>
+	</variable>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
 	<pageHeader>
 		<band height="57" splitType="Prevent">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="4210a258-e7d9-4021-8ded-27a8860612e9" x="8" y="0" width="540" height="20"/>
+				<reportElement uuid="4210a258-e7d9-4021-8ded-27a8860612e9" x="8" y="4" width="540" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{startDate} == null?
     ($F{endDate} == null?
-        $R{dense.paymentspros.title.nodates}:
-        java.lang.String.format($R{dense.paymentspros.title.enddate},
+        ($V{isDueDate}?$R{dense.paymentspros.dueto.title.nodates}: $R{dense.paymentspros.created.title.nodates}):
+        java.lang.String.format(($V{isDueDate}?$R{dense.paymentspros.dueto.title.enddate}:$R{dense.paymentspros.created.title.enddate}),
             new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{endDate}))
     ):
     ($F{endDate} == null?
-        java.lang.String.format($R{dense.paymentspros.title.startdate},
+        java.lang.String.format(($V{isDueDate}?$R{dense.paymentspros.dueto.title.startdate}:$R{dense.paymentspros.created.title.startdate}),
             new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{startDate})):
-        java.lang.String.format($R{dense.paymentspros.title.bothdates},
+        java.lang.String.format(($V{isDueDate}?$R{dense.paymentspros.dueto.title.bothdates}:$R{dense.paymentspros.created.title.bothdates}),
             new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{startDate}),
             new java.text.SimpleDateFormat("dd/MM/yyyy").format($F{endDate}))
-    )
-
-
-]]></textFieldExpression>
+    )]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageHeader>
 	<detail>
 		<band height="96" splitType="Stretch">
 			<componentElement>
-				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="7" y="14" width="540" height="50"/>
+				<reportElement uuid="38e0479d-9be7-43dc-ac09-5bac62781c62" key="table" style="table" positionType="Float" x="8" y="11" width="540" height="50"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd" whenNoDataType="AllSectionsNoDetail">
 					<datasetRun subDataset="Items Table Dataset" uuid="c21823c5-e3bc-4119-ac73-1e9cefe4d5d3">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{invoices})]]></dataSourceExpression>

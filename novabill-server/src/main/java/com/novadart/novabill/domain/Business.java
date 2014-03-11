@@ -23,6 +23,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
@@ -69,7 +70,10 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @TaxFieldsNotNull
-@NamedQuery(name = "business.allUnpaidInvoicesInDateRante", query = "select i from Invoice i where i.payed = false and :startDate < i.paymentDueDate and i.paymentDueDate < :endDate and i.business.id = :bizID order by i.paymentDueDate")
+@NamedQueries({
+	@NamedQuery(name = "business.allUnpaidInvoicesDueDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate < i.paymentDueDate and i.paymentDueDate < :endDate and i.business.id = :bizID order by i.paymentDueDate"),
+	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate < i.accountingDocumentDate and i.accountingDocumentDate < :endDate and i.business.id = :bizID order by i.accountingDocumentDate")
+})
 public class Business implements Serializable, Taxable {
 
 	private static final long serialVersionUID = 261999997691744944L;
@@ -289,12 +293,21 @@ public class Business implements Serializable, Taxable {
 		}
     }
     
-    public List<Invoice> getAllUnpaidInvoicesInDateRange(Date startDate, Date endDate){
-    	return entityManager().createNamedQuery("business.allUnpaidInvoicesInDateRante", Invoice.class).
+    private List<Invoice> getAllUnpaidInvoicesInDateRange(String namedQuery, Date startDate, Date endDate){
+    	return entityManager().createNamedQuery(namedQuery, Invoice.class).
     			setParameter("bizID", getId()).
     			setParameter("startDate", startDate == null? createDateFromString("1-1-1970"): startDate).
     			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();
     }
+    
+    public List<Invoice> getAllUnpaidInvoicesDueDateInDateRange(Date startDate, Date endDate){
+    	return getAllUnpaidInvoicesInDateRange("business.allUnpaidInvoicesDueDateInDateRange", startDate, endDate);
+    }
+    
+    public List<Invoice> getAllUnpaidInvoicesCreationDateInDateRange(Date startDate, Date endDate){
+    	return getAllUnpaidInvoicesInDateRange("business.allUnpaidInvoicesCreationDateInDateRange", startDate, endDate);
+    }
+    
     
     private static interface ClientQueryPreparator{
     	Query prepareQuery(List<String> queryTokens);

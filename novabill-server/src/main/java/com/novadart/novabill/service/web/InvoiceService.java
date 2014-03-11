@@ -24,6 +24,7 @@ import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.service.validator.Groups.HeavyClient;
 import com.novadart.novabill.service.validator.SimpleValidator;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
@@ -168,9 +169,10 @@ public class InvoiceService {
 		Invoice.findInvoice(id).setPayed(value);
 	}
 	
-	public List<InvoiceDTO> getAllUnpaidInDateRange(Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException {
+	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException {
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
-		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(startDate, endDate);
+		List<Invoice> invoices = (FilteringDateType.PAYMENT_DUEDATE.equals(filteringDateType)? business.getAllUnpaidInvoicesDueDateInDateRange(startDate, endDate):
+									business.getAllUnpaidInvoicesCreationDateInDateRange(startDate, endDate));
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<>(invoices.size());
 		for(Invoice inv: invoices)
 			invoiceDTOs.add(InvoiceDTOFactory.toDTO(inv, false));
