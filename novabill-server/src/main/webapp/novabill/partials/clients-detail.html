@@ -14,7 +14,7 @@
 			<div class="client-detail">
 				<div class="jumbotron">
 					<h2><strong>
-						{{name}}
+						{{client.name}}
 						</strong>
 					</h2>
 					<p>{{address}}</p>
@@ -46,8 +46,8 @@
 
 			<div class="tabbable tabbable-custom">
 				<ul class="nav nav-tabs nav-justified">
-					<li class="active"><a href="#tab_documents" data-toggle="tab"><strong>{{'DOCUMENTS' | translate}}</strong></a></li>
-					<li class="" ng-click="loadClientAddresses()"><a href="#tab_additional_addresses" data-toggle="tab"><strong>{{'ADDRESSES_MANAGEMENT' | translate}}</strong></a></li>
+					<li class="active"><a href="#tab_documents" data-toggle="tab"><i class="fa fa-file"></i> {{'DOCUMENTS' | translate}}</a></li>
+					<li class="" ng-click="loadClientAddresses()"><a href="#tab_additional_addresses" data-toggle="tab"><i class="fa fa-map-marker"></i> {{'ADDRESSES_MANAGEMENT' | translate}}</a></li>
 				</ul>
 				<div class="tab-content">
 
@@ -104,6 +104,10 @@
 
 					<div class="tab-pane" id="tab_additional_addresses">
 					
+					   <button type="button" class="btn green new-invoice" style="margin: 0 auto 20px;" ng-click="newAddressClick()">
+                           {{'NEW_ADDRESS' | translate}}
+                       </button>
+					
 					   <div class="well" style="background-color: #E6E6E6; position: relative;">
 							<div>
 								<div style="text-transform: uppercase; font-weight: bold; font-size: larger;">{{'LEGAL_ADDRESS' | translate}}</div>
@@ -119,16 +123,12 @@
 								</div>
 							</div>
 							<div style="position: absolute; right: 20px; bottom: 15px;">
-								<a href="javascript: void(0)" ng-click="editClient()" class="btn btn-sm blue"> 
+								<a href="javascript: void(0)" ng-click="editLegalAddress()" class="btn btn-sm blue"> 
 								    <i class="fa fa-edit"></i>
 									{{'EDIT' | translate}}
 								</a>
 							</div>
 						</div>
-					
-					   <button type="button" class="btn green new-invoice" style="margin: 0 auto 40px;" ng-click="newAddressClick()">
-					       {{'NEW_ADDRESS' | translate}}
-					   </button>
 					   
 					   <div class="well" style="position: relative;" ng-repeat="ca in clientAddresses">
                             <div style="text-transform: uppercase; font-weight: bold; font-size: larger;">{{ca.name}}</div>

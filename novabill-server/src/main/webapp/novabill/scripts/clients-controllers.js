@@ -253,6 +253,39 @@ angular.module('novabill.clients.controllers',
 				});
 			};
 			
+			
+			$scope.editLegalAddress = function(){
+				
+				var address = { 
+						isLegalAddress : true,
+						companyName : $scope.client.name,
+						address : $scope.client.address,
+						postcode: $scope.client.postcode,
+						city: $scope.client.city,
+						province: $scope.client.province,
+						country: $scope.client.country
+				};
+				
+				var instance = nEditAddressDialog.open(address);
+				instance.result.then(function(addr){
+					//making a copy to display the results only if saving the data succeeded
+					$scope.client.name = addr.companyName;
+					$scope.client.address = addr.address;
+					$scope.client.postcode = addr.postcode;
+					$scope.client.city = addr.city;
+					$scope.client.province = addr.province;
+					$scope.client.country = addr.country;
+					
+					GWT_Server.client.update(nConstants.conf.businessId, angular.toJson($scope.client), {
+						onSuccess: function(){},
+						onFailure : function(){
+							$route.reload();
+						}
+					});
+				});
+			};
+			
+			
 			$scope.editClientAddress = function(id){
 				var address = null;
 				for(var i in $scope.clientAddresses){
@@ -315,49 +348,54 @@ angular.module('novabill.clients.controllers',
 
 			};
 			
+			
+			function updateClientDetails(){
+				if(!$scope.client){
+					return;
+				}
+				
+				$scope.businessDetails = 
+					($scope.client.vatID ? $filter('translate')('VATID')+': '+$scope.client.vatID : '') +
+					($scope.client.vatID && $scope.client.ssn ? ' - ' : '') +
+					($scope.client.ssn ? $filter('translate')('SSN')+': '+$scope.client.ssn : '');
+
+				$scope.address = 
+					($scope.client.address ? $scope.client.address+' ' : '') +
+					($scope.client.postcode ? ' - '+$scope.client.postcode+' - ' : '') +
+					($scope.client.city ? $scope.client.city+' ' : '') +
+					($scope.client.province ? '('+$scope.client.province+') ' : '');
+
+				var a1 = [
+				          ($scope.client.email ? 'Email: '+$scope.client.email : ''),
+				          ($scope.client.fax ? 'Fax: '+$scope.client.fax : ''),
+				          ($scope.client.mobile ? 'Cell: '+$scope.client.mobile : ''),
+				          ($scope.client.phone ? 'Tel: '+$scope.client.phone : '') ];
+
+				var a2 = [];
+				angular.forEach(a1, function(val, _){
+					if(val){ a2.push(val); };
+				});
+
+				var contactInfo = "";
+				for(var i=0; i<a2.length-1; i++){
+					contactInfo += a2[i] + ' - '; 
+				}
+				if(a2.length > 0){
+					contactInfo += a2[a2.length-1];
+				}
+				$scope.contactInfo = contactInfo;
+
+				$scope.website = $scope.client.web;
+				$scope.websiteUrl =  $scope.client.web ? ($scope.client.web.indexOf('http') == 0 ? $scope.client.web : 'http://'+$scope.client.web) : null;
+			}
+			
 			// load client data
 			GWT_Server.client.get($routeParams.clientId, {
 
 				onSuccess : function(client){
 					$scope.$apply(function(){
-
-						$scope.name = client.name;
-
-						$scope.businessDetails = 
-							(client.vatID ? $filter('translate')('VATID')+': '+client.vatID : '') +
-							(client.vatID && client.ssn ? ' - ' : '') +
-							(client.ssn ? $filter('translate')('SSN')+': '+client.ssn : '');
-
-						$scope.address = 
-							(client.address ? client.address+' ' : '') +
-							(client.postcode ? ' - '+client.postcode+' - ' : '') +
-							(client.city ? client.city+' ' : '') +
-							(client.province ? '('+client.province+') ' : '');
-
-						var a1 = [
-							(client.email ? 'Email: '+client.email : ''),
-							(client.fax ? 'Fax: '+client.fax : ''),
-							(client.mobile ? 'Cell: '+client.mobile : ''),
-							(client.phone ? 'Tel: '+client.phone : '') ];
-						
-						var a2 = [];
-						angular.forEach(a1, function(val, _){
-							if(val){ a2.push(val); };
-						});
-						
-						var contactInfo = "";
-						for(var i=0; i<a2.length-1; i++){
-							contactInfo += a2[i] + ' - '; 
-						}
-						if(a2.length > 0){
-							contactInfo += a2[a2.length-1];
-						}
-						$scope.contactInfo = contactInfo;
-						
-						$scope.website = client.web;
-						$scope.websiteUrl =  client.web ? (client.web.indexOf('http') == 0 ? client.web : 'http://'+client.web) : null;
-						
 						$scope.client = client;
+						updateClientDetails();
 					});
 				},
 
@@ -456,6 +494,8 @@ angular.module('novabill.clients.controllers',
 				$scope.$apply();
 				$scope.loadTransportDocuments();
 			});
+			
+			$scope.$watchCollection('client', updateClientDetails);
 
 		}]);
 

@@ -8,7 +8,7 @@
         <js>/novabill-deps/angular/angular-animate.min.js</js>
         <js>/novabill-deps/angular/i18n/angular-locale_it-it.js</js>
         <js>/novabill-deps/angular-translate.min.js</js>
-        <js>/novabill-deps/angular-ui/ui-bootstrap-custom-tpls-0.9.0.min.js</js>
+        <js>/novabill-deps/angular-ui/ui-bootstrap-tpls-0.10.0.min.js</js>
         <js>/novabill-deps/bignumber-1.3.0/bignumber.min.js</js>
         <js>/novabill-deps/ng-infinite-scroll.min.js</js>
     </group>
