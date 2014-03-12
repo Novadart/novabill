@@ -72,8 +72,8 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @TaxFieldsNotNull
 @NamedQueries({
-	@NamedQuery(name = "business.allUnpaidInvoicesDueDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate < i.paymentDueDate and i.paymentDueDate < :endDate and i.business.id = :bizID order by i.paymentDueDate"),
-	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate < i.accountingDocumentDate and i.accountingDocumentDate < :endDate and i.business.id = :bizID order by i.accountingDocumentDate")
+	@NamedQuery(name = "business.allUnpaidInvoicesDueDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate < i.paymentDueDate and i.paymentDueDate < :endDate and i.business.id = :bizID order by i.paymentDueDate, i.documentID desc"),
+	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate < i.accountingDocumentDate and i.accountingDocumentDate < :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID desc")
 })
 public class Business implements Serializable, Taxable {
 
