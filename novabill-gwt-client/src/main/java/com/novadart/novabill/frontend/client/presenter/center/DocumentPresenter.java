@@ -87,7 +87,7 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 			for (ClientAddressDTO c : clientAddresses) {
 				if(c.getId().equals(selId)){
 					getView().getToAddrCity().setText(c.getCity());
-					getView().getToAddrCompanyName().setText(c.getName());
+					getView().getToAddrCompanyName().setText(c.getCompanyName());
 					getView().getToAddrPostCode().setText(c.getPostcode());
 					if(c.getCountry().equalsIgnoreCase("IT")){
 						getView().getToAddrProvince().setSelectedItem(c.getProvince());
