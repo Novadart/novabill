@@ -448,7 +448,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 			<textField>
 				<reportElement uuid="0502c8dd-0f74-4c3d-b789-f5716cbf31ef" positionType="Float" mode="Transparent" x="50" y="70" width="200" height="20" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false" isItalic="false"/>
+					<font size="10" isBold="true" isItalic="false"/>
 					<paragraph leftIndent="0"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.invoice.details}]]></textFieldExpression>
@@ -553,7 +553,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 			<textField>
 				<reportElement uuid="29a9e165-0341-48b9-ae1b-c58e2f5b479a" positionType="Float" mode="Transparent" x="305" y="70" width="200" height="20" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false" isItalic="false"/>
+					<font size="10" isBold="true" isItalic="false"/>
 					<paragraph leftIndent="0"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.invoice.destination}]]></textFieldExpression>

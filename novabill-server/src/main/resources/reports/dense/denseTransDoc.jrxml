@@ -309,7 +309,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 			<textField>
 				<reportElement uuid="439d2bb1-1ed1-43f7-b7a7-483327251eea" positionType="Float" mode="Transparent" x="50" y="70" width="200" height="20" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false" isItalic="false"/>
+					<font size="10" isBold="true" isItalic="false"/>
 					<paragraph leftIndent="0"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.transdoc.details}]]></textFieldExpression>
@@ -318,7 +318,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<reportElement uuid="01e9c929-a47e-4f24-96ca-86a03a7bc3d5" positionType="Float" x="50" y="90" width="200" height="70"/>
 				<textElement>
 					<font size="9" isBold="false"/>
-					<paragraph lineSpacing="Single" spacingBefore="4"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.join("\n",
     $F{document.client.name},
@@ -623,7 +623,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 			<textField>
 				<reportElement uuid="86dcdd07-e663-4f35-b1b9-712cd18e1a09" positionType="Float" mode="Transparent" x="305" y="70" width="200" height="20" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false" isItalic="false"/>
+					<font size="10" isBold="true" isItalic="false"/>
 					<paragraph leftIndent="0"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.transdoc.destination}]]></textFieldExpression>
