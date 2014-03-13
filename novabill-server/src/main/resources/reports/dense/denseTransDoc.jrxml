@@ -543,10 +543,10 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 									<rightPen lineWidth="0.0"/>
 								</box>
 								<textElement textAlignment="Left" verticalAlignment="Middle">
-									<font isBold="false"/>
+									<font size="7" isBold="false"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
-								<textFieldExpression><![CDATA[$F{totalWeight}]]></textFieldExpression>
+								<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s kg", $F{totalWeight})]]></textFieldExpression>
 							</textField>
 						</jr:detailCell>
 					</jr:column>
