@@ -398,7 +398,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 			<textField>
 				<reportElement uuid="dd440861-df5f-4c5d-b5f3-02f503c7fa45" positionType="Float" mode="Transparent" x="50" y="70" width="200" height="20" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false" isItalic="false"/>
+					<font size="10" isBold="true" isItalic="false"/>
 					<paragraph leftIndent="0"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.crednote.details}]]></textFieldExpression>
@@ -509,7 +509,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 			<textField>
 				<reportElement uuid="274f1443-31dc-4b16-811b-43c08ded6a05" positionType="Float" mode="Transparent" x="305" y="70" width="200" height="20" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false" isItalic="false"/>
+					<font size="10" isBold="true" isItalic="false"/>
 					<paragraph leftIndent="0"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$R{dense.crednote.destination}]]></textFieldExpression>
