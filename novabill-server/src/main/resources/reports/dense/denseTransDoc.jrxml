@@ -309,10 +309,10 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 			<textField>
 				<reportElement uuid="439d2bb1-1ed1-43f7-b7a7-483327251eea" positionType="Float" mode="Transparent" x="50" y="70" width="200" height="20" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false" isItalic="true"/>
+					<font size="10" isBold="false" isItalic="false"/>
 					<paragraph leftIndent="0"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.client}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{dense.transdoc.details}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="01e9c929-a47e-4f24-96ca-86a03a7bc3d5" positionType="Float" x="50" y="90" width="200" height="70"/>
@@ -328,19 +328,11 @@ com.novadart.novabill.report.ReportUtils.join("  ",
     com.novadart.novabill.report.ReportUtils.transformIfNotBlank($R{dense.ssn} + " %s", $F{document.client.ssn})
 )]]></textFieldExpression>
 			</textField>
-			<textField>
-				<reportElement uuid="4a2487a7-7443-48f3-a72f-660e843287f7" positionType="Float" mode="Opaque" x="305" y="70" width="200" height="20" backcolor="#C0BEBE"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-					<paragraph leftIndent="3"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.receivingaddress}]]></textFieldExpression>
-			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="2a12f6b0-51fe-4315-b0de-1e00870d709c" positionType="Float" x="305" y="90" width="200" height="70"/>
 				<textElement>
 					<font size="9" isBold="false"/>
-					<paragraph lineSpacing="Single" spacingBefore="4"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.join("\n",
 $F{document.toEndpoint.companyName},
@@ -628,6 +620,14 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 					</jr:column>
 				</jr:table>
 			</componentElement>
+			<textField>
+				<reportElement uuid="86dcdd07-e663-4f35-b1b9-712cd18e1a09" positionType="Float" mode="Transparent" x="305" y="70" width="200" height="20" backcolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="false" isItalic="false"/>
+					<paragraph leftIndent="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{dense.transdoc.destination}]]></textFieldExpression>
+			</textField>
 		</band>
 		<band height="36" splitType="Prevent">
 			<textField>

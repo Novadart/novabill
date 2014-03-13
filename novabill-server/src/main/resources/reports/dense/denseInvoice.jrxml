@@ -448,10 +448,10 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 			<textField>
 				<reportElement uuid="0502c8dd-0f74-4c3d-b789-f5716cbf31ef" positionType="Float" mode="Transparent" x="50" y="70" width="200" height="20" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false" isItalic="true"/>
+					<font size="10" isBold="false" isItalic="false"/>
 					<paragraph leftIndent="0"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.client}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{dense.invoice.details}]]></textFieldExpression>
 			</textField>
 			<textField>
 				<reportElement uuid="53a9be65-25f0-4fa9-9003-6bc6327fe1c9" positionType="Float" x="352" y="171" width="195" height="15"/>
@@ -533,19 +533,11 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
-			<textField>
-				<reportElement uuid="9c815bb6-01e3-49d0-8486-38d0d5d8f790" positionType="Float" mode="Opaque" x="305" y="70" width="200" height="20" backcolor="#C0BEBE"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-					<paragraph leftIndent="3"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.receivingaddress}]]></textFieldExpression>
-			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="5f63ffc7-9df7-44f9-aae0-751374d0b7ca" positionType="Float" x="305" y="90" width="200" height="70"/>
 				<textElement>
 					<font size="9" isBold="false"/>
-					<paragraph lineSpacing="Single" spacingBefore="4"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.join("\n",
 $F{document.toEndpoint.companyName},
@@ -557,6 +549,14 @@ com.novadart.novabill.report.ReportUtils.join(" ",
     com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.toEndpoint.city}),
     com.novadart.novabill.report.ReportUtils.transformIfNotBlank("(%s)", $F{document.toEndpoint.province})),
 com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.toEndpoint.country})))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="29a9e165-0341-48b9-ae1b-c58e2f5b479a" positionType="Float" mode="Transparent" x="305" y="70" width="200" height="20" backcolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="false" isItalic="false"/>
+					<paragraph leftIndent="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{dense.invoice.destination}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

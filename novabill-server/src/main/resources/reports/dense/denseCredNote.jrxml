@@ -398,10 +398,10 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 			<textField>
 				<reportElement uuid="dd440861-df5f-4c5d-b5f3-02f503c7fa45" positionType="Float" mode="Transparent" x="50" y="70" width="200" height="20" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false" isItalic="true"/>
+					<font size="10" isBold="false" isItalic="false"/>
 					<paragraph leftIndent="0"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.client}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{dense.crednote.details}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="264820f0-8a8f-4497-8e4f-1bab3fea85ed" positionType="Float" x="50" y="90" width="200" height="70"/>
@@ -489,19 +489,11 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 					<pen lineWidth="0.5"/>
 				</graphicElement>
 			</line>
-			<textField>
-				<reportElement uuid="7f0c6ac3-3ac7-4466-afc6-745e86513a9c" positionType="Float" mode="Opaque" x="305" y="70" width="200" height="20" backcolor="#C0BEBE"/>
-				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-					<paragraph leftIndent="3"/>
-				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.receivingaddress}]]></textFieldExpression>
-			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="734291bf-5d96-4de5-9c3e-3e1e31b2b55b" positionType="Float" x="305" y="90" width="200" height="70"/>
 				<textElement>
 					<font size="9" isBold="false"/>
-					<paragraph lineSpacing="Single" spacingBefore="4"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.join("\n",
 $F{document.toEndpoint.companyName},
@@ -513,6 +505,14 @@ com.novadart.novabill.report.ReportUtils.join(" ",
     com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.toEndpoint.city}),
     com.novadart.novabill.report.ReportUtils.transformIfNotBlank("(%s)", $F{document.toEndpoint.province})),
 com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.toEndpoint.country})))]]></textFieldExpression>
+			</textField>
+			<textField>
+				<reportElement uuid="274f1443-31dc-4b16-811b-43c08ded6a05" positionType="Float" mode="Transparent" x="305" y="70" width="200" height="20" backcolor="#FFFFFF"/>
+				<textElement verticalAlignment="Middle">
+					<font size="10" isBold="false" isItalic="false"/>
+					<paragraph leftIndent="0"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$R{dense.crednote.destination}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>

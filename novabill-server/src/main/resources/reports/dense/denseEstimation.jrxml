@@ -448,10 +448,10 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 			<textField>
 				<reportElement uuid="5e0e974e-b6e2-4eb7-968e-b9244a97b905" positionType="Float" mode="Transparent" x="50" y="70" width="200" height="20" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
-					<font size="10" isBold="false" isItalic="true"/>
+					<font size="10" isBold="false" isItalic="false"/>
 					<paragraph leftIndent="0"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.client}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{dense.estimation.details}]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="1e51b090-4143-4b36-9636-5d45711599f3" positionType="Float" x="50" y="90" width="200" height="70"/>
@@ -568,12 +568,12 @@ com.novadart.novabill.report.ReportUtils.join(" ",
 com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.toEndpoint.country})))]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="8211c60a-9c1a-4d93-8300-d4eea8d73c97" positionType="Float" mode="Opaque" x="305" y="70" width="200" height="20" backcolor="#C0BEBE"/>
+				<reportElement uuid="9e1b6e1c-383d-4a2c-ab8c-db6973066095" positionType="Float" mode="Transparent" x="305" y="70" width="200" height="20" backcolor="#FFFFFF"/>
 				<textElement verticalAlignment="Middle">
-					<font fontName="Arial" size="10" isBold="true"/>
-					<paragraph leftIndent="3"/>
+					<font size="10" isBold="false" isItalic="false"/>
+					<paragraph leftIndent="0"/>
 				</textElement>
-				<textFieldExpression><![CDATA[$R{dense.receivingaddress}]]></textFieldExpression>
+				<textFieldExpression><![CDATA[$R{dense.estimation.destination}]]></textFieldExpression>
 			</textField>
 		</band>
 	</detail>
