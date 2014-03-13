@@ -74,7 +74,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		INVOICES_PER_MONTH : 'Fatture al mese',
 		LAYOUT_TYPE : 'Formato di Stampa',
 		LAYOUT_TYPE_DENSE : 'COMPATTO - adatto a documenti che contengono molti articoli',
-		LAYOUT_TYPE_TIDY : 'ELEGANTE - maggiore spazio tra i vari elementi del documento',
+		LAYOUT_TYPE_TIDY : 'SPAZIOSO - maggiore spazio tra i vari elementi del documento',
 		LEGAL_ADDRESS : 'Indirizzo Legale',
 		LR_CLIENT_CREATE : 'Congratulazioni! Hai aggiunto <strong><a href="{{link}}">{{clientName}}</a></strong> alla lista dei tuoi clienti',
 		LR_CLIENT_DELETE : 'Hai rimosso <strong>{{clientName}}</strong> dalla lista dei tuoi clienti',
