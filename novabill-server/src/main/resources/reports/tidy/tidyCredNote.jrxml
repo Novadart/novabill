@@ -183,6 +183,7 @@ $F{document.client.country} +
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="37244614-0134-43c7-841c-d8cf4dfd8650" x="0" y="0" width="58" height="18"/>
 								<textElement verticalAlignment="Middle">
+									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{sku} == null || $F{sku}.startsWith("::sku")? "": $F{sku}]]></textFieldExpression>

@@ -223,6 +223,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="14f788ce-0b8b-457f-9bc3-4c55e7a8a182" x="0" y="0" width="58" height="18"/>
 								<textElement verticalAlignment="Middle">
+									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{sku} == null || $F{sku}.startsWith("::sku")? "": $F{sku}]]></textFieldExpression>
