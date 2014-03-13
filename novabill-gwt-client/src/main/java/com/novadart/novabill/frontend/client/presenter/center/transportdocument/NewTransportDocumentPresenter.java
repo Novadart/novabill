@@ -12,6 +12,7 @@ import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
@@ -132,7 +133,7 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 		Date d = new Date();
 		String hourStr = DateTimeFormat.getFormat("HH").format(d);
 		String minuteStr = DateTimeFormat.getFormat("mm").format(d);
-		getView().getDate().setValue(d);
+		getView().getDate().setValue(DocumentUtils.createNormalizedDate(d));
 		getView().getTransportStartDate().setValue(d);
 		getView().getHour().setSelectedItem(hourStr);
 		getView().getMinute().setSelectedItem(minuteStr);

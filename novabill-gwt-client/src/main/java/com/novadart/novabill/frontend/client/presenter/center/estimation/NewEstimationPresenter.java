@@ -11,6 +11,7 @@ import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.estimation.EstimationView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
@@ -35,7 +36,7 @@ public class NewEstimationPresenter extends AbstractEstimationPresenter {
 
 		getView().getClientName().setText(client.getName());
 		getView().getNumber().setText(progressiveId.toString());
-		Date now = new Date();
+		Date now = DocumentUtils.createNormalizedDate(new Date());
 		getView().getDate().setValue(now);
 		getView().getValidTill().setValue(new Date(now.getTime() + 2592000000L));
 

@@ -16,6 +16,7 @@ import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.center.DocumentPresenter;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.invoice.InvoiceView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
@@ -107,7 +108,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		inv.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 
 		inv.setDocumentID(Long.parseLong(getView().getNumber().getText()));
-		inv.setAccountingDocumentDate(getView().getDate().getValue());
+		inv.setAccountingDocumentDate( DocumentUtils.createNormalizedDate(getView().getDate().getValue()) );
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
 		for (AccountingDocumentItemDTO itemDTO : getView().getItemInsertionForm().getItems()) {
 			invItems.add(itemDTO);

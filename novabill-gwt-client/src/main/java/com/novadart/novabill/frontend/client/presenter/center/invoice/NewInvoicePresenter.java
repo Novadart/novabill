@@ -48,7 +48,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		setClient(client);
 
 		getView().getClientName().setText(client.getName());
-		Date d = new Date();
+		Date d = DocumentUtils.createNormalizedDate(new Date());
 		getView().getDate().setValue(d);
 		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(d));
 		getView().getNumber().setText(progressiveId.toString());
@@ -225,7 +225,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	}
 
 	private void setupPayment(PaymentTypeDTO defaultPayment){
-		getView().getPayment().setDocumentCreationDate(new Date());
+		getView().getPayment().setDocumentCreationDate(getView().getDate().getValue());
 		if(defaultPayment == null) {
 			getView().getPayment().init();
 		} else {

@@ -13,6 +13,7 @@ import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
@@ -36,7 +37,7 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 		setClient(client);
 
 		getView().getClientName().setText(client.getName());
-		getView().getDate().setValue(new Date());
+		getView().getDate().setValue(DocumentUtils.createNormalizedDate(new Date()));
 		getView().getNumber().setText(progressiveId.toString());
 
 		getView().getCreateDocument().setVisible(true);

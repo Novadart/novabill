@@ -12,6 +12,7 @@ import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.center.DocumentPresenter;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
@@ -87,7 +88,7 @@ public abstract class AbstractCreditNotePresenter extends DocumentPresenter<Cred
 		cn.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 
 		cn.setDocumentID(Long.parseLong(getView().getNumber().getText()));
-		cn.setAccountingDocumentDate(getView().getDate().getValue());
+		cn.setAccountingDocumentDate(DocumentUtils.createNormalizedDate(getView().getDate().getValue()));
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
 		for (AccountingDocumentItemDTO itemDTO : getView().getItemInsertionForm().getItems()) {
 			invItems.add(itemDTO);
