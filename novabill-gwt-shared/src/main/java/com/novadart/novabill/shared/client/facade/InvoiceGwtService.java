@@ -28,7 +28,7 @@ public interface InvoiceGwtService extends RemoteService {
 
 	public Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, DataIntegrityException;
 
-	public void update(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException;
+	public void update(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, DataIntegrityException;
 
 	public Long getNextInvoiceDocumentID() throws NotAuthenticatedException, DataAccessException;
 

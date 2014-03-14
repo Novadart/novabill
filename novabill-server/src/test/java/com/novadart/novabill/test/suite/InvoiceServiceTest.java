@@ -261,7 +261,7 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
+	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException, DataIntegrityException{
 		Invoice expectedInvoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		expectedInvoice.setNote("Temporary note for this invoice");
 		invoiceService.update(InvoiceDTOFactory.toDTO(expectedInvoice, true));
@@ -278,12 +278,12 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedInvoiceNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedInvoiceNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException{
 		invoiceService.update(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException{
 		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(invoice, true);
 		invDTO.setId(null);

@@ -22,6 +22,7 @@ import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.Settings;
 import com.novadart.novabill.domain.TransportDocument;
+import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.data.PriceType;
@@ -101,22 +102,10 @@ public class TestUtils {
 		public boolean equal(AccountingDocumentDTO doc1, AccountingDocumentDTO doc2);
 	}
 	
-	private static boolean compareItems(AccountingDocumentDTO lhs, AccountingDocumentDTO rhs, boolean ignoreID){
-		if(lhs.getItems().size() != rhs.getItems().size())
-			return false;
-		for(int i = 0; i < lhs.getItems().size(); ++i){
-			if(!ignoreID && !EqualsBuilder.reflectionEquals(lhs.getItems().get(i), rhs.getItems().get(i), false))
-				return false;
-			if(ignoreID && !EqualsBuilder.reflectionEquals(lhs.getItems().get(i), rhs.getItems().get(i), "id"))
-				return false;
-		}
-		return true;
-	}
-	 
 	public static Comparator accountingDocumentComparator = new Comparator() {
 		@Override
 		public boolean equal(AccountingDocumentDTO lhs, AccountingDocumentDTO rhs) {
-			boolean itemsEqual = compareItems(lhs, rhs, false);
+			boolean itemsEqual = DTOUtils.compareItems(lhs, rhs, false);
 			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "toEndpoint") &&
 					EqualsBuilder.reflectionEquals(lhs.getToEndpoint(), rhs.getToEndpoint()) && itemsEqual;
 		}
@@ -125,7 +114,7 @@ public class TestUtils {
 	public static Comparator accountingDocumentComparatorIgnoreID = new Comparator() {
 		@Override
 		public boolean equal(AccountingDocumentDTO lhs, AccountingDocumentDTO rhs) {
-			boolean itemsEqual = compareItems(lhs, rhs, true);
+			boolean itemsEqual = DTOUtils.compareItems(lhs, rhs, true);
 			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "id", "toEndpoint") &&
 					EqualsBuilder.reflectionEquals(lhs.getToEndpoint(), rhs.getToEndpoint()) && itemsEqual;
 		}
@@ -135,7 +124,7 @@ public class TestUtils {
 		@Override
 		public boolean equal(AccountingDocumentDTO doc1, AccountingDocumentDTO doc2) {
 			TransportDocumentDTO lhs = (TransportDocumentDTO)doc1, rhs = (TransportDocumentDTO)doc2;
-			boolean itemsEqual = compareItems(lhs, rhs, false);
+			boolean itemsEqual = DTOUtils.compareItems(lhs, rhs, false);
 			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "fromEndpoint", "toEndpoint") &&
 					EqualsBuilder.reflectionEquals(lhs.getFromEndpoint(), rhs.getFromEndpoint(), false) &&
 					EqualsBuilder.reflectionEquals(lhs.getToEndpoint(), rhs.getToEndpoint(), false) && itemsEqual;
@@ -146,7 +135,7 @@ public class TestUtils {
 		@Override
 		public boolean equal(AccountingDocumentDTO doc1, AccountingDocumentDTO doc2) {
 			TransportDocumentDTO lhs = (TransportDocumentDTO)doc1, rhs = (TransportDocumentDTO)doc2;
-			boolean itemsEqual = compareItems(lhs, rhs, true);
+			boolean itemsEqual = DTOUtils.compareItems(lhs, rhs, true);
 			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "fromEndpoint", "toEndpoint", "id") &&
 					EqualsBuilder.reflectionEquals(lhs.getFromEndpoint(), rhs.getFromEndpoint(), false) &&
 					EqualsBuilder.reflectionEquals(lhs.getToEndpoint(), rhs.getToEndpoint(), false) && itemsEqual;

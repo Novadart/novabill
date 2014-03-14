@@ -42,7 +42,7 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 		return invoiceService.add(invoiceDTO);
 	}
 
-	public void update(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException {
+	public void update(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, DataIntegrityException {
 		invoiceService.update(invoiceDTO);
 	}
 
