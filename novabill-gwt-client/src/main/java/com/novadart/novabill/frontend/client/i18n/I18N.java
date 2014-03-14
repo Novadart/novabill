@@ -6,6 +6,10 @@ import com.google.gwt.i18n.client.Constants;
 public interface I18N extends Constants {
 	public static final I18N INSTANCE = GWT.create(I18N.class);
 	
+	public String legalAddress();
+	public String selectAddress();
+	public String additionalClientAddresses();
+	public String mainClientData();
 	public String commercialMonths();
 	public String appearanceOfTheGoods();
 	public String text();

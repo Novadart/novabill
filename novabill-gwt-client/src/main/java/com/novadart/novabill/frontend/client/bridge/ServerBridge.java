@@ -25,19 +25,27 @@ public class ServerBridge implements ApiBridge {
 				get : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::get(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				getClients : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::getClients(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				getStats : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::getStats(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				update : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::update(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			},
 			
 			client : {
 				add : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::add(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				update : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::update(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				searchClients : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::searchClients(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				get : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::get(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-				remove : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
+				remove : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				addClientAddress : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::addClientAddress(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				getClientAddresses : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::getClientAddresses(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				removeClientAddress : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::removeClientAddress(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				updateClientAddress : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::updateClientAddress(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 			},
 			
 			invoice : {
 				getAllForClient : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::getAllForClient(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				getAllInRange : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::getAllInRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				remove : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::remove(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				setPayed : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::setPayed(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZLcom/google/gwt/core/client/JavaScriptObject;),
+				getAllUnpaidInDateRange : @com.novadart.novabill.frontend.client.bridge.server.InvoiceServiceJS::getAllUnpaidInDateRange(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;)
 			},
 			
 			estimation : {

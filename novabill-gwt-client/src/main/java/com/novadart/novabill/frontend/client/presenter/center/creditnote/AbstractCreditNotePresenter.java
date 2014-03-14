@@ -6,16 +6,19 @@ import java.util.List;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.center.DocumentPresenter;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.EndpointDTO;
 
 public abstract class AbstractCreditNotePresenter extends DocumentPresenter<CreditNoteView> implements CreditNoteView.Presenter {
 
@@ -57,11 +60,35 @@ public abstract class AbstractCreditNotePresenter extends DocumentPresenter<Cred
 			cn.setBusiness(Configuration.getBusiness());
 			cn.setClient(getClient());
 		}
+		
+		if(!getView().getSetToAddress().getValue()){
+			getView().getToAddrCity().setText(getClient().getCity());
+			getView().getToAddrCompanyName().setText(getClient().getName());
+			getView().getToAddrPostCode().setText(getClient().getPostcode());
+			if(getClient().getCountry().equalsIgnoreCase("IT")){
+				getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
+			}
+			getView().getToAddrStreetName().setText(getClient().getAddress());
+			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
+		}
 
-		cn.setLayoutType(Configuration.getBusiness().getDefaultLayoutType());
+		EndpointDTO loc = new EndpointDTO();
+		loc.setCompanyName(getView().getToAddrCompanyName().getText());
+		loc.setCity(getView().getToAddrCity().getText());
+		loc.setPostcode(getView().getToAddrPostCode().getText());
+		if(getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
+			loc.setProvince(getView().getToAddrProvince().getSelectedItemText());
+		} else {
+			loc.setProvince("");
+		}
+		loc.setStreet(getView().getToAddrStreetName().getText());
+		loc.setCountry(getView().getToAddrCountry().getSelectedItemValue());
+		cn.setToEndpoint(loc);
+
+		cn.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 
 		cn.setDocumentID(Long.parseLong(getView().getNumber().getText()));
-		cn.setAccountingDocumentDate(getView().getDate().getValue());
+		cn.setAccountingDocumentDate(DocumentUtils.createNormalizedDate(getView().getDate().getValue()));
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
 		for (AccountingDocumentItemDTO itemDTO : getView().getItemInsertionForm().getItems()) {
 			invItems.add(itemDTO);
@@ -81,7 +108,22 @@ public abstract class AbstractCreditNotePresenter extends DocumentPresenter<Cred
 			return false;
 		}
 		
-		return getView().getNumber().isValid() && getView().getDate().isValid();
+        boolean validation = true;
+
+		if(getView().getSetToAddress().getValue()){
+		    for (ValidatedWidget<?> vw : new ValidatedWidget<?>[]{getView().getToAddrCountry(), getView().getToAddrCity(), 
+				    getView().getToAddrCompanyName(), getView().getToAddrPostCode(),	getView().getToAddrStreetName()}) {
+			    vw.validate();
+			    validation = validation && vw.isValid();
+		    }
+	    }
+
+        if(getView().getSetToAddress().getValue() && getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
+			getView().getToAddrProvince().validate();
+			validation = validation && getView().getToAddrProvince().isValid();
+		}
+		
+		return validation && getView().getNumber().isValid() && getView().getDate().isValid();
 	}
 
 }

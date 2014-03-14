@@ -1,6 +1,7 @@
 package com.novadart.novabill.service.web;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.NoSuchElementException;
 
@@ -23,6 +24,7 @@ import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.service.validator.Groups.HeavyClient;
 import com.novadart.novabill.service.validator.SimpleValidator;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
@@ -133,17 +135,23 @@ public class InvoiceService {
 	@PreAuthorize("#invoiceDTO?.business?.id == principal.business.id and " +
 	  	  	  	 "T(com.novadart.novabill.domain.Client).findClient(#invoiceDTO?.client?.id)?.business?.id == principal.business.id and " +
 	  	  	  	 "#invoiceDTO?.id != null")
-	public void update(InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
+	public void update(InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException {
 		Invoice persistedInvoice = Invoice.findInvoice(invoiceDTO.getId());
 		if(persistedInvoice == null)
 			throw new NoSuchObjectException();
+		if (invoiceDTO.isCreatedFromTransportDocuments()) {
+			if (!DTOUtils.compareItems(invoiceDTO, InvoiceDTOFactory.toDTO(persistedInvoice, true), false))
+				throw new DataIntegrityException();
+		}
 		InvoiceDTOFactory.copyFromDTO(persistedInvoice, invoiceDTO, false);
-		persistedInvoice.getAccountingDocumentItems().clear();
-		for(AccountingDocumentItemDTO itemDTO: invoiceDTO.getItems()){
-			AccountingDocumentItem item = new AccountingDocumentItem();
-			AccountingDocumentItemDTOFactory.copyFromDTO(item, itemDTO);
-			item.setAccountingDocument(persistedInvoice);
-			persistedInvoice.getAccountingDocumentItems().add(item);
+		if (!invoiceDTO.isCreatedFromTransportDocuments()) {
+			persistedInvoice.getAccountingDocumentItems().clear();
+			for (AccountingDocumentItemDTO itemDTO : invoiceDTO.getItems()) {
+				AccountingDocumentItem item = new AccountingDocumentItem();
+				AccountingDocumentItemDTOFactory.copyFromDTO(item, itemDTO);
+				item.setAccountingDocument(persistedInvoice);
+				persistedInvoice.getAccountingDocumentItems().add(item);
+			}
 		}
 		validator.validate(Invoice.class, persistedInvoice);
 	}
@@ -165,6 +173,15 @@ public class InvoiceService {
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.client?.id == #clientID")
 	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException {
 		Invoice.findInvoice(id).setPayed(value);
+	}
+	
+	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException {
+		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
+		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(filteringDateType, startDate, endDate);
+		List<InvoiceDTO> invoiceDTOs = new ArrayList<>(invoices.size());
+		for(Invoice inv: invoices)
+			invoiceDTOs.add(InvoiceDTOFactory.toDTO(inv, false));
+		return invoiceDTOs;
 	}
 	
 }

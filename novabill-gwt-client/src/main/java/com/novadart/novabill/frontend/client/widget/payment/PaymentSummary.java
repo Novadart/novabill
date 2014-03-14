@@ -69,14 +69,19 @@ public class PaymentSummary extends Composite {
 	public void setPaymentDueDate(Date date){
 		paymentDueDate = date;
 		Label l = new Label();
-		l.setText(DocumentUtils.DOCUMENT_DATE_FORMAT.format(date));
+		if(date != null) {
+			l.setText(DocumentUtils.DOCUMENT_DATE_FORMAT.format(date));
+		}
 		paymentDateContainer.setWidget(l);
 	}
 
-	public void setManual(){
+	public void setManual(Date paymentDueDate){
 		ValidatedDateBox date = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
 		date.setFormat(new DateBox.DefaultFormat
 				(DocumentUtils.DOCUMENT_DATE_FORMAT));
+		if(paymentDueDate != null){
+			date.setValue(paymentDueDate);
+		}
 		paymentDateContainer.setWidget(date);
 	}
 	
@@ -84,7 +89,7 @@ public class PaymentSummary extends Composite {
 		if(paymentDateContainer.getWidget() instanceof ValidatedDateBox) {
 			ValidatedDateBox db = (ValidatedDateBox) paymentDateContainer.getWidget();
 			db.validate(); // display validation alert if needed
-			return db.getValue();
+			return DocumentUtils.createNormalizedDate(db.getValue());
 		} else {
 			return paymentDueDate;
 		}

@@ -77,4 +77,10 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	
 	AutoBean<Pair> makePair();
 	
+	AutoBean<Settings> makeSettings();
+	
+	AutoBean<ClientAddress> makeClientAddress();
+	
+	AutoBean<ClientAddressList> makeClientAddressesList();
+	
 }

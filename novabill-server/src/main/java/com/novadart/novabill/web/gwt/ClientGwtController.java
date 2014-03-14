@@ -1,9 +1,12 @@
 package com.novadart.novabill.web.gwt;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.service.web.ClientService;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -41,6 +44,26 @@ public class ClientGwtController extends AbstractGwtController implements Client
 
 	public PageDTO<ClientDTO> searchClients(Long businessID, String query, int start, int offset) throws InvalidArgumentException, NotAuthenticatedException, DataAccessException {
 		return clientService.searchClients(businessID, query, start, offset);
+	}
+
+	@Override
+	public Long addClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException {
+		return clientService.addClientAddress(clientAddressDTO);
+	}
+
+	@Override
+	public List<ClientAddressDTO> getClientAddresses(Long clientID) throws NotAuthenticatedException, DataAccessException {
+		return clientService.getClientAddresses(clientID);
+	}
+
+	@Override
+	public void removeClientAddress(Long clientID, Long id) throws NotAuthenticatedException, DataAccessException {
+		clientService.removeClientAddress(clientID, id);
+	}
+
+	@Override
+	public void updateClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException, ValidationException, DataAccessException {
+		clientService.updateClientAddress(clientAddressDTO);
 	}
 
 }

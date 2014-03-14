@@ -123,8 +123,6 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 			b.setMobile(getView().getMobile().getText());
 			b.setFax(getView().getFax().getText());
 			b.setWeb(getView().getWeb().getText());
-			b.setPriceDisplayInDocsMonolithic(!getView().getDiscountInDocsExplicit().getValue());
-			b.setEnabledIncognito(getView().getIncognitoEnabled().getValue());
 			
 			getView().getSaveData().showLoader(true);
 			getView().setLocked(true);
@@ -168,8 +166,6 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 		getView().getMobile().setText(b.getMobile());
 		getView().getFax().setText(b.getFax());
 		getView().getWeb().setText(b.getWeb());
-		getView().getDiscountInDocsExplicit().setValue(!b.isPriceDisplayInDocsMonolithic());
-		getView().getIncognitoEnabled().setValue(b.isIncognitoEnabled());
 	}
 
 	@Override

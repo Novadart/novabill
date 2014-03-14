@@ -23,12 +23,12 @@ import net.sf.jasperreports.engine.JRException;
 
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.support.ReloadableResourceBundleMessageSource;
 import org.springframework.stereotype.Service;
 
+import com.google.common.base.Joiner;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -72,7 +72,8 @@ public class DataExporter {
 			headers[i] = messageSource.getMessage("export." + CLIENT_FIELDS[i], null, CLIENT_FIELDS[i], locale);
 		for(; j < CLIENT_CONTACT_FIELDS.length; ++j)
 			headers[i + j] = messageSource.getMessage("export.contact." + CLIENT_CONTACT_FIELDS[j], null, CLIENT_CONTACT_FIELDS[j], locale);
-		out.write(StringUtils.join(headers, "\t"));
+		Joiner joiner = Joiner.on(";");
+		out.write(joiner.join(headers));
 		out.newLine();
 		for(Client client: clients){
 			List<String> clientVals = new ArrayList<String>(CLIENT_FIELDS.length + CLIENT_CONTACT_FIELDS.length);
@@ -80,7 +81,7 @@ public class DataExporter {
 				clientVals.add(BeanUtils.getProperty(client, clientField));
 			for(String clientContactField: CLIENT_CONTACT_FIELDS)
 				clientVals.add(BeanUtils.getProperty(client.getContact(), clientContactField));
-			out.write(StringUtils.join(clientVals, "\t"));
+			out.write(joiner.join(clientVals));
 			out.newLine();
 		}
 		out.flush();

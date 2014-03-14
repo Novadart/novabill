@@ -21,6 +21,8 @@ public abstract aspect DBLoggerAspect {
 	
 	public static final String PRICE_LIST_NAME = "priceListName";
 	
+	public static final String PAYED_STATUS = "payedStatus";
+	
 	private String toJsonString(Map<String, String> jsonObject) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {

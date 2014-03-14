@@ -17,6 +17,7 @@ import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.center.DocumentPresenter;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
@@ -28,7 +29,6 @@ import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 public abstract class AbstractTransportDocumentPresenter extends DocumentPresenter<TransportDocumentView> implements TransportDocumentView.Presenter {
 
 	private TransportDocumentDTO transportDocument;
-
 
 	public AbstractTransportDocumentPresenter(PlaceController placeController, EventBus eventBus, TransportDocumentView view, JavaScriptObject callback) {
 		super(placeController, eventBus, view, callback);
@@ -42,6 +42,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		return transportDocument;
 	}
 
+
 	@Override
 	public void onFromAddressButtonDefaultCLicked() {
 		BusinessDTO b = Configuration.getBusiness();
@@ -53,20 +54,6 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		getView().getFromAddrCountry().setSelectedItemByValue(b.getCountry());
 	}
 
-	@Override
-	public void onToAddressButtonDefaultCLicked() {
-		getView().getToAddrCity().setText(getClient().getCity());
-		getView().getToAddrCompanyName().setText(getClient().getName());
-		getView().getToAddrPostCode().setText(getClient().getPostcode());
-		if(getClient().getCountry().equalsIgnoreCase("IT")){
-			getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
-		} else {
-			getView().getToAddrProvince().setEnabled(false);
-			getView().getToAddrProvince().setSelectedIndex(0);
-		}
-		getView().getToAddrStreetName().setText(getClient().getAddress());
-		getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
-	}
 
 	@Override
 	public void onCountItemsCLicked() {
@@ -94,12 +81,6 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 	public void onFromCountryChange() {
 		getView().getFromAddrProvince().setEnabled(getView().getFromAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT"));
 		getView().getFromAddrProvince().reset();
-	}
-
-	@Override
-	public void onToCountryChange() {
-		getView().getToAddrProvince().setEnabled(getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT"));
-		getView().getToAddrProvince().reset();
 	}
 
 	@Override
@@ -131,12 +112,18 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			onFromAddressButtonDefaultCLicked();
 		}
 
-		// this to auto populate the fields
 		if(!getView().getSetToAddress().getValue()){
-			onToAddressButtonDefaultCLicked();
+			getView().getToAddrCity().setText(getClient().getCity());
+			getView().getToAddrCompanyName().setText(getClient().getName());
+			getView().getToAddrPostCode().setText(getClient().getPostcode());
+			if(getClient().getCountry().equalsIgnoreCase("IT")){
+				getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
+			}
+			getView().getToAddrStreetName().setText(getClient().getAddress());
+			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
 		}
 
-		td.setLayoutType(Configuration.getBusiness().getDefaultLayoutType());
+		td.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
 
 		td.setDocumentID(Long.parseLong(getView().getNumber().getText()));
 
@@ -180,7 +167,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		td.setTransportationResponsibility(getView().getTransportationResponsibility().getText());
 		td.setTransporter(getView().getTransporter().getText());
 
-		td.setAccountingDocumentDate(getView().getDate().getValue());
+		td.setAccountingDocumentDate(DocumentUtils.createNormalizedDate(getView().getDate().getValue()));
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
 		for (AccountingDocumentItemDTO itemDTO : getView().getItemInsertionForm().getItems()) {
 			invItems.add(itemDTO);

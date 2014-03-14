@@ -1,7 +1,6 @@
 package com.novadart.novabill.shared.client.dto;
 
 import com.google.gwt.user.client.rpc.IsSerializable;
-import com.novadart.novabill.shared.client.data.LayoutType;
 
 public class BusinessDTO implements IsSerializable {
 	
@@ -35,12 +34,8 @@ public class BusinessDTO implements IsSerializable {
 	
 	private boolean premium;
 	
-	private LayoutType defaultLayoutType;
+	private SettingsDTO settings;
 
-	private boolean priceDisplayInDocsMonolithic;
-	
-	private boolean incognitoEnabled;
-	
 	public Long getId() {
 		return id;
 	}
@@ -161,28 +156,12 @@ public class BusinessDTO implements IsSerializable {
 		this.premium = premium;
 	}
 
-	public LayoutType getDefaultLayoutType() {
-		return defaultLayoutType;
+	public SettingsDTO getSettings() {
+		return settings;
 	}
 
-	public void setDefaultLayoutType(LayoutType defaultLayoutType) {
-		this.defaultLayoutType = defaultLayoutType;
+	public void setSettings(SettingsDTO settings) {
+		this.settings = settings;
 	}
 
-	public boolean isPriceDisplayInDocsMonolithic() {
-		return priceDisplayInDocsMonolithic;
-	}
-
-	public void setPriceDisplayInDocsMonolithic(boolean priceDisplayInDocsMonolithic) {
-		this.priceDisplayInDocsMonolithic = priceDisplayInDocsMonolithic;
-	}
-
-	public boolean isIncognitoEnabled() {
-		return incognitoEnabled;
-	}
-
-	public void setEnabledIncognito(boolean incognitoEnabled) {
-		this.incognitoEnabled = incognitoEnabled;
-	}
-	
 }

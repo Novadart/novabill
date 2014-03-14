@@ -20,6 +20,7 @@ import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
@@ -43,15 +44,11 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		this.transportDocumentSources = transportDocumentSources;
 	}
 	
-	@Override
-	public void onLoad() {
-	}
-
 	private void initData(ClientDTO client, Long progressiveId){
 		setClient(client);
 
 		getView().getClientName().setText(client.getName());
-		Date d = new Date();
+		Date d = DocumentUtils.createNormalizedDate(new Date());
 		getView().getDate().setValue(d);
 		getView().getInvoiceNumberSuffix().setText(" / "+ getYearFormat().format(d));
 		getView().getNumber().setText(progressiveId.toString());
@@ -76,6 +73,21 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		getView().getPayment().setDocumentCreationDate(getView().getDate().getValue());
 		getView().getPayment().init(invoice.getPaymentTypeName(), invoice.getPaymentDateGenerator(), 
 				invoice.getPaymentDateDelta(), invoice.getPaymentDeltaType(), invoice.getSecondaryPaymentDateDelta());
+		
+        EndpointDTO loc = invoice.getToEndpoint();
+		getView().getToAddrCity().setText(loc.getCity());
+		getView().getToAddrCompanyName().setText(loc.getCompanyName());
+		getView().getToAddrPostCode().setText(loc.getPostcode());
+		if("IT".equalsIgnoreCase(loc.getCountry())){
+			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
+		} else {
+			getView().getToAddrProvince().setEnabled(false);
+		} 
+		getView().getToAddrStreetName().setText(loc.getStreet());
+		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
+		getView().getSetToAddress().setValue(true);
+		getView().getToAddressContainer().setVisible(true);
+		
 		//NOTE we don't show the checkbox to set this as the default payment because we don't know its ID
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(invoice.getNote());
@@ -91,24 +103,24 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		for (AccountingDocumentItemDTO i : estimation.getItems()) {
 			items.add(i.clone());
 		}
-
 		getView().getItemInsertionForm().setItems(items);
+		
+        EndpointDTO loc = estimation.getToEndpoint();
+		getView().getToAddrCity().setText(loc.getCity());
+		getView().getToAddrCompanyName().setText(loc.getCompanyName());
+		getView().getToAddrPostCode().setText(loc.getPostcode());
+		if("IT".equalsIgnoreCase(loc.getCountry())){
+			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
+		} else {
+			getView().getToAddrProvince().setEnabled(false);
+		} 
+		getView().getToAddrStreetName().setText(loc.getStreet());
+		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
+		getView().getSetToAddress().setValue(true);
+		getView().getToAddressContainer().setVisible(true);
+		
 		getView().getNote().setText(I18NM.get.generatedFromEstimation(estimation.getDocumentID(), 
 				DateTimeFormat.getFormat("dd MMMM yyyy").format(estimation.getAccountingDocumentDate())));
-	}
-
-
-	public void setDataForNewInvoice(Long progressiveId, TransportDocumentDTO transportDocument, PaymentTypeDTO paymentType) {
-		initData(transportDocument.getClient(), progressiveId);
-		setupPayment(paymentType);
-
-		List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(transportDocument.getItems().size());
-		for (AccountingDocumentItemDTO i : transportDocument.getItems()) {
-			items.add(i.clone());
-		}
-
-		getView().getItemInsertionForm().setItems(items);
-		getView().getNote().setText(transportDocument.getNote());
 	}
 	
 	
@@ -137,16 +149,11 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 			}
 			
 		}
-
+		
 		getView().getItemInsertionForm().setItems(items);
-		getView().setItemsLock(true);
 	}
 
 	
-	@Override
-	public void onUnlockItemsTableChecked(Boolean value) {
-		getView().setItemsLock(!value);
-	}
 
 	@Override
 	public void onCreateDocumentClicked() {
@@ -160,6 +167,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
 		final InvoiceDTO invoice = createInvoice(null);
 		invoice.setTransportDocumentIDs(transportDocumentSources);
+		invoice.setCreatedFromTransportDocuments(transportDocumentSources!=null);
 
 		final ManagedAsyncCallback<Void> updateClientCallback = new ManagedAsyncCallback<Void>() {
 
@@ -218,7 +226,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 	}
 
 	private void setupPayment(PaymentTypeDTO defaultPayment){
-		getView().getPayment().setDocumentCreationDate(new Date());
+		getView().getPayment().setDocumentCreationDate(getView().getDate().getValue());
 		if(defaultPayment == null) {
 			getView().getPayment().init();
 		} else {

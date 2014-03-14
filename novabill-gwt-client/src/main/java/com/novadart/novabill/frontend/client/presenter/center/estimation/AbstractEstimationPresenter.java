@@ -6,29 +6,32 @@ import java.util.List;
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.center.DocumentPresenter;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.estimation.EstimationView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
+import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 
 public abstract class AbstractEstimationPresenter extends DocumentPresenter<EstimationView> implements EstimationView.Presenter {
 
 	private EstimationDTO estimation;
-	
+
 	public AbstractEstimationPresenter(PlaceController placeController,	EventBus eventBus, EstimationView view, JavaScriptObject callback) {
 		super(placeController, eventBus, view, callback);
 	}
-	
+
 	protected void setEstimation(EstimationDTO estimation) {
 		this.estimation = estimation;
 	}
-	
+
 	protected EstimationDTO getEstimation() {
 		return estimation;
 	}
@@ -46,19 +49,35 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 		});
 	}
 
+
 	protected boolean validateEstimation(){
 		getView().getNumber().validate();
 		getView().getDate().validate();
 		getView().getValidTill().validate();
+
+		boolean validation = true;
 		
+		if(getView().getSetToAddress().getValue()){
+			for (ValidatedWidget<?> vw : new ValidatedWidget<?>[]{getView().getToAddrCountry(), getView().getToAddrCity(), 
+					getView().getToAddrCompanyName(), getView().getToAddrPostCode(),	getView().getToAddrStreetName()}) {
+				vw.validate();
+				validation = validation && vw.isValid();
+			}
+		}
+
+		if(getView().getSetToAddress().getValue() && getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
+			getView().getToAddrProvince().validate();
+			validation = validation && getView().getToAddrProvince().isValid();
+		}
+
 		if(!getView().getItemInsertionForm().isValid()){
 			return false;
 		}
-		
-		return getView().getNumber().isValid() && getView().getDate().isValid() && getView().getValidTill().isValid();
+
+		return validation && getView().getNumber().isValid() && getView().getDate().isValid() && getView().getValidTill().isValid();
 	}
-	
-	
+
+
 	protected EstimationDTO createEstimation(EstimationDTO estimation){
 		EstimationDTO es;
 
@@ -70,12 +89,36 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 			es.setClient(getClient());
 		}
 
-		es.setLayoutType(Configuration.getBusiness().getDefaultLayoutType());
-		
+		if(!getView().getSetToAddress().getValue()){
+			getView().getToAddrCity().setText(getClient().getCity());
+			getView().getToAddrCompanyName().setText(getClient().getName());
+			getView().getToAddrPostCode().setText(getClient().getPostcode());
+			if(getClient().getCountry().equalsIgnoreCase("IT")){
+				getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
+			}
+			getView().getToAddrStreetName().setText(getClient().getAddress());
+			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
+		}
+
+		EndpointDTO loc = new EndpointDTO();
+		loc.setCompanyName(getView().getToAddrCompanyName().getText());
+		loc.setCity(getView().getToAddrCity().getText());
+		loc.setPostcode(getView().getToAddrPostCode().getText());
+		if(getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
+			loc.setProvince(getView().getToAddrProvince().getSelectedItemText());
+		} else {
+			loc.setProvince("");
+		}
+		loc.setStreet(getView().getToAddrStreetName().getText());
+		loc.setCountry(getView().getToAddrCountry().getSelectedItemValue());
+		es.setToEndpoint(loc);
+
+		es.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
+
 		es.setDocumentID(Long.parseLong(getView().getNumber().getText()));
-		
-		es.setAccountingDocumentDate(getView().getDate().getValue());
-		es.setValidTill(getView().getValidTill().getValue());
+
+		es.setAccountingDocumentDate(DocumentUtils.createNormalizedDate(getView().getDate().getValue()));
+		es.setValidTill(DocumentUtils.createNormalizedDate(getView().getValidTill().getValue()));
 		List<AccountingDocumentItemDTO> invItems = new ArrayList<AccountingDocumentItemDTO>();
 		for (AccountingDocumentItemDTO itemDTO : getView().getItemInsertionForm().getItems()) {
 			invItems.add(itemDTO);
@@ -84,7 +127,7 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 		es.setNote(getView().getNote().getText());
 		es.setPaymentNote(getView().getPaymentNote().getText());
 		es.setLimitations(getView().getLimitations().getText());
-		es.setIncognito(Configuration.getBusiness().isIncognitoEnabled() && !getView().getOverrideIncognitoModeCheckbox().getValue());
+		es.setIncognito(Configuration.getBusiness().getSettings().isIncognitoEnabled() && !getView().getOverrideIncognitoModeCheckbox().getValue());
 		CalcUtils.calculateTotals(invItems, es);
 		return es;
 	}

@@ -14,12 +14,15 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.ClientAddress;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.PriceList;
+import com.novadart.novabill.domain.Settings;
 import com.novadart.novabill.domain.TransportDocument;
+import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.data.PriceType;
@@ -99,31 +102,21 @@ public class TestUtils {
 		public boolean equal(AccountingDocumentDTO doc1, AccountingDocumentDTO doc2);
 	}
 	
-	private static boolean compareItems(AccountingDocumentDTO lhs, AccountingDocumentDTO rhs, boolean ignoreID){
-		if(lhs.getItems().size() != rhs.getItems().size())
-			return false;
-		for(int i = 0; i < lhs.getItems().size(); ++i){
-			if(!ignoreID && !EqualsBuilder.reflectionEquals(lhs.getItems().get(i), rhs.getItems().get(i), false))
-				return false;
-			if(ignoreID && !EqualsBuilder.reflectionEquals(lhs.getItems().get(i), rhs.getItems().get(i), "id"))
-				return false;
-		}
-		return true;
-	}
-	 
 	public static Comparator accountingDocumentComparator = new Comparator() {
 		@Override
 		public boolean equal(AccountingDocumentDTO lhs, AccountingDocumentDTO rhs) {
-			boolean itemsEqual = compareItems(lhs, rhs, false);
-			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business") && itemsEqual;
+			boolean itemsEqual = DTOUtils.compareItems(lhs, rhs, false);
+			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "toEndpoint") &&
+					EqualsBuilder.reflectionEquals(lhs.getToEndpoint(), rhs.getToEndpoint()) && itemsEqual;
 		}
 	};
 	
 	public static Comparator accountingDocumentComparatorIgnoreID = new Comparator() {
 		@Override
 		public boolean equal(AccountingDocumentDTO lhs, AccountingDocumentDTO rhs) {
-			boolean itemsEqual = compareItems(lhs, rhs, true);
-			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "id") && itemsEqual;
+			boolean itemsEqual = DTOUtils.compareItems(lhs, rhs, true);
+			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "id", "toEndpoint") &&
+					EqualsBuilder.reflectionEquals(lhs.getToEndpoint(), rhs.getToEndpoint()) && itemsEqual;
 		}
 	};
 	
@@ -131,7 +124,7 @@ public class TestUtils {
 		@Override
 		public boolean equal(AccountingDocumentDTO doc1, AccountingDocumentDTO doc2) {
 			TransportDocumentDTO lhs = (TransportDocumentDTO)doc1, rhs = (TransportDocumentDTO)doc2;
-			boolean itemsEqual = compareItems(lhs, rhs, false);
+			boolean itemsEqual = DTOUtils.compareItems(lhs, rhs, false);
 			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "fromEndpoint", "toEndpoint") &&
 					EqualsBuilder.reflectionEquals(lhs.getFromEndpoint(), rhs.getFromEndpoint(), false) &&
 					EqualsBuilder.reflectionEquals(lhs.getToEndpoint(), rhs.getToEndpoint(), false) && itemsEqual;
@@ -142,7 +135,7 @@ public class TestUtils {
 		@Override
 		public boolean equal(AccountingDocumentDTO doc1, AccountingDocumentDTO doc2) {
 			TransportDocumentDTO lhs = (TransportDocumentDTO)doc1, rhs = (TransportDocumentDTO)doc2;
-			boolean itemsEqual = compareItems(lhs, rhs, true);
+			boolean itemsEqual = DTOUtils.compareItems(lhs, rhs, true);
 			return EqualsBuilder.reflectionEquals(lhs, rhs, "items", "client", "business", "fromEndpoint", "toEndpoint", "id") &&
 					EqualsBuilder.reflectionEquals(lhs.getFromEndpoint(), rhs.getFromEndpoint(), false) &&
 					EqualsBuilder.reflectionEquals(lhs.getToEndpoint(), rhs.getToEndpoint(), false) && itemsEqual;
@@ -340,7 +333,7 @@ public class TestUtils {
 		field.setAccessible(true);
 		field.set(target, value);
 	}
-	
+
 	public static Business createBusiness(){
 		Business business = new Business();
 		business.setName("Novadart S.n.c. di Giordano Battilana & C.");
@@ -355,7 +348,9 @@ public class TestUtils {
 		business.setMobile("0498597898");
 		business.setSsn("IT04534730280");
 		business.setVatID("IT04534730280");
-		business.setDefaultLayoutType(LayoutType.DENSE);
+		Settings settings = new Settings();
+		settings.setDefaultLayoutType(LayoutType.DENSE);
+		business.setSettings(settings);
 		return business;
 	}
 	
@@ -363,6 +358,18 @@ public class TestUtils {
 		PriceList priceList = new PriceList();
 		priceList.setName("Default price list" + Math.random());
 		return priceList;
+	}
+	
+	public static ClientAddress createClientAddress(){
+		ClientAddress clientAddress = new ClientAddress();
+		clientAddress.setName("Administration address");
+		clientAddress.setCompanyName("Novadart S.n.c. di Giordano Battilana & C.");
+		clientAddress.setAddress("Via Castagneto 2");
+		clientAddress.setPostcode("81049");
+		clientAddress.setProvince("CE");
+		clientAddress.setCity("Galluccio");
+		clientAddress.setCountry("IT");
+		return clientAddress;
 	}
 	
 }

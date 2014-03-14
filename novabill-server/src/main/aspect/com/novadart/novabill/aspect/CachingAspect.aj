@@ -5,23 +5,34 @@ import java.io.IOException;
 import java.util.List;
 
 import org.apache.commons.io.FileUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.cache.annotation.Caching;
 
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.PriceList;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.web.CacheEvictHooksService;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
-
+import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.dto.TransporterDTO;
 
 public privileged aspect CachingAspect {
+	
+	@Autowired
+	private UtilsService utilsService;
+	
+	@Autowired
+	private CacheEvictHooksService cacheEvictHooksService;
 	
 	private String ehcacheDiskStore;
 	
@@ -62,6 +73,10 @@ public privileged aspect CachingAspect {
 	
 	public static final String PRICELIST_CACHE = "pricelist-cache";
 	
+	public static final String TRANSPORTER_CACHE = "transporter-cache";
+	
+	public static final String CLIENTADDRESS_CACHE = "clientaddress-cache";
+	
 	declare @method : public BusinessDTO com.novadart.novabill.service.web.BusinessServiceImpl.get(Long): @Cacheable(value = BUSINESS_CACHE, key = "#businessID");
 	
 	declare @method : public List<ClientDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getClients(Long): @Cacheable(value = CLIENT_CACHE, key = "#businessID");
@@ -83,6 +98,8 @@ public privileged aspect CachingAspect {
 				condition = "T(java.lang.Integer).parseInt(new java.text.SimpleDateFormat('yyyy').format(new java.util.Date())) - #year < 2");
 	
 	declare @method : public List<PaymentTypeDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getPaymentTypes(Long): @Cacheable(value = PAYMENTTYPE_CACHE, key = "#businessID");
+	
+	declare @method : public List<TransporterDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getTransporters(Long): @Cacheable(value = TRANSPORTER_CACHE, key = "#businessID");
 	
 	declare @method : public List<CommodityDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getCommodities(Long): @Cacheable(value = COMMODITY_CACHE, key = "#businessID");
 	
@@ -234,33 +251,27 @@ public privileged aspect CachingAspect {
 	declare @method : public void com.novadart.novabill.service.web.PaymentTypeService.update(PaymentTypeDTO): @CacheEvict(value = PAYMENTTYPE_CACHE, key = "#paymentTypeDTO.business.id");
 	
 	/*
+	 * Transporter caching
+	 * Dependencies: None
+	 */
+	
+	declare @method : public void com.novadart.novabill.service.web.TransporterService.remove(Long, Long): @CacheEvict(value = TRANSPORTER_CACHE, key = "#businessID");
+	
+	declare @method : public Long com.novadart.novabill.service.web.TransporterService.add(TransporterDTO): @CacheEvict(value = TRANSPORTER_CACHE, key = "#transporterDTO.business.id");
+	
+	declare @method : public void com.novadart.novabill.service.web.TransporterService.update(TransporterDTO): @CacheEvict(value = TRANSPORTER_CACHE, key = "#transporterDTO.business.id");
+	
+	/*
 	 * Commodity caching
 	 * Dependencies: None
 	 */
 	
-	declare @method : public void com.novadart.novabill.service.web.CommodityService.remove(Long, Long): @Caching(evict = {
-			@CacheEvict(value = COMMODITY_CACHE, key = "#businessID"),
-			@CacheEvict(value = PRICELIST_CACHE, allEntries = true)
-	});
-		
+	declare @method : public void com.novadart.novabill.service.web.CommodityService.remove(Long, Long): @CacheEvict(value = COMMODITY_CACHE, key = "#businessID");
 	
-	declare @method : public Long com.novadart.novabill.service.web.CommodityService.add(CommodityDTO): @Caching(evict = {
-			@CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id"),
-			@CacheEvict(value = PRICELIST_CACHE, allEntries = true)
-	});
+	declare @method : public Long com.novadart.novabill.service.web.CommodityService.add(CommodityDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id");
 	
-	declare @method : public void com.novadart.novabill.service.web.CommodityService.update(CommodityDTO): @Caching(evict = {
-			@CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id"),
-			@CacheEvict(value = PRICELIST_CACHE, allEntries = true)
-	});
+	declare @method : public void com.novadart.novabill.service.web.CommodityService.update(CommodityDTO): @CacheEvict(value = COMMODITY_CACHE, key = "#commodityDTO.business.id");
 	
-	declare @method : public void com.novadart.novabill.service.web.CommodityService.removePrice(Long, Long, Long): @CacheEvict(value = PRICELIST_CACHE, allEntries = true); 
-	
-	declare @method : public Long com.novadart.novabill.service.web.CommodityService.addOrUpdatePrice(Long, PriceDTO): @Caching(evict = { 
-		//@CacheEvict(value = COMMODITY_CACHE, key = "#businessID"),
-		//@CacheEvict(value = PRICELIST_CACHE, key = "#priceDTO.priceListID")
-			@CacheEvict(value = PRICELIST_CACHE, allEntries = true)
-	});
 	
 	/*
 	 * PriceList caching
@@ -282,5 +293,31 @@ public privileged aspect CachingAspect {
 	});
 	
 	declare @method : public Long com.novadart.novabill.service.web.PriceListService.clonePriceList(Long, Long, String): @CacheEvict(value = PRICELIST_CACHE, key = "#businessID.toString().concat('-all')");
+	
+	/*
+	 * Client address caching
+	 * Dependencies: None
+	 */
+	
+	declare @method : public List<ClientAddressDTO> com.novadart.novabill.service.web.ClientService.getClientAddresses(Long): @Cacheable(value = CLIENTADDRESS_CACHE, key = "#clientID");
+	
+	declare @method : public Long com.novadart.novabill.service.web.ClientService.addClientAddress(ClientAddressDTO): @CacheEvict(value = CLIENTADDRESS_CACHE, key = "#clientAddressDTO.client.id");
+	
+	declare @method : public void com.novadart.novabill.service.web.ClientService.removeClientAddress(Long, Long): @CacheEvict(value = CLIENTADDRESS_CACHE, key = "#clientID");
+	
+	declare @method : public void com.novadart.novabill.service.web.ClientService.updateClientAddress(ClientAddressDTO): @CacheEvict(value = CLIENTADDRESS_CACHE, key = "#clientAddressDTO.client.id");
+	
+	pointcut removeCommodity(): execution(public void com.novadart.novabill.service.web.CommodityService.remove(..));
+	pointcut addCommodity(): execution(public Long com.novadart.novabill.service.web.CommodityService.add(..));
+	pointcut updateCommodity(): execution(public void com.novadart.novabill.service.web.CommodityService.update(..));
+	pointcut removePrice(): execution(public void com.novadart.novabill.service.web.CommodityService.removePrice(..));
+	pointcut addOrUpdatePrice(): execution(public Long com.novadart.novabill.service.web.CommodityService.addOrUpdatePrice(..));
+	
+	after() returning: removeCommodity() || addCommodity() || updateCommodity() || removePrice() || addOrUpdatePrice(){
+		Long businessID = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
+		for(PriceList priceList: Business.findBusiness(businessID).getPriceLists())
+			cacheEvictHooksService.evictPriceList(priceList.getId());
+	}
+	
 	
 }

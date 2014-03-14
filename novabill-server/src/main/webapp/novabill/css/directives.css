@@ -100,6 +100,59 @@
 }
 
 /*
+ * INVOICE
+ */
+.document-well.invoice .payment-details {
+	display: none;
+	margin-right: 20px;
+	position: relative;
+	bottom: 10px;
+}
+
+.document-well.invoice .payment-status {
+    display: none;
+    margin-right: 40px;
+    text-transform: uppercase;
+    font-weight: bold;
+}
+
+.document-well.invoice .payment-status .payed{
+	color: green;
+}
+
+.document-well.invoice .payment-status .not-payed{
+    color: orange;
+}
+
+.document-well.invoice .payment-status .expired{
+    color: red;
+}
+
+.document-well.invoice .payment-details .value {
+	padding-left: 10px;
+}
+
+.document-well.invoice:HOVER .payment-details {
+    display: inline;
+}
+
+.document-well.invoice:HOVER .payment-status {
+    display: inline;
+}
+
+.document-well.invoice.payed {
+	border-left: 4px solid green;
+}
+
+.document-well.invoice.not-payed {
+    border-left: 4px solid orange;
+} 
+
+.document-well.invoice.not-payed.expired {
+    border-left: 4px solid red;
+}
+
+/*
  *  COMMODITY
  */
 .commodity {

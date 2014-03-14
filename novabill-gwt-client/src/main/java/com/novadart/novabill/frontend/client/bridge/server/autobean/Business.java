@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
+
 public interface Business {
 
 	public Long getId();
@@ -58,8 +59,12 @@ public interface Business {
 
 	public void setSsn(String ssn);
 
-	public boolean isPremium();
+	public boolean getPremium();
 
 	public void setPremium(boolean premium);
+	
+	public Settings getSettings();
+
+	public void setSettings(Settings settings);
 
 }

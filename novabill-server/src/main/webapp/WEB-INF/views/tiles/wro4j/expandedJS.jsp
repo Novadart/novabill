@@ -4,13 +4,13 @@
 <spring:url var="novabillDepsUrl" value="/novabill-deps" />
 <spring:url var="novabillCoreUrl" value="/novabill" />
 
-<script src="${novabillDepsUrl}/angular/angular.min.js"></script>
-<script src="${novabillDepsUrl}/angular/angular-route.min.js"></script>
-<script src="${novabillDepsUrl}/angular/angular-sanitize.min.js"></script>
-<script src="${novabillDepsUrl}/angular/angular-animate.min.js"></script>
+<script src="${novabillDepsUrl}/angular/angular.js"></script>
+<script src="${novabillDepsUrl}/angular/angular-route.js"></script>
+<script src="${novabillDepsUrl}/angular/angular-sanitize.js"></script>
+<script src="${novabillDepsUrl}/angular/angular-animate.js"></script>
 <script src="${novabillDepsUrl}/angular/i18n/angular-locale_it-it.js" type="text/javascript"></script>
 <script src="${novabillDepsUrl}/angular-translate.min.js" type="text/javascript"></script>
-<script src="${novabillDepsUrl}/angular-ui/ui-bootstrap-custom-tpls-0.9.0.min.js" type="text/javascript"></script>
+<script src="${novabillDepsUrl}/angular-ui/ui-bootstrap-tpls-0.10.0.min.js" type="text/javascript"></script>
 <script src="${novabillDepsUrl}/bignumber-1.3.0/bignumber.min.js"></script>
 <script src="${novabillDepsUrl}/ng-infinite-scroll.min.js"></script>
 
@@ -36,3 +36,7 @@
 <script src="${novabillCoreUrl}/scripts/commodities.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/price-lists-controllers.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/price-lists.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/settings.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/settings-controllers.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/payments.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/payments-controllers.js" type="text/javascript"></script>

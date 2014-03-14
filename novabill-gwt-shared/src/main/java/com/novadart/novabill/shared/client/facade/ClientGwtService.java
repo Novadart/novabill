@@ -1,8 +1,11 @@
 package com.novadart.novabill.shared.client.facade;
 
+import java.util.List;
+
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -26,5 +29,13 @@ public interface ClientGwtService extends RemoteService{
 	public ClientDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
 	
 	public PageDTO<ClientDTO> searchClients(Long businessID, String query, int start, int offset) throws InvalidArgumentException, NotAuthenticatedException, DataAccessException;
+	
+	public Long addClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException;
+	
+	public List<ClientAddressDTO> getClientAddresses(Long clientID) throws NotAuthenticatedException, DataAccessException;
+	
+	public void removeClientAddress(Long clientID, Long id) throws NotAuthenticatedException, DataAccessException;
+	
+	public void updateClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException, ValidationException, DataAccessException;
 
 }

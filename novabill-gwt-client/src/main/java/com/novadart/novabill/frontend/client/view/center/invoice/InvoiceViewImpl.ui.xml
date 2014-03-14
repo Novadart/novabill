@@ -6,7 +6,7 @@
 	xmlns:t="urn:import:com.novadart.novabill.frontend.client.view.center"
 	xmlns:f="urn:import:com.novadart.novabill.frontend.client.widget"
 	xmlns:gwtshared="urn:import:com.novadart.gwtshared.client"
-	xmlns:p="urn:import:com.novadart.novabill.frontend.client.widget.payment">
+	xmlns:p="urn:import:com.novadart.novabill.frontend.client.widget.payment" xmlns:textbox="urn:import:com.novadart.gwtshared.client.textbox">
 
 	<ui:with type="com.novadart.novabill.frontend.client.i18n.I18N"
 		field="i18n"></ui:with>
@@ -17,6 +17,11 @@
 		field="g"></ui:with>
 
 	<ui:style>
+	.forceBold label {
+        font-weight: bold !important;
+        margin-left: 5px;
+    }
+    
 	.tipContainer {
 		max-width: 600px;
 	}
@@ -119,10 +124,48 @@
 						ui:field="note"></f:ValidatedTextArea>
 				</g:customCell>
 			</g:row>
+			<g:row>
+                <g:customCell>
+                    <g:CheckBox ui:field="setToAddress" styleName="{s.label} {style.forceBold}"
+                        text="{i18n.toAddress}"></g:CheckBox>
+                </g:customCell>
+                <g:customCell>
+                    <g:HorizontalPanel visible="false" ui:field="toAddressContainer"
+                        styleName="{s.addressBox}">
+                        <g:Grid>
+                            <g:row>
+                                <g:customCell>
+                                    <textbox:RichTextBox ui:field="toAddrCompanyName" maxLength="255" />
+                                </g:customCell>
+                            </g:row>
+                            <g:row>
+                                <g:customCell>
+                                    <textbox:RichTextBox ui:field="toAddrStreetName" maxLength="255" />
+                                </g:customCell>
+                            </g:row>
+                            <g:row>
+                                <g:customCell>
+                                    <textbox:RichTextBox ui:field="toAddrPostCode" maxLength="10" />
+                                </g:customCell>
+                                <g:customCell>
+                                    <textbox:RichTextBox ui:field="toAddrCity" maxLength="60" />
+                                </g:customCell>
+                                <g:customCell>
+                                    <v:ValidatedListBox styleName="{s.box}" ui:field="toAddrProvince" />
+                                </g:customCell>
+                            </g:row>
+                            <g:row>
+                                <g:customCell>
+                                    <v:ValidatedListBox styleName="{s.box}"
+                                        ui:field="toAddrCountry" />
+                                </g:customCell>
+                            </g:row>
+                        </g:Grid>
+                        <g:ListBox styleName="{s.loadDefaultsButton}" ui:field="toAddrButtonDefault"></g:ListBox>
+                    </g:HorizontalPanel>
+                </g:customCell>
+            </g:row>
 		</g:Grid>
-
-        <!-- <g:CheckBox ui:field="unlockItemsTable" visible="false" styleName="{style.unlockItemsTable}"
-                            text="{i18n.unlockItemsTable}" title="{i18n.lockedItemsTableAlert}" /> -->
 
 		<g:SimplePanel styleName="{s.itemTableContainer}">
 			<t:ItemInsertionForm ui:field="itemInsertionForm"></t:ItemInsertionForm>

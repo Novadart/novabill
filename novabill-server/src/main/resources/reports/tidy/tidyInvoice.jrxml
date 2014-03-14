@@ -76,6 +76,7 @@
 	<field name="document.business.fax" class="java.lang.String"/>
 	<field name="document.business.email" class="java.lang.String"/>
 	<field name="document.business.web" class="java.lang.String"/>
+	<field name="document.business.settings.invoiceFooterNote" class="java.lang.String"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -91,7 +92,7 @@
 		</band>
 		<band height="245" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" x="8" y="0" width="308" height="20"/>
+				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" positionType="Float" x="8" y="0" width="308" height="20"/>
 				<textElement>
 					<font fontName="Arial" size="12" isBold="true"/>
 				</textElement>
@@ -183,6 +184,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="fd7d27e2-b7c0-491d-8347-3aa91afdd491" x="0" y="0" width="58" height="18"/>
 								<textElement verticalAlignment="Middle">
+									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{sku} == null || $F{sku}.startsWith("::sku")? "": $F{sku}]]></textFieldExpression>
@@ -339,7 +341,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 				</jr:table>
 			</componentElement>
 			<textField isStretchWithOverflow="true">
-				<reportElement uuid="3ff7c07b-3883-4543-88ef-ceae6d03bb78" positionType="Float" x="8" y="21" width="308" height="16"/>
+				<reportElement uuid="3ff7c07b-3883-4543-88ef-ceae6d03bb78" positionType="Float" x="8" y="17" width="308" height="16"/>
 				<textElement textAlignment="Left">
 					<font size="8"/>
 					<paragraph lineSpacing="Single"/>
@@ -487,6 +489,13 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 					<font size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[" " + $V{PAGE_NUMBER}]]></textFieldExpression>
+			</textField>
+			<textField isBlankWhenNull="true">
+				<reportElement uuid="e7f23e41-c016-41d6-b0fb-7629c6360864" x="8" y="16" width="540" height="24"/>
+				<textElement textAlignment="Center" verticalAlignment="Bottom">
+					<font size="8" isItalic="true"/>
+				</textElement>
+				<textFieldExpression><![CDATA[$F{document.business.settings.invoiceFooterNote}]]></textFieldExpression>
 			</textField>
 		</band>
 	</pageFooter>

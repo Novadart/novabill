@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.bridge.server;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
@@ -13,6 +14,7 @@ import com.novadart.novabill.frontend.client.bridge.server.autobean.Invoice;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.InvoicesList;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.Page;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 
@@ -49,6 +51,17 @@ public class InvoiceServiceJS extends ServiceJS {
 		});
 	}
 	
+	
+	public static void setPayed(String businessID, String clientId, String id, boolean value, final JavaScriptObject callback) {
+		SERVER_FACADE.getInvoiceService().setPayed(Long.parseLong(businessID), Long.parseLong(clientId), Long.parseLong(id), value, new ManagedAsyncCallback<Void>() {
+
+			@Override
+			public void onSuccess(Void result) {
+				BridgeUtils.invokeJSCallback(callback);
+			}
+		});	
+	}
+	
 	public static void remove(String businessID, String clientId, String invoiceId, final JavaScriptObject callback) {
 		SERVER_FACADE.getInvoiceService().remove(Long.parseLong(businessID), Long.parseLong(clientId), Long.parseLong(invoiceId), 
 				new ManagedAsyncCallback<Void>() {
@@ -58,6 +71,27 @@ public class InvoiceServiceJS extends ServiceJS {
 				BridgeUtils.invokeJSCallback(callback);
 			}
 		});
+	}
+	
+	public static void getAllUnpaidInDateRange(String filteringDateType, String startDate, String endDate, final JavaScriptObject callback) {
+		Date sDate = startDate != null ? new Date(Long.parseLong(startDate)) : null;
+		Date eDate = endDate != null ? new Date(Long.parseLong(endDate)) : null;
+		
+		SERVER_FACADE.getInvoiceService().getAllUnpaidInDateRange(FilteringDateType.valueOf(filteringDateType), sDate, eDate, 
+				new ManagedAsyncCallback<List<InvoiceDTO>>() {
+
+			@Override
+			public void onSuccess(List<InvoiceDTO> result) {
+				InvoicesList il = AutoBeanMaker.INSTANCE.makeInvoicesList().as();
+				List<Invoice> invoices = new ArrayList<Invoice>(result.size());
+				for (InvoiceDTO i : result) {
+					invoices.add(AutoBeanEncoder.encode(i).as());
+				}
+				il.setInvoices(invoices);
+				BridgeUtils.invokeJSCallback(AutoBeanUtils.getAutoBean(il), callback);
+			}
+		});	
+		
 	}
 	
 }

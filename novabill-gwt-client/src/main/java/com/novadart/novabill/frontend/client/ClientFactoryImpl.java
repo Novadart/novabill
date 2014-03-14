@@ -47,6 +47,8 @@ public class ClientFactoryImpl implements ClientFactory {
 			+ "../private/export?clients={c}&invoices={i}&estimations={e}&creditnotes={cn}&transportdocs={t}&token={token}";
 	private static final String PDF_REQUEST = 
 			GWT.getModuleBaseURL()+"../private/pdf/{document}/{id}?token={token}";
+	private static final String PROSPECT_PDF_REQUEST = 
+			GWT.getModuleBaseURL()+"../private/pdf/paymentspros";
 			
 	private static String logoUrl = URL_THUMB + "?v=" + new Date().getTime();
 	
@@ -116,6 +118,11 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 	
 	@Override
+	public String getPdfProspectRequest() {
+		return PROSPECT_PDF_REQUEST;
+	}
+	
+	@Override
 	public PlaceController getPlaceController()	{
 		return placeController;
 	}
@@ -154,7 +161,7 @@ public class ClientFactoryImpl implements ClientFactory {
 //	}
 
 	@Override
-	public void getInvoiceView(final AsyncCallback<InvoiceView> callback) {
+	public void getInvoiceView(final boolean readonly, final AsyncCallback<InvoiceView> callback) {
 		if(views.containsKey(InvoiceView.class)){
 			callback.onSuccess((InvoiceView) getView(InvoiceView.class));
 		} else {
@@ -162,7 +169,7 @@ public class ClientFactoryImpl implements ClientFactory {
 				
 				@Override
 				public void onSuccess() {
-					callback.onSuccess((InvoiceView) getView(InvoiceView.class, new InvoiceViewImpl()));
+					callback.onSuccess((InvoiceView) getView(InvoiceView.class, new InvoiceViewImpl(readonly)));
 				}
 				
 				@Override
@@ -254,7 +261,7 @@ public class ClientFactoryImpl implements ClientFactory {
 	}
 	
 	@Override
-	public void getTransportDocumentView(final AsyncCallback<TransportDocumentView> callback) {
+	public void getTransportDocumentView(final boolean readonly, final AsyncCallback<TransportDocumentView> callback) {
 		if(views.containsKey(TransportDocumentView.class)){
 			callback.onSuccess((TransportDocumentView) getView(TransportDocumentView.class));
 		} else {
@@ -262,7 +269,7 @@ public class ClientFactoryImpl implements ClientFactory {
 				
 				@Override
 				public void onSuccess() {
-					callback.onSuccess((TransportDocumentView) getView(TransportDocumentView.class, new TransportDocumentViewImpl()));
+					callback.onSuccess((TransportDocumentView) getView(TransportDocumentView.class, new TransportDocumentViewImpl(readonly)));
 				}
 				
 				@Override

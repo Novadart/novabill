@@ -6,11 +6,14 @@ import java.util.Map;
 
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.shared.client.data.PriceType;
+import com.novadart.novabill.shared.client.dto.BusinessDTO;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
+import com.novadart.novabill.shared.client.dto.SettingsDTO;
 
 public class AutoBeanDecoder {
 
@@ -99,4 +102,52 @@ public class AutoBeanDecoder {
 		return c;
 	}
 	
+	
+	public static SettingsDTO decode(Settings s) {
+		SettingsDTO c = new SettingsDTO();
+		c.setDefaultLayoutType(s.getDefaultLayoutType());
+		c.setIncognitoEnabled(s.isIncognitoEnabled());
+		c.setPriceDisplayInDocsMonolithic(s.isPriceDisplayInDocsMonolithic());
+		c.setCreditNoteFooterNote(s.getCreditNoteFooterNote());
+		c.setEstimationFooterNote(s.getEstimationFooterNote());
+		c.setInvoiceFooterNote(s.getInvoiceFooterNote());
+		c.setTransportDocumentFooterNote(s.getTransportDocumentFooterNote());
+		return c;
+	}
+	
+	
+	public static BusinessDTO decode(Business bu) {
+		BusinessDTO b = new BusinessDTO();
+		b.setAddress(bu.getAddress());
+		b.setCity(bu.getCity());
+		b.setCountry(bu.getCountry());
+		b.setEmail(bu.getEmail());
+		b.setFax(bu.getFax());
+		b.setId(bu.getId());
+		b.setMobile(bu.getMobile());
+		b.setName(bu.getName());
+		b.setPhone(bu.getPhone());
+		b.setPostcode(bu.getPostcode());
+		b.setPremium(bu.getPremium());
+		b.setProvince(bu.getProvince());
+		b.setSsn(bu.getSsn());
+		b.setVatID(bu.getVatID());
+		b.setWeb(bu.getWeb());
+		b.setSettings(decode(bu.getSettings()));
+		return b;
+	}
+	
+	public static ClientAddressDTO decode(ClientAddress c) {
+		ClientAddressDTO ca = new ClientAddressDTO();
+		ca.setAddress(c.getAddress());
+		ca.setCity(c.getCity());
+		ca.setClient(decode(c.getClient()));
+		ca.setCompanyName(c.getCompanyName());
+		ca.setCountry(c.getCountry());
+		ca.setId(c.getId());
+		ca.setName(c.getName());
+		ca.setPostcode(c.getPostcode());
+		ca.setProvince(c.getProvince());
+		return ca;
+	}
 }

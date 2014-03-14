@@ -11,6 +11,7 @@ import com.novadart.novabill.frontend.client.bridge.server.autobean.ModifyPriceL
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
@@ -22,6 +23,7 @@ import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
+import com.novadart.novabill.shared.client.dto.SettingsDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.tuple.Pair;
 
@@ -132,6 +134,25 @@ public class AutoBeanEncoder {
 
 		return AutoBeanUtils.getAutoBean(l);
 	}
+	
+	
+	public static AutoBean<ClientAddress> encode(ClientAddressDTO c){
+		if(c == null){
+			return null;
+		}
+
+		ClientAddress ca = AutoBeanMaker.INSTANCE.makeClientAddress().as();
+		ca.setAddress(c.getAddress());
+		ca.setCity(c.getCity());
+		ca.setClient(c.getClient() != null ? encode(c.getClient()).as() : null);
+		ca.setCompanyName(c.getCompanyName());
+		ca.setCountry(c.getCountry());
+		ca.setId(c.getId());
+		ca.setName(c.getName());
+		ca.setPostcode(c.getPostcode());
+		ca.setProvince(c.getProvince());
+		return AutoBeanUtils.getAutoBean(ca);
+	}
 
 
 	public static AutoBean<Commodity> encode(CommodityDTO c){
@@ -199,6 +220,7 @@ public class AutoBeanEncoder {
 		ab.setSsn(b.getSsn());
 		ab.setVatID(b.getVatID());
 		ab.setWeb(b.getWeb());
+		ab.setSettings(encode(b.getSettings()).as());
 		return AutoBeanUtils.getAutoBean(ab);
 	}
 
@@ -215,6 +237,22 @@ public class AutoBeanEncoder {
 		ac.setMobile(c.getMobile());
 		ac.setPhone(c.getPhone());
 		return AutoBeanUtils.getAutoBean(ac);
+	}
+	
+	
+	public static AutoBean<Settings> encode(SettingsDTO c){
+		if(c == null){
+			return null;
+		}
+		Settings s = AutoBeanMaker.INSTANCE.makeSettings().as();
+		s.setDefaultLayoutType(c.getDefaultLayoutType());
+		s.setIncognitoEnabled(c.isIncognitoEnabled());
+		s.setPriceDisplayInDocsMonolithic(c.isPriceDisplayInDocsMonolithic());
+		s.setCreditNoteFooterNote(c.getCreditNoteFooterNote());
+		s.setEstimationFooterNote(c.getEstimationFooterNote());
+		s.setInvoiceFooterNote(c.getInvoiceFooterNote());
+		s.setTransportDocumentFooterNote(c.getTransportDocumentFooterNote());
+		return AutoBeanUtils.getAutoBean(s);
 	}
 
 
@@ -318,6 +356,10 @@ public class AutoBeanEncoder {
 		ai.setTotalBeforeTax(invoice.getTotalBeforeTax());
 		ai.setTotalTax(invoice.getTotalTax());
 
+		LongList ll = AutoBeanMaker.INSTANCE.makeLongList().as();
+		ll.setList(invoice.getTransportDocumentIDs());
+		ai.setTransportDocumentIDs(ll);
+		
 		return AutoBeanUtils.getAutoBean(ai);
 	}
 

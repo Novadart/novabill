@@ -14,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.DTOUtils;
@@ -86,8 +85,6 @@ public class TransportDocumentService {
 		  	  	  "#transportDocDTO != null and #transportDocDTO.id == null")
 	public Long add(TransportDocumentDTO transportDocDTO) throws NotAuthenticatedException, DataAccessException, AuthorizationException, ValidationException {
 		TransportDocument transportDoc = new TransportDocument();
-		transportDoc.setFromEndpoint(new Endpoint());
-		transportDoc.setToEndpoint(new Endpoint());
 		TransportDocumentDTOFactory.copyFromDTO(transportDoc, transportDocDTO, true);
 		validator.validate(TransportDocument.class, transportDoc);
 		Client client = Client.findClient(transportDocDTO.getClient().getId());
@@ -121,10 +118,12 @@ public class TransportDocumentService {
 	  	  	  	  "T(com.novadart.novabill.domain.Client).findClient(#transportDocDTO?.client?.id)?.business?.id == principal.business.id and " +
 	  	  	  	  "#transportDocDTO?.id != null")
 	public void update(TransportDocumentDTO transportDocDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException,
-			ValidationException {
+			ValidationException, DataIntegrityException {
 		TransportDocument persistedTransportDoc = TransportDocument.findTransportDocument(transportDocDTO.getId());
 		if(persistedTransportDoc == null)
 			throw new NoSuchObjectException();
+		if(persistedTransportDoc.getInvoice() != null)
+			throw new DataIntegrityException();
 		TransportDocumentDTOFactory.copyFromDTO(persistedTransportDoc, transportDocDTO, false);
 		persistedTransportDoc.getAccountingDocumentItems().clear();
 		for(AccountingDocumentItemDTO itemDTO: transportDocDTO.getItems()){

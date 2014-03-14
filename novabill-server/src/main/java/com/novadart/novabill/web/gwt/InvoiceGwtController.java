@@ -1,11 +1,13 @@
 package com.novadart.novabill.web.gwt;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.service.web.InvoiceService;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -40,7 +42,7 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 		return invoiceService.add(invoiceDTO);
 	}
 
-	public void update(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException {
+	public void update(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException, DataIntegrityException {
 		invoiceService.update(invoiceDTO);
 	}
 
@@ -58,6 +60,11 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 
 	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException, DataAccessException {
 		invoiceService.setPayed(businessID, clientID, id, value);
+	}
+
+	@Override
+	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException {
+		return invoiceService.getAllUnpaidInDateRange(filteringDateType, startDate, endDate);
 	}
 	
 }

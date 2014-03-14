@@ -7,11 +7,14 @@ import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.place.shared.PlaceController;
 import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.event.shared.EventBus;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.presenter.AbstractPresenter;
 import com.novadart.novabill.frontend.client.view.DocumentView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
+import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
@@ -23,6 +26,7 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 	
 	private ClientDTO client;
 	private final JavaScriptObject callback;
+	private List<ClientAddressDTO> clientAddresses = null;
 	
 	public DocumentPresenter(PlaceController placeController, EventBus eventBus, V view, JavaScriptObject callback) {
 		super(placeController, eventBus, view);
@@ -33,6 +37,80 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 	public void go(AcceptsOneWidget panel) {
 		super.go(panel);
 	}
+	
+	
+	@Override
+	public void onLoad() {
+		getView().getToAddrButtonDefault().setEnabled(false);
+		getView().getToAddrButtonDefault().clear();
+		ServerFacade.INSTANCE.getClientService().getClientAddresses(getClient().getId(), new ManagedAsyncCallback<List<ClientAddressDTO>>() {
+
+			@Override
+			public void onSuccess(List<ClientAddressDTO> result) {
+				clientAddresses = result;
+
+				getView().getToAddrButtonDefault().addItem(I18N.INSTANCE.selectAddress(), "");
+				getView().getToAddrButtonDefault().addItem(I18N.INSTANCE.legalAddress(), "");
+				for (ClientAddressDTO c : result) {
+					getView().getToAddrButtonDefault().addItem(c.getName(), c.getId().toString());
+				}
+				getView().getToAddrButtonDefault().setEnabled(true);
+			}
+		});
+	}
+
+	@Override
+	public void onToAddressButtonDefaultChange() {
+		int selectedIndex = getView().getToAddrButtonDefault().getSelectedIndex();
+
+		switch (selectedIndex) {
+		case 0:
+			break;
+
+		case 1:
+			getView().getToAddrCity().setText(getClient().getCity());
+			getView().getToAddrCompanyName().setText(getClient().getName());
+			getView().getToAddrPostCode().setText(getClient().getPostcode());
+			if(getClient().getCountry().equalsIgnoreCase("IT")){
+				getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
+			} else {
+				getView().getToAddrProvince().setEnabled(false);
+				getView().getToAddrProvince().setSelectedIndex(0);
+			}
+			getView().getToAddrStreetName().setText(getClient().getAddress());
+			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
+			break;
+
+		default:
+			Long selId = Long.parseLong(getView().getToAddrButtonDefault().getValue(selectedIndex));
+
+			for (ClientAddressDTO c : clientAddresses) {
+				if(c.getId().equals(selId)){
+					getView().getToAddrCity().setText(c.getCity());
+					getView().getToAddrCompanyName().setText(c.getCompanyName());
+					getView().getToAddrPostCode().setText(c.getPostcode());
+					if(c.getCountry().equalsIgnoreCase("IT")){
+						getView().getToAddrProvince().setSelectedItem(c.getProvince());
+						getView().getToAddrProvince().setValidationOkStyle();
+					} else {
+						getView().getToAddrProvince().reset();
+						getView().getToAddrProvince().setEnabled(false);
+					}
+					getView().getToAddrStreetName().setText(c.getAddress());
+					getView().getToAddrCountry().setSelectedItemByValue(c.getCountry());
+					break;
+				}
+			}
+			break;
+		}
+	}
+
+	@Override
+	public void onToCountryChange() {
+		getView().getToAddrProvince().setEnabled(getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT"));
+		getView().getToAddrProvince().reset();
+	}
+	
 	
 	protected String getHumanReadable(Field field){
 		switch (field) {

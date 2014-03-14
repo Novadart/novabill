@@ -1,0 +1,112 @@
+<div class="container-fluid settings">
+	<div class="row">
+		<div class="col-md-12">
+
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<h3 class="page-title">{{'SETTINGS' | translate}}</h3>
+			<ul class="breadcrumb">
+				<li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
+				<li><span>{{'SETTINGS' | translate}}</span></li>
+			</ul>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="tabbable-custom ">
+				<ul class="nav nav-tabs ">
+					<li class="active"><a href="#business" data-toggle="tab">{{'BUSINESS_TAB_BUSINESS' | translate}}</a>
+					</li>
+					<li><a href="#options" data-toggle="tab">{{'BUSINESS_TAB_OPTIONS' | translate}}</a></li>
+					<li><a href="#layout" data-toggle="tab">{{'BUSINESS_TAB_LAYOUT' | translate}}</a></li>
+				</ul>
+				<div class="tab-content">
+					<div class="tab-pane active" id="business">
+						<div id="settings-page"></div>
+					</div>
+					<div class="tab-pane" id="options">
+
+                        <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
+                        
+                        
+                        <form ng-show="business" class="form-horizontal" role="form">
+                            <div class="form-body">
+
+                                <div class="form-group">
+                                    <label for="priceDisplayInDocsMonolithic" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_PRICE_IN_DOCS_MONOLITHIC' | translate }}</label>
+                                    <div class="col-md-8">
+                                        <div class="checkbox-list">
+                                            <label> <input id="priceDisplayInDocsMonolithic" type="checkbox" ng-model="priceDisplayInDocsMonolithic">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </form>
+
+						<button ng-show="business" type="button" ng-click="update()" class="btn green save-options button-save">
+						  {{'SAVE_CHANGES' | translate}}
+						</button>
+
+					</div>
+					<div class="tab-pane" id="layout">
+					
+					   <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
+
+						<form ng-show="business" class="form-horizontal" role="form">
+							<div class="form-body">
+								<div class="form-group">
+									<label class="col-md-4 control-label">{{'LAYOUT_TYPE' | translate}}</label>
+									<div class="col-md-8">
+										<select class="form-control input-xlarge" ng-model="business.settings.defaultLayoutType">
+											<option value="DENSE">{{'LAYOUT_TYPE_DENSE' | translate}}</option>
+											<option value="TIDY">{{'LAYOUT_TYPE_TIDY' | translate}}</option>
+										</select>
+									</div>
+								</div>
+
+								<div class="form-group">
+									<label for="incognitoEnabled" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_INCOGNITO_ENABLED' | translate }}</label>
+									<div class="col-md-8">
+										<div class="checkbox-list">
+											<label> <input id="incognitoEnabled" type="checkbox" ng-model="business.settings.incognitoEnabled">
+											</label>
+										</div>
+									</div>
+								</div>
+								
+								<div class="form-group">
+                                    <label for="footerNote" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_FOOTER_TEXT' | translate }}</label>
+                                    <div class="col-md-8">
+                                       <label for="estimationFooterNote" class="control-label">{{ 'ESTIMATION' | translate }}</label>
+                                       <input id="estimationFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.estimationFooterNote">
+                                       <label for="transportDocumentFooterNote" style="margin-top: 10px;" class="control-label">{{ 'TRANSPORT_DOCUMENT' | translate }}</label>
+                                       <input id="transportDocumentFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.transportDocumentFooterNote">
+                                       <label for="invoiceFooterNote" style="margin-top: 10px;" class="control-label">{{ 'INVOICE' | translate }}</label>
+                                       <input id="invoiceFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.invoiceFooterNote">
+                                       <label for="creditNoteFooterNote" style="margin-top: 10px;" class="control-label">{{ 'CREDIT_NOTE' | translate }}</label>
+                                       <input id="creditNoteFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.creditNoteFooterNote">
+                                    </div>
+                                </div>
+
+							</div>
+						</form>
+
+                        <button ng-show="business" type="button" ng-click="update()" class="btn green save-layout button-save">
+                            {{'SAVE_CHANGES' | translate}}
+                        </button>
+                        
+					</div>
+				</div>
+
+			</div>
+
+		</div>
+	</div>
+
+</div>

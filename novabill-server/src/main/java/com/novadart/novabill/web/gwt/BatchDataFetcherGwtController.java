@@ -128,5 +128,10 @@ public class BatchDataFetcherGwtController extends AbstractGwtController impleme
 		return new Pair<PriceListDTO, List<PriceListDTO>>(priceListService.get(Client.findClient(clientID).getDefaultPriceList().getId()),
 				priceListService.getAll(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()));
 	}
+
+	@Override
+	public Pair<Long, EstimationDTO> fetchNewTransportDocumentFromEstimationOpData(Long estimationID) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException {
+		return new Pair<Long, EstimationDTO>(transportDocService.getNextTransportDocId(), estimationService.get(estimationID));
+	}
 	
 }

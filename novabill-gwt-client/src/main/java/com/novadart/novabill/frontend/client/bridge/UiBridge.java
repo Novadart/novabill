@@ -31,10 +31,13 @@ import com.novadart.novabill.frontend.client.place.invoice.FromEstimationInvoice
 import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocumentListInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
+import com.novadart.novabill.frontend.client.place.transportdocument.FromEstimationTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
+import com.novadart.novabill.frontend.client.util.PDFUtils;
 import com.novadart.novabill.frontend.client.view.bootstrap.BootstrapDialog;
 import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class UiBridge implements ApiBridge {
@@ -81,13 +84,14 @@ public class UiBridge implements ApiBridge {
 			// transport documents
 			showNewTransportDocumentPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewTransportDocumentPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showModifyTransportDocumentPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyTransportDocumentPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+			showFromEstimationTransportDocumentPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showFromEstimationTransportDocumentPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			
 			//pdf
 			generateInvoicePdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateInvoicePdf(Ljava/lang/String;),
 			generateEstimationPdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateEstimationPdf(Ljava/lang/String;),
 			generateCreditNotePdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateCreditNotePdf(Ljava/lang/String;),
 			generateTransportDocumentPdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateTransportDocumentPdf(Ljava/lang/String;),
-			
+			generatePaymentsProspectPdf : @com.novadart.novabill.frontend.client.bridge.UiBridge::generatePaymentsProspectPdf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)
 		};
 	
 	}-*/;
@@ -304,5 +308,27 @@ public class UiBridge implements ApiBridge {
 		TransportDocumentActivity is = new TransportDocumentActivity(mep, ClientFactory.INSTANCE, callback);
 		is.start(panel, null);
 	}
+	
+	public static void showFromEstimationTransportDocumentPage(String wrapperId, String estimationId, JavaScriptObject callback) {
+		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
+		
+		FromEstimationTransportDocumentPlace fei = new FromEstimationTransportDocumentPlace();
+		fei.setEstimationId(Long.parseLong(estimationId));
+
+		TransportDocumentActivity is = new TransportDocumentActivity(fei, ClientFactory.INSTANCE, callback);
+		is.start(panel, null);
+	}
+	
+	/*
+	 * PDF
+	 */
+	
+	public static void generatePaymentsProspectPdf(String filteringDateType, String startDate, String endDate){
+		PDFUtils.generatePaymentsProspectPdf(
+				FilteringDateType.valueOf(filteringDateType),
+				startDate != null ? Long.parseLong(startDate) : null, 
+				endDate != null ? Long.parseLong(endDate) : null
+				);
+	};
 
 }

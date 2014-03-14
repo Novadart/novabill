@@ -51,13 +51,13 @@ public class OneTimePaymentIPNHandlerService extends PayPalIPNHandlerService {
 
 	@Override
 	protected void extendNonFreeAccountExpirationTime(Business business, Map<String, String> parametersMap) {
-		Long current = System.currentTimeMillis(), nonFreeAccountExpirationTime = business.getNonFreeAccountExpirationTime();
+		Long current = System.currentTimeMillis(), nonFreeAccountExpirationTime = business.getSettings().getNonFreeAccountExpirationTime();
 		Long zero = nonFreeAccountExpirationTime == null || nonFreeAccountExpirationTime < current? current: nonFreeAccountExpirationTime;
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(zero);
 		if(parametersMap.get(ITEM_NAME).equals(premiumOneYearItemName))
 			calendar.add(Calendar.YEAR, 1);
-		business.setNonFreeAccountExpirationTime(calendar.getTimeInMillis());
+		business.getSettings().setNonFreeAccountExpirationTime(calendar.getTimeInMillis());
 	}
 
 }

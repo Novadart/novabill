@@ -40,7 +40,7 @@ public class TransportDocumentGwtController extends AbstractGwtController implem
 		transportDocService.remove(businessID, clientID, id);
 	}
 
-	public void update(TransportDocumentDTO transportDocDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException {
+	public void update(TransportDocumentDTO transportDocDTO) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException, DataIntegrityException {
 		transportDocService.update(transportDocDTO);
 	}
 

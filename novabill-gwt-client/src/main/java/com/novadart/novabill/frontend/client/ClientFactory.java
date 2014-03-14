@@ -31,20 +31,15 @@ public interface ClientFactory {
 	String getDeleteAccountUrl();
 	String getExportRequest();
 	String getPdfRequest();
+	String getPdfProspectRequest();
 	String getRegisterAccountUrl();
 	
 	//center
-//	void getHomeView(AsyncCallback<HomeView> callback);
-	void getInvoiceView(AsyncCallback<InvoiceView> callback);
+	void getInvoiceView(boolean readonly, AsyncCallback<InvoiceView> callback);
 	void getEstimationView(AsyncCallback<EstimationView> callback);
 	void getBusinessView(AsyncCallback<BusinessView> callback);
-//	void getClientView(AsyncCallback<ClientView> callback);
 	void getCreditNoteView(AsyncCallback<CreditNoteView> callback);
-	void getTransportDocumentView(AsyncCallback<TransportDocumentView> asyncCallback);
+	void getTransportDocumentView(boolean readonly, AsyncCallback<TransportDocumentView> asyncCallback);
 	void getPaymentView(AsyncCallback<PaymentView> callback);
 	
-	//west
-//	void getStandardWestView(AsyncCallback<StandardWestView> callback);
-//	void getEmptyWestView(AsyncCallback<EmptyWestView> callback);
-//	void getConfigurationWestView(AsyncCallback<ConfigurationWestView> callback);
 }

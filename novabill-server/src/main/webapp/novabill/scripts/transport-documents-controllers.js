@@ -84,6 +84,30 @@ angular.module('novabill.transportDocuments.controllers',
 }])
 
 
+/**
+ * INVOICE CREATE FROM ESTIMATION PAGE CONTROLLER
+ */
+.controller('TransportDocumentFromEstimationCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
+                                          function($scope, $routeParams, $location, $translate, gwtHook) {
+	$scope.pageTitle = $translate('NEW_TRANSPORT_DOCUMENT');
+
+	GWT_UI.showFromEstimationTransportDocumentPage('transport-document-details', $routeParams.estimationId, {
+		onSuccess : function(bool){
+			$scope.$apply(function(){
+				$location.path('/');
+			});
+		},
+		onFailure : function(){
+			$scope.$apply(function(){
+				$location.path('/');
+			});
+		}
+	});
+	
+	gwtHook.injectSelectCommodityDialogHook();
+}])
+
+
 
 /**
  * TRANSPORT DOCUMENTS CREATE PAGE CONTROLLER

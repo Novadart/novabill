@@ -11,8 +11,12 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.SortedSet;
 import java.util.TreeSet;
+
+import javax.persistence.AttributeOverride;
+import javax.persistence.AttributeOverrides;
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
@@ -82,6 +86,18 @@ public abstract class AccountingDocument {
     @OrderBy("id")
     @Valid
     protected List<AccountingDocumentItem> accountingDocumentItems = new LinkedList<AccountingDocumentItem>();
+    
+    @AttributeOverrides({
+		@AttributeOverride(name = "companyName", column = @Column(name = "to_company_name")),
+		@AttributeOverride(name = "street", column = @Column(name = "to_street")),
+		@AttributeOverride(name = "postcode", column = @Column(name = "to_postcode")),
+		@AttributeOverride(name = "city", column = @Column(name = "to_city")),
+		@AttributeOverride(name = "province", column = @Column(name = "to_province")),
+		@AttributeOverride(name = "country", column = @Column(name = "to_country"))
+	})
+	@Embedded
+	@Valid
+	private Endpoint toEndpoint = new Endpoint();
     
     protected static int getYear(Date date){
     	Calendar calendar = new GregorianCalendar();
@@ -179,6 +195,14 @@ public abstract class AccountingDocument {
     public void setPaymentNote(String paymentNote) {
         this.paymentNote = paymentNote;
     }
+    
+    public Endpoint getToEndpoint() {
+		return toEndpoint;
+	}
+
+	public void setToEndpoint(Endpoint toEndpoint) {
+		this.toEndpoint = toEndpoint;
+	}
     
     public LayoutType getLayoutType() {
 		return layoutType;

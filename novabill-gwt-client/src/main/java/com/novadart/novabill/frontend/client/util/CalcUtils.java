@@ -103,6 +103,7 @@ public class CalcUtils {
 		}
 
 		Date d;
+		Date normDate = DocumentUtils.createNormalizedDate(documentDate);
 
 		switch (payment.getPaymentDateGenerator()) {
 		default:
@@ -113,11 +114,11 @@ public class CalcUtils {
 			switch (payment.getPaymentDeltaType()) {
 			case COMMERCIAL_MONTH:
 				//add the delay	
-				d = addCommercialMonthsToDate(documentDate, payment.getPaymentDateDelta());
+				d = addCommercialMonthsToDate(normDate, payment.getPaymentDateDelta());
 				break;
 				
 			case DAYS:
-				d = (Date)documentDate.clone();
+				d = (Date)normDate.clone();
 				CalendarUtil.addDaysToDate(d, payment.getPaymentDateDelta());
 				break;
 				
@@ -138,11 +139,11 @@ public class CalcUtils {
 			switch (payment.getPaymentDeltaType()) {
 			case COMMERCIAL_MONTH:
 				//add the delay	
-				d = addCommercialMonthsToDate(documentDate, payment.getPaymentDateDelta());
+				d = addCommercialMonthsToDate(normDate, payment.getPaymentDateDelta());
 				return d;
 				
 			case DAYS:
-				d = (Date)documentDate.clone();
+				d = (Date)normDate.clone();
 				CalendarUtil.addDaysToDate(d, payment.getPaymentDateDelta());
 				return d;
 

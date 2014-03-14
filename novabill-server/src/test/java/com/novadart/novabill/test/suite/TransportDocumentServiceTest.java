@@ -213,7 +213,7 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
+	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException, DataIntegrityException{
 		TransportDocument expected = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		expected.setNote("Temporary note for this transport document");
 		transportDocService.update(TransportDocumentDTOFactory.toDTO(expected, true));
@@ -230,16 +230,24 @@ public class TransportDocumentServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedTransportDocNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedTransportDocNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException{
 		transportDocService.update(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException{
 		TransportDocument transportDoc = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getTransportDocuments().iterator().next();
 		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(transportDoc, true);
 		transDocDTO.setId(null);
 		transportDocService.update(transDocDTO);
+	}
+	
+	@Test(expected = DataIntegrityException.class)
+	public void updateTransportDocInInvoiceTest() throws DataAccessException, NotAuthenticatedException, DataIntegrityException, NoSuchObjectException, ValidationException{
+		TransportDocument transportDoc = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getTransportDocuments().iterator().next();
+		Long invoiceID = authenticatedPrincipal.getBusiness().getInvoices().iterator().next().getId();
+		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoiceID, transportDoc.getId());
+		transportDocService.update(TransportDocumentDTOFactory.toDTO(transportDoc, true));
 	}
 	
 	@Test

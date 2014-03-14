@@ -176,6 +176,9 @@ public class Client implements Serializable, Taxable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
     private Set<TransportDocument> transportDocuments = new HashSet<TransportDocument>();
     
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "client")
+    private Set<ClientAddress> addresses = new HashSet<>();
+    
     @ManyToOne
     @IndexedEmbedded
     private Business business;
@@ -407,6 +410,14 @@ public class Client implements Serializable, Taxable {
 
 	public void setTransportDocuments(Set<TransportDocument> transportDocuments) {
 		this.transportDocuments = transportDocuments;
+	}
+
+	public Set<ClientAddress> getAddresses() {
+		return addresses;
+	}
+
+	public void setAddresses(Set<ClientAddress> addresses) {
+		this.addresses = addresses;
 	}
 
 	public Business getBusiness() {

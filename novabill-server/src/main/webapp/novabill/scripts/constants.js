@@ -37,6 +37,7 @@ angular.module('novabill.constants', [])
 			commoditiesBaseUrl : basePath + 'private/commodities/',
 			paymentsBaseUrl : basePath + 'private/payments/',
 			priceListsBaseUrl : basePath + 'private/price-lists/',
+			settingsBaseUrl : basePath + 'private/settings/',
 
 			partialsBaseUrl : basePath + 'novabill/partials/'
 	};
@@ -129,6 +130,7 @@ angular.module('novabill.constants', [])
 
 				transportDocumentList : function(){ return baseConf.transportDocumentsBaseUrl + '#/'; },
 				transportDocumentNew : function(clientId){ return baseConf.transportDocumentsBaseUrl + '#/new/' + clientId; },
+				transportDocumentFromEstimation : function(estimationId){ return baseConf.transportDocumentsBaseUrl + '#/from-estimation/' + estimationId; },
 				transportDocumentDetails : function(transportDocumentId){ return baseConf.transportDocumentsBaseUrl + '#/details/' + transportDocumentId; }
 
 			},

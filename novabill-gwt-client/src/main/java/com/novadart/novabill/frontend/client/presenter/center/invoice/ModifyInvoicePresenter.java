@@ -15,6 +15,7 @@ import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
@@ -27,10 +28,6 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 	@Override
 	protected void setPresenterInView(InvoiceView view) {
 		view.setPresenter(this);
-	}
-
-	@Override
-	public void onLoad() {
 	}
 
 	public void setData(InvoiceDTO invoice) {
@@ -48,11 +45,25 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 		List<AccountingDocumentItemDTO> items = null;
 		items = invoice.getItems();
 
-
 		getView().getItemInsertionForm().setItems(items);
 		if(invoice.getDocumentID() != null){
 			getView().getNumber().setText(invoice.getDocumentID().toString());
+		}
+		
+        EndpointDTO loc = invoice.getToEndpoint();
+		getView().getToAddrCity().setText(loc.getCity());
+		getView().getToAddrCompanyName().setText(loc.getCompanyName());
+		getView().getToAddrPostCode().setText(loc.getPostcode());
+		if("IT".equalsIgnoreCase(loc.getCountry())){
+			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
+		} else {
+			getView().getToAddrProvince().setEnabled(false);
 		} 
+		getView().getToAddrStreetName().setText(loc.getStreet());
+		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
+		getView().getSetToAddress().setValue(true);
+		getView().getToAddressContainer().setVisible(true);
+		
 		getView().getNote().setText(invoice.getNote());
 		getView().getPaymentNote().setText(invoice.getPaymentNote());
 	}
@@ -135,11 +146,6 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 				}
 			}
 		});
-	}
-
-	@Override
-	public void onUnlockItemsTableChecked(Boolean value) {
-		
 	}
 
 }

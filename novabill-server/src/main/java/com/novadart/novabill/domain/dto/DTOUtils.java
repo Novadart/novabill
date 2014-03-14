@@ -6,6 +6,9 @@ import java.util.Collection;
 import java.util.GregorianCalendar;
 import java.util.Iterator;
 import java.util.List;
+
+import org.apache.commons.lang3.builder.EqualsBuilder;
+
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Estimation;
@@ -113,6 +116,18 @@ public class DTOUtils {
 	
 	public static <E> List<E> range(List<E> list, Integer start, Integer length){
 		return new ArrayList<E>(list.subList(start, Math.min(start + length, list.size())));
+	}
+	
+	public static boolean compareItems(AccountingDocumentDTO lhs, AccountingDocumentDTO rhs, boolean ignoreID){
+		if(lhs.getItems().size() != rhs.getItems().size())
+			return false;
+		for(int i = 0; i < lhs.getItems().size(); ++i){
+			if(!ignoreID && !EqualsBuilder.reflectionEquals(lhs.getItems().get(i), rhs.getItems().get(i), false))
+				return false;
+			if(ignoreID && !EqualsBuilder.reflectionEquals(lhs.getItems().get(i), rhs.getItems().get(i), "id"))
+				return false;
+		}
+		return true;
 	}
 	
 }

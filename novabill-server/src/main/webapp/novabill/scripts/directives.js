@@ -17,6 +17,30 @@ angular.module('novabill.directives',
 		},
 		controller : ['$scope', '$element', '$translate', function($scope, $element, $translate){
 
+			function isExpired(){
+				var today = new Date();
+				today.setHours(0);
+				today.setMinutes(0);
+				today.setSeconds(0);
+				var paymentDueDate = new Date(parseInt($scope.invoice.paymentDueDate));
+				return paymentDueDate < today;
+			}; 
+			
+			$scope.expired = isExpired();
+			
+			$scope.togglePayed = function(){
+				var value = !$scope.invoice.payed;
+				GWT_Server.invoice.setPayed(nConstants.conf.businessId, $scope.invoice.client.id, $scope.invoice.id, value, {
+					onSuccess : function(){
+						$scope.$apply(function(){
+							$scope.invoice.payed = value;
+							$scope.expired = isExpired();
+						});
+					},
+					onFailure : function(){}
+				});
+			};
+			
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.invoiceDetails($scope.invoice.id) );
 			};
@@ -128,6 +152,10 @@ angular.module('novabill.directives',
 
 			$scope.convertToInvoice = function(id){
 				window.location.assign(nConstants.url.invoiceFromEstimation($scope.estimation.id));
+			};
+			
+			$scope.convertToTransportDocument = function(id){
+				window.location.assign(nConstants.url.transportDocumentFromEstimation($scope.estimation.id));
 			};
 
 			//activate the dropdown
@@ -781,8 +809,8 @@ angular.module('novabill.directives',
 					break;
 
 				case nConstants.logRecord.operationType.SET_PAYED:
-//					$scope.description = tr('LR_INVOICE_SET_PAYED');
-//					$scope.link = nConstants.url.invoiceDetails( $scope.record.entityID );
+					$scope.description = tr( details.payedStatus==='true' ? 'LR_INVOICE_SET_PAYED_TRUE' : 'LR_INVOICE_SET_PAYED_FALSE',
+							'{documentID: "'+ details.documentID + '", clientName: "'+ $sanitize(details.clientName) + '", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:

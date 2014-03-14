@@ -23,9 +23,7 @@ public class BusinessDTOFactory {
 		businessDTO.setWeb(business.getWeb());
 		businessDTO.setVatID(business.getVatID());
 		businessDTO.setSsn(business.getSsn());
-		businessDTO.setDefaultLayoutType(business.getDefaultLayoutType());
-		businessDTO.setPriceDisplayInDocsMonolithic(business.isPriceDisplayInDocsMonolithic());
-		businessDTO.setEnabledIncognito(business.isIncognitoEnabled());
+		businessDTO.setSettings(SettingsDTOFactory.toDTO(business.getSettings()));
 		return businessDTO;
 	}
 	
@@ -45,9 +43,7 @@ public class BusinessDTOFactory {
 		business.setWeb(businessDTO.getWeb());
 		business.setVatID(businessDTO.getVatID());
 		business.setSsn(businessDTO.getSsn());
-		business.setDefaultLayoutType(businessDTO.getDefaultLayoutType());
-		business.setPriceDisplayInDocsMonolithic(businessDTO.isPriceDisplayInDocsMonolithic());
-		business.setIncognitoEnabled(businessDTO.isIncognitoEnabled());
+		SettingsDTOFactory.copyFromDTO(business.getSettings(), businessDTO.getSettings());
 	}
 
 }

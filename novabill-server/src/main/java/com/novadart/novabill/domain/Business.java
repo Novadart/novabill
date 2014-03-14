@@ -3,26 +3,32 @@ package com.novadart.novabill.domain;
 import java.io.IOException;
 import java.io.Serializable;
 import java.io.StringReader;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
-import java.util.concurrent.TimeUnit;
 
 import javax.persistence.CascadeType;
 import javax.persistence.Column;
+import javax.persistence.Embedded;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
 import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
+import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Transient;
+import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
@@ -52,7 +58,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.TaxFieldsNotNull;
 import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.shared.client.data.LayoutType;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
@@ -65,6 +71,10 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @TaxFieldsNotNull
+@NamedQueries({
+	@NamedQuery(name = "business.allUnpaidInvoicesDueDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.paymentDueDate and i.paymentDueDate <= :endDate and i.business.id = :bizID order by i.paymentDueDate, i.documentID"),
+	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID")
+})
 public class Business implements Serializable, Taxable {
 
 	private static final long serialVersionUID = 261999997691744944L;
@@ -129,17 +139,9 @@ public class Business implements Serializable, Taxable {
     @Trimmed
     private String ssn;
 
-    private Long nonFreeAccountExpirationTime;
-
-    @NotNull
-    @Column(columnDefinition = "integer default 0")
-    private LayoutType defaultLayoutType;
-    
-    @Column(columnDefinition = "boolean default true")
-    private boolean priceDisplayInDocsMonolithic = true;
-    
-    @Column(columnDefinition = "boolean default false")
-    private boolean incognitoEnabled = false;
+    @Embedded
+    @Valid
+    private Settings settings = new Settings();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<Commodity> commodities = new HashSet<Commodity>();
@@ -170,6 +172,9 @@ public class Business implements Serializable, Taxable {
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<PriceList> priceLists = new HashSet<PriceList>();
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+    private Set<Transporter> transporters = new HashSet<Transporter>();
     
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
@@ -278,6 +283,25 @@ public class Business implements Serializable, Taxable {
     			.setParameter("businessId", getId())
     			.setParameter("year", year)
     			.setParameter("id", documentID).getResultList();
+    }
+    
+    private Date createDateFromString(String dateString){
+    	DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
+    	try {
+			return dateFormat.parse(dateString);
+		} catch (java.text.ParseException e) {
+			return new Date();
+		}
+    }
+    
+    public List<Invoice> getAllUnpaidInvoicesInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) {
+    	if(filteringDateType == null)
+    		throw new RuntimeException("Illegal filter date type!");
+    	String namedQuery = FilteringDateType.PAYMENT_DUEDATE.equals(filteringDateType)? "business.allUnpaidInvoicesDueDateInDateRange": "business.allUnpaidInvoicesCreationDateInDateRange";
+    	return entityManager().createNamedQuery(namedQuery, Invoice.class).
+    			setParameter("bizID", getId()).
+    			setParameter("startDate", startDate == null? createDateFromString("1-1-1970"): startDate).
+    			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();
     }
     
     private static interface ClientQueryPreparator{
@@ -400,12 +424,7 @@ public class Business implements Serializable, Taxable {
     	return getAccountingDocumentForYear(getTransportDocuments().iterator(), year);
     }
     
-    public Long getNonFreeExpirationDelta(TimeUnit timeUnit){
-    	Long now = System.currentTimeMillis();
-    	if(nonFreeAccountExpirationTime == null || nonFreeAccountExpirationTime < now)
-    		return null;
-    	return timeUnit.convert(nonFreeAccountExpirationTime, TimeUnit.MILLISECONDS);
-    }
+    
 
 	/*
 	 * Getters and setters
@@ -515,36 +534,12 @@ public class Business implements Serializable, Taxable {
         this.ssn = ssn;
     }
     
-	public Long getNonFreeAccountExpirationTime() {
-		return nonFreeAccountExpirationTime;
+	public Settings getSettings() {
+		return settings;
 	}
 
-	public void setNonFreeAccountExpirationTime(Long nonFreeAccountExpirationTime) {
-		this.nonFreeAccountExpirationTime = nonFreeAccountExpirationTime;
-	}
-
-	public boolean isIncognitoEnabled() {
-		return incognitoEnabled;
-	}
-
-	public void setIncognitoEnabled(boolean incognitoEnabled) {
-		this.incognitoEnabled = incognitoEnabled;
-	}
-
-	public LayoutType getDefaultLayoutType() {
-		return defaultLayoutType;
-	}
-
-	public void setDefaultLayoutType(LayoutType defaultLayoutType) {
-		this.defaultLayoutType = defaultLayoutType;
-	}
-
-	public boolean isPriceDisplayInDocsMonolithic() {
-		return priceDisplayInDocsMonolithic;
-	}
-
-	public void setPriceDisplayInDocsMonolithic(boolean priceDisplayInDocsMonolithic) {
-		this.priceDisplayInDocsMonolithic = priceDisplayInDocsMonolithic;
+	public void setSettings(Settings settings) {
+		this.settings = settings;
 	}
 
 	public Set<Commodity> getCommodities() {
@@ -619,6 +614,14 @@ public class Business implements Serializable, Taxable {
 		this.paymentTypes = paymentTypes;
 	}
 	
+	public Set<Transporter> getTransporters() {
+		return transporters;
+	}
+
+	public void setTransporters(Set<Transporter> transporters) {
+		this.transporters = transporters;
+	}
+
 	public Set<PriceList> getPriceLists() {
 		return priceLists;
 	}

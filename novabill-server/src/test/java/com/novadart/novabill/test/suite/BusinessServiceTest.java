@@ -1,6 +1,8 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
+import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
@@ -10,7 +12,9 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+
 import javax.annotation.Resource;
+
 import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.EqualsBuilder;
@@ -28,6 +32,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.BusinessService;
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -308,8 +313,22 @@ public class BusinessServiceTest extends GWTServiceTest {
 		Business actualBusiness = Principal.findPrincipal(authenticatedPrincipal.getId()).getBusiness();
 		assertTrue(EqualsBuilder.reflectionEquals(business, actualBusiness, "version", "paymentTypes",
 				"nonFreeAccountExpirationTime", "items", "accounts" , "invoices", "estimations", "creditNotes",
-				"transportDocuments", "clients", "principals", "priceLists"));
+				"transportDocuments", "clients", "principals", "priceLists", "settings"));
+		assertTrue(EqualsBuilder.reflectionEquals(business.getSettings(), actualBusiness.getSettings()));
 	}
+	
+	@Test
+	public void addAuthorizedDefaultLayoutTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+									com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
+		authenticatedPrincipal.setBusiness(null);
+		Business business = TestUtils.createBusiness();
+		BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
+		businessDTO.getSettings().setDefaultLayoutType(null);
+		business.setId(businessGwtService.add(businessDTO));
+		Business.entityManager().flush();
+		Business actualBusiness = Principal.findPrincipal(authenticatedPrincipal.getId()).getBusiness();
+		assertEquals(LayoutType.DENSE, actualBusiness.getSettings().getDefaultLayoutType());
+	} 
 	
 	@Test(expected = DataAccessException.class)
 	public void addNullTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 

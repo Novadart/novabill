@@ -13,12 +13,14 @@ import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.i18n.I18NM;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.creditnote.CreditNoteView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
+import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
@@ -35,7 +37,7 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 		setClient(client);
 
 		getView().getClientName().setText(client.getName());
-		getView().getDate().setValue(new Date());
+		getView().getDate().setValue(DocumentUtils.createNormalizedDate(new Date()));
 		getView().getNumber().setText(progressiveId.toString());
 
 		getView().getCreateDocument().setVisible(true);
@@ -50,15 +52,25 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 		for (AccountingDocumentItemDTO i : invoice.getItems()) {
 			items.add(i.clone());
 		}
+		
+        EndpointDTO loc = invoice.getToEndpoint();
+		getView().getToAddrCity().setText(loc.getCity());
+		getView().getToAddrCompanyName().setText(loc.getCompanyName());
+		getView().getToAddrPostCode().setText(loc.getPostcode());
+		if("IT".equalsIgnoreCase(loc.getCountry())){
+			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
+		} else {
+			getView().getToAddrProvince().setEnabled(false);
+		} 
+		getView().getToAddrStreetName().setText(loc.getStreet());
+		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
+		getView().getSetToAddress().setValue(true);
+		getView().getToAddressContainer().setVisible(true);
+		
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(I18NM.get.generatedFromInvoice(
 				invoice.getDocumentID()+"/"+ getYearFormat().format(invoice.getAccountingDocumentDate()), 
 				DateTimeFormat.getFormat("dd MMMM yyyy").format(invoice.getAccountingDocumentDate())));
-	}
-
-
-	@Override
-	public void onLoad() {
 	}
 
 

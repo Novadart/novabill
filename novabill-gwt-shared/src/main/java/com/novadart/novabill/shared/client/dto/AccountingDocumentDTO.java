@@ -31,6 +31,8 @@ public class AccountingDocumentDTO implements IsSerializable {
     protected LayoutType layoutType;
 
     protected ClientDTO client;
+    
+    protected EndpointDTO toEndpoint;
 
     protected List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>();
     
@@ -144,6 +146,13 @@ public class AccountingDocumentDTO implements IsSerializable {
 		this.client = client;
 	}
 
+	public EndpointDTO getToEndpoint() {
+		return toEndpoint;
+	}
+
+	public void setToEndpoint(EndpointDTO toEndpoint) {
+		this.toEndpoint = toEndpoint;
+	}
 	
 	public List<AccountingDocumentItemDTO> getItems() {
 		return items;

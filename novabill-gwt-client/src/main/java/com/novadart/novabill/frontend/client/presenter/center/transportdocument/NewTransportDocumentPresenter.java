@@ -12,12 +12,14 @@ import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.util.DocumentUtils;
 import com.novadart.novabill.frontend.client.view.center.transportdocument.TransportDocumentView;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
+import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
@@ -62,6 +64,21 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
 
 	}
+	
+	
+	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId, EstimationDTO document) {
+		setDataForNewTransportDocument(client,transportDocumentProgressiveId);
+
+		List<AccountingDocumentItemDTO> items = null;
+		items = new ArrayList<AccountingDocumentItemDTO>(document.getItems().size());
+		for (AccountingDocumentItemDTO i : document.getItems()) {
+			items.add(i.clone());
+		}
+
+		getView().getItemInsertionForm().setItems(items);
+		getView().getNote().setText(document.getNote());
+	}
+	
 
 	@Override
 	public void onCreateDocumentClicked() {
@@ -116,16 +133,12 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 		Date d = new Date();
 		String hourStr = DateTimeFormat.getFormat("HH").format(d);
 		String minuteStr = DateTimeFormat.getFormat("mm").format(d);
-		getView().getDate().setValue(d);
+		getView().getDate().setValue(DocumentUtils.createNormalizedDate(d));
 		getView().getTransportStartDate().setValue(d);
 		getView().getHour().setSelectedItem(hourStr);
 		getView().getMinute().setSelectedItem(minuteStr);
 
 		getView().getCreateDocument().setVisible(true);
-	}
-
-	@Override
-	public void onLoad() {
 	}
 
 	@Override
