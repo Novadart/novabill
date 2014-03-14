@@ -553,7 +553,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 				<reportElement uuid="74d17045-9219-42bb-a62c-fc094f28f4d5" positionType="Float" x="305" y="90" width="200" height="70"/>
 				<textElement>
 					<font size="9" isBold="false"/>
-					<paragraph lineSpacing="Single" spacingBefore="4"/>
+					<paragraph lineSpacing="Single"/>
 				</textElement>
 				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.join("\n",
 $F{document.toEndpoint.companyName},
