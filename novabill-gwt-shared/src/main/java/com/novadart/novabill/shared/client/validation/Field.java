@@ -46,5 +46,6 @@ public enum Field {
 	companyName,
 	
 	//Business settings
-	settings_defaultLayoutType, settings_priceDisplayInDocsMonolithic, settings_incognitoEnabled  
+	settings_defaultLayoutType, settings_priceDisplayInDocsMonolithic, settings_incognitoEnabled, settings_invoiceFooterNote,
+	settings_creditNoteFooterNote, settings_estimationFooterNote, settings_transportDocumentFooterNote
 }
