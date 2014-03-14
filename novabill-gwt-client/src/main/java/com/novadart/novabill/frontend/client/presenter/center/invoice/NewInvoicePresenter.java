@@ -167,6 +167,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 
 		final InvoiceDTO invoice = createInvoice(null);
 		invoice.setTransportDocumentIDs(transportDocumentSources);
+		invoice.setCreatedFromTransportDocuments(transportDocumentSources!=null);
 
 		final ManagedAsyncCallback<Void> updateClientCallback = new ManagedAsyncCallback<Void>() {
 
