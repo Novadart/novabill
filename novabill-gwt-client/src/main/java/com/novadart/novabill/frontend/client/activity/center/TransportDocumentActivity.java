@@ -8,7 +8,6 @@ import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
 import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.place.HomePlace;
-import com.novadart.novabill.frontend.client.place.transportdocument.CloneTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.FromEstimationTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
@@ -21,7 +20,6 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.tuple.Pair;
-import com.novadart.novabill.shared.client.tuple.Triple;
 
 public class TransportDocumentActivity extends AbstractCenterActivity {
 
@@ -35,39 +33,44 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 	@Override
 	public void start(final AcceptsOneWidget panel, final EventBus eventBus) {
 		super.start(panel, eventBus);
+		
 
-		getClientFactory().getTransportDocumentView(new AsyncCallback<TransportDocumentView>() {
+		if (place instanceof ModifyTransportDocumentPlace) {
+			ModifyTransportDocumentPlace p = (ModifyTransportDocumentPlace) place;
+			setupModifyTransportDocumentView(panel, p);
 
-			@Override
-			public void onSuccess(final TransportDocumentView view) {
+		} else {
 
-				if (place instanceof ModifyTransportDocumentPlace) {
-					ModifyTransportDocumentPlace p = (ModifyTransportDocumentPlace) place;
-					setupModifyTransportDocumentView(panel, view, p);
-
-				} else if (place instanceof CloneTransportDocumentPlace) {
-					CloneTransportDocumentPlace p = (CloneTransportDocumentPlace) place;
-					setupCloneTransportDocumentView(panel, view, p);
-
-				} else if (place instanceof FromEstimationTransportDocumentPlace) {
-					FromEstimationTransportDocumentPlace p = (FromEstimationTransportDocumentPlace) place;
-					setupFromEstimationTransportDocumentView(panel, view, p);
-
-				} else if (place instanceof NewTransportDocumentPlace) {
-					NewTransportDocumentPlace p = (NewTransportDocumentPlace) place;
-					setupNewTransportDocumentView(panel, view, p);
-
-				} else {
-					getClientFactory().getPlaceController().goTo(new HomePlace());
+			getClientFactory().getTransportDocumentView(false, new AsyncCallback<TransportDocumentView>() {
+	
+				@Override
+				public void onSuccess(final TransportDocumentView view) {
+//					if (place instanceof CloneTransportDocumentPlace) {
+//						CloneTransportDocumentPlace p = (CloneTransportDocumentPlace) place;
+//						setupCloneTransportDocumentView(panel, view, p);
+//	
+//					} else 
+					
+					if (place instanceof FromEstimationTransportDocumentPlace) {
+						FromEstimationTransportDocumentPlace p = (FromEstimationTransportDocumentPlace) place;
+						setupFromEstimationTransportDocumentView(panel, view, p);
+	
+					} else if (place instanceof NewTransportDocumentPlace) {
+						NewTransportDocumentPlace p = (NewTransportDocumentPlace) place;
+						setupNewTransportDocumentView(panel, view, p);
+	
+					} else {
+						getClientFactory().getPlaceController().goTo(new HomePlace());
+					}
+	
 				}
-
-			}
-
-			@Override
-			public void onFailure(Throwable caught) {
-				manageError();
-			}
-		});
+	
+				@Override
+				public void onFailure(Throwable caught) {
+					manageError();
+				}
+			});
+		}
 	}
 
 
@@ -123,43 +126,56 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 	}
 	
 
-	private void setupModifyTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, ModifyTransportDocumentPlace place){
+	private void setupModifyTransportDocumentView(final AcceptsOneWidget panel, ModifyTransportDocumentPlace place){
 		ServerFacade.INSTANCE.getTransportdocumentService().get(place.getTransportDocumentId(), new DocumentCallack<TransportDocumentDTO>() {
 
 			@Override
-			public void onSuccess(TransportDocumentDTO result) {
-				ModifyTransportDocumentPresenter p = new ModifyTransportDocumentPresenter(getClientFactory().getPlaceController(), 
-						getClientFactory().getEventBus(), view, getCallback());
-				p.setData(result);
-				p.go(panel);
+			public void onSuccess(final TransportDocumentDTO result) {
+				
+				getClientFactory().getTransportDocumentView(result.getInvoice()!=null, new AsyncCallback<TransportDocumentView>() {
+					
+					@Override
+					public void onSuccess(final TransportDocumentView view) {
+						ModifyTransportDocumentPresenter p = new ModifyTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+								getClientFactory().getEventBus(), view, getCallback());
+						p.setData(result);
+						p.go(panel);
+					}
+		
+					@Override
+					public void onFailure(Throwable caught) {
+						manageError();
+					}
+				});
+				
 			}
 
 		});
 	}
 
-	private void setupCloneTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, final CloneTransportDocumentPlace place){
-		ServerFacade.INSTANCE.getBatchfetcherService().fetchCloneTransportDocumentOpData(place.getTransportDocumentId(), place.getClientId(), 
-				new DocumentCallack<Triple<Long,ClientDTO,TransportDocumentDTO>>() {
-
-					@Override
-					public void onSuccess(final Triple<Long, ClientDTO, TransportDocumentDTO> result) {
-						DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond(), new AsyncCallback<ClientDTO>() {
-
-							@Override
-							public void onFailure(Throwable caught) {
-								BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
-							}
-
-							@Override
-							public void onSuccess(ClientDTO newClient) {
-								NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
-										getClientFactory().getEventBus(), view, getCallback());
-								p.setDataForNewTransportDocument(newClient, result.getFirst(), result.getThird());
-								p.go(panel);
-								
-							}
-						});
-					}
-		});
-	}
+//	private void setupCloneTransportDocumentView(final AcceptsOneWidget panel, final TransportDocumentView view, final CloneTransportDocumentPlace place){
+//		ServerFacade.INSTANCE.getBatchfetcherService().fetchCloneTransportDocumentOpData(place.getTransportDocumentId(), place.getClientId(), 
+//				new DocumentCallack<Triple<Long,ClientDTO,TransportDocumentDTO>>() {
+//
+//					@Override
+//					public void onSuccess(final Triple<Long, ClientDTO, TransportDocumentDTO> result) {
+//						DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond(), new AsyncCallback<ClientDTO>() {
+//
+//							@Override
+//							public void onFailure(Throwable caught) {
+//								BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
+//							}
+//
+//							@Override
+//							public void onSuccess(ClientDTO newClient) {
+//								NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+//										getClientFactory().getEventBus(), view, getCallback());
+//								p.setDataForNewTransportDocument(newClient, result.getFirst(), result.getThird());
+//								p.go(panel);
+//								
+//							}
+//						});
+//					}
+//		});
+//	}
 }

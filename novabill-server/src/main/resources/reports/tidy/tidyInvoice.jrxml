@@ -184,6 +184,7 @@ $F{document.client.postcode} + " " + $F{document.client.city} + ($F{document.cli
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="fd7d27e2-b7c0-491d-8347-3aa91afdd491" x="0" y="0" width="58" height="18"/>
 								<textElement verticalAlignment="Middle">
+									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{sku} == null || $F{sku}.startsWith("::sku")? "": $F{sku}]]></textFieldExpression>

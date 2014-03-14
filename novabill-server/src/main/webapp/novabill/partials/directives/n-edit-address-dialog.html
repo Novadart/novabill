@@ -6,15 +6,15 @@
     <div class="modal-body">
         <form name="form" role="form" novalidate>
 
-            <div class="form-group" ng-class="{'has-error': form.name.$dirty && form.name.$invalid, 'has-success': form.name.$dirty && form.name.$valid}">
+            <div ng-show="!$parent.address.isLegalAddress" class="form-group" ng-class="{'has-error': form.name.$dirty && form.name.$invalid, 'has-success': form.name.$dirty && form.name.$valid}">
                 <label style="font-weight: bold;" class="control-label" for="id">{{'NAME' | translate}} *</label> 
-                <input  type="text" name="name" maxlength="50" ng-model="$parent.address.name" class="form-control" placeholder="{{'ADDRESS_NAME_PLACEHOLDER' | translate}}" required>
+                <input  type="text" name="name" maxlength="50" ng-model="$parent.address.name" class="form-control" placeholder="{{'ADDRESS_NAME_PLACEHOLDER' | translate}}" ng-required="!$parent.address.isLegalAddress">
                 <div ng-show="form.name.$dirty && form.name.$invalid">
                     <span class="text-danger" ng-show="form.name.$error.required">{{'VALIDATION_REQUIRED' | translate}}</span> 
                 </div>
             </div>
             
-            <hr>
+            <hr ng-show="!$parent.address.isLegalAddress">
             
             <div class="form-group" ng-class="{'has-error': form.companyName.$dirty && form.companyName.$invalid, 'has-success': form.companyName.$dirty && form.companyName.$valid}">
                 <label class="control-label" for="companyName">{{'COMPANY_NAME' | translate}} *</label> 

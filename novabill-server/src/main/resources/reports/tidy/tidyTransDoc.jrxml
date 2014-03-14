@@ -2,7 +2,7 @@
 <jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd" name="Transport Document" pageWidth="595" pageHeight="842" columnWidth="555" leftMargin="20" rightMargin="20" topMargin="30" bottomMargin="20" uuid="96f0ca59-afec-4bbb-95f2-0a9732c6c014">
 	<property name="ireport.zoom" value="1.0"/>
 	<property name="ireport.x" value="0"/>
-	<property name="ireport.y" value="328"/>
+	<property name="ireport.y" value="17"/>
 	<style name="table">
 		<box>
 			<pen lineWidth="1.0" lineColor="#000000"/>
@@ -108,7 +108,7 @@
 				<imageExpression><![CDATA[$F{logoInStream}]]></imageExpression>
 			</image>
 		</band>
-		<band height="182" splitType="Stretch">
+		<band height="169" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 				<reportElement uuid="602635c5-8a47-4651-9d4c-e9177e5f3637" x="8" y="0" width="308" height="20"/>
 				<textElement>
@@ -223,6 +223,7 @@ com.novadart.novabill.report.ReportUtils.join("  ",
 							<textField isStretchWithOverflow="true" isBlankWhenNull="true">
 								<reportElement uuid="14f788ce-0b8b-457f-9bc3-4c55e7a8a182" x="0" y="0" width="58" height="18"/>
 								<textElement verticalAlignment="Middle">
+									<font size="8"/>
 									<paragraph leftIndent="3"/>
 								</textElement>
 								<textFieldExpression><![CDATA[$F{sku} == null || $F{sku}.startsWith("::sku")? "": $F{sku}]]></textFieldExpression>

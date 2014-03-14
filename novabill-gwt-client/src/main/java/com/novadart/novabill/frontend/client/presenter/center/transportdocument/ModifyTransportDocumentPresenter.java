@@ -70,11 +70,30 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 		getView().getToAddrCity().setText(loc.getCity());
 		getView().getToAddrCompanyName().setText(loc.getCompanyName());
 		getView().getToAddrPostCode().setText(loc.getPostcode());
-		getView().getToAddrProvince().setSelectedItem(loc.getProvince());
+		if("IT".equalsIgnoreCase(loc.getCountry())){
+			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
+		} else {
+			getView().getToAddrProvince().setEnabled(false);
+		} 
 		getView().getToAddrStreetName().setText(loc.getStreet());
 		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
 		getView().getSetToAddress().setValue(true);
 		getView().getToAddressContainer().setVisible(true);
+		
+		// lock the UI ig the transport document was included in an invoice already
+		if(getTransportDocument().getInvoice() != null){
+			getView().setLocked(true);
+			getView().getReadonlyWarning().setVisible(true);
+			getView().getAbort().setEnabled(true);
+		}
+	}
+	
+	@Override
+	public void onLoad() {
+		// load the button only if readonly
+		if(getTransportDocument().getInvoice() == null){
+			super.onLoad();
+		}
 	}
 
 	@Override

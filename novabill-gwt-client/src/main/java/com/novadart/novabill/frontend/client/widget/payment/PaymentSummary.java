@@ -89,7 +89,7 @@ public class PaymentSummary extends Composite {
 		if(paymentDateContainer.getWidget() instanceof ValidatedDateBox) {
 			ValidatedDateBox db = (ValidatedDateBox) paymentDateContainer.getWidget();
 			db.validate(); // display validation alert if needed
-			return db.getValue();
+			return DocumentUtils.createNormalizedDate(db.getValue());
 		} else {
 			return paymentDueDate;
 		}

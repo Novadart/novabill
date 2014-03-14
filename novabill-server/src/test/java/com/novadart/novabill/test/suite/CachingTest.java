@@ -285,7 +285,7 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void invoiceUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void invoiceUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, DataIntegrityException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
 		Set<InvoiceDTO> result = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(businessID, getYear()));

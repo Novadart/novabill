@@ -36,6 +36,8 @@
 	<g:FlowPanel>
 
 		<g:FlowPanel styleName="{s.docScrollBody}">
+		    <g:Label ui:field="readonlyWarning" styleName="alert alert-warning" text="Il documento non è modificabile perché è già stato incluso in una fattura"></g:Label>
+		
 			<g:Grid styleName="{s.documentMainDetails}">
 				<g:row>
 					<g:customCell>

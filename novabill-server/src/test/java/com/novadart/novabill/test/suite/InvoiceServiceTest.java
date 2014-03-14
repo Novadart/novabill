@@ -41,6 +41,7 @@ import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.EntityType;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
@@ -260,7 +261,7 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
+	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException, DataIntegrityException{
 		Invoice expectedInvoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		expectedInvoice.setNote("Temporary note for this invoice");
 		invoiceService.update(InvoiceDTOFactory.toDTO(expectedInvoice, true));
@@ -277,12 +278,12 @@ public class InvoiceServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedInvoiceNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedInvoiceNullTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException{
 		invoiceService.update(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
+	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException{
 		Invoice invoice = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(invoice, true);
 		invDTO.setId(null);
@@ -397,10 +398,15 @@ public class InvoiceServiceTest extends GWTServiceTest {
 		Set<Long> ids2010 = invoiceIDSet(businessService.getInvoices(businessID, 2010));
 		Set<Long> ids2009 = invoiceIDSet(businessService.getInvoices(businessID, 2009));
 		DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
-		assertEquals(ids2013, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(dateFormat.parse("01-01-2013"), dateFormat.parse("31-12-2013"))));
-		assertEquals(ids2012, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(dateFormat.parse("01-01-2012"), dateFormat.parse("31-12-2012"))));
-		assertEquals(ids2010, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(dateFormat.parse("01-01-2010"), dateFormat.parse("31-12-2010"))));
-		assertEquals(ids2009, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(dateFormat.parse("01-01-2009"), dateFormat.parse("31-12-2009"))));
+		assertEquals(ids2013, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(FilteringDateType.PAYMENT_DUEDATE, dateFormat.parse("01-01-2013"), dateFormat.parse("31-12-2013"))));
+		assertEquals(ids2012, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(FilteringDateType.PAYMENT_DUEDATE, dateFormat.parse("01-01-2012"), dateFormat.parse("31-12-2012"))));
+		assertEquals(ids2010, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(FilteringDateType.PAYMENT_DUEDATE, dateFormat.parse("01-01-2010"), dateFormat.parse("31-12-2010"))));
+		assertEquals(ids2009, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(FilteringDateType.PAYMENT_DUEDATE, dateFormat.parse("01-01-2009"), dateFormat.parse("31-12-2009"))));
+		
+		assertEquals(ids2013, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(FilteringDateType.CREATION_DATE, dateFormat.parse("01-01-2013"), dateFormat.parse("31-12-2013"))));
+		assertEquals(ids2012, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(FilteringDateType.CREATION_DATE, dateFormat.parse("01-01-2012"), dateFormat.parse("31-12-2012"))));
+		assertEquals(ids2010, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(FilteringDateType.CREATION_DATE, dateFormat.parse("01-01-2010"), dateFormat.parse("31-12-2010"))));
+		assertEquals(ids2009, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(FilteringDateType.CREATION_DATE, dateFormat.parse("01-01-2009"), dateFormat.parse("31-12-2009"))));
 	}
 	
 }

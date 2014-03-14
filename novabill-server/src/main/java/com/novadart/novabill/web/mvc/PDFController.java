@@ -32,6 +32,7 @@ import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.report.JasperReportService;
 import com.novadart.novabill.report.ReportUtils;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -116,14 +117,16 @@ public class PDFController{
 	@RequestMapping(method = RequestMethod.GET, value = "/paymentspros", produces = "application/pdf")
 	@ResponseBody
 	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
-	public byte[] getPaymentsProspectPDF(@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date startDate,
-			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date endDate, @RequestParam(value = "token", required = false) String token, 
+	public byte[] getPaymentsProspectPaymentDueDatePDF(@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date startDate,
+			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date endDate,
+			@RequestParam(value = "filteringDateType") FilteringDateType filteringDateType,
+			@RequestParam(value = "token", required = false) String token, 
 			HttpServletResponse response, Locale locale) throws JRException, JasperReportKeyResolutionException {
 		Business business  = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
-		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(startDate, endDate);
+		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(filteringDateType, startDate, endDate);
 		String pdfName = messageSource.getMessage("export.paymentspros.name.pattern", null, "Payments_prospect.pdf", locale);
 		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
-		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(invoices, startDate, endDate), DocumentType.PAYMENTS_PROSPECT, LayoutType.DENSE);
+		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(invoices, startDate, endDate, filteringDateType), DocumentType.PAYMENTS_PROSPECT, LayoutType.DENSE);
 	}
-
+	
 }

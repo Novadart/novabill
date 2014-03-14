@@ -216,5 +216,10 @@ public class SelectPayment extends Composite implements PaymentSummary.Handler {
 	public PaymentTypeDTO getSelectedPayment() {
 		return selectedPayment;
 	}
+
+	public void reset() {
+		showingSummary = false;
+		setupLoader();
+	}
 	
 }

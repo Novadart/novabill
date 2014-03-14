@@ -24,6 +24,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.PaymentDeltaNotNull;
 import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
@@ -35,6 +36,7 @@ import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 
 @Configurable
 @Entity
+@PaymentDeltaNotNull
 public class PaymentType {
 	
 	@Size(max = 255)

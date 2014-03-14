@@ -1,6 +1,7 @@
 package com.novadart.novabill.frontend.client.util;
 
 import java.math.BigDecimal;
+import java.util.Date;
 
 import com.google.gwt.i18n.client.DateTimeFormat;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -42,7 +43,21 @@ public class DocumentUtils {
 		ii.setDescription(description);
 		return ii;
 	}
+	
+	@SuppressWarnings("deprecation")
+	public static Date createNormalizedDate(Date date){
+		Date normDate = (Date) date.clone();
+		normDate.setHours(0);
+		normDate.setMinutes(0);
+		normDate.setSeconds(0);
+		return normDate;
+	}
+	
+	public static boolean isTextOnly(AccountingDocumentItemDTO item){
+		return item.getPrice() == null;
+	}
 
+	
 	private static boolean isEmpty(String str){
 		return str == null || str.isEmpty();
 	}
@@ -54,7 +69,7 @@ public class DocumentUtils {
 				|| isEmpty(client.getCountry())
 				|| isEmpty(client.getName())
 				|| isEmpty(client.getPostcode())
-				|| isEmpty(client.getProvince())
+				|| ("IT".equalsIgnoreCase(client.getCountry()) && isEmpty(client.getProvince()))
 				|| (isEmpty(client.getSsn()) && isEmpty(client.getVatID()) ) ){
 			
 			ClientDialog clientDialog = new ClientDialog(Configuration.getBusiness().getId(), true, callback);

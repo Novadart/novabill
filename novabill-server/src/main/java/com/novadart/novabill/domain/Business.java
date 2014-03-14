@@ -23,6 +23,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
@@ -57,6 +58,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.TaxFieldsNotNull;
 import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
@@ -69,7 +71,10 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @TaxFieldsNotNull
-@NamedQuery(name = "business.allUnpaidInvoicesInDateRante", query = "select i from Invoice i where i.payed = false and :startDate < i.paymentDueDate and i.paymentDueDate < :endDate and i.business.id = :bizID order by i.paymentDueDate")
+@NamedQueries({
+	@NamedQuery(name = "business.allUnpaidInvoicesDueDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.paymentDueDate and i.paymentDueDate <= :endDate and i.business.id = :bizID order by i.paymentDueDate, i.documentID"),
+	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID")
+})
 public class Business implements Serializable, Taxable {
 
 	private static final long serialVersionUID = 261999997691744944L;
@@ -289,8 +294,11 @@ public class Business implements Serializable, Taxable {
 		}
     }
     
-    public List<Invoice> getAllUnpaidInvoicesInDateRange(Date startDate, Date endDate){
-    	return entityManager().createNamedQuery("business.allUnpaidInvoicesInDateRante", Invoice.class).
+    public List<Invoice> getAllUnpaidInvoicesInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) {
+    	if(filteringDateType == null)
+    		throw new RuntimeException("Illegal filter date type!");
+    	String namedQuery = FilteringDateType.PAYMENT_DUEDATE.equals(filteringDateType)? "business.allUnpaidInvoicesDueDateInDateRange": "business.allUnpaidInvoicesCreationDateInDateRange";
+    	return entityManager().createNamedQuery(namedQuery, Invoice.class).
     			setParameter("bizID", getId()).
     			setParameter("startDate", startDate == null? createDateFromString("1-1-1970"): startDate).
     			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();

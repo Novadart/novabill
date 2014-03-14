@@ -7,6 +7,7 @@ import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 
 public class JRDataSourceFactory {
 	
@@ -14,8 +15,8 @@ public class JRDataSourceFactory {
 		return new AccountingDocumentJRDataSource<T>(doc, doc.getAccountingDocumentItems(), businessID).getDataSource();
 	}
 	
-	public static JRBeanCollectionDataSource createDataSource(List<Invoice> invoices, Date startDate, Date endDate){
-		return new PaymentsProspectJRDataSource(invoices, startDate, endDate).getDataSource();
+	public static JRBeanCollectionDataSource createDataSource(List<Invoice> invoices, Date startDate, Date endDate, FilteringDateType filteringDateType){
+		return new PaymentsProspectJRDataSource(invoices, startDate, endDate, filteringDateType).getDataSource();
 	}
 	
 }

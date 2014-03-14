@@ -4,10 +4,10 @@
 <spring:url var="novabillDepsUrl" value="/novabill-deps" />
 <spring:url var="novabillCoreUrl" value="/novabill" />
 
-<script src="${novabillDepsUrl}/angular/angular.min.js"></script>
-<script src="${novabillDepsUrl}/angular/angular-route.min.js"></script>
-<script src="${novabillDepsUrl}/angular/angular-sanitize.min.js"></script>
-<script src="${novabillDepsUrl}/angular/angular-animate.min.js"></script>
+<script src="${novabillDepsUrl}/angular/angular.js"></script>
+<script src="${novabillDepsUrl}/angular/angular-route.js"></script>
+<script src="${novabillDepsUrl}/angular/angular-sanitize.js"></script>
+<script src="${novabillDepsUrl}/angular/angular-animate.js"></script>
 <script src="${novabillDepsUrl}/angular/i18n/angular-locale_it-it.js" type="text/javascript"></script>
 <script src="${novabillDepsUrl}/angular-translate.min.js" type="text/javascript"></script>
 <script src="${novabillDepsUrl}/angular-ui/ui-bootstrap-tpls-0.10.0.min.js" type="text/javascript"></script>

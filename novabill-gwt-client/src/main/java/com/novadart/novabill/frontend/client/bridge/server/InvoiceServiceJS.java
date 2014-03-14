@@ -14,6 +14,7 @@ import com.novadart.novabill.frontend.client.bridge.server.autobean.Invoice;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.InvoicesList;
 import com.novadart.novabill.frontend.client.bridge.server.autobean.Page;
 import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 
@@ -72,11 +73,12 @@ public class InvoiceServiceJS extends ServiceJS {
 		});
 	}
 	
-	public static void getAllUnpaidInDateRange(String startDate, String endDate, final JavaScriptObject callback) {
+	public static void getAllUnpaidInDateRange(String filteringDateType, String startDate, String endDate, final JavaScriptObject callback) {
 		Date sDate = startDate != null ? new Date(Long.parseLong(startDate)) : null;
 		Date eDate = endDate != null ? new Date(Long.parseLong(endDate)) : null;
 		
-		SERVER_FACADE.getInvoiceService().getAllUnpaidInDateRange(sDate, eDate, new ManagedAsyncCallback<List<InvoiceDTO>>() {
+		SERVER_FACADE.getInvoiceService().getAllUnpaidInDateRange(FilteringDateType.valueOf(filteringDateType), sDate, eDate, 
+				new ManagedAsyncCallback<List<InvoiceDTO>>() {
 
 			@Override
 			public void onSuccess(List<InvoiceDTO> result) {
