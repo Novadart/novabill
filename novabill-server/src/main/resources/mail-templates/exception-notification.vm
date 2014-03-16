@@ -1,6 +1,6 @@
 <html>
 <body>
-	<p>${message}</p>
-	<p>${stackTrace}</p>
+	<p>${otherVars.message}</p>
+	<p>${otherVars.stackTrace}</p>
 </body>
 </html>

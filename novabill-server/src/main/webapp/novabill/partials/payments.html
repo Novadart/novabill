@@ -29,8 +29,8 @@
 					<div class="row">
 					     <div class="col-md-3">
                              <div class="form-group">
-                                 <label class="control-label col-md-4">{{'PAYMENTS_STATUS_FILTERING_DATE_TYPE' | translate}}</label>
-                                 <div class="col-md-8">
+                                 <label class="control-label col-md-6">{{'PAYMENTS_STATUS_ORDERING_DATE_TYPE' | translate}}</label>
+                                 <div class="col-md-6">
                                     <p class="input-group input-medium">
                                       <select ng-disabled="loading" class="form-control" ng-model="filteringDateType">
                                         <option value="PAYMENT_DUEDATE">{{'PAYMENTS_STATUS_FILTERING_PAYMENT_DUEDATE' | translate}}</option>
@@ -83,10 +83,10 @@
                              </div>
                          </div>
                          <div class="col-md-3 col-md-offset-1">
-                            <a  ng-disabled="loading" href="javascript:void(0);" class="btn red" ng-click="clear()">
+                            <a  ng-disabled="loading" href="javascript:void(0);" class="btn red col-md-5" ng-click="clear()">
                                 {{'CLEAR' | translate}} <i class="fa fa-eraser"></i>
                             </a>
-                            <a  ng-show="invoices && invoices.length > 0" href="javascript:void(0);" style="margin-left: 20px;" class="btn default" ng-click="print()">
+                            <a  ng-show="invoices && invoices.length > 0" href="javascript:void(0);" class="btn default col-md-5 col-md-offset-1" ng-click="print()">
                                 {{'PAYMENTS_STATUS_PRINT' | translate}} <i class="fa fa-print"></i>
                             </a>
                          </div>
