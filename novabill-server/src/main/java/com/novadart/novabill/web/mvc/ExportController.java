@@ -36,7 +36,6 @@ import com.novadart.novabill.shared.client.data.DataExportClasses;
 @RequestMapping("/private/export")
 public class ExportController {
 
-	public static final String TOKENS_SESSION_FIELD = "export.data.tokens";
 	public static final String CLIENTS_REQUEST_PARAM = "clients";
 	public static final String INVOICES_REQUEST_PARAM = "invoices";
 	public static final String ESTIMATIONS_REQUEST_PARAM = "estimations";
@@ -59,7 +58,7 @@ public class ExportController {
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
 	@Transactional(readOnly = true)
-	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
+	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.EXPORT_DATA_TOKENS_SESSION_FIELD)
 	public void getData(
 			@RequestParam(value = CLIENTS_REQUEST_PARAM, required = false) boolean clients, 
 			@RequestParam(value = INVOICES_REQUEST_PARAM, required = false) boolean invoices,
@@ -105,7 +104,7 @@ public class ExportController {
 	@ResponseBody
 	@RequestMapping(value = "/token", method = RequestMethod.GET)
 	public String getToken(HttpSession session) throws NoSuchAlgorithmException{
-		return xsrfTokenService.generateToken(session, ExportController.TOKENS_SESSION_FIELD);
+		return xsrfTokenService.generateToken(session, XsrfTokenSessionFieldNames.EXPORT_DATA_TOKENS_SESSION_FIELD);
 	}
 
 }

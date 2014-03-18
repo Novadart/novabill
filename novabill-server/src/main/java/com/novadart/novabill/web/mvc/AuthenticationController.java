@@ -60,7 +60,7 @@ public class AuthenticationController{
 	@Value("${activation.period}")
 	private Integer activationPeriod;
 	
-	private String emailTemplateLocation = "mail-templates/activation-notification.vm";
+	private static final String EMAIL_TEMPLATE_LOCATION = "mail-templates/activation-notification.vm";
 	
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
@@ -87,7 +87,7 @@ public class AuthenticationController{
 				URLEncoder.encode(registration.getEmail(), "UTF-8"), URLEncoder.encode(registration.getActivationToken(), "UTF-8"));
 		templateVars.put("activationLink", activationLink);
 		templateVars.put("activationPeriod", activationPeriod);
-		sendMessage(registration.getEmail(), messageSource.getMessage("activation.notification", null, locale), templateVars, emailTemplateLocation);
+		sendMessage(registration.getEmail(), messageSource.getMessage("activation.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
 	}
 	
 	@RequestMapping(value = "/register", method = RequestMethod.POST)

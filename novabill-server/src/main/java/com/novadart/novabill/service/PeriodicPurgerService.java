@@ -19,6 +19,9 @@ public class PeriodicPurgerService {
 	@Value("${forgotpassword.expiration}")
 	private Long forgotPasswordExpiration;
 	
+	@Value("${sharing.expiration}")
+	private Long sharingExpiration;
+	
 	@PersistenceContext
 	private EntityManager entityManager;
 	
@@ -26,6 +29,7 @@ public class PeriodicPurgerService {
 	public void runPurgeTasks(){
 		purgeExpiredRegistration();
 		purgeExpiredForgotPasswordRequest();
+		purgeExpiredInvoiceSharingPermits();
 	}
 	
 	@Async
@@ -33,7 +37,7 @@ public class PeriodicPurgerService {
 	private void purgeExpiredRegistration(){
 		String query = "delete from Registration r where r.creationTime < :threshold";
 		entityManager.createQuery(query)
-			.setParameter("threshold", System.currentTimeMillis() -  registrationExpiration * 3600000l)
+			.setParameter("threshold", System.currentTimeMillis() -  registrationExpiration * 3_600_000l)
 			.executeUpdate();
 	}
 	
@@ -42,7 +46,16 @@ public class PeriodicPurgerService {
 	private void purgeExpiredForgotPasswordRequest(){
 		String query = "delete from ForgotPassword fpr where fpr.creationTime < :threshold";
 		entityManager.createQuery(query)
-			.setParameter("threshold", System.currentTimeMillis() -  forgotPasswordExpiration * 3600000l)
+			.setParameter("threshold", System.currentTimeMillis() -  forgotPasswordExpiration * 3_600_000l)
+			.executeUpdate();
+	}
+	
+	@Async
+	@Transactional
+	private void purgeExpiredInvoiceSharingPermits(){
+		String query = "delete from SharingPermit isp where isp.createdOn < :threshold";
+		entityManager.createQuery(query)
+			.setParameter("threshold", System.currentTimeMillis() -  sharingExpiration * 3_600_000l)
 			.executeUpdate();
 	}
 	

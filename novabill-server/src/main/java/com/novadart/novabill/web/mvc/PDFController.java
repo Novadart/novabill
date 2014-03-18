@@ -41,7 +41,6 @@ import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 @RequestMapping("/private/pdf")
 public class PDFController{
 
-	public static final String TOKENS_SESSION_FIELD = "pdf.generation.tokens";
 	public static final String TOKEN_REQUEST_PARAM = "token";
 
 	@Autowired
@@ -55,7 +54,7 @@ public class PDFController{
 	
 
 	@RequestMapping(method = RequestMethod.GET, value = "/invoices/{id}", produces = "application/pdf")
-	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
+	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
 	@ResponseBody
 	public byte[] getInvoicePDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token,
 			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JasperReportKeyResolutionException, JRException{
@@ -71,7 +70,7 @@ public class PDFController{
 
 	@RequestMapping(method = RequestMethod.GET, value = "/estimations/{id}", produces = "application/pdf")
 	@ResponseBody
-	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
+	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
 	public byte[] getEstimationPDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token, 
 			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JRException, JasperReportKeyResolutionException{
 		Estimation estimation = Estimation.findEstimation(id);
@@ -86,7 +85,7 @@ public class PDFController{
 
 	@RequestMapping(method = RequestMethod.GET, value = "/creditnotes/{id}", produces = "application/pdf")
 	@ResponseBody
-	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
+	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
 	public byte[] getCreditNotePDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token, 
 			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JRException, JasperReportKeyResolutionException{
 		CreditNote creditNote = CreditNote.findCreditNote(id);
@@ -101,7 +100,7 @@ public class PDFController{
 
 	@RequestMapping(method = RequestMethod.GET, value = "/transportdocs/{id}", produces = "application/pdf")
 	@ResponseBody
-	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
+	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
 	public byte[] getTransportDocumentPDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token, 
 			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JRException, JasperReportKeyResolutionException{
 		TransportDocument transportDocument = TransportDocument.findTransportDocument(id);
@@ -116,7 +115,7 @@ public class PDFController{
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/paymentspros", produces = "application/pdf")
 	@ResponseBody
-	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = TOKENS_SESSION_FIELD)
+	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
 	public byte[] getPaymentsProspectPaymentDueDatePDF(@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date startDate,
 			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date endDate,
 			@RequestParam(value = "filteringDateType") FilteringDateType filteringDateType,

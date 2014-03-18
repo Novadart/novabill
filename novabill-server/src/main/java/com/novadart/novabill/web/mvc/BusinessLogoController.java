@@ -44,7 +44,6 @@ public class BusinessLogoController {
 	public static final int LOGO_SIZE_LIMIT = 1024 * 1024; // 1MB
 	public static final LogoFormat DEFAULT_FORMAT = LogoFormat.PNG;
 	public static final String TOKEN_REQUEST_PARAM = "token";
-	public static final String TOKENS_SESSION_FIELD = "business.logo.tokens";
 	
 	@Value("${logoThumbnail.format}")
 	private String logoThumbnailFormat;
@@ -139,7 +138,7 @@ public class BusinessLogoController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@Transactional(readOnly = false)
-	@Xsrf(tokensSessionField = TOKENS_SESSION_FIELD, tokenRequestParam = TOKEN_REQUEST_PARAM)
+	@Xsrf(tokensSessionField = XsrfTokenSessionFieldNames.BUSINESS_LOGO_TOKENS_SESSION_FIELD, tokenRequestParam = TOKEN_REQUEST_PARAM)
 	public String uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws UnsupportedImageFormatException {
 		if(!ServletFileUpload.isMultipartContent(request))
 			return String.valueOf(LogoUploadStatus.ILLEGAL_REQUEST.ordinal());
@@ -193,7 +192,7 @@ public class BusinessLogoController {
 	@RequestMapping(method = RequestMethod.DELETE)
 	@ResponseBody
 	@Transactional(readOnly = false)
-	@Xsrf(tokensSessionField = TOKENS_SESSION_FIELD, tokenRequestParam = TOKEN_REQUEST_PARAM)
+	@Xsrf(tokensSessionField = XsrfTokenSessionFieldNames.BUSINESS_LOGO_TOKENS_SESSION_FIELD, tokenRequestParam = TOKEN_REQUEST_PARAM)
 	public void deleteLogo(){
 		clearLogo(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 	}
