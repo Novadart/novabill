@@ -46,7 +46,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:gwt-paymenttype-test-config.xml")
 @Transactional
-public class PaymentTypeServiceTest extends GWTServiceTest {
+public class PaymentTypeServiceTest extends ServiceTest {
 	
 	@Autowired
 	private PaymentTypeGwtService paymentTypeService;

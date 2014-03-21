@@ -54,7 +54,7 @@ import com.novadart.novabill.shared.client.facade.CommodityGwtService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:gwt-commodity-test-config.xml")
 @Transactional
-public class CommodityServiceTest extends GWTServiceTest {
+public class CommodityServiceTest extends ServiceTest {
 	
 	@Autowired
 	private CommodityGwtService commodityGwtService;

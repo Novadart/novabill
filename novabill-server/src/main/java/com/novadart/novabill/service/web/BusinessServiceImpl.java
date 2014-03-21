@@ -25,6 +25,7 @@ import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
+import com.novadart.novabill.domain.SharingPermit;
 import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
@@ -33,6 +34,7 @@ import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.LogRecordDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
+import com.novadart.novabill.domain.dto.factory.SharingPermitDTOFactory;
 import com.novadart.novabill.domain.dto.factory.TransporterDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
@@ -51,6 +53,7 @@ import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
+import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
@@ -231,6 +234,16 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		for(Transporter transporter: transporters)
 			transporterDTOs.add(TransporterDTOFactory.toDTO(transporter));
 		return transporterDTOs;
+	}
+	
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<SharingPermitDTO> getSharingPermits(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		Set<SharingPermit> sharingPermits = Business.findBusiness(businessID).getSharingPermits();
+		List<SharingPermitDTO> sharingPermitDTOs = new ArrayList<>(sharingPermits.size());
+		for(SharingPermit sharingPermit: sharingPermits)
+			sharingPermitDTOs.add(SharingPermitDTOFactory.toDTO(sharingPermit));
+		return sharingPermitDTOs;
 	}
 	
 	@PreAuthorize("#businessID == principal.business.id")

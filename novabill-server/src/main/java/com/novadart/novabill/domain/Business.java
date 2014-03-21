@@ -144,37 +144,40 @@ public class Business implements Serializable, Taxable {
     private Settings settings = new Settings();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Commodity> commodities = new HashSet<Commodity>();
+    private Set<Commodity> commodities = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<BankAccount> accounts = new HashSet<BankAccount>();
+    private Set<BankAccount> accounts = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Invoice> invoices = new HashSet<Invoice>();
+    private Set<Invoice> invoices = new HashSet<>();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Estimation> estimations = new HashSet<Estimation>();
+    private Set<Estimation> estimations = new HashSet<>();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<CreditNote> creditNotes = new HashSet<CreditNote>();
+    private Set<CreditNote> creditNotes = new HashSet<>();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<TransportDocument> transportDocuments = new HashSet<TransportDocument>();
+    private Set<TransportDocument> transportDocuments = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Client> clients = new HashSet<Client>();
+    private Set<Client> clients = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Principal> principals = new HashSet<Principal>();
+    private Set<Principal> principals = new HashSet<>();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<PaymentType> paymentTypes = new HashSet<PaymentType>();
+    private Set<PaymentType> paymentTypes = new HashSet<>();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<PriceList> priceLists = new HashSet<PriceList>();
+    private Set<PriceList> priceLists = new HashSet<>();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Transporter> transporters = new HashSet<Transporter>();
+    private Set<Transporter> transporters = new HashSet<>();
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+    private Set<SharingPermit> sharingPermits = new HashSet<>();
     
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
@@ -614,6 +617,14 @@ public class Business implements Serializable, Taxable {
 		this.paymentTypes = paymentTypes;
 	}
 	
+	public Set<SharingPermit> getSharingPermits() {
+		return sharingPermits;
+	}
+
+	public void setSharingPermits(Set<SharingPermit> sharingPermits) {
+		this.sharingPermits = sharingPermits;
+	}
+
 	public Set<Transporter> getTransporters() {
 		return transporters;
 	}

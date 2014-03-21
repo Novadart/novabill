@@ -84,7 +84,7 @@ import com.novadart.novabill.shared.client.facade.TransporterGwtService;
 @ContextConfiguration(locations = "classpath*:caching-test-config.xml")
 @Transactional
 @ActiveProfiles("dev")
-public class CachingTest extends GWTServiceTest {
+public class CachingTest extends ServiceTest {
 	
 	@Resource(name = "testPL")
 	private HashMap<String, String> testPL;

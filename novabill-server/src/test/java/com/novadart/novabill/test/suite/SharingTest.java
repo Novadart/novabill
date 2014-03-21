@@ -54,33 +54,33 @@ public class SharingTest {
 		assertEquals(1, SharingPermit.findAllSharingPermits().size());
 	}
 	
-	@Test
-	public void validInvoiceSharingRequestTest(){
-		Long businessID = 1l;
-		String token = "token";
-		new SharingPermit(token, "foo@bar", businessID, System.currentTimeMillis()).persist();
-		SharingPermit.entityManager().flush();
-		assertTrue(sharingService.isValidRequest(businessID, token));
-	}
-	
-	@Test
-	public void invalidInvoiceSharingRequestTest(){
-		Long businessID = 1l;
-		String token = "token";
-		new SharingPermit(token, "foo@bar", businessID, System.currentTimeMillis() - (invoiceSharingExpiration + 1) * 3_600_000l).persist();
-		SharingPermit.entityManager().flush();
-		assertTrue(!sharingService.isValidRequest(businessID, token));
-	}
-	
-	@Test
-	public void purgeExpiredInvoiceSharingPermitsTest(){
-		Long businessID = 1l;
-		String token = "token";
-		new SharingPermit(token, "foo@bar", businessID, System.currentTimeMillis() - (invoiceSharingExpiration + 1) * 3_600_000l).persist();
-		SharingPermit.entityManager().flush();
-		periodicPurgerService.runPurgeTasks();
-		SharingPermit.entityManager().flush();
-		assertEquals(0, SharingPermit.findAllSharingPermits().size());
-	}
+//	@Test
+//	public void validInvoiceSharingRequestTest(){
+//		Long businessID = 1l;
+//		String token = "token";
+//		new SharingPermit(token, "foo@bar", businessID, System.currentTimeMillis()).persist();
+//		SharingPermit.entityManager().flush();
+//		assertTrue(sharingService.isValidRequest(businessID, token));
+//	}
+//	
+//	@Test
+//	public void invalidInvoiceSharingRequestTest(){
+//		Long businessID = 1l;
+//		String token = "token";
+//		new SharingPermit(token, "foo@bar", businessID, System.currentTimeMillis() - (invoiceSharingExpiration + 1) * 3_600_000l).persist();
+//		SharingPermit.entityManager().flush();
+//		assertTrue(!sharingService.isValidRequest(businessID, token));
+//	}
+//	
+//	@Test
+//	public void purgeExpiredInvoiceSharingPermitsTest(){
+//		Long businessID = 1l;
+//		String token = "token";
+//		new SharingPermit(token, "foo@bar", businessID, System.currentTimeMillis() - (invoiceSharingExpiration + 1) * 3_600_000l).persist();
+//		SharingPermit.entityManager().flush();
+//		periodicPurgerService.runPurgeTasks();
+//		SharingPermit.entityManager().flush();
+//		assertEquals(0, SharingPermit.findAllSharingPermits().size());
+//	}
 	
 }

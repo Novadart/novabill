@@ -58,7 +58,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 @ContextConfiguration(locations = "classpath*:gwt-pricelist-test-config.xml")
 @Transactional
 @DirtiesContext
-public class PriceListServiceTest extends GWTServiceTest {
+public class PriceListServiceTest extends ServiceTest {
 
 	@Autowired
 	private PriceListGwtService priceListService;

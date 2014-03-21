@@ -63,7 +63,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 @ContextConfiguration(locations = "classpath*:gwt-invoice-test-config.xml")
 @Transactional
 @ActiveProfiles("dev")
-public class InvoiceServiceTest extends GWTServiceTest {
+public class InvoiceServiceTest extends ServiceTest {
 	
 	@Autowired
 	private InvoiceGwtService invoiceService;

@@ -52,7 +52,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 @ContextConfiguration(locations = "classpath*:gwt-estimation-test-config.xml")
 @Transactional
 @ActiveProfiles("dev")
-public class EstimationServiceTest extends GWTServiceTest {
+public class EstimationServiceTest extends ServiceTest {
 	
 	@Autowired
 	private EstimationGwtService estimationService;

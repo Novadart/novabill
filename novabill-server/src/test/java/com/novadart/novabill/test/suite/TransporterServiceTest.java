@@ -25,7 +25,7 @@ import com.novadart.novabill.shared.client.facade.TransporterGwtService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:gwt-transporter-test-config.xml")
 @Transactional
-public class TransporterServiceTest extends GWTServiceTest{
+public class TransporterServiceTest extends ServiceTest{
 
 	
 	@Autowired

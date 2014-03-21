@@ -48,7 +48,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 @ContextConfiguration(locations = "classpath*:gwt-business-test-config.xml")
 @Transactional
 @ActiveProfiles("dev")
-public class BusinessServiceTest extends GWTServiceTest {
+public class BusinessServiceTest extends ServiceTest {
 	
 	@Autowired
 	private BusinessGwtService businessGwtService;

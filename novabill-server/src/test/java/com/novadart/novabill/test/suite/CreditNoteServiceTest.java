@@ -54,7 +54,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 @ContextConfiguration(locations = "classpath*:gwt-creditnote-test-config.xml")
 @Transactional
 @ActiveProfiles("dev")
-public class CreditNoteServiceTest extends GWTServiceTest {
+public class CreditNoteServiceTest extends ServiceTest {
 	
 	@Autowired
 	private CreditNoteGwtService creditNoteService;

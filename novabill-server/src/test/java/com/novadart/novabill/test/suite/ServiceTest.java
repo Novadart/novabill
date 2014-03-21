@@ -26,9 +26,9 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import com.novadart.novabill.domain.security.Principal;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath*:gwt-test-config.xml")
+@ContextConfiguration(locations = "classpath*:service-test-config.xml")
 @ActiveProfiles("dev")
-public class GWTServiceTest {
+public class ServiceTest {
 	
 	@Resource(name = "userPasswordMap")
 	protected HashMap<String, String> userPasswordMap;

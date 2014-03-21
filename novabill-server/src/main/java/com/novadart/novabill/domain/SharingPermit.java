@@ -8,59 +8,43 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
+import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.annotation.Trimmed;
 
 @Entity
 @Configurable
 public class SharingPermit {
 
-	private String token;
-	
+	@Size(max = 255)
+    @Email
+    @Trimmed
+    @NotNull
 	private String email;
 	
-	private Long businessID;
+	@Size(max = 255)
+	private String description;
 	
-	private Long createdOn;
+	private Long createdOn = System.currentTimeMillis();
 	
-	public SharingPermit() {}
-
-	public SharingPermit(String token, String email, Long businessID, Long createdOn) {
-		this.token = token;
-		this.email = email;
-		this.businessID = businessID;
-		this.createdOn = createdOn;
-	}
-	
-	public SharingPermit(String token, String email, Long businessID){
-		this(token, email, businessID, System.currentTimeMillis());
-	}
-	
-	public static List<SharingPermit> findSharingPermits(Long businessID, String token){
-		String sql = "select o from SharingPermit o where o.token = :tk and o.businessID = :bid";
-		return entityManager().createQuery(sql, SharingPermit.class).
-				setParameter("tk", token).
-				setParameter("bid", businessID).getResultList();
-	}
+	@ManyToOne
+	private Business business;
 	
 	
 	/**
 	 * Getters and setters
 	 */
 	
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
-
 	public String getEmail() {
 		return email;
 	}
@@ -69,20 +53,31 @@ public class SharingPermit {
 		this.email = email;
 	}
 
-	public Long getBusinessID() {
-		return businessID;
+	public String getDescription() {
+		return description;
 	}
 
-	public void setBusinessID(Long businessID) {
-		this.businessID = businessID;
+
+	public void setDescription(String description) {
+		this.description = description;
 	}
-	
+
+
 	public Long getCreatedOn() {
 		return createdOn;
 	}
 
 	public void setCreatedOn(Long createdOn) {
 		this.createdOn = createdOn;
+	}
+	
+	public Business getBusiness() {
+		return business;
+	}
+
+
+	public void setBusiness(Business business) {
+		this.business = business;
 	}
 	
 	/**

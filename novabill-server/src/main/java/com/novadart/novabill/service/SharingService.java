@@ -34,7 +34,7 @@ public class SharingService {
 	public void issueSharingPermitTemporarilyAndNotifyParticipant(Long businessID, String email, MessageSource messageSource, Locale locale){
 		try {
 			String token = tokenGenerator.generateToken();
-			new SharingPermit(token, email, businessID).persist();
+			//new SharingPermit(token, email, businessID).persist();
 			Map<String, Object> templateVars = new HashMap<String, Object>();
 			String sharedInvoicesLink = String.format(sharingUrlPattern, businessID, URLEncoder.encode(token, "UTF-8"));
 			templateVars.put("shareLink", sharedInvoicesLink);
@@ -48,9 +48,9 @@ public class SharingService {
 	}
 
 	public boolean isValidRequest(Long businessID, String token){
-		for(SharingPermit permit: SharingPermit.findSharingPermits(businessID, token))
-			if(3_600_000l * sharingExpiration + permit.getCreatedOn() > System.currentTimeMillis())
-				return true;
+//		for(SharingPermit permit: SharingPermit.findSharingPermits(businessID, token))
+//			if(3_600_000l * sharingExpiration + permit.getCreatedOn() > System.currentTimeMillis())
+//				return true;
 		return false;
 	}
 	

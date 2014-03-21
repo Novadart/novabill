@@ -64,7 +64,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 @ContextConfiguration(locations = "classpath*:gwt-transportdocument-test-config.xml")
 @Transactional
 @ActiveProfiles("dev")
-public class TransportDocumentServiceTest extends GWTServiceTest {
+public class TransportDocumentServiceTest extends ServiceTest {
 	
 	@Autowired
 	private TransportDocumentGwtService transportDocService;
