@@ -1,4 +1,4 @@
-package com.novadart.novabill.service;
+package com.novadart.novabill.service.export.data;
 
 import java.io.BufferedOutputStream;
 import java.io.BufferedWriter;
@@ -38,7 +38,6 @@ import com.novadart.novabill.report.JRDataSourceFactory;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.report.JasperReportService;
 import com.novadart.novabill.report.ReportUtils;
-import com.novadart.novabill.shared.client.data.DataExportClasses;
 
 @Service
 public class DataExporter {
@@ -112,8 +111,8 @@ public class DataExporter {
 		return files;
 	}
 	
-	public File exportData(Set<DataExportClasses> classes, Business business, Logo logo,
-			ReloadableResourceBundleMessageSource messageSource, Locale locale) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, JRException, JasperReportKeyResolutionException{
+	public File exportData(ExportDataBundle exportDataBundle, ReloadableResourceBundleMessageSource messageSource,
+			Locale locale) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, JRException, JasperReportKeyResolutionException {
 		File outDir = new File(dataOutLocation);
 		File zipFile = File.createTempFile("export", ".zip", outDir);
 		ZipOutputStream zipStream = new ZipOutputStream(new BufferedOutputStream(new FileOutputStream(zipFile)));
@@ -123,25 +122,27 @@ public class DataExporter {
 		List<File> creditNoteFiles = null;
 		List<File> transportDocsFiles = null;
 		try {
-			if(classes.contains(DataExportClasses.CLIENT)){
-				clientsData = exportClientData(outDir, business.getClients(), messageSource, locale);
+			if(exportDataBundle.getClients() != null){
+				clientsData = exportClientData(outDir, exportDataBundle.getClients(), messageSource, locale);
 				zipStream.putNextEntry(new ZipEntry(messageSource.getMessage("export.clients.zipentry", null, "clients.csv", locale)));
 				FileInputStream clientDataStream = new FileInputStream(clientsData);
 				IOUtils.copy(clientDataStream, zipStream);
 				clientDataStream.close();
 			}
 			boolean putWatermark = true;
-			if(classes.contains(DataExportClasses.INVOICE))
-				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, business.getInvoices(), logo, DocumentType.INVOICE, business.getId(), putWatermark,
+			Long businessID = exportDataBundle.getBusiness().getId();
+			Logo logo = exportDataBundle.getLogo();
+			if(exportDataBundle.getInvoices() != null)
+				invoicesFiles = exportAccountingDocumentsData(outDir, zipStream, exportDataBundle.getInvoices(), logo, DocumentType.INVOICE, businessID, putWatermark,
 						messageSource.getMessage("export.invoices.zipentry.pattern", null, "invoices/invoice_%d_%d_%s.pdf", locale));
-			if(classes.contains(DataExportClasses.ESTIMATION))
-				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, business.getEstimations(), logo, DocumentType.ESTIMATION, business.getId(), putWatermark,
+			if(exportDataBundle.getEstimations() != null)
+				estimationFiles = exportAccountingDocumentsData(outDir, zipStream, exportDataBundle.getEstimations(), logo, DocumentType.ESTIMATION, businessID, putWatermark,
 						messageSource.getMessage("export.estimations.zipentry.pattern", null, "estimations/estimation_%d_%d_%s.pdf", locale));
-			if(classes.contains(DataExportClasses.CREDIT_NOTE))
-				creditNoteFiles = exportAccountingDocumentsData(outDir, zipStream, business.getCreditNotes(), logo, DocumentType.CREDIT_NOTE, business.getId(), putWatermark,
+			if(exportDataBundle.getCreditNotes() != null)
+				creditNoteFiles = exportAccountingDocumentsData(outDir, zipStream, exportDataBundle.getCreditNotes(), logo, DocumentType.CREDIT_NOTE, businessID, putWatermark,
 						messageSource.getMessage("export.creditnotes.zipentry.pattern", null, "creditnotes/creditnotes_%d_%d_%s.pdf", locale));
-			if(classes.contains(DataExportClasses.TRANSPORT_DOCUMENT))
-				transportDocsFiles = exportAccountingDocumentsData(outDir, zipStream, business.getTransportDocuments(), logo, DocumentType.TRANSPORT_DOCUMENT, business.getId(), putWatermark,
+			if(exportDataBundle.getTransportDocuments() != null)
+				transportDocsFiles = exportAccountingDocumentsData(outDir, zipStream, exportDataBundle.getTransportDocuments(), logo, DocumentType.TRANSPORT_DOCUMENT, businessID, putWatermark,
 						messageSource.getMessage("export.transportdoc.zipentry.pattern", null, "transportdocs/transportdocs_%d_%d_%s.pdf", locale));
 				
 			zipStream.close();
