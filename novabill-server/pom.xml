@@ -25,7 +25,7 @@
 			<scope>runtime</scope>
 			<type>war</type>
 		</dependency>
- 		<dependency>
+		<dependency>
 			<groupId>com.novadart.utils</groupId>
 			<artifactId>novadart-utils</artifactId>
 		</dependency>
@@ -85,16 +85,13 @@
 			<artifactId>spring-context-support</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>postgresql</groupId>
+			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -278,12 +275,12 @@
 			<artifactId>itext</artifactId>
 		</dependency>
 
-        <!-- Disabled dependencies -->
-        <dependency>
-            <groupId>commons-logging</groupId>
-            <artifactId>commons-logging</artifactId>
-            <scope>provided</scope>
-        </dependency>
+		<!-- Disabled dependencies -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<scope>provided</scope>
+		</dependency>
 
 	</dependencies>
 
@@ -431,30 +428,6 @@
 				<artifactId>tomcat7-maven-plugin</artifactId>
 				<configuration>
 					<contextFile>${basedir}/tomcat/context.xml</contextFile>
-				</configuration>
-			</plugin>
-
-			<!-- IDE -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<configuration>
-					<wtpversion>2.0</wtpversion>
-					<additionalBuildcommands>
-						<buildCommand>
-							<name>org.springframework.ide.eclipse.core.springbuilder</name>
-						</buildCommand>
-						<buildCommand>
-							<name>org.eclipse.ajdt.core.ajbuilder</name>
-							<arguments>
-								<aspectPath>org.springframework.aspects</aspectPath>
-							</arguments>
-						</buildCommand>
-					</additionalBuildcommands>
-					<additionalProjectnatures>
-						<projectnature>org.eclipse.ajdt.ui.ajnature</projectnature>
-						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-					</additionalProjectnatures>
 				</configuration>
 			</plugin>
 		</plugins>
