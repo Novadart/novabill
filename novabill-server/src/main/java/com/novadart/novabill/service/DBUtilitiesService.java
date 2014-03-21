@@ -1,30 +1,16 @@
 package com.novadart.novabill.service;
 
-import java.io.File;
 import java.io.IOException;
 import java.math.BigDecimal;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Map;
-import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Scheduled;
-import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.google.common.base.Joiner;
-import com.google.common.base.Strings;
-import com.healthmarketscience.jackcess.DatabaseBuilder;
-import com.healthmarketscience.jackcess.Row;
-import com.healthmarketscience.jackcess.Table;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
-import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.EmailPasswordHolder;
 import com.novadart.novabill.domain.Endpoint;
@@ -120,132 +106,132 @@ public class DBUtilitiesService {
 		return false;
 	}
 	
-	private <T> T safeGet(Row r, String column, T defaultVal){
-		Object res = r.get(column);
-		return res == null? defaultVal: (T)res;
-	}
+//	private <T> T safeGet(Row r, String column, T defaultVal){
+//		Object res = r.get(column);
+//		return res == null? defaultVal: (T)res;
+//	}
 	
-	private Set<Client> createClients(Business business) throws IOException{
-		Set<Client> faultyClients = new HashSet<>();
-		PriceList defaultPL = business.getPriceLists().iterator().next();
-		Table table = DatabaseBuilder.open(new File(blmDBPath)).getTable("CLIENTI");
-		for(Row row: table){
-			
-//			Integer id = safeGet(row, "CodCli", -1);
-//			System.out.println(safeGet(row, "CodCli", -1l));
-			
-			Client client = new Client();
-			client.setName(safeGet(row, "RagSoc", "")); //Name
-			String[] addressTkns = safeGet(row, "Indirizzo", "").split("\r\n");
-			client.setAddress(addressTkns[0]); // Address
-			if(addressTkns.length > 1){
-				addressTkns = addressTkns[addressTkns.length - 1].split(" ");
-				client.setPostcode(addressTkns[0]);
-				client.setCity(Joiner.on(" ").join(Arrays.copyOfRange(addressTkns, 1, addressTkns.length - 1)).trim()); //City
-				String provinceToken = addressTkns[addressTkns.length - 1];
-				String provinceStr = provinceToken.substring(1, provinceToken.length() - 1).toUpperCase();
-				if(provinceStr.length() > 2) //Province
-					client.setProvince("XX");
-				else
-					client.setProvince(provinceStr);
-				//System.out.println(provinceStr);
-			}
-			if(StringUtils.isEmpty(client.getCity())){
-				client.setCity("BOGUS CITY");
-				faultyClients.add(client);
-			}
-			if(StringUtils.isEmpty(client.getProvince())){
-				client.setProvince("XX");
-				faultyClients.add(client);
-			}
-				
-			String piva = safeGet(row, "CF_PIVA", ""); //Vat and Ssn
-			if(piva.contains("-")){
-				String[] pivaTkns = piva.split("-");
-				client.setVatID("IT" + Strings.nullToEmpty(pivaTkns[0]));
-				client.setSsn(Joiner.on("").join(Strings.nullToEmpty(pivaTkns[1]).split(" ")));
-			}else{
-				String nPiva = Strings.nullToEmpty(Joiner.on("").join(piva.split(" ")));
-				if(Strings.isNullOrEmpty(nPiva)){
-					client.setVatID(Strings.padEnd("IT", 13, '0'));
-					faultyClients.add(client);
-				}else if(StringUtils.isNumeric(nPiva))
-					client.setVatID("IT" + nPiva);
-				else
-					client.setSsn(nPiva);
-			}
-			String nphoneFax = Strings.nullToEmpty(safeGet(row, "Tel_Fax", ""));
-			if(!Strings.isNullOrEmpty(nphoneFax) && !containsAlphanumericChar(nphoneFax)){
-				if(nphoneFax.contains("-"))
-					client.setPhone(nphoneFax.split("-")[0].trim());
-				else
-					client.setPhone(nphoneFax);
-			}
-				
-			
-			client.setCountry("IT");
-			
-			client.getContact().setEmail("");
-			
-			//System.out.println(client.getPhone());
-			
-			client.setBusiness(business);
-			business.getClients().add(client);
-			client.setDefaultPriceList(defaultPL);
-			defaultPL.getClients().add(client);
-		}
-		return faultyClients;
-	}
-	
-	private void createCommodities(Business business) throws IOException{
-		Map<String, Commodity> comMap = new HashMap<>();
-		Table table = DatabaseBuilder.open(new File(blmDBPath)).getTable("ARTICOLI");
-		for(Row row: table){
-			Commodity commodity = new Commodity();
-			String sku = safeGet(row, "CodArt", "");
-			commodity.setSku(sku);
-			String descr = safeGet(row, "Descr", "");
-			String dim = safeGet(row, "Dim", "");
-			commodity.setService(false);
-			commodity.setUnitOfMeasure("pz.");
-			commodity.setDescription(descr + ". Dimensioni: " + dim);
-			commodity.setTax(new BigDecimal("22.00"));
-			commodity.setBusiness(business);
-			business.getCommodities().add(commodity);
-			comMap.put(sku, commodity);
-		}
-		table = DatabaseBuilder.open(new File(blmDBPath)).getTable("RIGHE_LIST");
-		PriceList defaultPL = business.getPriceLists().iterator().next();
-		Set<String> skus = new HashSet<>();
-		for(Row row:table){
-			Integer id = safeGet(row, "CodListino", -1);
-			if(id == 1){
-				String sku = safeGet(row, "CodArt", "");
-				Commodity commodity = comMap.get(sku);
-				BigDecimal prezzo = safeGet(row, "Prezzo", new BigDecimal("0.00"));
-				Price price = new Price();
-				price.setPriceValue(prezzo);
-				price.setPriceType(PriceType.FIXED);
-				price.setCommodity(commodity);
-				commodity.getPrices().add(price);
-				price.setPriceList(defaultPL);
-				defaultPL.getPrices().add(price);
-				skus.add(sku);
-			}
-		}
-		for(String sku: comMap.keySet()){
-			if(!skus.contains(sku)){
-				Price price = new Price();
-				price.setPriceValue(new BigDecimal("0.0"));
-				price.setPriceType(PriceType.FIXED);
-				Commodity commodity = comMap.get(sku); 
-				price.setCommodity(commodity);
-				commodity.getPrices().add(price);
-				price.setPriceList(defaultPL);
-				defaultPL.getPrices().add(price);
-			}
-		}
-	}
+//	private Set<Client> createClients(Business business) throws IOException{
+//		Set<Client> faultyClients = new HashSet<>();
+//		PriceList defaultPL = business.getPriceLists().iterator().next();
+//		Table table = DatabaseBuilder.open(new File(blmDBPath)).getTable("CLIENTI");
+//		for(Row row: table){
+//			
+////			Integer id = safeGet(row, "CodCli", -1);
+////			System.out.println(safeGet(row, "CodCli", -1l));
+//			
+//			Client client = new Client();
+//			client.setName(safeGet(row, "RagSoc", "")); //Name
+//			String[] addressTkns = safeGet(row, "Indirizzo", "").split("\r\n");
+//			client.setAddress(addressTkns[0]); // Address
+//			if(addressTkns.length > 1){
+//				addressTkns = addressTkns[addressTkns.length - 1].split(" ");
+//				client.setPostcode(addressTkns[0]);
+//				client.setCity(Joiner.on(" ").join(Arrays.copyOfRange(addressTkns, 1, addressTkns.length - 1)).trim()); //City
+//				String provinceToken = addressTkns[addressTkns.length - 1];
+//				String provinceStr = provinceToken.substring(1, provinceToken.length() - 1).toUpperCase();
+//				if(provinceStr.length() > 2) //Province
+//					client.setProvince("XX");
+//				else
+//					client.setProvince(provinceStr);
+//				//System.out.println(provinceStr);
+//			}
+//			if(StringUtils.isEmpty(client.getCity())){
+//				client.setCity("BOGUS CITY");
+//				faultyClients.add(client);
+//			}
+//			if(StringUtils.isEmpty(client.getProvince())){
+//				client.setProvince("XX");
+//				faultyClients.add(client);
+//			}
+//				
+//			String piva = safeGet(row, "CF_PIVA", ""); //Vat and Ssn
+//			if(piva.contains("-")){
+//				String[] pivaTkns = piva.split("-");
+//				client.setVatID("IT" + Strings.nullToEmpty(pivaTkns[0]));
+//				client.setSsn(Joiner.on("").join(Strings.nullToEmpty(pivaTkns[1]).split(" ")));
+//			}else{
+//				String nPiva = Strings.nullToEmpty(Joiner.on("").join(piva.split(" ")));
+//				if(Strings.isNullOrEmpty(nPiva)){
+//					client.setVatID(Strings.padEnd("IT", 13, '0'));
+//					faultyClients.add(client);
+//				}else if(StringUtils.isNumeric(nPiva))
+//					client.setVatID("IT" + nPiva);
+//				else
+//					client.setSsn(nPiva);
+//			}
+//			String nphoneFax = Strings.nullToEmpty(safeGet(row, "Tel_Fax", ""));
+//			if(!Strings.isNullOrEmpty(nphoneFax) && !containsAlphanumericChar(nphoneFax)){
+//				if(nphoneFax.contains("-"))
+//					client.setPhone(nphoneFax.split("-")[0].trim());
+//				else
+//					client.setPhone(nphoneFax);
+//			}
+//				
+//			
+//			client.setCountry("IT");
+//			
+//			client.getContact().setEmail("");
+//			
+//			//System.out.println(client.getPhone());
+//			
+//			client.setBusiness(business);
+//			business.getClients().add(client);
+//			client.setDefaultPriceList(defaultPL);
+//			defaultPL.getClients().add(client);
+//		}
+//		return faultyClients;
+//	}
+//	
+//	private void createCommodities(Business business) throws IOException{
+//		Map<String, Commodity> comMap = new HashMap<>();
+//		Table table = DatabaseBuilder.open(new File(blmDBPath)).getTable("ARTICOLI");
+//		for(Row row: table){
+//			Commodity commodity = new Commodity();
+//			String sku = safeGet(row, "CodArt", "");
+//			commodity.setSku(sku);
+//			String descr = safeGet(row, "Descr", "");
+//			String dim = safeGet(row, "Dim", "");
+//			commodity.setService(false);
+//			commodity.setUnitOfMeasure("pz.");
+//			commodity.setDescription(descr + ". Dimensioni: " + dim);
+//			commodity.setTax(new BigDecimal("22.00"));
+//			commodity.setBusiness(business);
+//			business.getCommodities().add(commodity);
+//			comMap.put(sku, commodity);
+//		}
+//		table = DatabaseBuilder.open(new File(blmDBPath)).getTable("RIGHE_LIST");
+//		PriceList defaultPL = business.getPriceLists().iterator().next();
+//		Set<String> skus = new HashSet<>();
+//		for(Row row:table){
+//			Integer id = safeGet(row, "CodListino", -1);
+//			if(id == 1){
+//				String sku = safeGet(row, "CodArt", "");
+//				Commodity commodity = comMap.get(sku);
+//				BigDecimal prezzo = safeGet(row, "Prezzo", new BigDecimal("0.00"));
+//				Price price = new Price();
+//				price.setPriceValue(prezzo);
+//				price.setPriceType(PriceType.FIXED);
+//				price.setCommodity(commodity);
+//				commodity.getPrices().add(price);
+//				price.setPriceList(defaultPL);
+//				defaultPL.getPrices().add(price);
+//				skus.add(sku);
+//			}
+//		}
+//		for(String sku: comMap.keySet()){
+//			if(!skus.contains(sku)){
+//				Price price = new Price();
+//				price.setPriceValue(new BigDecimal("0.0"));
+//				price.setPriceType(PriceType.FIXED);
+//				Commodity commodity = comMap.get(sku); 
+//				price.setCommodity(commodity);
+//				commodity.getPrices().add(price);
+//				price.setPriceList(defaultPL);
+//				defaultPL.getPrices().add(price);
+//			}
+//		}
+//	}
 	
 	private void createDefaultPriceListForExistingBusinesses(){
 		for(Business business: Business.findAllBusinesses()){
