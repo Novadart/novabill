@@ -25,7 +25,6 @@
 	</scm>
 
 	<modules>
-		<module>novabill-scala-utils</module>
 		<module>novabill-gwt-client</module>
 		<module>novabill-gwt-shared</module>
 		<module>novabill-android-client</module>
@@ -71,11 +70,6 @@
 			</dependency>
 
 			<dependency>
-				<groupId>com.google.gwt.google-apis</groupId>
-				<artifactId>gwt-maps</artifactId>
-				<version>1.0.4</version>
-			</dependency>
-			<dependency>
 				<groupId>com.google.gwt</groupId>
 				<artifactId>gwt-user</artifactId>
 				<version>${gwt.version}</version>
@@ -105,33 +99,6 @@
 				<artifactId>javax.servlet-api</artifactId>
 				<version>3.0.1</version>
 			</dependency>
-
-			<!-- Scala -->
-			<dependency>
-				<groupId>org.scala-lang</groupId>
-				<artifactId>scala-library</artifactId>
-				<version>2.9.2</version>
-			</dependency>
-
-			<!-- Scala Testing -->
-			<dependency>
-				<groupId>org.scalacheck</groupId>
-				<artifactId>scalacheck_2.9.2</artifactId>
-				<version>1.10.0</version>
-			</dependency>
-			<dependency>
-				<groupId>org.scalatest</groupId>
-				<artifactId>scalatest_2.9.2</artifactId>
-				<version>1.9.1</version>
-				<scope>test</scope>
-			</dependency>
-			<dependency>
-				<groupId>org.specs2</groupId>
-				<artifactId>specs2_2.9.2</artifactId>
-				<version>1.12.4.1</version>
-			</dependency>
-			<!-- -->
-
 
 			<!-- Spring dependencies -->
 			<dependency>
@@ -403,11 +370,6 @@
 				<version>1.6</version>
 			</dependency>
 			<dependency>
-				<groupId>com.novadart.services.shared</groupId>
-				<artifactId>novadart-services-shared</artifactId>
-				<version>1.0</version>
-			</dependency>
-			<dependency>
 				<groupId>commons-io</groupId>
 				<artifactId>commons-io</artifactId>
 				<version>1.3.2</version>
@@ -594,11 +556,6 @@
 						</emulator>
 					</configuration>
 					<extensions>true</extensions>
-				</plugin>
-				<plugin>
-					<groupId>net.alchim31.maven</groupId>
-					<artifactId>scala-maven-plugin</artifactId>
-					<version>3.1.3</version>
 				</plugin>
 				<plugin>
 					<groupId>org.codehaus.mojo</groupId>

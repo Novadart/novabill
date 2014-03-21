@@ -1,7 +1,6 @@
 package com.novadart.novabill.service;
 
 import java.io.IOException;
-import java.math.BigDecimal;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -17,14 +16,10 @@ import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.PaymentType;
-import com.novadart.novabill.domain.Price;
-import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.shared.client.data.LayoutType;
-import com.novadart.novabill.shared.client.data.PriceListConstants;
-import com.novadart.novabill.shared.client.data.PriceType;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 
@@ -32,7 +27,7 @@ import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 //@Service
 public class DBUtilitiesService {
 	
-	private String blmDBPath = "/tmp/DATI.mdb";
+//	private String blmDBPath = "/tmp/DATI.mdb";
 	
 	@PersistenceContext
 	private EntityManager em;
@@ -60,51 +55,51 @@ public class DBUtilitiesService {
 		
 	}
 	
-	private Principal createPrincipal() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
-		Registration registration = new Registration();
-		registration.setEmail("info@manufattiblm.it");
-		setPrivateFieldForRegistration(registration, "password", "30a385db4f43cff8fdcc3f00633fd294a4c1a1a42eab56e721f242b12d018309"); //avoid password hashing
-		Principal principal = new Principal(registration);
-		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
-		principal.setPassword("m4tte0:590");
-		return principal.merge();
-	}
-	
-	private Business createBusiness(Principal principal) throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
-		Business business = new Business();
-		for(PaymentType pType: paymentTypes){
-			PaymentType paymentType = null;
-			try {
-				paymentType = pType.clone();
-			} catch (CloneNotSupportedException e) {
-				throw new com.novadart.novabill.shared.client.exception.CloneNotSupportedException();
-			}
-			paymentType.setBusiness(business);
-			business.getPaymentTypes().add(paymentType);
-		}
-		business.setName("BLM MANUFATTI IN CEMENTO di Bruseghin Matteo");
-		business.setAddress("Via Leonardo da Vinci 39");
-		business.setCity("Campo San Martino");
-		business.setPostcode("35010");
-		business.setProvince("PD");
-		business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
-		business.setVatID("IT03971280288");
-		business.setSsn("BRSMTT75P10B563Y");
-		business.setCountry("IT");
-		business.getPrincipals().add(principal);
-		principal.setBusiness(business);
-		PriceList publicPriceList = new PriceList(PriceListConstants.DEFAULT);
-		publicPriceList.setBusiness(business);
-		business.getPriceLists().add(publicPriceList);
-		return business.merge();
-	}
-	
-	private boolean containsAlphanumericChar(String s){
-		for(char ch:s.toCharArray())
-			if(Character.isAlphabetic(ch))
-				return true;
-		return false;
-	}
+//	private Principal createPrincipal() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+//		Registration registration = new Registration();
+//		registration.setEmail("info@manufattiblm.it");
+//		setPrivateFieldForRegistration(registration, "password", "30a385db4f43cff8fdcc3f00633fd294a4c1a1a42eab56e721f242b12d018309"); //avoid password hashing
+//		Principal principal = new Principal(registration);
+//		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
+//		principal.setPassword("m4tte0:590");
+//		return principal.merge();
+//	}
+//	
+//	private Business createBusiness(Principal principal) throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
+//		Business business = new Business();
+//		for(PaymentType pType: paymentTypes){
+//			PaymentType paymentType = null;
+//			try {
+//				paymentType = pType.clone();
+//			} catch (CloneNotSupportedException e) {
+//				throw new com.novadart.novabill.shared.client.exception.CloneNotSupportedException();
+//			}
+//			paymentType.setBusiness(business);
+//			business.getPaymentTypes().add(paymentType);
+//		}
+//		business.setName("BLM MANUFATTI IN CEMENTO di Bruseghin Matteo");
+//		business.setAddress("Via Leonardo da Vinci 39");
+//		business.setCity("Campo San Martino");
+//		business.setPostcode("35010");
+//		business.setProvince("PD");
+//		business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
+//		business.setVatID("IT03971280288");
+//		business.setSsn("BRSMTT75P10B563Y");
+//		business.setCountry("IT");
+//		business.getPrincipals().add(principal);
+//		principal.setBusiness(business);
+//		PriceList publicPriceList = new PriceList(PriceListConstants.DEFAULT);
+//		publicPriceList.setBusiness(business);
+//		business.getPriceLists().add(publicPriceList);
+//		return business.merge();
+//	}
+//	
+//	private boolean containsAlphanumericChar(String s){
+//		for(char ch:s.toCharArray())
+//			if(Character.isAlphabetic(ch))
+//				return true;
+//		return false;
+//	}
 	
 //	private <T> T safeGet(Row r, String column, T defaultVal){
 //		Object res = r.get(column);
@@ -232,22 +227,22 @@ public class DBUtilitiesService {
 //			}
 //		}
 //	}
-	
-	private void createDefaultPriceListForExistingBusinesses(){
-		for(Business business: Business.findAllBusinesses()){
-			if(business.getPrincipals().iterator().next().getUsername().equals("info@manufattiblm.it"))
-				continue;
-			PriceList publicPriceList = new PriceList(PriceListConstants.DEFAULT);
-			publicPriceList.setBusiness(business);
-			business.getPriceLists().add(publicPriceList);
-			publicPriceList.persist();
-			PriceList.entityManager().flush();
-			for(Client client:business.getClients()){
-				client.setDefaultPriceList(publicPriceList);
-				publicPriceList.getClients().add(client);
-			}
-		}
-	}
+//	
+//	private void createDefaultPriceListForExistingBusinesses(){
+//		for(Business business: Business.findAllBusinesses()){
+//			if(business.getPrincipals().iterator().next().getUsername().equals("info@manufattiblm.it"))
+//				continue;
+//			PriceList publicPriceList = new PriceList(PriceListConstants.DEFAULT);
+//			publicPriceList.setBusiness(business);
+//			business.getPriceLists().add(publicPriceList);
+//			publicPriceList.persist();
+//			PriceList.entityManager().flush();
+//			for(Client client:business.getClients()){
+//				client.setDefaultPriceList(publicPriceList);
+//				publicPriceList.getClients().add(client);
+//			}
+//		}
+//	}
 	
 	public void createSecondBusiness() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		Registration registration = new Registration();
@@ -281,84 +276,84 @@ public class DBUtilitiesService {
 		
 	}
 	
-	private void createThirdBusiness() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
-		Registration registration = new Registration();
-		registration.setEmail("info@cyclostore.it");
-		setPrivateFieldForRegistration(registration, "password", "b02801478c8fa876cb8e487f78ccd20b0ac24e321e00380cfef6f6804d62cb05"); //avoid password hashing
-		Principal principal = new Principal(registration);
-		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
-		principal.setPassword("cyclo2014");
-		Business business = new Business();
-		for(PaymentType pType: paymentTypes){
-			PaymentType paymentType = null;
-			try {
-				paymentType = pType.clone();
-			} catch (CloneNotSupportedException e) {
-				throw new com.novadart.novabill.shared.client.exception.CloneNotSupportedException();
-			}
-			paymentType.setBusiness(business);
-			business.getPaymentTypes().add(paymentType);
-		}
-		business.setName("CYCLOSTORE");
-		business.setAddress("Via Busiago, 69");
-		business.setCity("Campo San Martino");
-		business.setPostcode("35010");
-		business.setProvince("PD");
-		business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
-		business.setVatID("IT04782700282");
-		business.setSsn("PTTRSE87B03C743C");
-		business.setCountry("IT");
-		business.getPrincipals().add(principal);
-		principal.setBusiness(business);
-		PriceList publicPriceList = new PriceList(PriceListConstants.DEFAULT);
-		publicPriceList.setBusiness(business);
-		business.getPriceLists().add(publicPriceList);
-		business.persist();
-	}
-	
-	private void fixPrices(){
-		for(Price price: Price.findAllPrices()){
-			if(PriceType.DISCOUNT_PERCENT.equals(price.getPriceType()))
-				price.setPriceType(PriceType.FIXED);
-			else if(PriceType.FIXED.equals(price.getPriceType())){
-				if(price.getPriceValue().compareTo(BigDecimal.ZERO) == -1){ //less than zero
-					price.setPriceType(PriceType.DISCOUNT_PERCENT);
-					price.setPriceValue(price.getPriceValue().negate());
-				}else
-					price.setPriceType(PriceType.OVERCHARGE_PERCENT);
-			}
-		}
-	}
-	
-	private void fixPaymentTypes(){
-		for(PaymentType pType: PaymentType.findAllPaymentTypes()){
-			switch (pType.getPaymentDateGenerator()) {
-			case END_OF_MONTH:
-			case IMMEDIATE:
-				pType.setPaymentDeltaType(PaymentDeltaType.COMMERCIAL_MONTH);
-				break;
-
-			default:
-				break;
-			}
-		}
-	}
-	
-	
-	private void fixInvoices(){
-		for(Invoice invoice: Invoice.findAllInvoices()){
-			switch (invoice.getPaymentDateGenerator()) {
-			case END_OF_MONTH:
-				invoice.setSecondaryPaymentDateDelta(0);
-			case IMMEDIATE:
-				invoice.setPaymentDeltaType(PaymentDeltaType.COMMERCIAL_MONTH);
-				break;
-
-			default:
-				break;
-			}
-		}
-	}
+//	private void createThirdBusiness() throws IllegalArgumentException, IllegalAccessException, NoSuchFieldException, SecurityException, com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
+//		Registration registration = new Registration();
+//		registration.setEmail("info@cyclostore.it");
+//		setPrivateFieldForRegistration(registration, "password", "b02801478c8fa876cb8e487f78ccd20b0ac24e321e00380cfef6f6804d62cb05"); //avoid password hashing
+//		Principal principal = new Principal(registration);
+//		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
+//		principal.setPassword("cyclo2014");
+//		Business business = new Business();
+//		for(PaymentType pType: paymentTypes){
+//			PaymentType paymentType = null;
+//			try {
+//				paymentType = pType.clone();
+//			} catch (CloneNotSupportedException e) {
+//				throw new com.novadart.novabill.shared.client.exception.CloneNotSupportedException();
+//			}
+//			paymentType.setBusiness(business);
+//			business.getPaymentTypes().add(paymentType);
+//		}
+//		business.setName("CYCLOSTORE");
+//		business.setAddress("Via Busiago, 69");
+//		business.setCity("Campo San Martino");
+//		business.setPostcode("35010");
+//		business.setProvince("PD");
+//		business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
+//		business.setVatID("IT04782700282");
+//		business.setSsn("PTTRSE87B03C743C");
+//		business.setCountry("IT");
+//		business.getPrincipals().add(principal);
+//		principal.setBusiness(business);
+//		PriceList publicPriceList = new PriceList(PriceListConstants.DEFAULT);
+//		publicPriceList.setBusiness(business);
+//		business.getPriceLists().add(publicPriceList);
+//		business.persist();
+//	}
+//	
+//	private void fixPrices(){
+//		for(Price price: Price.findAllPrices()){
+//			if(PriceType.DISCOUNT_PERCENT.equals(price.getPriceType()))
+//				price.setPriceType(PriceType.FIXED);
+//			else if(PriceType.FIXED.equals(price.getPriceType())){
+//				if(price.getPriceValue().compareTo(BigDecimal.ZERO) == -1){ //less than zero
+//					price.setPriceType(PriceType.DISCOUNT_PERCENT);
+//					price.setPriceValue(price.getPriceValue().negate());
+//				}else
+//					price.setPriceType(PriceType.OVERCHARGE_PERCENT);
+//			}
+//		}
+//	}
+//	
+//	private void fixPaymentTypes(){
+//		for(PaymentType pType: PaymentType.findAllPaymentTypes()){
+//			switch (pType.getPaymentDateGenerator()) {
+//			case END_OF_MONTH:
+//			case IMMEDIATE:
+//				pType.setPaymentDeltaType(PaymentDeltaType.COMMERCIAL_MONTH);
+//				break;
+//
+//			default:
+//				break;
+//			}
+//		}
+//	}
+//	
+//	
+//	private void fixInvoices(){
+//		for(Invoice invoice: Invoice.findAllInvoices()){
+//			switch (invoice.getPaymentDateGenerator()) {
+//			case END_OF_MONTH:
+//				invoice.setSecondaryPaymentDateDelta(0);
+//			case IMMEDIATE:
+//				invoice.setPaymentDeltaType(PaymentDeltaType.COMMERCIAL_MONTH);
+//				break;
+//
+//			default:
+//				break;
+//			}
+//		}
+//	}
 	
 	private void fixInvoiceCreatedFromTransDocFlag(){
 		for(Invoice invoice: Invoice.findAllInvoices()){

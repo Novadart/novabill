@@ -25,7 +25,7 @@
 			<scope>runtime</scope>
 			<type>war</type>
 		</dependency>
-		<dependency>
+ 		<dependency>
 			<groupId>com.novadart.utils</groupId>
 			<artifactId>novadart-utils</artifactId>
 		</dependency>
