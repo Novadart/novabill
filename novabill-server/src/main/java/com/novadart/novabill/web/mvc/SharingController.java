@@ -43,7 +43,7 @@ public class SharingController {
 	
 	@ResponseBody
 	@RequestMapping(value = "/private/share/{email}", method = RequestMethod.POST)
-	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.SHARING_TOKENS_SESSION_FIELD)
+	//@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.SHARING_TOKENS_SESSION_FIELD)
 	public void issueSharingPermitTemporarily(@PathVariable String email, Locale locale, HttpSession session){
 		sharingService.issueSharingPermitTemporarilyAndNotifyParticipant(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), email, messageSource, locale);
 	}
