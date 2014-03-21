@@ -21,10 +21,6 @@
 			<artifactId>gwt-user</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.google.gwt.google-apis</groupId>
-			<artifactId>gwt-maps</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.novadart</groupId>
 			<artifactId>novadart-gwt-shared</artifactId>
 		</dependency>
