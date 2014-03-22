@@ -22,8 +22,8 @@ public class SharingService {
 	
 	private static final String EMAIL_TEMPLATE_LOCATION = "mail-templates/sharing-notification.vm";
 	
-	@Value("${sharing.url.pattern}")
-	private String sharingUrlPattern;
+//	@Value("${sharing.url.pattern}")
+//	private String sharingUrlPattern;
 	
 	@Value("${sharing.expiration}")
 	private Long sharingExpiration;
@@ -31,21 +31,21 @@ public class SharingService {
 	@Autowired
 	private TokenGenerator tokenGenerator;
 	
-	public void issueSharingPermitTemporarilyAndNotifyParticipant(Long businessID, String email, MessageSource messageSource, Locale locale){
-		try {
-			String token = tokenGenerator.generateToken();
-			//new SharingPermit(token, email, businessID).persist();
-			Map<String, Object> templateVars = new HashMap<String, Object>();
-			String sharedInvoicesLink = String.format(sharingUrlPattern, businessID, URLEncoder.encode(token, "UTF-8"));
-			templateVars.put("shareLink", sharedInvoicesLink);
-			templateVars.put("sharingExpiration", sharingExpiration);
-			sendMessage(email, messageSource.getMessage("sharing.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
-		} catch (NoSuchAlgorithmException e) {
-			throw new RuntimeException("Token generation failed");
-		} catch (UnsupportedEncodingException e) {
-			throw new RuntimeException("Unsupported encoding UTF-8");
-		}
-	}
+//	public void issueSharingPermitTemporarilyAndNotifyParticipant(Long businessID, String email, MessageSource messageSource, Locale locale){
+//		try {
+//			String token = tokenGenerator.generateToken();
+//			//new SharingPermit(token, email, businessID).persist();
+//			Map<String, Object> templateVars = new HashMap<String, Object>();
+//			String sharedInvoicesLink = String.format(sharingUrlPattern, businessID, URLEncoder.encode(token, "UTF-8"));
+//			templateVars.put("shareLink", sharedInvoicesLink);
+//			templateVars.put("sharingExpiration", sharingExpiration);
+//			sendMessage(email, messageSource.getMessage("sharing.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
+//		} catch (NoSuchAlgorithmException e) {
+//			throw new RuntimeException("Token generation failed");
+//		} catch (UnsupportedEncodingException e) {
+//			throw new RuntimeException("Unsupported encoding UTF-8");
+//		}
+//	}
 
 	public boolean isValidRequest(Long businessID, String token){
 //		for(SharingPermit permit: SharingPermit.findSharingPermits(businessID, token))

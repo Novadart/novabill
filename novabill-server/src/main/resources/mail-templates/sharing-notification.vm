@@ -1,5 +1,5 @@
 <html>
 <body>
-	Find invoices <a target="_blank" href="${shareLink}">here</a>
+	To get invoices proceed to this <a target="_blank" href="${shareRequestUrl}">link</a>
 </body>
 </html>

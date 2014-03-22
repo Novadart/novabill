@@ -35,13 +35,14 @@ public class SharingPermitService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#sharingPermitDTO?.business?.id == principal.business.id and " +
 	  	  	      "#sharingPermitDTO != null and #sharingPermitDTO.id == null")
-	public Long add(SharingPermitDTO sharingPermitDTO) throws ValidationException {
+	public Long add(Long businessID, SharingPermitDTO sharingPermitDTO) throws ValidationException {
 		SharingPermit sharingPermit = new SharingPermit();
 		SharingPermitDTOFactory.copyFromDTO(sharingPermit, sharingPermitDTO);
 		validator.validate(sharingPermit);
 		Business business = Business.findBusiness(sharingPermitDTO.getBusiness().getId());
 		business.getSharingPermits().add(sharingPermit);
 		sharingPermit.setBusiness(business);
+		sharingPermit.persist();
 		sharingPermit.flush();
 		return sharingPermit.getId();
 	}

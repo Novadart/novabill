@@ -20,34 +20,54 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.dumbster.smtp.SimpleSmtpServer;
 import com.novadart.novabill.domain.SharingPermit;
-import com.novadart.novabill.service.SharingService;
+import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
+import com.novadart.novabill.domain.dto.factory.SharingPermitDTOFactory;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.PeriodicPurgerService;
+import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.web.SharingPermitService;
+import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
+import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.web.mvc.ajax.SharingPermitController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(locations = "classpath*:mvc-test-config.xml")
 @Transactional
 @ActiveProfiles("dev")
-public class SharingTest {
+public class SharingTest extends ServiceTest {
 
 	@Autowired
-	private SharingService sharingService;
+	private SharingPermitService sharingPermitService;
 	
 	@Value("${sharing.expiration}")
 	private Integer invoiceSharingExpiration;
 	
+	private SharingPermitController initSharingPermitController() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		SharingPermitController controller = new SharingPermitController();
+		MessageSource messageSource = mock(MessageSource.class);
+		when(messageSource.getMessage("sharing.notification", null, null)).thenReturn("Sharing invoices");
+		TestUtils.setPrivateField(SharingPermitController.class, controller, "messageSource", messageSource);
+		TestUtils.setPrivateField(SharingPermitController.class, controller, "sharingPermitService", sharingPermitService);
+		TestUtils.setPrivateField(SharingPermitController.class, controller, "sharingRequestUrl", "bogus.pattern.com");
+		return controller;
+	}
+	
 	@Autowired
 	private PeriodicPurgerService periodicPurgerService;
 	
+	@Autowired
+	private UtilsService utilsService;
+	
 	@Test
-	public void shareInvoicesTemporarilyAndNotifyParticipantTest(){
-		String email = "foo@bar";
-		Long businessID = 1l;
-		Locale locale = LocaleContextHolder.getLocale();
-		MessageSource messageSource = mock(MessageSource.class);
-		when(messageSource.getMessage("sharing.notification", null, locale)).thenReturn("Docs sharing");
+	public void grantPermitTest() throws ValidationException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+		SharingPermitDTO sharingPermitDTO = SharingPermitDTOFactory.toDTO(TestUtils.createSharingPermit());
+		Principal authenticatedPrincipal = utilsService.getAuthenticatedPrincipalDetails();
+		sharingPermitDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		
+		SharingPermitController sharingPermitController = initSharingPermitController();
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		sharingService.issueSharingPermitTemporarilyAndNotifyParticipant(businessID, email, messageSource, locale);
+		sharingPermitController.add(businessID, sharingPermitDTO, null);
 		smtpServer.stop();
 		
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);

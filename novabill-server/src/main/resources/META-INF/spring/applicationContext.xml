@@ -197,6 +197,10 @@
 		factory-method="aspectOf">
 	</bean>
 	
+	<bean class="com.novadart.novabill.aspect.logging.SharingPermitServiceActionsAspect"
+	    factory-method="aspectOf">
+	</bean>
+	
 	<bean class="com.novadart.novabill.aspect.CachingAspect"
 		factory-method="aspectOf">
 		<property name="ehcacheDiskStore" value="${ehcache.diskStore}"/>

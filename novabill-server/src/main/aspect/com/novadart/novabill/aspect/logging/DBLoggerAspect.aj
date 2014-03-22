@@ -23,6 +23,8 @@ public abstract aspect DBLoggerAspect {
 	
 	public static final String PAYED_STATUS = "payedStatus";
 	
+	public static final String SHARING_PERMIT_DESC = "sharingPermitDesc";
+	
 	private String toJsonString(Map<String, String> jsonObject) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {

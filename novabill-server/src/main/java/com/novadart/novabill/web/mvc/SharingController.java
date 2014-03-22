@@ -13,7 +13,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.novadart.novabill.annotation.Xsrf;
 import com.novadart.novabill.service.SharingService;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.XsrfTokenService;
@@ -45,7 +44,7 @@ public class SharingController {
 	@RequestMapping(value = "/private/share/{email}", method = RequestMethod.POST)
 	//@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.SHARING_TOKENS_SESSION_FIELD)
 	public void issueSharingPermitTemporarily(@PathVariable String email, Locale locale, HttpSession session){
-		sharingService.issueSharingPermitTemporarilyAndNotifyParticipant(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), email, messageSource, locale);
+		//sharingService.issueSharingPermitTemporarilyAndNotifyParticipant(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), email, messageSource, locale);
 	}
 	
 	@RequestMapping(value = "/share/{businessID}/{token}")
