@@ -67,6 +67,9 @@
 	
 	<!--  -->
 
+	<definition name="sharingRequest" template="/WEB-INF/views/tiles/frontend/sharingRequest.jsp"></definition>
+	
+	<definition name="sharingRequestAck" template="/WEB-INF/views/tiles/frontend/sharingRequestAck.jsp"></definition>
 
 
 </tiles-definitions>

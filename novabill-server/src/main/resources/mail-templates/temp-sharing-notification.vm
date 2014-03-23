@@ -1,0 +1,5 @@
+<html>
+<body>
+	To get invoices proceed to this <a target="_blank" href="${shareLink}">link</a>. Licence expires in ${sharingExpiration} hours.
+</body>
+</html>

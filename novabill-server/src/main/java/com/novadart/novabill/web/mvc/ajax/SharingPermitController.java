@@ -31,7 +31,7 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 @MailMixin
 public class SharingPermitController {
 
-	private static final String EMAIL_TEMPLATE_LOCATION = "mail-templates/sharing-notification.vm";
+	private static final String EMAIL_TEMPLATE_LOCATION = "mail-templates/sharing-permit-notification.vm";
 	
 	@Value("${sharing.request.url}")
 	private String sharingRequestUrl;
@@ -52,7 +52,7 @@ public class SharingPermitController {
 	private void sendMessage(String email, Long businessID, Locale locale){
 		Map<String, Object> templateVars = new HashMap<String, Object>();
 		templateVars.put("shareRequestUrl", sharingRequestUrl);
-		sendMessage(email, messageSource.getMessage("sharing.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
+		sendMessage(email, messageSource.getMessage("sharing.permit.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)

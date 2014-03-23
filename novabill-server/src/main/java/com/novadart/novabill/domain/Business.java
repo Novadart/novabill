@@ -427,6 +427,14 @@ public class Business implements Serializable, Taxable {
     	return getAccountingDocumentForYear(getTransportDocuments().iterator(), year);
     }
     
+    public static Business findBusinessByVatIDIfSharingPermit(String vatID, String email){
+    	String sql = "select b from Business b join fetch b.sharingPermits p where b.vatID = :vatID and p.email = :email";
+    	List<Business> r = entityManager().createQuery(sql, Business.class).
+    			setParameter("vatID", vatID).
+    			setParameter("email", email).getResultList();
+    	return r.size() == 0? null: r.get(0);
+    }
+    
     
 
 	/*
