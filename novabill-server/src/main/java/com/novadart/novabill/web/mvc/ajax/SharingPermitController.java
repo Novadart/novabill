@@ -2,6 +2,7 @@ package com.novadart.novabill.web.mvc.ajax;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,18 +49,18 @@ public class SharingPermitController {
 		return sharingPermitService.getAll(businessID);
 	}
 	
-	private void sendMessage(String email, Long businessID){
+	private void sendMessage(String email, Long businessID, Locale locale){
 		Map<String, Object> templateVars = new HashMap<String, Object>();
 		templateVars.put("shareRequestUrl", sharingRequestUrl);
-		sendMessage(email, messageSource.getMessage("sharing.notification", null, null), templateVars, EMAIL_TEMPLATE_LOCATION);
+		sendMessage(email, messageSource.getMessage("sharing.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public Long add(@PathVariable Long businessID, @RequestBody SharingPermitDTO sharingPermitDTO) throws ValidationException{
+	public Long add(@PathVariable Long businessID, @RequestBody SharingPermitDTO sharingPermitDTO, Locale locale) throws ValidationException{
 		Long id = sharingPermitService.add(businessID, sharingPermitDTO);
-		sendMessage(sharingPermitDTO.getEmail(), businessID);
+		sendMessage(sharingPermitDTO.getEmail(), businessID, locale);
 		return id;
 	}
 	
