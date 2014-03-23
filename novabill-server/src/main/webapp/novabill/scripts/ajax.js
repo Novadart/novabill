@@ -3,12 +3,6 @@
 angular.module('novabill.ajax', ['ngResource'])
 
 
-//.config(['$httpProvider', function($httpProvider) {
-//	$httpProvider.defaults.headers.patch = {
-//			'Content-Type': 'application/json;charset=utf-8'
-//	};
-//}])
-
 /**
  * The ajax service stores all the resources used in Novabill
  */

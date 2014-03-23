@@ -8,9 +8,9 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
  */
 .controller('SettingsCtrl', ['$scope', 'nConstants', '$route', 'nAjax', 'nEditSharingPermitDialog',
                              function($scope, nConstants, $route, nAjax, nEditSharingPermitDialog){
-	
+
 	var SharingPermit = nAjax.SharingPermit();
-	
+
 	GWT_UI.showSettingsPage('settings-page');
 
 	GWT_Server.business.get(nConstants.conf.businessId, {
@@ -22,7 +22,7 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 		},
 		onFailure : function(){}
 	});
-	
+
 	$scope.update = function(){
 		GWT_Server.business.update(angular.toJson($scope.business), {
 			onSuccess : function(business){
@@ -33,14 +33,16 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 			onFailure : function(){}
 		});
 	};
-	
+
 	$scope.loadSharingPermits = function(){
 		if($scope.sharingPermits == null){
-			$scope.sharingPermits = SharingPermit.query();
+			SharingPermit.query(function(result){
+				$scope.sharingPermits = result;
+			});
 		}
-		
+
 	};
-	
+
 	$scope.newShare = function(){
 		// open the dialog to create a new sharing permit with an empty resource
 		var instance = nEditSharingPermitDialog.open( new SharingPermit() );
@@ -50,24 +52,28 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 					id : nConstants.conf.businessId
 			};
 			sharingPermit.createdOn = new Date().getTime();
-			
+
 			// save the sharing permit
 			sharingPermit.$save(function(){
-				$scope.sharingPermits = SharingPermit.query();
+				SharingPermit.query(function(result){
+					$scope.sharingPermits = result;
+				});
 			});
 		});
 	};
-	
+
 	$scope.$watch('priceDisplayInDocsMonolithic', function(newValue, oldValue) {
 		if($scope.business){
 			$scope.business.settings.priceDisplayInDocsMonolithic = !newValue;
 		}
 	});
-	
+
 	$scope.$on(nConstants.events.SHARING_PERMIT_REMOVED, function(){
-		$scope.sharingPermits = SharingPermit.query();
+		SharingPermit.query(function(result){
+			$scope.sharingPermits = result;
+		});
 	});
-	
+
 }]);
 
 
