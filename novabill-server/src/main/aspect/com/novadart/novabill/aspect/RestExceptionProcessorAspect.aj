@@ -1,11 +1,14 @@
 package com.novadart.novabill.aspect;
 
+import java.util.Map;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
+import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -17,22 +20,22 @@ public aspect RestExceptionProcessorAspect {
 	@ExceptionHandler(ValidationException.class)
 	@ResponseStatus(value = HttpStatus.BAD_REQUEST)
 	@ResponseBody
-	public String RestExceptionProcessor.invalidRequestExceptionHandler(){
-		return "BAD REQUEST!";
+	public Map<String, Object> RestExceptionProcessor.invalidRequestExceptionHandler(ValidationException ex){
+		return ImmutableMap.<String, Object>of("Error", "VALIDATION ERROR", "Message", ex.getErrors());
 	}
 
 	@ExceptionHandler(value = {AccessDeniedException.class, DataAccessException.class})
 	@ResponseStatus(value = HttpStatus.UNAUTHORIZED)
 	@ResponseBody
-	public String RestExceptionProcessor.accessDeniedExceptionHandler(){
-		return "UNAUTHORIZED ACCESS!";
+	public Map<String, Object> RestExceptionProcessor.accessDeniedExceptionHandler(){
+		return ImmutableMap.<String, Object>of("Error", "UNAUTHORIZED ACCESS");
 	}
 	
 	@ExceptionHandler(value = {RuntimeException.class})
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)
 	@ResponseBody
-	public String RestExceptionProcessor.runtimeExceptionHandler(){
-		return "INTERNAL SERVER ERROR!";
+	public Map<String, Object> RestExceptionProcessor.runtimeExceptionHandler(){
+		return ImmutableMap.<String, Object>of("Error", "INTERNAL SERVER ERROR");
 	}
 	
 }
