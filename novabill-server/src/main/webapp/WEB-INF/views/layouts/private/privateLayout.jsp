@@ -104,7 +104,7 @@
 						class="fa fa-angle-down"></i>
 				</a>
 					<ul class="dropdown-menu">
-						<li><a href="${settingsUrl}"><i class="fa fa-user"></i> Impostazioni</a></li>
+						<li><a href="${settingsUrl}"><i class="fa fa-gears"></i> Impostazioni</a></li>
 						<li class="divider"></li>
 						<li><a href="javascript:;" id="trigger_fullscreen"><i class="fa fa-move"></i> Schermo Intero</a></li>
 						<li><a href="${logoutUrl}"><i class="fa fa-key"></i> Esci</a></li>

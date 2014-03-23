@@ -8,12 +8,14 @@
 <script src="${novabillDepsUrl}/angular/angular-route.js"></script>
 <script src="${novabillDepsUrl}/angular/angular-sanitize.js"></script>
 <script src="${novabillDepsUrl}/angular/angular-animate.js"></script>
+<script src="${novabillDepsUrl}/angular/angular-resource.js"></script>
 <script src="${novabillDepsUrl}/angular/i18n/angular-locale_it-it.js" type="text/javascript"></script>
 <script src="${novabillDepsUrl}/angular-translate.min.js" type="text/javascript"></script>
 <script src="${novabillDepsUrl}/angular-ui/ui-bootstrap-tpls-0.10.0.min.js" type="text/javascript"></script>
 <script src="${novabillDepsUrl}/bignumber-1.3.0/bignumber.min.js"></script>
 <script src="${novabillDepsUrl}/ng-infinite-scroll.min.js"></script>
 
+<script src="${novabillCoreUrl}/scripts/ajax.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/translations.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/constants.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/calc.js" type="text/javascript"></script>

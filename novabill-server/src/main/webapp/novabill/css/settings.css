@@ -21,3 +21,7 @@
 .settings label {
 	cursor: pointer;
 }
+
+.settings .new-share {
+	margin-bottom: 20px;
+}
