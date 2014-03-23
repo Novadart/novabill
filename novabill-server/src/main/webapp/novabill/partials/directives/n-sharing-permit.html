@@ -1,0 +1,19 @@
+<div class="well well-small sharing-permit">
+	<span class="email"><strong>{{sharingPermit.email}}</strong></span> 
+    <span style="margin-left: 30px;" class="description">{{sharingPermit.description}}</span>
+    
+    <div class="options btn-group pull-right" ng-click="stopProp($event)">
+        <a class="btn blue btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
+            <i class="fa fa-ellipsis-horizontal"></i>
+            {{'OPTIONS' | translate}}
+            <i class="fa fa-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu" ng-class="{'bottom-up': bottomUpMenu}">
+            <li ><a href="javascript:void(0);" ng-click="remove()" ><i class="fa fa-trash-o"></i>{{'DELETE' | translate}}</a></li>
+        </ul>
+    </div>
+    
+    <span title="{{'CREATED_ON' | translate}} {{sharingPermit.createdOn | date:'dd MMMM yyyy' }}" style="margin-right: 20px; line-height: 28px;" class="created-on pull-right">
+        <i class="fa fa-info-circle"></i>
+    </span>
+</div>

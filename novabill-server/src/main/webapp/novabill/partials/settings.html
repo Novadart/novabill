@@ -19,10 +19,11 @@
 
 			<div class="tabbable-custom ">
 				<ul class="nav nav-tabs ">
-					<li class="active"><a href="#business" data-toggle="tab">{{'BUSINESS_TAB_BUSINESS' | translate}}</a>
+					<li class="active"><a href="#business" data-toggle="tab"><i class="fa fa-building"></i> {{'BUSINESS_TAB_BUSINESS' | translate}}</a>
 					</li>
-					<li><a href="#options" data-toggle="tab">{{'BUSINESS_TAB_OPTIONS' | translate}}</a></li>
-					<li><a href="#layout" data-toggle="tab">{{'BUSINESS_TAB_LAYOUT' | translate}}</a></li>
+					<li><a href="#options" data-toggle="tab"><i class="fa fa-gears"></i> {{'BUSINESS_TAB_OPTIONS' | translate}}</a></li>
+					<li><a href="#layout" data-toggle="tab"><i class="fa fa-print"></i> {{'BUSINESS_TAB_LAYOUT' | translate}}</a></li>
+					<li><a href="#share" data-toggle="tab" ng-click="loadSharingPermits()"><i class="fa fa-group"></i> {{'BUSINESS_TAB_SHARE' | translate}}</a></li>
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="business">
@@ -102,6 +103,18 @@
                         </button>
                         
 					</div>
+					<div class="tab-pane" id="share">
+					    <div class="well">
+                            <h4>{{'INFO' | translate}}</h4>
+                            <p>{{'SHARING_PERMIT_INFO1' | translate}}</p>
+                            <p>{{'SHARING_PERMIT_INFO2' | translate}}</p>
+                            <button type="button" class="btn default try-share" ng-click="tryShare()">{{'TRY_SHARE' | translate}}</button>
+                        </div>
+					    <button type="button" class="btn green new-share" ng-click="newShare()">{{'NEW_SHARE' | translate}}</button>
+					    <img class="spinner" ng-show="sharingPermits==null" src="../../private_assets/img/ajax-loading.gif">
+		                <p class="no-data-message text-center text-info" ng-show="sharingPermits && sharingPermits.length===0">{{'NO_DATA' | translate}}</p>
+		                <n-sharing-permit sharing-permit="sp" bottom-up-menu="!$first && $last" ng-repeat="sp in sharingPermits"></n-sharing-permit>
+                    </div>
 				</div>
 
 			</div>
@@ -109,4 +122,5 @@
 		</div>
 	</div>
 
+    <n-removal-dialog></n-removal-dialog>
 </div>

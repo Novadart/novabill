@@ -321,6 +321,37 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 
 /*
+ * Edit Sharing Permit Dialog
+ */
+.factory('nEditSharingPermitDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+	return {
+		open : function( sharingPermit ) {
+
+			return $modal.open({
+
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-edit-sharing-permit-dialog.html'),
+
+				controller: ['$scope', '$modalInstance',
+				             function($scope, $modalInstance){
+					
+					$scope.sharingPermit = sharingPermit;
+
+					$scope.save = function(){
+						$modalInstance.close($scope.sharingPermit);
+					};
+
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
+				}]
+			});
+		}
+	};
+}])
+
+
+/*
  * Removal Dialog
  */
 .directive('nRemovalDialog', ['nConstants', function factory(nConstants){

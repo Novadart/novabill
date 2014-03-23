@@ -66,7 +66,6 @@ angular.module('novabill.directives',
 
 					onCancel : function(){}
 				});
-
 			};
 
 			$scope.clone = function(){
@@ -376,6 +375,44 @@ angular.module('novabill.directives',
 			
 			//activate the dropdown
 			angular.element($element).find('.dropdown-toggle').dropdown();
+
+		}],
+		restrict: 'E',
+		replace: true
+	};
+
+}])
+
+
+/*
+ * Share Widget
+ */
+.directive('nSharingPermit', ['nConstants', function factory(nConstants){
+
+	return {
+		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-sharing-permit.html'),
+		scope: { 
+			sharingPermit : '='
+		},
+		controller : ['$scope', 'nConstants', '$rootScope', '$translate', function($scope, nConstants, $rootScope, $translate){
+			
+			$scope.stopProp = function($event){
+				$event.stopPropagation();
+			};
+			
+			$scope.remove = function(){
+				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, $translate('SHARING_PERMIT_REMOVAL_QUESTION', {email : $scope.sharingPermit.email}), {
+					onOk : function(){
+						$scope.sharingPermit.$delete(function(){
+							$rootScope.$broadcast(nConstants.events.SHARING_PERMIT_REMOVED);
+						});
+					},
+
+					onCancel : function(){}
+				});
+
+				
+			};
 
 		}],
 		restrict: 'E',
