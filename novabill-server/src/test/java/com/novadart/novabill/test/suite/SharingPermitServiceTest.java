@@ -25,6 +25,7 @@ import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.SharingPermit;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.SharingPermitDTOFactory;
+import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.service.web.SharingPermitService;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
@@ -41,9 +42,13 @@ public class SharingPermitServiceTest extends ServiceTest {
 	@Autowired
 	private SharingPermitService sharingPermitService;
 	
+	@Autowired
+	private SimpleValidator validator;
+	
 	@Test
 	public void sharingPermitAutowiredTest(){
 		assertNotNull(sharingPermitService);
+		assertNotNull(validator);
 	}
 	
 	@Test
@@ -86,19 +91,9 @@ public class SharingPermitServiceTest extends ServiceTest {
 		sharingPermitService.add(businessID, sharingPermitDTO);
 	}
 	
-	private SharingPermit addAndPermistSharingPermit(){
-		SharingPermit sharingPermit = TestUtils.createSharingPermit();
-		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
-		sharingPermit.setBusiness(business);
-		business.getSharingPermits().add(sharingPermit);
-		sharingPermit.persist();
-		sharingPermit.flush();
-		return sharingPermit;
-	}
-	
 	@Test
 	public void removeAutorizedTest() throws JsonParseException, JsonMappingException, IOException{
-		SharingPermit sharingPermit = addAndPermistSharingPermit();
+		SharingPermit sharingPermit = authenticatedPrincipal.getBusiness().getSharingPermits().iterator().next();
 		sharingPermitService.remove(authenticatedPrincipal.getBusiness().getId(), sharingPermit.getId());
 		assertTrue(SharingPermit.findSharingPermit(sharingPermit.getId()) == null);
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
@@ -116,19 +111,19 @@ public class SharingPermitServiceTest extends ServiceTest {
 	
 	@Test(expected = AccessDeniedException.class)
 	public void removeBusinessIDNullTest(){
-		SharingPermit sharingPermit = addAndPermistSharingPermit();
-		sharingPermitService.remove(null, sharingPermit.getId());
+		Long id = authenticatedPrincipal.getBusiness().getSharingPermits().iterator().next().getId();
+		sharingPermitService.remove(null, id);
 	}
 	
 	@Test(expected = AccessDeniedException.class)
 	public void removeUnauthorizedTest(){
-		SharingPermit sharingPermit = addAndPermistSharingPermit();
-		sharingPermitService.remove(getUnathorizedBusinessID(), sharingPermit.getId());
+		Long id = authenticatedPrincipal.getBusiness().getSharingPermits().iterator().next().getId();
+		sharingPermitService.remove(getUnathorizedBusinessID(), id);
 	}
 	
 	@Test
 	public void getAllAuthorizedTest() throws NotAuthenticatedException, DataAccessException{
-		SharingPermit sharingPermit = addAndPermistSharingPermit();
+		SharingPermit sharingPermit = authenticatedPrincipal.getBusiness().getSharingPermits().iterator().next();
 		List<SharingPermitDTO> all = sharingPermitService.getAll(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(1 == all.size());
 		assertTrue(EqualsBuilder.reflectionEquals(SharingPermitDTOFactory.toDTO(sharingPermit), all.get(0), "id", "business"));
@@ -142,6 +137,23 @@ public class SharingPermitServiceTest extends ServiceTest {
 	@Test(expected = AccessDeniedException.class)
 	public void getAllUnauthorizedTest() throws NotAuthenticatedException, DataAccessException{
 		sharingPermitService.getAll(getUnathorizedBusinessID());
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void addDuplicateSharingPermitEmailTest() throws ValidationException{
+		SharingPermit persistedSharingPermit = authenticatedPrincipal.getBusiness().getSharingPermits().iterator().next();
+		SharingPermit sharingPermit = TestUtils.createSharingPermit();
+		sharingPermit.setEmail(persistedSharingPermit.getEmail());
+		sharingPermit.setBusiness(authenticatedPrincipal.getBusiness());
+		validator.validate(sharingPermit);
+	}
+	
+	@Test
+	public void updateSharingPermitEmailTest() throws ValidationException{
+		SharingPermit persistedSharingPermit = authenticatedPrincipal.getBusiness().getSharingPermits().iterator().next();
+		persistedSharingPermit.setDescription("new desctiption");
+		validator.validate(persistedSharingPermit);
+		persistedSharingPermit.flush();
 	}
 	
 }

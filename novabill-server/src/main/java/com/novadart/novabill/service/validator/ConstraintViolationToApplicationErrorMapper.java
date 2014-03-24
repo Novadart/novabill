@@ -16,6 +16,7 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.stereotype.Service;
 
 import com.novadart.novabill.annotation.PaymentDeltaNotNull;
+import com.novadart.novabill.annotation.SharingPermitEmailBusinessUnique;
 import com.novadart.novabill.annotation.TaxFieldsNotNull;
 import com.novadart.novabill.shared.client.validation.ErrorCode;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
@@ -91,6 +92,8 @@ public class ConstraintViolationToApplicationErrorMapper {
 				errors.add(new ErrorObject(Field.vatID, ErrorCode.BLANK_OR_NULL));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(PaymentDeltaNotNull.class))
 				errors.add(new ErrorObject(Field.paymentTypeCls, ErrorCode.NULL));
+			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(SharingPermitEmailBusinessUnique.class))
+				errors.add(new ErrorObject(Field.email, ErrorCode.NOT_UNIQUE));
 			else
 				throw new RuntimeException("No such constraint violation exception!");
 		}

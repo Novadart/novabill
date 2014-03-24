@@ -10,6 +10,8 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -20,10 +22,13 @@ import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.SharingPermitEmailBusinessUnique;
 import com.novadart.novabill.annotation.Trimmed;
 
 @Entity
 @Configurable
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email", "business"})})
+@SharingPermitEmailBusinessUnique
 public class SharingPermit {
 
 	@Size(max = 255)
@@ -39,6 +44,14 @@ public class SharingPermit {
 	
 	@ManyToOne
 	private Business business;
+	
+	public static SharingPermit findByEmailForBusiness(String email, Long businessID){
+		String sql = "select sp from SharingPermit sp where sp.email = :email and sp.business.id = :businessID";
+		List<SharingPermit> r = entityManager().createQuery(sql, SharingPermit.class).
+					setParameter("email", email).
+					setParameter("businessID", businessID).getResultList();
+		return r.size() == 0? null: r.get(0);
+	}
 	
 	
 	/**

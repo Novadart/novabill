@@ -38,8 +38,9 @@ public class SharingPermitService {
 	public Long add(Long businessID, SharingPermitDTO sharingPermitDTO) throws ValidationException {
 		SharingPermit sharingPermit = new SharingPermit();
 		SharingPermitDTOFactory.copyFromDTO(sharingPermit, sharingPermitDTO);
-		validator.validate(sharingPermit);
 		Business business = Business.findBusiness(sharingPermitDTO.getBusiness().getId());
+		sharingPermit.setBusiness(business);
+		validator.validate(sharingPermit);
 		business.getSharingPermits().add(sharingPermit);
 		sharingPermit.setBusiness(business);
 		sharingPermit.persist();

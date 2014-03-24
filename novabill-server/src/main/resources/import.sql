@@ -323,4 +323,8 @@ insert into accounting_document_item (id, description, price, quantity, tax, tot
 insert into transporter (id, description, business, version) values (183, 'Jason Statham', 1, 1);
 insert into transporter (id, description, business, version) values (184, 'Jason Statham', 2, 1);
 
-alter sequence hibernate_sequence restart with 185;
+--creating sharing permit
+insert into sharing_permit (id, created_on, description, email, business, version) values (185, 1, 'tax advisor', 'mario.rossi@example.com', 1, 1);
+insert into sharing_permit (id, created_on, description, email, business, version) values (186, 1, 'tax advisor', 'mario.rossi@example.com', 2, 1);
+
+alter sequence hibernate_sequence restart with 187;
