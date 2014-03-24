@@ -84,7 +84,7 @@ public class SharingTest extends ServiceTest {
 		Business business = Business.findBusinessByVatIDIfSharingPermit(authenticatedPrincipal.getBusiness().getVatID(), sharingPermitDTO.getEmail());
 		
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
-		assertEquals(1, SharingPermit.findAllSharingPermits().size());
+		assertEquals(2, Business.findBusiness(businessID).getSharingPermits().size());
 		assertTrue(business != null);
 		assertEquals(businessID, business.getId());
 	}
@@ -137,15 +137,15 @@ public class SharingTest extends ServiceTest {
 //		assertTrue(!sharingService.isValidRequest(businessID, token));
 //	}
 //	
-//	@Test
-//	public void purgeExpiredInvoiceSharingPermitsTest(){
-//		Long businessID = 1l;
-//		String token = "token";
-//		new SharingPermit(token, "foo@bar", businessID, System.currentTimeMillis() - (invoiceSharingExpiration + 1) * 3_600_000l).persist();
-//		SharingPermit.entityManager().flush();
-//		periodicPurgerService.runPurgeTasks();
-//		SharingPermit.entityManager().flush();
-//		assertEquals(0, SharingPermit.findAllSharingPermits().size());
-//	}
+	@Test
+	public void purgeExpiredSharingTokensTest(){
+		Long businessID = 1l;
+		String token = "token";
+		new SharingToken("foo@bar", System.currentTimeMillis() - (invoiceSharingExpiration + 1) * 3_600_000l, businessID, token).persist();
+		SharingPermit.entityManager().flush();
+		periodicPurgerService.runPurgeTasks();
+		SharingPermit.entityManager().flush();
+		assertEquals(0, SharingToken.findAllSharingTokens().size());
+	}
 	
 }

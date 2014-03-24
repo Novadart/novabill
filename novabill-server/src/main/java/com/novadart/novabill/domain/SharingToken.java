@@ -39,11 +39,15 @@ public class SharingToken {
 
 	public SharingToken(){}
 	
-	public SharingToken(String email, Long businessID, String token) {
-		super();
+	public SharingToken(String email, Long createdOn, Long businessID, String token) {
 		this.email = email;
+		this.createdOn = createdOn;
 		this.businessID = businessID;
 		this.token = token;
+	}
+
+	public SharingToken(String email, Long businessID, String token) {
+		this(email, System.currentTimeMillis(), businessID, token);
 	}
 
 	/**

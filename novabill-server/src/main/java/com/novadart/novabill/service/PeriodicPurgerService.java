@@ -29,7 +29,7 @@ public class PeriodicPurgerService {
 	public void runPurgeTasks(){
 		purgeExpiredRegistration();
 		purgeExpiredForgotPasswordRequest();
-		purgeExpiredInvoiceSharingPermits();
+		purgeExpiredSharingTokens();
 	}
 	
 	@Async
@@ -52,8 +52,8 @@ public class PeriodicPurgerService {
 	
 	@Async
 	@Transactional
-	private void purgeExpiredInvoiceSharingPermits(){
-		String query = "delete from SharingPermit isp where isp.createdOn < :threshold";
+	private void purgeExpiredSharingTokens(){
+		String query = "delete from SharingToken st where st.createdOn < :threshold";
 		entityManager.createQuery(query)
 			.setParameter("threshold", System.currentTimeMillis() -  sharingExpiration * 3_600_000l)
 			.executeUpdate();
