@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.SharingService;
 import com.novadart.novabill.web.mvc.command.SharingRequest;
 
@@ -46,8 +47,13 @@ public class SharingController {
 		if(result.hasErrors())
 			return "sharingRequest";
 		Business business = Business.findBusinessByVatIDIfSharingPermit(sharingRequest.getVatID(), sharingRequest.getEmail());
-		if(business == null)
-			return "redirect:/sharingRequestAck";
+		if(business == null){
+			Principal principal = Principal.findByUsername(sharingRequest.getEmail());
+			if(principal == null || !principal.getBusiness().getVatID().equals(sharingRequest.getVatID()))
+				return "redirect:/sharingRequestAck";
+			else
+				business = principal.getBusiness();
+		}
 		sharingService.enableSharingTemporarilyAndNotifyParticipant(business, sharingRequest.getEmail(), messageSource, locale);
 		status.setComplete();
 		return "redirect:/sharingRequestAck";
