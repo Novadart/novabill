@@ -7,8 +7,8 @@ angular.module('novabill.commodities.controllers',
 /**
  * COMMODITIES PAGE CONTROLLER
  */
-.controller('CommoditiesCtrl', ['$scope', '$location', '$rootScope', 'nConstants', 'nSorting', '$filter',
-                                function($scope, $location, $rootScope, nConstants, nSorting, $filter){
+.controller('CommoditiesCtrl', ['$scope', '$location', '$rootScope', 'nConstants', 'nSorting', '$filter', 'nEditCommodityDialog',
+                                function($scope, $location, $rootScope, nConstants, nSorting, $filter, nEditCommodityDialog){
 
 	$scope.commodities = null;
 	
@@ -46,35 +46,43 @@ angular.module('novabill.commodities.controllers',
 		}
 	};
 
-	$scope.newCommodity = function(){
-		$rootScope.$broadcast(nConstants.events.SHOW_EDIT_COMMODITY_DIALOG, false, 
-				{
-			onSave : function(commodity, delegation){
+	
+	function recursiveCreation(wrongCommodity, invalidSku){
+		var instance = null;
+		
+		if(wrongCommodity){
+			instance = nEditCommodityDialog.open(wrongCommodity, invalidSku, true);
+		} else {
+			instance = nEditCommodityDialog.open();
+		}
+		
+		instance.result.then(function(commodity){
+			GWT_Server.commodity.add(angular.toJson(commodity), {
+				onSuccess : function(newId){
+					loadCommodities();
+				},
 
-				GWT_Server.commodity.add(angular.toJson(commodity), {
-					onSuccess : function(newId){
-						delegation.finish();
-						loadCommodities();
-					},
-
-					onFailure : function(error){
-						switch(error.exception){
-						case nConstants.exception.VALIDATION:
-							if(error.data === nConstants.validation.NOT_UNIQUE){
-								delegation.invalidSku();
-							}
-							break;
-
-						default:
-							break;
+				onFailure : function(error){
+					switch(error.exception){
+					case nConstants.exception.VALIDATION:
+						if(error.data === nConstants.validation.NOT_UNIQUE){
+							recursiveCreation(commodity, true);
 						}
+						break;
 
+					default:
+						break;
 					}
-				});
-			},
 
-			onCancel : function(){}
-				});
+				}
+			});
+		});
+	}
+	
+	
+	
+	$scope.newCommodity = function(){
+		recursiveCreation();
 	};
 
 	loadCommodities();
@@ -86,8 +94,8 @@ angular.module('novabill.commodities.controllers',
 /**
  * COMMODITIES DETAILS PAGE CONTROLLER
  */
-.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', '$rootScope', 'nConstants', '$filter', '$route', 'nRegExp', 'nConfirmDialog',
-                                       function($scope, $location, $routeParams, $rootScope, nConstants, $filter, $route, nRegExp, nConfirmDialog){
+.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', '$rootScope', 'nConstants', '$filter', '$route', 'nRegExp', 'nConfirmDialog', 'nEditCommodityDialog',
+                                       function($scope, $location, $routeParams, $rootScope, nConstants, $filter, $route, nRegExp, nConfirmDialog, nEditCommodityDialog){
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	$scope.commodity = null;
 
@@ -118,38 +126,43 @@ angular.module('novabill.commodities.controllers',
 		}
 		
 	};
+	
+	
+	function recursiveUpdate(wrongCommodity, invalidSku){
+		var instance = null;
+		
+		if(wrongCommodity){
+			instance = nEditCommodityDialog.open(wrongCommodity, invalidSku, true);
+		} else {
+			instance = nEditCommodityDialog.open();
+		}
+		
+		instance.result.then(function(commodity){
+			GWT_Server.commodity.update(angular.toJson(commodity), {
+				onSuccess : function(newId){
+					$route.reload();
+				},
+
+				onFailure : function(error){
+					switch(error.exception){
+					case nConstants.exception.VALIDATION:
+						if(error.data === nConstants.validation.NOT_UNIQUE){
+							recursiveUpdate(commodity, true);
+						}
+						break;
+
+					default:
+						break;
+					}
+
+				}
+			});
+		});
+	}
+	
 
 	$scope.editCommodity = function(commodityId){
-
-		$rootScope.$broadcast(nConstants.events.SHOW_EDIT_COMMODITY_DIALOG, true, 
-				{
-			onSave : function(commodity, delegation){
-
-				GWT_Server.commodity.update(angular.toJson(commodity), {
-					onSuccess : function(newId){
-						delegation.finish(true);
-						$route.reload();
-					},
-
-					onFailure : function(error){
-						switch(error.exception){
-						case nConstants.exception.VALIDATION:
-							if(error.data === nConstants.validation.NOT_UNIQUE){
-								delegation.invalidSku();
-							}
-							break;
-
-						default:
-							break;
-						}
-
-					}
-				});
-			},
-
-			onCancel : function(){}
-				});
-
+		recursiveUpdate($scope.commodity, false, true);
 	};
 
 
