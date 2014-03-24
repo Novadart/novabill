@@ -32,112 +32,113 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 
 /*
- * Select Transport Documents Dialog
+ * Edit Address Dialog
  */
-.directive('nSelectTransportDocumentsDialog', ['nConstants', function factory(nConstants){
+.factory('nSelectTransportDocumentsDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 	return {
+		open : function( clientId, preSelectedId ) {
 
-		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-select-transport-documents-dialog.html'),
-		scope: {},
+			return $modal.open({
 
-		controller : ['$scope', 'nConstants', function($scope, nConstants){
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-select-transport-documents-dialog.html'),
 
-			function partitionTransportDocuments(docs){
-				var result = {
-						neverIncludedInInvoice : [],
-						alreadyIncludedInInvoice : []
-				};
+				controller: ['$scope', '$modalInstance',
+				             function($scope, $modalInstance){
+					
+					var currentYear = new Date().getFullYear().toString();
 
-				angular.forEach(docs, function(tDoc, key){
-					if(tDoc.invoice){
-						result.alreadyIncludedInInvoice.push(tDoc);
-					} else {
-						result.neverIncludedInInvoice.push(tDoc);
-					}
-				});
+					GWT_Server.transportDocument.getAllForClient(clientId, currentYear, {
 
-				return result;
-			}
+						onSuccess : function(result){
+							$scope.$apply(function(){
+								$scope.selectedSet = {};
+								$scope.selectedSet[preSelectedId] = true;
+								$scope.docs = partitionTransportDocuments(result.transportDocuments);
 
-			$scope.$on(nConstants.events.SHOW_TRANSPORT_DOCUMENTS_DIALOG, 
-					function(event, clientId, preSelectedId){
-
-				var currentYear = new Date().getFullYear().toString();
-
-				GWT_Server.transportDocument.getAllForClient(clientId, currentYear, {
-
-					onSuccess : function(result){
-						$scope.$apply(function(){
-							$scope.selectedSet = {};
-							$scope.selectedSet[preSelectedId] = true;
-							$scope.docs = partitionTransportDocuments(result.transportDocuments);
-
-							$('#selectTransportDocumentsDialog').modal('show');
-							$('#selectTransportDocumentsDialog .scroller').slimScroll({
-								height: '400px'
+								$('.n-select-transport-documents-dialog .scroller').slimScroll({
+									height: '400px'
+								});
 							});
+						},
+
+						onFailure : function(){}
+
+					});
+					
+					
+					function partitionTransportDocuments(docs){
+						var result = {
+								neverIncludedInInvoice : [],
+								alreadyIncludedInInvoice : []
+						};
+
+						angular.forEach(docs, function(tDoc, key){
+							if(tDoc.invoice){
+								result.alreadyIncludedInInvoice.push(tDoc);
+							} else {
+								result.neverIncludedInInvoice.push(tDoc);
+							}
 						});
-					},
 
-					onFailure : function(){}
-
-				});
-			});
-
-
-			/**
-			 * This function keeps updated a set of selected values.
-			 * If the set is empty, it sets it to null for easier evaluation in the view 
-			 */
-			$scope.toggleElement = function(id){
-				if(!$scope.selectedSet){
-					$scope.selectedSet = {};
-				}
-
-				if($scope.selectedSet[id]){
-					delete $scope.selectedSet[id];
-
-					if(angular.element.isEmptyObject($scope.selectedSet)){
-						$scope.selectedSet = null;
+						return result;
 					}
-				} else {
-					$scope.selectedSet[id] = true;
-				}
-			};
 
-			$scope.openUrl = function($event, id){
-				$event.stopPropagation();
-				window.open(nConstants.url.transportDocumentDetails( id ), '_blank');
-			};
+					/**
+					 * This function keeps updated a set of selected values.
+					 * If the set is empty, it sets it to null for easier evaluation in the view 
+					 */
+					$scope.toggleElement = function(id){
+						if(!$scope.selectedSet){
+							$scope.selectedSet = {};
+						}
 
-			$scope.openInvoice = function($event, invoiceId){
-				$event.stopPropagation();
-				window.open(nConstants.url.invoiceDetails( invoiceId ), '_blank');
-			};
+						if($scope.selectedSet[id]){
+							delete $scope.selectedSet[id];
 
-			$scope.ok = function(){
-				var ids = new Array();
-				for(var id in $scope.selectedSet){
-					ids.push(id);
-				}
+							if(angular.element.isEmptyObject($scope.selectedSet)){
+								$scope.selectedSet = null;
+							}
+						} else {
+							$scope.selectedSet[id] = true;
+						}
+					};
 
-				window.location.assign(nConstants.url.invoiceFromTransportDocumentList( 
-						encodeURIComponent( 
-								angular.toJson({
-									list : ids
-								}) ) ));
-			};
+					$scope.openUrl = function($event, id){
+						$event.stopPropagation();
+						window.open(nConstants.url.transportDocumentDetails( id ), '_blank');
+					};
 
+					$scope.openInvoice = function($event, invoiceId){
+						$event.stopPropagation();
+						window.open(nConstants.url.invoiceDetails( invoiceId ), '_blank');
+					};
 
-		}],
+					$scope.ok = function(){
+						var ids = new Array();
+						for(var id in $scope.selectedSet){
+							ids.push(id);
+						}
 
-		restrict: 'E',
-		replace: true
+						$modalInstance.close();
+						
+						window.location.assign(nConstants.url.invoiceFromTransportDocumentList( 
+								encodeURIComponent( 
+										angular.toJson({
+											list : ids
+										}) ) ));
+					};
+					
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
 
+				}]
+			});
+		}
 	};
-
 }])
+
 
 
 /*
@@ -180,112 +181,72 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 /*
  * Edit Commodity Dialog
  */
-.directive('nEditCommodityDialog', ['nConstants', function factory(nConstants){
+.factory('nEditCommodityDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 	return {
+		open : function( commodity, invalidSku, editMode ) {
 
-		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-edit-commodity-dialog.html'),
-		scope: {
-			commodity : '=?'
-		},
+			return $modal.open({
 
-		controller : ['$scope', 'nConstants', function($scope, nConstants){
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-edit-commodity-dialog.html'),
 
-			$scope.$on(nConstants.events.SHOW_EDIT_COMMODITY_DIALOG, 
-					function(event, editMode, callback){
-				$scope.editMode = editMode;
-				$scope.callback = callback;
+				controller: ['$scope', '$modalInstance',
+				             function($scope, $modalInstance){
+					
+					$scope.editMode = editMode;
+					$scope.invalidSku = invalidSku;
 
-				$('#editCommodityDialog').modal('show');
-			});
+					$scope.$watch('commodity', function() {
 
-			//init commodity, if not present, to avoid calls to $watch that will reset service and price
-			$scope.commodity = $scope['commodity'] === undefined ? {} : $scope.commodity;
+						//if prices map is empty, init it
+						if( $scope.commodity ){
+							$scope.price = $scope.commodity.pricesMap && $scope.commodity.pricesMap.prices[ nConstants.conf.defaultPriceListName ]
+							? $scope.commodity.pricesMap.prices[ nConstants.conf.defaultPriceListName ].priceValue 
+									: null;
 
-			$scope.$watch('commodity', function() {
+							// NOTE we check for id to workaround GWT removing the property when it is false
+							$scope.service = ($scope.commodity.service === undefined  
+									? ($scope.commodity.id === undefined || $scope.commodity.id === null ? null : 'false') 
+											: $scope.commodity.service.toString());
+						}
 
-				//if prices map is empty, init it
-				if( $scope.commodity ){
-					$scope.price = $scope.commodity.pricesMap && $scope.commodity.pricesMap.prices[ nConstants.conf.defaultPriceListName ]
-					? $scope.commodity.pricesMap.prices[ nConstants.conf.defaultPriceListName ].priceValue 
-							: null;
+					});
+					
+					//init commodity, if not present, to avoid calls to $watch that will reset service and price
+					$scope.commodity = commodity == null ? {} : commodity;
 
-					// NOTE we check for id to workaround GWT removing the property when it is false
-					$scope.service = ($scope.commodity.service === undefined  
-							? ($scope.commodity.id === undefined || $scope.commodity.id === null ? null : 'false') 
-									: $scope.commodity.service.toString());
-				}
+					$scope.save = function(){
+						// update service property
+						$scope.commodity.service = $scope.service==='true';
 
-			});
+						//set weight to null in case we are dealing with a service
+						$scope.commodity.weight = $scope.commodity.service ? null : ($scope.commodity.weight ? new String($scope.commodity.weight) : null);
 
-			function hideAndReset(){
-				if(!$scope.editMode){
-					$scope.commodity = null;
-					$scope.price = null;
-					$scope.service = null;
-				}
+						// if default price is not present, build the structure for storing it
+						if(!$scope.commodity.pricesMap){
+							$scope.commodity['pricesMap'] = { prices : {} };
+							$scope.commodity['pricesMap']['prices'][nConstants.conf.defaultPriceListName] = {
+									priceValue : null,
+									priceType : 'FIXED'
+							};
+						}
 
-				$('#editCommodityDialog').modal('hide');
+						// update default price
+						$scope.commodity['pricesMap']['prices'][nConstants.conf.defaultPriceListName].priceValue = $scope.price;
 
-				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
-				$('body').removeClass('modal-open');
-				$('.modal-backdrop').remove();
-
-				$scope.invalidSku = false;
-				$scope.contactingServer = false;
-				$scope.form.$setPristine();
-			};
-
-			$scope.save = function(){
-				$scope.contactingServer = true;
-
-				// update service property
-				$scope.commodity.service = $scope.service==='true';
-
-				//set weight to null in case we are dealing with a service
-				$scope.commodity.weight = $scope.commodity.service ? null : ($scope.commodity.weight ? new String($scope.commodity.weight) : null);
-
-				// if default price is not present, build the structure for storing it
-				if(!$scope.commodity.pricesMap){
-					$scope.commodity['pricesMap'] = { prices : {} };
-					$scope.commodity['pricesMap']['prices'][nConstants.conf.defaultPriceListName] = {
-							priceValue : null,
-							priceType : 'FIXED'
+						// persist the commodity
+						$modalInstance.close( $scope.commodity );
 					};
-				}
 
-				// update default price
-				$scope.commodity['pricesMap']['prices'][nConstants.conf.defaultPriceListName].priceValue = $scope.price;
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
 
-				// persist the commodity
-				$scope.callback.onSave(
-						$scope.commodity, 
-						{
-							finish : hideAndReset,
-
-							invalidSku : function(){ 
-								$scope.$apply(function(){
-									$scope.contactingServer = false;
-									$scope.invalidSku = true;
-								}); 
-							}
-						});
-			};
-
-			$scope.cancel = function(){
-				hideAndReset();
-				$scope.callback.onCancel();
-			};
-
-		}],
-
-		restrict: 'E',
-		replace: true
-
+				}]
+			});
+		}
 	};
-
 }])
-
 
 
 /*
@@ -356,46 +317,33 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 
 /*
- * Removal Dialog
+ * Confirm Dialog
  */
-.directive('nRemovalDialog', ['nConstants', function factory(nConstants){
-
+.factory('nConfirmDialog', ['nConstants', '$modal', function factory(nConstants,$modal){
+	
 	return {
+		open : function( message ) {
 
-		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-confirm-removal-dialog.html'),
-		scope: {},
+			return $modal.open({
 
-		controller : ['$scope', 'nConstants', function($scope, nConstants){
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-confirm-dialog.html'),
 
-			$scope.$on(nConstants.events.SHOW_REMOVAL_DIALOG, function(event, message, callback){
-				$scope.message = message;
-				$scope.callback = callback;
+				controller: ['$scope', '$modalInstance',
+				             function($scope, $modalInstance){
+					
+					$scope.message = message;
+					
+					$scope.ok = function(){
+						$modalInstance.close();
+					};
 
-				$('#removalDialog').modal('show');
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
+
+				}]
 			});
-
-			function hide(){
-				$('#removalDialog').modal('hide');
-
-				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
-				$('body').removeClass('modal-open');
-				$('.modal-backdrop').remove();
-			};
-
-			$scope.ok = function(){
-				hide();
-				$scope.callback.onOk();
-			};
-
-			$scope.cancel = function(){
-				hide();
-				$scope.callback.onCancel();
-			};
-		}],
-
-		restrict: 'E',
-		replace: true
-
+		}
 	};
 
 }])

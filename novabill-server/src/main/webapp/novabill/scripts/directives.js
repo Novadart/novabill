@@ -15,7 +15,8 @@ angular.module('novabill.directives',
 			invoice : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$translate', function($scope, $element, $translate){
+		controller : ['$scope', '$element', '$translate', 'nConfirmDialog', 
+		              function($scope, $element, $translate, nConfirmDialog){
 
 			function isExpired(){
 				var today = new Date();
@@ -54,18 +55,16 @@ angular.module('novabill.directives',
 			};
 
 			$scope.remove = function(){
-				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, $translate('REMOVAL_QUESTION'), {
-					onOk : function(){
-						GWT_Server.invoice.remove(nConstants.conf.businessId, $scope.invoice.client.id, $scope.invoice.id, {
-							onSuccess : function(){
-								$rootScope.$broadcast(nConstants.events.INVOICE_REMOVED);
-							},
-							onFailure : function(){}
-						});
-					},
-
-					onCancel : function(){}
+				var instance = nConfirmDialog.open( $translate('REMOVAL_QUESTION') );
+				instance.result.then(function(){
+					GWT_Server.invoice.remove(nConstants.conf.businessId, $scope.invoice.client.id, $scope.invoice.id, {
+						onSuccess : function(){
+							$rootScope.$broadcast(nConstants.events.INVOICE_REMOVED);
+						},
+						onFailure : function(){}
+					});
 				});
+				
 			};
 
 			$scope.clone = function(){
@@ -106,8 +105,8 @@ angular.module('novabill.directives',
 			estimation : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$translate', 'nSelectClientDialog',
-		              function($scope, $element, $translate, nSelectClientDialog){
+		controller : ['$scope', '$element', '$translate', 'nSelectClientDialog', 'nConfirmDialog',
+		              function($scope, $element, $translate, nSelectClientDialog, nConfirmDialog){
 
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.estimationDetails($scope.estimation.id) );
@@ -122,20 +121,15 @@ angular.module('novabill.directives',
 			};
 
 			$scope.remove = function(){
-				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
-						$translate('REMOVAL_QUESTION'), {
-					onOk : function(){
-						GWT_Server.estimation.remove(nConstants.conf.businessId, $scope.estimation.client.id, $scope.estimation.id, {
-							onSuccess : function(){
-								$rootScope.$broadcast(nConstants.events.ESTIMATION_REMOVED);
-							},
-							onFailure : function(){}
-						});
-					},
-
-					onCancel : function(){}
+				var instance = nConfirmDialog.open( $translate('REMOVAL_QUESTION') );
+				instance.result.then(function(){
+					GWT_Server.estimation.remove(nConstants.conf.businessId, $scope.estimation.client.id, $scope.estimation.id, {
+						onSuccess : function(){
+							$rootScope.$broadcast(nConstants.events.ESTIMATION_REMOVED);
+						},
+						onFailure : function(){}
+					});
 				});
-
 			};
 
 			$scope.clone = function(){
@@ -171,8 +165,8 @@ angular.module('novabill.directives',
 /*
  * Transport Document Widget
  */
-.directive('nTransportDocument', ['$rootScope', 'nConstants',
-                                  function factory($rootScope, nConstants){
+.directive('nTransportDocument', ['$rootScope', 'nConstants', 'nSelectTransportDocumentsDialog',
+                                  function factory($rootScope, nConstants, nSelectTransportDocumentsDialog){
 
 	return {
 		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-transport-document.html'),
@@ -180,7 +174,8 @@ angular.module('novabill.directives',
 			transportDocument : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$translate', 'nConstants', function($scope, $element, $translate, nConstants){
+		controller : ['$scope', '$element', '$translate', 'nConstants', 'nConfirmDialog', 
+		              function($scope, $element, $translate, nConstants, nConfirmDialog){
 
 			$scope.invoiceRefUrl = $scope.transportDocument.invoice ? nConstants.url.invoiceDetails($scope.transportDocument.invoice) : null;
 			
@@ -197,24 +192,19 @@ angular.module('novabill.directives',
 			};
 
 			$scope.remove = function(){
-				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
-						$translate('REMOVAL_QUESTION'), {
-					onOk : function(){
-						GWT_Server.transportDocument.remove(nConstants.conf.businessId, $scope.transportDocument.client.id, $scope.transportDocument.id, {
-							onSuccess : function(){
-								$rootScope.$broadcast(nConstants.events.TRANSPORT_DOCUMENT_REMOVED);
-							},
-							onFailure : function(){}
-						});
-					},
-
-					onCancel : function(){}
+				var instance = nConfirmDialog.open( $translate('REMOVAL_QUESTION') );
+				instance.result.then(function(){
+					GWT_Server.transportDocument.remove(nConstants.conf.businessId, $scope.transportDocument.client.id, $scope.transportDocument.id, {
+						onSuccess : function(){
+							$rootScope.$broadcast(nConstants.events.TRANSPORT_DOCUMENT_REMOVED);
+						},
+						onFailure : function(){}
+					});
 				});
 			};
 
 			$scope.createInvoice = function(id){
-				$rootScope.$broadcast(nConstants.events.SHOW_TRANSPORT_DOCUMENTS_DIALOG, 
-						$scope.transportDocument.client.id, $scope.transportDocument.id);
+				nSelectTransportDocumentsDialog.open($scope.transportDocument.client.id, $scope.transportDocument.id);
 			};
 
 			//activate the dropdown
@@ -240,7 +230,8 @@ angular.module('novabill.directives',
 			creditNote : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$translate', function($scope, $element, $translate){
+		controller : ['$scope', '$element', '$translate', 'nConfirmDialog', 
+		              function($scope, $element, $translate, nConfirmDialog){
 
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.creditNoteDetails( $scope.creditNote.id ) );
@@ -255,18 +246,14 @@ angular.module('novabill.directives',
 			};
 
 			$scope.remove = function(){
-				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, 
-						$translate('REMOVAL_QUESTION'), {
-					onOk : function(){
-						GWT_Server.creditNote.remove(nConstants.conf.businessId, $scope.creditNote.client.id, $scope.creditNote.id, {
-							onSuccess : function(){
-								$rootScope.$broadcast(nConstants.events.CREDIT_NOTE_REMOVED);
-							},
-							onFailure : function(){}
-						});
-					},
-
-					onCancel : function(){}
+				var instance = nConfirmDialog.open( $translate('REMOVAL_QUESTION') );
+				instance.result.then(function(){
+					GWT_Server.creditNote.remove(nConstants.conf.businessId, $scope.creditNote.client.id, $scope.creditNote.id, {
+						onSuccess : function(){
+							$rootScope.$broadcast(nConstants.events.CREDIT_NOTE_REMOVED);
+						},
+						onFailure : function(){}
+					});
 				});
 			};
 
@@ -394,32 +381,26 @@ angular.module('novabill.directives',
 		scope: { 
 			sharingPermit : '='
 		},
-		controller : ['$scope', 'nConstants', '$rootScope', '$translate',
-		              function($scope, nConstants, $rootScope, $translate){
+		controller : ['$scope', 'nConstants', '$rootScope', '$translate', 'nConfirmDialog',
+		              function($scope, nConstants, $rootScope, $translate, nConfirmDialog){
 			
 			$scope.stopProp = function($event){
 				$event.stopPropagation();
 			};
 			
 			$scope.sendEmail = function(){
-				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, $translate('SHARING_PERMIT_SEND_EMAIL_CONFIRM', {email : $scope.sharingPermit.email}), {
-					onOk : function(){
-						$scope.sharingPermit.$sendEmail();
-					},
-
-					onCancel : function(){}
+				var instance = nConfirmDialog.open( $translate('SHARING_PERMIT_SEND_EMAIL_CONFIRM', {email : $scope.sharingPermit.email}) );
+				instance.result.then(function(){
+					$scope.sharingPermit.$sendEmail();
 				});
 			};
 			
 			$scope.remove = function(){
-				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, $translate('SHARING_PERMIT_REMOVAL_QUESTION', {email : $scope.sharingPermit.email}), {
-					onOk : function(){
-						$scope.sharingPermit.$delete(function(){
-							$rootScope.$broadcast(nConstants.events.SHARING_PERMIT_REMOVED);
-						});
-					},
-
-					onCancel : function(){}
+				var instance = nConfirmDialog.open( $translate('SHARING_PERMIT_REMOVAL_QUESTION', {email : $scope.sharingPermit.email}) );
+				instance.result.then(function(){
+					$scope.sharingPermit.$delete(function(){
+						$rootScope.$broadcast(nConstants.events.SHARING_PERMIT_REMOVED);
+					});
 				});
 			};
 
@@ -455,7 +436,8 @@ angular.module('novabill.directives',
 			//should we reload if the price has been updated?
 			reloadOnUpdate : '='
 		},
-		controller : ['$scope', '$rootScope', 'nCalc', '$filter', function($scope, $rootScope, nCalc, $filter){
+		controller : ['$scope', '$rootScope', 'nCalc', '$filter', 'nConfirmDialog', 
+		              function($scope, $rootScope, nCalc, $filter, nConfirmDialog){
 			$scope.PRICE_TYPE = nConstants.priceType;
 			$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 			var COMMODITY_PRICES_HACK = $scope.commodity.pricesMap ? $scope.commodity.pricesMap.prices : $scope.commodity.prices;
@@ -556,32 +538,28 @@ angular.module('novabill.directives',
 				};
 	
 				$scope.remove = function(){
-					$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, $filter('translate')('REMOVAL_QUESTION'), {
-						onOk : function(){
-							GWT_Server.commodity.removePrice(nConstants.conf.businessId, String($scope.price.priceListID), String($scope.price.commodityID), {
-								onSuccess : function(data){
-									$scope.$apply(function(){
-										var deletedPrice = COMMODITY_PRICES_HACK[$scope.priceListName];
-										var emptyPrice = {
-												id: null, 
-												priceValue: null, 
-												priceType: null, 
-												commodityID: deletedPrice.commodityID, 
-												priceListID: deletedPrice.priceListID
-										};
-										COMMODITY_PRICES_HACK[$scope.priceListName] = emptyPrice;
-										$scope.price = emptyPrice;
-										updatePriceInfo( $scope.price );
-										$scope.editMode = false;
-									});
-								},
-	
-								onFailure : function(error){}
-							});
-	
-						},
-	
-						onCancel : function(){}
+					var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION') );
+					instance.result.then(function(){
+						GWT_Server.commodity.removePrice(nConstants.conf.businessId, String($scope.price.priceListID), String($scope.price.commodityID), {
+							onSuccess : function(data){
+								$scope.$apply(function(){
+									var deletedPrice = COMMODITY_PRICES_HACK[$scope.priceListName];
+									var emptyPrice = {
+											id: null, 
+											priceValue: null, 
+											priceType: null, 
+											commodityID: deletedPrice.commodityID, 
+											priceListID: deletedPrice.priceListID
+									};
+									COMMODITY_PRICES_HACK[$scope.priceListName] = emptyPrice;
+									$scope.price = emptyPrice;
+									updatePriceInfo( $scope.price );
+									$scope.editMode = false;
+								});
+							},
+
+							onFailure : function(error){}
+						});
 					});
 				};
 				
