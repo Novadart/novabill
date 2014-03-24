@@ -264,6 +264,11 @@
 			<artifactId>dumbster</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>el-impl</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- JasperReports -->
 		<dependency>
@@ -297,10 +302,10 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
-            <groupId>javax.servlet</groupId>
-            <artifactId>servlet-api</artifactId>
-            <scope>provided</scope>
-        </dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<dependency>
 			<groupId>${project.groupId}</groupId>
 			<artifactId>novabill-gwt-client</artifactId>
