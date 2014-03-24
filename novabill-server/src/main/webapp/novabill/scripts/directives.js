@@ -165,8 +165,8 @@ angular.module('novabill.directives',
 /*
  * Transport Document Widget
  */
-.directive('nTransportDocument', ['$rootScope', 'nConstants',
-                                  function factory($rootScope, nConstants){
+.directive('nTransportDocument', ['$rootScope', 'nConstants', 'nSelectTransportDocumentsDialog',
+                                  function factory($rootScope, nConstants, nSelectTransportDocumentsDialog){
 
 	return {
 		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-transport-document.html'),
@@ -204,8 +204,7 @@ angular.module('novabill.directives',
 			};
 
 			$scope.createInvoice = function(id){
-				$rootScope.$broadcast(nConstants.events.SHOW_TRANSPORT_DOCUMENTS_DIALOG, 
-						$scope.transportDocument.client.id, $scope.transportDocument.id);
+				nSelectTransportDocumentsDialog.open($scope.transportDocument.client.id, $scope.transportDocument.id);
 			};
 
 			//activate the dropdown

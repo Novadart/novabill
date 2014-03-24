@@ -32,112 +32,113 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 
 /*
- * Select Transport Documents Dialog
+ * Edit Address Dialog
  */
-.directive('nSelectTransportDocumentsDialog', ['nConstants', function factory(nConstants){
+.factory('nSelectTransportDocumentsDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 	return {
+		open : function( clientId, preSelectedId ) {
 
-		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-select-transport-documents-dialog.html'),
-		scope: {},
+			return $modal.open({
 
-		controller : ['$scope', 'nConstants', function($scope, nConstants){
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-select-transport-documents-dialog.html'),
 
-			function partitionTransportDocuments(docs){
-				var result = {
-						neverIncludedInInvoice : [],
-						alreadyIncludedInInvoice : []
-				};
+				controller: ['$scope', '$modalInstance',
+				             function($scope, $modalInstance){
+					
+					var currentYear = new Date().getFullYear().toString();
 
-				angular.forEach(docs, function(tDoc, key){
-					if(tDoc.invoice){
-						result.alreadyIncludedInInvoice.push(tDoc);
-					} else {
-						result.neverIncludedInInvoice.push(tDoc);
-					}
-				});
+					GWT_Server.transportDocument.getAllForClient(clientId, currentYear, {
 
-				return result;
-			}
+						onSuccess : function(result){
+							$scope.$apply(function(){
+								$scope.selectedSet = {};
+								$scope.selectedSet[preSelectedId] = true;
+								$scope.docs = partitionTransportDocuments(result.transportDocuments);
 
-			$scope.$on(nConstants.events.SHOW_TRANSPORT_DOCUMENTS_DIALOG, 
-					function(event, clientId, preSelectedId){
-
-				var currentYear = new Date().getFullYear().toString();
-
-				GWT_Server.transportDocument.getAllForClient(clientId, currentYear, {
-
-					onSuccess : function(result){
-						$scope.$apply(function(){
-							$scope.selectedSet = {};
-							$scope.selectedSet[preSelectedId] = true;
-							$scope.docs = partitionTransportDocuments(result.transportDocuments);
-
-							$('#selectTransportDocumentsDialog').modal('show');
-							$('#selectTransportDocumentsDialog .scroller').slimScroll({
-								height: '400px'
+								$('.n-select-transport-documents-dialog .scroller').slimScroll({
+									height: '400px'
+								});
 							});
+						},
+
+						onFailure : function(){}
+
+					});
+					
+					
+					function partitionTransportDocuments(docs){
+						var result = {
+								neverIncludedInInvoice : [],
+								alreadyIncludedInInvoice : []
+						};
+
+						angular.forEach(docs, function(tDoc, key){
+							if(tDoc.invoice){
+								result.alreadyIncludedInInvoice.push(tDoc);
+							} else {
+								result.neverIncludedInInvoice.push(tDoc);
+							}
 						});
-					},
 
-					onFailure : function(){}
-
-				});
-			});
-
-
-			/**
-			 * This function keeps updated a set of selected values.
-			 * If the set is empty, it sets it to null for easier evaluation in the view 
-			 */
-			$scope.toggleElement = function(id){
-				if(!$scope.selectedSet){
-					$scope.selectedSet = {};
-				}
-
-				if($scope.selectedSet[id]){
-					delete $scope.selectedSet[id];
-
-					if(angular.element.isEmptyObject($scope.selectedSet)){
-						$scope.selectedSet = null;
+						return result;
 					}
-				} else {
-					$scope.selectedSet[id] = true;
-				}
-			};
 
-			$scope.openUrl = function($event, id){
-				$event.stopPropagation();
-				window.open(nConstants.url.transportDocumentDetails( id ), '_blank');
-			};
+					/**
+					 * This function keeps updated a set of selected values.
+					 * If the set is empty, it sets it to null for easier evaluation in the view 
+					 */
+					$scope.toggleElement = function(id){
+						if(!$scope.selectedSet){
+							$scope.selectedSet = {};
+						}
 
-			$scope.openInvoice = function($event, invoiceId){
-				$event.stopPropagation();
-				window.open(nConstants.url.invoiceDetails( invoiceId ), '_blank');
-			};
+						if($scope.selectedSet[id]){
+							delete $scope.selectedSet[id];
 
-			$scope.ok = function(){
-				var ids = new Array();
-				for(var id in $scope.selectedSet){
-					ids.push(id);
-				}
+							if(angular.element.isEmptyObject($scope.selectedSet)){
+								$scope.selectedSet = null;
+							}
+						} else {
+							$scope.selectedSet[id] = true;
+						}
+					};
 
-				window.location.assign(nConstants.url.invoiceFromTransportDocumentList( 
-						encodeURIComponent( 
-								angular.toJson({
-									list : ids
-								}) ) ));
-			};
+					$scope.openUrl = function($event, id){
+						$event.stopPropagation();
+						window.open(nConstants.url.transportDocumentDetails( id ), '_blank');
+					};
 
+					$scope.openInvoice = function($event, invoiceId){
+						$event.stopPropagation();
+						window.open(nConstants.url.invoiceDetails( invoiceId ), '_blank');
+					};
 
-		}],
+					$scope.ok = function(){
+						var ids = new Array();
+						for(var id in $scope.selectedSet){
+							ids.push(id);
+						}
 
-		restrict: 'E',
-		replace: true
+						$modalInstance.close();
+						
+						window.location.assign(nConstants.url.invoiceFromTransportDocumentList( 
+								encodeURIComponent( 
+										angular.toJson({
+											list : ids
+										}) ) ));
+					};
+					
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
 
+				}]
+			});
+		}
 	};
-
 }])
+
 
 
 /*
