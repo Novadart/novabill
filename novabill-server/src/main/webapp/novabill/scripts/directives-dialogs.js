@@ -336,9 +336,13 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				             function($scope, $modalInstance){
 					
 					$scope.sharingPermit = sharingPermit;
+					$scope.sendEmail = false;
 
 					$scope.save = function(){
-						$modalInstance.close($scope.sharingPermit);
+						$modalInstance.close({
+							sharingPermit : $scope.sharingPermit,
+							sendEmail : $scope.sendEmail
+						});
 					};
 
 					$scope.cancel = function(){

@@ -46,7 +46,9 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 	$scope.newShare = function(){
 		// open the dialog to create a new sharing permit with an empty resource
 		var instance = nEditSharingPermitDialog.open( new SharingPermit() );
-		instance.result.then(function( sharingPermit ){
+		instance.result.then(function( result ){
+			var sharingPermit = result.sharingPermit;
+			
 			//add missing parameters
 			sharingPermit.business = {
 					id : nConstants.conf.businessId
@@ -54,7 +56,7 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 			sharingPermit.createdOn = new Date().getTime();
 
 			// save the sharing permit
-			sharingPermit.$save(function(){
+			sharingPermit.$save({ sendEmail : result.sendEmail }, function(){
 				SharingPermit.query(function(result){
 					$scope.sharingPermits = result;
 				});

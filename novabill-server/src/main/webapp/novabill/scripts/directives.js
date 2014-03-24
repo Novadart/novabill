@@ -394,10 +394,21 @@ angular.module('novabill.directives',
 		scope: { 
 			sharingPermit : '='
 		},
-		controller : ['$scope', 'nConstants', '$rootScope', '$translate', function($scope, nConstants, $rootScope, $translate){
+		controller : ['$scope', 'nConstants', '$rootScope', '$translate',
+		              function($scope, nConstants, $rootScope, $translate){
 			
 			$scope.stopProp = function($event){
 				$event.stopPropagation();
+			};
+			
+			$scope.sendEmail = function(){
+				$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, $translate('SHARING_PERMIT_SEND_EMAIL_CONFIRM', {email : $scope.sharingPermit.email}), {
+					onOk : function(){
+						$scope.sharingPermit.$sendEmail();
+					},
+
+					onCancel : function(){}
+				});
 			};
 			
 			$scope.remove = function(){
@@ -410,8 +421,6 @@ angular.module('novabill.directives',
 
 					onCancel : function(){}
 				});
-
-				
 			};
 
 		}],

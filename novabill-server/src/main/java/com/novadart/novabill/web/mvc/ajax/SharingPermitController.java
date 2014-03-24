@@ -14,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -34,55 +35,56 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 public class SharingPermitController {
 
 	private static final String EMAIL_TEMPLATE_LOCATION = "mail-templates/sharing-permit-notification.vm";
-	
+
 	@Value("${sharing.request.url}")
 	private String sharingRequestUrl;
-	
+
 	@Autowired
 	private SharingPermitService sharingPermitService;
-	
+
 	@Autowired
 	private MessageSource messageSource;
-	
+
 	@Autowired
 	private UtilsService utilsService;
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<SharingPermitDTO> getAll(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException{
 		return sharingPermitService.getAll(businessID);
 	}
-	
+
 	private void sendMessage(String email, Long businessID, Locale locale){
 		Map<String, Object> templateVars = new HashMap<String, Object>();
 		templateVars.put("shareRequestUrl", sharingRequestUrl);
 		sendMessage(email, messageSource.getMessage("sharing.permit.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
 	}
-	
-	@RequestMapping(value = "/{sendEmail}", method = RequestMethod.POST)
+
+	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public Long add(@PathVariable Long businessID, @PathVariable boolean sendEmail, @RequestBody SharingPermitDTO sharingPermitDTO, Locale locale) throws ValidationException{
+	public Long add(@PathVariable Long businessID, @RequestParam(required=false, defaultValue="false") boolean sendEmail, @RequestBody SharingPermitDTO sharingPermitDTO, Locale locale) throws ValidationException{
 		Long id = sharingPermitService.add(businessID, sharingPermitDTO);
 		if(sendEmail)
 			sendMessage(sharingPermitDTO.getEmail(), businessID, locale);
 		return id;
 	}
-	
-	@RequestMapping(value = "/{id}/email", method = RequestMethod.GET)
+
+	@RequestMapping(value = "/{id}/email", method = RequestMethod.POST)
+	@ResponseBody
 	public void sendEmail(@PathVariable Long id, Locale locale) throws DataAccessException{
 		SharingPermit sharingPermit = SharingPermit.findSharingPermit(id);
 		if(!sharingPermit.getBusiness().getId().equals(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()))
 			throw new DataAccessException();
 		sendMessage(sharingPermit.getEmail(), sharingPermit.getBusiness().getId(), locale);
 	}
-	
+
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
 	public void remove(@PathVariable Long businessID, @PathVariable Long id){
 		sharingPermitService.remove(businessID, id);
 	}
-	
+
 }
