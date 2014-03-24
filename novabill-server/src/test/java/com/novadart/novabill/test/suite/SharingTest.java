@@ -5,16 +5,12 @@ import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import java.util.Locale;
-
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
-import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.test.context.ActiveProfiles;
-import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BeanPropertyBindingResult;
@@ -33,6 +29,7 @@ import com.novadart.novabill.service.SharingService;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.SharingPermitService;
 import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
+import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.web.mvc.SharingController;
 import com.novadart.novabill.web.mvc.ajax.SharingPermitController;
@@ -59,6 +56,7 @@ public class SharingTest extends ServiceTest {
 		TestUtils.setPrivateField(SharingPermitController.class, controller, "messageSource", messageSource);
 		TestUtils.setPrivateField(SharingPermitController.class, controller, "sharingPermitService", sharingPermitService);
 		TestUtils.setPrivateField(SharingPermitController.class, controller, "sharingRequestUrl", "bogus.pattern.com");
+		TestUtils.setPrivateField(SharingPermitController.class, controller, "utilsService", utilsService);
 		return controller;
 	}
 	
@@ -69,7 +67,7 @@ public class SharingTest extends ServiceTest {
 	private UtilsService utilsService;
 	
 	@Test
-	public void grantPermitTest() throws ValidationException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+	public void grantPermitWithEmailTest() throws ValidationException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
 		SharingPermitDTO sharingPermitDTO = SharingPermitDTOFactory.toDTO(TestUtils.createSharingPermit());
 		Principal authenticatedPrincipal = utilsService.getAuthenticatedPrincipalDetails();
 		sharingPermitDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
@@ -78,7 +76,7 @@ public class SharingTest extends ServiceTest {
 		SharingPermitController sharingPermitController = initSharingPermitController();
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		sharingPermitController.add(businessID, sharingPermitDTO, null);
+		sharingPermitController.add(businessID, true, sharingPermitDTO, null);
 		smtpServer.stop();
 		
 		Business business = Business.findBusinessByVatIDIfSharingPermit(authenticatedPrincipal.getBusiness().getVatID(), sharingPermitDTO.getEmail());
@@ -87,6 +85,39 @@ public class SharingTest extends ServiceTest {
 		assertEquals(2, Business.findBusiness(businessID).getSharingPermits().size());
 		assertTrue(business != null);
 		assertEquals(businessID, business.getId());
+	}
+	
+	@Test
+	public void grantPermitWithoutEmailTest() throws ValidationException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+		SharingPermitDTO sharingPermitDTO = SharingPermitDTOFactory.toDTO(TestUtils.createSharingPermit());
+		Principal authenticatedPrincipal = utilsService.getAuthenticatedPrincipalDetails();
+		sharingPermitDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		
+		SharingPermitController sharingPermitController = initSharingPermitController();
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
+		sharingPermitController.add(businessID, false, sharingPermitDTO, null);
+		smtpServer.stop();
+		
+		Business business = Business.findBusinessByVatIDIfSharingPermit(authenticatedPrincipal.getBusiness().getVatID(), sharingPermitDTO.getEmail());
+		
+		assertTrue(smtpServer.getReceivedEmailSize() == 0);
+		assertEquals(2, Business.findBusiness(businessID).getSharingPermits().size());
+		assertTrue(business != null);
+		assertEquals(businessID, business.getId());
+	}
+	
+	@Test
+	public void sendEmailTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, DataAccessException{
+		SharingPermitController sharingPermitController = initSharingPermitController();
+		SharingPermit permit = authenticatedPrincipal.getBusiness().getSharingPermits().iterator().next();
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
+		sharingPermitController.sendEmail(permit.getId(), null);
+		smtpServer.stop();
+		
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 	}
 	
 	private SharingController initSharingController() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{

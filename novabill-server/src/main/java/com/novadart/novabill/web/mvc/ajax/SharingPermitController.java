@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
+import com.novadart.novabill.domain.SharingPermit;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.SharingPermitService;
 import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -42,6 +44,9 @@ public class SharingPermitController {
 	@Autowired
 	private MessageSource messageSource;
 	
+	@Autowired
+	private UtilsService utilsService;
+	
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
@@ -55,13 +60,22 @@ public class SharingPermitController {
 		sendMessage(email, messageSource.getMessage("sharing.permit.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = "/{sendEmail}", method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public Long add(@PathVariable Long businessID, @RequestBody SharingPermitDTO sharingPermitDTO, Locale locale) throws ValidationException{
+	public Long add(@PathVariable Long businessID, @PathVariable boolean sendEmail, @RequestBody SharingPermitDTO sharingPermitDTO, Locale locale) throws ValidationException{
 		Long id = sharingPermitService.add(businessID, sharingPermitDTO);
-		sendMessage(sharingPermitDTO.getEmail(), businessID, locale);
+		if(sendEmail)
+			sendMessage(sharingPermitDTO.getEmail(), businessID, locale);
 		return id;
+	}
+	
+	@RequestMapping(value = "/{id}/email", method = RequestMethod.GET)
+	public void sendEmail(@PathVariable Long id, Locale locale) throws DataAccessException{
+		SharingPermit sharingPermit = SharingPermit.findSharingPermit(id);
+		if(!sharingPermit.getBusiness().getId().equals(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()))
+			throw new DataAccessException();
+		sendMessage(sharingPermit.getEmail(), sharingPermit.getBusiness().getId(), locale);
 	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
