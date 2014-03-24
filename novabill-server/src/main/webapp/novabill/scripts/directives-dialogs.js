@@ -356,46 +356,33 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 
 /*
- * Removal Dialog
+ * Confirm Dialog
  */
-.directive('nRemovalDialog', ['nConstants', function factory(nConstants){
-
+.factory('nConfirmDialog', ['nConstants', '$modal', function factory(nConstants,$modal){
+	
 	return {
+		open : function( message ) {
 
-		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-confirm-removal-dialog.html'),
-		scope: {},
+			return $modal.open({
 
-		controller : ['$scope', 'nConstants', function($scope, nConstants){
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-confirm-dialog.html'),
 
-			$scope.$on(nConstants.events.SHOW_REMOVAL_DIALOG, function(event, message, callback){
-				$scope.message = message;
-				$scope.callback = callback;
+				controller: ['$scope', '$modalInstance',
+				             function($scope, $modalInstance){
+					
+					$scope.message = message;
+					
+					$scope.ok = function(){
+						$modalInstance.close();
+					};
 
-				$('#removalDialog').modal('show');
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
+
+				}]
 			});
-
-			function hide(){
-				$('#removalDialog').modal('hide');
-
-				// workaround - see http://stackoverflow.com/questions/11519660/twitter-bootstrap-modal-backdrop-doesnt-disappear
-				$('body').removeClass('modal-open');
-				$('.modal-backdrop').remove();
-			};
-
-			$scope.ok = function(){
-				hide();
-				$scope.callback.onOk();
-			};
-
-			$scope.cancel = function(){
-				hide();
-				$scope.callback.onCancel();
-			};
-		}],
-
-		restrict: 'E',
-		replace: true
-
+		}
 	};
 
 }])

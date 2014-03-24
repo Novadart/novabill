@@ -86,8 +86,8 @@ angular.module('novabill.commodities.controllers',
 /**
  * COMMODITIES DETAILS PAGE CONTROLLER
  */
-.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', '$rootScope', 'nConstants', '$filter', '$route', 'nRegExp',
-                                       function($scope, $location, $routeParams, $rootScope, nConstants, $filter, $route, nRegExp){
+.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', '$rootScope', 'nConstants', '$filter', '$route', 'nRegExp', 'nConfirmDialog',
+                                       function($scope, $location, $routeParams, $rootScope, nConstants, $filter, $route, nRegExp, nConfirmDialog){
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	$scope.commodity = null;
 
@@ -154,21 +154,17 @@ angular.module('novabill.commodities.controllers',
 
 
 	$scope.removeCommodity = function(){
-		$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, $filter('translate')('REMOVAL_QUESTION',{data : $scope.commodity.description}), {
-			onOk : function(){
-				GWT_Server.commodity.remove(nConstants.conf.businessId, $scope.commodity.id, {
-					onSuccess : function(data){
-						$scope.$apply(function(){
-							$location.path('/');
-						});
-					},
+		var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION',{data : $scope.commodity.description}) );
+		instance.result.then(function(){
+			GWT_Server.commodity.remove(nConstants.conf.businessId, $scope.commodity.id, {
+				onSuccess : function(data){
+					$scope.$apply(function(){
+						$location.path('/');
+					});
+				},
 
-					onFailure : function(error){}
-				});
-
-			},
-
-			onCancel : function(){}
+				onFailure : function(error){}
+			});
 		});
 	};
 

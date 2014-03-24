@@ -73,9 +73,9 @@ angular.module('novabill.priceLists.controllers',
 /**
  * PRICE LISTS DETAILS PAGE CONTROLLER
  */
-.controller('PriceListsDetailsCtrl', ['$scope', '$http', '$routeParams', 'nSorting', 'nConstants', '$rootScope', 
+.controller('PriceListsDetailsCtrl', ['$scope', '$http', '$routeParams', 'nSorting', 'nConstants', '$rootScope', 'nConfirmDialog',
                                       '$location', '$filter', 'nEditPriceListDialog', 'nCommodityPriceDialog', '$route',
-                                      function($scope, $http, $routeParams, nSorting, nConstants, $rootScope, 
+                                      function($scope, $http, $routeParams, nSorting, nConstants, $rootScope, nConfirmDialog,
                                     		  $location, $filter, nEditPriceListDialog, nCommodityPriceDialog, $route){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
@@ -173,21 +173,17 @@ angular.module('novabill.priceLists.controllers',
 
 
 	$scope.removePriceList = function(){
-		$rootScope.$broadcast(nConstants.events.SHOW_REMOVAL_DIALOG, $filter('translate')('REMOVAL_QUESTION', {data: $scope.priceList.name}), {
-			onOk : function(){
-				GWT_Server.priceList.remove(nConstants.conf.businessId, String($scope.priceList.id), {
-					onSuccess : function(data){
-						$scope.$apply(function(){
-							$location.path('/');
-						});
-					},
+		var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION', {data: $scope.priceList.name}) );
+		instance.result.then(function(){
+			GWT_Server.priceList.remove(nConstants.conf.businessId, String($scope.priceList.id), {
+				onSuccess : function(data){
+					$scope.$apply(function(){
+						$location.path('/');
+					});
+				},
 
-					onFailure : function(error){}
-				});
-
-			},
-
-			onCancel : function(){}
+				onFailure : function(error){}
+			});
 		});
 	};
 	
