@@ -10,13 +10,13 @@ import static java.lang.annotation.RetentionPolicy.RUNTIME;
 import javax.validation.Constraint;
 import javax.validation.Payload;
 
-import com.novadart.novabill.service.validator.TaxFieldsNotNullValidator;
+import com.novadart.novabill.service.validator.VatIDUniqueValidator;
 
 @Target({TYPE, ANNOTATION_TYPE})
 @Retention(RUNTIME)
-@Constraint(validatedBy = TaxFieldsNotNullValidator.class)
+@Constraint(validatedBy = VatIDUniqueValidator.class)
 @Documented
-public @interface TaxFieldsNotNull {
+public @interface VatIDUnique {
 	
 	String message() default "At least one of VatID and Ssn must be not null";
 	

@@ -12,6 +12,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -39,6 +40,7 @@ import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.dto.factory.ClientAddressDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
@@ -66,6 +68,9 @@ public class ClientServiceTest extends ServiceTest {
 	
 	@Autowired
 	private BusinessGwtService businessService;
+	
+	@Autowired
+	private SimpleValidator validator;
 	
 	@Resource(name = "testProps")
 	private HashMap<String, String> testProps;
@@ -511,6 +516,29 @@ public class ClientServiceTest extends ServiceTest {
 		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(clientAddress);
 		clientAddressDTO.setClient(ClientDTOFactory.toDTO(Client.findClient(getUnathorizedBusinessID())));
 		clientService.updateClientAddress(clientAddressDTO);
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void nonUniqueVatIDAddTest() throws ValidationException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		Client newClient = TestUtils.createClient();
+		newClient.setVatID(client.getVatID());
+		newClient.setSsn(client.getSsn());
+		validator.validate(newClient);
+	}
+	
+	@Test
+	public void nonUniqueVatIDUpdateTest() throws ValidationException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		client.setName("New Comp Inc.");
+		validator.validate(client);
+	}
+	
+	@Test
+	public void uniqueVatIDUpdateTest() throws ValidationException{
+		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
+		client.setVatID(UUID.randomUUID().toString().substring(0, 24));
+		validator.validate(client);
 	}
 	
 }
