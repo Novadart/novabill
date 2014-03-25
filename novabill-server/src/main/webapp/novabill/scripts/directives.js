@@ -394,8 +394,8 @@ angular.module('novabill.directives',
 		scope: { 
 			sharingPermit : '='
 		},
-		controller : ['$scope', 'nConstants', '$rootScope', '$translate', 'nConfirmDialog',
-		              function($scope, nConstants, $rootScope, $translate, nConfirmDialog){
+		controller : ['$scope', 'nConstants', '$rootScope', '$translate', 'nConfirmDialog', 'nAlertDialog',
+		              function($scope, nConstants, $rootScope, $translate, nConfirmDialog, nAlertDialog){
 			
 			$scope.stopProp = function($event){
 				$event.stopPropagation();
@@ -404,7 +404,9 @@ angular.module('novabill.directives',
 			$scope.sendEmail = function(){
 				var instance = nConfirmDialog.open( $translate('SHARING_PERMIT_SEND_EMAIL_CONFIRM', {email : $scope.sharingPermit.email}) );
 				instance.result.then(function(){
-					$scope.sharingPermit.$sendEmail();
+					$scope.sharingPermit.$sendEmail(function(){
+						nAlertDialog.open($translate('SHARING_PERMIT_EMAIL_SENT'));
+					});
 				});
 			};
 			

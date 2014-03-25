@@ -42,10 +42,14 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 		}
 
 	};
-
-	$scope.newShare = function(){
+	
+	function recursiveCreation(wrongShare){
+		
+		var invalidEmail = wrongShare ? true : false;
+		var sp = wrongShare ? wrongShare : new SharingPermit();
+		
 		// open the dialog to create a new sharing permit with an empty resource
-		var instance = nEditSharingPermitDialog.open( new SharingPermit() );
+		var instance = nEditSharingPermitDialog.open( sp, invalidEmail );
 		instance.result.then(function( result ){
 			var sharingPermit = result.sharingPermit;
 			
@@ -60,8 +64,21 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 				SharingPermit.query(function(result){
 					$scope.sharingPermits = result;
 				});
+			}, function(exception){
+				switch (exception.data.error) {
+				case "VALIDATION ERROR":
+					recursiveCreation( sharingPermit );
+					break;
+
+				default:
+					break;
+				}
 			});
 		});
+	}
+
+	$scope.newShare = function(){
+		recursiveCreation();
 	};
 
 	$scope.$watch('priceDisplayInDocsMonolithic', function(newValue, oldValue) {

@@ -287,7 +287,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 .factory('nEditSharingPermitDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 	return {
-		open : function( sharingPermit ) {
+		open : function( sharingPermit, invalidEmail ) {
 
 			return $modal.open({
 
@@ -297,6 +297,7 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 				             function($scope, $modalInstance){
 					
 					$scope.sharingPermit = sharingPermit;
+					$scope.invalidEmail = invalidEmail;
 					$scope.sendEmail = false;
 
 					$scope.save = function(){
