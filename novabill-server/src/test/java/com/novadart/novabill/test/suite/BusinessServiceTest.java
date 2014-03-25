@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -31,6 +32,7 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
@@ -58,6 +60,9 @@ public class BusinessServiceTest extends ServiceTest {
 	
 	@Resource(name = "totalsAfterTax")
 	protected HashMap<String, String> totalsAfterTax;
+	
+	@Autowired
+	private SimpleValidator validator;
 	
 	@Override
 	@Before
@@ -359,6 +364,29 @@ public class BusinessServiceTest extends ServiceTest {
 		assertTrue(new HashSet<>(businessService.getCreditNoteYears(business.getId())) .equals(extractYears(business.getCreditNotes())));
 		assertTrue(new HashSet<>(businessService.getEstimationYears(business.getId())) .equals(extractYears(business.getEstimations())));
 		assertTrue(new HashSet<>(businessService.getTransportDocumentYears(business.getId())) .equals(extractYears(business.getTransportDocuments())));
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void nonUniqueVatIDAddTest() throws ValidationException{
+		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
+		Business newBusiness = TestUtils.createBusiness();
+		newBusiness.setVatID(business.getVatID());
+		newBusiness.setSsn(business.getSsn());
+		validator.validate(newBusiness);
+	}
+	
+	@Test
+	public void nonUniqueVatIDUpdateTest() throws ValidationException{
+		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
+		business.setName("New Comp Inc.");
+		validator.validate(business);
+	}
+	
+	@Test
+	public void uniqueVatIDUpdateTest() throws ValidationException{
+		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
+		business.setVatID(UUID.randomUUID().toString().substring(0, 24));
+		validator.validate(business);
 	}
 
 }

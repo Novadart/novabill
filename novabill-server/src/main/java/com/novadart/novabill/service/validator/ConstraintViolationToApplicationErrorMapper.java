@@ -17,7 +17,7 @@ import org.springframework.stereotype.Service;
 
 import com.novadart.novabill.annotation.PaymentDeltaNotNull;
 import com.novadart.novabill.annotation.SharingPermitEmailBusinessUnique;
-import com.novadart.novabill.annotation.TaxFieldsNotNull;
+import com.novadart.novabill.annotation.VatIDUnique;
 import com.novadart.novabill.shared.client.validation.ErrorCode;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
@@ -88,7 +88,7 @@ public class ConstraintViolationToApplicationErrorMapper {
 				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.MALFORMED_REGEX_PATTERN, pair.getIndexes()));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(Size.class))
 				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.LENGTH, pair.getIndexes()));
-			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(TaxFieldsNotNull.class))
+			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(VatIDUnique.class))
 				errors.add(new ErrorObject(Field.vatID, ErrorCode.BLANK_OR_NULL));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(PaymentDeltaNotNull.class))
 				errors.add(new ErrorObject(Field.paymentTypeCls, ErrorCode.NULL));

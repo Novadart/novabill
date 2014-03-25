@@ -19,6 +19,8 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -45,8 +47,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.annotation.TaxFieldsNotNull;
 import com.novadart.novabill.annotation.Trimmed;
+import com.novadart.novabill.annotation.VatIDUnique;
 import com.novadart.novabill.service.validator.Groups.HeavyClient;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
@@ -69,7 +71,8 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @Configurable
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@TaxFieldsNotNull(groups = {HeavyClient.class})
+@VatIDUnique(groups = {HeavyClient.class})
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"vatid"})})
 public class Client implements Serializable, Taxable {
 	
 	private static final long serialVersionUID = 8383909226336873374L;
@@ -132,11 +135,13 @@ public class Client implements Serializable, Taxable {
     private String web;
 
     @Size(max = 25)
+    @NotBlank(groups = {HeavyClient.class})
     //@Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
     @Trimmed
     private String vatID;
 
     @Size(max = 25)
+    @NotBlank(groups = {HeavyClient.class})
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
     @Trimmed
     private String ssn;
@@ -240,11 +245,18 @@ public class Client implements Serializable, Taxable {
     			entityManager.createQuery(String.format(queryTemplate, "TransportDocument"), Long.class).setParameter("clientId", clientID).getSingleResult() != 0;
     }
     
+    @Override
+	public Taxable findByVatID(String vatID) {
+    	String sql = "select c from Client c where c.vatID = :vatID";
+    	List<Client> r = entityManager.createQuery(sql, Client.class).setParameter("vatID", vatID).getResultList();
+		return r.size() == 0? null: r.get(0);
+	}
+    
     /*
      * Getters and setters
      * */
     
-    public String getName() {
+	public String getName() {
         return this.name;
     }
     
@@ -516,6 +528,7 @@ public class Client implements Serializable, Taxable {
     @Column(name = "version")
     private Integer version;
     
+    @Override
     public Long getId() {
         return this.id;
     }
