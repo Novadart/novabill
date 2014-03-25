@@ -6,8 +6,8 @@ angular.module('novabill.directives',
 /*
  * Invoice widget
  */
-.directive('nInvoice', ['$rootScope', 'nConstants', 'nSelectClientDialog',
-                        function factory($rootScope, nConstants, nSelectClientDialog){
+.directive('nInvoice', ['nConstants',
+                        function factory(nConstants){
 
 	return {
 		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-invoice.html'),
@@ -15,8 +15,8 @@ angular.module('novabill.directives',
 			invoice : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$translate', 'nConfirmDialog', 
-		              function($scope, $element, $translate, nConfirmDialog){
+		controller : ['$scope', '$rootScope', '$element', '$translate', 'nConfirmDialog', 'nSelectClientDialog', 'nPdf',
+		              function($scope, $rootScope, $element, $translate, nConfirmDialog, nSelectClientDialog, nPdf){
 
 			function isExpired(){
 				var today = new Date();
@@ -51,7 +51,7 @@ angular.module('novabill.directives',
 			};
 
 			$scope.print = function($event){
-				GWT_UI.generateInvoicePdf($scope.invoice.id);
+				nPdf.downloadInvoicePdf($scope.invoice.id);
 			};
 
 			$scope.remove = function(){
@@ -96,8 +96,7 @@ angular.module('novabill.directives',
 /*
  * Estimation Widget
  */
-.directive('nEstimation', ['$rootScope', 'nConstants', 
-                           function factory($rootScope, nConstants){
+.directive('nEstimation', ['nConstants', function factory(nConstants){
 
 	return {
 		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-estimation.html'),
@@ -105,8 +104,8 @@ angular.module('novabill.directives',
 			estimation : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$translate', 'nSelectClientDialog', 'nConfirmDialog',
-		              function($scope, $element, $translate, nSelectClientDialog, nConfirmDialog){
+		controller : ['$scope', '$element', '$rootScope', '$translate', 'nSelectClientDialog', 'nConfirmDialog', 'nPdf',
+		              function($scope, $element, $rootScope, $translate, nSelectClientDialog, nConfirmDialog, nPdf){
 
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.estimationDetails($scope.estimation.id) );
@@ -117,7 +116,7 @@ angular.module('novabill.directives',
 			};
 
 			$scope.print = function(){
-				GWT_UI.generateEstimationPdf($scope.estimation.id);
+				nPdf.downloadEstimationPdf($scope.estimation.id);
 			};
 
 			$scope.remove = function(){
@@ -165,8 +164,7 @@ angular.module('novabill.directives',
 /*
  * Transport Document Widget
  */
-.directive('nTransportDocument', ['$rootScope', 'nConstants', 'nSelectTransportDocumentsDialog',
-                                  function factory($rootScope, nConstants, nSelectTransportDocumentsDialog){
+.directive('nTransportDocument', ['nConstants', function factory(nConstants){
 
 	return {
 		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-transport-document.html'),
@@ -174,8 +172,8 @@ angular.module('novabill.directives',
 			transportDocument : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$translate', 'nConstants', 'nConfirmDialog', 
-		              function($scope, $element, $translate, nConstants, nConfirmDialog){
+		controller : ['$scope', '$element', '$translate', 'nConstants', 'nConfirmDialog', 'nSelectTransportDocumentsDialog', '$rootScope', 'nPdf',
+		              function($scope, $element, $translate, nConstants, nConfirmDialog, nSelectTransportDocumentsDialog, $rootScope, nPdf){
 
 			$scope.invoiceRefUrl = $scope.transportDocument.invoice ? nConstants.url.invoiceDetails($scope.transportDocument.invoice) : null;
 			
@@ -188,7 +186,7 @@ angular.module('novabill.directives',
 			};
 
 			$scope.print = function(){
-				GWT_UI.generateTransportDocumentPdf($scope.transportDocument.id);
+				nPdf.downloadTransportDocumentPdf($scope.transportDocument.id);
 			};
 
 			$scope.remove = function(){
@@ -221,8 +219,7 @@ angular.module('novabill.directives',
 /*
  * Credit Note Widget
  */
-.directive('nCreditNote', ['$rootScope', 'nConstants', 
-                           function factory($rootScope, nConstants){
+.directive('nCreditNote', ['nConstants', function factory(nConstants){
 
 	return {
 		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-credit-note.html'),
@@ -230,8 +227,8 @@ angular.module('novabill.directives',
 			creditNote : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$translate', 'nConfirmDialog', 
-		              function($scope, $element, $translate, nConfirmDialog){
+		controller : ['$scope', '$rootScope', '$element', '$translate', 'nConfirmDialog', 'nPdf',
+		              function($scope, $rootScope, $element, $translate, nConfirmDialog, nPdf){
 
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.creditNoteDetails( $scope.creditNote.id ) );
@@ -242,7 +239,7 @@ angular.module('novabill.directives',
 			};
 
 			$scope.print = function(){
-				GWT_UI.generateCreditNotePdf($scope.creditNote.id);
+				nPdf.downloadCreditNotePdf($scope.creditNote.id);
 			};
 
 			$scope.remove = function(){
