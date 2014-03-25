@@ -3,6 +3,8 @@
     <span class="date">{{creditNote.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
     <span class="clientName">{{creditNote.client.name}}</span>
     
+    <a href="javascript:void(0);" ng-click="stopProp($event); download()" class="print btn btn-sm default pull-right"><i class="fa fa-download"></i></a>
+    
     <a href="javascript:void(0);" ng-click="stopProp($event); print()" class="print btn btn-sm default pull-right"><i class="fa fa-print"></i></a>
     
     <div class="options btn-group pull-right" ng-click="stopProp($event)">

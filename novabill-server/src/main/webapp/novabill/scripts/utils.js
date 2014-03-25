@@ -131,6 +131,22 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 
 				onFailure : function(){}
 			});
+		},
+		
+		printInvoicePdf : function(documentId){
+			/* TODO */
+		},
+
+		printEstimationPdf : function(documentId){
+			/* TODO */
+		},
+
+		printCreditNotePdf : function(documentId){
+			/* TODO */
+		},
+
+		printTransportDocumentPdf : function(documentId){
+			/* TODO */
 		}
 		
 	};

@@ -49,9 +49,13 @@ angular.module('novabill.directives',
 			$scope.stopProp = function($event){
 				$event.stopPropagation();
 			};
-
-			$scope.print = function($event){
+			
+			$scope.download = function(){
 				nPdf.downloadInvoicePdf($scope.invoice.id);
+			};
+
+			$scope.print = function(){
+				nPdf.printInvoicePdf($scope.invoice.id);
 			};
 
 			$scope.remove = function(){
@@ -115,8 +119,12 @@ angular.module('novabill.directives',
 				$event.stopPropagation();
 			};
 
-			$scope.print = function(){
+			$scope.download = function(){
 				nPdf.downloadEstimationPdf($scope.estimation.id);
+			};
+			
+			$scope.print = function(){
+				nPdf.printEstimationPdf($scope.estimation.id);
 			};
 
 			$scope.remove = function(){
@@ -185,8 +193,12 @@ angular.module('novabill.directives',
 				$event.stopPropagation();
 			};
 
-			$scope.print = function(){
+			$scope.download = function(){
 				nPdf.downloadTransportDocumentPdf($scope.transportDocument.id);
+			};
+			
+			$scope.print = function(){
+				nPdf.printTransportDocumentPdf($scope.transportDocument.id);
 			};
 
 			$scope.remove = function(){
@@ -237,9 +249,13 @@ angular.module('novabill.directives',
 			$scope.stopProp = function($event){
 				$event.stopPropagation();
 			};
+			
+			$scope.download = function(){
+				nPdf.downloadCreditNotePdf($scope.creditNote.id);
+			};
 
 			$scope.print = function(){
-				nPdf.downloadCreditNotePdf($scope.creditNote.id);
+				nPdf.printCreditNotePdf($scope.creditNote.id);
 			};
 
 			$scope.remove = function(){
