@@ -34,7 +34,6 @@ import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.FromEstimationTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
-import com.novadart.novabill.frontend.client.view.bootstrap.BootstrapDialog;
 import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
@@ -49,9 +48,6 @@ public class UiBridge implements ApiBridge {
 	
 	public native void injectNative()/*-{
 		$wnd.GWT_UI = {
-			// bootstrap
-			bootstrapDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showBootstrapDialog(),
-			
 			// payments
 			showPaymentsPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showPaymentsPage(Ljava/lang/String;),
 			
@@ -86,15 +82,6 @@ public class UiBridge implements ApiBridge {
 		};
 	
 	}-*/;
-	
-	
-	/*
-	 * BOOTSTRAP
-	 */
-	public static void showBootstrapDialog(){
-		BootstrapDialog dialog = new BootstrapDialog();
-		dialog.showCentered();
-	}
 	
 	
 	/*
