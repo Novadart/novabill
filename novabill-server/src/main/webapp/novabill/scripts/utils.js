@@ -17,7 +17,7 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 			var s2 = c2.name.toLowerCase();
 			return s1<s2 ? -1 : (s1>s2 ? 1 : 0);
 		},
-		
+
 		/**
 		 * Compare two clients
 		 * @return -1 if minor, 0 if equal, 1 if major
@@ -27,7 +27,7 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 			var s2 = c2.name.toLowerCase();
 			return s1<s2 ? -1 : (s1>s2 ? 1 : 0);
 		},
-		
+
 		/**
 		 * Compare two price lists
 		 * @return -1 if minor, 0 if equal, 1 if major
@@ -35,12 +35,12 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 		priceListsComparator : function(p1, p2){
 			if(p1.name === nConstants.conf.defaultPriceListName){ return -1; }
 			if(p2.name === nConstants.conf.defaultPriceListName){ return 1; }
-			
+
 			var n1 = p1.name.toLowerCase();
 			var n2 = p2.name.toLowerCase();
 			return n1<n2 ? -1 : (n1>n2 ? 1 : 0);
 		},
-		
+
 		/**
 		 * Compare two objects that have a 'description' property
 		 */
@@ -58,14 +58,99 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 
 		twoDecimalsFloatNumber : /^(\+|\-)?\d+((\.|\,)\d{1,2})?$/,
 		positiveTwoDecimalsFloatNumber : /^\d+((\.|\,)\d{1,2})?$/,
-		
+
 		positiveFloatNumber : /^\d+((\.|\,)\d+)?$/,
 		floatNumber : /^\-?\d+((\.|\,)\d+)?$/,
-		
+
 		reserved_word : /^\::.*$/
 
 	};
 })
+
+
+.factory('nPdf', ['$document', 'nConstants', function($document, nConstants) {
+
+	var HIDDEN_IFRAME = angular.element('<iframe style="display: none;"></iframe>');
+	angular.element($document[0].body).append(HIDDEN_IFRAME);
+
+	return {
+
+		_downloadPdf : function(documentClass, documentId){
+			GWT_Server.business.generatePDFToken({
+				onSuccess : function(token){
+
+					var pdfUrl = nConstants.conf.pdfDownloadUrl
+					.replace('{document}', documentClass)
+					.replace('{id}', documentId)
+					.replace('{token}', token);
+					
+					HIDDEN_IFRAME.attr('src', pdfUrl);
+					
+				},
+
+				onFailure : function(){}
+			});
+		},
+		
+		_formatDate : function(date){
+			var formatedDate = date.getFullYear() + '-' + ('0'+(date.getMonth()+1)).slice(-2) + '-' + ('0'+date.getDate()).slice(-2);
+			return formatedDate;
+		},
+
+		downloadInvoicePdf : function(documentId){
+			this._downloadPdf('invoices', documentId);
+		},
+
+		downloadEstimationPdf : function(documentId){
+			this._downloadPdf('estimations', documentId);
+		},
+
+		downloadCreditNotePdf : function(documentId){
+			this._downloadPdf('creditnotes', documentId);
+		},
+
+		downloadTransportDocumentPdf : function(documentId){
+			this._downloadPdf('transportdocs', documentId);
+		},
+		
+		downloadPaymentsProspect : function(filteringDateType, startDate, endDate){
+			var self = this;
+			
+			GWT_Server.business.generatePDFToken({
+				onSuccess : function(token){
+
+					var prospectUrl = nConstants.conf.pdfPaymentsProspectUrl
+					.replace('{filteringDateType}', filteringDateType)
+					.replace('{token}', token)
+					.replace('{startDate}', startDate ? self._formatDate(startDate) : '')
+					.replace('{endDate}', endDate ? self._formatDate(endDate) : '');
+					
+					HIDDEN_IFRAME.attr('src', prospectUrl);
+					
+				},
+
+				onFailure : function(){}
+			});
+		},
+		
+		printInvoicePdf : function(documentId){
+			/* TODO */
+		},
+
+		printEstimationPdf : function(documentId){
+			/* TODO */
+		},
+
+		printCreditNotePdf : function(documentId){
+			/* TODO */
+		},
+
+		printTransportDocumentPdf : function(documentId){
+			/* TODO */
+		}
+		
+	};
+}])
 
 
 /*
@@ -73,34 +158,34 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
  */
 
 .filter('nFriendlyDate',['$filter', function($filter){
-	
+
 	return function(dateToFormat, format){
 		var target = new Date( parseInt(dateToFormat) );
 		target.setHours(0, 0, 0, 0);
-		
-		var today = new Date();
-	    today.setHours(0, 0, 0, 0);
-	    
-	    if(target.getTime() === today.getTime()){
-	    
-	    	return $filter('translate')('TODAY');
-	    
-	    } else {
 
-	    	var yesterday = new Date();
-		    yesterday.setHours(0, 0, 0, 0);
-		    yesterday.setDate(yesterday.getDate() - 1);
-		    
-		    if(target.getTime() === yesterday.getTime()){
-			    
-		    	return $filter('translate')('YESTERDAY');
-		    
-		    } else {
-		    	
-		    	return $filter('date')(dateToFormat, format);
-		    }
-	    	
-	    }
+		var today = new Date();
+		today.setHours(0, 0, 0, 0);
+
+		if(target.getTime() === today.getTime()){
+
+			return $filter('translate')('TODAY');
+
+		} else {
+
+			var yesterday = new Date();
+			yesterday.setHours(0, 0, 0, 0);
+			yesterday.setDate(yesterday.getDate() - 1);
+
+			if(target.getTime() === yesterday.getTime()){
+
+				return $filter('translate')('YESTERDAY');
+
+			} else {
+
+				return $filter('date')(dateToFormat, format);
+			}
+
+		}
 	};
 }])
 
@@ -119,9 +204,9 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
  * Analytics Service
  */
 .provider('nAnalytics', [ function() {
-	
+
 	var urlPath = "";
-	
+
 	this.urlPath = function(value){
 		urlPath = value;
 	};
@@ -132,11 +217,11 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 		var GA = $window.ga ? $window.ga : function(action, event, url){
 			$log.debug('Analytics::_trackPageview[ '+ (url ? url : $window.location.href) +' ]');
 		};
-		
+
 		//service instance
 		var nAnalyticsInstance = {
 
-				// track apge view
+				// track page view
 				trackPageview : function(url){
 					if(url) {
 						GA('send', 'pageview', url);
@@ -146,12 +231,12 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 				}
 
 		};
-		
+
 		// automatically track page views
 		$rootScope.$on('$viewContentLoaded', function(){
 			nAnalyticsInstance.trackPageview(urlPath + '#' + $location.path());
 		});
-		
+
 		return nAnalyticsInstance;
 	}];
 

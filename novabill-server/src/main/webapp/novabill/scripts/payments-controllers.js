@@ -1,12 +1,13 @@
 'use strict';
 
-angular.module('novabill.payments.controllers', ['novabill.translations', 'novabill.directives', 'novabill.directives.dialogs', 'infinite-scroll', 'ui.bootstrap'])
+angular.module('novabill.payments.controllers', ['novabill.translations', 'novabill.directives', 'novabill.directives.dialogs', 
+                                                 'infinite-scroll', 'ui.bootstrap'])
 
 
 /**
  * SETTINGS PAGE CONTROLLER
  */
-.controller('PaymentsCtrl', ['$scope', 'nConstants', function($scope, nConstants){
+.controller('PaymentsCtrl', ['$scope', 'nConstants', 'nPdf', function($scope, nConstants, nPdf){
 	
 	$scope.dateOptions = {
 			'starting-day' : '1',
@@ -65,9 +66,7 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 	};
 	
 	$scope.print = function(){
-		var sd = $scope.startDate ? String($scope.startDate.getTime()) : null;
-		var ed = $scope.endDate ? String($scope.endDate.getTime()) : null;
-		GWT_UI.generatePaymentsProspectPdf($scope.filteringDateType, sd, ed);
+		nPdf.downloadPaymentsProspect($scope.filteringDateType, $scope.startDate, $scope.endDate);
 	};
 
 	$scope.$watch('startDate', function(newValue, oldValue){

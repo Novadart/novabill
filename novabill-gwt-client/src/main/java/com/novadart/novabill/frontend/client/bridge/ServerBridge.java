@@ -26,6 +26,7 @@ public class ServerBridge implements ApiBridge {
 				getClients : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::getClients(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				getStats : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::getStats(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				update : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::update(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
+				generatePDFToken : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::generatePDFToken(Lcom/google/gwt/core/client/JavaScriptObject;)
 			},
 			
 			client : {
@@ -89,7 +90,7 @@ public class ServerBridge implements ApiBridge {
 			batchDataFetcher : {
 				fetchSelectCommodityForDocItemOpData : @com.novadart.novabill.frontend.client.bridge.server.BatchDataFetcherServiceJS::fetchSelectCommodityForDocItemOpData(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			}
-			
+
 		}
 
 	}-*/;

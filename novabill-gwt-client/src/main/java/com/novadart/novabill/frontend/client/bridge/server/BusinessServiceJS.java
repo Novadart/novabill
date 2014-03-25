@@ -32,6 +32,17 @@ public class BusinessServiceJS extends ServiceJS {
 	}
 
 	
+	public static void generatePDFToken(final JavaScriptObject callback){
+		SERVER_FACADE.getBusinessService().generatePDFToken(new ManagedAsyncCallback<String>() {
+
+			@Override
+			public void onSuccess(String result) {
+				BridgeUtils.invokeJSCallback(result, callback);
+			}
+		});
+	}
+	
+	
 	public static void getClients(String businessID, final JavaScriptObject callback){
 		SERVER_FACADE.getBusinessService().getClients(Long.valueOf(businessID), new ManagedAsyncCallback<List<ClientDTO>>() {
 			@Override

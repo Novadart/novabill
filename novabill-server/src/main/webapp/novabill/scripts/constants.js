@@ -10,7 +10,7 @@ angular.module('novabill.constants', [])
 	var defaultPriceListName = '::default';
 	var basePath = '/novabill-server/';
 	var version = '0';
-	
+
 	//updating the values in case they are set in the environment
 	if(typeof NovabillConf != 'undefined') {
 		businessId = NovabillConf.businessId;
@@ -27,32 +27,33 @@ angular.module('novabill.constants', [])
 			version : version,
 
 			privateAreaBaseUrl : basePath + 'private/',
-			
-			dashboardUrl : basePath + 'private/',
+
 			clientsBaseUrl : basePath + 'private/clients/',
-			invoicesBaseUrl : basePath + 'private/invoices/',
-			estimationsBaseUrl : basePath + 'private/estimations/',
-			creditNotesBaseUrl : basePath + 'private/credit-notes/',
-			transportDocumentsBaseUrl : basePath + 'private/transport-documents/',
 			commoditiesBaseUrl : basePath + 'private/commodities/',
+			creditNotesBaseUrl : basePath + 'private/credit-notes/',
+			dashboardUrl : basePath + 'private/',
+			estimationsBaseUrl : basePath + 'private/estimations/',
+			invoicesBaseUrl : basePath + 'private/invoices/',
+			partialsBaseUrl : basePath + 'novabill/partials/',
 			paymentsBaseUrl : basePath + 'private/payments/',
+			pdfDownloadUrl : basePath + 'private/pdf/{document}/{id}?token={token}',
+			pdfPaymentsProspectUrl : basePath + 'private/pdf/paymentspros?token={token}&filteringDateType={filteringDateType}&startDate={startDate}&endDate={endDate}',
 			priceListsBaseUrl : basePath + 'private/price-lists/',
 			settingsBaseUrl : basePath + 'private/settings/',
-
-			partialsBaseUrl : basePath + 'novabill/partials/'
+			transportDocumentsBaseUrl : basePath + 'private/transport-documents/'
 	};
-	
+
 	var baseConf = this.conf;
-	
+
 	this.url = {
 			htmlFragmentUrl : function(path){ return baseConf.partialsBaseUrl + (path.charAt(0)=='/' ? path.substring(1) : path) + '?v=' + baseConf.version; }
 	};
-	
+
 	// this is the full set of properties, available only after the module is loaded
 	this.$get = function(){
 
 		var baseConf = this.conf;
-		
+
 		return {
 
 			conf : baseConf,
@@ -122,7 +123,7 @@ angular.module('novabill.constants', [])
 				invoiceFromTransportDocumentList : function(transportDocumentList){ return baseConf.invoicesBaseUrl + '#/from-transport-document-list/' + transportDocumentList; },
 
 				htmlFragmentUrl : this.url.htmlFragmentUrl,
-				
+
 				paymentList : function(){ return baseConf.paymentsBaseUrl + '#/'; },
 
 				priceListList : function(){ return baseConf.priceListsBaseUrl + '#/'; },
@@ -139,22 +140,18 @@ angular.module('novabill.constants', [])
 
 				INVOICE_ADDED : 'INVOICE_ADDED',
 				INVOICE_REMOVED : 'INVOICE_REMOVED',
-				
+
 				CREDIT_NOTE_ADDED : 'CREDIT_NOTE_ADDED',
 				CREDIT_NOTE_REMOVED : 'CREDIT_NOTE_REMOVED',
-				
+
 				TRANSPORT_DOCUMENT_ADDED : 'TRANSPORT_DOCUMENT_ADDED',
 				TRANSPORT_DOCUMENT_REMOVED : 'TRANSPORT_DOCUMENT_REMOVED',
-				
+
 				ESTIMATION_ADDED : 'ESTIMATION_ADDED',
 				ESTIMATION_REMOVED : 'ESTIMATION_REMOVED',
-				
+
 				SHARING_PERMIT_ADDED : 'SHARING_PERMIT_ADDED',
 				SHARING_PERMIT_REMOVED : 'SHARING_PERMIT_REMOVED',
-
-				SHOW_TRANSPORT_DOCUMENTS_DIALOG : 'SHOW_TRANSPORT_DOCUMENTS_DIALOG',
-				SHOW_REMOVAL_DIALOG : 'SHOW_REMOVAL_DIALOG',
-				SHOW_EDIT_COMMODITY_DIALOG : 'SHOW_EDIT_COMMODITY_DIALOG'
 			}
 
 		};

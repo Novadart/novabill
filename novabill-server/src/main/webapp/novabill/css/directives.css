@@ -8,7 +8,7 @@
 /*
  *  SELECT MULTIPLE TRANSPORT DOCUMENTS DIALOG
  */
-.select-multiple-td-dialog .details>strong,.select-multiple-td-dialog .details>span
+.n-select-transport-documents-dialog .details>strong,.n-select-transport-documents-dialog .details>span
 	{
 	margin-left: 5px;
 	position: relative;
@@ -17,50 +17,50 @@
 	text-align: center;
 }
 
-.select-multiple-td-dialog .details.never-included-in-invoice:HOVER {
+.n-select-transport-documents-dialog .details.never-included-in-invoice:HOVER {
     border-color: #555;
     cursor: pointer;
 }
  
-.select-multiple-td-dialog .details.selected {
+.n-select-transport-documents-dialog .details.selected {
 	background-color: #dff0d8;
 }
 
-.select-multiple-td-dialog .details .documentId {
+.n-select-transport-documents-dialog .details .documentId {
 	min-width: 20px;
 	margin-left: 10px;
 }
 
-.select-multiple-td-dialog .details .total {
+.n-select-transport-documents-dialog .details .total {
 	margin-left: 10px;
 	font-style: italic;
 }
 
-.select-multiple-td-dialog .details .date {
+.n-select-transport-documents-dialog .details .date {
 	margin-left: 10px;
 	min-width: 120px;
 }
 
-.select-multiple-td-dialog .details .invoice-ref {
+.n-select-transport-documents-dialog .details .invoice-ref {
 	margin-right: 10px;
 }
 
-.select-multiple-td-dialog .details.already-included-in-invoice {
+.n-select-transport-documents-dialog .details.already-included-in-invoice {
 	color: #757575;
 	height: 48px;
 }
 
-.select-multiple-td-dialog .details.already-included-in-invoice strong,
-.select-multiple-td-dialog .details.already-included-in-invoice span {
+.n-select-transport-documents-dialog .details.already-included-in-invoice strong,
+.n-select-transport-documents-dialog .details.already-included-in-invoice span {
 	position: relative;
     top: 5px;
 }
 
-.select-multiple-td-dialog .details.already-included-in-invoice .documentId {
+.n-select-transport-documents-dialog .details.already-included-in-invoice .documentId {
 	margin-left: 35px;
 }
 
-.select-multiple-td-dialog .already-in-invoice-alert {
+.n-select-transport-documents-dialog .already-in-invoice-alert {
     text-align: center;
 	padding: 20px 0;
 	font-style: italic;
