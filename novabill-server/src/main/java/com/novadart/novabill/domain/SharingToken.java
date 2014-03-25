@@ -9,6 +9,8 @@ import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Table;
+import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
@@ -23,6 +25,7 @@ import com.novadart.novabill.annotation.Trimmed;
 
 @Entity
 @Configurable
+@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"businessid", "token"})})
 public class SharingToken {
 
 	@Size(max = 255)
@@ -48,6 +51,14 @@ public class SharingToken {
 
 	public SharingToken(String email, Long businessID, String token) {
 		this(email, System.currentTimeMillis(), businessID, token);
+	}
+	
+	public static SharingToken findSharingToken(Long businessID, String token){
+		String sql = "select st from SharingToken st where st.businessID = :businessID and st.token = :token";
+		List<SharingToken> r = entityManager().createQuery(sql, SharingToken.class).
+				setParameter("businessID", businessID).
+				setParameter("token", token).getResultList();
+		return r.size() == 0? null: r.get(0);
 	}
 
 	/**

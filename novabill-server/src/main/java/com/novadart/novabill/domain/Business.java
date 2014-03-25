@@ -75,7 +75,8 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @VatIDUnique
 @NamedQueries({
 	@NamedQuery(name = "business.allUnpaidInvoicesDueDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.paymentDueDate and i.paymentDueDate <= :endDate and i.business.id = :bizID order by i.paymentDueDate, i.documentID"),
-	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID")
+	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID"),
+	@NamedQuery(name = "business.allInvoicesCreationDateInDateRange", query = "select i from Invoice i where :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID")
 })
 @Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"vatid"})})
 public class Business implements Serializable, Taxable {
@@ -293,7 +294,7 @@ public class Business implements Serializable, Taxable {
     			.setParameter("id", documentID).getResultList();
     }
     
-    private Date createDateFromString(String dateString){
+    private static Date createDateFromString(String dateString){
     	DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     	try {
 			return dateFormat.parse(dateString);
@@ -308,6 +309,13 @@ public class Business implements Serializable, Taxable {
     	String namedQuery = FilteringDateType.PAYMENT_DUEDATE.equals(filteringDateType)? "business.allUnpaidInvoicesDueDateInDateRange": "business.allUnpaidInvoicesCreationDateInDateRange";
     	return entityManager().createNamedQuery(namedQuery, Invoice.class).
     			setParameter("bizID", getId()).
+    			setParameter("startDate", startDate == null? createDateFromString("1-1-1970"): startDate).
+    			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();
+    }
+    
+    public static List<Invoice> getAllInvoicesCreationDateInRange(Long businessID, Date startDate, Date endDate){
+    	return entityManager().createNamedQuery("business.allInvoicesCreationDateInDateRange", Invoice.class).
+    			setParameter("bizID", businessID).
     			setParameter("startDate", startDate == null? createDateFromString("1-1-1970"): startDate).
     			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();
     }

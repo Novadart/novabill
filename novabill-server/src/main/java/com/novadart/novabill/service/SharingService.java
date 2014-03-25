@@ -49,10 +49,8 @@ public class SharingService {
 	}
 
 	public boolean isValidRequest(Long businessID, String token){
-//		for(SharingPermit permit: SharingPermit.findSharingPermits(businessID, token))
-//			if(3_600_000l * sharingExpiration + permit.getCreatedOn() > System.currentTimeMillis())
-//				return true;
-		return false;
+		SharingToken sharingToken = SharingToken.findSharingToken(businessID, token);
+		return sharingToken == null? false: 3_600_000l * sharingExpiration + sharingToken.getCreatedOn() > System.currentTimeMillis();
 	}
 	
 }
