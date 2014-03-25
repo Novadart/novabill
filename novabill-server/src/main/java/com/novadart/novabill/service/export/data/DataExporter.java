@@ -25,12 +25,11 @@ import org.apache.commons.beanutils.BeanUtils;
 import org.apache.commons.io.IOUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.google.common.base.Joiner;
 import com.novadart.novabill.domain.AccountingDocument;
-import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.report.DocumentType;
@@ -60,7 +59,7 @@ public class DataExporter {
 	}
 	
 	private File exportClientData(File outDir, Set<Client> clients,
-			ReloadableResourceBundleMessageSource messageSource, Locale locale) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
+			MessageSource messageSource, Locale locale) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException{
 		File clientsData = File.createTempFile("clients", ".csv", outDir);
 		clientsData.deleteOnExit();
 		FileWriter fstream = new FileWriter(clientsData);
@@ -111,7 +110,7 @@ public class DataExporter {
 		return files;
 	}
 	
-	public File exportData(ExportDataBundle exportDataBundle, ReloadableResourceBundleMessageSource messageSource,
+	public File exportData(ExportDataBundle exportDataBundle, MessageSource messageSource,
 			Locale locale) throws IOException, IllegalAccessException, InvocationTargetException, NoSuchMethodException, JRException, JasperReportKeyResolutionException {
 		File outDir = new File(dataOutLocation);
 		File zipFile = File.createTempFile("export", ".zip", outDir);

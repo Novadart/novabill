@@ -1,10 +1,21 @@
 package com.novadart.novabill.web.mvc;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.lang.reflect.InvocationTargetException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JRException;
+
+import org.apache.commons.io.IOUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -26,9 +37,13 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.service.SharingService;
+import com.novadart.novabill.service.export.data.DataExporter;
+import com.novadart.novabill.service.export.data.ExportDataBundle;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.web.mvc.command.SharingRequest;
 
@@ -45,6 +60,9 @@ public class SharingController {
 	
 	@Autowired
 	private Validator validator;
+	
+	@Autowired
+	private DataExporter dataExporter;
 	
 	@RequestMapping(value = "/ask", method = RequestMethod.GET)
 	public String setupRequestForm(Model model){
@@ -90,6 +108,34 @@ public class SharingController {
 		if(sharingService.isValidRequest(businessID, token))
 			return new ResponseEntity<List<InvoiceDTO>>(DTOUtils.toDTOList(Business.getAllInvoicesCreationDateInRange(businessID, startDate, endDate), DTOUtils.invoiceDTOConverter, false), HttpStatus.OK);
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+	}
+	
+	@RequestMapping(value = "/share/{businessID}/{token}/download", method = RequestMethod.GET)
+	@ResponseBody
+	public void getSharedDocs(@PathVariable Long businessID, @PathVariable String token,
+			@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date startDate,
+			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date endDate,
+			HttpServletResponse response, Locale locale) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException, JRException, JasperReportKeyResolutionException{
+		if(sharingService.isValidRequest(businessID, token)){
+			List<Invoice> invoices = Business.getAllInvoicesCreationDateInRange(businessID, startDate, endDate);
+			File zipFile = null;
+			try{
+				ExportDataBundle exportDataBundle = new ExportDataBundle();
+				exportDataBundle.setInvoices(new HashSet<>(invoices));
+				zipFile = dataExporter.exportData(exportDataBundle, messageSource, locale);
+				response.setContentType("application/zip");
+				response.setHeader ("Content-Disposition", 
+						String.format("attachment; filename=\"%s.zip\"", messageSource.getMessage("export.filename", null, "data", locale)));
+				response.setHeader ("Content-Length", String.valueOf(zipFile.length()));
+				ServletOutputStream out = response.getOutputStream();
+				IOUtils.copy(new FileInputStream(zipFile), out);
+				out.flush();
+				out.close();
+			}finally{
+				if(zipFile != null)
+					zipFile.delete();
+			}
+		}
 	}
 	
 }
