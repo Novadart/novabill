@@ -103,7 +103,7 @@ public class Business implements Serializable, Taxable {
     @Trimmed
     private String city;
 
-    @Size(max = 2)
+    @Size(max = 100)
     //@NotNull
     @Trimmed
     private String province;

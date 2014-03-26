@@ -102,7 +102,7 @@ public class Client implements Serializable, Taxable {
     private String city;
 
 	@Field(name = FTSNamespace.PROVINCE)
-    @Size(max = 2)
+    @Size(max = 100)
 	@Trimmed
     private String province;
 

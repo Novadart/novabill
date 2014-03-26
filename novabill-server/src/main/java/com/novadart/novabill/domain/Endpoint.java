@@ -23,7 +23,7 @@ public class Endpoint {
 	@Size(max = 60)
 	private String city;
 	
-	@Size(max = 2)
+	@Size(max = 100)
 	private String province;
 	
 	@Size(max = 3)
