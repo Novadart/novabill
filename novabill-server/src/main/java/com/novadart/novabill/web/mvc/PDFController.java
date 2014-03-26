@@ -64,14 +64,14 @@ public class PDFController{
 			throw new NoSuchObjectException();
 		String pdfName = String.format(messageSource.getMessage("export.invoices.name.pattern", null, "invoice_%d_%d_%s.pdf", locale),  
 				invoice.getAccountingDocumentYear(), invoice.getDocumentID(), ReportUtils.convertToASCII(invoice.getClient().getName()));
-		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
+		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(invoice, invoice.getBusiness().getId()),
 				DocumentType.INVOICE, invoice.getLayoutType(), print);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/estimations/{id}", produces = "application/pdf")
 	@ResponseBody
-	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
+	//@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
 	public byte[] getEstimationPDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token,
 			@RequestParam(value = "print", required = false, defaultValue = "false") boolean print,
 			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JRException, JasperReportKeyResolutionException{
@@ -80,14 +80,14 @@ public class PDFController{
 			throw new NoSuchObjectException();
 		String pdfName = String.format(messageSource.getMessage("export.estimations.name.pattern", null, "estimation_%d_%d_%s.pdf", locale),
 				estimation.getAccountingDocumentYear(), estimation.getDocumentID(), ReportUtils.convertToASCII(estimation.getClient().getName()));
-		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
+		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(estimation, estimation.getBusiness().getId()),
 				DocumentType.ESTIMATION, estimation.getLayoutType(), print);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/creditnotes/{id}", produces = "application/pdf")
 	@ResponseBody
-	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
+	//@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
 	public byte[] getCreditNotePDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token,
 			@RequestParam(value = "print", required = false, defaultValue = "false") boolean print,
 			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JRException, JasperReportKeyResolutionException{
@@ -96,14 +96,14 @@ public class PDFController{
 			throw new NoSuchObjectException();
 		String pdfName = String.format(messageSource.getMessage("export.creditnotes.name.pattern", null, "creditnote_%d_%d_%s.pdf", locale),
 				creditNote.getAccountingDocumentYear(), creditNote.getDocumentID(), ReportUtils.convertToASCII(creditNote.getClient().getName()));
-		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
+		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(creditNote, creditNote.getBusiness().getId()),
 				DocumentType.CREDIT_NOTE, creditNote.getLayoutType(), print);
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/transportdocs/{id}", produces = "application/pdf")
 	@ResponseBody
-	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
+	//@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
 	public byte[] getTransportDocumentPDF(@PathVariable Long id, @RequestParam(value = "token", required = false) String token,
 			@RequestParam(value = "print", required = false, defaultValue = "false") boolean print,
 			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JRException, JasperReportKeyResolutionException{
@@ -112,14 +112,14 @@ public class PDFController{
 			throw new NoSuchObjectException();
 		String pdfName = String.format(messageSource.getMessage("export.transportdocs.name.pattern", null, "transportdoc_%d_%d_%s.pdf", locale),
 				transportDocument.getAccountingDocumentYear(), transportDocument.getDocumentID(), ReportUtils.convertToASCII(transportDocument.getClient().getName()));
-		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
+		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(transportDocument, transportDocument.getBusiness().getId()),
 				DocumentType.TRANSPORT_DOCUMENT, transportDocument.getLayoutType(), print);
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/paymentspros", produces = "application/pdf")
 	@ResponseBody
-	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
+	//@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
 	public byte[] getPaymentsProspectPaymentDueDatePDF(@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date startDate,
 			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date endDate,
 			@RequestParam(value = "filteringDateType") FilteringDateType filteringDateType,
@@ -129,7 +129,7 @@ public class PDFController{
 		Business business  = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(filteringDateType, startDate, endDate);
 		String pdfName = messageSource.getMessage("export.paymentspros.name.pattern", null, "Payments_prospect.pdf", locale);
-		response.setHeader("Content-Disposition", String.format("attachment; filename=%s", pdfName));
+		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(invoices, startDate, endDate, filteringDateType),
 				DocumentType.PAYMENTS_PROSPECT, LayoutType.DENSE, print);
 	}
