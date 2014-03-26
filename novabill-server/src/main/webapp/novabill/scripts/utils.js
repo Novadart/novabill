@@ -78,8 +78,7 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 		_downloadPdf : function(documentClass, documentId){
 			var pdfUrl = nConstants.conf.pdfDownloadUrl
 			.replace('{document}', documentClass)
-			.replace('{id}', documentId)
-			.replace('{token}', token);
+			.replace('{id}', documentId);
 			
 			HIDDEN_IFRAME.attr('src', pdfUrl);
 		},
@@ -87,8 +86,7 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 		_printPdf : function(documentClass, documentId){
 			var pdfUrl = nConstants.conf.pdfPrintUrl
 			.replace('{document}', documentClass)
-			.replace('{id}', documentId)
-			.replace('{token}', token);
+			.replace('{id}', documentId);
 			
 			$window.open(pdfUrl, '_blank');
 		},
@@ -117,7 +115,6 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 		downloadPaymentsProspect : function(filteringDateType, startDate, endDate){
 			var prospectUrl = nConstants.conf.pdfPaymentsProspectUrl
 			.replace('{filteringDateType}', filteringDateType)
-			.replace('{token}', token)
 			.replace('{startDate}', startDate ? this._formatDate(startDate) : '')
 			.replace('{endDate}', endDate ? this._formatDate(endDate) : '');
 			
