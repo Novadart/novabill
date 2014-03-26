@@ -1,5 +1,6 @@
 package com.novadart.novabill.report;
 
+import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Deque;
@@ -10,7 +11,9 @@ import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.Set;
+
 import javax.annotation.PostConstruct;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -20,7 +23,10 @@ import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
+import net.sf.jasperreports.engine.export.JRPdfExporter;
+import net.sf.jasperreports.engine.export.JRPdfExporterParameter;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ResourceLoaderAware;
@@ -152,8 +158,17 @@ public class JasperReportService implements ResourceLoaderAware{
 		return JasperFillManager.fillReport(jasperReport, reportParameters, dataSource);
 	}
 	
-	public byte[] exportReportToPdf(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType) throws JRException, JasperReportKeyResolutionException{
-		return JasperExportManager.exportReportToPdf(createJasperPrint(dataSource, docType, layoutType));
+	public byte[] exportReportToPdf(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType, boolean embedPrint) throws JRException, JasperReportKeyResolutionException{
+		if(embedPrint){
+			ByteArrayOutputStream out = new ByteArrayOutputStream();
+			JRPdfExporter exporter = new JRPdfExporter();
+			exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, createJasperPrint(dataSource, docType, layoutType));
+			exporter.setParameter(JRPdfExporterParameter.PDF_JAVASCRIPT, "this.print({bUI: true,bSilent: false,bShrinkToFit: true});");
+			exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
+			exporter.exportReport();
+			return out.toByteArray();
+		}else
+			return JasperExportManager.exportReportToPdf(createJasperPrint(dataSource, docType, layoutType));
 	}
 	
 	public void exportReportToPdfFile(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType, String destFileName) throws JRException, JasperReportKeyResolutionException{
