@@ -68,7 +68,7 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 })
 
 
-.factory('nPdf', ['$document', 'nConstants', function($document, nConstants) {
+.factory('nPdf', ['$window', '$document', 'nConstants', function($window, $document, nConstants) {
 
 	var HIDDEN_IFRAME = angular.element('<iframe style="display: none;"></iframe>');
 	angular.element($document[0].body).append(HIDDEN_IFRAME);
@@ -76,20 +76,21 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 	return {
 
 		_downloadPdf : function(documentClass, documentId){
-			GWT_Server.business.generatePDFToken({
-				onSuccess : function(token){
-
-					var pdfUrl = nConstants.conf.pdfDownloadUrl
-					.replace('{document}', documentClass)
-					.replace('{id}', documentId)
-					.replace('{token}', token);
-					
-					HIDDEN_IFRAME.attr('src', pdfUrl);
-					
-				},
-
-				onFailure : function(){}
-			});
+			var pdfUrl = nConstants.conf.pdfDownloadUrl
+			.replace('{document}', documentClass)
+			.replace('{id}', documentId)
+			.replace('{token}', token);
+			
+			HIDDEN_IFRAME.attr('src', pdfUrl);
+		},
+		
+		_printPdf : function(documentClass, documentId){
+			var pdfUrl = nConstants.conf.pdfPrintUrl
+			.replace('{document}', documentClass)
+			.replace('{id}', documentId)
+			.replace('{token}', token);
+			
+			$window.open(pdfUrl, '_blank');
 		},
 		
 		_formatDate : function(date){
@@ -114,39 +115,30 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 		},
 		
 		downloadPaymentsProspect : function(filteringDateType, startDate, endDate){
-			var self = this;
+			var prospectUrl = nConstants.conf.pdfPaymentsProspectUrl
+			.replace('{filteringDateType}', filteringDateType)
+			.replace('{token}', token)
+			.replace('{startDate}', startDate ? this._formatDate(startDate) : '')
+			.replace('{endDate}', endDate ? this._formatDate(endDate) : '');
 			
-			GWT_Server.business.generatePDFToken({
-				onSuccess : function(token){
-
-					var prospectUrl = nConstants.conf.pdfPaymentsProspectUrl
-					.replace('{filteringDateType}', filteringDateType)
-					.replace('{token}', token)
-					.replace('{startDate}', startDate ? self._formatDate(startDate) : '')
-					.replace('{endDate}', endDate ? self._formatDate(endDate) : '');
-					
-					HIDDEN_IFRAME.attr('src', prospectUrl);
-					
-				},
-
-				onFailure : function(){}
-			});
+			HIDDEN_IFRAME.attr('src', prospectUrl);
+			
 		},
 		
 		printInvoicePdf : function(documentId){
-			/* TODO */
+			this._printPdf('invoices', documentId);
 		},
 
 		printEstimationPdf : function(documentId){
-			/* TODO */
+			this._printPdf('estimations', documentId);
 		},
 
 		printCreditNotePdf : function(documentId){
-			/* TODO */
+			this._printPdf('creditnotes', documentId);
 		},
 
 		printTransportDocumentPdf : function(documentId){
-			/* TODO */
+			this._printPdf('transportdocs', documentId);
 		}
 		
 	};
