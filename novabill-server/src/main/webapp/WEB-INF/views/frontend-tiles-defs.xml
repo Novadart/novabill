@@ -12,7 +12,6 @@
 	
 	<definition name="frontend.indexLayout" template="/WEB-INF/views/layouts/frontend/indexLayout.jsp"/>
 	
-	<!--  -->
 
 	<!-- PAGES -->
 	<definition name="frontend.index" extends="frontend.indexLayout">
@@ -49,9 +48,20 @@
 	   <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/contactJS.jsp" />
 	</definition>
 	
-   <definition name="frontend.tos" extends="frontend.subPageLayout">
+    <definition name="frontend.tos" extends="frontend.subPageLayout">
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/tosBody.jsp" />
     </definition>
+    
+    <!-- Share workflow -->
+    
+    <definition name="sharing.request" extends="frontend.subPageLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/sharing/sharingRequestBody.jsp" />
+    </definition>
+    
+    <definition name="sharing.requestAck" extends="frontend.subPageLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/sharing/sharingRequestAckBody.jsp" />
+    </definition>
+    
 	
 <!-- 	<definition name="frontend.about" extends="frontend.subPageLayout">
 	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/aboutHead.jsp" />
