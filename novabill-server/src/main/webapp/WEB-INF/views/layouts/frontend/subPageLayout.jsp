@@ -68,6 +68,8 @@
 
     <tiles:insertAttribute  ignore="true" name="javascript" />
     
+    <tiles:insertAttribute  ignore="true" name="javascriptExtra" />
+    
     <script type="text/javascript">
     if(window.ga){
         ga('send', 'pageview');

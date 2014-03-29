@@ -3,4 +3,4 @@
 
 <spring:url var="novabillMinUrl" value="/novabill-min" />
 
-<script src="${novabillMinUrl}/novabill-core.js?v=${project.version}"></script>
+<script src="${novabillMinUrl}/novabill-private.js?v=${project.version}"></script>

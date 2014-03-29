@@ -98,10 +98,11 @@ public class SharingController {
 	@RequestMapping(value = Urls.PUBLIC_SHARE_SHARE, method = RequestMethod.GET)
 	public String share(@RequestParam Long businessID, @RequestParam String token, Model model){
 		if(sharingService.isValidRequest(businessID, token)){
-			model.addAttribute("invoices", Business.getAllInvoicesCreationDateInRange(businessID, DateUtils.truncate(new Date(), Calendar.YEAR), null));
-			return "share";
+			Business b = Business.findBusiness(businessID);
+			model.addAttribute("pageName", b.getName() + " - Condivisione Dati");
+			return "sharing.share";
 		}else
-			return "invalidSharingRequest";
+			return "sharing.invalidSharingRequest";
 	}
 	
 	@RequestMapping(value = "/share/{businessID}/{token}/filter", method = RequestMethod.GET)
