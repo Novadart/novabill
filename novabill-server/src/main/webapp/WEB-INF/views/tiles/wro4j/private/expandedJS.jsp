@@ -2,7 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <spring:url var="novabillDepsUrl" value="/novabill-deps" />
-<spring:url var="novabillCoreUrl" value="/novabill" />
+<spring:url var="novabillCoreUrl" value="/novabill/private" />
 
 <script src="${novabillDepsUrl}/angular/angular.js"></script>
 <script src="${novabillDepsUrl}/angular/angular-route.js"></script>

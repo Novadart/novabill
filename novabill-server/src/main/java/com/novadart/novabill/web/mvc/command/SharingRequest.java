@@ -3,12 +3,16 @@ package com.novadart.novabill.web.mvc.command;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotEmpty;
 
+import com.novadart.novabill.annotation.Trimmed;
+
 public class SharingRequest {
 
+	@Trimmed
 	@NotEmpty(message = "{required.email}")
 	@Email(message = "{invalid.format.email}")
 	private String email;
 	
+	@Trimmed
 	@NotEmpty(message = "{required.vatID}")
 	private String vatID;
 

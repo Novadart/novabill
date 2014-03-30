@@ -1,7 +1,7 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<spring:url var="novabillCoreUrl" value="/novabill" />
+<spring:url var="novabillCoreUrl" value="/novabill/private" />
 
 <link href="${novabillCoreUrl}/css/global.css" rel="stylesheet" type="text/css" />
 <link href="${novabillCoreUrl}/css/directives.css" rel="stylesheet" type="text/css" />

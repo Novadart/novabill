@@ -6,13 +6,18 @@
 	<!-- LAYOUTS -->
 	<definition name="frontend.subPageLayout" template="/WEB-INF/views/layouts/frontend/subPageLayout.jsp" >
 		<put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
+		<put-attribute name="novabill.version" value="${project.version}"></put-attribute>
 		<put-attribute name="header" value="/WEB-INF/views/tiles/frontend/header.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/views/tiles/frontend/footer.jsp" />
 	</definition>
 	
 	<definition name="frontend.indexLayout" template="/WEB-INF/views/layouts/frontend/indexLayout.jsp"/>
 	
-	<!--  -->
+	<!-- WRO4J HELPERS -->
+    <definition name="frontend.minifiedJS" template="/WEB-INF/views/tiles/wro4j/frontend/minifiedJS.jsp" />
+    <definition name="frontend.minifiedCSS" template="/WEB-INF/views/tiles/wro4j/frontend/minifiedCSS.jsp" />
+    <definition name="frontend.expandedJS" template="/WEB-INF/views/tiles/wro4j/frontend/expandedJS.jsp" />
+    <definition name="frontend.expandedCSS" template="/WEB-INF/views/tiles/wro4j/frontend/expandedCSS.jsp" />
 
 	<!-- PAGES -->
 	<definition name="frontend.index" extends="frontend.indexLayout">
@@ -49,27 +54,29 @@
 	   <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/contactJS.jsp" />
 	</definition>
 	
-   <definition name="frontend.tos" extends="frontend.subPageLayout">
+    <definition name="frontend.tos" extends="frontend.subPageLayout">
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/tosBody.jsp" />
     </definition>
+    
+    <!-- Share workflow -->
+    
+    <definition name="sharing.request" extends="frontend.subPageLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/sharing/sharingRequestBody.jsp" />
+    </definition>
+    
+    <definition name="sharing.requestAck" extends="frontend.subPageLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/sharing/sharingRequestAckBody.jsp" />
+    </definition>
+    
+	<definition name="sharing.share" extends="frontend.subPageLayout">
+	   <put-attribute name="css" value="/WEB-INF/views/tiles/frontend/sharing/shareCss.jsp" />
+	   <put-attribute name="cssExtra" value="frontend.${mvn.tiles.css.definition}" />
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/sharing/shareBody.jsp" />
+       <put-attribute name="javascriptExtra" value="frontend.${mvn.tiles.javascript.definition}" />
+    </definition>
+    
+    <definition name="sharing.invalidSharingRequest" extends="frontend.subPageLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/sharing/invalidSharingRequestBody.jsp" />
+    </definition>
 	
-<!-- 	<definition name="frontend.about" extends="frontend.subPageLayout">
-	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/aboutHead.jsp" />
-	   <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/aboutBody.jsp" />
-	   <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/aboutJS.jsp" />
-	</definition>
-	
-	<definition name="frontend.prices" extends="frontend.subPageLayout">
-		<put-attribute name="head" value="/WEB-INF/views/tiles/frontend/pricesHead.jsp" />
-		<put-attribute name="body" value="/WEB-INF/views/tiles/frontend/pricesBody.jsp" />
-		<put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/pricesJS.jsp" />
-	</definition> -->
-	
-	<!--  -->
-
-	<definition name="sharingRequest" template="/WEB-INF/views/tiles/frontend/sharingRequest.jsp"></definition>
-	
-	<definition name="sharingRequestAck" template="/WEB-INF/views/tiles/frontend/sharingRequestAck.jsp"></definition>
-
-
 </tiles-definitions>

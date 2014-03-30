@@ -88,8 +88,7 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 			.replace('{document}', documentClass)
 			.replace('{id}', documentId);
 			
-			HIDDEN_IFRAME.attr('src', pdfUrl);
-//			$window.open(pdfUrl, '_blank');
+			$window.open(pdfUrl, '_blank');
 		},
 		
 		_formatDate : function(date){

@@ -7,18 +7,16 @@
 	
 	<definition name="private.layout" template="/WEB-INF/views/layouts/private/privateLayout.jsp">
 	   <put-attribute name="novabill.version" value="${project.version}"></put-attribute>
-	   <put-attribute name="css" value="${mvn.tiles.css.definition}" />
+	   <put-attribute name="css" value="private.${mvn.tiles.css.definition}" />
 	   <put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
-	   <put-attribute name="javascript" value="${mvn.tiles.javascript.definition}" />
+	   <put-attribute name="javascript" value="private.${mvn.tiles.javascript.definition}" />
 	</definition>
 
-	<!--  -->
-
     <!-- WRO4J HELPERS -->
-    <definition name="minifiedJS" template="/WEB-INF/views/tiles/wro4j/minifiedJS.jsp" />
-    <definition name="minifiedCSS" template="/WEB-INF/views/tiles/wro4j/minifiedCSS.jsp" />
-    <definition name="expandedJS" template="/WEB-INF/views/tiles/wro4j/expandedJS.jsp" />
-    <definition name="expandedCSS" template="/WEB-INF/views/tiles/wro4j/expandedCSS.jsp" />
+    <definition name="private.minifiedJS" template="/WEB-INF/views/tiles/wro4j/private/minifiedJS.jsp" />
+    <definition name="private.minifiedCSS" template="/WEB-INF/views/tiles/wro4j/private/minifiedCSS.jsp" />
+    <definition name="private.expandedJS" template="/WEB-INF/views/tiles/wro4j/private/expandedJS.jsp" />
+    <definition name="private.expandedCSS" template="/WEB-INF/views/tiles/wro4j/private/expandedCSS.jsp" />
 
 	<!-- PAGES -->
 	<definition name="private.dashboard" extends="private.layout">

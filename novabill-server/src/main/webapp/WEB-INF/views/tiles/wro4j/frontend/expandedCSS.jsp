@@ -1,6 +1,6 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
-<spring:url var="novabillMinUrl" value="/novabill-min" />
+<spring:url var="novabillCoreUrl" value="/novabill/frontend" />
 
-<script src="${novabillMinUrl}/novabill-core.js?v=${project.version}"></script>
+<link href="${novabillCoreUrl}/css/directives-frontend.css" rel="stylesheet" type="text/css" />
