@@ -77,7 +77,7 @@ angular.module('novabill.clients.controllers',
 				});
 				$scope.letters = letters;
 			}
-			
+
 			function updateFilteredClients(generateTillIndex){
 				filteredClients = filterClients($scope.query, loadedClients);
 				updateLettersIndex(filteredClients);
@@ -87,7 +87,7 @@ angular.module('novabill.clients.controllers',
 					$scope.partitions = partitionClients( filteredClients.slice(0, 20) );
 				}
 			}
-			
+
 			$scope.$watch('query', function(newValue, oldValue){
 				updateFilteredClients();
 			});
@@ -163,7 +163,7 @@ angular.module('novabill.clients.controllers',
 		.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'nConstants', '$filter', 'nAlertDialog', 'nConfirmDialog', 'nEditAddressDialog', 'nSorting',
 		                                  function($scope, $route, $routeParams, $location, $rootScope, nConstants, $filter, nAlertDialog, nConfirmDialog, nEditAddressDialog, nSorting) {
 
-			
+
 			$scope.editClient = function() {
 				GWT_UI.modifyClientDialog(nConstants.conf.businessId, $scope.client.id, {
 
@@ -195,24 +195,24 @@ angular.module('novabill.clients.controllers',
 					});
 				});
 			};
-			
+
 			$scope.newInvoiceClick = function(){
 				window.location.assign( nConstants.url.invoiceNew($routeParams.clientId) );
 			};
-			
+
 			$scope.newTransportDocumentClick = function(){
 				window.location.assign( nConstants.url.transportDocumentNew($routeParams.clientId) );
 			};
-			
+
 			$scope.newEstimationClick = function(){
 				window.location.assign( nConstants.url.estimationNew($routeParams.clientId) );
 			};
-			
+
 			$scope.newCreditNoteClick = function(){
 				window.location.assign( nConstants.url.creditNoteNew($routeParams.clientId) );
 			};
-			
-			
+
+
 			$scope.loadClientAddresses = function(force){
 				if(!$scope.clientAddresses || force) {
 					GWT_Server.client.getClientAddresses($routeParams.clientId, {
@@ -225,7 +225,7 @@ angular.module('novabill.clients.controllers',
 					});
 				}
 			};
-			
+
 			$scope.newAddressClick = function(){
 				var instance = nEditAddressDialog.open({
 					companyName : $scope.client.name,
@@ -241,10 +241,10 @@ angular.module('novabill.clients.controllers',
 					});
 				});
 			};
-			
-			
+
+
 			$scope.editLegalAddress = function(){
-				
+
 				var address = { 
 						isLegalAddress : true,
 						companyName : $scope.client.name,
@@ -254,7 +254,7 @@ angular.module('novabill.clients.controllers',
 						province: $scope.client.province,
 						country: $scope.client.country
 				};
-				
+
 				var instance = nEditAddressDialog.open(address);
 				instance.result.then(function(addr){
 					//making a copy to display the results only if saving the data succeeded
@@ -264,7 +264,7 @@ angular.module('novabill.clients.controllers',
 					$scope.client.city = addr.city;
 					$scope.client.province = addr.province;
 					$scope.client.country = addr.country;
-					
+
 					GWT_Server.client.update(nConstants.conf.businessId, angular.toJson($scope.client), {
 						onSuccess: function(){},
 						onFailure : function(){
@@ -273,8 +273,8 @@ angular.module('novabill.clients.controllers',
 					});
 				});
 			};
-			
-			
+
+
 			$scope.editClientAddress = function(id){
 				var address = null;
 				for(var i in $scope.clientAddresses){
@@ -283,13 +283,13 @@ angular.module('novabill.clients.controllers',
 						break;
 					}
 				}
-				
+
 				if(address == null){
 					return;
 				}
-				
+
 				address.client = { id : $routeParams.clientId };
-				
+
 				var instance = nEditAddressDialog.open(address);
 				instance.result.then(function(addr){
 					GWT_Server.client.updateClientAddress(angular.toJson(addr), {
@@ -300,7 +300,7 @@ angular.module('novabill.clients.controllers',
 					});
 				});
 			};
-			
+
 			$scope.removeClientAddress = function(id){
 				var address = null;
 				for(var i in $scope.clientAddresses){
@@ -313,7 +313,7 @@ angular.module('novabill.clients.controllers',
 				if(address == null){
 					return;
 				}
-				
+
 				var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION',{data : address.name}) );
 				instance.result.then(function(){
 					GWT_Server.client.removeClientAddress($routeParams.clientId, String(address.id), {
@@ -328,13 +328,13 @@ angular.module('novabill.clients.controllers',
 				});
 
 			};
-			
-			
+
+
 			function updateClientDetails(){
 				if(!$scope.client){
 					return;
 				}
-				
+
 				$scope.businessDetails = 
 					($scope.client.vatID ? $filter('translate')('VATID')+': '+$scope.client.vatID : '') +
 					($scope.client.vatID && $scope.client.ssn ? ' - ' : '') +
@@ -369,7 +369,7 @@ angular.module('novabill.clients.controllers',
 				$scope.website = $scope.client.web;
 				$scope.websiteUrl =  $scope.client.web ? ($scope.client.web.indexOf('http') == 0 ? $scope.client.web : 'http://'+$scope.client.web) : null;
 			}
-			
+
 			// load client data
 			GWT_Server.client.get($routeParams.clientId, {
 
@@ -475,7 +475,7 @@ angular.module('novabill.clients.controllers',
 				$scope.$apply();
 				$scope.loadTransportDocuments();
 			});
-			
+
 			$scope.$watchCollection('client', updateClientDetails);
 
 		}]);

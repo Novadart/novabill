@@ -6,6 +6,7 @@
 	<!-- LAYOUTS -->
 	<definition name="frontend.subPageLayout" template="/WEB-INF/views/layouts/frontend/subPageLayout.jsp" >
 		<put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
+		<put-attribute name="novabill.version" value="${project.version}"></put-attribute>
 		<put-attribute name="header" value="/WEB-INF/views/tiles/frontend/header.jsp" />
 		<put-attribute name="footer" value="/WEB-INF/views/tiles/frontend/footer.jsp" />
 	</definition>
@@ -68,6 +69,8 @@
     </definition>
     
 	<definition name="sharing.share" extends="frontend.subPageLayout">
+	   <put-attribute name="css" value="/WEB-INF/views/tiles/frontend/sharing/shareCss.jsp" />
+	   <put-attribute name="cssExtra" value="frontend.${mvn.tiles.css.definition}" />
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/sharing/shareBody.jsp" />
        <put-attribute name="javascriptExtra" value="frontend.${mvn.tiles.javascript.definition}" />
     </definition>

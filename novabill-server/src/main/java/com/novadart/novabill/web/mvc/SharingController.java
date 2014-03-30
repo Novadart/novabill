@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -100,9 +98,12 @@ public class SharingController {
 		if(sharingService.isValidRequest(businessID, token)){
 			Business b = Business.findBusiness(businessID);
 			model.addAttribute("pageName", b.getName() + " - Condivisione Dati");
+			model.addAttribute("businessName", b.getName());
 			return "sharing.share";
-		}else
+		}else {
+			model.addAttribute("pageName", "Condivisione Disabilitata");
 			return "sharing.invalidSharingRequest";
+		}
 	}
 	
 	@RequestMapping(value = "/share/{businessID}/{token}/filter", method = RequestMethod.GET)
