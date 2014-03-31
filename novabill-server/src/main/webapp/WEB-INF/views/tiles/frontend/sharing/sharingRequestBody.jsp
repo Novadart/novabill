@@ -9,9 +9,9 @@
 	<div class="row">
 		<div class="col-md-6 col-md-offset-3">
 			<div class="well">
-				<h4 class="block">Inserire i dati di accesso</h4>
-				<p>Inserire qui il proprio <strong>indirizzo email</strong> e la <strong>partita IVA</strong> dell'azienda che ha autorizzato l'accesso.</p>
-				<p>Dopo aver verificato la correttezza dei dati, verrà inviata una email all'indirizzo indicato contenente le istruzioni per accedere alla documentazione di tale azienda.</p>
+				<h4 class="block">Condivisione dei Dati</h4>
+				<p>Inserire qui il proprio <strong>indirizzo email</strong> e la <strong>partita IVA</strong> dell'azienda che ha autorizzato la condivisione dei propri dati con te.</p>
+				<p>Dopo aver verificato la correttezza dei dati, ti verrà inviata una email contenente le istruzioni per accedere ai documenti.</p>
 				<p>Grazie</p>
 			</div>
 
