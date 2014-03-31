@@ -370,7 +370,7 @@
 				</graphicElement>
 			</line>
 			<line>
-				<reportElement uuid="f2cf12c5-7ecc-408c-be33-3532996766ec" x="388" y="19" width="160" height="1" forecolor="#666666"/>
+				<reportElement uuid="f2cf12c5-7ecc-408c-be33-3532996766ec" x="388" y="20" width="160" height="1" forecolor="#666666"/>
 				<graphicElement>
 					<pen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</graphicElement>
