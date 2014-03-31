@@ -38,6 +38,7 @@ public class SharingService {
 			new SharingToken(email, business.getId(), token).persist();
 			Map<String, Object> templateVars = new HashMap<String, Object>();
 			String shareLink = String.format(sharingUrlPattern, business.getId(), URLEncoder.encode(token, "UTF-8"));
+			templateVars.put("businessName", business.getName());
 			templateVars.put("shareLink", shareLink);
 			templateVars.put("sharingExpiration", sharingExpiration);
 			sendMessage(email, messageSource.getMessage("temp.sharing.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
