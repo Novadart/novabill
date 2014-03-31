@@ -971,6 +971,23 @@ angular.module('novabill.directives',
 					break;
 				}
 				break;
+				
+			case nConstants.logRecord.entityType.SHARING_PERMIT:
+				switch ($scope.record.operationType) {
+				case nConstants.logRecord.operationType.CREATE:
+					$scope.description = tr('LR_SHARING_PERMIT_CREATE',
+							'{sharingPermitDesc: "'+ $sanitize(details.sharingPermitDesc) +'"}');
+					break;
+
+				case nConstants.logRecord.operationType.DELETE:
+					$scope.description = tr('LR_SHARING_PERMIT_DELETE',
+							'{sharingPermitDesc: "'+ $sanitize(details.sharingPermitDesc) +'"}');
+					break;
+
+				default:
+					break;
+				}
+				break;
 
 			default:
 				break;
