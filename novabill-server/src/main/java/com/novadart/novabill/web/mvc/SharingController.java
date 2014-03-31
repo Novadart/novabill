@@ -4,7 +4,6 @@ import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.HashSet;
 import java.util.List;
@@ -16,7 +15,6 @@ import javax.servlet.http.HttpServletResponse;
 import net.sf.jasperreports.engine.JRException;
 
 import org.apache.commons.io.IOUtils;
-import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -48,7 +46,6 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.web.mvc.command.SharingRequest;
 
 @Controller
-@RequestMapping("/share")
 @SessionAttributes("sharingRequest")
 public class SharingController {
 
@@ -64,40 +61,49 @@ public class SharingController {
 	@Autowired
 	private DataExporter dataExporter;
 	
-	@RequestMapping(value = "/ask", method = RequestMethod.GET)
+	@RequestMapping(value = Urls.PUBLIC_SHARE_REQUEST, method = RequestMethod.GET)
 	public String setupRequestForm(Model model){
 		SharingRequest sharingRequest = new SharingRequest();
+		model.addAttribute("pageName", "Accesso alla Condivisione");
 		model.addAttribute("sharingRequest", sharingRequest);
-		return "sharingRequest";
+		return "sharing.request";
 	}
 	
-	@RequestMapping(value = "/ask", method = RequestMethod.POST)
+	@RequestMapping(value = Urls.PUBLIC_SHARE_REQUEST, method = RequestMethod.POST)
 	public String processRequestSubmit(@ModelAttribute("sharingRequest") SharingRequest sharingRequest, BindingResult result, SessionStatus status, Locale locale){
 		validator.validate(sharingRequest, result);
 		if(result.hasErrors())
-			return "sharingRequest";
+			return "sharing.request";
 		Business business = Business.findBusinessByVatIDIfSharingPermit(sharingRequest.getVatID(), sharingRequest.getEmail());
 		if(business == null){
 			Principal principal = Principal.findByUsername(sharingRequest.getEmail());
 			if(principal == null || !principal.getBusiness().getVatID().equals(sharingRequest.getVatID()))
-				return "redirect:/sharingRequestAck";
+				return "redirect:"+Urls.PUBLIC_SHARE_THANKS;
 			else
 				business = principal.getBusiness();
 		}
 		sharingService.enableSharingTemporarilyAndNotifyParticipant(business, sharingRequest.getEmail(), messageSource, locale);
 		status.setComplete();
-		return "redirect:/sharingRequestAck";
+		return "redirect:"+Urls.PUBLIC_SHARE_THANKS;
 	}
 	
+	@RequestMapping(value = Urls.PUBLIC_SHARE_THANKS, method = RequestMethod.GET)
+	public String thanks(Model model){
+		model.addAttribute("pageName", "Richiesta inserita correttamente");
+		return "sharing.requestAck";
+	}
 	
-	
-	@RequestMapping(value = "/share/{businessID}/{token}", method = RequestMethod.GET)
-	public String share(@PathVariable Long businessID, @PathVariable String token, Model model){
+	@RequestMapping(value = Urls.PUBLIC_SHARE_SHARE, method = RequestMethod.GET)
+	public String share(@RequestParam Long businessID, @RequestParam String token, Model model){
 		if(sharingService.isValidRequest(businessID, token)){
-			model.addAttribute("invoices", Business.getAllInvoicesCreationDateInRange(businessID, DateUtils.truncate(new Date(), Calendar.YEAR), null));
-			return "share";
-		}else
-			return "invalidSharingRequest";
+			Business b = Business.findBusiness(businessID);
+			model.addAttribute("pageName", b.getName() + " - Condivisione Dati");
+			model.addAttribute("businessName", b.getName());
+			return "sharing.share";
+		}else {
+			model.addAttribute("pageName", "Condivisione Disabilitata");
+			return "sharing.invalidSharingRequest";
+		}
 	}
 	
 	@RequestMapping(value = "/share/{businessID}/{token}/filter", method = RequestMethod.GET)

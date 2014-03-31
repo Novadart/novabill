@@ -11,6 +11,9 @@ public interface Urls {
 	public static final String PUBLIC_EXCEPTION = "/oops";
 	public static final String PUBLIC_TOS = "/tos";
 	
+	public static final String PUBLIC_SHARE_REQUEST = "/share-ask";
+	public static final String PUBLIC_SHARE_SHARE = "/share";
+	public static final String PUBLIC_SHARE_THANKS = "/share-thanks";
 	
 	// Private Urls	
 	public static final String PRIVATE_HOME = "/private/";

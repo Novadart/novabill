@@ -163,7 +163,7 @@ public class JasperReportService implements ResourceLoaderAware{
 			ByteArrayOutputStream out = new ByteArrayOutputStream();
 			JRPdfExporter exporter = new JRPdfExporter();
 			exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, createJasperPrint(dataSource, docType, layoutType));
-			exporter.setParameter(JRPdfExporterParameter.PDF_JAVASCRIPT, "this.print({bUI: true,bSilent: false,bShrinkToFit: true});");
+			exporter.setParameter(JRPdfExporterParameter.PDF_JAVASCRIPT, "setTimeout(function(){ this.print({bUI: true,bSilent: false,bShrinkToFit: true}); }, 1000)");
 			exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
 			exporter.exportReport();
 			return out.toByteArray();

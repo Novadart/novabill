@@ -51,8 +51,6 @@
 		<mvc:view-controller path="/tos" /> -->
 	<!-- <mvc:view-controller path="/privacyPolicy" /> --> <!-- Not needed, currently we're using iubenda.com -->
 	<!-- <mvc:view-controller path="/premiumInfo"/> -->
-	
-	<mvc:view-controller path="/sharingRequestAck" view-name="sharingRequestAck"/>
 
 	<!-- TEST view -->
 	<mvc:view-controller path="/resolutionTest" />

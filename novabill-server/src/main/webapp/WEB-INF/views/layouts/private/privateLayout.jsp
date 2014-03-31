@@ -31,7 +31,7 @@
 
 <spring:url var="clientsBaseUrl" value="<%=Urls.PRIVATE_CLIENTS%>" />
 
- <spring:url var="gwtUrl" value="/rpc/rpc.nocache.js" />
+<spring:url var="gwtUrl" value="/rpc/rpc.nocache.js" />
 
 <%
 	PAGES activePage = (PAGES)request.getAttribute("activePage");
@@ -217,7 +217,7 @@
 	<!-- END FOOTER -->
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 	
-	   <script>
+	<script>
     var NovabillConf = {
             businessId : '<%=business.getId()%>',
             defaultPriceListName : '<%=PriceListConstants.DEFAULT%>',

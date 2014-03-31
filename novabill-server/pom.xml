@@ -352,10 +352,13 @@
 					<warSourceExcludes>
 						**/rpc/**,
 						WEB-INF/views/tiles/frontend/analytics.jsp,
-						WEB-INF/views/tiles/wro4j/minifiedCSS.jsp,
-						WEB-INF/views/tiles/wro4j/minifiedJS.jsp,
+						WEB-INF/views/tiles/wro4j/private/minifiedCSS.jsp,
+						WEB-INF/views/tiles/wro4j/private/minifiedJS.jsp,
+						WEB-INF/views/tiles/wro4j/frontend/minifiedCSS.jsp,
+                        WEB-INF/views/tiles/wro4j/frontend/minifiedJS.jsp,
 						WEB-INF/web.xml,
-						WEB-INF/views/private-tiles-defs.xml
+						WEB-INF/views/private-tiles-defs.xml,
+						WEB-INF/views/frontend-tiles-defs.xml
 					</warSourceExcludes>
 					<webResources>
 						<resource>
@@ -366,8 +369,11 @@
 								<include>web.xml</include>
 								<include>views/tiles/frontend/analytics.jsp</include>
 								<include>views/private-tiles-defs.xml</include>
-								<include>views/tiles/wro4j/minifiedCSS.jsp</include>
-								<include>views/tiles/wro4j/minifiedJS.jsp</include>
+								<include>views/frontend-tiles-defs.xml</include>
+								<include>views/tiles/wro4j/private/minifiedCSS.jsp</include>
+								<include>views/tiles/wro4j/private/minifiedJS.jsp</include>
+								<include>views/tiles/wro4j/frontend/minifiedCSS.jsp</include>
+                                <include>views/tiles/wro4j/frontend/minifiedJS.jsp</include>
 							</includes>
 						</resource>
 					</webResources>
@@ -414,8 +420,8 @@
 						<source>${project.basedir}/src/main/webapp/novabill-deps/angular/i18n/angular-locale_it-it.js</source>
 						<source>${project.basedir}/src/main/webapp/novabill-deps/angular-translate.min.js</source>
 					</preloadSources>
-					<jsSrcDir>${project.basedir}/src/main/webapp/novabill/scripts</jsSrcDir>
-					<jsTestSrcDir>${project.basedir}/src/test/webapp/novabill/scripts</jsTestSrcDir>
+					<jsSrcDir>${project.basedir}/src/main/webapp/novabill/private/scripts</jsSrcDir>
+					<jsTestSrcDir>${project.basedir}/src/test/webapp/novabill/private/scripts</jsTestSrcDir>
 					<specIncludes>
 						<include>*Spec.js</include>
 					</specIncludes>
@@ -571,10 +577,12 @@
 						<configuration>
 							<classifier>stage</classifier>
 							<warSourceExcludes>
-								novabill/css/**,
-								novabill/scripts/**,
-								novabill-deps/**
-							</warSourceExcludes>
+                                novabill/private/css/**,
+                                novabill/private/scripts/**,
+                                novabill/frontend/css/**,
+                                novabill/frontend/scripts/**,
+                                novabill-deps/**
+                            </warSourceExcludes>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -609,10 +617,12 @@
 						<configuration>
 							<classifier>nb</classifier>
 							<warSourceExcludes>
-								novabill/css/**,
-								novabill/scripts/**,
-								novabill-deps/**
-							</warSourceExcludes>
+                                novabill/private/css/**,
+                                novabill/private/scripts/**,
+                                novabill/frontend/css/**,
+                                novabill/frontend/scripts/**,
+                                novabill-deps/**
+                            </warSourceExcludes>
 						</configuration>
 					</plugin>
 				</plugins>
@@ -664,8 +674,10 @@
 						<configuration>
 							<classifier>production</classifier>
 							<warSourceExcludes>
-								novabill/css/**,
-								novabill/scripts/**,
+								novabill/private/css/**,
+								novabill/private/scripts/**,
+								novabill/frontend/css/**,
+                                novabill/frontend/scripts/**,
 								novabill-deps/**
 							</warSourceExcludes>
 						</configuration>

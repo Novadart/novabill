@@ -3,6 +3,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
+<spring:url value="/" var="basePath" />
 
 <%
     String pageName = (String)request.getAttribute("pageName");
@@ -34,6 +35,10 @@
    <!-- END THEME STYLES -->
    
    <tiles:insertAttribute ignore="true" name="head" />
+   
+   <tiles:insertAttribute  ignore="true" name="css" />
+   
+   <tiles:insertAttribute  ignore="true" name="cssExtra" />
 
    <link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
 </head>
@@ -66,13 +71,25 @@
     <script src="${frontendAssetsUrl}/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script>
     <!-- END CORE PLUGINS -->
 
+    <script>
+	var NovabillFrontendConf = {
+	        basePath : '${basePath}',
+	        version : '<tiles:insertAttribute name="novabill.version" />'
+	};
+	</script>
+
     <tiles:insertAttribute  ignore="true" name="javascript" />
+    
+    <tiles:insertAttribute  ignore="true" name="javascriptExtra" />
     
     <script type="text/javascript">
     if(window.ga){
         ga('send', 'pageview');
     }
     </script>
+    
+    
+    
 </body>
 <!-- END BODY -->
 </html>
