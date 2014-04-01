@@ -53,42 +53,38 @@ public class PrivateController {
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_INVOICES, method = RequestMethod.GET)
-	public ModelAndView invoices() throws JsonGenerationException, JsonMappingException, IOException{
+	public ModelAndView invoices() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.invoices");
 		mav.addObject("activePage", PAGES.INVOICES);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Business business = principal.getBusiness();
-		mav.addObject("invoiceYears", mapper.writeValueAsString(business.getInvoiceYears()));
+		mav.addObject("invoiceYears", mapper.writeValueAsString(businessService.getInvoceYears(principal.getBusiness().getId())));
 		return mav;
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_ESTIMATIONS, method = RequestMethod.GET)
-	public ModelAndView estimations() throws JsonGenerationException, JsonMappingException, IOException{
+	public ModelAndView estimations() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.estimations");
 		mav.addObject("activePage", PAGES.ESTIMATIONS);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Business business = principal.getBusiness();
-		mav.addObject("estimationYears", mapper.writeValueAsString(business.getEstimationYears()));
+		mav.addObject("estimationYears", mapper.writeValueAsString(businessService.getEstimationYears(principal.getBusiness().getId())));
 		return mav;
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_TRANSPORT_DOCUMENTS, method = RequestMethod.GET)
-	public ModelAndView transportDocuments() throws JsonGenerationException, JsonMappingException, IOException{
+	public ModelAndView transportDocuments() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.transportDocuments");
 		mav.addObject("activePage", PAGES.TRANSPORT_DOCUMENTS);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Business business = principal.getBusiness();
-		mav.addObject("transportDocumentYears", mapper.writeValueAsString(business.getTransportDocumentYears()));
+		mav.addObject("transportDocumentYears", mapper.writeValueAsString(businessService.getTransportDocumentYears(principal.getBusiness().getId())));
 		return mav;
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_CREDIT_NOTES, method = RequestMethod.GET)
-	public ModelAndView creditNotes() throws JsonGenerationException, JsonMappingException, IOException{
+	public ModelAndView creditNotes() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.creditNotes");
 		mav.addObject("activePage", PAGES.CREDIT_NOTES);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Business business = principal.getBusiness();
-		mav.addObject("creditNoteYears", mapper.writeValueAsString(business.getCreditNoteYears()));
+		mav.addObject("creditNoteYears", mapper.writeValueAsString(businessService.getCreditNoteYears(principal.getBusiness().getId())));
 		return mav;
 	}
 	
