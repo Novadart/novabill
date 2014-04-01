@@ -85,7 +85,8 @@ angular.module('novabill.constants', [])
 					CREDIT_NOTE : 'CREDIT_NOTE', 
 					TRANSPORT_DOCUMENT : 'TRANSPORT_DOCUMENT',
 					PAYMENT_TYPE : 'PAYMENT_TYPE',
-					PRICE_LIST : 'PRICE_LIST'
+					PRICE_LIST : 'PRICE_LIST',
+					SHARING_PERMIT : 'SHARING_PERMIT'
 				},
 
 				operationType : {

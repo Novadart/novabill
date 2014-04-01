@@ -3,6 +3,7 @@
 
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
 <spring:url value="/tos" var="tosUrl" />
+<spring:url var="shareAskUrl" value="/share-ask" />
 
 <!-- BEGIN FOOTER -->
 <%-- <div class="footer">
@@ -130,8 +131,11 @@
                     | <a href="${tosUrl}">Termini di Servizio</a>
                 </p>
             </div>
-            <!-- <div class="col-md-4 col-sm-4">
+            <div class="col-md-4 col-sm-4">
                 <ul class="social-footer">
+                    <li class="datashare"><a class="btn btn-sm blue" href="${shareAskUrl}"><i class="fa fa-group"></i> Condivisione Dati</a></li>
+                </ul>
+                <!-- <ul class="social-footer">
                     <li><a href="#"><i class="fa fa-facebook"></i></a></li>
                     <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
                     <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
@@ -141,8 +145,8 @@
                     <li><a href="#"><i class="fa fa-github"></i></a></li>
                     <li><a href="#"><i class="fa fa-youtube"></i></a></li>
                     <li><a href="#"><i class="fa fa-dropbox"></i></a></li>
-                </ul>                
-            </div> -->
+                </ul> -->                
+            </div>
         </div>
     </div>
 </div>

@@ -9,6 +9,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.domain.SharingPermit;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.SharingPermitService;
 import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
@@ -58,6 +60,8 @@ public class SharingPermitController {
 	private void sendMessage(String email, Long businessID, Locale locale){
 		Map<String, Object> templateVars = new HashMap<String, Object>();
 		templateVars.put("shareRequestUrl", sharingRequestUrl);
+		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+		templateVars.put("businessName", principal.getBusiness().getName());
 		sendMessage(email, messageSource.getMessage("sharing.permit.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
 	}
 

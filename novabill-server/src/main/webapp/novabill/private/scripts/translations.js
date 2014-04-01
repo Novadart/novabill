@@ -101,6 +101,8 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		LR_PAYMENT_TYPE_CREATE : 'Hai creato il tipo di Pagamento <strong><a href="{{link}}">{{paymentName}}</a></strong>',
 		LR_PAYMENT_TYPE_DELETE : 'Hai cancellato il tipo di Pagamento <strong>{{paymentName}}</strong>',
 		LR_PAYMENT_TYPE_UPDATE : 'Hai aggiornato il tipo di Pagamento <strong><a href="{{link}}">{{paymentName}}</a></strong>',
+		LR_SHARING_PERMIT_CREATE : 'Hai concesso a <strong>{{sharingPermitDesc}}</strong> la possibilità di accedere ai tuoi dati',
+		LR_SHARING_PERMIT_DELETE : 'Hai rimosso per <strong>{{sharingPermitDesc}}</strong> la possibilità di accedere ai tuoi dati',
 		LR_TRANSPORT_DOCUMENT_CREATE : 'Hai creato il <strong><a href="{{link}}">Documento di Trasporto #{{documentID}}</a></strong> per il cliente {{clientName}}',
 		LR_TRANSPORT_DOCUMENT_DELETE : 'Hai cancellato il <strong>Documento di Trasporto #{{documentID}}</strong> per il cliente {{clientName}}',
 		LR_TRANSPORT_DOCUMENT_UPDATE : 'Hai aggiornato il <strong><a href="{{link}}">Documento di Trasporto #{{documentID}}</a></strong> per il cliente {{clientName}}',
