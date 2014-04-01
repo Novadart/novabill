@@ -269,7 +269,7 @@
 				<textFieldExpression><![CDATA[$F{document.note}!=null && !"".equals($F{document.note}.trim()) ? $F{document.note}: $R{tidy.nonote}]]></textFieldExpression>
 			</textField>
 			<componentElement>
-				<reportElement uuid="efa0b762-6546-4748-9a3a-6a2973a62883" key="table" style="table" positionType="Float" x="10" y="245" width="540" height="50"/>
+				<reportElement uuid="efa0b762-6546-4748-9a3a-6a2973a62883" key="table" style="table" positionType="Float" x="8" y="245" width="540" height="50"/>
 				<jr:table xmlns:jr="http://jasperreports.sourceforge.net/jasperreports/components" xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports/components http://jasperreports.sourceforge.net/xsd/components.xsd">
 					<datasetRun subDataset="Items Table Dataset" uuid="9cae1167-07ed-414c-8a4e-54292c7611d4">
 						<dataSourceExpression><![CDATA[new net.sf.jasperreports.engine.data.JRBeanCollectionDataSource($F{items})]]></dataSourceExpression>
@@ -509,14 +509,14 @@
 				<textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format($F{document.totalTax}.doubleValue())]]></textFieldExpression>
 			</textField>
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="b1330750-53d5-4fba-96a2-1ce18df49e5f" positionType="Float" x="10" y="30" width="240" height="20" forecolor="#333333"/>
+				<reportElement uuid="b1330750-53d5-4fba-96a2-1ce18df49e5f" positionType="Float" x="8" y="30" width="240" height="20" forecolor="#333333"/>
 				<textElement verticalAlignment="Middle">
 					<font fontName="Open Sans Light" size="8"/>
 				</textElement>
 				<textFieldExpression><![CDATA[$F{document.limitations}!=null && !"".equals($F{document.limitations}.trim())? $F{document.limitations}: $R{tidy.nolimitations}]]></textFieldExpression>
 			</textField>
 			<textField>
-				<reportElement uuid="97974dbc-c141-4a43-b90c-49e90a99ef91" positionType="Float" x="10" y="5" width="240" height="20"/>
+				<reportElement uuid="97974dbc-c141-4a43-b90c-49e90a99ef91" positionType="Float" x="8" y="5" width="240" height="20"/>
 				<box>
 					<bottomPen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</box>
