@@ -112,9 +112,10 @@ public class SharingController {
 		}
 	}
 	
-	@RequestMapping(value = "/share/{businessID}/{token}/filter", method = RequestMethod.GET)
+	@RequestMapping(value = "/share/{businessID}/filter", method = RequestMethod.GET)
 	@ResponseBody
-	public ResponseEntity<List<InvoiceDTO>> filterSharedDocs(@PathVariable Long businessID, @PathVariable String token,
+	public ResponseEntity<List<InvoiceDTO>> filterSharedDocs(@PathVariable Long businessID,
+			@RequestParam(value = "token", required = true) String token,
 			@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date startDate,
 			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date endDate){
 		if(sharingService.isValidRequest(businessID, token))
