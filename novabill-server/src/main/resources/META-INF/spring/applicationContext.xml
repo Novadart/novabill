@@ -203,7 +203,7 @@
 	
 	<bean class="com.novadart.novabill.aspect.CachingAspect"
 		factory-method="aspectOf">
-		<property name="ehcacheDiskStore" value="${ehcache.diskStore}"/>
+		<property name="ehcacheDiskStore" value="${mvn.ehcache.diskStore}"/>
 	</bean>
 	
 	<bean id="businessServiceImpl" class="com.novadart.novabill.service.web.BusinessServiceImpl">
@@ -215,8 +215,8 @@
 			destroy-method="close" id="dataSource">
 			<property name="driverClassName" value="org.postgresql.Driver" />
 			<property name="url" value="jdbc:postgresql://localhost/${mvn.db.name}" />
-			<property name="username" value="${dbuser}" />
-			<property name="password" value="${dbpassword}" />
+			<property name="username" value="${mvn.db.user}" />
+			<property name="password" value="${mvn.db.password}" />
 			<property name="testOnBorrow" value="true" />
 			<property name="testOnReturn" value="true" />
 			<property name="testWhileIdle" value="true" />
