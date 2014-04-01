@@ -160,6 +160,26 @@ public class SharingTest extends ServiceTest {
 	}
 	
 	@Test
+	public void tempSharingVatIDNoPrefixTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
+		SharingPermit sharingPermit = TestUtils.createSharingPermit();
+		business.getSharingPermits().add(sharingPermit);
+		sharingPermit.setBusiness(business);
+		business.flush();
+		SharingController sharingController = initSharingController();
+		SharingRequest request = new SharingRequest();
+		request.setEmail(sharingPermit.getEmail());
+		request.setVatID(business.getVatID().substring(2));
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
+		sharingController.processRequestSubmit(request, new BeanPropertyBindingResult(request, "sharingRequest"), mock(SessionStatus.class), null);
+		smtpServer.stop();
+		
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
+		assertEquals(1, SharingToken.findAllSharingTokens().size());
+	}
+	
+	@Test
 	public void tempSharingForNovabillUserTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
 		SharingController sharingController = initSharingController();
 		SharingRequest request = new SharingRequest();
@@ -222,7 +242,7 @@ public class SharingTest extends ServiceTest {
 	public void shareInvalidTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
 		SharingController sharingController = initSharingController();
 		String viewName = sharingController.share(1l, "token", mock(Model.class));
-		assertEquals("invalidSharingRequest", viewName);
+		assertEquals("sharing.invalidSharingRequest", viewName);
 	}
 	
 	@Test
@@ -233,7 +253,7 @@ public class SharingTest extends ServiceTest {
 		SharingToken.entityManager().flush();
 		SharingController sharingController = initSharingController();
 		String viewName = sharingController.share(businessID, token, mock(Model.class));
-		assertEquals("share", viewName);
+		assertEquals("sharing.share", viewName);
 	}
 	
 	@Test
