@@ -69,12 +69,18 @@ public class SharingController {
 		return "sharing.request";
 	}
 	
+	private String normalizeAndGetVatID(SharingRequest sharingRequest){
+		String vatID = sharingRequest.getVatID().trim().toUpperCase();
+		return vatID.startsWith("IT")? vatID: "IT" + vatID;
+	}
+	
+	
 	@RequestMapping(value = Urls.PUBLIC_SHARE_REQUEST, method = RequestMethod.POST)
 	public String processRequestSubmit(@ModelAttribute("sharingRequest") SharingRequest sharingRequest, BindingResult result, SessionStatus status, Locale locale){
 		validator.validate(sharingRequest, result);
 		if(result.hasErrors())
 			return "sharing.request";
-		Business business = Business.findBusinessByVatIDIfSharingPermit(sharingRequest.getVatID(), sharingRequest.getEmail());
+		Business business = Business.findBusinessByVatIDIfSharingPermit(normalizeAndGetVatID(sharingRequest), sharingRequest.getEmail());
 		if(business == null){
 			Principal principal = Principal.findByUsername(sharingRequest.getEmail());
 			if(principal == null || !principal.getBusiness().getVatID().equals(sharingRequest.getVatID()))

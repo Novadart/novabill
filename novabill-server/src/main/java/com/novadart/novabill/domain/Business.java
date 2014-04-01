@@ -441,7 +441,7 @@ public class Business implements Serializable, Taxable {
     }
     
     public static Business findBusinessByVatIDIfSharingPermit(String vatID, String email){
-    	String sql = "select b from Business b join fetch b.sharingPermits p where b.vatID = :vatID and p.email = :email";
+    	String sql = "select b from Business b join fetch b.sharingPermits p where upper(b.vatID) = upper(:vatID) and upper(p.email) = upper(:email)";
     	List<Business> r = entityManager().createQuery(sql, Business.class).
     			setParameter("vatID", vatID).
     			setParameter("email", email).getResultList();
