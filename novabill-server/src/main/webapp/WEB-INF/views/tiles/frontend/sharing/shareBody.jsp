@@ -54,7 +54,7 @@
 		       {{'CLEAR' | translate}} <i class="fa fa-eraser"></i>
 		   </a>
 		   <a  ng-show="invoices && invoices.length > 0" href="javascript:void(0);" class="btn default col-md-5 col-md-offset-1" ng-click="print()">
-		       {{'PAYMENTS_STATUS_PRINT' | translate}} <i class="fa fa-print"></i>
+		       {{'DOWNLOAD' | translate}} <i class="fa fa-download"></i>
 		   </a>
 		</div>
 		<!--/span-->

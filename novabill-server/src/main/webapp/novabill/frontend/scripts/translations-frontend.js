@@ -9,6 +9,7 @@ angular.module("novabill-frontend.translations", ['pascalprecht.translate'])
 	 */
 	$translateProvider.translations('it_IT', {
 		CLEAR : 'Ripulisci',
+		DOWNLOAD : 'Scarica',
 		NO_DATA : 'Nessun dato',
 		PAYMENTS_STATUS_END_DATE : 'A',
 		PAYMENTS_STATUS_PRINT : 'Stampa',
