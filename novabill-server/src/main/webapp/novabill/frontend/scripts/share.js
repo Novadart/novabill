@@ -30,6 +30,7 @@ angular.module('novabill-frontend.share', ['novabill-frontend.ajax', 'novabill-f
 	
 	var loadedInvoices = [];
 	var PARTITION = 50;
+	var firstLoad = true;
 	
 	var now = new Date();
 	var DEFAULT_START_DATE = new Date(now.getFullYear(), 0, 1);
@@ -52,6 +53,7 @@ angular.module('novabill-frontend.share', ['novabill-frontend.ajax', 'novabill-f
 				endDate != null ? formatDate(endDate) : '', 
 				function(invoices){
 					
+					firstLoad = false;
 					loadedInvoices = invoices;
 					$scope.invoices = loadedInvoices.slice(0, 15);
 					$scope.loading = false;
@@ -89,7 +91,7 @@ angular.module('novabill-frontend.share', ['novabill-frontend.ajax', 'novabill-f
 		var sd = $scope.startDate != null ? formatDate($scope.startDate) : ''; 
 		var ed = $scope.endDate != null ? formatDate($scope.endDate) : '';
 		
-		var url = nConstantsFrontend.conf.baseUrl + 'share/{businessID}/{token}/download?startDate={startDate}&endDate={endDate}'
+		var url = nConstantsFrontend.conf.baseUrl + 'share/{businessID}/download?token={token}&startDate={startDate}&endDate={endDate}'
 		.replace('{businessID}', nQueryParams.businessID)
 		.replace('{token}', nQueryParams.token)
 		.replace('{startDate}', sd)
@@ -99,17 +101,16 @@ angular.module('novabill-frontend.share', ['novabill-frontend.ajax', 'novabill-f
 	};
 
 	$scope.$watch('startDate', function(newValue, oldValue){
-		if(newValue != null){
+		if(!firstLoad){
 			loadInvoices(newValue, $scope.endDate);
 		}
 	});
 	
 	$scope.$watch('endDate', function(newValue, oldValue){
-		if(newValue != null){
+		if(!firstLoad){
 			loadInvoices($scope.startDate, newValue);
 		}
 	});
-	
+
 	$scope.clear();
-	
 }]);

@@ -13,7 +13,7 @@ angular.module('novabill-frontend.ajax', ['novabill-frontend.constants'])
 	return {
 		
 		getInvoices : function(businessID, token, startDate, endDate, onSuccess){
-			var url = baseUrl + 'share/{businessID}/{token}/filter?startDate={startDate}&endDate={endDate}'
+			var url = baseUrl + 'share/{businessID}/filter?token={token}&startDate={startDate}&endDate={endDate}'
 				.replace('{businessID}', businessID)
 				.replace('{token}', token)
 				.replace('{startDate}', startDate)

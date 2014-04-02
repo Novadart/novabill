@@ -123,9 +123,9 @@ public class SharingController {
 		return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 	}
 	
-	@RequestMapping(value = "/share/{businessID}/{token}/download", method = RequestMethod.GET)
+	@RequestMapping(value = "/share/{businessID}/download", method = RequestMethod.GET)
 	@ResponseBody
-	public void getSharedDocs(@PathVariable Long businessID, @PathVariable String token,
+	public void getSharedDocs(@PathVariable Long businessID, @RequestParam(value = "token", required = true) String token,
 			@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date startDate,
 			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date endDate,
 			HttpServletResponse response, Locale locale) throws IllegalAccessException, InvocationTargetException, NoSuchMethodException, IOException, JRException, JasperReportKeyResolutionException{
