@@ -88,7 +88,10 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 			.replace('{document}', documentClass)
 			.replace('{id}', documentId);
 			
-			$window.open(pdfUrl, '_blank');
+			var openPrintPage = nConstants.conf.pdfPrintPageUrl
+			.replace('{pdfUrl}', encodeURIComponent(pdfUrl));
+			
+			$window.open(openPrintPage, '_blank');
 		},
 		
 		_formatDate : function(date){

@@ -27,4 +27,5 @@ public interface Urls {
 	public static final String PRIVATE_PRICE_LISTS = "/private/price-lists";
 	public static final String PRIVATE_PAYMENTS = "/private/payments";
 	public static final String PRIVATE_SETTINGS = "/private/settings";
+	public static final String PRIVATE_PRINT_PDF = "/private/print-pdf";
 }

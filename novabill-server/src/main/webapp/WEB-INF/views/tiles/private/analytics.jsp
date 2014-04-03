@@ -9,6 +9,4 @@ if(! eval('${mvn.devMode.enabled}') ) {
     ga('create', 'UA-36322447-1', 'novabill.it');
     /* ga('send', 'pageview'); */
 }
-
-jQuery.cookie('cc_cookie_decline') !== "cc_cookie_decline"
 </script>

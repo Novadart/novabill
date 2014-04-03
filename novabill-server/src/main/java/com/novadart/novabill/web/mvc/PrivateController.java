@@ -1,6 +1,8 @@
 package com.novadart.novabill.web.mvc;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
 import org.codehaus.jackson.JsonGenerationException;
 import org.codehaus.jackson.map.JsonMappingException;
@@ -10,9 +12,9 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -122,4 +124,11 @@ public class PrivateController {
 		return mav;
 	}
 
+	@RequestMapping(value = Urls.PRIVATE_PRINT_PDF, method = RequestMethod.GET)
+	public ModelAndView printPdf(@RequestParam String pdfUrl) throws UnsupportedEncodingException{
+		ModelAndView mav = new ModelAndView("private.printPDF");
+		mav.addObject("pdfUrl", URLDecoder.decode(pdfUrl, "UTF-8"));
+		return mav;
+	}
+	
 }
