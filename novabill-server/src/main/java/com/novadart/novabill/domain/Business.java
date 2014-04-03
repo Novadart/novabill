@@ -779,7 +779,6 @@ public class Business implements Serializable, Taxable {
     
     public String toString() {
     	return String.format("<id: %d, name: %s>", id, name); 
-        //return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
     }
     
 }
