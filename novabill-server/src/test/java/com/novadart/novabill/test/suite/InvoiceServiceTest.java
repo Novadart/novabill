@@ -391,7 +391,7 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void getAllUnpaidInDateRangeTest() throws NotAuthenticatedException, DataAccessException, ParseException{
+	public void getAllUnpaidInDateRangeTest() throws NotAuthenticatedException, DataAccessException, ParseException, AuthorizationException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		Set<Long> ids2013 = invoiceIDSet(businessService.getInvoices(businessID, 2013));
 		Set<Long> ids2012 = invoiceIDSet(businessService.getInvoices(businessID, 2012));
