@@ -8,7 +8,7 @@
 	<definition name="private.layout" template="/WEB-INF/views/layouts/private/privateLayout.jsp">
 	   <put-attribute name="novabill.version" value="${project.version}"></put-attribute>
 	   <put-attribute name="css" value="private.${mvn.tiles.css.definition}" />
-	   <put-attribute name="analytics" value="/WEB-INF/views/tiles/frontend/analytics.jsp" />
+	   <put-attribute name="analytics" value="/WEB-INF/views/tiles/private/analytics.jsp" />
 	   <put-attribute name="javascript" value="private.${mvn.tiles.javascript.definition}" />
 	</definition>
 

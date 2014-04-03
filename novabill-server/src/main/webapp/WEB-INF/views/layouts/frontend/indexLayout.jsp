@@ -37,6 +37,8 @@
    <link href="${frontendAssetsUrl}/css/style-responsive.css" rel="stylesheet" type="text/css"/>
    <link href="${frontendAssetsUrl}/css/custom.css" rel="stylesheet" type="text/css"/>
    <!-- END THEME STYLES -->
+   
+   <link href="${frontendAssetsUrl}/plugins/cookieCuttr/cookiecuttr.css" rel="stylesheet" type="text/css"/>
 
    <link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
 	
@@ -84,8 +86,6 @@
 
 <!-- BEGIN BODY -->
 <body>
-
-    <tiles:insertAttribute name="analytics" />
 
     <tiles:insertAttribute name="header" />
 
@@ -686,6 +686,8 @@
     <script src="${frontendAssetsUrl}/plugins/respond.min.js"></script>  
     <![endif]-->  
     <script src="${frontendAssetsUrl}/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="${frontendAssetsUrl}/plugins/jquery.cookie-1.4.0.js" type="text/javascript"></script>
+    <script src="${frontendAssetsUrl}/plugins/cookieCuttr/jquery.cookiecuttr.js" type="text/javascript"></script>
     <script src="${frontendAssetsUrl}/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
     <script src="${frontendAssetsUrl}/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>      
     <script type="text/javascript" src="${frontendAssetsUrl}/plugins/hover-dropdown.js"></script>
@@ -713,6 +715,17 @@
             var austDay = new Date();
             austDay = new Date(2014, 3, 10);
             $('#defaultCountdown').countdown({until: austDay});
+            
+            //start cookie cuttr            
+           	$.cookieCuttr({
+           		cookieAnalyticsMessage : 'Utilizziamo i cookie per raccogliere dati statistici anonimi e migliorare il servizio. Non memorizziamo dati personali.',
+           		cookieAcceptButtonText: 'Ok, ho capito',
+           		cookieWhatAreLinkText : '',
+           		cookieNotificationLocationBottom : true,
+           		cookieDeclineButton : true,
+           		cookieDeclineButtonText : 'Disabilita'
+           	});    
+            
         });
         
         $('#alertEmailButton').click(function(){
@@ -745,11 +758,8 @@
         
     </script>
     
-    <script type="text/javascript">
-    if(window.ga){
-    	ga('send', 'pageview');
-    }
-	</script>
+    <tiles:insertAttribute name="analytics" />
+    
     <!-- END PAGE LEVEL JAVASCRIPTS -->
 </body>
 <!-- END BODY -->

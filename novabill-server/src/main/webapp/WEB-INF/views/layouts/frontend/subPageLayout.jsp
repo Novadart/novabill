@@ -46,7 +46,6 @@
 
 <!-- BEGIN BODY -->
 <body>
-    <tiles:insertAttribute name="analytics" />
 
     <tiles:insertAttribute name="header" />
 
@@ -82,13 +81,7 @@
     
     <tiles:insertAttribute  ignore="true" name="javascriptExtra" />
     
-    <script type="text/javascript">
-    if(window.ga){
-        ga('send', 'pageview');
-    }
-    </script>
-    
-    
+    <tiles:insertAttribute name="analytics" />
     
 </body>
 <!-- END BODY -->

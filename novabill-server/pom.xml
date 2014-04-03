@@ -352,6 +352,7 @@
 					<warSourceExcludes>
 						**/rpc/**,
 						WEB-INF/views/tiles/frontend/analytics.jsp,
+						WEB-INF/views/tiles/private/analytics.jsp,
 						WEB-INF/views/tiles/wro4j/private/minifiedCSS.jsp,
 						WEB-INF/views/tiles/wro4j/private/minifiedJS.jsp,
 						WEB-INF/views/tiles/wro4j/frontend/minifiedCSS.jsp,
@@ -368,6 +369,7 @@
 							<includes>
 								<include>web.xml</include>
 								<include>views/tiles/frontend/analytics.jsp</include>
+								<include>views/tiles/private/analytics.jsp</include>
 								<include>views/private-tiles-defs.xml</include>
 								<include>views/frontend-tiles-defs.xml</include>
 								<include>views/tiles/wro4j/private/minifiedCSS.jsp</include>
