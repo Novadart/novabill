@@ -21,7 +21,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.novadart.novabill.annotation.Restrictions;
-import com.novadart.novabill.annotation.Xsrf;
 import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.CreditNote;
@@ -36,8 +35,8 @@ import com.novadart.novabill.report.ReportUtils;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.data.LayoutType;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
@@ -70,7 +69,7 @@ public class PDFController{
 				invoice.getAccountingDocumentYear(), invoice.getDocumentID(), ReportUtils.convertToASCII(invoice.getClient().getName()));
 		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(invoice, invoice.getBusiness().getId()),
-				DocumentType.INVOICE, invoice.getLayoutType(), print);
+				DocumentType.INVOICE, invoice.getLayoutType());
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/estimations/{id}", produces = "application/pdf")
@@ -86,7 +85,7 @@ public class PDFController{
 				estimation.getAccountingDocumentYear(), estimation.getDocumentID(), ReportUtils.convertToASCII(estimation.getClient().getName()));
 		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(estimation, estimation.getBusiness().getId()),
-				DocumentType.ESTIMATION, estimation.getLayoutType(), print);
+				DocumentType.ESTIMATION, estimation.getLayoutType());
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/creditnotes/{id}", produces = "application/pdf")
@@ -102,7 +101,7 @@ public class PDFController{
 				creditNote.getAccountingDocumentYear(), creditNote.getDocumentID(), ReportUtils.convertToASCII(creditNote.getClient().getName()));
 		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(creditNote, creditNote.getBusiness().getId()),
-				DocumentType.CREDIT_NOTE, creditNote.getLayoutType(), print);
+				DocumentType.CREDIT_NOTE, creditNote.getLayoutType());
 	}
 
 	@RequestMapping(method = RequestMethod.GET, value = "/transportdocs/{id}", produces = "application/pdf")
@@ -118,7 +117,7 @@ public class PDFController{
 				transportDocument.getAccountingDocumentYear(), transportDocument.getDocumentID(), ReportUtils.convertToASCII(transportDocument.getClient().getName()));
 		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(transportDocument, transportDocument.getBusiness().getId()),
-				DocumentType.TRANSPORT_DOCUMENT, transportDocument.getLayoutType(), print);
+				DocumentType.TRANSPORT_DOCUMENT, transportDocument.getLayoutType());
 	}
 	
 	@RequestMapping(method = RequestMethod.GET, value = "/paymentspros", produces = "application/pdf")
@@ -136,7 +135,7 @@ public class PDFController{
 		String pdfName = messageSource.getMessage("export.paymentspros.name.pattern", null, "Payments_prospect.pdf", locale);
 		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(invoices, startDate, endDate, filteringDateType),
-				DocumentType.PAYMENTS_PROSPECT, LayoutType.DENSE, print);
+				DocumentType.PAYMENTS_PROSPECT, LayoutType.DENSE);
 	}
 	
 }

@@ -158,17 +158,8 @@ public class JasperReportService implements ResourceLoaderAware{
 		return JasperFillManager.fillReport(jasperReport, reportParameters, dataSource);
 	}
 	
-	public byte[] exportReportToPdf(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType, boolean embedPrint) throws JRException, JasperReportKeyResolutionException{
-		if(embedPrint){
-			ByteArrayOutputStream out = new ByteArrayOutputStream();
-			JRPdfExporter exporter = new JRPdfExporter();
-			exporter.setParameter(JRPdfExporterParameter.JASPER_PRINT, createJasperPrint(dataSource, docType, layoutType));
-			exporter.setParameter(JRPdfExporterParameter.PDF_JAVASCRIPT, "setTimeout(function(){ this.print({bUI: true,bSilent: false,bShrinkToFit: true}); }, 1000)");
-			exporter.setParameter(JRPdfExporterParameter.OUTPUT_STREAM, out);
-			exporter.exportReport();
-			return out.toByteArray();
-		}else
-			return JasperExportManager.exportReportToPdf(createJasperPrint(dataSource, docType, layoutType));
+	public byte[] exportReportToPdf(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType) throws JRException, JasperReportKeyResolutionException{
+		return JasperExportManager.exportReportToPdf(createJasperPrint(dataSource, docType, layoutType));
 	}
 	
 	public void exportReportToPdfFile(JRBeanCollectionDataSource dataSource, DocumentType docType, LayoutType layoutType, String destFileName) throws JRException, JasperReportKeyResolutionException{
