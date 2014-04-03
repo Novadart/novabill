@@ -134,6 +134,7 @@ public class SharingController {
 			File zipFile = null;
 			try{
 				ExportDataBundle exportDataBundle = new ExportDataBundle();
+				exportDataBundle.setBusiness(Business.findBusiness(businessID));
 				exportDataBundle.setInvoices(new HashSet<>(invoices));
 				zipFile = dataExporter.exportData(exportDataBundle, messageSource, locale);
 				response.setContentType("application/zip");

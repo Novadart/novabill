@@ -11,6 +11,9 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.NumberOfInvoicesPerYearQuotaReachedChecker;
+import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -106,7 +109,7 @@ public class InvoiceService {
 	}
 
 	@Transactional(readOnly = false, rollbackFor = {Exception.class})
-	//@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
+	@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
 	@PreAuthorize("#invoiceDTO?.business?.id == principal.business.id and " +
 		  	  	 "T(com.novadart.novabill.domain.Client).findClient(#invoiceDTO?.client?.id)?.business?.id == principal.business.id and " +
 		  	  	 "#invoiceDTO != null and #invoiceDTO.id == null")
@@ -167,11 +170,11 @@ public class InvoiceService {
 	}
 	
 	@Transactional(readOnly = false)
-	//@Restrictions(checkers = {PremiumChecker.class})
+	@Restrictions(checkers = {PremiumChecker.class})
 	@PreAuthorize("principal.business.id == #businessID and " +
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == #businessID and " +
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.client?.id == #clientID")
-	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException {
+	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, AuthorizationException, DataAccessException {
 		Invoice.findInvoice(id).setPayed(value);
 	}
 	
