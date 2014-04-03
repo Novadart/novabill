@@ -9,7 +9,7 @@ import com.novadart.novabill.service.web.ClientService;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
@@ -30,7 +30,7 @@ public class ClientGwtController extends AbstractGwtController implements Client
 		clientService.remove(businessID, id);
 	}
 
-	public Long add(Long businessID, ClientDTO clientDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException {
+	public Long add(Long businessID, ClientDTO clientDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException {
 		return clientService.add(businessID, clientDTO);
 	}
 
@@ -47,7 +47,7 @@ public class ClientGwtController extends AbstractGwtController implements Client
 	}
 
 	@Override
-	public Long addClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException {
+	public Long addClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException {
 		return clientService.addClientAddress(clientAddressDTO);
 	}
 
@@ -62,7 +62,7 @@ public class ClientGwtController extends AbstractGwtController implements Client
 	}
 
 	@Override
-	public void updateClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException, ValidationException, DataAccessException {
+	public void updateClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, NoSuchObjectException, FreeUserAccessForbiddenException, ValidationException, DataAccessException {
 		clientService.updateClientAddress(clientAddressDTO);
 	}
 

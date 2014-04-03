@@ -28,7 +28,7 @@ import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -81,7 +81,7 @@ public class CommodityService {
 				  "#commodityDTO?.id == null" )
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@Restrictions(checkers = {NumberOfCommoditiesQuotaReachedChecker.class})
-	public Long add(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+	public Long add(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException {
 		Commodity commodity = new Commodity();
 		CommodityDTOFactory.copyFromDTO(commodity, commodityDTO);
 		if(StringUtils.isBlank(commodity.getSku()))
@@ -99,7 +99,7 @@ public class CommodityService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#commodityDTO?.business?.id == principal.business.id and " +
 			  	  "#commodityDTO?.id != null" )
-	public void update(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+	public void update(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException {
 		Commodity persistentCommodity = Commodity.findCommodity(commodityDTO.getId());
 		if(persistentCommodity == null)
 			throw new NoSuchObjectException();

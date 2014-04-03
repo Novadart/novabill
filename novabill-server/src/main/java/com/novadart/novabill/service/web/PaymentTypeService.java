@@ -17,7 +17,7 @@ import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -52,7 +52,7 @@ public class PaymentTypeService {
 	@PreAuthorize("#paymentTypeDTO?.business?.id == principal.business.id and " +
 		  	  	  "#paymentTypeDTO != null and #paymentTypeDTO.id == null")
 	@Restrictions(checkers = {NumberOfPaymentTypesQuotaReachedChecker.class})
-	public Long add(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
+	public Long add(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException {
 		PaymentType paymentType = new PaymentType();
 		PaymentTypeDTOFactory.copyFromDTO(paymentType, paymentTypeDTO);
 		validator.validate(paymentType);
@@ -68,7 +68,7 @@ public class PaymentTypeService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#paymentTypeDTO?.business?.id == principal.business.id and " +
 	  	  	  	  "#paymentTypeDTO?.id != null")
-	public void update(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+	public void update(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException {
 		PaymentType persistedPaymentType = PaymentType.findPaymentType(paymentTypeDTO.getId());
 		if(persistedPaymentType == null)
 			throw new NoSuchObjectException();

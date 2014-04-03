@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.beans.factory.annotation.Value;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
-import com.novadart.novabill.shared.client.exception.AuthorizationError;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessErrorType;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 
 @Configurable
 public class NumberOfTransportDocsPerYearQuotaReachedChecker implements RestricionChecker {
@@ -23,11 +23,11 @@ public class NumberOfTransportDocsPerYearQuotaReachedChecker implements Restrici
 	}
 
 	@Override
-	public void check(Principal principal) throws AuthorizationException {
+	public void check(Principal principal) throws FreeUserAccessForbiddenException {
 		LOGGER.debug("Number of transport documents per year quota check - quota: {}, roles: {}", new Object[]{numberOfTransportDocsPerYearQuota, principal.getGrantedRoles()});
 		if(principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE) && 
 				principal.getBusiness().getTransportDocsForYear(Calendar.getInstance().get(Calendar.YEAR)).size() >= numberOfTransportDocsPerYearQuota)
-			throw new AuthorizationException(AuthorizationError.NUMBER_OF_TRANSPORT_DOCUMENTS_QUOTA_REACHED);
+			throw new FreeUserAccessForbiddenException(FreeUserAccessErrorType.NUMBER_OF_TRANSPORT_DOCUMENTS_QUOTA_REACHED);
 	}
 
 }

@@ -37,7 +37,7 @@ import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -309,7 +309,7 @@ public class BusinessServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+	public void addAuthorizedTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 
 									com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		authenticatedPrincipal.setBusiness(null);
 		Business business = TestUtils.createBusiness();
@@ -323,7 +323,7 @@ public class BusinessServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedDefaultLayoutTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+	public void addAuthorizedDefaultLayoutTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 
 									com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		authenticatedPrincipal.setBusiness(null);
 		Business business = TestUtils.createBusiness();
@@ -336,13 +336,13 @@ public class BusinessServiceTest extends ServiceTest {
 	} 
 	
 	@Test(expected = DataAccessException.class)
-	public void addNullTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+	public void addNullTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 
 								com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		businessGwtService.add(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void addNotNullIDTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+	public void addNotNullIDTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 
 										com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		authenticatedPrincipal.setBusiness(null);
 		Business business = TestUtils.createBusiness();

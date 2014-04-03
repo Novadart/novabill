@@ -38,7 +38,9 @@ import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.SharingPermitService;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.web.mvc.SharingController;
 import com.novadart.novabill.web.mvc.ajax.SharingPermitController;
@@ -58,7 +60,7 @@ public class SharingTest extends ServiceTest {
 	@Value("${sharing.expiration}")
 	private Integer invoiceSharingExpiration;
 	
-	private SharingPermitController initSharingPermitController() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+	static SharingPermitController initSharingPermitController(UtilsService utilsService, SharingPermitService sharingPermitService) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		SharingPermitController controller = new SharingPermitController();
 		MessageSource messageSource = mock(MessageSource.class);
 		when(messageSource.getMessage("sharing.permit.notification", null, null)).thenReturn("Sharing invoices");
@@ -69,6 +71,10 @@ public class SharingTest extends ServiceTest {
 		return controller;
 	}
 	
+	private SharingPermitController initSharingPermitController() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+		return initSharingPermitController(utilsService, sharingPermitService);
+	}
+	
 	@Autowired
 	private PeriodicPurgerService periodicPurgerService;
 	
@@ -76,7 +82,7 @@ public class SharingTest extends ServiceTest {
 	private UtilsService utilsService;
 	
 	@Test
-	public void grantPermitWithEmailTest() throws ValidationException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+	public void grantPermitWithEmailTest() throws ValidationException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
 		SharingPermitDTO sharingPermitDTO = SharingPermitDTOFactory.toDTO(TestUtils.createSharingPermit());
 		Principal authenticatedPrincipal = utilsService.getAuthenticatedPrincipalDetails();
 		sharingPermitDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
@@ -97,7 +103,7 @@ public class SharingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void grantPermitWithoutEmailTest() throws ValidationException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+	public void grantPermitWithoutEmailTest() throws ValidationException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
 		SharingPermitDTO sharingPermitDTO = SharingPermitDTOFactory.toDTO(TestUtils.createSharingPermit());
 		Principal authenticatedPrincipal = utilsService.getAuthenticatedPrincipalDetails();
 		sharingPermitDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
@@ -118,7 +124,7 @@ public class SharingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void sendEmailTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, DataAccessException{
+	public void sendEmailTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, DataAccessException, NotAuthenticatedException, FreeUserAccessForbiddenException{
 		SharingPermitController sharingPermitController = initSharingPermitController();
 		SharingPermit permit = authenticatedPrincipal.getBusiness().getSharingPermits().iterator().next();
 		

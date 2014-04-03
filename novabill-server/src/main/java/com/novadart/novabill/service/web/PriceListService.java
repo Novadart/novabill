@@ -27,7 +27,7 @@ import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -81,7 +81,7 @@ public class PriceListService {
 	@PreAuthorize("#priceListDTO?.business?.id == principal.business.id and " +
 		  	  	  "#priceListDTO != null and #priceListDTO.id == null")
 	@Restrictions(checkers = {PremiumChecker.class})
-	public Long add(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
+	public Long add(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException {
 		PriceList priceList = new PriceList();
 		PriceListDTOFactory.copyFromDTO(priceList, priceListDTO);
 		Business business = Business.findBusiness(priceListDTO.getBusiness().getId());
@@ -96,7 +96,7 @@ public class PriceListService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#priceListDTO?.business?.id == principal.business.id and " +
 	  	  	  	  "#priceListDTO?.id != null")
-	public void update(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+	public void update(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException {
 		PriceList persistedPriceList = PriceList.findPriceList(priceListDTO.getId());
 		if(persistedPriceList == null)
 			throw new NoSuchObjectException();

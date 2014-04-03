@@ -31,7 +31,7 @@ import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -113,7 +113,7 @@ public class InvoiceService {
 	@PreAuthorize("#invoiceDTO?.business?.id == principal.business.id and " +
 		  	  	 "T(com.novadart.novabill.domain.Client).findClient(#invoiceDTO?.client?.id)?.business?.id == principal.business.id and " +
 		  	  	 "#invoiceDTO != null and #invoiceDTO.id == null")
-	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, AuthorizationException, NotAuthenticatedException, DataIntegrityException {
+	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataIntegrityException {
 		Invoice invoice = new Invoice();//create new invoice
 		InvoiceDTOFactory.copyFromDTO(invoice, invoiceDTO, true);
 		validator.validate(Invoice.class, invoice);
@@ -174,12 +174,12 @@ public class InvoiceService {
 	@PreAuthorize("principal.business.id == #businessID and " +
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == #businessID and " +
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.client?.id == #clientID")
-	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, AuthorizationException, DataAccessException {
+	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException {
 		Invoice.findInvoice(id).setPayed(value);
 	}
 	
 	@Restrictions(checkers = {PremiumChecker.class})
-	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException, AuthorizationException {
+	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(filteringDateType, startDate, endDate);
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<>(invoices.size());

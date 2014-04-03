@@ -36,7 +36,7 @@ import com.novadart.novabill.report.ReportUtils;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.data.LayoutType;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -130,7 +130,7 @@ public class PDFController{
 			@RequestParam(value = "filteringDateType") FilteringDateType filteringDateType,
 			@RequestParam(value = "token", required = false) String token,
 			@RequestParam(value = "print", required = false, defaultValue = "false") boolean print,
-			HttpServletResponse response, Locale locale) throws JRException, JasperReportKeyResolutionException, AuthorizationException, NotAuthenticatedException, DataAccessException {
+			HttpServletResponse response, Locale locale) throws JRException, JasperReportKeyResolutionException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException {
 		Business business  = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(filteringDateType, startDate, endDate);
 		String pdfName = messageSource.getMessage("export.paymentspros.name.pattern", null, "Payments_prospect.pdf", locale);

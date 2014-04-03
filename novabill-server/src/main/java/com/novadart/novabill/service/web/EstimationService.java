@@ -23,7 +23,7 @@ import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -74,7 +74,7 @@ public class EstimationService {
 	@PreAuthorize("#estimationDTO?.business?.id == principal.business.id and " +
 			  	  "T(com.novadart.novabill.domain.Client).findClient(#estimationDTO?.client?.id)?.business?.id == principal.business.id and " +
 			  	  "#estimationDTO != null and #estimationDTO.id == null")
-	public Long add(EstimationDTO estimationDTO) throws DataAccessException, AuthorizationException, ValidationException {
+	public Long add(EstimationDTO estimationDTO) throws DataAccessException, FreeUserAccessForbiddenException, ValidationException {
 		Estimation estimation = new Estimation();
 		EstimationDTOFactory.copyFromDTO(estimation, estimationDTO, true);
 		validator.validate(Estimation.class, estimation);

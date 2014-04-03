@@ -8,7 +8,7 @@ import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.authorization.RestricionChecker;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
@@ -23,7 +23,7 @@ privileged aspect CheckRestrictionsAspect {
 		execution(@Restrictions * *(..)) && @annotation(checkQuotas);
 
 	@Transactional(readOnly = true)
-	before(Restrictions checkQuotas) throws AuthorizationException, NotAuthenticatedException, DataAccessException : quotaRestrictedMethod(checkQuotas){
+	before(Restrictions checkQuotas) throws FreeUserAccessForbiddenException, NotAuthenticatedException, DataAccessException : quotaRestrictedMethod(checkQuotas){
 		LOGGER.debug("Checking quotas for method {}", new Object[]{thisJoinPoint.getSignature().toShortString()});
 		Principal principal = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId());
 		for(Class<? extends RestricionChecker> checkerClass: checkQuotas.checkers())

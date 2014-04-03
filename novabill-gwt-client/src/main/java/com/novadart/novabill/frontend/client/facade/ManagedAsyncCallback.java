@@ -7,7 +7,7 @@ import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HistoryPrefix;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -45,7 +45,7 @@ public abstract class ManagedAsyncCallback<T> implements AsyncCallback<T> {
 				}
 			});
 			
-		} else if(caught instanceof AuthorizationException){
+		} else if(caught instanceof FreeUserAccessForbiddenException){
 //			TODO reenable when premium is enabled
 //			if(!GoPremiumDialog.getInstance().isShowing()) {
 //				GoPremiumDialog.getInstance().showCentered();

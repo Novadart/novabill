@@ -22,7 +22,7 @@ import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
@@ -57,7 +57,7 @@ public class ClientService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	//@Restrictions(checkers = {NumberOfClientsQuotaReachedChecker.class})
 	@PreAuthorize("#businessID == principal.business.id and #clientDTO != null and #clientDTO.id == null")
-	public Long add(Long businessID, ClientDTO clientDTO) throws AuthorizationException, ValidationException {
+	public Long add(Long businessID, ClientDTO clientDTO) throws FreeUserAccessForbiddenException, ValidationException {
 		Client client = new Client(); 
 		ClientDTOFactory.copyFromDTO(client, clientDTO);
 		if(clientDTO.getDefaultPriceListID() == null)
@@ -155,7 +155,7 @@ public class ClientService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientAddressDTO?.client?.id)?.business?.id == principal.business.id and " +
 				  "#clientAddressDTO != null and #clientAddressDTO.id == null")
-	public Long addClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException {
+	public Long addClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException {
 		ClientAddress clientAddress = new ClientAddress();
 		ClientAddressDTOFactory.copyFromDTO(clientAddress, clientAddressDTO);
 		validator.validate(clientAddress);
@@ -191,7 +191,7 @@ public class ClientService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#clientAddressDTO?.client?.id)?.business?.id == principal.business.id and " +
 			      "#clientAddressDTO != null and #clientAddressDTO.id != null")
-	public void updateClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, NoSuchObjectException {
+	public void updateClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, NoSuchObjectException {
 		ClientAddress clientAddress = ClientAddress.findClientAddress(clientAddressDTO.getId());
 		if(clientAddress == null)
 			throw new NoSuchObjectException();

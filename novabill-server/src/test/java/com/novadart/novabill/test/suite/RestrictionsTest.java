@@ -31,23 +31,26 @@ import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.CommodityService;
 import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.service.web.PaymentTypeService;
 import com.novadart.novabill.service.web.PriceListService;
+import com.novadart.novabill.service.web.SharingPermitService;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationError;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessErrorType;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.web.mvc.PDFController;
+import com.novadart.novabill.web.mvc.ajax.SharingPermitController;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -66,6 +69,12 @@ public class RestrictionsTest extends ServiceTest {
 	
 	@Autowired
 	private PriceListService priceListService;
+	
+	@Autowired
+	private UtilsService utilsService;
+	
+	@Autowired
+	private SharingPermitService sharingPermitService;
 	
 	@Override
 	@Before
@@ -91,9 +100,9 @@ public class RestrictionsTest extends ServiceTest {
 		boolean raised = false;
 		try {
 			invoiceService.add(invDTO);
-		} catch (AuthorizationException e) {
+		} catch (FreeUserAccessForbiddenException e) {
 			raised = true;
-			assertEquals(AuthorizationError.NUMBER_OF_INVOICES_QUOTA_REACHED, e.getError());
+			assertEquals(FreeUserAccessErrorType.NUMBER_OF_INVOICES_QUOTA_REACHED, e.getError());
 		}
 		assertTrue(raised);
 	}
@@ -106,9 +115,9 @@ public class RestrictionsTest extends ServiceTest {
 		boolean raised = false;
 		try {
 			invoiceService.setPayed(authenticatedPrincipal.getBusiness().getId(), client.getId(), invoiceID, true);
-		} catch (AuthorizationException e) {
+		} catch (FreeUserAccessForbiddenException e) {
 			raised = true;
-			assertEquals(AuthorizationError.NOT_PREMIUM_USER, e.getError());
+			assertEquals(FreeUserAccessErrorType.NOT_PREMIUM_USER, e.getError());
 		}
 		assertTrue(raised);
 	}
@@ -122,9 +131,9 @@ public class RestrictionsTest extends ServiceTest {
 		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		try {
 			commodityService.add(commodityDTO);
-		} catch (AuthorizationException e) {
+		} catch (FreeUserAccessForbiddenException e) {
 			raised = true;
-			assertEquals(AuthorizationError.NUMBER_OF_COMMODITIES_QUOTA_REACHED, e.getError());
+			assertEquals(FreeUserAccessErrorType.NUMBER_OF_COMMODITIES_QUOTA_REACHED, e.getError());
 		}
 		assertTrue(raised);
 	}
@@ -136,9 +145,9 @@ public class RestrictionsTest extends ServiceTest {
 		boolean raised = false;
 		try {
 			paymentTypeService.add(paymentTypeDTO);
-		} catch (AuthorizationException e) {
+		} catch (FreeUserAccessForbiddenException e) {
 			raised = true;
-			assertEquals(AuthorizationError.NUMBER_OF_PAYMENTTYPES_QUOTA_REACHED, e.getError());
+			assertEquals(FreeUserAccessErrorType.NUMBER_OF_PAYMENTTYPES_QUOTA_REACHED, e.getError());
 		}
 		assertTrue(raised);
 	}
@@ -150,9 +159,9 @@ public class RestrictionsTest extends ServiceTest {
 		boolean raised = false;
 		try {
 			priceListService.add(priceListDTO);
-		} catch (AuthorizationException e) {
+		} catch (FreeUserAccessForbiddenException e) {
 			raised = true;
-			assertEquals(AuthorizationError.NOT_PREMIUM_USER, e.getError());
+			assertEquals(FreeUserAccessErrorType.NOT_PREMIUM_USER, e.getError());
 		}
 		assertTrue(raised);
 	}
@@ -162,9 +171,9 @@ public class RestrictionsTest extends ServiceTest {
 		boolean raised = false;
 		try {
 			invoiceService.getAllUnpaidInDateRange(FilteringDateType.CREATION_DATE, null, null);
-		} catch (AuthorizationException e) {
+		} catch (FreeUserAccessForbiddenException e) {
 			raised = true;
-			assertEquals(AuthorizationError.NOT_PREMIUM_USER, e.getError());
+			assertEquals(FreeUserAccessErrorType.NOT_PREMIUM_USER, e.getError());
 		}
 		assertTrue(raised);
 	}
@@ -175,9 +184,62 @@ public class RestrictionsTest extends ServiceTest {
 		boolean raised = false;
 		try {
 			controller.getPaymentsProspectPaymentDueDatePDF(null, null, FilteringDateType.CREATION_DATE, "", false, mock(HttpServletResponse.class), null);
-		} catch (AuthorizationException e) {
+		} catch (FreeUserAccessForbiddenException e) {
 			raised = true;
-			assertEquals(AuthorizationError.NOT_PREMIUM_USER, e.getError());
+			assertEquals(FreeUserAccessErrorType.NOT_PREMIUM_USER, e.getError());
+		}
+		assertTrue(raised);
+	}
+	
+	
+	@Test
+	public void getAllSharingPermitsFreeUserTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NotAuthenticatedException, DataAccessException{
+		SharingPermitController controller = SharingTest.initSharingPermitController(utilsService, sharingPermitService);
+		boolean raised = false;
+		try {
+			controller.getAll(authenticatedPrincipal.getBusiness().getId());
+		} catch (FreeUserAccessForbiddenException e) {
+			raised = true;
+			assertEquals(FreeUserAccessErrorType.NOT_PREMIUM_USER, e.getError());
+		}
+		assertTrue(raised);
+	}
+	
+	@Test
+	public void addSharingPermitsFreeUserTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NotAuthenticatedException, DataAccessException, ValidationException{
+		SharingPermitController controller = SharingTest.initSharingPermitController(utilsService, sharingPermitService);
+		boolean raised = false;
+		try {
+			controller.add(authenticatedPrincipal.getBusiness().getId(), false, null, null);
+		} catch (FreeUserAccessForbiddenException e) {
+			raised = true;
+			assertEquals(FreeUserAccessErrorType.NOT_PREMIUM_USER, e.getError());
+		}
+		assertTrue(raised);
+	}
+	
+	@Test
+	public void sendEmailSharingPermitsFreeUserTest() throws NotAuthenticatedException, DataAccessException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		SharingPermitController controller = SharingTest.initSharingPermitController(utilsService, sharingPermitService);
+		boolean raised = false;
+		try {
+			controller.sendEmail(1l, null);
+		} catch (FreeUserAccessForbiddenException e) {
+			raised = true;
+			assertEquals(FreeUserAccessErrorType.NOT_PREMIUM_USER, e.getError());
+		}
+		assertTrue(raised);
+	}
+	
+	@Test
+	public void removeSharingPermitsFreeUserTest() throws NotAuthenticatedException, DataAccessException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
+		SharingPermitController controller = SharingTest.initSharingPermitController(utilsService, sharingPermitService);
+		boolean raised = false;
+		try {
+			controller.remove(authenticatedPrincipal.getBusiness().getId(), 1l);
+		} catch (FreeUserAccessForbiddenException e) {
+			raised = true;
+			assertEquals(FreeUserAccessErrorType.NOT_PREMIUM_USER, e.getError());
 		}
 		assertTrue(raised);
 	}

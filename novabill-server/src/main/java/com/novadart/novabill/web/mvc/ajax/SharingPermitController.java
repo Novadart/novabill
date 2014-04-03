@@ -21,11 +21,14 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.SharingPermit;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.SharingPermitService;
 import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -53,7 +56,8 @@ public class SharingPermitController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<SharingPermitDTO> getAll(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException{
+	@Restrictions(checkers = {PremiumChecker.class})
+	public List<SharingPermitDTO> getAll(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return sharingPermitService.getAll(businessID);
 	}
 
@@ -68,7 +72,9 @@ public class SharingPermitController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.CREATED)
-	public Long add(@PathVariable Long businessID, @RequestParam(required=false, defaultValue="false") boolean sendEmail, @RequestBody SharingPermitDTO sharingPermitDTO, Locale locale) throws ValidationException{
+	@Restrictions(checkers = {PremiumChecker.class})
+	public Long add(@PathVariable Long businessID, @RequestParam(required=false, defaultValue="false") boolean sendEmail, @RequestBody SharingPermitDTO sharingPermitDTO,
+			Locale locale) throws ValidationException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Long id = sharingPermitService.add(businessID, sharingPermitDTO);
 		if(sendEmail)
 			sendMessage(sharingPermitDTO.getEmail(), businessID, locale);
@@ -77,7 +83,8 @@ public class SharingPermitController {
 
 	@RequestMapping(value = "/{id}/email", method = RequestMethod.POST)
 	@ResponseBody
-	public void sendEmail(@PathVariable Long id, Locale locale) throws DataAccessException{
+	@Restrictions(checkers = {PremiumChecker.class})
+	public void sendEmail(@PathVariable Long id, Locale locale) throws  NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		SharingPermit sharingPermit = SharingPermit.findSharingPermit(id);
 		if(!sharingPermit.getBusiness().getId().equals(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()))
 			throw new DataAccessException();
@@ -87,7 +94,8 @@ public class SharingPermitController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	public void remove(@PathVariable Long businessID, @PathVariable Long id){
+	@Restrictions(checkers = {PremiumChecker.class})
+	public void remove(@PathVariable Long businessID, @PathVariable Long id) throws  NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		sharingPermitService.remove(businessID, id);
 	}
 

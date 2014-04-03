@@ -1,6 +1,6 @@
 package com.novadart.novabill.shared.client.exception;
 
-public enum AuthorizationError {
+public enum FreeUserAccessErrorType {
 	
 	NUMBER_OF_CLIENTS_QUOTA_REACHED,
 	NUMBER_OF_INVOICES_QUOTA_REACHED,

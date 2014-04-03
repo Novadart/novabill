@@ -62,7 +62,7 @@ import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -180,7 +180,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void  clientAddCacheTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+	public void  clientAddCacheTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException{
 		Set<ClientDTO> clients = new HashSet<ClientDTO>(businessGwtService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		Integer count = businessGwtService.countClients(authenticatedPrincipal.getBusiness().getId());
 		Client client = TestUtils.createClient();
@@ -205,7 +205,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void  clientUpdateCacheTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, NoSuchObjectException{
+	public void  clientUpdateCacheTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, NoSuchObjectException{
 		Set<ClientDTO> clients = new HashSet<ClientDTO>(businessGwtService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		Integer count = businessGwtService.countClients(authenticatedPrincipal.getBusiness().getId());
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
@@ -261,7 +261,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void invoiceAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, ParseException, DataIntegrityException{
+	public void invoiceAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, ParseException, DataIntegrityException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
 		Set<InvoiceDTO> result = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(businessID, getYear()));
@@ -285,7 +285,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void invoiceUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, DataIntegrityException{
+	public void invoiceUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, DataIntegrityException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
 		Set<InvoiceDTO> result = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(businessID, getYear()));
@@ -307,7 +307,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void invoiceSetPayedCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void invoiceSetPayedCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
 		List<InvoiceDTO> result = businessGwtService.getInvoices(businessID, getYear());
@@ -333,7 +333,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void invoiceUpdateFailCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void invoiceUpdateFailCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
 		List<InvoiceDTO> result = businessGwtService.getInvoices(businessID, getYear());
@@ -384,7 +384,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void creditNoteAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, ParseException{
+	public void creditNoteAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, ParseException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> credYears = businessService.getCreditNoteYears(businessID);
 		List<CreditNoteDTO> result = businessGwtService.getCreditNotes(businessID, getYear());
@@ -403,7 +403,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void creditNoteUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void creditNoteUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> credYears = businessService.getCreditNoteYears(businessID);
 		List<CreditNoteDTO> result = businessGwtService.getCreditNotes(businessID, getYear());
@@ -441,7 +441,7 @@ public class CachingTest extends ServiceTest {
 	} 
 	
 	@Test
-	public void estimationAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, ParseException{
+	public void estimationAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, ParseException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> estYears = businessService.getEstimationYears(businessID);
 		List<EstimationDTO> result = businessGwtService.getEstimations(businessID, getYear());
@@ -459,7 +459,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void estimationUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void estimationUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> estYears = businessService.getEstimationYears(businessID);
 		List<EstimationDTO> result = businessGwtService.getEstimations(businessID, getYear());
@@ -497,7 +497,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void transDocAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, ParseException{
+	public void transDocAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, ParseException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> tranYears = businessService.getTransportDocumentYears(businessID);
 		List<TransportDocumentDTO> result = businessGwtService.getTransportDocuments(businessID, getYear());
@@ -516,7 +516,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void transDocUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, DataIntegrityException{
+	public void transDocUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, DataIntegrityException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> tranYears = businessService.getTransportDocumentYears(businessID);
 		List<TransportDocumentDTO> result = businessGwtService.getTransportDocuments(businessID, getYear());
@@ -596,7 +596,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void  paymentTypeAddCacheTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+	public void  paymentTypeAddCacheTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException{
 		Set<PaymentTypeDTO> paymentTypes = new HashSet<PaymentTypeDTO>(businessGwtService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
 		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(TestUtils.createPaymentType());
 		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
@@ -607,7 +607,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void  paymentTypeUpdateCacheTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, NoSuchObjectException{
+	public void  paymentTypeUpdateCacheTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, NoSuchObjectException{
 		Set<PaymentTypeDTO> paymentTypes = new HashSet<PaymentTypeDTO>(businessGwtService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
 		PaymentType paymentType = authenticatedPrincipal.getBusiness().getPaymentTypes().iterator().next();
 		paymentType.setName("Updated test payment type name");
@@ -638,7 +638,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void transporterAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException {
+	public void transporterAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException {
 		Set<TransporterDTO> transporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
@@ -651,7 +651,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void transporterUpdateCache() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, NoSuchObjectException {
+	public void transporterUpdateCache() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, NoSuchObjectException {
 		Set<TransporterDTO> transporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
 		TransporterDTO transDTO = TransporterDTOFactory.toDTO(authenticatedPrincipal.getBusiness().getTransporters().iterator().next());
 		transDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
@@ -662,14 +662,14 @@ public class CachingTest extends ServiceTest {
 	}
 
 	@Test
-	public void commodityGetAllCacheTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void commodityGetAllCacheTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
 		Set<CommodityDTO> cachedCommodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(commodities.equals(cachedCommodities));
 	}
 	
 	@Test
-	public void commodityAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, NoSuchObjectException{
+	public void commodityAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, NoSuchObjectException{
 		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
 		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
@@ -685,7 +685,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void commodityUpdateCacheTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void commodityUpdateCacheTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
 		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		TestUtils.setDefaultPrice(commodityDTO, new BigDecimal("19.95"));
@@ -712,7 +712,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void commodityRemoveCacheTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void commodityRemoveCacheTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
 		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		TestUtils.setDefaultPrice(commodityDTO, new BigDecimal("19.95"));
@@ -730,7 +730,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void commodityAddOrRemovePriceTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void commodityAddOrRemovePriceTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
 		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		TestUtils.setDefaultPrice(commodityDTO, new BigDecimal("19.95"));
@@ -767,7 +767,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void priceListUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, NoSuchObjectException{
+	public void priceListUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, NoSuchObjectException{
 		Long id = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<PriceListDTO> resultAll = priceListService.getAll(businessID);
@@ -781,7 +781,7 @@ public class CachingTest extends ServiceTest {
 	
 	
 	@Test(expected = DataAccessException.class)
-	public void priceListRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, ValidationException, AuthorizationException{
+	public void priceListRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, ValidationException, FreeUserAccessForbiddenException{
 		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
 		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
@@ -796,7 +796,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void priceListCloneCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, ValidationException, AuthorizationException{
+	public void priceListCloneCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, ValidationException, FreeUserAccessForbiddenException{
 		Long id = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<PriceListDTO> resultAll = priceListService.getAll(businessID);
@@ -807,7 +807,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void priceListAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException{
+	public void priceListAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<PriceListDTO> resultAll = priceListService.getAll(businessID);
 		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
@@ -817,7 +817,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void priceListAddOrUpdateCacheTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, AuthorizationException{
+	public void priceListAddOrUpdateCacheTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, FreeUserAccessForbiddenException{
 		Long id = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		PriceListDTO resultOne = priceListService.get(id);
@@ -853,7 +853,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void addClientAddressTest() throws NotAuthenticatedException, DataAccessException, AuthorizationException, ValidationException{
+	public void addClientAddressTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException, ValidationException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		addClientAddress(client);
 		Long clientID = client.getId();
@@ -877,7 +877,7 @@ public class CachingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void updateClientAddressTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, AuthorizationException, ValidationException{
+	public void updateClientAddressTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, ValidationException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		Long clientAddressID = addClientAddress(client).getId();
 		Long clientID = client.getId();

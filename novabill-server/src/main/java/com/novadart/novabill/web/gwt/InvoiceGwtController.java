@@ -10,7 +10,7 @@ import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -38,7 +38,7 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 		return invoiceService.getAllForClient(clientID, year);
 	}
 
-	public Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, DataIntegrityException {
+	public Long add(InvoiceDTO invoiceDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, DataIntegrityException {
 		return invoiceService.add(invoiceDTO);
 	}
 
@@ -58,12 +58,12 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 		return invoiceService.getAllForClientInRange(clientID, year, start, length);
 	}
 
-	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException, DataAccessException {
+	public void setPayed(Long businessID, Long clientID, Long id, Boolean value) throws NotAuthenticatedException, NoSuchObjectException, FreeUserAccessForbiddenException, DataAccessException {
 		invoiceService.setPayed(businessID, clientID, id, value);
 	}
 
 	@Override
-	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException, AuthorizationException {
+	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return invoiceService.getAllUnpaidInDateRange(filteringDateType, startDate, endDate);
 	}
 	
