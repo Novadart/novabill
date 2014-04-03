@@ -21,11 +21,14 @@ import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
 import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
+import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.CommodityService;
 import com.novadart.novabill.service.web.InvoiceService;
+import com.novadart.novabill.service.web.PaymentTypeService;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationError;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -36,7 +39,6 @@ import com.novadart.novabill.shared.client.exception.ValidationException;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
-//@ContextConfiguration(locations = "classpath*:service-test-config.xml")
 @Transactional
 @ActiveProfiles("dev")
 public class RestrictionsTest extends ServiceTest {
@@ -46,6 +48,9 @@ public class RestrictionsTest extends ServiceTest {
 	
 	@Autowired
 	private CommodityService commodityService;
+
+	@Autowired
+	private PaymentTypeService paymentTypeService;
 	
 	@Override
 	@Before
@@ -58,6 +63,7 @@ public class RestrictionsTest extends ServiceTest {
 	public void wiringTest(){
 		assertNotNull(invoiceService);
 		assertNotNull(commodityService);
+		assertNotNull(paymentTypeService);
 	}
 	
 	@Test
@@ -103,6 +109,20 @@ public class RestrictionsTest extends ServiceTest {
 		} catch (AuthorizationException e) {
 			raised = true;
 			assertEquals(AuthorizationError.NUMBER_OF_COMMODITIES_QUOTA_REACHED, e.getError());
+		}
+		assertTrue(raised);
+	}
+	
+	@Test
+	public void addPaymentTypeOverQuotaTest() throws NotAuthenticatedException, ValidationException, DataAccessException{
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(TestUtils.createPaymentType());
+		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		boolean raised = false;
+		try {
+			paymentTypeService.add(paymentTypeDTO);
+		} catch (AuthorizationException e) {
+			raised = true;
+			assertEquals(AuthorizationError.NUMBER_OF_PAYMENTTYPES_QUOTA_REACHED, e.getError());
 		}
 		assertTrue(raised);
 	}

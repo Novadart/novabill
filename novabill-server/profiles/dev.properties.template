@@ -83,4 +83,4 @@ mvn.quota.numberOfEstimationsPerYear=1
 mvn.quota.numberOfCreditNotesPerYear=1
 mvn.quota.numberOfTransportDocsPerYear=1
 mvn.quota.numberOfCommodities=1
-
+mvn.quota.numberOfPaymentTypes=7

@@ -7,6 +7,6 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
 public interface RestricionChecker {
 	
-	public void check(Principal business) throws AuthorizationException, NotAuthenticatedException, DataAccessException;
+	public void check(Principal principal) throws AuthorizationException, NotAuthenticatedException, DataAccessException;
 
 }

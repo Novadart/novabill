@@ -8,6 +8,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.NumberOfPaymentTypesQuotaReachedChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.PaymentType;
@@ -49,6 +51,7 @@ public class PaymentTypeService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#paymentTypeDTO?.business?.id == principal.business.id and " +
 		  	  	  "#paymentTypeDTO != null and #paymentTypeDTO.id == null")
+	@Restrictions(checkers = {NumberOfPaymentTypesQuotaReachedChecker.class})
 	public Long add(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
 		PaymentType paymentType = new PaymentType();
 		PaymentTypeDTOFactory.copyFromDTO(paymentType, paymentTypeDTO);
