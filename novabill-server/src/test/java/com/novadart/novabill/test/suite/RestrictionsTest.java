@@ -22,13 +22,16 @@ import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
 import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
 import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
+import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.CommodityService;
 import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.service.web.PaymentTypeService;
+import com.novadart.novabill.service.web.PriceListService;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
+import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.exception.AuthorizationError;
 import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -52,6 +55,9 @@ public class RestrictionsTest extends ServiceTest {
 	@Autowired
 	private PaymentTypeService paymentTypeService;
 	
+	@Autowired
+	private PriceListService priceListService;
+	
 	@Override
 	@Before
 	public void authenticate() {
@@ -64,6 +70,7 @@ public class RestrictionsTest extends ServiceTest {
 		assertNotNull(invoiceService);
 		assertNotNull(commodityService);
 		assertNotNull(paymentTypeService);
+		assertNotNull(priceListService);
 	}
 	
 	@Test
@@ -84,7 +91,7 @@ public class RestrictionsTest extends ServiceTest {
 	
 	
 	@Test
-	public void setInvoicePayedTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
+	public void setInvoicePayedFreeUserTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		Long invoiceID = client.getInvoices().iterator().next().getId();
 		boolean raised = false;
@@ -123,6 +130,20 @@ public class RestrictionsTest extends ServiceTest {
 		} catch (AuthorizationException e) {
 			raised = true;
 			assertEquals(AuthorizationError.NUMBER_OF_PAYMENTTYPES_QUOTA_REACHED, e.getError());
+		}
+		assertTrue(raised);
+	}
+	
+	@Test
+	public void addPriceListFreeUserTest() throws NotAuthenticatedException, ValidationException, DataAccessException{
+		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		boolean raised = false;
+		try {
+			priceListService.add(priceListDTO);
+		} catch (AuthorizationException e) {
+			raised = true;
+			assertEquals(AuthorizationError.NOT_PREMIUM_USER, e.getError());
 		}
 		assertTrue(raised);
 	}

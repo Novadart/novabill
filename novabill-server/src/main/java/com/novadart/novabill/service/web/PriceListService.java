@@ -11,6 +11,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Commodity;
@@ -78,6 +80,7 @@ public class PriceListService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#priceListDTO?.business?.id == principal.business.id and " +
 		  	  	  "#priceListDTO != null and #priceListDTO.id == null")
+	@Restrictions(checkers = {PremiumChecker.class})
 	public Long add(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
 		PriceList priceList = new PriceList();
 		PriceListDTOFactory.copyFromDTO(priceList, priceListDTO);
