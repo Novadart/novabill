@@ -20,7 +20,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.annotation.Xsrf;
+import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Estimation;
@@ -34,8 +36,10 @@ import com.novadart.novabill.report.ReportUtils;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.data.LayoutType;
+import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
 @Controller
 @RequestMapping("/private/pdf")
@@ -120,12 +124,13 @@ public class PDFController{
 	@RequestMapping(method = RequestMethod.GET, value = "/paymentspros", produces = "application/pdf")
 	@ResponseBody
 	//@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD)
+	@Restrictions(checkers = {PremiumChecker.class})
 	public byte[] getPaymentsProspectPaymentDueDatePDF(@RequestParam(value = "startDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date startDate,
 			@RequestParam(value = "endDate", required = false) @DateTimeFormat(iso = ISO.DATE) Date endDate,
 			@RequestParam(value = "filteringDateType") FilteringDateType filteringDateType,
 			@RequestParam(value = "token", required = false) String token,
 			@RequestParam(value = "print", required = false, defaultValue = "false") boolean print,
-			HttpServletResponse response, Locale locale) throws JRException, JasperReportKeyResolutionException {
+			HttpServletResponse response, Locale locale) throws JRException, JasperReportKeyResolutionException, AuthorizationException, NotAuthenticatedException, DataAccessException {
 		Business business  = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(filteringDateType, startDate, endDate);
 		String pdfName = messageSource.getMessage("export.paymentspros.name.pattern", null, "Payments_prospect.pdf", locale);

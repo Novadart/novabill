@@ -3,8 +3,14 @@ package com.novadart.novabill.test.suite;
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+
 
 import java.math.BigDecimal;
+
+import javax.servlet.http.HttpServletResponse;
+
+import net.sf.jasperreports.engine.JRException;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -24,10 +30,12 @@ import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
 import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.service.web.CommodityService;
 import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.service.web.PaymentTypeService;
 import com.novadart.novabill.service.web.PriceListService;
+import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
@@ -39,6 +47,7 @@ import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.web.mvc.PDFController;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -141,6 +150,31 @@ public class RestrictionsTest extends ServiceTest {
 		boolean raised = false;
 		try {
 			priceListService.add(priceListDTO);
+		} catch (AuthorizationException e) {
+			raised = true;
+			assertEquals(AuthorizationError.NOT_PREMIUM_USER, e.getError());
+		}
+		assertTrue(raised);
+	}
+	
+	@Test
+	public void retrieveUnpaidInvoicesInRangeFreeUserTest() throws NotAuthenticatedException, DataAccessException {
+		boolean raised = false;
+		try {
+			invoiceService.getAllUnpaidInDateRange(FilteringDateType.CREATION_DATE, null, null);
+		} catch (AuthorizationException e) {
+			raised = true;
+			assertEquals(AuthorizationError.NOT_PREMIUM_USER, e.getError());
+		}
+		assertTrue(raised);
+	}
+	
+	@Test
+	public void genPaymentsProspectPDFFreeUserTest() throws JRException, JasperReportKeyResolutionException, NotAuthenticatedException, DataAccessException{
+		PDFController controller = new PDFController();
+		boolean raised = false;
+		try {
+			controller.getPaymentsProspectPaymentDueDatePDF(null, null, FilteringDateType.CREATION_DATE, "", false, mock(HttpServletResponse.class), null);
 		} catch (AuthorizationException e) {
 			raised = true;
 			assertEquals(AuthorizationError.NOT_PREMIUM_USER, e.getError());

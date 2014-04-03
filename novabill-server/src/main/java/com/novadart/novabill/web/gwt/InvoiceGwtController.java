@@ -63,7 +63,7 @@ public class InvoiceGwtController extends AbstractGwtController implements Invoi
 	}
 
 	@Override
-	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException {
+	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException, AuthorizationException {
 		return invoiceService.getAllUnpaidInDateRange(filteringDateType, startDate, endDate);
 	}
 	
