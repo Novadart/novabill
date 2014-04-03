@@ -24,8 +24,6 @@ import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
 import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
 import org.apache.solr.analysis.LowerCaseFilterFactory;
 import org.apache.solr.analysis.StandardTokenizerFactory;
@@ -537,7 +535,7 @@ public class Client implements Serializable, Taxable {
      * */
     
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    	return String.format("<id: %d, name: %s>", id, name);
     }
     
 }

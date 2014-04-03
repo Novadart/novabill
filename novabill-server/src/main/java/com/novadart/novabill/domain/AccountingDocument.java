@@ -35,12 +35,12 @@ import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
+
 import com.novadart.novabill.shared.client.data.LayoutType;
 
 /*
@@ -356,7 +356,7 @@ public abstract class AccountingDocument {
     /*End of entity section*/
     
     public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+    	return String.format("<id: %d, documentID: %d, type: %s>", id, documentID, getClass().getSimpleName());
     }
 	
 }

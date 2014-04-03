@@ -1,6 +1,7 @@
 package com.novadart.novabill.domain;
 
 import java.util.List;
+
 import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
@@ -12,8 +13,7 @@ import javax.persistence.Id;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
-import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
-import org.apache.commons.lang3.builder.ToStringStyle;
+
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -209,7 +209,7 @@ public class Logo {
 	
 	
 	public String toString() {
-        return ReflectionToStringBuilder.toString(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		return String.format("<id: %d, name: %s, businessID: %d>", id, name, businessID);
     }
 
 	
