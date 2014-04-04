@@ -46,7 +46,9 @@
     	</authentication-provider>
     </authentication-manager>
     
-    <beans:bean id="passwordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
+    <beans:bean id="passwordEncoder" class="com.novadart.novabill.springsecurity.MigrationPasswordEncoder"/>
+    
+    <beans:bean id="shaPasswordEncoder" class="org.springframework.security.authentication.encoding.ShaPasswordEncoder">
     	<beans:constructor-arg value="256"></beans:constructor-arg></beans:bean>
     
     <beans:bean id="novabillAuthenticationEntryPoint" class="com.novadart.novabill.springsecurity.AuthenticationEntryPoint">
