@@ -723,7 +723,7 @@
            		cookieWhatAreLinkText : '',
            		cookieNotificationLocationBottom : true,
            		cookieDeclineButton : true,
-           		cookieDeclineButtonText : 'Disabilita'
+           		cookieDeclineButtonText : 'Disabilita i cookie'
            	});    
             
         });
