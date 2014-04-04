@@ -53,7 +53,7 @@ public privileged aspect CachingAspect {
 	 * Business service caching
 	 * Dependencies: Client caching, Invoice caching, CreditNote caching, Estimation caching, TransportDocument caching, PaymentType caching, Commodity caching, PriceList caching
 	 */
-	public static final String BUSINESS_CACHE = "business-cache";
+	//public static final String BUSINESS_CACHE = "business-cache";
 	
 	public static final String CLIENT_CACHE = "client-cache";
 	
@@ -77,7 +77,7 @@ public privileged aspect CachingAspect {
 	
 	public static final String CLIENTADDRESS_CACHE = "clientaddress-cache";
 	
-	declare @method : public BusinessDTO com.novadart.novabill.service.web.BusinessServiceImpl.get(Long): @Cacheable(value = BUSINESS_CACHE, key = "#businessID");
+	//declare @method : public BusinessDTO com.novadart.novabill.service.web.BusinessServiceImpl.get(Long): @Cacheable(value = BUSINESS_CACHE, key = "#businessID");
 	
 	declare @method : public List<ClientDTO> com.novadart.novabill.service.web.BusinessServiceImpl.getClients(Long): @Cacheable(value = CLIENT_CACHE, key = "#businessID");
 	
@@ -113,7 +113,7 @@ public privileged aspect CachingAspect {
 	
 	declare @method : public List<Integer> com.novadart.novabill.service.web.BusinessServiceImpl.getTransportDocumentYears(Long): @Cacheable(value = DOCSYEARS_CACHE, key = "#businessID.toString().concat('-transportdocs')");
 	
-	declare @method : public void com.novadart.novabill.service.web.BusinessServiceImpl.update(BusinessDTO): @CacheEvict(value = BUSINESS_CACHE, key = "#businessDTO.id");
+	//declare @method : public void com.novadart.novabill.service.web.BusinessServiceImpl.update(BusinessDTO): @CacheEvict(value = BUSINESS_CACHE, key = "#businessDTO.id");
 	
 	
 	/*

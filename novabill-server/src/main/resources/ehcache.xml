@@ -26,10 +26,10 @@
         overflowToDisk="false" diskPersistent="false" timeToIdleSeconds="0"
         timeToLiveSeconds="600" memoryStoreEvictionPolicy="LRU" statistics="true" />
 
-	<cache name="business-cache" eternal="false"
-        maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
-        timeToIdleSeconds="0" timeToLiveSeconds="600"
-        memoryStoreEvictionPolicy="LRU" statistics="true" />
+<!-- 	<cache name="business-cache" eternal="false" -->
+<!--         maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false" -->
+<!--         timeToIdleSeconds="0" timeToLiveSeconds="600" -->
+<!--         memoryStoreEvictionPolicy="LRU" statistics="true" /> -->
 
     <cache name="client-cache" eternal="false"
         maxElementsInMemory="100" overflowToDisk="false" diskPersistent="false"
