@@ -75,7 +75,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	@UiField(provided=true) com.novadart.gwtshared.client.validation.widget.ValidatedTextArea companyName;
 	@UiField(provided=true) ValidatedTextBox address;
 	@UiField(provided=true) ValidatedTextBox city;
-	@UiField(provided=true) ValidatedListBox province;
+	@UiField(provided=true) ValidatedTextBox province;
 	@UiField(provided=true) ValidatedListBox country;
 	@UiField(provided=true) ValidatedTextBox postcode;
 	@UiField(provided=true) ValidatedTextBox phone;
@@ -174,7 +174,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		email = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_EMAIL);
 		contactEmail = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_EMAIL);
 
-		province = LocaleWidgets.createProvinceListBox("");
+		province = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 
 
 		ok = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
@@ -282,15 +282,10 @@ public class ClientDialog extends Dialog implements HasUILocking {
 	public void setClient(ClientDTO client) {
 		this.client = client;
 		clientDialogTitle.setText(I18N.INSTANCE.modifyClientTitle());
-
-		boolean isIT = client.getCountry() == null ? true :switchValidationByCountry(client.getCountry());
-
 		companyName.setText(client.getName());
 		address.setText(client.getAddress());
 		city.setText(client.getCity());
-		if(isIT && client.getProvince() != null){
-			province.setSelectedItem(client.getProvince());
-		}
+		province.setText(client.getProvince());
 		country.setSelectedItemByValue(client.getCountry()==null ? Configuration.getBusiness().getCountry() : client.getCountry());
 		postcode.setText(client.getPostcode());
 		phone.setText(client.getPhone());
@@ -341,11 +336,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		client.setName(companyName.getText());
 		client.setPhone(phone.getText());
 		client.setPostcode(postcode.getText());
-		if(country.getSelectedItemValue().equalsIgnoreCase("IT")){
-			client.setProvince(province.getItemText(province.getSelectedIndex()));
-		} else {
-			client.setProvince("");
-		}
+		client.setProvince(province.getText());
 
 		if(selectDefaultPayment.getSelectedIndex() > 0){
 			PaymentTypeDTO payment = paymentTypes.get(selectDefaultPayment.getValue(selectDefaultPayment.getSelectedIndex()));
@@ -446,7 +437,6 @@ public class ClientDialog extends Dialog implements HasUILocking {
 
 	private boolean switchValidationByCountry(String country){
 		boolean isIT = "IT".equalsIgnoreCase(country);
-		province.setEnabled(isIT);
 		province.reset();
 		setVatIdSsnValidation(isIT);
 		vatID.reset();
@@ -504,7 +494,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		}
 
 		for (ValidatedWidget<?> tb: new ValidatedWidget[]{companyName, 
-				postcode, phone, mobile, fax, email, address, city, web,
+				postcode, phone, mobile, fax, email, address, city, province, web,
 				contactEmail, contactFax, contactMobile, contactName, contactPhone,
 				contactSurname, note}){
 			tb.validate();
@@ -513,10 +503,6 @@ public class ClientDialog extends Dialog implements HasUILocking {
 
 		country.validate();
 		isValid = isValid && country.isValid();
-		if(country.getSelectedItemValue().equalsIgnoreCase("IT")){
-			province.validate();
-			isValid = isValid && province.isValid();
-		}
 		return isValid;
 	}
 

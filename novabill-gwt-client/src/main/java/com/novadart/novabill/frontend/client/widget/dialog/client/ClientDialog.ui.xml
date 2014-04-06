@@ -131,8 +131,8 @@
 								<g:Label styleName="{s.label}" text="{i18n.province} *"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<validation:ValidatedListBox
-									styleName="{s.value}" ui:field="province"></validation:ValidatedListBox>
+							    <validation:ValidatedTextBox
+                                    styleName="{s.value}" ui:field="province" maxLength="100"></validation:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>

@@ -101,6 +101,7 @@ public class Client implements Serializable, Taxable {
 
 	@Field(name = FTSNamespace.PROVINCE)
     @Size(max = 100)
+	@NotBlank(groups = HeavyClient.class)
 	@Trimmed
     private String province;
 
