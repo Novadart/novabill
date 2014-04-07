@@ -33,12 +33,14 @@ import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.CommodityService;
 import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.service.web.PaymentTypeService;
 import com.novadart.novabill.service.web.PriceListService;
 import com.novadart.novabill.service.web.SharingPermitService;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
@@ -77,6 +79,9 @@ public class RestrictionsTest extends ServiceTest {
 	
 	@Autowired
 	private SharingPermitService sharingPermitService;
+	
+	@Autowired
+	private BusinessService businessService;
 	
 	@Override
 	@Before
@@ -239,6 +244,18 @@ public class RestrictionsTest extends ServiceTest {
 		boolean raised = false;
 		try {
 			controller.remove(authenticatedPrincipal.getBusiness().getId(), 1l);
+		} catch (FreeUserAccessForbiddenException e) {
+			raised = true;
+			assertEquals(FreeUserAccessErrorType.NOT_PREMIUM_USER, e.getError());
+		}
+		assertTrue(raised);
+	}
+	
+	@Test
+	public void setDefaultLayoutFreeUserTest() throws NotAuthenticatedException, DataAccessException{
+		boolean raised = false;
+		try {
+			businessService.setDefaultLayout(authenticatedPrincipal.getBusiness().getId(), LayoutType.TIDY);
 		} catch (FreeUserAccessForbiddenException e) {
 			raised = true;
 			assertEquals(FreeUserAccessErrorType.NOT_PREMIUM_USER, e.getError());

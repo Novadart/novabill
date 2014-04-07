@@ -18,6 +18,8 @@ import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -339,6 +341,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	@Transactional(readOnly = false)
+	@Restrictions(checkers = {PremiumChecker.class})
 	public void setDefaultLayout(Long businessID, LayoutType layoutType) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Business.findBusiness(businessID).getSettings().setDefaultLayoutType(layoutType);
 	}

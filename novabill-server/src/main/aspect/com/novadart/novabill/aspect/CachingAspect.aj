@@ -14,7 +14,6 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.CacheEvictHooksService;
-import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;

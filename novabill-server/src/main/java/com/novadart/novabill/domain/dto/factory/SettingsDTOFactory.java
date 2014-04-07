@@ -18,7 +18,6 @@ public class SettingsDTOFactory {
 	}
 	
 	public static void copyFromDTO(Settings settings, SettingsDTO settingsDTO){
-		settings.setDefaultLayoutType(settingsDTO.getDefaultLayoutType());
 		settings.setIncognitoEnabled(settingsDTO.isIncognitoEnabled());
 		settings.setPriceDisplayInDocsMonolithic(settingsDTO.isPriceDisplayInDocsMonolithic());
 		settings.setInvoiceFooterNote(settingsDTO.getInvoiceFooterNote());
