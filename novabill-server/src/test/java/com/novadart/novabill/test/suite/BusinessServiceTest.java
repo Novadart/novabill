@@ -22,6 +22,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -380,6 +381,19 @@ public class BusinessServiceTest extends ServiceTest {
 		business.setSsn("    ");
 		validator.validate(business);
 	}
-	
 
+	@Test
+	public void setDefaultLayoutTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		businessService.setDefaultLayout(businessID, LayoutType.TIDY);
+		Business.entityManager().flush();
+		assertEquals(LayoutType.TIDY, Business.findBusiness(businessID).getSettings().getDefaultLayoutType());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void setDefaultLayoutUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
+		Long businessID = getUnathorizedBusinessID();
+		businessService.setDefaultLayout(businessID, LayoutType.TIDY);
+	}
+	
 }

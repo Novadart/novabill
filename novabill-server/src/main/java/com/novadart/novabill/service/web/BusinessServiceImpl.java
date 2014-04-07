@@ -335,5 +335,12 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		}
 		return counts;
 	}
+
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	@Transactional(readOnly = false)
+	public void setDefaultLayout(Long businessID, LayoutType layoutType) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
+		Business.findBusiness(businessID).getSettings().setDefaultLayoutType(layoutType);
+	}
 	
 }

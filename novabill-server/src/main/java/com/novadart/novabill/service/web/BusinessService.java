@@ -3,6 +3,7 @@ package com.novadart.novabill.service.web;
 import java.math.BigDecimal;
 import java.util.List;
 
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
@@ -72,5 +73,7 @@ public interface BusinessService {
 	public List<Integer> getInvoiceMonthCounts(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
 	public List<SharingPermitDTO> getSharingPermits(Long businessID) throws NotAuthenticatedException, DataAccessException;
+	
+	public void setDefaultLayout(Long businessID, LayoutType layoutType) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 	
 }
