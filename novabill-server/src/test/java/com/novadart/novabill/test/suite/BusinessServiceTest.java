@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -37,8 +36,8 @@ import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -367,26 +366,20 @@ public class BusinessServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void nonUniqueVatIDAddTest() throws ValidationException{
-		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
-		Business newBusiness = TestUtils.createBusiness();
-		newBusiness.setVatID(business.getVatID());
-		newBusiness.setSsn(business.getSsn());
-		validator.validate(newBusiness);
-	}
-	
-	@Test
-	public void nonUniqueVatIDUpdateTest() throws ValidationException{
-		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
-		business.setName("New Comp Inc.");
+	public void nullTaxableFieldsAddTest() throws ValidationException{
+		Business business = TestUtils.createBusiness();
+		business.setVatID(null);
+		business.setSsn(null);
 		validator.validate(business);
 	}
 	
-	@Test
-	public void uniqueVatIDUpdateTest() throws ValidationException{
-		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
-		business.setVatID(UUID.randomUUID().toString().substring(0, 24));
+	@Test(expected = ValidationException.class)
+	public void blankTaxableFieldsAddTest() throws ValidationException{
+		Business business = TestUtils.createBusiness();
+		business.setVatID("");
+		business.setSsn("    ");
 		validator.validate(business);
 	}
+	
 
 }

@@ -27,9 +27,7 @@ import javax.persistence.NamedQueries;
 import javax.persistence.NamedQuery;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.persistence.UniqueConstraint;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
@@ -57,8 +55,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.TaxFieldsNotNull;
 import com.novadart.novabill.annotation.Trimmed;
-import com.novadart.novabill.annotation.VatIDUnique;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.PageDTO;
@@ -72,13 +70,12 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @Configurable
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@VatIDUnique
+@TaxFieldsNotNull
 @NamedQueries({
 	@NamedQuery(name = "business.allUnpaidInvoicesDueDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.paymentDueDate and i.paymentDueDate <= :endDate and i.business.id = :bizID order by i.paymentDueDate, i.documentID"),
 	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID"),
 	@NamedQuery(name = "business.allInvoicesCreationDateInDateRange", query = "select i from Invoice i where :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID")
 })
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"vatid"})})
 public class Business implements Serializable, Taxable {
 
 	private static final long serialVersionUID = 261999997691744944L;

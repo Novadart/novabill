@@ -12,7 +12,6 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
-import java.util.UUID;
 
 import javax.annotation.Resource;
 
@@ -46,9 +45,9 @@ import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -518,26 +517,20 @@ public class ClientServiceTest extends ServiceTest {
 		clientService.updateClientAddress(clientAddressDTO);
 	}
 	
+
 	@Test(expected = ValidationException.class)
-	public void nonUniqueVatIDAddTest() throws ValidationException{
-		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		Client newClient = TestUtils.createClient();
-		newClient.setVatID(client.getVatID());
-		newClient.setSsn(client.getSsn());
-		validator.validate(newClient);
-	}
-	
-	@Test
-	public void nonUniqueVatIDUpdateTest() throws ValidationException{
-		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		client.setName("New Comp Inc.");
+	public void nullTaxableFieldsAddTest() throws ValidationException{
+		Client client = TestUtils.createClient();
+		client.setVatID(null);
+		client.setSsn(null);
 		validator.validate(client);
 	}
 	
-	@Test
-	public void uniqueVatIDUpdateTest() throws ValidationException{
-		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		client.setVatID(UUID.randomUUID().toString().substring(0, 24));
+	@Test(expected = ValidationException.class)
+	public void blankTaxableFieldsAddTest() throws ValidationException{
+		Client client = TestUtils.createClient();
+		client.setVatID("");
+		client.setSsn("    ");
 		validator.validate(client);
 	}
 	

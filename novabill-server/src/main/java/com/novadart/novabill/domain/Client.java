@@ -19,8 +19,6 @@ import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Table;
-import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.Valid;
 import javax.validation.constraints.NotNull;
@@ -45,8 +43,8 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.TaxFieldsNotNull;
 import com.novadart.novabill.annotation.Trimmed;
-import com.novadart.novabill.annotation.VatIDUnique;
 import com.novadart.novabill.service.validator.Groups.HeavyClient;
 import com.novadart.utils.fts.TermValueFilterFactory;
 
@@ -69,8 +67,7 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @Configurable
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@VatIDUnique(groups = {HeavyClient.class})
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"vatid"})})
+@TaxFieldsNotNull(groups = {HeavyClient.class})
 public class Client implements Serializable, Taxable {
 	
 	private static final long serialVersionUID = 8383909226336873374L;
