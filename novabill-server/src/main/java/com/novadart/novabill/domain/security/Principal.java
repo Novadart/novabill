@@ -98,7 +98,7 @@ public class Principal implements UserDetails {
 		return this.password;
 	}
 	
-	@Hash(saltMethod = "getCreationTime")
+	@Hash
 	public void setPassword(String password){
 		this.password = password;
 	}

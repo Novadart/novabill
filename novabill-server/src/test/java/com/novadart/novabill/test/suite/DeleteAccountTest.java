@@ -7,15 +7,13 @@ import static org.mockito.Mockito.when;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 
-import javax.annotation.Resource;
 import javax.servlet.http.HttpSession;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
@@ -40,24 +38,23 @@ import com.novadart.novabill.web.mvc.command.DeleteAccount;
 @Transactional
 @DirtiesContext
 @ActiveProfiles("dev")
-public class DeleteAccountTest {
-	
-	@Resource(name = "userPasswordMap")
-	protected HashMap<String, String> userPasswordMap;
+public class DeleteAccountTest extends AuthenticatedTest {
 	
 	@Autowired
 	private Validator validator;
 	
 	@Autowired
-	private PasswordEncoder passwordEncoder;
+	private UtilsService utilsService;
+	
+	@Override
+	@Before
+	public void authenticate() {
+		authenticatedPrincipal = Principal.findByUsername("giordano.battilana@novadart.com");
+		authenticatePrincipal(authenticatedPrincipal);
+	}
 	
 	private DeleteAccountController initDeleteAccountController(String username, String password, String providedPassword) throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
-		Principal principal = Principal.findByUsername(username);
 		DeleteAccountController deleteAccountController = new DeleteAccountController();
-		UtilsService utilsService = mock(UtilsService.class);
-		when(utilsService.getAuthenticatedPrincipalDetails()).thenReturn(principal);
-		when(utilsService.hash(password, principal.getCreationTime())).thenReturn(principal.getPassword());
-		when(utilsService.hash(providedPassword, principal.getCreationTime())).thenReturn(passwordEncoder.encodePassword(providedPassword, principal.getCreationTime()));
 		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "utilsService", utilsService);
 		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "validator", validator);
 		TestUtils.setPrivateField(DeleteAccountController.class, deleteAccountController, "businessLogoController", mock(BusinessLogoController.class));
@@ -92,10 +89,6 @@ public class DeleteAccountTest {
 		assertTrue(result.hasErrors());
 	}
 	
-	@Test
-	public void deleteAccountNullPasswordTest() throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
-		invalidPasswordValue(userPasswordMap.keySet().iterator().next(), null);
-	}
 	
 	@Test
 	public void deleteAccountBlankPasswordTest() throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{

@@ -2,7 +2,7 @@ package com.novadart.novabill.web.mvc;
 
 import java.util.Date;
 import java.util.Locale;
-import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+
 import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
@@ -33,7 +34,6 @@ public class ActivateAccountController {
 	
 	@Autowired
 	private UtilsService utilsService;
-	
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model) throws CloneNotSupportedException{
@@ -54,7 +54,7 @@ public class ActivateAccountController {
 	@Transactional(readOnly = false)
 	public String processSubmit(@RequestParam("j_username") String j_username, @RequestParam("j_password") String j_password,
 			@ModelAttribute("registration") Registration registration, Model model, SessionStatus status, Locale locale) throws CloneNotSupportedException{
-		if(!StringUtils.equals(utilsService.hash(j_password, registration.getCreationTime()), registration.getPassword())){
+		if(!utilsService.isPasswordValid(registration.getPassword(), j_password)){
 			model.addAttribute("wrongPassword", true);
 			return "activate";
  		}

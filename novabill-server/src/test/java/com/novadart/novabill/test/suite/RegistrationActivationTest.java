@@ -1,14 +1,14 @@
 package com.novadart.novabill.test.suite;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
-import java.util.HashMap;
 import java.util.Locale;
 
-import javax.annotation.Resource;
 import org.apache.commons.lang3.StringUtils;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -40,10 +40,8 @@ import com.novadart.novabill.web.mvc.AuthenticationController;
 @Transactional
 @DirtiesContext
 @ActiveProfiles("dev")
-public class RegistrationActivationTest {
+public class RegistrationActivationTest extends AuthenticatedTest{
 	
-	@Resource(name = "userPasswordMap")
-	protected HashMap<String, String> userPasswordMap;
 
 	@Autowired
 	private RegistrationValidator validator;
@@ -287,25 +285,4 @@ public class RegistrationActivationTest {
 		assertEquals("activate", backToActivate);
 	}
 	
-	@Test
-	public void registrationActivationNullPassword() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
-		String token = "1", email = "foo@bar.com", password = "password";
-		AuthenticationController registerController = initRegisterController(token, "%s%s", 24);
-		Registration registration = initRegistration(token, email, password, password, true);
-		
-		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
-		smtpServer.stop();
-		assertEquals(1, smtpServer.getReceivedEmailSize());
-		
-		ActivateAccountController activationController = initActivateAccountController();
-		Model model = new ExtendedModelMap();
-		String activateView = activationController.setupForm(email, token, model);
-		String backToActivate = activationController.processSubmit(email, null, (Registration)model.asMap().get("registration"),
-				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
-		assertEquals("redirect:/registrationCompleted", registerView);
-		assertEquals("activate", activateView);
-		assertEquals("activate", backToActivate);
-	}
-
 }

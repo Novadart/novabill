@@ -146,9 +146,7 @@ public class CachingTest extends ServiceTest {
 	
 	@Test
 	public void businessGetTest() throws NotAuthenticatedException, DataAccessException{
-		BusinessDTO business = businessGwtService.get(authenticatedPrincipal.getBusiness().getId());
-		BusinessDTO cachedBusiness = businessGwtService.get(authenticatedPrincipal.getBusiness().getId());
-		assertTrue(business == cachedBusiness);
+		assertTrue(Business.findBusiness(authenticatedPrincipal.getBusiness().getId()) == Business.findBusiness(authenticatedPrincipal.getBusiness().getId()));
 	}
 	
 	@Test

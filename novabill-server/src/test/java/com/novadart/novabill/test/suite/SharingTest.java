@@ -10,6 +10,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.apache.commons.lang3.time.DateUtils;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,6 +18,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.MessageSource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
@@ -48,6 +50,7 @@ import com.novadart.novabill.web.mvc.command.SharingRequest;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @Transactional
+@DirtiesContext
 @ActiveProfiles("dev")
 public class SharingTest extends ServiceTest {
 
@@ -59,6 +62,13 @@ public class SharingTest extends ServiceTest {
 	
 	@Value("${sharing.expiration}")
 	private Integer invoiceSharingExpiration;
+	
+	@Override
+	@Before
+	public void authenticate() {
+		authenticatedPrincipal = Principal.findByUsername("giordano.battilana@novadart.com");
+		authenticatePrincipal(authenticatedPrincipal);
+	}
 	
 	static SharingPermitController initSharingPermitController(UtilsService utilsService, SharingPermitService sharingPermitService) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		SharingPermitController controller = new SharingPermitController();

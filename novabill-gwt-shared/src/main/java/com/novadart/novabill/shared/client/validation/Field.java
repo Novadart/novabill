@@ -28,7 +28,7 @@ public enum Field {
 	transporter, transportationResponsibility, tradeZone, transportStartDate, numberOfPackages, cause, appearanceOfTheGoods,
 	
 	//Business and Client fields
-	name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatID, ssn, 
+	name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatID, ssn, defaultPriceList,
 	
 	//Client contact fields 
 	contact_firstName, contact_lastName, contact_email, contact_phone, contact_fax, contact_mobile, contact_note,

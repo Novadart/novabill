@@ -27,6 +27,7 @@ import com.novadart.novabill.domain.EmailPasswordHolder;
 import com.novadart.novabill.domain.ForgotPassword;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.TokenGenerator;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.ForgotPasswordValidator;
 import com.novadart.novabill.web.mvc.ForgotPasswordController;
 import com.novadart.novabill.web.mvc.PasswordRecoveryController;
@@ -37,13 +38,16 @@ import com.novadart.novabill.web.mvc.PasswordRecoveryController;
 @Transactional
 @DirtiesContext
 @ActiveProfiles("dev")
-public class ForgotPasswordRecoveryTest {
+public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 
 	@Resource(name = "userPasswordMap")
 	protected HashMap<String, String> userPasswordMap;
 	
 	@Autowired
 	private ForgotPasswordValidator validator;
+	
+	@Autowired
+	private UtilsService utilsService;
 	
 	private ForgotPasswordController initForgotPasswordController(String token, String passwordRecoveryUrlPattern, int passwordRecoveryPeriod) throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, NoSuchAlgorithmException{
 		ForgotPasswordController controller = new ForgotPasswordController();
@@ -101,10 +105,7 @@ public class ForgotPasswordRecoveryTest {
 		assertEquals("passwordRecoverySuccess", passwordRecoverySuccessView);
 		
 		Principal persistedPrincipal = Principal.findByUsername(email);
-		Principal tempPrincipal = new Principal();
-		tempPrincipal.setCreationTime(persistedPrincipal.getCreationTime());
-		tempPrincipal.setPassword(newPassword); //force hashing
-		assertEquals(tempPrincipal.getPassword(), persistedPrincipal.getPassword());
+		assertTrue(utilsService.isPasswordValid(persistedPrincipal.getPassword(), newPassword));
 	}
 	
 	@Test
@@ -278,10 +279,7 @@ public class ForgotPasswordRecoveryTest {
 		Principal.entityManager().flush();
 		
 		Principal persistedPrincipal = Principal.findByUsername(email);
-		Principal tempPrincipal = new Principal();
-		tempPrincipal.setCreationTime(persistedPrincipal.getCreationTime());
-		tempPrincipal.setPassword(password1); //force hashing
-		assertEquals(tempPrincipal.getPassword(), persistedPrincipal.getPassword());
+		assertTrue(utilsService.isPasswordValid(persistedPrincipal.getPassword(), password1));
 		
 		//Submitting first password recovery form
 		forgotPassword = (ForgotPassword)model2.asMap().get("forgotPassword");
@@ -292,10 +290,8 @@ public class ForgotPasswordRecoveryTest {
 		Principal.entityManager().flush();
 		
 		persistedPrincipal = Principal.findByUsername(email);
-		tempPrincipal = new Principal();
-		tempPrincipal.setCreationTime(persistedPrincipal.getCreationTime());
-		tempPrincipal.setPassword(password2); //force hashing
-		assertEquals(tempPrincipal.getPassword(), persistedPrincipal.getPassword());
+		assertTrue(utilsService.isPasswordValid(persistedPrincipal.getPassword(), password2));
+		
 		
 		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView1);
 		assertEquals("passwordRecovery", passwordRecoverView1);

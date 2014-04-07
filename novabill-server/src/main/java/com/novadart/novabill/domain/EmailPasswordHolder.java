@@ -77,7 +77,7 @@ public class EmailPasswordHolder {
 		return password;
 	}
 
-	@Hash(saltMethod = "getCreationTime")
+	@Hash
 	public void setPassword(String password) {
 		this.password = password;
 	}
@@ -86,7 +86,7 @@ public class EmailPasswordHolder {
 		return confirmPassword;
 	}
 
-	@Hash(saltMethod = "getCreationTime")
+	@Hash
 	public void setConfirmPassword(String confirmPassword) {
 		this.confirmPassword = confirmPassword;
 	}

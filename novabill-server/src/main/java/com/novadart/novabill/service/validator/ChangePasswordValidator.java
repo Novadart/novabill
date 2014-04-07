@@ -5,6 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.validation.Errors;
 import org.springframework.validation.Validator;
+
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.web.mvc.command.ChangePassword;
@@ -21,7 +22,7 @@ public class ChangePasswordValidator {
 	public void validate(ChangePassword changePassword, Errors errors){
 		validator.validate(changePassword, errors);
 		Principal principal = Principal.findByUsername(changePassword.getEmail());
-		if(!utilsService.hash(changePassword.getPassword(), principal.getCreationTime()).equals(principal.getPassword()))
+		if(!utilsService.isPasswordValid(principal.getPassword(), changePassword.getPassword()))
 			errors.rejectValue("password", "changePassword.wrong.password");
 		if(!StringUtils.equals(changePassword.getNewPassword(), changePassword.getConfirmNewPassword()))
 			errors.rejectValue("confirmNewPassword", "changePassword.password.mismatch");

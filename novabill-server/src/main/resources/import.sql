@@ -1,8 +1,8 @@
 insert into business (id, name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatid, ssn, default_layout_type, version, invoice_footer_note, credit_note_footer_note, estimation_footer_note, transport_document_footer_note) values (1, 'Novadart S.n.c. di Giordano Battilana & C.', 'via Stradone, 51', '35010', 'Campo San Martino', 'PD', 'IT', 'giordano.battilana@novadart.com', '3334927614', '3334927614', '0498597898', '', 'IT04534350280', 'IT04534350280', 1, 1, 'Invoice footer note', 'CreditNote footer note', 'Estimation footer note', 'Transport doc footer note');
-insert into principal (id, username, password, version, business, enabled, notes_bit_mask) values (1, 'giordano.battilana@novadart.com', '17f3fdc0520bbf0588b41bf45c0d68ad0da26c80d3dc466a96a8215b2a4de187', 1, 1, 't', -1);
+insert into principal (id, username, password, version, business, enabled, notes_bit_mask) values (1, 'giordano.battilana@novadart.com', '$2a$10$TGxkcePWlxnQSZo2mqjnx..y.4lTFGQIu9mVlRdv6Rs9Rd44Xx/Ki', 1, 1, 't', -1);
 insert into principal_granted_roles (principal, granted_roles) values (1, 1);
 insert into business (id, name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatid, ssn, default_layout_type, version) values (2, 'Novadart S.n.c. di Giordano Battilana & C.', 'via Stradone, 51', '35010', 'Campo San Martino', 'PD', 'IT', 'risto.gligorov@novadart.com', '3334927614', '3334927614', '0498597898', '', 'IT04534350281', 'IT04534350281', 0, 1);
-insert into principal (id, username, password, version, business, enabled, notes_bit_mask) values (2, 'risto.gligorov@novadart.com', '17f3fdc0520bbf0588b41bf45c0d68ad0da26c80d3dc466a96a8215b2a4de187', 1, 2, 't', -1)
+insert into principal (id, username, password, version, business, enabled, notes_bit_mask) values (2, 'risto.gligorov@novadart.com', '$2a$10$TGxkcePWlxnQSZo2mqjnx..y.4lTFGQIu9mVlRdv6Rs9Rd44Xx/Ki', 1, 2, 't', -1)
 insert into principal_granted_roles (principal, granted_roles) values (2, 0);
 
 --creating price lists

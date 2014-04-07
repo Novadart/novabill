@@ -1,7 +1,5 @@
 package com.novadart.novabill.aspect;
 
-import java.lang.reflect.Method;
-
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 
 import com.novadart.novabill.annotation.Hash;
@@ -21,9 +19,7 @@ privileged aspect HashFieldAspect {
 	void around(Object target, String value, Hash hashAnnotation) : 
 		callSetterOnHashPasswordField(target, value, hashAnnotation){
 		try{
-			Method saltMethod = target.getClass().getMethod(hashAnnotation.saltMethod());
-			Object salt = saltMethod.invoke(target);
-			String hashedValue = encoder.encodePassword(value, salt);
+			String hashedValue = encoder.encodePassword(value, null);
 			proceed(target, hashedValue, hashAnnotation);
 		}catch(Exception e){
 			e.printStackTrace();

@@ -22,10 +22,10 @@ import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
 @Service("utilsService")
 public class UtilsService {
-
+	
 	@Autowired
 	private PasswordEncoder passwordEncoder;
-	
+
 	private Authentication getAuthentication(){
 		return SecurityContextHolder.getContext().getAuthentication();
 	}
@@ -62,14 +62,14 @@ public class UtilsService {
 		}
 	}
 	
-	public String hash(String value, Object salt){
-		return passwordEncoder.encodePassword(value, salt);
-	}
-	
 	public void setBusinessForPrincipal(Business business) throws NotAuthenticatedException{
 		if(!isAuthenticated())
 			throw new NotAuthenticatedException();
 		getAuthenticatedPrincipalDetails().setBusiness(business);
+	}
+	
+	public boolean isPasswordValid(String encodedPassword, String rawPassword){
+		return passwordEncoder.isPasswordValid(encodedPassword, rawPassword, null);
 	}
 	
 }

@@ -1,10 +1,10 @@
 package com.novadart.novabill.test.suite;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
-import java.util.HashMap;
-import javax.annotation.Resource;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +15,7 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.validation.BeanPropertyBindingResult;
 import org.springframework.web.bind.support.SessionStatus;
+
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.ChangePasswordValidator;
@@ -26,13 +27,13 @@ import com.novadart.novabill.web.mvc.command.ChangePassword;
 @Transactional
 @DirtiesContext
 @ActiveProfiles("dev")
-public class ChangePasswordControllerTest {
-	
-	@Resource(name = "userPasswordMap")
-	protected HashMap<String, String> userPasswordMap;
+public class ChangePasswordControllerTest extends AuthenticatedTest{
 	
 	@Autowired
 	private ChangePasswordValidator validator;
+	
+	@Autowired
+	private UtilsService utilsService;
 	
 	private ChangePassword initChangePassword(String email, String password, String newPassword, String confirmNewPassword) throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException{
 		ChangePassword changePassword = new ChangePassword();
@@ -63,10 +64,7 @@ public class ChangePasswordControllerTest {
 		Principal.entityManager().flush();
 		assertEquals("redirect:/private", view);
 		Principal persistedPrincipal = Principal.findByUsername(email);
-		Principal tempPrincipal = new Principal();
-		tempPrincipal.setCreationTime(persistedPrincipal.getCreationTime());
-		tempPrincipal.setPassword(newPassword); //force hashing
-		assertEquals(tempPrincipal.getPassword(), persistedPrincipal.getPassword());
+		assertTrue(utilsService.isPasswordValid(persistedPrincipal.getPassword(), newPassword));
 	}
 	
 	@Test
@@ -114,13 +112,4 @@ public class ChangePasswordControllerTest {
 		assertEquals("changePassword", view);
 	}
 	
-	@Test
-	public void changePasswordNulls() throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException{
-		String email = userPasswordMap.keySet().iterator().next();
-		ChangePassword changePassword = initChangePassword(email, null, null, null);
-		ChangePasswordController controller = initChangePasswordController(email);
-		String view = controller.processSubmit(changePassword, new BeanPropertyBindingResult(changePassword, "changePassword"), mock(SessionStatus.class));
-		assertEquals("changePassword", view);
-	}
-
 }
