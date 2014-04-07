@@ -14,6 +14,7 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/x
             <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>
             <property name="hibernate.cache.use_second_level_cache" value="true"/>
             <property name="hibernate.max_fetch_depth" value="1"/>
+            <property name="hibernate.cache.use_query_cache" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>

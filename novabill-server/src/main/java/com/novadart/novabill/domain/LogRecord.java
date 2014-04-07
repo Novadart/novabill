@@ -1,5 +1,7 @@
 package com.novadart.novabill.domain;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -10,9 +12,13 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
+import javax.persistence.TypedQuery;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
+import org.apache.commons.lang3.time.DateUtils;
+import org.hibernate.annotations.Cache;
+import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +29,7 @@ import com.novadart.novabill.shared.client.data.OperationType;
 
 @Entity
 @Configurable
+@Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 public class LogRecord {
 	
 	@NotNull
@@ -59,9 +66,10 @@ public class LogRecord {
 	
 	public static List<LogRecord> fetchAllSince(Long businessID, Long threshold){
 		String sql = "select lr from LogRecord lr where lr.business.id = :bizID and lr.time > :threshold order by lr.time desc";
-		return entityManager().createQuery(sql, LogRecord.class).
-				setParameter("bizID", businessID).
-				setParameter("threshold", threshold).getResultList();
+		TypedQuery<LogRecord> query = entityManager().createQuery(sql, LogRecord.class);
+		query.setHint("org.hibernate.cacheable", true);
+		Long truncatedThreshold = DateUtils.truncate(new Date(threshold), Calendar.HOUR).getTime();
+		return query.setParameter("bizID", businessID).setParameter("threshold", truncatedThreshold).getResultList();
 	}
 	
 	/*
