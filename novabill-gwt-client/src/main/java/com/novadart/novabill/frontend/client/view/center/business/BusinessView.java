@@ -69,7 +69,7 @@ public interface BusinessView extends View<BusinessView.Presenter>, HasUILocking
 
 	ValidatedListBox getCountry();
 
-	ValidatedListBox getProvince();
+	ValidatedTextBox getProvince();
 
 	ValidatedTextBox getCity();
 

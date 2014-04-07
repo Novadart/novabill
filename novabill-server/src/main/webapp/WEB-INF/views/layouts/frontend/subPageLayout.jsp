@@ -34,6 +34,8 @@
    <link href="${frontendAssetsUrl}/css/custom.css" rel="stylesheet" type="text/css"/>
    <!-- END THEME STYLES -->
    
+   <link href="${frontendAssetsUrl}/plugins/cookieCuttr/cookiecuttr.css" rel="stylesheet" type="text/css"/>
+   
    <tiles:insertAttribute ignore="true" name="head" />
    
    <tiles:insertAttribute  ignore="true" name="css" />
@@ -63,6 +65,8 @@
     <script src="${frontendAssetsUrl}/plugins/respond.min.js"></script>  
     <![endif]-->  
     <script src="${frontendAssetsUrl}/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
+    <script src="${frontendAssetsUrl}/plugins/jquery.cookie-1.4.0.js" type="text/javascript"></script>
+    <script src="${frontendAssetsUrl}/plugins/cookieCuttr/jquery.cookiecuttr.js" type="text/javascript"></script>
     <script src="${frontendAssetsUrl}/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
     <script src="${frontendAssetsUrl}/plugins/bootstrap/js/bootstrap.min.js" type="text/javascript"></script>      
     <script type="text/javascript" src="${frontendAssetsUrl}/plugins/hover-dropdown.js"></script>
@@ -75,6 +79,18 @@
 	        basePath : '${basePath}',
 	        version : '<tiles:insertAttribute name="novabill.version" />'
 	};
+	
+	$(function(){
+		//start cookie cuttr            
+        $.cookieCuttr({
+            cookieAnalyticsMessage : 'Utilizziamo i cookie per raccogliere dati statistici anonimi e migliorare il servizio. Non memorizziamo dati personali.',
+            cookieAcceptButtonText: 'Ok, ho capito',
+            cookieWhatAreLinkText : '',
+            cookieNotificationLocationBottom : true,
+            cookieDeclineButton : true,
+            cookieDeclineButtonText : 'Disabilita i cookie'
+        });    
+	});
 	</script>
 
     <tiles:insertAttribute  ignore="true" name="javascript" />

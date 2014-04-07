@@ -58,7 +58,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	@UiField(provided=true) ValidatedTextBox vatID;
 	@UiField(provided=true) ValidatedTextBox address;
 	@UiField(provided=true) ValidatedTextBox city;
-	@UiField(provided=true) ValidatedListBox province;
+	@UiField(provided=true) ValidatedTextBox province;
 	@UiField(provided=true) ValidatedListBox country;
 	@UiField(provided=true) ValidatedTextBox postcode;
 	@UiField(provided=true) ValidatedTextBox phone;
@@ -95,7 +95,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 
 		address = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		city = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
-		province = LocaleWidgets.createProvinceListBox("");
+		province = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		country = LocaleWidgets.createCountryListBoxItalyOnly("");
 		postcode = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.POSTCODE);
 		phone = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
@@ -176,13 +176,12 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 			}
 		});
 		formPanel.setWidget(fileUpload);
-		for (ValidatedTextBox v : new ValidatedTextBox[]{ssn, vatID, address, city, 
+		for (ValidatedTextBox v : new ValidatedTextBox[]{ssn, vatID, address, city, province, 
 				postcode, phone, email, mobile, fax, web}) {
 			v.reset();
 		}
 		name.reset();
 		ssnOrVatIdValidation.reset();
-		province.reset();
 		country.reset();
 		web.reset();
 		inlineNotification.hide();
@@ -301,7 +300,7 @@ public class BusinessViewImpl extends Composite implements BusinessView, HasUILo
 	}
 
 	@Override
-	public ValidatedListBox getProvince() {
+	public ValidatedTextBox getProvince() {
 		return province;
 	}
 
