@@ -28,7 +28,7 @@ public interface BusinessService {
 
 	public Integer countClients(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
-	public Integer countInvoicesForYear(Long BusinessID, Integer year) throws NotAuthenticatedException, DataAccessException;
+	public Integer countInvoicesForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	
 	public Pair<BigDecimal, BigDecimal> getTotalsForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException;
 	

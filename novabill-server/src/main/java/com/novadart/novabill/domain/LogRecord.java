@@ -1,7 +1,5 @@
 package com.novadart.novabill.domain;
 
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -16,7 +14,6 @@ import javax.persistence.TypedQuery;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
-import org.apache.commons.lang3.time.DateUtils;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
 import org.hibernate.annotations.Type;
@@ -68,8 +65,7 @@ public class LogRecord {
 		String sql = "select lr from LogRecord lr where lr.business.id = :bizID and lr.time > :threshold order by lr.time desc";
 		TypedQuery<LogRecord> query = entityManager().createQuery(sql, LogRecord.class);
 		query.setHint("org.hibernate.cacheable", true);
-		Long truncatedThreshold = DateUtils.truncate(new Date(threshold), Calendar.HOUR).getTime();
-		return query.setParameter("bizID", businessID).setParameter("threshold", truncatedThreshold).getResultList();
+		return query.setParameter("bizID", businessID).setParameter("threshold", threshold).getResultList();
 	}
 	
 	/*
