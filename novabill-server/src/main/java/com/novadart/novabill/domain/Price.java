@@ -197,7 +197,7 @@ public class Price {
      * */
     
     public String toString() {
-    	return String.format("<id: %d, type: %s, value: %s>", id, priceType.name(), priceValue.toString());
+    	return String.format("<id: %d, type: %s, value: %s>", id, priceType == null? null: priceType.name(), priceValue == null? null: priceValue.toString());
     }
 	
 	
