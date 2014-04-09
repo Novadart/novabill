@@ -7,9 +7,9 @@ import org.springframework.security.access.AccessDeniedException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
-
 import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
+import com.novadart.novabill.shared.client.exception.ClientUIException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -38,6 +38,11 @@ public aspect RestExceptionProcessorAspect {
 	public Map<String, Object> RestExceptionProcessor.freeUserAccessForbiddenExceptionHandler(){
 		return ImmutableMap.<String, Object>of("error", "FREE USER ACCESS FORBIDDEN");
 	}
+
+	@ExceptionHandler(value = {ClientUIException.class})
+	@ResponseStatus(value = HttpStatus.CREATED)
+	@ResponseBody
+	public void RestExceptionProcessor.clientUIErrorExceptionHandler(){}
 	
 	@ExceptionHandler(value = {RuntimeException.class})
 	@ResponseStatus(value = HttpStatus.INTERNAL_SERVER_ERROR)

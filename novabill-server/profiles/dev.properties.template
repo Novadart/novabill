@@ -41,6 +41,7 @@ mvn.notification.exception=false
 mvn.notification.validationError=false
 mvn.notification.accountUpgrade=false
 mvn.notification.feedback=true
+mvn.notification.clientUIError=true
 
 #
 # Application Configuration
