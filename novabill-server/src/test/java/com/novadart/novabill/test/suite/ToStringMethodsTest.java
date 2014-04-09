@@ -17,9 +17,15 @@ import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.ClientAddress;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.LogRecord;
+import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.domain.PaymentType;
+import com.novadart.novabill.domain.PesistentLogin;
+import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
+import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.Transporter;
+import com.novadart.novabill.domain.UpgradeToken;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
 
@@ -109,6 +115,15 @@ public class ToStringMethodsTest {
 		principal.setUsername("giordano.battilana@novadart.com");
 		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_PREMIUM);
 		assertEquals(String.format("<username: %s, roles: %s>", "giordano.battilana@novadart.com", "[ROLE_BUSINESS_PREMIUM]"), principal.toString());
+	}
+	
+	@Test
+	public void noArgConToStringTest() throws InstantiationException, IllegalAccessException{
+		for(Class<?> cls: new Class<?>[]{Business.class, Invoice.class, AccountingDocumentItem.class, BankAccount.class, Client.class,
+				ClientAddress.class, Commodity.class, Logo.class, LogRecord.class, PaymentType.class, PesistentLogin.class, Price.class,
+				PriceList.class, Registration.class, Transporter.class, UpgradeToken.class}){
+			cls.newInstance().toString();
+		}
 	}
 	
 }
