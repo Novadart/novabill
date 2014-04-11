@@ -27,13 +27,16 @@ angular.module('novabill.constants', [])
 			version : version,
 
 			privateAreaBaseUrl : basePath + 'private/',
-
+			
+			ajaxBaseUrl : basePath + 'private/ajax/',
 			clientsBaseUrl : basePath + 'private/clients/',
 			commoditiesBaseUrl : basePath + 'private/commodities/',
 			creditNotesBaseUrl : basePath + 'private/credit-notes/',
 			dashboardUrl : basePath + 'private/',
 			estimationsBaseUrl : basePath + 'private/estimations/',
+			exportDwonloadUrl : basePath + 'private/export?clients={c}&invoices={i}&estimations={e}&creditnotes={cn}&transportdocs={t}',
 			invoicesBaseUrl : basePath + 'private/invoices/',
+			logoUrl : basePath +'private/businesses/logo',
 			partialsBaseUrl : basePath + 'novabill/private/partials/',
 			paymentsBaseUrl : basePath + 'private/payments/',
 			pdfDownloadUrl : basePath + 'private/pdf/{document}/{id}?print=false',

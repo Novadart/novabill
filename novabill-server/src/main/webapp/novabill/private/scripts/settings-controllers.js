@@ -1,26 +1,21 @@
 'use strict';
 
-angular.module('novabill.settings.controllers', ['novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'novabill.ajax'])
+angular.module('novabill.settings.controllers', ['novabill.directives', 'novabill.directives.dialogs', 'novabill.directives.forms', 
+                                                 'novabill.translations', 'novabill.ajax'])
 
 
 /**
  * SETTINGS PAGE CONTROLLER
  */
-.controller('SettingsCtrl', ['$scope', 'nConstants', '$route', 'nAjax', 'nEditSharingPermitDialog',
-                             function($scope, nConstants, $route, nAjax, nEditSharingPermitDialog){
+.controller('SettingsCtrl', ['$scope', 'nConstants', '$route', 'nAjax', 'nEditSharingPermitDialog', 'nDownload',
+                             function($scope, nConstants, $route, nAjax, nEditSharingPermitDialog, nDownload){
 
+	var Business = nAjax.Business();
 	var SharingPermit = nAjax.SharingPermit();
 
-	GWT_UI.showSettingsPage('settings-page');
-
-	GWT_Server.business.get(nConstants.conf.businessId, {
-		onSuccess : function(business){
-			$scope.$apply(function(){
-				$scope.business = business;
-				$scope.priceDisplayInDocsMonolithic = !business.settings.priceDisplayInDocsMonolithic;
-			});
-		},
-		onFailure : function(){}
+	Business.get({ id : nConstants.conf.businessId }, function(business){
+		$scope.business = business;
+		$scope.priceDisplayInDocsMonolithic = !business.settings.priceDisplayInDocsMonolithic;
 	});
 
 	$scope.update = function(){
@@ -42,6 +37,8 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 		}
 
 	};
+	
+	$scope.exportZip = nDownload.downloadExportZip;
 	
 	function recursiveCreation(wrongShare){
 		

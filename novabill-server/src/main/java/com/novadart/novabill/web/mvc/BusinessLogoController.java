@@ -138,7 +138,6 @@ public class BusinessLogoController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@Transactional(readOnly = false)
-	@Xsrf(tokensSessionField = XsrfTokenSessionFieldNames.BUSINESS_LOGO_TOKENS_SESSION_FIELD, tokenRequestParam = TOKEN_REQUEST_PARAM)
 	public String uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws UnsupportedImageFormatException {
 		if(!ServletFileUpload.isMultipartContent(request))
 			return String.valueOf(LogoUploadStatus.ILLEGAL_REQUEST.ordinal());
@@ -192,7 +191,6 @@ public class BusinessLogoController {
 	@RequestMapping(method = RequestMethod.DELETE)
 	@ResponseBody
 	@Transactional(readOnly = false)
-	@Xsrf(tokensSessionField = XsrfTokenSessionFieldNames.BUSINESS_LOGO_TOKENS_SESSION_FIELD, tokenRequestParam = TOKEN_REQUEST_PARAM)
 	public void deleteLogo(){
 		clearLogo(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 	}

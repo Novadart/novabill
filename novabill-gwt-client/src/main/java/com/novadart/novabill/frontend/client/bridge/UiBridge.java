@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.activity.center.BusinessActivity;
 import com.novadart.novabill.frontend.client.activity.center.CreditNoteActivity;
 import com.novadart.novabill.frontend.client.activity.center.EstimationActivity;
 import com.novadart.novabill.frontend.client.activity.center.InvoiceActivity;
@@ -51,9 +50,6 @@ public class UiBridge implements ApiBridge {
 			// payments
 			showPaymentsPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showPaymentsPage(Ljava/lang/String;),
 			
-			// settings
-			showSettingsPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showSettingsPage(Ljava/lang/String;),
-			
 			// clients			
 			clientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewClientDialog(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			modifyClientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyClientDialog(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
@@ -91,17 +87,6 @@ public class UiBridge implements ApiBridge {
 		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
 
 		PaymentActivity pa = new PaymentActivity(ClientFactory.INSTANCE);
-		pa.start(panel, null);
-	}
-	
-	
-	/*
-	 * SETTINGS
-	 */
-	public static void showSettingsPage(String wrapperId){
-		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
-
-		BusinessActivity pa = new BusinessActivity(ClientFactory.INSTANCE);
 		pa.start(panel, null);
 	}
 	

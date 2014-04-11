@@ -8,23 +8,37 @@ angular.module('novabill.ajax', ['ngResource'])
  */
 .factory('nAjax', ['nConstants', '$resource', function(nConstants, $resource) {
 
-	var businesId = nConstants.conf.businessId;
-	var baseUrl = nConstants.conf.privateAreaBaseUrl;
+	var businessId = nConstants.conf.businessId;
+	var baseUrl = nConstants.conf.ajaxBaseUrl;
 	
 	return {
+		
+		/*
+		 * Business resource
+		 */
+		Business : function(){
+			return $resource(
+					baseUrl + 'businesses/:id',
+					{id:'@id'},
+					{
+						'update': { method:'PUT' }
+					}
+			);
+		},
+		
 		
 		/*
 		 * Sharing Permit resource
 		 */
 		SharingPermit : function(){
 			return $resource(
-					baseUrl + 'businesses/'+ businesId +'/sharepermits/:id',
+					baseUrl + 'businesses/'+ businessId +'/sharepermits/:id',
 					{id:'@id'},
 					{
 						sendEmail : {
 							method : 'POST',
 							params : {id:'@id'},
-							url : baseUrl + 'businesses/'+ businesId +'/sharepermits/:id/email'
+							url : baseUrl + 'businesses/'+ businessId +'/sharepermits/:id/email'
 						}
 					}
 			);

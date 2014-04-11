@@ -62,13 +62,16 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 		positiveFloatNumber : /^\d+((\.|\,)\d+)?$/,
 		floatNumber : /^\-?\d+((\.|\,)\d+)?$/,
 
-		reserved_word : /^\::.*$/
+		reserved_word : /^\::.*$/,
+		
+		ssn : /^[a-zA-Z]{6}[0-9]{2}[a-zA-Z][0-9]{2}[a-zA-Z][0-9]{3}[a-zA-Z]$/,
+		vatId : /^([A-Z]{2})?[0-9]{11}$/
 
 	};
 })
 
 
-.factory('nPdf', ['$window', '$document', 'nConstants', function($window, $document, nConstants) {
+.factory('nDownload', ['$window', '$document', 'nConstants', function($window, $document, nConstants) {
 
 	var HIDDEN_IFRAME = angular.element('<iframe style="display: none;"></iframe>');
 	angular.element($document[0].body).append(HIDDEN_IFRAME);
@@ -123,6 +126,17 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 			
 			HIDDEN_IFRAME.attr('src', prospectUrl);
 			
+		},
+		
+		downloadExportZip : function(clients, invoices, estimations, creditNotes, transportDocs){
+			var exportZipUrl = nConstants.conf.exportDwonloadUrl
+			.replace('{c}', clients)
+			.replace('{i}', invoices)
+			.replace('{e}', estimations)
+			.replace('{cn}', creditNotes)
+			.replace('{t}', transportDocs);
+			
+			HIDDEN_IFRAME.attr('src', exportZipUrl);
 		},
 		
 		printInvoicePdf : function(documentId){

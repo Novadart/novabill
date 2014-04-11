@@ -7,7 +7,7 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 /**
  * SETTINGS PAGE CONTROLLER
  */
-.controller('PaymentsCtrl', ['$scope', 'nConstants', 'nPdf', function($scope, nConstants, nPdf){
+.controller('PaymentsCtrl', ['$scope', 'nConstants', 'nDownload', function($scope, nConstants, nDownload){
 	
 	$scope.dateOptions = {
 			'starting-day' : '1',
@@ -66,7 +66,7 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 	};
 	
 	$scope.print = function(){
-		nPdf.downloadPaymentsProspect($scope.filteringDateType, $scope.startDate, $scope.endDate);
+		nDownload.downloadPaymentsProspect($scope.filteringDateType, $scope.startDate, $scope.endDate);
 	};
 
 	$scope.$watch('startDate', function(newValue, oldValue){

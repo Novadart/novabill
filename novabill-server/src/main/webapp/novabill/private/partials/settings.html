@@ -27,12 +27,35 @@
 				</ul>
 				<div class="tab-content">
 					<div class="tab-pane active" id="business">
-						<div id="settings-page"></div>
+						<div class="container-fluid">
+						  <div class="row">
+						      <div class="col-md-6">
+						          <h4><strong style="text-transform: uppercase;">{{'TITLE_COMPANY_DATA' | translate}}</strong></h4>
+						          <n-business-form business="business"></n-business-form>
+						      </div>
+						      <div class="col-md-6">
+						          <h4><strong style="text-transform: uppercase;">{{'TITLE_SET_LOGO' | translate}}</strong></h4>
+						          <n-business-logo></n-business-logo>
+                              </div>
+						  </div>
+						  <br>
+						  <br>
+						  <br>
+						  <div class="row">
+                              <div class="col-md-12">
+                                  <h4><strong style="text-transform: uppercase;">{{'TITLE_EXPORT_DATA' | translate}}</strong></h4>
+                                  <a href="javascript:void(0);" class="btn default" ng-click="exportZip(true, false, false, false, false)">{{'EXPORT_CLIENTS' | translate}}</a>
+                                  <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, false, true, false)">{{'EXPORT_CREDIT_NOTES' | translate}}</a>
+                                  <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, true, false, false)">{{'EXPORT_ESTIMATIONS' | translate}}</a>
+                                  <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, true, false, false, false)">{{'EXPORT_INVOICES' | translate}}</a>
+                                  <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, false, false, true)">{{'EXPORT_TRANSPORT_DOCUMENTS' | translate}}</a>
+                              </div>
+                          </div>
+						</div>
 					</div>
 					<div class="tab-pane" id="options">
 
                         <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
-                        
                         
                         <form ng-show="business" class="form-horizontal" role="form">
                             <div class="form-body">

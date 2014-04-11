@@ -12,6 +12,7 @@
 <script src="${novabillDepsUrl}/angular/i18n/angular-locale_it-it.js" type="text/javascript"></script>
 <script src="${novabillDepsUrl}/angular-translate.min.js" type="text/javascript"></script>
 <script src="${novabillDepsUrl}/angular-ui/ui-bootstrap-tpls-0.10.0.min.js" type="text/javascript"></script>
+<script src="${novabillDepsUrl}/angular-file-upload.min.js"></script>
 <script src="${novabillDepsUrl}/bignumber-1.3.0/bignumber.min.js"></script>
 <script src="${novabillDepsUrl}/ng-infinite-scroll.min.js"></script>
 
@@ -20,6 +21,8 @@
 <script src="${novabillCoreUrl}/scripts/constants.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/calc.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/utils.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/directives-validation.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/directives-forms.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/directives-dialogs.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/directives.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/dashboard-controllers.js" type="text/javascript"></script>

@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('novabill.directives', 
-		['novabill.utils', 'novabill.translations', 'novabill.calc', 'novabill.constants', 'ngSanitize', 'ngAnimate'])
+		['novabill.directives.validation', 'novabill.directives.dialogs', 'novabill.utils', 'novabill.translations', 
+		 'novabill.calc', 'novabill.constants', 'ngSanitize', 'ngAnimate'])
 
 /*
  * Invoice widget
@@ -15,8 +16,8 @@ angular.module('novabill.directives',
 			invoice : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$rootScope', '$element', '$translate', 'nConfirmDialog', 'nSelectClientDialog', 'nPdf',
-		              function($scope, $rootScope, $element, $translate, nConfirmDialog, nSelectClientDialog, nPdf){
+		controller : ['$scope', '$rootScope', '$element', '$translate', 'nConfirmDialog', 'nSelectClientDialog', 'nDownload',
+		              function($scope, $rootScope, $element, $translate, nConfirmDialog, nSelectClientDialog, nDownload){
 
 			function isExpired(){
 				var today = new Date();
@@ -51,11 +52,11 @@ angular.module('novabill.directives',
 			};
 			
 			$scope.download = function(){
-				nPdf.downloadInvoicePdf($scope.invoice.id);
+				nDownload.downloadInvoicePdf($scope.invoice.id);
 			};
 
 			$scope.print = function(){
-				nPdf.printInvoicePdf($scope.invoice.id);
+				nDownload.printInvoicePdf($scope.invoice.id);
 			};
 
 			$scope.remove = function(){
@@ -108,8 +109,8 @@ angular.module('novabill.directives',
 			estimation : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$rootScope', '$translate', 'nSelectClientDialog', 'nConfirmDialog', 'nPdf',
-		              function($scope, $element, $rootScope, $translate, nSelectClientDialog, nConfirmDialog, nPdf){
+		controller : ['$scope', '$element', '$rootScope', '$translate', 'nSelectClientDialog', 'nConfirmDialog', 'nDownload',
+		              function($scope, $element, $rootScope, $translate, nSelectClientDialog, nConfirmDialog, nDownload){
 
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.estimationDetails($scope.estimation.id) );
@@ -120,11 +121,11 @@ angular.module('novabill.directives',
 			};
 
 			$scope.download = function(){
-				nPdf.downloadEstimationPdf($scope.estimation.id);
+				nDownload.downloadEstimationPdf($scope.estimation.id);
 			};
 			
 			$scope.print = function(){
-				nPdf.printEstimationPdf($scope.estimation.id);
+				nDownload.printEstimationPdf($scope.estimation.id);
 			};
 
 			$scope.remove = function(){
@@ -180,8 +181,8 @@ angular.module('novabill.directives',
 			transportDocument : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$translate', 'nConstants', 'nConfirmDialog', 'nSelectTransportDocumentsDialog', '$rootScope', 'nPdf',
-		              function($scope, $element, $translate, nConstants, nConfirmDialog, nSelectTransportDocumentsDialog, $rootScope, nPdf){
+		controller : ['$scope', '$element', '$translate', 'nConstants', 'nConfirmDialog', 'nSelectTransportDocumentsDialog', '$rootScope', 'nDownload',
+		              function($scope, $element, $translate, nConstants, nConfirmDialog, nSelectTransportDocumentsDialog, $rootScope, nDownload){
 
 			$scope.invoiceRefUrl = $scope.transportDocument.invoice ? nConstants.url.invoiceDetails($scope.transportDocument.invoice) : null;
 			
@@ -194,11 +195,11 @@ angular.module('novabill.directives',
 			};
 
 			$scope.download = function(){
-				nPdf.downloadTransportDocumentPdf($scope.transportDocument.id);
+				nDownload.downloadTransportDocumentPdf($scope.transportDocument.id);
 			};
 			
 			$scope.print = function(){
-				nPdf.printTransportDocumentPdf($scope.transportDocument.id);
+				nDownload.printTransportDocumentPdf($scope.transportDocument.id);
 			};
 
 			$scope.remove = function(){
@@ -239,8 +240,8 @@ angular.module('novabill.directives',
 			creditNote : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$rootScope', '$element', '$translate', 'nConfirmDialog', 'nPdf',
-		              function($scope, $rootScope, $element, $translate, nConfirmDialog, nPdf){
+		controller : ['$scope', '$rootScope', '$element', '$translate', 'nConfirmDialog', 'nDownload',
+		              function($scope, $rootScope, $element, $translate, nConfirmDialog, nDownload){
 
 			$scope.openUrl = function() {
 				window.location.assign( nConstants.url.creditNoteDetails( $scope.creditNote.id ) );
@@ -251,11 +252,11 @@ angular.module('novabill.directives',
 			};
 			
 			$scope.download = function(){
-				nPdf.downloadCreditNotePdf($scope.creditNote.id);
+				nDownload.downloadCreditNotePdf($scope.creditNote.id);
 			};
 
 			$scope.print = function(){
-				nPdf.printCreditNotePdf($scope.creditNote.id);
+				nDownload.printCreditNotePdf($scope.creditNote.id);
 			};
 
 			$scope.remove = function(){
@@ -585,135 +586,6 @@ angular.module('novabill.directives',
 		replace: true
 	};
 
-}])
-
-
-
-/*
- * Smart Tax attribute. 
- * User can insert , or . to separate decimals
- * Value mast be between 0 and 100
- */
-.directive('nSmartTax', ['nRegExp', function(nRegExp) {
-	return {
-		require: 'ngModel',
-		restrict: 'A',
-		link: function(scope, elm, attrs, ctrl) {
-			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.positiveTwoDecimalsFloatNumber.test(viewValue)) {
-					var dotVal = viewValue.replace(',', '.');
-					var floatVal = parseFloat(dotVal);
-					if(floatVal >= 0 && floatVal < 100){
-						ctrl.$setValidity('tax', true);
-						return dotVal;
-					} else {
-						ctrl.$setValidity('tax', false);
-						return undefined;
-					}
-
-				} else {
-					ctrl.$setValidity('tax', false);
-					return undefined;
-				}
-			});
-
-			ctrl.$formatters.push(function(modelValue) {
-				return modelValue ? new String(modelValue).replace('.', ',') : '';
-			});
-		}
-	};
-}])
-
-
-/*
- * Smart Price attribute. 
- * User can insert , or . to separate decimals
- */
-.directive('nSmartPrice', ['nRegExp', function(nRegExp) {
-	return {
-		require: 'ngModel',
-		restrict: 'A',
-		link: function(scope, elm, attrs, ctrl) {
-			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.positiveTwoDecimalsFloatNumber.test(viewValue)) {
-					var dotVal = viewValue.replace(',', '.');
-					var floatVal = parseFloat(dotVal);
-					if(floatVal >= 0){
-						ctrl.$setValidity('price', true);
-						return dotVal;
-					} else {
-						ctrl.$setValidity('price', false);
-						return undefined;
-					}
-
-				} else {
-					ctrl.$setValidity('price', false);
-					return undefined;
-				}
-			});
-
-			ctrl.$formatters.push(function(modelValue) {
-				return modelValue ? new String(modelValue).replace('.', ',') : '';
-			});
-		}
-	};
-}])
-
-
-/*
- * Smart Float attribute. 
- * User can insert , or . to separate decimals.
- * if "positive-float" attribute is set to true the float must be positive
- */
-.directive('nSmartFloat', ['nRegExp', function(nRegExp) {
-	return {
-		require: 'ngModel',
-		scope : {
-			positiveFloat : '='
-		},
-		restrict: 'A',
-		link: function(scope, elm, attrs, ctrl) {
-			ctrl.$parsers.unshift(function(viewValue) {
-				var testExp = scope.positiveFloatNumber ? nRegExp.positiveFloatNumber : nRegExp.floatNumber;
-				
-				if (testExp.test(viewValue)) {
-					ctrl.$setValidity('float', true);
-			        return viewValue.replace(',', '.');
-				} else {
-					ctrl.$setValidity('float', false);
-					return undefined;
-				}
-			});
-
-			ctrl.$formatters.push(function(modelValue) {
-				return modelValue ? new String(modelValue).replace('.', ',') : '';
-			});
-		}
-	};
-}])
-
-
-/*
- * Check if the text is not a reserved word
- */
-.directive('nNotReserved', ['nRegExp', '$filter', function(nRegExp, $filter) {
-	return {
-		require: 'ngModel',
-		restrict: 'A',
-		link: function(scope, elm, attrs, ctrl) {
-			ctrl.$parsers.unshift(function(viewValue) {
-				if (nRegExp.reserved_word.test(viewValue) ||
-						$filter('translate')('DEFAULT_PRICE_LIST').toLowerCase() == viewValue.toLowerCase()) {
-					ctrl.$setValidity('notReserved', false);
-					return undefined;
-
-				} else {
-					ctrl.$setValidity('notReserved', true);
-					return viewValue;
-				}
-			});
-		}
-	};
 }])
 
 

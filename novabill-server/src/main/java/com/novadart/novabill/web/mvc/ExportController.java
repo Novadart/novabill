@@ -23,7 +23,6 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.novadart.novabill.annotation.Xsrf;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
@@ -58,7 +57,6 @@ public class ExportController {
 	@ResponseBody
 	@RequestMapping(method = RequestMethod.GET)
 	@Transactional(readOnly = true)
-	@Xsrf(tokenRequestParam = TOKEN_REQUEST_PARAM, tokensSessionField = XsrfTokenSessionFieldNames.EXPORT_DATA_TOKENS_SESSION_FIELD)
 	public void getData(
 			@RequestParam(value = CLIENTS_REQUEST_PARAM, required = false) boolean clients, 
 			@RequestParam(value = INVOICES_REQUEST_PARAM, required = false) boolean invoices,
