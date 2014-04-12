@@ -7,10 +7,12 @@ import java.io.FileInputStream;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
+
 import javax.annotation.PostConstruct;
 import javax.servlet.ServletContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.io.FilenameUtils;
@@ -29,7 +31,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.context.support.ServletContextResource;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.novadart.novabill.annotation.Xsrf;
+import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Logo;
 import com.novadart.novabill.domain.Logo.LogoFormat;
 import com.novadart.novabill.service.UtilsService;
@@ -88,7 +90,8 @@ public class BusinessLogoController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	public void getLogo(HttpServletResponse response) throws IOException{
-		Logo logo = Logo.getLogoByBusinessID(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
+		Business business = utilsService.getAuthenticatedPrincipalDetails().getBusiness();
+		Logo logo = business !=null ? Logo.getLogoByBusinessID(business.getId()) : null;
 		InputStream is = logo == null? noLogoImage.getInputStream() : new ByteArrayInputStream(logo.getData());
 		response.setContentType("image/" + (logo == null? FilenameUtils.getExtension(noLogoImage.getPath()): logo.getFormat().name().toLowerCase()));
 		response.setHeader ("Content-Disposition", String.format("attachment; filename=\"%s\"", logo == null? FilenameUtils.getName(noLogoImage.getPath()): logo.getName()));

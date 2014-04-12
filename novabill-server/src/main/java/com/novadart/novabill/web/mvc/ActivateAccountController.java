@@ -28,7 +28,7 @@ import com.novadart.novabill.service.UtilsService;
  * an associated business objects are created. 
  */
 @Controller
-@RequestMapping("/activate")
+@RequestMapping(Urls.PUBLIC_ACTIVATE)
 @SessionAttributes({"registration"})
 public class ActivateAccountController {
 	
@@ -38,16 +38,16 @@ public class ActivateAccountController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model) throws CloneNotSupportedException{
 		if(Principal.findByUsername(email) != null) //registered user already exists
-			return "invalidActivationRequest";
+			return "frontend.invalidActivationRequest";
 		for(Registration registration: Registration.findRegistrations(email, token)){
 			if(registration.getExpirationDate().before(new Date())){ //expired
 				registration.remove();
 				continue;
 			}
 			model.addAttribute("registration", registration.clone());
-			return "activate";
+			return "frontend.activate";
 		}
-		return "invalidActivationRequest";
+		return "frontend.invalidActivationRequest";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -56,7 +56,7 @@ public class ActivateAccountController {
 			@ModelAttribute("registration") Registration registration, Model model, SessionStatus status, Locale locale) throws CloneNotSupportedException{
 		if(!utilsService.isPasswordValid(registration.getPassword(), j_password)){
 			model.addAttribute("wrongPassword", true);
-			return "activate";
+			return "frontend.activate";
  		}
 		Principal principal = new Principal(registration);
 		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);

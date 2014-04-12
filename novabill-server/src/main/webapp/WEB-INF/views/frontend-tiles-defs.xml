@@ -10,6 +10,8 @@
 		<put-attribute name="footer" value="/WEB-INF/views/tiles/frontend/footer.jsp" />
 	</definition>
 	
+	<definition name="frontend.subPageMinimalLayout" template="/WEB-INF/views/layouts/frontend/subPageMinimalLayout.jsp" />
+	
 	<definition name="frontend.indexLayout" template="/WEB-INF/views/layouts/frontend/indexLayout.jsp"/>
 	
 	<!-- WRO4J HELPERS -->
@@ -26,34 +28,45 @@
 	</definition>
 	
 	<definition name="frontend.login" extends="frontend.subPageLayout" >
-	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/loginHead.jsp" />
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/loginBody.jsp" />
-       <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/loginJS.jsp" />
 	</definition>
 	
 	<definition name="frontend.register" extends="frontend.subPageLayout" >
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/registerBody.jsp" />
     </definition>
+    
+    <definition name="frontend.registrationCompleted" extends="frontend.subPageLayout" >
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/registrationCompleteBody.jsp" />
+    </definition>
+	
+	<definition name="frontend.activate" extends="frontend.subPageLayout" >
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/activateBody.jsp" />
+    </definition>
+    
+    <definition name="frontend.invalidActivationRequest" extends="frontend.subPageLayout" >
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/invalidActivationRequestBody.jsp" />
+    </definition>
 	
 	<definition name="frontend.pageNotFound" extends="frontend.subPageLayout"  >
 	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/pageNotFoundHead.jsp" />
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/pageNotFoundBody.jsp" />
-       <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/pageNotFoundJS.jsp" />
     </definition>
 	
 	<definition name="frontend.oops" extends="frontend.subPageLayout" >
 	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/oopsHead.jsp" />
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/oopsBody.jsp" />
-       <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/oopsJS.jsp" />
 	</definition>
 	
 	<definition name="frontend.contact" extends="frontend.subPageLayout">
-	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/contactHead.jsp" />
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/contactBody.jsp" />
 	   <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/contactJS.jsp" />
 	</definition>
 	
     <definition name="frontend.tos" extends="frontend.subPageLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/tosBody.jsp" />
+    </definition>
+    
+    <definition name="frontend.tosMinimal" extends="frontend.subPageMinimalLayout">
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/tosBody.jsp" />
     </definition>
     

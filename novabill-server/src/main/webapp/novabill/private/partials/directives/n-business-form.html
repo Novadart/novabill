@@ -151,7 +151,7 @@
 	    
 	    <div class="form-actions fluid">
             <div class="col-md-offset-5 col-md-2">
-                <button type="button" class="btn green" ng-click="business.$update(); form.$setPristine();">{{'SAVE_CHANGES' | translate}}</button>
+                <button type="button" class="btn green" ng-disabled="form.$invalid" ng-click="saveOrUpdate(); form.$setPristine();">{{'SAVE_CHANGES' | translate}}</button>
             </div>
         </div>
 	    

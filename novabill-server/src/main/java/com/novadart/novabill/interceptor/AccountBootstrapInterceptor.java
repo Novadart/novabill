@@ -25,8 +25,8 @@ public class AccountBootstrapInterceptor implements HandlerInterceptor {
 			if ( !requestURI.contains("/private/settings/")) {
 
 				String newURI = "/private/settings/";
-				request.getRequestDispatcher(newURI).forward(request, response);
-
+				response.sendRedirect(request.getServletContext().getContextPath()+newURI);
+				return false;
 			}
 
 		}

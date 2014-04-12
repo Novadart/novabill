@@ -56,5 +56,10 @@ public class FrontendController {
 		return "frontend.tos";
 	}
 	
+	@RequestMapping(value = Urls.PUBLIC_TOS_MINIMAL, method = RequestMethod.GET)
+	public String tosMinimal(Model model){
+		return "frontend.tosMinimal";
+	}
+	
 	
 }

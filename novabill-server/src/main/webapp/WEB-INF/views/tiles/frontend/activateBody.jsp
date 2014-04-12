@@ -2,7 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <spring:url var="frontendAssetsUrl" value="/frontend_assets" />
-<spring:url var="loginUrl" value="/resources/login_check" />
+<spring:url var="activateUrl" value="/activate" />
 <spring:url var="homeUrl" value="/" />
 
 <div class="page-container">
@@ -11,12 +11,12 @@
         <div class="row breadcrumbs margin-bottom-40">
             <div class="container">
                 <div class="col-md-4 col-sm-4">
-                    <h1>Login</h1>
+                    <h1>Attivazione Account</h1>
                 </div>
                 <div class="col-md-8 col-sm-8">
                     <ul class="pull-right breadcrumb">
                         <li><a href="${homeUrl}">Home</a></li>
-                        <li class="active">Login</li>
+                        <li class="active">Attivazione Account</li>
                     </ul>
                 </div>
             </div>
@@ -27,9 +27,9 @@
         <div class="container " style="margin-bottom: 150px;"> <!-- margin-bottom-40 -->
           <div class="row">
             <div class="col-md-4 col-md-offset-4 col-sm-6 col-sm-offset-3 login-signup-page">
-                <form action="${loginUrl}" method="post" >           
+                <form action="${activateUrl}" method="post" >           
                     
-                    <h2>Entra nel tuo account</h2>
+                    <h2>Accedi per attivare l'account</h2>
 
                     <div class="input-group margin-bottom-20">
                         <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
@@ -38,30 +38,13 @@
                     <div class="input-group margin-bottom-20">
                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                         <input type="password" class="form-control" name="j_password" placeholder="Password">
-
-                        <!-- <a href="#" class="login-signup-forgot-link">Forgot?</a> -->
                     </div>                    
 
                     <div class="row">
                         <div class="col-md-6 col-sm-6">
-                            <div class="checkbox-list"><label class="checkbox"><input type="checkbox" name="_spring_security_remember_me"> Ricordami<br/><span style="font-size: small;">(selezionare solo se il pc è proprio)</span></label></div>                        
-                        </div>
-                        <div class="col-md-6 col-sm-6">
                             <button type="submit" class="btn theme-btn pull-right">Invia</button>                        
                         </div>
                     </div>
-
-                    <hr>
-
-                    <!-- <div class="login-socio">
-                        <p class="text-muted">or login using:</p>
-                        <ul class="social-icons">
-                            <li><a class="facebook" data-original-title="facebook" href="#"></a></li>
-                            <li><a class="twitter" data-original-title="Twitter" href="#"></a></li>
-                            <li><a class="googleplus" data-original-title="Goole Plus" href="#"></a></li>
-                            <li><a class="linkedin" data-original-title="Linkedin" href="#"></a></li>
-                        </ul>
-                    </div> -->
                 </form>
             </div>
           </div>

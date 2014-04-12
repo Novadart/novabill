@@ -36,6 +36,11 @@
    
    <link href="${frontendAssetsUrl}/plugins/cookieCuttr/cookiecuttr.css" rel="stylesheet" type="text/css"/>
    
+   <!-- BEGIN PAGE LEVEL PLUGIN STYLES --> 
+   <link href="${frontendAssetsUrl}/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" /> 
+   <link href="${frontendAssetsUrl}/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+   <!-- END PAGE LEVEL PLUGIN STYLES -->
+   
    <tiles:insertAttribute ignore="true" name="head" />
    
    <tiles:insertAttribute  ignore="true" name="css" />
@@ -43,6 +48,15 @@
    <tiles:insertAttribute  ignore="true" name="cssExtra" />
 
    <link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
+   
+   <style type="text/css">
+   .page-container {
+        min-height: 400px;
+   }
+   </style>
+   
+   <!-- Placed here because it might be needed in the body -->
+   <script src="${frontendAssetsUrl}/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
 </head>
 <!-- END HEAD -->
 
@@ -64,7 +78,6 @@
     <!--[if lt IE 9]>
     <script src="${frontendAssetsUrl}/plugins/respond.min.js"></script>  
     <![endif]-->  
-    <script src="${frontendAssetsUrl}/plugins/jquery-1.10.2.min.js" type="text/javascript"></script>
     <script src="${frontendAssetsUrl}/plugins/jquery.cookie-1.4.0.js" type="text/javascript"></script>
     <script src="${frontendAssetsUrl}/plugins/cookieCuttr/jquery.cookiecuttr.js" type="text/javascript"></script>
     <script src="${frontendAssetsUrl}/plugins/jquery-migrate-1.2.1.min.js" type="text/javascript"></script>
@@ -92,6 +105,18 @@
         });    
 	});
 	</script>
+	
+	<!-- BEGIN PAGE LEVEL JAVASCRIPTS(REQUIRED ONLY FOR CURRENT PAGE) -->
+	<script type="text/javascript" src="${frontendAssetsUrl}/plugins/fancybox/source/jquery.fancybox.pack.js"></script>
+	
+	<script src="${frontendAssetsUrl}/scripts/app.js"></script>  
+	<script type="text/javascript">
+	    jQuery(document).ready(function() {    
+	       App.init();
+	       App.initUniform();  
+	    });
+	</script>
+	<!-- END PAGE LEVEL JAVASCRIPTS -->
 
     <tiles:insertAttribute  ignore="true" name="javascript" />
     

@@ -12,84 +12,97 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 
 	var Business = nAjax.Business();
 	var SharingPermit = nAjax.SharingPermit();
+	
+	$scope.firstRun =  nConstants.conf.businessId === '-1';
 
-	Business.get({ id : nConstants.conf.businessId }, function(business){
-		$scope.business = business;
-		$scope.priceDisplayInDocsMonolithic = !business.settings.priceDisplayInDocsMonolithic;
-	});
-
-	$scope.update = function(){
-		GWT_Server.business.update(angular.toJson($scope.business), {
-			onSuccess : function(business){
-				$scope.$apply(function(){
-					window.location.reload();
-				});
-			},
-			onFailure : function(){}
+	if(!$scope.firstRun) {
+		
+		Business.get({ id : nConstants.conf.businessId }, function(business){
+			$scope.business = business;
+			$scope.priceDisplayInDocsMonolithic = !business.settings.priceDisplayInDocsMonolithic;
 		});
-	};
-
-	$scope.loadSharingPermits = function(){
-		if($scope.sharingPermits == null){
-			SharingPermit.query(function(result){
-				$scope.sharingPermits = result;
+		
+		
+		$scope.update = function(){
+			GWT_Server.business.update(angular.toJson($scope.business), {
+				onSuccess : function(business){
+					$scope.$apply(function(){
+						window.location.reload();
+					});
+				},
+				onFailure : function(){}
 			});
-		}
+		};
 
-	};
-	
-	$scope.exportZip = nDownload.downloadExportZip;
-	
-	function recursiveCreation(wrongShare){
-		
-		var invalidEmail = wrongShare ? true : false;
-		var sp = wrongShare ? wrongShare : new SharingPermit();
-		
-		// open the dialog to create a new sharing permit with an empty resource
-		var instance = nEditSharingPermitDialog.open( sp, invalidEmail );
-		instance.result.then(function( result ){
-			var sharingPermit = result.sharingPermit;
-			
-			//add missing parameters
-			sharingPermit.business = {
-					id : nConstants.conf.businessId
-			};
-			sharingPermit.createdOn = new Date().getTime();
-
-			// save the sharing permit
-			sharingPermit.$save({ sendEmail : result.sendEmail }, function(){
+		$scope.loadSharingPermits = function(){
+			if($scope.sharingPermits == null){
 				SharingPermit.query(function(result){
 					$scope.sharingPermits = result;
 				});
-			}, function(exception){
-				switch (exception.data.error) {
-				case "VALIDATION ERROR":
-					recursiveCreation( sharingPermit );
-					break;
+			}
 
-				default:
-					break;
-				}
+		};
+		
+		$scope.exportZip = nDownload.downloadExportZip;
+		
+		$scope.recursiveCreation = function(wrongShare){
+			
+			var invalidEmail = wrongShare ? true : false;
+			var sp = wrongShare ? wrongShare : new SharingPermit();
+			
+			// open the dialog to create a new sharing permit with an empty resource
+			var instance = nEditSharingPermitDialog.open( sp, invalidEmail );
+			instance.result.then(function( result ){
+				var sharingPermit = result.sharingPermit;
+				
+				//add missing parameters
+				sharingPermit.business = {
+						id : nConstants.conf.businessId
+				};
+				sharingPermit.createdOn = new Date().getTime();
+
+				// save the sharing permit
+				sharingPermit.$save({ sendEmail : result.sendEmail }, function(){
+					SharingPermit.query(function(result){
+						$scope.sharingPermits = result;
+					});
+				}, function(exception){
+					switch (exception.data.error) {
+					case "VALIDATION ERROR":
+						$scope.recursiveCreation( sharingPermit );
+						break;
+
+					default:
+						break;
+					}
+				});
+			});
+		}
+
+		$scope.newShare = function(){
+			$scope.recursiveCreation();
+		};
+
+		
+		$scope.$watch('priceDisplayInDocsMonolithic', function(newValue, oldValue) {
+			if($scope.business){
+				$scope.business.settings.priceDisplayInDocsMonolithic = !newValue;
+			}
+		});
+
+		$scope.$on(nConstants.events.SHARING_PERMIT_REMOVED, function(){
+			SharingPermit.query(function(result){
+				$scope.sharingPermits = result;
 			});
 		});
+
+		
+	} else {
+		
+		$scope.business = new Business();
 	}
 
-	$scope.newShare = function(){
-		recursiveCreation();
-	};
-
-	$scope.$watch('priceDisplayInDocsMonolithic', function(newValue, oldValue) {
-		if($scope.business){
-			$scope.business.settings.priceDisplayInDocsMonolithic = !newValue;
-		}
-	});
-
-	$scope.$on(nConstants.events.SHARING_PERMIT_REMOVED, function(){
-		SharingPermit.query(function(result){
-			$scope.sharingPermits = result;
-		});
-	});
-
+	
 }]);
 
 

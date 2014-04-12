@@ -100,7 +100,7 @@
 			<ul class="nav navbar-nav pull-right">
 				<!-- BEGIN USER LOGIN DROPDOWN -->
 				<li class="dropdown user"><a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-					data-close-others="true"> <span class="btn btn-sm dark"><%=business.getName()%></span> <i
+					data-close-others="true"> <span class="btn btn-sm dark"><%=business != null ? business.getName() : "Menu"%></span> <i
 						class="fa fa-angle-down"></i>
 				</a>
 					<ul class="dropdown-menu">
@@ -219,7 +219,7 @@
 	
 	<script>
     var NovabillConf = {
-            businessId : '<%=business.getId()%>',
+            businessId : '<%=business != null ? business.getId() : -1%>',
             defaultPriceListName : '<%=PriceListConstants.DEFAULT%>',
             basePath : '${basePath}',
             version : '<tiles:insertAttribute name="novabill.version" />'

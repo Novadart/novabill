@@ -67,9 +67,10 @@ public class RegistrationController{
 		dataBinder.setDisallowedFields("id");
 	}
 	
-	@RequestMapping(value = "/register", method = RequestMethod.GET)
+	@RequestMapping(value = Urls.PUBLIC_REGISTER, method = RequestMethod.GET)
 	public String login(Model model){
 		model.addAttribute("pageName", "Registrazione");
+		model.addAttribute("registration", new Registration());
 		return "frontend.register";
 	}
 	
@@ -82,14 +83,15 @@ public class RegistrationController{
 		sendMessage(registration.getEmail(), messageSource.getMessage("activation.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
 	}
 	
-	@RequestMapping(value = "/register", method = RequestMethod.POST)
+	@RequestMapping(value = Urls.PUBLIC_REGISTER, method = RequestMethod.POST)
 	public String processSubmit(@ModelAttribute("registration") Registration registration, BindingResult result, SessionStatus status, Locale locale, Model model)
 			throws NoSuchAlgorithmException, UnsupportedEncodingException{
 		validator.validate(registration, result);
 		
 		if(result.hasErrors()) {
-			model.addAttribute("pageName", "Register");
-			return "register";
+			model.addAttribute("pageName", "Registrazione");
+			model.addAttribute("registration", registration);
+			return "frontend.register";
 		} else{
 			String rawRassword = registration.getPassword();
 			registration.setPassword(rawRassword); //force hashing
@@ -98,8 +100,14 @@ public class RegistrationController{
 			registration.setExpirationDate(new Date(System.currentTimeMillis() + activationPeriod * MILLISECS_PER_HOUR));
 			sendActivationMail(registration.merge(), locale);
 			status.setComplete();
-			return "redirect:/registrationCompleted";
+			return "redirect:"+Urls.PUBLIC_REGISTRATION_COMPLETE;
 		}
+	}
+	
+	@RequestMapping(value = Urls.PUBLIC_REGISTRATION_COMPLETE, method = RequestMethod.GET)
+	public String registrationComplete(Model model){
+		model.addAttribute("pageName", "Registrazione Completata");
+		return "frontend.registrationCompleted";
 	}
 
 }

@@ -9,7 +9,11 @@ public interface Urls {
 	public static final String PUBLIC_PRICES = "/prices";
 	public static final String PUBLIC_PAGE_NOT_FOUND = "/page-not-found";
 	public static final String PUBLIC_EXCEPTION = "/oops";
+	public static final String PUBLIC_ACTIVATE = "/activate";
+	public static final String PUBLIC_REGISTER = "/register";
+	public static final String PUBLIC_REGISTRATION_COMPLETE = "/registration-complete";
 	public static final String PUBLIC_TOS = "/tos";
+	public static final String PUBLIC_TOS_MINIMAL = "/tos-minimal";
 	
 	public static final String PUBLIC_SHARE_REQUEST = "/share-ask";
 	public static final String PUBLIC_SHARE_SHARE = "/share";

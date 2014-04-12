@@ -38,6 +38,7 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/private/**" />
+			<mvc:exclude-mapping path="/private/ajax/**"/>
 			<bean class="com.novadart.novabill.interceptor.AccountBootstrapInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
