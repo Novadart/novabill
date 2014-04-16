@@ -10,9 +10,9 @@ angular.module('novabill.ajax', ['ngResource'])
 
 	var businessId = nConstants.conf.businessId;
 	var baseUrl = nConstants.conf.ajaxBaseUrl;
-	
+
 	return {
-		
+
 		/*
 		 * Business resource
 		 */
@@ -21,12 +21,31 @@ angular.module('novabill.ajax', ['ngResource'])
 					baseUrl + 'businesses/:id',
 					{id:'@id'},
 					{
-						'update': { method:'PUT' }
+						'getClients': { 
+							isArray: true,
+							method:'GET',
+							url : baseUrl + 'businesses/'+ businessId +'/clients'
+						},
+						
+						'getStats' : {
+							method:'GET',
+							url : baseUrl + 'businesses/'+ businessId +'/stats'
+						},
+						
+						'setDefaultLayout' : {
+							method:'PUT',
+							url : baseUrl + 'businesses/'+ businessId +'/defaulttemplate/:defaultLayoutType',
+							params : {defaultLayoutType : '@defaultLayoutType'}
+						},
+						
+						'update': { 
+							method:'PUT' 
+						}
 					}
 			);
 		},
-		
-		
+
+
 		/*
 		 * Sharing Permit resource
 		 */

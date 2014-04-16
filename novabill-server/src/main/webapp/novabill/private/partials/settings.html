@@ -16,39 +16,34 @@
 
 	<div class="row">
 		<div class="col-md-12">
-
-			<div class="tabbable-custom ">
-				<ul class="nav nav-tabs ">
-					<li class="active"><a href="#business" data-toggle="tab"><i class="fa fa-building"></i> {{'BUSINESS_TAB_BUSINESS' | translate}}</a>
-					</li>
-					<li ng-if="!firstRun"><a href="#options" data-toggle="tab"><i class="fa fa-gears"></i> {{'BUSINESS_TAB_OPTIONS' | translate}}</a></li>
-					<li ng-if="!firstRun"><a href="#layout" data-toggle="tab"><i class="fa fa-print"></i> {{'BUSINESS_TAB_LAYOUT' | translate}}</a></li>
-					<li ng-if="!firstRun"><a href="#share" data-toggle="tab" ng-click="loadSharingPermits()"><i class="fa fa-group"></i> {{'BUSINESS_TAB_SHARE' | translate}}</a></li>
-				</ul>
-				<div class="tab-content">
-					<div class="tab-pane active" id="business">
-						<div class="container-fluid">
-						  <div class="row" ng-if="firstRun">
-							  <div class="col-md-6 col-md-offset-3">
-							     <div class="alert alert-info">
-							     Per favore completa le informazioni sulla tua azienda
-							     </div>
-							  </div>
-						  </div>
-						  <div class="row">
-						      <div class="col-md-6">
-						          <h4><strong style="text-transform: uppercase;">{{'TITLE_COMPANY_DATA' | translate}}</strong></h4>
-						          <n-business-form business="business"></n-business-form>
-						      </div>
-						      <div class="col-md-6" ng-if="!firstRun">
-						          <h4><strong style="text-transform: uppercase;">{{'TITLE_SET_LOGO' | translate}}</strong></h4>
-						          <n-business-logo></n-business-logo>
+		    <tabset class="tabbable-custom">
+			    <tab>
+                    <tab-heading>
+				        <i class="fa fa-building"></i> {{'BUSINESS_TAB_BUSINESS' | translate}}
+			        </tab-heading>
+			        
+			        <div class="container-fluid">
+                          <div class="row" ng-if="firstRun">
+                              <div class="col-md-6 col-md-offset-3">
+                                 <div class="alert alert-info">
+                                 Per favore completa le informazioni sulla tua azienda
+                                 </div>
                               </div>
-						  </div>
-						  <br>
-						  <br>
-						  <br>
-						  <div class="row" ng-if="!firstRun">
+                          </div>
+                          <div class="row">
+                              <div class="col-md-6">
+                                  <h4><strong style="text-transform: uppercase;">{{'TITLE_COMPANY_DATA' | translate}}</strong></h4>
+                                  <n-business-form business="business"></n-business-form>
+                              </div>
+                              <div class="col-md-6" ng-show="!firstRun">
+                                  <h4><strong style="text-transform: uppercase;">{{'TITLE_SET_LOGO' | translate}}</strong></h4>
+                                  <n-business-logo></n-business-logo>
+                              </div>
+                          </div>
+                          <br>
+                          <br>
+                          <br>
+                          <div class="row" ng-show="!firstRun">
                               <div class="col-md-12">
                                   <h4><strong style="text-transform: uppercase;">{{'TITLE_EXPORT_DATA' | translate}}</strong></h4>
                                   <a href="javascript:void(0);" class="btn default" ng-click="exportZip(true, false, false, false, false)">{{'EXPORT_CLIENTS' | translate}}</a>
@@ -58,11 +53,15 @@
                                   <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, false, false, true)">{{'EXPORT_TRANSPORT_DOCUMENTS' | translate}}</a>
                               </div>
                           </div>
-						</div>
-					</div>
-					<div ng-if="!firstRun" class="tab-pane" id="options">
-
-                        <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
+                        </div>
+                </tab>
+                
+                <tab>
+                    <tab-heading>
+                        <i class="fa fa-gears"></i> {{'BUSINESS_TAB_OPTIONS' | translate}}
+                    </tab-heading>
+                    
+                    <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
                         
                         <form ng-show="business" class="form-horizontal" role="form">
                             <div class="form-body">
@@ -80,38 +79,41 @@
                             </div>
                         </form>
 
-						<button ng-show="business" type="button" ng-click="update()" class="btn green save-options button-save">
-						  {{'SAVE_CHANGES' | translate}}
-						</button>
+                        <button ng-show="business" type="button" ng-click="update()" class="btn green save-options button-save">
+                          {{'SAVE_CHANGES' | translate}}
+                        </button>
+                </tab>
+                
+                <tab>
+                    <tab-heading>
+                        <i class="fa fa-print"></i> {{'BUSINESS_TAB_LAYOUT' | translate}}
+                    </tab-heading>
+                    
+                    <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
 
-					</div>
-					<div ng-if="!firstRun" class="tab-pane" id="layout">
-					
-					   <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
+                        <form ng-show="business" class="form-horizontal" role="form">
+                            <div class="form-body">
+                                <div class="form-group">
+                                    <label class="col-md-4 control-label">{{'LAYOUT_TYPE' | translate}}</label>
+                                    <div class="col-md-8">
+                                        <select class="form-control input-xlarge" ng-model="business.settings.defaultLayoutType">
+                                            <option value="DENSE">{{'LAYOUT_TYPE_DENSE' | translate}}</option>
+                                            <option value="TIDY">{{'LAYOUT_TYPE_TIDY' | translate}}</option>
+                                        </select>
+                                    </div>
+                                </div>
 
-						<form ng-show="business" class="form-horizontal" role="form">
-							<div class="form-body">
-								<div class="form-group">
-									<label class="col-md-4 control-label">{{'LAYOUT_TYPE' | translate}}</label>
-									<div class="col-md-8">
-										<select class="form-control input-xlarge" ng-model="business.settings.defaultLayoutType">
-											<option value="DENSE">{{'LAYOUT_TYPE_DENSE' | translate}}</option>
-											<option value="TIDY">{{'LAYOUT_TYPE_TIDY' | translate}}</option>
-										</select>
-									</div>
-								</div>
-
-								<div class="form-group">
-									<label for="incognitoEnabled" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_INCOGNITO_ENABLED' | translate }}</label>
-									<div class="col-md-8">
-										<div class="checkbox-list">
-											<label> <input id="incognitoEnabled" type="checkbox" ng-model="business.settings.incognitoEnabled">
-											</label>
-										</div>
-									</div>
-								</div>
-								
-								<div class="form-group">
+                                <div class="form-group">
+                                    <label for="incognitoEnabled" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_INCOGNITO_ENABLED' | translate }}</label>
+                                    <div class="col-md-8">
+                                        <div class="checkbox-list">
+                                            <label> <input id="incognitoEnabled" type="checkbox" ng-model="business.settings.incognitoEnabled">
+                                            </label>
+                                        </div>
+                                    </div>
+                                </div>
+                                
+                                <div class="form-group">
                                     <label for="footerNote" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_FOOTER_TEXT' | translate }}</label>
                                     <div class="col-md-8">
                                        <label for="estimationFooterNote" class="control-label">{{ 'ESTIMATION' | translate }}</label>
@@ -125,30 +127,32 @@
                                     </div>
                                 </div>
 
-							</div>
-						</form>
+                            </div>
+                        </form>
 
-                        <button ng-show="business" type="button" ng-click="update()" class="btn green save-layout button-save">
+                        <button ng-show="business" type="button" ng-click="update(true)" class="btn green save-layout button-save">
                             {{'SAVE_CHANGES' | translate}}
                         </button>
-                        
-					</div>
-					<div ng-if="!firstRun" class="tab-pane" id="share">
-					    <div class="well">
+                </tab>
+                
+                <tab select="loadSharingPermits()">
+                    <tab-heading>
+                        <i class="fa fa-group"></i> {{'BUSINESS_TAB_SHARE' | translate}}
+                    </tab-heading>
+                    
+                    <div class="well">
                             <h4>{{'INFO' | translate}}</h4>
                             <p>{{'SHARING_PERMIT_INFO1' | translate}}</p>
                             <p>{{'SHARING_PERMIT_INFO2' | translate}}</p>
                             <button type="button" class="btn default try-share" ng-click="tryShare()">{{'TRY_SHARE' | translate}}</button>
                         </div>
-					    <button type="button" class="btn green new-share" ng-click="newShare()">{{'NEW_SHARE' | translate}}</button>
-					    <img class="spinner" ng-show="sharingPermits==null" src="../../private_assets/img/ajax-loading.gif">
-		                <p class="no-data-message text-center text-info" ng-show="sharingPermits && sharingPermits.length===0">{{'NO_DATA' | translate}}</p>
-		                <n-sharing-permit sharing-permit="sp" bottom-up-menu="!$first && $last" ng-repeat="sp in sharingPermits"></n-sharing-permit>
-                    </div>
-				</div>
-
-			</div>
-
+                        <button type="button" class="btn green new-share" ng-click="newShare()">{{'NEW_SHARE' | translate}}</button>
+                        <img class="spinner" ng-show="sharingPermits==null" src="../../private_assets/img/ajax-loading.gif">
+                        <p class="no-data-message text-center text-info" ng-show="sharingPermits && sharingPermits.length===0">{{'NO_DATA' | translate}}</p>
+                        <n-sharing-permit sharing-permit="sp" bottom-up-menu="!$first && $last" ng-repeat="sp in sharingPermits"></n-sharing-permit>
+                </tab>
+			</tabset>
+		
 		</div>
 	</div>
 

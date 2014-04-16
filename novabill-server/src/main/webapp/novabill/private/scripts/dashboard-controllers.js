@@ -1,13 +1,16 @@
 'use strict';
 
-angular.module('novabill.dashboard.controllers', ['novabill.directives', 'novabill.constants', 'novabill.translations'])
+angular.module('novabill.dashboard.controllers', 
+		['novabill.directives', 'novabill.constants', 'novabill.translations', 'novabill.ajax'])
 
 
 /**
  * DASHBOARD CONTROLLER
  */
-.controller('DashboardCtrl', ['$scope', 'nConstants', '$filter', function($scope, nConstants, $filter){
+.controller('DashboardCtrl', ['$scope', 'nConstants', '$filter', 'nAjax', 
+                              function($scope, nConstants, $filter, nAjax){
 
+	var Business = nAjax.Business();
 
 	function drawInvoicesPerMonthChart(data) {
 		if (!jQuery.plot || !data) {
@@ -112,24 +115,16 @@ angular.module('novabill.dashboard.controllers', ['novabill.directives', 'novabi
 		}
 	};
 
-
-	GWT_Server.business.getStats(nConstants.conf.businessId, {
-		onSuccess : function(stats){
-			$scope.$apply(function(){
-				$scope.stats = stats;
-				loadedLogRecords = stats.logRecords.logRecords;
-				$scope.logRecords = loadedLogRecords.slice(0, 10);
-				drawInvoicesPerMonthChart(stats.invoiceCountsPerMonth.list);
-				
-				$('.scroller').slimScroll({
-				    height: '300px'
-				});
-			});
-		},
-
-		onFailure : function(error){}
+	Business.getStats(function(stats){
+		$scope.stats = stats;
+		loadedLogRecords = stats.logRecords;
+		$scope.logRecords = loadedLogRecords.slice(0, 10);
+		drawInvoicesPerMonthChart(stats.invoiceCountsPerMonth);
+		
+		$('.scroller').slimScroll({
+		    height: '300px'
+		});
 	});
-
 
 }]);
 

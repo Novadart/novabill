@@ -21,14 +21,6 @@ public class ServerBridge implements ApiBridge {
 	private native void injectNative()/*-{
 		$wnd.GWT_Server = {
 
-			business : {
-				get : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::get(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-				getClients : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::getClients(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-				getStats : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::getStats(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-				update : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::update(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-				generatePDFToken : @com.novadart.novabill.frontend.client.bridge.server.BusinessServiceJS::generatePDFToken(Lcom/google/gwt/core/client/JavaScriptObject;)
-			},
-			
 			client : {
 				add : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::add(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 				update : @com.novadart.novabill.frontend.client.bridge.server.ClientServiceJS::update(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),

@@ -2,12 +2,6 @@
 	pageEncoding="UTF-8"%>
 	
 	
-<div class="page-content">
+<div class="page-content" ng-app="novabill.settings">
     <div ng-view></div>
 </div>
-
-<script type="text/javascript">
-function onGWTLoaded(){
-    angular.bootstrap(document, ['novabill.settings']);
-}
-</script>	

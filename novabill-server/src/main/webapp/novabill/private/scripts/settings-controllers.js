@@ -7,8 +7,8 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 /**
  * SETTINGS PAGE CONTROLLER
  */
-.controller('SettingsCtrl', ['$scope', 'nConstants', '$route', 'nAjax', 'nEditSharingPermitDialog', 'nDownload',
-                             function($scope, nConstants, $route, nAjax, nEditSharingPermitDialog, nDownload){
+.controller('SettingsCtrl', ['$scope', 'nConstants', '$route', 'nAjax', 'nEditSharingPermitDialog', 'nDownload', '$window',
+                             function($scope, nConstants, $route, nAjax, nEditSharingPermitDialog, nDownload, $window){
 
 	var Business = nAjax.Business();
 	var SharingPermit = nAjax.SharingPermit();
@@ -23,14 +23,15 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 		});
 		
 		
-		$scope.update = function(){
-			GWT_Server.business.update(angular.toJson($scope.business), {
-				onSuccess : function(business){
-					$scope.$apply(function(){
-						window.location.reload();
+		$scope.update = function(updateLayout){
+			$scope.business.$update(function(){
+				if(updateLayout){
+					Business.setDefaultLayout({defaultLayoutType : $scope.business.settings.defaultLayoutType}, function(){
+						$window.location.reload();
 					});
-				},
-				onFailure : function(){}
+				} else {
+					$window.location.reload();	
+				}
 			});
 		};
 
@@ -40,7 +41,6 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 					$scope.sharingPermits = result;
 				});
 			}
-
 		};
 		
 		$scope.exportZip = nDownload.downloadExportZip;
@@ -77,7 +77,7 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 					}
 				});
 			});
-		}
+		};
 
 		$scope.newShare = function(){
 			$scope.recursiveCreation();

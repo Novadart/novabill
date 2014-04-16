@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.constants', 'novabill.calc', 'ui.bootstrap'])
+angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.ajax', 'novabill.constants', 'novabill.calc', 'ui.bootstrap'])
 
 
 /*
@@ -362,8 +362,8 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 
 				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-select-client-dialog.html'),
 
-				controller: ['$scope', 'nConstants', 'nSorting', '$filter', '$modalInstance',
-				             function($scope, nConstants, nSorting, $filter, $modalInstance){
+				controller: ['$scope', 'nConstants', 'nSorting', '$filter', '$modalInstance', 'nAjax',
+				             function($scope, nConstants, nSorting, $filter, $modalInstance, nAjax){
 
 					var loadedClients = new Array();
 					var filteredClients = new Array();
@@ -432,19 +432,9 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.const
 						$modalInstance.dismiss();
 					};
 
-					GWT_Server.business.getClients(nConstants.conf.businessId, {
-
-						onSuccess : function(data){
-							$scope.$apply(function(){
-
-								loadedClients = data.clients.sort( nSorting.clientsComparator );
-								updateFilteredClients();
-
-							});
-						},
-
-						onFailure : function(){}
-
+					nAjax.Business().getClients(function(clients){
+						loadedClients = clients.sort( nSorting.clientsComparator );
+						updateFilteredClients();
 					});
 
 				}]

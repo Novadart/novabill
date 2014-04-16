@@ -1,19 +1,22 @@
 'use strict';
 
 angular.module('novabill.clients.controllers', 
-		['novabill.utils', 'novabill.constants', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'infinite-scroll'])
+		['novabill.utils', 'novabill.constants', 'novabill.directives', 'novabill.ajax',
+		 'novabill.directives.dialogs', 'novabill.translations', 'infinite-scroll'])
 
 
 		/**
 		 * CLIENTS PAGE CONTROLLER
 		 */
-		.controller('ClientsCtrl', ['$scope', 'nSorting', '$location', 'nConstants',
-		                            function($scope, nSorting, $location, nConstants){
+		.controller('ClientsCtrl', ['$scope', 'nSorting', '$location', 'nConstants', 'nAjax',
+		                            function($scope, nSorting, $location, nConstants, nAjax){
 
 			var loadedClients = [];
 			var filteredClients = [];
 			var displayedClientsCount = 0;
 			var PARTITION = 50;
+			
+			var Business = nAjax.Business();
 
 			function partitionClients(clients){
 				//split it alphabetically
@@ -102,16 +105,10 @@ angular.module('novabill.clients.controllers',
 			};
 
 			function loadClients() {
-				GWT_Server.business.getClients(nConstants.conf.businessId, {
-					onSuccess : function(data){
-						$scope.$apply(function(){
-							//sort the data
-							loadedClients = data.clients.sort( nSorting.clientsComparator );
-							updateFilteredClients();
-						});
-					},
-
-					onFailure : function(error){}
+				Business.getClients(function(clients){
+					//sort the data
+					loadedClients = clients.sort( nSorting.clientsComparator );
+					updateFilteredClients();
 				});
 			};
 
