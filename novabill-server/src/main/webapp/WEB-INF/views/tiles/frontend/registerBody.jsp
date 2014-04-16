@@ -40,7 +40,7 @@
                             <i class="fa fa-envelope"></i> 
                             <form:input path="email" cssClass="form-control placeholder-no-fix" type="text"
                                 placeholder="E-mail" />
-                            <span class="text-danger"><form:errors path="email">E-mail non valida</form:errors></span>
+                            <span class="text-danger"><form:errors path="email" /></span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -49,7 +49,9 @@
                             <i class="fa fa-lock"></i> 
                             <form:password path="password" cssClass="form-control placeholder-no-fix" autocomplete="off" 
                                 id="register_password" placeholder="Password" />
-                            <span class="text-danger"><form:errors path="password">Password non valida</form:errors></span>
+                            <span class="help-block">La password deve contenere almeno un carattere maiuscolo, un carattere minuscolo, un numero e un carattere speciale come <span style="font-family: monospace;">: , / % $ ! # @ * .</span></span>
+                            <span class="help-block">Scegliere una buona password è <span style="font-style: italic;">fondamentale</span> per la sicurezza dei tuoi dati.</span>
+                            <span class="text-danger"><form:errors path="password" /> </span>
                         </div>
                     </div>
                     <div class="form-group">
@@ -58,7 +60,7 @@
                             <i class="fa fa-check"></i> 
                             <form:password path="confirmPassword" cssClass="form-control placeholder-no-fix" autocomplete="off" 
                                 id="register_password" placeholder="Conferma Password" />
-                            <span class="text-danger"><form:errors path="confirmPassword">Le password non coincidono</form:errors></span>
+                            <span class="text-danger"><form:errors path="confirmPassword" /></span>
                         </div>
                     </div>
                     
@@ -70,7 +72,7 @@
                                 <a href="https://www.iubenda.com/privacy-policy/257554" class="iubenda-light iubenda-embed" 
                                 title="Privacy Policy">Privacy Policy</a>
                         </label>
-                        <div class="text-danger"><form:errors path="agreementAccepted">È necessario accettare i Termini di servizio e la Privacy Policy</form:errors></div>
+                        <div class="text-danger"><form:errors path="agreementAccepted" /></div>
                     </div>
                     <div class="form-actions text-center">
                         <form:button id="register-submit-btn" class="btn green">

@@ -44,9 +44,11 @@ public class ActivateAccountController {
 				registration.remove();
 				continue;
 			}
+			model.addAttribute("pageName", "Attivazione Account");
 			model.addAttribute("registration", registration.clone());
 			return "frontend.activate";
 		}
+		model.addAttribute("pageName", "Attivazione Account");
 		return "frontend.invalidActivationRequest";
 	}
 	
@@ -54,6 +56,7 @@ public class ActivateAccountController {
 	@Transactional(readOnly = false)
 	public String processSubmit(@RequestParam("j_username") String j_username, @RequestParam("j_password") String j_password,
 			@ModelAttribute("registration") Registration registration, Model model, SessionStatus status, Locale locale) throws CloneNotSupportedException{
+		model.addAttribute("pageName", "Attivazione Account");
 		if(!utilsService.isPasswordValid(registration.getPassword(), j_password)){
 			model.addAttribute("wrongPassword", true);
 			return "frontend.activate";

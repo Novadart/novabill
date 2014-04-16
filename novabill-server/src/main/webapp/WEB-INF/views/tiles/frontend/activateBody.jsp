@@ -5,6 +5,10 @@
 <spring:url var="activateUrl" value="/activate" />
 <spring:url var="homeUrl" value="/" />
 
+<%
+boolean wrongPwd = request.getAttribute("wrongPassword") != null;
+%>
+
 <div class="page-container">
   
         <!-- BEGIN BREADCRUMBS -->   
@@ -35,14 +39,15 @@
                         <span class="input-group-addon"><i class="fa fa-envelope"></i></span>
                         <input type="text" class="form-control" name="j_username" placeholder="E-mail">
                     </div>                    
-                    <div class="input-group margin-bottom-20">
+                    <div class="input-group">
                         <span class="input-group-addon"><i class="fa fa-lock"></i></span>
                         <input type="password" class="form-control" name="j_password" placeholder="Password">
-                    </div>                    
+                    </div>
+                    <span class="text-danger" style="display: <%=wrongPwd ? "inline" : "none"%>">Password non corretta</span>
 
-                    <div class="row">
-                        <div class="col-md-6 col-sm-6">
-                            <button type="submit" class="btn theme-btn pull-right">Invia</button>                        
+                    <div class="row margin-top-20">
+                        <div class="col-md-12 text-center">
+                            <button type="submit" class="btn theme-btn">Invia</button>                        
                         </div>
                     </div>
                 </form>
