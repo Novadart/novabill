@@ -4,6 +4,7 @@
 <%@ taglib prefix="sec"	uri="http://www.springframework.org/security/tags"%>
 
 <spring:url var="indexPageUrl" value="/" />
+<spring:url var="logoutUrl" value="/resources/logout" />
 <spring:url var="aboutPageUrl" value="/about" />
 <spring:url var="contactPageUrl" value="/contact" />
 <spring:url var="pricesPageUrl" value="/prices" />
@@ -29,11 +30,20 @@
                         </ul>
                     </div>
                     <div class="col-md-3 col-sm-3 login-reg-links">
-                        <ul class="list-unstyled inline">
-                            <li><a href="${privatePageUrl}">Entra</a></li>
-                            <li class="sep"><span>|</span></li>
-                            <li><a href="${registerPageUrl}">Registrati</a></li>
-                        </ul>
+                        <sec:authorize access="isAnonymous()">
+                            <ul class="list-unstyled inline">
+	                            <li><a href="${privatePageUrl}">Entra</a></li>
+	                            <li class="sep"><span>|</span></li>
+	                            <li><a href="${registerPageUrl}">Registrati</a></li>
+	                        </ul>
+                        </sec:authorize>
+                        <sec:authorize access="isAuthenticated()">
+						    <ul class="list-unstyled inline">
+                                <li><a href="${privatePageUrl}" class="btn btn-sm green">Area Privata</a></li>
+                                <li class="sep"><span>|</span></li>
+                                <li><a href="${logoutUrl}">Esci</a></li>
+                            </ul>
+						</sec:authorize>
                     </div>
                 </div>
             </div>        
