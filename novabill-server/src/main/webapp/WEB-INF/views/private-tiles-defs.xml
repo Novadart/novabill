@@ -65,6 +65,15 @@
 	
 	<definition name="private.printPDF" template="/WEB-INF/views/layouts/private/printPDF.jsp"></definition>
 	
+	<definition name="private.upgrade" template="/WEB-INF/views/tiles/private/upgrade.jsp">
+	</definition>
+	
+	<definition name="private.premiumUpgradeSuccess" template="/WEB-INF/views/tiles/private/premiumUpgradeSuccess.jsp">
+	</definition>
+	
+	<definition name="private.premiumUpgradeFailure" template="/WEB-INF/views/tiles/private/premiumUpgradeFailure.jsp">
+	</definition>
+	
 	<!--  -->
 
 </tiles-definitions>
