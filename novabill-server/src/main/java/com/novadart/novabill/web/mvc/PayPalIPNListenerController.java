@@ -18,7 +18,7 @@ import org.apache.http.client.ClientProtocolException;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.entity.UrlEncodedFormEntity;
 import org.apache.http.client.methods.HttpPost;
-import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -53,7 +53,7 @@ public class PayPalIPNListenerController {
     
 	private boolean verifyIPN(HttpServletRequest request) throws URISyntaxException, ClientProtocolException, IOException{
 		//passing back the message to paypal
-		HttpClient client = new DefaultHttpClient();
+		HttpClient client = HttpClientBuilder.create().build();
 		HttpPost post = new HttpPost(payPalUrl);
 		List<NameValuePair> params = new ArrayList<NameValuePair>();
 		params.add(new BasicNameValuePair(PARAM_NAME_CMD, PARAM_VAL_CMD)); //You need to add this parameter to tell PayPal to verify

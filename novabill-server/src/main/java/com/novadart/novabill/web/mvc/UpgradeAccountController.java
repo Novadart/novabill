@@ -55,7 +55,7 @@ public class UpgradeAccountController {
 		model.addAttribute("hostedButtonID", hostedButtonID);
 		model.addAttribute("returnUrl", returnURL);
 		model.addAttribute("email", email);
-		return "upgrade";
+		return "private.upgrade";
 	}
 	
 	private void handleError(String email, String message){}
@@ -66,7 +66,7 @@ public class UpgradeAccountController {
 		List<UpgradeToken> upgradeTokens = UpgradeToken.findByEmail(email);
 		if(upgradeTokens.size() == 0){
 			handleError(email, "No associated tokens");
-			return "premiumUpgradeFailure";
+			return "private.premiumUpgradeFailure";
 		}
 		boolean found = false;
 		for(UpgradeToken ut: upgradeTokens){
@@ -75,9 +75,9 @@ public class UpgradeAccountController {
 			ut.remove();
 		}
 		if(found)
-			return "premiumUpgradeSuccess";
+			return "private.premiumUpgradeSuccess";
 		handleError(email, "Token mismatch");
-		return "premiumUpgradeFailure";
+		return "private.premiumUpgradeFailure";
 	}
 	
 }
