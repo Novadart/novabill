@@ -16,8 +16,8 @@ import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
-import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
-import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.AccountingDocumentItemDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.EstimationDTOTransformer;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
@@ -46,7 +46,7 @@ public class EstimationService {
 		Estimation estimation = Estimation.findEstimation(id);
 		if(estimation == null)
 			throw new NoSuchElementException();
-		return EstimationDTOFactory.toDTO(estimation, true);
+		return EstimationDTOTransformer.toDTO(estimation, true);
 	}
 	
 	private static class EqualsClientIDPredicate implements Predicate<EstimationDTO>{
@@ -76,7 +76,7 @@ public class EstimationService {
 			  	  "#estimationDTO != null and #estimationDTO.id == null")
 	public Long add(EstimationDTO estimationDTO) throws DataAccessException, FreeUserAccessForbiddenException, ValidationException {
 		Estimation estimation = new Estimation();
-		EstimationDTOFactory.copyFromDTO(estimation, estimationDTO, true);
+		EstimationDTOTransformer.copyFromDTO(estimation, estimationDTO, true);
 		validator.validate(Estimation.class, estimation);
 		Client client = Client.findClient(estimationDTO.getClient().getId());
 		estimation.setClient(client);
@@ -110,11 +110,11 @@ public class EstimationService {
 		Estimation persistedEstimation = Estimation.findEstimation(estimationDTO.getId());
 		if(persistedEstimation == null)
 			throw new NoSuchObjectException();
-		EstimationDTOFactory.copyFromDTO(persistedEstimation, estimationDTO, false);
+		EstimationDTOTransformer.copyFromDTO(persistedEstimation, estimationDTO, false);
 		persistedEstimation.getAccountingDocumentItems().clear();
 		for(AccountingDocumentItemDTO itemDTO: estimationDTO.getItems()){
 			AccountingDocumentItem item = new AccountingDocumentItem();
-			AccountingDocumentItemDTOFactory.copyFromDTO(item, itemDTO);
+			AccountingDocumentItemDTOTransformer.copyFromDTO(item, itemDTO);
 			item.setAccountingDocument(persistedEstimation);
 			persistedEstimation.getAccountingDocumentItems().add(item);
 		}

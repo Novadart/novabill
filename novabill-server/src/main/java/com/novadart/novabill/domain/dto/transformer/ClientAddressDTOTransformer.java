@@ -1,9 +1,9 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.ClientAddress;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 
-public class ClientAddressDTOFactory {
+public class ClientAddressDTOTransformer {
 
 	public static ClientAddressDTO toDTO(ClientAddress clientAddress){
 		if(clientAddress == null) return null;

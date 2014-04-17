@@ -30,9 +30,9 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.Price;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
-import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.CommodityDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PriceDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.CommodityService;
@@ -82,9 +82,9 @@ public class CommodityServiceTest extends ServiceTest {
 	
 	
 	private CommodityDTO addCommodity(Long businessID, BigDecimal defaultPrice) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
-		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
+		CommodityDTO commodityDTO = CommodityDTOTransformer.toDTO(TestUtils.createCommodity());
 		TestUtils.setDefaultPrice(commodityDTO, defaultPrice);
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(businessID)));
+		commodityDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(businessID)));
 		Long commodityID = commodityGwtService.add(commodityDTO);
 		commodityDTO.setId(commodityID);
 		return commodityDTO;
@@ -95,7 +95,7 @@ public class CommodityServiceTest extends ServiceTest {
 		BigDecimal defaultPrice = new BigDecimal("24.95");
 		CommodityDTO commodityDTO = addCommodity(authenticatedPrincipal.getBusiness().getId(), defaultPrice);
 		Commodity.entityManager().flush();
-		CommodityDTO persistedDTO = CommodityDTOFactory.toDTO(Commodity.findCommodity(commodityDTO.getId()));
+		CommodityDTO persistedDTO = CommodityDTOTransformer.toDTO(Commodity.findCommodity(commodityDTO.getId()));
 		assertTrue(EqualsBuilder.reflectionEquals(commodityDTO, persistedDTO, "id", "business", "prices"));
 		PriceDTO defaultPriceDTO = commodityService.getPrices(authenticatedPrincipal.getBusiness().getId(), persistedDTO.getId()).get(PriceListConstants.DEFAULT);
 		assertEquals(defaultPrice, defaultPriceDTO.getPriceValue());
@@ -162,11 +162,11 @@ public class CommodityServiceTest extends ServiceTest {
      public void updateAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
     	 Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
          CommodityDTO commodityDTO = commodityGwtService.get(authenticatedPrincipal.getBusiness().getId(), commodityID);
-         commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+         commodityDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
          commodityDTO.setDescription("Edited description");
          commodityGwtService.update(commodityDTO);
          Commodity.entityManager().flush();
-         CommodityDTO persistedDTO = CommodityDTOFactory.toDTO(Commodity.findCommodity(commodityDTO.getId()));
+         CommodityDTO persistedDTO = CommodityDTOTransformer.toDTO(Commodity.findCommodity(commodityDTO.getId()));
          assertEquals("Edited description", persistedDTO.getDescription());
          LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
          assertEquals(EntityType.COMMODITY, rec.getEntityType());
@@ -191,7 +191,7 @@ public class CommodityServiceTest extends ServiceTest {
      public void updateAuthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
     	 Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
          CommodityDTO commodityDTO = commodityGwtService.get(authenticatedPrincipal.getBusiness().getId(), commodityID);
-         commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+         commodityDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
          commodityDTO.setId(null);
          commodityGwtService.update(commodityDTO);
      }
@@ -217,7 +217,7 @@ public class CommodityServiceTest extends ServiceTest {
      public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException{
     	 Long commodityID = addCommodity(authenticatedPrincipal.getBusiness().getId(), new BigDecimal("10.00")).getId();
     	 CommodityDTO commodityDTO = commodityGwtService.get(authenticatedPrincipal.getBusiness().getId(), commodityID);
-    	 assertTrue(EqualsBuilder.reflectionEquals(commodityDTO, CommodityDTOFactory.toDTO(Commodity.findCommodity(commodityID)), "business", "prices"));
+    	 assertTrue(EqualsBuilder.reflectionEquals(commodityDTO, CommodityDTOTransformer.toDTO(Commodity.findCommodity(commodityID)), "business", "prices"));
     	 assertNotNull(commodityDTO.getPrices());
     	 assertTrue(commodityDTO.getPrices().containsKey(PriceListConstants.DEFAULT));
      }
@@ -248,7 +248,7 @@ public class CommodityServiceTest extends ServiceTest {
     	 Long commodityID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername() + ":commodityID"));
     	 Long priceListID = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
     	 Price price = Price.findPrice(priceListID, commodityID);
-    	 PriceDTO priceDTO = PriceDTOFactory.toDTO(price);
+    	 PriceDTO priceDTO = PriceDTOTransformer.toDTO(price);
     	 priceDTO.setPriceType(PriceType.DISCOUNT_PERCENT);
     	 priceDTO.setPriceValue(new BigDecimal("5.00"));
     	 commodityGwtService.addOrUpdatePrice(authenticatedPrincipal.getBusiness().getId(), priceDTO);
@@ -311,10 +311,10 @@ public class CommodityServiceTest extends ServiceTest {
      
      @Test(expected = ValidationException.class)
      public void duplicateSkuTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
-    	CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
+    	CommodityDTO commodityDTO = CommodityDTOTransformer.toDTO(TestUtils.createCommodity());
     	TestUtils.setDefaultPrice(commodityDTO, new BigDecimal("5.00"));
  		commodityDTO.setSku("12345");
- 		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+ 		commodityDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
  		commodityGwtService.add(commodityDTO);
  		commodityGwtService.add(commodityDTO);
      }

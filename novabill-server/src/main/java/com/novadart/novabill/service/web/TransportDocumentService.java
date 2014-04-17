@@ -18,8 +18,8 @@ import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
-import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
-import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.AccountingDocumentItemDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.TransportDocumentDTOTransformer;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.service.validator.Groups.HeavyClient;
@@ -55,7 +55,7 @@ public class TransportDocumentService {
 		TransportDocument transDoc = TransportDocument.findTransportDocument(id);
 		if(transDoc == null)
 			throw new NoSuchObjectException();
-		return TransportDocumentDTOFactory.toDTO(transDoc, true);
+		return TransportDocumentDTOTransformer.toDTO(transDoc, true);
 	}
 	
 	private static class EqualsClientIDPredicate implements Predicate<TransportDocumentDTO>{
@@ -85,7 +85,7 @@ public class TransportDocumentService {
 		  	  	  "#transportDocDTO != null and #transportDocDTO.id == null")
 	public Long add(TransportDocumentDTO transportDocDTO) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException, ValidationException {
 		TransportDocument transportDoc = new TransportDocument();
-		TransportDocumentDTOFactory.copyFromDTO(transportDoc, transportDocDTO, true);
+		TransportDocumentDTOTransformer.copyFromDTO(transportDoc, transportDocDTO, true);
 		validator.validate(TransportDocument.class, transportDoc);
 		Client client = Client.findClient(transportDocDTO.getClient().getId());
 		simpleValidator.validate(client, HeavyClient.class);
@@ -124,11 +124,11 @@ public class TransportDocumentService {
 			throw new NoSuchObjectException();
 		if(persistedTransportDoc.getInvoice() != null)
 			throw new DataIntegrityException();
-		TransportDocumentDTOFactory.copyFromDTO(persistedTransportDoc, transportDocDTO, false);
+		TransportDocumentDTOTransformer.copyFromDTO(persistedTransportDoc, transportDocDTO, false);
 		persistedTransportDoc.getAccountingDocumentItems().clear();
 		for(AccountingDocumentItemDTO itemDTO: transportDocDTO.getItems()){
 			AccountingDocumentItem item = new AccountingDocumentItem();
-			AccountingDocumentItemDTOFactory.copyFromDTO(item, itemDTO);
+			AccountingDocumentItemDTOTransformer.copyFromDTO(item, itemDTO);
 			item.setAccountingDocument(persistedTransportDoc);
 			persistedTransportDoc.getAccountingDocumentItems().add(item);
 		}

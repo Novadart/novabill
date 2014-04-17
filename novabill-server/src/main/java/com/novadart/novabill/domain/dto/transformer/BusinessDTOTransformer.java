@@ -1,9 +1,9 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 
-public class BusinessDTOFactory {
+public class BusinessDTOTransformer {
 	
 	public static BusinessDTO toDTO(Business business){
 		if(business == null)
@@ -23,7 +23,7 @@ public class BusinessDTOFactory {
 		businessDTO.setWeb(business.getWeb());
 		businessDTO.setVatID(business.getVatID());
 		businessDTO.setSsn(business.getSsn());
-		businessDTO.setSettings(SettingsDTOFactory.toDTO(business.getSettings()));
+		businessDTO.setSettings(SettingsDTOTransformer.toDTO(business.getSettings()));
 		return businessDTO;
 	}
 	
@@ -43,7 +43,7 @@ public class BusinessDTOFactory {
 		business.setWeb(businessDTO.getWeb());
 		business.setVatID(businessDTO.getVatID());
 		business.setSsn(businessDTO.getSsn());
-		SettingsDTOFactory.copyFromDTO(business.getSettings(), businessDTO.getSettings());
+		SettingsDTOTransformer.copyFromDTO(business.getSettings(), businessDTO.getSettings());
 	}
 
 }

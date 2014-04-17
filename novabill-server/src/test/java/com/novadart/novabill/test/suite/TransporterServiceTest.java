@@ -13,7 +13,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Transporter;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -42,7 +42,7 @@ public class TransporterServiceTest extends ServiceTest{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		assertEquals(transporterDesc, Transporter.findTransporter(id).getDescription());
 	}
@@ -57,7 +57,7 @@ public class TransporterServiceTest extends ServiceTest{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		transporterDTO.setId(1l);
 		transporterService.add(transporterDTO);
 	}
@@ -67,7 +67,7 @@ public class TransporterServiceTest extends ServiceTest{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		transporterService.add(transporterDTO);
 	}
 	
@@ -76,14 +76,14 @@ public class TransporterServiceTest extends ServiceTest{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = " \t";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		transporterService.add(transporterDTO);
 	}
 	
 	@Test(expected = ValidationException.class)
 	public void addAuthorizedValidationError2Test() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
 		TransporterDTO transporterDTO = new TransporterDTO();
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		transporterDTO.setDescription(null);
 		transporterService.add(transporterDTO);
 	}
@@ -93,7 +93,7 @@ public class TransporterServiceTest extends ServiceTest{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		transporterDTO.setId(id);
@@ -113,7 +113,7 @@ public class TransporterServiceTest extends ServiceTest{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		transporterService.update(transporterDTO);
 	}
 	
@@ -122,12 +122,12 @@ public class TransporterServiceTest extends ServiceTest{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		transporterDTO.setId(id);
 		transporterDTO.setDescription("Updated transporter description");
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		transporterService.update(transporterDTO);
 		Transporter.entityManager().flush();
 		assertEquals("Updated transporter description", Transporter.findTransporter(id).getDescription());
@@ -138,7 +138,7 @@ public class TransporterServiceTest extends ServiceTest{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		transporterDTO.setId(id);
@@ -151,7 +151,7 @@ public class TransporterServiceTest extends ServiceTest{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		transporterService.remove(authenticatedPrincipal.getBusiness().getId(), id);
@@ -164,7 +164,7 @@ public class TransporterServiceTest extends ServiceTest{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		transporterService.remove(null, id);
@@ -180,7 +180,7 @@ public class TransporterServiceTest extends ServiceTest{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		transporterService.remove(getUnathorizedBusinessID(), id);
@@ -191,7 +191,7 @@ public class TransporterServiceTest extends ServiceTest{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		TransporterDTO retrieved = transporterService.get(id);

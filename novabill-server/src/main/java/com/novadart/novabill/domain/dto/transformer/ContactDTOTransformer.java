@@ -1,9 +1,9 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.Contact;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
 
-public class ContactDTOFactory {
+public class ContactDTOTransformer {
 	
 	public static ContactDTO toDTO(Contact contact){
 		ContactDTO contactDTO = new ContactDTO();

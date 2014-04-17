@@ -24,12 +24,12 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
-import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
-import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
-import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.CommodityDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PaymentTypeDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PriceListDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.service.UtilsService;
@@ -101,9 +101,9 @@ public class RestrictionsTest extends ServiceTest {
 	@Test
 	public void addInvoiceOverQuotaTest() throws NotAuthenticatedException, ValidationException, DataAccessException, DataIntegrityException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class), true);
-		invDTO.setClient(ClientDTOFactory.toDTO(client));
-		invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class), true);
+		invDTO.setClient(ClientDTOTransformer.toDTO(client));
+		invDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		boolean raised = false;
 		try {
 			invoiceService.add(invDTO);
@@ -132,10 +132,10 @@ public class RestrictionsTest extends ServiceTest {
 	@Test
 	public void addCommodityOverQuotaTest() throws NotAuthenticatedException, ValidationException, DataAccessException, NoSuchObjectException{
 		BigDecimal defaultPrice = new BigDecimal("24.95");
-		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
+		CommodityDTO commodityDTO = CommodityDTOTransformer.toDTO(TestUtils.createCommodity());
 		TestUtils.setDefaultPrice(commodityDTO, defaultPrice);
 		boolean raised = false;
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		commodityDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		try {
 			commodityService.add(commodityDTO);
 		} catch (FreeUserAccessForbiddenException e) {
@@ -147,8 +147,8 @@ public class RestrictionsTest extends ServiceTest {
 	
 	@Test
 	public void addPaymentTypeOverQuotaTest() throws NotAuthenticatedException, ValidationException, DataAccessException{
-		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(TestUtils.createPaymentType());
-		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOTransformer.toDTO(TestUtils.createPaymentType());
+		paymentTypeDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		boolean raised = false;
 		try {
 			paymentTypeService.add(paymentTypeDTO);
@@ -161,8 +161,8 @@ public class RestrictionsTest extends ServiceTest {
 	
 	@Test
 	public void addPriceListFreeUserTest() throws NotAuthenticatedException, ValidationException, DataAccessException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		boolean raised = false;
 		try {
 			priceListService.add(priceListDTO);

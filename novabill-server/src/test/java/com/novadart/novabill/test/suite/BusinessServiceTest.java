@@ -30,7 +30,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.service.web.BusinessService;
@@ -166,7 +166,7 @@ public class BusinessServiceTest extends ServiceTest {
 	@Test
 	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		authenticatedPrincipal.getBusiness().setName("Kick ass company");
-		businessGwtService.update(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		businessGwtService.update(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		assertEquals("Kick ass company", Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getName());
 	}
 	
@@ -177,7 +177,7 @@ public class BusinessServiceTest extends ServiceTest {
 			BeanUtils.setProperty(business, key, StringUtils.leftPad("1", 1000, '1'));
 		}
 		try{
-			businessGwtService.update(BusinessDTOFactory.toDTO(business));
+			businessGwtService.update(BusinessDTOTransformer.toDTO(business));
 		}catch(ValidationException e){
 			Set<Field> expected = new HashSet<Field>(validationFieldsMap.values());
 			Set<Field> actual= new HashSet<Field>();
@@ -195,7 +195,7 @@ public class BusinessServiceTest extends ServiceTest {
 		boolean validationError = false;
 		boolean containsError = false;
 		try {
-			businessGwtService.update(BusinessDTOFactory.toDTO(business));
+			businessGwtService.update(BusinessDTOTransformer.toDTO(business));
 		} catch (ValidationException e) {
 			validationError = true;
 			for(ErrorObject er: e.getErrors())
@@ -210,7 +210,7 @@ public class BusinessServiceTest extends ServiceTest {
 	@Test(expected = ValidationException.class)
 	public void updateAuthorizedValidationErrorTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		authenticatedPrincipal.getBusiness().setName(StringUtils.leftPad("1", 1000, '1'));
-		businessGwtService.update(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		businessGwtService.update(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 	}
 	
 	@Test
@@ -313,7 +313,7 @@ public class BusinessServiceTest extends ServiceTest {
 									com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		authenticatedPrincipal.setBusiness(null);
 		Business business = TestUtils.createBusiness();
-		business.setId(businessGwtService.add(BusinessDTOFactory.toDTO(business)));
+		business.setId(businessGwtService.add(BusinessDTOTransformer.toDTO(business)));
 		Business.entityManager().flush();
 		Business actualBusiness = Principal.findPrincipal(authenticatedPrincipal.getId()).getBusiness();
 		assertTrue(EqualsBuilder.reflectionEquals(business, actualBusiness, "version", "paymentTypes",
@@ -327,7 +327,7 @@ public class BusinessServiceTest extends ServiceTest {
 									com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		authenticatedPrincipal.setBusiness(null);
 		Business business = TestUtils.createBusiness();
-		BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
+		BusinessDTO businessDTO = BusinessDTOTransformer.toDTO(business);
 		businessDTO.getSettings().setDefaultLayoutType(null);
 		business.setId(businessGwtService.add(businessDTO));
 		Business.entityManager().flush();
@@ -347,7 +347,7 @@ public class BusinessServiceTest extends ServiceTest {
 		authenticatedPrincipal.setBusiness(null);
 		Business business = TestUtils.createBusiness();
 		business.setId(1l);
-		businessGwtService.add(BusinessDTOFactory.toDTO(business));
+		businessGwtService.add(BusinessDTOTransformer.toDTO(business));
 	}
 	
 	private <T extends AccountingDocument> Set<Integer> extractYears(Set<T> docs){

@@ -1,9 +1,9 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 
-public class PriceDTOFactory {
+public class PriceDTOTransformer {
 	
 	public static PriceDTO toDTO(Price price){
 		if(price == null)

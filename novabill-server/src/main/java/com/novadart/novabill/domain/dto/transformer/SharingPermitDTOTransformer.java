@@ -1,9 +1,9 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.SharingPermit;
 import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
 
-public class SharingPermitDTOFactory {
+public class SharingPermitDTOTransformer {
 	
 	public static SharingPermitDTO toDTO(SharingPermit sharingPermit) {
 		if(sharingPermit == null)

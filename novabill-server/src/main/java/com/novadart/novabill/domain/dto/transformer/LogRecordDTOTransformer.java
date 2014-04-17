@@ -1,9 +1,9 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 
-public class LogRecordDTOFactory {
+public class LogRecordDTOTransformer {
 	
 	public static LogRecordDTO toDTO(LogRecord record){
 		if(record == null)

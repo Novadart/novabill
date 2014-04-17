@@ -1,9 +1,9 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
 
-public class TransporterDTOFactory {
+public class TransporterDTOTransformer {
 
 	public static TransporterDTO toDTO(Transporter transporter){
 		if(transporter == null)

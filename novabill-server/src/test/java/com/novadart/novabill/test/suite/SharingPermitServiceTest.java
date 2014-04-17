@@ -25,8 +25,8 @@ import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.SharingPermit;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
-import com.novadart.novabill.domain.dto.factory.SharingPermitDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.SharingPermitDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.service.web.SharingPermitService;
@@ -64,12 +64,12 @@ public class SharingPermitServiceTest extends ServiceTest {
 	
 	@Test
 	public void addAuthorizedTest() throws ValidationException, JsonParseException, JsonMappingException, IOException{
-		SharingPermitDTO sharingPermitDTO = SharingPermitDTOFactory.toDTO(TestUtils.createSharingPermit());
-		sharingPermitDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		SharingPermitDTO sharingPermitDTO = SharingPermitDTOTransformer.toDTO(TestUtils.createSharingPermit());
+		sharingPermitDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		Long id = sharingPermitService.add(businessID, sharingPermitDTO);
 		SharingPermit.entityManager().flush();
-		SharingPermitDTO persistedDTO = SharingPermitDTOFactory.toDTO(SharingPermit.findSharingPermit(id));
+		SharingPermitDTO persistedDTO = SharingPermitDTOTransformer.toDTO(SharingPermit.findSharingPermit(id));
 		assertTrue(EqualsBuilder.reflectionEquals(sharingPermitDTO, persistedDTO, "id", "business"));
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
 		assertEquals(EntityType.SHARING_PERMIT, rec.getEntityType());
@@ -87,8 +87,8 @@ public class SharingPermitServiceTest extends ServiceTest {
 	
 	@Test(expected = AccessDeniedException.class)
 	public void addIDNotNullTest() throws ValidationException{
-		SharingPermitDTO sharingPermitDTO = SharingPermitDTOFactory.toDTO(TestUtils.createSharingPermit());
-		sharingPermitDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		SharingPermitDTO sharingPermitDTO = SharingPermitDTOTransformer.toDTO(TestUtils.createSharingPermit());
+		sharingPermitDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		sharingPermitDTO.setId(1l);
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		sharingPermitService.add(businessID, sharingPermitDTO);
@@ -96,8 +96,8 @@ public class SharingPermitServiceTest extends ServiceTest {
 	
 	@Test(expected = AccessDeniedException.class)
 	public void addUnauthorizedTest() throws ValidationException{
-		SharingPermitDTO sharingPermitDTO = SharingPermitDTOFactory.toDTO(TestUtils.createSharingPermit());
-		sharingPermitDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
+		SharingPermitDTO sharingPermitDTO = SharingPermitDTOTransformer.toDTO(TestUtils.createSharingPermit());
+		sharingPermitDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		sharingPermitService.add(businessID, sharingPermitDTO);
 	}
@@ -138,7 +138,7 @@ public class SharingPermitServiceTest extends ServiceTest {
 		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
 		SharingPermit sharingPermit = business.getSharingPermits().iterator().next();
 		List<SharingPermitDTO> all = sharingPermitService.getAll(business.getId());
-		assertTrue(EqualsBuilder.reflectionEquals(SharingPermitDTOFactory.toDTO(sharingPermit), all.get(0), "id", "business"));
+		assertTrue(EqualsBuilder.reflectionEquals(SharingPermitDTOTransformer.toDTO(sharingPermit), all.get(0), "id", "business"));
 	}
 	
 	@Test(expected = AccessDeniedException.class)

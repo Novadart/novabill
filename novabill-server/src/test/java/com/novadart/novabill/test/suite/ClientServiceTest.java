@@ -36,8 +36,8 @@ import com.novadart.novabill.domain.ClientAddress;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
-import com.novadart.novabill.domain.dto.factory.ClientAddressDTOFactory;
-import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.ClientAddressDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.data.EntityType;
@@ -98,7 +98,7 @@ public class ClientServiceTest extends ServiceTest {
 	public void getAllAuthenticatedTest() throws NotAuthenticatedException, DataAccessException{
 		Set<ClientDTO> expected = new HashSet<ClientDTO>();
 		for(Client client: authenticatedPrincipal.getBusiness().getClients())
-			expected.add(ClientDTOFactory.toDTO(client));
+			expected.add(ClientDTOTransformer.toDTO(client));
 		boolean contained = true;
 		Set<ClientDTO> actual = new HashSet<ClientDTO>(businessService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		outer: for (ClientDTO cdto1 : actual) {
@@ -169,7 +169,7 @@ public class ClientServiceTest extends ServiceTest {
 	@Test
 	public void getAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException{
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
-		ClientDTO expectedDTO = ClientDTOFactory.toDTO(Client.findClient(clientID));
+		ClientDTO expectedDTO = ClientDTOTransformer.toDTO(Client.findClient(clientID));
 		ClientDTO actualDTO = clientService.get(clientID);
 		assertTrue(EqualsBuilder.reflectionEquals(expectedDTO, actualDTO, "contact") && EqualsBuilder.reflectionEquals(expectedDTO.getContact(), actualDTO.getContact(), false));
 	}
@@ -194,7 +194,7 @@ public class ClientServiceTest extends ServiceTest {
 	public void addAuthenticatedTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, JsonParseException, JsonMappingException, IOException{
 		Client expectedClient = TestUtils.createClient();
 		expectedClient.setBusiness(authenticatedPrincipal.getBusiness());
-		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(expectedClient));
+		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(expectedClient));
 		expectedClient.setId(clientID);
 		Client.entityManager().flush();
 		Client actualClient = Client.findClient(clientID);
@@ -213,7 +213,7 @@ public class ClientServiceTest extends ServiceTest {
 		Client expectedClient = new Client();
 		expectedClient.setName("John Doe");
 		expectedClient.setBusiness(authenticatedPrincipal.getBusiness());
-		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(expectedClient));
+		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(expectedClient));
 		Client.entityManager().flush();
 		Client actualClient = Client.findClient(clientID);
 		assertTrue(actualClient.getName().equals("John Doe"));
@@ -236,7 +236,7 @@ public class ClientServiceTest extends ServiceTest {
 	public void addAuthenticatedNotNullClientID() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException{
 		Client client = TestUtils.createClient();
 		client.setId(100l);
-		clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(client));
+		clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(client));
 	}
 	
 	@Test
@@ -246,7 +246,7 @@ public class ClientServiceTest extends ServiceTest {
 			BeanUtils.setProperty(client, key, StringUtils.leftPad("1", 1000, '1'));
 		}
 		try{
-			clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(client));
+			clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(client));
 		}catch(ValidationException e){
 			Set<Field> expected = new HashSet<Field>(validationFieldsMap.values());
 			Set<Field> actual= new HashSet<Field>();
@@ -261,7 +261,7 @@ public class ClientServiceTest extends ServiceTest {
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
 		Client expectedClient = Client.findClient(clientID);
 		expectedClient.setName("Temporary name for this company");
-		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(expectedClient));
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(expectedClient));
 		Client.entityManager().flush();
 		Client actualClient = Client.findClient(clientID);
 		assertEquals(actualClient.getName(), "Temporary name for this company");
@@ -278,12 +278,12 @@ public class ClientServiceTest extends ServiceTest {
 		Long clientID = authenticatedPrincipal.getBusiness().getClients().iterator().next().getId();
 		Client expectedClient = Client.findClient(clientID);
 		expectedClient.setAddress("");
-		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(expectedClient));
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(expectedClient));
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void updateAuthenticatedClientIDNull() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
-		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(TestUtils.createClient()));
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(TestUtils.createClient()));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -295,7 +295,7 @@ public class ClientServiceTest extends ServiceTest {
 	public void updateUnauthenticatedClient() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, ValidationException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		client.setName("Temporary name for this company");
-		clientService.update(getUnathorizedBusinessID(), ClientDTOFactory.toDTO(client));
+		clientService.update(getUnathorizedBusinessID(), ClientDTOTransformer.toDTO(client));
 	}
 	
 	@Test
@@ -305,7 +305,7 @@ public class ClientServiceTest extends ServiceTest {
 			BeanUtils.setProperty(client, key, StringUtils.leftPad("1", 1000, '1'));
 		}
 		try{
-			clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(client));
+			clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(client));
 		}catch(ValidationException e){
 			Set<Field> expected = new HashSet<Field>(validationFieldsMap.values());
 			Set<Field> actual= new HashSet<Field>();
@@ -323,7 +323,7 @@ public class ClientServiceTest extends ServiceTest {
 		paymentType.getClients().add(client);
 		paymentType.persist();
 		PaymentType.entityManager().flush();
-		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		ClientDTO clientDTO = ClientDTOTransformer.toDTO(client);
 		clientDTO.setDefaultPaymentTypeID(null);
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
 		assertNull(client.getDefaultPaymentType());
@@ -340,7 +340,7 @@ public class ClientServiceTest extends ServiceTest {
 		PaymentType paymentType2 = TestUtils.createPaymentType();
 		paymentType2.persist();
 		PaymentType.entityManager().flush();
-		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		ClientDTO clientDTO = ClientDTOTransformer.toDTO(client);
 		clientDTO.setDefaultPaymentTypeID(paymentType2.getId());
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
 		assertEquals(paymentType2, client.getDefaultPaymentType());
@@ -349,7 +349,7 @@ public class ClientServiceTest extends ServiceTest {
 	@Test
 	public void updateAuthorizedNullDefaultPaymentTypeNullNullTest() throws NotAuthenticatedException, NoSuchObjectException, ValidationException, DataAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		ClientDTO clientDTO = ClientDTOTransformer.toDTO(client);
 		clientDTO.setDefaultPaymentTypeID(null);
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
 		assertNull(client.getDefaultPaymentType());
@@ -361,7 +361,7 @@ public class ClientServiceTest extends ServiceTest {
 		PaymentType paymentType = TestUtils.createPaymentType();
 		paymentType.persist();
 		PaymentType.entityManager().flush();
-		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		ClientDTO clientDTO = ClientDTOTransformer.toDTO(client);
 		clientDTO.setDefaultPaymentTypeID(paymentType.getId());
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
 		assertEquals(paymentType, client.getDefaultPaymentType());
@@ -379,7 +379,7 @@ public class ClientServiceTest extends ServiceTest {
 		PriceList priceList2 = TestUtils.createPriceList();
 		priceList2.persist();
 		PriceList.entityManager().flush();
-		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		ClientDTO clientDTO = ClientDTOTransformer.toDTO(client);
 		clientDTO.setDefaultPriceListID(priceList2.getId());
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
 		assertEquals(priceList2, client.getDefaultPriceList());
@@ -391,7 +391,7 @@ public class ClientServiceTest extends ServiceTest {
 		PriceList priceList = TestUtils.createPriceList();
 		priceList.persist();
 		PriceList.entityManager().flush();
-		ClientDTO clientDTO = ClientDTOFactory.toDTO(client);
+		ClientDTO clientDTO = ClientDTOTransformer.toDTO(client);
 		clientDTO.setDefaultPriceListID(priceList.getId());
 		clientService.update(authenticatedPrincipal.getBusiness().getId(), clientDTO);
 		assertEquals(priceList, client.getDefaultPriceList());
@@ -399,8 +399,8 @@ public class ClientServiceTest extends ServiceTest {
 	
 	private ClientAddress addClientAddress(Client client) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException{
 		ClientAddress clientAddress = TestUtils.createClientAddress();
-		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(clientAddress);
-		clientAddressDTO.setClient(ClientDTOFactory.toDTO(client));
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOTransformer.toDTO(clientAddress);
+		clientAddressDTO.setClient(ClientDTOTransformer.toDTO(client));
 		Long id = clientService.addClientAddress(clientAddressDTO);
 		clientAddress.setId(id);
 		return clientAddress;
@@ -428,8 +428,8 @@ public class ClientServiceTest extends ServiceTest {
 	public void addClientAddressIDNotNullTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		ClientAddress clientAddress = TestUtils.createClientAddress();
-		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(clientAddress);
-		clientAddressDTO.setClient(ClientDTOFactory.toDTO(client));
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOTransformer.toDTO(clientAddress);
+		clientAddressDTO.setClient(ClientDTOTransformer.toDTO(client));
 		clientAddressDTO.setId(1l);
 		clientService.addClientAddress(clientAddressDTO);
 	}
@@ -487,8 +487,8 @@ public class ClientServiceTest extends ServiceTest {
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		ClientAddress clientAddress = addClientAddress(client);
 		clientAddress.setName("Newest administrative address");
-		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(clientAddress);
-		clientAddressDTO.setClient(ClientDTOFactory.toDTO(client));
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOTransformer.toDTO(clientAddress);
+		clientAddressDTO.setClient(ClientDTOTransformer.toDTO(client));
 		clientService.updateClientAddress(clientAddressDTO);
 		assertEquals("Newest administrative address", ClientAddress.findClientAddress(clientAddress.getId()).getName());
 	}
@@ -502,8 +502,8 @@ public class ClientServiceTest extends ServiceTest {
 	public void updateClientAddressAuthorizedIDNullTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, NoSuchObjectException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		ClientAddress clientAddress = addClientAddress(client);
-		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(clientAddress);
-		clientAddressDTO.setClient(ClientDTOFactory.toDTO(client));
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOTransformer.toDTO(clientAddress);
+		clientAddressDTO.setClient(ClientDTOTransformer.toDTO(client));
 		clientAddressDTO.setId(null);
 		clientService.updateClientAddress(clientAddressDTO);
 	}
@@ -512,8 +512,8 @@ public class ClientServiceTest extends ServiceTest {
 	public void updateClientAddressUnauthorizedTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, NoSuchObjectException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		ClientAddress clientAddress = addClientAddress(client);
-		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(clientAddress);
-		clientAddressDTO.setClient(ClientDTOFactory.toDTO(Client.findClient(getUnathorizedBusinessID())));
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOTransformer.toDTO(clientAddress);
+		clientAddressDTO.setClient(ClientDTOTransformer.toDTO(Client.findClient(getUnathorizedBusinessID())));
 		clientService.updateClientAddress(clientAddressDTO);
 	}
 	

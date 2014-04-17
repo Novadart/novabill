@@ -1,9 +1,9 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.Settings;
 import com.novadart.novabill.shared.client.dto.SettingsDTO;
 
-public class SettingsDTOFactory {
+public class SettingsDTOTransformer {
 
 	public static SettingsDTO toDTO(Settings settings){
 		SettingsDTO settingsDTO = new SettingsDTO();

@@ -1,10 +1,10 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Contact;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
-public class ClientDTOFactory {
+public class ClientDTOTransformer {
 	
 	public static ClientDTO toDTO(Client client){
 		if(client == null)
@@ -27,7 +27,7 @@ public class ClientDTOFactory {
 		clientDTO.setDefaultPaymentTypeID(client.getDefaultPaymentType() == null? null: client.getDefaultPaymentType().getId());
 		clientDTO.setDefaultPriceListID(client.getDefaultPriceList() == null? null: client.getDefaultPriceList().getId());
 		clientDTO.setNote(client.getNote());
-		clientDTO.setContact(ContactDTOFactory.toDTO(client.getContact() == null? new Contact(): client.getContact()));
+		clientDTO.setContact(ContactDTOTransformer.toDTO(client.getContact() == null? new Contact(): client.getContact()));
 		return clientDTO;
 	}
 	
@@ -48,7 +48,7 @@ public class ClientDTOFactory {
 		client.setVatID(clientDTO.getVatID());
 		client.setSsn(clientDTO.getSsn());
 		client.setContact(new Contact());
-		ContactDTOFactory.copyFromDTO(client.getContact(), clientDTO.getContact());
+		ContactDTOTransformer.copyFromDTO(client.getContact(), clientDTO.getContact());
 		client.setNote(clientDTO.getNote());
 	}
 

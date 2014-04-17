@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.SharingPermit;
-import com.novadart.novabill.domain.dto.factory.SharingPermitDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.SharingPermitDTOTransformer;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -37,7 +37,7 @@ public class SharingPermitService {
 	  	  	      "#sharingPermitDTO != null and #sharingPermitDTO.id == null")
 	public Long add(Long businessID, SharingPermitDTO sharingPermitDTO) throws ValidationException {
 		SharingPermit sharingPermit = new SharingPermit();
-		SharingPermitDTOFactory.copyFromDTO(sharingPermit, sharingPermitDTO);
+		SharingPermitDTOTransformer.copyFromDTO(sharingPermit, sharingPermitDTO);
 		Business business = Business.findBusiness(sharingPermitDTO.getBusiness().getId());
 		sharingPermit.setBusiness(business);
 		validator.validate(sharingPermit);

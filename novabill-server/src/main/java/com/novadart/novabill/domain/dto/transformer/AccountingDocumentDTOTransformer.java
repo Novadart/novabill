@@ -1,4 +1,4 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -9,7 +9,7 @@ import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
-public abstract class AccountingDocumentDTOFactory {
+public abstract class AccountingDocumentDTOTransformer {
 	
 	protected static void copyToDTO(AccountingDocument accountingDocument, AccountingDocumentDTO accountingDocumentDTO, boolean copyItems) {
 		accountingDocumentDTO.setId(accountingDocument.getId());
@@ -20,7 +20,7 @@ public abstract class AccountingDocumentDTOFactory {
 		if(copyItems){
 			List<AccountingDocumentItemDTO> items = new ArrayList<AccountingDocumentItemDTO>(accountingDocument.getAccountingDocumentItems().size());
 			for(AccountingDocumentItem item: accountingDocument.getAccountingDocumentItems())
-				items.add(AccountingDocumentItemDTOFactory.toDTO(item));
+				items.add(AccountingDocumentItemDTOTransformer.toDTO(item));
 			accountingDocumentDTO.setItems(items);
 		}
 		accountingDocumentDTO.setTotal(accountingDocument.getTotal());
@@ -28,7 +28,7 @@ public abstract class AccountingDocumentDTOFactory {
 		accountingDocumentDTO.setTotalBeforeTax(accountingDocument.getTotalBeforeTax());
 		accountingDocumentDTO.setPaymentNote(accountingDocument.getPaymentNote());
 		if(accountingDocument.getToEndpoint() != null)
-			accountingDocumentDTO.setToEndpoint(EndpointDTOFactory.toDTO(accountingDocument.getToEndpoint()));
+			accountingDocumentDTO.setToEndpoint(EndpointDTOTransformer.toDTO(accountingDocument.getToEndpoint()));
 	}
 	
 	public static void copyFromDTO(AccountingDocument accountingDocument, AccountingDocumentDTO accountingDocumentDTO, boolean addItems){
@@ -39,7 +39,7 @@ public abstract class AccountingDocumentDTOFactory {
 		if(addItems){
 			for(AccountingDocumentItemDTO itemDTO: accountingDocumentDTO.getItems()){
 				AccountingDocumentItem item = new AccountingDocumentItem();
-				AccountingDocumentItemDTOFactory.copyFromDTO(item, itemDTO);
+				AccountingDocumentItemDTOTransformer.copyFromDTO(item, itemDTO);
 				item.setAccountingDocument(accountingDocument);
 				accountingDocument.getAccountingDocumentItems().add(item);
 			}
@@ -51,7 +51,7 @@ public abstract class AccountingDocumentDTOFactory {
 		if(accountingDocumentDTO.getToEndpoint() != null){
 			if(accountingDocument.getToEndpoint() == null)
 				accountingDocument.setToEndpoint(new Endpoint());
-			EndpointDTOFactory.copyFromDTO(accountingDocument.getToEndpoint(), accountingDocumentDTO.getToEndpoint());
+			EndpointDTOTransformer.copyFromDTO(accountingDocument.getToEndpoint(), accountingDocumentDTO.getToEndpoint());
 		}
 	}
 

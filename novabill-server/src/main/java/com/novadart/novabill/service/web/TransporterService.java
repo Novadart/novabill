@@ -10,7 +10,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Transporter;
-import com.novadart.novabill.domain.dto.factory.TransporterDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.TransporterDTOTransformer;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
@@ -51,7 +51,7 @@ public class TransporterService {
 	  	  	  	  "#transporterDTO != null and #transporterDTO.id == null")
 	public Long add(TransporterDTO transporterDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException {
 		Transporter transporter = new Transporter();
-		TransporterDTOFactory.copyFromDTO(transporter, transporterDTO);
+		TransporterDTOTransformer.copyFromDTO(transporter, transporterDTO);
 		Business business = Business.findBusiness(transporterDTO.getBusiness().getId());
 		transporter.setBusiness(business);
 		validator.validate(transporter);
@@ -68,7 +68,7 @@ public class TransporterService {
 		Transporter persistedTransporter = Transporter.findTransporter(transporterDTO.getId());
 		if(persistedTransporter == null)
 			throw new NoSuchObjectException();
-		TransporterDTOFactory.copyFromDTO(persistedTransporter, transporterDTO);
+		TransporterDTOTransformer.copyFromDTO(persistedTransporter, transporterDTO);
 		validator.validate(persistedTransporter);
 	}
 	

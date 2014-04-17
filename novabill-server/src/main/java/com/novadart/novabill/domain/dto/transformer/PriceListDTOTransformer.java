@@ -1,4 +1,4 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import java.util.List;
 
@@ -6,7 +6,7 @@ import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 
-public class PriceListDTOFactory {
+public class PriceListDTOTransformer {
 	
 	public static PriceListDTO toDTO(PriceList priceList, List<CommodityDTO> commodities){
 		if(priceList == null)

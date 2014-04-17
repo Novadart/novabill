@@ -18,8 +18,8 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
-import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.CommodityDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PriceDTOTransformer;
 import com.novadart.novabill.service.validator.CommodityValidator;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
@@ -83,7 +83,7 @@ public class CommodityService {
 	@Restrictions(checkers = {NumberOfCommoditiesQuotaReachedChecker.class})
 	public Long add(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException {
 		Commodity commodity = new Commodity();
-		CommodityDTOFactory.copyFromDTO(commodity, commodityDTO);
+		CommodityDTOTransformer.copyFromDTO(commodity, commodityDTO);
 		if(StringUtils.isBlank(commodity.getSku()))
 			commodity.setSku(Commodity.generateSku());
 		Business business = Business.findBusiness(commodityDTO.getBusiness().getId());
@@ -104,9 +104,9 @@ public class CommodityService {
 		if(persistentCommodity == null)
 			throw new NoSuchObjectException();
 		Commodity copy = persistentCommodity.shallowCopy();
-		CommodityDTOFactory.copyFromDTO(copy, commodityDTO);
+		CommodityDTOTransformer.copyFromDTO(copy, commodityDTO);
 		validator.validate(copy, !copy.getSku().equals(persistentCommodity.getSku()));
-		CommodityDTOFactory.copyFromDTO(persistentCommodity, commodityDTO);
+		CommodityDTOTransformer.copyFromDTO(persistentCommodity, commodityDTO);
 		PriceDTO defaultPriceDTO = commodityDTO.getPrices().get(PriceListConstants.DEFAULT);
 		addOrUpdatePrice(commodityDTO.getBusiness().getId(), defaultPriceDTO);
 	}
@@ -128,7 +128,7 @@ public class CommodityService {
 	public Long addOrUpdatePrice(Long businessID, PriceDTO priceDTO) throws ValidationException{
 		if(priceDTO.getId() == null){ //add
 			Price price = new Price();
-			PriceDTOFactory.copyFromDTO(price, priceDTO);
+			PriceDTOTransformer.copyFromDTO(price, priceDTO);
 			simpleValidator.validate(price);
 			PriceList persistedPriceList = PriceList.findPriceList(priceDTO.getPriceListID());
 			Commodity persistedCommodity = Commodity.findCommodity(priceDTO.getCommodityID());
@@ -143,7 +143,7 @@ public class CommodityService {
 			return price.getId();
 		}else{ //update
 			Price persisted = Price.findPrice(priceDTO.getId());
-			PriceDTOFactory.copyFromDTO(persisted, priceDTO);
+			PriceDTOTransformer.copyFromDTO(persisted, priceDTO);
 			simpleValidator.validate(persisted);
 			return persisted.merge().getId();
 		}
@@ -176,7 +176,7 @@ public class CommodityService {
 		}
 		List<CommodityDTO> commoditytDTOs = new ArrayList<CommodityDTO>();
 		for(Commodity commodity: commodities.getItems())
-			commoditytDTOs.add(CommodityDTOFactory.toDTO(commodity));
+			commoditytDTOs.add(CommodityDTOTransformer.toDTO(commodity));
 		return new PageDTO<CommodityDTO>(commoditytDTOs, start, length, commodities.getTotal());
 	}
 	
@@ -192,7 +192,7 @@ public class CommodityService {
 			result.put(pl.getName(), new PriceDTO(id, pl.getId()));
 		}
 		for(Price price: Price.findPricesForCommodity(id))
-			result.put(plMap.get(price.getPriceList().getId()), PriceDTOFactory.toDTO(price));
+			result.put(plMap.get(price.getPriceList().getId()), PriceDTOTransformer.toDTO(price));
 		return result;
 	}
 

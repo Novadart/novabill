@@ -31,8 +31,8 @@ import com.dumbster.smtp.SimpleSmtpServer;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.SharingPermit;
 import com.novadart.novabill.domain.SharingToken;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
-import com.novadart.novabill.domain.dto.factory.SharingPermitDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.SharingPermitDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.PeriodicPurgerService;
 import com.novadart.novabill.service.SharingService;
@@ -93,9 +93,9 @@ public class SharingTest extends ServiceTest {
 	
 	@Test
 	public void grantPermitWithEmailTest() throws ValidationException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
-		SharingPermitDTO sharingPermitDTO = SharingPermitDTOFactory.toDTO(TestUtils.createSharingPermit());
+		SharingPermitDTO sharingPermitDTO = SharingPermitDTOTransformer.toDTO(TestUtils.createSharingPermit());
 		Principal authenticatedPrincipal = utilsService.getAuthenticatedPrincipalDetails();
-		sharingPermitDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		sharingPermitDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		
 		SharingPermitController sharingPermitController = initSharingPermitController();
@@ -114,9 +114,9 @@ public class SharingTest extends ServiceTest {
 	
 	@Test
 	public void grantPermitWithoutEmailTest() throws ValidationException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
-		SharingPermitDTO sharingPermitDTO = SharingPermitDTOFactory.toDTO(TestUtils.createSharingPermit());
+		SharingPermitDTO sharingPermitDTO = SharingPermitDTOTransformer.toDTO(TestUtils.createSharingPermit());
 		Principal authenticatedPrincipal = utilsService.getAuthenticatedPrincipalDetails();
-		sharingPermitDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		sharingPermitDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		
 		SharingPermitController sharingPermitController = initSharingPermitController();

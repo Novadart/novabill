@@ -1,19 +1,19 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 
-public class TransportDocumentDTOFactory extends AccountingDocumentDTOFactory {
+public class TransportDocumentDTOTransformer extends AccountingDocumentDTOTransformer {
 	
 	public static TransportDocumentDTO toDTO(TransportDocument transportDocument, boolean copyItems) {
 		if(transportDocument == null)
 			return null;
 		TransportDocumentDTO transportDocumentDTO = new TransportDocumentDTO();
-		AccountingDocumentDTOFactory.copyToDTO(transportDocument, transportDocumentDTO, copyItems);
-		transportDocumentDTO.setBusiness(BusinessDTOFactory.toDTO(transportDocument.getBusiness()));
-		transportDocumentDTO.setClient(ClientDTOFactory.toDTO(transportDocument.getClient()));
+		AccountingDocumentDTOTransformer.copyToDTO(transportDocument, transportDocumentDTO, copyItems);
+		transportDocumentDTO.setBusiness(BusinessDTOTransformer.toDTO(transportDocument.getBusiness()));
+		transportDocumentDTO.setClient(ClientDTOTransformer.toDTO(transportDocument.getClient()));
 		transportDocumentDTO.setNumberOfPackages(transportDocument.getNumberOfPackages());
-		transportDocumentDTO.setFromEndpoint(EndpointDTOFactory.toDTO(transportDocument.getFromEndpoint()));
+		transportDocumentDTO.setFromEndpoint(EndpointDTOTransformer.toDTO(transportDocument.getFromEndpoint()));
 		transportDocumentDTO.setTransporter(transportDocument.getTransporter());
 		transportDocumentDTO.setTransportationResponsibility(transportDocument.getTransportationResponsibility());
 		transportDocumentDTO.setTradeZone(transportDocument.getTradeZone());
@@ -26,9 +26,9 @@ public class TransportDocumentDTOFactory extends AccountingDocumentDTOFactory {
 	}
 	
 	public static void copyFromDTO(TransportDocument transportDocument, TransportDocumentDTO transportDocumentDTO, boolean addItems){
-		AccountingDocumentDTOFactory.copyFromDTO(transportDocument, transportDocumentDTO, addItems);
+		AccountingDocumentDTOTransformer.copyFromDTO(transportDocument, transportDocumentDTO, addItems);
 		transportDocument.setNumberOfPackages(transportDocumentDTO.getNumberOfPackages());
-		EndpointDTOFactory.copyFromDTO(transportDocument.getFromEndpoint(), transportDocumentDTO.getFromEndpoint());
+		EndpointDTOTransformer.copyFromDTO(transportDocument.getFromEndpoint(), transportDocumentDTO.getFromEndpoint());
 		transportDocument.setTransporter(transportDocumentDTO.getTransporter());
 		transportDocument.setTransportationResponsibility(transportDocumentDTO.getTransportationResponsibility());
 		transportDocument.setTradeZone(transportDocumentDTO.getTradeZone());

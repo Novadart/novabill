@@ -34,9 +34,9 @@ import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.DTOUtils;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
-import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
-import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.TransportDocumentDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
@@ -96,7 +96,7 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	@Test
 	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long transportDocID = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next().getId();
-		TransportDocumentDTO expectedDTO = TransportDocumentDTOFactory.toDTO(TransportDocument.findTransportDocument(transportDocID), true);
+		TransportDocumentDTO expectedDTO = TransportDocumentDTOTransformer.toDTO(TransportDocument.findTransportDocument(transportDocID), true);
 		TransportDocumentDTO actualDTO = transportDocService.get(transportDocID);
 		assertTrue(TestUtils.transportDocumentComparator.equal(actualDTO, expectedDTO));
 	}
@@ -216,7 +216,7 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException, DataIntegrityException{
 		TransportDocument expected = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		expected.setNote("Temporary note for this transport document");
-		transportDocService.update(TransportDocumentDTOFactory.toDTO(expected, true));
+		transportDocService.update(TransportDocumentDTOTransformer.toDTO(expected, true));
 		TransportDocument.entityManager().flush();
 		TransportDocument actual = TransportDocument.findTransportDocument(expected.getId());
 		assertEquals(actual.getNote(), "Temporary note for this transport document");
@@ -237,7 +237,7 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException{
 		TransportDocument transportDoc = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getTransportDocuments().iterator().next();
-		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(transportDoc, true);
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(transportDoc, true);
 		transDocDTO.setId(null);
 		transportDocService.update(transDocDTO);
 	}
@@ -247,18 +247,18 @@ public class TransportDocumentServiceTest extends ServiceTest {
 		TransportDocument transportDoc = Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getTransportDocuments().iterator().next();
 		Long invoiceID = authenticatedPrincipal.getBusiness().getInvoices().iterator().next().getId();
 		transportDocService.setInvoice(authenticatedPrincipal.getBusiness().getId(), invoiceID, transportDoc.getId());
-		transportDocService.update(TransportDocumentDTOFactory.toDTO(transportDoc, true));
+		transportDocService.update(TransportDocumentDTOTransformer.toDTO(transportDoc, true));
 	}
 	
 	@Test
 	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, JsonParseException, JsonMappingException, IOException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
-		transDocDTO.setClient(ClientDTOFactory.toDTO(client));
-		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
+		transDocDTO.setClient(ClientDTOTransformer.toDTO(client));
+		transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = transportDocService.add(transDocDTO);
 		TransportDocument.entityManager().flush();
-		assertTrue(TestUtils.transportDocumentComparatorIgnoreID.equal(transDocDTO, TransportDocumentDTOFactory.toDTO(TransportDocument.findTransportDocument(id), true)));
+		assertTrue(TestUtils.transportDocumentComparatorIgnoreID.equal(transDocDTO, TransportDocumentDTOTransformer.toDTO(TransportDocument.findTransportDocument(id), true)));
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
 		assertEquals(EntityType.TRANSPORT_DOCUMENT, rec.getEntityType());
 		assertEquals(id, rec.getEntityID());
@@ -273,20 +273,20 @@ public class TransportDocumentServiceTest extends ServiceTest {
 		Client client = new Client();
 		client.setName("John Doe");
 		client.setBusiness(authenticatedPrincipal.getBusiness());
-		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(client));
+		Long clientID = clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(client));
 		
-		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID()), true);
-		transDocDTO.setClient(ClientDTOFactory.toDTO(Client.findClient(clientID)));
-		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID()), true);
+		transDocDTO.setClient(ClientDTOTransformer.toDTO(Client.findClient(clientID)));
+		transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		transportDocService.add(transDocDTO);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void addUnathorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(Business.findBusiness(getUnathorizedBusinessID()).getNextTransportDocDocumentID()), true);
-		transDocDTO.setClient(ClientDTOFactory.toDTO(client));
-		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createTransportDocument(Business.findBusiness(getUnathorizedBusinessID()).getNextTransportDocDocumentID()), true);
+		transDocDTO.setClient(ClientDTOTransformer.toDTO(client));
+		transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		transportDocService.add(transDocDTO);
 	}
 	
@@ -298,9 +298,9 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void addAuthorizedTransportDocDTOIDNotNull() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
-		transDocDTO.setClient(ClientDTOFactory.toDTO(client));
-		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
+		transDocDTO.setClient(ClientDTOTransformer.toDTO(client));
+		transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		transDocDTO.setId(1l);
 		transportDocService.add(transDocDTO);
 	}
@@ -308,9 +308,9 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	@Test
 	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, InstantiationException{
 		try{
-			TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createInvalidTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
-			transDocDTO.setClient(ClientDTOFactory.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
-			transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+			TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createInvalidTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
+			transDocDTO.setClient(ClientDTOTransformer.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
+			transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 			transportDocService.add(transDocDTO);
 		}catch(ValidationException e){
 			Set<Field> expected = new HashSet<Field>(TestUtils.transportDocValidationFieldsMap.values());
@@ -329,9 +329,9 @@ public class TransportDocumentServiceTest extends ServiceTest {
 	@Test
 	public void getAllWithIDsTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, ValidationException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
-		transDocDTO.setClient(ClientDTOFactory.toDTO(client));
-		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
+		transDocDTO.setClient(ClientDTOTransformer.toDTO(client));
+		transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		transportDocService.add(transDocDTO);
 		TransportDocument.entityManager().flush();
 		Long nextInvID = invoiceService.getNextInvoiceDocumentID();

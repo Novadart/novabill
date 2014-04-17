@@ -13,7 +13,7 @@ import com.novadart.novabill.authorization.NumberOfPaymentTypesQuotaReachedCheck
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.PaymentType;
-import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.PaymentTypeDTOTransformer;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
@@ -54,7 +54,7 @@ public class PaymentTypeService {
 	@Restrictions(checkers = {NumberOfPaymentTypesQuotaReachedChecker.class})
 	public Long add(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException {
 		PaymentType paymentType = new PaymentType();
-		PaymentTypeDTOFactory.copyFromDTO(paymentType, paymentTypeDTO);
+		PaymentTypeDTOTransformer.copyFromDTO(paymentType, paymentTypeDTO);
 		validator.validate(paymentType);
 		Business business = Business.findBusiness(paymentTypeDTO.getBusiness().getId());
 		business.getPaymentTypes().add(paymentType);
@@ -72,7 +72,7 @@ public class PaymentTypeService {
 		PaymentType persistedPaymentType = PaymentType.findPaymentType(paymentTypeDTO.getId());
 		if(persistedPaymentType == null)
 			throw new NoSuchObjectException();
-		PaymentTypeDTOFactory.copyFromDTO(persistedPaymentType, paymentTypeDTO);
+		PaymentTypeDTOTransformer.copyFromDTO(persistedPaymentType, paymentTypeDTO);
 		validator.validate(persistedPaymentType);
 	}
 

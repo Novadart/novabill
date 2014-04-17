@@ -34,8 +34,8 @@ import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PriceListDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
@@ -80,11 +80,11 @@ public class PriceListServiceTest extends ServiceTest {
 	
 	@Test
 	public void addAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, JsonParseException, JsonMappingException, IOException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
 		PriceList.entityManager().flush();
-		PriceListDTO persistedDTO = PriceListDTOFactory.toDTO(PriceList.findPriceList(id), null);
+		PriceListDTO persistedDTO = PriceListDTOTransformer.toDTO(PriceList.findPriceList(id), null);
 		assertTrue(EqualsBuilder.reflectionEquals(priceListDTO, persistedDTO, "id", "business"));
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
 		assertEquals(EntityType.PRICE_LIST, rec.getEntityType());
@@ -97,8 +97,8 @@ public class PriceListServiceTest extends ServiceTest {
 	
 	@Test(expected = DataAccessException.class)
 	public void addUnauthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		priceListService.add(priceListDTO);
 	}
 	
@@ -109,8 +109,8 @@ public class PriceListServiceTest extends ServiceTest {
 	
 	@Test(expected = DataAccessException.class)
 	public void addAuthorizedIDNotNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		priceListDTO.setId(1l);
 		priceListService.add(priceListDTO);
 	}
@@ -119,7 +119,7 @@ public class PriceListServiceTest extends ServiceTest {
 	public void addAuthorizedValidationFieldMappingTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException{
 		PriceListDTO priceListDTO = new PriceListDTO();
 		priceListDTO.setName("test price list");
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		try{
 			priceListService.add(priceListDTO);
 		}catch (ValidationException e) {
@@ -157,16 +157,16 @@ public class PriceListServiceTest extends ServiceTest {
 	
 	@Test(expected = DataAccessException.class)
 	public void removeUnAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException, DataIntegrityException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
 		priceListService.remove(getUnathorizedBusinessID(), id);
 	}
 	
 	@Test(expected = DataAccessException.class)
 	public void removeBusinessIDNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException, DataIntegrityException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
 		priceListService.remove(null, id);
 	}
@@ -178,8 +178,8 @@ public class PriceListServiceTest extends ServiceTest {
 	
 	@Test
 	public void removeAuthorizedUsedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, DataIntegrityException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
 		PriceList priceList = PriceList.findPriceList(id);
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
@@ -191,8 +191,8 @@ public class PriceListServiceTest extends ServiceTest {
 	
 	@Test
 	public void getAllAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		priceListService.add(priceListDTO);
 		List<PriceListDTO> priceListDTOs = priceListService.getAll(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(priceListDTOs.size() == authenticatedPrincipal.getBusiness().getPriceLists().size());
@@ -201,8 +201,8 @@ public class PriceListServiceTest extends ServiceTest {
 	
 	@Test(expected = DataAccessException.class)
 	public void getAllUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		priceListService.add(priceListDTO);
 		priceListService.getAll(getUnathorizedBusinessID());
 	}
@@ -252,16 +252,16 @@ public class PriceListServiceTest extends ServiceTest {
 	
 	@Test(expected = ValidationException.class)
 	public void duplicateNameTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		priceListService.add(priceListDTO);
 		priceListService.add(priceListDTO);
 	}
 	
 	@Test
 	public void updateSameNameTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
 		priceListDTO.setId(id);
 		priceListService.update(priceListDTO);
@@ -269,8 +269,8 @@ public class PriceListServiceTest extends ServiceTest {
 	
 	@Test
 	public void checkUniquenessTrueTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
 		assertTrue(PriceList.findPriceList(id).nameExists());
 	}

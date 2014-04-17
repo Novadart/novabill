@@ -32,14 +32,14 @@ import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.SharingPermit;
 import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.domain.dto.DTOUtils;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
-import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
-import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
-import com.novadart.novabill.domain.dto.factory.LogRecordDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
-import com.novadart.novabill.domain.dto.factory.SharingPermitDTOFactory;
-import com.novadart.novabill.domain.dto.factory.TransporterDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.CommodityDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.LogRecordDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PaymentTypeDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PriceListDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.SharingPermitDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.TransporterDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
@@ -161,7 +161,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@PreAuthorize("#businessDTO?.id == principal.business.id")
 	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
 		Business business = Business.findBusiness(businessDTO.getId());
-		BusinessDTOFactory.copyFromDTO(business, businessDTO);
+		BusinessDTOTransformer.copyFromDTO(business, businessDTO);
 		validator.validate(business);
 	}
 	
@@ -195,7 +195,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Set<Client> clients = Business.findBusiness(businessID).getClients();
 		List<ClientDTO> clientDTOs = new ArrayList<ClientDTO>(clients.size());
 		for(Client client: clients)
-			clientDTOs.add(ClientDTOFactory.toDTO(client));
+			clientDTOs.add(ClientDTOTransformer.toDTO(client));
 		return clientDTOs;
 	}
 	
@@ -205,7 +205,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Set<Commodity> commodities = Business.findBusiness(businessID).getCommodities();
 		List<CommodityDTO> commodityDTOs = new ArrayList<CommodityDTO>(commodities.size());
 		for(Commodity commodity: commodities)
-			commodityDTOs.add(CommodityDTOFactory.toDTO(commodity));
+			commodityDTOs.add(CommodityDTOTransformer.toDTO(commodity));
 		return commodityDTOs;
 	}
 	
@@ -216,7 +216,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Set<PriceList> priceLists = Business.findBusiness(businessID).getPriceLists();
 		List<PriceListDTO> priceListDTOs = new ArrayList<>(priceLists.size());
 		for(PriceList priceList: priceLists)
-			priceListDTOs.add(PriceListDTOFactory.toDTO(priceList, null));
+			priceListDTOs.add(PriceListDTOTransformer.toDTO(priceList, null));
 		return priceListDTOs;
 	}
 
@@ -226,7 +226,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Set<PaymentType> paymentTypes = Business.findBusiness(businessID).getPaymentTypes();
 		List<PaymentTypeDTO> paymentTypeDTOs = new ArrayList<PaymentTypeDTO>(paymentTypes.size());
 		for(PaymentType paymentType: paymentTypes)
-			paymentTypeDTOs.add(PaymentTypeDTOFactory.toDTO(paymentType));
+			paymentTypeDTOs.add(PaymentTypeDTOTransformer.toDTO(paymentType));
 		return paymentTypeDTOs;
 	}
 	
@@ -236,7 +236,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Set<Transporter> transporters = Business.findBusiness(businessID).getTransporters();
 		List<TransporterDTO> transporterDTOs = new ArrayList<>(transporters.size());
 		for(Transporter transporter: transporters)
-			transporterDTOs.add(TransporterDTOFactory.toDTO(transporter));
+			transporterDTOs.add(TransporterDTOTransformer.toDTO(transporter));
 		return transporterDTOs;
 	}
 	
@@ -246,13 +246,13 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Set<SharingPermit> sharingPermits = Business.findBusiness(businessID).getSharingPermits();
 		List<SharingPermitDTO> sharingPermitDTOs = new ArrayList<>(sharingPermits.size());
 		for(SharingPermit sharingPermit: sharingPermits)
-			sharingPermitDTOs.add(SharingPermitDTOFactory.toDTO(sharingPermit));
+			sharingPermitDTOs.add(SharingPermitDTOTransformer.toDTO(sharingPermit));
 		return sharingPermitDTOs;
 	}
 	
 	@PreAuthorize("#businessID == principal.business.id")
 	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return BusinessDTOFactory.toDTO(Business.findBusiness(businessID));
+		return BusinessDTOTransformer.toDTO(Business.findBusiness(businessID));
 	}
 
 	@Transactional(readOnly = false)
@@ -267,7 +267,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 
 													com.novadart.novabill.shared.client.exception.CloneNotSupportedException {
 		Business business = new Business();
-		BusinessDTOFactory.copyFromDTO(business, businessDTO);
+		BusinessDTOTransformer.copyFromDTO(business, businessDTO);
 		if(businessDTO.getSettings().getDefaultLayoutType() == null)
 			business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
 		validator.validate(business);
@@ -323,7 +323,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Long threshold = DateUtils.truncate(new Date(System.currentTimeMillis()), Calendar.HOUR).getTime() - (numberOfDays * 24L * 60L * 60L * 1000L) ;
 		List<LogRecordDTO> result = new ArrayList<>();
 		for(LogRecord lg: LogRecord.fetchAllSince(businessID, threshold))
-			result.add(LogRecordDTOFactory.toDTO(lg));
+			result.add(LogRecordDTOTransformer.toDTO(lg));
 		return result;
 	}
 

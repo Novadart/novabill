@@ -30,9 +30,9 @@ import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.dto.DTOUtils;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
-import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
-import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.EstimationDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
@@ -72,7 +72,7 @@ public class EstimationServiceTest extends ServiceTest {
 	@Test
 	public void getAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException{
 		Long estimationID = authenticatedPrincipal.getBusiness().getEstimations().iterator().next().getId();
-		EstimationDTO expectedDTO = EstimationDTOFactory.toDTO(Estimation.findEstimation(estimationID), true);
+		EstimationDTO expectedDTO = EstimationDTOTransformer.toDTO(Estimation.findEstimation(estimationID), true);
 		EstimationDTO actualDTO = estimationService.get(estimationID);
 		assertTrue(TestUtils.accountingDocumentComparator.equal(actualDTO, expectedDTO));
 	}
@@ -192,7 +192,7 @@ public class EstimationServiceTest extends ServiceTest {
 	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, JsonParseException, JsonMappingException, IOException{
 		Estimation expectedEstimation = authenticatedPrincipal.getBusiness().getEstimations().iterator().next();
 		expectedEstimation.setNote("Temporary note for this estimation");
-		estimationService.update(EstimationDTOFactory.toDTO(expectedEstimation, true));
+		estimationService.update(EstimationDTOTransformer.toDTO(expectedEstimation, true));
 		Estimation.entityManager().flush();
 		Estimation actualEstimation = Estimation.findEstimation(expectedEstimation.getId());
 		assertEquals(actualEstimation.getNote(), "Temporary note for this estimation");
@@ -213,7 +213,7 @@ public class EstimationServiceTest extends ServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void updateAuthorizedIDNull() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		Estimation estimation = authenticatedPrincipal.getBusiness().getEstimations().iterator().next();
-		EstimationDTO estDTO = EstimationDTOFactory.toDTO(estimation, true);
+		EstimationDTO estDTO = EstimationDTOTransformer.toDTO(estimation, true);
 		estDTO.setId(null);
 		estimationService.update(estDTO);
 	}
@@ -221,12 +221,12 @@ public class EstimationServiceTest extends ServiceTest {
 	@Test
 	public void addAuthorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, JsonParseException, JsonMappingException, IOException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		EstimationDTO estDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
-		estDTO.setClient(ClientDTOFactory.toDTO(client));
-		estDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		EstimationDTO estDTO = EstimationDTOTransformer.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
+		estDTO.setClient(ClientDTOTransformer.toDTO(client));
+		estDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = estimationService.add(estDTO);
 		Estimation.entityManager().flush();
-		assertTrue(TestUtils.accountingDocumentComparatorIgnoreID.equal(estDTO, EstimationDTOFactory.toDTO(Estimation.findEstimation(id), true)));
+		assertTrue(TestUtils.accountingDocumentComparatorIgnoreID.equal(estDTO, EstimationDTOTransformer.toDTO(Estimation.findEstimation(id), true)));
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
 		assertEquals(EntityType.ESTIMATION, rec.getEntityType());
 		assertEquals(id, rec.getEntityID());
@@ -239,9 +239,9 @@ public class EstimationServiceTest extends ServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void addUnathorizedTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		EstimationDTO estDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(Business.findBusiness(getUnathorizedBusinessID()).getNextEstimationDocumentID()), true);
-		estDTO.setClient(ClientDTOFactory.toDTO(client));
-		estDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
+		EstimationDTO estDTO = EstimationDTOTransformer.toDTO(TestUtils.createEstimation(Business.findBusiness(getUnathorizedBusinessID()).getNextEstimationDocumentID()), true);
+		estDTO.setClient(ClientDTOTransformer.toDTO(client));
+		estDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		estimationService.add(estDTO);
 	}
 	
@@ -253,9 +253,9 @@ public class EstimationServiceTest extends ServiceTest {
 	@Test(expected = DataAccessException.class)
 	public void addAuthorizedEstimationDTOIDNotNull() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		EstimationDTO estDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
-		estDTO.setClient(ClientDTOFactory.toDTO(client));
-		estDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		EstimationDTO estDTO = EstimationDTOTransformer.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
+		estDTO.setClient(ClientDTOTransformer.toDTO(client));
+		estDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		estDTO.setId(1l);
 		estimationService.add(estDTO);
 	}
@@ -263,9 +263,9 @@ public class EstimationServiceTest extends ServiceTest {
 	@Test
 	public void updateAuthorizedValidationFieldMappingTest() throws IllegalAccessException, InvocationTargetException, NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, InstantiationException{
 		try{
-			EstimationDTO estDTO = EstimationDTOFactory.toDTO(TestUtils.createInvalidEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
-			estDTO.setClient(ClientDTOFactory.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
-			estDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+			EstimationDTO estDTO = EstimationDTOTransformer.toDTO(TestUtils.createInvalidEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
+			estDTO.setClient(ClientDTOTransformer.toDTO(authenticatedPrincipal.getBusiness().getClients().iterator().next()));
+			estDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 			estimationService.add(estDTO);
 		}catch(ValidationException e){
 			Set<Field> expected = new HashSet<Field>(TestUtils.estimationValidationFieldsMap.values());

@@ -1,10 +1,10 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 
 
-public class CommodityDTOFactory {
+public class CommodityDTOTransformer {
 	
 	public static CommodityDTO toDTO(Commodity commodity){
 		if(commodity == null)

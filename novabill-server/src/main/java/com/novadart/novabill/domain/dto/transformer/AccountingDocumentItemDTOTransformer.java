@@ -1,10 +1,10 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 
 
-public class AccountingDocumentItemDTOFactory {
+public class AccountingDocumentItemDTOTransformer {
 	
 	public static AccountingDocumentItemDTO toDTO(AccountingDocumentItem item){
 		if(item == null)

@@ -21,8 +21,8 @@ import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
-import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
-import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.AccountingDocumentItemDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.service.validator.Groups.HeavyClient;
@@ -61,7 +61,7 @@ public class InvoiceService {
 		Invoice invoice = Invoice.findInvoice(id);
 		if(invoice == null)
 			throw new NoSuchElementException();
-		return InvoiceDTOFactory.toDTO(invoice, true);
+		return InvoiceDTOTransformer.toDTO(invoice, true);
 	}
 
 	@Transactional(readOnly = true)
@@ -115,7 +115,7 @@ public class InvoiceService {
 		  	  	 "#invoiceDTO != null and #invoiceDTO.id == null")
 	public Long add(InvoiceDTO invoiceDTO) throws DataAccessException, ValidationException, FreeUserAccessForbiddenException, NotAuthenticatedException, DataIntegrityException {
 		Invoice invoice = new Invoice();//create new invoice
-		InvoiceDTOFactory.copyFromDTO(invoice, invoiceDTO, true);
+		InvoiceDTOTransformer.copyFromDTO(invoice, invoiceDTO, true);
 		validator.validate(Invoice.class, invoice);
 		Client client = Client.findClient(invoiceDTO.getClient().getId());
 		simpleValidator.validate(client, HeavyClient.class);
@@ -143,15 +143,15 @@ public class InvoiceService {
 		if(persistedInvoice == null)
 			throw new NoSuchObjectException();
 		if (invoiceDTO.isCreatedFromTransportDocuments()) {
-			if (!DTOUtils.compareItems(invoiceDTO, InvoiceDTOFactory.toDTO(persistedInvoice, true), false))
+			if (!DTOUtils.compareItems(invoiceDTO, InvoiceDTOTransformer.toDTO(persistedInvoice, true), false))
 				throw new DataIntegrityException();
 		}
-		InvoiceDTOFactory.copyFromDTO(persistedInvoice, invoiceDTO, false);
+		InvoiceDTOTransformer.copyFromDTO(persistedInvoice, invoiceDTO, false);
 		if (!invoiceDTO.isCreatedFromTransportDocuments()) {
 			persistedInvoice.getAccountingDocumentItems().clear();
 			for (AccountingDocumentItemDTO itemDTO : invoiceDTO.getItems()) {
 				AccountingDocumentItem item = new AccountingDocumentItem();
-				AccountingDocumentItemDTOFactory.copyFromDTO(item, itemDTO);
+				AccountingDocumentItemDTOTransformer.copyFromDTO(item, itemDTO);
 				item.setAccountingDocument(persistedInvoice);
 				persistedInvoice.getAccountingDocumentItems().add(item);
 			}
@@ -184,7 +184,7 @@ public class InvoiceService {
 		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(filteringDateType, startDate, endDate);
 		List<InvoiceDTO> invoiceDTOs = new ArrayList<>(invoices.size());
 		for(Invoice inv: invoices)
-			invoiceDTOs.add(InvoiceDTOFactory.toDTO(inv, false));
+			invoiceDTOs.add(InvoiceDTOTransformer.toDTO(inv, false));
 		return invoiceDTOs;
 	}
 	

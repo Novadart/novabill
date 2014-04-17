@@ -1,9 +1,9 @@
-package com.novadart.novabill.domain.dto.factory;
+package com.novadart.novabill.domain.dto.transformer;
 
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 
-public class PaymentTypeDTOFactory {
+public class PaymentTypeDTOTransformer {
 	
 	public static PaymentTypeDTO toDTO(PaymentType paymentType){
 		if(paymentType == null)
