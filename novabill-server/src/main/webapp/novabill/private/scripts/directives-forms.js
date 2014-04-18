@@ -19,14 +19,13 @@ angular.module('novabill.directives.forms',
 			$scope.saveOrUpdate = function(){
 				
 				if($scope.business.id){
-					$scope.business.$update();
+					$scope.business.$update(function(){
+						$window.location.reload();
+					});
 				} else {
 					$scope.business.settings = {};
 					$scope.business.$save(function(){
 						$window.location.reload();
-					},
-					function(error){
-						alert(error);
 					});
 				}
 				

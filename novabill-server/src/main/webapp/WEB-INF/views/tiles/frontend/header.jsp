@@ -39,7 +39,7 @@
                         </sec:authorize>
                         <sec:authorize access="isAuthenticated()">
 						    <ul class="list-unstyled inline">
-                                <li><a href="${privatePageUrl}" class="btn btn-sm green">Area Privata</a></li>
+                                <li><a href="${privatePageUrl}" class="btn btn-sm green">I Tuoi Documenti</a></li>
                                 <li class="sep"><span>|</span></li>
                                 <li><a href="${logoutUrl}">Esci</a></li>
                             </ul>
