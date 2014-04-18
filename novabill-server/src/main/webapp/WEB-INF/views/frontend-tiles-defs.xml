@@ -31,6 +31,35 @@
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/loginBody.jsp" />
 	</definition>
 	
+	
+	<!-- Forgot Password -->
+	
+	<definition name="frontend.forgotPassword" extends="frontend.subPageLayout" >
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/forgotPasswordBody.jsp" />
+    </definition>
+    
+    <definition name="frontend.forgotPasswordOk" extends="frontend.subPageLayout" >
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/forgotPasswordOkBody.jsp" />
+    </definition>
+    
+    
+    <!-- Password Recovery -->
+    
+    <definition name="frontend.passwordRecovery" extends="frontend.subPageLayout" >
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/passwordRecoveryBody.jsp" />
+    </definition>
+	
+	<definition name="frontend.passwordRecoverySuccess" extends="frontend.subPageLayout" >
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/passwordRecoverySuccessBody.jsp" />
+    </definition>
+    
+    <definition name="frontend.passwordRecoveryFailure" extends="frontend.subPageLayout" >
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/passwordRecoveryFailureBody.jsp" />
+    </definition>
+	
+	
+	<!-- Registration -->
+	
 	<definition name="frontend.register" extends="frontend.subPageLayout" >
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/registerBody.jsp" />
     </definition>
@@ -39,6 +68,9 @@
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/registrationCompleteBody.jsp" />
     </definition>
 	
+	
+	<!-- Account Activation -->
+	
 	<definition name="frontend.activate" extends="frontend.subPageLayout" >
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/activateBody.jsp" />
     </definition>
@@ -46,6 +78,9 @@
     <definition name="frontend.invalidActivationRequest" extends="frontend.subPageLayout" >
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/invalidActivationRequestBody.jsp" />
     </definition>
+	
+	
+	<!-- Error pages -->
 	
 	<definition name="frontend.pageNotFound" extends="frontend.subPageLayout"  >
 	   <put-attribute name="head" value="/WEB-INF/views/tiles/frontend/pageNotFoundHead.jsp" />

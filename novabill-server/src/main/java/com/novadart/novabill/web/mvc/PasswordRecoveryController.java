@@ -18,7 +18,7 @@ import com.novadart.novabill.service.validator.ForgotPasswordValidator;
 import com.novadart.novabill.service.validator.ForgotPasswordValidator.ValidationType;
 
 @Controller
-@RequestMapping("/password-recovery")
+@RequestMapping(Urls.PUBLIC_PASSWORD_RECOVERY)
 @SessionAttributes("forgotPassword")
 public class PasswordRecoveryController {
 	
@@ -27,29 +27,32 @@ public class PasswordRecoveryController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model) throws CloneNotSupportedException{
+		model.addAttribute("pageName", "Creazione Nuova Password");
 		for(ForgotPassword forgotPassword : ForgotPassword.findForgotPasswords(email, token)){
 			if(forgotPassword.getExpirationDate().before(new Date())){ //expired
 				forgotPassword.remove();
 				continue;
 			}
 			model.addAttribute("forgotPassword", ((ForgotPassword)forgotPassword.clone()).clearPasswordFields());
-			return "passwordRecovery";
+			return "frontend.passwordRecovery";
 		}
-		return "invalidForgotPasswordRequest";
+		return "frontend.passwordRecoveryFailure";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional(readOnly = false)
-	public String processSubmit(@ModelAttribute("forgotPassword") ForgotPassword forgotPassword, BindingResult result, SessionStatus status){
+	public String processSubmit(@ModelAttribute("forgotPassword") ForgotPassword forgotPassword, BindingResult result, SessionStatus status, Model model){
 		validator.validate(forgotPassword, result, ValidationType.FULL_VALIDATION);
-		if(result.hasErrors())
-			return "passwordRecovery";
+		model.addAttribute("pageName", "Creazione Nuova Password");
+		if(result.hasErrors()) {
+			return "frontend.passwordRecovery";
+		}
 		else{
 			Principal principal = Principal.findByUsername(forgotPassword.getEmail());
 			principal.setPassword(forgotPassword.getPassword());
 			forgotPassword.remove();
 			status.setComplete();
-			return "passwordRecoverySuccess";
+			return "frontend.passwordRecoverySuccess";
 		}
 	}
 

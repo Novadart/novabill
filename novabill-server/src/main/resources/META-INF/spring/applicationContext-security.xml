@@ -60,6 +60,6 @@
     </beans:bean>
     
     <beans:bean id="novabillAuthenticationFailureHandler" class="com.novadart.novabill.springsecurity.AuthenticationFailureHandler">
-    	<beans:property name="defaultFailureUrl" value="/login?login_error=t"/>
+    	<beans:property name="defaultFailureUrl" value="/login?error=true"/>
     </beans:bean>
 </beans:beans>

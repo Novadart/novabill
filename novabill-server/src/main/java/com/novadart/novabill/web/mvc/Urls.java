@@ -10,6 +10,10 @@ public interface Urls {
 	public static final String PUBLIC_PAGE_NOT_FOUND = "/page-not-found";
 	public static final String PUBLIC_EXCEPTION = "/oops";
 	public static final String PUBLIC_ACTIVATE = "/activate";
+	public static final String PUBLIC_LOGIN = "/login";
+	public static final String PUBLIC_FORGOT_PASSWORD = "/forgot-password";
+	public static final String PUBLIC_FORGOT_PASSWORD_OK = "/forgot-password-ok";
+	public static final String PUBLIC_PASSWORD_RECOVERY = "/password-recovery";
 	public static final String PUBLIC_REGISTER = "/register";
 	public static final String PUBLIC_REGISTRATION_COMPLETE = "/registration-complete";
 	public static final String PUBLIC_TOS = "/tos";

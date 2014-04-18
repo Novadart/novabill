@@ -11,7 +11,7 @@ import com.novadart.novabill.domain.Registration;
 @Controller
 public class AuthenticationController {
 	
-	@RequestMapping(value = "/login", method = RequestMethod.GET)
+	@RequestMapping(value = Urls.PUBLIC_LOGIN, method = RequestMethod.GET)
 	public String register(Model model){
 		Registration registration = new Registration();
 		model.addAttribute("registration", registration);
