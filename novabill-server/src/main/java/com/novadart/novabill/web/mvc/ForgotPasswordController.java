@@ -98,7 +98,7 @@ public class ForgotPasswordController {
 			forgotPassword.setExpirationDate(new Date(System.currentTimeMillis() + passwordRecoveryPeriod * MILLISECS_PER_HOUR));
 			sendActivationMail(forgotPassword.merge(), locale);
 			status.setComplete();
-			return "redirect:/" + Urls.PUBLIC_FORGOT_PASSWORD_OK;
+			return "redirect:" + Urls.PUBLIC_FORGOT_PASSWORD_OK;
 		}
 	}
 

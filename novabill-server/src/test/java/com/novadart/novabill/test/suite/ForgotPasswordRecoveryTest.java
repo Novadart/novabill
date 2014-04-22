@@ -83,12 +83,13 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 	
 	@Test
 	public void defaultForgotPasswordRecoveryFlow() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
-		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "new password";
+		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "N3w password$";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -98,11 +99,12 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		String passwordRecoveryView = recoveryController.setupForm(email, token, model);
 		forgotPassword = (ForgotPassword)model.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, newPassword, newPassword);
-		String passwordRecoverySuccessView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class));
+		String passwordRecoverySuccessView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), mock(Model.class));
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView);
-		assertEquals("passwordRecovery", passwordRecoveryView);
-		assertEquals("passwordRecoverySuccess", passwordRecoverySuccessView);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView);
+		assertEquals("frontend.passwordRecovery", passwordRecoveryView);
+		assertEquals("frontend.passwordRecoverySuccess", passwordRecoverySuccessView);
 		
 		Principal persistedPrincipal = Principal.findByUsername(email);
 		assertTrue(utilsService.isPasswordValid(persistedPrincipal.getPassword(), newPassword));
@@ -113,8 +115,9 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		String token = "1", email = "foo@bar.com";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
-		assertEquals("forgotPassword", forgotPasswordView);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
+		assertEquals("frontend.forgotPassword", forgotPasswordView);
 	}
 	
 	@Test
@@ -122,8 +125,9 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		String token = "1";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, null);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
-		assertEquals("forgotPassword", forgotPasswordView);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
+		assertEquals("frontend.forgotPassword", forgotPasswordView);
 	}
 	
 	@Test
@@ -133,7 +137,8 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -142,11 +147,12 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		String passwordRecoveryView = recoveryController.setupForm(email, token, model);
 		forgotPassword = (ForgotPassword)model.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, newPassword, confirmNewPassword);
-		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class));
+		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), mock(Model.class));
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView);
-		assertEquals("passwordRecovery", passwordRecoveryView);
-		assertEquals("passwordRecovery", backTopasswordRecoveryView);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView);
+		assertEquals("frontend.passwordRecovery", passwordRecoveryView);
+		assertEquals("frontend.passwordRecovery", backTopasswordRecoveryView);
 	}
 	
 	@Test
@@ -156,7 +162,8 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -165,11 +172,12 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		String passwordRecoveryView = recoveryController.setupForm(email, token, model);
 		forgotPassword = (ForgotPassword)model.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, null, null);
-		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class));
+		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), mock(Model.class));
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView);
-		assertEquals("passwordRecovery", passwordRecoveryView);
-		assertEquals("passwordRecovery", backTopasswordRecoveryView);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView);
+		assertEquals("frontend.passwordRecovery", passwordRecoveryView);
+		assertEquals("frontend.passwordRecovery", backTopasswordRecoveryView);
 	}
 	
 	@Test
@@ -179,7 +187,8 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -188,11 +197,12 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		String passwordRecoveryView = recoveryController.setupForm(email, token, model);
 		forgotPassword = (ForgotPassword)model.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, newPassword, newPassword);
-		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class));
+		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), mock(Model.class));
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView);
-		assertEquals("passwordRecovery", passwordRecoveryView);
-		assertEquals("passwordRecovery", backTopasswordRecoveryView);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView);
+		assertEquals("frontend.passwordRecovery", passwordRecoveryView);
+		assertEquals("frontend.passwordRecovery", backTopasswordRecoveryView);
 	}
 	
 	
@@ -203,7 +213,8 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -212,11 +223,12 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		String passwordRecoveryView = recoveryController.setupForm(email, token, model);
 		forgotPassword = (ForgotPassword)model.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, newPassword, newPassword);
-		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class));
+		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), mock(Model.class));
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView);
-		assertEquals("passwordRecovery", passwordRecoveryView);
-		assertEquals("passwordRecovery", backTopasswordRecoveryView);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView);
+		assertEquals("frontend.passwordRecovery", passwordRecoveryView);
+		assertEquals("frontend.passwordRecovery", backTopasswordRecoveryView);
 	}
 	
 	
@@ -227,27 +239,29 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
 		PasswordRecoveryController recoveryController = initPasswordRecoveryController();
 		String passwordRecoveryView = recoveryController.setupForm(email, token, mock(Model.class));
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView);
-		assertEquals("invalidForgotPasswordRequest", passwordRecoveryView);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView);
+		assertEquals("frontend.passwordRecoveryFailure", passwordRecoveryView);
 	}
 	
 	@Test
 	public void twoForgotPasswordRequestsSameEmail() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
-		String token1 = "1", token2 = "2", email = userPasswordMap.keySet().iterator().next(), password1 = "password1", password2 = "password2";
+		String token1 = "1", token2 = "2", email = userPasswordMap.keySet().iterator().next(), password1 = "Password1$", password2 = "Password2$";
 
 		//First forgot password
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token1, "%S%S", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token1, email);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView1 = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView1 = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -256,7 +270,8 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		forgotPassword = initForgotPassword(token2, email);
 		
 		smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView2 = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView2 = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -274,7 +289,7 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		forgotPassword = (ForgotPassword)model1.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, password1, password1);
 		String passwordRecoverySuccessView1 = passwordRecoveryController1.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
-				mock(SessionStatus.class));
+				mock(SessionStatus.class), mock(Model.class));
 		
 		Principal.entityManager().flush();
 		
@@ -285,7 +300,7 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		forgotPassword = (ForgotPassword)model2.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, password2, password2);
 		String passwordRecoverySuccessView2 = passwordRecoveryController2.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
-				mock(SessionStatus.class));
+				mock(SessionStatus.class), mock(Model.class));
 		
 		Principal.entityManager().flush();
 		
@@ -293,13 +308,13 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		assertTrue(utilsService.isPasswordValid(persistedPrincipal.getPassword(), password2));
 		
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView1);
-		assertEquals("passwordRecovery", passwordRecoverView1);
-		assertEquals("passwordRecoverySuccess", passwordRecoverySuccessView1);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView1);
+		assertEquals("frontend.passwordRecovery", passwordRecoverView1);
+		assertEquals("frontend.passwordRecoverySuccess", passwordRecoverySuccessView1);
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView2);
-		assertEquals("passwordRecovery", passwordRecoverView2);
-		assertEquals("passwordRecoverySuccess", passwordRecoverySuccessView2);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView2);
+		assertEquals("frontend.passwordRecovery", passwordRecoverView2);
+		assertEquals("frontend.passwordRecoverySuccess", passwordRecoverySuccessView2);
 		
 	}
 	

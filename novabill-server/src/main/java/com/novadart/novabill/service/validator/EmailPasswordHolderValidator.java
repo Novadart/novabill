@@ -34,6 +34,7 @@ public class EmailPasswordHolderValidator {
 	}
 	
 	public static boolean isPasswordStrong(String password){
+		if(password == null) return false;
 		if(password.equals(password.toUpperCase())) return false; // no lowercase letter
 		if(password.equals(password.toLowerCase())) return false; // no uppercase letter
 		if(password.matches("[A-Za-z0-9 ]*")) return false; // no special character
