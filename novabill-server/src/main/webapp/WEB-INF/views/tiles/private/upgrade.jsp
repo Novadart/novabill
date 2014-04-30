@@ -20,7 +20,6 @@
 			height="1">
 		<input type="hidden" name="return" value="${returnUrl}">
 		<input type="hidden" name="custom" value="${email}">	
-		
 	</form>
 
 

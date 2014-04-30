@@ -69,11 +69,8 @@ mvn.tiles.css.definition=expandedCSS
 # Paypal
 #
 mvn.paypal.action=https://www.sandbox.paypal.com/cgi-bin/webscr
-mvn.paypal.hostedButtonID=QR96B53BDX3FJ
 mvn.paypal.url=https://www.sandbox.paypal.com/cgi-bin/webscr
-mvn.paypal.email=nova_1337536969_biz@gmail.com
-mvn.paypal.premiumOneYearItemName=Novabill premium membership - 1 Year
-mvn.paypal.premiumOneYearMCGross=40.00
+mvn.paypal.email=risto.gligorov-facilitator@novadart.com
 
 #
 # Quota
