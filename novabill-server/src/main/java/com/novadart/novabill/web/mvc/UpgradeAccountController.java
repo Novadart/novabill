@@ -19,6 +19,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
 import com.novadart.novabill.domain.UpgradeToken;
+import com.novadart.novabill.paypal.PaymentPlansLoader;
 import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
 
@@ -34,9 +35,9 @@ public class UpgradeAccountController {
 	
 	@Value("${paypal.action}")
 	private String paypalAction;
-	
-	@Value("${paypal.hostedButtonID}")
-	private String hostedButtonID;
+
+	@Autowired
+	private PaymentPlansLoader paymentPlans;
 	
 	
 	@RequestMapping(method = RequestMethod.GET)
@@ -52,7 +53,7 @@ public class UpgradeAccountController {
 				request.getContextPath() + String.format("/private/upgrade/paypal-callback?email=%s&novabillToken=%s", 
 						URLEncoder.encode(email, "UTF-8"), URLEncoder.encode(token, "UTF-8"))).toString();
 		model.addAttribute("paypalAction", paypalAction);
-		model.addAttribute("hostedButtonID", hostedButtonID);
+		model.addAttribute("hostedButtonID", paymentPlans.getPayPalPaymentPlanDescriptors()[0].getHostedButtonID());
 		model.addAttribute("returnUrl", returnURL);
 		model.addAttribute("email", email);
 		return "private.upgrade";

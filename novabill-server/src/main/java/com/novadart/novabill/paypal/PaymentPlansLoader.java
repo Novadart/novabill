@@ -18,6 +18,10 @@ public class PaymentPlansLoader {
 	
 	@Autowired
 	private ResourceLoader resourceLoader;
+
+	public PayPalPaymentPlanDescriptor[] getPayPalPaymentPlanDescriptors(){
+		return paypalPaymentDescriptors;
+	}
 	
 	@PostConstruct
 	public void init() {
@@ -35,5 +39,5 @@ public class PaymentPlansLoader {
 				return descriptor;
 		throw new NoSuchElementException("No such payment plan");
 	}
-
+	
 }
