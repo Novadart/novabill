@@ -9,18 +9,19 @@ import javax.persistence.PersistenceContext;
 
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.MailMixin;
-import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
 
 
-//@Service
+@Service
 @MailMixin
 public class AccountStatusManagerService {
 	
-	private static final Long DAY_IN_MILLIS = 86400000l;
+	private static final Long DAY_IN_MILLIS = 86_400_000l;
 	
 	@PersistenceContext
 	private EntityManager entityManager; 
@@ -36,41 +37,41 @@ public class AccountStatusManagerService {
 	@Async
 	@Transactional(readOnly = true)
 	private void notifySoonToExpireAccounts(int days){
-		String query = "select business from Business business, in (business.grantedRoles) gr where " +
-				":lbound < business.settings.nonFreeAccountExpirationTime and business.settings.nonFreeAccountExpirationTime < :rbound and gr = :role";
+		String query = "select principal from Principal principal inner join principal.grantedRoles gr where " +
+				":lbound < principal.business.settings.nonFreeAccountExpirationTime and principal.business.settings.nonFreeAccountExpirationTime < :rbound and gr = :role";
 		Long now = System.currentTimeMillis();
 		Long lbound = now + (days - 1)  *  DAY_IN_MILLIS, rbound = now + days * DAY_IN_MILLIS;
-		List<Business> soonToExpireBusinesses = entityManager.createQuery(query, Business.class)
+		List<Principal> soonToExpirePrincipals = entityManager.createQuery(query, Principal.class)
 				.setParameter("lbound", lbound)
 				.setParameter("rbound", rbound)
 				.setParameter("role", RoleType.ROLE_BUSINESS_PREMIUM).getResultList();
-		for(Business business: soonToExpireBusinesses){
+		for(Principal principal: soonToExpirePrincipals){
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("expired", false);
 			model.put("days", days);
-			sendMessage(business.getEmail(), "Premium account soon to expire", model, "mail-templates/premium-expiration-notification.vm");
+			sendMessage(principal.getUsername(), "Premium account soon to expire", model, "mail-templates/premium-expiration-notification.vm");
 		}
 	}
 	
 	@Async
 	@Transactional(readOnly = false)
 	private void disableExpiredAccounts(){
-		String query = "select business from Business business, in (business.grantedRoles) gr where business.settings.nonFreeAccountExpirationTime < :now and gr = :role";
-		List<Business> expiredBusinesses = entityManager.createQuery(query, Business.class)
+		String query = "select principal from Principal principal inner join principal.grantedRoles gr where principal.business.settings.nonFreeAccountExpirationTime < :now and gr = :role";
+		List<Principal> expiredPrincipals = entityManager.createQuery(query, Principal.class)
 				.setParameter("now", System.currentTimeMillis())
 				.setParameter("role", RoleType.ROLE_BUSINESS_PREMIUM).getResultList();
-		for(Business business: expiredBusinesses){
-			disableExpiredAccount(business);
+		for(Principal principal: expiredPrincipals){
+			disableExpiredAccount(principal);
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("expired", true);
-			sendMessage(business.getEmail(), "Premium account expired", model, "mail-templates/premium-expiration-notification.vm");
+			sendMessage(principal.getUsername(), "Premium account expired", model, "mail-templates/premium-expiration-notification.vm");
 		}
 	}
 	
-	private void disableExpiredAccount(Business business){
-//		business.getGrantedRoles().remove(RoleType.ROLE_BUSINESS_PREMIUM);
-//		business.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
-//		business.setNonFreeAccountExpirationTime(null);
+	private void disableExpiredAccount(Principal principal){
+		principal.getGrantedRoles().remove(RoleType.ROLE_BUSINESS_PREMIUM);
+		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
+		principal.getBusiness().getSettings().setNonFreeAccountExpirationTime(null);
 	}
 
 }
