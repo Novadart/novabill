@@ -95,10 +95,10 @@ public class NewCreditNotePresenter extends AbstractCreditNotePresenter {
 
 			@Override
 			public void onSuccess(Long result) {
-				Notification.showMessage(I18N.INSTANCE.creditNoteCreationSuccess(), new NotificationCallback<Void>() {
+				Notification.showMessage(I18N.INSTANCE.creditNoteCreationSuccess(), new NotificationCallback() {
 
 					@Override
-					public void onNotificationClosed(Void value) {
+					public void onNotificationClosed(boolean value) {
 						getView().getCreateDocument().showLoader(false);
 						getView().setLocked(false);
 						BridgeUtils.invokeJSCallback(Boolean.TRUE, getCallback());

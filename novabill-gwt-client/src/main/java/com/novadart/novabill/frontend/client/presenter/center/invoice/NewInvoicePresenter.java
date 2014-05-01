@@ -178,10 +178,10 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 					@Override
 					public void onSuccess(Long result) {
 						getView().getCreateDocument().showLoader(false);
-						Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess(), new NotificationCallback<Void>() {
+						Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess(), new NotificationCallback() {
 
 							@Override
-							public void onNotificationClosed(Void value) {
+							public void onNotificationClosed(boolean value) {
 								getView().setLocked(false);
 								BridgeUtils.invokeJSCallback(Boolean.TRUE, getCallback());
 							}

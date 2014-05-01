@@ -22,10 +22,10 @@ public abstract class BasicActivity extends AbstractActivity {
 	}
 	
 	protected void manageError(){
-		Notification.showMessage(I18N.INSTANCE.errorServerCommunication(), new NotificationCallback<Void>() {
+		Notification.showMessage(I18N.INSTANCE.errorServerCommunication(), new NotificationCallback() {
 			
 			@Override
-			public void onNotificationClosed(Void value) {
+			public void onNotificationClosed(boolean value) {
 				clientFactory.getPlaceController().goTo(new HomePlace());
 			}
 		});

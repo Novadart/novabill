@@ -70,14 +70,10 @@ angular.module('novabill.creditNotes.controllers',
 	
     GWT_UI.showModifyCreditNotePage('credit-note-details', $routeParams.creditNoteId, {
     	onSuccess : function(bool){
-    	    $scope.$apply(function(){
-    	    	$location.path('/');
-    	    });  		
+	    	$location.path('/');
     	},
     	onFailure : function(){
-			$scope.$apply(function(){
-				$location.path('/');
-			});
+			$location.path('/');
 		}
     });
 	
@@ -95,14 +91,10 @@ angular.module('novabill.creditNotes.controllers',
 	
 	GWT_UI.showNewCreditNotePage('credit-note-details', $routeParams.clientId, {
     	onSuccess : function(bool){
-    		$scope.$apply(function(){
-    	    	$location.path('/');
-    	    });
+	    	$location.path('/');
     	},
     	onFailure : function(){
-			$scope.$apply(function(){
-				$location.path('/');
-			});
+			$location.path('/');
 		}
     });
 	
@@ -119,14 +111,10 @@ angular.module('novabill.creditNotes.controllers',
 	
 	GWT_UI.showFromInvoiceCreditNotePage('credit-note-details', $routeParams.invoiceId, {
     	onSuccess : function(bool){
-    		$scope.$apply(function(){
-    	    	$location.path('/');
-    	    });
+	    	$location.path('/');
     	},
     	onFailure : function(){
-			$scope.$apply(function(){
-				$location.path('/');
-			});
+			$location.path('/');
 		}
     });
 	

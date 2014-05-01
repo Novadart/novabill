@@ -69,14 +69,10 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 	
     GWT_UI.showModifyEstimationPage('estimation-details', $routeParams.estimationId, {
     	onSuccess : function(bool){
-    	    $scope.$apply(function(){
-    	    	$location.path('/');
-    	    });  		
+	    	$location.path('/');
     	},
     	onFailure : function(){
-			$scope.$apply(function(){
-				$location.path('/');
-			});
+			$location.path('/');
 		}
     });
 	gwtHook.injectSelectCommodityDialogHook();
@@ -93,14 +89,10 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 	
 	GWT_UI.showNewEstimationPage('estimation-details', $routeParams.clientId, {
     	onSuccess : function(bool){
-    		$scope.$apply(function(){
-    	    	$location.path('/');
-    	    });
+	    	$location.path('/');
     	},
     	onFailure : function(){
-			$scope.$apply(function(){
-				$location.path('/');
-			});
+			$location.path('/');
 		}
     });
 	gwtHook.injectSelectCommodityDialogHook();
@@ -117,14 +109,10 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 	
 	GWT_UI.showCloneEstimationPage('estimation-details', $routeParams.clientId, $routeParams.sourceId, {
     	onSuccess : function(bool){
-    	    $scope.$apply(function(){
-    	    	$location.path('/');
-    	    });  		
+	    	$location.path('/');
     	},
     	onFailure : function(){
-			$scope.$apply(function(){
-				$location.path('/');
-			});
+			$location.path('/');
 		}
     });
 	gwtHook.injectSelectCommodityDialogHook();

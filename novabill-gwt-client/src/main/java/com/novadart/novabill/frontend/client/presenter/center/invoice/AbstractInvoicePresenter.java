@@ -6,7 +6,6 @@ import java.util.List;
 
 import com.google.gwt.core.client.JavaScriptObject;
 import com.google.gwt.place.shared.PlaceController;
-import com.google.gwt.safehtml.shared.SafeHtmlBuilder;
 import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
 import com.novadart.novabill.frontend.client.Configuration;
@@ -44,10 +43,10 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 
 	@Override
 	public void onCancelClicked() {
-		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 					BridgeUtils.invokeJSCallback(Boolean.FALSE, getCallback());
 				}
@@ -194,18 +193,10 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 			if(getView().getPaymentNote().getText().equals(payment.getDefaultPaymentNote())){
 				return;
 			}
-
-			SafeHtmlBuilder shb = new SafeHtmlBuilder();
-			shb.appendHtmlConstant("<div>");
-			shb.appendEscaped(I18N.INSTANCE.overridePaymentNoteQuestion());
-			shb.appendHtmlConstant("</div>");
-			shb.appendHtmlConstant("<div style=\"font-style: italic;\">");
-			shb.appendEscaped(payment.getDefaultPaymentNote());
-			shb.appendHtmlConstant("</div>");
-			Notification.showConfirm(shb.toSafeHtml(), new NotificationCallback<Boolean>() {
+			Notification.showConfirm(I18N.INSTANCE.overridePaymentNoteQuestion() + "\""+payment.getDefaultPaymentNote()+"\"?", new NotificationCallback() {
 
 				@Override
-				public void onNotificationClosed(Boolean value) {
+				public void onNotificationClosed(boolean value) {
 					if(value){
 						getView().getPaymentNote().setText(payment.getDefaultPaymentNote());
 					}

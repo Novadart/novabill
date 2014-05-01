@@ -174,16 +174,18 @@ angular.module('novabill.priceLists.controllers',
 
 	$scope.removePriceList = function(){
 		var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION', {data: $scope.priceList.name}) );
-		instance.result.then(function(){
-			GWT_Server.priceList.remove(nConstants.conf.businessId, String($scope.priceList.id), {
-				onSuccess : function(data){
-					$scope.$apply(function(){
-						$location.path('/');
-					});
-				},
-
-				onFailure : function(error){}
-			});
+		instance.result.then(function(value){
+			if(value){
+				GWT_Server.priceList.remove(nConstants.conf.businessId, String($scope.priceList.id), {
+					onSuccess : function(data){
+						$scope.$apply(function(){
+							$location.path('/');
+						});
+					},
+	
+					onFailure : function(error){}
+				});
+			}
 		});
 	};
 	

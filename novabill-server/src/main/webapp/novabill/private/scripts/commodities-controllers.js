@@ -168,16 +168,18 @@ angular.module('novabill.commodities.controllers',
 
 	$scope.removeCommodity = function(){
 		var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION',{data : $scope.commodity.description}) );
-		instance.result.then(function(){
-			GWT_Server.commodity.remove(nConstants.conf.businessId, $scope.commodity.id, {
-				onSuccess : function(data){
-					$scope.$apply(function(){
-						$location.path('/');
-					});
-				},
-
-				onFailure : function(error){}
-			});
+		instance.result.then(function(value){
+			if(value){
+				GWT_Server.commodity.remove(nConstants.conf.businessId, $scope.commodity.id, {
+					onSuccess : function(data){
+						$scope.$apply(function(){
+							$location.path('/');
+						});
+					},
+	
+					onFailure : function(error){}
+				});
+			}
 		});
 	};
 

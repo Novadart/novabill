@@ -61,13 +61,15 @@ angular.module('novabill.directives',
 
 			$scope.remove = function(){
 				var instance = nConfirmDialog.open( $translate('REMOVAL_QUESTION') );
-				instance.result.then(function(){
-					GWT_Server.invoice.remove(nConstants.conf.businessId, $scope.invoice.client.id, $scope.invoice.id, {
-						onSuccess : function(){
-							$rootScope.$broadcast(nConstants.events.INVOICE_REMOVED);
-						},
-						onFailure : function(){}
-					});
+				instance.result.then(function(value){
+					if(value){
+						GWT_Server.invoice.remove(nConstants.conf.businessId, $scope.invoice.client.id, $scope.invoice.id, {
+							onSuccess : function(){
+								$rootScope.$broadcast(nConstants.events.INVOICE_REMOVED);
+							},
+							onFailure : function(){}
+						});
+					}
 				});
 				
 			};
@@ -130,13 +132,15 @@ angular.module('novabill.directives',
 
 			$scope.remove = function(){
 				var instance = nConfirmDialog.open( $translate('REMOVAL_QUESTION') );
-				instance.result.then(function(){
-					GWT_Server.estimation.remove(nConstants.conf.businessId, $scope.estimation.client.id, $scope.estimation.id, {
-						onSuccess : function(){
-							$rootScope.$broadcast(nConstants.events.ESTIMATION_REMOVED);
-						},
-						onFailure : function(){}
-					});
+				instance.result.then(function(value){
+					if(value){
+						GWT_Server.estimation.remove(nConstants.conf.businessId, $scope.estimation.client.id, $scope.estimation.id, {
+							onSuccess : function(){
+								$rootScope.$broadcast(nConstants.events.ESTIMATION_REMOVED);
+							},
+							onFailure : function(){}
+						});
+					}
 				});
 			};
 
@@ -204,13 +208,15 @@ angular.module('novabill.directives',
 
 			$scope.remove = function(){
 				var instance = nConfirmDialog.open( $translate('REMOVAL_QUESTION') );
-				instance.result.then(function(){
-					GWT_Server.transportDocument.remove(nConstants.conf.businessId, $scope.transportDocument.client.id, $scope.transportDocument.id, {
-						onSuccess : function(){
-							$rootScope.$broadcast(nConstants.events.TRANSPORT_DOCUMENT_REMOVED);
-						},
-						onFailure : function(){}
-					});
+				instance.result.then(function(value){
+					if(value){
+						GWT_Server.transportDocument.remove(nConstants.conf.businessId, $scope.transportDocument.client.id, $scope.transportDocument.id, {
+							onSuccess : function(){
+								$rootScope.$broadcast(nConstants.events.TRANSPORT_DOCUMENT_REMOVED);
+							},
+							onFailure : function(){}
+						});
+					}
 				});
 			};
 
@@ -261,13 +267,15 @@ angular.module('novabill.directives',
 
 			$scope.remove = function(){
 				var instance = nConfirmDialog.open( $translate('REMOVAL_QUESTION') );
-				instance.result.then(function(){
-					GWT_Server.creditNote.remove(nConstants.conf.businessId, $scope.creditNote.client.id, $scope.creditNote.id, {
-						onSuccess : function(){
-							$rootScope.$broadcast(nConstants.events.CREDIT_NOTE_REMOVED);
-						},
-						onFailure : function(){}
-					});
+				instance.result.then(function(value){
+					if(value){
+						GWT_Server.creditNote.remove(nConstants.conf.businessId, $scope.creditNote.client.id, $scope.creditNote.id, {
+							onSuccess : function(){
+								$rootScope.$broadcast(nConstants.events.CREDIT_NOTE_REMOVED);
+							},
+							onFailure : function(){}
+						});
+					}
 				});
 			};
 
@@ -404,19 +412,23 @@ angular.module('novabill.directives',
 			
 			$scope.sendEmail = function(){
 				var instance = nConfirmDialog.open( $translate('SHARING_PERMIT_SEND_EMAIL_CONFIRM', {email : $scope.sharingPermit.email}) );
-				instance.result.then(function(){
-					$scope.sharingPermit.$sendEmail(function(){
-						nAlertDialog.open($translate('SHARING_PERMIT_EMAIL_SENT'));
-					});
+				instance.result.then(function(value){
+					if(value){
+						$scope.sharingPermit.$sendEmail(function(){
+							nAlertDialog.open($translate('SHARING_PERMIT_EMAIL_SENT'));
+						});
+					}
 				});
 			};
 			
 			$scope.remove = function(){
 				var instance = nConfirmDialog.open( $translate('SHARING_PERMIT_REMOVAL_QUESTION', {email : $scope.sharingPermit.email}) );
-				instance.result.then(function(){
-					$scope.sharingPermit.$delete(function(){
-						$rootScope.$broadcast(nConstants.events.SHARING_PERMIT_REMOVED);
-					});
+				instance.result.then(function(value){
+					if(value){
+						$scope.sharingPermit.$delete(function(){
+							$rootScope.$broadcast(nConstants.events.SHARING_PERMIT_REMOVED);
+						});
+					}
 				});
 			};
 
@@ -555,27 +567,29 @@ angular.module('novabill.directives',
 	
 				$scope.remove = function(){
 					var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION') );
-					instance.result.then(function(){
-						GWT_Server.commodity.removePrice(nConstants.conf.businessId, String($scope.price.priceListID), String($scope.price.commodityID), {
-							onSuccess : function(data){
-								$scope.$apply(function(){
-									var deletedPrice = COMMODITY_PRICES_HACK[$scope.priceListName];
-									var emptyPrice = {
-											id: null, 
-											priceValue: null, 
-											priceType: null, 
-											commodityID: deletedPrice.commodityID, 
-											priceListID: deletedPrice.priceListID
-									};
-									COMMODITY_PRICES_HACK[$scope.priceListName] = emptyPrice;
-									$scope.price = emptyPrice;
-									updatePriceInfo( $scope.price );
-									$scope.editMode = false;
-								});
-							},
-
-							onFailure : function(error){}
-						});
+					instance.result.then(function(value){
+						if(value){
+							GWT_Server.commodity.removePrice(nConstants.conf.businessId, String($scope.price.priceListID), String($scope.price.commodityID), {
+								onSuccess : function(data){
+									$scope.$apply(function(){
+										var deletedPrice = COMMODITY_PRICES_HACK[$scope.priceListName];
+										var emptyPrice = {
+												id: null, 
+												priceValue: null, 
+												priceType: null, 
+												commodityID: deletedPrice.commodityID, 
+												priceListID: deletedPrice.priceListID
+										};
+										COMMODITY_PRICES_HACK[$scope.priceListName] = emptyPrice;
+										$scope.price = emptyPrice;
+										updatePriceInfo( $scope.price );
+										$scope.editMode = false;
+									});
+								},
+	
+								onFailure : function(error){}
+							});
+						}
 					});
 				};
 				

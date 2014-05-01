@@ -111,12 +111,10 @@ public class PaymentPresenter extends AbstractPresenter<PaymentView> implements 
 	
 	public void onPaymentDelete(final PaymentTypeDTO payment){
 		resetDescription();
-		SafeHtmlBuilder shb = new SafeHtmlBuilder();
-		shb.appendEscapedLines(I18N.INSTANCE.paymentDeletionConfirm());
-		Notification.showConfirm(shb.toSafeHtml(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.paymentDeletionConfirm(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean result) {
+			public void onNotificationClosed(boolean result) {
 				if(result){
 					ServerFacade.INSTANCE.getPaymentService().remove(Configuration.getBusinessId(), payment.getId(), new ManagedAsyncCallback<Void>() {
 

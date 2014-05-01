@@ -335,11 +335,11 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.ajax'
 					$scope.message = message;
 					
 					$scope.ok = function(){
-						$modalInstance.close();
+						$modalInstance.close(true);
 					};
 
 					$scope.cancel = function(){
-						$modalInstance.dismiss();
+						$modalInstance.close(false);
 					};
 
 				}]
@@ -617,5 +617,29 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.ajax'
 				return nSelectCommodityDialog.open(clientId);
 			};
 		}
+	};
+}])
+
+.run(['nAlertDialog', 'nConfirmDialog', '$window', function(nAlertDialog, nConfirmDialog, $window){
+	$window.Angular_Dialogs = {
+			
+			confirm : function(message, callback){
+				var instance = nConfirmDialog.open(message);
+				instance.result.then(function(value){
+					if(callback){
+						callback(value);
+					}
+				});
+			},
+			
+			alert : function(message, callback){
+				var instance = nAlertDialog.open(message);
+				instance.result.then(function(){
+					if(callback){
+						callback();
+					}
+				});
+			}
+			
 	};
 }]);

@@ -247,10 +247,10 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 	@Override
 	public void onCancelClientClicked() {
-		Notification.showConfirm(I18N.INSTANCE.confirmClientDeletion(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.confirmClientDeletion(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 
 					getView().getCancelClient().showLoader(true);

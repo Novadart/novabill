@@ -150,10 +150,10 @@ public class CreditNoteCellImpl extends QuickViewCell<CreditNoteDTO> implements 
 	}
 
 	private void onDeleteClicked(final CreditNoteDTO creditNote) {
-		Notification.showConfirm(I18N.INSTANCE.confirmCreditNoteDeletion(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.confirmCreditNoteDeletion(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 					ServerFacade.INSTANCE.getCreditNoteService().remove(Configuration.getBusinessId(), creditNote.getClient().getId(), creditNote.getId(), new ManagedAsyncCallback<Void>() {
 

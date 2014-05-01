@@ -38,10 +38,10 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 
 	@Override
 	public void onCancelClicked() {
-		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 					BridgeUtils.invokeJSCallback(Boolean.FALSE, getCallback());
 				}

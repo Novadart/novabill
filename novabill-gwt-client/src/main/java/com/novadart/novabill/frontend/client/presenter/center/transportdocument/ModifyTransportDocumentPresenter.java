@@ -103,10 +103,10 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 			return;
 		}
 
-		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 					getView().getCreateDocument().showLoader(true);
 					getView().setLocked(true);
@@ -130,10 +130,10 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 						@Override
 						public void onSuccess(Void result) {
 							getView().getCreateDocument().showLoader(false);
-							Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateSuccess(), new NotificationCallback<Void>() {
+							Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateSuccess(), new NotificationCallback() {
 
 								@Override
-								public void onNotificationClosed(Void value) {
+								public void onNotificationClosed(boolean value) {
 									getView().setLocked(false);
 									BridgeUtils.invokeJSCallback(Boolean.TRUE, getCallback());
 								}

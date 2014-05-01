@@ -298,7 +298,6 @@
 		<dependency>
 			<groupId>com.novadart.jasperreports.fonts</groupId>
 			<artifactId>fonts-open-sans</artifactId>
-			<version>1.0</version>
 		</dependency>
 
 		<!-- Disabled dependencies -->

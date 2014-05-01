@@ -10,7 +10,7 @@ import com.novadart.novabill.frontend.client.widget.notification.NotificationDia
 
 public class MessageDialog extends NotificationDialog<Void> {
 
-	public MessageDialog(NotificationCallback<Void> onClose) {
+	public MessageDialog(NotificationCallback onClose) {
 		super(onClose);
 	}
 
@@ -29,8 +29,8 @@ public class MessageDialog extends NotificationDialog<Void> {
 	}
 
 	@Override
-	protected Void getValue() {
-		return null;
+	protected boolean getValue() {
+		return true;
 	}
 
 }

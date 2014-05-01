@@ -223,10 +223,10 @@ public class InvoiceCellImpl extends QuickViewCell<InvoiceDTO> implements Invoic
 	}
 
 	private void onDeleteClicked(final InvoiceDTO invoice) {
-		Notification.showConfirm(I18N.INSTANCE.confirmInvoiceDeletion(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.confirmInvoiceDeletion(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 					ServerFacade.INSTANCE.getInvoiceService().remove(Configuration.getBusinessId(), invoice.getClient().getId(), invoice.getId(), new ManagedAsyncCallback<Void>() {
 

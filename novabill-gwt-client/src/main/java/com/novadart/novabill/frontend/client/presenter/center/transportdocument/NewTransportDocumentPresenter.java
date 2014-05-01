@@ -98,10 +98,10 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 			public void onSuccess(Long result) {
 				getView().getCreateDocument().showLoader(false);
 
-				Notification.showMessage(I18N.INSTANCE.transportDocumentCreationSuccess(), new NotificationCallback<Void>() {
+				Notification.showMessage(I18N.INSTANCE.transportDocumentCreationSuccess(), new NotificationCallback() {
 
 					@Override
-					public void onNotificationClosed(Void value) {
+					public void onNotificationClosed(boolean value) {
 						getView().setLocked(false);
 						BridgeUtils.invokeJSCallback(Boolean.TRUE, getCallback());
 					}

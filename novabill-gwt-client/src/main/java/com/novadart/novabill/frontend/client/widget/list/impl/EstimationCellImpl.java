@@ -183,10 +183,10 @@ public class EstimationCellImpl extends QuickViewCell<EstimationDTO> implements 
 	}
 
 	private void onDeleteClicked(final EstimationDTO estimation) {
-		Notification.showConfirm(I18N.INSTANCE.confirmEstimationDeletion(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.confirmEstimationDeletion(), new NotificationCallback() {
 			
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 					ServerFacade.INSTANCE.getEstimationService().remove(Configuration.getBusinessId(), estimation.getClient().getId(), estimation.getId(), new ManagedAsyncCallback<Void>() {
 

@@ -178,18 +178,20 @@ angular.module('novabill.clients.controllers',
 			//fired when remove client is clicked
 			$scope.removeClient = function() {
 				var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION',{data : $scope.client.name}) );
-				instance.result.then(function(){
-					GWT_Server.client.remove(nConstants.conf.businessId, $scope.client.id, {
-						onSuccess : function(data){
-							$scope.$apply(function(){
-								$location.path('/');
-							});
-						},
-
-						onFailure : function(error){
-							nAlertDialog.open($filter('translate')('CLIENT_DELETION_ALERT'));
-						}
-					});
+				instance.result.then(function(value){
+					if(value){
+						GWT_Server.client.remove(nConstants.conf.businessId, $scope.client.id, {
+							onSuccess : function(data){
+								$scope.$apply(function(){
+									$location.path('/');
+								});
+							},
+	
+							onFailure : function(error){
+								nAlertDialog.open($filter('translate')('CLIENT_DELETION_ALERT'));
+							}
+						});
+					}
 				});
 			};
 
@@ -312,16 +314,18 @@ angular.module('novabill.clients.controllers',
 				}
 
 				var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION',{data : address.name}) );
-				instance.result.then(function(){
-					GWT_Server.client.removeClientAddress($routeParams.clientId, String(address.id), {
-						onSuccess : function(data){
-							$scope.$apply(function(){
-								$scope.loadClientAddresses(true);
-							});
-						},
-
-						onFailure : function(error){}
-					});
+				instance.result.then(function(value){
+					if(value){
+						GWT_Server.client.removeClientAddress($routeParams.clientId, String(address.id), {
+							onSuccess : function(data){
+								$scope.$apply(function(){
+									$scope.loadClientAddresses(true);
+								});
+							},
+	
+							onFailure : function(error){}
+						});
+					}
 				});
 
 			};

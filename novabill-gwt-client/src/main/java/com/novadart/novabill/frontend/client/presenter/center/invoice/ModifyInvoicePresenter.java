@@ -75,10 +75,10 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 			return;
 		}
 
-		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 
 					getView().getCreateDocument().showLoader(true);
@@ -107,10 +107,10 @@ public class ModifyInvoicePresenter extends AbstractInvoicePresenter {
 								@Override
 								public void onSuccess(Void result) {
 									getView().getCreateDocument().showLoader(false);
-									Notification.showMessage(I18N.INSTANCE.invoiceUpdateSuccess(), new NotificationCallback<Void>() {
+									Notification.showMessage(I18N.INSTANCE.invoiceUpdateSuccess(), new NotificationCallback() {
 
 										@Override
-										public void onNotificationClosed(Void value) {
+										public void onNotificationClosed(boolean value) {
 											getView().setLocked(false);
 											BridgeUtils.invokeJSCallback(Boolean.TRUE, getCallback());
 										}

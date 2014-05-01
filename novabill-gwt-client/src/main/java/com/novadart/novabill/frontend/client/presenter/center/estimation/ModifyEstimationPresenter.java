@@ -71,10 +71,10 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 			return;
 		}
 
-		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 
 					getView().getCreateDocument().showLoader(true);
@@ -100,10 +100,10 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 						public void onSuccess(Void result) {
 							getView().getCreateDocument().showLoader(false);
 
-							Notification.showMessage(I18N.INSTANCE.estimationUpdateSuccess(), new NotificationCallback<Void>() {
+							Notification.showMessage(I18N.INSTANCE.estimationUpdateSuccess(), new NotificationCallback() {
 
 								@Override
-								public void onNotificationClosed(Void value) {
+								public void onNotificationClosed(boolean value) {
 									getView().setLocked(false);
 									BridgeUtils.invokeJSCallback(Boolean.TRUE, getCallback());
 								}

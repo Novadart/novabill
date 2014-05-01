@@ -1,14 +1,13 @@
 package com.novadart.novabill.frontend.client.facade;
 
-import com.google.gwt.safehtml.shared.SafeHtmlUtils;
 import com.google.gwt.user.client.History;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.place.HistoryPrefix;
 import com.novadart.novabill.frontend.client.widget.notification.Notification;
 import com.novadart.novabill.frontend.client.widget.notification.NotificationCallback;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
@@ -27,20 +26,20 @@ public abstract class ManagedAsyncCallback<T> implements AsyncCallback<T> {
 			
 		} else if(caught instanceof DataAccessException){
 			
-			Notification.showMessage(SafeHtmlUtils.fromTrustedString(I18N.INSTANCE.errorDataAccessException()), new NotificationCallback<Void>() {
+			Notification.showMessage(I18N.INSTANCE.errorDataAccessException(), new NotificationCallback() {
 				
 				@Override
-				public void onNotificationClosed(Void value) {
+				public void onNotificationClosed(boolean value) {
 					History.newItem(HistoryPrefix.HOME);
 				}
 			});
 			
 		} else if(caught instanceof NoSuchObjectException){
 			
-			Notification.showMessage(SafeHtmlUtils.fromTrustedString(I18N.INSTANCE.errorDataAccessException()), new NotificationCallback<Void>() {
+			Notification.showMessage(I18N.INSTANCE.errorDataAccessException(), new NotificationCallback() {
 				
 				@Override
-				public void onNotificationClosed(Void value) {
+				public void onNotificationClosed(boolean value) {
 					History.newItem(HistoryPrefix.HOME);
 				}
 			});
