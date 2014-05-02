@@ -55,6 +55,9 @@
 <meta content="" name="description" />
 <meta content="" name="author" />
 <meta name="MobileOptimized" content="320">
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <link href="${privateAssetsUrl}/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="${privateAssetsUrl}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
