@@ -12,10 +12,10 @@ privileged aspect AccountUpgradeAspect extends AbstractLogEventEmailSenderAspect
 	private static final Logger LOGGER = LoggerFactory.getLogger(AccountUpgradeAspect.class);
 	
 	pointcut upgrade(Business business):
-		execution(protected void com.novadart.novabill.service.OneTimePaymentIPNHandlerService.extendNonFreeAccountExpirationTime(..)) && args(business, ..);
+		execution(protected void com.novadart.novabill.paypal.OneTimePaymentIPNHandlerService.extendNonFreeAccountExpirationTime(..)) && args(business, ..);
 	
 	pointcut upgradeError(String email, String message):
-		call(private void com.novadart.novabill.service.OneTimePaymentIPNHandlerService.handleError(..)) && args(email, message);
+		call(private void com.novadart.novabill.paypal.OneTimePaymentIPNHandlerService.handleError(..)) && args(email, message);
 	
 	after(Business business): upgrade(business){
 		handleEvent(LOGGER, "Account upgrade", business.getEmail(), new Date(System.currentTimeMillis()), null);

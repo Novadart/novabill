@@ -110,7 +110,13 @@
 						<li><a href="${settingsUrl}"><i class="fa fa-gears"></i> Impostazioni</a></li>
 						<li class="divider"></li>
 						<li><a href="javascript:;" id="trigger_fullscreen"><i class="fa fa-move"></i> Schermo Intero</a></li>
-						<li><a href="${logoutUrl}"><i class="fa fa-key"></i> Esci</a></li>
+						<li>
+							<form action="${logoutUrl}" method="post">
+<!-- 								<a href=""><i class="fa fa-key"></i> Esci</a>	 -->
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+								<input type="submit" value="Esci">	
+							</form>
+						</li>
 					</ul></li>
 				<!-- END USER LOGIN DROPDOWN -->
 			</ul>
