@@ -110,11 +110,12 @@
 						<li><a href="${settingsUrl}"><i class="fa fa-gears"></i> Impostazioni</a></li>
 						<li class="divider"></li>
 						<li><a href="javascript:;" id="trigger_fullscreen"><i class="fa fa-move"></i> Schermo Intero</a></li>
-						<li>
-							<form action="${logoutUrl}" method="post">
-<!-- 								<a href=""><i class="fa fa-key"></i> Esci</a>	 -->
+						<li id="logoutLi">
+							<form id="logoutForm" action="${logoutUrl}" method="post">
 								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-								<input type="submit" value="Esci">	
+    						    <a href="javascript:;"><i class="fa fa-key"></i>
+    						      <input id="logoutButton" style="background: none; border: none; outline: none;" type="submit" value="Esci">
+   						        </a>	
 							</form>
 						</li>
 					</ul></li>
@@ -264,6 +265,10 @@
 	
 	<script type="text/javascript">
 	$(App.init);
+	
+	$('#logoutLi').click(function(){
+        $('#logoutForm').submit();
+    });
 	</script>
 	
 	<tiles:insertAttribute name="javascriptExtra" ignore="true" />
