@@ -88,7 +88,6 @@
 
 	<bean class="com.novadart.novabill.aspect.MailAspect"
 		factory-method="aspectOf">
-		<property name="mailSender" ref="mailSender" />
 		<property name="velocityEngine" ref="velocityEngine" />
 		<property name="from" value="${smtp.mail.registration_completed_sender}" />
 	</bean>

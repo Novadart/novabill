@@ -34,9 +34,9 @@ import com.novadart.novabill.domain.SharingToken;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.SharingPermitDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.service.PeriodicPurgerService;
 import com.novadart.novabill.service.SharingService;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.periodic.PeriodicPurgerService;
 import com.novadart.novabill.service.web.SharingPermitService;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
@@ -249,7 +249,7 @@ public class SharingTest extends ServiceTest {
 		String token = "token";
 		new SharingToken("foo@bar", System.currentTimeMillis() - (invoiceSharingExpiration + 1) * 3_600_000l, businessID, token).persist();
 		SharingPermit.entityManager().flush();
-		periodicPurgerService.runPurgeTasks();
+		periodicPurgerService.runTasks();
 		SharingPermit.entityManager().flush();
 		assertEquals(0, SharingToken.findAllSharingTokens().size());
 	}

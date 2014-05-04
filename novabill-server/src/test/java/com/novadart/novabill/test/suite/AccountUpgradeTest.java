@@ -25,14 +25,17 @@ import org.springframework.ui.Model;
 import com.dumbster.smtp.SimpleSmtpServer;
 import com.dumbster.smtp.SmtpMessage;
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Email;
+import com.novadart.novabill.domain.EmailStatus;
 import com.novadart.novabill.domain.UpgradeToken;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.paypal.PayPalPaymentPlanDescriptor;
 import com.novadart.novabill.paypal.PaymentPlansLoader;
-import com.novadart.novabill.service.AccountStatusManagerService;
 import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.periodic.AccountStatusManagerService;
+import com.novadart.novabill.service.periodic.PeriodicMailSender;
 import com.novadart.novabill.web.mvc.UpgradeAccountController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -49,6 +52,9 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 
 	@Autowired
 	private UtilsService utilsService;
+	
+	@Autowired
+	private PeriodicMailSender mailSenderService;
 	
 	private long getNDaysFromNowInMillis(int days){
 		long DAY_IN_MILLIS = 86_400_000l;
@@ -92,6 +98,58 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	public void accountExpirationIn30DaysNotificationTest(){
 		accountExpirationInNDaysNotificationTest(30);
 	}
+
+	@Test
+	public void accountExpirationIn7DaysNotificationFailureTest(){
+		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
+		business.getSettings().setNonFreeAccountExpirationTime(getNDaysFromNowInMillis(7));
+		business.flush();
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2526); //wrong port, email fails
+		accountStatusService.runTasks();
+		assertEquals(0, smtpServer.getReceivedEmailSize());
+		assertEquals(1, Email.countEmails());
+		Email email = Email.findAllEmails().get(0);
+		assertEquals(EmailStatus.PENDING, email.getStatus());
+		assertTrue(email.getTries() > 0);
+		
+		for(int i = 0; i < PeriodicMailSender.MAX_NUMBER_OF_RETRIES; ++i)
+			mailSenderService.runTasks();
+		
+		smtpServer.stop();
+		Email.entityManager().flush();
+
+		assertEquals(EmailStatus.FAILED, email.getStatus());
+		assertTrue(email.getTries() == PeriodicMailSender.MAX_NUMBER_OF_RETRIES);
+		
+	}
+	
+	
+	@Test
+	public void accountExpirationIn7DaysNotificationSuccessOnLaterTryTest(){
+		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
+		business.getSettings().setNonFreeAccountExpirationTime(getNDaysFromNowInMillis(7));
+		business.flush();
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2526); //wrong port, email fails
+		accountStatusService.runTasks();
+		assertEquals(0, smtpServer.getReceivedEmailSize());
+		assertEquals(1, Email.countEmails());
+		Email email = Email.findAllEmails().get(0);
+		assertEquals(EmailStatus.PENDING, email.getStatus());
+		assertTrue(email.getTries() > 0);
+		
+		smtpServer.stop();
+		smtpServer = SimpleSmtpServer.start(2525);
+		mailSenderService.runTasks();
+		smtpServer.stop();
+		
+		Email.entityManager().flush();
+		assertEquals(0, Email.countEmails());
+		assertEquals(1, smtpServer.getReceivedEmailSize());
+		
+	}
+	
 	
 	@Test
 	public void disableExpiredAccountsTest(){
