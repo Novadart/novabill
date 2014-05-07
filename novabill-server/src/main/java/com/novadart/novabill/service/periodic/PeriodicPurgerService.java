@@ -1,4 +1,4 @@
-package com.novadart.novabill.service;
+package com.novadart.novabill.service.periodic;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -11,7 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 
 @Service
-public class PeriodicPurgerService {
+public class PeriodicPurgerService implements PeriodicService {
 	
 	@Value("${registration.expiration}")
 	private Long registrationExpiration;
@@ -25,8 +25,9 @@ public class PeriodicPurgerService {
 	@PersistenceContext
 	private EntityManager entityManager;
 	
+	@Override
 	@Scheduled(cron = "* 0 0 3 * *")// once a day at 3 am
-	public void runPurgeTasks(){
+	public void runTasks(){
 		purgeExpiredRegistration();
 		purgeExpiredForgotPasswordRequest();
 		purgeExpiredSharingTokens();
@@ -37,7 +38,7 @@ public class PeriodicPurgerService {
 	private void purgeExpiredRegistration(){
 		String query = "delete from Registration r where r.creationTime < :threshold";
 		entityManager.createQuery(query)
-			.setParameter("threshold", System.currentTimeMillis() -  registrationExpiration * 3_600_000l)
+			.setParameter("threshold", System.currentTimeMillis() -  registrationExpiration * MILLIS_IN_HOUR)
 			.executeUpdate();
 	}
 	
@@ -46,7 +47,7 @@ public class PeriodicPurgerService {
 	private void purgeExpiredForgotPasswordRequest(){
 		String query = "delete from ForgotPassword fpr where fpr.creationTime < :threshold";
 		entityManager.createQuery(query)
-			.setParameter("threshold", System.currentTimeMillis() -  forgotPasswordExpiration * 3_600_000l)
+			.setParameter("threshold", System.currentTimeMillis() -  forgotPasswordExpiration * MILLIS_IN_HOUR)
 			.executeUpdate();
 	}
 	
@@ -55,7 +56,7 @@ public class PeriodicPurgerService {
 	private void purgeExpiredSharingTokens(){
 		String query = "delete from SharingToken st where st.createdOn < :threshold";
 		entityManager.createQuery(query)
-			.setParameter("threshold", System.currentTimeMillis() -  sharingExpiration * 3_600_000l)
+			.setParameter("threshold", System.currentTimeMillis() -  sharingExpiration * MILLIS_IN_HOUR)
 			.executeUpdate();
 	}
 	

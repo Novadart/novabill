@@ -1,4 +1,4 @@
-package com.novadart.novabill.service;
+package com.novadart.novabill.service.periodic;
 
 import java.util.HashMap;
 import java.util.List;
@@ -19,13 +19,12 @@ import com.novadart.novabill.domain.security.RoleType;
 
 @Service
 @MailMixin
-public class AccountStatusManagerService {
-	
-	private static final Long DAY_IN_MILLIS = 86_400_000l;
+public class AccountStatusManagerService implements PeriodicService {
 	
 	@PersistenceContext
 	private EntityManager entityManager; 
 	
+	@Override
 	@Scheduled(cron = "* 0 0 3 * *") //run once a day at 3 AM
 	public void runTasks(){
 		disableExpiredAccounts();
@@ -40,7 +39,7 @@ public class AccountStatusManagerService {
 		String query = "select principal from Principal principal inner join principal.grantedRoles gr where " +
 				":lbound < principal.business.settings.nonFreeAccountExpirationTime and principal.business.settings.nonFreeAccountExpirationTime < :rbound and gr = :role";
 		Long now = System.currentTimeMillis();
-		Long lbound = now + (days - 1)  *  DAY_IN_MILLIS, rbound = now + days * DAY_IN_MILLIS;
+		Long lbound = now + (days - 1)  *  MILLIS_IN_DAY, rbound = now + days * MILLIS_IN_DAY;
 		List<Principal> soonToExpirePrincipals = entityManager.createQuery(query, Principal.class)
 				.setParameter("lbound", lbound)
 				.setParameter("rbound", rbound)
