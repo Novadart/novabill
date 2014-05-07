@@ -64,8 +64,8 @@ angular.module('novabill.transportDocuments.controllers',
 /**
  * TRANSPORT DOCUMENTS MODIFY PAGE CONTROLLER
  */
-.controller('TransportDocumentDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook', 
-                                             function($scope, $routeParams, $location, $translate, gwtHook) {
+.controller('TransportDocumentDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate', 
+                                             function($scope, $routeParams, $location, $translate) {
 	$scope.pageTitle = $translate('MODIFY_TRANSPORT_DOCUMENT');
 	
     GWT_UI.showModifyTransportDocumentPage('transport-document-details', $routeParams.transportDocumentId, {
@@ -76,15 +76,15 @@ angular.module('novabill.transportDocuments.controllers',
 			$location.path('/');
 		}
     });
-	gwtHook.injectSelectCommodityDialogHook();
+	
 }])
 
 
 /**
  * INVOICE CREATE FROM ESTIMATION PAGE CONTROLLER
  */
-.controller('TransportDocumentFromEstimationCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
-                                          function($scope, $routeParams, $location, $translate, gwtHook) {
+.controller('TransportDocumentFromEstimationCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                          function($scope, $routeParams, $location, $translate) {
 	$scope.pageTitle = $translate('NEW_TRANSPORT_DOCUMENT');
 
 	GWT_UI.showFromEstimationTransportDocumentPage('transport-document-details', $routeParams.estimationId, {
@@ -96,7 +96,7 @@ angular.module('novabill.transportDocuments.controllers',
 		}
 	});
 	
-	gwtHook.injectSelectCommodityDialogHook();
+	
 }])
 
 
@@ -104,8 +104,8 @@ angular.module('novabill.transportDocuments.controllers',
 /**
  * TRANSPORT DOCUMENTS CREATE PAGE CONTROLLER
  */
-.controller('TransportDocumentCreateCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
-                                            function($scope, $routeParams, $location, $translate, gwtHook) {
+.controller('TransportDocumentCreateCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                            function($scope, $routeParams, $location, $translate) {
 	$scope.pageTitle = $translate('NEW_TRANSPORT_DOCUMENT');
 	
 	GWT_UI.showNewTransportDocumentPage('transport-document-details', $routeParams.clientId, {
@@ -116,7 +116,7 @@ angular.module('novabill.transportDocuments.controllers',
 			$location.path('/');
 		}
     });
-	gwtHook.injectSelectCommodityDialogHook();
+	
 }]);
 
 

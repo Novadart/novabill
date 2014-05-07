@@ -65,8 +65,8 @@ angular.module('novabill.invoices.controllers',
 		/**
 		 * INVOICE MODIFY PAGE CONTROLLER
 		 */
-		.controller('InvoiceDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
-		                                   function($scope, $routeParams, $location, $translate, gwtHook) {
+		.controller('InvoiceDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate',
+		                                   function($scope, $routeParams, $location, $translate) {
 			$scope.pageTitle = $translate('MODIFY_INVOICE');
 
 			GWT_UI.showModifyInvoicePage('invoice-details', $routeParams.invoiceId, {
@@ -76,7 +76,7 @@ angular.module('novabill.invoices.controllers',
 				onFailure : function(){}
 			});
 			
-			gwtHook.injectSelectCommodityDialogHook();
+			
 			
 		}])
 
@@ -85,8 +85,8 @@ angular.module('novabill.invoices.controllers',
 		/**
 		 * INVOICE CREATE PAGE CONTROLLER
 		 */
-		.controller('InvoiceCreateCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
-		                                  function($scope, $routeParams, $location, $translate, gwtHook) {
+		.controller('InvoiceCreateCtrl', ['$scope', '$routeParams', '$location', '$translate',
+		                                  function($scope, $routeParams, $location, $translate) {
 			$scope.pageTitle = $translate('NEW_INVOICE');
 
 			GWT_UI.showNewInvoicePage('invoice-details', $routeParams.clientId, {
@@ -98,7 +98,7 @@ angular.module('novabill.invoices.controllers',
 				}
 			});
 			
-			gwtHook.injectSelectCommodityDialogHook();
+			
 		}])
 
 
@@ -106,8 +106,8 @@ angular.module('novabill.invoices.controllers',
 		/**
 		 * INVOICE CREATE FROM ESTIMATION PAGE CONTROLLER
 		 */
-		.controller('InvoiceFromEstimationCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
-		                                          function($scope, $routeParams, $location, $translate, gwtHook) {
+		.controller('InvoiceFromEstimationCtrl', ['$scope', '$routeParams', '$location', '$translate',
+		                                          function($scope, $routeParams, $location, $translate) {
 			$scope.pageTitle = $translate('NEW_INVOICE');
 
 			GWT_UI.showFromEstimationInvoicePage('invoice-details', $routeParams.estimationId, {
@@ -119,15 +119,15 @@ angular.module('novabill.invoices.controllers',
 				}
 			});
 			
-			gwtHook.injectSelectCommodityDialogHook();
+			
 		}])
 
 
 		/**
 		 * INVOICE CREATE FROM TRANSPORT DOCUMENT LIST PAGE CONTROLLER
 		 */
-		.controller('InvoiceFromTransportDocumentListCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
-		                                                     function($scope, $routeParams, $location, $translate, gwtHook) {
+		.controller('InvoiceFromTransportDocumentListCtrl', ['$scope', '$routeParams', '$location', '$translate',
+		                                                     function($scope, $routeParams, $location, $translate) {
 			$scope.pageTitle = $translate('NEW_INVOICE');
 
 			GWT_UI.showFromTransportDocumentListInvoicePage('invoice-details', $routeParams.transportDocumentList, {
@@ -139,15 +139,15 @@ angular.module('novabill.invoices.controllers',
 				}
 			});
 			
-			gwtHook.injectSelectCommodityDialogHook();
+			
 		}])
 
 
 		/**
 		 * INVOICE CLONE PAGE CONTROLLER
 		 */
-		.controller('InvoiceCloneInvoiceCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
-		                                        function($scope, $routeParams, $location, $translate, gwtHook) {
+		.controller('InvoiceCloneInvoiceCtrl', ['$scope', '$routeParams', '$location', '$translate',
+		                                        function($scope, $routeParams, $location, $translate) {
 			$scope.pageTitle = $translate('NEW_INVOICE');
 
 			GWT_UI.showCloneInvoicePage('invoice-details', $routeParams.clientId, $routeParams.sourceId, {
@@ -159,7 +159,7 @@ angular.module('novabill.invoices.controllers',
 				}
 			});
 			
-			gwtHook.injectSelectCommodityDialogHook();
+			
 		}]);
 
 

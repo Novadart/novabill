@@ -640,7 +640,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	}
 
 	native void openSelectCommodityDialog(ItemInsertionForm insForm, String clientId)/*-{
-		var instance = $wnd.GWT_Hook_nSelectCommodityDialog(clientId);
+		var instance = $wnd.Angular_Dialogs.selectCommodityDialog(clientId);
 		instance.result.then(
 			function(result){
 					insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::updateItemFromJS(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(
