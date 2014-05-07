@@ -1,5 +1,6 @@
 package com.novadart.novabill.web.mvc.ajax;
 
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -32,6 +33,13 @@ public class PriceListController {
 
 	@Autowired
 	private PriceListService priceListService;
+	
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.OK)
+	public List<PriceListDTO> getPriceLists(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return priceListService.getAll(businessID);
+	}
 	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody

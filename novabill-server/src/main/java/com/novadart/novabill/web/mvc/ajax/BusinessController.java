@@ -19,13 +19,11 @@ import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
 import com.novadart.novabill.shared.client.exception.CloneNotSupportedException;
@@ -105,20 +103,6 @@ public class BusinessController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<ClientDTO> getClients(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return businessService.getClients(businessID);
-	}
-	
-	@RequestMapping(value = "/{businessID}/commodities", method = RequestMethod.GET)
-	@ResponseBody
-	@ResponseStatus(value = HttpStatus.OK)
-	public List<CommodityDTO> getCommodities(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return businessService.getCommodities(businessID);
-	}
-	
-	@RequestMapping(value = "/{businessID}/pricelists", method = RequestMethod.GET)
-	@ResponseBody
-	@ResponseStatus(value = HttpStatus.OK)
-	public List<PriceListDTO> getPriceLists(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return businessService.getPriceLists(businessID);
 	}
 	
 	@RequestMapping(value = "/{businessID}/paymenttypes", method = RequestMethod.GET)

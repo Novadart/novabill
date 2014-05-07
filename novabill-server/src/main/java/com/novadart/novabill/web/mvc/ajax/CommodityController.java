@@ -30,7 +30,14 @@ public class CommodityController {
 
 	@Autowired
 	private CommodityService commodityService;
-
+	
+	@RequestMapping(method = RequestMethod.GET)
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.OK)
+	public List<CommodityDTO> getCommodities(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return commodityService.getAll(businessID);
+	}
+	
 	@RequestMapping(value = "/{id}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
