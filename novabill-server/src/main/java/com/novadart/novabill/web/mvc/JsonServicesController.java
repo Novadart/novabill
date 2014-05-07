@@ -20,6 +20,7 @@ import com.novadart.novabill.shared.client.tuple.Pair;
 
 @Controller
 @RequestMapping("/private/json/")
+@Deprecated
 public class JsonServicesController {
 	
 	/**
