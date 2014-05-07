@@ -56,6 +56,9 @@
 <meta content="" name="description" />
 <meta content="" name="author" />
 <meta name="MobileOptimized" content="320">
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <link href="${privateAssetsUrl}/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="${privateAssetsUrl}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
@@ -108,7 +111,14 @@
 						<li><a href="${settingsUrl}"><i class="fa fa-gears"></i> Impostazioni</a></li>
 						<li class="divider"></li>
 						<li><a href="javascript:;" id="trigger_fullscreen"><i class="fa fa-move"></i> Schermo Intero</a></li>
-						<li><a href="${logoutUrl}"><i class="fa fa-key"></i> Esci</a></li>
+						<li id="logoutLi">
+							<form id="logoutForm" action="${logoutUrl}" method="post">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    						    <a href="javascript:;"><i class="fa fa-key"></i>
+    						      <input id="logoutButton" style="background: none; border: none; outline: none;" type="submit" value="Esci">
+   						        </a>	
+							</form>
+						</li>
 					</ul></li>
 				<!-- END USER LOGIN DROPDOWN -->
 			</ul>
@@ -257,6 +267,10 @@
 	
 	<script type="text/javascript">
 	$(App.init);
+	
+	$('#logoutLi').click(function(){
+        $('#logoutForm').submit();
+    });
 	</script>
 	
 	<tiles:insertAttribute name="javascriptExtra" ignore="true" />

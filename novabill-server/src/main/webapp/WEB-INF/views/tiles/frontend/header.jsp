@@ -41,7 +41,13 @@
 						    <ul class="list-unstyled inline">
                                 <li><a href="${privatePageUrl}" class="btn btn-sm green">I Tuoi Documenti</a></li>
                                 <li class="sep"><span>|</span></li>
-                                <li><a href="${logoutUrl}">Esci</a></li>
+                                <li>
+                                	<form action="${logoutUrl}" method="post">
+<%--                                 	<a href="${logoutUrl}">Esci</a> --%>
+										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+										<input type="submit" value="Esci">
+									</form>
+                                </li>
                             </ul>
 						</sec:authorize>
                     </div>

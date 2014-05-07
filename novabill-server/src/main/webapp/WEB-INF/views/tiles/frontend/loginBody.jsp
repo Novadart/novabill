@@ -51,6 +51,8 @@
                             <button type="submit" class="btn theme-btn pull-right">Invia</button>                        
                         </div>
                     </div>
+                    
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 
                     <!-- <hr>
 

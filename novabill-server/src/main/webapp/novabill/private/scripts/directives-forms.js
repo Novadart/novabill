@@ -48,8 +48,10 @@ angular.module('novabill.directives.forms',
 	return {
 		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-business-logo.html'),
 
-		controller : ['$scope', 'nConstants', '$upload', '$filter', '$http',
-		              function($scope, nConstants, $upload, $filter, $http){
+		controller : ['$scope', 'nConstants', 'nAjax', '$filter',
+		              function($scope, nConstants, nAjax, $filter){
+			var BusinessLogo = nAjax.BusinessLogo();
+			
 			$scope.logoUrl = nConstants.conf.logoUrl;
 
 			$scope.refreshLogoUrl = function(){
@@ -57,19 +59,13 @@ angular.module('novabill.directives.forms',
 			};
 
 			$scope.removeLogo = function(){
-				$http({
-					method : 'DELETE',
-					url : nConstants.conf.logoUrl
-				}).success($scope.refreshLogoUrl);
+				BusinessLogo.remove( $scope.refreshLogoUrl );
 			};
 			
 			$scope.uploadLogo = function($files){
 				$scope.errorMessage = null;
 				
-				$scope.upload = $upload.upload({
-					url: nConstants.conf.logoUrl,
-					file: $files[0],
-				}).success(function(result, status, headers, config) {
+				BusinessLogo.upload($files[0], function(result, status, headers, config) {
 					
 					var res = result.indexOf('<pre>') != -1 ? result.charAt(5) : result;
 					switch (parseInt(res)) {
