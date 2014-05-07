@@ -1,3 +1,4 @@
+<%@page import="com.novadart.novabill.domain.security.RoleType"%>
 <%@page import="com.novadart.novabill.shared.client.data.PriceListConstants"%>
 <%@page import="com.novadart.novabill.web.mvc.Urls"%>
 <%@page import="com.novadart.novabill.domain.security.Principal"%>
@@ -220,6 +221,7 @@
 	<script>
     var NovabillConf = {
             businessId : '<%=business != null ? business.getId() : -1%>',
+            premium : <%=principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM)%>,
             defaultPriceListName : '<%=PriceListConstants.DEFAULT%>',
             basePath : '${basePath}',
             version : '<tiles:insertAttribute name="novabill.version" />'
