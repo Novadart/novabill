@@ -128,7 +128,6 @@ public class AutoBeanDecoder {
 		b.setName(bu.getName());
 		b.setPhone(bu.getPhone());
 		b.setPostcode(bu.getPostcode());
-		b.setPremium(bu.getPremium());
 		b.setProvince(bu.getProvince());
 		b.setSsn(bu.getSsn());
 		b.setVatID(bu.getVatID());

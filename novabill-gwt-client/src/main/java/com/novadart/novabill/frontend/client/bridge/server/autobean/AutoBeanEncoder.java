@@ -215,7 +215,6 @@ public class AutoBeanEncoder {
 		ab.setName(b.getName());
 		ab.setPhone(b.getPhone());
 		ab.setPostcode(b.getPostcode());
-		ab.setPremium(b.isPremium());
 		ab.setProvince(b.getProvince());
 		ab.setSsn(b.getSsn());
 		ab.setVatID(b.getVatID());

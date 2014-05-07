@@ -32,8 +32,6 @@ public class BusinessDTO implements IsSerializable {
 	
 	private String ssn;
 	
-	private boolean premium;
-	
 	private SettingsDTO settings;
 
 	public Long getId() {
@@ -146,14 +144,6 @@ public class BusinessDTO implements IsSerializable {
 
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
-	}
-
-	public boolean isPremium() {
-		return premium;
-	}
-
-	public void setPremium(boolean premium) {
-		this.premium = premium;
 	}
 
 	public SettingsDTO getSettings() {
