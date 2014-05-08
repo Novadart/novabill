@@ -61,8 +61,6 @@ public interface BusinessGwtService extends RemoteService {
 	
 	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
-	public Long updateNotesBitMask(Long notesBitMask) throws NotAuthenticatedException, DataAccessException;
-	
 	public String generateLogoOpToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException;
 	
 	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, com.novadart.novabill.shared.client.exception.CloneNotSupportedException;

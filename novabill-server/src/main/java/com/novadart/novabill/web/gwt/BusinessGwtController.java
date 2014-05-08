@@ -124,10 +124,6 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 		return businessService.get(businessID);
 	}
 
-	@Override
-	public Long updateNotesBitMask(Long notesBitMask) throws NotAuthenticatedException, DataAccessException {
-		return businessService.updateNotesBitMask(notesBitMask);
-	}
 
 	@Override
 	public String generateLogoOpToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException {
