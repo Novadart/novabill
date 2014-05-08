@@ -50,8 +50,8 @@ public class CommodityController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public Long add(@RequestBody CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
-		return commodityService.add(commodityDTO);
+	public String add(@RequestBody CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
+		return commodityService.add(commodityDTO).toString();
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
@@ -71,8 +71,8 @@ public class CommodityController {
 	@RequestMapping(value = "/{commodityID}/pricelists/{priceListID}/prices", method = {RequestMethod.PUT, RequestMethod.POST})
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public Long addOrUpdatePrice(@PathVariable Long businessID, @RequestBody PriceDTO priceDTO) throws ValidationException{
-		return commodityService.addOrUpdatePrice(businessID, priceDTO);
+	public String addOrUpdatePrice(@PathVariable Long businessID, @RequestBody PriceDTO priceDTO) throws ValidationException{
+		return commodityService.addOrUpdatePrice(businessID, priceDTO).toString();
 	}
 	
 	@RequestMapping(value = "/{commodityID}/pricelists/{priceListID}/prices", method = RequestMethod.DELETE)
@@ -85,10 +85,10 @@ public class CommodityController {
 	@RequestMapping(value = "/{commodityID}/pricelists/{priceListID}/prices/batch", method = {RequestMethod.PUT, RequestMethod.POST})
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<Long> addOrUpdatePrices(@PathVariable Long businessID, @RequestBody List<PriceDTO> priceDTOs) throws ValidationException{
-		List<Long> ids = new ArrayList<>(priceDTOs.size());
+	public List<String> addOrUpdatePrices(@PathVariable Long businessID, @RequestBody List<PriceDTO> priceDTOs) throws ValidationException{
+		List<String> ids = new ArrayList<>(priceDTOs.size());
 		for(PriceDTO priceDTO: priceDTOs)
-			ids.add(commodityService.addOrUpdatePrice(businessID, priceDTO));
+			ids.add(commodityService.addOrUpdatePrice(businessID, priceDTO).toString());
 		return ids;
 	}
 	
