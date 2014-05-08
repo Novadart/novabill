@@ -52,8 +52,8 @@ public class PriceListController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public Long add(@RequestBody PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
-		return priceListService.add(priceListDTO);
+	public String add(@RequestBody PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
+		return priceListService.add(priceListDTO).toString();
 	}
 	
 	@RequestMapping(method = RequestMethod.PUT)
@@ -73,15 +73,15 @@ public class PriceListController {
 	@RequestMapping(value = "/{id}/prices", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public Map<String, Pair<String, PriceDTO>> getPrices(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException {
+	public Map<String, Pair<String, PriceDTO>> getPrices(@PathVariable Long businessID, @PathVariable Long id) throws NotAuthenticatedException, DataAccessException {
 		return priceListService.getPrices(businessID, id);
 	}
 	
 	@RequestMapping(value = "/{id}/clone", method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public Long clonePriceList(@PathVariable Long businessID, @PathVariable Long id, @RequestParam String priceListName) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException{
-		return priceListService.clonePriceList(businessID, id, priceListName);
+	public String clonePriceList(@PathVariable Long businessID, @PathVariable Long id, @RequestParam String priceListName) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException{
+		return priceListService.clonePriceList(businessID, id, priceListName).toString();
 	}
 	
 }
