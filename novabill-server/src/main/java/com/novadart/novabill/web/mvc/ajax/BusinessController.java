@@ -52,8 +52,8 @@ public class BusinessController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public Long add(@RequestBody BusinessDTO businessDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, CloneNotSupportedException {
-		return businessService.add(businessDTO);
+	public String add(@RequestBody BusinessDTO businessDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, CloneNotSupportedException {
+		return businessService.add(businessDTO).toString();
 	}
 	
 	@RequestMapping(value = "/{businessID}", method = RequestMethod.PUT)
@@ -117,13 +117,6 @@ public class BusinessController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<TransporterDTO> getTransporters(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return businessService.getTransporters(businessID);
-	}
-	
-	@RequestMapping(value = "/{businessID}/notesbitmask/{bitMask}", method = RequestMethod.PUT)
-	@ResponseBody
-	@ResponseStatus(value = HttpStatus.OK)
-	public Long updateNotesBitMask(@PathVariable Long bitMask) throws NotAuthenticatedException, DataAccessException {
-		return businessService.updateNotesBitMask(bitMask);
 	}
 	
 	@RequestMapping(value = "/{businessID}/clients/count", method = RequestMethod.GET)

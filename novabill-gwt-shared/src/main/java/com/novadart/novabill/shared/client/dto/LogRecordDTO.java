@@ -1,5 +1,7 @@
 package com.novadart.novabill.shared.client.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
@@ -32,6 +34,7 @@ public class LogRecordDTO implements IsSerializable{
 		this.operationType = operationType;
 	}
 
+	@JsonSerialize(using=ToStringSerializer.class)
 	public Long getEntityID() {
 		return entityID;
 	}
