@@ -62,6 +62,7 @@ public class PriceDTO implements IsSerializable {
 		this.priceListID = priceListID;
 	}
 
+	@JsonSerialize(using=ToStringSerializer.class)
 	public BigDecimal getPriceValue() {
 		return priceValue;
 	}
