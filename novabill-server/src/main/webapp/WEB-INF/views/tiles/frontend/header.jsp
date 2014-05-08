@@ -45,7 +45,7 @@
                                 	<form action="${logoutUrl}" method="post">
 <%--                                 	<a href="${logoutUrl}">Esci</a> --%>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-										<input type="submit" value="Esci">
+										<input class="btn btn-sm default" type="submit" value="Esci">
 									</form>
                                 </li>
                             </ul>
