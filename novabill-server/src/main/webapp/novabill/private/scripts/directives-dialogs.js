@@ -609,18 +609,36 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.ajax'
 }])
 
 
-.factory('gwtHook', ['nSelectCommodityDialog', function(nSelectCommodityDialog) {
-	return {
+//
+///*
+// * Premium Activation Dialog
+// */
+//.factory('nPremiumUpgradeDialog', ['nConstants', '$modal', function (nConstants, $modal){
+//
+//	return {
+//		open : function( address ) {
+//
+//			return $modal.open({
+//
+//				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-premium-upgrade-dialog.html'),
+//
+//				controller: ['$scope', '$modalInstance',
+//				             function($scope, $modalInstance){
+//					
+//					
+//
+//				}]
+//			});
+//		}
+//	};
+//}])
 
-		injectSelectCommodityDialogHook : function(){
-			window.GWT_Hook_nSelectCommodityDialog = function(clientId){
-				return nSelectCommodityDialog.open(clientId);
-			};
-		}
-	};
-}])
 
-.run(['nAlertDialog', 'nConfirmDialog', '$window', function(nAlertDialog, nConfirmDialog, $window){
+/*
+ * Exposing few dialogs used by GWT
+ */
+.run(['nAlertDialog', 'nConfirmDialog', 'nSelectCommodityDialog', '$window', 
+      function(nAlertDialog, nConfirmDialog, nSelectCommodityDialog, $window){
 	$window.Angular_Dialogs = {
 			
 			confirm : function(message, callback){
@@ -639,6 +657,10 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.ajax'
 						callback();
 					}
 				});
+			},
+			
+			selectCommodityDialog : function(clientId){
+				return nSelectCommodityDialog.open(clientId);
 			}
 			
 	};

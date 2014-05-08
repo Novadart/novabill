@@ -11,6 +11,7 @@ angular.module('novabill.priceLists.controllers',
                                function($scope, nConstants, nSorting, nEditPriceListDialog){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
+	$scope.PREMIUM = nConstants.conf.premium;
 	
 	function loadPriceLists(){
 		GWT_Server.priceList.getAll(nConstants.conf.businessId, {

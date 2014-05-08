@@ -63,8 +63,8 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 /**
  * ESTIMATION MODIFY PAGE CONTROLLER
  */
-.controller('EstimationDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
-                                      function($scope, $routeParams, $location, $translate, gwtHook) {
+.controller('EstimationDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                      function($scope, $routeParams, $location, $translate) {
 	$scope.pageTitle = $translate('MODIFY_ESTIMATION');
 	
     GWT_UI.showModifyEstimationPage('estimation-details', $routeParams.estimationId, {
@@ -75,7 +75,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 			$location.path('/');
 		}
     });
-	gwtHook.injectSelectCommodityDialogHook();
+    
 }])
 
 
@@ -83,8 +83,8 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 /**
  * ESTIMATION CREATE PAGE CONTROLLER
  */
-.controller('EstimationCreateCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
-                                     function($scope, $routeParams, $location, $translate, gwtHook) {
+.controller('EstimationCreateCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                     function($scope, $routeParams, $location, $translate) {
 	$scope.pageTitle = $translate('NEW_ESTIMATION');
 	
 	GWT_UI.showNewEstimationPage('estimation-details', $routeParams.clientId, {
@@ -95,7 +95,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 			$location.path('/');
 		}
     });
-	gwtHook.injectSelectCommodityDialogHook();
+
 }])
 
 
@@ -103,8 +103,8 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 /**
  * ESTIMATION CLONE PAGE CONTROLLER
  */
-.controller('EstimationCloneEstimationCtrl', ['$scope', '$routeParams', '$location', '$translate', 'gwtHook',
-                                        function($scope, $routeParams, $location, $translate, gwtHook) {
+.controller('EstimationCloneEstimationCtrl', ['$scope', '$routeParams', '$location', '$translate',
+                                        function($scope, $routeParams, $location, $translate) {
 	$scope.pageTitle = $translate('NEW_ESTIMATION');
 	
 	GWT_UI.showCloneEstimationPage('estimation-details', $routeParams.clientId, $routeParams.sourceId, {
@@ -115,7 +115,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 			$location.path('/');
 		}
     });
-	gwtHook.injectSelectCommodityDialogHook();
+
 }]);
 
 
