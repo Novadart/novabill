@@ -56,8 +56,6 @@ public interface BusinessService {
 	
 	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
-	public Long updateNotesBitMask(Long notesBitMask) throws NotAuthenticatedException, DataAccessException;
-	
 	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, com.novadart.novabill.shared.client.exception.CloneNotSupportedException;
 	
 	public List<Integer> getInvoceYears(Long businessID) throws NotAuthenticatedException, DataAccessException;

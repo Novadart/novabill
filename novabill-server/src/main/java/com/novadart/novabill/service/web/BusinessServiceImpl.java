@@ -255,13 +255,6 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		return BusinessDTOTransformer.toDTO(Business.findBusiness(businessID));
 	}
 
-	@Transactional(readOnly = false)
-	public Long updateNotesBitMask(Long notesBitMask) throws NotAuthenticatedException, DataAccessException {
-		Principal authenticatedPrincipal = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId());
-		authenticatedPrincipal.setNotesBitMask(notesBitMask);
-		return authenticatedPrincipal.merge().getNotesBitMask();
-	}
-
 	@PreAuthorize("principal.business == null and #businessDTO != null and #businessDTO.id == null")
 	@Transactional(readOnly = false)
 	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 

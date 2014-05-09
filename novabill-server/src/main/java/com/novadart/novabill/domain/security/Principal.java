@@ -20,7 +20,6 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
 
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
@@ -53,9 +52,6 @@ public class Principal implements UserDetails {
 	private Date lastLogin;
 	
 	private boolean enabled = true;
-	
-	@NotNull
-	private Long notesBitMask = 0xFFFFFFFFFFFFFFFFl;
 	
 	@ManyToOne
 	private Business business;
@@ -132,14 +128,6 @@ public class Principal implements UserDetails {
 		this.enabled = enabled;
 	}
 	
-	public Long getNotesBitMask() {
-		return notesBitMask;
-	}
-
-	public void setNotesBitMask(Long notesBitMask) {
-		this.notesBitMask = notesBitMask;
-	}
-
 	public Business getBusiness() {
 		return business;
 	}
