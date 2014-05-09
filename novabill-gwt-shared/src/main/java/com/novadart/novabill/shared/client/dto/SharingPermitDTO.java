@@ -1,5 +1,8 @@
 package com.novadart.novabill.shared.client.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
+
 
 public class SharingPermitDTO {
 
@@ -37,6 +40,7 @@ public class SharingPermitDTO {
 		this.description = description;
 	}
 
+	@JsonSerialize(using=ToStringSerializer.class)
 	public Long getCreatedOn() {
 		return createdOn;
 	}
