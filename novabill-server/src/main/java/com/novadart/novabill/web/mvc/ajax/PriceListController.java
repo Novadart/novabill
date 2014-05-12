@@ -37,7 +37,7 @@ public class PriceListController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<PriceListDTO> getPriceLists(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<PriceListDTO> getAll(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return priceListService.getAll(businessID);
 	}
 	

@@ -21,7 +21,6 @@ import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
-import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
@@ -68,13 +67,6 @@ public class BusinessController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public void setDefaultLayout(@PathVariable Long businessID, @PathVariable LayoutType layoutType) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
 		businessService.setDefaultLayout(businessID, layoutType);
-	}
-	
-	@RequestMapping(value = "/{businessID}/invoices/{year}", method = RequestMethod.GET)
-	@ResponseBody
-	@ResponseStatus(value = HttpStatus.OK)
-	public List<InvoiceDTO> getInvoices(@PathVariable Long businessID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException {
-		return businessService.getInvoices(businessID, year);
 	}
 	
 	@RequestMapping(value = "/{businessID}/creditnotes/{year}", method = RequestMethod.GET)
