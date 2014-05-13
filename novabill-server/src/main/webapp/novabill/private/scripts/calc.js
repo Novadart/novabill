@@ -15,8 +15,7 @@ angular.module('novabill.calc', ['novabill.constants'])
 		 * Default prices are already rounded to the 2nd decimal
 		 */
 		calculatePriceForCommodity : function(commodity, priceListName){
-			var COMMODITY_PRICES_HACK = commodity.pricesMap ? commodity.pricesMap.prices : commodity.prices;
-			var price = COMMODITY_PRICES_HACK[priceListName];
+			var price = commodity.prices[priceListName];
 			
 			if(priceListName === nConstants.conf.defaultPriceListName){
 				return new BigNumber( price.priceValue );
@@ -24,11 +23,11 @@ angular.module('novabill.calc', ['novabill.constants'])
 				
 				if(price === undefined || !price.id){
 					//if no price for the given price list, return the default price
-					price = COMMODITY_PRICES_HACK[nConstants.conf.defaultPriceListName];
+					price = commodity.prices[nConstants.conf.defaultPriceListName];
 					return new BigNumber( price.priceValue );
 				}
 				
-				var defaultPrice = new BigNumber( COMMODITY_PRICES_HACK[nConstants.conf.defaultPriceListName].priceValue );
+				var defaultPrice = new BigNumber( commodity.prices[nConstants.conf.defaultPriceListName].priceValue );
 				var priceValue = new BigNumber( price.priceValue );
 				var percentValue = null;
 				
