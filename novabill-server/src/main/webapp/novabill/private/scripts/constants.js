@@ -67,7 +67,7 @@ angular.module('novabill.constants', [])
 			conf : baseConf,
 
 			exception : {
-				VALIDATION : 'com.novadart.novabill.shared.client.exception.ValidationException'
+				VALIDATION : 'VALIDATION ERROR'
 			},
 
 			validation : {

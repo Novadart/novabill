@@ -50,11 +50,14 @@ public class CommodityController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public String add(@RequestBody CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
-		return commodityService.add(commodityDTO).toString();
+	public CommodityDTO add(@RequestBody CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
+		Long id  = commodityService.add(commodityDTO);
+		CommodityDTO commodity = new CommodityDTO();
+		commodity.setId(id);
+		return commodity;
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public void update(@RequestBody CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
@@ -82,7 +85,7 @@ public class CommodityController {
 		commodityService.removePrice(businessID, priceListID, commodityID);
 	}
 	
-	@RequestMapping(value = "/{commodityID}/pricelists/{priceListID}/prices/batch", method = {RequestMethod.PUT, RequestMethod.POST})
+	@RequestMapping(value = "/prices/batch", method = {RequestMethod.PUT, RequestMethod.POST})
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<String> addOrUpdatePrices(@PathVariable Long businessID, @RequestBody List<PriceDTO> priceDTOs) throws ValidationException{

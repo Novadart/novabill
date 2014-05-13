@@ -334,8 +334,8 @@ angular.module('novabill.directives',
 		scope: { 
 			priceList : '='
 		},
-		controller : ['$scope', 'nConstants', '$element', 'nEditPriceListDialog',
-		              function($scope, nConstants, $element, nEditPriceListDialog){
+		controller : ['$scope', 'nConstants', '$element', 'nEditPriceListDialog', '$window', 'nAjax',
+		              function($scope, nConstants, $element, nEditPriceListDialog, $window, nAjax){
 			$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 			
 			$scope.openUrl = function(){
@@ -356,25 +356,27 @@ angular.module('novabill.directives',
 				}
 				
 				instance.result.then(function(priceList){
-					GWT_Server.priceList.clonePriceList(nConstants.conf.businessId, String($scope.priceList.id), priceList.name, {
+					var PriceList = nAjax.PriceList();
+					PriceList.clonePriceList(
+							{
+								id : $scope.priceList.id,
+								priceListName: priceList.name 
+							},
+							function(newPriceList){
+								$window.location.assign( nConstants.url.priceListDetails(newPriceList.id) );
+							}, 
+							function(exceptionData){
+								switch(exceptionData.data.error){
+								case nConstants.exception.VALIDATION:
+									if(exceptionData.data.message[0].errorCode === nConstants.validation.NOT_UNIQUE){
+										recursiveCloning(priceList);
+									}
+									break;
 
-						onSuccess : function(newId){
-							window.location.assign( nConstants.url.priceListDetails(newId) );
-						},
-
-						onFailure : function(error){
-							switch(error.exception){
-							case nConstants.exception.VALIDATION:
-								if(error.data === nConstants.validation.NOT_UNIQUE){
-									recursiveCloning(priceList);
+								default:
+									break;
 								}
-								break;
-
-							default:
-								break;
-							}
-						}
-					});
+							});
 				});
 			}
 			
@@ -464,14 +466,13 @@ angular.module('novabill.directives',
 			//should we reload if the price has been updated?
 			reloadOnUpdate : '='
 		},
-		controller : ['$scope', '$rootScope', 'nCalc', '$filter', 'nConfirmDialog', 
-		              function($scope, $rootScope, nCalc, $filter, nConfirmDialog){
+		controller : ['$scope', '$rootScope', 'nCalc', '$filter', 'nConfirmDialog', 'nAjax', 
+		              function($scope, $rootScope, nCalc, $filter, nConfirmDialog, nAjax){
 			$scope.PRICE_TYPE = nConstants.priceType;
 			$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
-			var COMMODITY_PRICES_HACK = $scope.commodity.pricesMap ? $scope.commodity.pricesMap.prices : $scope.commodity.prices;
 
 			// making a copy because we want to drop changes in case they are not saved remotely
-			$scope.price = angular.copy( COMMODITY_PRICES_HACK[$scope.priceListName]);
+			$scope.price = angular.copy( $scope.commodity.prices[$scope.priceListName]);
 
 			function updatePriceInfo(price){
 
@@ -483,7 +484,7 @@ angular.module('novabill.directives',
 
 				} else {
 					var details = $filter('translate')('DEFAULT_PRICE_LIST')
-					+'    '+$filter('currency')(COMMODITY_PRICES_HACK[$scope.DEFAULT_PRICELIST_NAME].priceValue);
+					+'    '+$filter('currency')($scope.commodity.prices[$scope.DEFAULT_PRICELIST_NAME].priceValue);
 
 					switch (price.priceType) {
 					case nConstants.priceType.DISCOUNT_PERCENT:
@@ -520,9 +521,11 @@ angular.module('novabill.directives',
 			}
 
 			// for displaying info
-			updatePriceInfo(COMMODITY_PRICES_HACK[$scope.priceListName]);
+			updatePriceInfo($scope.commodity.prices[$scope.priceListName]);
 
 			if(!$scope.readOnly) {
+				
+				var CommodityUtils = nAjax.CommodityUtils();
 				
 				$scope.$watch('price', function(newPrice, oldPrice){
 					if(newPrice.priceType !== oldPrice.priceType){
@@ -531,33 +534,27 @@ angular.module('novabill.directives',
 				}, true);
 	
 				$scope.save = function(){
-					GWT_Server.commodity.addOrUpdatePrice(nConstants.conf.businessId, angular.toJson($scope.price), {
-						onSuccess : function(id){
-							$scope.$apply(function(){
-	
+					CommodityUtils.addOrUpdatePrice($scope.price,
+							function(newPriceId){
 								//set the id, needed if the price was freshly added
-								$scope.price.id = id;
-	
+								$scope.price.id = newPriceId;
+		
 								// and update the model
-								COMMODITY_PRICES_HACK[$scope.priceListName] = $scope.price;
+								$scope.commodity.prices[$scope.priceListName] = $scope.price;
 								
 								// data has been saved, update info...
 								updatePriceInfo( $scope.price );
 								
 								$scope.editMode = false;
-	
+		
 								if($scope.reloadOnUpdate){
 									$route.reload();
 								}
 							});
-						},
-	
-						onFailure : function(error){}
-					});
 				};
 	
 				$scope.edit = function(){
-					$scope.price = angular.copy( COMMODITY_PRICES_HACK[$scope.priceListName] );
+					$scope.price = angular.copy( $scope.commodity.prices[$scope.priceListName] );
 					$scope.editMode = true;
 				};
 	
@@ -569,10 +566,14 @@ angular.module('novabill.directives',
 					var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION') );
 					instance.result.then(function(value){
 						if(value){
-							GWT_Server.commodity.removePrice(nConstants.conf.businessId, String($scope.price.priceListID), String($scope.price.commodityID), {
-								onSuccess : function(data){
-									$scope.$apply(function(){
-										var deletedPrice = COMMODITY_PRICES_HACK[$scope.priceListName];
+							var params = {
+									commodityID : $scope.price.commodityID,
+									priceListID : $scope.price.priceListID
+								};
+							CommodityUtils.removePrice(
+									params,
+									function(){
+										var deletedPrice = $scope.commodity.prices[$scope.priceListName];
 										var emptyPrice = {
 												id: null, 
 												priceValue: null, 
@@ -580,15 +581,11 @@ angular.module('novabill.directives',
 												commodityID: deletedPrice.commodityID, 
 												priceListID: deletedPrice.priceListID
 										};
-										COMMODITY_PRICES_HACK[$scope.priceListName] = emptyPrice;
+										$scope.commodity.prices[$scope.priceListName] = emptyPrice;
 										$scope.price = emptyPrice;
 										updatePriceInfo( $scope.price );
 										$scope.editMode = false;
 									});
-								},
-	
-								onFailure : function(error){}
-							});
 						}
 					});
 				};

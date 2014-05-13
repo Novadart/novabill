@@ -19,17 +19,17 @@ angular.module('novabill.calc', ['novabill.constants'])
 			var price = COMMODITY_PRICES_HACK[priceListName];
 			
 			if(priceListName === nConstants.conf.defaultPriceListName){
-				return new BigNumber( String(price.priceValue) );
+				return new BigNumber( price.priceValue );
 			} else {
 				
 				if(price === undefined || !price.id){
 					//if no price for the given price list, return the default price
 					price = COMMODITY_PRICES_HACK[nConstants.conf.defaultPriceListName];
-					return new BigNumber( String(price.priceValue) );
+					return new BigNumber( price.priceValue );
 				}
 				
-				var defaultPrice = new BigNumber( String(COMMODITY_PRICES_HACK[nConstants.conf.defaultPriceListName].priceValue) );
-				var priceValue = new BigNumber( String(price.priceValue) );
+				var defaultPrice = new BigNumber( COMMODITY_PRICES_HACK[nConstants.conf.defaultPriceListName].priceValue );
+				var priceValue = new BigNumber( price.priceValue );
 				var percentValue = null;
 				
 				switch (price.priceType) {

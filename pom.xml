@@ -43,7 +43,7 @@
 		<gwt.version>2.5.1</gwt.version>
 		<android-sdk.version>4.1.1.4</android-sdk.version>
 		<android-sdk.path>${local.android-sdk.path}</android-sdk.path>
-		<jackson.version>2.0.1</jackson.version>
+		<jackson.version>2.3.3</jackson.version>
 	</properties>
 
 	<scm>

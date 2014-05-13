@@ -8,7 +8,7 @@
 
            <div class="form-group" ng-class="{'has-success': form.service.$dirty}">
                <label class="control-label" for="service">{{'TYPE' | translate}} *</label>
-               <select class="form-control" name="service" ng-model="service" required>
+               <select class="form-control" name="service" ng-model="$parent.service" required>
                    <option value="false">{{'PRODUCT' | translate}}</option>
                    <option value="true">{{'SERVICE' | translate}}</option>
                </select>

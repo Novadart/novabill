@@ -1,19 +1,15 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import com.google.web.bindery.autobean.shared.AutoBean;
 import com.google.web.bindery.autobean.shared.AutoBeanUtils;
-import com.novadart.novabill.frontend.client.bridge.server.autobean.ModifyPriceList.CommodityPrice;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
-import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.ContactDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
@@ -21,71 +17,12 @@ import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.dto.PriceDTO;
-import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.SettingsDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.tuple.Pair;
 
 public class AutoBeanEncoder {
 	
 	
-	public static AutoBean<ModifyPriceList> encode(Pair<PriceListDTO, Map<String, Pair<String, PriceDTO>>> data){
-		if(data == null){
-			return null;
-		}
-		
-		ModifyPriceList mpl = AutoBeanMaker.INSTANCE.makeModifyPriceList().as();
-		
-		PriceList pl = encode(data.getFirst()).as();
-		mpl.setPriceList(pl);
-		
-		CommodityPrice cp;
-		Pair<String, PriceDTO> p;
-		List<CommodityPrice> prices = new ArrayList<ModifyPriceList.CommodityPrice>();
-		
-		for (String sku : data.getSecond().keySet()) {
-			p = data.getSecond().get(sku);
-			
-			cp = AutoBeanMaker.INSTANCE.makeCommodityPrice().as();
-			cp.setDescription(p.getFirst());
-			cp.setPrice(encode(p.getSecond()).as());
-			cp.setSku(sku);
-			
-			prices.add(cp);
-		}
-		
-		mpl.setCommodityPriceList(prices);
-		
-		return AutoBeanUtils.getAutoBean(mpl);
-	}
-	
-
-	public static AutoBean<PriceList> encode(PriceListDTO c){
-		if(c == null){
-			return null;
-		}
-
-		PriceList pl = AutoBeanMaker.INSTANCE.makePriceList().as();
-
-		AutoBean<Business> b = encode(c.getBusiness());
-		pl.setBusiness(b==null ? null : b.as());
-		pl.setId(c.getId());
-		pl.setName(c.getName());
-
-		if(c.getCommodities() != null) {
-			CommodityList cl = AutoBeanMaker.INSTANCE.makeCommodityList().as();
-			List<Commodity> commList = new ArrayList<Commodity>();
-			
-			for (CommodityDTO cd : c.getCommodities()) {
-				commList.add(encode(cd).as());
-			}
-			cl.setCommodities(commList);
-			pl.setCommodityList(cl);
-		}
-		
-		return AutoBeanUtils.getAutoBean(pl);
-	}
 
 
 	public static AutoBean<BusinessStats> encode(BusinessStatsDTO c){
@@ -152,52 +89,6 @@ public class AutoBeanEncoder {
 		ca.setPostcode(c.getPostcode());
 		ca.setProvince(c.getProvince());
 		return AutoBeanUtils.getAutoBean(ca);
-	}
-
-
-	public static AutoBean<Commodity> encode(CommodityDTO c){
-		if(c == null){
-			return null;
-		}
-		Commodity cb = AutoBeanMaker.INSTANCE.makeCommodity().as();
-		cb.setDescription(c.getDescription());
-		cb.setId(c.getId());
-		cb.setService(c.isService());
-		cb.setTax(c.getTax() != null ? c.getTax().toPlainString() : null);
-		cb.setUnitOfMeasure(c.getUnitOfMeasure());
-		cb.setSku(c.getSku());
-		cb.setWeight(c.getWeight() != null ? c.getWeight().toPlainString() : null);
-
-		if(c.getPrices() != null) {
-			PricesMap pricesMap = AutoBeanMaker.INSTANCE.makePricesMap().as();
-			Map<String, Price> prices = new HashMap<String, Price>();
-
-			AutoBean<Price> p;
-			for (String plName : c.getPrices().keySet()) {
-				p = encode(c.getPrices().get(plName));
-				prices.put(plName, p == null ? null : p.as());
-			}
-
-			pricesMap.setPrices(prices);
-			cb.setPricesMap(pricesMap);
-		}
-
-		return AutoBeanUtils.getAutoBean(cb);
-	}
-
-
-	public static AutoBean<Price> encode(PriceDTO price) {
-		if(price == null) {
-			return null;
-		}
-
-		Price p = AutoBeanMaker.INSTANCE.makePrice().as();
-		p.setCommodityID(price.getCommodityID());
-		p.setId(price.getId());
-		p.setPriceListID(price.getPriceListID());
-		p.setPriceType(price.getPriceType() != null ? price.getPriceType().name() : null);
-		p.setPriceValue(price.getPriceValue() != null ? price.getPriceValue().toPlainString() : null);
-		return AutoBeanUtils.getAutoBean(p);
 	}
 
 	public static AutoBean<Business> encode(BusinessDTO b){

@@ -1,16 +1,18 @@
 'use strict';
 
 angular.module('novabill.commodities.controllers', 
-		['novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'novabill.constants', 'novabill.utils', 'infinite-scroll'])
+		['novabill.directives', 'novabill.directives.dialogs', 'novabill.ajax', 
+		 'novabill.translations', 'novabill.constants', 'novabill.utils', 'infinite-scroll'])
 
 
 /**
  * COMMODITIES PAGE CONTROLLER
  */
-.controller('CommoditiesCtrl', ['$scope', '$location', '$rootScope', 'nConstants', 'nSorting', '$filter', 'nEditCommodityDialog',
-                                function($scope, $location, $rootScope, nConstants, nSorting, $filter, nEditCommodityDialog){
+.controller('CommoditiesCtrl', ['$scope', '$location', '$rootScope', 'nConstants', 'nSorting', '$filter', 'nAjax', 'nEditCommodityDialog',
+                                function($scope, $location, $rootScope, nConstants, nSorting, $filter, nAjax, nEditCommodityDialog){
 
 	$scope.commodities = null;
+	var Commodity = nAjax.Commodity();
 	
 	var loadedCommodities = [];
 	var filteredCommodities = [];
@@ -27,15 +29,9 @@ angular.module('novabill.commodities.controllers',
 
 
 	function loadCommodities() {
-		GWT_Server.commodity.getAll(nConstants.conf.businessId, {
-			onSuccess : function(data){
-				$scope.$apply(function(){
-					loadedCommodities = data.commodities.sort(nSorting.descriptionComparator);
-					updateFilteredCommodities();
-				});
-			},
-
-			onFailure : function(error){}
+		Commodity.query(function(commodities){
+			loadedCommodities = commodities.sort(nSorting.descriptionComparator);
+			updateFilteredCommodities();
 		});
 	};
 
@@ -53,29 +49,28 @@ angular.module('novabill.commodities.controllers',
 		if(wrongCommodity){
 			instance = nEditCommodityDialog.open(wrongCommodity, invalidSku, true);
 		} else {
-			instance = nEditCommodityDialog.open();
+			var commodity = new Commodity();
+			commodity.business = { id : nConstants.conf.businessId };
+			instance = nEditCommodityDialog.open(commodity);
 		}
 		
 		instance.result.then(function(commodity){
-			GWT_Server.commodity.add(angular.toJson(commodity), {
-				onSuccess : function(newId){
-					loadCommodities();
-				},
+			commodity.$save(
+					function(newId){
+						loadCommodities();
+					}, 
+					function(exceptionData){
+						switch(exceptionData.data.error){
+						case nConstants.exception.VALIDATION:
+							if(exceptionData.data.message[0].errorCode === nConstants.validation.NOT_UNIQUE){
+								recursiveCreation(commodity, true);
+							}
+							break;
 
-				onFailure : function(error){
-					switch(error.exception){
-					case nConstants.exception.VALIDATION:
-						if(error.data === nConstants.validation.NOT_UNIQUE){
-							recursiveCreation(commodity, true);
+						default:
+							break;
 						}
-						break;
-
-					default:
-						break;
-					}
-
-				}
-			});
+					});
 		});
 	}
 	
@@ -94,23 +89,19 @@ angular.module('novabill.commodities.controllers',
 /**
  * COMMODITIES DETAILS PAGE CONTROLLER
  */
-.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', '$rootScope', 'nConstants', '$filter', '$route', 'nRegExp', 'nConfirmDialog', 'nEditCommodityDialog',
-                                       function($scope, $location, $routeParams, $rootScope, nConstants, $filter, $route, nRegExp, nConfirmDialog, nEditCommodityDialog){
+.controller('CommoditiesDetailsCtrl', ['$scope', '$location', '$routeParams', '$rootScope', 'nConstants', '$filter', 
+                                       '$route', 'nRegExp', 'nConfirmDialog', 'nEditCommodityDialog', 'nAjax',
+                                       function($scope, $location, $routeParams, $rootScope, nConstants, $filter, 
+                                    		   $route, nRegExp, nConfirmDialog, nEditCommodityDialog, nAjax){
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	$scope.commodity = null;
+	var Commodity = nAjax.Commodity();
 
 
 	function loadCommodity(){
-		GWT_Server.commodity.get(nConstants.conf.businessId, $routeParams.commodityId, {
-
-			onSuccess : function(commodity){
-				$scope.$apply(function(){
-					$scope.commodity = commodity;
-				});
-			},
-
-			onFailure : function(){}
-
+		Commodity.get({id : $routeParams.commodityId}, function(commodity){
+			$scope.commodity = commodity;
+			$scope.commodity.business = { id : nConstants.conf.businessId };
 		});
 	}
 
@@ -138,23 +129,19 @@ angular.module('novabill.commodities.controllers',
 		}
 		
 		instance.result.then(function(commodity){
-			GWT_Server.commodity.update(angular.toJson(commodity), {
-				onSuccess : function(newId){
-					$route.reload();
-				},
-
-				onFailure : function(error){
-					switch(error.exception){
-					case nConstants.exception.VALIDATION:
-						if(error.data === nConstants.validation.NOT_UNIQUE){
-							recursiveUpdate(commodity, true);
-						}
-						break;
-
-					default:
-						break;
+			commodity.$update(function(){
+				$route.reload();
+			},
+			function(exceptionData){
+				switch(exceptionData.data.error){
+				case nConstants.exception.VALIDATION:
+					if(exceptionData.data.message[0].errorCode === nConstants.validation.NOT_UNIQUE){
+						recursiveUpdate(commodity, true);
 					}
+					break;
 
+				default:
+					break;
 				}
 			});
 		});
@@ -170,14 +157,8 @@ angular.module('novabill.commodities.controllers',
 		var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION',{data : $scope.commodity.description}) );
 		instance.result.then(function(value){
 			if(value){
-				GWT_Server.commodity.remove(nConstants.conf.businessId, $scope.commodity.id, {
-					onSuccess : function(data){
-						$scope.$apply(function(){
-							$location.path('/');
-						});
-					},
-	
-					onFailure : function(error){}
+				$scope.commodity.$delete(function(){
+					$location.path('/');
 				});
 			}
 		});

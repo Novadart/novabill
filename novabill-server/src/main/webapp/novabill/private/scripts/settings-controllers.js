@@ -17,7 +17,7 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 
 	if(!$scope.firstRun) {
 		
-		Business.get({ id : nConstants.conf.businessId }, function(business){
+		Business.get(function(business){
 			$scope.business = business;
 			$scope.priceDisplayInDocsMonolithic = !business.settings.priceDisplayInDocsMonolithic;
 		});

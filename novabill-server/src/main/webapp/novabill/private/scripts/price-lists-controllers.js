@@ -1,31 +1,23 @@
 'use strict';
 
 angular.module('novabill.priceLists.controllers', 
-		['novabill.translations', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.utils', 'infinite-scroll'])
+		['novabill.translations', 'novabill.directives', 'novabill.ajax', 'novabill.directives.dialogs', 
+		 'novabill.utils', 'infinite-scroll'])
 
 
 /**
  * PRICE LISTS PAGE CONTROLLER
  */
-.controller('PriceListsCtrl', ['$scope', 'nConstants', 'nSorting', 'nEditPriceListDialog', 
-                               function($scope, nConstants, nSorting, nEditPriceListDialog){
+.controller('PriceListsCtrl', ['$scope', 'nConstants', 'nSorting', 'nEditPriceListDialog', 'nAjax',
+                               function($scope, nConstants, nSorting, nEditPriceListDialog, nAjax){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	$scope.PREMIUM = nConstants.conf.premium;
+	var PriceList = nAjax.PriceList(); 
 	
 	function loadPriceLists(){
-		GWT_Server.priceList.getAll(nConstants.conf.businessId, {
-			
-			onSuccess : function(priceLists){
-				$scope.$apply(function(){
-					$scope.priceLists = priceLists.list.sort(nSorting.priceListsComparator);
-				});
-			},
-			
-			onFailure : function() {
-				
-			}
-			
+		PriceList.query(function(priceLists){
+			$scope.priceLists = priceLists.sort(nSorting.priceListsComparator);
 		});
 	};
 	
@@ -35,27 +27,24 @@ angular.module('novabill.priceLists.controllers',
 		if(wrongPriceList){
 			instance = nEditPriceListDialog.open(wrongPriceList, true);
 		} else {
-			instance = nEditPriceListDialog.open();
+			var newPriceList = new PriceList();
+			newPriceList.business = { id : nConstants.conf.businessId };
+			instance = nEditPriceListDialog.open( newPriceList );
 		}
 		
 		instance.result.then(function(priceList){
-			GWT_Server.priceList.add(angular.toJson(priceList), {
-
-				onSuccess : function(newId){
-					loadPriceLists();
-				},
-
-				onFailure : function(error){
-					switch(error.exception){
-					case nConstants.exception.VALIDATION:
-						if(error.data === nConstants.validation.NOT_UNIQUE){
-							recursiveCreation(priceList);
-						}
-						break;
-
-					default:
-						break;
+			priceList.$save(function(newId){
+				loadPriceLists();
+			}, function(exceptionData){
+				switch(exceptionData.data.error){
+				case nConstants.exception.VALIDATION:
+					if(exceptionData.data.message[0].errorCode === nConstants.validation.NOT_UNIQUE){
+						recursiveCreation(priceList);
 					}
+					break;
+
+				default:
+					break;
 				}
 			});
 		});
@@ -75,13 +64,15 @@ angular.module('novabill.priceLists.controllers',
  * PRICE LISTS DETAILS PAGE CONTROLLER
  */
 .controller('PriceListsDetailsCtrl', ['$scope', '$http', '$routeParams', 'nSorting', 'nConstants', '$rootScope', 'nConfirmDialog',
-                                      '$location', '$filter', 'nEditPriceListDialog', 'nCommodityPriceDialog', '$route',
+                                      '$location', '$filter', 'nEditPriceListDialog', 'nCommodityPriceDialog', '$route', 'nAjax',
                                       function($scope, $http, $routeParams, nSorting, nConstants, $rootScope, nConfirmDialog,
-                                    		  $location, $filter, nEditPriceListDialog, nCommodityPriceDialog, $route){
+                                    		  $location, $filter, nEditPriceListDialog, nCommodityPriceDialog, $route, nAjax){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	$scope.selectedCommodities = {};
 	$scope.selectedCommoditiesCount = 0;
+	var PriceList = nAjax.PriceList();
+	var CommodityUtils = nAjax.CommodityUtils();
 	
 	var loadedCommodities = [];
 	var filteredCommodities = [];
@@ -99,12 +90,12 @@ angular.module('novabill.priceLists.controllers',
 	});
 	
 	function loadPriceList(){
-		$http.get(nConstants.conf.privateAreaBaseUrl+'json/pricelists/'+$routeParams.priceListId)
-			.success(function(data, status){
-				loadedCommodities = data.commodities.sort(nSorting.descriptionComparator);
-				$scope.priceList = data;
-				updateFilteredCommodities();
-			});
+		PriceList.get({id: $routeParams.priceListId}, function(priceList){
+			loadedCommodities = priceList.commodities.sort(nSorting.descriptionComparator);
+			$scope.priceList = priceList;
+			$scope.priceList.business = { id : nConstants.conf.businessId };
+			updateFilteredCommodities();
+		});
 	}
 	
 	$scope.loadMoreCommodities = function(){
@@ -119,25 +110,18 @@ angular.module('novabill.priceLists.controllers',
 		var instance = nEditPriceListDialog.open(updatedPriceList, invalidIdentifier);
 
 		instance.result.then(function(priceList){
-			GWT_Server.priceList.update(angular.toJson(priceList), {
-
-				onSuccess : function(newId){
-					$scope.$apply(function(){
-						$scope.priceList.name = priceList.name;
-					});
-				},
-
-				onFailure : function(error){
-					switch(error.exception){
-					case nConstants.exception.VALIDATION:
-						if(error.data === nConstants.validation.NOT_UNIQUE){
-							recursiveUpdate(priceList, true);
-						}
-						break;
-
-					default:
-						break;
+			priceList.$update(function(newId){
+				$scope.priceList.name = priceList.name;
+			}, function(exceptionData){
+				switch(exceptionData.data.error){
+				case nConstants.exception.VALIDATION:
+					if(exceptionData.data.message[0].errorCode === nConstants.validation.NOT_UNIQUE){
+						recursiveUpdate(priceList, true);
 					}
+					break;
+
+				default:
+					break;
 				}
 			});
 		});
@@ -177,14 +161,8 @@ angular.module('novabill.priceLists.controllers',
 		var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION', {data: $scope.priceList.name}) );
 		instance.result.then(function(value){
 			if(value){
-				GWT_Server.priceList.remove(nConstants.conf.businessId, String($scope.priceList.id), {
-					onSuccess : function(data){
-						$scope.$apply(function(){
-							$location.path('/');
-						});
-					},
-	
-					onFailure : function(error){}
+				$scope.priceList.$delete(function(){
+					$location.path('/');
 				});
 			}
 		});
@@ -204,32 +182,24 @@ angular.module('novabill.priceLists.controllers',
 					});
 					
 					// extract and update the prices
-					var prices = { list : [] };
+					var prices = [];
 					var price = null;
 					angular.forEach(set, function(com, _){
 						price = angular.copy(com.prices[$scope.priceList.name]);
 						price.priceType = result.priceType;
 						price.priceValue = result.priceValue;
-						prices.list.push(price);
+						prices.push(price);
 					});
 					
-					GWT_Server.commodity.addOrUpdatePrices(nConstants.conf.businessId, angular.toJson(prices), {
-						onSuccess : function(result){
-							$scope.$apply(function(){
-								
-//								var price = null;
-//								angular.forEach(set, function(com, i){
-//									price = prices.list[i];
-//									price.id = parseInt(result.list[i]);
-//									com.prices[$scope.priceList.name] = price;
-//								});
-								$route.reload();
-								
-							});
-						},
-						onFailure : function(){}
+					CommodityUtils.addOrUpdatePrices(prices, function(newPrices){
+//						var price = null;
+//						angular.forEach(set, function(com, i){
+//							price = prices.list[i];
+//							price.id = parseInt(result.list[i]);
+//							com.prices[$scope.priceList.name] = price;
+//						});
+						$route.reload();
 					});
-					
 					
 				},
 				function () {

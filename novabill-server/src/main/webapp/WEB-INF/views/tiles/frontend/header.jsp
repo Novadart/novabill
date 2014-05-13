@@ -43,7 +43,6 @@
                                 <li class="sep"><span>|</span></li>
                                 <li>
                                 	<form action="${logoutUrl}" method="post">
-<%--                                 	<a href="${logoutUrl}">Esci</a> --%>
 										<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
 										<input class="btn btn-sm default" type="submit" value="Esci">
 									</form>

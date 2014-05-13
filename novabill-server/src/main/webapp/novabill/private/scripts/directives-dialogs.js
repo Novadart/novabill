@@ -200,39 +200,35 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.ajax'
 
 						//if prices map is empty, init it
 						if( $scope.commodity ){
-							$scope.price = $scope.commodity.pricesMap && $scope.commodity.pricesMap.prices[ nConstants.conf.defaultPriceListName ]
-							? $scope.commodity.pricesMap.prices[ nConstants.conf.defaultPriceListName ].priceValue 
-									: null;
-
-							// NOTE we check for id to workaround GWT removing the property when it is false
-							$scope.service = ($scope.commodity.service === undefined  
-									? ($scope.commodity.id === undefined || $scope.commodity.id === null ? null : 'false') 
-											: $scope.commodity.service.toString());
+							$scope.price = $scope.commodity.prices ? $scope.commodity.prices[ nConstants.conf.defaultPriceListName ].priceValue : null;
+							$scope.service = $scope.commodity.service;
 						}
 
 					});
 					
-					//init commodity, if not present, to avoid calls to $watch that will reset service and price
-					$scope.commodity = commodity == null ? {} : commodity;
+					//init commodity
+					$scope.commodity = commodity;
 
 					$scope.save = function(){
 						// update service property
 						$scope.commodity.service = $scope.service==='true';
 
 						//set weight to null in case we are dealing with a service
-						$scope.commodity.weight = $scope.commodity.service ? null : ($scope.commodity.weight ? new String($scope.commodity.weight) : null);
+						$scope.commodity.weight = $scope.commodity.service 
+								? null 
+								: ($scope.commodity.weight ? new String($scope.commodity.weight) : null);
 
 						// if default price is not present, build the structure for storing it
-						if(!$scope.commodity.pricesMap){
-							$scope.commodity['pricesMap'] = { prices : {} };
-							$scope.commodity['pricesMap']['prices'][nConstants.conf.defaultPriceListName] = {
+						if(!$scope.commodity.prices){
+							$scope.commodity.prices = {};
+							$scope.commodity.prices[nConstants.conf.defaultPriceListName] = {
 									priceValue : null,
 									priceType : 'FIXED'
 							};
 						}
 
 						// update default price
-						$scope.commodity['pricesMap']['prices'][nConstants.conf.defaultPriceListName].priceValue = $scope.price;
+						$scope.commodity.prices[nConstants.conf.defaultPriceListName].priceValue = $scope.price;
 
 						// persist the commodity
 						$modalInstance.close( $scope.commodity );
@@ -609,29 +605,29 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.ajax'
 }])
 
 
-//
-///*
-// * Premium Activation Dialog
-// */
-//.factory('nPremiumUpgradeDialog', ['nConstants', '$modal', function (nConstants, $modal){
-//
-//	return {
-//		open : function( address ) {
-//
-//			return $modal.open({
-//
-//				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-premium-upgrade-dialog.html'),
-//
-//				controller: ['$scope', '$modalInstance',
-//				             function($scope, $modalInstance){
-//					
-//					
-//
-//				}]
-//			});
-//		}
-//	};
-//}])
+
+/*
+ * Premium Activation Dialog
+ */
+.factory('nPremiumUpgradeDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+	return {
+		open : function( address ) {
+
+			return $modal.open({
+
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-premium-upgrade-dialog.html'),
+
+				controller: ['$scope', '$modalInstance',
+				             function($scope, $modalInstance){
+					
+					
+
+				}]
+			});
+		}
+	};
+}])
 
 
 /*

@@ -2,8 +2,7 @@ package com.novadart.novabill.aspect.logging;
 
 import java.util.Map;
 
-import org.codehaus.jackson.map.ObjectMapper;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.shared.client.data.EntityType;
