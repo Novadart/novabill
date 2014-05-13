@@ -1,0 +1,6 @@
+<html>
+<body>
+<p>${message}</p>
+You can access the invoice <a href=href="${invoiceUrl}">here</a>
+</body>
+</html>

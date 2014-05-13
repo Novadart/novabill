@@ -24,13 +24,13 @@ public aspect CommodityServiceActionsAspect extends DBLoggerAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(CommodityServiceActionsAspect.class);
 	
 	pointcut add(CommodityDTO commodityDTO) : 
-		execution(public Long com.novadart.novabill.web.gwt.CommodityGwtController.add(..)) && args(commodityDTO);
+		execution(public Long com.novadart.novabill.service.web.CommodityService.add(..)) && args(commodityDTO);
 	
 	pointcut remove(Long businessID, Long id) : 
-		execution(public void com.novadart.novabill.web.gwt.CommodityGwtController.remove(..)) && args(businessID, id);
+		execution(public void com.novadart.novabill.service.web.CommodityService.remove(..)) && args(businessID, id);
 	
 	pointcut update(CommodityDTO commodityDTO) : 
-		execution(public void com.novadart.novabill.web.gwt.CommodityGwtController.update(..)) && args(commodityDTO);
+		execution(public void com.novadart.novabill.service.web.CommodityService.update(..)) && args(commodityDTO);
 	
 	after(CommodityDTO commodityDTO) returning (Long id) : add(commodityDTO){
 		Long time = System.currentTimeMillis();

@@ -5,7 +5,6 @@ import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 
-
 import java.math.BigDecimal;
 
 import javax.servlet.http.HttpServletResponse;
@@ -35,7 +34,7 @@ import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.CommodityService;
-import com.novadart.novabill.service.web.InvoiceService;
+import com.novadart.novabill.service.web.InvoiceServiceImpl;
 import com.novadart.novabill.service.web.PaymentTypeService;
 import com.novadart.novabill.service.web.PriceListService;
 import com.novadart.novabill.service.web.SharingPermitService;
@@ -45,14 +44,14 @@ import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessErrorType;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessErrorType;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
-import com.novadart.novabill.web.mvc.PDFController;
+import com.novadart.novabill.web.mvc.PrivatePDFController;
 import com.novadart.novabill.web.mvc.ajax.SharingPermitController;
 
 
@@ -63,7 +62,7 @@ import com.novadart.novabill.web.mvc.ajax.SharingPermitController;
 public class RestrictionsTest extends ServiceTest {
 	
 	@Autowired
-	private InvoiceService invoiceService;
+	private InvoiceServiceImpl invoiceService;
 	
 	@Autowired
 	private CommodityService commodityService;
@@ -187,7 +186,7 @@ public class RestrictionsTest extends ServiceTest {
 	
 	@Test
 	public void genPaymentsProspectPDFFreeUserTest() throws JRException, JasperReportKeyResolutionException, NotAuthenticatedException, DataAccessException{
-		PDFController controller = new PDFController();
+		PrivatePDFController controller = new PrivatePDFController();
 		boolean raised = false;
 		try {
 			controller.getPaymentsProspectPaymentDueDatePDF(null, null, FilteringDateType.CREATION_DATE, "", false, mock(HttpServletResponse.class), null);

@@ -143,25 +143,25 @@ public privileged aspect CachingAspect {
 	 * Dependencies: None
 	 */
 	
-	declare @method : public void com.novadart.novabill.service.web.InvoiceService.remove(Long, Long, Long): @Caching(evict = {
+	declare @method : public void com.novadart.novabill.service.web.InvoiceServiceImpl.remove(Long, Long, Long): @Caching(evict = {
 			@CacheEvict(value = INVOICE_CACHE, beforeInvocation = true,
 					key = "#businessID.toString().concat('-').concat(T(com.novadart.novabill.domain.Invoice).findInvoice(#id).accountingDocumentYear.toString())"),
 			@CacheEvict(value = DOCSYEARS_CACHE, key = "#businessID.toString().concat('-invoices')")
 	}); 
 		
-	declare @method : public Long com.novadart.novabill.service.web.InvoiceService.add(InvoiceDTO): @Caching(evict = {
+	declare @method : public Long com.novadart.novabill.service.web.InvoiceServiceImpl.add(InvoiceDTO): @Caching(evict = {
 			@CacheEvict(value = INVOICE_CACHE,
 					key = "#invoiceDTO.business.id.toString().concat('-').concat(new java.text.SimpleDateFormat('yyyy').format(#invoiceDTO.accountingDocumentDate).toString())"),
 			@CacheEvict(value = DOCSYEARS_CACHE, key = "#invoiceDTO.business.id.toString().concat('-invoices')")
 	});
 		
-	declare @method : public void com.novadart.novabill.service.web.InvoiceService.update(InvoiceDTO): @Caching(evict = {
+	declare @method : public void com.novadart.novabill.service.web.InvoiceServiceImpl.update(InvoiceDTO): @Caching(evict = {
 		@CacheEvict(value = INVOICE_CACHE, beforeInvocation = true, 
 			key = "#invoiceDTO.business.id.toString().concat('-').concat(new java.text.SimpleDateFormat('yyyy').format(T(com.novadart.novabill.domain.Invoice).findInvoice(#invoiceDTO.id).accountingDocumentDate).toString())"),
 		@CacheEvict(value = INVOICE_CACHE, key = "#invoiceDTO.business.id.toString().concat('-').concat(new java.text.SimpleDateFormat('yyyy').format(#invoiceDTO.accountingDocumentDate).toString())")
 	});
 	
-	declare @method : public void com.novadart.novabill.service.web.InvoiceService.setPayed(Long, ..):
+	declare @method : public void com.novadart.novabill.service.web.InvoiceServiceImpl.setPayed(Long, ..):
 		@CacheEvict(value = INVOICE_CACHE, key = "#businessID.toString().concat('-').concat(T(com.novadart.novabill.domain.Invoice).findInvoice(#id).accountingDocumentYear.toString())");
 	
 	/*

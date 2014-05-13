@@ -25,13 +25,13 @@ public aspect EstimationServiceActionsAspect extends DBLoggerAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(EstimationServiceActionsAspect.class);
 	
 	pointcut add(EstimationDTO estimationDTO) : 
-		execution(public Long com.novadart.novabill.web.gwt.EstimationGwtController.add(..)) && args(estimationDTO);
+		execution(public Long com.novadart.novabill.service.web.EstimationService.add(..)) && args(estimationDTO);
 	
 	pointcut remove(Long businessID, Long clientID, Long id) : 
-		execution(public void com.novadart.novabill.web.gwt.EstimationGwtController.remove(..)) && args(businessID, clientID, id);
+		execution(public void com.novadart.novabill.service.web.EstimationService.remove(..)) && args(businessID, clientID, id);
 	
 	pointcut update(EstimationDTO estimationDTO) : 
-		execution(public void com.novadart.novabill.web.gwt.EstimationGwtController.update(..)) && args(estimationDTO);
+		execution(public void com.novadart.novabill.service.web.EstimationService.update(..)) && args(estimationDTO);
 	
 	
 	after(EstimationDTO estimationDTO) returning (Long id) : add(estimationDTO){

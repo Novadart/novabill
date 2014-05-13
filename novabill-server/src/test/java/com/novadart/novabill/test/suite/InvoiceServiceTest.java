@@ -8,6 +8,7 @@ import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
+import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -29,9 +30,11 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.dumbster.smtp.SimpleSmtpServer;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.DocumentAccessToken;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.TransportDocument;
@@ -40,15 +43,16 @@ import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -67,6 +71,9 @@ public class InvoiceServiceTest extends ServiceTest {
 	
 	@Autowired
 	private InvoiceGwtService invoiceService;
+	
+	@Autowired
+	private InvoiceService invoiceAjaxService;
 	
 	@Autowired
 	private ClientGwtService clientService;
@@ -407,6 +414,25 @@ public class InvoiceServiceTest extends ServiceTest {
 		assertEquals(ids2012, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(FilteringDateType.CREATION_DATE, dateFormat.parse("01-01-2012"), dateFormat.parse("31-12-2012"))));
 		assertEquals(ids2010, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(FilteringDateType.CREATION_DATE, dateFormat.parse("01-01-2010"), dateFormat.parse("31-12-2010"))));
 		assertEquals(ids2009, invoiceIDSet(invoiceService.getAllUnpaidInDateRange(FilteringDateType.CREATION_DATE, dateFormat.parse("01-01-2009"), dateFormat.parse("31-12-2009"))));
+	}
+	
+	@Test
+	public void emailInvoiceAuthorizedTest() throws NoSuchAlgorithmException, JsonParseException, JsonMappingException, IOException{
+		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
+		invoiceAjaxService.email(inv.getId(), "foo@bar.com", "Test subject", "Test message");
+		smtpServer.stop();
+		String token = DocumentAccessToken.findAllDocumentAccessTokens().iterator().next().getToken();
+		assertTrue(smtpServer.getReceivedEmailSize() == 1);
+		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
+		assertEquals(EntityType.INVOICE, rec.getEntityType());
+		assertEquals(inv.getId(), rec.getEntityID());
+		assertEquals(OperationType.EMAIL, rec.getOperationType());
+		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
+		assertEquals(inv.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
+		assertEquals(inv.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
+		assertEquals(1l, DocumentAccessToken.countDocumentAccessTokens());
+		assertEquals(1l, DocumentAccessToken.findDocumentAccessTokens(inv.getId(), token).size());
 	}
 	
 }

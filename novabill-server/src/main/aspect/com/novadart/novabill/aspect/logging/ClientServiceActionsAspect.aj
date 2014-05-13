@@ -24,7 +24,7 @@ public aspect ClientServiceActionsAspect extends DBLoggerAspect {
 	private UtilsService utilsService;
 	
 	pointcut add(Long businessID, ClientDTO clientDTO) :
-		execution(public Long com.novadart.novabill.web.gwt.ClientGwtController.add(..)) && args(businessID, clientDTO);
+		execution(public Long com.novadart.novabill.service.web.ClientService.add(..)) && args(businessID, clientDTO);
 	
 	pointcut remove(Long businessID, Long id) :
 		execution(public void com.novadart.novabill.web.gwt.ClientGwtController.remove(..)) && args(businessID, id);

@@ -1,5 +1,7 @@
 package com.novadart.novabill.web.mvc.ajax;
 
+import java.io.UnsupportedEncodingException;
+import java.security.NoSuchAlgorithmException;
 import java.util.Date;
 import java.util.List;
 
@@ -12,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -81,7 +84,7 @@ public class InvoiceController {
 		return invoiceService.add(invoiceDTO).toString();
 	}
 	
-	@RequestMapping(method = RequestMethod.PUT)
+	@RequestMapping(value = "/{id}", method = RequestMethod.PUT)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public void update(@RequestBody InvoiceDTO invoiceDTO) throws DataAccessException, NoSuchObjectException, ValidationException, DataIntegrityException {
@@ -118,6 +121,14 @@ public class InvoiceController {
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date startDate,
 			@PathVariable @DateTimeFormat(iso = ISO.DATE) Date endDate) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return invoiceService.getAllUnpaidInDateRange(filteringDateType, startDate, endDate);
+	}
+	
+	@RequestMapping(value = "/{id}/email", method = RequestMethod.POST)
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.OK)
+	public void email(@PathVariable Long id, @RequestParam(value = "to") String to, @RequestParam(value = "subject") String subject,
+			@RequestParam(value = "message") String message) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+		invoiceService.email(id, to, subject, message);
 	}
 	
 }

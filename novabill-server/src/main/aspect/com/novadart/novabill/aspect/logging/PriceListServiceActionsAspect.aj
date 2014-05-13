@@ -24,13 +24,13 @@ public aspect PriceListServiceActionsAspect extends DBLoggerAspect {
 	private UtilsService utilsService;
 	
 	pointcut add(PriceListDTO priceListDTO) :
-		execution(public Long com.novadart.novabill.web.gwt.PriceListGwtController.add(..)) && args(priceListDTO);
+		execution(public Long com.novadart.novabill.service.web.PriceListService.add(..)) && args(priceListDTO);
 	
 	pointcut remove(Long businessID, Long id) :
-		execution(public void com.novadart.novabill.web.gwt.PriceListGwtController.remove(..)) && args(businessID, id);
+		execution(public void com.novadart.novabill.service.web.PriceListService.remove(..)) && args(businessID, id);
 	
 	pointcut update(PriceListDTO priceListDTO) :
-		execution(public void com.novadart.novabill.web.gwt.PriceListGwtController.update(..)) && args(priceListDTO);
+		execution(public void com.novadart.novabill.service.web.PriceListService.update(..)) && args(priceListDTO);
 	
 	after(PriceListDTO priceListDTO) returning (Long id) : add(priceListDTO){
 		Long time = System.currentTimeMillis();
