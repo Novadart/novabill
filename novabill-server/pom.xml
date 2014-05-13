@@ -206,7 +206,6 @@
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-search-engine</artifactId>
-			<scope>runtime</scope>
 			<exclusions>
 				<exclusion>
 					<artifactId>jackson-mapper-asl</artifactId>
