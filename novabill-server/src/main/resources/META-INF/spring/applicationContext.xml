@@ -149,7 +149,7 @@
 	</bean>
 	
 	<bean
-		class="com.novadart.novabill.aspect.logging.ValidationAspect"
+		class="com.novadart.novabill.aspect.logging.ValidationErrorAspect"
 		factory-method="aspectOf">
 		<property name="sendEmail" value="${notification.validationError}" />
 		<property name="emailAddresses">
