@@ -90,27 +90,32 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 		}
 
 		if(!getView().getSetToAddress().getValue()){
-			getView().getToAddrCity().setText(getClient().getCity());
 			getView().getToAddrCompanyName().setText(getClient().getName());
-			getView().getToAddrPostCode().setText(getClient().getPostcode());
-			if(getClient().getCountry().equalsIgnoreCase("IT")){
-				getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
+			if(getClient().getVatID()!=null || getClient().getSsn()!=null){
+				getView().getToAddrCity().setText(getClient().getCity());
+				getView().getToAddrPostCode().setText(getClient().getPostcode());
+				if(getClient().getCountry().equalsIgnoreCase("IT")){
+					getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
+				}
+				getView().getToAddrStreetName().setText(getClient().getAddress());
+				getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
 			}
-			getView().getToAddrStreetName().setText(getClient().getAddress());
-			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
 		}
 
 		EndpointDTO loc = new EndpointDTO();
 		loc.setCompanyName(getView().getToAddrCompanyName().getText());
 		loc.setCity(getView().getToAddrCity().getText());
 		loc.setPostcode(getView().getToAddrPostCode().getText());
-		if(getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
+		if("IT".equalsIgnoreCase(getView().getToAddrCountry().getSelectedItemValue())){
 			loc.setProvince(getView().getToAddrProvince().getSelectedItemText());
 		} else {
 			loc.setProvince("");
 		}
 		loc.setStreet(getView().getToAddrStreetName().getText());
-		loc.setCountry(getView().getToAddrCountry().getSelectedItemValue());
+		
+		if(getView().getToAddrCountry().getSelectedIndex() > 0) {
+			loc.setCountry(getView().getToAddrCountry().getSelectedItemValue());
+		}
 		es.setToEndpoint(loc);
 
 		es.setLayoutType(Configuration.getBusiness().getSettings().getDefaultLayoutType());
