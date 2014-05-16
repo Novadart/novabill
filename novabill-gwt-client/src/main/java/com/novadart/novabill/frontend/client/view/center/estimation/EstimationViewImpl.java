@@ -20,12 +20,15 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
+import com.novadart.gwtshared.client.textbox.RichTextArea;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
+import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
@@ -45,7 +48,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 
 	interface EstimationViewImplUiBinder extends UiBinder<Widget, EstimationViewImpl> {
 	}
-	
+
 	@UiField FlowPanel docControls;
 
 	@UiField Label clientName;
@@ -55,42 +58,42 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	@UiField ValidatedTextArea note;
 	@UiField ValidatedTextArea paymentNote;
 	@UiField ValidatedTextArea limitations;
-	
+
 	@UiField CheckBox setToAddress;
 	@UiField HorizontalPanel toAddressContainer;
-	@UiField(provided=true) RichTextBox toAddrCompanyName;
+	@UiField(provided=true) RichTextArea toAddrCompanyName;
 	@UiField(provided=true) RichTextBox toAddrStreetName;
 	@UiField(provided=true) RichTextBox toAddrPostCode;
 	@UiField(provided=true) RichTextBox toAddrCity;
 	@UiField(provided=true) ValidatedListBox toAddrProvince;
 	@UiField(provided=true) ValidatedListBox toAddrCountry;
 	@UiField ListBox toAddrButtonDefault;
-	
+
 	@UiField(provided=true) ItemInsertionForm itemInsertionForm;
 
 	@UiField Label pdfOptionsLabel;
 	@UiField CheckBox overrideIncognitoModeCheckbox;
-	
+
 	@UiField Label totalBeforeTaxes;
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
-	
+
 	@UiField(provided=true) LoaderButton createEstimation;
 	@UiField Button abort;
-	
-	
+
+
 	private Presenter presenter;
 
 	public EstimationViewImpl() {
 		itemInsertionForm = new ItemInsertionForm(new ItemInsertionForm.Handler() {
-			
+
 			@Override
 			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
 				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
-			
+
 		});
-		
+
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
 
 		date = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
@@ -100,31 +103,38 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		validTill.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		createEstimation = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
-		
+
 		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),ValidationKit.DEFAULT);
 		toAddrCity.addStyleName(CSS.box());
-		toAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(), ValidationKit.DEFAULT);
+		toAddrCompanyName = new RichTextArea(GlobalBundle.INSTANCE.richTextAreaCss(), I18N.INSTANCE.companyName(), 
+				new TextLengthValidation(255) {
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(getMaxLength());
+			}
+		}, ValidationKit.DEFAULT);
 		toAddrCompanyName.addStyleName(CSS.box());
+		toAddrCompanyName.addStyleName(CSS.companyName());
 		toAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(),ValidationKit.DEFAULT);
 		toAddrPostCode.addStyleName(CSS.box());
 		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),ValidationKit.DEFAULT);
 		toAddrStreetName.addStyleName(CSS.box());
 		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
-		
+
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
-		
+
 		createEstimation.getButton().setStyleName(CSS.createButton()+" btn green");
-		
+
 	}
-	
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
 		presenter.onLoad();
 	}
-	
+
 	@UiHandler("setToAddress")
 	void onSetToAddress(ValueChangeEvent<Boolean> e){
 		toAddressContainer.setVisible(e.getValue());
@@ -139,17 +149,17 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	void onToCountryChange(ChangeEvent event){
 		presenter.onToCountryChange();
 	}
-	
+
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
 	}
-	
+
 	@UiFactory
 	GlobalCss getGlobalCss(){
 		return GlobalBundle.INSTANCE.globalCss();
 	}
-	
+
 	@UiFactory
 	AccountDocumentCss getAccountDocumentCss(){
 		return CSS;
@@ -181,7 +191,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		overrideIncognitoModeCheckbox.setVisible(Configuration.getBusiness().getSettings().isIncognitoEnabled());
 		pdfOptionsLabel.setVisible(Configuration.getBusiness().getSettings().isIncognitoEnabled());
 		overrideIncognitoModeCheckbox.setValue(false);
-		
+
 		number.reset();
 
 		//reset widget statuses
@@ -196,7 +206,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
-		
+
 		setToAddress.setValue(false);
 		toAddressContainer.setVisible(false);
 		toAddrCity.reset();
@@ -206,7 +216,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		toAddrProvince.setEnabled(true);
 		toAddrProvince.reset();
 		toAddrCountry.reset();
-		
+
 		createEstimation.reset();
 		setLocked(false);
 	}
@@ -219,7 +229,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		note.setEnabled(!value);
 		paymentNote.setEnabled(!value);
 		limitations.setEnabled(!value);
-		
+
 		toAddrCompanyName.setEnabled(!value);
 		toAddrStreetName.setEnabled(!value);
 		toAddrPostCode.setEnabled(!value);
@@ -227,19 +237,19 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 		toAddrProvince.setEnabled(!value);
 		toAddrCountry.setEnabled(!value);
 		toAddrButtonDefault.setEnabled(!value);
-		
+
 		itemInsertionForm.setLocked(value);
 		overrideIncognitoModeCheckbox.setEnabled(!value);
 		abort.setEnabled(!value);
 	}
-	
+
 	@Override
 	public CheckBox getSetToAddress() {
 		return setToAddress;
 	}
 
 	@Override
-	public RichTextBox getToAddrCompanyName() {
+	public RichTextArea getToAddrCompanyName() {
 		return toAddrCompanyName;
 	}
 
@@ -272,8 +282,8 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	public ListBox getToAddrButtonDefault() {
 		return toAddrButtonDefault;
 	}
-	
-   	@Override
+
+	@Override
 	public HorizontalPanel getToAddressContainer() {
 		return toAddressContainer;
 	}
@@ -317,7 +327,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	public LoaderButton getCreateDocument() {
 		return createEstimation;
 	}
-	
+
 	@Override
 	public ValidatedTextArea getNote() {
 		return note;
@@ -337,7 +347,7 @@ public class EstimationViewImpl extends AccountDocument implements EstimationVie
 	public ValidatedTextArea getLimitations() {
 		return limitations;
 	}
-	
+
 	@Override
 	public CheckBox getOverrideIncognitoModeCheckbox() {
 		return overrideIncognitoModeCheckbox;

@@ -21,11 +21,14 @@ import com.google.gwt.user.client.ui.SimplePanel;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
+import com.novadart.gwtshared.client.textbox.RichTextArea;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
+import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
@@ -50,7 +53,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 
 	interface InvoiceViewImplUiBinder extends UiBinder<Widget, InvoiceViewImpl> {
 	}
-	
+
 	@UiField FlowPanel docControls;
 
 	@UiField(provided=true) SelectPayment payment;
@@ -62,10 +65,10 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiField(provided=true) ValidatedTextBox number;
 	@UiField ValidatedTextArea paymentNote;
 	@UiField ValidatedTextArea note;
-	
+
 	@UiField CheckBox setToAddress;
 	@UiField HorizontalPanel toAddressContainer;
-	@UiField(provided=true) RichTextBox toAddrCompanyName;
+	@UiField(provided=true) RichTextArea toAddrCompanyName;
 	@UiField(provided=true) RichTextBox toAddrStreetName;
 	@UiField(provided=true) RichTextBox toAddrPostCode;
 	@UiField(provided=true) RichTextBox toAddrCity;
@@ -76,86 +79,92 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiField Label totalBeforeTaxes;
 	@UiField Label totalTax;
 	@UiField Label totalAfterTaxes;
-	
+
 	@UiField Label invoiceNumberSuffix;
 
 	@UiField(provided=true) LoaderButton createInvoice;
 	@UiField Button abort;
-	
+
 	@UiField SimplePanel tipPayment;
-	
+
 	private Presenter presenter;
-	
+
 	public InvoiceViewImpl(boolean readonly) {
 		payment = new SelectPayment(new SelectPayment.Handler() {
-			
+
 			@Override
 			public void onPaymentSelected(PaymentTypeDTO payment) {
 				presenter.onPaymentSelected(payment);
 			}
-			
+
 			@Override
 			public void onPaymentClear() {
 				presenter.onPaymentClear();
 			}
 		});
-		
+
 		number = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
-		
+
 		itemInsertionForm = new ItemInsertionForm(false, readonly, new ItemInsertionForm.Handler() {
-			
+
 			@Override
 			public void onItemListUpdated(List<AccountingDocumentItemDTO> items) {
 				CalcUtils.calculateTotals(itemInsertionForm.getItems(), totalTax, totalBeforeTaxes, totalAfterTaxes);
 			}
 
 		});
-		
+
 		date = new ValidatedDateBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY_DATE);
 		date.setFormat(new DateBox.DefaultFormat
 				(DocumentUtils.DOCUMENT_DATE_FORMAT));
 		createInvoice = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
-		
+
 		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),ValidationKit.DEFAULT);
 		toAddrCity.addStyleName(CSS.box());
-		toAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(), ValidationKit.DEFAULT);
+		toAddrCompanyName = new RichTextArea(GlobalBundle.INSTANCE.richTextAreaCss(), I18N.INSTANCE.companyName(), new TextLengthValidation(255) {
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(getMaxLength());
+			}
+		}, ValidationKit.DEFAULT);
 		toAddrCompanyName.addStyleName(CSS.box());
+		toAddrCompanyName.addStyleName(CSS.companyName());
 		toAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(),ValidationKit.DEFAULT);
 		toAddrPostCode.addStyleName(CSS.box());
 		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),ValidationKit.DEFAULT);
 		toAddrStreetName.addStyleName(CSS.box());
 		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
-		
+
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
-		
+
 		createInvoice.getButton().setStyleName(CSS.createButton()+" btn green");
-		
+
 		TipFactory.show(Tips.center_invoice_payment, tipPayment);
 	}
-	
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
 		presenter.onLoad();
 	}
-	
+
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
 	}
-	
+
 	@UiFactory
 	AccountDocumentCss getAccountDocumentCss(){
 		return CSS;
 	}
-	
+
 	@UiFactory
 	GlobalCss getGlobalCss(){
 		return GlobalBundle.INSTANCE.globalCss();
 	}
-	
+
 	@Override
 	public ValidatedTextBox getNumber() {
 		return number;
@@ -165,7 +174,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	void onDateChanged(ValueChangeEvent<Date> e){
 		presenter.onDateChanged(e.getValue());
 	}
-	
+
 	@UiHandler("createInvoice")
 	void onCreateInvoiceClicked(ClickEvent e){
 		presenter.onCreateDocumentClicked();
@@ -175,7 +184,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	void onCancelClicked(ClickEvent e){
 		presenter.onCancelClicked();
 	}
-	
+
 	@UiHandler("setToAddress")
 	void onSetToAddress(ValueChangeEvent<Boolean> e){
 		toAddressContainer.setVisible(e.getValue());
@@ -195,48 +204,48 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
 	}
-	
+
 	@Override
 	public CheckBox getSetToAddress() {
 		return setToAddress;
 	}
 
-    @Override
-	public RichTextBox getToAddrCompanyName() {
+	@Override
+	public RichTextArea getToAddrCompanyName() {
 		return toAddrCompanyName;
 	}
 
-    @Override
+	@Override
 	public RichTextBox getToAddrStreetName() {
 		return toAddrStreetName;
 	}
-    
-    @Override
+
+	@Override
 	public RichTextBox getToAddrPostCode() {
 		return toAddrPostCode;
 	}
 
-    @Override
+	@Override
 	public RichTextBox getToAddrCity() {
 		return toAddrCity;
 	}
-    
-    @Override
+
+	@Override
 	public ValidatedListBox getToAddrProvince() {
 		return toAddrProvince;
 	}
 
-    @Override
+	@Override
 	public ValidatedListBox getToAddrCountry() {
 		return toAddrCountry;
 	}
 
-    @Override
+	@Override
 	public ListBox getToAddrButtonDefault() {
 		return toAddrButtonDefault;
 	}
 
-   	@Override
+	@Override
 	public HorizontalPanel getToAddressContainer() {
 		return toAddressContainer;
 	}
@@ -300,17 +309,17 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	public Button getAbort() {
 		return abort;
 	}
-	
+
 	@Override
 	public SelectPayment getPayment() {
 		return payment;
 	}
-	
+
 	@Override
 	public CheckBox getMakePaymentAsDefault() {
 		return makePaymentAsDefault;
 	}
-	
+
 	@Override
 	public void reset() {
 		//reset widget statuses
@@ -324,7 +333,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
-		
+
 		setToAddress.setValue(false);
 		toAddressContainer.setVisible(false);
 		toAddrCity.reset();
@@ -334,11 +343,11 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		toAddrProvince.setEnabled(true);
 		toAddrProvince.reset();
 		toAddrCountry.reset();
-		
+
 		createInvoice.reset();
-		
+
 		payment.reset();
-		
+
 		makePaymentAsDefault.setValue(false);
 		makePaymentAsDefault.setVisible(false);
 		setLocked(false);
@@ -354,7 +363,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		note.setEnabled(!value);
 		makePaymentAsDefault.setEnabled(!value);
 		abort.setEnabled(!value);
-		
+
 		toAddrCompanyName.setEnabled(!value);
 		toAddrStreetName.setEnabled(!value);
 		toAddrPostCode.setEnabled(!value);
@@ -363,5 +372,5 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		toAddrCountry.setEnabled(!value);
 		toAddrButtonDefault.setEnabled(!value);
 	}
-	
+
 }

@@ -22,6 +22,7 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
+import com.novadart.gwtshared.client.textbox.RichTextArea;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
@@ -54,7 +55,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	@UiField CheckBox setFromAddress;
 	@UiField HorizontalPanel fromAddressContainer;
-	@UiField(provided=true) RichTextBox fromAddrCompanyName;
+	@UiField(provided=true) RichTextArea fromAddrCompanyName;
 	@UiField(provided=true) RichTextBox fromAddrStreetName;
 	@UiField(provided=true) RichTextBox fromAddrPostCode;
 	@UiField(provided=true) RichTextBox fromAddrCity;
@@ -64,7 +65,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	@UiField CheckBox setToAddress;
 	@UiField HorizontalPanel toAddressContainer;
-	@UiField(provided=true) RichTextBox toAddrCompanyName;
+	@UiField(provided=true) RichTextArea toAddrCompanyName;
 	@UiField(provided=true) RichTextBox toAddrStreetName;
 	@UiField(provided=true) RichTextBox toAddrPostCode;
 	@UiField(provided=true) RichTextBox toAddrCity;
@@ -131,8 +132,14 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 		fromAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city());
 		fromAddrCity.addStyleName(CSS.box());
-		fromAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName());
+		fromAddrCompanyName = new RichTextArea(GlobalBundle.INSTANCE.richTextAreaCss(), I18N.INSTANCE.companyName(), new TextLengthValidation(255) {
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(getMaxLength());
+			}
+		});
 		fromAddrCompanyName.addStyleName(CSS.box());
+		fromAddrCompanyName.addStyleName(CSS.companyName());
 		fromAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode());
 		fromAddrPostCode.addStyleName(CSS.box());
 		fromAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address());
@@ -142,7 +149,13 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),ValidationKit.DEFAULT);
 		toAddrCity.addStyleName(CSS.box());
-		toAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(), ValidationKit.DEFAULT);
+		toAddrCompanyName = new RichTextArea(GlobalBundle.INSTANCE.richTextAreaCss(), I18N.INSTANCE.companyName(), new TextLengthValidation(255) {
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(getMaxLength());
+			} 
+		}, ValidationKit.DEFAULT);
+		toAddrCompanyName.addStyleName(CSS.companyName());
 		toAddrCompanyName.addStyleName(CSS.box());
 		toAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(),ValidationKit.DEFAULT);
 		toAddrPostCode.addStyleName(CSS.box());
@@ -282,7 +295,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	public void reset() {
 		number.reset();
 		readonlyWarning.setVisible(false);
-		
+
 		//reset widget contents	
 		date.reset();
 		transportStartDate.reset();
@@ -418,7 +431,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return note;
 	}
 
-	public RichTextBox getFromAddrCompanyName() {
+	public RichTextArea getFromAddrCompanyName() {
 		return fromAddrCompanyName;
 	}
 
@@ -446,7 +459,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return fromAddrButtonDefault;
 	}
 
-	public RichTextBox getToAddrCompanyName() {
+	public RichTextArea getToAddrCompanyName() {
 		return toAddrCompanyName;
 	}
 
@@ -538,7 +551,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	public Button getCountItems() {
 		return countItems;
 	}
-	
+
 	@Override
 	public Label getReadonlyWarning() {
 		return readonlyWarning;

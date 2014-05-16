@@ -74,5 +74,7 @@ public interface AccountDocumentCss extends CssResource {
 	String box();
 
 	String docScroll();
+	
+	String companyName();
 
 }

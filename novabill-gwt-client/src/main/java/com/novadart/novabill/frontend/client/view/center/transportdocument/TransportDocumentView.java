@@ -4,7 +4,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
-import com.google.gwt.user.client.ui.ListBox;
+import com.novadart.gwtshared.client.textbox.RichTextArea;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
@@ -30,7 +30,7 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 	}
 	
 	
-	RichTextBox getFromAddrCompanyName();
+	RichTextArea getFromAddrCompanyName();
 
 	RichTextBox getFromAddrStreetName();
 
@@ -43,20 +43,6 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 	ValidatedListBox getFromAddrCountry();
 
 	Button getFromAddrButtonDefault();
-
-	RichTextBox getToAddrCompanyName();
-
-	RichTextBox getToAddrStreetName();
-
-	RichTextBox getToAddrPostCode();
-
-	RichTextBox getToAddrCity();
-
-	ValidatedListBox getToAddrProvince();
-
-	ValidatedListBox getToAddrCountry();
-
-	ListBox getToAddrButtonDefault();
 
 	ValidatedTextBox getNumberOfPackages();
 	

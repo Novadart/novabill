@@ -135,7 +135,7 @@
                         <g:Grid>
                             <g:row>
                                 <g:customCell>
-                                    <textbox:RichTextBox ui:field="toAddrCompanyName" maxLength="255" />
+                                    <textbox:RichTextArea ui:field="toAddrCompanyName" />
                                 </g:customCell>
                             </g:row>
                             <g:row>
