@@ -21,6 +21,8 @@ import com.novadart.novabill.domain.TransportDocument;
 
 public class ReportUtils {
 	
+	public static final int FILENAME_MAX_LENGTH = 120;
+	
 	public static String removeTrailingZeros(BigDecimal decimal, Locale locale){
 		DecimalFormat format = (DecimalFormat)NumberFormat.getNumberInstance(locale);
 		format.applyPattern("0.#");
@@ -73,6 +75,10 @@ public class ReportUtils {
 			throw new RuntimeException(e);
 		}
 		return Joiner.on("_").join(tokens).toString();
+	}
+	
+	public static String cutFileName(String fileName){
+		return fileName.length() <= FILENAME_MAX_LENGTH ? fileName : fileName.substring(0, FILENAME_MAX_LENGTH);
 	}
 
 }
