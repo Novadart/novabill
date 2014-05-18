@@ -67,6 +67,7 @@
 	
 }
 
+textarea.box,
 input[type=text].box {
 	width: 15em;
 	margin-bottom: 0.5em;
@@ -111,6 +112,10 @@ input[type="text"].box.number {
 
 .note,.paymentNote {
 	width: 40em;
+}
+
+.companyName {
+    min-height: 5em;
 }
 
 .itemTableContainer {

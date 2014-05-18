@@ -6,6 +6,7 @@ import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.ListBox;
 import com.novadart.gwtshared.client.LoaderButton;
+import com.novadart.gwtshared.client.textbox.RichTextArea;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
@@ -33,7 +34,7 @@ public interface DocumentView<P extends DocumentView.Presenter> extends View<P>,
 
     CheckBox getSetToAddress();
 
-	RichTextBox getToAddrCompanyName();
+	RichTextArea getToAddrCompanyName();
 
 	RichTextBox getToAddrStreetName();
 
