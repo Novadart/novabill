@@ -4,19 +4,22 @@
 		<h4 class="modal-title">{{'SELECT_CLIENT' | translate}}</h4>
 	</div>
 	<div class="modal-body">
-		<div class="clients-filter input-icon left" >
-			<i ng-show="!newClientMode" class="fa fa-search"></i> 
-			<input type="text" class="form-control input-large" autofocus="autofocus" type="text"
-				placeholder="{{newClientMode && ('INSERT_CLIENT_NAME' | translate) || ('FILTER' | translate)+'...'}}" ng-model="$parent.query">
-		</div>
-		
-		<button type="button" class="btn green new-client" ng-click="newClientClick()" ng-show="allowNewClient" ng-enabled="!newClientMode || (newClientMode && query)">
-		  {{!newClientMode && ('NEW_CLIENT' | translate) || ('CONTINUE' | translate)}}
-		</button>
-		<button type="button" class="btn default cancel" ng-click="cancelNewClientClick()" ng-show="newClientMode">
-		  {{'CANCEL' | translate}}
-		</button>
-
+	   <form name="form" role="form" novalidate>
+			<div class="clients-filter input-icon left" >
+				<i ng-show="!newClientMode" class="fa fa-search"></i> 
+				<input type="text" class="form-control input-large" name="inp" autofocus="autofocus" type="text"
+					placeholder="{{newClientMode && ('INSERT_CLIENT_NAME' | translate) || ('FILTER' | translate)+'...'}}" 
+					ng-required="newClientMode" ng-model="$parent.query">
+			</div>
+			
+			<button type="button" class="btn green new-client" ng-click="newClientClick()" ng-show="allowNewClient" 
+			  ng-disabled="newClientMode && form.$invalid">
+			  {{!newClientMode && ('NEW_CLIENT' | translate) || ('CONTINUE' | translate)}}
+			</button>
+			<button type="button" class="btn default cancel" ng-click="cancelNewClientClick()" ng-show="newClientMode">
+			  {{'CANCEL' | translate}}
+			</button>
+        </form>
         <div class="similar-clients-message" ng-show="allowNewClient && newClientMode">{{'SIMILAR_CLIENTS' | translate}}</div>
 
 		<div class="scroller" n-div-infinite-scroll="loadMoreClients()">

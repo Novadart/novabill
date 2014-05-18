@@ -74,19 +74,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		getView().getPayment().init(invoice.getPaymentTypeName(), invoice.getPaymentDateGenerator(), 
 				invoice.getPaymentDateDelta(), invoice.getPaymentDeltaType(), invoice.getSecondaryPaymentDateDelta());
 		
-        EndpointDTO loc = invoice.getToEndpoint();
-		getView().getToAddrCity().setText(loc.getCity());
-		getView().getToAddrCompanyName().setText(loc.getCompanyName());
-		getView().getToAddrPostCode().setText(loc.getPostcode());
-		if("IT".equalsIgnoreCase(loc.getCountry())){
-			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
-		} else {
-			getView().getToAddrProvince().setEnabled(false);
-		} 
-		getView().getToAddrStreetName().setText(loc.getStreet());
-		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
-		getView().getSetToAddress().setValue(true);
-		getView().getToAddressContainer().setVisible(true);
+		//NOTE obviously in this case we don't load the endpoint as it is specific to the client
 		
 		//NOTE we don't show the checkbox to set this as the default payment because we don't know its ID
 		getView().getItemInsertionForm().setItems(items);

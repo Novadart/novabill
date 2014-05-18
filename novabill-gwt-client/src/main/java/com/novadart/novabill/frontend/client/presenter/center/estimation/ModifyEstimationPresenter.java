@@ -43,18 +43,21 @@ public class ModifyEstimationPresenter extends AbstractEstimationPresenter {
 		} 
 		
 		EndpointDTO loc = estimation.getToEndpoint();
-		getView().getToAddrCity().setText(loc.getCity());
-		getView().getToAddrCompanyName().setText(loc.getCompanyName());
-		getView().getToAddrPostCode().setText(loc.getPostcode());
-		if("IT".equalsIgnoreCase(loc.getCountry())){
-			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
-		} else {
-			getView().getToAddrProvince().setEnabled(false);
-		} 
-		getView().getToAddrStreetName().setText(loc.getStreet());
-		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
-		getView().getSetToAddress().setValue(true);
-		getView().getToAddressContainer().setVisible(true);
+		// if loading a light client most likely the destination address was not set and we should avoid loading it
+		if(loc.getCountry()!=null){
+			getView().getToAddrCity().setText(loc.getCity());
+			getView().getToAddrCompanyName().setText(loc.getCompanyName());
+			getView().getToAddrPostCode().setText(loc.getPostcode());
+			if("IT".equalsIgnoreCase(loc.getCountry())){
+				getView().getToAddrProvince().setSelectedItem(loc.getProvince());
+			} else {
+				getView().getToAddrProvince().setEnabled(false);
+			} 
+			getView().getToAddrStreetName().setText(loc.getStreet());
+			getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
+			getView().getSetToAddress().setValue(true);
+			getView().getToAddressContainer().setVisible(true);
+		}
 
 		getView().getItemInsertionForm().setItems(items);
 		getView().getNote().setText(estimation.getNote());

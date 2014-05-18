@@ -48,8 +48,8 @@ public class PDFController{
 		Invoice invoice = Invoice.findInvoice(id);
 		if(invoice == null)
 			throw new NoSuchObjectException();
-		String pdfName = String.format(messageSource.getMessage("export.invoices.name.pattern", null, "invoice_%d_%d_%s.pdf", locale),  
-				invoice.getAccountingDocumentYear(), invoice.getDocumentID(), ReportUtils.convertToASCII(invoice.getClient().getName()));
+		String pdfName = ReportUtils.cutFileName( String.format(messageSource.getMessage("export.invoices.name.pattern", null, "invoice_%d_%d_%s.pdf", locale),  
+				invoice.getAccountingDocumentYear(), invoice.getDocumentID(), ReportUtils.convertToASCII(invoice.getClient().getName())) );
 		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return new ResponseEntity<>(jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(invoice, invoice.getBusiness().getId()),
 				DocumentType.INVOICE, invoice.getLayoutType()), HttpStatus.OK);
@@ -60,8 +60,8 @@ public class PDFController{
 		Estimation estimation = Estimation.findEstimation(id);
 		if(estimation == null)
 			throw new NoSuchObjectException();
-		String pdfName = String.format(messageSource.getMessage("export.estimations.name.pattern", null, "estimation_%d_%d_%s.pdf", locale),
-				estimation.getAccountingDocumentYear(), estimation.getDocumentID(), ReportUtils.convertToASCII(estimation.getClient().getName()));
+		String pdfName = ReportUtils.cutFileName( String.format(messageSource.getMessage("export.estimations.name.pattern", null, "estimation_%d_%d_%s.pdf", locale),
+				estimation.getAccountingDocumentYear(), estimation.getDocumentID(), ReportUtils.convertToASCII(estimation.getClient().getName())) );
 		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return new ResponseEntity<>(jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(estimation, estimation.getBusiness().getId()),
 				DocumentType.ESTIMATION, estimation.getLayoutType()), HttpStatus.OK);
@@ -72,8 +72,8 @@ public class PDFController{
 		CreditNote creditNote = CreditNote.findCreditNote(id);
 		if(creditNote == null)
 			throw new NoSuchObjectException();
-		String pdfName = String.format(messageSource.getMessage("export.creditnotes.name.pattern", null, "creditnote_%d_%d_%s.pdf", locale),
-				creditNote.getAccountingDocumentYear(), creditNote.getDocumentID(), ReportUtils.convertToASCII(creditNote.getClient().getName()));
+		String pdfName = ReportUtils.cutFileName( String.format(messageSource.getMessage("export.creditnotes.name.pattern", null, "creditnote_%d_%d_%s.pdf", locale),
+				creditNote.getAccountingDocumentYear(), creditNote.getDocumentID(), ReportUtils.convertToASCII(creditNote.getClient().getName())) );
 		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return new ResponseEntity<>(jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(creditNote, creditNote.getBusiness().getId()),
 				DocumentType.CREDIT_NOTE, creditNote.getLayoutType()), HttpStatus.OK);
@@ -84,8 +84,8 @@ public class PDFController{
 		TransportDocument transportDocument = TransportDocument.findTransportDocument(id);
 		if(transportDocument == null)
 			throw new NoSuchObjectException();
-		String pdfName = String.format(messageSource.getMessage("export.transportdocs.name.pattern", null, "transportdoc_%d_%d_%s.pdf", locale),
-				transportDocument.getAccountingDocumentYear(), transportDocument.getDocumentID(), ReportUtils.convertToASCII(transportDocument.getClient().getName()));
+		String pdfName = ReportUtils.cutFileName( String.format(messageSource.getMessage("export.transportdocs.name.pattern", null, "transportdoc_%d_%d_%s.pdf", locale),
+				transportDocument.getAccountingDocumentYear(), transportDocument.getDocumentID(), ReportUtils.convertToASCII(transportDocument.getClient().getName())) );
 		response.setHeader("Content-Disposition", String.format("%s; filename=%s", print? "inline": "attachment", pdfName));
 		return new ResponseEntity<>(jrService.exportReportToPdf(JRDataSourceFactory.createDataSource(transportDocument, transportDocument.getBusiness().getId()),
 				DocumentType.TRANSPORT_DOCUMENT, transportDocument.getLayoutType()), HttpStatus.OK);

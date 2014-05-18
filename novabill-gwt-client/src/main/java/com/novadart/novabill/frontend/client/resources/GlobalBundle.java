@@ -14,6 +14,9 @@ public interface GlobalBundle extends ClientBundle {
 
 	@Source("RichTextBoxCss.css")
 	RichTextBoxCss richTextBoxCss();
+	
+	@Source("RichTextAreaCss.css")
+	RichTextAreaCss richTextAreaCss();
 
 	@Source("DialogCss.css")
 	DialogCss dialog();

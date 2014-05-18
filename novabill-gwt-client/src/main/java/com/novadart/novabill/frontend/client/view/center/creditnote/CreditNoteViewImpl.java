@@ -20,11 +20,14 @@ import com.google.gwt.user.client.ui.ListBox;
 import com.google.gwt.user.client.ui.Widget;
 import com.google.gwt.user.datepicker.client.DateBox;
 import com.novadart.gwtshared.client.LoaderButton;
+import com.novadart.gwtshared.client.textbox.RichTextArea;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
+import com.novadart.gwtshared.client.validation.TextLengthValidation;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedListBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedTextBox;
 import com.novadart.novabill.frontend.client.i18n.I18N;
+import com.novadart.novabill.frontend.client.i18n.I18NM;
 import com.novadart.novabill.frontend.client.resources.GlobalBundle;
 import com.novadart.novabill.frontend.client.resources.GlobalCss;
 import com.novadart.novabill.frontend.client.resources.ImageResources;
@@ -54,10 +57,10 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	@UiField Label creditNoteNumber;
 	@UiField(provided=true) ValidatedTextBox number;
 	@UiField ValidatedTextArea note;
-	
+
 	@UiField CheckBox setToAddress;
 	@UiField HorizontalPanel toAddressContainer;
-	@UiField(provided=true) RichTextBox toAddrCompanyName;
+	@UiField(provided=true) RichTextArea toAddrCompanyName;
 	@UiField(provided=true) RichTextBox toAddrStreetName;
 	@UiField(provided=true) RichTextBox toAddrPostCode;
 	@UiField(provided=true) RichTextBox toAddrCity;
@@ -89,24 +92,30 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		date.setFormat(new DateBox.DefaultFormat
 				(DateTimeFormat.getFormat("dd MMMM yyyy")));
 		createCreditNote = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
-		
+
 		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),ValidationKit.DEFAULT);
 		toAddrCity.addStyleName(CSS.box());
-		toAddrCompanyName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.companyName(), ValidationKit.DEFAULT);
+		toAddrCompanyName = new RichTextArea(GlobalBundle.INSTANCE.richTextAreaCss(), I18N.INSTANCE.companyName(), new TextLengthValidation(255) {
+			@Override
+			public String getErrorMessage() {
+				return I18NM.get.textLengthError(getMaxLength());
+			}
+		}, ValidationKit.DEFAULT);
 		toAddrCompanyName.addStyleName(CSS.box());
+		toAddrCompanyName.addStyleName(CSS.companyName());
 		toAddrPostCode = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.postcode(),ValidationKit.DEFAULT);
 		toAddrPostCode.addStyleName(CSS.box());
 		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),ValidationKit.DEFAULT);
 		toAddrStreetName.addStyleName(CSS.box());
 		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
-		
+
 		initWidget(uiBinder.createAndBindUi(this));
 		setStyleName(CSS.accountDocumentView());
 
 		createCreditNote.getButton().setStyleName(CSS.createButton()+" btn green");
 	}
-	
+
 	@Override
 	protected void onLoad() {
 		super.onLoad();
@@ -148,7 +157,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	void onCancelClicked(ClickEvent e){
 		presenter.onCancelClicked();
 	}
-	
+
 	@Override
 	public void reset() {
 		//reset widget statuses
@@ -161,7 +170,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		totalBeforeTaxes.setText("");
 		totalAfterTaxes.setText("");
 		itemInsertionForm.reset();
-		
+
 		setToAddress.setValue(false);
 		toAddressContainer.setVisible(false);
 		toAddrCity.reset();
@@ -183,7 +192,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		date.setEnabled(!value);
 		number.setEnabled(!value);
 		note.setEnabled(!value);
-		
+
 		toAddrCompanyName.setEnabled(!value);
 		toAddrStreetName.setEnabled(!value);
 		toAddrPostCode.setEnabled(!value);
@@ -194,7 +203,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 
 		abort.setEnabled(!value);
 	}
-	
+
 	@UiHandler("setToAddress")
 	void onSetToAddress(ValueChangeEvent<Boolean> e){
 		toAddressContainer.setVisible(e.getValue());
@@ -209,49 +218,49 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	void onToCountryChange(ChangeEvent event){
 		presenter.onToCountryChange();
 	}
-	
-	
+
+
 	@Override
 	public CheckBox getSetToAddress() {
 		return setToAddress;
 	}
 
-    @Override
-	public RichTextBox getToAddrCompanyName() {
+	@Override
+	public RichTextArea getToAddrCompanyName() {
 		return toAddrCompanyName;
 	}
 
-    @Override
+	@Override
 	public RichTextBox getToAddrStreetName() {
 		return toAddrStreetName;
 	}
-    
-    @Override
+
+	@Override
 	public RichTextBox getToAddrPostCode() {
 		return toAddrPostCode;
 	}
 
-    @Override
+	@Override
 	public RichTextBox getToAddrCity() {
 		return toAddrCity;
 	}
-    
-    @Override
+
+	@Override
 	public ValidatedListBox getToAddrProvince() {
 		return toAddrProvince;
 	}
 
-    @Override
+	@Override
 	public ValidatedListBox getToAddrCountry() {
 		return toAddrCountry;
 	}
 
-    @Override
+	@Override
 	public ListBox getToAddrButtonDefault() {
 		return toAddrButtonDefault;
 	}
 
-   	@Override
+	@Override
 	public HorizontalPanel getToAddressContainer() {
 		return toAddressContainer;
 	}

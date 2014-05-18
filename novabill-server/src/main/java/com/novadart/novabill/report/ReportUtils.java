@@ -21,6 +21,8 @@ import com.novadart.novabill.domain.TransportDocument;
 
 public class ReportUtils {
 	
+	public static final int FILENAME_MAX_LENGTH = 120;
+	
 	public static String removeTrailingZeros(BigDecimal decimal, Locale locale){
 		DecimalFormat format = (DecimalFormat)NumberFormat.getNumberInstance(locale);
 		format.applyPattern("0.#");
@@ -51,16 +53,32 @@ public class ReportUtils {
 		return arg == null || Strings.isNullOrEmpty(arg.toString())? "": String.format(pattern, arg);
 	}
 	
+	public static CharSequence replaceNonAlphaNumeric(CharSequence seq, char newChar){
+		StringBuffer buff = new StringBuffer(seq.length());
+		for(int i = 0; i < seq.length(); ++i){
+			char ch = seq.charAt(i);
+			if(Character.isDigit(ch) || Character.isLetter(ch))
+				buff.append(ch);
+			else
+				buff.append(newChar);
+		}
+		return buff.toString();
+	}
+	
 	public static String convertToASCII(String text){
-		List<String> tokens = new ArrayList<>();
+		List<CharSequence> tokens = new ArrayList<>();
 		try (TokenStream stream = new ASCIIFoldingFilter(new LowerCaseFilter(Version.LUCENE_35, new WhitespaceTokenizer(Version.LUCENE_35, new StringReader(text)))) ){
 			stream.reset();
 			while(stream.incrementToken())
-				tokens.add(stream.getAttribute(CharTermAttribute.class).toString());
+				tokens.add(replaceNonAlphaNumeric(stream.getAttribute(CharTermAttribute.class).toString(), '_'));
 		}catch(Exception e){
 			throw new RuntimeException(e);
 		}
 		return Joiner.on("_").join(tokens).toString();
+	}
+	
+	public static String cutFileName(String fileName){
+		return fileName.length() <= FILENAME_MAX_LENGTH ? fileName : fileName.substring(0, FILENAME_MAX_LENGTH);
 	}
 
 }
