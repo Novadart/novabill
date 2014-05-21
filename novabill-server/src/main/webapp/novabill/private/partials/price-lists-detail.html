@@ -6,11 +6,11 @@
 			<ul class="breadcrumb">
 				<li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
 				<li><a href=".">{{'PRICE_LISTS' | translate}}</a><i class="icon-angle-right"></i></li>
-				<li><span>{{priceList.name | nFilterDefault:'DEFAULT_PRICE_LIST'}}</span></li>
+				<li><span>{{priceList.name | nReplaceReservedWord:'DEFAULT_PRICE_LIST'}}</span></li>
 			</ul>
 
 			<div class="jumbotron">
-				<h2>{{priceList.name | nFilterDefault:'DEFAULT_PRICE_LIST'}}</h2>
+				<h2>{{priceList.name | nReplaceReservedWord:'DEFAULT_PRICE_LIST'}}</h2>
 			</div>
 
 			<div ng-if="DEFAULT_PRICELIST_NAME!==priceList.name" style="height: 28px;" class="col-md-4 col-md-offset-8 col-sm-4 col-sm-offset-8">
@@ -57,7 +57,7 @@
 									<label> <input type="checkbox" ng-model="selectedCommodities[com.id]" ng-change="onSelectionChange(com.id)"> </label>
 								</div>
 							</td>
-							<td width="10%"><strong>{{com.sku | nFilterDefault}}</strong></td>
+							<td width="10%"><strong>{{com.sku | nReplaceReservedWord}}</strong></td>
 							<td width="45%">{{com.description}}</td>
 							<td width="40%" style="text-align: right;">
 							      <n-commodity-price 

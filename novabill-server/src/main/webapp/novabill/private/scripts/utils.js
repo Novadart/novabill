@@ -197,9 +197,9 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 
 
 /**
- * Replace the reserver word with some custom string. If no string is supplied, return the empty string
+ * Replace a reserved word with some custom string. If no string is supplied, return the empty string
  */
-.filter('nFilterDefault', ['$filter', 'nRegExp', function($filter, nRegExp) {
+.filter('nReplaceReservedWord', ['$filter', 'nRegExp', function($filter, nRegExp) {
 	return function(input, replacement) {
 		return nRegExp.reserved_word.test(input) ? (replacement ? $filter('translate')(replacement) : '') : input;
 	};

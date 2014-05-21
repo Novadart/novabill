@@ -198,4 +198,47 @@ angular.module('novabill.directives.validation',
 			});
 		}
 	};
+}])
+
+
+
+/*
+ * Input for sku values
+ */
+.directive('nSkuInput', ['nRegExp', '$filter', function(nRegExp, $filter) {
+	return {
+		require: 'ngModel',
+		replace: true,
+		scope : {
+			origSku : '='
+		},
+		controller : ['$scope', function($scope){
+			$scope.originalSku = $scope.origSku;
+		}],
+		link: function(scope, element, attrs, ctrl) {
+			ctrl.$parsers.push(function(viewValue) {
+				if(viewValue == ''){
+					if(nRegExp.reserved_word.test(scope.originalSku)){
+						ctrl.$setValidity('skuRequired', true);
+						return scope.originalSku;
+					} else {
+						ctrl.$setValidity('skuRequired', false);
+						return undefined;
+					}
+				} else {
+					if (nRegExp.reserved_word.test(viewValue)) {
+						ctrl.$setValidity('notReserved', false);
+						return undefined;
+					} else {
+						ctrl.$setValidity('notReserved', true);
+						return viewValue;
+					}
+				}
+			});
+
+			ctrl.$formatters.push(function(data) {
+				return $filter('nReplaceReservedWord')(data); 
+			});
+		}
+	};
 }]);

@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.ajax', 'novabill.constants', 'novabill.calc', 'ui.bootstrap'])
+angular.module('novabill.directives.dialogs', 
+		['novabill.directives.validation', 'novabill.utils', 'novabill.ajax', 'novabill.constants', 'novabill.calc', 'ui.bootstrap'])
 
 
 /*
@@ -181,6 +182,8 @@ angular.module('novabill.directives.dialogs', ['novabill.utils', 'novabill.ajax'
 /*
  * Edit Commodity Dialog
  */
+
+
 .factory('nEditCommodityDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 	return {

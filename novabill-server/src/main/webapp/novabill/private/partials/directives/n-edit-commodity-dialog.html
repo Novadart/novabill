@@ -28,9 +28,12 @@
            <div class="form-group" 
                 ng-class="{'has-error': form.sku.$dirty && form.sku.$invalid, 'has-success': form.sku.$dirty && form.sku.$valid}">
                <label class="control-label" for="sku">{{'SKU' | translate}}</label> 
-               <input type="text" n-not-reserved name="sku" maxlength="50" ng-model="commodity.sku" class="form-control" placeholder="{{'SKU_PLACEHOLDER' | translate}}">
-               <span class="text-danger" ng-show="form.sku.$dirty && form.sku.$error.notReserved">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
-               <span class="text-danger" ng-show="$parent.invalidSku">{{'VALIDATION_SKU_TAKEN' | translate}}</span>
+               <input type="text" n-sku-input name="sku" maxlength="50" orig-sku="commodity.sku" ng-model="commodity.sku" class="form-control" placeholder="{{'SKU_PLACEHOLDER' | translate}}">
+               <div ng-show="form.sku.$dirty && form.sku.$invalid">
+	               <span class="text-danger" ng-show="form.sku.$dirty && form.sku.$error.notReserved">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+	               <span class="text-danger" ng-show="$parent.invalidSku">{{'VALIDATION_SKU_TAKEN' | translate}}</span>
+	               <span class="text-danger" ng-show="form.sku.$dirty && form.sku.$error.skuRequired">{{'VALIDATION_REQUIRED' | translate}}</span>
+               </div>
            </div>
            
            <div class="form-group" ng-class="{'has-success': form.unitOfMeasure.$dirty && form.unitOfMeasure.$valid}">
