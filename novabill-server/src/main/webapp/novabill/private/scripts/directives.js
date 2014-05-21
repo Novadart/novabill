@@ -488,26 +488,26 @@ angular.module('novabill.directives',
 
 					switch (price.priceType) {
 					case nConstants.priceType.DISCOUNT_PERCENT:
-						$scope.priceDetails = details +'\n'
+						$scope.priceDetails = details +'<br>'
 						+ $filter('translate')('COMMODITY_PRICE_DISCOUNT')
 						+'  ' + String(price.priceValue).replace('\.', ',') +'%';
 						break;
 						
 					case nConstants.priceType.DISCOUNT_FIXED:
-						$scope.priceDetails = details +'\n'
+						$scope.priceDetails = details +'<br>'
 						+ $filter('translate')('COMMODITY_PRICE_DISCOUNT')
 						+'  ' + String(price.priceValue).replace('\.', ',') +'€';
 						break;
 						
 					case nConstants.priceType.OVERCHARGE_PERCENT:
-						$scope.priceDetails = details +'\n'
+						$scope.priceDetails = details +'<br>'
 						+ $filter('translate')('COMMODITY_PRICE_OVERCHARGE')
 						+'  ' + String(price.priceValue).replace('\.', ',') +'%';
 						break;
 						
 						
 					case nConstants.priceType.OVERCHARGE_FIXED:
-						$scope.priceDetails = details +'\n'
+						$scope.priceDetails = details +'<br>'
 						+ $filter('translate')('COMMODITY_PRICE_OVERCHARGE')
 						+'  ' + String(price.priceValue).replace('\.', ',') +'€';
 						break;
