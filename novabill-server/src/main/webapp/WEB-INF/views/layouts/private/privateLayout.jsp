@@ -78,6 +78,10 @@
 <tiles:insertAttribute name="css" />
 
 <link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
+
+<!-- Load jQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="${privateAssetsUrl}/plugins/jquery-1.10.2.min.js"><\/script>');</script>
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
@@ -239,9 +243,6 @@
     </script>
     
     <!-- BEGIN CORE PLUGINS -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="${privateAssetsUrl}/plugins/jquery-1.10.2.min.js"><\/script>');</script>
-	
 	
 	<!--[if lt IE 9]>
 	<script src="${privateAssetsUrl}/plugins/respond.min.js"></script>

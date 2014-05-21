@@ -45,6 +45,13 @@
                           <br>
                           <div class="row" ng-show="!firstRun">
                               <div class="col-md-12">
+                                  <h4><strong style="text-transform: uppercase;">{{'TITLE_PROFILE' | translate}}</strong></h4>
+                                  <a href="{{changePasswordUrl}}" class="btn default">{{'CHANGE_PASSWORD' | translate}}</a>
+                                  
+                                  <br>
+                                  <br>
+                                  <br>
+                                  
                                   <h4><strong style="text-transform: uppercase;">{{'TITLE_EXPORT_DATA' | translate}}</strong></h4>
                                   <a href="javascript:void(0);" class="btn default" ng-click="exportZip(true, false, false, false, false)">{{'EXPORT_CLIENTS' | translate}}</a>
                                   <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, false, true, false)">{{'EXPORT_CREDIT_NOTES' | translate}}</a>

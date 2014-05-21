@@ -32,6 +32,7 @@ angular.module('novabill.constants', [])
 			privateAreaBaseUrl : basePath + 'private/',
 			
 			ajaxBaseUrl : basePath + 'private/ajax/',
+			changePasswordBaseUrl : basePath + 'private/change-password',
 			clientsBaseUrl : basePath + 'private/clients/',
 			commoditiesBaseUrl : basePath + 'private/commodities/',
 			creditNotesBaseUrl : basePath + 'private/credit-notes/',

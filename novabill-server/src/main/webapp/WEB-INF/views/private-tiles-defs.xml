@@ -74,6 +74,10 @@
 	<definition name="private.premiumUpgradeFailure" template="/WEB-INF/views/tiles/private/premiumUpgradeFailure.jsp">
 	</definition>
 	
+	<definition name="private.changePassword" extends="private.layout">
+        <put-attribute name="body" value="/WEB-INF/views/tiles/private/changePasswordBody.jsp" />
+    </definition>
+	
 	<!--  -->
 
 </tiles-definitions>

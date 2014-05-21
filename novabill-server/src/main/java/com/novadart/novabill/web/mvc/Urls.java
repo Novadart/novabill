@@ -25,6 +25,7 @@ public interface Urls {
 	
 	// Private Urls	
 	public static final String PRIVATE_HOME = "/private/";
+	public static final String PRIVATE_CHANGE_PASSWORD = "/private/change-password";
 	public static final String PRIVATE_CLIENTS = "/private/clients";
 	public static final String PRIVATE_FIRST_RUN = "/private/firstrun";
 	public static final String PRIVATE_DOCS_INVOICES = "/private/invoices";

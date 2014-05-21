@@ -14,6 +14,7 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 	var SharingPermit = nAjax.SharingPermit();
 	
 	$scope.firstRun =  nConstants.conf.businessId === '-1';
+	$scope.changePasswordUrl = nConstants.conf.changePasswordBaseUrl;
 
 	if(!$scope.firstRun) {
 		

@@ -25,12 +25,12 @@ public class ChangePasswordValidator {
 		if(!utilsService.isPasswordValid(principal.getPassword(), changePassword.getPassword()))
 			errors.rejectValue("password", "changePassword.wrong.password");
 		if(!StringUtils.equals(changePassword.getNewPassword(), changePassword.getConfirmNewPassword()))
-			errors.rejectValue("confirmNewPassword", "changePassword.password.mismatch");
+			errors.rejectValue("confirmNewPassword", "registration.password.mismatch");
 		if(EmailPasswordHolderValidator.isLengthInvalid(changePassword.getNewPassword()))
-			errors.rejectValue("newPassword", "changePassword.password.lenght",
+			errors.rejectValue("newPassword", "registration.password.lenght",
 					new Object[]{EmailPasswordHolderValidator.MIN_PASSWORD_LENGTH, EmailPasswordHolderValidator.MAX_PASSWORD_LENGTH}, null);
-		if(EmailPasswordHolderValidator.isPasswordStrong(changePassword.getNewPassword()))
-			errors.reject("newPassword", "changePassword.password.strength");
+		if(!EmailPasswordHolderValidator.isPasswordStrong(changePassword.getNewPassword()))
+			errors.reject("newPassword", "registration.password.strength");
 	}
 
 }
