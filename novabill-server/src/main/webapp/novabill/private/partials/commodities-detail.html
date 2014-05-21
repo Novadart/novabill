@@ -75,7 +75,7 @@
 						<th>{{'PRICE' | translate}}</th>
 					</thead>
 					<tbody>
-						<tr ng-repeat="(priceListName, price) in commodity.pricesMap.prices"
+						<tr ng-repeat="(priceListName, price) in commodity.prices"
 							ng-class="{defaultPriceList: priceListName===DEFAULT_PRICELIST_NAME, priceList: priceListName!==DEFAULT_PRICELIST_NAME, service: commodity.service, product: !commodity.service}">
 							<td width="40%">{{priceListName | nFilterDefault:'DEFAULT_PRICE_LIST'}}</td>
 							<td width="60%">

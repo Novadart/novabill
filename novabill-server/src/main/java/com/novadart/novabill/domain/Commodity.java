@@ -78,6 +78,7 @@ public class Commodity implements Serializable {
     
     private boolean service;
     
+    @Column(name = "weight", precision = 19, scale = 3)
     private BigDecimal weight;
     
     public Commodity shallowCopy(){
