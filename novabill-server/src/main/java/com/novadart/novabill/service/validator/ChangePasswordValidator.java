@@ -30,7 +30,7 @@ public class ChangePasswordValidator {
 			errors.rejectValue("newPassword", "registration.password.lenght",
 					new Object[]{EmailPasswordHolderValidator.MIN_PASSWORD_LENGTH, EmailPasswordHolderValidator.MAX_PASSWORD_LENGTH}, null);
 		if(!EmailPasswordHolderValidator.isPasswordStrong(changePassword.getNewPassword()))
-			errors.reject("newPassword", "registration.password.strength");
+			errors.rejectValue("newPassword", "registration.password.strength");
 	}
 
 }
