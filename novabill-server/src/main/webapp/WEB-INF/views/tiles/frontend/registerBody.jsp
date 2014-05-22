@@ -49,7 +49,7 @@
                             <i class="fa fa-lock"></i> 
                             <form:password path="password" cssClass="form-control password placeholder-no-fix" autocomplete="off" 
                                 id="register_password" placeholder="Password" 
-                                data-toggle="popover" data-placement="left" 
+                                data-toggle="popover" data-placement="left" data-trigger="focus"
                                 data-content="La password deve contenere almeno un carattere maiuscolo, un carattere minuscolo, un numero e un carattere speciale come : , / % $ ! . # @ *<br><br>Scegliere una buona password è fondamentale per la sicurezza dei tuoi dati."/>
                             <span class="text-danger"><form:errors path="password" /> </span>
                         </div>
