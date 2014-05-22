@@ -15,7 +15,9 @@
 <script src="${novabillDepsUrl}/angular-file-upload.min.js"></script>
 <script src="${novabillDepsUrl}/bignumber-1.3.0/bignumber.min.js"></script>
 <script src="${novabillDepsUrl}/ng-infinite-scroll.min.js"></script>
+<script src="${novabillDepsUrl}/stacktracejs-0.6.0/stacktrace.js"></script>
 
+<script src="${novabillCoreUrl}/scripts/logging.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/ajax.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/translations.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/constants.js" type="text/javascript"></script>

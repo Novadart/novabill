@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module('novabill.ajax', ['ngResource', 'angularFileUpload'])
+angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.logging'])
 
 .config(['$httpProvider', function($httpProvider){
 
@@ -14,10 +14,44 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload'])
 	$httpProvider.defaults.headers['delete'] = 
 		$httpProvider.defaults.headers['delete'] ? $httpProvider.defaults.headers['delete'] : {};
 
-		// set the header for DELETE / POST / PUT calls
-		$httpProvider.defaults.headers['delete'][ csrfHeaderName ] = csrfHeaderValue;
-		$httpProvider.defaults.headers['post'][ csrfHeaderName ] = csrfHeaderValue;
-		$httpProvider.defaults.headers['put'][ csrfHeaderName ] = csrfHeaderValue;
+	// set the header for DELETE / POST / PUT calls
+	$httpProvider.defaults.headers['delete'][ csrfHeaderName ] = csrfHeaderValue;
+	$httpProvider.defaults.headers['post'][ csrfHeaderName ] = csrfHeaderValue;
+	$httpProvider.defaults.headers['put'][ csrfHeaderName ] = csrfHeaderValue;
+		
+		
+	/**
+     * this interceptor uses the application logging service to
+     * log server-side any errors from $http requests
+     */
+	$httpProvider.responseInterceptors.push(
+			['$rootScope', '$q', '$injector','$location','nApplicationLogger',
+			 function($rootScope, $q, $injector, $location, nApplicationLogger){
+
+				return function(promise){
+					return promise.then(function(response){
+						// http on success
+						return response;
+					}, function (response) {
+						// http on failure
+						// in this example im just looking for 500, in production
+						// you'd obviously need to be more discerning
+						if(response.status === null || response.status === 500) {
+							var error = {
+									method: response.config.method,
+									url: response.config.url,
+									message: response.data,
+									status: response.status
+							};
+							nApplicationLogger.error( angular.fromJson(error) );
+						}
+						
+						return $q.reject(response);
+					});
+				};
+			}
+			]);	
+	
 
 }])
 

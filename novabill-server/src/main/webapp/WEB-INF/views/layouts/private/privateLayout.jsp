@@ -29,6 +29,7 @@
 <spring:url var="priceListsUrl" value="/private/price-lists/" />
 <spring:url var="paymentsUrl" value="/private/payments/" />
 <spring:url var="settingsUrl" value="/private/settings/" />
+<spring:url var="clientUiErrorUrl" value="/private/ajax/clientuierror" />
 
 <spring:url var="clientsBaseUrl" value="<%=Urls.PRIVATE_CLIENTS%>" />
 
@@ -82,6 +83,31 @@
 <!-- Load jQuery -->
 <script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
 <script>window.jQuery || document.write('<script src="${privateAssetsUrl}/plugins/jquery-1.10.2.min.js"><\/script>');</script>
+
+<script type="text/javascript">
+window.onerror = function(message, source, line, column) {
+	var escape = function(x) { return x.replace('\\', '\\\\').replace('\"', '\\"'); };
+    var XHR = window.XMLHttpRequest || function() {
+        try { return new ActiveXObject("Msxml3.XMLHTTP"); } catch (e0) {}
+        try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); } catch (e1) {}
+        try { return new ActiveXObject("Msxml2.XMLHTTP.3.0"); } catch (e2) {}
+        try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e3) {}
+        try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e4) {}
+    };
+    var xhr = new XHR();
+    xhr.open('POST', '${clientUiErrorUrl}', true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.setRequestHeader('${_csrf.headerName}', '${_csrf.token}');
+    xhr.send('{ ' + 
+        '"message": "' + escape(message || '') + '",' + 
+        '"source": "' + escape(source || '') + '",' + 
+        '"url": "' + escape(window.location.href) + '",' + 
+        '"line": "' + (line || 0) + '",' + 
+        '"column": "' + (column || 0) + '"' + 
+    '}');
+};
+
+</script>
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
