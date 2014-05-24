@@ -29,6 +29,12 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 	public NewTransportDocumentPresenter(PlaceController placeController, EventBus eventBus, TransportDocumentView view, JavaScriptObject callback) {
 		super(placeController, eventBus, view, callback);
 	}
+	
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		loadTransporters();
+	}
 
 	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId, TransportDocumentDTO document) {
 		setDataForNewTransportDocument(client,transportDocumentProgressiveId);

@@ -1,17 +1,25 @@
 'use strict';
 
 angular.module('novabill.transportDocuments.controllers', 
-		['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.translations', 'novabill.constants', 'infinite-scroll'])
+		['novabill.utils', 'novabill.directives', 'novabill.directives.dialogs', 'novabill.ajax', 
+		 'novabill.translations', 'novabill.constants', 'infinite-scroll'])
 
 
 /**
  * TRANSPORT DOCUMENTS PAGE CONTROLLER
  */
-.controller('TransportDocumentCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', 
-                                      function($scope, $location, nConstants, nSelectClientDialog){
+.controller('TransportDocumentCtrl', ['$scope', '$location', '$filter', 'nConstants', 'nSelectClientDialog', 'nEditTransporterDialog', 'nConfirmDialog', 'nAjax',
+                                      function($scope, $location, $filter, nConstants, nSelectClientDialog, nEditTransporterDialog, nConfirmDialog, nAjax){
 	var selectedYear = String(new Date().getFullYear());
+	var Transporter = nAjax.Transporter();
 	var loadedTransportDocuments = [];
 	var PARTITION = 50;
+	
+	$scope.loadTransporters = function(){
+		Transporter.query(function(transporters){
+			$scope.transporters = transporters;
+		});
+	};
 	
 	$scope.loadTransportDocuments = function(year) {
 		selectedYear = year;
@@ -56,6 +64,38 @@ angular.module('novabill.transportDocuments.controllers',
 		$scope.loadTransportDocuments(selectedYear);
 	});
 	
+	$scope.newTransporter = function(){
+		var newTransporter = new Transporter();
+		newTransporter.business = { id : nConstants.conf.businessId };
+		
+		var instance = nEditTransporterDialog.open(newTransporter);
+		instance.result.then(function(transporter){
+			transporter.$save( $scope.loadTransporters );
+		});
+	};
+	
+	$scope.editTransporter = function(transporter){
+		var instance = nEditTransporterDialog.open(transporter);
+		instance.result.then(function(updatedTransporter){
+			updatedTransporter.business = { id : nConstants.conf.businessId };
+			updatedTransporter.$update(function(){
+				$scope.loadTransporters();
+			});
+		});
+	};
+	
+	$scope.removeTransporter = function(transporter){
+		var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION',{data : transporter.name}) );
+		instance.result.then(function(value){
+			if(value){
+				transporter.$delete(function(){
+					$scope.loadTransporters();
+				});
+			}
+		});
+	};
+	
+	$scope.loadTransporters();
 }])
 
 

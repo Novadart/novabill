@@ -8,6 +8,7 @@ public interface I18N extends Constants {
 	
 	public String legalAddress();
 	public String selectAddress();
+	public String selectTransporter();
 	public String additionalClientAddresses();
 	public String mainClientData();
 	public String commercialMonths();

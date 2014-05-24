@@ -10,6 +10,7 @@ public class TransporterDTOTransformer {
 			return null;
 		TransporterDTO transporterDTO = new TransporterDTO();
 		transporterDTO.setId(transporter.getId());
+		transporterDTO.setName(transporter.getName());
 		transporterDTO.setDescription(transporter.getDescription());
 		return transporterDTO;
 	}
@@ -17,6 +18,7 @@ public class TransporterDTOTransformer {
 	public static void copyFromDTO(Transporter transporter, TransporterDTO transporterDTO) {
 		if(transporter == null || transporterDTO == null)
 			return;
+		transporter.setName(transporterDTO.getName());
 		transporter.setDescription(transporterDTO.getDescription());
 	}
 	

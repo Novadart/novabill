@@ -179,6 +179,39 @@ angular.module('novabill.directives.dialogs',
 }])
 
 
+
+/*
+ * Edit Address Dialog
+ */
+.factory('nEditTransporterDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+	return {
+		open : function( transporter ) {
+
+			return $modal.open({
+
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-edit-transporter-dialog.html'),
+
+				controller: ['$scope', '$modalInstance',
+				             function($scope, $modalInstance){
+					
+					$scope.transporter = angular.copy(transporter);
+					
+					$scope.save = function(){
+						$modalInstance.close($scope.transporter);
+					};
+
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
+				}]
+			});
+		}
+	};
+}])
+
+
+
 /*
  * Edit Commodity Dialog
  */

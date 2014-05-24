@@ -76,6 +76,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) ValidatedTextBox numberOfPackages;
 	@UiField(provided=true) ValidatedTextBox totalWeight;
 	@UiField(provided=true) com.novadart.gwtshared.client.validation.widget.ValidatedTextArea transporter;
+	@UiField ListBox loadTransporterAddress;
 
 	@UiField(provided=true) ValidatedDateBox transportStartDate;
 	@UiField(provided=true) ValidatedListBox hour;
@@ -263,7 +264,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	void onToAddressButtonDefaultChange(ChangeEvent e){
 		presenter.onToAddressButtonDefaultChange();
 	}
-
+	
+	@UiHandler("loadTransporterAddress")
+	void onLoadTransporterAddressChange(ChangeEvent e){
+		presenter.onLoadTransporterAddressChange();
+	}
 
 	@UiHandler("createTransportDocument")
 	void onCreateTransportDocumentClicked(ClickEvent e){
@@ -366,6 +371,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		numberOfPackages.setEnabled(!value);
 		totalWeight.setEnabled(!value);
 		transporter.setEnabled(!value);
+		loadTransporterAddress.setEnabled(!value);
 
 		appearanceOfTheGoods.setEnabled(!value);
 		cause.setEnabled(!value);
@@ -497,6 +503,10 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	public com.novadart.gwtshared.client.validation.widget.ValidatedTextArea getTransporter() {
 		return transporter;
+	}
+	
+	public ListBox getLoadTransporterAddress() {
+		return loadTransporterAddress;
 	}
 
 	public ValidatedDateBox getTransportStartDate() {

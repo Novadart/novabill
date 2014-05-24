@@ -1,4 +1,5 @@
-.new-transport-document {
+.new-transport-document,
+.new-transporter {
     margin-top: 10px;
 }
 
@@ -6,7 +7,16 @@ div.transport-documents {
 	margin-top: 20px;
 }
 
+div.transporters {
+    margin-top: 20px;
+}
+
 .transport-documents .spinner {
+    margin: 0 auto;
+    display: block;
+}
+
+.transporters .spinner {
     margin: 0 auto;
     display: block;
 }

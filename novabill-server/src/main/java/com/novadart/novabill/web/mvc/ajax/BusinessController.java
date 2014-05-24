@@ -24,7 +24,6 @@ import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.LogRecordDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.dto.TransporterDTO;
 import com.novadart.novabill.shared.client.exception.CloneNotSupportedException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
@@ -102,13 +101,6 @@ public class BusinessController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<PaymentTypeDTO> getPaymentTypes(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return businessService.getPaymentTypes(businessID);
-	}
-	
-	@RequestMapping(value = "/{businessID}/transporters", method = RequestMethod.GET)
-	@ResponseBody
-	@ResponseStatus(value = HttpStatus.OK)
-	public List<TransporterDTO> getTransporters(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return businessService.getTransporters(businessID);
 	}
 	
 	@RequestMapping(value = "/{businessID}/clients/count", method = RequestMethod.GET)

@@ -14,6 +14,8 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.center.DocumentPresenter;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
@@ -25,10 +27,12 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.dto.TransporterDTO;
 
 public abstract class AbstractTransportDocumentPresenter extends DocumentPresenter<TransportDocumentView> implements TransportDocumentView.Presenter {
 
 	private TransportDocumentDTO transportDocument;
+	private List<TransporterDTO> transporters;
 
 	public AbstractTransportDocumentPresenter(PlaceController placeController, EventBus eventBus, TransportDocumentView view, JavaScriptObject callback) {
 		super(placeController, eventBus, view, callback);
@@ -42,6 +46,44 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		return transportDocument;
 	}
 
+	protected void loadTransporters(){
+		getView().getLoadTransporterAddress().setEnabled(false);
+		getView().getLoadTransporterAddress().clear();
+		ServerFacade.INSTANCE.getBusinessService().getTransporters(Configuration.getBusinessId(), new ManagedAsyncCallback<List<TransporterDTO>>() {
+
+			@Override
+			public void onSuccess(List<TransporterDTO> result) {
+				transporters = result;
+
+				getView().getLoadTransporterAddress().addItem(I18N.INSTANCE.selectTransporter(), "");
+				for (TransporterDTO c : result) {
+					getView().getLoadTransporterAddress().addItem(c.getName(), c.getId().toString());
+				}
+				getView().getLoadTransporterAddress().setEnabled(true);
+
+			}
+		});
+	}
+
+	@Override
+	public void onLoadTransporterAddressChange() {
+		int selectedIndex = getView().getLoadTransporterAddress().getSelectedIndex();
+
+		switch (selectedIndex) {
+		case 0:
+			break;
+
+		default:
+			Long selId = Long.parseLong(getView().getLoadTransporterAddress().getValue(selectedIndex));
+			for (TransporterDTO c : transporters) {
+				if(c.getId().equals(selId)){
+					getView().getTransporter().setText(c.getDescription());
+					break;
+				}
+			}
+			break;
+		}
+	}
 
 	@Override
 	public void onFromAddressButtonDefaultCLicked() {

@@ -227,6 +227,27 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 						}
 					}
 			);
+		},
+		
+		
+		
+		/*
+		 * Transporter resource
+		 */
+		Transporter : function(){
+			return $resource(
+					baseUrl + 'businesses/:businessId/transporters/:id',
+					{
+						businessId: businessId,
+						id : '@id'
+					},
+					{
+						
+						'update': { 
+							method:'PUT'
+						}
+					}
+			);
 		}
 
 	};

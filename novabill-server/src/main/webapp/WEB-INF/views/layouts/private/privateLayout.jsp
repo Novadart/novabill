@@ -197,7 +197,7 @@ window.onerror = function(message, source, line, column) {
                 </a></li>
                 
 				<li class="<%=PAGES.TRANSPORT_DOCUMENTS.equals(activePage) ? "active" : "" %>"><a
-					href="${transportDocumentsUrl}"> <i class="fa fa-file"></i> <span class="title">Documenti di Trasporto</span> <% if(PAGES.TRANSPORT_DOCUMENTS.equals(activePage)) { %>
+					href="${transportDocumentsUrl}"> <i class="fa fa-file"></i> <span class="title">DDT</span> <% if(PAGES.TRANSPORT_DOCUMENTS.equals(activePage)) { %>
 						<span class="selected"></span> <%} %>
 				</a></li>
 

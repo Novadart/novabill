@@ -1,8 +1,12 @@
 package com.novadart.novabill.shared.client.dto;
 
-public class TransporterDTO {
+import com.google.gwt.user.client.rpc.IsSerializable;
+
+public class TransporterDTO implements IsSerializable {
 	
 	private Long id;
+	
+	private String name;
 	
 	private String description;
 	
@@ -14,6 +18,14 @@ public class TransporterDTO {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+	
+	public String getName() {
+		return name;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
 	}
 
 	public String getDescription() {

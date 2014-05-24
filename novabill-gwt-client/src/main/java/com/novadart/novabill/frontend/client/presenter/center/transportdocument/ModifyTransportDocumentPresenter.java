@@ -93,6 +93,7 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 		// load the button only if readonly
 		if(getTransportDocument().getInvoice() == null){
 			super.onLoad();
+			loadTransporters();
 		}
 	}
 
