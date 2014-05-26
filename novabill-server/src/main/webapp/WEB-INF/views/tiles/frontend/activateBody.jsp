@@ -44,7 +44,9 @@ boolean wrongPwd = request.getAttribute("wrongPassword") != null;
                         <input type="password" class="form-control" name="j_password" placeholder="Password">
                     </div>
                     <span class="text-danger" style="display: <%=wrongPwd ? "inline" : "none"%>">Password non corretta</span>
-
+                    
+                    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+                    
                     <div class="row margin-top-20">
                         <div class="col-md-12 text-center">
                             <button type="submit" class="btn theme-btn">Invia</button>                        
