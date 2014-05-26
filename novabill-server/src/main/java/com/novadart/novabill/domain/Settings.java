@@ -42,7 +42,13 @@ public class Settings implements Serializable {
     	Long now = System.currentTimeMillis();
     	if(nonFreeAccountExpirationTime == null || nonFreeAccountExpirationTime < now)
     		return null;
-    	return timeUnit.convert(nonFreeAccountExpirationTime, TimeUnit.MILLISECONDS);
+    	return timeUnit.convert(nonFreeAccountExpirationTime - now, TimeUnit.MILLISECONDS);
+    }
+    
+    public void addNonFreeAccountExpirationTime(TimeUnit timeUnit, Long duration){
+    	Long now = System.currentTimeMillis();
+    	Long currentExpirationTime = (nonFreeAccountExpirationTime == null || nonFreeAccountExpirationTime < now)? now: nonFreeAccountExpirationTime;
+    	nonFreeAccountExpirationTime = currentExpirationTime + TimeUnit.MILLISECONDS.convert(duration, timeUnit);
     }
     
 	public LayoutType getDefaultLayoutType() {

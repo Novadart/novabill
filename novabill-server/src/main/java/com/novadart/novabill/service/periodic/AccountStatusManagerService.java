@@ -21,6 +21,8 @@ import com.novadart.novabill.domain.security.RoleType;
 @MailMixin
 public class AccountStatusManagerService implements PeriodicService {
 	
+	public static final int TRIAL_PERIOD_IN_DAYS = 90;
+	
 	@PersistenceContext
 	private EntityManager entityManager; 
 	
@@ -37,9 +39,9 @@ public class AccountStatusManagerService implements PeriodicService {
 	@Transactional(readOnly = true)
 	private void notifySoonToExpireAccounts(int days){
 		String query = "select principal from Principal principal inner join principal.grantedRoles gr where " +
-				":lbound < principal.business.settings.nonFreeAccountExpirationTime and principal.business.settings.nonFreeAccountExpirationTime < :rbound and gr = :role";
+				":lbound <= principal.business.settings.nonFreeAccountExpirationTime and principal.business.settings.nonFreeAccountExpirationTime <= :rbound and gr = :role";
 		Long now = System.currentTimeMillis();
-		Long lbound = now + (days - 1)  *  MILLIS_IN_DAY, rbound = now + days * MILLIS_IN_DAY;
+		Long lbound = now + (days - 1)  *  MILLIS_IN_DAY - MILLIS_IN_HOUR, rbound = now + days * MILLIS_IN_DAY;
 		List<Principal> soonToExpirePrincipals = entityManager.createQuery(query, Principal.class)
 				.setParameter("lbound", lbound)
 				.setParameter("rbound", rbound)
@@ -55,7 +57,7 @@ public class AccountStatusManagerService implements PeriodicService {
 	@Async
 	@Transactional(readOnly = false)
 	private void disableExpiredAccounts(){
-		String query = "select principal from Principal principal inner join principal.grantedRoles gr where principal.business.settings.nonFreeAccountExpirationTime < :now and gr = :role";
+		String query = "select principal from Principal principal inner join principal.grantedRoles gr where principal.business.settings.nonFreeAccountExpirationTime <= :now and gr = :role";
 		List<Principal> expiredPrincipals = entityManager.createQuery(query, Principal.class)
 				.setParameter("now", System.currentTimeMillis())
 				.setParameter("role", RoleType.ROLE_BUSINESS_PREMIUM).getResultList();

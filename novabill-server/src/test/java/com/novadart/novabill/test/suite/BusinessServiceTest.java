@@ -12,6 +12,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.Resource;
 
@@ -32,6 +33,7 @@ import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.periodic.AccountStatusManagerService;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.data.LayoutType;
@@ -319,7 +321,8 @@ public class BusinessServiceTest extends ServiceTest {
 		assertTrue(EqualsBuilder.reflectionEquals(business, actualBusiness, "version", "paymentTypes",
 				"nonFreeAccountExpirationTime", "items", "accounts" , "invoices", "estimations", "creditNotes",
 				"transportDocuments", "clients", "principals", "priceLists", "settings"));
-		assertTrue(EqualsBuilder.reflectionEquals(business.getSettings(), actualBusiness.getSettings()));
+		assertTrue(EqualsBuilder.reflectionEquals(business.getSettings(), actualBusiness.getSettings(), "nonFreeAccountExpirationTime"));
+		assertTrue(actualBusiness.getSettings().getNonFreeExpirationDelta(TimeUnit.DAYS) == AccountStatusManagerService.TRIAL_PERIOD_IN_DAYS - 1);
 	}
 	
 	@Test
