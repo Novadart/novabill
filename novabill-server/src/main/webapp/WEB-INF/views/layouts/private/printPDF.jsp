@@ -37,7 +37,10 @@ iframe#printArea {
     	PDFIframe.load(function(){
     		setTimeout(function(){
     			PDFIframe[0].focus();
-                PDFIframe[0].contentWindow.print();
+    			try {
+    			    PDFIframe[0].contentWindow.print();
+    			} catch (e) {
+				}
     		}, 1000);
     	});
    	});
