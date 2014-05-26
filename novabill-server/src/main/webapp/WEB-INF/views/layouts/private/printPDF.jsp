@@ -2,6 +2,7 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <spring:url var="privateAssetsUrl" value="/private_assets" />
+<spring:url var="frontendAssetsUrl" value="/frontend_assets" />
 
 <!DOCTYPE html>
 <html>
@@ -22,6 +23,7 @@ iframe#printArea {
     height: 100%;
 }
 </style>
+<link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
 </head>
 <body>
 
@@ -35,8 +37,13 @@ iframe#printArea {
     	var PDFIframe = $('iframe#printArea');
     	
     	PDFIframe.load(function(){
-    		PDFIframe[0].focus();
-    		PDFIframe[0].contentWindow.print();
+    		setTimeout(function(){
+    			PDFIframe[0].focus();
+    			try {
+    			    PDFIframe[0].contentWindow.print();
+    			} catch (e) {
+				}
+    		}, 1000);
     	});
    	});
     
