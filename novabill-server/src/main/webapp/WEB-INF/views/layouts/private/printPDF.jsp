@@ -35,8 +35,10 @@ iframe#printArea {
     	var PDFIframe = $('iframe#printArea');
     	
     	PDFIframe.load(function(){
-    		PDFIframe[0].focus();
-    		PDFIframe[0].contentWindow.print();
+    		setTimeout(function(){
+    			PDFIframe[0].focus();
+                PDFIframe[0].contentWindow.print();
+    		}, 1000);
     	});
    	});
     
