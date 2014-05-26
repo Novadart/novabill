@@ -40,7 +40,8 @@ public class FrontendController {
 //	}
 //	
 	@RequestMapping(value = Urls.PUBLIC_PAGE_NOT_FOUND, method = RequestMethod.GET)
-	public String pageNotFound(){
+	public String pageNotFound(Model model){
+		model.addAttribute("pageName", "Risorsa non Disponibile");
 		return "frontend.pageNotFound";
 	}
 	
