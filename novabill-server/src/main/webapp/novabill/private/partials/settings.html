@@ -63,7 +63,7 @@
                         </div>
                 </tab>
                 
-                <tab>
+                <tab ng-show="!firstRun">
                     <tab-heading>
                         <i class="fa fa-gears"></i> {{'BUSINESS_TAB_OPTIONS' | translate}}
                     </tab-heading>
@@ -91,7 +91,7 @@
                         </button>
                 </tab>
                 
-                <tab>
+                <tab ng-show="!firstRun">
                     <tab-heading>
                         <i class="fa fa-print"></i> {{'BUSINESS_TAB_LAYOUT' | translate}}
                     </tab-heading>
@@ -142,7 +142,7 @@
                         </button>
                 </tab>
                 
-                <tab select="loadSharingPermits()">
+                <tab ng-show="!firstRun" select="loadSharingPermits()">
                     <tab-heading>
                         <i class="fa fa-group"></i> {{'BUSINESS_TAB_SHARE' | translate}}
                     </tab-heading>
