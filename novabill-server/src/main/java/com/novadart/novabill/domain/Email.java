@@ -47,6 +47,7 @@ public class Email implements Serializable {
 	@Size(max = 78)
 	private String subject;
 	
+	@Size(max = 1500)
 	private String text;
 	
 	private EmailStatus status;
