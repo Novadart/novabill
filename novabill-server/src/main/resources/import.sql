@@ -320,8 +320,8 @@ insert into invoice (id, payment_date_generator, payment_date_delta, payment_typ
 insert into accounting_document_item (id, description, price, quantity, tax, total, total_before_tax, total_tax, unit_of_measure, version, accounting_document) values (182, 'description', 100.0, 1.0, 21.0, 121.0, 100.0, 21.0, 'piece', 1, 181);
 
 --creating transporters
-insert into transporter (id, description, business, version) values (183, 'Jason Statham', 1, 1);
-insert into transporter (id, description, business, version) values (184, 'Jason Statham', 2, 1);
+insert into transporter (id, name, description, business, version) values (183, 'Jason Statham', 'The transporter', 1, 1);
+insert into transporter (id, name, description, business, version) values (184, 'Jason Statham', 'The transporrer', 2, 1);
 
 --creating sharing permit
 insert into sharing_permit (id, created_on, description, email, business, version) values (185, 1, 'tax advisor', 'mario.rossi@example.com', 1, 1);

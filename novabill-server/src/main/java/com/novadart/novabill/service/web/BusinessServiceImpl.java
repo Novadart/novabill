@@ -10,6 +10,7 @@ import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
+import java.util.concurrent.TimeUnit;
 
 import javax.annotation.PostConstruct;
 
@@ -42,6 +43,7 @@ import com.novadart.novabill.domain.dto.transformer.SharingPermitDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.TransporterDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.service.periodic.AccountStatusManagerService;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
@@ -261,9 +263,9 @@ public abstract class BusinessServiceImpl implements BusinessService {
 													com.novadart.novabill.shared.client.exception.CloneNotSupportedException {
 		Business business = new Business();
 		BusinessDTOTransformer.copyFromDTO(business, businessDTO);
-		if(businessDTO.getSettings().getDefaultLayoutType() == null)
-			business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
+		business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
 		validator.validate(business);
+		business.getSettings().addNonFreeAccountExpirationTime(TimeUnit.DAYS, (long)AccountStatusManagerService.TRIAL_PERIOD_IN_DAYS); //set trial period
 		Locale locale = LocaleContextHolder.getLocale();
 		for(PaymentType pType: paymentTypes.containsKey(locale)? paymentTypes.get(locale): paymentTypes.get(Locale.ITALIAN)){
 			PaymentType paymentType = null;
