@@ -159,12 +159,6 @@ angular.module('novabill.directives.dialogs',
 					
 					$scope.address = angular.copy(address);
 					
-					$scope.onCountryChange = function(){
-						if($scope.address.country !== 'IT'){
-							$scope.address.province = null;
-						}
-					};
-
 					$scope.save = function(){
 						$modalInstance.close($scope.address);
 					};
