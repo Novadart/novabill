@@ -96,7 +96,7 @@ public class UiBridge implements ApiBridge {
 	 */
 	public static void showNewClientDialog(String businessId, JavaScriptObject callback){
 		ClientDialog clientDialog = new ClientDialog(Long.parseLong(businessId), callback);
-		clientDialog.showCentered();
+		clientDialog.center();
 	}
 	
 	public static void showModifyClientDialog(final String businessId, String clientId, final JavaScriptObject callback){

@@ -153,7 +153,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		ssnOrVatIdValidation.addWidget(vatID);
 		ssnOrVatIdValidation.addWidget(ssn);
 
-		postcode = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NUMBER);
+		postcode = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 
 		address = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
 		city = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
@@ -287,6 +287,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		city.setText(client.getCity());
 		province.setText(client.getProvince());
 		country.setSelectedItemByValue(client.getCountry()==null ? Configuration.getBusiness().getCountry() : client.getCountry());
+		setVatIdSsnValidation(country.getSelectedItemValue().equalsIgnoreCase("IT"));
 		postcode.setText(client.getPostcode());
 		phone.setText(client.getPhone());
 		mobile.setText(client.getMobile());
@@ -441,7 +442,6 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		setVatIdSsnValidation(isIT);
 		vatID.reset();
 		ssn.reset();
-		postcode.setValidationBundle(isIT ? ValidationKit.NUMBER : ValidationKit.NOT_EMPTY);
 		postcode.reset();
 		return isIT;
 	}
@@ -456,32 +456,6 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		}
 	}
 
-	//	private void clearData(){
-	//		client = null;
-	//		setVatIdSsnValidation(true);
-	//		postcode.setValidationBundle(ValidationKit.NUMBER);
-	//		province.reset();
-	//		web.setText("");
-	//		for (ValidatedWidget<?> tb: new ValidatedWidget[]{companyName, 
-	//				postcode, phone, mobile, fax, email, address, city, web,
-	//				contactEmail, contactFax, contactMobile, contactName, contactPhone,
-	//				contactSurname, note}){
-	//			tb.reset();
-	//		}
-	//		ssnOrVatIdValidation.reset();
-	//		
-	//		province.setEnabled(true);
-	//		province.reset();
-	//		country.reset();
-	//		country.setSelectedItemByValue("IT");
-	//		ok.setText(I18N.INSTANCE.submit());
-	//		inlineNotification.hide();
-	//		clientDialogTitle.setText(I18N.INSTANCE.addNewClientTitle());
-	//		ok.reset();
-	//		selectDefaultPayment.clear();
-	//		setLocked(false);
-	//		paymentTypes.clear();
-	//	}
 
 	private boolean validate(){
 		boolean isValid = true;
