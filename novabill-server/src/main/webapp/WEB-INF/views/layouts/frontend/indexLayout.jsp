@@ -1,10 +1,12 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
 <spring:url value="/private/feedback" var="feedbackUrl" />
 <spring:url value="/private/" var="privateUrl" />
+<spring:url value="/register" var="registerPageUrl"/>
 
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -366,38 +368,65 @@
                 <div class="col-md-4 col-sm-4">
                     <div class="service-box-heading">
                         <em><i class="fa fa-resize-small green"></i></em>
-                        <span>Offerta base senza costi</span>
+                        <span>Aggiornamenti costanti</span>
                     </div>
-                    <p>Puoi esplorare e utilizzare Novabill gratuitamente, senza limiti di tempo. Ti offriamo funzionalità avanzate solo se lo desideri e a un costo molto accessibile.</p>
+                    <p>Novabill è un sistema cloud accessibile da tutti i browser moderni. I miglioramenti e le correzioni che apportiamo con regolarità saranno immediatamente disponibili anche per te.</p>
                 </div>
             </div>
             <!-- END SERVICE BOX -->  
 
             <div class="clearfix"></div>
             
-            <!-- BEGIN COMING SOON -->
-            <div class="row" style="margin-bottom: 50px;">
-	            <div class="col-md-6 coming-soon-content">
-	                <h2>Manca poco...</h2>
-	                <p style="text-align: justify;color: #656565; font-size: 13px;">Stiamo completando l'aggiornamento delle funzionalità le ultime operazioni di test.<br />
-	                Presto sarà possibile creare nuovi account, se invece sei già iscritto <a href="${privateUrl}" style="text-decoration: underline;">puoi entrare e accedere ai tuoi dati</a>. 
-	                </p>
-	                <p class="alertEmailCont" style="color: #656565; font-size: 13px;">Lasciaci la tua email se vuoi essere avvisato quando riapriremo le registrazioni.</p>
-	                <form class="alertEmailCont" class="form-inline">
-	                    <div class="input-group input-large">
-	                        <input id="alertEmail" type="text" class="form-control">
-	                        <span class="input-group-btn">
-	                        <button id="alertEmailButton" class="btn blue" type="button"><span>Avvisami</span> <i class="m-icon-swapright m-icon-white"></i></button>
-	                        </span>
-	                    </div>
-	                </form>
+            <sec:authorize access="isAnonymous()">
+	            <div class="row">
+	                <a class="btn btn-lg green col-md-4 col-md-offset-4" href="${registerPageUrl}">Registrati</a>
 	            </div>
-	            <div class="col-md-6 coming-soon-countdown">
-	                <div id="defaultCountdown"></div>
-	            </div>
-	        </div>
-	        <!--/end row-->
-            <!-- end COMING SOON -->
+            </sec:authorize>
+            
+            <!-- BEGIN BLOCKQUOTE AND VIDEO -->   
+            <div class="row">
+                <!-- BEGIN SERVICE BLOCKS -->               
+                <div class="col-md-12">
+                    <div class="row margin-bottom-20">
+                        <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-thumbs-up color-grey"></i></div>
+                            <h2>Harum quidem</h2>
+                            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse.</p>
+                        </div>
+                        <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-cloud-download color-grey"></i></div>
+                            <h2>Denim robatl</h2>
+                            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse.</p>
+                        </div>
+                        <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-comments color-grey"></i></div>
+                            <h2>Harum quidem</h2>
+                            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse.</p>
+                        </div>
+                    </div>
+                    <div class="row margin-bottom-20">
+                        <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-dropbox color-grey"></i></div>
+                            <h2>Solnh mateore</h2>
+                            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse.</p>
+                        </div>
+                        <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-gift color-grey"></i></div>
+                            <h2>Molestia pore</h2>
+                            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse.</p>
+                        </div>
+                        <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-globe color-grey"></i></div>
+                            <h2>Denim robatl</h2>
+                            <p>Raw denim you probably haven't heard of them jean shorts Austin. Nesciunt tofu stumptown aliqua, retro synth master cleanse.</p>
+                        </div>
+                    </div>
+                </div>
+                <!-- END SERVICE BLOCKS --> 
+            </div>
+            <!-- END BLOCKQUOTE AND VIDEO -->
+            
+            
 
             <!-- BEGIN RECENT WORKS -->
 <%--             <div class="row recent-work margin-bottom-40">

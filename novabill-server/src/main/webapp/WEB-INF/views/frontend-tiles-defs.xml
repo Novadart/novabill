@@ -31,6 +31,26 @@
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/loginBody.jsp" />
 	</definition>
 	
+    <definition name="frontend.about" extends="frontend.subPageLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/aboutBody.jsp" />
+    </definition>
+    
+    <definition name="frontend.security" extends="frontend.subPageLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/securityBody.jsp" />
+    </definition>
+    
+    <definition name="frontend.prices" extends="frontend.subPageLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/pricesBody.jsp" />
+    </definition>
+    
+    <definition name="frontend.tos" extends="frontend.subPageLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/tosBody.jsp" />
+    </definition>
+    
+    <definition name="frontend.tosMinimal" extends="frontend.subPageMinimalLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/tosBody.jsp" />
+    </definition>
+	
 	
 	<!-- Forgot Password -->
 	
@@ -92,19 +112,6 @@
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/oopsBody.jsp" />
 	</definition>
 	
-	<definition name="frontend.contact" extends="frontend.subPageLayout">
-       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/contactBody.jsp" />
-	   <put-attribute name="javascript" value="/WEB-INF/views/tiles/frontend/contactJS.jsp" />
-	</definition>
-	
-    <definition name="frontend.tos" extends="frontend.subPageLayout">
-       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/tosBody.jsp" />
-    </definition>
-    
-    <definition name="frontend.tosMinimal" extends="frontend.subPageMinimalLayout">
-       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/tosBody.jsp" />
-    </definition>
-    
     <!-- Share workflow -->
     
     <definition name="sharing.request" extends="frontend.subPageLayout">

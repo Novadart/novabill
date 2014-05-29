@@ -6,7 +6,7 @@
 <spring:url var="indexPageUrl" value="/" />
 <spring:url var="logoutUrl" value="/resources/logout" />
 <spring:url var="aboutPageUrl" value="/about" />
-<spring:url var="contactPageUrl" value="/contact" />
+<spring:url var="securityPageUrl" value="/security" />
 <spring:url var="pricesPageUrl" value="/prices" />
 <spring:url var="privatePageUrl" value="/private/" />
 <spring:url var="registerPageUrl" value="/register" />
@@ -75,20 +75,9 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="<%=PAGES.HOME.equals(activePage) ? "active" : "" %>"><a href="${indexPageUrl}">Home</a></li>
-                    <%-- <li class="<%=PAGES.ABOUT.equals(activePage) ? "active" : "" %>"><a href="${aboutPageUrl}">About Us</a></li>
-                    <li class="<%=PAGES.PRICES.equals(activePage) ? "active" : "" %>"><a href="${pricesPageUrl}">Prices</a></li>
-    <!--                         <li class="dropdown">
-                                <a class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown" data-delay="0" data-close-others="false" href="#">
-                                    Blog
-                                    <i class="fa fa-angle-down"></i>
-                                </a>
-                                <ul class="dropdown-menu">
-                                    <li><a href="blog.html">Blog Page</a></li>
-                                    <li><a href="blog_item.html">Blog Item</a></li>
-                                </ul>
-                            </li> -->
-                    <li class="<%=PAGES.CONTACT.equals(activePage) ? "active" : "" %>"><a href="${contactPageUrl}">Contatti</a></li>
-                     --%>
+                    <li class="<%=PAGES.PRICES.equals(activePage) ? "active" : "" %>"><a href="${pricesPageUrl}">Quanto costa?</a></li>
+                    <li class="<%=PAGES.SECURITY.equals(activePage) ? "active" : "" %>"><a href="${securityPageUrl}">Sicurezza</a></li>
+                    <li class="<%=PAGES.ABOUT.equals(activePage) ? "active" : "" %>"><a href="${aboutPageUrl}">Chi Siamo</a></li>
                 </ul>                         
             </div>
             <!-- BEGIN TOP NAVIGATION MENU -->

@@ -133,7 +133,7 @@
             </div>
             <div class="col-md-4 col-sm-4">
                 <ul class="social-footer">
-                    <li class="datashare"><a class="btn btn-sm blue" href="${shareAskUrl}"><i class="fa fa-group"></i> Condivisione Dati</a></li>
+                    <li class="datashare"><a class="btn btn-sm blue" href="${shareAskUrl}"><i class="fa fa-group"></i> Sei un Commercialista?</a></li>
                 </ul>
                 <!-- <ul class="social-footer">
                     <li><a href="#"><i class="fa fa-facebook"></i></a></li>

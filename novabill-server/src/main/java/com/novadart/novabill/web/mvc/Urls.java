@@ -4,9 +4,9 @@ public interface Urls {
 
 	//	Public Urls
 	public static final String PUBLIC_HOME = "/";
-	public static final String PUBLIC_CONTACT = "/contact";
 	public static final String PUBLIC_ABOUT = "/about";
 	public static final String PUBLIC_PRICES = "/prices";
+	public static final String PUBLIC_SECURITY = "/security";
 	public static final String PUBLIC_PAGE_NOT_FOUND = "/page-not-found";
 	public static final String PUBLIC_EXCEPTION = "/oops";
 	public static final String PUBLIC_ACTIVATE = "/activate";

@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class FrontendController {
 
 	public static enum PAGES {
-		HOME, PRICES, BLOG, ABOUT, CONTACT
+		HOME, PRICES, ABOUT, SECURITY
 	}
 	
 	@RequestMapping(value = Urls.PUBLIC_HOME, method = RequestMethod.GET)
@@ -18,27 +18,28 @@ public class FrontendController {
 		return "frontend.index";
 	}
 
-//	@RequestMapping(value = Urls.PUBLIC_CONTACT, method = RequestMethod.GET)
-//	public String contact(Model model){
-//		model.addAttribute("activePage", PAGES.CONTACT);
-//		model.addAttribute("pageName", "Contact Us");
-//		return "frontend.contact";
-//	}
-	
-//	@RequestMapping(value = Urls.PUBLIC_ABOUT, method = RequestMethod.GET)
-//	public String about(Model model){
-//		model.addAttribute("activePage", PAGES.ABOUT);
-//		model.addAttribute("pageName", "About");
-//		return "frontend.about";
-//	}
+	@RequestMapping(value = Urls.PUBLIC_SECURITY, method = RequestMethod.GET)
+	public String security(Model model){
+		model.addAttribute("activePage", PAGES.SECURITY);
+		model.addAttribute("pageName", "Sicurezza");
+		return "frontend.security";
+	}
 
-//	@RequestMapping(value = Urls.PUBLIC_PRICES, method = RequestMethod.GET)
-//	public String prices(Model model){
-//		model.addAttribute("activePage", PAGES.PRICES);
-//		model.addAttribute("pageName", "Prices");
-//		return "frontend.prices";
-//	}
-//	
+	
+	@RequestMapping(value = Urls.PUBLIC_ABOUT, method = RequestMethod.GET)
+	public String about(Model model){
+		model.addAttribute("activePage", PAGES.ABOUT);
+		model.addAttribute("pageName", "Chi Siamo");
+		return "frontend.about";
+	}
+
+	@RequestMapping(value = Urls.PUBLIC_PRICES, method = RequestMethod.GET)
+	public String prices(Model model){
+		model.addAttribute("activePage", PAGES.PRICES);
+		model.addAttribute("pageName", "Quanto Costa?");
+		return "frontend.prices";
+	}
+	
 	@RequestMapping(value = Urls.PUBLIC_PAGE_NOT_FOUND, method = RequestMethod.GET)
 	public String pageNotFound(Model model){
 		model.addAttribute("pageName", "Risorsa non Disponibile");
