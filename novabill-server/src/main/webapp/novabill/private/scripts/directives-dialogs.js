@@ -231,13 +231,13 @@ angular.module('novabill.directives.dialogs',
 						//if prices map is empty, init it
 						if( $scope.commodity ){
 							$scope.price = $scope.commodity.prices ? $scope.commodity.prices[ nConstants.conf.defaultPriceListName ].priceValue : null;
-							$scope.service = $scope.commodity.service;
+							$scope.service = String( $scope.commodity.service );
 						}
 
 					});
 					
 					//init commodity
-					$scope.commodity = commodity;
+					$scope.commodity = angular.copy( commodity );
 
 					$scope.save = function(){
 						// update service property
