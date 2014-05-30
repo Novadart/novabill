@@ -10,11 +10,11 @@
 			</ul>
 
 
-			<div class="jumbotron" ng-class="{product: !commodity.service, service: commodity.service}">
+			<div class="page-header" ng-class="{product: !commodity.service, service: commodity.service}">
 				<span class="type label label-primary" ng-show="commodity.service">{{'SERVICE' | translate}}</span> <span
 					class="type label label-success" ng-show="!commodity.service">{{'PRODUCT' | translate}}</span>
 
-				<h2>{{commodity.description}}</h2>
+				<h2><strong>{{commodity.description}}</strong></h2>
 
 			</div>
 

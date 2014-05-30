@@ -143,11 +143,6 @@ angular.module('novabill.priceLists.controllers',
 		}
 	};
 	
-	
-	$scope.selectionButtonText = function(){
-		return $scope.selectedCommoditiesCount === 0 ? $filter('translate')('SELECT_ALL'):$filter('translate')('UNSELECT_ALL');
-	};
-	
 	$scope.onSelectionChange = function(id){
 		$scope.selectedCommoditiesCount += $scope.selectedCommodities[id] ? 1 : -1;
 	};

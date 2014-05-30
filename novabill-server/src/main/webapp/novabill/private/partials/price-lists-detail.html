@@ -9,8 +9,8 @@
 				<li><span>{{priceList.name | nReplaceReservedWord:'DEFAULT_PRICE_LIST'}}</span></li>
 			</ul>
 
-			<div class="jumbotron">
-				<h2>{{priceList.name | nReplaceReservedWord:'DEFAULT_PRICE_LIST'}}</h2>
+			<div class="page-header">
+				<h2><strong>{{priceList.name | nReplaceReservedWord:'DEFAULT_PRICE_LIST'}}</strong></h2>
 			</div>
 
 			<div ng-if="DEFAULT_PRICELIST_NAME!==priceList.name" style="height: 28px;" class="col-md-4 col-md-offset-8 col-sm-4 col-sm-offset-8">
@@ -37,7 +37,7 @@
 			</div>
 			
 			<div class="btn-group global-actions">
-               <button ng-disabled="selectedCommoditiesCount < 2" class="btn blue dropdown-toggle" type="button" data-toggle="dropdown">
+               <button ng-disabled="selectedCommoditiesCount < 1" class="btn blue dropdown-toggle" type="button" data-toggle="dropdown">
                {{'SELECTED' | translate}} ({{selectedCommoditiesCount}}) <i class="fa fa-angle-down"></i>
                </button>
                <ul class="dropdown-menu" role="menu">
@@ -45,7 +45,11 @@
                </ul>
            </div>
            
-           <button type="button" class="btn blue select-all" ng-bind="selectionButtonText()" ng-click="selectionButtonClick()"></button>
+           <a href="javascript:void(0);" class="btn blue select-all" ng-click="selectionButtonClick()">
+            <i class="fa" ng-class="{'fa-reorder': selectedCommoditiesCount == 0, 'fa-ban' : selectedCommoditiesCount > 0}"></i> 
+            <span ng-if="selectedCommoditiesCount == 0">{{'SELECT_ALL' | translate}}</span>
+            <span ng-if="selectedCommoditiesCount > 0">{{'UNSELECT_ALL' | translate}}</span>
+           </a>
 			
 			<div class="table-responsive" infinite-scroll="loadMoreCommodities()">
 			    <img class="spinner" ng-show="commodities==null" style="margin: 0 auto; display: block;" src="../../private_assets/img/ajax-loading.gif">

@@ -3,22 +3,21 @@
 }
 
 .commodities-detail .type {
-	position: absolute;
-	left: 0;
-	top: 0;
-	font-size: medium;
-}
-
-.commodities-detail .jumbotron {
 	position: relative;
+    top: 2px;
+    right: 10px;
 }
 
-.commodities-detail .jumbotron.service {
-    border-left: 10px solid #428bca;
+.commodities-detail .page-header {
+	padding-left: 10px;
 }
 
-.commodities-detail .jumbotron.product {
-    border-left: 10px solid #3cc051;
+.commodities-detail .page-header.service {
+    border-left: 2px solid #428bca;
+}
+
+.commodities-detail .page-header.product {
+    border-left: 2px solid #3cc051;
 }
 
 .commodities-detail table.table td{
