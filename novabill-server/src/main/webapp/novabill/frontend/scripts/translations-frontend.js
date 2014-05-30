@@ -11,9 +11,9 @@ angular.module("novabill-frontend.translations", ['pascalprecht.translate'])
 		CLEAR : 'Ripulisci',
 		DOWNLOAD : 'Scarica',
 		NO_DATA : 'Nessun dato',
-		PAYMENTS_STATUS_END_DATE : 'A',
+		PAYMENTS_STATUS_END_DATE : 'Fine Intervallo',
 		PAYMENTS_STATUS_PRINT : 'Stampa',
-		PAYMENTS_STATUS_START_DATE : 'Da',
+		PAYMENTS_STATUS_START_DATE : 'Inizio Intervallo',
 	  });
 
 	$translateProvider.preferredLanguage('it_IT');

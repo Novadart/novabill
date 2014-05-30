@@ -10,7 +10,7 @@
 		<!--/span-->
 		<div class="col-md-6">
 		   <div class="form-group">
-		        <label class="control-label col-md-4">{{'PAYMENTS_STATUS_START_DATE' | translate}}</label>
+		        <label class="control-label col-md-4" style="text-align: right;">{{'PAYMENTS_STATUS_START_DATE' | translate}}</label>
 		        <div class="col-md-8">
 		           <p class="input-group input-medium">
 		             <input ng-disabled="loading" type="text" class="form-control"
@@ -30,7 +30,7 @@
 		    </div>
 		
 		    <div class="form-group">
-		        <label class="control-label col-md-4">{{'PAYMENTS_STATUS_END_DATE' | translate}}</label>
+		        <label class="control-label col-md-4" style="text-align: right;">{{'PAYMENTS_STATUS_END_DATE' | translate}}</label>
 		        <div class="col-md-8">
 		           <p class="input-group input-medium">
 		             <input ng-disabled="loading" type="text" class="form-control"

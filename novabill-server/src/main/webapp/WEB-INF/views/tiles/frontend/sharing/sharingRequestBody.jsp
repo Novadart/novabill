@@ -25,8 +25,8 @@
 							<span class="input-group-addon"><i class="fa fa-envelope"></i></span>
 							<form:input path="email" type="text" class="form-control"
 								placeholder="Il proprio indirizzo email"></form:input>
-							<form:errors path="email" />
 						</div>
+						<span class="text-danger"><form:errors path="email" /></span>
 					</div>
 
 					<div class="form-group">
@@ -35,8 +35,8 @@
 							<span class="input-group-addon"><i class="fa fa-building"></i></span>
 							<form:input path="vatID" type="text" class="form-control"
 								placeholder="Partita IVA dell'azienda"></form:input>
-							<form:errors path="vatID" />
 						</div>
+						<span class="text-danger"><form:errors path="vatID" /></span>
 					</div>
 				</div>
 				<div class="form-actions" style="text-align: center;">

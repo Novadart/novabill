@@ -168,7 +168,7 @@ public class SharingTest extends ServiceTest {
 		request.setVatID(business.getVatID());
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		sharingController.processRequestSubmit(request, new BeanPropertyBindingResult(request, "sharingRequest"), mock(SessionStatus.class), null);
+		sharingController.processRequestSubmit(request, new BeanPropertyBindingResult(request, "sharingRequest"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
@@ -188,7 +188,7 @@ public class SharingTest extends ServiceTest {
 		request.setVatID(business.getVatID().substring(2));
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		sharingController.processRequestSubmit(request, new BeanPropertyBindingResult(request, "sharingRequest"), mock(SessionStatus.class), null);
+		sharingController.processRequestSubmit(request, new BeanPropertyBindingResult(request, "sharingRequest"), mock(SessionStatus.class), null,mock(Model.class));
 		smtpServer.stop();
 		
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
@@ -203,7 +203,7 @@ public class SharingTest extends ServiceTest {
 		request.setVatID(authenticatedPrincipal.getBusiness().getVatID());
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		sharingController.processRequestSubmit(request, new BeanPropertyBindingResult(request, "sharingRequest"), mock(SessionStatus.class), null);
+		sharingController.processRequestSubmit(request, new BeanPropertyBindingResult(request, "sharingRequest"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
@@ -218,7 +218,7 @@ public class SharingTest extends ServiceTest {
 		request.setVatID("Invalid vatid");
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		sharingController.processRequestSubmit(request, new BeanPropertyBindingResult(request, "sharingRequest"), mock(SessionStatus.class), null);
+		sharingController.processRequestSubmit(request, new BeanPropertyBindingResult(request, "sharingRequest"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		
 		assertTrue(smtpServer.getReceivedEmailSize() == 0);

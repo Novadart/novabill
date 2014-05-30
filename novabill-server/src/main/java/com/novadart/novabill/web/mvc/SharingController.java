@@ -76,10 +76,13 @@ public class SharingController {
 	
 	
 	@RequestMapping(value = Urls.PUBLIC_SHARE_REQUEST, method = RequestMethod.POST)
-	public String processRequestSubmit(@ModelAttribute("sharingRequest") SharingRequest sharingRequest, BindingResult result, SessionStatus status, Locale locale){
+	public String processRequestSubmit(@ModelAttribute("sharingRequest") SharingRequest sharingRequest, BindingResult result, 
+			SessionStatus status, Locale locale, Model model){
 		validator.validate(sharingRequest, result);
-		if(result.hasErrors())
+		if(result.hasErrors()) {
+			model.addAttribute("pageName", "Accesso alla Condivisione");
 			return "sharing.request";
+		}
 		Business business = Business.findBusinessByVatIDIfSharingPermit(normalizeAndGetVatID(sharingRequest), sharingRequest.getEmail());
 		if(business == null){
 			Principal principal = Principal.findByUsername(sharingRequest.getEmail());

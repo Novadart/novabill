@@ -40,27 +40,32 @@
                                   <n-business-logo></n-business-logo>
                               </div>
                           </div>
-                          <br>
-                          <br>
-                          <br>
-                          <div class="row" ng-show="!firstRun">
-                              <div class="col-md-12">
-                                  <h4><strong style="text-transform: uppercase;">{{'TITLE_PROFILE' | translate}}</strong></h4>
-                                  <a href="{{changePasswordUrl}}" class="btn default">{{'CHANGE_PASSWORD' | translate}}</a>
-                                  
-                                  <br>
-                                  <br>
-                                  <br>
-                                  
-                                  <h4><strong style="text-transform: uppercase;">{{'TITLE_EXPORT_DATA' | translate}}</strong></h4>
-                                  <a href="javascript:void(0);" class="btn default" ng-click="exportZip(true, false, false, false, false)">{{'EXPORT_CLIENTS' | translate}}</a>
-                                  <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, false, true, false)">{{'EXPORT_CREDIT_NOTES' | translate}}</a>
-                                  <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, true, false, false)">{{'EXPORT_ESTIMATIONS' | translate}}</a>
-                                  <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, true, false, false, false)">{{'EXPORT_INVOICES' | translate}}</a>
-                                  <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, false, false, true)">{{'EXPORT_TRANSPORT_DOCUMENTS' | translate}}</a>
-                              </div>
-                          </div>
                         </div>
+                </tab>
+                
+                <tab ng-show="!firstRun">
+                    <tab-heading>
+                        <i class="fa fa-user"></i> {{'BUSINESS_TAB_PROFILE' | translate}}
+                    </tab-heading>
+                    
+                    <div class="row" ng-show="!firstRun">
+                        <div class="col-md-12">
+                            <h4><strong style="text-transform: uppercase;">{{'TITLE_PROFILE' | translate}}</strong></h4>
+                            <a href="{{changePasswordUrl}}" class="btn default">{{'CHANGE_PASSWORD' | translate}}</a>
+                            
+                            <br>
+                            <br>
+                            <br>
+                            
+                            <h4><strong style="text-transform: uppercase;">{{'TITLE_EXPORT_DATA' | translate}}</strong></h4>
+                            <a href="javascript:void(0);" class="btn default" ng-click="exportZip(true, false, false, false, false)">{{'EXPORT_CLIENTS' | translate}}</a>
+                            <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, false, true, false)">{{'EXPORT_CREDIT_NOTES' | translate}}</a>
+                            <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, true, false, false)">{{'EXPORT_ESTIMATIONS' | translate}}</a>
+                            <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, true, false, false, false)">{{'EXPORT_INVOICES' | translate}}</a>
+                            <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, false, false, true)">{{'EXPORT_TRANSPORT_DOCUMENTS' | translate}}</a>
+                        </div>
+                    </div>
+                 
                 </tab>
                 
                 <tab ng-show="!firstRun">
@@ -68,78 +73,70 @@
                         <i class="fa fa-gears"></i> {{'BUSINESS_TAB_OPTIONS' | translate}}
                     </tab-heading>
                     
-                    <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
-                        
-                        <form ng-show="business" class="form-horizontal" role="form">
-                            <div class="form-body">
-
-                                <div class="form-group">
-                                    <label for="priceDisplayInDocsMonolithic" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_PRICE_IN_DOCS_MONOLITHIC' | translate }}</label>
-                                    <div class="col-md-8">
-                                        <div class="checkbox-list">
-                                            <label> <input id="priceDisplayInDocsMonolithic" type="checkbox" ng-model="priceDisplayInDocsMonolithic">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-
-                            </div>
-                        </form>
-
-                        <button ng-show="business" type="button" ng-click="update()" class="btn green save-options button-save">
-                          {{'SAVE_CHANGES' | translate}}
-                        </button>
-                </tab>
-                
-                <tab ng-show="!firstRun">
-                    <tab-heading>
-                        <i class="fa fa-print"></i> {{'BUSINESS_TAB_LAYOUT' | translate}}
-                    </tab-heading>
+                    <h4><strong style="text-transform: uppercase;">{{'TITLE_LAYOUT_SETTINGS' | translate}}</strong></h4>
                     
                     <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
 
-                        <form ng-show="business" class="form-horizontal" role="form">
-                            <div class="form-body">
-                                <div class="form-group">
-                                    <label class="col-md-4 control-label">{{'LAYOUT_TYPE' | translate}}</label>
-                                    <div class="col-md-8">
-                                        <select class="form-control input-xlarge" ng-model="business.settings.defaultLayoutType">
-                                            <option value="DENSE">{{'LAYOUT_TYPE_DENSE' | translate}}</option>
-                                            <option value="TIDY">{{'LAYOUT_TYPE_TIDY' | translate}}</option>
-                                        </select>
-                                    </div>
+                    <form ng-show="business" class="form-horizontal" role="form">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">{{'LAYOUT_TYPE' | translate}}</label>
+                                <div class="col-md-8">
+                                    <select class="form-control input-xlarge" ng-model="business.settings.defaultLayoutType">
+                                        <option value="DENSE">{{'LAYOUT_TYPE_DENSE' | translate}}</option>
+                                        <option value="TIDY">{{'LAYOUT_TYPE_TIDY' | translate}}</option>
+                                    </select>
                                 </div>
-
-                                <div class="form-group">
-                                    <label for="incognitoEnabled" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_INCOGNITO_ENABLED' | translate }}</label>
-                                    <div class="col-md-8">
-                                        <div class="checkbox-list">
-                                            <label> <input id="incognitoEnabled" type="checkbox" ng-model="business.settings.incognitoEnabled">
-                                            </label>
-                                        </div>
-                                    </div>
-                                </div>
-                                
-                                <div class="form-group">
-                                    <label for="footerNote" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_FOOTER_TEXT' | translate }}</label>
-                                    <div class="col-md-8">
-                                       <label for="estimationFooterNote" class="control-label">{{ 'ESTIMATION' | translate }}</label>
-                                       <input id="estimationFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.estimationFooterNote">
-                                       <label for="transportDocumentFooterNote" style="margin-top: 10px;" class="control-label">{{ 'TRANSPORT_DOCUMENT' | translate }}</label>
-                                       <input id="transportDocumentFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.transportDocumentFooterNote">
-                                       <label for="invoiceFooterNote" style="margin-top: 10px;" class="control-label">{{ 'INVOICE' | translate }}</label>
-                                       <input id="invoiceFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.invoiceFooterNote">
-                                       <label for="creditNoteFooterNote" style="margin-top: 10px;" class="control-label">{{ 'CREDIT_NOTE' | translate }}</label>
-                                       <input id="creditNoteFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.creditNoteFooterNote">
-                                    </div>
-                                </div>
-
                             </div>
-                        </form>
 
-                        <button ng-show="business" type="button" ng-click="update(true)" class="btn green save-layout button-save">
-                            {{'SAVE_CHANGES' | translate}}
-                        </button>
+                            <div class="form-group">
+                                <label for="incognitoEnabled" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_INCOGNITO_ENABLED' | translate }}</label>
+                                <div class="col-md-8">
+                                    <div class="checkbox-list">
+                                        <label> <input id="incognitoEnabled" type="checkbox" ng-model="business.settings.incognitoEnabled">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label for="footerNote" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_FOOTER_TEXT' | translate }}</label>
+                                <div class="col-md-8">
+                                   <label for="estimationFooterNote" class="control-label">{{ 'ESTIMATION' | translate }}</label>
+                                   <input id="estimationFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.estimationFooterNote">
+                                   <label for="transportDocumentFooterNote" style="margin-top: 10px;" class="control-label">{{ 'TRANSPORT_DOCUMENT' | translate }}</label>
+                                   <input id="transportDocumentFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.transportDocumentFooterNote">
+                                   <label for="invoiceFooterNote" style="margin-top: 10px;" class="control-label">{{ 'INVOICE' | translate }}</label>
+                                   <input id="invoiceFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.invoiceFooterNote">
+                                   <label for="creditNoteFooterNote" style="margin-top: 10px;" class="control-label">{{ 'CREDIT_NOTE' | translate }}</label>
+                                   <input id="creditNoteFooterNote" maxlength="300" class="form-control input-xlarge" type="text" ng-model="business.settings.creditNoteFooterNote">
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                        
+                    <h4><strong style="text-transform: uppercase;">{{'TITLE_OTHER_SETTINGS' | translate}}</strong></h4>
+                    
+                    <form ng-show="business" class="form-horizontal" role="form">
+                        <div class="form-body">
+
+                            <div class="form-group">
+                                <label for="priceDisplayInDocsMonolithic" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_PRICE_IN_DOCS_MONOLITHIC' | translate }}</label>
+                                <div class="col-md-8">
+                                    <div class="checkbox-list">
+                                        <label> <input id="priceDisplayInDocsMonolithic" type="checkbox" ng-model="$parent.priceDisplayInDocsMonolithic">
+                                        </label>
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+
+                    <button ng-show="business" type="button" ng-click="update()" class="btn green save-options button-save">
+                      {{'SAVE_CHANGES' | translate}}
+                    </button>
                 </tab>
                 
                 <tab ng-show="!firstRun" select="loadSharingPermits()">
