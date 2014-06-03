@@ -41,6 +41,7 @@
     
     <definition name="frontend.prices" extends="frontend.subPageLayout">
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/pricesBody.jsp" />
+       <put-attribute name="cssExtra" value="/WEB-INF/views/tiles/frontend/pricesCss.jsp" />
     </definition>
     
     <definition name="frontend.tos" extends="frontend.subPageLayout">

@@ -34,7 +34,7 @@
                             <ul class="list-unstyled inline">
 	                            <li><a href="${privatePageUrl}">Entra</a></li>
 	                            <li class="sep"><span>|</span></li>
-	                            <li><a href="${registerPageUrl}">Registrati</a></li>
+	                            <li><a href="${registerPageUrl}" class="btn btn-sm green">Registrati</a></li>
 	                        </ul>
                         </sec:authorize>
                         <sec:authorize access="isAuthenticated()">
