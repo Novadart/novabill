@@ -39,7 +39,7 @@
                         </sec:authorize>
                         <sec:authorize access="isAuthenticated()">
 						    <ul class="list-unstyled inline">
-                                <li><a href="${privatePageUrl}" class="btn btn-sm green">I Tuoi Documenti</a></li>
+                                <li><a href="${privatePageUrl}" class="btn btn-sm green"><i class="fa fa-file"></i> Accedi ai tuoi Documenti</a></li>
                                 <li class="sep"><span>|</span></li>
                                 <li>
                                 	<form action="${logoutUrl}" method="post">
