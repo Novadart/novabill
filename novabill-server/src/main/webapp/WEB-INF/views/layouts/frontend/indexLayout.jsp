@@ -2,12 +2,15 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles" %>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib uri="http://htmlcompressor.googlecode.com/taglib/compressor" prefix="compress" %>
 
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
 <spring:url value="/private/feedback" var="feedbackUrl" />
 <spring:url value="/private/" var="privateUrl" />
 <spring:url value="/register" var="registerPageUrl"/>
 <spring:url var="pricesPageUrl" value="/prices" />
+
+<compress:html enabled="${mvn.tiles.minify.html}" compressJavaScript="${mvn.tiles.minify.html}" compressCss="${mvn.tiles.minify.html}"> 
 
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8"> <![endif]-->
@@ -309,3 +312,5 @@
 </body>
 <!-- END BODY -->
 </html>
+
+</compress:html>
