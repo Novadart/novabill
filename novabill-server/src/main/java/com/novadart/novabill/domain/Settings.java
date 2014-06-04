@@ -47,8 +47,8 @@ public class Settings implements Serializable {
     
     public void addNonFreeAccountExpirationTime(TimeUnit timeUnit, Long duration){
     	Long now = System.currentTimeMillis();
-    	Long currentExpirationTime = (nonFreeAccountExpirationTime == null || nonFreeAccountExpirationTime < now)? now: nonFreeAccountExpirationTime;
-    	nonFreeAccountExpirationTime = currentExpirationTime + TimeUnit.MILLISECONDS.convert(duration, timeUnit);
+    	Long startTime = (nonFreeAccountExpirationTime == null || nonFreeAccountExpirationTime < now)? now: nonFreeAccountExpirationTime;
+    	nonFreeAccountExpirationTime = startTime + TimeUnit.MILLISECONDS.convert(duration, timeUnit);
     }
     
 	public LayoutType getDefaultLayoutType() {

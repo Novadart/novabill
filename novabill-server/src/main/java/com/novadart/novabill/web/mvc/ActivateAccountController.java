@@ -62,7 +62,7 @@ public class ActivateAccountController {
 			return "frontend.activate";
  		}
 		Principal principal = new Principal(registration);
-		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_PREMIUM);
+		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
 		principal.persist();
 		registration.remove();
 		status.setComplete();
