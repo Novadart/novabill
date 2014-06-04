@@ -18,14 +18,6 @@ public class FrontendController {
 		return "frontend.index";
 	}
 
-	@RequestMapping(value = Urls.PUBLIC_SECURITY, method = RequestMethod.GET)
-	public String security(Model model){
-		model.addAttribute("activePage", PAGES.SECURITY);
-		model.addAttribute("pageName", "Sicurezza");
-		return "frontend.security";
-	}
-
-	
 	@RequestMapping(value = Urls.PUBLIC_ABOUT, method = RequestMethod.GET)
 	public String about(Model model){
 		model.addAttribute("activePage", PAGES.ABOUT);

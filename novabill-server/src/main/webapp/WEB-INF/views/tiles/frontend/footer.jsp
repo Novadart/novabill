@@ -1,5 +1,8 @@
+<%@page import="org.springframework.security.core.context.SecurityContextHolder"%>
+<%@page import="com.novadart.novabill.domain.security.Principal"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
 
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
 <spring:url value="/tos" var="tosUrl" />
@@ -151,3 +154,47 @@
     </div>
 </div>
 <!-- END COPYRIGHT -->
+
+<sec:authorize access="isAuthenticated()">
+
+<%
+Principal principal = (Principal)SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+%>
+
+<script>
+// Include the UserVoice JavaScript SDK (only needed once on a page)
+UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/qijZFrEigj9IF6UL4zLtNw.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+
+//
+// UserVoice Javascript SDK developer documentation:
+// https://www.uservoice.com/o/javascript-sdk
+//
+
+// Set colors
+UserVoice.push(['set', {
+  accent_color: '#448dd6',
+  trigger_color: 'white',
+  trigger_background_color: 'rgba(46, 49, 51, 0.6)'
+}]);
+
+// Identify the user and pass traits
+// To enable, replace sample data with actual user traits and uncomment the line
+UserVoice.push(['identify', {
+  email:      '<%=principal.getUsername()%>', // User’s email address
+  created_at: <%=principal.getCreationTime()%>, // Unix timestamp for the date the user signed up
+  id:         <%=principal.getId()%>, // Optional: Unique id of the user (if set, this should not change)
+  account: {
+    plan:         '<%=principal.getGrantedRoles()%>' // Plan name for the account
+  }
+}]);
+
+// Add default trigger to the bottom-right corner of the window:
+UserVoice.push(['addTrigger', { mode: 'contact', trigger_position: 'bottom-left' }]);
+
+// Or, use your own custom trigger:
+//UserVoice.push(['addTrigger', '#id', { mode: 'contact' }]);
+
+// Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
+UserVoice.push(['autoprompt', {}]);
+</script>
+</sec:authorize>
