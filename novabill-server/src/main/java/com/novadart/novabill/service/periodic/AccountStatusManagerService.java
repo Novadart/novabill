@@ -21,8 +21,6 @@ import com.novadart.novabill.domain.security.RoleType;
 @MailMixin
 public class AccountStatusManagerService implements PeriodicService {
 	
-	public static final int TRIAL_PERIOD_IN_DAYS = 90;
-	
 	@PersistenceContext
 	private EntityManager entityManager; 
 	
