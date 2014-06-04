@@ -76,8 +76,10 @@
                 <ul class="nav navbar-nav">
                     <li class="<%=PAGES.HOME.equals(activePage) ? "active" : "" %>"><a href="${indexPageUrl}">Home</a></li>
                     <li class="<%=PAGES.PRICES.equals(activePage) ? "active" : "" %>"><a href="${pricesPageUrl}">Quanto costa?</a></li>
-                    <li class="<%=PAGES.SECURITY.equals(activePage) ? "active" : "" %>"><a href="${securityPageUrl}">Sicurezza</a></li>
                     <li class="<%=PAGES.ABOUT.equals(activePage) ? "active" : "" %>"><a href="${aboutPageUrl}">Chi Siamo</a></li>
+                    <sec:authorize access="isAuthenticated()">
+                    <li><a href="http://novabill.uservoice.com/">Supporto</a></li>
+                    </sec:authorize>
                 </ul>                         
             </div>
             <!-- BEGIN TOP NAVIGATION MENU -->
