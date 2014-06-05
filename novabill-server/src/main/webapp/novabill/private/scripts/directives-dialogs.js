@@ -635,31 +635,6 @@ angular.module('novabill.directives.dialogs',
 }])
 
 
-
-/*
- * Premium Activation Dialog
- */
-.factory('nPremiumUpgradeDialog', ['nConstants', '$modal', function (nConstants, $modal){
-
-	return {
-		open : function( address ) {
-
-			return $modal.open({
-
-				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-premium-upgrade-dialog.html'),
-
-				controller: ['$scope', '$modalInstance',
-				             function($scope, $modalInstance){
-					
-					
-
-				}]
-			});
-		}
-	};
-}])
-
-
 /*
  * Exposing few dialogs used by GWT
  */

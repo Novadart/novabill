@@ -8,8 +8,10 @@
 				<li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
 				<li><span>{{'COMMODITIES' | translate}}</span></li>
 			</ul>
+			
+			<n-premium-alert></n-premium-alert>
 
-			<button type="button" class="btn green new-commodity" ng-click="newCommodity()">{{'NEW_COMMODITY' | translate}}</button>
+			<button n-premium-check type="button" class="btn green new-commodity" ng-click="newCommodity()">{{'NEW_COMMODITY' | translate}}</button>
 
 			<div class="commodities-filter input-icon left">
 				<i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"

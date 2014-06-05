@@ -8,7 +8,9 @@
 				<li><span>{{'PRICE_LISTS' | translate}}</span></li>
 			</ul>
 			
-			<button type="button" class="btn green new-price-list" ng-enabled="PREMIUM" ng-click="newPriceList()">{{'NEW_PRICE_LIST' | translate}}</button>
+			<n-premium-alert></n-premium-alert>
+			
+			<button n-premium-check type="button" class="btn green new-price-list" ng-enabled="PREMIUM" ng-click="newPriceList()">{{'NEW_PRICE_LIST' | translate}}</button>
 			
 			<div class="price-list-filter input-icon left">
                 <i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
