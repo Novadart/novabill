@@ -13,7 +13,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.Restrictions;
-import com.novadart.novabill.authorization.NumberOfCommoditiesQuotaReachedChecker;
+import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Price;
@@ -28,8 +28,8 @@ import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -80,7 +80,7 @@ public class CommodityService {
 	@PreAuthorize("#commodityDTO?.business?.id == principal.business.id and " +
 				  "#commodityDTO?.id == null" )
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
-	@Restrictions(checkers = {NumberOfCommoditiesQuotaReachedChecker.class})
+	@Restrictions(checkers = {PremiumChecker.class})
 	public Long add(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException {
 		Commodity commodity = new Commodity();
 		CommodityDTOTransformer.copyFromDTO(commodity, commodityDTO);

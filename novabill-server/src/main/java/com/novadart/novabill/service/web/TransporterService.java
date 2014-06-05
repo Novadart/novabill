@@ -8,6 +8,8 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.domain.dto.transformer.TransporterDTOTransformer;
@@ -49,6 +51,7 @@ public class TransporterService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#transporterDTO?.business?.id == principal.business.id and " +
 	  	  	  	  "#transporterDTO != null and #transporterDTO.id == null")
+	@Restrictions(checkers = {PremiumChecker.class})
 	public Long add(TransporterDTO transporterDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException {
 		Transporter transporter = new Transporter();
 		TransporterDTOTransformer.copyFromDTO(transporter, transporterDTO);

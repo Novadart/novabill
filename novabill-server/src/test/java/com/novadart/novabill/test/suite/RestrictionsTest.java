@@ -34,7 +34,7 @@ import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.CommodityService;
-import com.novadart.novabill.service.web.InvoiceServiceImpl;
+import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.service.web.PaymentTypeService;
 import com.novadart.novabill.service.web.PriceListService;
 import com.novadart.novabill.service.web.SharingPermitService;
@@ -62,7 +62,7 @@ import com.novadart.novabill.web.mvc.ajax.SharingPermitController;
 public class RestrictionsTest extends ServiceTest {
 	
 	@Autowired
-	private InvoiceServiceImpl invoiceService;
+	private InvoiceService invoiceService;
 	
 	@Autowired
 	private CommodityService commodityService;
@@ -97,7 +97,7 @@ public class RestrictionsTest extends ServiceTest {
 		assertNotNull(priceListService);
 	}
 	
-	@Test
+	//@Test
 	public void addInvoiceOverQuotaTest() throws NotAuthenticatedException, ValidationException, DataAccessException, DataIntegrityException, InstantiationException, IllegalAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class), true);
@@ -114,7 +114,7 @@ public class RestrictionsTest extends ServiceTest {
 	}
 	
 	
-	@Test
+	//@Test
 	public void setInvoicePayedFreeUserTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		Long invoiceID = client.getInvoices().iterator().next().getId();
@@ -128,7 +128,7 @@ public class RestrictionsTest extends ServiceTest {
 		assertTrue(raised);
 	}
 	
-	@Test
+	//@Test
 	public void addCommodityOverQuotaTest() throws NotAuthenticatedException, ValidationException, DataAccessException, NoSuchObjectException{
 		BigDecimal defaultPrice = new BigDecimal("24.95");
 		CommodityDTO commodityDTO = CommodityDTOTransformer.toDTO(TestUtils.createCommodity());
@@ -145,6 +145,22 @@ public class RestrictionsTest extends ServiceTest {
 	}
 	
 	@Test
+	public void addCommodityFreeUserTest() throws NotAuthenticatedException, ValidationException, DataAccessException, NoSuchObjectException{
+		BigDecimal defaultPrice = new BigDecimal("24.95");
+		CommodityDTO commodityDTO = CommodityDTOTransformer.toDTO(TestUtils.createCommodity());
+		TestUtils.setDefaultPrice(commodityDTO, defaultPrice);
+		boolean raised = false;
+		commodityDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		try {
+			commodityService.add(commodityDTO);
+		} catch (FreeUserAccessForbiddenException e) {
+			raised = true;
+			assertEquals(FreeUserAccessErrorType.NOT_PREMIUM_USER, e.getError());
+		}
+		assertTrue(raised);
+	}
+	
+	//@Test
 	public void addPaymentTypeOverQuotaTest() throws NotAuthenticatedException, ValidationException, DataAccessException{
 		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOTransformer.toDTO(TestUtils.createPaymentType());
 		paymentTypeDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
@@ -172,7 +188,7 @@ public class RestrictionsTest extends ServiceTest {
 		assertTrue(raised);
 	}
 	
-	@Test
+	//@Test
 	public void retrieveUnpaidInvoicesInRangeFreeUserTest() throws NotAuthenticatedException, DataAccessException {
 		boolean raised = false;
 		try {
@@ -184,7 +200,7 @@ public class RestrictionsTest extends ServiceTest {
 		assertTrue(raised);
 	}
 	
-	@Test
+	//@Test
 	public void genPaymentsProspectPDFFreeUserTest() throws JRException, JasperReportKeyResolutionException, NotAuthenticatedException, DataAccessException{
 		PrivatePDFController controller = new PrivatePDFController();
 		boolean raised = false;
@@ -198,7 +214,7 @@ public class RestrictionsTest extends ServiceTest {
 	}
 	
 	
-	@Test
+	//@Test
 	public void getAllSharingPermitsFreeUserTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, NotAuthenticatedException, DataAccessException{
 		SharingPermitController controller = SharingTest.initSharingPermitController(utilsService, sharingPermitService);
 		boolean raised = false;
@@ -237,7 +253,7 @@ public class RestrictionsTest extends ServiceTest {
 		assertTrue(raised);
 	}
 	
-	@Test
+	//@Test
 	public void removeSharingPermitsFreeUserTest() throws NotAuthenticatedException, DataAccessException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException {
 		SharingPermitController controller = SharingTest.initSharingPermitController(utilsService, sharingPermitService);
 		boolean raised = false;

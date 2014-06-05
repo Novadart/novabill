@@ -56,7 +56,6 @@ public class SharingPermitController {
 	@RequestMapping(method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	@Restrictions(checkers = {PremiumChecker.class})
 	public List<SharingPermitDTO> getAll(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return sharingPermitService.getAll(businessID);
 	}
@@ -94,7 +93,6 @@ public class SharingPermitController {
 	@RequestMapping(value = "/{id}", method = RequestMethod.DELETE)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.NO_CONTENT)
-	@Restrictions(checkers = {PremiumChecker.class})
 	public void remove(@PathVariable Long businessID, @PathVariable Long id) throws  NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		sharingPermitService.remove(businessID, id);
 	}

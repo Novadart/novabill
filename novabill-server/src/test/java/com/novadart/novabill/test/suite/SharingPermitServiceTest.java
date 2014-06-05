@@ -34,6 +34,7 @@ import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 
@@ -63,7 +64,7 @@ public class SharingPermitServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws ValidationException, JsonParseException, JsonMappingException, IOException{
+	public void addAuthorizedTest() throws ValidationException, JsonParseException, JsonMappingException, IOException, FreeUserAccessForbiddenException, DataAccessException, NotAuthenticatedException{
 		SharingPermitDTO sharingPermitDTO = SharingPermitDTOTransformer.toDTO(TestUtils.createSharingPermit());
 		sharingPermitDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
@@ -80,13 +81,13 @@ public class SharingPermitServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = AccessDeniedException.class)
-	public void addNulltest() throws ValidationException{
+	public void addNulltest() throws ValidationException, FreeUserAccessForbiddenException, DataAccessException, NotAuthenticatedException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		sharingPermitService.add(businessID, null);
 	}
 	
 	@Test(expected = AccessDeniedException.class)
-	public void addIDNotNullTest() throws ValidationException{
+	public void addIDNotNullTest() throws ValidationException, FreeUserAccessForbiddenException, DataAccessException, NotAuthenticatedException{
 		SharingPermitDTO sharingPermitDTO = SharingPermitDTOTransformer.toDTO(TestUtils.createSharingPermit());
 		sharingPermitDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		sharingPermitDTO.setId(1l);
@@ -95,7 +96,7 @@ public class SharingPermitServiceTest extends ServiceTest {
 	}
 	
 	@Test(expected = AccessDeniedException.class)
-	public void addUnauthorizedTest() throws ValidationException{
+	public void addUnauthorizedTest() throws ValidationException, FreeUserAccessForbiddenException, DataAccessException, NotAuthenticatedException{
 		SharingPermitDTO sharingPermitDTO = SharingPermitDTOTransformer.toDTO(TestUtils.createSharingPermit());
 		sharingPermitDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		Long businessID = authenticatedPrincipal.getBusiness().getId();

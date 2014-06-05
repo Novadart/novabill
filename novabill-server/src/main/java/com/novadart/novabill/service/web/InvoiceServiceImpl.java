@@ -18,9 +18,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.MailMixin;
-import com.novadart.novabill.annotation.Restrictions;
-import com.novadart.novabill.authorization.NumberOfInvoicesPerYearQuotaReachedChecker;
-import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
@@ -132,7 +129,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 
 	@Override
 	@Transactional(readOnly = false, rollbackFor = {Exception.class})
-	@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
+	//@Restrictions(checkers = {NumberOfInvoicesPerYearQuotaReachedChecker.class})
 	@PreAuthorize("#invoiceDTO?.business?.id == principal.business.id and " +
 		  	  	 "T(com.novadart.novabill.domain.Client).findClient(#invoiceDTO?.client?.id)?.business?.id == principal.business.id and " +
 		  	  	 "#invoiceDTO != null and #invoiceDTO.id == null")
@@ -197,7 +194,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	
 	@Override
 	@Transactional(readOnly = false)
-	@Restrictions(checkers = {PremiumChecker.class})
+	//@Restrictions(checkers = {PremiumChecker.class})
 	@PreAuthorize("principal.business.id == #businessID and " +
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == #businessID and " +
 	  	  	  	  "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.client?.id == #clientID")
@@ -206,7 +203,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 	
 	@Override
-	@Restrictions(checkers = {PremiumChecker.class})
+	//@Restrictions(checkers = {PremiumChecker.class})
 	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		List<Invoice> invoices = business.getAllUnpaidInvoicesInDateRange(filteringDateType, startDate, endDate);

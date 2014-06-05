@@ -38,6 +38,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.service.SharingService;
 import com.novadart.novabill.service.export.data.DataExporter;
@@ -86,7 +87,7 @@ public class SharingController {
 		Business business = Business.findBusinessByVatIDIfSharingPermit(normalizeAndGetVatID(sharingRequest), sharingRequest.getEmail());
 		if(business == null){
 			Principal principal = Principal.findByUsername(sharingRequest.getEmail());
-			if(principal == null || !principal.getBusiness().getVatID().equals(sharingRequest.getVatID()))
+			if(principal == null || !principal.getBusiness().getVatID().equals(sharingRequest.getVatID()) || principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM))
 				return "redirect:"+Urls.PUBLIC_SHARE_THANKS;
 			else
 				business = principal.getBusiness();
