@@ -160,6 +160,8 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		PAYMENTS_STATUS_START_DATE : 'Da',
 		POSTCODE : 'C.A.P.',
 		POSTCODE_PLACEHOLDER : 'esempio: 35010',
+		PREMIUM_ALERT : 'Questa funzionalità è disponibile solo agli utenti <b>Premium</b>',
+		PREMIUM_BUTTON : 'Acquista',
 		PRICE : 'Prezzo',
 		PRICE_DISCOUNT_PERCENT : 'Sconto %',
 		PRICE_DISCOUNT_FIXED : 'Sconto €',

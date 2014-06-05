@@ -35,7 +35,11 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 					$scope.loading = false;
 				});
 			},
-			onFailure : function(){}
+			onFailure : function(){
+				$scope.$apply(function(){
+					$scope.loading = false;
+				});
+			}
 		});
 	}
 	

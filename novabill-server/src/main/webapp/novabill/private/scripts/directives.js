@@ -654,6 +654,48 @@ angular.module('novabill.directives',
 
 
 /*
+ * DIRECTIVES FOR PREMIUM CHECKS
+ */
+
+.directive('nPremiumAlert', ['nConstants', function(nConstants) {
+	
+	return {
+		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-premium-alert.html'),
+		scope: { },
+		controller : ['$scope', 'nConstants', '$sce', '$filter', '$window',
+		              function($scope, nConstants, $sce, $filter, $window){
+			$scope.premium = nConstants.conf.premium;
+			$scope.message = $sce.trustAsHtml($filter('translate')('PREMIUM_ALERT'));
+			
+			$scope.goToPremium = function(){
+				$window.location.href = nConstants.url.premiumUrl;
+			};
+		}],
+		restrict: 'E',
+		replace: true
+	};
+	
+}])
+
+
+
+.directive('nPremiumCheck', ['nConstants', function(nConstants) {
+	
+	return {
+		scope: { },
+		link : function(scope, element, attrs){
+			if(!nConstants.conf.premium){
+				element.attr('disabled', 'disabled');
+			};
+		},
+		restrict: 'A'
+	};
+	
+}])
+
+
+
+/*
  * Log Record Widget
  */
 .directive('nLogRecord', ['nConstants', '$sanitize', function factory(nConstants, $sanitize){

@@ -48,6 +48,7 @@ angular.module('novabill.constants', [])
 			pdfPrintPageUrl : basePath + 'private/print-pdf?pdfUrl={pdfUrl}',
 			pdfPaymentsProspectUrl : basePath + 'private/pdf/paymentspros?filteringDateType={filteringDateType}&startDate={startDate}&endDate={endDate}',
 			pdfPrintUrl : basePath + 'private/pdf/{document}/{id}?print=true',
+			premiumUrl : basePath + 'private/premium',
 			priceListsBaseUrl : basePath + 'private/price-lists/',
 			settingsBaseUrl : basePath + 'private/settings/',
 			transportDocumentsBaseUrl : basePath + 'private/transport-documents/'

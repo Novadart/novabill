@@ -1,0 +1,5 @@
+<div ng-if="!premium" class="alert alert-warning text-center">
+    <div style="font-size: 14px;" ng-bind-html="message"></div>
+    <br>
+    <button class="btn btn-primary" ng-click="goToPremium()">{{'PREMIUM_BUTTON' | translate}}</button>
+</div>

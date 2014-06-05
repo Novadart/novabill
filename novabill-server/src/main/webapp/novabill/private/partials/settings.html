@@ -82,7 +82,10 @@
                             <div class="form-group">
                                 <label class="col-md-4 control-label">{{'LAYOUT_TYPE' | translate}}</label>
                                 <div class="col-md-8">
-                                    <select class="form-control input-xlarge" ng-model="business.settings.defaultLayoutType">
+                                
+                                    <n-premium-alert></n-premium-alert>
+                                    
+                                    <select class="form-control input-xlarge" ng-model="business.settings.defaultLayoutType" n-premium-check>
                                         <option value="DENSE">{{'LAYOUT_TYPE_DENSE' | translate}}</option>
                                         <option value="TIDY">{{'LAYOUT_TYPE_TIDY' | translate}}</option>
                                     </select>
@@ -150,7 +153,10 @@
                             <p>{{'SHARING_PERMIT_INFO2' | translate}}</p>
                             <button type="button" class="btn default try-share" ng-click="tryShare()">{{'TRY_SHARE' | translate}}</button>
                         </div>
-                        <button type="button" class="btn green new-share" ng-click="newShare()">{{'NEW_SHARE' | translate}}</button>
+                        
+                        <n-premium-alert></n-premium-alert>
+                        
+                        <button n-premium-check type="button" class="btn green new-share" ng-click="newShare()">{{'NEW_SHARE' | translate}}</button>
                         <img class="spinner" ng-show="sharingPermits==null" src="../../private_assets/img/ajax-loading.gif">
                         <p class="no-data-message text-center text-info" ng-show="sharingPermits && sharingPermits.length===0">{{'NO_DATA' | translate}}</p>
                         <n-sharing-permit sharing-permit="sp" bottom-up-menu="!$first && $last" ng-repeat="sp in sharingPermits"></n-sharing-permit>
