@@ -64,6 +64,7 @@ mvn.spring.profiles.active=dev
 mvn.devMode.enabled=true
 mvn.tiles.javascript.definition=expandedJS
 mvn.tiles.css.definition=expandedCSS
+mvn.tiles.minify.html=false
 mvn.invoice.pdf.url=http://localhost:8080/novabill-server/pdf/invoices/%d?token=%s
 
 #

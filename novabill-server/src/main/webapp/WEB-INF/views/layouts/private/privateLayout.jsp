@@ -9,6 +9,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib uri="http://htmlcompressor.googlecode.com/taglib/compressor" prefix="compress" %>
 
 <spring:url var="logoutUrl" value="/resources/logout" />
 
@@ -40,6 +41,8 @@
 	Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	Business business = principal.getBusiness();
 %>
+
+<compress:html enabled="${mvn.tiles.minify.html}" compressJavaScript="${mvn.tiles.minify.html}" compressCss="${mvn.tiles.minify.html}"> 
 
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
@@ -351,3 +354,5 @@ window.onerror = function(message, source, line, column) {
 </body>
 <!-- END BODY -->
 </html>
+
+</compress:html>

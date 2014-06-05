@@ -1,8 +1,11 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
+<%@ taglib uri="http://htmlcompressor.googlecode.com/taglib/compressor" prefix="compress" %>
 
 <spring:url var="privateAssetsUrl" value="/private_assets" />
 <spring:url var="frontendAssetsUrl" value="/frontend_assets" />
+
+<compress:html enabled="${mvn.tiles.minify.html}" compressJavaScript="${mvn.tiles.minify.html}" compressCss="${mvn.tiles.minify.html}">
 
 <!DOCTYPE html>
 <html>
@@ -51,3 +54,5 @@ iframe#printArea {
 
 </body>
 </html>
+
+</compress:html>
