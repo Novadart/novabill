@@ -31,6 +31,7 @@ import com.novadart.novabill.domain.dto.transformer.PaymentTypeDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.PriceListDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
+import com.novadart.novabill.service.SharingService;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.CommodityService;
@@ -82,6 +83,9 @@ public class RestrictionsTest extends ServiceTest {
 	@Autowired
 	private BusinessService businessService;
 	
+	@Autowired
+	private SharingService sharingService;
+	
 	@Override
 	@Before
 	public void authenticate() {
@@ -95,6 +99,7 @@ public class RestrictionsTest extends ServiceTest {
 		assertNotNull(commodityService);
 		assertNotNull(paymentTypeService);
 		assertNotNull(priceListService);
+		assertNotNull(sharingService);
 	}
 	
 	//@Test
@@ -278,4 +283,18 @@ public class RestrictionsTest extends ServiceTest {
 		assertTrue(raised);
 	}
 
+	@Test
+	public void enableSharingTemporarilyAndNotifyParticipantTest() throws DataAccessException, FreeUserAccessForbiddenException, NotAuthenticatedException{
+		Long id = authenticatedPrincipal.getBusiness().getId();
+		logout();
+		boolean raised = false;
+		try {
+			sharingService.enableSharingTemporarilyAndNotifyParticipant(Business.findBusiness(id), null, null, null);
+		} catch (FreeUserAccessForbiddenException e) {
+			raised = true;
+			assertEquals(FreeUserAccessErrorType.NOT_PREMIUM_USER, e.getError());
+		}
+		assertTrue(raised);
+	}
+	
 }

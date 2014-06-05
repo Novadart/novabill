@@ -13,8 +13,13 @@ import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import com.novadart.novabill.annotation.MailMixin;
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.SharingToken;
+import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
 
 @Service
@@ -32,7 +37,9 @@ public class SharingService {
 	@Autowired
 	private TokenGenerator tokenGenerator;
 	
-	public void enableSharingTemporarilyAndNotifyParticipant(Business business, String email, MessageSource messageSource, Locale locale){
+	@Restrictions(checkers = {PremiumChecker.class}, businessParamName = "business")
+	public void enableSharingTemporarilyAndNotifyParticipant(Business business, String email, MessageSource messageSource, Locale locale)
+			throws DataAccessException, FreeUserAccessForbiddenException, NotAuthenticatedException{
 		try {
 			String token = tokenGenerator.generateToken();
 			new SharingToken(email, business.getId(), token).persist();

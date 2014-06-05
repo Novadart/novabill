@@ -9,5 +9,7 @@ import com.novadart.novabill.authorization.RestricionChecker;
 public @interface Restrictions {
 	
 	Class<? extends RestricionChecker>[] checkers();
+	
+	String businessParamName() default "[unassigned]";
 
 }

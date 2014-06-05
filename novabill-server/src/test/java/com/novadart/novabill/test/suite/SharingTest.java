@@ -156,7 +156,7 @@ public class SharingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void tempSharingTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+	public void tempSharingTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, DataAccessException, FreeUserAccessForbiddenException, NotAuthenticatedException{
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		SharingPermit sharingPermit = TestUtils.createSharingPermit();
 		business.getSharingPermits().add(sharingPermit);
@@ -176,7 +176,7 @@ public class SharingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void tempSharingVatIDNoPrefixTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+	public void tempSharingVatIDNoPrefixTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, DataAccessException, FreeUserAccessForbiddenException, NotAuthenticatedException{
 		Business business = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId());
 		SharingPermit sharingPermit = TestUtils.createSharingPermit();
 		business.getSharingPermits().add(sharingPermit);
@@ -196,7 +196,7 @@ public class SharingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void tempSharingForNovabillUserTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+	public void tempSharingForNovabillUserTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, DataAccessException, FreeUserAccessForbiddenException, NotAuthenticatedException{
 		SharingController sharingController = initSharingController();
 		SharingRequest request = new SharingRequest();
 		request.setEmail(authenticatedPrincipal.getUsername());
@@ -211,7 +211,7 @@ public class SharingTest extends ServiceTest {
 	}
 	
 	@Test
-	public void tempSharingForNovabillInvalidVatIDUserTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+	public void tempSharingForNovabillInvalidVatIDUserTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, DataAccessException, FreeUserAccessForbiddenException, NotAuthenticatedException{
 		SharingController sharingController = initSharingController();
 		SharingRequest request = new SharingRequest();
 		request.setEmail(authenticatedPrincipal.getUsername());

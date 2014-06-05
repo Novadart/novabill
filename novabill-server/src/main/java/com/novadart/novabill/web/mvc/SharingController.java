@@ -38,12 +38,14 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.service.SharingService;
 import com.novadart.novabill.service.export.data.DataExporter;
 import com.novadart.novabill.service.export.data.ExportDataBundle;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.web.mvc.command.SharingRequest;
 
 @Controller
@@ -78,7 +80,7 @@ public class SharingController {
 	
 	@RequestMapping(value = Urls.PUBLIC_SHARE_REQUEST, method = RequestMethod.POST)
 	public String processRequestSubmit(@ModelAttribute("sharingRequest") SharingRequest sharingRequest, BindingResult result, 
-			SessionStatus status, Locale locale, Model model){
+			SessionStatus status, Locale locale, Model model) throws DataAccessException, FreeUserAccessForbiddenException, NotAuthenticatedException{
 		validator.validate(sharingRequest, result);
 		if(result.hasErrors()) {
 			model.addAttribute("pageName", "Accesso alla Condivisione");
@@ -87,7 +89,7 @@ public class SharingController {
 		Business business = Business.findBusinessByVatIDIfSharingPermit(normalizeAndGetVatID(sharingRequest), sharingRequest.getEmail());
 		if(business == null){
 			Principal principal = Principal.findByUsername(sharingRequest.getEmail());
-			if(principal == null || !principal.getBusiness().getVatID().equals(sharingRequest.getVatID()) || principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM))
+			if(principal == null || !principal.getBusiness().getVatID().equals(sharingRequest.getVatID()))
 				return "redirect:"+Urls.PUBLIC_SHARE_THANKS;
 			else
 				business = principal.getBusiness();
