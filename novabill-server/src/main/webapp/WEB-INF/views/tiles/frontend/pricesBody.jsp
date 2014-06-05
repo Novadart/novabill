@@ -46,7 +46,6 @@
                             <li>Backup regolare dei dati</li>
                             <li>Modello di documento non modificabile</li>
                             <li>Statistiche di base</li>
-                            <li>Pubblicità non intrusiva</li>
                         </ul>
                         <div class="pricing-footer">
                             <a href="${registerPageUrl}" class="btn green">Registrati</a>  
@@ -72,7 +71,6 @@
                             <li>Backup regolare dei dati</li>
                             <li><strong>Più modelli di documento selezionabili</strong></li>
                             <li><strong>Statistiche avanzate</strong></li>
-                            <li><strong>Nessuna pubblicità</strong></li>
                             <li><strong>Invio automatico della fattura al cliente via e-mail</strong></li>
                             <li><strong>Gestione articoli</strong></li>
                             <li><strong>Gestione listini</strong></li>

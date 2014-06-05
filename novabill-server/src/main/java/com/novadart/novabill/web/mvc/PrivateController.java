@@ -29,7 +29,7 @@ public class PrivateController {
 	private final ObjectMapper mapper = new ObjectMapper();
 	
 	public static enum PAGES {
-		DASHBOARD, CLIENTS, COMMODITIES, PRICE_LISTS, PAYMENTS, SETTINGS, INVOICES, ESTIMATIONS, TRANSPORT_DOCUMENTS, CREDIT_NOTES
+		DASHBOARD, CLIENTS, COMMODITIES, PRICE_LISTS, PAYMENTS, SETTINGS, INVOICES, ESTIMATIONS, TRANSPORT_DOCUMENTS, CREDIT_NOTES, PREMIUM
 	}
 
 
@@ -121,6 +121,12 @@ public class PrivateController {
 	@RequestMapping(value = Urls.PRIVATE_FIRST_RUN, method = RequestMethod.GET)
 	public ModelAndView firstRun(){
 		ModelAndView mav = new ModelAndView("private.firstrun");
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_PREMIUM, method = RequestMethod.GET)
+	public ModelAndView premium(){
+		ModelAndView mav = new ModelAndView("private.premium");
 		return mav;
 	}
 

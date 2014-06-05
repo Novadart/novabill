@@ -32,6 +32,8 @@
 <spring:url var="settingsUrl" value="/private/settings/" />
 <spring:url var="clientUiErrorUrl" value="/private/ajax/clientuierror" />
 
+<spring:url var="premiumUrl" value="/private/premium" />
+
 <spring:url var="clientsBaseUrl" value="<%=Urls.PRIVATE_CLIENTS%>" />
 
 <spring:url var="gwtUrl" value="/rpc/rpc.nocache.js" />
@@ -135,6 +137,11 @@ window.onerror = function(message, source, line, column) {
 			<!-- END RESPONSIVE MENU TOGGLER -->
 			<!-- BEGIN TOP NAVIGATION MENU -->
 			<ul class="nav navbar-nav pull-right">
+			     
+			    <sec:authorize ifAnyGranted="ROLE_BUSINESS_FREE">
+                    <li><a style="color: white; position: relative; bottom: 5px;" href="${premiumUrl}">PREMIUM</a></li>
+			    </sec:authorize>
+			
 				<!-- BEGIN USER LOGIN DROPDOWN -->
 				<li class="dropdown user"><a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
 					data-close-others="true"> <span class="btn btn-sm dark"><%=business != null ? business.getName() : "Menu"%></span> <i
@@ -157,6 +164,8 @@ window.onerror = function(message, source, line, column) {
 					</ul></li>
 				<!-- END USER LOGIN DROPDOWN -->
 			</ul>
+			
+			
 			<!-- END TOP NAVIGATION MENU -->
 		</div>
 		<!-- END TOP NAVIGATION BAR -->

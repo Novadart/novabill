@@ -668,7 +668,7 @@ angular.module('novabill.directives',
 			$scope.message = $sce.trustAsHtml($filter('translate')('PREMIUM_ALERT'));
 			
 			$scope.goToPremium = function(){
-				$window.location.href = nConstants.url.premiumUrl;
+				$window.location.href = nConstants.conf.premiumUrl;
 			};
 		}],
 		restrict: 'E',
