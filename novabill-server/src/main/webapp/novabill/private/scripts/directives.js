@@ -653,6 +653,33 @@ angular.module('novabill.directives',
 })
 
 
+.directive('nEmailKeywordChooser', ['nConstants', function(nConstants) {
+	
+    return {
+    	templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-email-keyword-chooser.html'),
+		scope: { 
+			model : '=',
+		},
+		controller : ['$scope', function($scope){
+			
+			$scope.keywords = {
+				'NomeCliente' : 'EMAIL_KEYWORD_CLIENT_NAME',
+				'DataFattura' : 'EMAIL_KEYWORD_INVOICE_DATE',
+				'NumeroFattura' : 'EMAIL_KEYWORD_INVOICE_NUMBER',
+				'TotaleFattura' : 'EMAIL_KEYWORD_INVOICE_TOTAL'
+			};
+			
+			$scope.click = function(key){
+				$scope.model = $scope.model ? $scope.model+("$"+key) : ("$"+key);
+			};
+			
+		}],
+		restrict: 'E',
+		replace: true
+    };
+}])
+
+
 /*
  * DIRECTIVES FOR PREMIUM CHECKS
  */

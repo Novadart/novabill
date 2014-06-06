@@ -17,7 +17,7 @@
 	<div class="row">
 		<div class="col-md-12">
 		    <tabset class="tabbable-custom">
-			    <tab>
+			    <tab select="onTabChange('business')" active="activeTab.business">
                     <tab-heading>
 				        <i class="fa fa-building"></i> {{'BUSINESS_TAB_BUSINESS' | translate}}
 			        </tab-heading>
@@ -43,7 +43,7 @@
                         </div>
                 </tab>
                 
-                <tab ng-show="!firstRun">
+                <tab ng-show="!firstRun" select="onTabChange('profile')" active="activeTab.profile">
                     <tab-heading>
                         <i class="fa fa-user"></i> {{'BUSINESS_TAB_PROFILE' | translate}}
                     </tab-heading>
@@ -68,11 +68,12 @@
                  
                 </tab>
                 
-                <tab ng-show="!firstRun">
+                <tab ng-show="!firstRun" select="onTabChange('options')" active="activeTab.options">
                     <tab-heading>
                         <i class="fa fa-gears"></i> {{'BUSINESS_TAB_OPTIONS' | translate}}
                     </tab-heading>
                     
+                    <!-- ISLAND 1 -->
                     <h4><strong style="text-transform: uppercase;">{{'TITLE_LAYOUT_SETTINGS' | translate}}</strong></h4>
                     
                     <img class="spinner" ng-show="!business" src="../../private_assets/img/ajax-loading.gif">
@@ -116,7 +117,67 @@
 
                         </div>
                     </form>
-                        
+                    
+                    
+                    <!-- ISLAND 2 -->
+                    <h4 n-premium-check><strong style="text-transform: uppercase;">{{'TITLE_EMAIL_SETTINGS' | translate}}</strong></h4>
+                    <n-premium-alert-inline></n-premium-alert-inline>
+                    
+                    <form name="emailForm" ng-show="business" class="form-horizontal" role="form" novalidate>
+                        <div class="form-body">
+
+                            <div class="form-group">
+                                <label n-premium-check for="emailReplyTo" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_EMAIL_REPLY_TO' | translate }} *</label>
+                                <div class="col-md-4">
+                                    <input n-premium-check class="form-control input-xlarge" type="email" id="emailReplyTo" name="emailReplyTo" maxlength="200" ng-model="business.settings.emailReplyTo" 
+                                        placeholder="{{'BUSINESS_OPTION_EMAIL_REPLY_TO_PLACEHOLDER' | translate}}" required>
+                                    <div ng-show="emailForm.emailReplyTo.$dirty && emailForm.emailReplyTo.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label n-premium-check for="emailSubject" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_EMAIL_SUBJECT' | translate }} *</label>
+                                <div class="col-md-4">
+                                    <textarea n-premium-check id="emailSubject" name="emailSubject" placeholder="{{'BUSINESS_OPTION_EMAIL_SUBJECT_PLACEHOLDER' | translate}}" maxlength="80" 
+                                    ng-trim="false"
+                                    ng-model="business.settings.emailSubject" class="form-control input-xlarge" rows="2" required></textarea>
+                                    <n-email-keyword-chooser model="business.settings.emailSubject"></n-email-keyword-chooser>
+                                    <div ng-show="emailForm.emailSubject.$dirty && emailForm.emailSubject.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" style="position: relative;">
+                                    <small ng-show="business.settings.emailSubject" style="position: absolute; bottom: 20px; font-weight: bold;">Anteprima Oggetto</small>
+                                    <div ng-bind-html="business.settings.emailSubject | nFakeClient"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label n-premium-check for="emailText" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_EMAIL_TEXT' | translate }} *</label>
+                                <div class="col-md-4">
+                                    <textarea n-premium-check id="emailText" name="emailText" ng-model="business.settings.emailText" class="form-control input-xlarge" maxlength="1000" rows="6" 
+                                        ng-trim="false" required></textarea>
+                                    <n-email-keyword-chooser model="business.settings.emailText"></n-email-keyword-chooser>
+                                    <div ng-show="emailForm.emailText.$dirty && emailForm.emailText.$invalid">
+				                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+				                    </div>
+                                </div>
+                                <div class="col-md-4" style="position: relative;">
+                                    <small ng-show="business.settings.emailText" style="position: absolute; bottom: 20px; font-weight: bold;">Anteprima Testo</small>
+                                    <div ng-bind-html="business.settings.emailText | nFakeClient">
+                                        
+                                    </div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </form>
+                    
+                    
+                    
+                    <!-- ISLAND 3 -->
                     <h4><strong style="text-transform: uppercase;">{{'TITLE_OTHER_SETTINGS' | translate}}</strong></h4>
                     
                     <form ng-show="business" class="form-horizontal" role="form">
@@ -135,29 +196,28 @@
                         </div>
                     </form>
 
-                    <button ng-show="business" type="button" ng-click="update()" class="btn green save-options button-save">
+                    <button ng-show="business" type="button" ng-click="update()" ng-disabled="emailForm.$invalid" class="btn green save-options button-save">
                       {{'SAVE_CHANGES' | translate}}
                     </button>
                 </tab>
                 
-                <tab ng-show="!firstRun" select="loadSharingPermits()">
+                <tab ng-show="!firstRun" select="loadSharingPermits();onTabChange('share')" active="activeTab.share">
                     <tab-heading>
                         <i class="fa fa-group"></i> {{'BUSINESS_TAB_SHARE' | translate}}
                     </tab-heading>
                     
                     <div class="well">
-                            <h4>{{'INFO' | translate}}</h4>
-                            <p>{{'SHARING_PERMIT_INFO1' | translate}}</p>
-                            <p>{{'SHARING_PERMIT_INFO2' | translate}}</p>
-                            <button type="button" class="btn default try-share" ng-click="tryShare()">{{'TRY_SHARE' | translate}}</button>
-                        </div>
-                        
                         <n-premium-alert></n-premium-alert>
+                        <h4>{{'INFO' | translate}}</h4>
+                        <p>{{'SHARING_PERMIT_INFO1' | translate}}</p>
+                        <p>{{'SHARING_PERMIT_INFO2' | translate}}</p>
+                        <button type="button" class="btn default try-share" ng-click="tryShare()">{{'TRY_SHARE' | translate}}</button>
+                    </div>
                         
-                        <button n-premium-check type="button" class="btn green new-share" ng-click="newShare()">{{'NEW_SHARE' | translate}}</button>
-                        <img class="spinner" ng-show="sharingPermits==null" src="../../private_assets/img/ajax-loading.gif">
-                        <p class="no-data-message text-center text-info" ng-show="sharingPermits && sharingPermits.length===0">{{'NO_DATA' | translate}}</p>
-                        <n-sharing-permit sharing-permit="sp" bottom-up-menu="!$first && $last" ng-repeat="sp in sharingPermits"></n-sharing-permit>
+                    <button n-premium-check type="button" class="btn green new-share" ng-click="newShare()">{{'NEW_SHARE' | translate}}</button>
+                    <img class="spinner" ng-show="sharingPermits==null" src="../../private_assets/img/ajax-loading.gif">
+                    <p class="no-data-message text-center text-info" ng-show="sharingPermits && sharingPermits.length===0">{{'NO_DATA' | translate}}</p>
+                    <n-sharing-permit sharing-permit="sp" bottom-up-menu="!$first && $last" ng-repeat="sp in sharingPermits"></n-sharing-permit>
                 </tab>
 			</tabset>
 		

@@ -207,6 +207,22 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 
 
 /**
+ * Replace email keywords with test client data
+ */
+.filter('nFakeClient', ['$filter', function($filter) {
+	return function(input) {
+		return !input ? '' : 
+			input
+			.replace(/\$NomeCliente/g, "Mario Rossi")
+			.replace(/\$DataFattura/g, '01/01/1970')
+			.replace(/\$NumeroFattura/g, '10/1970')
+			.replace(/\$TotaleFattura/g, '€ 223,56')
+			.replace(/\n/g, '<br>');
+	};
+}])
+
+
+/**
  * Analytics Service
  */
 .provider('nAnalytics', [ function() {

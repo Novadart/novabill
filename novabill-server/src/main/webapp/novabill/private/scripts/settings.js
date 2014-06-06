@@ -11,9 +11,10 @@ angular.module("novabill.settings", ['novabill.settings.controllers', 'novabill.
 
 	.when('/', {
 		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/settings.html'),
-		controller: 'SettingsCtrl'
+		controller: 'SettingsCtrl',
+		reloadOnSearch : false
 	})
-
+	
 	.otherwise ({
 		redirectTo: '/'
 	});
