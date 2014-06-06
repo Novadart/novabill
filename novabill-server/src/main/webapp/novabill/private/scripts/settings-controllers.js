@@ -7,15 +7,28 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 /**
  * SETTINGS PAGE CONTROLLER
  */
-.controller('SettingsCtrl', ['$scope', 'nConstants', '$route', 'nAjax', 'nEditSharingPermitDialog', 'nDownload', '$window',
-                             function($scope, nConstants, $route, nAjax, nEditSharingPermitDialog, nDownload, $window){
+.controller('SettingsCtrl', ['$scope', 'nConstants', 'nAjax', 'nEditSharingPermitDialog', 'nDownload', '$window', '$location',
+                             function($scope, nConstants, nAjax, nEditSharingPermitDialog, nDownload, $window, $location){
 
 	var Business = nAjax.Business();
 	var SharingPermit = nAjax.SharingPermit();
 	
 	$scope.firstRun =  nConstants.conf.businessId === '-1';
 	$scope.changePasswordUrl = nConstants.conf.changePasswordBaseUrl;
-
+	
+	$scope.onTabChange = function(token){
+		$location.search('tab',token);
+	};
+	
+	$scope.activeTab = {
+			business : false,
+			profile : false,
+			options : false,
+			share : false
+	};
+	$scope.activeTab[$location.search().tab] = true;
+	
+	
 	if(!$scope.firstRun) {
 		
 		Business.get(function(business){
@@ -26,9 +39,14 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 		
 		$scope.update = function(){
 			$scope.business.$update(function(){
-				Business.setDefaultLayout({defaultLayoutType : $scope.business.settings.defaultLayoutType}, function(){
+				
+				if(nConstants.conf.premium) {
+					Business.setDefaultLayout({defaultLayoutType : $scope.business.settings.defaultLayoutType}, function(){
+						$window.location.reload();
+					});
+				} else {
 					$window.location.reload();
-				});
+				}
 			});
 		};
 
@@ -99,7 +117,6 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 		$scope.business = new Business();
 	}
 
-	
 }]);
 
 

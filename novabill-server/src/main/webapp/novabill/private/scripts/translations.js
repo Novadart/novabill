@@ -206,6 +206,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		TELEPHONE : 'Telefono',
 		TELEPHONE_PLACEHOLDER : 'esempio: 123/45678910',
 		TITLE_COMPANY_DATA : 'I dati della tua azienda',
+		TITLE_EMAIL_SETTINGS : 'Impostazioni E-Mail',
 		TITLE_EXPORT_DATA : 'Esporta i tuoi dati',
 		TITLE_LAYOUT_SETTINGS : 'Impostazioni di Stampa',
 		TITLE_OTHER_SETTINGS : 'Altre impostazioni',
