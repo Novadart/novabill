@@ -666,10 +666,7 @@ angular.module('novabill.directives',
 		              function($scope, nConstants, $sce, $filter, $window){
 			$scope.premium = nConstants.conf.premium;
 			$scope.message = $sce.trustAsHtml($filter('translate')('PREMIUM_ALERT'));
-			
-			$scope.goToPremium = function(){
-				$window.location.href = nConstants.conf.premiumUrl;
-			};
+			$scope.premiumUrl = nConstants.conf.premiumUrl;
 		}],
 		restrict: 'E',
 		replace: true
@@ -677,6 +674,23 @@ angular.module('novabill.directives',
 	
 }])
 
+
+.directive('nPremiumAlertInline', ['nConstants', function(nConstants) {
+	
+	return {
+		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-premium-alert-inline.html'),
+		scope: { },
+		controller : ['$scope', 'nConstants', '$sce', '$filter', '$window',
+		              function($scope, nConstants, $sce, $filter, $window){
+			$scope.premium = nConstants.conf.premium;
+			$scope.message = $sce.trustAsHtml($filter('translate')('PREMIUM_ALERT'));
+			$scope.premiumUrl = nConstants.conf.premiumUrl;
+		}],
+		restrict: 'E',
+		replace: true
+	};
+	
+}])
 
 
 .directive('nPremiumCheck', ['nConstants', function(nConstants) {
@@ -686,6 +700,7 @@ angular.module('novabill.directives',
 		link : function(scope, element, attrs){
 			if(!nConstants.conf.premium){
 				element.attr('disabled', 'disabled');
+				element.addClass('text-muted');
 			};
 		},
 		restrict: 'A'
