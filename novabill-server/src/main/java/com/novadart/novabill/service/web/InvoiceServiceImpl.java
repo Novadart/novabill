@@ -28,6 +28,7 @@ import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
 import com.novadart.novabill.domain.dto.transformer.AccountingDocumentItemDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
+import com.novadart.novabill.email.EmailFormatter;
 import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
@@ -218,7 +219,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 	public void email(Long id, String to, String subject, String message) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		String token = tokenGenerator.generateToken();
 		Map<String, Object> templateVars = new HashMap<String, Object>();
-		templateVars.put("message", message);
+		Map<String, Object> formatContext = new HashMap<>();
+		formatContext.put(EmailFormatter.INVOICE_CONTEXT_PARAMETER_NAME, Invoice.findInvoice(id));
+		templateVars.put("message", new EmailFormatter().format(message, formatContext));
 		String url = String.format(invoicePdfUrl, id, URLEncoder.encode(token, "UTF-8"));
 		templateVars.put("invoicePdfUrl", url);
 		sendMessage(to, subject, templateVars, EMAIL_TEMPLATE_LOCATION);
