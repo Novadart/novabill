@@ -6,6 +6,8 @@ import java.util.Map;
 
 public class EmailFormatter {
 
+	public static final String INVOICE_BUSINESS_NAME = "$RagioneSocialeAzienda";
+	
 	public static final String INVOICE_CLIENT_NAME = "$NomeCliente";
 	
 	public static final String INVOICE_DATE = "$DataFattura";
@@ -19,6 +21,7 @@ public class EmailFormatter {
 	
 	@SuppressWarnings("serial")
 	private final Map<String, ValueProducer> valueProducers = new HashMap<String, ValueProducer>(){{
+		put(INVOICE_BUSINESS_NAME, new InvoiceBusinessNameProducer());
 		put(INVOICE_CLIENT_NAME, new InvoiceClientNameProducer());
 		put(INVOICE_DATE, new InvoiceDateProducer());
 		put(INVOICE_NUMBER, new InvoiceNumberProducer());

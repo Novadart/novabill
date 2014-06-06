@@ -663,6 +663,7 @@ angular.module('novabill.directives',
 		controller : ['$scope', function($scope){
 			
 			$scope.keywords = {
+				'RagioneSocialeAzienda' : 'EMAIL_KEYWORD_BUSINESS_NAME',
 				'NomeCliente' : 'EMAIL_KEYWORD_CLIENT_NAME',
 				'DataFattura' : 'EMAIL_KEYWORD_INVOICE_DATE',
 				'NumeroFattura' : 'EMAIL_KEYWORD_INVOICE_NUMBER',

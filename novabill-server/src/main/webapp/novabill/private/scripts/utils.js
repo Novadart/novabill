@@ -209,15 +209,34 @@ angular.module('novabill.utils', ['novabill.translations', 'novabill.constants']
 /**
  * Replace email keywords with test client data
  */
-.filter('nFakeClient', ['$filter', function($filter) {
+.filter('nEmailKeywordsFake', ['$filter', 'nConstants', function($filter, nConstants) {
 	return function(input) {
 		return !input ? '' : 
 			input
+			.replace(/\$RagioneSocialeAzienda/g, nConstants.conf.businessName)
 			.replace(/\$NomeCliente/g, "Mario Rossi")
 			.replace(/\$DataFattura/g, '01/01/1970')
 			.replace(/\$NumeroFattura/g, '10/1970')
 			.replace(/\$TotaleFattura/g, '€ 223,56')
-			.replace(/\n/g, '<br>');
+			.replace(/\n/g, '<br>')
+			.replace(/\$\w*/g, '<i>#ERR</i>');
+	};
+}])
+
+
+/**
+ * Replace email keywords with invoice data
+ */
+.filter('nEmailKeywords', ['$filter', 'nConstants', function($filter, nConstants) {
+	return function(input, invoice) {
+		return !input ? '' : 
+			input
+			.replace(/\$RagioneSocialeAzienda/g, nConstants.conf.businessName)
+			.replace(/\$NomeCliente/g, invoice.client.name)
+			.replace(/\$DataFattura/g, $filter('date')(invoice.accountingDocumentDate, 'dd/MM/yyyy'))
+			.replace(/\$NumeroFattura/g, invoice.documentID+'/'+$filter('date')(invoice.accountingDocumentDate, 'yyyy'))
+			.replace(/\$TotaleFattura/g, $filter('currency')(invoice.total))
+			.replace(/\$.*/g, '#ERR');
 	};
 }])
 

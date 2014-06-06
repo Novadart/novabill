@@ -25,3 +25,14 @@
 .settings .new-share {
 	margin-bottom: 20px;
 }
+
+.settings .preview-title {
+	position: absolute; 
+	top: -20px; 
+	font-weight: bold;
+}
+
+.settings .preview-area {
+	border: 1px solid #DDD;
+	padding: 5px 10px;
+}

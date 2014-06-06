@@ -7,6 +7,7 @@ angular.module('novabill.constants', [])
 	// these variables are set in the environment with values coming from the server.
 	// setting default values useful for testing
 	var businessId = 0;
+	var businessName = "";
 	var premium = false;
 	var defaultPriceListName = '::default';
 	var basePath = '/novabill-server/';
@@ -15,6 +16,7 @@ angular.module('novabill.constants', [])
 	//updating the values in case they are set in the environment
 	if(typeof NovabillConf != 'undefined') {
 		businessId = NovabillConf.businessId;
+		businessName = NovabillConf.businessName;
 		premium = NovabillConf.premium;
 		defaultPriceListName = NovabillConf.defaultPriceListName;
 		basePath = NovabillConf.basePath;
@@ -25,6 +27,7 @@ angular.module('novabill.constants', [])
 	// these properties define the most basic configuration of the UI
 	this.conf = {
 			businessId : businessId,
+			businessName : businessName,
 			premium : premium,
 			defaultPriceListName : defaultPriceListName,
 			version : version,

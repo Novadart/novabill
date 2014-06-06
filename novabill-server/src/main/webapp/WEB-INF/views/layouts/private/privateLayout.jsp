@@ -275,6 +275,7 @@ window.onerror = function(message, source, line, column) {
 	<script>
     var NovabillConf = {
             businessId : '<%=business != null ? business.getId() : -1%>',
+         	businessName : '<%=business != null ? business.getName() : ""%>',
             premium : <%=principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM)%>,
             defaultPriceListName : '<%=PriceListConstants.DEFAULT%>',
             basePath : '${basePath}',
