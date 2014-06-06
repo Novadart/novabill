@@ -6,13 +6,13 @@ import java.util.Map;
 
 public class EmailFormatter {
 
-	public static final String INVOICE_CLIENT_NAME = "${clientName}";
+	public static final String INVOICE_CLIENT_NAME = "$NomeCliente";
 	
-	public static final String INVOICE_DATE = "${invoiceDate}";
+	public static final String INVOICE_DATE = "$DataFattura";
 	
-	public static final String INVOICE_NUMBER = "${invoiceNumber}";
+	public static final String INVOICE_NUMBER = "$NumeroFattura";
 	
-	public static final String INVOICE_TOTAL = "${invoiceTotal}";
+	public static final String INVOICE_TOTAL = "$TotaleFattura";
 	
 	public static final String INVOICE_CONTEXT_PARAMETER_NAME = "invoice";
 	

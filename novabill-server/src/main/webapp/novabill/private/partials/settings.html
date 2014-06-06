@@ -120,17 +120,54 @@
                     
                     
                     <!-- ISLAND 2 -->
-                    <h4><strong style="text-transform: uppercase;">{{'TITLE_EMAIL_SETTINGS' | translate}}</strong></h4>
+                    <h4 n-premium-check><strong style="text-transform: uppercase;">{{'TITLE_EMAIL_SETTINGS' | translate}}</strong></h4>
+                    <n-premium-alert-inline></n-premium-alert-inline>
                     
-                    <form ng-show="business" class="form-horizontal" role="form">
+                    <form name="emailForm" ng-show="business" class="form-horizontal" role="form" novalidate>
                         <div class="form-body">
 
                             <div class="form-group">
-                                <label for="priceDisplayInDocsMonolithic" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_PRICE_IN_DOCS_MONOLITHIC' | translate }}</label>
-                                <div class="col-md-8">
-                                    <div class="checkbox-list">
-                                        <label>
-                                        </label>
+                                <label n-premium-check for="emailReplyTo" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_EMAIL_REPLY_TO' | translate }} *</label>
+                                <div class="col-md-4">
+                                    <input n-premium-check class="form-control input-xlarge" type="email" id="emailReplyTo" name="emailReplyTo" maxlength="200" ng-model="business.settings.emailReplyTo" 
+                                        placeholder="{{'BUSINESS_OPTION_EMAIL_REPLY_TO_PLACEHOLDER' | translate}}" required>
+                                    <div ng-show="emailForm.emailReplyTo.$dirty && emailForm.emailReplyTo.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label n-premium-check for="emailSubject" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_EMAIL_SUBJECT' | translate }} *</label>
+                                <div class="col-md-4">
+                                    <textarea n-premium-check id="emailSubject" name="emailSubject" placeholder="{{'BUSINESS_OPTION_EMAIL_SUBJECT_PLACEHOLDER' | translate}}" maxlength="80" 
+                                    ng-trim="false"
+                                    ng-model="business.settings.emailSubject" class="form-control input-xlarge" rows="2" required></textarea>
+                                    <n-email-keyword-chooser model="business.settings.emailSubject"></n-email-keyword-chooser>
+                                    <div ng-show="emailForm.emailSubject.$dirty && emailForm.emailSubject.$invalid">
+                                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                                    </div>
+                                </div>
+                                <div class="col-md-4" style="position: relative;">
+                                    <small ng-show="business.settings.emailSubject" style="position: absolute; bottom: 20px; font-weight: bold;">Anteprima Oggetto</small>
+                                    <div ng-bind-html="business.settings.emailSubject | nFakeClient"></div>
+                                </div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label n-premium-check for="emailText" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_EMAIL_TEXT' | translate }} *</label>
+                                <div class="col-md-4">
+                                    <textarea n-premium-check id="emailText" name="emailText" ng-model="business.settings.emailText" class="form-control input-xlarge" maxlength="1000" rows="6" 
+                                        ng-trim="false" required></textarea>
+                                    <n-email-keyword-chooser model="business.settings.emailText"></n-email-keyword-chooser>
+                                    <div ng-show="emailForm.emailText.$dirty && emailForm.emailText.$invalid">
+				                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+				                    </div>
+                                </div>
+                                <div class="col-md-4" style="position: relative;">
+                                    <small ng-show="business.settings.emailText" style="position: absolute; bottom: 20px; font-weight: bold;">Anteprima Testo</small>
+                                    <div ng-bind-html="business.settings.emailText | nFakeClient">
+                                        
                                     </div>
                                 </div>
                             </div>
@@ -159,7 +196,7 @@
                         </div>
                     </form>
 
-                    <button ng-show="business" type="button" ng-click="update()" class="btn green save-options button-save">
+                    <button ng-show="business" type="button" ng-click="update()" ng-disabled="emailForm.$invalid" class="btn green save-options button-save">
                       {{'SAVE_CHANGES' | translate}}
                     </button>
                 </tab>
