@@ -14,6 +14,9 @@ public class SettingsDTOTransformer {
 		settingsDTO.setCreditNoteFooterNote(settings.getCreditNoteFooterNote());
 		settingsDTO.setEstimationFooterNote(settings.getEstimationFooterNote());
 		settingsDTO.setTransportDocumentFooterNote(settings.getTransportDocumentFooterNote());
+		settingsDTO.setEmailSubject(settings.getEmailSubject());
+		settingsDTO.setEmailText(settings.getEmailText());
+		settingsDTO.setEmailReplyTo(settings.getEmailReplyTo());
 		return settingsDTO;
 	}
 	
@@ -24,6 +27,9 @@ public class SettingsDTOTransformer {
 		settings.setCreditNoteFooterNote(settingsDTO.getCreditNoteFooterNote());
 		settings.setEstimationFooterNote(settingsDTO.getEstimationFooterNote());
 		settings.setTransportDocumentFooterNote(settingsDTO.getTransportDocumentFooterNote());
+		settings.setEmailSubject(settingsDTO.getEmailSubject());
+		settings.setEmailText(settingsDTO.getEmailText());
+		settings.setEmailReplyTo(settingsDTO.getEmailReplyTo());
 	}
 	
 }

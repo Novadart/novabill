@@ -8,6 +8,9 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
+
+import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.shared.client.data.LayoutType;
 
 @Embeddable
@@ -37,6 +40,17 @@ public class Settings implements Serializable {
     
     @Size(max = 300)
     private String transportDocumentFooterNote;
+    
+    @Size(max = 80)
+    @Trimmed
+    private String emailSubject;
+    
+    @Size(max = 1000)
+    private String emailText;
+    
+    @Email
+    @Trimmed
+    private String emailReplyTo;
     
     public Long getNonFreeExpirationDelta(TimeUnit timeUnit){
     	Long now = System.currentTimeMillis();
@@ -113,6 +127,30 @@ public class Settings implements Serializable {
 
 	public void setTransportDocumentFooterNote(String transportDocumentFooterNote) {
 		this.transportDocumentFooterNote = transportDocumentFooterNote;
+	}
+
+	public String getEmailSubject() {
+		return emailSubject;
+	}
+
+	public void setEmailSubject(String emailSubject) {
+		this.emailSubject = emailSubject;
+	}
+
+	public String getEmailText() {
+		return emailText;
+	}
+
+	public void setEmailText(String emailText) {
+		this.emailText = emailText;
+	}
+
+	public String getEmailReplyTo() {
+		return emailReplyTo;
+	}
+
+	public void setEmailReplyTo(String emailReplyTo) {
+		this.emailReplyTo = emailReplyTo;
 	}
 	
 }
