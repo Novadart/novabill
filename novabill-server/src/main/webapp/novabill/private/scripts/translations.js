@@ -161,7 +161,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		POSTCODE : 'C.A.P.',
 		POSTCODE_PLACEHOLDER : 'esempio: 35010',
 		PREMIUM_ALERT : 'Questa funzionalità è disponibile solo agli utenti <b>Premium</b>',
-		PREMIUM_BUTTON : 'Acquista',
+		PREMIUM_BUTTON : 'Diventa Premium',
 		PRICE : 'Prezzo',
 		PRICE_DISCOUNT_PERCENT : 'Sconto %',
 		PRICE_DISCOUNT_FIXED : 'Sconto €',

@@ -43,7 +43,10 @@
 
                     </div>
                     <div class="tab-pane" id="transporters_list">
-                        <button type="button" class="btn green new-transporter" ng-click="newTransporter()">{{'NEW_TRANSPORTER' | translate}}</button>
+                        
+                        <n-premium-alert></n-premium-alert>
+                        
+                        <button type="button" n-premium-check class="btn green new-transporter" ng-click="newTransporter()">{{'NEW_TRANSPORTER' | translate}}</button>
 
                         <div class="clearfix"></div>
                         

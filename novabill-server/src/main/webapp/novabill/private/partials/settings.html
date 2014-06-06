@@ -80,15 +80,13 @@
                     <form ng-show="business" class="form-horizontal" role="form">
                         <div class="form-body">
                             <div class="form-group">
-                                <label class="col-md-4 control-label">{{'LAYOUT_TYPE' | translate}}</label>
+                                <label n-premium-check class="col-md-4 control-label">{{'LAYOUT_TYPE' | translate}}</label>
                                 <div class="col-md-8">
-                                
-                                    <n-premium-alert></n-premium-alert>
-                                    
                                     <select class="form-control input-xlarge" ng-model="business.settings.defaultLayoutType" n-premium-check>
                                         <option value="DENSE">{{'LAYOUT_TYPE_DENSE' | translate}}</option>
                                         <option value="TIDY">{{'LAYOUT_TYPE_TIDY' | translate}}</option>
                                     </select>
+                                    <n-premium-alert-inline></n-premium-alert-inline>
                                 </div>
                             </div>
 
