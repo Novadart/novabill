@@ -41,7 +41,7 @@ public class Settings implements Serializable {
     @Size(max = 300)
     private String transportDocumentFooterNote;
     
-    @Size(max = 80)
+    @Size(max = 78)
     @Trimmed
     private String emailSubject;
     

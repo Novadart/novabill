@@ -423,7 +423,7 @@ public class InvoiceServiceTest extends ServiceTest {
 	public void emailInvoiceAuthorizedTest() throws NoSuchAlgorithmException, JsonParseException, JsonMappingException, IOException{
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		invoiceAjaxService.email(inv.getId(), "foo@bar.com", "Test subject", "Test message");
+		invoiceAjaxService.email(inv.getId(), "foo@bar.com", "foo@bar.com", "Test subject", "Test message");
 		smtpServer.stop();
 		String token = DocumentAccessToken.findAllDocumentAccessTokens().iterator().next().getToken();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
@@ -434,6 +434,7 @@ public class InvoiceServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(inv.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(inv.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
+		assertEquals("foo@bar.com", details.get(DBLoggerAspect.REPLY_TO));
 		assertEquals(1l, DocumentAccessToken.countDocumentAccessTokens());
 		assertEquals(1l, DocumentAccessToken.findDocumentAccessTokens(inv.getId(), token).size());
 	}

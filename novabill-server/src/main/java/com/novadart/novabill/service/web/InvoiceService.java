@@ -37,6 +37,6 @@ public interface InvoiceService {
 
 	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 
-	public void email(Long id, String to, String subject, String message) throws NoSuchAlgorithmException, UnsupportedEncodingException;
+	public void email(Long id, String to, String replyTo, String subject, String message) throws NoSuchAlgorithmException, UnsupportedEncodingException;
 
 }

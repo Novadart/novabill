@@ -127,8 +127,8 @@ public class InvoiceController {
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public void email(@PathVariable Long id, @RequestParam(value = "to") String to, @RequestParam(value = "subject") String subject,
-			@RequestParam(value = "message") String message) throws NoSuchAlgorithmException, UnsupportedEncodingException{
-		invoiceService.email(id, to, subject, message);
+			@RequestParam(value = "message") String message, @RequestParam(value = "replyTo") String replyTo) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+		invoiceService.email(id, to, replyTo, subject, message);
 	}
 	
 }

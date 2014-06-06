@@ -17,6 +17,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,19 +51,27 @@ public class Email implements Serializable {
 	@Size(max = 1500)
 	private String text;
 	
+	@Column(name = "replyto_addr")
+	private String replyTo;
+	
 	private EmailStatus status;
 	
 	private int tries;
 	
 	public Email(){}
 	
-	public Email(String[] to, String from, String subject, String text) {
+	public Email(String[] to, String from, String subject, String text, String replyTo) {
 		this.setTo(to);
 		this.from = from;
 		this.subject = subject;
 		this.text = text;
+		this.replyTo = replyTo;
 		tries = 0;
 		status = EmailStatus.PENDING;
+	}
+	
+	public Email(String[] to, String from, String subject, String text) {
+		this(to, from, subject, text, null);
 	}
 
 	public void send() throws MessagingException{
@@ -72,6 +81,8 @@ public class Email implements Serializable {
 		messageHelper.setFrom(getFrom());
 		messageHelper.setSubject(getSubject());
 		messageHelper.setText(getText(), true);
+		if(StringUtils.isNotBlank(getReplyTo()))
+			messageHelper.setReplyTo(getReplyTo());
 		mailSender.send(mimeMessage);
 	}
 	
@@ -112,6 +123,14 @@ public class Email implements Serializable {
 
 	public void setText(String text) {
 		this.text = text;
+	}
+
+	public String getReplyTo() {
+		return replyTo;
+	}
+
+	public void setReplyTo(String replyTo) {
+		this.replyTo = replyTo;
 	}
 
 	public EmailStatus getStatus() {

@@ -24,6 +24,8 @@ public abstract aspect DBLoggerAspect {
 	
 	public static final String SHARING_PERMIT_DESC = "sharingPermitDesc";
 	
+	public static final String REPLY_TO = "replyTo";
+	
 	private String toJsonString(Map<String, String> jsonObject) {
 		ObjectMapper mapper = new ObjectMapper();
 		try {

@@ -216,15 +216,16 @@ public class InvoiceServiceImpl implements InvoiceService {
 	
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == principal.business.id")
-	public void email(Long id, String to, String subject, String message) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void email(Long id, String to, String replyTo, String subject, String message) throws NoSuchAlgorithmException, UnsupportedEncodingException {
 		String token = tokenGenerator.generateToken();
 		Map<String, Object> templateVars = new HashMap<String, Object>();
 		Map<String, Object> formatContext = new HashMap<>();
 		formatContext.put(EmailFormatter.INVOICE_CONTEXT_PARAMETER_NAME, Invoice.findInvoice(id));
-		templateVars.put("message", new EmailFormatter().format(message, formatContext));
+		EmailFormatter formatter = new EmailFormatter();
+		templateVars.put("message", formatter.format(message, formatContext));
 		String url = String.format(invoicePdfUrl, id, URLEncoder.encode(token, "UTF-8"));
 		templateVars.put("invoicePdfUrl", url);
-		sendMessage(to, subject, templateVars, EMAIL_TEMPLATE_LOCATION);
+		sendMessage(to, replyTo, formatter.format(subject, formatContext), templateVars, EMAIL_TEMPLATE_LOCATION);
 		new DocumentAccessToken(id, token).persist();
 	}
 	

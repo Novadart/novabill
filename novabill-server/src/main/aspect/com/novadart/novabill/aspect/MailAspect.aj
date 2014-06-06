@@ -29,7 +29,7 @@ privileged aspect MailAspect {
 	declare parents : @MailMixin * implements MailSender;
 
 
-	public void MailSender.sendMessage(String[] to, String subject, Map<String, Object> model, String templateLocation){
+	public void MailSender.sendMessage(String[] to, String replyTo, String subject, Map<String, Object> model, String templateLocation){
 		MailAspect thisAspect = MailAspect.aspectOf();
 		Email email = null;
 		try {
@@ -44,8 +44,16 @@ privileged aspect MailAspect {
 		}
 	}
 	
+	public void MailSender.sendMessage(String to, String replyTo, String subject, Map<String, Object> model, String templateLocation){
+		sendMessage(new String[]{to}, replyTo, subject, model, templateLocation);
+	}
+	
+	public void MailSender.sendMessage(String[] to, String subject, Map<String, Object> model, String templateLocation){
+		sendMessage(to, null, subject, model, templateLocation);
+	}
+	
 	public void MailSender.sendMessage(String to, String subject, Map<String, Object> model, String templateLocation){
-		sendMessage(new String[]{to}, subject, model, templateLocation);
+		sendMessage(new String[]{to}, null, subject, model, templateLocation);
 	}
 	
 }

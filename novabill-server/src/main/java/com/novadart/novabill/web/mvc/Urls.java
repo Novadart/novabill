@@ -22,6 +22,8 @@ public interface Urls {
 	public static final String PUBLIC_SHARE_SHARE = "/share";
 	public static final String PUBLIC_SHARE_THANKS = "/share-thanks";
 	
+	public static final String PUBLIC_EMAIL_INVOICES = "/email/invoices";
+	
 	// Private Urls	
 	public static final String PRIVATE_HOME = "/private/";
 	public static final String PRIVATE_CHANGE_PASSWORD = "/private/change-password";

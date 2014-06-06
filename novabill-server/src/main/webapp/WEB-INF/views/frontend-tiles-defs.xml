@@ -134,4 +134,10 @@
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/sharing/invalidSharingRequestBody.jsp" />
     </definition>
 	
+    <!-- Get emailed invoice -->
+    <definition name="email.invoice.pdf" extends="frontend.subPageLayout">
+        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/emailInvoicePdfBody.jsp" />
+    </definition>
+        
+    
 </tiles-definitions>

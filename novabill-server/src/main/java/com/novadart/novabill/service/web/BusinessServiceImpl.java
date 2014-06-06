@@ -13,6 +13,7 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
@@ -29,6 +30,7 @@ import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
+import com.novadart.novabill.domain.Settings;
 import com.novadart.novabill.domain.SharingPermit;
 import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.domain.dto.DTOUtils;
@@ -255,13 +257,21 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		return BusinessDTOTransformer.toDTO(Business.findBusiness(businessID));
 	}
 
+	private void setDefaultsForNewBusiness(Business business) {
+		Settings settings = business.getSettings(); 
+		settings.setDefaultLayoutType(LayoutType.DENSE);
+		settings.setEmailReplyTo(StringUtils.isBlank(business.getEmail())? utilsService.getAuthenticatedPrincipalDetails().getUsername(): business.getEmail());
+		settings.setEmailSubject("Invio Fattura n. $NumeroFattura del $DataFattura");
+		settings.setEmailText(" Spettabile $NomeCliente,\n\ncon la presente trasmettiamo la nostra fattura nr. $NumeroFattura del $DataFattura in formato PDF.\nIl documento è scaricabile alla pagina web sotto indicata.\n\nCordiali saluti,\n$RagioneSocialeAzienda");
+	}
+	
 	@PreAuthorize("principal.business == null and #businessDTO != null and #businessDTO.id == null")
 	@Transactional(readOnly = false)
 	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 
 													com.novadart.novabill.shared.client.exception.CloneNotSupportedException {
 		Business business = new Business();
 		BusinessDTOTransformer.copyFromDTO(business, businessDTO);
-		business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
+		setDefaultsForNewBusiness(business);
 		validator.validate(business);
 		Locale locale = LocaleContextHolder.getLocale();
 		for(PaymentType pType: paymentTypes.containsKey(locale)? paymentTypes.get(locale): paymentTypes.get(Locale.ITALIAN)){

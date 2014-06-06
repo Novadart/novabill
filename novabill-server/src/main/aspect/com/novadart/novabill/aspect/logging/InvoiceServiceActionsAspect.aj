@@ -36,8 +36,8 @@ public aspect InvoiceServiceActionsAspect extends DBLoggerAspect {
 	pointcut setPayed(Long businessID, Long clientID, Long id, Boolean value) : 
 		execution(public void com.novadart.novabill.service.web.InvoiceServiceImpl.setPayed(..)) && args(businessID, clientID, id, value);
 	
-	pointcut email(Long id, String to, String subject, String message) : 
-		execution(public void com.novadart.novabill.service.web.InvoiceServiceImpl.email(..)) && args(id, to, subject, message);
+	pointcut email(Long id, String to, String replyTo, String subject, String message) : 
+		execution(public void com.novadart.novabill.service.web.InvoiceServiceImpl.email(..)) && args(id, to, replyTo, subject, message);
 	
 	after(InvoiceDTO invoiceDTO) returning (Long id) : add(invoiceDTO){
 		Long time = System.currentTimeMillis();
@@ -80,12 +80,12 @@ public aspect InvoiceServiceActionsAspect extends DBLoggerAspect {
 		logActionInDB(businessID, EntityType.INVOICE, OperationType.SET_PAYED, id, time, details);
 	}
 	
-	after(Long id, String to, String subject, String message) returning : email(id, to, subject, message){
+	after(Long id, String to, String replyTo, String subject, String message) returning : email(id, to, replyTo, subject, message){
 		Long time = System.currentTimeMillis();
-		LOGGER.info("[{}, emailInvoice, {}, id: {}]",
-				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), id});
+		LOGGER.info("[{}, emailInvoice, {}, id: {}, replyTo: {}]",
+				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), id, replyTo});
 		Invoice invoice = Invoice.findInvoice(id);
-		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, invoice.getClient().getName(), DOCUMENT_ID, invoice.getDocumentID().toString());
+		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, invoice.getClient().getName(), DOCUMENT_ID, invoice.getDocumentID().toString(), REPLY_TO, replyTo);
 		logActionInDB(invoice.getBusiness().getId(), EntityType.INVOICE, OperationType.EMAIL, id, time, details);
 	}
 
