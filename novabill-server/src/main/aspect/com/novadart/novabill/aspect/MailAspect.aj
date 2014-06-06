@@ -35,7 +35,7 @@ privileged aspect MailAspect {
 		try {
 			String text = VelocityEngineUtils.mergeTemplateIntoString(thisAspect.velocityEngine, templateLocation, 
 					CharEncoding.UTF_8, model);
-			email = new Email(to, thisAspect.from, subject, text);
+			email = new Email(to, thisAspect.from, subject, text, replyTo);
 			email.send();
 		} catch (MessagingException | MailSendException e) {
 			email.setTries(1);

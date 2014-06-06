@@ -14,10 +14,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Locale;
 import java.util.Map;
 import java.util.Set;
 
@@ -45,7 +43,6 @@ import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
-import com.novadart.novabill.email.EmailFormatter;
 import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
@@ -423,7 +420,7 @@ public class InvoiceServiceTest extends ServiceTest {
 	public void emailInvoiceAuthorizedTest() throws NoSuchAlgorithmException, JsonParseException, JsonMappingException, IOException{
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		invoiceAjaxService.email(inv.getId(), "foo@bar.com", "foo@bar.com", "Test subject", "Test message");
+		invoiceAjaxService.email(inv.getId(), "foo@bar.com", "foo@bar.it", "Test subject", "Test message");
 		smtpServer.stop();
 		String token = DocumentAccessToken.findAllDocumentAccessTokens().iterator().next().getToken();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
@@ -434,20 +431,9 @@ public class InvoiceServiceTest extends ServiceTest {
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(inv.getClient().getName(), details.get(DBLoggerAspect.CLIENT_NAME));
 		assertEquals(inv.getDocumentID().toString(), details.get(DBLoggerAspect.DOCUMENT_ID));
-		assertEquals("foo@bar.com", details.get(DBLoggerAspect.REPLY_TO));
+		assertEquals("foo@bar.it", details.get(DBLoggerAspect.REPLY_TO));
 		assertEquals(1l, DocumentAccessToken.countDocumentAccessTokens());
 		assertEquals(1l, DocumentAccessToken.findDocumentAccessTokens(inv.getId(), token).size());
-	}
-	
-	@Test
-	public void emailFormattingTest(){
-		EmailFormatter formatter = new EmailFormatter();
-		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
-		Map<String, Object> context = new HashMap<>();
-		context.put(EmailFormatter.INVOICE_CONTEXT_PARAMETER_NAME, inv);
-		assertEquals("Dear " + inv.getClient().getName() + inv.getClient().getName(), formatter.format("Dear ${clientName}${clientName}", context));
-		assertEquals("Total: " + java.text.NumberFormat.getCurrencyInstance(Locale.ITALY).format(inv.getTotal().doubleValue()), formatter.format("Total: ${invoiceTotal}", context));
-		assertEquals("Number: " + inv.getDocumentID() + "/" + inv.getAccountingDocumentYear(), formatter.format("Number: ${invoiceNumber}", context));
 	}
 	
 }
