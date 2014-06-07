@@ -97,7 +97,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		String forwardToSpringSecurityCheck = activationController.processSubmit(email, password, (Registration)model.asMap().get("registration"),
 				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		assertEquals("redirect:/registrationCompleted", registerView);
-		assertEquals("activate", activateView);
+		assertEquals("frontend.activate", activateView);
 		assertEquals("forward:/resources/login_check", forwardToSpringSecurityCheck);
 	}
 	
@@ -107,7 +107,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, confirmPassword, true);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
-		assertEquals("register", registerView);
+		assertEquals("frontend.register", registerView);
 	}
 	
 	@Test
@@ -116,7 +116,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
-		assertEquals("register", registerView);
+		assertEquals("frontend.register", registerView);
 	}
 	
 	@Test
@@ -125,7 +125,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, userPasswordMap.keySet().iterator().next(), password, password, true);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
-		assertEquals("register", registerView);
+		assertEquals("frontend.register", registerView);
 	}
 	
 	@Test
@@ -134,7 +134,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, null, password, password, true);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
-		assertEquals("register", registerView);
+		assertEquals("frontend.register", registerView);
 	}
 	
 	@Test
@@ -143,7 +143,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, null, null, true);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
-		assertEquals("register", registerView);
+		assertEquals("frontend.register", registerView);
 	}
 	
 	@Test
@@ -152,7 +152,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, "abcd", null, true);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
-		assertEquals("register", registerView);
+		assertEquals("frontend.register", registerView);
 	}
 	
 	@Test
@@ -161,7 +161,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, StringUtils.leftPad("1", 20), null, true);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
-		assertEquals("register", registerView);
+		assertEquals("frontend.register", registerView);
 	}
 	
 	@Test
@@ -170,7 +170,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, false);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
-		assertEquals("register", registerView);
+		assertEquals("frontend.register", registerView);
 	}
 	
 	@Test

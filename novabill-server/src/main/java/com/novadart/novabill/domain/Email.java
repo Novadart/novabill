@@ -6,7 +6,6 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
-import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
@@ -20,6 +19,7 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -28,6 +28,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Splitter;
+import com.novadart.novabill.annotation.Trimmed;
 
 @Configurable
 @Entity
@@ -38,17 +39,22 @@ public class Email implements Serializable {
 	@Autowired
 	private transient JavaMailSender mailSender;
 	
-	@Basic
 	@Column(name = "to_addr")
+	@Trimmed
+	@NotBlank
 	private String to;
 	
 	@Column(name = "from_addr")
+	@Trimmed
+	@NotBlank
 	private String from;
 
 	@Size(max = 78)
+	@NotBlank
 	private String subject;
 	
 	@Size(max = 1500)
+	@NotBlank
 	private String text;
 	
 	@Column(name = "replyto_addr")
