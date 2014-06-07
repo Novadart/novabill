@@ -39,9 +39,10 @@ public class InvoiceController {
 	@Autowired
 	private InvoiceService invoiceService;
 	
+	@Autowired
 	private BusinessService businessService;
 	
-	@RequestMapping(value = "/{year}", method = RequestMethod.GET)
+	@RequestMapping(value = "/year/{year}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<InvoiceDTO> getInvoices(@PathVariable Long businessID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException {
@@ -55,7 +56,7 @@ public class InvoiceController {
 		return invoiceService.get(id);
 	}
 	
-	@RequestMapping(value = "/{year}/start/{start}/offset/{length}", method = RequestMethod.GET)
+	@RequestMapping(value = "/year/{year}/start/{start}/offset/{length}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public PageDTO<InvoiceDTO> getAllInRange(@PathVariable Long businessID, @PathVariable Integer year,
@@ -63,7 +64,7 @@ public class InvoiceController {
 		return invoiceService.getAllInRange(businessID, year, start, length);
 	}
 	
-	@RequestMapping(value = "/{year}/clients/{clientID}", method = RequestMethod.GET)
+	@RequestMapping(value = "/year/{year}/clients/{clientID}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<InvoiceDTO> getAllForClient(@PathVariable Long clientID, @PathVariable Integer year) throws DataAccessException, NoSuchObjectException, NotAuthenticatedException {
@@ -98,7 +99,7 @@ public class InvoiceController {
 		return invoiceService.getNextInvoiceDocumentID().toString();
 	}
 
-	@RequestMapping(value = "/{year}/clients/{clientID}/start/{start}/offset/{length}", method = RequestMethod.GET)
+	@RequestMapping(value = "/year/{year}/clients/{clientID}/start/{start}/offset/{length}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public PageDTO<InvoiceDTO> getAllForClientInRange(@PathVariable Long clientID, @PathVariable Integer year, 
@@ -130,5 +131,5 @@ public class InvoiceController {
 			@RequestParam(value = "message") String message, @RequestParam(value = "replyTo") String replyTo) throws NoSuchAlgorithmException, UnsupportedEncodingException{
 		invoiceService.email(id, to, replyTo, subject, message);
 	}
-	
+
 }
