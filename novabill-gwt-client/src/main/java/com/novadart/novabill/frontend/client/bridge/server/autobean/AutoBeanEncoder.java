@@ -142,6 +142,10 @@ public class AutoBeanEncoder {
 		s.setEstimationFooterNote(c.getEstimationFooterNote());
 		s.setInvoiceFooterNote(c.getInvoiceFooterNote());
 		s.setTransportDocumentFooterNote(c.getTransportDocumentFooterNote());
+		s.setEmailReplyTo(c.getEmailReplyTo());
+		s.setEmailSubject(c.getEmailSubject());
+		s.setEmailText(c.getEmailText());
+		
 		return AutoBeanUtils.getAutoBean(s);
 	}
 
@@ -245,6 +249,7 @@ public class AutoBeanEncoder {
 		ai.setTotal(invoice.getTotal());
 		ai.setTotalBeforeTax(invoice.getTotalBeforeTax());
 		ai.setTotalTax(invoice.getTotalTax());
+		ai.setSeenByClient(invoice.isSeenByClient());
 
 		LongList ll = AutoBeanMaker.INSTANCE.makeLongList().as();
 		ll.setList(invoice.getTransportDocumentIDs());

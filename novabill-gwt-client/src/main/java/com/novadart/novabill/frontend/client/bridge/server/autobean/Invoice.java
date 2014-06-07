@@ -25,6 +25,10 @@ public interface Invoice {
 
 	public void setTransportDocumentIDs(LongList list);
 	
+	public boolean isSeenByClient();
+
+	public void setSeenByClient(boolean seenByClient);
+	
 	/*
 	 * AbstractInvoiceDTO interface
 	 */

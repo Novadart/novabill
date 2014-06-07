@@ -22,14 +22,14 @@
         <div class="front-topbar">
             <div class="container">
                 <div class="row">
-                    <div class="col-md-9 col-sm-9">
+                    <div class="col-md-8 col-sm-8">
                         <ul class="list-unstyle inline">
                             <!-- <li><i class="fa fa-phone topbar-info-icon top-2"></i>Call us: <span>(1) 456 6717</span></li>
                             <li class="sep"><span>|</span></li>
                             <li><i class="fa fa-envelope-o topbar-info-icon top-2"></i>Email: <span>test@test.it</span></li> -->
                         </ul>
                     </div>
-                    <div class="col-md-3 col-sm-3 login-reg-links">
+                    <div class="col-md-4 col-sm-4 login-reg-links">
                         <sec:authorize access="isAnonymous()">
                             <ul class="list-unstyled inline">
 	                            <li><a href="${privatePageUrl}">Entra</a></li>
