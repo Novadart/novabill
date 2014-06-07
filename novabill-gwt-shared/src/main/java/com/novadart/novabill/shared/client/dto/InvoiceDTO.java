@@ -18,6 +18,8 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
     
 	private boolean createdFromTransportDocuments;
 	
+	private boolean seenByClient;
+	
     private List<Long> transportDocumentIDs;
     
 	public PaymentDateType getPaymentDateGenerator() {
@@ -88,6 +90,16 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
 	public void setCreatedFromTransportDocuments(
 			boolean createdFromTransportDocuments) {
 		this.createdFromTransportDocuments = createdFromTransportDocuments;
+	}
+
+
+	public boolean isSeenByClient() {
+		return seenByClient;
+	}
+
+
+	public void setSeenByClient(boolean seenByClient) {
+		this.seenByClient = seenByClient;
 	}
     
 }

@@ -47,6 +47,9 @@ public class Invoice extends AbstractInvoice implements Serializable {
 	
 	@Column(columnDefinition = "boolean default false")
 	private boolean createdFromTransportDocuments = false;
+	
+	@Column(columnDefinition = "boolean default false")
+	private boolean seenByClient = false;
 
     @ManyToOne
     protected Business business;
@@ -104,6 +107,14 @@ public class Invoice extends AbstractInvoice implements Serializable {
 	public void setCreatedFromTransportDocuments(
 			boolean createdFromTransportDocuments) {
 		this.createdFromTransportDocuments = createdFromTransportDocuments;
+	}
+
+	public boolean isSeenByClient() {
+		return seenByClient;
+	}
+
+	public void setSeenByClient(boolean seenByClient) {
+		this.seenByClient = seenByClient;
 	}
 
 	public String getPaymentTypeName() {

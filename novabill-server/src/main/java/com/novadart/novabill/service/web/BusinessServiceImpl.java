@@ -262,7 +262,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		settings.setDefaultLayoutType(LayoutType.DENSE);
 		settings.setEmailReplyTo(StringUtils.isBlank(business.getEmail())? utilsService.getAuthenticatedPrincipalDetails().getUsername(): business.getEmail());
 		settings.setEmailSubject("Invio Fattura n. $NumeroFattura del $DataFattura");
-		settings.setEmailText(" Spettabile $NomeCliente,\n\ncon la presente trasmettiamo la nostra fattura nr. $NumeroFattura del $DataFattura in formato PDF.\nIl documento è scaricabile alla pagina web sotto indicata.\n\nCordiali saluti,\n$RagioneSocialeAzienda");
+		settings.setEmailText("Spettabile $NomeCliente,\n\ncon la presente trasmettiamo la nostra fattura nr. $NumeroFattura del $DataFattura in formato PDF.\nIl documento è scaricabile alla pagina web sotto indicata.\n\nCordiali saluti,\n$RagioneSocialeAzienda");
 	}
 	
 	@PreAuthorize("principal.business == null and #businessDTO != null and #businessDTO.id == null")
