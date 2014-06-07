@@ -175,6 +175,24 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 		},
 		
 		
+		/*
+		 * Invoice resource
+		 */
+		InvoiceUtils : function() {
+			return {
+				
+				email: function(params, successFn, failureFn){
+					$http({
+						method : 'POST',
+						url : baseUrl + 'businesses/'+ businessId +'/invoices/'+ params.invoiceID +'/email',
+						data : params.payload
+					}).success( successFn );
+				},
+				
+				
+			};
+		},
+		
 		
 		/*
 		 * PriceList resource

@@ -143,6 +143,46 @@ angular.module('novabill.directives.dialogs',
 
 
 /*
+ * Send Email Dialog
+ */
+.factory('nSendEmailDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+	return {
+		open : function( invoice ) {
+
+			return $modal.open({
+
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-send-email-dialog.html'),
+
+				controller: ['$scope', '$modalInstance', '$filter',
+				             function($scope, $modalInstance, $filter){
+					
+					$scope.data = {
+							to : invoice.client.email,
+							replyTo : invoice.business.email,
+							message : $filter('nEmailKeywords')(invoice.business.settings.emailText, invoice),
+							subject : $filter('nEmailKeywords')(invoice.business.settings.emailSubject, invoice),
+					};
+					
+					$scope.save = function(){
+						$modalInstance.close({
+							invoiceID : invoice.id,
+							payload : $scope.data
+						});
+					};
+
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
+				}]
+			});
+		}
+	};
+}])
+
+
+
+/*
  * Edit Address Dialog
  */
 .factory('nEditAddressDialog', ['nConstants', '$modal', function (nConstants, $modal){

@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('novabill.directives', 
-		['novabill.directives.validation', 'novabill.directives.dialogs', 'novabill.utils', 'novabill.translations', 
+		['novabill.directives.validation', 'novabill.directives.dialogs', 
+		 'novabill.utils', 'novabill.translations', 
 		 'novabill.calc', 'novabill.constants', 'ngSanitize', 'ngAnimate'])
 
 /*
@@ -16,8 +17,10 @@ angular.module('novabill.directives',
 			invoice : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$rootScope', '$element', '$translate', 'nConfirmDialog', 'nSelectClientDialog', 'nDownload',
-		              function($scope, $rootScope, $element, $translate, nConfirmDialog, nSelectClientDialog, nDownload){
+		controller : ['$scope', '$rootScope', '$element', 'nAjax', 'nAlertDialog', '$filter',
+		              'nConfirmDialog', 'nSelectClientDialog', 'nDownload', 'nSendEmailDialog',
+		              function($scope, $rootScope, $element, nAjax, nAlertDialog, $filter,
+		            		  nConfirmDialog, nSelectClientDialog, nDownload, nSendEmailDialog){
 
 			function isExpired(){
 				var today = new Date();
@@ -87,6 +90,18 @@ angular.module('novabill.directives',
 
 			$scope.createCreditNote = function(id){
 				window.location.assign(nConstants.url.creditNoteFromInvoice($scope.invoice.id));
+			};
+			
+			$scope.sendEmailToClient = function(){
+				var instance = nSendEmailDialog.open($scope.invoice);
+				instance.result.then(function(data){
+					var InvoiceUtils = nAjax.InvoiceUtils();
+					InvoiceUtils.email(data, function(){
+						nAlertDialog.open($filter('translate')('SEND_EMAIL_TO_CLIENT_SUCCESS'));
+					}, function(){
+						nAlertDialog.open($filter('translate')('SEND_EMAIL_TO_CLIENT_FAILURE'));
+					});
+				});
 			};
 
 			//activate the dropdown
@@ -724,11 +739,19 @@ angular.module('novabill.directives',
 .directive('nPremiumCheck', ['nConstants', function(nConstants) {
 	
 	return {
-		scope: { },
+		scope: { 
+			nPremiumClick : '&'
+		},
 		link : function(scope, element, attrs){
 			if(!nConstants.conf.premium){
 				element.attr('disabled', 'disabled');
-				element.addClass('text-muted');
+				element.css('color', '#999');
+			} else {
+				if(scope.nPremiumClick) {
+					element.click(function(){
+						scope.nPremiumClick();
+					});
+				}
 			};
 		},
 		restrict: 'A'

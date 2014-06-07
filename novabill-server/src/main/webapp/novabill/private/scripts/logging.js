@@ -4,7 +4,7 @@
  * See http://engineering.talis.com/articles/client-side-error-logging/
  */
 
-angular.module('novabill.logging', [])
+angular.module('novabill.logging', ['novabill.constants'])
 
 .constant('CSRF_HEADER', angular.element("meta[name='_csrf_header']").attr("content"))
 
@@ -81,8 +81,8 @@ angular.module('novabill.logging', [])
 }])
 
 
-.factory("nApplicationLogger", ["$log", "$window", 'CSRF_HEADER', 'CSRF_VALUE',
-                                function($log, $window, CSRF_HEADER, CSRF_VALUE){
+.factory("nApplicationLogger", ["$log", "$window", 'CSRF_HEADER', 'CSRF_VALUE', 'nConstants',
+                                function($log, $window, CSRF_HEADER, CSRF_VALUE, nConstants){
 	var heads = {};
 	heads[CSRF_HEADER] = CSRF_VALUE;
 	

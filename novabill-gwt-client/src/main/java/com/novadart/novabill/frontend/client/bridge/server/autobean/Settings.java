@@ -33,5 +33,17 @@ public interface Settings {
 	public String getTransportDocumentFooterNote();
 
 	public void setTransportDocumentFooterNote(String transportDocumentFooterNote);
+	
+	public String getEmailSubject();
+
+	public void setEmailSubject(String emailSubject);
+
+	public String getEmailText();
+
+	public void setEmailText(String emailText);
+
+	public String getEmailReplyTo();
+
+	public void setEmailReplyTo(String emailReplyTo);
 
 }
