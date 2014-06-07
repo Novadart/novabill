@@ -30,6 +30,7 @@ import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenExce
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.web.mvc.ajax.dto.EmailInvoiceDTO;
 
 @Controller
 @RestExceptionProcessingMixin
@@ -127,9 +128,8 @@ public class InvoiceController {
 	@RequestMapping(value = "/{id}/email", method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public void email(@PathVariable Long id, @RequestParam(value = "to") String to, @RequestParam(value = "subject") String subject,
-			@RequestParam(value = "message") String message, @RequestParam(value = "replyTo") String replyTo) throws NoSuchAlgorithmException, UnsupportedEncodingException{
-		invoiceService.email(id, to, replyTo, subject, message);
+	public void email(@PathVariable Long id, @RequestBody EmailInvoiceDTO emailInvoiceDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException{
+		invoiceService.email(id, emailInvoiceDTO.getTo(), emailInvoiceDTO.getReplyTo(), emailInvoiceDTO.getSubject(), emailInvoiceDTO.getMessage());
 	}
 
 }
