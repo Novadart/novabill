@@ -231,6 +231,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 	public void markViewedByClient(Long businessID, Long id, Long viewingTime) {
 		Invoice invoice = Invoice.findInvoice(id);
 		invoice.setSeenByClientTime(System.currentTimeMillis());
+		invoice.merge();
 	}
 	
 }
