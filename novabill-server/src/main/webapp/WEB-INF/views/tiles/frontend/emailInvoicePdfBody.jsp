@@ -4,7 +4,7 @@
 
 <spring:url var="frontendAssetsUrl" value="/frontend_assets" />
 <spring:url var="homeUrl" value="/" />
-<%-- <spring:url var="invoicePdfUrl" value="/pdf/invoices/${id}?token=${token}" /> --%>
+<spring:url var="invoicePdfUrl" value="${pdfUrl}" />
 
 <div class="page-container">
   
@@ -24,7 +24,7 @@
         </div>
         <!-- END BREADCRUMBS -->
 
-		Download the pdf <a href="${pdfUrl}">here</a>.
+		Download the pdf <a href="${invoicePdfUrl}">here</a>.
 
         <!-- BEGIN CONTAINER -->   
 <!--         <div class="container " style="margin-bottom: 150px;"> margin-bottom-40 -->
