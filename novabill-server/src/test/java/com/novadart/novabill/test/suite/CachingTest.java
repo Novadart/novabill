@@ -639,6 +639,7 @@ public class CachingTest extends ServiceTest {
 	public void transporterAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException {
 		Set<TransporterDTO> transporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
 		TransporterDTO transporterDTO = new TransporterDTO();
+		transporterDTO.setName("Jason");
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
 		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));

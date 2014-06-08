@@ -57,12 +57,12 @@ public class ChangePasswordControllerTest extends AuthenticatedTest{
 	public void defaultChangePasswordFlow() throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException{
 		String email = userPasswordMap.keySet().iterator().next();
 		String password = userPasswordMap.get(email);
-		String newPassword = "password", confirmNewPassword = "password";
+		String newPassword = "Novadart28&", confirmNewPassword = "Novadart28&";
 		ChangePassword changePassword = initChangePassword(email, password, newPassword, confirmNewPassword);
 		ChangePasswordController controller = initChangePasswordController(email);
 		String view = controller.processSubmit(changePassword, new BeanPropertyBindingResult(changePassword, "changePassword"), mock(SessionStatus.class));
 		Principal.entityManager().flush();
-		assertEquals("redirect:/private", view);
+		assertEquals("redirect:/private/", view);
 		Principal persistedPrincipal = Principal.findByUsername(email);
 		assertTrue(utilsService.isPasswordValid(persistedPrincipal.getPassword(), newPassword));
 	}
@@ -75,7 +75,7 @@ public class ChangePasswordControllerTest extends AuthenticatedTest{
 		ChangePassword changePassword = initChangePassword(email, password, newPassword, confirmNewPassword);
 		ChangePasswordController controller = initChangePasswordController(email);
 		String view = controller.processSubmit(changePassword, new BeanPropertyBindingResult(changePassword, "changePassword"), mock(SessionStatus.class));
-		assertEquals("changePassword", view);
+		assertEquals("private.changePassword", view);
 	}
 	
 	@Test
@@ -86,7 +86,7 @@ public class ChangePasswordControllerTest extends AuthenticatedTest{
 		ChangePassword changePassword = initChangePassword(email, password, newPassword, confirmNewPassword);
 		ChangePasswordController controller = initChangePasswordController(email);
 		String view = controller.processSubmit(changePassword, new BeanPropertyBindingResult(changePassword, "changePassword"), mock(SessionStatus.class));
-		assertEquals("changePassword", view);
+		assertEquals("private.changePassword", view);
 	}
 	
 	
@@ -98,7 +98,7 @@ public class ChangePasswordControllerTest extends AuthenticatedTest{
 		ChangePassword changePassword = initChangePassword(email, password, newPassword, confirmNewPassword);
 		ChangePasswordController controller = initChangePasswordController(email);
 		String view = controller.processSubmit(changePassword, new BeanPropertyBindingResult(changePassword, "changePassword"), mock(SessionStatus.class));
-		assertEquals("changePassword", view);
+		assertEquals("private.changePassword", view);
 	}
 	
 	@Test
@@ -109,7 +109,7 @@ public class ChangePasswordControllerTest extends AuthenticatedTest{
 		ChangePassword changePassword = initChangePassword(email, password, newPassword, confirmNewPassword);
 		ChangePasswordController controller = initChangePasswordController(email);
 		String view = controller.processSubmit(changePassword, new BeanPropertyBindingResult(changePassword, "changePassword"), mock(SessionStatus.class));
-		assertEquals("changePassword", view);
+		assertEquals("private.changePassword", view);
 	}
 	
 }

@@ -319,7 +319,7 @@ public class BusinessServiceTest extends ServiceTest {
 		assertTrue(EqualsBuilder.reflectionEquals(business, actualBusiness, "version", "paymentTypes",
 				"nonFreeAccountExpirationTime", "items", "accounts" , "invoices", "estimations", "creditNotes",
 				"transportDocuments", "clients", "principals", "priceLists", "settings"));
-		assertTrue(EqualsBuilder.reflectionEquals(business.getSettings(), actualBusiness.getSettings()));
+		assertEquals(LayoutType.DENSE, actualBusiness.getSettings().getDefaultLayoutType());
 	}
 	
 	@Test
