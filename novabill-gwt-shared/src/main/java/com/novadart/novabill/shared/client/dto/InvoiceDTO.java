@@ -18,7 +18,7 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
     
 	private boolean createdFromTransportDocuments;
 	
-	private boolean seenByClient;
+	private Long seenByClientTime;
 	
     private List<Long> transportDocumentIDs;
     
@@ -93,13 +93,13 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
 	}
 
 
-	public boolean isSeenByClient() {
-		return seenByClient;
+	public Long getSeenByClientTime() {
+		return seenByClientTime;
 	}
 
 
-	public void setSeenByClient(boolean seenByClient) {
-		this.seenByClient = seenByClient;
+	public void setSeenByClientTime(Long seenByClientTime) {
+		this.seenByClientTime = seenByClientTime;
 	}
-    
+
 }

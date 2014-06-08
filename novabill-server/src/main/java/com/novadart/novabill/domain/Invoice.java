@@ -48,8 +48,7 @@ public class Invoice extends AbstractInvoice implements Serializable {
 	@Column(columnDefinition = "boolean default false")
 	private boolean createdFromTransportDocuments = false;
 	
-	@Column(columnDefinition = "boolean default false")
-	private boolean seenByClient = false;
+	private Long seenByClientTime;
 
     @ManyToOne
     protected Business business;
@@ -109,12 +108,12 @@ public class Invoice extends AbstractInvoice implements Serializable {
 		this.createdFromTransportDocuments = createdFromTransportDocuments;
 	}
 
-	public boolean isSeenByClient() {
-		return seenByClient;
+	public Long getSeenByClientTime() {
+		return seenByClientTime;
 	}
 
-	public void setSeenByClient(boolean seenByClient) {
-		this.seenByClient = seenByClient;
+	public void setSeenByClientTime(Long seenByClientTime) {
+		this.seenByClientTime = seenByClientTime;
 	}
 
 	public String getPaymentTypeName() {

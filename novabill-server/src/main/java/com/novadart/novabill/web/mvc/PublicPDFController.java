@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.novadart.novabill.domain.DocumentAccessToken;
+import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -34,6 +35,8 @@ public class PublicPDFController extends PDFController {
 			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JasperReportKeyResolutionException, JRException {
 		if(DocumentAccessToken.findDocumentAccessTokens(id, token).size() == 0)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
+		Invoice invoice = Invoice.findInvoice(id);
+		invoice.setSeenByClientTime(System.currentTimeMillis());
 		return super.getInvoicePDF(id, token, true, response, locale);
 	}
 	
