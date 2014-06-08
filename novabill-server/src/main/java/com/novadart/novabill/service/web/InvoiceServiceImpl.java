@@ -226,5 +226,11 @@ public class InvoiceServiceImpl implements InvoiceService {
 		sendMessage(emailDTO.getTo(), emailDTO.getReplyTo(), emailDTO.getSubject(), templateVars, EMAIL_TEMPLATE_LOCATION);
 		new DocumentAccessToken(id, token).persist();
 	}
+
+	@Override
+	public void markViewedByClient(Long businessID, Long id, Long viewingTime) {
+		Invoice invoice = Invoice.findInvoice(id);
+		invoice.setSeenByClientTime(System.currentTimeMillis());
+	}
 	
 }

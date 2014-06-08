@@ -7,6 +7,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import net.sf.jasperreports.engine.JRException;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -19,6 +20,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.novadart.novabill.domain.DocumentAccessToken;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
+import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 
@@ -26,6 +28,9 @@ import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 @Controller
 @RequestMapping("/pdf")
 public class PublicPDFController extends PDFController {
+	
+	@Autowired
+	private InvoiceService invoiceService;
 
 	@RequestMapping(method = RequestMethod.GET, value = "/invoices/{id}", produces = "application/pdf")
 	@ResponseBody
@@ -35,8 +40,7 @@ public class PublicPDFController extends PDFController {
 			HttpServletResponse response, Locale locale) throws IOException, DataAccessException, NoSuchObjectException, JasperReportKeyResolutionException, JRException {
 		if(DocumentAccessToken.findDocumentAccessTokens(id, token).size() == 0)
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
-		Invoice invoice = Invoice.findInvoice(id);
-		invoice.setSeenByClientTime(System.currentTimeMillis());
+		invoiceService.markViewedByClient(Invoice.findInvoice(id).getBusiness().getId(), id, System.currentTimeMillis());
 		return super.getInvoicePDF(id, token, print, response, locale);
 	}
 	

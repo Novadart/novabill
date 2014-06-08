@@ -49,6 +49,7 @@ import com.novadart.novabill.domain.dto.transformer.TransportDocumentDTOTransfor
 import com.novadart.novabill.domain.dto.transformer.TransporterDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.BusinessService;
+import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
@@ -121,6 +122,9 @@ public class CachingTest extends ServiceTest {
 	
 	@Autowired
 	private TransporterGwtService transporterService;
+	
+	@Autowired
+	private InvoiceService invoiceAjaxService;
 	
 	@Autowired
 	private CacheManager cacheManager;
@@ -320,6 +324,32 @@ public class CachingTest extends ServiceTest {
 				break;
 			}
 		invoiceService.setPayed(businessID, clientID, id, true);
+		
+		List<InvoiceDTO> nonCachedResult = businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear());
+		Integer nonCachedCountClients = businessGwtService.countClients(businessID);
+		Integer nonCachedCountInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
+		assertTrue(result != nonCachedResult);
+		assertTrue(countClients.equals(nonCachedCountClients));
+		assertTrue(countInvsYear.equals(nonCachedCountInvsYear));
+		assertTrue(invYears == businessService.getInvoceYears(businessID));
+	}
+	
+	@Test
+	public void invoicemarkViewedByClientCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<Integer> invYears = businessService.getInvoceYears(businessID);
+		List<InvoiceDTO> result = businessGwtService.getInvoices(businessID, getYear());
+		Integer countClients = businessGwtService.countClients(businessID);
+		Integer countInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
+		
+		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
+		Long id = null;
+		for(Invoice inv: Client.findClient(clientID).getInvoices())
+			if(inv.getAccountingDocumentYear().equals(getYear())){
+				id = inv.getId();
+				break;
+			}
+		invoiceAjaxService.markViewedByClient(businessID, id, System.currentTimeMillis());
 		
 		List<InvoiceDTO> nonCachedResult = businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear());
 		Integer nonCachedCountClients = businessGwtService.countClients(businessID);
