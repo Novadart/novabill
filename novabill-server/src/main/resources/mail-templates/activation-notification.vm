@@ -4,10 +4,12 @@
 * {
     font-family: Arial, sans-serif, serif;
     font-size: 16px;
+    color: #333;
 }
 
 a {
     text-decoration: none;
+    color: blue;
 }
 
 a:HOVER {

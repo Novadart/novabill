@@ -183,6 +183,40 @@ angular.module('novabill.directives.dialogs',
 
 
 /*
+ * Email Preview Dialog
+ */
+.factory('nEmailPreviewDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+	return {
+		open : function( business ) {
+
+			return $modal.open({
+
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-email-preview-dialog.html'),
+
+				controller: ['$scope', '$modalInstance', '$filter', '$sce',
+				             function($scope, $modalInstance, $filter, $sce){
+					
+					$scope.subject = business.settings.emailSubject;
+					$scope.text = business.settings.emailText;
+					
+					$scope.save = function(){
+						$modalInstance.close();
+					};
+
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
+				}]
+			});
+		}
+	};
+}])
+
+
+
+
+/*
  * Edit Address Dialog
  */
 .factory('nEditAddressDialog', ['nConstants', '$modal', function (nConstants, $modal){

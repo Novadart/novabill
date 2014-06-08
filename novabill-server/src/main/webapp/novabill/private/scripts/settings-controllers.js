@@ -7,8 +7,10 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 /**
  * SETTINGS PAGE CONTROLLER
  */
-.controller('SettingsCtrl', ['$scope', 'nConstants', 'nAjax', 'nEditSharingPermitDialog', 'nDownload', '$window', '$location',
-                             function($scope, nConstants, nAjax, nEditSharingPermitDialog, nDownload, $window, $location){
+.controller('SettingsCtrl', ['$scope', 'nConstants', 'nAjax', 'nEditSharingPermitDialog', 
+                             'nDownload', '$window', '$location', 'nEmailPreviewDialog',
+                             function($scope, nConstants, nAjax, nEditSharingPermitDialog, 
+                            		 nDownload, $window, $location, nEmailPreviewDialog){
 
 	var Business = nAjax.Business();
 	var SharingPermit = nAjax.SharingPermit();
@@ -89,6 +91,10 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 				}
 			});
 		});
+	};
+	
+	$scope.viewPreview = function(){
+		nEmailPreviewDialog.open($scope.business);
 	};
 
 	$scope.newShare = function(){

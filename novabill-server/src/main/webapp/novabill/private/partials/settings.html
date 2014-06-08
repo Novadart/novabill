@@ -148,25 +148,27 @@
                                         <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
                                     </div>
                                 </div>
-                                <div ng-show="business.settings.emailSubject" class="col-md-4" style="position: relative;">
-                                    <small class="preview-title">{{'EMAIL_KEYWORD_PREVIEW' | translate}}</small>
-                                    <div class="preview-area" style="min-height: 55px;" ng-bind-html="business.settings.emailSubject | nEmailKeywordsFake"></div>
-                                </div>
                             </div>
                             
                             <div class="form-group">
                                 <label n-premium-check for="emailText" class="col-md-4 control-label">{{ 'BUSINESS_OPTION_EMAIL_TEXT' | translate }} *</label>
                                 <div class="col-md-4">
-                                    <textarea n-premium-check id="emailText" name="emailText" ng-model="business.settings.emailText" class="form-control input-xlarge" maxlength="1000" rows="6" 
+                                    <textarea n-premium-check id="emailText" name="emailText" ng-model="business.settings.emailText" 
+                                    class="form-control input-xlarge" maxlength="1000" rows="8" 
                                         ng-trim="false" required></textarea>
                                     <n-email-keyword-chooser model="business.settings.emailText"></n-email-keyword-chooser>
                                     <div ng-show="emailForm.emailText.$dirty && emailForm.emailText.$invalid">
 				                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
 				                    </div>
                                 </div>
-                                <div ng-show="business.settings.emailText" class="col-md-4" style="position: relative;">
-                                    <small class="preview-title">{{'EMAIL_KEYWORD_PREVIEW' | translate}}</small>
-                                    <div class="preview-area" style="min-height: 135px;" ng-bind-html="business.settings.emailText | nEmailKeywordsFake"></div>
+                            </div>
+                            
+                            <div class="form-group">
+                                <label class="col-md-4 control-label"></label>
+                                <div class="col-md-4">
+                                    <button n-premium-check type="button" ng-click="viewPreview()" ng-disabled="emailForm.$invalid" class="btn default pull-right">
+				                      {{'BUSINESS_OPTION_EMAIL_PREVIEW' | translate}}
+				                    </button>
                                 </div>
                             </div>
 

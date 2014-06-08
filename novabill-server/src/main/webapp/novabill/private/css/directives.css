@@ -85,6 +85,10 @@
 	margin-left: 10px;
 }
 
+.document-well .spacer {
+    margin-left: 10px;
+}
+
 .document-well .clientName {
 	margin-left: 10px;
 	max-width: 75%;
@@ -111,6 +115,10 @@
 	margin-right: 20px;
 	position: relative;
 	bottom: 10px;
+}
+
+.document-well.invoice .seen-by-client {
+	margin-left: 10px;
 }
 
 .document-well.invoice .payment-status {

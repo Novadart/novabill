@@ -1,6 +1,54 @@
 <html>
+<head>
+<style>
+* {
+    font-family: Arial, sans-serif, serif;
+    font-size: 16px;
+    color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+a:HOVER {
+    text-decoration: underline;
+}
+
+.logo{
+    color: #445058;
+    font-size: 18px;
+    font-weight: bold;
+    text-shadow: 1px 1px white;
+    text-decoration: none;
+}
+
+body {
+    padding: 1em;
+}
+
+</style>
+</head>
 <body>
-<p>${message}</p>
-You can access the invoice <a href=href="${invoiceUrl}">here</a>
+<h2 class="logo">Invio Fattura</h2>
+<hr>
+<br>
+<p>
+${message}
+</p>
+<p style="text-align:center;">
+<strong>
+<a target="_blank" href="${invoiceUrl}">Clicca qui</a> per scaricare la fattura.
+</strong>
+<br><br>
+<span style="font-size: small;">Alternativamente copia e incolla questa URL nel tuo browser ${invoiceUrl}<span>
+</p>
+<br>
+<hr>
+<p class="footer" style="text-align:right;font-size: small;">
+Messaggio inviato tramite <a target="_blank" style="font-size: small;" href="http://www.novabill.it/">Novabill - www.novabill.it</a> 
+</p>
 </body>
+
 </html>

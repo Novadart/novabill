@@ -12,43 +12,46 @@
         <div class="row breadcrumbs margin-bottom-40">
             <div class="container">
                 <div class="col-md-4 col-sm-4">
-                    <h1>Scarica Fattura</h1>
+                    <h1>Accesso alla Fattura</h1>
                 </div>
                 <div class="col-md-8 col-sm-8">
                     <ul class="pull-right breadcrumb">
                         <li><a href="${homeUrl}">Home</a></li>
-                        <li class="active">Scarica Fattura</li>
+                        <li class="active">Accesso alla Fattura</li>
                     </ul>
                 </div>
             </div>
         </div>
         <!-- END BREADCRUMBS -->
 
-		Download the pdf <a href="${invoicePdfUrl}">here</a>.
-
         <!-- BEGIN CONTAINER -->   
-<!--         <div class="container " style="margin-bottom: 150px;"> margin-bottom-40 -->
-<!--           <div class="row"> -->
-<!--             <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 login-signup-page"> -->
-<%--                 <form:form modelAttribute="forgotPassword" action="${forgotPasswordUrl}" method="post" >            --%>
-<!--                     <h2>Creazione Nuova Password</h2> -->
-<!--                     <p>Inserisci la tua email. Ti invieremo le istruzioni per creare una nuova password.</p> -->
-
-<!--                     <div class="input-group"> -->
-<!--                         <span class="input-group-addon"><i class="fa fa-envelope"></i></span> -->
-<%--                         <form:input path="email" type="text" class="form-control" name="email" placeholder="E-mail"></form:input> --%>
-<!--                     </div> -->
-<%--                     <span class="text-danger"><form:errors path="email" /> </span>         --%>
-
-<!--                     <div class="row margin-top-20"> -->
-<!--                         <div class="col-md-12 col-sm-12 text-center"> -->
-<!--                             <button type="submit" class="btn theme-btn">Invia</button>                         -->
-<!--                         </div> -->
-<!--                     </div> -->
-
-<%--                 </form:form> --%>
-<!--             </div> -->
-<!--           </div> -->
-<!--         </div> -->
+        <div class="container " style="margin-bottom: 150px;">
+          <div class="row">
+            <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 text-center">
+                    <h2>${businessName}</h2>
+                    <p>
+                        <% 
+                        Object pdfUrl = request.getAttribute("pdfUrl");
+                        if(pdfUrl != null) { 
+                        %>
+                        <br>
+                        Per scaricare il file PDF della fattura premere il pulsante sottostante
+                        <br>
+                        <br>
+                        <br>
+                        <a class="btn btn-success btn-lg" href="${invoicePdfUrl}">Scarica la Fattura</a>
+                        <%} else { %>
+                        <br>
+                        <p class="alert alert-warning">
+                            Il documento cui stai cercando di accedere non è disponibile.
+                        </p>
+                        <br>
+                        <a class="btn btn-success" href="${homeUrl}">Home</a>
+                        <%} %>                        
+                    </p>
+            
+            </div>
+          </div>
+        </div>
         
 </div>

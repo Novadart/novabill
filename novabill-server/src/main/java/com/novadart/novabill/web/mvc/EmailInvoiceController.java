@@ -20,12 +20,14 @@ public class EmailInvoiceController {
 		if(DocumentAccessToken.findDocumentAccessTokens(id, token).size() == 0)
 			return "redirect:" + Urls.PUBLIC_PAGE_NOT_FOUND;
 		Invoice invoice = Invoice.findInvoice(id);
-		if(invoice == null)
-			return "redirect:" + Urls.PUBLIC_PAGE_NOT_FOUND;
-		model.addAttribute("pageName", invoice.getBusiness().getName() + " - Scarica Fattura");
-		model.addAttribute("businessName", invoice.getBusiness().getName());
-		String pdfUrl = String.format("/pdf/invoices/%d?token=%s", id, URLEncoder.encode(token, "UTF-8"));
-		model.addAttribute("pdfUrl", pdfUrl);
+		if(invoice == null){
+			model.addAttribute("pdfUrl", null);
+		} else {
+			model.addAttribute("pageName", invoice.getBusiness().getName() + " - Accesso alla Fattura");
+			model.addAttribute("businessName", invoice.getBusiness().getName());
+			String pdfUrl = String.format("/pdf/invoices/%d?token=%s", id, URLEncoder.encode(token, "UTF-8"));
+			model.addAttribute("pdfUrl", pdfUrl);
+		}
 		return "email.invoice.pdf";
 	}
 

@@ -249,7 +249,7 @@ public class AutoBeanEncoder {
 		ai.setTotal(invoice.getTotal());
 		ai.setTotalBeforeTax(invoice.getTotalBeforeTax());
 		ai.setTotalTax(invoice.getTotalTax());
-		ai.setSeenByClient(invoice.isSeenByClient());
+		ai.setSeenByClientTime(invoice.getSeenByClientTime());
 
 		LongList ll = AutoBeanMaker.INSTANCE.makeLongList().as();
 		ll.setList(invoice.getTransportDocumentIDs());
