@@ -1,5 +1,8 @@
 package com.novadart.novabill.web.mvc;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,7 +16,7 @@ import com.novadart.novabill.domain.Invoice;
 public class EmailInvoiceController {
 	
 	@RequestMapping(value = Urls.PUBLIC_EMAIL_INVOICES, method = RequestMethod.GET)
-	public String get(@RequestParam Long id, @RequestParam String token, Model model){
+	public String get(@RequestParam Long id, @RequestParam String token, Model model) throws UnsupportedEncodingException{
 		if(DocumentAccessToken.findDocumentAccessTokens(id, token).size() == 0)
 			return "redirect:" + Urls.PUBLIC_PAGE_NOT_FOUND;
 		Invoice invoice = Invoice.findInvoice(id);
@@ -21,8 +24,8 @@ public class EmailInvoiceController {
 			return "redirect:" + Urls.PUBLIC_PAGE_NOT_FOUND;
 		model.addAttribute("pageName", invoice.getBusiness().getName() + " - Scarica Fattura");
 		model.addAttribute("businessName", invoice.getBusiness().getName());
-		model.addAttribute("id", id);
-		model.addAttribute("token", token);
+		String pdfUrl = String.format("/pdf/invoices/%d?token=%s", id, URLEncoder.encode(token, "UTF-8"));
+		model.addAttribute("pdfUrl", pdfUrl);
 		return "email.invoice.pdf";
 	}
 

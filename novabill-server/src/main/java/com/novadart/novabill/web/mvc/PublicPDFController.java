@@ -37,7 +37,7 @@ public class PublicPDFController extends PDFController {
 			return new ResponseEntity<>(HttpStatus.BAD_REQUEST);
 		Invoice invoice = Invoice.findInvoice(id);
 		invoice.setSeenByClientTime(System.currentTimeMillis());
-		return super.getInvoicePDF(id, token, true, response, locale);
+		return super.getInvoicePDF(id, token, print, response, locale);
 	}
 	
 	
