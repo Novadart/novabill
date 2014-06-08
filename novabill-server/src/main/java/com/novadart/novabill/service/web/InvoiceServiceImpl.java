@@ -220,9 +220,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 		simpleValidator.validate(emailDTO);
 		String token = tokenGenerator.generateToken();
 		Map<String, Object> templateVars = new HashMap<String, Object>();
-		templateVars.put("message", emailDTO.getMessage());
+		templateVars.put("message", emailDTO.getMessage().replaceAll("\n", "<br>"));
 		String url = String.format(invoicePdfUrl, id, URLEncoder.encode(token, "UTF-8"));
-		templateVars.put("invoicePdfUrl", url);
+		templateVars.put("invoiceUrl", url);
 		sendMessage(emailDTO.getTo(), emailDTO.getReplyTo(), emailDTO.getSubject(), templateVars, EMAIL_TEMPLATE_LOCATION);
 		new DocumentAccessToken(id, token).persist();
 	}
