@@ -14,6 +14,7 @@ import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenExce
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
 
 public interface InvoiceService {
 
@@ -37,6 +38,6 @@ public interface InvoiceService {
 
 	public List<InvoiceDTO> getAllUnpaidInDateRange(FilteringDateType filteringDateType, Date startDate, Date endDate) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 
-	public void email(Long id, String to, String replyTo, String subject, String message) throws NoSuchAlgorithmException, UnsupportedEncodingException;
+	public void email(Long id, EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException;
 
 }

@@ -7,6 +7,7 @@ import static org.junit.Assert.assertNull;
 import static org.junit.Assert.assertTrue;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.InvocationTargetException;
 import java.security.NoSuchAlgorithmException;
 import java.text.DateFormat;
@@ -61,6 +62,7 @@ import com.novadart.novabill.shared.client.facade.ClientGwtService;
 import com.novadart.novabill.shared.client.facade.InvoiceGwtService;
 import com.novadart.novabill.shared.client.validation.ErrorObject;
 import com.novadart.novabill.shared.client.validation.Field;
+import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -417,10 +419,15 @@ public class InvoiceServiceTest extends ServiceTest {
 	}
 	
 	@Test
-	public void emailInvoiceAuthorizedTest() throws NoSuchAlgorithmException, JsonParseException, JsonMappingException, IOException{
+	public void emailInvoiceAuthorizedTest() throws NoSuchAlgorithmException, JsonParseException, JsonMappingException, IOException, ValidationException{
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		invoiceAjaxService.email(inv.getId(), "foo@bar.com", "foo@bar.it", "Test subject", "Test message");
+		EmailDTO emailDTO = new EmailDTO();
+		emailDTO.setTo("foo@bar.com");
+		emailDTO.setReplyTo("foo@bar.it");
+		emailDTO.setSubject("Test subject");
+		emailDTO.setMessage("Test message");
+		invoiceAjaxService.email(inv.getId(), emailDTO);
 		smtpServer.stop();
 		String token = DocumentAccessToken.findAllDocumentAccessTokens().iterator().next().getToken();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
@@ -434,6 +441,62 @@ public class InvoiceServiceTest extends ServiceTest {
 		assertEquals("foo@bar.it", details.get(DBLoggerAspect.REPLY_TO));
 		assertEquals(1l, DocumentAccessToken.countDocumentAccessTokens());
 		assertEquals(1l, DocumentAccessToken.findDocumentAccessTokens(inv.getId(), token).size());
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void emailInvoiceInvalidParams1Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		EmailDTO emailDTO = new EmailDTO();
+		invoiceAjaxService.email(inv.getId(), emailDTO);
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void emailInvoiceInvalidParams2Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		EmailDTO emailDTO = new EmailDTO();
+		emailDTO.setTo("foo@bar.com");
+		invoiceAjaxService.email(inv.getId(), emailDTO);
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void emailInvoiceInvalidParams3Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		EmailDTO emailDTO = new EmailDTO();
+		emailDTO.setTo("foo@bar.com");
+		emailDTO.setReplyTo("foo@bar.it");
+		invoiceAjaxService.email(inv.getId(), emailDTO);
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void emailInvoiceInvalidParams4Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		EmailDTO emailDTO = new EmailDTO();
+		emailDTO.setTo("foo@bar.com");
+		emailDTO.setReplyTo("foo@bar.it");
+		emailDTO.setSubject("Test subject");
+		invoiceAjaxService.email(inv.getId(), emailDTO);
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void emailInvoiceInvalidParams5Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		EmailDTO emailDTO = new EmailDTO();
+		emailDTO.setTo("foo-bar.com");
+		emailDTO.setReplyTo("foo@bar.it");
+		emailDTO.setSubject("Test subject");
+		emailDTO.setMessage("Test message");
+		invoiceAjaxService.email(inv.getId(), emailDTO);
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void emailInvoiceInvalidParams6Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
+		EmailDTO emailDTO = new EmailDTO();
+		emailDTO.setTo("foo@bar.com");
+		emailDTO.setReplyTo("foo-bar.it");
+		emailDTO.setSubject("Test subject");
+		emailDTO.setMessage("Test message");
+		invoiceAjaxService.email(inv.getId(), emailDTO);
 	}
 	
 }

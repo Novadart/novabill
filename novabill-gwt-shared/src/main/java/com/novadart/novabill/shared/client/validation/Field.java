@@ -51,5 +51,5 @@ public enum Field {
 	emailSubject, emailText, emailReplyTo,
 	
 	//Email
-	to, from, subject, text, replyTo
+	to, from, subject, text, replyTo, message
 }

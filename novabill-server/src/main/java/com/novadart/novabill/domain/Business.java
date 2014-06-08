@@ -109,7 +109,7 @@ public class Business implements Serializable, Taxable {
     @Trimmed
     private String country;
 
-    @Size(max = 255)
+    @Size(max = com.novadart.novabill.domain.Email.EMAIL_MAX_LENGTH)
     @Email
     @Trimmed
     private String email;

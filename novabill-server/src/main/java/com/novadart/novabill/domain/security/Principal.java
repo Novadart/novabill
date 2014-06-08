@@ -20,8 +20,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -30,6 +32,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.Hash;
+import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Registration;
 
@@ -40,7 +43,10 @@ public class Principal implements UserDetails {
 	
 	private static final long serialVersionUID = -2652502773566344511L;
 	
+	@NotBlank
 	@Email
+	@Size(max = com.novadart.novabill.domain.Email.EMAIL_MAX_LENGTH)
+	@Trimmed
 	private String username;
 	
 	private String password;

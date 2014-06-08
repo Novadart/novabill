@@ -109,7 +109,7 @@ public class Client implements Serializable, Taxable {
     private String country;
 
 	@Field(name = FTSNamespace.EMAIL)
-    @Size(max = 255)
+    @Size(max = com.novadart.novabill.domain.Email.EMAIL_MAX_LENGTH)
     @Email
     @Trimmed
     private String email;

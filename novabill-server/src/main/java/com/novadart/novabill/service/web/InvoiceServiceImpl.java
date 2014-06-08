@@ -43,6 +43,7 @@ import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenExce
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
+import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
 
 @MailMixin
 @Service
@@ -215,13 +216,14 @@ public class InvoiceServiceImpl implements InvoiceService {
 	
 	@Override
 	@PreAuthorize("T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == principal.business.id")
-	public void email(Long id, String to, String replyTo, String subject, String message) throws NoSuchAlgorithmException, UnsupportedEncodingException {
+	public void email(Long id, EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+		simpleValidator.validate(emailDTO);
 		String token = tokenGenerator.generateToken();
 		Map<String, Object> templateVars = new HashMap<String, Object>();
-		templateVars.put("message", message);
+		templateVars.put("message", emailDTO.getMessage());
 		String url = String.format(invoicePdfUrl, id, URLEncoder.encode(token, "UTF-8"));
 		templateVars.put("invoicePdfUrl", url);
-		sendMessage(to, replyTo, subject, templateVars, EMAIL_TEMPLATE_LOCATION);
+		sendMessage(emailDTO.getTo(), emailDTO.getReplyTo(), emailDTO.getSubject(), templateVars, EMAIL_TEMPLATE_LOCATION);
 		new DocumentAccessToken(id, token).persist();
 	}
 	

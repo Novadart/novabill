@@ -16,6 +16,7 @@ import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
 
 public aspect InvoiceServiceActionsAspect extends DBLoggerAspect {
 	
@@ -36,8 +37,8 @@ public aspect InvoiceServiceActionsAspect extends DBLoggerAspect {
 	pointcut setPayed(Long businessID, Long clientID, Long id, Boolean value) : 
 		execution(public void com.novadart.novabill.service.web.InvoiceServiceImpl.setPayed(..)) && args(businessID, clientID, id, value);
 	
-	pointcut email(Long id, String to, String replyTo, String subject, String message) : 
-		execution(public void com.novadart.novabill.service.web.InvoiceServiceImpl.email(..)) && args(id, to, replyTo, subject, message);
+	pointcut email(Long id, EmailDTO emailDTO) : 
+		execution(public void com.novadart.novabill.service.web.InvoiceServiceImpl.email(..)) && args(id, emailDTO);
 	
 	after(InvoiceDTO invoiceDTO) returning (Long id) : add(invoiceDTO){
 		Long time = System.currentTimeMillis();
@@ -80,12 +81,12 @@ public aspect InvoiceServiceActionsAspect extends DBLoggerAspect {
 		logActionInDB(businessID, EntityType.INVOICE, OperationType.SET_PAYED, id, time, details);
 	}
 	
-	after(Long id, String to, String replyTo, String subject, String message) returning : email(id, to, replyTo, subject, message){
+	after(Long id, EmailDTO emailDTO) returning : email(id, emailDTO){
 		Long time = System.currentTimeMillis();
 		LOGGER.info("[{}, emailInvoice, {}, id: {}, replyTo: {}]",
-				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), id, replyTo});
+				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), id, emailDTO.getReplyTo()});
 		Invoice invoice = Invoice.findInvoice(id);
-		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, invoice.getClient().getName(), DOCUMENT_ID, invoice.getDocumentID().toString(), REPLY_TO, replyTo);
+		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, invoice.getClient().getName(), DOCUMENT_ID, invoice.getDocumentID().toString(), REPLY_TO, emailDTO.getReplyTo());
 		logActionInDB(invoice.getBusiness().getId(), EntityType.INVOICE, OperationType.EMAIL, id, time, details);
 	}
 

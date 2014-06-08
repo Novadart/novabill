@@ -19,7 +19,6 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
-import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.mail.javamail.JavaMailSender;
@@ -36,28 +35,35 @@ public class Email implements Serializable {
 
 	private static final long serialVersionUID = -3446297950310934579L;
 	
+	public static final int SUBJECT_MAX_LENGTH = 78;
+	
+	public static final int TEXT_MAX_LENGTH = 1500;
+	
+	public static final int EMAIL_MAX_LENGTH = 255;
+	
+	
 	@Autowired
 	private transient JavaMailSender mailSender;
 	
 	@Column(name = "to_addr")
+	@Size(max = EMAIL_MAX_LENGTH)
 	@Trimmed
-	@NotBlank
 	private String to;
 	
 	@Column(name = "from_addr")
+	@Size(max = EMAIL_MAX_LENGTH)
 	@Trimmed
-	@NotBlank
 	private String from;
 
-	@Size(max = 78)
-	@NotBlank
+	@Size(max = SUBJECT_MAX_LENGTH)
 	private String subject;
 	
-	@Size(max = 1500)
-	@NotBlank
+	@Size(max = TEXT_MAX_LENGTH)
 	private String text;
 	
 	@Column(name = "replyto_addr")
+	@Size(max = EMAIL_MAX_LENGTH)
+	@Trimmed
 	private String replyTo;
 	
 	private EmailStatus status;
