@@ -16,6 +16,9 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 	var SharingPermit = nAjax.SharingPermit();
 	
 	$scope.changePasswordUrl = nConstants.conf.changePasswordBaseUrl;
+	$scope.principalEmail = nConstants.conf.principalEmail;
+	$scope.principalCreationDate = nConstants.conf.principalCreationDate;
+	$scope.premium = nConstants.conf.premium;
 	
 	$scope.onTabChange = function(token){
 		$location.search('tab',token);

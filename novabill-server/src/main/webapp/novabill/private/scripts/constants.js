@@ -8,6 +8,8 @@ angular.module('novabill.constants', [])
 	// setting default values useful for testing
 	var businessId = 0;
 	var businessName = "";
+	var principalEmail = "";
+	var principalCreationDate = 0;
 	var premium = false;
 	var defaultPriceListName = '::default';
 	var basePath = '/novabill-server/';
@@ -17,6 +19,8 @@ angular.module('novabill.constants', [])
 	if(typeof NovabillConf != 'undefined') {
 		businessId = NovabillConf.businessId;
 		businessName = NovabillConf.businessName;
+		principalEmail = NovabillConf.principalEmail;
+		principalCreationDate = NovabillConf.principalCreationDate;
 		premium = NovabillConf.premium;
 		defaultPriceListName = NovabillConf.defaultPriceListName;
 		basePath = NovabillConf.basePath;
@@ -28,6 +32,8 @@ angular.module('novabill.constants', [])
 	this.conf = {
 			businessId : businessId,
 			businessName : businessName,
+			principalEmail : principalEmail,
+			principalCreationDate : principalCreationDate,
 			premium : premium,
 			defaultPriceListName : defaultPriceListName,
 			version : version,
