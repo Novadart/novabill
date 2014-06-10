@@ -11,7 +11,8 @@ angular.module("novabill.payments", ['novabill.payments.controllers', 'novabill.
 
 	.when('/', {
 		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/payments.html'),
-		controller: 'PaymentsCtrl'
+		controller: 'PaymentsCtrl',
+		reloadOnSearch : false
 	})
 
 	.otherwise ({
