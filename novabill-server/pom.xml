@@ -373,6 +373,7 @@
 						WEB-INF/views/layouts/frontend/subPageLayout.jsp,
 						WEB-INF/views/layouts/frontend/subPageMinimalLayout.jsp,
 						WEB-INF/views/layouts/private/privateLayout.jsp,
+						WEB-INF/views/layouts/private/privateHelloLayout.jsp,
 						WEB-INF/views/layouts/private/printPDF.jsp,
 						WEB-INF/views/tiles/frontend/analytics.jsp,
 						WEB-INF/views/tiles/private/analytics.jsp,
@@ -395,6 +396,7 @@
 								<include>views/layouts/frontend/subPageLayout.jsp</include>
 								<include>views/layouts/frontend/subPageMinimalLayout.jsp</include>
 								<include>views/layouts/private/privateLayout.jsp</include>
+								<include>views/layouts/private/privateHelloLayout.jsp</include>
 								<include>views/layouts/private/printPDF.jsp</include>
 								<include>views/tiles/frontend/analytics.jsp</include>
 								<include>views/tiles/private/analytics.jsp</include>

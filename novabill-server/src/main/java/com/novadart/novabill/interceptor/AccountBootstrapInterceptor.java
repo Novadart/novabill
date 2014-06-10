@@ -22,13 +22,21 @@ public class AccountBootstrapInterceptor implements HandlerInterceptor {
 		if(principal.getBusiness() == null){
 
 			// check if the url we are loading is already the one for first run
-			if ( !requestURI.contains("/private/settings/")) {
+			if ( !requestURI.contains("/private/hello/")) {
 
-				String newURI = "/private/settings/";
+				String newURI = "/private/hello/";
 				response.sendRedirect(request.getServletContext().getContextPath()+newURI);
 				return false;
 			}
 
+		} else {
+			
+			if ( requestURI.contains("/private/hello/")) {
+
+				String newURI = "/private/";
+				response.sendRedirect(request.getServletContext().getContextPath()+newURI);
+				return false;
+			}
 		}
 
 		return true;

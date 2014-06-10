@@ -1,7 +1,8 @@
 'use strict';
 
 angular.module('novabill.directives.dialogs', 
-		['novabill.directives.validation', 'novabill.utils', 'novabill.ajax', 'novabill.constants', 'novabill.calc', 'ui.bootstrap'])
+		['novabill.directives.validation', 'novabill.directives.forms', 
+		 'novabill.utils', 'novabill.ajax', 'novabill.constants', 'novabill.calc', 'ui.bootstrap'])
 
 
 /*
@@ -707,6 +708,37 @@ angular.module('novabill.directives.dialogs',
 		}
 	};
 }])
+
+
+/*
+ * Edit Price List Dialog
+ */
+.factory('nHelloDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+	return {
+		open : function( business ) {
+
+			return $modal.open({
+
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-hello-dialog.html'),
+				size : 'lg',
+				keyboard : false,
+				backdrop : 'static',
+				controller: ['$scope', '$modalInstance',
+				             function($scope, $modalInstance){
+
+					$scope.business = business;
+
+					$scope.ok = function(){
+						$modalInstance.close();
+					};
+
+				}]
+			});
+		}
+	};
+}])
+
 
 
 /*

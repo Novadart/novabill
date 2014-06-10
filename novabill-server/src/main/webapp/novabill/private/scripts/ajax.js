@@ -72,7 +72,7 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 		Business : function(){
 			return $resource(
 					baseUrl + 'businesses/:id',
-					{ id : businessId },
+					{ id : (businessId==='-1' ? null : businessId)},
 					{
 						'getClients': { 
 							isArray: true,

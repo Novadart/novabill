@@ -94,6 +94,8 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		FAX : 'Fax',
 		FAX_PLACEHOLDER : 'esempio: 987 32322323',
 		FILTER : 'Filtra',
+		HELLO_DIALOG_ALERT : 'Per favore completa le informazioni sulla tua azienda',
+		HELLO_DIALOG_TITLE : 'Benvenuto!',
 		INFO : 'Informazioni',
 		INSERT_CLIENT_NAME : 'Ragione sociale del nuovo cliente',
 		INVOICE_REF_TITLE : 'Questo Documento di Trasporto è stato incluso in una fattura.\nClicca per vederla.',

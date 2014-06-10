@@ -23,7 +23,7 @@
 			        </tab-heading>
 			        
 			        <div class="container-fluid">
-                          <div class="row" ng-if="firstRun">
+                          <div class="row" >
                               <div class="col-md-6 col-md-offset-3">
                                  <div class="alert alert-info">
                                  Per favore completa le informazioni sulla tua azienda
@@ -35,7 +35,7 @@
                                   <h4><strong style="text-transform: uppercase;">{{'TITLE_COMPANY_DATA' | translate}}</strong></h4>
                                   <n-business-form business="business"></n-business-form>
                               </div>
-                              <div class="col-md-6" ng-show="!firstRun">
+                              <div class="col-md-6" >
                                   <h4><strong style="text-transform: uppercase;">{{'TITLE_SET_LOGO' | translate}}</strong></h4>
                                   <n-business-logo></n-business-logo>
                               </div>
@@ -43,12 +43,12 @@
                         </div>
                 </tab>
                 
-                <tab ng-show="!firstRun" select="onTabChange('profile')" active="activeTab.profile">
+                <tab  select="onTabChange('profile')" active="activeTab.profile">
                     <tab-heading>
                         <i class="fa fa-user"></i> {{'BUSINESS_TAB_PROFILE' | translate}}
                     </tab-heading>
                     
-                    <div class="row" ng-show="!firstRun">
+                    <div class="row" >
                         <div class="col-md-12">
                             <h4><strong style="text-transform: uppercase;">{{'TITLE_PROFILE' | translate}}</strong></h4>
                             <a href="{{changePasswordUrl}}" class="btn default">{{'CHANGE_PASSWORD' | translate}}</a>
@@ -68,7 +68,7 @@
                  
                 </tab>
                 
-                <tab ng-show="!firstRun" select="onTabChange('options')" active="activeTab.options">
+                <tab  select="onTabChange('options')" active="activeTab.options">
                     <tab-heading>
                         <i class="fa fa-gears"></i> {{'BUSINESS_TAB_OPTIONS' | translate}}
                     </tab-heading>
@@ -201,7 +201,7 @@
                     </button>
                 </tab>
                 
-                <tab ng-show="!firstRun" select="loadSharingPermits();onTabChange('share')" active="activeTab.share">
+                <tab select="loadSharingPermits();onTabChange('share')" active="activeTab.share">
                     <tab-heading>
                         <i class="fa fa-group"></i> {{'BUSINESS_TAB_SHARE' | translate}}
                     </tab-heading>
