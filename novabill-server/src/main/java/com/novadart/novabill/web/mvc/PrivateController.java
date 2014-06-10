@@ -124,12 +124,6 @@ public class PrivateController {
 		return mav;
 	}
 	
-	@RequestMapping(value = Urls.PRIVATE_PREMIUM, method = RequestMethod.GET)
-	public ModelAndView premium(){
-		ModelAndView mav = new ModelAndView("private.premium");
-		return mav;
-	}
-
 	@RequestMapping(value = Urls.PRIVATE_PRINT_PDF, method = RequestMethod.GET)
 	public ModelAndView printPdf(@RequestParam String pdfUrl) throws UnsupportedEncodingException{
 		ModelAndView mav = new ModelAndView("private.printPDF");

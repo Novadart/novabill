@@ -31,7 +31,7 @@ import com.novadart.novabill.domain.PayPalTransactionID;
 import com.novadart.novabill.paypal.PayPalIPNHandlerService;
 
 @Controller
-@RequestMapping("/paypal-ipn-listener")
+@RequestMapping(Urls.PUBLIC_PAYPAL_IPN_LISTENER)
 public class PayPalIPNListenerController {
 	
 	@Value("${paypal.url}")

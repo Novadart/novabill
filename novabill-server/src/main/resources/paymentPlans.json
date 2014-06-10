@@ -4,5 +4,11 @@
 		"mcGross": "119.00",
 		"itemName": "Novabill Premium Membership - 1 Year",
 		"payedPeriodInMonths": 12
+	},
+	{
+		"hostedButtonID": "UC6FAHQL9E5T2",
+		"mcGross": "200.00",
+		"itemName": "Novabill Premium Membership - 2 Years",
+		"payedPeriodInMonths": 24
 	}
 ]

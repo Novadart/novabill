@@ -69,11 +69,13 @@
         <put-attribute name="body" value="/WEB-INF/views/tiles/private/premium.jsp" />
     </definition>
 	
-	<definition name="private.premiumUpgradeSuccess" template="/WEB-INF/views/tiles/private/premiumUpgradeSuccess.jsp">
-	</definition>
-	
-	<definition name="private.premiumUpgradeFailure" template="/WEB-INF/views/tiles/private/premiumUpgradeFailure.jsp">
-	</definition>
+	<definition name="private.premiumUpgradeSuccess" extends="private.layout">
+        <put-attribute name="body" value="/WEB-INF/views/tiles/private/premiumUpgradeSuccess.jsp" />
+    </definition>
+    
+	<definition name="private.premiumUpgradeFailure" extends="private.layout">
+        <put-attribute name="body" value="/WEB-INF/views/tiles/private/premiumUpgradeFailure.jsp" />
+    </definition>
 	
 	<definition name="private.changePassword" extends="private.layout">
         <put-attribute name="body" value="/WEB-INF/views/tiles/private/changePasswordBody.jsp" />

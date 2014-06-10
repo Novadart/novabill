@@ -24,6 +24,8 @@ public interface Urls {
 	
 	public static final String PUBLIC_EMAIL_INVOICES = "/email/invoices";
 	
+	public static final String PUBLIC_PAYPAL_IPN_LISTENER = "/paypal-ipn-listener";
+	
 	// Private Urls	
 	public static final String PRIVATE_HOME = "/private/";
 	public static final String PRIVATE_CHANGE_PASSWORD = "/private/change-password";

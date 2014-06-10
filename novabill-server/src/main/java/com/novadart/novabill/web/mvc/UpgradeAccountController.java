@@ -24,7 +24,7 @@ import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
 
 @Controller
-@RequestMapping("/private/upgrade")
+@RequestMapping(Urls.PRIVATE_PREMIUM)
 public class UpgradeAccountController {
 	
 	@Autowired
@@ -50,13 +50,14 @@ public class UpgradeAccountController {
 		upgradeToken.setToken(token);
 		upgradeToken.persist();
 		String returnURL = new URL(request.getScheme(), request.getServerName(), request.getServerPort(),
-				request.getContextPath() + String.format("/private/upgrade/paypal-callback?email=%s&novabillToken=%s", 
+				request.getContextPath() + String.format("/private/premium/paypal-callback?email=%s&novabillToken=%s", 
 						URLEncoder.encode(email, "UTF-8"), URLEncoder.encode(token, "UTF-8"))).toString();
 		model.addAttribute("paypalAction", paypalAction);
-		model.addAttribute("hostedButtonID", paymentPlans.getPayPalPaymentPlanDescriptors()[0].getHostedButtonID());
+		model.addAttribute("hostedButtonIDOneYear", paymentPlans.getPayPalPaymentPlanDescriptors()[0].getHostedButtonID());
+		model.addAttribute("hostedButtonIDTwoYears", paymentPlans.getPayPalPaymentPlanDescriptors()[1].getHostedButtonID());
 		model.addAttribute("returnUrl", returnURL);
 		model.addAttribute("email", email);
-		return "private.upgrade";
+		return "private.premium";
 	}
 	
 	private void handleError(String email, String message){}

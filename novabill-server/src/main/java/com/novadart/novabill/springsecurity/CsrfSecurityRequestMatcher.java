@@ -9,6 +9,7 @@ import org.springframework.security.web.util.matcher.RequestMatcher;
 import org.springframework.stereotype.Service;
 
 import com.novadart.novabill.service.UtilsService;
+import com.novadart.novabill.web.mvc.Urls;
 
 @Service("csrfSecurityRequestMatcher")
 public class CsrfSecurityRequestMatcher implements RequestMatcher {
@@ -23,6 +24,8 @@ public class CsrfSecurityRequestMatcher implements RequestMatcher {
 		if(allowedMethods.matcher(request.getMethod()).matches())
 			return false;
 		if(utilsService.isGWTRPCCall(request))
+			return false;
+		if(request.getServletPath().equals(Urls.PUBLIC_PAYPAL_IPN_LISTENER))
 			return false;
 		return true;
 	}
