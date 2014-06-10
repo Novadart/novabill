@@ -29,7 +29,7 @@ privileged aspect MailAspect {
 	declare parents : @MailMixin * implements MailSender;
 
 
-	public void MailSender.sendMessage(String[] to, String replyTo, String subject, Map<String, Object> model, String templateLocation){
+	public boolean MailSender.sendMessage(String[] to, String replyTo, String subject, Map<String, Object> model, String templateLocation, boolean retry){
 		MailAspect thisAspect = MailAspect.aspectOf();
 		Email email = null;
 		try {
@@ -37,23 +37,27 @@ privileged aspect MailAspect {
 					CharEncoding.UTF_8, model);
 			email = new Email(to, thisAspect.from, subject, text, replyTo);
 			email.send();
+			return true;
 		} catch (MessagingException | MailSendException e) {
-			email.setTries(1);
-			email.setStatus(EmailStatus.PENDING);
-			email.persist();
+			if(retry) {
+				email.setTries(1);
+				email.setStatus(EmailStatus.PENDING);
+				email.persist();
+			}
+			return false;
 		}
 	}
 	
-	public void MailSender.sendMessage(String to, String replyTo, String subject, Map<String, Object> model, String templateLocation){
-		sendMessage(new String[]{to}, replyTo, subject, model, templateLocation);
+	public boolean MailSender.sendMessage(String to, String replyTo, String subject, Map<String, Object> model, String templateLocation, boolean retry){
+		return sendMessage(new String[]{to}, replyTo, subject, model, templateLocation, retry);
 	}
 	
-	public void MailSender.sendMessage(String[] to, String subject, Map<String, Object> model, String templateLocation){
-		sendMessage(to, null, subject, model, templateLocation);
+	public boolean MailSender.sendMessage(String[] to, String subject, Map<String, Object> model, String templateLocation){
+		return sendMessage(to, null, subject, model, templateLocation, true);
 	}
 	
-	public void MailSender.sendMessage(String to, String subject, Map<String, Object> model, String templateLocation){
-		sendMessage(new String[]{to}, null, subject, model, templateLocation);
+	public boolean MailSender.sendMessage(String to, String subject, Map<String, Object> model, String templateLocation){
+		return sendMessage(new String[]{to}, null, subject, model, templateLocation, true);
 	}
 	
 }

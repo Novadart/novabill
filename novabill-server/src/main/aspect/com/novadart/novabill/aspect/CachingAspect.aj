@@ -161,10 +161,13 @@ public privileged aspect CachingAspect {
 		@CacheEvict(value = INVOICE_CACHE, key = "#invoiceDTO.business.id.toString().concat('-').concat(new java.text.SimpleDateFormat('yyyy').format(#invoiceDTO.accountingDocumentDate).toString())")
 	});
 	
-	declare @method : public void com.novadart.novabill.service.web.InvoiceServiceImpl.setPayed(Long, ..):
+	declare @method : public void com.novadart.novabill.service.web.InvoiceServiceImpl.setPayed(..):
 		@CacheEvict(value = INVOICE_CACHE, key = "#businessID.toString().concat('-').concat(T(com.novadart.novabill.domain.Invoice).findInvoice(#id).accountingDocumentYear.toString())");
 	
-	declare @method : public void com.novadart.novabill.service.web.InvoiceServiceImpl.markViewedByClient(Long, ..):
+	declare @method : public void com.novadart.novabill.service.web.InvoiceServiceImpl.markViewedByClient(..):
+		@CacheEvict(value = INVOICE_CACHE, key = "#businessID.toString().concat('-').concat(T(com.novadart.novabill.domain.Invoice).findInvoice(#id).accountingDocumentYear.toString())");
+	
+	declare @method : public boolean com.novadart.novabill.service.web.InvoiceServiceImpl.email(..):
 		@CacheEvict(value = INVOICE_CACHE, key = "#businessID.toString().concat('-').concat(T(com.novadart.novabill.domain.Invoice).findInvoice(#id).accountingDocumentYear.toString())");
 	
 	/*

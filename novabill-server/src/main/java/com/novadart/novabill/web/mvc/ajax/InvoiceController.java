@@ -18,6 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
@@ -41,6 +42,9 @@ public class InvoiceController {
 	
 	@Autowired
 	private BusinessService businessService;
+	
+	@Autowired
+	private UtilsService utilsService;
 	
 	@RequestMapping(value = "/year/{year}", method = RequestMethod.GET)
 	@ResponseBody
@@ -127,8 +131,8 @@ public class InvoiceController {
 	@RequestMapping(value = "/{id}/email", method = RequestMethod.POST)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public void email(@PathVariable Long id, @RequestBody EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException{
-		invoiceService.email(id, emailDTO);
+	public boolean email(@PathVariable Long id, @RequestBody EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException{
+		return invoiceService.email(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId(), id, emailDTO);
 	}
 
 }

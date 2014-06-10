@@ -215,16 +215,23 @@ public class InvoiceServiceImpl implements InvoiceService {
 	}
 	
 	@Override
-	@PreAuthorize("T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == principal.business.id")
-	public void email(Long id, EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
+	@PreAuthorize("principal.business.id == #businessID and " +
+			      "T(com.novadart.novabill.domain.Invoice).findInvoice(#id)?.business?.id == #businessID")
+	public boolean email(Long businessID, Long id, EmailDTO emailDTO) throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
 		simpleValidator.validate(emailDTO);
 		String token = tokenGenerator.generateToken();
 		Map<String, Object> templateVars = new HashMap<String, Object>();
 		templateVars.put("message", emailDTO.getMessage().replaceAll("\n", "<br>"));
 		String url = String.format(invoicePdfUrl, id, URLEncoder.encode(token, "UTF-8"));
 		templateVars.put("invoiceUrl", url);
-		sendMessage(emailDTO.getTo(), emailDTO.getReplyTo(), emailDTO.getSubject(), templateVars, EMAIL_TEMPLATE_LOCATION);
-		new DocumentAccessToken(id, token).persist();
+		if(sendMessage(emailDTO.getTo(), emailDTO.getReplyTo(), emailDTO.getSubject(), templateVars, EMAIL_TEMPLATE_LOCATION, false)){
+			Invoice invoice = Invoice.findInvoice(id);
+			invoice.setEmailedToClient(true);
+			invoice.merge();
+			new DocumentAccessToken(id, token).persist();
+			return true;
+		} else
+			return false;
 	}
 
 	@Override
