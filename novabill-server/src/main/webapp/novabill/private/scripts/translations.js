@@ -83,6 +83,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		EMAIL_PLACEHOLDER : 'esempio: mario.rossi@example.com',
 		EMAIL_REPLY_TO_ADDRESS : 'Indirizzo di risposta (campo reply-to)',
 		EMAIL_SEEN_BY_CLIENT_AT : 'Fattura scaricata dal cliente in data ',
+		EMAIL_SENT : 'Email inviata correttamente',
 		EMAIL_TO_ADDRESS : 'E-mail Cliente',
 		ESTIMATION : 'Offerta',
 		ESTIMATIONS : 'Offerte',

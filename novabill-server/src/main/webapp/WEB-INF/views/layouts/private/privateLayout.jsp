@@ -78,7 +78,6 @@
 <link href="${privateAssetsUrl}/css/plugins.css" rel="stylesheet" type="text/css" />
 <link href="${privateAssetsUrl}/css/pages/tasks.css" rel="stylesheet" type="text/css" />
 <link href="${privateAssetsUrl}/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color" />
-<link href="${privateAssetsUrl}/css/custom.css" rel="stylesheet" type="text/css" />
 <!-- END THEME STYLES -->
 
 <tiles:insertAttribute name="css" />

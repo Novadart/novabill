@@ -29,6 +29,10 @@ public interface Invoice {
 
 	public void setSeenByClientTime(Long seenByClient);
 	
+	public boolean isEmailedToClient();
+
+	public void setEmailedToClient(boolean emailedToClient);
+	
 	/*
 	 * AbstractInvoiceDTO interface
 	 */
