@@ -427,7 +427,7 @@ public class InvoiceServiceTest extends ServiceTest {
 		emailDTO.setReplyTo("foo@bar.it");
 		emailDTO.setSubject("Test subject");
 		emailDTO.setMessage("Test message");
-		invoiceAjaxService.email(inv.getId(), emailDTO);
+		invoiceAjaxService.email(inv.getBusiness().getId(), inv.getId(), emailDTO);
 		smtpServer.stop();
 		String token = DocumentAccessToken.findAllDocumentAccessTokens().iterator().next().getToken();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
@@ -441,13 +441,14 @@ public class InvoiceServiceTest extends ServiceTest {
 		assertEquals("foo@bar.it", details.get(DBLoggerAspect.REPLY_TO));
 		assertEquals(1l, DocumentAccessToken.countDocumentAccessTokens());
 		assertEquals(1l, DocumentAccessToken.findDocumentAccessTokens(inv.getId(), token).size());
+		assertTrue(Invoice.findInvoice(inv.getId()).isEmailedToClient());
 	}
 	
 	@Test(expected = ValidationException.class)
 	public void emailInvoiceInvalidParams1Test() throws NoSuchAlgorithmException, UnsupportedEncodingException, ValidationException {
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		EmailDTO emailDTO = new EmailDTO();
-		invoiceAjaxService.email(inv.getId(), emailDTO);
+		invoiceAjaxService.email(inv.getBusiness().getId(), inv.getId(), emailDTO);
 	}
 	
 	@Test(expected = ValidationException.class)
@@ -455,7 +456,7 @@ public class InvoiceServiceTest extends ServiceTest {
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setTo("foo@bar.com");
-		invoiceAjaxService.email(inv.getId(), emailDTO);
+		invoiceAjaxService.email(inv.getBusiness().getId(), inv.getId(), emailDTO);
 	}
 	
 	@Test(expected = ValidationException.class)
@@ -464,7 +465,7 @@ public class InvoiceServiceTest extends ServiceTest {
 		EmailDTO emailDTO = new EmailDTO();
 		emailDTO.setTo("foo@bar.com");
 		emailDTO.setReplyTo("foo@bar.it");
-		invoiceAjaxService.email(inv.getId(), emailDTO);
+		invoiceAjaxService.email(inv.getBusiness().getId(), inv.getId(), emailDTO);
 	}
 	
 	@Test(expected = ValidationException.class)
@@ -474,7 +475,7 @@ public class InvoiceServiceTest extends ServiceTest {
 		emailDTO.setTo("foo@bar.com");
 		emailDTO.setReplyTo("foo@bar.it");
 		emailDTO.setSubject("Test subject");
-		invoiceAjaxService.email(inv.getId(), emailDTO);
+		invoiceAjaxService.email(inv.getBusiness().getId(), inv.getId(), emailDTO);
 	}
 	
 	@Test(expected = ValidationException.class)
@@ -485,7 +486,7 @@ public class InvoiceServiceTest extends ServiceTest {
 		emailDTO.setReplyTo("foo@bar.it");
 		emailDTO.setSubject("Test subject");
 		emailDTO.setMessage("Test message");
-		invoiceAjaxService.email(inv.getId(), emailDTO);
+		invoiceAjaxService.email(inv.getBusiness().getId(), inv.getId(), emailDTO);
 	}
 	
 	@Test(expected = ValidationException.class)
@@ -496,7 +497,7 @@ public class InvoiceServiceTest extends ServiceTest {
 		emailDTO.setReplyTo("foo-bar.it");
 		emailDTO.setSubject("Test subject");
 		emailDTO.setMessage("Test message");
-		invoiceAjaxService.email(inv.getId(), emailDTO);
+		invoiceAjaxService.email(inv.getBusiness().getId(), inv.getId(), emailDTO);
 	}
 	
 }

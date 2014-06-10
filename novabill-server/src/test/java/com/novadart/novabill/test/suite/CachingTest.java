@@ -2,7 +2,9 @@ package com.novadart.novabill.test.suite;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -79,6 +81,7 @@ import com.novadart.novabill.shared.client.facade.PaymentTypeGwtService;
 import com.novadart.novabill.shared.client.facade.PriceListGwtService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
 import com.novadart.novabill.shared.client.facade.TransporterGwtService;
+import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -351,6 +354,35 @@ public class CachingTest extends ServiceTest {
 			}
 		invoiceAjaxService.markViewedByClient(businessID, id, System.currentTimeMillis());
 		
+		List<InvoiceDTO> nonCachedResult = businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear());
+		Integer nonCachedCountClients = businessGwtService.countClients(businessID);
+		Integer nonCachedCountInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
+		assertTrue(result != nonCachedResult);
+		assertTrue(countClients.equals(nonCachedCountClients));
+		assertTrue(countInvsYear.equals(nonCachedCountInvsYear));
+		assertTrue(invYears == businessService.getInvoceYears(businessID));
+	}
+	
+	@Test
+	public void invoiceEmailToClientCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, NoSuchAlgorithmException, UnsupportedEncodingException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<Integer> invYears = businessService.getInvoceYears(businessID);
+		List<InvoiceDTO> result = businessGwtService.getInvoices(businessID, getYear());
+		Integer countClients = businessGwtService.countClients(businessID);
+		Integer countInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
+		EmailDTO emailDTO = new EmailDTO();
+		emailDTO.setTo("foo@bar.com");
+		emailDTO.setReplyTo("foo@bar.it");
+		emailDTO.setSubject("Test subject");
+		emailDTO.setMessage("Test message");
+		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
+		Long id = null;
+		for(Invoice inv: Client.findClient(clientID).getInvoices())
+			if(inv.getAccountingDocumentYear().equals(getYear())){
+				id = inv.getId();
+				break;
+			}
+		invoiceAjaxService.email(businessID, id, emailDTO);
 		List<InvoiceDTO> nonCachedResult = businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear());
 		Integer nonCachedCountClients = businessGwtService.countClients(businessID);
 		Integer nonCachedCountInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));

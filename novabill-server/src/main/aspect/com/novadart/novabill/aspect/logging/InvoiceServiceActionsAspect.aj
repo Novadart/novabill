@@ -37,8 +37,8 @@ public aspect InvoiceServiceActionsAspect extends DBLoggerAspect {
 	pointcut setPayed(Long businessID, Long clientID, Long id, Boolean value) : 
 		execution(public void com.novadart.novabill.service.web.InvoiceServiceImpl.setPayed(..)) && args(businessID, clientID, id, value);
 	
-	pointcut email(Long id, EmailDTO emailDTO) : 
-		execution(public void com.novadart.novabill.service.web.InvoiceServiceImpl.email(..)) && args(id, emailDTO);
+	pointcut email(Long businessID, Long id, EmailDTO emailDTO) : 
+		execution(public boolean com.novadart.novabill.service.web.InvoiceServiceImpl.email(..)) && args(businessID, id, emailDTO);
 	
 	after(InvoiceDTO invoiceDTO) returning (Long id) : add(invoiceDTO){
 		Long time = System.currentTimeMillis();
@@ -81,7 +81,7 @@ public aspect InvoiceServiceActionsAspect extends DBLoggerAspect {
 		logActionInDB(businessID, EntityType.INVOICE, OperationType.SET_PAYED, id, time, details);
 	}
 	
-	after(Long id, EmailDTO emailDTO) returning : email(id, emailDTO){
+	after(Long businessID, Long id, EmailDTO emailDTO) returning : email(businessID, id, emailDTO){
 		Long time = System.currentTimeMillis();
 		LOGGER.info("[{}, emailInvoice, {}, id: {}, replyTo: {}]",
 				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), id, emailDTO.getReplyTo()});

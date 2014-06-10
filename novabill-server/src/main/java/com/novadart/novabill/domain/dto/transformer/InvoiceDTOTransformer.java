@@ -19,6 +19,7 @@ public class InvoiceDTOTransformer extends AbstractInvoiceDTOTransformer {
 		invoiceDTO.setBusiness(BusinessDTOTransformer.toDTO(invoice.getBusiness()));
 		invoiceDTO.setClient(ClientDTOTransformer.toDTO(invoice.getClient()));
 		invoiceDTO.setSeenByClientTime(invoice.getSeenByClientTime());
+		invoiceDTO.setEmailedToClient(invoice.isEmailedToClient());
 		return invoiceDTO;
 	}
 	
