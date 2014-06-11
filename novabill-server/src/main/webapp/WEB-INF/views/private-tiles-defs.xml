@@ -10,6 +10,13 @@
 	   <put-attribute name="analytics" value="/WEB-INF/views/tiles/private/analytics.jsp" />
 	   <put-attribute name="javascript" value="private.${mvn.tiles.javascript.definition}" />
 	</definition>
+	
+	<definition name="private.hello.layout" template="/WEB-INF/views/layouts/private/privateHelloLayout.jsp">
+       <put-attribute name="novabill.version" value="${project.version}"></put-attribute>
+       <put-attribute name="css" value="private.${mvn.tiles.css.definition}" />
+       <put-attribute name="analytics" value="/WEB-INF/views/tiles/private/analytics.jsp" />
+       <put-attribute name="javascript" value="private.${mvn.tiles.javascript.definition}" />
+    </definition>
 
     <!-- WRO4J HELPERS -->
     <definition name="private.minifiedJS" template="/WEB-INF/views/tiles/wro4j/private/minifiedJS.jsp" />
@@ -59,9 +66,7 @@
 		<put-attribute name="body" value="/WEB-INF/views/tiles/private/settingsBody.jsp" />
 	</definition>
 	
-	<definition name="private.firstrun" extends="private.layout">
-		<put-attribute name="body" value="/WEB-INF/views/tiles/private/firstRunBody.jsp" />
-	</definition>
+	<definition name="private.hello" extends="private.hello.layout"></definition>
 	
 	<definition name="private.printPDF" template="/WEB-INF/views/layouts/private/printPDF.jsp"></definition>
 	

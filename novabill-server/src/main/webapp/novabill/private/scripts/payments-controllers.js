@@ -1,20 +1,34 @@
 'use strict';
 
-angular.module('novabill.payments.controllers', ['novabill.translations', 'novabill.directives', 'novabill.directives.dialogs', 
+angular.module('novabill.payments.controllers', ['novabill.translations', 'novabill.directives', 
+                                                 'novabill.directives.dialogs', 
                                                  'infinite-scroll', 'ui.bootstrap'])
 
 
 /**
  * SETTINGS PAGE CONTROLLER
  */
-.controller('PaymentsCtrl', ['$scope', 'nConstants', 'nDownload', function($scope, nConstants, nDownload){
+.controller('PaymentsCtrl', ['$scope', 'nConstants', 'nDownload', '$location', '$timeout',
+                             function($scope, nConstants, nDownload, $location, $timeout){
 	
 	$scope.dateOptions = {
 			'starting-day' : '1',
 			'clear-text' : 'Ripulisci'
 	};
+	
+	$scope.onTabChange = function(token){
+		$location.search('tab',token);
+	};
+	
+	$scope.activeTab = {
+			paymentsstatus : false,
+			paymenttypes : false,
+	};
+	$scope.activeTab[$location.search().tab] = true;
 
-	GWT_UI.showPaymentsPage('payments-page');
+	$timeout(function(){
+		GWT_UI.showPaymentsPage('payments-page');
+	}, 1000);
 
 	$scope.filteringDateType = 'PAYMENT_DUEDATE';
 	var loadedInvoices = [];

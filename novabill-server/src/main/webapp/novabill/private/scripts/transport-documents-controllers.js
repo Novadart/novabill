@@ -15,6 +15,16 @@ angular.module('novabill.transportDocuments.controllers',
 	var loadedTransportDocuments = [];
 	var PARTITION = 50;
 	
+	$scope.onTabChange = function(token){
+		$location.search('tab',token);
+	};
+	
+	$scope.activeTab = {
+			transportdocuments : false,
+			transporters : false,
+	};
+	$scope.activeTab[$location.search().tab] = true;
+	
 	$scope.loadTransporters = function(){
 		Transporter.query(function(transporters){
 			$scope.transporters = transporters;

@@ -36,8 +36,6 @@
 
 <spring:url var="clientsBaseUrl" value="<%=Urls.PRIVATE_CLIENTS%>" />
 
-<spring:url var="gwtUrl" value="/rpc/rpc.nocache.js" />
-
 <%
 	PAGES activePage = (PAGES)request.getAttribute("activePage");
 	Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
@@ -78,6 +76,7 @@
 <link href="${privateAssetsUrl}/css/plugins.css" rel="stylesheet" type="text/css" />
 <link href="${privateAssetsUrl}/css/pages/tasks.css" rel="stylesheet" type="text/css" />
 <link href="${privateAssetsUrl}/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color" />
+<link href="${privateAssetsUrl}/css/custom.css" rel="stylesheet" type="text/css" />
 <!-- END THEME STYLES -->
 
 <tiles:insertAttribute name="css" />
@@ -126,7 +125,6 @@ window.onerror = function(message, source, line, column) {
 			<!-- BEGIN LOGO -->
 			<a class="navbar-brand" href="${dashboardUrl}"> 
 		      <img src="${frontendAssetsUrl}/img/logo_thin_white.png" alt="logo" class="img-responsive" />
-				<img src="${privateAssetsUrl}/img/beta-small-w.png" alt="" style="position: relative; bottom: 10px; right: 49px; float: right;" />
 			</a>
 			<!-- END LOGO -->
 			<!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -134,38 +132,6 @@ window.onerror = function(message, source, line, column) {
 				src="${privateAssetsUrl}/img/menu-toggler.png" alt="" />
 			</a>
 			<!-- END RESPONSIVE MENU TOGGLER -->
-			<!-- BEGIN TOP NAVIGATION MENU -->
-			<ul class="nav navbar-nav pull-right">
-			     
-			    <sec:authorize ifAnyGranted="ROLE_BUSINESS_FREE">
-                    <li><a style="color: white; position: relative; bottom: 5px;" href="${premiumUrl}">PREMIUM</a></li>
-			    </sec:authorize>
-			
-				<!-- BEGIN USER LOGIN DROPDOWN -->
-				<li class="dropdown user"><a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-					data-close-others="true"> <span class="btn btn-sm dark"><%=business != null ? business.getName() : "Menu"%></span> <i
-						class="fa fa-angle-down"></i>
-				</a>
-					<ul class="dropdown-menu">
-						<li><a href="${settingsUrl}"><i class="fa fa-gears"></i> Impostazioni</a></li>
-						<li class="divider"></li>
-						<li><a target="_blank" href="http://novabill.uservoice.com/"><i class="fa fa-question"></i> Area Supporto</a></li>
-						<li class="divider"></li>
-						<li><a href="javascript:;" id="trigger_fullscreen"><i class="fa fa-move"></i> Schermo Intero</a></li>
-						<li id="logoutLi">
-							<form id="logoutForm" action="${logoutUrl}" method="post">
-								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
-    						    <a href="javascript:;"><i class="fa fa-key"></i>
-    						      <input id="logoutButton" style="background: none; border: none; outline: none;" type="submit" value="Esci">
-   						        </a>	
-							</form>
-						</li>
-					</ul></li>
-				<!-- END USER LOGIN DROPDOWN -->
-			</ul>
-			
-			
-			<!-- END TOP NAVIGATION MENU -->
 		</div>
 		<!-- END TOP NAVIGATION BAR -->
 	</div>
@@ -173,95 +139,20 @@ window.onerror = function(message, source, line, column) {
 	<div class="clearfix"></div>
 	<!-- BEGIN CONTAINER -->
 	<div class="page-container">
-		<!-- BEGIN SIDEBAR -->
-		<div class="page-sidebar navbar-collapse collapse">
-			<!-- BEGIN SIDEBAR MENU -->
-			<ul class="page-sidebar-menu">
-				<li>
-					<!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-					<div class="sidebar-toggler hidden-phone"></div> <!-- BEGIN SIDEBAR TOGGLER BUTTON -->
-				</li>
-
-				<li>
-					<div class="spacer" style="margin: 20px 0;"></div>
-				</li>
-
-				<li class="start <%=PAGES.DASHBOARD.equals(activePage) ? "active" : "" %>"><a href="${dashboardUrl}"> <i
-						class="fa fa-dashboard"></i> <span class="title">Dashboard</span> <% if(PAGES.DASHBOARD.equals(activePage)) { %> <span
-						class="selected"></span> <%} %>
-				</a></li>
-
-				<li>
-					<div class="spacer" style="margin: 20px 0;"></div>
-				</li>
-
-				<li class="<%=PAGES.CLIENTS.equals(activePage) ? "active" : "" %>"><a href="${clientsUrl}"> <i
-						class="fa fa-user"></i> <span class="title">Clienti</span> <% if(PAGES.CLIENTS.equals(activePage)) { %> <span
-						class="selected"></span> <%} %>
-				</a></li>
-
-				<li>
-					<div class="spacer" style="margin: 20px 0;"></div>
-				</li>
-
-                <li class="<%=PAGES.ESTIMATIONS.equals(activePage) ? "active" : "" %>"><a href="${estimationsUrl}"> <i
-                        class="fa fa-file"></i> <span class="title">Offerte</span> <% if(PAGES.ESTIMATIONS.equals(activePage)) { %> <span
-                        class="selected"></span> <%} %>
-                </a></li>
-                
-				<li class="<%=PAGES.TRANSPORT_DOCUMENTS.equals(activePage) ? "active" : "" %>"><a
-					href="${transportDocumentsUrl}"> <i class="fa fa-file"></i> <span class="title">DDT</span> <% if(PAGES.TRANSPORT_DOCUMENTS.equals(activePage)) { %>
-						<span class="selected"></span> <%} %>
-				</a></li>
-
-                <li class="<%=PAGES.INVOICES.equals(activePage) ? "active" : "" %>"><a href="${invoicesUrl}"> <i
-                        class="fa fa-file"></i> <span class="title">Fatture</span> <% if(PAGES.INVOICES.equals(activePage)) { %> <span
-                        class="selected"></span> <%} %>
-                </a></li>
-
-				<li class="<%=PAGES.CREDIT_NOTES.equals(activePage) ? "active" : "" %>"><a href="${creditNotesUrl}"> <i
-						class="fa fa-file"></i> <span class="title">Note di Credito</span> <% if(PAGES.CREDIT_NOTES.equals(activePage)) { %> <span
-						class="selected"></span> <%} %>
-				</a></li>
-
-				<li>
-					<div class="spacer" style="margin: 20px 0;"></div>
-				</li>
-
-				<li class="<%=PAGES.COMMODITIES.equals(activePage) ? "active" : ""%>"><a href="${commoditiesUrl}"> <i
-						class="fa fa-th"></i> <span class="title">Articoli</span> <%
-                        if(PAGES.COMMODITIES.equals(activePage)) {
-                    %> <span class="selected"></span> <%} %>
-				</a></li>
-
-				<li class="<%=PAGES.PRICE_LISTS.equals(activePage) ? "active" : ""%>"><a href="${priceListsUrl}"> <i
-						class="fa fa-dollar"></i> <span class="title">Listini</span> <%
-                        if(PAGES.PRICE_LISTS.equals(activePage)) {
-                    %> <span class="selected"></span> <%} %>
-				</a></li>
-
-				<li>
-					<div class="spacer" style="margin: 20px 0;"></div>
-				</li>
-
-				<li class="<%=PAGES.PAYMENTS.equals(activePage) ? "active last" : "last" %>"><a href="${paymentsUrl}"> <i
-						class="fa fa-briefcase"></i> <span class="title">Pagamenti</span> <% if(PAGES.PAYMENTS.equals(activePage)) { %> <span
-						class="selected"></span> <%} %>
-				</a></li>
-
-			</ul>
-			<!-- END SIDEBAR MENU -->
-		</div>
-		<!-- END SIDEBAR -->
+		
 		<!-- BEGIN PAGE -->
 
-		<tiles:insertAttribute name="body" />
-
+            
+		<div class="page-content" style="margin-left: 0;" ng-app="novabill.hello" ng-controller="HelloCtrl">
+		    
+		</div>
+		
+		
 		<!-- END PAGE -->
 	</div>
 	<!-- END CONTAINER -->
 	<!-- BEGIN FOOTER -->
-	<div class="footer">
+	<div class="footer" style="margin-left: 0;">
 		<div class="footer-inner">2014 &copy; Novadart.</div>
 		<div class="footer-tools">
 			<span class="go-top"> <i class="fa fa-angle-up"></i>
@@ -273,10 +164,8 @@ window.onerror = function(message, source, line, column) {
 	
 	<script>
     var NovabillConf = {
-            businessId : '<%=business.getId()%>',
-         	businessName : '<%=business.getName()%>',
-         	principalEmail : '<%=principal.getUsername()%>',
-         	principalCreationDate : <%=principal.getCreationTime()%>,
+            businessId : '<%=business != null ? business.getId() : -1%>',
+         	businessName : '<%=business != null ? business.getName() : ""%>',
             premium : <%=principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM)%>,
             defaultPriceListName : '<%=PriceListConstants.DEFAULT%>',
             basePath : '${basePath}',
@@ -302,23 +191,11 @@ window.onerror = function(message, source, line, column) {
 	<script src="${privateAssetsUrl}/plugins/uniform/jquery.uniform.min.js" type="text/javascript"></script>
 	<!-- END CORE PLUGINS -->
 	
-	<script src="${gwtUrl}" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/scripts/app.js" type="text/javascript"></script>
 	
 	<tiles:insertAttribute name="javascript" />
 	
-	
-	<script type="text/javascript">
-	$(App.init);
-	
-	$('#logoutLi').click(function(){
-        $('#logoutForm').submit();
-    });
-	</script>
-	
-	<tiles:insertAttribute name="javascriptExtra" ignore="true" />
-	
-        <script>
+    <script>
     // Include the UserVoice JavaScript SDK (only needed once on a page)
     UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/qijZFrEigj9IF6UL4zLtNw.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
     

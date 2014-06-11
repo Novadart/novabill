@@ -17,6 +17,7 @@ public class SettingsDTOTransformer {
 		settingsDTO.setEmailSubject(settings.getEmailSubject());
 		settingsDTO.setEmailText(settings.getEmailText());
 		settingsDTO.setEmailReplyTo(settings.getEmailReplyTo());
+		settingsDTO.setNonFreeAccountExpirationTime(settings.getNonFreeAccountExpirationTime());
 		return settingsDTO;
 	}
 	

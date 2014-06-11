@@ -9,7 +9,7 @@
 }
 
 .settings .tab-pane {
-	padding: 20px;
+	padding: 20px 20px 40px;
 }
 
 .settings input[type=checkbox]{
@@ -35,4 +35,8 @@
 .settings .preview-area {
 	border: 1px solid #DDD;
 	padding: 5px 10px;
+}
+
+.settings .readonly {
+	padding-top: 5px;
 }

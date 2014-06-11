@@ -11,7 +11,8 @@ angular.module("novabill.transportDocuments", ['novabill.transportDocuments.cont
 	
 	.when('/', {
 		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/transport-documents.html'),
-		controller: 'TransportDocumentCtrl'
+		controller: 'TransportDocumentCtrl',
+		reloadOnSearch : false
 	})
 	
 	.when('/details/:transportDocumentId', {

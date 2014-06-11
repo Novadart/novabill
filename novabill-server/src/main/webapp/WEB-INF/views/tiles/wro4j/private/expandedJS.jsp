@@ -47,3 +47,4 @@
 <script src="${novabillCoreUrl}/scripts/settings-controllers.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/payments.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/payments-controllers.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/hello.js" type="text/javascript"></script>

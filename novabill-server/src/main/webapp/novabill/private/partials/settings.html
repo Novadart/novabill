@@ -23,19 +23,12 @@
 			        </tab-heading>
 			        
 			        <div class="container-fluid">
-                          <div class="row" ng-if="firstRun">
-                              <div class="col-md-6 col-md-offset-3">
-                                 <div class="alert alert-info">
-                                 Per favore completa le informazioni sulla tua azienda
-                                 </div>
-                              </div>
-                          </div>
                           <div class="row">
                               <div class="col-md-6">
                                   <h4><strong style="text-transform: uppercase;">{{'TITLE_COMPANY_DATA' | translate}}</strong></h4>
                                   <n-business-form business="business"></n-business-form>
                               </div>
-                              <div class="col-md-6" ng-show="!firstRun">
+                              <div class="col-md-6" >
                                   <h4><strong style="text-transform: uppercase;">{{'TITLE_SET_LOGO' | translate}}</strong></h4>
                                   <n-business-logo></n-business-logo>
                               </div>
@@ -43,20 +36,66 @@
                         </div>
                 </tab>
                 
-                <tab ng-show="!firstRun" select="onTabChange('profile')" active="activeTab.profile">
+                <tab  select="onTabChange('profile')" active="activeTab.profile">
                     <tab-heading>
                         <i class="fa fa-user"></i> {{'BUSINESS_TAB_PROFILE' | translate}}
                     </tab-heading>
                     
-                    <div class="row" ng-show="!firstRun">
+                    <div class="row" style="margin-bottom: 30px;" >
+                        <div class="col-md-12">
+                            <h4><strong style="text-transform: uppercase;">{{'TITLE_PROFILE_STATUS' | translate}}</strong></h4>
+                            
+                            <form class="form-horizontal" role="form">
+                                <div class="form-body">
+                                    <div class="form-group">
+                                        <label  class="col-md-4 control-label">{{'BUSINESS_TAB_PROFILE_EMAIL' | translate}}</label>
+                                        <div class="col-md-4">
+                                            <div class="form-control readonly">
+                                                {{principalEmail}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="col-md-4 control-label">{{'BUSINESS_TAB_PROFILE_REGISTERED' | translate}}</label>
+                                        <div class="col-md-4">
+                                            <div class="form-control readonly">
+                                                {{principalCreationDate | date:'dd/MM/yyyy HH:mm'}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group">
+                                        <label  class="col-md-4 control-label">{{'BUSINESS_TAB_PROFILE_PLAN' | translate}}</label>
+                                        <div class="col-md-4">
+                                            <div class="form-control readonly" style="font-weight: bold;">
+                                                <span ng-if="!premium"><i class="fa fa-check"></i> Piano Gratuito</span>
+                                                <span ng-if="premium"><i class="fa fa-trophy"></i> Piano Premium</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="form-group" ng-if="premium">
+                                        <label  class="col-md-4 control-label">{{'BUSINESS_TAB_PROFILE_PLAN_EXPIRATION' | translate}}</label>
+                                        <div class="col-md-4">
+                                            <div class="form-control readonly" style="font-weight: bold;">
+                                                {{business.settings.nonFreeAccountExpirationTime | date:'dd/MM/yyyy'}}
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                            
+                            
+                        </div>
+                    </div>
+                    
+                    <div class="row" style="margin-bottom: 30px;" >
                         <div class="col-md-12">
                             <h4><strong style="text-transform: uppercase;">{{'TITLE_PROFILE' | translate}}</strong></h4>
                             <a href="{{changePasswordUrl}}" class="btn default">{{'CHANGE_PASSWORD' | translate}}</a>
-                            
-                            <br>
-                            <br>
-                            <br>
-                            
+                        </div>
+                    </div>
+                                
+                     <div class="row" >
+                        <div class="col-md-12">
                             <h4><strong style="text-transform: uppercase;">{{'TITLE_EXPORT_DATA' | translate}}</strong></h4>
                             <a href="javascript:void(0);" class="btn default" ng-click="exportZip(true, false, false, false, false)">{{'EXPORT_CLIENTS' | translate}}</a>
                             <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, false, true, false)">{{'EXPORT_CREDIT_NOTES' | translate}}</a>
@@ -68,7 +107,7 @@
                  
                 </tab>
                 
-                <tab ng-show="!firstRun" select="onTabChange('options')" active="activeTab.options">
+                <tab  select="onTabChange('options')" active="activeTab.options">
                     <tab-heading>
                         <i class="fa fa-gears"></i> {{'BUSINESS_TAB_OPTIONS' | translate}}
                     </tab-heading>
@@ -165,7 +204,7 @@
                             
                             <div class="form-group">
                                 <label class="col-md-4 control-label"></label>
-                                <div class="col-md-4">
+                                <div class="col-md-5">
                                     <button n-premium-check type="button" ng-click="viewPreview()" ng-disabled="emailForm.$invalid" class="btn default pull-right">
 				                      {{'BUSINESS_OPTION_EMAIL_PREVIEW' | translate}}
 				                    </button>
@@ -201,7 +240,7 @@
                     </button>
                 </tab>
                 
-                <tab ng-show="!firstRun" select="loadSharingPermits();onTabChange('share')" active="activeTab.share">
+                <tab select="loadSharingPermits();onTabChange('share')" active="activeTab.share">
                     <tab-heading>
                         <i class="fa fa-group"></i> {{'BUSINESS_TAB_SHARE' | translate}}
                     </tab-heading>
