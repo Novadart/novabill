@@ -239,10 +239,9 @@ public class Client implements Serializable, Taxable {
     			entityManager.createQuery(String.format(queryTemplate, "TransportDocument"), Long.class).setParameter("clientId", clientID).getSingleResult() != 0;
     }
     
-    @Override
 	public Taxable findByVatID(String vatID) {
-    	String sql = "select c from Client c where c.vatID = :vatID";
-    	List<Client> r = entityManager.createQuery(sql, Client.class).setParameter("vatID", vatID).getResultList();
+    	String sql = "select c from Client c where c.vatID = :id or c.ssn = :id";
+    	List<Client> r = entityManager.createQuery(sql, Client.class).setParameter("id", vatID).getResultList();
 		return r.size() == 0? null: r.get(0);
 	}
     

@@ -6,9 +6,11 @@ import java.util.List;
 
 import javax.mail.MessagingException;
 import javax.mail.internet.MimeMessage;
+import javax.persistence.Basic;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.EntityManager;
+import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
@@ -21,6 +23,7 @@ import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Configurable;
+import org.springframework.core.io.ByteArrayResource;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.transaction.annotation.Transactional;
@@ -65,6 +68,11 @@ public class Email implements Serializable {
 	@Size(max = EMAIL_MAX_LENGTH)
 	@Trimmed
 	private String replyTo;
+
+	@Basic(fetch = FetchType.LAZY)
+    private byte[] attachment;
+	
+	private String attachmentName;
 	
 	private EmailStatus status;
 	
@@ -72,29 +80,38 @@ public class Email implements Serializable {
 	
 	public Email(){}
 	
-	public Email(String[] to, String from, String subject, String text, String replyTo) {
+	public Email(String[] to, String from, String subject, String text, String replyTo, byte[] attachment, String attachmentName) {
 		this.setTo(to);
 		this.from = from;
 		this.subject = subject;
 		this.text = text;
 		this.replyTo = replyTo;
+		this.attachment = attachment;
+		this.attachmentName = attachmentName;
 		tries = 0;
 		status = EmailStatus.PENDING;
 	}
 	
+	public Email(String[] to, String from, String subject, String text, String replyTo) {
+		this(to, from, subject, text, replyTo, null, null);
+	}
+	
 	public Email(String[] to, String from, String subject, String text) {
-		this(to, from, subject, text, null);
+		this(to, from, subject, text, null, null, null);
 	}
 
 	public void send() throws MessagingException{
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
-		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+		boolean hasAttachment = attachment != null && StringUtils.isNotBlank(attachmentName); 
+		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, hasAttachment);
 		messageHelper.setTo(getTo());
 		messageHelper.setFrom(getFrom());
 		messageHelper.setSubject(getSubject());
 		messageHelper.setText(getText(), true);
 		if(StringUtils.isNotBlank(getReplyTo()))
 			messageHelper.setReplyTo(getReplyTo());
+		if(hasAttachment)
+			messageHelper.addAttachment(attachmentName, new ByteArrayResource(attachment));
 		mailSender.send(mimeMessage);
 	}
 	
@@ -143,6 +160,22 @@ public class Email implements Serializable {
 
 	public void setReplyTo(String replyTo) {
 		this.replyTo = replyTo;
+	}
+
+	public byte[] getAttachment() {
+		return attachment;
+	}
+
+	public void setAttachment(byte[] attachment) {
+		this.attachment = attachment;
+	}
+
+	public String getAttachmentName() {
+		return attachmentName;
+	}
+
+	public void setAttachmentName(String attachmentName) {
+		this.attachmentName = attachmentName;
 	}
 
 	public EmailStatus getStatus() {

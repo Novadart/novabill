@@ -66,6 +66,7 @@ mvn.tiles.javascript.definition=expandedJS
 mvn.tiles.css.definition=expandedCSS
 mvn.tiles.minify.html=false
 mvn.invoice.pdf.url=http://localhost:8080/novabill-server/email/invoices?id=%d&token=%s
+mvn.novadart.username=giordano.battilana@novadart.com
 
 #
 # Paypal

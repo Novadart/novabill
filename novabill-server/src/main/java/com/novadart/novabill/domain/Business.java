@@ -447,10 +447,16 @@ public class Business implements Serializable, Taxable {
     
     @Override
 	public Taxable findByVatID(String vatID) {
-    	String sql = "select b from Business b where b.vatID = :vatID";
-    	List<Business> r = entityManager.createQuery(sql, Business.class).setParameter("vatID", vatID).getResultList();
+    	String sql = "select b from Business b where b.vatID = :id or b.ssn = :id";
+    	List<Business> r = entityManager.createQuery(sql, Business.class).setParameter("id", vatID).getResultList();
 		return r.size() == 0? null: r.get(0);
 	}
+    
+    public Client findClientByVatIDOrSsn(String vatIDOrSsn) {
+    	String sql = "select c from Client c where c.business.id = :id and c.vatID = :vatIDOrSsn or c.ssn = :vatIDOrSsn";
+    	List<Client> r = entityManager.createQuery(sql, Client.class).setParameter("id", getId()).setParameter("vatIDOrSsn", vatIDOrSsn).getResultList();
+		return r.size() == 0? null: r.get(0);
+    }
     
 
 	/*

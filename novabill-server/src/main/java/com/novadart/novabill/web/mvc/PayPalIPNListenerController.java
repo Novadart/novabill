@@ -29,6 +29,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.novadart.novabill.domain.PayPalTransactionID;
 import com.novadart.novabill.paypal.PayPalIPNHandlerService;
+import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
 
 @Controller
 @RequestMapping(Urls.PUBLIC_PAYPAL_IPN_LISTENER)
@@ -82,7 +83,7 @@ public class PayPalIPNListenerController {
     
     @RequestMapping
     public @ResponseBody void processIPN(@RequestParam("txn_type") String transactionType, @RequestParam(value = "txn_id", required = false) String transactionID,
-    		HttpServletRequest request) throws URISyntaxException, ClientProtocolException, IOException{
+    		HttpServletRequest request) throws URISyntaxException, ClientProtocolException, IOException, PremiumUpgradeException{
     	Map<String, String> parametersMap = extractParameters(request);
     	if(!verifyIPN(request)) return;
     	String email = parametersMap.get(RECEIVER_EMAIL);

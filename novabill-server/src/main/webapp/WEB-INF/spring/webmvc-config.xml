@@ -109,8 +109,8 @@
 		</property>
 	</bean>
 
-	<bean class="com.novadart.novabill.aspect.XsrfAspect"
-		factory-method="aspectOf">
-	</bean>
+<!-- 	<bean class="com.novadart.novabill.aspect.XsrfAspect" -->
+<!-- 		factory-method="aspectOf"> -->
+<!-- 	</bean> -->
 
 </beans>

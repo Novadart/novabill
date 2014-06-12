@@ -15,12 +15,12 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 @Service
 public class PaymentPlansLoader {
 	
-	private volatile PayPalPaymentPlanDescriptor[] paypalPaymentDescriptors;
+	private volatile PaymentPlanDescriptor[] paypalPaymentDescriptors;
 	
 	@Autowired
 	private ResourceLoader resourceLoader;
 
-	public PayPalPaymentPlanDescriptor[] getPayPalPaymentPlanDescriptors(){
+	public PaymentPlanDescriptor[] getPayPalPaymentPlanDescriptors(){
 		return paypalPaymentDescriptors;
 	}
 	
@@ -28,14 +28,14 @@ public class PaymentPlansLoader {
 	public void init() {
 		try {
 			InputStream in = resourceLoader.getResource("classpath:/paymentPlans.json").getInputStream();
-			paypalPaymentDescriptors = new ObjectMapper().readValue(in, PayPalPaymentPlanDescriptor[].class);
+			paypalPaymentDescriptors = new ObjectMapper().readValue(in, PaymentPlanDescriptor[].class);
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public PayPalPaymentPlanDescriptor getPayPalPaymentPlanDescriptor(String id){
-		for(PayPalPaymentPlanDescriptor descriptor: paypalPaymentDescriptors)
+	public PaymentPlanDescriptor getPayPalPaymentPlanDescriptor(String id){
+		for(PaymentPlanDescriptor descriptor: paypalPaymentDescriptors)
 			if(descriptor.getItemName().equals(id))
 				return descriptor;
 		throw new NoSuchElementException("No such payment plan");

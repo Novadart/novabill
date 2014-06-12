@@ -8,6 +8,8 @@ import static org.mockito.Mockito.when;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Calendar;
+import java.util.Date;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -30,12 +32,18 @@ import com.novadart.novabill.domain.EmailStatus;
 import com.novadart.novabill.domain.UpgradeToken;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
-import com.novadart.novabill.paypal.PayPalPaymentPlanDescriptor;
+import com.novadart.novabill.paypal.PaymentPlanDescriptor;
 import com.novadart.novabill.paypal.PaymentPlansLoader;
 import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
-import com.novadart.novabill.service.periodic.AccountStatusManagerService;
 import com.novadart.novabill.service.periodic.PeriodicMailSender;
+import com.novadart.novabill.service.periodic.PremiumDisablerService;
+import com.novadart.novabill.service.web.InvoiceService;
+import com.novadart.novabill.service.web.PremiumEnablerService;
+import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
+import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
 import com.novadart.novabill.web.mvc.UpgradeAccountController;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -45,7 +53,7 @@ import com.novadart.novabill.web.mvc.UpgradeAccountController;
 public class AccountUpgradeTest extends AuthenticatedTest {
 	
 	@Autowired
-	private AccountStatusManagerService accountStatusService;
+	private PremiumDisablerService accountStatusService;
 	
 	@Autowired
 	private PaymentPlansLoader paymentPlans;
@@ -56,10 +64,24 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	@Autowired
 	private PeriodicMailSender mailSenderService;
 	
+	@Autowired
+	private PremiumEnablerService premiumEnablerService;
+	
+	@Autowired
+	private PaymentPlansLoader paymentPlansLoader;
+	
+	@Autowired
+	private InvoiceService invoiceService;
+	
 	private long getNDaysFromNowInMillis(int days){
 		long DAY_IN_MILLIS = 86_400_000l;
 		Long now = System.currentTimeMillis();
 		return now + days * DAY_IN_MILLIS;
+	}
+	
+	@Test
+	public void wiringTest(){
+		assertTrue(premiumEnablerService != null);
 	}
 	
 	
@@ -172,7 +194,7 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	
 	@Test
 	public void paymentPlansTest(){
-		for(PayPalPaymentPlanDescriptor paymentPlan: paymentPlans.getPayPalPaymentPlanDescriptors()){
+		for(PaymentPlanDescriptor paymentPlan: paymentPlans.getPayPalPaymentPlanDescriptors()){
 			assertTrue(EqualsBuilder.reflectionEquals(paymentPlan, paymentPlans.getPayPalPaymentPlanDescriptor(paymentPlan.getItemName())));
 		}
 	}
@@ -200,7 +222,7 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	public void initiateUpgradeAccountTest() throws NoSuchAlgorithmException, MalformedURLException, UnsupportedEncodingException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
 		UpgradeAccountController controller = initUpgradeAccountController("1");
 		String view = controller.display(mock(Model.class), mockRequest());
-		assertEquals("private.upgrade", view);
+		assertEquals("private.premium", view);
 		assertEquals(1, UpgradeToken.countUpgradeTokens());
 		assertEquals(authenticatedPrincipal.getUsername(), UpgradeToken.findAllUpgradeTokens().iterator().next().getEmail());
 	}
@@ -213,5 +235,56 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		assertEquals("private.premiumUpgradeSuccess", view);
 		assertEquals(0, UpgradeToken.countUpgradeTokens());
 	}
+	
+	@Test
+	public void enablePremiumFor12MonthsFreeUserTest(){
+		Long businessID = getUnathorizedBusinessID();
+		assertTrue(Business.findBusiness(businessID).getPrincipals().iterator().next().getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE));
+		premiumEnablerService.enablePremiumForNMonths(Business.findBusiness(businessID), 12);
+		assertTrue(Business.findBusiness(businessID).getPrincipals().iterator().next().getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM));
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(System.currentTimeMillis());
+		calendar.add(Calendar.MONTH, 12);
+		assertTrue(calendar.getTimeInMillis() - Business.findBusiness(businessID).getSettings().getNonFreeAccountExpirationTime() < 3600000);
+	}
+	
+	@Test
+	public void enablePremiumFor12MonthsPremiumUserTest(){
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		assertTrue(Business.findBusiness(businessID).getPrincipals().iterator().next().getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM));
+		Long base = getNDaysFromNowInMillis(30); //set in future
+		Business.findBusiness(businessID).getSettings().setNonFreeAccountExpirationTime(base);
+		premiumEnablerService.enablePremiumForNMonths(Business.findBusiness(businessID), 12);
+		assertTrue(Business.findBusiness(businessID).getPrincipals().iterator().next().getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM));
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTimeInMillis(base);
+		calendar.add(Calendar.MONTH, 12);
+		assertTrue(calendar.getTimeInMillis() - Business.findBusiness(businessID).getSettings().getNonFreeAccountExpirationTime() == 0);
+	}
+	
+	@Test
+	public void notifyAndInvoiceFreeUserTest() throws PremiumUpgradeException, InterruptedException, DataAccessException, NoSuchObjectException, NotAuthenticatedException{
+		Calendar calendar = Calendar.getInstance();
+		calendar.setTime(new Date());
+		int year = calendar.get(Calendar.YEAR);
+		Long businessID = getUnathorizedBusinessID();
+		Business business = Business.findBusiness(businessID);
+		Business novadartBusiness = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
+		novadartBusiness.getInvoices().size();
+		novadartBusiness.getClients().size();
+		
+		String emailAddr = business.getPrincipals().iterator().next().getUsername();
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
+		premiumEnablerService.notifyAndInvoiceBusiness(business, paymentPlansLoader.getPayPalPaymentPlanDescriptors()[0].getItemName(), emailAddr);
+		smtpServer.stop();
+		assertTrue(novadartBusiness.findClientByVatIDOrSsn(business.getVatID()) != null);
+		assertTrue(invoiceService.getAllForClient(novadartBusiness.findClientByVatIDOrSsn(business.getVatID()).getId(), year).size() == 1);
+		assertEquals(1, smtpServer.getReceivedEmailSize());
+		SmtpMessage email = (SmtpMessage)smtpServer.getReceivedEmail().next();
+		assertEquals(emailAddr, email.getHeaderValue("To"));
+		assertEquals("Account upgraded", email.getHeaderValue("Subject"));
+	}
+	
 	
 }

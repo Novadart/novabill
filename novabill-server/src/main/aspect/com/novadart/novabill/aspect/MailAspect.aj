@@ -29,13 +29,14 @@ privileged aspect MailAspect {
 	declare parents : @MailMixin * implements MailSender;
 
 
-	public boolean MailSender.sendMessage(String[] to, String replyTo, String subject, Map<String, Object> model, String templateLocation, boolean retry){
+	public boolean MailSender.sendMessage(String[] to, String replyTo, String subject, Map<String, Object> model, String templateLocation, boolean retry,
+			byte[] attachment, String attachmentName){
 		MailAspect thisAspect = MailAspect.aspectOf();
 		Email email = null;
 		try {
 			String text = VelocityEngineUtils.mergeTemplateIntoString(thisAspect.velocityEngine, templateLocation, 
 					CharEncoding.UTF_8, model);
-			email = new Email(to, thisAspect.from, subject, text, replyTo);
+			email = new Email(to, thisAspect.from, subject, text, replyTo, attachment, attachmentName);
 			email.send();
 			return true;
 		} catch (MessagingException | MailSendException e) {
@@ -49,15 +50,19 @@ privileged aspect MailAspect {
 	}
 	
 	public boolean MailSender.sendMessage(String to, String replyTo, String subject, Map<String, Object> model, String templateLocation, boolean retry){
-		return sendMessage(new String[]{to}, replyTo, subject, model, templateLocation, retry);
+		return sendMessage(new String[]{to}, replyTo, subject, model, templateLocation, retry, null, null);
 	}
 	
 	public boolean MailSender.sendMessage(String[] to, String subject, Map<String, Object> model, String templateLocation){
-		return sendMessage(to, null, subject, model, templateLocation, true);
+		return sendMessage(to, null, subject, model, templateLocation, true, null, null);
 	}
 	
 	public boolean MailSender.sendMessage(String to, String subject, Map<String, Object> model, String templateLocation){
-		return sendMessage(new String[]{to}, null, subject, model, templateLocation, true);
+		return sendMessage(new String[]{to}, null, subject, model, templateLocation, true, null, null);
+	}
+	
+	public boolean MailSender.sendMessage(String to, String subject, Map<String, Object> model, String templateLocation, byte[] attachment, String attachmentName){
+		return sendMessage(new String[]{to}, null, subject, model, templateLocation, true, attachment, attachmentName);
 	}
 	
 }

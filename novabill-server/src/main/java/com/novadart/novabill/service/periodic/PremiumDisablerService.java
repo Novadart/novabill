@@ -19,7 +19,7 @@ import com.novadart.novabill.domain.security.RoleType;
 
 @Service
 @MailMixin
-public class AccountStatusManagerService implements PeriodicService {
+public class PremiumDisablerService implements PeriodicService {
 	
 	@PersistenceContext
 	private EntityManager entityManager; 
