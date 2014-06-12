@@ -22,6 +22,8 @@ public abstract class PayPalIPNHandlerService {
 	
 	protected final static String TRANSACTION_ID = "txn_id";
 	
+	protected final static String PAYPAL = "PayPal";
+	
 	@Autowired
 	private PrincipalDetailsService principalDetailsService;
 	
@@ -39,13 +41,12 @@ public abstract class PayPalIPNHandlerService {
 		String email = parametersMap.get(CUSTOM);
 		Business business = principalDetailsService.loadUserByUsername(email).getBusiness();
 		premiumEnablerService.enablePremiumForNMonths(business, paymentPlans.getPayPalPaymentPlanDescriptor(parametersMap.get(ITEM_NAME)).getPayedPeriodInMonths());
-//		sendMessage(parametersMap.get(CUSTOM), "Account upgraded", new HashMap<String, Object>(), "mail-templates/upgrade-notification.vm",
-//				"This is a test message".getBytes(), "test.txt");
 		try {
 			premiumEnablerService.notifyAndInvoiceBusiness(business, paymentPlans.getPayPalPaymentPlanDescriptor(parametersMap.get(ITEM_NAME)).getItemName(), email);
 		} catch (PremiumUpgradeException e) {
 			e.setUsername(email);
 			e.setTransactionID(parametersMap.get(TRANSACTION_ID));
+			e.setPaymentPlatform(PAYPAL);
 			throw e;
 		}
 		postProcess(parametersMap);

@@ -98,9 +98,13 @@ public class PremiumEnablerService {
 	/* (non-Javadoc)
 	 * @see com.novadart.novabill.service.web.PremiumEnablerService#enablePremiumForNMonths(com.novadart.novabill.domain.Business, int)
 	 */
-	public void enablePremiumForNMonths(Business business, int numberOfMonths) {
-		makePremium(business);
-		extendNonFreeAccountExpirationTime(business, numberOfMonths);
+	public void enablePremiumForNMonths(Business business, int numberOfMonths) throws PremiumUpgradeException {
+		try {
+			makePremium(business);
+			extendNonFreeAccountExpirationTime(business, numberOfMonths);
+		} catch (Exception e) {
+			throw new PremiumUpgradeException(e);
+		}
 	}
 
 	private void setSecurityContext(){

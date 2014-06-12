@@ -7,6 +7,8 @@ public class PremiumUpgradeException extends Exception {
 	private String username;
 	
 	private String transactionID;
+	
+	private String paymentPlatform;
 
 	
 	public PremiumUpgradeException() {
@@ -31,6 +33,14 @@ public class PremiumUpgradeException extends Exception {
 
 	public void setTransactionID(String transactionID) {
 		this.transactionID = transactionID;
+	}
+
+	public String getPaymentPlatform() {
+		return paymentPlatform;
+	}
+
+	public void setPaymentPlatform(String paymentPlatform) {
+		this.paymentPlatform = paymentPlatform;
 	}
 
 }

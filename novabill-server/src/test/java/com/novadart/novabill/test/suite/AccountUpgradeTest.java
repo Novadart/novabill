@@ -4,12 +4,15 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.doThrow;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.security.NoSuchAlgorithmException;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Map;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -18,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.test.annotation.DirtiesContext;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -32,8 +36,11 @@ import com.novadart.novabill.domain.EmailStatus;
 import com.novadart.novabill.domain.UpgradeToken;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
+import com.novadart.novabill.paypal.OneTimePaymentIPNHandlerService;
+import com.novadart.novabill.paypal.PayPalIPNHandlerService;
 import com.novadart.novabill.paypal.PaymentPlanDescriptor;
 import com.novadart.novabill.paypal.PaymentPlansLoader;
+import com.novadart.novabill.service.PrincipalDetailsService;
 import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.periodic.PeriodicMailSender;
@@ -72,6 +79,9 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	
 	@Autowired
 	private InvoiceService invoiceService;
+	
+	@Autowired
+	private PrincipalDetailsService principalDetailsService;
 	
 	private long getNDaysFromNowInMillis(int days){
 		long DAY_IN_MILLIS = 86_400_000l;
@@ -237,7 +247,7 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	}
 	
 	@Test
-	public void enablePremiumFor12MonthsFreeUserTest(){
+	public void enablePremiumFor12MonthsFreeUserTest() throws PremiumUpgradeException{
 		Long businessID = getUnathorizedBusinessID();
 		assertTrue(Business.findBusiness(businessID).getPrincipals().iterator().next().getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE));
 		premiumEnablerService.enablePremiumForNMonths(Business.findBusiness(businessID), 12);
@@ -249,7 +259,7 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	}
 	
 	@Test
-	public void enablePremiumFor12MonthsPremiumUserTest(){
+	public void enablePremiumFor12MonthsPremiumUserTest() throws PremiumUpgradeException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		assertTrue(Business.findBusiness(businessID).getPrincipals().iterator().next().getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM));
 		Long base = getNDaysFromNowInMillis(30); //set in future
@@ -284,6 +294,41 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		SmtpMessage email = (SmtpMessage)smtpServer.getReceivedEmail().next();
 		assertEquals(emailAddr, email.getHeaderValue("To"));
 		assertEquals("Account upgraded", email.getHeaderValue("Subject"));
+	}
+	
+	public static class MockPaypelIPNHandlerService extends PayPalIPNHandlerService{
+
+		@Override
+		protected boolean check(String transactionType, Map<String, String> parametersMap) {
+			return true;
+		}
+		
+	}
+	
+	@Test(expected = PremiumUpgradeException.class)
+	@DirtiesContext
+	public void notifyIfPremiumUpgradeFail() throws PremiumUpgradeException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+		Long businessID = getUnathorizedBusinessID();
+		Business business = Business.findBusiness(businessID);
+		PremiumEnablerService mockedService = mock(PremiumEnablerService.class);
+		doThrow(new PremiumUpgradeException(new Exception())).when(mockedService).notifyAndInvoiceBusiness(business,
+				paymentPlans.getPayPalPaymentPlanDescriptors()[0].getItemName(), "risto.gligorov@novadart.com");
+		MockPaypelIPNHandlerService mockIPNService = new MockPaypelIPNHandlerService();
+		TestUtils.setPrivateField(PayPalIPNHandlerService.class, mockIPNService, "premiumEnablerService", mockedService);
+		TestUtils.setPrivateField(PayPalIPNHandlerService.class, mockIPNService, "principalDetailsService", principalDetailsService);
+		TestUtils.setPrivateField(PayPalIPNHandlerService.class, mockIPNService, "paymentPlans", paymentPlans);
+		Map<String, String> parametersMap = new HashMap<>();
+		parametersMap.put("custom", "risto.gligorov@novadart.com");
+		parametersMap.put("item_name", "Novabill Premium Membership - 1 Year");
+		
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
+		try{
+			mockIPNService.handle("", parametersMap);
+		}finally {
+			smtpServer.stop();
+		}
+		
+		assertEquals(1, smtpServer.getReceivedEmailSize());
 	}
 	
 	
