@@ -19,9 +19,10 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.web.mvc.command.DeleteAccount;
+import com.novadart.novabill.web.mvc.Urls;
 
 @Controller
-@RequestMapping("/private/delete")
+@RequestMapping(Urls.PRIVATE_DELETE_ACCOUNT)
 @SessionAttributes("deleteAccount")
 public class DeleteAccountController {
 	
@@ -46,7 +47,7 @@ public class DeleteAccountController {
 		model.addAttribute("exportTransportdocsParamName", ExportController.TRANSPORTDOCS_REQUEST_PARAM);
 		model.addAttribute("exportTokenParamName", ExportController.TOKEN_REQUEST_PARAM);
 		
-		return "deleteAccount";
+		return "private.deleteAccount";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
@@ -54,16 +55,16 @@ public class DeleteAccountController {
 	public String processSubmit(@ModelAttribute("deleteAccount") DeleteAccount deleteAccount, BindingResult result, SessionStatus status){
 		validator.validate(deleteAccount, result);
 		if(result.hasErrors())
-			return "deleteAccount";
+			return "private.deleteAccount";
 		Principal principal = utilsService.getAuthenticatedPrincipalDetails();
 		if(!utilsService.isPasswordValid(principal.getPassword(), deleteAccount.getPassword())){
 			result.rejectValue("password", "deleteAccount.wrong.password");
-			return "deleteAccount";
+			return "private.deleteAccount";
 		}
 		businessLogoController.clearLogo(principal.getBusiness().getId());
 		principal.getBusiness().remove();
 		status.setComplete();
-		return "redirect:/resources/logout";
+		return "redirect:" + Urls.PRIVATE_LOGOUT;
 	}
 	
 }

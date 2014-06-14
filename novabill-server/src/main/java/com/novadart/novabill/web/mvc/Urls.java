@@ -41,4 +41,7 @@ public interface Urls {
 	public static final String PRIVATE_PREMIUM = "/private/premium";
 	public static final String PRIVATE_SETTINGS = "/private/settings";
 	public static final String PRIVATE_PRINT_PDF = "/private/print-pdf";
+	public static final String PRIVATE_DELETE_ACCOUNT = "/private/delete-account";
+	public static final String PRIVATE_LOGOUT = "/resources/logout";
+	public static final String PRIVATE_EXPORT = "/private/export";
 }

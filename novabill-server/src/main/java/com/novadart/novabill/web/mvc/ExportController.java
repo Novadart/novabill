@@ -1,6 +1,7 @@
 package com.novadart.novabill.web.mvc;
 
 import java.io.File;
+
 import java.io.FileInputStream;
 import java.io.IOException;
 import java.lang.reflect.InvocationTargetException;
@@ -32,7 +33,7 @@ import com.novadart.novabill.service.export.data.DataExporter;
 import com.novadart.novabill.service.export.data.ExportDataBundle;
 
 @Controller
-@RequestMapping("/private/export")
+@RequestMapping(Urls.PRIVATE_EXPORT)
 public class ExportController {
 
 	public static final String CLIENTS_REQUEST_PARAM = "clients";
