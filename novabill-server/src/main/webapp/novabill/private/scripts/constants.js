@@ -47,6 +47,7 @@ angular.module('novabill.constants', [])
 			commoditiesBaseUrl : basePath + 'private/commodities/',
 			creditNotesBaseUrl : basePath + 'private/credit-notes/',
 			dashboardUrl : basePath + 'private/',
+			deleteAccountUrl : basePath + 'private/delete-account',
 			estimationsBaseUrl : basePath + 'private/estimations/',
 			exportDwonloadUrl : basePath + 'private/export?clients={c}&invoices={i}&estimations={e}&creditnotes={cn}&transportdocs={t}',
 			invoicesBaseUrl : basePath + 'private/invoices/',

@@ -48,7 +48,9 @@
                             <li>Statistiche di base</li>
                         </ul>
                         <div class="pricing-footer">
-                            <a href="${registerPageUrl}" class="btn green">Registrati</a>  
+                            <a href="${registerPageUrl}" class="btn register green"
+				                data-container="body" data-toggle="popover" data-placement="top"
+				                data-content="Registrati e parti con un piano 'Standard', puoi aggiornare a 'Premium' quando vuoi" data-trigger="hover">Registrati</a>
                         </div>
                     </div>
                 </div>
@@ -77,12 +79,20 @@
                             <li><strong>Condivisione dei documenti con il commercialista</strong></li>
                         </ul>
                         <div class="pricing-footer">
-                            <a href="${registerPageUrl}" class="btn green">Registrati</a>  
+                            <a href="${registerPageUrl}" class="btn register green"
+				                data-container="body" data-toggle="popover" data-placement="top"
+				                data-content="Registrati e parti con un piano 'Standard', puoi aggiornare a 'Premium' quando vuoi" data-trigger="hover">Registrati</a>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- END PRICING OPTION1 -->
+            
+    		<script type="text/javascript">
+    		$(function(){
+    			$('a.register').popover();
+    		});
+    		</script>
            
         </div>
         <!-- END CONTAINER -->

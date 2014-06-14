@@ -94,7 +94,7 @@
                         </div>
                     </div>
                                 
-                     <div class="row" >
+                     <div class="row" style="margin-bottom: 30px;">
                         <div class="col-md-12">
                             <h4><strong style="text-transform: uppercase;">{{'TITLE_EXPORT_DATA' | translate}}</strong></h4>
                             <a href="javascript:void(0);" class="btn default" ng-click="exportZip(true, false, false, false, false)">{{'EXPORT_CLIENTS' | translate}}</a>
@@ -102,6 +102,13 @@
                             <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, true, false, false)">{{'EXPORT_ESTIMATIONS' | translate}}</a>
                             <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, true, false, false, false)">{{'EXPORT_INVOICES' | translate}}</a>
                             <a style="margin-left: 10px;" href="javascript:void(0);" class="btn default" ng-click="exportZip(false, false, false, false, true)">{{'EXPORT_TRANSPORT_DOCUMENTS' | translate}}</a>
+                        </div>
+                    </div>
+                    
+                    <div class="row" style="margin-bottom: 30px;" >
+                        <div class="col-md-12">
+                            <h4><strong style="text-transform: uppercase;">{{'TITLE_DELETE_ACCOUNT' | translate}}</strong></h4>
+                            <a href="{{deleteAccountUrl}}" class="btn red">{{'DELETE_ACCOUNT' | translate}}</a>
                         </div>
                     </div>
                  

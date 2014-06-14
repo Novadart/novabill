@@ -16,6 +16,7 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 	var SharingPermit = nAjax.SharingPermit();
 	
 	$scope.changePasswordUrl = nConstants.conf.changePasswordBaseUrl;
+	$scope.deleteAccountUrl = nConstants.conf.deleteAccountUrl;
 	$scope.principalEmail = nConstants.conf.principalEmail;
 	$scope.principalCreationDate = nConstants.conf.principalCreationDate;
 	$scope.premium = nConstants.conf.premium;

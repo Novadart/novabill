@@ -5,6 +5,7 @@ import java.security.NoSuchAlgorithmException;
 import javax.servlet.http.HttpSession;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.web.mvc.command.DeleteAccount;
-import com.novadart.novabill.web.mvc.Urls;
 
 @Controller
 @RequestMapping(Urls.PRIVATE_DELETE_ACCOUNT)
@@ -64,7 +64,8 @@ public class DeleteAccountController {
 		businessLogoController.clearLogo(principal.getBusiness().getId());
 		principal.getBusiness().remove();
 		status.setComplete();
-		return "redirect:" + Urls.PRIVATE_LOGOUT;
+		SecurityContextHolder.clearContext();
+		return "redirect:" + Urls.PUBLIC_HOME;
 	}
 	
 }
