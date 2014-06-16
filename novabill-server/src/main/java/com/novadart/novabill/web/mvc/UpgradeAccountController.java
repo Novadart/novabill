@@ -76,7 +76,6 @@ public class UpgradeAccountController {
 		for(UpgradeToken ut: upgradeTokens){
 			if(ut.getToken().equals(returnedNovabillToken))
 				found = true;
-			ut.remove();
 		}
 		if(found)
 			return "private.premiumUpgradeSuccess";
