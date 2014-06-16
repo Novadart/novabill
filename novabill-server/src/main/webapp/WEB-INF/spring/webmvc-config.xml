@@ -47,19 +47,6 @@
 		</mvc:interceptor>
 	</mvc:interceptors>
 
-	<!-- <mvc:view-controller path="/login" /> -->
-	<!-- <mvc:view-controller path="/uncaughtException" />
-		<mvc:view-controller path="/resourceNotFound" />
-		<mvc:view-controller path="/dataAccessFailure" />
-		<mvc:view-controller path="/registrationCompleted" />
-		<mvc:view-controller path="/passwordRecoveryCommenced" />
-		<mvc:view-controller path="/tos" /> -->
-	<!-- <mvc:view-controller path="/privacyPolicy" /> --> <!-- Not needed, currently we're using iubenda.com -->
-	<!-- <mvc:view-controller path="/premiumInfo"/> -->
-
-	<!-- TEST view -->
-	<mvc:view-controller path="/resolutionTest" />
-
 	<bean
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
 		id="messageSource" p:basenames="WEB-INF/i18n/messages,WEB-INF/i18n/application"

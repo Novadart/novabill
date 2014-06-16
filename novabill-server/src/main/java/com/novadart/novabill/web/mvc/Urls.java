@@ -39,6 +39,7 @@ public interface Urls {
 	public static final String PRIVATE_PRICE_LISTS = "/private/price-lists";
 	public static final String PRIVATE_PAYMENTS = "/private/payments";
 	public static final String PRIVATE_PREMIUM = "/private/premium";
+	public static final String PRIVATE_PREMIUM_PAYPAL_CALLBACK = "/private/premium/paypal-callback";
 	public static final String PRIVATE_SETTINGS = "/private/settings";
 	public static final String PRIVATE_PRINT_PDF = "/private/print-pdf";
 	public static final String PRIVATE_DELETE_ACCOUNT = "/private/delete-account";

@@ -64,7 +64,7 @@ public class UpgradeAccountController {
 	
 	private void handleError(String email, String message){}
 
-	@RequestMapping("/paypal-callback")
+	@RequestMapping(Urls.PRIVATE_PREMIUM_PAYPAL_CALLBACK)
 	@Transactional(readOnly = false)
 	public String handlePaypalReturn(@RequestParam("novabillToken") String returnedNovabillToken, @RequestParam("email") String email){
 		List<UpgradeToken> upgradeTokens = UpgradeToken.findByEmail(email);
