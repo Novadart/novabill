@@ -50,7 +50,7 @@
 	                <div class="col-md-offset-2 col-md-3">
 	                    <div class="pricing hover-effect">
 	                        <div class="pricing-head">
-	                            <span class="label label-danger" style="position: absolute;right: 5px;top: 5px;font-size: larger;">- 5%</span>
+	                            <span class="label label-danger" style="position: absolute;right: 10px;top: 10px;font-size: larger;">- 5%</span>
 	                            <h3>2 Anni</h3>
 	                            <h4><i>€</i>114<i>.00</i><span>pari a € 4,75 al mese</span></h4>
 	                        </div>
@@ -117,7 +117,7 @@
                     </div>
                     <div class="row margin-bottom-20">
                         <div class="col-md-4 service-box-v1">
-                            <div><i class="fa fa-gears color-grey"></i></div>
+                            <div><i class="fa fa-comments-o color-grey"></i></div>
                             <h4>Priorità nel supporto tecnico</h4>
                         </div>
                         <div class="col-md-4 service-box-v1">

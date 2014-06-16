@@ -33,7 +33,7 @@
 
 .service-box-v1:hover i,
 .service-box-v1:hover p,
-.service-box-v1:hover h2 {
+.service-box-v1:hover h4 {
     color: #fff;
 }
 
