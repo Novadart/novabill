@@ -71,7 +71,8 @@
 	<definition name="private.printPDF" template="/WEB-INF/views/layouts/private/printPDF.jsp"></definition>
 	
 	<definition name="private.premium" extends="private.layout">
-        <put-attribute name="body" value="/WEB-INF/views/tiles/private/premium.jsp" />
+	   <put-attribute name="cssExtra" value="/WEB-INF/views/tiles/private/premiumCSS.jsp" />
+       <put-attribute name="body" value="/WEB-INF/views/tiles/private/premium.jsp" />
     </definition>
 	
 	<definition name="private.premiumUpgradeSuccess" extends="private.layout">

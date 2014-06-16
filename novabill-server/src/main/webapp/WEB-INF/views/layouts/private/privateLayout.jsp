@@ -82,6 +82,8 @@
 
 <tiles:insertAttribute name="css" />
 
+<tiles:insertAttribute  ignore="true" name="cssExtra" />
+
 <link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
 
 <!-- Load jQuery -->
