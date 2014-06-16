@@ -18,50 +18,58 @@
 	            <!-- END PAGE TITLE & BREADCRUMB-->
 
                 <div class="row">
-                <div class="col-md-offset-2 col-md-3">
-                    <div class="pricing hover-effect">
-                        <div class="pricing-head">
-                            <h3>1 Anno</h3>
-                            <h4><i>€</i>60<i>.00</i></h4>
-                        </div>
-                        
-                        <div class="pricing-footer">
-                        <br>
-                            <form action="${paypalAction}" method="post">
-			                    <input type="hidden" name="cmd" value="_s-xclick">
-			                    <input type="hidden" name="hosted_button_id" value="${hostedButtonIDOneYear}">
-			                    <input type="image"
-			                        src="https://www.sandbox.paypal.com/it_IT/i/btn/btn_buynowCC_LG.gif"
-			                        border="0" name="submit"
-			                        alt="PayPal - The safer, easier way to pay online!">
-			                    <img alt="" border="0" src="https://www.sandbox.paypal.com/it_IT/i/scr/pixel.gif" width="1" height="1">
-			                    <input type="hidden" name="return" value="${returnUrl}">
-			                    <input type="hidden" name="custom" value="${payload}">
-			                </form>
-                        </div>
-                    </div>
-                </div>
-                <div class="col-md-offset-2 col-md-3">
-                    <div class="pricing hover-effect">
-                        <div class="pricing-head">
-                            <h3>2 Anni</h3>
-                            <h4><i>€</i>114<i>.00</i></h4>
-                        </div>
-                        <div class="pricing-footer">
-                        <br>
-                            <form action="${paypalAction}" method="post" target="_top">
-			                    <input type="hidden" name="cmd" value="_s-xclick">
-			                    <input type="hidden" name="hosted_button_id" value="${hostedButtonIDTwoYears}">
-			                    <input type="image"
-			                        src="https://www.sandbox.paypal.com/it_IT/i/btn/btn_buynowCC_LG.gif"
-			                        border="0" name="submit"
-			                        alt="PayPal - The safer, easier way to pay online!">
-			                    <img alt="" border="0" src="https://www.sandbox.paypal.com/it_IT/i/scr/pixel.gif" width="1" height="1">
-			                    <input type="hidden" name="return" value="${returnUrl}">
-			                    <input type="hidden" name="custom" value="${payload}">
-			                </form>
-                        </div>
-                    </div>
+                
+                <div class="col-md-12">
+	                <h3>Seleziona il piano di tuo interesse</h3>
+	                
+	                <br>
+	                
+	                <div class="col-md-offset-2 col-md-3">
+	                    <div class="pricing hover-effect">
+	                        <div class="pricing-head">
+	                            <h3>1 Anno</h3>
+	                            <h4><i>€</i>60<i>.00</i> <span>pari a € 5,00 al mese</span></h4>
+	                        </div>
+	                        
+	                        <div class="pricing-footer">
+	                        <br>
+	                            <form action="${paypalAction}" method="post">
+				                    <input type="hidden" name="cmd" value="_s-xclick">
+				                    <input type="hidden" name="hosted_button_id" value="${hostedButtonIDOneYear}">
+				                    <input type="image"
+				                        src="https://www.sandbox.paypal.com/it_IT/i/btn/btn_buynowCC_LG.gif"
+				                        border="0" name="submit"
+				                        alt="PayPal - The safer, easier way to pay online!">
+				                    <img alt="" border="0" src="https://www.sandbox.paypal.com/it_IT/i/scr/pixel.gif" width="1" height="1">
+				                    <input type="hidden" name="return" value="${returnUrl}">
+				                    <input type="hidden" name="custom" value="${payload}">
+				                </form>
+	                        </div>
+	                    </div>
+	                </div>
+	                <div class="col-md-offset-2 col-md-3">
+	                    <div class="pricing hover-effect">
+	                        <div class="pricing-head">
+	                            <span class="label label-danger" style="position: absolute;right: 5px;top: 5px;font-size: larger;">- 5%</span>
+	                            <h3>2 Anni</h3>
+	                            <h4><i>€</i>114<i>.00</i><span>pari a € 4,75 al mese</span></h4>
+	                        </div>
+	                        <div class="pricing-footer">
+	                        <br>
+	                            <form action="${paypalAction}" method="post" target="_top">
+				                    <input type="hidden" name="cmd" value="_s-xclick">
+				                    <input type="hidden" name="hosted_button_id" value="${hostedButtonIDTwoYears}">
+				                    <input type="image"
+				                        src="https://www.sandbox.paypal.com/it_IT/i/btn/btn_buynowCC_LG.gif"
+				                        border="0" name="submit"
+				                        alt="PayPal - The safer, easier way to pay online!">
+				                    <img alt="" border="0" src="https://www.sandbox.paypal.com/it_IT/i/scr/pixel.gif" width="1" height="1">
+				                    <input type="hidden" name="return" value="${returnUrl}">
+				                    <input type="hidden" name="custom" value="${payload}">
+				                </form>
+	                        </div>
+	                    </div>
+	                </div>
                 </div>
 		      </div>
 	       </div>
@@ -72,44 +80,57 @@
 	   <div class="row">
 	   
 	       <div class="col-md-12">
-	           <h4>
-                    Seleziona uno dei due piani.<br>
-                    Se decidi di aderire al piano da 2 anni potrai beneficiare di uno sconto.
-               </h4>
+	           
+	           <h3>I benefici dedicati agli utenti Premium</h3>
 	           
 	           <br>
 	           
-	           <div class="col-md-4">
-	               <h4><strong>I vantaggi di diventare utenti Premium</strong></h4>
-                   <ul class="pricing-content feats-list list-unstyled">
-                        <li><strong>Più modelli di documento selezionabili</strong></li>
-                        <li><strong>Statistiche avanzate</strong></li>
-                        <li><strong>Invio automatico della fattura al cliente via e-mail</strong></li>
-                        <li><strong>Gestione articoli</strong></li>
-                        <li><strong>Gestione listini</strong></li>
-                        <li><strong>Condivisione dei documenti con il commercialista</strong></li>
-                        <li><strong>Priorità nel supporto tecnico</strong></li>
-                        <li><strong>Maggiore priorità allo sviluppo di funzionalità suggerite da utenti premium</strong></li>
-                        <li><strong>Supporti il nostro lavoro e ci aiuti a fornire un servizio sempre migliore</strong></li>
-                    </ul>
-               </div>
-	       
-	           <div class="col-md-4 col-md-offset-1">
-	               <h4>Le funzionalità già attive nel piano Standard</h4>
-	               <ul class="pricing-content">
-	                    <li>Creazione di offerte in numero illimitato</li>
-	                    <li>Creazione di fatture in numero illimitato</li>
-	                    <li>Creazione di DDT in numero illimitato</li>
-	                    <li>Creazione di note di credito in numero illimitato</li>
-	                    <li>Gestione di un numero illimitato di clienti</li>
-	                    <li>Esportazione dei documenti in PDF</li>
-	                    <li>Esportazione dei dati in archivio ZIP</li>
-	                    <li>Personalizzazione dei documenti</li>
-	                    <li>Gestione dei pagamenti</li>
-	                    <li>Backup regolare dei dati</li>
-	                </ul>
-	           </div>
-	           
+	           <div class="col-md-10 col-md-offset-1">
+	           <!-- BEGIN SERVICE BLOCKS -->               
+                    <div class="row margin-bottom-20">
+                        <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-file-o color-grey"></i></div>
+                            <h4>Più modelli di documento selezionabili</h4>
+                        </div>
+                        <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-bar-chart-o color-grey"></i></div>
+                            <h4>Statistiche avanzate</h4>
+                        </div>
+                         <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-envelope-o color-grey"></i></div>
+                            <h4>Invio automatico della fattura al cliente via e-mail</h4>
+                        </div>
+                    </div>
+                    <div class="row margin-bottom-20">
+                        <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-th color-grey"></i></div>
+                            <h4>Gestione articoli</h4>
+                        </div>
+                        <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-dollar color-grey"></i></div>
+                            <h4>Gestione listini</h4>
+                        </div>
+                         <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-group color-grey"></i></div>
+                            <h4>Condivisione dei documenti con il commercialista</h4>
+                        </div>
+                    </div>
+                    <div class="row margin-bottom-20">
+                        <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-gears color-grey"></i></div>
+                            <h4>Priorità nel supporto tecnico</h4>
+                        </div>
+                        <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-code color-grey"></i></div>
+                            <h4>Maggiore priorità allo sviluppo di funzionalità suggerite da utenti premium</h4>
+                        </div>
+                         <div class="col-md-4 service-box-v1">
+                            <div><i class="fa fa-smile-o color-grey"></i></div>
+                            <h4>Supporti il nostro lavoro e ci aiuti a fornire un servizio sempre migliore</h4>
+                        </div>
+                    </div>
+                <!-- END SERVICE BLOCKS --> 
+                </div>
 	       </div>
 	       
 	   </div>
