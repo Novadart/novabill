@@ -27,6 +27,8 @@ import com.novadart.novabill.service.UtilsService;
 @RequestMapping(Urls.PRIVATE_PREMIUM)
 public class UpgradeAccountController {
 	
+	public static final String PAYLOAD_SEPARATOR = ":65536:";
+	
 	@Autowired
 	private UtilsService utilsService;
 	
@@ -39,7 +41,7 @@ public class UpgradeAccountController {
 	@Autowired
 	private PaymentPlansLoader paymentPlans;
 	
-	
+
 	@RequestMapping(method = RequestMethod.GET)
 	@Transactional(readOnly = false)
 	public String display(Model model, HttpServletRequest request) throws MalformedURLException, UnsupportedEncodingException, NoSuchAlgorithmException{
@@ -56,7 +58,7 @@ public class UpgradeAccountController {
 		model.addAttribute("hostedButtonIDOneYear", paymentPlans.getPayPalPaymentPlanDescriptors()[0].getHostedButtonID());
 		model.addAttribute("hostedButtonIDTwoYears", paymentPlans.getPayPalPaymentPlanDescriptors()[1].getHostedButtonID());
 		model.addAttribute("returnUrl", returnURL);
-		model.addAttribute("email", email);
+		model.addAttribute("payload", email + PAYLOAD_SEPARATOR + token);
 		return "private.premium";
 	}
 	

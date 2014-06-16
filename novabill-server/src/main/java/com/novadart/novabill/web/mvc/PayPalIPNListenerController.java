@@ -27,7 +27,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.novadart.novabill.domain.PayPalTransactionID;
+import com.novadart.novabill.domain.Transaction;
 import com.novadart.novabill.paypal.PayPalIPNHandlerService;
 import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
 
@@ -88,15 +88,16 @@ public class PayPalIPNListenerController {
     	if(!verifyIPN(request)) return;
     	String email = parametersMap.get(RECEIVER_EMAIL);
     	if(email!= null && !email.equals(payPalEmail))//email doesn't match
-    		return; 
+    		return;
+    	Transaction transaction = null;
     	if(transactionID != null){
-    		if(PayPalTransactionID.findByTransactionID(transactionID).size() > 0)
+    		if(Transaction.findByTransactionID(transactionID).size() > 0)
     			return; //already processed thus ignore
     		else
-    			new PayPalTransactionID(transactionID).merge(); //store transaction id
+    			transaction = new Transaction(transactionID).merge(); //store transaction id
     	}
     	for(PayPalIPNHandlerService ipnHandler: ipnHandlers)
-    		ipnHandler.handle(transactionType, parametersMap);
+    		ipnHandler.handle(transactionType, parametersMap, transaction);
     }
 
 }

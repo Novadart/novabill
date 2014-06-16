@@ -33,6 +33,7 @@ import com.dumbster.smtp.SmtpMessage;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Email;
 import com.novadart.novabill.domain.EmailStatus;
+import com.novadart.novabill.domain.Transaction;
 import com.novadart.novabill.domain.UpgradeToken;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
@@ -318,12 +319,12 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		TestUtils.setPrivateField(PayPalIPNHandlerService.class, mockIPNService, "principalDetailsService", principalDetailsService);
 		TestUtils.setPrivateField(PayPalIPNHandlerService.class, mockIPNService, "paymentPlans", paymentPlans);
 		Map<String, String> parametersMap = new HashMap<>();
-		parametersMap.put("custom", "risto.gligorov@novadart.com");
+		parametersMap.put("custom", "risto.gligorov@novadart.com" + UpgradeAccountController.PAYLOAD_SEPARATOR + "token");
 		parametersMap.put("item_name", "Novabill Premium Membership - 1 Year");
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		try{
-			mockIPNService.handle("", parametersMap);
+			mockIPNService.handle("", parametersMap, new Transaction());
 		}finally {
 			smtpServer.stop();
 		}
