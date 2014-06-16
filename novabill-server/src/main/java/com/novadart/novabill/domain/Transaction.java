@@ -1,5 +1,6 @@
 package com.novadart.novabill.domain;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -18,19 +19,28 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
-public class PayPalTransactionID {
+public class Transaction {
 	
 	private String transactionID;
 	
-	public PayPalTransactionID(String transactionID){
+	private String token;
+	
+	public Transaction(String transactionID){
 		this.transactionID = transactionID;
 	}
 	
-	public PayPalTransactionID(){}
+	public Transaction(){}
 	
-	public static List<PayPalTransactionID> findByTransactionID(String transactionID){
-		return entityManager().createQuery("SELECT o FROM PayPalTransactionID o WHERE o.transactionID = :transactionID", PayPalTransactionID.class)
+	public static List<Transaction> findByTransactionID(String transactionID){
+		List<Transaction> r = entityManager().createQuery("SELECT o FROM Transaction o WHERE o.transactionID = :transactionID", Transaction.class)
 				.setParameter("transactionID", transactionID).getResultList();
+		return new ArrayList<Transaction>(r);
+	}
+	
+	public static List<Transaction> findByToken(String token) {
+		List<Transaction> r = entityManager().createQuery("SELECT o FROM Transaction o WHERE o.token = :token", Transaction.class)
+				.setParameter("token", token).getResultList();
+		return new ArrayList<Transaction>(r);
 	}
 	
 	
@@ -41,40 +51,48 @@ public class PayPalTransactionID {
         return this.transactionID;
     }
     
-    public void setTransactionID(String transactionID) {
+	public void setTransactionID(String transactionID) {
         this.transactionID = transactionID;
     }
+    
+	public String getToken() {
+		return token;
+	}
+
+	public void setToken(String token) {
+		this.token = token;
+	}
     /*
      * End of getters and setters section
      * */
     
-    /*
+	/*
      * Active record functionality
      * */
     @PersistenceContext
     transient EntityManager entityManager;
     
     public static final EntityManager entityManager() {
-        EntityManager em = new PayPalTransactionID().entityManager;
+        EntityManager em = new Transaction().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }
     
-    public static long countPayPalTransactionIDs() {
-        return entityManager().createQuery("SELECT COUNT(o) FROM PayPalTransactionID o", Long.class).getSingleResult();
+    public static long countTransactions() {
+        return entityManager().createQuery("SELECT COUNT(o) FROM Transaction o", Long.class).getSingleResult();
     }
     
-    public static List<PayPalTransactionID> findAllPayPalTransactionIDs() {
-        return entityManager().createQuery("SELECT o FROM PayPalTransactionID o", PayPalTransactionID.class).getResultList();
+    public static List<Transaction> findAllTransactions() {
+        return entityManager().createQuery("SELECT o FROM Transaction o", Transaction.class).getResultList();
     }
     
-    public static PayPalTransactionID findPayPalTransactionID(Long id) {
+    public static Transaction findTransaction(Long id) {
         if (id == null) return null;
-        return entityManager().find(PayPalTransactionID.class, id);
+        return entityManager().find(Transaction.class, id);
     }
     
-    public static List<PayPalTransactionID> findPayPalTransactionIDEntries(int firstResult, int maxResults) {
-        return entityManager().createQuery("SELECT o FROM PayPalTransactionID o", PayPalTransactionID.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
+    public static List<Transaction> findTransactionEntries(int firstResult, int maxResults) {
+        return entityManager().createQuery("SELECT o FROM Transaction o", Transaction.class).setFirstResult(firstResult).setMaxResults(maxResults).getResultList();
     }
     
     @Transactional
@@ -89,7 +107,7 @@ public class PayPalTransactionID {
         if (this.entityManager.contains(this)) {
             this.entityManager.remove(this);
         } else {
-            PayPalTransactionID attached = PayPalTransactionID.findPayPalTransactionID(this.id);
+            Transaction attached = Transaction.findTransaction(this.id);
             this.entityManager.remove(attached);
         }
     }
@@ -107,9 +125,9 @@ public class PayPalTransactionID {
     }
     
     @Transactional
-    public PayPalTransactionID merge() {
+    public Transaction merge() {
         if (this.entityManager == null) this.entityManager = entityManager();
-        PayPalTransactionID merged = this.entityManager.merge(this);
+        Transaction merged = this.entityManager.merge(this);
         this.entityManager.flush();
         return merged;
     }

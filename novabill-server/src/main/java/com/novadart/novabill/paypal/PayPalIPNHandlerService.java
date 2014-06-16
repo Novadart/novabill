@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Transaction;
 import com.novadart.novabill.service.PrincipalDetailsService;
 import com.novadart.novabill.service.web.PremiumEnablerService;
 import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
+import com.novadart.novabill.web.mvc.UpgradeAccountController;
 
 public abstract class PayPalIPNHandlerService {
 	
@@ -34,15 +36,18 @@ public abstract class PayPalIPNHandlerService {
 	private PremiumEnablerService premiumEnablerService;
 
 	@Transactional(readOnly = false)
-	public void handle(String transactionType, Map<String, String> parametersMap) throws PremiumUpgradeException {
+	public void handle(String transactionType, Map<String, String> parametersMap, Transaction transaction) throws PremiumUpgradeException {
 		preProcess(parametersMap);
 		if(!check(transactionType, parametersMap))
 			return;
-		String email = parametersMap.get(CUSTOM);
+		String[] payload = parametersMap.get(CUSTOM).split(UpgradeAccountController.PAYLOAD_SEPARATOR);
+		String email = payload[0], token = payload[1];
 		Business business = principalDetailsService.loadUserByUsername(email).getBusiness();
 		premiumEnablerService.enablePremiumForNMonths(business, paymentPlans.getPayPalPaymentPlanDescriptor(parametersMap.get(ITEM_NAME)).getPayedPeriodInMonths());
 		try {
 			premiumEnablerService.notifyAndInvoiceBusiness(business, paymentPlans.getPayPalPaymentPlanDescriptor(parametersMap.get(ITEM_NAME)).getItemName(), email);
+			transaction.setToken(token);
+			transaction.merge();
 		} catch (PremiumUpgradeException e) {
 			e.setUsername(email);
 			e.setTransactionID(parametersMap.get(TRANSACTION_ID));

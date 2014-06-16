@@ -173,4 +173,11 @@ public class BusinessController {
 		return businessService.getInvoiceMonthCounts(businessID);
 	}
 	
+	@RequestMapping(value = "/{businessID}/upgrade-completed/{token}", method = RequestMethod.GET)
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.OK)
+	public boolean isUpgradeTransactionCompleted(@PathVariable Long businessID, @PathVariable String token){
+		return businessService.isUpgradeTransactionCompleted(businessID, token);
+	}
+	
 }

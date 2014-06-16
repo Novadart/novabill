@@ -32,6 +32,7 @@ import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.Settings;
 import com.novadart.novabill.domain.SharingPermit;
+import com.novadart.novabill.domain.Transaction;
 import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
@@ -348,6 +349,12 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@Restrictions(checkers = {PremiumChecker.class})
 	public void setDefaultLayout(Long businessID, LayoutType layoutType) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Business.findBusiness(businessID).getSettings().setDefaultLayoutType(layoutType);
+	}
+
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public boolean isUpgradeTransactionCompleted(Long businessID, String token) {
+		return Transaction.findByToken(token).size() > 0;
 	}
 	
 }
