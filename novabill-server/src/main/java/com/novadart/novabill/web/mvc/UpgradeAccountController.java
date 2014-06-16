@@ -3,9 +3,7 @@ package com.novadart.novabill.web.mvc;
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
-import java.util.List;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -16,7 +14,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.novadart.novabill.domain.UpgradeToken;
 import com.novadart.novabill.paypal.PaymentPlansLoader;
@@ -52,8 +49,7 @@ public class UpgradeAccountController {
 		upgradeToken.setToken(token);
 		upgradeToken.persist();
 		String returnURL = new URL(request.getScheme(), request.getServerName(), request.getServerPort(),
-				request.getContextPath() + String.format("/private/premium/paypal-callback?email=%s&novabillToken=%s", 
-						URLEncoder.encode(email, "UTF-8"), URLEncoder.encode(token, "UTF-8"))).toString();
+				request.getContextPath() + "/private/premium/paypal-callback").toString();
 		model.addAttribute("paypalAction", paypalAction);
 		model.addAttribute("hostedButtonIDOneYear", paymentPlans.getPayPalPaymentPlanDescriptors()[0].getHostedButtonID());
 		model.addAttribute("hostedButtonIDTwoYears", paymentPlans.getPayPalPaymentPlanDescriptors()[1].getHostedButtonID());
@@ -62,25 +58,9 @@ public class UpgradeAccountController {
 		return "private.premium";
 	}
 	
-	private void handleError(String email, String message){}
-
 	@RequestMapping(Urls.PRIVATE_PREMIUM_PAYPAL_CALLBACK)
-	@Transactional(readOnly = false)
-	public String handlePaypalReturn(@RequestParam("novabillToken") String returnedNovabillToken, @RequestParam("email") String email){
-		List<UpgradeToken> upgradeTokens = UpgradeToken.findByEmail(email);
-		if(upgradeTokens.size() == 0){
-			handleError(email, "No associated tokens");
-			return "private.premiumUpgradeFailure";
-		}
-		boolean found = false;
-		for(UpgradeToken ut: upgradeTokens){
-			if(ut.getToken().equals(returnedNovabillToken))
-				found = true;
-		}
-		if(found)
-			return "private.premiumUpgradeSuccess";
-		handleError(email, "Token mismatch");
-		return "private.premiumUpgradeFailure";
+	public String handlePaypalReturn(){
+		return "private.premiumUpgradeSuccess";
 	}
 	
 }
