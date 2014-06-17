@@ -1,0 +1,22 @@
+<div class="n-upgrade-suggestion-dialog">
+	<div class="modal-header">
+		<button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="ok()">&times;</button>
+		<h3 class="modal-title">{{'PREMIUM_SUGGESTION_TITLE' | translate}}</h3>
+	</div>
+	<div class="modal-body">
+		<div style="font-size: larger;">
+		  {{'PREMIUM_SUGGESTION_MESSAGE' | translate}}
+		<br><br>
+          {{'PREMIUM_SUGGESTION_MESSAGE_2' | translate}}
+        </div>
+		<br><br>
+		<div class="text-center">
+		      <a href="{{premiumUrl}}" class="btn btn-lg green" style="margin-bottom: 5px;">{{'PREMIUM_SUGGESTION_GO' | translate}}</a>
+		      <br>
+		      <a href="javascript:void(0);" ng-click="skip()">{{'PREMIUM_SUGGESTION_SKIP' | translate}}</a>
+		</div>
+		
+	</div>
+
+	
+</div>

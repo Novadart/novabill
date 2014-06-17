@@ -40,6 +40,10 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 	});
 	
 	
+	$scope.businessUpdateCallback = function(){
+		$window.location.reload();
+	};
+	
 	$scope.update = function(){
 		$scope.business.$update(function(){
 			

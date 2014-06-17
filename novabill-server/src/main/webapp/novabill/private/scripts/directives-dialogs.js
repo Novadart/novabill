@@ -716,7 +716,7 @@ angular.module('novabill.directives.dialogs',
 .factory('nHelloDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
 	return {
-		open : function( business ) {
+		open : function( business, callback ) {
 
 			return $modal.open({
 
@@ -729,8 +729,43 @@ angular.module('novabill.directives.dialogs',
 
 					$scope.business = business;
 
+					$scope.businessUpdateCallback = function(){
+						callback();
+					};
+					
 					$scope.ok = function(){
 						$modalInstance.close();
+					};
+
+				}]
+			});
+		}
+	};
+}])
+
+
+
+/*
+ * Edit Price List Dialog
+ */
+.factory('nUpgradeSuggestionDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+	return {
+		open : function() {
+
+			return $modal.open({
+
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-upgrade-suggestion-dialog.html'),
+				keyboard : false,
+				backdrop : 'static',
+				controller: ['$scope', '$modalInstance', 'nConstants', '$window',
+				             function($scope, $modalInstance, nConstants, $window){
+					
+					
+					$scope.premiumUrl = nConstants.conf.premiumUrl;
+					
+					$scope.skip = function(){
+						$window.location.reload();
 					};
 
 				}]

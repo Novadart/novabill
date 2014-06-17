@@ -12,20 +12,22 @@ angular.module('novabill.directives.forms',
 	return {
 		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-business-form.html'),
 		scope: { 
-			business : '='
+			business : '=',
+			callback : '&'
 		},
-		controller : ['$scope', '$window', function($scope, $window){
+		controller : ['$scope', 
+		              function($scope){
 			
 			$scope.saveOrUpdate = function(){
 				
 				if($scope.business.id){
 					$scope.business.$update(function(){
-						$window.location.reload();
+						$scope.callback();
 					});
 				} else {
 					$scope.business.settings = {};
 					$scope.business.$save(function(){
-						$window.location.reload();
+						$scope.callback();
 					});
 				}
 				
