@@ -2,7 +2,6 @@ package com.novadart.novabill.web.mvc;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
-import java.net.URL;
 import java.security.NoSuchAlgorithmException;
 
 import javax.servlet.http.HttpServletRequest;
@@ -15,22 +14,15 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 
-import com.novadart.novabill.domain.UpgradeToken;
 import com.novadart.novabill.paypal.PaymentPlansLoader;
-import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
 
 @Controller
 @RequestMapping(Urls.PRIVATE_PREMIUM)
 public class UpgradeAccountController {
 	
-	public static final String PAYLOAD_SEPARATOR = ":65536:";
-	
 	@Autowired
 	private UtilsService utilsService;
-	
-	@Autowired
-	private TokenGenerator tokenGenerator;
 	
 	@Value("${paypal.action}")
 	private String paypalAction;
@@ -43,18 +35,10 @@ public class UpgradeAccountController {
 	@Transactional(readOnly = false)
 	public String display(Model model, HttpServletRequest request) throws MalformedURLException, UnsupportedEncodingException, NoSuchAlgorithmException{
 		String email = utilsService.getAuthenticatedPrincipalDetails().getUsername();
-		String token = tokenGenerator.generateToken();
-		UpgradeToken upgradeToken = new UpgradeToken();
-		upgradeToken.setEmail(email);
-		upgradeToken.setToken(token);
-		upgradeToken.persist();
-		String returnURL = new URL(request.getScheme(), request.getServerName(), request.getServerPort(),
-				request.getContextPath() + "/private/premium/paypal-callback").toString();
 		model.addAttribute("paypalAction", paypalAction);
 		model.addAttribute("hostedButtonIDOneYear", paymentPlans.getPayPalPaymentPlanDescriptors()[0].getHostedButtonID());
 		model.addAttribute("hostedButtonIDTwoYears", paymentPlans.getPayPalPaymentPlanDescriptors()[1].getHostedButtonID());
-		model.addAttribute("returnUrl", returnURL);
-		model.addAttribute("payload", email + PAYLOAD_SEPARATOR + token);
+		model.addAttribute("email", email);
 		return "private.premium";
 	}
 	

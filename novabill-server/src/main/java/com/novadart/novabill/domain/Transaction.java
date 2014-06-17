@@ -23,8 +23,6 @@ public class Transaction {
 	
 	private String transactionID;
 	
-	private String token;
-	
 	public Transaction(String transactionID){
 		this.transactionID = transactionID;
 	}
@@ -37,13 +35,6 @@ public class Transaction {
 		return new ArrayList<Transaction>(r);
 	}
 	
-	public static List<Transaction> findByToken(String token) {
-		List<Transaction> r = entityManager().createQuery("SELECT o FROM Transaction o WHERE o.token = :token", Transaction.class)
-				.setParameter("token", token).getResultList();
-		return new ArrayList<Transaction>(r);
-	}
-	
-	
 	/*
 	 * Getters and setters
 	 * */
@@ -54,14 +45,6 @@ public class Transaction {
 	public void setTransactionID(String transactionID) {
         this.transactionID = transactionID;
     }
-    
-	public String getToken() {
-		return token;
-	}
-
-	public void setToken(String token) {
-		this.token = token;
-	}
     /*
      * End of getters and setters section
      * */

@@ -42,7 +42,7 @@
 				                        alt="PayPal - The safer, easier way to pay online!">
 				                    <img alt="" border="0" src="https://www.sandbox.paypal.com/it_IT/i/scr/pixel.gif" width="1" height="1">
 				                    <input type="hidden" name="return" value="${returnUrl}">
-				                    <input type="hidden" name="custom" value="${payload}">
+				                    <input type="hidden" name="custom" value="${email}">
 				                </form>
 	                        </div>
 	                    </div>
@@ -65,7 +65,7 @@
 				                        alt="PayPal - The safer, easier way to pay online!">
 				                    <img alt="" border="0" src="https://www.sandbox.paypal.com/it_IT/i/scr/pixel.gif" width="1" height="1">
 				                    <input type="hidden" name="return" value="${returnUrl}">
-				                    <input type="hidden" name="custom" value="${payload}">
+				                    <input type="hidden" name="custom" value="${email}">
 				                </form>
 	                        </div>
 	                    </div>

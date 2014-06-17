@@ -2,9 +2,9 @@ package com.novadart.novabill.test.suite;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.doThrow;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
-import static org.mockito.Mockito.doThrow;
 
 import java.io.UnsupportedEncodingException;
 import java.net.MalformedURLException;
@@ -34,10 +34,8 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Email;
 import com.novadart.novabill.domain.EmailStatus;
 import com.novadart.novabill.domain.Transaction;
-import com.novadart.novabill.domain.UpgradeToken;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
-import com.novadart.novabill.paypal.OneTimePaymentIPNHandlerService;
 import com.novadart.novabill.paypal.PayPalIPNHandlerService;
 import com.novadart.novabill.paypal.PaymentPlanDescriptor;
 import com.novadart.novabill.paypal.PaymentPlansLoader;
@@ -214,7 +212,6 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		UpgradeAccountController controller = new UpgradeAccountController();
 		TokenGenerator tokenGenerator = mock(TokenGenerator.class);
 		when(tokenGenerator.generateToken()).thenReturn(token);
-		TestUtils.setPrivateField(UpgradeAccountController.class, controller, "tokenGenerator", tokenGenerator);
 		TestUtils.setPrivateField(UpgradeAccountController.class, controller, "utilsService", utilsService);
 		TestUtils.setPrivateField(UpgradeAccountController.class, controller, "paymentPlans", paymentPlans);
 		return controller;
@@ -234,17 +231,14 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		UpgradeAccountController controller = initUpgradeAccountController("1");
 		String view = controller.display(mock(Model.class), mockRequest());
 		assertEquals("private.premium", view);
-		assertEquals(1, UpgradeToken.countUpgradeTokens());
-		assertEquals(authenticatedPrincipal.getUsername(), UpgradeToken.findAllUpgradeTokens().iterator().next().getEmail());
 	}
 	
 	@Test
 	public void handlePaypalReturnTest() throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, MalformedURLException, UnsupportedEncodingException{
 		UpgradeAccountController controller = initUpgradeAccountController("1");
 		controller.display(mock(Model.class), mockRequest());
-		String view = controller.handlePaypalReturn("1", authenticatedPrincipal.getUsername());
+		String view = controller.handlePaypalReturn();
 		assertEquals("private.premiumUpgradeSuccess", view);
-		assertEquals(0, UpgradeToken.countUpgradeTokens());
 	}
 	
 	@Test
@@ -319,7 +313,7 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		TestUtils.setPrivateField(PayPalIPNHandlerService.class, mockIPNService, "principalDetailsService", principalDetailsService);
 		TestUtils.setPrivateField(PayPalIPNHandlerService.class, mockIPNService, "paymentPlans", paymentPlans);
 		Map<String, String> parametersMap = new HashMap<>();
-		parametersMap.put("custom", "risto.gligorov@novadart.com" + UpgradeAccountController.PAYLOAD_SEPARATOR + "token");
+		parametersMap.put("custom", "risto.gligorov@novadart.com");
 		parametersMap.put("item_name", "Novabill Premium Membership - 1 Year");
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
