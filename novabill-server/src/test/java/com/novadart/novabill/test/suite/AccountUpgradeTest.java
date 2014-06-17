@@ -33,6 +33,7 @@ import com.dumbster.smtp.SmtpMessage;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Email;
 import com.novadart.novabill.domain.EmailStatus;
+import com.novadart.novabill.domain.Notification;
 import com.novadart.novabill.domain.Transaction;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
@@ -44,8 +45,10 @@ import com.novadart.novabill.service.TokenGenerator;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.periodic.PeriodicMailSender;
 import com.novadart.novabill.service.periodic.PremiumDisablerService;
+import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.service.web.PremiumEnablerService;
+import com.novadart.novabill.shared.client.dto.NotificationType;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -81,6 +84,9 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	
 	@Autowired
 	private PrincipalDetailsService principalDetailsService;
+	
+	@Autowired
+	private BusinessService businessService;
 	
 	private long getNDaysFromNowInMillis(int days){
 		long DAY_IN_MILLIS = 86_400_000l;
@@ -251,6 +257,9 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		calendar.setTimeInMillis(System.currentTimeMillis());
 		calendar.add(Calendar.MONTH, 12);
 		assertTrue(calendar.getTimeInMillis() - Business.findBusiness(businessID).getSettings().getNonFreeAccountExpirationTime() < 3600000);
+		Business biz = Business.findBusiness(getUnathorizedBusinessID());
+		assertEquals(1, biz.getNotifications().size());
+		assertEquals(NotificationType.PREMIUM_UPGRADE, biz.getNotifications().iterator().next().getType());
 	}
 	
 	@Test
@@ -265,6 +274,12 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		calendar.setTimeInMillis(base);
 		calendar.add(Calendar.MONTH, 12);
 		assertTrue(calendar.getTimeInMillis() - Business.findBusiness(businessID).getSettings().getNonFreeAccountExpirationTime() == 0);
+		Business biz = Business.findBusiness(businessID);
+		assertEquals(1, biz.getNotifications().size());
+		assertEquals(NotificationType.PREMIUM_EXTENSION, biz.getNotifications().iterator().next().getType());
+		assertEquals(1, businessService.getNotifications(businessID).size());
+		businessService.markNotificationAsSeen(businessID, biz.getNotifications().iterator().next().getId());
+		assertEquals(0, businessService.getNotifications(businessID).size());
 	}
 	
 	@Test

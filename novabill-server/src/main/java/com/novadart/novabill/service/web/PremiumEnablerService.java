@@ -28,6 +28,7 @@ import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.Notification;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
@@ -43,6 +44,7 @@ import com.novadart.novabill.service.PrincipalDetailsService;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.shared.client.dto.NotificationType;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -105,6 +107,13 @@ public class PremiumEnablerService {
 		}
 	}
 	
+
+	private void createNotification(Business business, NotificationType type){
+		Notification notification = new Notification();
+		notification.setType(type);
+		notification.setBusiness(business);
+		business.getNotifications().add(notification);
+	}
 	
 	private void extendNonFreeAccountExpirationTime(Business business, int numberOfMonths) {
 		Long current = System.currentTimeMillis(), nonFreeAccountExpirationTime = business.getSettings().getNonFreeAccountExpirationTime();
@@ -113,6 +122,7 @@ public class PremiumEnablerService {
 		calendar.setTimeInMillis(zero);
 		calendar.add(Calendar.MONTH, numberOfMonths);
 		business.getSettings().setNonFreeAccountExpirationTime(calendar.getTimeInMillis());
+		createNotification(business, zero == nonFreeAccountExpirationTime? NotificationType.PREMIUM_EXTENSION: NotificationType.PREMIUM_UPGRADE);
 	}
 	
 	public void enablePremiumForNMonths(Business business, int numberOfMonths) throws PremiumUpgradeException {

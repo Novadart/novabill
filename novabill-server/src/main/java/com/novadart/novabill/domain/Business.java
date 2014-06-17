@@ -182,6 +182,9 @@ public class Business implements Serializable, Taxable {
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
     private Set<SharingPermit> sharingPermits = new HashSet<>();
     
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+    private Set<Notification> notifications = new HashSet<>();
+    
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
     	return entityManager().createQuery(query, Invoice.class).setParameter("id", getId()).setFirstResult(start).setMaxResults(length).getResultList();
@@ -653,6 +656,14 @@ public class Business implements Serializable, Taxable {
 
 	public void setSharingPermits(Set<SharingPermit> sharingPermits) {
 		this.sharingPermits = sharingPermits;
+	}
+
+	public Set<Notification> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(Set<Notification> notifications) {
+		this.notifications = notifications;
 	}
 
 	public Set<Transporter> getTransporters() {

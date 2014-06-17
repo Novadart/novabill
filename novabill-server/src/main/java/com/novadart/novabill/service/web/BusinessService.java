@@ -12,6 +12,7 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.LogRecordDTO;
+import com.novadart.novabill.shared.client.dto.NotificationDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
@@ -73,5 +74,9 @@ public interface BusinessService {
 	public List<SharingPermitDTO> getSharingPermits(Long businessID) throws NotAuthenticatedException, DataAccessException;
 	
 	public void setDefaultLayout(Long businessID, LayoutType layoutType) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
+	
+	public List<NotificationDTO> getNotifications(Long businessID);
+	
+	public void markNotificationAsSeen(Long businessID, Long id);
 	
 }
