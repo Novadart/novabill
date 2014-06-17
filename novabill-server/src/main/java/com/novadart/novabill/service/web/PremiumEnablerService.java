@@ -18,6 +18,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.security.core.session.SessionInformation;
+import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -76,6 +78,24 @@ public class PremiumEnablerService {
 	@Autowired
 	private JasperReportService jasperReportService;
 	
+	@Autowired
+	private SessionRegistry sessionRegistry;
+	
+	private void expireSessions(String username){
+		Object principal = null;
+		for(Object p: sessionRegistry.getAllPrincipals()){
+			UserDetails ud = (UserDetails)p;
+			if(ud.getUsername().equals(username))
+				principal = p;
+		}
+		if(principal != null){
+			for(SessionInformation sInfo: sessionRegistry.getAllSessions(principal, false))
+				sInfo.expireNow();
+				
+		}
+			
+	}
+	
 	private void makePremium(Business business){
 		for(Principal principal: business.getPrincipals()){
 			if(!principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM)){
@@ -95,9 +115,6 @@ public class PremiumEnablerService {
 		business.getSettings().setNonFreeAccountExpirationTime(calendar.getTimeInMillis());
 	}
 	
-	/* (non-Javadoc)
-	 * @see com.novadart.novabill.service.web.PremiumEnablerService#enablePremiumForNMonths(com.novadart.novabill.domain.Business, int)
-	 */
 	public void enablePremiumForNMonths(Business business, int numberOfMonths) throws PremiumUpgradeException {
 		try {
 			makePremium(business);
@@ -205,6 +222,7 @@ public class PremiumEnablerService {
 			Long clientID = addOrUpdateClient(novadartBusiness, business, email);
 			Long invoiceID = createInvoice(novadartBusiness, clientID, paymentPlan);
 			exportAndEmailInvoicePdf(invoiceID, novadartBusiness.getId(), email);
+			expireSessions(email);
 		} catch (Exception e){
 			throw new PremiumUpgradeException(e);
 		} finally {
