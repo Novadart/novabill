@@ -55,5 +55,10 @@ public class FrontendController {
 		return "frontend.tosMinimal";
 	}
 	
+	@RequestMapping(value = Urls.PUBLIC_PAYPAL_RETURN_PAGE, method = RequestMethod.GET)
+	public String paypalreturnPage(Model model){
+		return "frontend.paypalReturnPage";
+	}
+	
 	
 }

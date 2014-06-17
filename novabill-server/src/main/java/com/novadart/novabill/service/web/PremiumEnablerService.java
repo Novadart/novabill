@@ -212,7 +212,7 @@ public class PremiumEnablerService {
 			invFile = File.createTempFile("premiumInvoce", ".pdf");
 			jasperReportService.exportReportToPdfFile(JRDataSourceFactory.createDataSource(Invoice.findInvoice(invoiceID), businessID),
 					DocumentType.INVOICE, LayoutType.TIDY, invFile.getPath());
-			sendMessage(email, "Account upgraded", new HashMap<String, Object>(), "mail-templates/upgrade-notification.vm",
+			sendMessage(email, "Conferma attivazione Novabill Premium", new HashMap<String, Object>(), "mail-templates/upgrade-notification.vm",
 					IOUtils.toByteArray(new FileInputStream(invFile)), "Fattura.pdf");
 		} finally {
 			if(invFile != null)

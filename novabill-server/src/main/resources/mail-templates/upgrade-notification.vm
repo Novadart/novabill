@@ -3,8 +3,21 @@
 <style>
 * {
     font-family: Arial, sans-serif, serif;
-    font-size: 14px;
+    font-size: 16px;
     color: #333;
+}
+
+a {
+    text-decoration: none;
+    color: blue;
+}
+
+a:HOVER {
+    text-decoration: underline;
+}
+
+body {
+    padding: 1em;
 }
 
 .logo{
@@ -14,15 +27,31 @@
     text-shadow: 1px 1px white;
     text-decoration: none;
 }
+
+.footer * {
+    font-size: 14px;
+}
+
+
+.footer .wwa {
+    margin-left: 1em;
+}
 </style>
 </head>
 <body>
-<h2 class="logo">Novabill</h2>
-
-<p>Il tuo account è stato aggiornato con successo!</p>
+<h2 class="logo">Novabill - Attivazione del piano Premium</h2>
+<hr>
 <br>
-<p>Grazie :)<br> Il team di Novabill</p>
+<p>Ti confermiamo che il tuo acquisto è andato a buon fine e il piano Premium è stato attivato.<br>
+   In allegato a questa email puoi trovare la fattura.
+<p>
 
+<p>Grazie<br> Il team di Novabill</p>
+<br>
+<hr>
+<span class="footer">
+<a target="_blank" href="http://www.novabill.it/">Novabill</a> <a class="wwa" target="_blank" href="http://www.novadart.com/">Chi Siamo</a> 
+</span>
 </body>
 
 </html>

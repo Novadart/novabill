@@ -113,6 +113,11 @@
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/oopsBody.jsp" />
 	</definition>
 	
+	<!-- PayPal return page -->
+	<definition name="frontend.paypalReturnPage" extends="frontend.subPageLayout" >
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/paypalReturnPage.jsp" />
+    </definition>
+	
     <!-- Share workflow -->
     
     <definition name="sharing.request" extends="frontend.subPageLayout">

@@ -240,14 +240,6 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	}
 	
 	@Test
-	public void handlePaypalReturnTest() throws NoSuchAlgorithmException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, MalformedURLException, UnsupportedEncodingException{
-		UpgradeAccountController controller = initUpgradeAccountController("1");
-		controller.display(mock(Model.class), mockRequest());
-		String view = controller.handlePaypalReturn();
-		assertEquals("private.premiumUpgradeSuccess", view);
-	}
-	
-	@Test
 	public void enablePremiumFor12MonthsFreeUserTest() throws PremiumUpgradeException{
 		Long businessID = getUnathorizedBusinessID();
 		assertTrue(Business.findBusiness(businessID).getPrincipals().iterator().next().getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE));

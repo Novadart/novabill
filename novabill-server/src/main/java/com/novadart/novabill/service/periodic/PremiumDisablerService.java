@@ -48,7 +48,7 @@ public class PremiumDisablerService implements PeriodicService {
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("expired", false);
 			model.put("days", days);
-			sendMessage(principal.getUsername(), "Premium account soon to expire", model, "mail-templates/premium-expiration-notification.vm");
+			sendMessage(principal.getUsername(), "Il tuo piano Premium sta per scadere", model, "mail-templates/premium-expiration-notification.vm");
 		}
 	}
 	
@@ -63,7 +63,7 @@ public class PremiumDisablerService implements PeriodicService {
 			disableExpiredAccount(principal);
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("expired", true);
-			sendMessage(principal.getUsername(), "Premium account expired", model, "mail-templates/premium-expiration-notification.vm");
+			sendMessage(principal.getUsername(), "Il tuo piano Premium è scaduto", model, "mail-templates/premium-expiration-notification.vm");
 		}
 	}
 	
