@@ -39,7 +39,7 @@ public class Notification {
 	private Business business;
 	
 	public static List<Notification> getUnseenNotificationsForBusiness(Long businessID) {
-		String sql = "select n from Notification n where n.seen = false and n.business.id = :businessID";
+		String sql = "select n from Notification n where n.seen = false and n.business.id = :businessID order by n.creationTime";
 		return entityManager().createQuery(sql, Notification.class).setParameter("businessID", businessID).getResultList();
 	}
 

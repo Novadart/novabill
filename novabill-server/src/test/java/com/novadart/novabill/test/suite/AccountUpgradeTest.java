@@ -33,7 +33,6 @@ import com.dumbster.smtp.SmtpMessage;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Email;
 import com.novadart.novabill.domain.EmailStatus;
-import com.novadart.novabill.domain.Notification;
 import com.novadart.novabill.domain.Transaction;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
@@ -295,7 +294,7 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		assertEquals(1, smtpServer.getReceivedEmailSize());
 		SmtpMessage email = (SmtpMessage)smtpServer.getReceivedEmail().next();
 		assertEquals(emailAddr, email.getHeaderValue("To"));
-		assertEquals("Account upgraded", email.getHeaderValue("Subject"));
+		assertEquals("Conferma attivazione Novabill Premium", email.getHeaderValue("Subject"));
 	}
 	
 	public static class MockPaypelIPNHandlerService extends PayPalIPNHandlerService{
