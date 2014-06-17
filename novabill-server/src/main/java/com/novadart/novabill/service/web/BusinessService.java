@@ -74,6 +74,4 @@ public interface BusinessService {
 	
 	public void setDefaultLayout(Long businessID, LayoutType layoutType) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException;
 	
-	public boolean isUpgradeTransactionCompleted(Long businessID, String token);
-	
 }

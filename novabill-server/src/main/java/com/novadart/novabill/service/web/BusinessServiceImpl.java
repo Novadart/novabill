@@ -32,7 +32,6 @@ import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.Settings;
 import com.novadart.novabill.domain.SharingPermit;
-import com.novadart.novabill.domain.Transaction;
 import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
@@ -63,8 +62,8 @@ import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -351,10 +350,4 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Business.findBusiness(businessID).getSettings().setDefaultLayoutType(layoutType);
 	}
 
-	@Override
-	@PreAuthorize("#businessID == principal.business.id")
-	public boolean isUpgradeTransactionCompleted(Long businessID, String token) {
-		return Transaction.findByToken(token).size() > 0;
-	}
-	
 }
