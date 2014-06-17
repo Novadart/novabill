@@ -28,6 +28,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.LogRecord;
+import com.novadart.novabill.domain.Notification;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.Settings;
@@ -38,6 +39,7 @@ import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.CommodityDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.LogRecordDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.NotificationDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.PaymentTypeDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.PriceListDTOTransformer;
 import com.novadart.novabill.domain.dto.transformer.SharingPermitDTOTransformer;
@@ -55,6 +57,7 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.LogRecordDTO;
+import com.novadart.novabill.shared.client.dto.NotificationDTO;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
@@ -348,6 +351,26 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@Restrictions(checkers = {PremiumChecker.class})
 	public void setDefaultLayout(Long businessID, LayoutType layoutType) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		Business.findBusiness(businessID).getSettings().setDefaultLayoutType(layoutType);
+	}
+
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<NotificationDTO> getNotifications(Long businessID) {
+		List<Notification> notifications = Notification.getUnseenNotificationsForBusiness(businessID); 
+		List<NotificationDTO> result = new ArrayList<>(notifications.size());
+		for(Notification n: notifications)
+			result.add(NotificationDTOTransformer.toDTO(n));
+		return result;
+	}
+
+	@Override
+	@PreAuthorize("#businessID == principal.business.id and " +
+				  "T(com.novadart.novabill.domain.Notification).findNotification(#id)?.business?.id == #businessID")
+	@Transactional(readOnly = false)
+	public void markNotificationAsSeen(Long businessID, Long id) {
+		Notification notification = Notification.findNotification(id);
+		notification.setSeen(true);
+		notification.merge();
 	}
 
 }

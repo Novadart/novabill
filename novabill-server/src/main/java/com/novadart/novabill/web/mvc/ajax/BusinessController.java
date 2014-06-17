@@ -22,6 +22,7 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.LogRecordDTO;
+import com.novadart.novabill.shared.client.dto.NotificationDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.exception.CloneNotSupportedException;
@@ -171,6 +172,20 @@ public class BusinessController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public List<Integer> getInvoiceMonthCounts(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
 		return businessService.getInvoiceMonthCounts(businessID);
+	}
+	
+	@RequestMapping(value = "/{businessID}/notifications", method = RequestMethod.GET)
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.OK)
+	public List<NotificationDTO> getNotifications(@PathVariable Long businessID){
+		return businessService.getNotifications(businessID);
+	}
+	
+	@RequestMapping(value = "/{businessID}/notifications/{id}/markseen", method = RequestMethod.POST)
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.OK)
+	public void markNotificationAsSeen(@PathVariable Long businessID, @PathVariable Long id){
+		businessService.markNotificationAsSeen(businessID, id);
 	}
 	
 }
