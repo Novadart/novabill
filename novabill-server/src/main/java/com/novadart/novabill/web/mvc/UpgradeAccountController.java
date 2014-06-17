@@ -18,7 +18,6 @@ import com.novadart.novabill.paypal.PaymentPlansLoader;
 import com.novadart.novabill.service.UtilsService;
 
 @Controller
-@RequestMapping(Urls.PRIVATE_PREMIUM)
 public class UpgradeAccountController {
 	
 	@Autowired
@@ -31,7 +30,7 @@ public class UpgradeAccountController {
 	private PaymentPlansLoader paymentPlans;
 	
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = Urls.PRIVATE_PREMIUM, method = RequestMethod.GET)
 	@Transactional(readOnly = false)
 	public String display(Model model, HttpServletRequest request) throws MalformedURLException, UnsupportedEncodingException, NoSuchAlgorithmException{
 		String email = utilsService.getAuthenticatedPrincipalDetails().getUsername();
@@ -40,11 +39,6 @@ public class UpgradeAccountController {
 		model.addAttribute("hostedButtonIDTwoYears", paymentPlans.getPayPalPaymentPlanDescriptors()[1].getHostedButtonID());
 		model.addAttribute("email", email);
 		return "private.premium";
-	}
-	
-	@RequestMapping(Urls.PRIVATE_PREMIUM_PAYPAL_CALLBACK)
-	public String handlePaypalReturn(){
-		return "private.premiumUpgradeSuccess";
 	}
 	
 }
