@@ -2,6 +2,9 @@
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 
 <spring:url var="novabillCoreUrl" value="/novabill/private" />
+<spring:url var="novabillDepsUrl" value="/novabill-deps" />
+
+<link href="${novabillDepsUrl}/AngularJS-Toaster-0.4.7/toaster.css" rel="stylesheet" type="text/css" />
 
 <link href="${novabillCoreUrl}/css/global.css" rel="stylesheet" type="text/css" />
 <link href="${novabillCoreUrl}/css/directives.css" rel="stylesheet" type="text/css" />

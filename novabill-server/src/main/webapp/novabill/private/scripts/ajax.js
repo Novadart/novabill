@@ -84,6 +84,20 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 							method:'GET',
 							url : baseUrl + 'businesses/:id/stats',
 						},
+						
+						'getNotifications': { 
+							isArray: true,
+							method:'GET',
+							url : baseUrl + 'businesses/:id/notifications',
+						},
+						
+						'markNotificationAsSeen' : {
+							method:'POST',
+							url : baseUrl + 'businesses/:id/notifications/:notificationId/markseen',
+							params : {
+								notificationId : '@notificationId'
+							}
+						},
 
 						'setDefaultLayout' : {
 							method:'PUT',

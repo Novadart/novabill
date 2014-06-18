@@ -16,6 +16,7 @@
 <script src="${novabillDepsUrl}/bignumber-1.3.0/bignumber.min.js"></script>
 <script src="${novabillDepsUrl}/ng-infinite-scroll.min.js"></script>
 <script src="${novabillDepsUrl}/stacktracejs-0.6.0/stacktrace.js"></script>
+<script src="${novabillDepsUrl}/AngularJS-Toaster-0.4.7/toaster.js"></script>
 
 <script src="${novabillCoreUrl}/scripts/logging.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/ajax.js" type="text/javascript"></script>
@@ -48,3 +49,4 @@
 <script src="${novabillCoreUrl}/scripts/payments.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/payments-controllers.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/hello.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/notifications.js" type="text/javascript"></script>

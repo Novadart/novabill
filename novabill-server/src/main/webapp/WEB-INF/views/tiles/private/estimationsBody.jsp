@@ -11,6 +11,6 @@ var documentYears = {
 };
 
 function onGWTLoaded(){
-    angular.bootstrap(document, ['novabill.estimations']);
+    angular.bootstrap(angular.element('.page-content'), ['novabill.estimations']);
 }
 </script>

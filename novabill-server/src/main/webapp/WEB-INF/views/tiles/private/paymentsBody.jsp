@@ -7,6 +7,6 @@
 
 <script type="text/javascript">
 function onGWTLoaded(){
-    angular.bootstrap(document, ['novabill.payments']);
+    angular.bootstrap(angular.element('.page-content'), ['novabill.payments']);
 }
 </script>

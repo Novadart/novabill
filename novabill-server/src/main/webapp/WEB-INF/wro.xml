@@ -17,6 +17,8 @@
         <js>/novabill-deps/angular-file-upload.min.js</js>
         <js>/novabill-deps/bignumber-1.3.0/bignumber.min.js</js>
         <js>/novabill-deps/stacktracejs-0.6.0/stacktrace.js</js>
+        <js>/novabill-deps/AngularJS-Toaster-0.4.7/toaster.js</js>
+        <css>/novabill-deps/AngularJS-Toaster-0.4.7/toaster.css</css>
     </group>
 
 	<group name="novabill-private">

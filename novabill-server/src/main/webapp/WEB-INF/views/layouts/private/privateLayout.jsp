@@ -175,6 +175,7 @@ window.onerror = function(message, source, line, column) {
 	<div class="clearfix"></div>
 	<!-- BEGIN CONTAINER -->
 	<div class="page-container">
+	   
 		<!-- BEGIN SIDEBAR -->
 		<div class="page-sidebar navbar-collapse collapse">
 			<!-- BEGIN SIDEBAR MENU -->
@@ -362,6 +363,16 @@ window.onerror = function(message, source, line, column) {
     
     // Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
     UserVoice.push(['autoprompt', {}]);
+    </script>
+    
+    <div id="notificationsRoot" ng-controller="NotificationsController">
+           <toaster-container toaster-options="{'time-out': 0, 'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>    
+    </div>
+    
+    <script type="text/javascript">
+    $(function(){
+    	angular.bootstrap( angular.element('#notificationsRoot'), ['novabill.notifications'] );
+    });
     </script>
 	
 </body>

@@ -10,6 +10,6 @@ var documentYears = {
 };
 
 function onGWTLoaded(){
-    angular.bootstrap(document, ['novabill.transportDocuments']);
+    angular.bootstrap(angular.element('.page-content'), ['novabill.transportDocuments']);
 }
 </script>

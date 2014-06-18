@@ -14,6 +14,6 @@ var documentYears = {
 };
 
 function onGWTLoaded(){
-     angular.bootstrap(document, ['novabill.clients']);
+     angular.bootstrap(angular.element('.page-content'), ['novabill.clients']);
 }
 </script>
