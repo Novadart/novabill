@@ -57,6 +57,7 @@ public class FrontendController {
 	
 	@RequestMapping(value = Urls.PUBLIC_PAYPAL_RETURN_PAGE, method = RequestMethod.GET)
 	public String paypalreturnPage(Model model){
+		model.addAttribute("pageName", "Attivazione Premium");
 		return "frontend.paypalReturnPage";
 	}
 	
