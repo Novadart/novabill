@@ -203,6 +203,10 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		
 		assertTrue(authenticatedPrincipal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_FREE));
 		assertTrue(!authenticatedPrincipal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM));
+		
+		business = Business.findBusiness(business.getId());
+		assertEquals(1, business.getNotifications().size());
+		assertEquals(NotificationType.PREMIUM_DOWNGRADE, business.getNotifications().iterator().next().getType());
 	}
 	
 	

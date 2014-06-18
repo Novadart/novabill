@@ -13,8 +13,11 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.MailMixin;
+import com.novadart.novabill.domain.Business;
+import com.novadart.novabill.domain.Notification;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
+import com.novadart.novabill.shared.client.dto.NotificationType;
 
 
 @Service
@@ -52,6 +55,13 @@ public class PremiumDisablerService implements PeriodicService {
 		}
 	}
 	
+	private void createNotification(Business business){
+		Notification notification = new Notification();
+		notification.setType(NotificationType.PREMIUM_DOWNGRADE);
+		notification.setBusiness(business);
+		business.getNotifications().add(notification);
+	}
+	
 	@Async
 	@Transactional(readOnly = false)
 	private void disableExpiredAccounts(){
@@ -64,6 +74,7 @@ public class PremiumDisablerService implements PeriodicService {
 			Map<String, Object> model = new HashMap<String, Object>();
 			model.put("expired", true);
 			sendMessage(principal.getUsername(), "Il tuo piano Premium è scaduto", model, "mail-templates/premium-expiration-notification.vm");
+			createNotification(principal.getBusiness());
 		}
 	}
 	
