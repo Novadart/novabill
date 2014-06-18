@@ -50,8 +50,7 @@ body {
 #if($expired)
     Il piano Premium che hai sottoscritto è scaduto.<br>Puoi rinnovarlo a <a href="https://www.novabill.it/private/premium">questo indirizzo</a> o alternativamente puoi continuare a utilizzare la versione gratuita di Novabill.
 #else
-    Il piano Premium che hai sottoscritto scadrà in ${days} giorni.<br>Puoi rinnovarlo già ora a <a href="https://www.novabill.it/private/premium">questo indirizzo</a>.<br>
-    In caso di rinnovo il tempo aggiuntivo va ad aggiungersi a quello restante. 
+    Il piano Premium che hai sottoscritto scadrà in ${days} giorni.<br>Puoi rinnovarlo già ora a <a href="https://www.novabill.it/private/premium">questo indirizzo</a>. 
 #end
 <p>
 
