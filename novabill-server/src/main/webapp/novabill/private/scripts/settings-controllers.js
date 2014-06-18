@@ -17,6 +17,7 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 	
 	$scope.changePasswordUrl = nConstants.conf.changePasswordBaseUrl;
 	$scope.deleteAccountUrl = nConstants.conf.deleteAccountUrl;
+	$scope.premiumUrl = nConstants.conf.premiumUrl;
 	$scope.principalEmail = nConstants.conf.principalEmail;
 	$scope.principalCreationDate = nConstants.conf.principalCreationDate;
 	$scope.premium = nConstants.conf.premium;

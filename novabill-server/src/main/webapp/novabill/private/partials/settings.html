@@ -67,8 +67,8 @@
                                         <label  class="col-md-4 control-label">{{'BUSINESS_TAB_PROFILE_PLAN' | translate}}</label>
                                         <div class="col-md-4">
                                             <div class="form-control readonly" style="font-weight: bold;">
-                                                <span ng-if="!premium"><i class="fa fa-check"></i> Piano Gratuito</span>
-                                                <span ng-if="premium"><i class="fa fa-trophy"></i> Piano Premium</span>
+                                                <span ng-if="!premium"><i class="fa fa-check"></i> {{'PLAN_STANDARD' | translate}} <a class="btn btn-xs green pull-right" href="{{premiumUrl}}">{{'PREMIUM_BUTTON' | translate}}</a></span>
+                                                <span ng-if="premium"><i class="fa fa-trophy"></i> {{'PLAN_PREMIUM' | translate}} <a class="btn btn-xs green pull-right" href="{{premiumUrl}}">{{'EXTEND_PREMIUM_BUTTON' | translate}}</a></span>
                                             </div>
                                         </div>
                                     </div>
