@@ -1,13 +1,12 @@
 'use strict';
 
-angular.module('novabill.notifications', ['novabill.translations', 'novabill.ajax', 'toaster'])
+angular.module('novabill.notifications', ['novabill.ajax', 'toaster'])
 
-.controller('NotificationsController', ['$scope', 'nAjax', 'toaster', 
-                                        function($scope, nAjax, toaster){
+.run(['$rootScope', 'nAjax', 'toaster', function($rootScope, nAjax, toaster){
 
 	var Business = nAjax.Business();
 	
-	$scope.addToast = function(not){
+	$rootScope.addToast = function(not){
 		switch (not.type) {
 		case 'PREMIUM_UPGRADE':
 			toaster.pop(
@@ -58,7 +57,7 @@ angular.module('novabill.notifications', ['novabill.translations', 'novabill.aja
 
 	Business.getNotifications(function(nots){
 		for(var i=0; i<nots.length; i++){
-			$scope.addToast( nots[i] );
+			$rootScope.addToast( nots[i] );
 		}
 	});
 

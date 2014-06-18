@@ -365,16 +365,6 @@ window.onerror = function(message, source, line, column) {
     UserVoice.push(['autoprompt', {}]);
     </script>
     
-    <div id="notificationsRoot" ng-controller="NotificationsController">
-           <toaster-container toaster-options="{'time-out': 0, 'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>    
-    </div>
-    
-    <script type="text/javascript">
-    $(function(){
-    	angular.bootstrap( angular.element('#notificationsRoot'), ['novabill.notifications'] );
-    });
-    </script>
-	
 </body>
 <!-- END BODY -->
 </html>

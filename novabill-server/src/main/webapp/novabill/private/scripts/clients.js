@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module("novabill.clients", 
-		['novabill.clients.controllers', 'novabill.constants', 'ngRoute', 'novabill.utils'])
+		['novabill.clients.controllers', 'novabill.constants', 'ngRoute', 'novabill.utils', 'novabill.notifications'])
 
 .config(['$routeProvider', 'nConstantsProvider', 'nAnalyticsProvider', 
          function($routeProvider, nConstantsProvider, nAnalyticsProvider){

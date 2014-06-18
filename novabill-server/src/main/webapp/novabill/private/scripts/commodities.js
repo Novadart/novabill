@@ -1,6 +1,7 @@
 'use strict';
 
-angular.module("novabill.commodities", ['novabill.commodities.controllers','novabill.constants','ngRoute', 'novabill.utils'])
+angular.module("novabill.commodities", ['novabill.commodities.controllers','novabill.constants','ngRoute', 
+                                        'novabill.utils', 'novabill.notifications'])
 
 .config(['$routeProvider', 'nConstantsProvider', 'nAnalyticsProvider', 
          function($routeProvider, nConstantsProvider, nAnalyticsProvider){
