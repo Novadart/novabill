@@ -18,6 +18,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
+import org.apache.commons.lang3.CharEncoding;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
@@ -103,7 +104,7 @@ public class Email implements Serializable {
 	public void send() throws MessagingException{
 		MimeMessage mimeMessage = mailSender.createMimeMessage();
 		boolean hasAttachment = attachment != null && StringUtils.isNotBlank(attachmentName); 
-		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, hasAttachment);
+		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage, hasAttachment, CharEncoding.UTF_8);
 		messageHelper.setTo(getTo());
 		messageHelper.setFrom(getFrom());
 		messageHelper.setSubject(getSubject());
