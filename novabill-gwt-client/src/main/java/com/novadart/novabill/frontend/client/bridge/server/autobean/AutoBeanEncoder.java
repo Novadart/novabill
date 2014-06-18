@@ -1,5 +1,6 @@
 package com.novadart.novabill.frontend.client.bridge.server.autobean;
 
+import java.math.BigDecimal;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -49,9 +50,13 @@ public class AutoBeanEncoder {
 		ll.setLogRecords(list);
 		b.setLogRecords(ll);
 
-		InvoiceCountsPerMonthList il = AutoBeanMaker.INSTANCE.makeInvoiceCountsPerMonthList().as();
-		il.setList(c.getInvoiceTotalsPerMonth());
-		b.setInvoiceCountsPerMonth(il);
+		InvoiceTotalsPerMonthList il = AutoBeanMaker.INSTANCE.makeInvoiceTotalsPerMonthList().as();
+		List<String> totals = new ArrayList<String>();
+		for (BigDecimal bd : c.getInvoiceTotalsPerMonth()) {
+			totals.add(bd.toPlainString());
+		}
+		il.setList(totals);
+		b.setInvoiceTotalsPerMonth(il);
 
 		return AutoBeanUtils.getAutoBean(b);
 	}

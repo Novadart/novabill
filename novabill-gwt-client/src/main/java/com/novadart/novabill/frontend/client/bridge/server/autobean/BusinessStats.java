@@ -27,7 +27,7 @@ public interface BusinessStats {
 
 	void setLogRecords(LogRecordList logRecords);
 	
-	InvoiceCountsPerMonthList getInvoiceCountsPerMonth();
+	InvoiceTotalsPerMonthList getInvoiceTotalsPerMonth();
 
-	void setInvoiceCountsPerMonth(InvoiceCountsPerMonthList logRecords);
+	void setInvoiceTotalsPerMonth(InvoiceTotalsPerMonthList totals);
 }

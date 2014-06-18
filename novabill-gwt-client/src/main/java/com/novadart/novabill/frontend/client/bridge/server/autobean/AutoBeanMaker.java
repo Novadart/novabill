@@ -47,7 +47,7 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	
 	AutoBean<LogRecordList> makeLogRecordList();
 	
-	AutoBean<InvoiceCountsPerMonthList> makeInvoiceCountsPerMonthList();
+	AutoBean<InvoiceTotalsPerMonthList> makeInvoiceTotalsPerMonthList();
 	
 	AutoBean<LogRecord> makeLogRecord();
 	
