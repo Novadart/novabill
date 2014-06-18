@@ -91,7 +91,10 @@ public class BusinessServiceTest extends ServiceTest {
 		assertEquals(new Long(authenticatedPrincipal.getBusiness().getClients().size()), new Long(stats.getClientsCount()));
 		assertEquals(new Long(businessGwtService.countInvoicesForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR))), new Long(stats.getInvoicesCountForYear()));
 		assertEquals(businessGwtService.getTotalsForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR)).getSecond(), stats.getTotalAfterTaxesForYear());
-		assertEquals(stats.getInvoiceCountsPerMonth(), Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, authenticatedPrincipal.getBusiness().getId() == 1? 24: 1, 0, 0));
+		assertEquals(stats.getInvoiceTotalsPerMonth(),
+				Arrays.asList(new BigDecimal("0.00"), new BigDecimal("0.00"), new BigDecimal("0.00"), new BigDecimal("0.00"), new BigDecimal("0.00"), new BigDecimal("0.00"), new BigDecimal("0.00"),
+						new BigDecimal("0.00"), new BigDecimal("0.00"), authenticatedPrincipal.getBusiness().getId() == 1? new BigDecimal("8833.00"): new BigDecimal("121.00"), new BigDecimal("0.00"),
+								new BigDecimal("0.00")));
 	}
 	
 	@Test(expected = DataAccessException.class)

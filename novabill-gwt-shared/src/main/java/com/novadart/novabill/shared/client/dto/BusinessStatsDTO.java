@@ -19,7 +19,7 @@ public class BusinessStatsDTO implements IsSerializable {
 	
 	private List<LogRecordDTO> logRecords;
 	
-	private List<Integer> invoiceCountsPerMonth;
+	private List<BigDecimal> invoiceTotalsPerMonth;
 	
 	public Integer getClientsCount() {
 		return clientsCount;
@@ -61,12 +61,12 @@ public class BusinessStatsDTO implements IsSerializable {
 		this.logRecords = logRecords;
 	}
 
-	public List<Integer> getInvoiceCountsPerMonth() {
-		return invoiceCountsPerMonth;
+	public List<BigDecimal> getInvoiceTotalsPerMonth() {
+		return invoiceTotalsPerMonth;
 	}
 
-	public void setInvoiceCountsPerMonth(List<Integer> invoiceCountsPerMonth) {
-		this.invoiceCountsPerMonth = invoiceCountsPerMonth;
+	public void setInvoiceTotalsPerMonth(List<BigDecimal> invoiceTotalsPerMonth) {
+		this.invoiceTotalsPerMonth = invoiceTotalsPerMonth;
 	}
 
 	public BigDecimal getTotalBeforeTaxesForYear() {

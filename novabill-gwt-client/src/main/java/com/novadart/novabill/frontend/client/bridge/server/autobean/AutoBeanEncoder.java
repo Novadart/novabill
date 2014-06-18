@@ -50,7 +50,7 @@ public class AutoBeanEncoder {
 		b.setLogRecords(ll);
 
 		InvoiceCountsPerMonthList il = AutoBeanMaker.INSTANCE.makeInvoiceCountsPerMonthList().as();
-		il.setList(c.getInvoiceCountsPerMonth());
+		il.setList(c.getInvoiceTotalsPerMonth());
 		b.setInvoiceCountsPerMonth(il);
 
 		return AutoBeanUtils.getAutoBean(b);

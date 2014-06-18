@@ -167,11 +167,11 @@ public class BusinessController {
 		return businessService.getLogRecords(businessID, numberOfDays);
 	}
 	
-	@RequestMapping(value = "/{businessID}/invoices/monthcounts", method = RequestMethod.GET)
+	@RequestMapping(value = "/{businessID}/invoices/monthtotals", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public List<Integer> getInvoiceMonthCounts(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return businessService.getInvoiceMonthCounts(businessID);
+	public List<BigDecimal> getInvoiceMonthTotals(@PathVariable Long businessID) throws NotAuthenticatedException, DataAccessException {
+		return businessService.getInvoiceMonthTotals(businessID);
 	}
 	
 	@RequestMapping(value = "/{businessID}/notifications", method = RequestMethod.GET)

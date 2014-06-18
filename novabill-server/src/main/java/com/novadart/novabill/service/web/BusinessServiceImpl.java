@@ -1,8 +1,8 @@
 package com.novadart.novabill.service.web;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -132,7 +132,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		stats.setTotalBeforeTaxesForYear(totals.getFirst());
 		stats.setTotalAfterTaxesForYear(totals.getSecond());
 		stats.setLogRecords(self().getLogRecords(businessID, 90));
-		stats.setInvoiceCountsPerMonth(self().getInvoiceMonthCounts(businessID));
+		stats.setInvoiceTotalsPerMonth(self().getInvoiceMonthTotals(businessID));
 		return stats;
 	}
 	
@@ -334,15 +334,18 @@ public abstract class BusinessServiceImpl implements BusinessService {
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<Integer> getInvoiceMonthCounts(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<BigDecimal> getInvoiceMonthTotals(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		Calendar cal = Calendar.getInstance();
-		List<Integer> counts = Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		List<BigDecimal> totals = new ArrayList<>(12);
+		for(int i = 0; i < 12; ++ i) totals.add(new BigDecimal("0.00"));
 		for(InvoiceDTO invoice: self().getInvoices(businessID, cal.get(Calendar.YEAR))){
 			cal.setTime(invoice.getAccountingDocumentDate());
 			int month = cal.get(Calendar.MONTH); 
-			counts.set(month, counts.get(month) + 1);
+			totals.set(month, totals.get(month).add(invoice.getTotal()));
 		}
-		return counts;
+		for(BigDecimal total: totals)
+			total.setScale(2, RoundingMode.HALF_UP);
+		return totals;
 	}
 
 	@Override
