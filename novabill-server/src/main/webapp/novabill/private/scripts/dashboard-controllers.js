@@ -23,7 +23,7 @@ angular.module('novabill.dashboard.controllers',
 		}
 		
 		function showTooltip(valueX, valueY, x, y) {
-			$('<div id="tooltip" class="chart-tooltip">' + $filter('translate')(nConstants.months[valueX-1]) + ': ' + valueY + '<\/div>').css({
+			$('<div id="tooltip" class="chart-tooltip">' + $filter('translate')(nConstants.months[valueX-1]) + ': ' + $filter('currency')(valueY) + '<\/div>').css({
 				position: 'absolute',
 				display: 'none',
 				top: y - 40,
@@ -43,7 +43,7 @@ angular.module('novabill.dashboard.controllers',
 
 			$.plot($("#site_statistics"), [{
 				data: points,
-				label: $filter('translate')('NUMBER_OF_INVOICES')
+				label: $filter('translate')('TOTAL_INVOICING')
 			}
 			], {
 				series: {
@@ -119,7 +119,7 @@ angular.module('novabill.dashboard.controllers',
 		$scope.stats = stats;
 		loadedLogRecords = stats.logRecords;
 		$scope.logRecords = loadedLogRecords.slice(0, 10);
-		drawInvoicesPerMonthChart(stats.invoiceCountsPerMonth);
+		drawInvoicesPerMonthChart(stats.invoiceTotalsPerMonth);
 		
 		$('.scroller').slimScroll({
 		    height: '300px'

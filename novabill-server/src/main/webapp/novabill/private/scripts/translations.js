@@ -107,7 +107,6 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		INVOICE_REF_TITLE : 'Questo Documento di Trasporto è stato incluso in una fattura.\nClicca per vederla.',
 		INVOICE : 'Fattura',
 		INVOICES : 'Fatture',
-		INVOICES_PER_MONTH : 'Fatture al mese',
 		LAYOUT_TYPE : 'Formato di Stampa',
 		LAYOUT_TYPE_DENSE : 'COMPATTO - adatto a documenti che contengono molti articoli',
 		LAYOUT_TYPE_TIDY : 'SPAZIOSO - maggiore spazio tra i vari elementi del documento',
@@ -166,7 +165,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		NO_DATA : 'Nessun dato',
 		NOT_PAYED : 'Non Incassata',
 		NOTIFICATION : 'Notifica',
-		NUMBER_OF_INVOICES : 'Numero di fatture',
+		INVOICING_PER_MONTH : 'Fatturato per mese',
 		OPEN : 'Apri',
 		OPTIONS : 'Opzioni',
 		PAYED : 'Incassata', 
@@ -272,7 +271,8 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		WEBSITE : 'Sito Web',
 		WEBSITE_PLACEHOLDER : 'esempio: www.example.com',
 		WEIGHT : 'Peso (kg)',
-		WEIGHT_PLACEHOLDER : 'esempio: 2'
+		WEIGHT_PLACEHOLDER : 'esempio: 2',
+		TOTAL_INVOICING : 'Fatturato'
 		
 	  });
 
