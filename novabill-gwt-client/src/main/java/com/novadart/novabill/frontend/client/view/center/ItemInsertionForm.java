@@ -374,7 +374,20 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 
 
 	private void handleKeyUpEvent(FILTER_TYPE filterType, KeyUpEvent event){
-		String text = FILTER_TYPE.DESCRIPTION.equals(filterType) ? item.getText() : sku.getText();;
+		String text = "";
+		int selectionLength = 0;
+		
+		switch (filterType) {
+		case DESCRIPTION:
+			selectionLength = item.getSelectionLength();
+			text = item.getText().substring(0, item.getText().length() - selectionLength);
+			break;
+
+		default:
+			selectionLength = sku.getSelectionLength();
+			text = sku.getText().substring(0, sku.getText().length() - selectionLength);
+			break;
+		}
 
 		switch (event.getNativeKeyCode()) {
 		case KeyCodes.KEY_SHIFT:
