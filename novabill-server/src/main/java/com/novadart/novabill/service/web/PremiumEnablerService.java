@@ -182,12 +182,12 @@ public class PremiumEnablerService {
 		invoice.setPaymentDeltaType(PaymentDeltaType.DAYS);
 		invoice.setPaymentDueDate(now);
 		invoice.setPayed(true);
-		invoice.setPaymentNote("Invoice payed via PayPal");
+		invoice.setPaymentNote("Pagato");
 		
 		PaymentPlanDescriptor planDesc = paymentPlansLoader.getPayPalPaymentPlanDescriptor(paymentPlan);
 		AccountingDocumentItem item = new AccountingDocumentItem();
 		item.setPrice(planDesc.getTotalWithoutTax());
-		item.setUnitOfMeasure("year");
+		item.setUnitOfMeasure("");
 		item.setQuantity(new BigDecimal("1.00"));
 		item.setDiscount(planDesc.getDiscount());
 		item.setDescription(planDesc.getItemName());
