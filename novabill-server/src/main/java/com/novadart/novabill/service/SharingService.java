@@ -37,6 +37,9 @@ public class SharingService {
 	@Autowired
 	private TokenGenerator tokenGenerator;
 	
+	@Autowired
+	private UtilsService utilsService;
+	
 	@Restrictions(checkers = {PremiumChecker.class}, businessParamName = "business")
 	public void enableSharingTemporarilyAndNotifyParticipant(Business business, String email, MessageSource messageSource, Locale locale)
 			throws DataAccessException, FreeUserAccessForbiddenException, NotAuthenticatedException{
@@ -57,6 +60,8 @@ public class SharingService {
 	}
 
 	public boolean isValidRequest(Long businessID, String token){
+		if(utilsService.isAuthenticated() && utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(businessID))
+			return true;
 		SharingToken sharingToken = SharingToken.findSharingToken(businessID, token);
 		return sharingToken == null? false: 3_600_000l * sharingExpiration + sharingToken.getCreatedOn() > System.currentTimeMillis();
 	}
