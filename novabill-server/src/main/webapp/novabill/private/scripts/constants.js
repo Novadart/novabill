@@ -60,6 +60,7 @@ angular.module('novabill.constants', [])
 			pdfPrintUrl : basePath + 'private/pdf/{document}/{id}?print=true',
 			premiumUrl : basePath + 'private/premium',
 			priceListsBaseUrl : basePath + 'private/price-lists/',
+			publicShareBaseUrl : basePath + 'share?businessID='+businessId+'&token=preview',
 			settingsBaseUrl : basePath + 'private/settings/',
 			shareBaseUrl : basePath + 'private/share/',
 			transportDocumentsBaseUrl : basePath + 'private/transport-documents/'

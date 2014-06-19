@@ -5,14 +5,15 @@ angular.module('novabill.share.controllers', ['novabill.directives', 'novabill.d
 
 
 /**
- * SETTINGS PAGE CONTROLLER
+ * SHARE PAGE CONTROLLER
  */
-.controller('ShareCtrl', ['$scope', 'nConstants', 'nAjax', 'nEditSharingPermitDialog',
-                             function($scope, nConstants, nAjax, nEditSharingPermitDialog){
+.controller('ShareCtrl', ['$scope', 'nConstants', 'nAjax', 'nEditSharingPermitDialog', '$filter', '$sce',
+                             function($scope, nConstants, nAjax, nEditSharingPermitDialog, $filter, $sce){
 
 	var SharingPermit = nAjax.SharingPermit();
 	
-
+	$scope.sharingInfo2 = $sce.trustAsHtml( $filter('translate')('SHARING_PERMIT_INFO2', {link : nConstants.conf.publicShareBaseUrl}) );
+	
 	$scope.loadSharingPermits = function(){
 		if($scope.sharingPermits == null){
 			SharingPermit.query(function(result){
@@ -57,8 +58,6 @@ angular.module('novabill.share.controllers', ['novabill.directives', 'novabill.d
 	$scope.newShare = function(){
 		$scope.recursiveCreation();
 	};
-
-	
 
 	$scope.$on(nConstants.events.SHARING_PERMIT_REMOVED, function(){
 		SharingPermit.query(function(result){

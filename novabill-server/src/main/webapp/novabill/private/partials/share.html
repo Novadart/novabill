@@ -20,8 +20,7 @@
               <n-premium-alert></n-premium-alert>
               <h4>{{'INFO' | translate}}</h4>
               <p>{{'SHARING_PERMIT_INFO1' | translate}}</p>
-              <p>{{'SHARING_PERMIT_INFO2' | translate}}</p>
-              <button type="button" class="btn default try-share" ng-click="tryShare()">{{'TRY_SHARE' | translate}}</button>
+              <p ng-bind-html="sharingInfo2"></p>
           </div>
               
           <button n-premium-check type="button" class="btn green new-share" ng-click="newShare()">{{'NEW_SHARE' | translate}}</button>
