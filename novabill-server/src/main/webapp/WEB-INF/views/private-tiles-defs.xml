@@ -66,6 +66,10 @@
 		<put-attribute name="body" value="/WEB-INF/views/tiles/private/settingsBody.jsp" />
 	</definition>
 	
+	<definition name="private.share" extends="private.layout">
+        <put-attribute name="body" value="/WEB-INF/views/tiles/private/shareBody.jsp" />
+    </definition>
+	
 	<definition name="private.hello" extends="private.hello.layout"></definition>
 	
 	<definition name="private.printPDF" template="/WEB-INF/views/layouts/private/printPDF.jsp"></definition>

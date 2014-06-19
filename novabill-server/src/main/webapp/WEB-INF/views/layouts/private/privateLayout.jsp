@@ -30,6 +30,7 @@
 <spring:url var="priceListsUrl" value="/private/price-lists/" />
 <spring:url var="paymentsUrl" value="/private/payments/" />
 <spring:url var="settingsUrl" value="/private/settings/" />
+<spring:url var="shareUrl" value="/private/share/" />
 <spring:url var="clientUiErrorUrl" value="/private/ajax/clientuierror" />
 
 <spring:url var="premiumUrl" value="/private/premium" />
@@ -251,6 +252,11 @@ window.onerror = function(message, source, line, column) {
 						class="fa fa-briefcase"></i> <span class="title">Pagamenti</span> <% if(PAGES.PAYMENTS.equals(activePage)) { %> <span
 						class="selected"></span> <%} %>
 				</a></li>
+				
+				<li class="<%=PAGES.SHARE.equals(activePage) ? "active last" : "last" %>"><a href="${shareUrl}"> <i
+                        class="fa fa-group"></i> <span class="title">Condivisione</span> <% if(PAGES.SHARE.equals(activePage)) { %> <span
+                        class="selected"></span> <%} %>
+                </a></li>
 
 			</ul>
 			<!-- END SIDEBAR MENU -->

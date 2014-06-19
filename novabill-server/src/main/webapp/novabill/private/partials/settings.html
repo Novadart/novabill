@@ -246,25 +246,6 @@
                       {{'SAVE_CHANGES' | translate}}
                     </button>
                 </tab>
-                
-                <tab select="loadSharingPermits();onTabChange('share')" active="activeTab.share">
-                    <tab-heading>
-                        <i class="fa fa-group"></i> {{'BUSINESS_TAB_SHARE' | translate}}
-                    </tab-heading>
-                    
-                    <div class="well">
-                        <n-premium-alert></n-premium-alert>
-                        <h4>{{'INFO' | translate}}</h4>
-                        <p>{{'SHARING_PERMIT_INFO1' | translate}}</p>
-                        <p>{{'SHARING_PERMIT_INFO2' | translate}}</p>
-                        <button type="button" class="btn default try-share" ng-click="tryShare()">{{'TRY_SHARE' | translate}}</button>
-                    </div>
-                        
-                    <button n-premium-check type="button" class="btn green new-share" ng-click="newShare()">{{'NEW_SHARE' | translate}}</button>
-                    <img class="spinner" ng-show="sharingPermits==null" src="../../private_assets/img/ajax-loading.gif">
-                    <p class="no-data-message text-center text-info" ng-show="sharingPermits && sharingPermits.length===0">{{'NO_DATA' | translate}}</p>
-                    <n-sharing-permit sharing-permit="sp" bottom-up-menu="!$first && $last" ng-repeat="sp in sharingPermits"></n-sharing-permit>
-                </tab>
 			</tabset>
 		
 		</div>

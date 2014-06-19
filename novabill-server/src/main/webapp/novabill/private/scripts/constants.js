@@ -61,6 +61,7 @@ angular.module('novabill.constants', [])
 			premiumUrl : basePath + 'private/premium',
 			priceListsBaseUrl : basePath + 'private/price-lists/',
 			settingsBaseUrl : basePath + 'private/settings/',
+			shareBaseUrl : basePath + 'private/share/',
 			transportDocumentsBaseUrl : basePath + 'private/transport-documents/'
 	};
 
