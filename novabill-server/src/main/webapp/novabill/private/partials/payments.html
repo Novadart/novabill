@@ -30,7 +30,7 @@
 	                                 <label class="control-label col-md-4">{{'PAYMENTS_STATUS_ORDERING_DATE_TYPE' | translate}}</label>
 	                                 <div class="col-md-8">
 	                                    <p class="input-group input-medium">
-	                                      <select ng-disabled="loading" class="form-control" ng-model="filteringDateType">
+	                                      <select ng-disabled="loading" class="form-control" ng-model="$parent.filteringDateType">
 	                                        <option value="PAYMENT_DUEDATE">{{'PAYMENTS_STATUS_FILTERING_PAYMENT_DUEDATE' | translate}}</option>
 	                                        <option value="CREATION_DATE">{{'PAYMENTS_STATUS_FILTERING_CREATION_DATE' | translate}}</option>
 	                                      </select>
@@ -45,8 +45,8 @@
                                           <input ng-disabled="loading" type="text" class="form-control"
                                              readonly="readonly" 
                                              datepicker-popup="dd MMMM yyyy" 
-                                             ng-model="startDate" 
-                                             is-open="openSD" 
+                                             ng-model="$parent.startDate" 
+                                             is-open="$parent.openSD" 
                                              datepicker-options="dateOptions"
                                              show-button-bar="false" />
                                           <span class="input-group-btn">
@@ -65,8 +65,8 @@
                                           <input ng-disabled="loading" type="text" class="form-control"
                                              readonly="readonly" 
                                              datepicker-popup="dd MMMM yyyy" 
-                                             ng-model="endDate" 
-                                             is-open="openED" 
+                                             ng-model="$parent.endDate" 
+                                             is-open="$parent.openED" 
                                              datepicker-options="dateOptions"
                                              show-button-bar="false" />
                                           <span class="input-group-btn">
