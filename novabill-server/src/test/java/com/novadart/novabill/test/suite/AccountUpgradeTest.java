@@ -324,7 +324,7 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		TestUtils.setPrivateField(PayPalIPNHandlerService.class, mockIPNService, "paymentPlans", paymentPlans);
 		Map<String, String> parametersMap = new HashMap<>();
 		parametersMap.put("custom", "risto.gligorov@novadart.com");
-		parametersMap.put("item_name", "Novabill Premium Membership - 1 Year");
+		parametersMap.put("item_name", "Piano Novabill Premium - 1 Anno");
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		try{

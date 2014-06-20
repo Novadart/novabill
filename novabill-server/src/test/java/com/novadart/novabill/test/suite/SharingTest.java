@@ -236,7 +236,7 @@ public class SharingTest extends ServiceTest {
 	
 	@Test
 	public void invalidInvoiceSharingRequestTest(){
-		Long businessID = 1l;
+		Long businessID = getUnathorizedBusinessID();
 		String token = "token";
 		new SharingToken("foo@bar", System.currentTimeMillis() - (invoiceSharingExpiration + 1) * 3_600_000l, businessID, token).persist();
 		SharingPermit.entityManager().flush();
@@ -257,7 +257,7 @@ public class SharingTest extends ServiceTest {
 	@Test
 	public void shareInvalidTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
 		SharingController sharingController = initSharingController();
-		String viewName = sharingController.share(1l, "token", mock(Model.class));
+		String viewName = sharingController.share(getUnathorizedBusinessID(), "token", mock(Model.class));
 		assertEquals("sharing.invalidSharingRequest", viewName);
 	}
 	
@@ -275,7 +275,7 @@ public class SharingTest extends ServiceTest {
 	@Test
 	public void shareFilterInvalidTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
 		SharingController sharingController = initSharingController();
-		ResponseEntity<List<InvoiceDTO>> response = sharingController.filterSharedDocs(1l, "token", null, null);
+		ResponseEntity<List<InvoiceDTO>> response = sharingController.filterSharedDocs(getUnathorizedBusinessID(), "token", null, null);
 		assertEquals(HttpStatus.BAD_REQUEST, response.getStatusCode());
 	}
 	

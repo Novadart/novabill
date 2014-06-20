@@ -105,7 +105,8 @@ public class ToStringMethodsTest {
 		Transporter transporter = new Transporter();
 		transporter.setId(1l);
 		transporter.setDescription("Test desc.");
-		assertEquals(String.format("<id: %d, desc: %s>", 1l, transporter.getDescription()), transporter.toString());
+		transporter.setName("Jason");
+		assertEquals(String.format("<id: %d, name: %s, desc: %s>", 1l, transporter.getName(), transporter.getDescription()), transporter.toString());
 	}
 	
 	@Test
