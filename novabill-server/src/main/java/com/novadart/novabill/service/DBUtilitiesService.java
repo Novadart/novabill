@@ -5,6 +5,7 @@ import java.io.IOException;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -19,6 +20,7 @@ import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
+import com.novadart.novabill.service.web.BusinessServiceImpl;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
@@ -406,6 +408,15 @@ public class DBUtilitiesService {
 				"drop column to_country").executeUpdate();
 	}
 	
+	private void migrate3_0(){
+		for(Business business: Business.findAllBusinesses()){
+			business.getSettings().setEmailText(BusinessServiceImpl.EMAIL_TEXT);
+			business.getSettings().setEmailSubject(BusinessServiceImpl.EMAIL_SUBJECT);
+			Principal principal = business.getPrincipals().iterator().next();
+			business.getSettings().setEmailReplyTo(StringUtils.isBlank(business.getEmail())? principal.getUsername(): business.getEmail());
+		}	
+	}
+	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
 	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException{
@@ -422,7 +433,8 @@ public class DBUtilitiesService {
 //		fixPrices();
 		//fixPaymentTypes();
 		//fixInvoices();
-		migrate2_5();
+		//migrate2_5();
+		migrate3_0();
 	}
 	
 }
