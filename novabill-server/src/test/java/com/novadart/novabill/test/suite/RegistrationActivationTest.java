@@ -63,6 +63,11 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		return controller;
 	}
 	
+	private void dropRegistrations(){
+		for(Registration r: Registration.findAllRegistrations())
+			r.remove();
+		Registration.entityManager().flush();
+	}
 	
 	private Registration initRegistration(String token, String email, String password, String confirmPassword, boolean agreementAccepted) throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException{
 		Registration registration = new Registration();
@@ -82,6 +87,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void defaultRegistrationActivationFlow() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropRegistrations();
 		String token = "1", email = "foo@bar.com", password = "Novadart28&";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);
@@ -103,6 +109,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerPasswordMismatch() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException {
+		dropRegistrations();
 		String token = "1", email = "foo@bar.com", password = "password1", confirmPassword = "password2";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, confirmPassword, true);
@@ -112,6 +119,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerInvalidEmail() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropRegistrations();
 		String token = "1", email = "foo.bar.com", password = "password";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);
@@ -121,6 +129,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerExistingEmail() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropRegistrations();
 		String token = "1", password = "password";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, userPasswordMap.keySet().iterator().next(), password, password, true);
@@ -130,6 +139,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerNullEmail() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropRegistrations();
 		String token = "1", password = "password";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, null, password, password, true);
@@ -139,6 +149,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerNullPassword() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropRegistrations();
 		String token = "1", email = "foo@bar.com";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, null, null, true);
@@ -148,6 +159,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerPasswordTooShort() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropRegistrations();
 		String token = "1", email = "foo@bar.com";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, "abcd", null, true);
@@ -157,6 +169,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerPasswordTooLong() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropRegistrations();
 		String token = "1", email = "foo@bar.com";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, StringUtils.leftPad("1", 20), null, true);
@@ -166,6 +179,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerAgreementNotAccepted() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropRegistrations();
 		String token = "1", email = "foo@bar.com", password = "Novadart28&";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, false);
@@ -175,6 +189,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerRequestExpired() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropRegistrations();
 		String token = "1", email = "foo@bar.com", password = "Novadart28&";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 0); //expires immediately
 		Registration registration = initRegistration(token, email, password, password, true);
@@ -192,6 +207,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void replayRegistrationActivationFlow() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropRegistrations();
 		String token = "1", email = "foo@bar.com", password = "Novadart28&";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);
@@ -216,6 +232,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test(expected = JpaSystemException.class)
 	public void twoRegistrationsWithSameEmail() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropRegistrations();
 		String token1 = "1", token2 = "2", email = "foo@bar.com", password = "Novadart28&";
 
 		//First registration
@@ -266,6 +283,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registrationActivationWrongPassword() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropRegistrations();
 		String token = "1", email = "foo@bar.com", password = "Novadart28&";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);

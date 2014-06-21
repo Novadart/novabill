@@ -1,6 +1,8 @@
 package com.novadart.novabill.web.mvc;
 
 import java.util.Date;
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -28,15 +30,16 @@ public class PasswordRecoveryController {
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model) throws CloneNotSupportedException{
 		model.addAttribute("pageName", "Creazione Nuova Password");
-		for(ForgotPassword forgotPassword : ForgotPassword.findForgotPasswords(email, token)){
-			if(forgotPassword.getExpirationDate().before(new Date())){ //expired
-				forgotPassword.remove();
-				continue;
-			}
-			model.addAttribute("forgotPassword", ((ForgotPassword)forgotPassword.clone()).clearPasswordFields());
-			return "frontend.passwordRecovery";
+		List<ForgotPassword> r = ForgotPassword.findForgotPasswords(email, token);
+		if(r.size() != 1)
+			return "frontend.passwordRecoveryFailure";
+		ForgotPassword forgotPassword = r.get(0);
+		if(forgotPassword.getExpirationDate().before(new Date())){ //expired
+			forgotPassword.remove();
+			return "frontend.passwordRecoveryFailure";
 		}
-		return "frontend.passwordRecoveryFailure";
+		model.addAttribute("forgotPassword", ((ForgotPassword)forgotPassword.clone()).clearPasswordFields());
+		return "frontend.passwordRecovery";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
