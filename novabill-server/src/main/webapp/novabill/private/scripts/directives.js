@@ -673,7 +673,7 @@ angular.module('novabill.directives',
     return {
     	templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-email-keyword-chooser.html'),
 		scope: { 
-			model : '=',
+			model : '='
 		},
 		controller : ['$scope', function($scope){
 			

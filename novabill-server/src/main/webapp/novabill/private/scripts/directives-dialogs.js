@@ -162,7 +162,7 @@ angular.module('novabill.directives.dialogs',
 							to : invoice.client.email,
 							replyTo : invoice.business.email,
 							message : $filter('nEmailKeywords')(invoice.business.settings.emailText, invoice),
-							subject : $filter('nEmailKeywords')(invoice.business.settings.emailSubject, invoice),
+							subject : $filter('nEmailKeywords')(invoice.business.settings.emailSubject, invoice)
 					};
 					
 					$scope.save = function(){

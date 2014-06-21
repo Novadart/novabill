@@ -22,7 +22,7 @@ angular.module('novabill.payments.controllers', ['novabill.translations', 'novab
 	
 	$scope.activeTab = {
 			paymentsstatus : false,
-			paymenttypes : false,
+			paymenttypes : false
 	};
 	$scope.activeTab[$location.search().tab] = true;
 
