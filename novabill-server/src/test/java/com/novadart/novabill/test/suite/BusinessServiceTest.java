@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -91,10 +90,6 @@ public class BusinessServiceTest extends ServiceTest {
 		assertEquals(new Long(authenticatedPrincipal.getBusiness().getClients().size()), new Long(stats.getClientsCount()));
 		assertEquals(new Long(businessGwtService.countInvoicesForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR))), new Long(stats.getInvoicesCountForYear()));
 		assertEquals(businessGwtService.getTotalsForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR)).getSecond(), stats.getTotalAfterTaxesForYear());
-		assertEquals(stats.getInvoiceTotalsPerMonth(),
-				Arrays.asList(new BigDecimal("0.00"), new BigDecimal("0.00"), new BigDecimal("0.00"), new BigDecimal("0.00"), new BigDecimal("0.00"), new BigDecimal("0.00"), new BigDecimal("0.00"),
-						new BigDecimal("0.00"), new BigDecimal("0.00"), authenticatedPrincipal.getBusiness().getId() == 1? new BigDecimal("8833.00"): new BigDecimal("121.00"), new BigDecimal("0.00"),
-								new BigDecimal("0.00")));
 	}
 	
 	@Test(expected = DataAccessException.class)

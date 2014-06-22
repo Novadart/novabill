@@ -131,13 +131,11 @@ public class Business implements Serializable, Taxable {
     private String web;
 
     @Size(max = 25)
-    @NotBlank
     //@Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
     @Trimmed
     private String vatID;
     
     @Size(max = 25)
-    @NotBlank
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
     @Trimmed
     private String ssn;

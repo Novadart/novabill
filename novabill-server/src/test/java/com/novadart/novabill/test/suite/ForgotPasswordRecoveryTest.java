@@ -7,6 +7,7 @@ import static org.mockito.Mockito.when;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.HashMap;
 
 import javax.annotation.Resource;
@@ -84,8 +85,15 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		return controller;
 	}
 	
+	private void dropForgotPasswords(){
+		for(ForgotPassword fp: ForgotPassword.findAllForgotPasswords())
+			fp.remove();
+		ForgotPassword.entityManager().flush();
+	}
+	
 	@Test
 	public void defaultForgotPasswordRecoveryFlow() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropForgotPasswords();
 		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "N3w password$";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
@@ -115,6 +123,7 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 	
 	@Test
 	public void forgotPasswordNonExistingEmail() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropForgotPasswords();
 		String token = "1", email = "foo@bar.com";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
@@ -125,6 +134,7 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 	
 	@Test
 	public void forgotPasswordEmailNull() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropForgotPasswords();
 		String token = "1";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, null);
@@ -135,6 +145,7 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 	
 	@Test
 	public void forgotPasswordPasswordMismatch() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropForgotPasswords();
 		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "new password1", confirmNewPassword = "new password2";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
@@ -160,6 +171,7 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 	
 	@Test
 	public void forgotPasswordPasswordNull() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropForgotPasswords();
 		String token = "1", email = userPasswordMap.keySet().iterator().next();
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
@@ -185,6 +197,7 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 	
 	@Test
 	public void forgotPasswordPasswordTooLong() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropForgotPasswords();
 		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "looooooooooooong password";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
@@ -211,6 +224,7 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 	
 	@Test
 	public void forgotPasswordPasswordTooShort() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropForgotPasswords();
 		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "pass";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
@@ -237,9 +251,12 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 	
 	@Test
 	public void forgotPasswordExpiredRequest() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropForgotPasswords();
 		String token = "1", email = userPasswordMap.keySet().iterator().next();
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 0); //expires immediately
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
+		
+		forgotPassword.setExpirationDate(new Date(System.currentTimeMillis() - 1_000_000));
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
@@ -256,6 +273,7 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 	
 	@Test
 	public void twoForgotPasswordRequestsSameEmail() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropForgotPasswords();
 		String token1 = "1", token2 = "2", email = userPasswordMap.keySet().iterator().next(), password1 = "Password1$", password2 = "Password2$";
 
 		//First forgot password
