@@ -6,6 +6,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
 import org.apache.commons.lang3.StringUtils;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,9 +22,11 @@ import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.service.web.BusinessServiceImpl;
+import com.novadart.novabill.service.web.PremiumEnablerService;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
+import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
 
 
 //@Service
@@ -33,6 +36,9 @@ public class DBUtilitiesService {
 	
 	@PersistenceContext
 	private EntityManager em;
+	
+	@Autowired
+	private PremiumEnablerService premiumEnabledService;
 	
 	private PaymentType[] paymentTypes = new PaymentType[]{
 			new PaymentType("Rimessa Diretta", "Pagamento in Rimessa Diretta", PaymentDateType.IMMEDIATE, 0, PaymentDeltaType.COMMERCIAL_MONTH, 0),
@@ -408,18 +414,19 @@ public class DBUtilitiesService {
 				"drop column to_country").executeUpdate();
 	}
 	
-	private void migrate3_0(){
+	private void migrate3_0() throws PremiumUpgradeException{
 		for(Business business: Business.findAllBusinesses()){
 			business.getSettings().setEmailText(BusinessServiceImpl.EMAIL_TEXT);
 			business.getSettings().setEmailSubject(BusinessServiceImpl.EMAIL_SUBJECT);
 			Principal principal = business.getPrincipals().iterator().next();
 			business.getSettings().setEmailReplyTo(StringUtils.isBlank(business.getEmail())? principal.getUsername(): business.getEmail());
-		}	
+			premiumEnabledService.enablePremiumForNMonths(business, 12);
+		}
 	}
 	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
-	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException{
+	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException, PremiumUpgradeException{
 //		Principal principal = createPrincipal();
 //		Business business = createBusiness(principal);
 //		Set<Client> faultyClients = createClients(business);
