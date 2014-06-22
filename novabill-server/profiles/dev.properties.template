@@ -79,10 +79,10 @@ mvn.paypal.email=risto.gligorov-facilitator@novadart.com
 #
 # Quota
 #
-mvn.quota.numberOfClients=1
-mvn.quota.numberOfInvoicesPerYear=1
-mvn.quota.numberOfEstimationsPerYear=1
-mvn.quota.numberOfCreditNotesPerYear=1
-mvn.quota.numberOfTransportDocsPerYear=1
-mvn.quota.numberOfCommodities=1
-mvn.quota.numberOfPaymentTypes=7
+#mvn.quota.numberOfClients=1
+#mvn.quota.numberOfInvoicesPerYear=1
+#mvn.quota.numberOfEstimationsPerYear=1
+#mvn.quota.numberOfCreditNotesPerYear=1
+#mvn.quota.numberOfTransportDocsPerYear=1
+#mvn.quota.numberOfCommodities=1
+#mvn.quota.numberOfPaymentTypes=7

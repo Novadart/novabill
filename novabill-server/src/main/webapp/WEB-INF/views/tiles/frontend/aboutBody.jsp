@@ -61,7 +61,7 @@
                                 We are a company based in Padova but with a very international heart and mindset.<br>
                                 In fact everything started in Copenhagen where the two founders were doing a MSc in Software Security and since then they decided to work side by side on innovative projects based on web technologies and data analysis.<br>
                                 We love Linux, Java and the Open Source world.<br>
-                                We enjoy a lot pasta and coffee, in fact Novabill required quite a lot of both to be developed.<br>
+                                We are passionate about applying technology to solve everyday problems.<br>
                                 If you want to know more about us or drop us a line, come to visit us at <a href="http://www.novadart.com">novadart.com</a>.
                             </p> 
 	                    </div>
