@@ -41,7 +41,7 @@
 		<spring.version>3.2.9.RELEASE</spring.version>
 		<hibernate.version>4.2.13.Final</hibernate.version>
 		<hibernate-search.version>4.4.3.Final</hibernate-search.version>
-		<spring-security.version>3.2.3.RELEASE</spring-security.version>
+		<spring-security.version>3.2.4.RELEASE</spring-security.version>
 		<gwt.version>2.5.1</gwt.version>
 		<android-sdk.version>4.1.1.4</android-sdk.version>
 		<android-sdk.path>${local.android-sdk.path}</android-sdk.path>
@@ -222,7 +222,7 @@
 			<dependency>
 				<groupId>ch.qos.logback</groupId>
 				<artifactId>logback-classic</artifactId>
-				<version>1.1.1</version>
+				<version>1.1.2</version>
 			</dependency>
 			<dependency>
 				<groupId>org.slf4j</groupId>
