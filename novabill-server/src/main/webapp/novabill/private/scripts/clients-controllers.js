@@ -170,7 +170,7 @@ angular.module('novabill.clients.controllers',
 			
 			$scope.activeTab = {
 					documents : false,
-					addresses : false,
+					addresses : false
 			};
 			$scope.activeTab[$location.search().tab] = true;
 
