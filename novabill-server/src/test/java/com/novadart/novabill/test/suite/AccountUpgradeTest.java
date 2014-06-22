@@ -263,7 +263,10 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		assertTrue(Business.findBusiness(businessID).getPrincipals().iterator().next().getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM));
 		Long base = getNDaysFromNowInMillis(30); //set in future
 		Business.findBusiness(businessID).getSettings().setNonFreeAccountExpirationTime(base);
+		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		premiumEnablerService.enablePremiumForNMonths(Business.findBusiness(businessID), 12);
+		smtpServer.stop();
+		assertEquals(1, smtpServer.getReceivedEmailSize());
 		assertTrue(Business.findBusiness(businessID).getPrincipals().iterator().next().getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM));
 		Calendar calendar = Calendar.getInstance();
 		calendar.setTimeInMillis(base);

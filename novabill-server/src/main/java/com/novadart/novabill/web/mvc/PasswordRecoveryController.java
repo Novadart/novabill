@@ -51,6 +51,8 @@ public class PasswordRecoveryController {
 			return "frontend.passwordRecovery";
 		}
 		else{
+			if(ForgotPassword.findForgotPasswords(forgotPassword.getEmail(), forgotPassword.getActivationToken()).size() != 1)
+				return "frontend.passwordRecoveryFailure";
 			Principal principal = Principal.findByUsername(forgotPassword.getEmail());
 			principal.setPassword(forgotPassword.getPassword());
 			forgotPassword.remove();
