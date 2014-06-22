@@ -55,7 +55,6 @@ import org.hibernate.validator.constraints.NotBlank;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.annotation.TaxFieldsNotNull;
 import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
@@ -70,7 +69,6 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @Configurable
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@TaxFieldsNotNull
 @NamedQueries({
 	@NamedQuery(name = "business.allUnpaidInvoicesDueDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.paymentDueDate and i.paymentDueDate <= :endDate and i.business.id = :bizID order by i.paymentDueDate, i.documentID"),
 	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID"),
@@ -132,11 +130,13 @@ public class Business implements Serializable, Taxable {
 
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
+    @NotBlank
     @Trimmed
     private String vatID;
     
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
+    @NotBlank
     @Trimmed
     private String ssn;
 
