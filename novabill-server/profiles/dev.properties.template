@@ -36,13 +36,12 @@ mvn.smtp.mail.registration_completed_sender=no-reply@novabill.it
 #
 # Email Notifications
 #
-mvn.notification.registration=false
+mvn.notification.registration=true
 mvn.notification.exception=false
 mvn.notification.validationError=false
-mvn.notification.accountUpgrade=false
+mvn.notification.accountUpgrade=true
 mvn.notification.feedback=true
 mvn.notification.clientUIError=true
-mvn.notification.premiumUpgradeError=true
 
 #
 # Application Configuration

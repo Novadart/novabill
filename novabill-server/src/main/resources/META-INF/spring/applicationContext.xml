@@ -127,7 +127,7 @@
 	</bean>
 	
 	<bean
-		class="com.novadart.novabill.aspect.logging.AccountUpgradeAspect"
+		class="com.novadart.novabill.aspect.logging.PremiumUpgradeAspect"
 		factory-method="aspectOf">
 		<property name="sendEmail" value="${notification.accountUpgrade}" />
 		<property name="emailAddresses">
@@ -161,19 +161,6 @@
 			</list>
 		</property>
 	</bean>
-	
-	<bean
-		class="com.novadart.novabill.aspect.logging.PremiumUpgradeErrorAspect"
-		factory-method="aspectOf">
-		<property name="sendEmail" value="${notification.validationError}" />
-		<property name="emailAddresses">
-			<list>
-				<value>giordano.battilana@novadart.com</value>
-				<value>risto.gligorov@novadart.com</value>
-			</list>
-		</property>
-	</bean>
-	
 	
 	<bean
 		class="com.novadart.novabill.aspect.logging.ClientUIAspect"
