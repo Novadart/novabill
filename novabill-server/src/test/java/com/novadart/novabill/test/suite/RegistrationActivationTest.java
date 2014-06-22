@@ -63,6 +63,11 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		return controller;
 	}
 	
+	private void dropRegistrations(){
+		for(Registration r: Registration.findAllRegistrations())
+			r.remove();
+		Registration.entityManager().flush();
+	}
 	
 	private Registration initRegistration(String token, String email, String password, String confirmPassword, boolean agreementAccepted) throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException{
 		Registration registration = new Registration();
@@ -82,27 +87,29 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void defaultRegistrationActivationFlow() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
-		String token = "1", email = "foo@bar.com", password = "password";
+		dropRegistrations();
+		String token = "1", email = "foo@bar.com", password = "Novadart28&";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
-		assertTrue(smtpServer.getReceivedEmailSize() == 1);
+		assertTrue(smtpServer.getReceivedEmailSize() == 2);//besides registration email, notification email is sent too
 		
 		ActivateAccountController activationController = initActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);
 		String forwardToSpringSecurityCheck = activationController.processSubmit(email, password, (Registration)model.asMap().get("registration"),
 				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
-		assertEquals("redirect:/registrationCompleted", registerView);
+		assertEquals("redirect:/registration-complete", registerView);
 		assertEquals("frontend.activate", activateView);
 		assertEquals("forward:/resources/login_check", forwardToSpringSecurityCheck);
 	}
 	
 	@Test
 	public void registerPasswordMismatch() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException {
+		dropRegistrations();
 		String token = "1", email = "foo@bar.com", password = "password1", confirmPassword = "password2";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, confirmPassword, true);
@@ -112,6 +119,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerInvalidEmail() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropRegistrations();
 		String token = "1", email = "foo.bar.com", password = "password";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);
@@ -121,6 +129,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerExistingEmail() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropRegistrations();
 		String token = "1", password = "password";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, userPasswordMap.keySet().iterator().next(), password, password, true);
@@ -130,6 +139,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerNullEmail() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropRegistrations();
 		String token = "1", password = "password";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, null, password, password, true);
@@ -139,6 +149,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerNullPassword() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropRegistrations();
 		String token = "1", email = "foo@bar.com";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, null, null, true);
@@ -148,6 +159,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerPasswordTooShort() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropRegistrations();
 		String token = "1", email = "foo@bar.com";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, "abcd", null, true);
@@ -157,6 +169,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerPasswordTooLong() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropRegistrations();
 		String token = "1", email = "foo@bar.com";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, StringUtils.leftPad("1", 20), null, true);
@@ -166,7 +179,8 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerAgreementNotAccepted() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
-		String token = "1", email = "foo@bar.com", password = "password";
+		dropRegistrations();
+		String token = "1", email = "foo@bar.com", password = "Novadart28&";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, false);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
@@ -175,31 +189,33 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registerRequestExpired() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
-		String token = "1", email = "foo@bar.com", password = "password";
+		dropRegistrations();
+		String token = "1", email = "foo@bar.com", password = "Novadart28&";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 0); //expires immediately
 		Registration registration = initRegistration(token, email, password, password, true);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
-		assertTrue(smtpServer.getReceivedEmailSize() == 1);
+		assertTrue(smtpServer.getReceivedEmailSize() == 2); //notification email is sent too
 		
 		ActivateAccountController activationController = new ActivateAccountController();
 		String activateView = activationController.setupForm(email, token, mock(Model.class));
-		assertEquals("redirect:/registrationCompleted", registerView);
-		assertEquals("invalidActivationRequest", activateView);
+		assertEquals("redirect:/registration-complete", registerView);
+		assertEquals("frontend.invalidActivationRequest", activateView);
 	}
 	
 	@Test
 	public void replayRegistrationActivationFlow() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
-		String token = "1", email = "foo@bar.com", password = "password";
+		dropRegistrations();
+		String token = "1", email = "foo@bar.com", password = "Novadart28&";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
-		assertEquals(1, smtpServer.getReceivedEmailSize());
+		assertEquals(2, smtpServer.getReceivedEmailSize());//notification email is sent too
 		
 		ActivateAccountController activationController = initActivateAccountController();
 		Model model = new ExtendedModelMap();
@@ -208,15 +224,16 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
 		model = new ExtendedModelMap();
 		String activateView2 = activationController.setupForm(email, token, model);
-		assertEquals("redirect:/registrationCompleted", registerView);
-		assertEquals("activate", activateView1);
+		assertEquals("redirect:/registration-complete", registerView);
+		assertEquals("frontend.activate", activateView1);
 		assertEquals("forward:/resources/login_check", forwardToSpringSecurityCheck1);
-		assertEquals("invalidActivationRequest", activateView2);
+		assertEquals("frontend.invalidActivationRequest", activateView2);
 	}
 	
 	@Test(expected = JpaSystemException.class)
 	public void twoRegistrationsWithSameEmail() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
-		String token1 = "1", token2 = "2", email = "foo@bar.com", password = "password";
+		dropRegistrations();
+		String token1 = "1", token2 = "2", email = "foo@bar.com", password = "Novadart28&";
 
 		//First registration
 		RegistrationController registerController = initRegisterController(token1, "%s%s", 24);
@@ -225,7 +242,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String registerView1 = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
-		assertTrue(smtpServer.getReceivedEmailSize() == 1);
+		assertTrue(smtpServer.getReceivedEmailSize() == 2); //notification email is sent too
 		
 		//Second registration
 		registerController = initRegisterController(token2, "%s%s", 24);
@@ -234,7 +251,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		smtpServer = SimpleSmtpServer.start(2525);
 		String registerView2 = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
-		assertTrue(smtpServer.getReceivedEmailSize() == 1);
+		assertTrue(smtpServer.getReceivedEmailSize() == 2); //notification email is sent too
 		
 		//First activation initiation
 		ActivateAccountController activationController1 = initActivateAccountController();
@@ -250,12 +267,12 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		
 		Principal.entityManager().flush();
 		
-		assertEquals("redirect:/registrationCompleted", registerView1);
-		assertEquals("activate", activateView1);
+		assertEquals("redirect:/registration-complete", registerView1);
+		assertEquals("frontend.activate", activateView1);
 		assertEquals("forward:/resources/login_check", forwardToSpringSecurityCheck1);
 		
-		assertEquals("redirect:/registrationCompleted", registerView2);
-		assertEquals("activate", activateView2);
+		assertEquals("redirect:/registration-complete", registerView2);
+		assertEquals("frontend.activate", activateView2);
 		
 		activationController2.processSubmit(email, password, (Registration)model2.asMap().get("registration"),
 				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
@@ -266,23 +283,24 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 	
 	@Test
 	public void registrationActivationWrongPassword() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
-		String token = "1", email = "foo@bar.com", password = "password";
+		dropRegistrations();
+		String token = "1", email = "foo@bar.com", password = "Novadart28&";
 		RegistrationController registerController = initRegisterController(token, "%s%s", 24);
 		Registration registration = initRegistration(token, email, password, password, true);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
-		assertTrue(smtpServer.getReceivedEmailSize() == 1);
+		assertTrue(smtpServer.getReceivedEmailSize() == 2);//besides registration email, notification email is sent too
 		
 		ActivateAccountController activationController = initActivateAccountController();
 		Model model = new ExtendedModelMap();
 		String activateView = activationController.setupForm(email, token, model);
 		String backToActivate = activationController.processSubmit(email, password + "1", (Registration)model.asMap().get("registration"),
 				mock(Model.class), mock(SessionStatus.class), Locale.ITALIAN);
-		assertEquals("redirect:/registrationCompleted", registerView);
-		assertEquals("activate", activateView);
-		assertEquals("activate", backToActivate);
+		assertEquals("redirect:/registration-complete", registerView);
+		assertEquals("frontend.activate", activateView);
+		assertEquals("frontend.activate", backToActivate);
 	}
 	
 }

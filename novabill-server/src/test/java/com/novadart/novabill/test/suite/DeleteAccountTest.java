@@ -73,7 +73,7 @@ public class DeleteAccountTest extends AuthenticatedTest {
 		when(result.hasErrors()).thenReturn(false);
 		String redirectLogoutView = deleteAccountController.processSubmit(deleteAccount, result, mock(SessionStatus.class));
 		Principal.entityManager().flush();
-		assertEquals("deleteAccount", deleteAccountView);
+		assertEquals("private.deleteAccount", deleteAccountView);
 		assertEquals("redirect:/resources/logout", redirectLogoutView);
 		assertEquals(null, Principal.findByUsername(username));
 		assertEquals(null, Business.findBusiness(businessID));
@@ -85,7 +85,7 @@ public class DeleteAccountTest extends AuthenticatedTest {
 		deleteAccount.setPassword(passValue);
 		BindingResult result = new BeanPropertyBindingResult(deleteAccount, "deleteAccount");
 		String view = deleteAccountController.processSubmit(deleteAccount, result, mock(SessionStatus.class));
-		assertEquals("deleteAccount", view);
+		assertEquals("private.deleteAccount", view);
 		assertTrue(result.hasErrors());
 	}
 	

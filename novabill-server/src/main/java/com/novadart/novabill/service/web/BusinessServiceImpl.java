@@ -85,6 +85,10 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	
 	private Map<Locale, PaymentType[]> paymentTypes;
 	
+	public static final String EMAIL_SUBJECT = "Invio Fattura n. $NumeroFattura del $DataFattura";
+	
+	public static final String EMAIL_TEXT = "Spettabile $NomeCliente,\n\ncon la presente trasmettiamo la nostra fattura nr. $NumeroFattura del $DataFattura in formato PDF.\nIl documento è scaricabile alla pagina web sotto indicata.\n\nCordiali saluti,\n$RagioneSocialeAzienda";
+	
 	@PostConstruct
 	public void init(){
 		paymentTypes = new HashMap<Locale, PaymentType[]>();
@@ -264,8 +268,8 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Settings settings = business.getSettings(); 
 		settings.setDefaultLayoutType(LayoutType.DENSE);
 		settings.setEmailReplyTo(StringUtils.isBlank(business.getEmail())? utilsService.getAuthenticatedPrincipalDetails().getUsername(): business.getEmail());
-		settings.setEmailSubject("Invio Fattura n. $NumeroFattura del $DataFattura");
-		settings.setEmailText("Spettabile $NomeCliente,\n\ncon la presente trasmettiamo la nostra fattura nr. $NumeroFattura del $DataFattura in formato PDF.\nIl documento è scaricabile alla pagina web sotto indicata.\n\nCordiali saluti,\n$RagioneSocialeAzienda");
+		settings.setEmailSubject(EMAIL_SUBJECT);
+		settings.setEmailText(EMAIL_TEXT);
 	}
 	
 	@PreAuthorize("principal.business == null and #businessDTO != null and #businessDTO.id == null")

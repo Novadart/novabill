@@ -1,6 +1,7 @@
 package com.novadart.novabill.web.mvc;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -37,19 +38,20 @@ public class ActivateAccountController {
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model) throws CloneNotSupportedException{
+		model.addAttribute("pageName", "Attivazione Account");
 		if(Principal.findByUsername(email) != null) //registered user already exists
 			return "frontend.invalidActivationRequest";
-		for(Registration registration: Registration.findRegistrations(email, token)){
-			if(registration.getExpirationDate().before(new Date())){ //expired
-				registration.remove();
-				continue;
-			}
-			model.addAttribute("pageName", "Attivazione Account");
-			model.addAttribute("registration", registration.clone());
-			return "frontend.activate";
+		List<Registration> r = Registration.findRegistrations(email, token);
+		if(r.size() != 1)
+			return "frontend.invalidActivationRequest";
+		Registration registration = r.get(0);
+		if(registration.getExpirationDate().before(new Date())){ //expired
+			registration.remove();
+			return "frontend.invalidActivationRequest";
 		}
 		model.addAttribute("pageName", "Attivazione Account");
-		return "frontend.invalidActivationRequest";
+		model.addAttribute("registration", registration.clone());
+		return "frontend.activate";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
