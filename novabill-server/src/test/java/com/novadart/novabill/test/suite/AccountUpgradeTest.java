@@ -30,6 +30,7 @@ import org.springframework.ui.Model;
 
 import com.dumbster.smtp.SimpleSmtpServer;
 import com.dumbster.smtp.SmtpMessage;
+import com.novadart.novabill.aspect.logging.ExceptionTraceAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Email;
 import com.novadart.novabill.domain.EmailStatus;
@@ -315,7 +316,8 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	
 	@Test(expected = PremiumUpgradeException.class)
 	@DirtiesContext
-	public void notifyIfPremiumUpgradeFail() throws PremiumUpgradeException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{
+	public void notifyIfPremiumUpgradeFail() throws PremiumUpgradeException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, ClassNotFoundException{
+		ExceptionTraceAspect.aspectOf().setIgnoreExceptions(new String[]{"java.lang.RuntimeException"});
 		Long businessID = getUnathorizedBusinessID();
 		Business business = Business.findBusiness(businessID);
 		PremiumEnablerService mockedService = mock(PremiumEnablerService.class);
@@ -334,9 +336,9 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 			mockIPNService.handle("", parametersMap, new Transaction());
 		}finally {
 			smtpServer.stop();
+			assertEquals(2, smtpServer.getReceivedEmailSize());
 		}
 		
-		assertEquals(1, smtpServer.getReceivedEmailSize());
 	}
 	
 	

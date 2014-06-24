@@ -37,7 +37,7 @@ mvn.smtp.mail.registration_completed_sender=no-reply@novabill.it
 # Email Notifications
 #
 mvn.notification.registration=true
-mvn.notification.exception=false
+mvn.notification.exception=true
 mvn.notification.validationError=false
 mvn.notification.accountUpgrade=true
 mvn.notification.feedback=true
@@ -85,3 +85,6 @@ mvn.paypal.email=risto.gligorov-facilitator@novadart.com
 #mvn.quota.numberOfTransportDocsPerYear=1
 #mvn.quota.numberOfCommodities=1
 #mvn.quota.numberOfPaymentTypes=7
+
+
+mvn.ignore.exceptions=java.lang.Exception

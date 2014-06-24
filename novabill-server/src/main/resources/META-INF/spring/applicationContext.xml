@@ -112,6 +112,7 @@
 			</list>
 		</property>
 		<property name="loggingOn" value="true"/>
+		<property name="ignoreExceptions" value="${ignore.exceptions}"/>
 	</bean>
 
 	<bean
