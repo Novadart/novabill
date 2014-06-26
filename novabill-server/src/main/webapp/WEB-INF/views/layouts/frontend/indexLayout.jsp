@@ -46,6 +46,7 @@
 		width: 100%;
 		margin: 10px 0;
 		overflow: hidden;
+		display: none;
 	}
 	
 	#defaultCountdown span.countdown_row {
