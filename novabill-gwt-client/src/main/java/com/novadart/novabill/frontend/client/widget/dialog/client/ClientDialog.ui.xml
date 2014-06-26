@@ -128,7 +128,7 @@
 						</g:row>
 						<g:row>
 							<g:customCell>
-								<g:Label styleName="{s.label}" text="{i18n.province} *"></g:Label>
+								<g:Label styleName="{s.label}" text="{i18n.province}"></g:Label>
 							</g:customCell>
 							<g:customCell>
 							    <validation:ValidatedTextBox
@@ -146,7 +146,7 @@
 						</g:row>
 						<g:row>
 							<g:customCell>
-								<g:Label styleName="{s.label}" text="{i18n.ssn} *"></g:Label>
+								<g:Label styleName="{s.label}" text="{i18n.ssn} **"></g:Label>
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
@@ -155,7 +155,7 @@
 						</g:row>
 						<g:row>
 							<g:customCell>
-								<g:Label styleName="{s.label}" text="{i18n.vatID} *"></g:Label>
+								<g:Label styleName="{s.label}" text="{i18n.vatID} **"></g:Label>
 							</g:customCell>
 							<g:customCell>
 								<validation:ValidatedTextBox
@@ -284,6 +284,7 @@
 			</g:HorizontalPanel>
 
 			<g:Label styleName="{s.mandatory}" text="* {i18n.mandatory}" />
+			<g:Label text="** Obbligatorio almeno uno dei due" />
 
 			<n:InlineNotification ui:field="inlineNotification"></n:InlineNotification>
 
