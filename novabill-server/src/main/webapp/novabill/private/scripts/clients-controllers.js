@@ -198,14 +198,16 @@ angular.module('novabill.clients.controllers',
 					if(value){
 						GWT_Server.client.remove(nConstants.conf.businessId, $scope.client.id, {
 							onSuccess : function(data){
-								$scope.$apply(function(){
-									$location.path('/');
-								});
+								if(data === 'true') {
+									$scope.$apply(function(){
+										$location.path('/');
+									});
+								} else {
+									nAlertDialog.open($filter('translate')('CLIENT_DELETION_ALERT'));
+								}
 							},
 	
-							onFailure : function(error){
-								nAlertDialog.open($filter('translate')('CLIENT_DELETION_ALERT'));
-							}
+							onFailure : function(error){}
 						});
 					}
 				});

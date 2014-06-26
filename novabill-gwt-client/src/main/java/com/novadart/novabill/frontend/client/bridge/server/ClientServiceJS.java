@@ -19,7 +19,6 @@ import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 
 
 public class ClientServiceJS extends ServiceJS {
@@ -78,22 +77,13 @@ public class ClientServiceJS extends ServiceJS {
 
 
 	public static void remove(String businessID, String id, final JavaScriptObject callback) {
-		SERVER_FACADE.getClientService().remove(Long.valueOf(businessID), Long.valueOf(id), new ManagedAsyncCallback<Void>() {
+		SERVER_FACADE.getClientService().remove(Long.valueOf(businessID), Long.valueOf(id), new ManagedAsyncCallback<Boolean>() {
 
 			@Override
-			public void onSuccess(Void result) {
-				BridgeUtils.invokeJSCallback(callback);
+			public void onSuccess(Boolean result) {
+				BridgeUtils.invokeJSCallback(result, callback);
 			}
 
-			@Override
-			public void onFailure(Throwable caught) {
-				if(caught instanceof DataIntegrityException){
-					DataIntegrityException di = (DataIntegrityException)caught;
-					BridgeUtils.invokeJSCallbackOnException(di.getClass().getName(), null, callback);
-				} else {
-					super.onFailure(caught);
-				}
-			}
 		});
 
 	}
