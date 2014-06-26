@@ -63,7 +63,7 @@ public class DeleteAccountController {
 		businessLogoController.clearLogo(principal.getBusiness().getId());
 		principal.getBusiness().remove();
 		status.setComplete();
-		return "redirect:" + Urls.PRIVATE_LOGOUT;
+		return "forward:" + Urls.PRIVATE_LOGOUT;
 	}
 	
 }
