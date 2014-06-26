@@ -26,8 +26,8 @@ public class ClientGwtController extends AbstractGwtController implements Client
 	@Autowired
 	private ClientService clientService;
 	
-	public void remove(Long businessID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, DataAccessException {
-		clientService.remove(businessID, id);
+	public boolean remove(Long businessID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+		return clientService.remove(businessID, id);
 	}
 
 	public Long add(Long businessID, ClientDTO clientDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException {
