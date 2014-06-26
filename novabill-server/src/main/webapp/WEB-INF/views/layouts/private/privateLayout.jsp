@@ -373,6 +373,12 @@ window.onerror = function(message, source, line, column) {
     
 </body>
 <!-- END BODY -->
+<<<<<<< HEAD
 </html>
 
 </compress:html>
+||||||| merged common ancestors
+</html>
+=======
+</html>
+>>>>>>> 2.5.6

@@ -369,12 +369,17 @@
 				<configuration>
 					<warSourceExcludes>
 						**/rpc/**,
+<<<<<<< HEAD
 						WEB-INF/views/layouts/frontend/indexLayout.jsp,
 						WEB-INF/views/layouts/frontend/subPageLayout.jsp,
 						WEB-INF/views/layouts/frontend/subPageMinimalLayout.jsp,
 						WEB-INF/views/layouts/private/privateLayout.jsp,
 						WEB-INF/views/layouts/private/privateHelloLayout.jsp,
 						WEB-INF/views/layouts/private/printPDF.jsp,
+||||||| merged common ancestors
+=======
+						WEB-INF/views/layouts/private/privateLayout.jsp,
+>>>>>>> 2.5.6
 						WEB-INF/views/tiles/frontend/analytics.jsp,
 						WEB-INF/views/tiles/private/analytics.jsp,
 						WEB-INF/views/tiles/wro4j/private/minifiedCSS.jsp,
@@ -392,12 +397,17 @@
 							<targetPath>WEB-INF</targetPath>
 							<includes>
 								<include>web.xml</include>
+<<<<<<< HEAD
 								<include>views/layouts/frontend/indexLayout.jsp</include>
 								<include>views/layouts/frontend/subPageLayout.jsp</include>
 								<include>views/layouts/frontend/subPageMinimalLayout.jsp</include>
 								<include>views/layouts/private/privateLayout.jsp</include>
 								<include>views/layouts/private/privateHelloLayout.jsp</include>
 								<include>views/layouts/private/printPDF.jsp</include>
+||||||| merged common ancestors
+=======
+								<include>views/layouts/private/privateLayout.jsp</include>
+>>>>>>> 2.5.6
 								<include>views/tiles/frontend/analytics.jsp</include>
 								<include>views/tiles/private/analytics.jsp</include>
 								<include>views/private-tiles-defs.xml</include>
