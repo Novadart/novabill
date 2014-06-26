@@ -45,13 +45,14 @@ public class ClientService {
 	@Transactional(readOnly = false)
 	@PreAuthorize("T(com.novadart.novabill.domain.Client).findClient(#id)?.business?.id == principal.business.id and " +
 				  "principal.business.id == #businessID")
-	public void remove(Long businessID, Long id) throws NoSuchObjectException, DataIntegrityException {
+	public boolean remove(Long businessID, Long id) throws NoSuchObjectException {
 		Client client = Client.findClient(id);
 		if(client.hasAccountingDocs())
-			throw new DataIntegrityException();
+			return false;
 		client.remove();
 		if(Hibernate.isInitialized(client.getBusiness().getClients()))
 			client.getBusiness().getClients().remove(client);
+		return true;
 	}
 
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})

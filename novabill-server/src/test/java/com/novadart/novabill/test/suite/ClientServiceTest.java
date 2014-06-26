@@ -125,8 +125,9 @@ public class ClientServiceTest extends ServiceTest {
 	public void removeAuthenticatedTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, JsonParseException, JsonMappingException, IOException{
 		Long clientID = new Long(testProps.get("clientWithoutInvoicesID"));
 		String name = Client.findClient(clientID).getName();
-		clientService.remove(authenticatedPrincipal.getBusiness().getId(), clientID);
+		boolean result = clientService.remove(authenticatedPrincipal.getBusiness().getId(), clientID);
 		Client.entityManager().flush();
+		assertEquals(true, result);
 		assertNull(Client.findClient(clientID));
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
 		assertEquals(EntityType.CLIENT, rec.getEntityType());
@@ -136,11 +137,12 @@ public class ClientServiceTest extends ServiceTest {
 		assertEquals(name, details.get(DBLoggerAspect.CLIENT_NAME));
 	}
 	
-	@Test(expected = DataIntegrityException.class)
+	@Test
 	public void removeAuthenticatedDataIntegrityViolationTest() throws DataAccessException, NotAuthenticatedException, NoSuchObjectException, DataIntegrityException{
 		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
-		clientService.remove(authenticatedPrincipal.getBusiness().getId(), clientID);
+		boolean result = clientService.remove(authenticatedPrincipal.getBusiness().getId(), clientID);
 		Client.entityManager().flush();
+		assertEquals(false, result);
 	}
 	
 	
