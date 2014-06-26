@@ -37,7 +37,7 @@
 
 <spring:url var="clientsBaseUrl" value="<%=Urls.PRIVATE_CLIENTS%>" />
 
-<spring:url var="gwtUrl" value="/rpc/rpc.nocache.js" />
+<spring:url var="gwtUrl" value="/rpc/rpc.nocache.js?v=${project.version}" />
 
 <%
 	PAGES activePage = (PAGES)request.getAttribute("activePage");

@@ -7,6 +7,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Stack;
+import java.util.logging.Logger;
 
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.core.client.Scheduler;
@@ -56,6 +57,8 @@ import com.novadart.novabill.shared.client.tuple.Pair;
 
 public class ItemInsertionForm extends Composite implements HasUILocking {
 
+	private Logger logger = Logger.getLogger("ItemInsertionForm");
+	
 	interface NotificationCss extends CssResource {
 		String notification();
 	}
@@ -276,13 +279,14 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		}
 		String nKey = key.toLowerCase();
 		if(!filterType.equals(prevFilterType)){
-			searchStack.clear();
+			resetCommodityAutoCompletion();
 			prevFilterType = filterType;
-			prevKey = "";
 		}
 
 		int diffSize = nKey.length() - prevKey.length();
 
+		logger.info("Filtering: key="+nKey+"  prevKey="+prevKey+"  diffSize="+diffSize);
+		
 		switch (diffSize) {
 		case 0:
 			if(!nKey.equals(prevKey)){
@@ -464,6 +468,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiHandler("sku")
 	void onSkuFocus(FocusEvent event){
 		commoditySearchPanel.hide();
+		resetCommodityAutoCompletion();
+		logger.info("reseting autocompletion on SKU focus");
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
 			public void execute() {
@@ -475,6 +481,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 	@UiHandler("item")
 	void onItemFocus(FocusEvent event){
 		commoditySearchPanel.hide();
+		resetCommodityAutoCompletion();
+		logger.info("reseting autocompletion on ITEM focus");
 		Scheduler.get().scheduleDeferred(new ScheduledCommand() {
 			@Override
 			public void execute() {
@@ -678,6 +686,12 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		accountingDocumentItems.refresh();
 		handler.onItemListUpdated(getItems());
 	}
+	
+	private void resetCommodityAutoCompletion(){
+		prevKey = "";
+		searchStack.clear();
+		prevFilterType = null;
+	}
 
 	private void resetItemTableForm(){
 		sku.setText("");
@@ -688,9 +702,7 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		price.setText("");
 		discount.setText("");
 		tax.reset();
-		prevKey = "";
-		searchStack.clear();
-		prevFilterType = null;
+		resetCommodityAutoCompletion();
 		
 		itemLabel.setText(I18N.INSTANCE.nameDescription());
 
