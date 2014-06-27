@@ -64,7 +64,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	@UiField(provided=true) RichTextBox toAddrStreetName;
 	@UiField(provided=true) RichTextBox toAddrPostCode;
 	@UiField(provided=true) RichTextBox toAddrCity;
-	@UiField(provided=true) ValidatedListBox toAddrProvince;
+	@UiField(provided=true) RichTextBox toAddrProvince;
 	@UiField(provided=true) ValidatedListBox toAddrCountry;
 	@UiField ListBox toAddrButtonDefault;
 
@@ -107,7 +107,8 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		toAddrPostCode.addStyleName(CSS.box());
 		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),ValidationKit.DEFAULT);
 		toAddrStreetName.addStyleName(CSS.box());
-		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
+		toAddrProvince = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.province(),ValidationKit.DEFAULT);
+		toAddrProvince.addStyleName(CSS.box());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
 		initWidget(uiBinder.createAndBindUi(this));
@@ -214,12 +215,6 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 		presenter.onToAddressButtonDefaultChange();
 	}
 
-	@UiHandler("toAddrCountry")
-	void onToCountryChange(ChangeEvent event){
-		presenter.onToCountryChange();
-	}
-
-
 	@Override
 	public CheckBox getSetToAddress() {
 		return setToAddress;
@@ -246,7 +241,7 @@ public class CreditNoteViewImpl extends AccountDocument implements CreditNoteVie
 	}
 
 	@Override
-	public ValidatedListBox getToAddrProvince() {
+	public RichTextBox getToAddrProvince() {
 		return toAddrProvince;
 	}
 

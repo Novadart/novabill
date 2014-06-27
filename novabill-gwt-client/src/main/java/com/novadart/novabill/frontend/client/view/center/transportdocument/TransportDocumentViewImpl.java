@@ -59,7 +59,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) RichTextBox fromAddrStreetName;
 	@UiField(provided=true) RichTextBox fromAddrPostCode;
 	@UiField(provided=true) RichTextBox fromAddrCity;
-	@UiField(provided=true) ValidatedListBox fromAddrProvince;
+	@UiField(provided=true) RichTextBox fromAddrProvince;
 	@UiField(provided=true) ValidatedListBox fromAddrCountry;
 	@UiField Button fromAddrButtonDefault;
 
@@ -69,7 +69,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) RichTextBox toAddrStreetName;
 	@UiField(provided=true) RichTextBox toAddrPostCode;
 	@UiField(provided=true) RichTextBox toAddrCity;
-	@UiField(provided=true) ValidatedListBox toAddrProvince;
+	@UiField(provided=true) RichTextBox toAddrProvince;
 	@UiField(provided=true) ValidatedListBox toAddrCountry;
 	@UiField ListBox toAddrButtonDefault;
 
@@ -145,7 +145,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrPostCode.addStyleName(CSS.box());
 		fromAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address());
 		fromAddrStreetName.addStyleName(CSS.box());
-		fromAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
+		fromAddrProvince = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.province());
+		fromAddrProvince.addStyleName(CSS.box());
 		fromAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
 		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),ValidationKit.DEFAULT);
@@ -162,7 +163,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddrPostCode.addStyleName(CSS.box());
 		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),ValidationKit.DEFAULT);
 		toAddrStreetName.addStyleName(CSS.box());
-		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
+		toAddrProvince = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.province());
+		toAddrProvince.addStyleName(CSS.box());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
 		String str;
@@ -233,16 +235,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiHandler("setToAddress")
 	void onSetToAddress(ValueChangeEvent<Boolean> e){
 		toAddressContainer.setVisible(e.getValue());
-	}
-
-	@UiHandler("fromAddrCountry")
-	void onFromCountryChange(ChangeEvent event){
-		presenter.onFromCountryChange();
-	}
-
-	@UiHandler("toAddrCountry")
-	void onToCountryChange(ChangeEvent event){
-		presenter.onToCountryChange();
 	}
 
 	@UiFactory
@@ -453,7 +445,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return fromAddrCity;
 	}
 
-	public ValidatedListBox getFromAddrProvince() {
+	public RichTextBox getFromAddrProvince() {
 		return fromAddrProvince;
 	}
 
@@ -481,7 +473,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return toAddrCity;
 	}
 
-	public ValidatedListBox getToAddrProvince() {
+	public RichTextBox getToAddrProvince() {
 		return toAddrProvince;
 	}
 

@@ -72,7 +72,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	@UiField(provided=true) RichTextBox toAddrStreetName;
 	@UiField(provided=true) RichTextBox toAddrPostCode;
 	@UiField(provided=true) RichTextBox toAddrCity;
-	@UiField(provided=true) ValidatedListBox toAddrProvince;
+	@UiField(provided=true) RichTextBox toAddrProvince;
 	@UiField(provided=true) ValidatedListBox toAddrCountry;
 	@UiField ListBox toAddrButtonDefault;
 
@@ -133,7 +133,8 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		toAddrPostCode.addStyleName(CSS.box());
 		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),ValidationKit.DEFAULT);
 		toAddrStreetName.addStyleName(CSS.box());
-		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
+		toAddrProvince = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.province(),ValidationKit.DEFAULT);
+		toAddrProvince.addStyleName(CSS.box());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
 		initWidget(uiBinder.createAndBindUi(this));
@@ -195,11 +196,6 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 		presenter.onToAddressButtonDefaultChange();
 	}
 
-	@UiHandler("toAddrCountry")
-	void onToCountryChange(ChangeEvent event){
-		presenter.onToCountryChange();
-	}
-
 	@Override
 	public void setPresenter(Presenter presenter) {
 		this.presenter = presenter;
@@ -231,7 +227,7 @@ public class InvoiceViewImpl extends AccountDocument implements InvoiceView {
 	}
 
 	@Override
-	public ValidatedListBox getToAddrProvince() {
+	public RichTextBox getToAddrProvince() {
 		return toAddrProvince;
 	}
 

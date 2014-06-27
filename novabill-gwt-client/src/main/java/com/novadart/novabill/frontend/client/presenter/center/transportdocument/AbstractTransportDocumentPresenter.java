@@ -91,7 +91,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		getView().getFromAddrCity().setText(b.getCity());
 		getView().getFromAddrCompanyName().setText(b.getName());
 		getView().getFromAddrPostCode().setText(b.getPostcode());
-		getView().getFromAddrProvince().setSelectedItem(b.getProvince());
+		getView().getFromAddrProvince().setText(b.getProvince());
 		getView().getFromAddrStreetName().setText(b.getAddress());
 		getView().getFromAddrCountry().setSelectedItemByValue(b.getCountry());
 	}
@@ -117,12 +117,6 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		BigDecimal total = CalcUtils.calculateTotalWeight(items);
 		BigDecimal roundedTotal = total.setScale(3, RoundingMode.HALF_UP);
 		getView().getTotalWeight().setText(NumberFormat.getDecimalFormat().format(roundedTotal));
-	}
-
-	@Override
-	public void onFromCountryChange() {
-		getView().getFromAddrProvince().setEnabled(getView().getFromAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT"));
-		getView().getFromAddrProvince().reset();
 	}
 
 	@Override
@@ -158,9 +152,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			getView().getToAddrCity().setText(getClient().getCity());
 			getView().getToAddrCompanyName().setText(getClient().getName());
 			getView().getToAddrPostCode().setText(getClient().getPostcode());
-			if(getClient().getCountry().equalsIgnoreCase("IT")){
-				getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
-			}
+			getView().getToAddrProvince().setText(getClient().getProvince());
 			getView().getToAddrStreetName().setText(getClient().getAddress());
 			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
 		}
@@ -173,11 +165,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		loc.setCompanyName(getView().getFromAddrCompanyName().getText());
 		loc.setCity(getView().getFromAddrCity().getText());
 		loc.setPostcode(getView().getFromAddrPostCode().getText());
-		if(getView().getFromAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
-			loc.setProvince(getView().getFromAddrProvince().getSelectedItemText());
-		} else {
-			loc.setProvince("");
-		}
+		loc.setProvince(getView().getFromAddrProvince().getText());
 		loc.setStreet(getView().getFromAddrStreetName().getText());
 		loc.setCountry(getView().getFromAddrCountry().getSelectedItemValue());
 		td.setFromEndpoint(loc);
@@ -186,11 +174,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		loc.setCompanyName(getView().getToAddrCompanyName().getText());
 		loc.setCity(getView().getToAddrCity().getText());
 		loc.setPostcode(getView().getToAddrPostCode().getText());
-		if(getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
-			loc.setProvince(getView().getToAddrProvince().getSelectedItemText());
-		} else {
-			loc.setProvince("");
-		}
+		loc.setProvince(getView().getToAddrProvince().getText());
 		loc.setStreet(getView().getToAddrStreetName().getText());
 		loc.setCountry(getView().getToAddrCountry().getSelectedItemValue());
 		td.setToEndpoint(loc);

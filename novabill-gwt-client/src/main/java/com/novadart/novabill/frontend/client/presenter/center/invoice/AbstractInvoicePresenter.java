@@ -119,9 +119,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 			getView().getToAddrCity().setText(getClient().getCity());
 			getView().getToAddrCompanyName().setText(getClient().getName());
 			getView().getToAddrPostCode().setText(getClient().getPostcode());
-			if(getClient().getCountry().equalsIgnoreCase("IT")){
-				getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
-			}
+			getView().getToAddrProvince().setText(getClient().getProvince());
 			getView().getToAddrStreetName().setText(getClient().getAddress());
 			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
 		}
@@ -130,11 +128,7 @@ public abstract class AbstractInvoicePresenter extends DocumentPresenter<Invoice
 		loc.setCompanyName(getView().getToAddrCompanyName().getText());
 		loc.setCity(getView().getToAddrCity().getText());
 		loc.setPostcode(getView().getToAddrPostCode().getText());
-		if(getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
-			loc.setProvince(getView().getToAddrProvince().getSelectedItemText());
-		} else {
-			loc.setProvince("");
-		}
+		loc.setProvince(getView().getToAddrProvince().getText());
 		loc.setStreet(getView().getToAddrStreetName().getText());
 		loc.setCountry(getView().getToAddrCountry().getSelectedItemValue());
 		inv.setToEndpoint(loc);
