@@ -49,7 +49,7 @@ public class ClientAddress implements Serializable {
 	@Trimmed
 	private String city;
 	
-	@NotBlank
+//	@NotBlank
 	@Size(max = 100)
 	@Trimmed
 	private String province;
