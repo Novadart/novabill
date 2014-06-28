@@ -4,6 +4,9 @@
 
 <spring:url var="indexPageUrl" value="/" />
 <spring:url value="/register" var="registerPageUrl"/>
+<spring:url value="/private/premium" var="premiumUrl"/>
+<spring:url value="/private/settings/#/?tab=profile" var="profileUrl"/>
+<spring:url value="/private/" var="privateUrl"/>
 
 <div class="page-container">
     
@@ -48,9 +51,14 @@
                             <li>Statistiche di base</li>
                         </ul>
                         <div class="pricing-footer">
-                            <a href="${registerPageUrl}" class="btn register green"
-				                data-container="body" data-toggle="popover" data-placement="top"
-				                data-content="Registrati e parti con un piano 'Standard', puoi aggiornare a 'Premium' quando vuoi" data-trigger="hover">Registrati</a>
+                            <sec:authorize access="isAnonymous()">
+                                <a href="${registerPageUrl}" class="btn register green"
+                                data-container="body" data-toggle="popover" data-placement="top"
+                                data-content="Registrati e parti con un piano 'Standard', puoi aggiornare a 'Premium' quando vuoi" data-trigger="hover">Registrati</a>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('ROLE_BUSINESS_FREE')">
+                                <a href="${profileUrl}" class="btn register green"><i class="fa fa-check"></i> Piano Attivo</a>
+                            </sec:authorize>
                         </div>
                     </div>
                 </div>
@@ -79,15 +87,23 @@
                             <li><strong>Condivisione dei documenti con il commercialista</strong></li>
                         </ul>
                         <div class="pricing-footer">
-                            <a href="${registerPageUrl}" class="btn register green"
-				                data-container="body" data-toggle="popover" data-placement="top"
-				                data-content="Registrati e parti con un piano 'Standard', puoi aggiornare a 'Premium' quando vuoi" data-trigger="hover">Registrati</a>
+                            <sec:authorize access="isAnonymous()">
+                                <a href="${registerPageUrl}" class="btn register green"
+                                data-container="body" data-toggle="popover" data-placement="top"
+                                data-content="Registrati e parti con un piano 'Standard', puoi aggiornare a 'Premium' quando vuoi" data-trigger="hover">Registrati</a>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('ROLE_BUSINESS_FREE')">
+                                <a href="${premiumUrl}" class="btn register green">Diventa Premium</a>
+                            </sec:authorize>
+                            <sec:authorize access="hasRole('ROLE_BUSINESS_PREMIUM')">
+                                <a href="${profileUrl}" class="btn register green"><i class="fa fa-check"></i> Piano Attivo</a>
+                            </sec:authorize>
                         </div>
                     </div>
                 </div>
             </div>
             <!-- END PRICING OPTION1 -->
-            
+
     		<script type="text/javascript">
     		$(function(){
     			$('a.register').popover();

@@ -13,6 +13,7 @@ public interface Urls {
 	public static final String PUBLIC_FORGOT_PASSWORD = "/forgot-password";
 	public static final String PUBLIC_FORGOT_PASSWORD_OK = "/forgot-password-ok";
 	public static final String PUBLIC_PASSWORD_RECOVERY = "/password-recovery";
+	public static final String PUBLIC_PASSWORD_RECOVERY_OK = "/password-recovery-ok";
 	public static final String PUBLIC_REGISTER = "/register";
 	public static final String PUBLIC_REGISTRATION_COMPLETE = "/registration-complete";
 	public static final String PUBLIC_TOS = "/tos";

@@ -36,9 +36,7 @@
                         <label class="control-label visible-ie8 visible-ie9">E-mail</label>
                         <div class="input-icon">
                             <i class="fa fa-envelope"></i> 
-                            <form:input path="email" cssClass="form-control placeholder-no-fix" type="text"
-                                placeholder="E-mail" />
-                            <span class="text-danger"><form:errors path="email" /></span>
+                            <input class="form-control placeholder-no-fix" readonly="readonly" type="text" value="${forgotPassword.email}" />
                         </div>
                     </div>
                     <div class="form-group">

@@ -162,7 +162,7 @@ angular.module('novabill.directives.dialogs',
 							to : invoice.client.email,
 							replyTo : invoice.business.email,
 							message : $filter('nEmailKeywords')(invoice.business.settings.emailText, invoice),
-							subject : $filter('nEmailKeywords')(invoice.business.settings.emailSubject, invoice),
+							subject : $filter('nEmailKeywords')(invoice.business.settings.emailSubject, invoice)
 					};
 					
 					$scope.save = function(){
@@ -779,8 +779,8 @@ angular.module('novabill.directives.dialogs',
 /*
  * Exposing few dialogs used by GWT
  */
-.run(['nAlertDialog', 'nConfirmDialog', 'nSelectCommodityDialog', '$window', 
-      function(nAlertDialog, nConfirmDialog, nSelectCommodityDialog, $window){
+.run(['nAlertDialog', 'nConfirmDialog', 'nSelectCommodityDialog', '$window', '$rootScope', '$compile',
+      function(nAlertDialog, nConfirmDialog, nSelectCommodityDialog, $window, $rootScope, $compile){
 	$window.Angular_Dialogs = {
 			
 			confirm : function(message, callback){
@@ -806,4 +806,12 @@ angular.module('novabill.directives.dialogs',
 			}
 			
 	};
+	
+	
+	$window.Angular_ItemFormInit = function(){
+		var elm = angular.element('n-item-form');
+		var html = $compile( elm )($rootScope);
+		angular.element('.angularJSItemForm').html(html);
+	};
+	
 }]);

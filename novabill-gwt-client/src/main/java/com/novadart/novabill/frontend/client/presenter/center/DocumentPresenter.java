@@ -71,12 +71,7 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 			getView().getToAddrCity().setText(getClient().getCity());
 			getView().getToAddrCompanyName().setText(getClient().getName());
 			getView().getToAddrPostCode().setText(getClient().getPostcode());
-			if(getClient().getCountry().equalsIgnoreCase("IT")){
-				getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
-			} else {
-				getView().getToAddrProvince().setEnabled(false);
-				getView().getToAddrProvince().setSelectedIndex(0);
-			}
+			getView().getToAddrProvince().setText(getClient().getProvince());
 			getView().getToAddrStreetName().setText(getClient().getAddress());
 			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
 			break;
@@ -89,13 +84,7 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 					getView().getToAddrCity().setText(c.getCity());
 					getView().getToAddrCompanyName().setText(c.getCompanyName());
 					getView().getToAddrPostCode().setText(c.getPostcode());
-					if(c.getCountry().equalsIgnoreCase("IT")){
-						getView().getToAddrProvince().setSelectedItem(c.getProvince());
-						getView().getToAddrProvince().setValidationOkStyle();
-					} else {
-						getView().getToAddrProvince().reset();
-						getView().getToAddrProvince().setEnabled(false);
-					}
+					getView().getToAddrProvince().setText(c.getProvince());
 					getView().getToAddrStreetName().setText(c.getAddress());
 					getView().getToAddrCountry().setSelectedItemByValue(c.getCountry());
 					break;
@@ -105,13 +94,6 @@ public abstract class DocumentPresenter<V extends DocumentView<?>> extends Abstr
 		}
 	}
 
-	@Override
-	public void onToCountryChange() {
-		getView().getToAddrProvince().setEnabled(getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT"));
-		getView().getToAddrProvince().reset();
-	}
-	
-	
 	protected String getHumanReadable(Field field){
 		switch (field) {
 		case accountingDocumentDate: return I18N.INSTANCE.date();

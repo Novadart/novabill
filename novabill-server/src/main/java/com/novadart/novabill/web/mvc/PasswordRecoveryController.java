@@ -20,14 +20,13 @@ import com.novadart.novabill.service.validator.ForgotPasswordValidator;
 import com.novadart.novabill.service.validator.ForgotPasswordValidator.ValidationType;
 
 @Controller
-@RequestMapping(Urls.PUBLIC_PASSWORD_RECOVERY)
 @SessionAttributes("forgotPassword")
 public class PasswordRecoveryController {
 	
 	@Autowired
 	private ForgotPasswordValidator validator;
 
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = Urls.PUBLIC_PASSWORD_RECOVERY, method = RequestMethod.GET)
 	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model) throws CloneNotSupportedException{
 		model.addAttribute("pageName", "Creazione Nuova Password");
 		List<ForgotPassword> r = ForgotPassword.findForgotPasswords(email, token);
@@ -42,7 +41,7 @@ public class PasswordRecoveryController {
 		return "frontend.passwordRecovery";
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
+	@RequestMapping(value = Urls.PUBLIC_PASSWORD_RECOVERY, method = RequestMethod.POST)
 	@Transactional(readOnly = false)
 	public String processSubmit(@ModelAttribute("forgotPassword") ForgotPassword forgotPassword, BindingResult result, SessionStatus status, Model model){
 		validator.validate(forgotPassword, result, ValidationType.FULL_VALIDATION);
@@ -51,12 +50,21 @@ public class PasswordRecoveryController {
 			return "frontend.passwordRecovery";
 		}
 		else{
+			if(ForgotPassword.findForgotPasswords(forgotPassword.getEmail(), forgotPassword.getActivationToken()).size() != 1)
+				return "frontend.passwordRecoveryFailure";
 			Principal principal = Principal.findByUsername(forgotPassword.getEmail());
 			principal.setPassword(forgotPassword.getPassword());
 			forgotPassword.remove();
 			status.setComplete();
-			return "frontend.passwordRecoverySuccess";
+			return "redirect:" + Urls.PUBLIC_PASSWORD_RECOVERY_OK;
 		}
+	}
+	
+	@RequestMapping(value = Urls.PUBLIC_PASSWORD_RECOVERY_OK, method = RequestMethod.GET)
+	public String passwordRecoveryComplete(Model model){
+		model.addAttribute("pageName", "Creazione Nuova Password Completata");
+		return "frontend.passwordRecoverySuccess";
+		
 	}
 
 }

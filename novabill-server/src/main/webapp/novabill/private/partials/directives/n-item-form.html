@@ -1,0 +1,78 @@
+<div>
+<form class="form-inline" name="form" role="form" novalidate>
+    <script type="text/ng-template" id="itemTemplate.html">
+        <a>[<span bind-html-unsafe="match.label  | typeaheadHighlight:query"></span>] <span bind-html-unsafe="match.model.description | typeaheadHighlight:query"></span></a>
+	</script>
+	
+	<label>
+        <input type="checkbox" ng-model="textOnly" ng-click="item=null;selectedCommodity=null;"> Riga di solo testo
+    </label>
+    
+    <br>
+	
+	<div class="form-group">
+		<label for="sku">{{textOnly ? 'Testo' : 'Descrizione'}}</label>
+		<textarea
+		  style="display: block;"
+		  maxlength="500"
+		  ng-show="selectedCommodity === null && !textOnly"
+		  ng-model="item.description" 
+		  typeahead="comm as comm.sku for comm in commodities | filter:$viewValue | limitTo:10"
+		  typeahead-template-url="itemTemplate.html"
+		  typeahead-on-select="onCommoditySelected($item, $model, $label)"
+		  class="form-control" 
+		  id="sku" 
+		  placeholder="Descrizione"></textarea>
+	  <textarea
+          maxlength="500"
+          ng-show="textOnly"
+          ng-model="item.description" 
+          class="form-control" 
+          id="sku" ></textarea>
+	   <button
+	       style="display: block;" 
+	       class="btn btn-xs btn-primary" 
+	       ng-click="openSelectCommodityDialog()"
+	       ng-show="selectedCommodity === null && !textOnly">Selezione avanzata...</button>
+	   <div
+	       class="autocompletion-selected-commodity"
+	       ng-show="selectedCommodity !== null && !textOnly" 
+	       type="primary" >
+	       <span class="close" ng-click="item=null;selectedCommodity=null;">X</span>
+	       <span class="label label-default label-sm" ng-show="selectedCommodity.sku">{{selectedCommodity.sku}}</span> {{selectedCommodity.description}}
+       </div>
+	</div>
+	<div class="form-group" ng-show="!textOnly">
+        <label for="unitOfMeasure">U.M.</label><br>
+        <input ng-model="item.unitOfMeasure" type="text" class="form-control input-small" id="unitOfMeasure" placeholder="U.M.">
+    </div>
+    <div class="form-group" ng-show="!textOnly">
+        <label for="quantity">Quantità</label><br>
+        <input ng-model="item.quantity" type="text" class="form-control input-small" id="quantity" placeholder="Quantità">
+    </div>
+    <div class="form-group" ng-show="!textOnly && weight !== false">
+        <label for="weight">Peso</label> <br>
+        <input ng-model="item.weight" type="text" class="form-control input-small" id="weight" placeholder="Peso (kg)">
+    </div>
+    <div class="form-group" ng-show="!textOnly">
+        <label for="price">Prezzo</label><br> 
+        <input ng-model="item.price" type="text" class="form-control input-small" id="price" placeholder="Prezzo">
+    </div>
+    <div class="form-group" ng-show="!textOnly">
+        <label for="discount">%Sco/Ric</label><br> 
+        <input ng-model="item.discount" type="text" class="form-control input-small" id="discount" placeholder="%Sco/Ric">
+    </div>
+    <div class="form-group" ng-show="!textOnly">
+        <label for="tax">IVA</label><br> 
+        <input ng-model="item.tax" type="text" class="form-control input-small" id="tax" placeholder="IVA">
+    </div>
+	<button type="button" class="btn btn-success" ng-click="addItem()">Aggiungi</button>
+</form>
+
+<br>
+<span>* Utilizza , (virgola) come separatore decimale</span>
+
+<label class="pull-right">
+    <input type="checkbox" ng-model="explicitDiscountCheck"> Esplicitare lo sconto percentuale quando si aggiunge un articolo da listino
+</label>
+</div>

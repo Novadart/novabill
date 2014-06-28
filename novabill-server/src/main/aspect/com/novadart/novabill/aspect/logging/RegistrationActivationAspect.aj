@@ -4,25 +4,29 @@ import java.util.Date;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.validation.BindingResult;
 
 import com.novadart.novabill.domain.Registration;
+import com.novadart.novabill.web.mvc.ActivateAccountController;
 
 public aspect RegistrationActivationAspect extends AbstractLogEventEmailSenderAspect {
 	
 	private static final Logger LOGGER = LoggerFactory.getLogger(RegistrationActivationAspect.class);
 	
-	pointcut registration(Registration registration) :
-		execution(public String com.novadart.novabill.web.mvc.RegistrationController.processSubmit(..)) && args(registration, ..);
+	pointcut registration(Registration registration, BindingResult result) :
+		execution(public String com.novadart.novabill.web.mvc.RegistrationController.processSubmit(..)) && args(registration, result, ..);
 	
 	pointcut activation(Registration registration) :
 		execution(public String com.novadart.novabill.web.mvc.ActivateAccountController.processSubmit(..)) && args(*, *, registration, ..);
 	
-	after(Registration registration) returning: registration(registration){
-		handleEvent(LOGGER, "Registration", registration.getEmail(), new Date(System.currentTimeMillis()), null);
+	after(Registration registration, BindingResult result) returning: registration(registration, result){
+		if(!result.hasErrors())
+			handleEvent(LOGGER, "Registration", registration.getEmail(), new Date(System.currentTimeMillis()), null);
 	}
 	
-	after(Registration registration) returning: activation(registration){
-		handleEvent(LOGGER, "Activation", registration.getEmail(), new Date(System.currentTimeMillis()), null);
+	after(Registration registration) returning (String viewOrUrl): activation(registration){
+		if(ActivateAccountController.ACTIVATION_SUCCESS_URL.equals(viewOrUrl))
+			handleEvent(LOGGER, "Activation", registration.getEmail(), new Date(System.currentTimeMillis()), null);
 	}
 
 }

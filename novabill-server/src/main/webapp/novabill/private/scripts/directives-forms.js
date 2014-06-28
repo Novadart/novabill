@@ -1,8 +1,89 @@
 'use strict';
 
 angular.module('novabill.directives.forms', 
-		['novabill.constants', 'novabill.utils', 'novabill.ajax', 'novabill.translations', 'angularFileUpload'])
+		['novabill.directives.dialogs', 'novabill.constants', 'novabill.calc', 'novabill.utils', 'novabill.ajax', 
+		 'novabill.translations', 'angularFileUpload', 'ui.bootstrap'])
 
+		
+		
+/*
+ * Item Form
+ */
+.directive('nItemForm', ['nConstants', function factory(nConstants){
+
+	return {
+		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-item-form.html'),
+		scope: {
+			clientId : '@',
+			explicitDiscount : '@'
+		},
+		controller : ['$scope', 'nAjax', '$element', 'nSelectCommodityDialog', '$window', 
+		              'nSorting', 'nRegExp', 'nCalc', '$filter', 'nConstants',
+		              function($scope, nAjax, $element, nSelectCommodityDialog, $window, 
+		            		  nSorting, nRegExp, nCalc, $filter, nConstants){
+			var BatchDataFetcherUtils = nAjax.BatchDataFetcherUtils();
+			$scope.pricelist = null;
+			$scope.commodities = null;
+			$scope.selectedCommodity = null;
+			$scope.item = null;
+			$scope.explicitDiscountCheck = $scope.explicitDiscount !== 'false';
+			
+			
+			BatchDataFetcherUtils.fetchSelectCommodityForDocItemOpData({clientID : $scope.clientId}, function(result){
+				$scope.pricelist = result.first;
+				$scope.commodities = $scope.pricelist.commodities.sort( nSorting.descriptionComparator );
+			});
+			
+			
+			$scope.applyCommodity = function(comm){
+				$scope.selectedCommodity = comm;
+				
+				$scope.item = {
+						sku : nRegExp.reserved_word.test(comm.sku) ? null : comm.sku,
+						description : comm.description,
+						unitOfMeasure : comm.unitOfMeasure,
+						tax : $filter('number')(comm.tax),
+						weight : $filter('number')(comm.weight)
+				};
+				
+				var priceType = comm.prices[ $scope.pricelist.name ].priceType;
+				
+				if(priceType == 'DISCOUNT_PERCENT' && $scope.explicitDiscount !== 'false' && $scope.explicitDiscountCheck){
+					
+					$scope.item.price = $filter('number')( comm.prices[ nConstants.conf.defaultPriceListName ].priceValue );
+					$scope.item.discount = $filter('number')( comm.prices[ $scope.pricelist.name ].priceValue );
+					
+				} else {
+					
+					$scope.item.price = $filter('number')( nCalc.calculatePriceForCommodity(comm, $scope.pricelist.name).toString() );
+					
+				}
+				
+				
+				$element.find('#unitOfMeasure').focus();
+			};
+			
+			$scope.onCommoditySelected = function($item, $model, $label){
+				$scope.applyCommodity($item);
+			};
+			
+			$scope.openSelectCommodityDialog = function(){
+				var instance = nSelectCommodityDialog.open( $scope.clientId );
+				instance.result.then(
+					function(result){
+							
+					});
+			};
+			
+			$scope.addItem = function(){
+				$window.Angular_ItemFormInit_callback($scope.textOnly, $scope.item);
+			};
+		}],
+		restrict: 'E',
+		replace: true
+	};
+
+}])
 
 /*
  * Business Form

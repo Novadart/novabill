@@ -117,7 +117,7 @@
                                     <textbox:RichTextBox ui:field="toAddrCity" maxLength="60" />
                                 </g:customCell>
                                 <g:customCell>
-                                    <v:ValidatedListBox styleName="{s.box}" ui:field="toAddrProvince" />
+                                    <textbox:RichTextBox ui:field="toAddrProvince" maxLength="100" />
                                 </g:customCell>
                             </g:row>
                             <g:row>

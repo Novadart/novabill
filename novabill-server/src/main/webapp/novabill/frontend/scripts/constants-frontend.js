@@ -21,7 +21,7 @@ angular.module('novabill-frontend.constants', [])
 			baseUrl : basePath,
 			version : version,
 			
-			partialsBaseUrl : basePath + 'novabill/frontend/partials/',
+			partialsBaseUrl : basePath + 'novabill/frontend/partials/'
 	};
 	
 	var baseConf = this.conf;

@@ -43,11 +43,8 @@
             </div>
             
             <div class="form-group" ng-class="{'has-error': form.province.$dirty && form.province.$invalid, 'has-success': form.province.$dirty && form.province.$valid}">
-                <label class="control-label" for="province">{{'PROVINCE' | translate}} *</label>
-                <input  type="text" name="province" maxlength="100" ng-model="$parent.address.province" class="form-control" placeholder="{{'PROVINCE_PLACEHOLDER' | translate}}" required>
-				<div ng-show="form.province.$dirty && form.province.$invalid">
-                    <span class="text-danger" ng-show="form.province.$error.required">{{'VALIDATION_REQUIRED' | translate}}</span> 
-                </div>
+                <label class="control-label" for="province">{{'PROVINCE' | translate}}</label>
+                <input  type="text" name="province" maxlength="100" ng-model="$parent.address.province" class="form-control" placeholder="{{'PROVINCE_PLACEHOLDER' | translate}}">
             </div>
             
             <div class="form-group" ng-class="{'has-error': form.country.$dirty && form.country.$invalid, 'has-success': form.country.$dirty && form.country.$valid}">
@@ -317,6 +314,8 @@
             </div>
             
         </form>
+        <br>
+        <span>* Obbligatorio</span>
     </div>
 
     <div class="modal-footer">

@@ -65,6 +65,24 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 	var baseUrl = nConstants.conf.ajaxBaseUrl;
 
 	return {
+		
+		
+		/*
+		 * BatchDataFetcher
+		 */
+		BatchDataFetcherUtils : function() {
+			return {
+				
+				fetchSelectCommodityForDocItemOpData: function(params, successFn, failureFn){
+					$http({
+						method : 'GET',
+						url : baseUrl + 'businesses/'+ businessId +'/commodityselectdata/'+ params.clientID,
+						data : params
+					}).success( successFn );
+				}
+				
+			};
+		},
 
 		/*
 		 * Business resource
@@ -77,18 +95,18 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 						'getClients': { 
 							isArray: true,
 							method:'GET',
-							url : baseUrl + 'businesses/:id/clients',
+							url : baseUrl + 'businesses/:id/clients'
 						},
 
 						'getStats' : {
 							method:'GET',
-							url : baseUrl + 'businesses/:id/stats',
+							url : baseUrl + 'businesses/:id/stats'
 						},
 						
 						'getNotifications': { 
 							isArray: true,
 							method:'GET',
-							url : baseUrl + 'businesses/:id/notifications',
+							url : baseUrl + 'businesses/:id/notifications'
 						},
 						
 						'markNotificationAsSeen' : {
@@ -124,7 +142,7 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 				upload : function(file, successFn, failureFn){
 					$upload.upload({
 						url: nConstants.conf.logoUrl,
-						file: file,
+						file: file
 					}).success( successFn );
 				},
 
@@ -201,7 +219,7 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 						url : baseUrl + 'businesses/'+ businessId +'/invoices/'+ params.invoiceID +'/email',
 						data : params.payload
 					}).success( successFn );
-				},
+				}
 				
 				
 			};

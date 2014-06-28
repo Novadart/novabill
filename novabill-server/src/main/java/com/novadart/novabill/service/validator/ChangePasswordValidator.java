@@ -21,6 +21,8 @@ public class ChangePasswordValidator {
 	
 	public void validate(ChangePassword changePassword, Errors errors){
 		validator.validate(changePassword, errors);
+		if(changePassword.getPassword().equals(changePassword.getNewPassword()))
+			errors.rejectValue("newPassword", "changePassword.same.password");
 		Principal principal = Principal.findByUsername(changePassword.getEmail());
 		if(!utilsService.isPasswordValid(principal.getPassword(), changePassword.getPassword()))
 			errors.rejectValue("password", "changePassword.wrong.password");

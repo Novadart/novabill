@@ -33,6 +33,8 @@ import com.novadart.novabill.service.UtilsService;
 @SessionAttributes({"registration"})
 public class ActivateAccountController {
 	
+	public static final String ACTIVATION_SUCCESS_URL = "forward:/resources/login_check";
+	
 	@Autowired
 	private UtilsService utilsService;
 
@@ -68,7 +70,7 @@ public class ActivateAccountController {
 		principal.persist();
 		registration.remove();
 		status.setComplete();
-		return "forward:/resources/login_check";
+		return ACTIVATION_SUCCESS_URL;
 	}
 	
 }

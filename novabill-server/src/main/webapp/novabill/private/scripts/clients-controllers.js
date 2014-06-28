@@ -18,7 +18,7 @@ angular.module('novabill.clients.controllers',
 			
 			var Business = nAjax.Business();
 
-			function partitionClients(clients){
+			$scope.partitionClients = function(clients){
 				//split it alphabetically
 				var partitions = [];
 				var pt = null;
@@ -47,29 +47,29 @@ angular.module('novabill.clients.controllers',
 				displayedClientsCount = clients.length;
 
 				return partitions;
-			}
+			};
 
-			function containsQuery(query, client) {
+			$scope.containsQuery = function(query, client) {
 				var normalizedQuery = query.toLowerCase();
 				return (client.name && client.name.toLowerCase().indexOf(normalizedQuery) > -1) ||
 				(client.address && client.address.toLowerCase().indexOf(normalizedQuery) > -1) ||
 				(client.city && client.city.toLowerCase().indexOf(normalizedQuery) > -1);
-			}
+			};
 
-			function filterClients(query, clients){
+			$scope.filterClients = function(query, clients){
 				if(!query){
 					return clients;
 				}
 				var result = [];
 				angular.forEach(clients, function(client, index){
-					if(containsQuery(query, client)){
+					if($scope.containsQuery(query, client)){
 						result.push(client);
 					}
 				});
 				return result;
-			}
+			};
 
-			function updateLettersIndex(clients){
+			$scope.updateLettersIndex = function(clients){
 				var letters = {};
 				var l = '', lo ='';
 				angular.forEach(clients, function(client, index){
@@ -79,36 +79,36 @@ angular.module('novabill.clients.controllers',
 					}
 				});
 				$scope.letters = letters;
-			}
+			};
 
-			function updateFilteredClients(generateTillIndex){
-				filteredClients = filterClients($scope.query, loadedClients);
-				updateLettersIndex(filteredClients);
+			$scope.updateFilteredClients = function(generateTillIndex){
+				filteredClients = $scope.filterClients($scope.query, loadedClients);
+				$scope.updateLettersIndex(filteredClients);
 				if(generateTillIndex){
-					$scope.partitions = partitionClients( filteredClients.slice(0, generateTillIndex+1) );
+					$scope.partitions = $scope.partitionClients( filteredClients.slice(0, generateTillIndex+1) );
 				} else {
-					$scope.partitions = partitionClients( filteredClients.slice(0, 20) );
+					$scope.partitions = $scope.partitionClients( filteredClients.slice(0, 20) );
 				}
-			}
+			};
 
 			$scope.$watch('query', function(newValue, oldValue){
-				updateFilteredClients();
+				$scope.updateFilteredClients();
 			});
 
 			$scope.loadMoreClients = function(){
 				if($scope.partitions){
 					var currentIndex = displayedClientsCount;
-					$scope.partitions = partitionClients( 
+					$scope.partitions = $scope.partitionClients( 
 							filteredClients.slice(0, currentIndex+PARTITION) 
 					);
 				}
 			};
 
-			function loadClients() {
+			$scope.loadClients = function() {
 				Business.getClients(function(clients){
 					//sort the data
 					loadedClients = clients.sort( nSorting.clientsComparator );
-					updateFilteredClients();
+					$scope.updateFilteredClients();
 				});
 			};
 
@@ -129,7 +129,7 @@ angular.module('novabill.clients.controllers',
 				GWT_UI.clientDialog(nConstants.conf.businessId, {
 
 					onSuccess : function(){
-						loadClients();
+						$scope.loadClients();
 					},
 
 					onFailure : function() {}
@@ -138,7 +138,7 @@ angular.module('novabill.clients.controllers',
 
 			$scope.scrollTo = function(letter, index){
 				if(displayedClientsCount < index){
-					updateFilteredClients(index);
+					$scope.updateFilteredClients(index);
 				}
 				//needed to let the browser draw the UI before moving to the letter
 				setTimeout(function(){
@@ -148,7 +148,7 @@ angular.module('novabill.clients.controllers',
 				}, 1);
 			};
 
-			loadClients();
+			$scope.loadClients();
 		}])
 
 
@@ -160,7 +160,23 @@ angular.module('novabill.clients.controllers',
 		.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'nConstants', '$filter', 'nAlertDialog', 'nConfirmDialog', 'nEditAddressDialog', 'nSorting',
 		                                  function($scope, $route, $routeParams, $location, $rootScope, nConstants, $filter, nAlertDialog, nConfirmDialog, nEditAddressDialog, nSorting) {
 
+			$scope.onTabChange = function(token){
+				$location.search('tab',token);
+				
+				if(token === 'addresses'){
+					$scope.loadClientAddresses();
+				}
+			};
+			
+			$scope.activeTab = {
+					documents : false,
+					addresses : false
+			};
+			$scope.activeTab[$location.search().tab] = true;
 
+			$scope.docsView = 'invoices';
+			
+			
 			$scope.editClient = function() {
 				GWT_UI.modifyClientDialog(nConstants.conf.businessId, $scope.client.id, {
 
@@ -182,14 +198,16 @@ angular.module('novabill.clients.controllers',
 					if(value){
 						GWT_Server.client.remove(nConstants.conf.businessId, $scope.client.id, {
 							onSuccess : function(data){
-								$scope.$apply(function(){
-									$location.path('/');
-								});
+								if(data === 'true') {
+									$scope.$apply(function(){
+										$location.path('/');
+									});
+								} else {
+									nAlertDialog.open($filter('translate')('CLIENT_DELETION_ALERT'));
+								}
 							},
 	
-							onFailure : function(error){
-								nAlertDialog.open($filter('translate')('CLIENT_DELETION_ALERT'));
-							}
+							onFailure : function(error){}
 						});
 					}
 				});
@@ -331,7 +349,7 @@ angular.module('novabill.clients.controllers',
 			};
 
 
-			function updateClientDetails(){
+			$scope.updateClientDetails = function(){
 				if(!$scope.client){
 					return;
 				}
@@ -369,7 +387,7 @@ angular.module('novabill.clients.controllers',
 
 				$scope.website = $scope.client.web;
 				$scope.websiteUrl =  $scope.client.web ? ($scope.client.web.indexOf('http') == 0 ? $scope.client.web : 'http://'+$scope.client.web) : null;
-			}
+			};
 
 			// load client data
 			GWT_Server.client.get($routeParams.clientId, {
@@ -377,7 +395,7 @@ angular.module('novabill.clients.controllers',
 				onSuccess : function(client){
 					$scope.$apply(function(){
 						$scope.client = client;
-						updateClientDetails();
+						$scope.updateClientDetails();
 					});
 				},
 
@@ -398,7 +416,7 @@ angular.module('novabill.clients.controllers',
 					'transportDocument' : true
 			};
 
-			var loadDocs = function(year, type){
+			$scope.loadDocs = function(year, type){
 				selectedYear[type] = year;
 
 				if(loading[type]){
@@ -423,7 +441,7 @@ angular.module('novabill.clients.controllers',
 
 
 			$scope.loadInvoices = function(year){ 
-				loadDocs(year === undefined ? selectedYear['invoice'] : year, 'invoice'); 
+				$scope.loadDocs(year === undefined ? selectedYear['invoice'] : year, 'invoice'); 
 			};
 
 			$scope.loadEstimations = function(year){ 
@@ -432,7 +450,7 @@ angular.module('novabill.clients.controllers',
 					selectedYear['estimation'] = year;
 					return;
 				}
-				loadDocs(year === undefined ? selectedYear['estimation'] : year, 'estimation'); 
+				$scope.loadDocs(year === undefined ? selectedYear['estimation'] : year, 'estimation'); 
 			};
 
 			$scope.loadCreditNotes = function(year){ 
@@ -441,7 +459,7 @@ angular.module('novabill.clients.controllers',
 					selectedYear['creditNote'] = year;
 					return;
 				}
-				loadDocs(year === undefined ? selectedYear['creditNote'] : year, 'creditNote'); 
+				$scope.loadDocs(year === undefined ? selectedYear['creditNote'] : year, 'creditNote'); 
 			};
 
 			$scope.loadTransportDocuments = function(year){ 
@@ -450,7 +468,7 @@ angular.module('novabill.clients.controllers',
 					selectedYear['transportDocument'] = year;
 					return;
 				}
-				loadDocs(year === undefined ? selectedYear['transportDocument'] : year, 'transportDocument'); 
+				$scope.loadDocs(year === undefined ? selectedYear['transportDocument'] : year, 'transportDocument'); 
 			};
 
 			$scope.$on(nConstants.events.INVOICE_REMOVED, function(event){
@@ -477,7 +495,7 @@ angular.module('novabill.clients.controllers',
 				$scope.loadTransportDocuments();
 			});
 
-			$scope.$watchCollection('client', updateClientDetails);
+			$scope.$watchCollection('client', function(){ $scope.updateClientDetails(); });
 
 		}]);
 

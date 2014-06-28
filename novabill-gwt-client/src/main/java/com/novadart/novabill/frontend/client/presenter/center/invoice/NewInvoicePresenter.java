@@ -97,11 +97,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		getView().getToAddrCity().setText(loc.getCity());
 		getView().getToAddrCompanyName().setText(loc.getCompanyName());
 		getView().getToAddrPostCode().setText(loc.getPostcode());
-		if("IT".equalsIgnoreCase(loc.getCountry())){
-			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
-		} else {
-			getView().getToAddrProvince().setEnabled(false);
-		} 
+		getView().getToAddrProvince().setText(loc.getProvince());
 		getView().getToAddrStreetName().setText(loc.getStreet());
 		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
 		getView().getSetToAddress().setValue(true);

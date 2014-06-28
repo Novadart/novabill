@@ -8,8 +8,6 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 
-import javax.transaction.Transactional;
-
 import net.sf.jasperreports.engine.JRException;
 
 import org.apache.commons.io.IOUtils;
@@ -22,6 +20,7 @@ import org.springframework.security.core.session.SessionInformation;
 import org.springframework.security.core.session.SessionRegistry;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.domain.AccountingDocumentItem;
