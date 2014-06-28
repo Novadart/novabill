@@ -67,7 +67,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
                                       function($scope, $routeParams, $location, $translate) {
 	$scope.pageTitle = $translate('MODIFY_ESTIMATION');
 	
-    GWT_UI.showModifyEstimationPage('estimation-details', $routeParams.estimationId, {
+	GWT_UI.showModifyEstimationPage('estimation-details', $routeParams.estimationId, {
     	onSuccess : function(bool){
 	    	$location.path('/');
     	},
@@ -75,7 +75,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 			$location.path('/');
 		}
     });
-    
+	
 }])
 
 
@@ -95,7 +95,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 			$location.path('/');
 		}
     });
-
+	
 }])
 
 
