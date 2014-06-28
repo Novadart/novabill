@@ -21,7 +21,7 @@ angular.module('novabill.transportDocuments.controllers',
 	
 	$scope.activeTab = {
 			transportdocuments : false,
-			transporters : false,
+			transporters : false
 	};
 	$scope.activeTab[$location.search().tab] = true;
 	

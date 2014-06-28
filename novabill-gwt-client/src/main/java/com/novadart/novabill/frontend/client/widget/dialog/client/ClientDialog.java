@@ -174,7 +174,7 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		email = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_EMAIL);
 		contactEmail = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.OPTIONAL_EMAIL);
 
-		province = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.NOT_EMPTY);
+		province = new ValidatedTextBox(GlobalBundle.INSTANCE.validatedWidget(), ValidationKit.DEFAULT);
 
 
 		ok = new LoaderButton(ImageResources.INSTANCE.loader(), GlobalBundle.INSTANCE.loaderButton());
@@ -436,14 +436,9 @@ public class ClientDialog extends Dialog implements HasUILocking {
 		switchValidationByCountry(country.getSelectedItemValue());
 	}
 
-	private boolean switchValidationByCountry(String country){
+	private void switchValidationByCountry(String country){
 		boolean isIT = "IT".equalsIgnoreCase(country);
-		province.reset();
 		setVatIdSsnValidation(isIT);
-		vatID.reset();
-		ssn.reset();
-		postcode.reset();
-		return isIT;
 	}
 
 	private void setVatIdSsnValidation(boolean activate){

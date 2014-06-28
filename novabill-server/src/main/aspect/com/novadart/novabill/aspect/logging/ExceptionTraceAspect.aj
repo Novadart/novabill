@@ -26,12 +26,20 @@ public aspect ExceptionTraceAspect extends AbstractLogEventEmailSenderAspect {
 	
 	private boolean loggingOn;
 	
+	private Class<?>[] ignoreExceptions;
+	
 	public boolean isLoggingOn() {
 		return loggingOn;
 	}
 
 	public void setLoggingOn(boolean turnOnLogging) {
 		this.loggingOn = turnOnLogging;
+	}
+	
+	public void setIgnoreExceptions(String[] ignoreExceptions) throws ClassNotFoundException {
+		this.ignoreExceptions = new Class<?>[ignoreExceptions.length];
+		for(int i = 0; i < ignoreExceptions.length; ++i)
+			this.ignoreExceptions[i] = Class.forName(ignoreExceptions[i]);
 	}
 
 	pointcut exceptionTraced(): execution(* *.*(..)) && within(com.novadart.novabill..*) && !within(ExceptionTraceAspect) && !within(com.novadart.novabill.test..*);
@@ -51,8 +59,15 @@ public aspect ExceptionTraceAspect extends AbstractLogEventEmailSenderAspect {
 		return sw.toString().replace(System.getProperty("line.separator"), "<br/>\n");
 	}
 	
+	private boolean ignore(Throwable ex){
+		for(Class<?> iex: this.ignoreExceptions)
+			if(iex.isAssignableFrom(ex.getClass()))
+				return true;
+		return false;
+	}
+	
 	after() throwing(Throwable ex): exceptionTraced(){
-		if(loggingOn && lastLoggedException.get() != ex){
+		if(loggingOn && lastLoggedException.get() != ex && !ignore(ex)){
 			lastLoggedException.set(ex);
 			Signature signature = thisJoinPointStaticPart.getSignature();
 			String principal = utilsService.isAuthenticated()? utilsService.getAuthenticatedPrincipalDetails().getUsername(): "anonymous";

@@ -95,7 +95,7 @@ public class RegistrationActivationTest extends AuthenticatedTest{
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
 		String registerView = registerController.processSubmit(registration, new BeanPropertyBindingResult(registration, "registration"), mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
-		assertTrue(smtpServer.getReceivedEmailSize() == 2);//besides registration email, notification email is sent too
+		assertEquals(2, smtpServer.getReceivedEmailSize()); //besides registration email, notification email is sent too
 		
 		ActivateAccountController activationController = initActivateAccountController();
 		Model model = new ExtendedModelMap();

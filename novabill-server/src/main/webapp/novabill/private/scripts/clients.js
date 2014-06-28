@@ -18,7 +18,8 @@ angular.module("novabill.clients",
 
 	.when('/details/:clientId', {
 		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/clients-detail.html'),
-		controller: 'ClientDetailsCtrl'
+		controller: 'ClientDetailsCtrl',
+		reloadOnSearch : false
 	})
 
 	.otherwise ({

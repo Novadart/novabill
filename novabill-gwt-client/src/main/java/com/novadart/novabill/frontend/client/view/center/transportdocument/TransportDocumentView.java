@@ -17,8 +17,6 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 	
 	public static interface Presenter extends DocumentView.Presenter {
 		
-		void onFromCountryChange();
-		
 		void onFromAddressButtonDefaultCLicked();
 		
 		void onCountItemsCLicked();
@@ -37,7 +35,7 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 
 	RichTextBox getFromAddrCity();
 
-	ValidatedListBox getFromAddrProvince();
+	RichTextBox getFromAddrProvince();
 
 	ValidatedListBox getFromAddrCountry();
 

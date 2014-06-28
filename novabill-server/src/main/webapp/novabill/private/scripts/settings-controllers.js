@@ -28,7 +28,7 @@ angular.module('novabill.settings.controllers', ['novabill.directives', 'novabil
 	$scope.activeTab = {
 			business : false,
 			profile : false,
-			options : false,
+			options : false
 	};
 	$scope.activeTab[$location.search().tab] = true;
 	

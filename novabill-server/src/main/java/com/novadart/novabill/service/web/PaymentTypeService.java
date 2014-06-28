@@ -8,8 +8,6 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.annotation.Restrictions;
-import com.novadart.novabill.authorization.NumberOfPaymentTypesQuotaReachedChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.PaymentType;
@@ -17,8 +15,8 @@ import com.novadart.novabill.domain.dto.transformer.PaymentTypeDTOTransformer;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -51,7 +49,7 @@ public class PaymentTypeService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#paymentTypeDTO?.business?.id == principal.business.id and " +
 		  	  	  "#paymentTypeDTO != null and #paymentTypeDTO.id == null")
-	@Restrictions(checkers = {NumberOfPaymentTypesQuotaReachedChecker.class})
+	//@Restrictions(checkers = {NumberOfPaymentTypesQuotaReachedChecker.class})
 	public Long add(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException {
 		PaymentType paymentType = new PaymentType();
 		PaymentTypeDTOTransformer.copyFromDTO(paymentType, paymentTypeDTO);

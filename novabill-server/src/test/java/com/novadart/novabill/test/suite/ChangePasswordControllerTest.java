@@ -112,4 +112,20 @@ public class ChangePasswordControllerTest extends AuthenticatedTest{
 		assertEquals("private.changePassword", view);
 	}
 	
+	@Test
+	public void changePasswordNewPasswordSameAsOldTest() throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException{
+		String email = userPasswordMap.keySet().iterator().next(), password = "Novadart28&";
+		Principal principal = Principal.findByUsername(email);
+		principal.setPassword(password);
+		principal.flush();
+		String newPassword = password, confirmNewPassword = password;
+		ChangePassword changePassword = initChangePassword(email, password, newPassword, confirmNewPassword);
+		ChangePasswordController controller = initChangePasswordController(email);
+		BeanPropertyBindingResult result = new BeanPropertyBindingResult(changePassword, "changePassword");
+		String view = controller.processSubmit(changePassword, result, mock(SessionStatus.class));
+		assertTrue(result.hasErrors());
+		assertEquals("private.changePassword", view);
+		
+	}
+	
 }
