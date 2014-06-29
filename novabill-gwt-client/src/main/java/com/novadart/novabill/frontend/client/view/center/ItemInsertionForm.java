@@ -116,8 +116,8 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		elm.setAttribute("manage-weight", String.valueOf(this.manageWeight));
 		elm.setAttribute("explicit-discount", String.valueOf( !Configuration.getBusiness().getSettings().isPriceDisplayInDocsMonolithic() ));
 		
-		initAngularItemForm();
 		initAngularItemFormCallback(this);
+		initAngularItemForm();
 	}
 
 	private native void initAngularItemForm()/*-{
@@ -129,7 +129,14 @@ public class ItemInsertionForm extends Composite implements HasUILocking {
 		$wnd.Angular_ItemFormInit_callback = function(textOnly, item){
 			if(!textOnly){
 				insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::addItem(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)(
-			
+					item.sku,
+					item.description,
+					item.price,
+					item.quantity,
+					item.weight,
+					item.unitOfMeasure,
+					item.tax,
+					item.discount
 				);
 			} else {
 				insForm.@com.novadart.novabill.frontend.client.view.center.ItemInsertionForm::addItem(Ljava/lang/String;)(item.description);

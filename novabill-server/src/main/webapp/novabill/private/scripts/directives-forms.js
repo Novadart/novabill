@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('novabill.directives.forms', 
-		['novabill.directives.dialogs', 'novabill.constants', 'novabill.calc', 'novabill.utils', 'novabill.ajax', 
+		['novabill.directives.dialogs', 'novabill.directives.validation', 'novabill.constants', 'novabill.calc', 'novabill.utils', 'novabill.ajax', 
 		 'novabill.translations', 'angularFileUpload', 'ui.bootstrap'])
 
 		
@@ -15,7 +15,8 @@ angular.module('novabill.directives.forms',
 		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-item-form.html'),
 		scope: {
 			clientId : '@',
-			explicitDiscount : '@'
+			explicitDiscount : '@',
+			manageWeight : '@'
 		},
 		controller : ['$scope', 'nAjax', '$element', 'nSelectCommodityDialog', '$window', 
 		              'nSorting', 'nRegExp', 'nCalc', '$filter', 'nConstants',
@@ -25,7 +26,9 @@ angular.module('novabill.directives.forms',
 			$scope.pricelist = null;
 			$scope.commodities = null;
 			$scope.selectedCommodity = null;
-			$scope.item = null;
+			$scope.item = {
+					tax : '22'
+			};
 			$scope.explicitDiscountCheck = $scope.explicitDiscount !== 'false';
 			
 			
@@ -35,9 +38,10 @@ angular.module('novabill.directives.forms',
 			});
 			
 			
-			$scope.applyCommodity = function(comm){
+			$scope.applyCommodity = function(comm, pricelistName){
 				$scope.selectedCommodity = comm;
 				
+				// assemble the item
 				$scope.item = {
 						sku : nRegExp.reserved_word.test(comm.sku) ? null : comm.sku,
 						description : comm.description,
@@ -46,37 +50,50 @@ angular.module('novabill.directives.forms',
 						weight : $filter('number')(comm.weight)
 				};
 				
-				var priceType = comm.prices[ $scope.pricelist.name ].priceType;
-				
+				// depending on the price type calculate price and discount
+				var priceType = comm.prices[ pricelistName ].priceType;
 				if(priceType == 'DISCOUNT_PERCENT' && $scope.explicitDiscount !== 'false' && $scope.explicitDiscountCheck){
-					
 					$scope.item.price = $filter('number')( comm.prices[ nConstants.conf.defaultPriceListName ].priceValue );
-					$scope.item.discount = $filter('number')( comm.prices[ $scope.pricelist.name ].priceValue );
-					
+					$scope.item.discount = $filter('number')( comm.prices[ pricelistName ].priceValue );
 				} else {
-					
-					$scope.item.price = $filter('number')( nCalc.calculatePriceForCommodity(comm, $scope.pricelist.name).toString() );
-					
+					$scope.item.price = $filter('number')( nCalc.calculatePriceForCommodity(comm, pricelistName).toString() );
+					$scope.item.discount = '0';
 				}
 				
 				
-				$element.find('#unitOfMeasure').focus();
+				$element.find('#quantity').focus();
 			};
 			
 			$scope.onCommoditySelected = function($item, $model, $label){
-				$scope.applyCommodity($item);
+				$scope.applyCommodity($item, $scope.pricelist.name);
 			};
 			
 			$scope.openSelectCommodityDialog = function(){
 				var instance = nSelectCommodityDialog.open( $scope.clientId );
 				instance.result.then(
 					function(result){
-							
+						$scope.applyCommodity(result.commodity, result.priceListName);
 					});
 			};
 			
+			$scope.reset = function(){
+				$scope.form.$setPristine();
+				$scope.textOnlyForm.$setPristine();
+				$scope.textOnly = false;
+				$scope.selectedCommodity = null;
+				$scope.item = {
+						tax : '22'
+				};
+			};
+			
+			$scope.addTextOnlyItem = function(){
+				$window.Angular_ItemFormInit_callback(true, $scope.item);
+				$scope.reset();
+			};
+			
 			$scope.addItem = function(){
-				$window.Angular_ItemFormInit_callback($scope.textOnly, $scope.item);
+				$window.Angular_ItemFormInit_callback(false, $scope.item);
+				$scope.reset();
 			};
 		}],
 		restrict: 'E',

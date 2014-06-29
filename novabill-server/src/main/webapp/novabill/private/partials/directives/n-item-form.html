@@ -1,78 +1,126 @@
-<div>
-<form class="form-inline" name="form" role="form" novalidate>
-    <script type="text/ng-template" id="itemTemplate.html">
-        <a>[<span bind-html-unsafe="match.label  | typeaheadHighlight:query"></span>] <span bind-html-unsafe="match.model.description | typeaheadHighlight:query"></span></a>
-	</script>
-	
-	<label>
-        <input type="checkbox" ng-model="textOnly" ng-click="item=null;selectedCommodity=null;"> Riga di solo testo
+<div class="n-item-form">
+    <label>
+        <input type="checkbox" ng-model="textOnly" ng-click="reset()"> {{'TEXT_ONLY_ITEM' | translate}}
     </label>
     
     <br>
+    
+    <form class="form-inline" name="textOnlyForm" ng-show="textOnly" role="form" novalidate>
+        <script type="text/ng-template" id="itemTemplate.html">
+            <a>[<span bind-html-unsafe="match.label  | typeaheadHighlight:query"></span>] <span bind-html-unsafe="match.model.description | typeaheadHighlight:query"></span></a>
+        </script>
+        
+        <div class="form-group">
+            <label for="txt">{{'TEXT' | translate}}</label>
+            <textarea
+              name="textOnlyDescription"
+              style="display: block;"
+              maxlength="500"
+              ng-show="textOnly"
+              ng-model="item.description" 
+              class="form-control input-large" 
+              id="txt" required></textarea>
+              <div ng-show="textOnlyForm.textOnlyDescription.$dirty && textOnlyForm.textOnlyDescription.$invalid">
+                  <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+              </div>
+        </div>
+        <div class="form-group">
+            <label>&nbsp;</label><br>
+            <button
+                ng-disabled="textOnlyForm.$invalid "
+                type="button" 
+                class="btn btn-success" 
+                ng-click="addTextOnlyItem()">{{'ADD_TO' | translate}}</button>
+        </div>
+    </form>
+
+
+	<form class="form-inline" name="form" ng-show="!textOnly" role="form" novalidate>
+	    <script type="text/ng-template" id="itemTemplate.html">
+            <a>[<span bind-html-unsafe="match.label  | typeaheadHighlight:query"></span>] <span bind-html-unsafe="match.model.description | typeaheadHighlight:query"></span></a>
+	    </script>
+		
+		<div class="form-group">
+			<label for="description">{{'DESCRIPTION' | translate}}</label>
+			<textarea
+			  name="description"
+			  style="display: block;"
+			  maxlength="500"
+			  ng-show="selectedCommodity === null"
+			  ng-model="item.description" 
+			  typeahead="comm as comm.sku for comm in commodities | filter:$viewValue | limitTo:10"
+			  typeahead-template-url="itemTemplate.html"
+			  typeahead-on-select="onCommoditySelected($item, $model, $label)"
+			  class="form-control input-large" 
+			  id="description" required></textarea>
+		   <div ng-show="form.description.$dirty && form.description.$invalid">
+               <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+           </div>
+		   <button
+		       style="display: block;" 
+		       class="btn btn-xs btn-primary" 
+		       ng-click="openSelectCommodityDialog()"
+		       ng-show="selectedCommodity === null">{{'ADVANCED_SELECTION' | translate}}...</button>
+		   <div
+		       class="autocompletion-selected-commodity form-control-static input-large"
+		       ng-show="selectedCommodity !== null" 
+		       type="primary" >
+		       <span class="close" ng-click="reset()">X</span>
+		       <span class="label label-default label-sm" ng-show="selectedCommodity.sku">{{selectedCommodity.sku}}</span> {{selectedCommodity.description}}
+	       </div>
+		</div>
+		<div class="form-group">
+	        <label for="unitOfMeasure">{{'UNIT_OF_MEASURE_SHORT' | translate}}</label><br>
+	        <input name="unitOfMeasure" ng-model="item.unitOfMeasure" type="text" class="form-control input-small" id="unitOfMeasure" >
+	    </div>
+	    <div class="form-group">
+	        <label for="quantity">{{'QUANTITY' | translate}}</label><br>
+	        <input name="quantity" n-smart-float ng-model="item.quantity" type="text" class="form-control input-small" id="quantity" required>
+	        <div ng-show="form.quantity.$dirty && form.quantity.$invalid">
+               <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+           </div>
+	    </div>
+	    <div class="form-group" ng-show="manageWeight !== 'false'">
+	        <label for="weight">{{'WEIGHT' | translate}}</label> <br>
+	        <input name="weight" n-smart-float ng-model="item.weight" type="text" class="form-control input-small" id="weight">
+	        <div ng-show="form.weight.$dirty && form.weight.$invalid">
+               <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+           </div>
+	    </div>
+	    <div class="form-group">
+	        <label for="price">{{'PRICE' | translate}}</label><br> 
+	        <input name="price" n-smart-price ng-model="item.price" type="text" class="form-control input-small" id="price" required>
+	        <div ng-show="form.price.$dirty && form.price.$invalid">
+               <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+           </div>
+	    </div>
+	    <div class="form-group">
+	        <label for="discount">{{'DISCOUNT_OVERPRICING_SHORT' | translate}}</label><br> 
+	        <input name="discount" n-smart-float ng-model="item.discount" type="text" class="form-control input-small" id="discount">
+	        <div ng-show="form.discount.$dirty && form.discount.$invalid">
+               <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+           </div>
+	    </div>
+	    <div class="form-group">
+	        <label for="tax">{{'VAT' | translate}}</label><br> 
+	        <input name="tax" n-smart-tax ng-model="item.tax" type="text" class="form-control input-small" id="tax" required>
+	        <div ng-show="form.tax.$dirty && form.tax.$invalid">
+               <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
+           </div>
+	    </div>
+	    <div class="form-group">
+	        <label>&nbsp;</label><br>
+	        <button
+	            ng-disabled="form.$invalid "
+	            type="button" 
+	            class="btn btn-success" 
+	            ng-click="addItem()">{{'ADD_TO' | translate}}</button>
+	    </div>
+	</form>
 	
-	<div class="form-group">
-		<label for="sku">{{textOnly ? 'Testo' : 'Descrizione'}}</label>
-		<textarea
-		  style="display: block;"
-		  maxlength="500"
-		  ng-show="selectedCommodity === null && !textOnly"
-		  ng-model="item.description" 
-		  typeahead="comm as comm.sku for comm in commodities | filter:$viewValue | limitTo:10"
-		  typeahead-template-url="itemTemplate.html"
-		  typeahead-on-select="onCommoditySelected($item, $model, $label)"
-		  class="form-control" 
-		  id="sku" 
-		  placeholder="Descrizione"></textarea>
-	  <textarea
-          maxlength="500"
-          ng-show="textOnly"
-          ng-model="item.description" 
-          class="form-control" 
-          id="sku" ></textarea>
-	   <button
-	       style="display: block;" 
-	       class="btn btn-xs btn-primary" 
-	       ng-click="openSelectCommodityDialog()"
-	       ng-show="selectedCommodity === null && !textOnly">Selezione avanzata...</button>
-	   <div
-	       class="autocompletion-selected-commodity"
-	       ng-show="selectedCommodity !== null && !textOnly" 
-	       type="primary" >
-	       <span class="close" ng-click="item=null;selectedCommodity=null;">X</span>
-	       <span class="label label-default label-sm" ng-show="selectedCommodity.sku">{{selectedCommodity.sku}}</span> {{selectedCommodity.description}}
-       </div>
-	</div>
-	<div class="form-group" ng-show="!textOnly">
-        <label for="unitOfMeasure">U.M.</label><br>
-        <input ng-model="item.unitOfMeasure" type="text" class="form-control input-small" id="unitOfMeasure" placeholder="U.M.">
-    </div>
-    <div class="form-group" ng-show="!textOnly">
-        <label for="quantity">Quantità</label><br>
-        <input ng-model="item.quantity" type="text" class="form-control input-small" id="quantity" placeholder="Quantità">
-    </div>
-    <div class="form-group" ng-show="!textOnly && weight !== false">
-        <label for="weight">Peso</label> <br>
-        <input ng-model="item.weight" type="text" class="form-control input-small" id="weight" placeholder="Peso (kg)">
-    </div>
-    <div class="form-group" ng-show="!textOnly">
-        <label for="price">Prezzo</label><br> 
-        <input ng-model="item.price" type="text" class="form-control input-small" id="price" placeholder="Prezzo">
-    </div>
-    <div class="form-group" ng-show="!textOnly">
-        <label for="discount">%Sco/Ric</label><br> 
-        <input ng-model="item.discount" type="text" class="form-control input-small" id="discount" placeholder="%Sco/Ric">
-    </div>
-    <div class="form-group" ng-show="!textOnly">
-        <label for="tax">IVA</label><br> 
-        <input ng-model="item.tax" type="text" class="form-control input-small" id="tax" placeholder="IVA">
-    </div>
-	<button type="button" class="btn btn-success" ng-click="addItem()">Aggiungi</button>
-</form>
-
-<br>
-<span>* Utilizza , (virgola) come separatore decimale</span>
-
-<label class="pull-right">
-    <input type="checkbox" ng-model="explicitDiscountCheck"> Esplicitare lo sconto percentuale quando si aggiunge un articolo da listino
-</label>
+	<br>
+	<label class="pull-right">
+	    <input type="checkbox" ng-model="explicitDiscountCheck"> {{'EXPLICIT_DISCOUNT_CHECK' | translate}}
+	</label>
+	<br>
 </div>

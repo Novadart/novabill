@@ -656,10 +656,7 @@ angular.module('novabill.directives.dialogs',
 
 						$modalInstance.close({
 							commodity : commodity,
-							defaultPriceValue : defaultPrice.priceValue,
-							priceListName : $scope.priceList.name,
-							priceType : price.priceType,
-							priceValue : price.priceValue
+							priceListName : $scope.priceList.name
 						});
 					};
 

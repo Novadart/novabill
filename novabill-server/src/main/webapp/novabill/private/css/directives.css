@@ -383,27 +383,28 @@
  *  ITEM FORM
  */
 
-.autocompletion-selected-commodity {
+.n-item-form .autocompletion-selected-commodity {
 	position: relative;
 	padding: 20px 30px 5px 5px;
     border: 1px solid #333;
-    max-width: 300px;
     background-color: #FFF;
 }
 
-.autocompletion-selected-commodity .close {
+.n-item-form .autocompletion-selected-commodity .close {
 	position: absolute;
 	top: 5px;
 	right: 5px;
 }
 
-.autocompletion-selected-commodity .label{
+.n-item-form .autocompletion-selected-commodity .label{
 	position: absolute;
     top: 5px;
     left: 5px;
 } 
  
- 
+.n-item-form .form-group {
+	min-height: 100px;
+}
  
  
  
