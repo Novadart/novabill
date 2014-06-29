@@ -11,10 +11,10 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 	var selectedYear = String(new Date().getFullYear());
 	var loadedEstimations = [];
 	var PARTITION = 50;
-	
+
 	$scope.loadEstimations = function(year) {
 		selectedYear = year;
-		
+
 		GWT_Server.estimation.getAllInRange(nConstants.conf.businessId, selectedYear, '0', '1000000', {
 			onSuccess : function(page){
 				$scope.$apply(function(){
@@ -26,14 +26,14 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 			onFailure : function(error){}
 		});
 	};
-	
+
 	$scope.loadMoreEstimations = function(){
 		if($scope.estimations){
 			var currentIndex = $scope.estimations.length;
 			$scope.estimations = $scope.estimations.concat(loadedEstimations.slice(currentIndex, currentIndex+PARTITION));
 		}
 	};
-	
+
 	$scope.newEstimationClick = function(){
 		var instance = nSelectClientDialog.open(true);
 		instance.result.then(
@@ -47,14 +47,14 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 				}
 		);
 	};
-	
+
 	$scope.$on(nConstants.events.ESTIMATION_REMOVED, function(){
 		$scope.$apply(function(){
 			$scope.estimations= null;
 		});
 		$scope.loadEstimations(selectedYear);
 	});
-	
+
 }])
 
 
@@ -66,16 +66,20 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 .controller('EstimationDetailsCtrl', ['$scope', '$routeParams', '$location', '$translate',
                                       function($scope, $routeParams, $location, $translate) {
 	$scope.pageTitle = $translate('MODIFY_ESTIMATION');
-	
+
 	GWT_UI.showModifyEstimationPage('estimation-details', $routeParams.estimationId, {
-    	onSuccess : function(bool){
-	    	$location.path('/');
-    	},
-    	onFailure : function(){
-			$location.path('/');
+		onSuccess : function(bool){
+			$scope.$apply(function(){
+				$location.path('/');	
+			});
+		},
+		onFailure : function(){
+			$scope.$apply(function(){
+				$location.path('/');	
+			});
 		}
-    });
-	
+	});
+
 }])
 
 
@@ -86,16 +90,20 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 .controller('EstimationCreateCtrl', ['$scope', '$routeParams', '$location', '$translate',
                                      function($scope, $routeParams, $location, $translate) {
 	$scope.pageTitle = $translate('NEW_ESTIMATION');
-	
+
 	GWT_UI.showNewEstimationPage('estimation-details', $routeParams.clientId, {
-    	onSuccess : function(bool){
-	    	$location.path('/');
-    	},
-    	onFailure : function(){
-			$location.path('/');
+		onSuccess : function(bool){
+			$scope.$apply(function(){
+				$location.path('/');	
+			});
+		},
+		onFailure : function(){
+			$scope.$apply(function(){
+				$location.path('/');	
+			});
 		}
-    });
-	
+	});
+
 }])
 
 
@@ -104,17 +112,21 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
  * ESTIMATION CLONE PAGE CONTROLLER
  */
 .controller('EstimationCloneEstimationCtrl', ['$scope', '$routeParams', '$location', '$translate',
-                                        function($scope, $routeParams, $location, $translate) {
+                                              function($scope, $routeParams, $location, $translate) {
 	$scope.pageTitle = $translate('NEW_ESTIMATION');
-	
+
 	GWT_UI.showCloneEstimationPage('estimation-details', $routeParams.clientId, $routeParams.sourceId, {
-    	onSuccess : function(bool){
-	    	$location.path('/');
-    	},
-    	onFailure : function(){
-			$location.path('/');
+		onSuccess : function(bool){
+			$scope.$apply(function(){
+				$location.path('/');	
+			});
+		},
+		onFailure : function(){
+			$scope.$apply(function(){
+				$location.path('/');	
+			});
 		}
-    });
+	});
 
 }]);
 
