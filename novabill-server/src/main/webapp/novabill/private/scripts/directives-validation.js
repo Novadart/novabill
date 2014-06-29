@@ -84,6 +84,12 @@ angular.module('novabill.directives.validation',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
+				
+				if(viewValue === ''){
+					ctrl.$setValidity('tax', true);
+			        return '';
+				}
+				
 				if (nRegExp.positiveTwoDecimalsFloatNumber.test(viewValue)) {
 					var dotVal = viewValue.replace(',', '.');
 					var floatVal = parseFloat(dotVal);
@@ -119,6 +125,12 @@ angular.module('novabill.directives.validation',
 		restrict: 'A',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
+				
+				if(viewValue === ''){
+					ctrl.$setValidity('price', true);
+			        return '';
+				}
+				
 				if (nRegExp.positiveTwoDecimalsFloatNumber.test(viewValue)) {
 					var dotVal = viewValue.replace(',', '.');
 					var floatVal = parseFloat(dotVal);
@@ -159,6 +171,11 @@ angular.module('novabill.directives.validation',
 		link: function(scope, elm, attrs, ctrl) {
 			ctrl.$parsers.unshift(function(viewValue) {
 				var testExp = scope.positiveFloatNumber ? nRegExp.positiveFloatNumber : nRegExp.floatNumber;
+				
+				if(viewValue === ''){
+					ctrl.$setValidity('float', true);
+			        return '';
+				}
 				
 				if (testExp.test(viewValue)) {
 					ctrl.$setValidity('float', true);

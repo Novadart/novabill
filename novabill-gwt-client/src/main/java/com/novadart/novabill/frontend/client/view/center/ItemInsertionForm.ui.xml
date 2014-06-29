@@ -136,54 +136,8 @@
 			<c:ItemTable ui:field="itemTable" styleName="{s.itemTable}"></c:ItemTable>
 		</g:ScrollPanel>
 
-		<g:FlowPanel styleName="{s.newItemContainer}"
-			ui:field="newItemContainer">
-			<g:CheckBox ui:field="textOnlyAccountingItem" styleName="{s.textOnlyCheckbox}" text="{i18n.textOnlyAccountingItem}" />
-			<g:HorizontalPanel>
-			    <g:VerticalPanel ui:field="skuContainer">
-                    <g:Label styleName="{s.smallLabel}" text="{i18n.sku}"></g:Label>
-                    <v:ValidatedTextArea tabIndex="10" ui:field="sku" styleName="{s.sku}" />
-                </g:VerticalPanel>
-				<g:VerticalPanel styleName="{s.itemContainer}">
-				    <g:HorizontalPanel>
-                        <g:Label styleName="{s.smallLabel}" text="{i18n.nameDescription}" ui:field="itemLabel"></g:Label>
-                        <g:Button tabIndex="0" styleName="{s.browse} btn btn-xs dark" text="Seleziona..." ui:field="browse"></g:Button>				    
-				    </g:HorizontalPanel>
-					<v:ValidatedTextArea tabIndex="20" ui:field="item" styleName="{s.item}" />
-				</g:VerticalPanel>
-				<g:VerticalPanel ui:field="unitOfMeasureContainer" styleName="{s.unitOfMeasureContainer}">
-					<g:Label styleName="{s.smallLabel}" text="{i18n.unityOfMeasure}"></g:Label>
-					<g:TextBox ui:field="unitOfMeasure" tabIndex="30" styleName="{s.unitOfMeasure}"
-						maxLength="255"></g:TextBox>
-				</g:VerticalPanel>
-				<g:VerticalPanel ui:field="quantityContainer" styleName="{s.quantityContainer}">
-                    <g:Label styleName="{s.smallLabel}" text="{i18n.quantity}*"></g:Label>
-                    <g:TextBox ui:field="quantity" tabIndex="40" styleName="{s.quantity}"></g:TextBox>
-                </g:VerticalPanel>
-                <g:VerticalPanel ui:field="weightContainer" styleName="{s.weightContainer}">
-                    <g:Label styleName="{s.smallLabel}" text="{i18n.weight}"></g:Label>
-                    <g:TextBox ui:field="weight" tabIndex="50" styleName="{s.weight}"></g:TextBox>
-                </g:VerticalPanel>
-				<g:VerticalPanel ui:field="priceContainer" styleName="{s.priceContainer}">
-					<g:Label styleName="{s.smallLabel}" text="{i18n.price}*"></g:Label>
-					<g:TextBox ui:field="price" tabIndex="60" styleName="{s.price}"></g:TextBox>
-				</g:VerticalPanel>
-                <g:VerticalPanel ui:field="discountContainer" styleName="{s.discountContainer}">
-                    <g:Label styleName="{s.smallLabel}" text="{i18n.discountLabel}"></g:Label>
-                    <g:TextBox styleName="{s.discount}" tabIndex="70" ui:field="discount" />
-                </g:VerticalPanel>
-				<g:VerticalPanel ui:field="taxContainer" styleName="{s.taxContainer}">
-					<g:Label styleName="{s.smallLabel}" text="{i18n.vat}"></g:Label>
-					<t:TaxWidget styleName="{s.tax}" tabIndex="80" ui:field="tax" />
-				</g:VerticalPanel>
-				<g:SimplePanel styleName="{s.addButtonContainer}">
-					<g:Button styleName="btn btn-sm green" tabIndex="90" ui:field="add" text="{i18n.add}"></g:Button>
-				</g:SimplePanel>
-			</g:HorizontalPanel>
-			
-			<g:Label styleName="{s.decimalSeparatorInfo}" text="*{i18n.decimalSeparatorInfo}" />
-			
-			<g:CheckBox ui:field="overrideDiscountInDocsExplicit" styleName="{s.overrideDiscountInDocsExplicit}" text="{i18n.discountInDocsExplicit}" />
-		</g:FlowPanel>
+		<g:HTMLPanel styleName="angularJSItemForm {s.newItemContainer}" ui:field="newItemContainer">
+            <n-item-form></n-item-form>
+		</g:HTMLPanel>
 	</g:FlowPanel>
 </ui:UiBinder> 

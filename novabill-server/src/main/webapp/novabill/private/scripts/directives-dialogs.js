@@ -656,10 +656,7 @@ angular.module('novabill.directives.dialogs',
 
 						$modalInstance.close({
 							commodity : commodity,
-							defaultPriceValue : defaultPrice.priceValue,
-							priceListName : $scope.priceList.name,
-							priceType : price.priceType,
-							priceValue : price.priceValue
+							priceListName : $scope.priceList.name
 						});
 					};
 
@@ -779,8 +776,8 @@ angular.module('novabill.directives.dialogs',
 /*
  * Exposing few dialogs used by GWT
  */
-.run(['nAlertDialog', 'nConfirmDialog', 'nSelectCommodityDialog', '$window', 
-      function(nAlertDialog, nConfirmDialog, nSelectCommodityDialog, $window){
+.run(['nAlertDialog', 'nConfirmDialog', 'nSelectCommodityDialog', '$window', '$rootScope', '$compile',
+      function(nAlertDialog, nConfirmDialog, nSelectCommodityDialog, $window, $rootScope, $compile){
 	$window.Angular_Dialogs = {
 			
 			confirm : function(message, callback){
@@ -806,4 +803,12 @@ angular.module('novabill.directives.dialogs',
 			}
 			
 	};
+	
+	
+	$window.Angular_ItemFormInit = function(){
+		var elm = angular.element('n-item-form');
+		var html = $compile( elm )($rootScope);
+		angular.element('.angularJSItemForm').html(html);
+	};
+	
 }]);

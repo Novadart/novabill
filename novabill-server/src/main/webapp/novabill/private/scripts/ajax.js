@@ -65,6 +65,24 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 	var baseUrl = nConstants.conf.ajaxBaseUrl;
 
 	return {
+		
+		
+		/*
+		 * BatchDataFetcher
+		 */
+		BatchDataFetcherUtils : function() {
+			return {
+				
+				fetchSelectCommodityForDocItemOpData: function(params, successFn, failureFn){
+					$http({
+						method : 'GET',
+						url : baseUrl + 'businesses/'+ businessId +'/commodityselectdata/'+ params.clientID,
+						data : params
+					}).success( successFn );
+				}
+				
+			};
+		},
 
 		/*
 		 * Business resource
