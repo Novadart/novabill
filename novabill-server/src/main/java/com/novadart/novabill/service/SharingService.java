@@ -61,7 +61,7 @@ public class SharingService {
 
 	public boolean isValidRequest(Long businessID, String token){
 		if(utilsService.isAuthenticated() && utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId().equals(businessID))
-			return true;
+			return true; //user has access right to his own data provided he's authenticated
 		SharingToken sharingToken = SharingToken.findSharingToken(businessID, token);
 		return sharingToken == null? false: 3_600_000l * sharingExpiration + sharingToken.getCreatedOn() > System.currentTimeMillis();
 	}

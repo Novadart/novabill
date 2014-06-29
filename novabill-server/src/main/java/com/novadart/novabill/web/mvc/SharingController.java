@@ -37,7 +37,6 @@ import org.springframework.web.bind.support.SessionStatus;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.DTOUtils;
-import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
 import com.novadart.novabill.service.SharingService;
 import com.novadart.novabill.service.export.data.DataExporter;
@@ -87,13 +86,8 @@ public class SharingController {
 			return "sharing.request";
 		}
 		Business business = Business.findBusinessByVatIDIfSharingPermit(normalizeAndGetVatID(sharingRequest), sharingRequest.getEmail());
-		if(business == null){
-			Principal principal = Principal.findByUsername(sharingRequest.getEmail());
-			if(principal == null || !principal.getBusiness().getVatID().equals(sharingRequest.getVatID()))
-				return "redirect:"+Urls.PUBLIC_SHARE_THANKS;
-			else
-				business = principal.getBusiness();
-		}
+		if(business == null) 
+			return "redirect:"+Urls.PUBLIC_SHARE_THANKS;
 		sharingService.enableSharingTemporarilyAndNotifyParticipant(business, sharingRequest.getEmail(), messageSource, locale);
 		status.setComplete();
 		return "redirect:"+Urls.PUBLIC_SHARE_THANKS;
