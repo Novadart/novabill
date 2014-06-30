@@ -37,13 +37,16 @@ angular.module('novabill.directives.forms',
 				$scope.commodities = $scope.pricelist.commodities.sort( nSorting.descriptionComparator );
 			});
 			
+			$scope.isReservedWord = function(str){
+				return nRegExp.reserved_word.test(str);
+			};
 			
 			$scope.applyCommodity = function(comm, pricelistName){
 				$scope.selectedCommodity = comm;
 				
 				// assemble the item
 				$scope.item = {
-						sku : nRegExp.reserved_word.test(comm.sku) ? null : comm.sku,
+						sku : comm.sku,
 						description : comm.description,
 						unitOfMeasure : comm.unitOfMeasure,
 						tax : $filter('number')(comm.tax),

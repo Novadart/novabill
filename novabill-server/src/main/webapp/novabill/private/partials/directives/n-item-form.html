@@ -6,10 +6,6 @@
     <br>
     
     <form class="form-inline" name="textOnlyForm" ng-show="textOnly" role="form" novalidate>
-        <script type="text/ng-template" id="itemTemplate.html">
-            <a>[<span bind-html-unsafe="match.label  | typeaheadHighlight:query"></span>] <span bind-html-unsafe="match.model.description | typeaheadHighlight:query"></span></a>
-        </script>
-        
         <div class="form-group">
             <label for="txt">{{'TEXT' | translate}}</label>
             <textarea
@@ -37,7 +33,7 @@
 
 	<form class="form-inline" name="form" ng-show="!textOnly" role="form" novalidate>
 	    <script type="text/ng-template" id="itemTemplate.html">
-            <a>[<span bind-html-unsafe="match.label  | typeaheadHighlight:query"></span>] <span bind-html-unsafe="match.model.description | typeaheadHighlight:query"></span></a>
+            <a>[<span bind-html-unsafe="match.label | nReplaceReservedWord:' - ' | typeaheadHighlight:query"></span>] <span bind-html-unsafe="match.model.description | typeaheadHighlight:query"></span></a>
 	    </script>
 		
 		<div class="form-group">
@@ -66,7 +62,7 @@
 		       ng-show="selectedCommodity !== null" 
 		       type="primary" >
 		       <span class="close" ng-click="reset()">X</span>
-		       <span class="label label-default label-sm" ng-show="selectedCommodity.sku">{{selectedCommodity.sku}}</span> {{selectedCommodity.description}}
+		       <span class="label label-default label-sm" ng-if="!isReservedWord(selectedCommodity.sku)">{{selectedCommodity.sku}}</span> {{selectedCommodity.description}}
 	       </div>
 		</div>
 		<div class="form-group">
