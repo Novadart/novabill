@@ -168,7 +168,7 @@
 	            </sec:authorize>
 	            
 	            <sec:authorize access="isAuthenticated()">
-	                <a class="btn btn-lg green col-md-4 col-md-offset-4 margin-bottom-30" href="${registerPageUrl}"><i class="fa fa-file"></i> Accedi ai tuoi Documenti</a>
+	                <a class="btn btn-lg green col-md-4 col-md-offset-4 margin-bottom-30" href="${privateUrl}"><i class="fa fa-file"></i> Accedi ai tuoi Documenti</a>
 	            </sec:authorize>
             </div>
             
