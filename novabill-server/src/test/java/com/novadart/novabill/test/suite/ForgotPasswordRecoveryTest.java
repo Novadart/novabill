@@ -35,6 +35,7 @@ import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.ForgotPasswordValidator;
 import com.novadart.novabill.web.mvc.ForgotPasswordController;
 import com.novadart.novabill.web.mvc.PasswordRecoveryController;
+import com.novadart.novabill.web.mvc.Urls;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -115,7 +116,7 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		
 		assertEquals("redirect:/forgot-password-ok", forgotPasswordView);
 		assertEquals("frontend.passwordRecovery", passwordRecoveryView);
-		assertEquals("frontend.passwordRecoverySuccess", passwordRecoverySuccessView);
+		assertEquals("redirect:" + Urls.PUBLIC_PASSWORD_RECOVERY_OK, passwordRecoverySuccessView);
 		
 		Principal persistedPrincipal = Principal.findByUsername(email);
 		assertTrue(utilsService.isPasswordValid(persistedPrincipal.getPassword(), newPassword));
@@ -331,11 +332,11 @@ public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 		
 		assertEquals("redirect:/forgot-password-ok", forgotPasswordView1);
 		assertEquals("frontend.passwordRecovery", passwordRecoverView1);
-		assertEquals("frontend.passwordRecoverySuccess", passwordRecoverySuccessView1);
+		assertEquals("redirect:" + Urls.PUBLIC_PASSWORD_RECOVERY_OK, passwordRecoverySuccessView1);
 		
 		assertEquals("redirect:/forgot-password-ok", forgotPasswordView2);
 		assertEquals("frontend.passwordRecovery", passwordRecoverView2);
-		assertEquals("frontend.passwordRecoverySuccess", passwordRecoverySuccessView2);
+		assertEquals("redirect:" + Urls.PUBLIC_PASSWORD_RECOVERY_OK, passwordRecoverySuccessView2);
 		
 	}
 	
