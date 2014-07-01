@@ -28,12 +28,15 @@
             
 			<div class="form-group" ng-class="{'has-error': form.sendEmail.$dirty && form.sendEmail.$invalid, 'has-success': form.sendEmail.$dirty && form.sendEmail.$valid}">
 				<label class="control-label" for="sendEmail">{{'SHARING_PERMIT_SEND_EMAIL'	| translate}}</label>
-				<select class="form-control" name="sendEmail" ng-model="$parent.sendEmail">
-                     <option value="false">{{'NO' | translate}}</option>
-                     <option value="true">{{'YES' | translate}}</option>
-                 </select>
+				<div class="radio-list">
+                     <label>
+                        <input type="radio" ng-model="$parent.sendEmail" name="sendEmail" id="sendEmailNo" value="false" checked> {{'NO' | translate}}
+                     </label>
+                     <label>
+                        <input type="radio" ng-model="$parent.sendEmail" name="sendEmail" id="sendEmailYes" value="true" > {{'YES' | translate}}
+                     </label>
+                 </div>
             </div>
-			
 		</form>
 	</div>
 

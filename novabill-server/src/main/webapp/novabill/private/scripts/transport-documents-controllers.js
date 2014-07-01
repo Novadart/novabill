@@ -120,9 +120,7 @@ angular.module('novabill.transportDocuments.controllers',
 
 			 GWT_UI.showModifyTransportDocumentPage('transport-document-details', $routeParams.transportDocumentId, {
 				 onSuccess : function(bool){
-					 $scope.$apply(function(){
-						 $location.path('/');	
-					 });
+					 $location.path('/');	
 				 },
 				 onFailure : function(){
 					 $scope.$apply(function(){
@@ -143,9 +141,7 @@ angular.module('novabill.transportDocuments.controllers',
 
 			 GWT_UI.showFromEstimationTransportDocumentPage('transport-document-details', $routeParams.estimationId, {
 				 onSuccess : function(bool){
-					 $scope.$apply(function(){
-						 $location.path('/');	
-					 });
+					 $location.path('/');	
 				 },
 				 onFailure : function(){
 					 $scope.$apply(function(){
@@ -168,9 +164,7 @@ angular.module('novabill.transportDocuments.controllers',
 
 			 GWT_UI.showNewTransportDocumentPage('transport-document-details', $routeParams.clientId, {
 				 onSuccess : function(bool){
-					 $scope.$apply(function(){
-						 $location.path('/');	
-					 });
+					 $location.path('/');	
 				 },
 				 onFailure : function(){
 					 $scope.$apply(function(){
