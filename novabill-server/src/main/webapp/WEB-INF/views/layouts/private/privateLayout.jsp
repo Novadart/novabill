@@ -129,7 +129,6 @@ window.onerror = function(message, source, line, column) {
 			<!-- BEGIN LOGO -->
 			<a class="navbar-brand" href="${dashboardUrl}"> 
 		      <img src="${frontendAssetsUrl}/img/logo_thin_white.png" alt="logo" class="img-responsive" />
-				<img src="${privateAssetsUrl}/img/beta-small-w.png" alt="" style="position: relative; bottom: 10px; right: 49px; float: right;" />
 			</a>
 			<!-- END LOGO -->
 			<!-- BEGIN RESPONSIVE MENU TOGGLER -->
