@@ -495,29 +495,28 @@ angular.module('novabill.directives.dialogs',
 					};
 
 					$scope.newClientClick = function(){
-						if($scope.newClientMode) {
-							var newClient = {
-									name : $scope.query,
-									contact : {}
-							};
-							GWT_Server.client.add(nConstants.conf.businessId, angular.toJson(newClient), {
+						$scope.newClientMode = true;
+						filteredClients = [];
+						$scope.query = '';
+						updateFilteredClients();
+					};
+					
+					$scope.createNewClient = function(){
+						var newClient = {
+								name : $scope.query,
+								contact : {}
+						};
+						GWT_Server.client.add(nConstants.conf.businessId, angular.toJson(newClient), {
 
-								onSuccess : function(newId){
-									$scope.$apply(function(){
-										$modalInstance.close(newId);
-									});
-								},
+							onSuccess : function(newId){
+								$scope.$apply(function(){
+									$modalInstance.close(newId);
+								});
+							},
 
-								onFailure : function(){}
+							onFailure : function(){}
 
-							});
-							
-						} else {
-							$scope.newClientMode = true;
-							filteredClients = [];
-							$scope.query = '';
-							updateFilteredClients();
-						}
+						});
 					};
 
 					$scope.cancelNewClientClick = function(){

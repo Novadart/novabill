@@ -113,10 +113,10 @@
 	            ng-click="addItem()">{{'ADD_TO' | translate}}</button>
 	    </div>
 	</form>
-	
-	<br>
-	<label class="pull-right" ng-show="explicitDiscount !== 'false'">
-	    <input type="checkbox" ng-model="explicitDiscountCheck"> {{'EXPLICIT_DISCOUNT_CHECK' | translate}}
-	</label>
-	<br>
+
+    <div class="text-right">	
+		<label ng-show="explicitDiscount !== 'false'">
+		    <input type="checkbox" ng-model="explicitDiscountCheck"> {{'EXPLICIT_DISCOUNT_CHECK' | translate}}
+		</label>
+	</div>
 </div>
