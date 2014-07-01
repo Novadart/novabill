@@ -71,11 +71,13 @@ angular.module('novabill.invoices.controllers',
 
 			GWT_UI.showModifyInvoicePage('invoice-details', $routeParams.invoiceId, {
 				onSuccess : function(bool){
+					$location.path('/');	
+				},
+				onFailure : function(){
 					$scope.$apply(function(){
 						$location.path('/');	
 					});
-				},
-				onFailure : function(){}
+				}
 			});
 			
 			
@@ -93,9 +95,7 @@ angular.module('novabill.invoices.controllers',
 
 			GWT_UI.showNewInvoicePage('invoice-details', $routeParams.clientId, {
 				onSuccess : function(bool){
-					$scope.$apply(function(){
-						$location.path('/');	
-					});
+					$location.path('/');	
 				},
 				onFailure : function(){
 					$scope.$apply(function(){
@@ -118,9 +118,7 @@ angular.module('novabill.invoices.controllers',
 
 			GWT_UI.showFromEstimationInvoicePage('invoice-details', $routeParams.estimationId, {
 				onSuccess : function(bool){
-					$scope.$apply(function(){
-						$location.path('/');	
-					});
+					$location.path('/');	
 					
 				},
 				onFailure : function(error){
@@ -143,9 +141,7 @@ angular.module('novabill.invoices.controllers',
 
 			GWT_UI.showFromTransportDocumentListInvoicePage('invoice-details', $routeParams.transportDocumentList, {
 				onSuccess : function(bool){
-					$scope.$apply(function(){
-						$location.path('/');	
-					});
+					$location.path('/');	
 				},
 				onFailure : function(){
 					$scope.$apply(function(){
@@ -167,9 +163,7 @@ angular.module('novabill.invoices.controllers',
 
 			GWT_UI.showCloneInvoicePage('invoice-details', $routeParams.clientId, $routeParams.sourceId, {
 				onSuccess : function(bool){
-					$scope.$apply(function(){
-						$location.path('/');	
-					});
+					$location.path('/');	
 				},
 				onFailure : function(){
 					$scope.$apply(function(){
