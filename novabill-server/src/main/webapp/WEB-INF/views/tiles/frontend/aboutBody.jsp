@@ -31,38 +31,39 @@
                 <div class="col-md-12 space-mobile">
                     <div class="row">
 	                    <div class="text-center well col-md-8 col-md-offset-2">
-	                        <h2>Our mission is to deliver an easy-to-use, secure and robust service for managing your documents</h2>
+	                        <h2>Il nostro obiettivo è quello di fornire un servizio semplice, sicuro e robusto per gestire i tuoi documenti</h2>
 	                    </div>
                     </div>
                     <div class="row">
                         <div class="col-md-8 col-md-offset-2">
-	                        <h2>Why Novabill?</h2>
+	                        <h2>Perchè Novabill?</h2>
 	                        <p>
-		                        Novabill is an online invoicing system tailored for small businesses and professionals.<br>
-		                        We started building Novabill to use it internally in our company, with three principles in mind:                       
+		                        Novabill è un servizio online per la gestione della contabilità, studiato per piccole imprese e professionisti.<br>
+		                        Abbiamo avviato lo sviluppo di Novabill qualche tempo fa con lo scopo di usarlo internamente nella nostra azienda, con in testa tre principi cardine:
 		                        <div class="row front-lists-v1">
 	                                <div class="col-md-12">
 		                                <ul class="list-unstyled margin-bottom-20">
-		                                    <li><i class="fa fa-check"></i> Ease of use, in fact existing solutions were either too simple or too complex</li>
-		                                    <li><i class="fa fa-check"></i> The possibility to access the data from anywhere, at any time</li>
-		                                    <li><i class="fa fa-check"></i> Safety and security of the data via continuous backups and using state of the art cryptography</li>
+		                                    <li><i class="fa fa-check"></i> Facilità d'uso, infatti le soluzioni pre-esistenti erano o troppo basilari o troppo complesse</li>
+		                                    <li><i class="fa fa-check"></i> La possibilità di accedere ai dati da qualunque luogo e in qualsiasi momento</li>
+		                                    <li><i class="fa fa-check"></i> Sicurezza e affidabilità dei dati, garantita da backup continui e lo stato dell'arte in termini di tecnologie crittografiche</li>
 		                                </ul>
 		                            </div>
 		                        </div>
-		                        And this is how the first version of Novabill was born.<br>
-		                        We showed it to friends and colleagues and it soon became evident that we were not the only ones that could benefit from a solution like.<br>
-		                        They encouraged us to share it with them and that was the moment when we made Novabill public and available to anyone.<br>Since that day more and more professionals and companies are joining us in using Novabill.                     
+		                        E così, dopo alcune settimane, nacque la prima versione di Novabill.<br>
+		                        L'abbiamo condivisa con amici e colleghi e ben presto ci siamo resi conto che non eravamo i soli ad essere alla ricerca di una soluzione di questo tipo.<br>
+		                        Siamo stati incoraggiati a rendere Novabill disponibile ad altre persone interessate e quello è stato il momento in cui abbiamo pubblicato Novabill e l'abbiamo reso disponibile a chiunque.<br>
+		                        A partire da quel giorno sempre più aziende e professionisti scelgono Novabill per affiancarli quotidianamente nel loro lavoro.                     
 		                    </p>
 		                
 		                
 		                
-		                    <h2>The people behind Novabill</h2>
+		                    <h2>Le persone dietro a Novabill</h2>
 		                    <p>
-                                We are a company based in Padova but with a very international heart and mindset.<br>
-                                In fact everything started in Copenhagen where the two founders were doing a MSc in Software Security and since then they decided to work side by side on innovative projects based on web technologies and data analysis.<br>
-                                We love Linux, Java and the Open Source world.<br>
-                                We are passionate about applying technology to solve everyday problems.<br>
-                                If you want to know more about us or drop us a line, come to visit us at <a href="http://www.novadart.com">novadart.com</a>.
+		                        Siamo un'azienda con sede a Padova ma dalla mentalità e il cuore fortemente internazionali.<br>
+		                        La nostra storia inizia a Copenaghen, dove i due soci fondatori si sono incontrati durante gli studi e da allora hanno deciso di lavorare fianco a fianco su progetti innovativi basati su tecnologie web e analisi di dati.<br>
+                                Siamo appassionati di Linux, Sicurezza Informatica e del mondo Open Source.<br>
+                                Il nostro lavoro si focalizza nell'applicazione della tecnologia per risolvere i problemi di tutti i giorni.<br>
+                                Se sei interessato ad ottenere qualche informazione in più su di noi o a contattarci, vieni a trovarci su <a href="http://www.novadart.com">novadart.com</a>.
                             </p> 
 	                    </div>
                     </div>
