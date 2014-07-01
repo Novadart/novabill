@@ -195,35 +195,6 @@ public class SharingTest extends ServiceTest {
 		assertEquals(1, SharingToken.findAllSharingTokens().size());
 	}
 	
-	@Test
-	public void tempSharingForNovabillUserTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, DataAccessException, FreeUserAccessForbiddenException, NotAuthenticatedException{
-		SharingController sharingController = initSharingController();
-		SharingRequest request = new SharingRequest();
-		request.setEmail(authenticatedPrincipal.getUsername());
-		request.setVatID(authenticatedPrincipal.getBusiness().getVatID());
-		
-		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		sharingController.processRequestSubmit(request, new BeanPropertyBindingResult(request, "sharingRequest"), mock(SessionStatus.class), null, mock(Model.class));
-		smtpServer.stop();
-		
-		assertTrue(smtpServer.getReceivedEmailSize() == 1);
-		assertEquals(1, SharingToken.findAllSharingTokens().size());
-	}
-	
-	@Test
-	public void tempSharingForNovabillInvalidVatIDUserTest() throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, DataAccessException, FreeUserAccessForbiddenException, NotAuthenticatedException{
-		SharingController sharingController = initSharingController();
-		SharingRequest request = new SharingRequest();
-		request.setEmail(authenticatedPrincipal.getUsername());
-		request.setVatID("Invalid vatid");
-		
-		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		sharingController.processRequestSubmit(request, new BeanPropertyBindingResult(request, "sharingRequest"), mock(SessionStatus.class), null, mock(Model.class));
-		smtpServer.stop();
-		
-		assertTrue(smtpServer.getReceivedEmailSize() == 0);
-		assertEquals(0, SharingToken.findAllSharingTokens().size());
-	}
 	
 	@Test
 	public void validInvoiceSharingRequestTest(){
