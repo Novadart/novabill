@@ -64,7 +64,7 @@
 				         <tab-heading>
 	                        {{'INVOICES' | translate}}
 	                    </tab-heading>
-	                    <div class="container-fluid">
+	                    <div class="container-fluid" style="min-height: 400px;">
 	                        <div class="text-right" style="padding: 10px;">
 			                     <a  ng-show="invoices && invoices.length > 0" href="javascript:void(0);" class="btn default" ng-click="download('invoices')">
 			                           {{'DOWNLOAD' | translate}} <i class="fa fa-download"></i>
@@ -81,7 +81,7 @@
                          <tab-heading>
                             {{'CREDIT_NOTES' | translate}}
                         </tab-heading>
-                        <div class="container-fluid">
+                        <div class="container-fluid" style="min-height: 400px;">
                             <div class="text-right" style="padding: 10px;">
                                  <a  ng-show="creditNotes && creditNotes.length > 0" href="javascript:void(0);" class="btn default" ng-click="download('creditnotes')">
                                        {{'DOWNLOAD' | translate}} <i class="fa fa-download"></i>
