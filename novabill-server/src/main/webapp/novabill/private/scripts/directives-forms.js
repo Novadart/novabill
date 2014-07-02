@@ -155,18 +155,25 @@ angular.module('novabill.directives.forms',
 		              function($scope, nConstants, nAjax, $filter){
 			var BusinessLogo = nAjax.BusinessLogo();
 			
-			$scope.logoUrl = nConstants.conf.logoUrl;
+			$scope.thumbUrl = nConstants.conf.thumbUrl;
 
 			$scope.refreshLogoUrl = function(){
-				$scope.logoUrl = nConstants.conf.logoUrl + '?date=' + new Date().getTime();
+				$scope.thumbUrl = nConstants.conf.thumbUrl + '?date=' + new Date().getTime();
+			};
+			
+			$scope.setLoader = function(){
+				$scope.thumbUrl = nConstants.conf.privateAreaBaseUrl + '../private_assets/img/ajax-loading.gif';
 			};
 
 			$scope.removeLogo = function(){
+				$scope.setLoader();
 				BusinessLogo.remove( $scope.refreshLogoUrl );
 			};
 			
 			$scope.uploadLogo = function($files){
 				$scope.errorMessage = null;
+				
+				$scope.setLoader();
 				
 				BusinessLogo.upload($files[0], function(result, status, headers, config) {
 					
@@ -174,14 +181,12 @@ angular.module('novabill.directives.forms',
 					switch (parseInt(res)) {
 					case 0:
 						$scope.showUploadForm = false;
-						$scope.refreshLogoUrl();
 						break;
 
 					default:
 					case 1:
 					case 4:
 						$scope.errorMessage = $filter('translate')('LOGO_UPLOAD_ERROR_ILLEGAL_REQUEST');
-						$scope.refreshLogoUrl();
 						break;
 						
 					case 2:
@@ -192,6 +197,7 @@ angular.module('novabill.directives.forms',
 						$scope.errorMessage = $filter('translate')('LOGO_UPLOAD_ERROR_ILLEGAL_SIZE');
 						break;
 					}
+					$scope.refreshLogoUrl();
 					
 				});
 

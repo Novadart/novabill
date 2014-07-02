@@ -52,6 +52,7 @@ angular.module('novabill.constants', [])
 			exportDwonloadUrl : basePath + 'private/export?clients={c}&invoices={i}&estimations={e}&creditnotes={cn}&transportdocs={t}',
 			invoicesBaseUrl : basePath + 'private/invoices/',
 			logoUrl : basePath +'private/businesses/logo',
+			thumbUrl : basePath +'private/businesses/logo/thumbnail',
 			partialsBaseUrl : basePath + 'novabill/private/partials/',
 			paymentsBaseUrl : basePath + 'private/payments/',
 			pdfDownloadUrl : basePath + 'private/pdf/{document}/{id}?print=false',

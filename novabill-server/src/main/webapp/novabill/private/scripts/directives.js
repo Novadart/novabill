@@ -63,7 +63,7 @@ angular.module('novabill.directives',
 			};
 
 			$scope.remove = function(){
-				var instance = nConfirmDialog.open( $translate('REMOVAL_QUESTION') );
+				var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION') );
 				instance.result.then(function(value){
 					if(value){
 						GWT_Server.invoice.remove(nConstants.conf.businessId, $scope.invoice.client.id, $scope.invoice.id, {
