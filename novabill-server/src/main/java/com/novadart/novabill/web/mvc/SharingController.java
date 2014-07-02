@@ -169,8 +169,8 @@ public class SharingController {
 			ExportDataBundle exportDataBundle = new ExportDataBundle();
 			exportDataBundle.setBusiness(Business.findBusiness(businessID));
 			exportDataBundle.setInvoices(new HashSet<>(invoices));
-			String exportFileName =  String.format(messageSource.getMessage("share.invoice.filename", null, "data", locale),
-					ReportUtils.convertToASCII(Business.findBusiness(businessID).getName()));
+			String exportFileName =  ReportUtils.cutFileName(String.format(messageSource.getMessage("share.invoice.filename", null, "data", locale),
+					ReportUtils.convertToASCII(Business.findBusiness(businessID).getName())));
 			downloadSharedDocs(businessID, token, startDate, endDate, response, locale, exportFileName, exportDataBundle);
 		}
 	}
@@ -186,8 +186,8 @@ public class SharingController {
 			ExportDataBundle exportDataBundle = new ExportDataBundle();
 			exportDataBundle.setBusiness(Business.findBusiness(businessID));
 			exportDataBundle.setCreditNotes(new HashSet<>(creditNotes));
-			String exportFileName =  String.format(messageSource.getMessage("share.creditnote.filename", null, "data", locale),
-					ReportUtils.convertToASCII(Business.findBusiness(businessID).getName()));
+			String exportFileName =  ReportUtils.cutFileName(String.format(messageSource.getMessage("share.creditnote.filename", null, "data", locale),
+					ReportUtils.convertToASCII(Business.findBusiness(businessID).getName())));
 			downloadSharedDocs(businessID, token, startDate, endDate, response, locale, exportFileName, exportDataBundle);
 		}
 	}
