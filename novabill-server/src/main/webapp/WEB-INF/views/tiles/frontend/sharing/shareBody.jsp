@@ -7,6 +7,15 @@
 <div class="container share-body" ng-app="novabill-frontend.share" ng-controller="ShareCtrl">
 
     <div class="row">
+        <alert type="info" ng-show="!hideInfo" class="col-md-6 col-md-offset-3" close="hideInfo=true">
+	        <ol>
+	           <li>Seleziona l'intervallo di date di creazione dei documenti</li>
+	           <li>Premi sul tasto "Scarica" per scaricare un archivio con i PDF dei documenti compresi nell'intervallo di date</li>
+	        </ol>
+	        Se premi il pulsante "Ripulisci" l'intervallo di date viene re-impostato sull'anno in corso.
+        </alert>
+    
+    
 		<!--/span-->
 		<div class="col-md-6">
 		   <div class="form-group">
