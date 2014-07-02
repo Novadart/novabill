@@ -39,6 +39,7 @@ import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.report.JasperReportKeyResolutionException;
+import com.novadart.novabill.report.ReportUtils;
 import com.novadart.novabill.service.SharingService;
 import com.novadart.novabill.service.export.data.DataExporter;
 import com.novadart.novabill.service.export.data.ExportDataBundle;
@@ -168,7 +169,8 @@ public class SharingController {
 			ExportDataBundle exportDataBundle = new ExportDataBundle();
 			exportDataBundle.setBusiness(Business.findBusiness(businessID));
 			exportDataBundle.setInvoices(new HashSet<>(invoices));
-			String exportFileName =  messageSource.getMessage("export.filename", null, "data", locale);
+			String exportFileName =  ReportUtils.cutFileName(String.format(messageSource.getMessage("share.invoice.filename", null, "data", locale),
+					ReportUtils.convertToASCII(Business.findBusiness(businessID).getName())));
 			downloadSharedDocs(businessID, token, startDate, endDate, response, locale, exportFileName, exportDataBundle);
 		}
 	}
@@ -184,7 +186,8 @@ public class SharingController {
 			ExportDataBundle exportDataBundle = new ExportDataBundle();
 			exportDataBundle.setBusiness(Business.findBusiness(businessID));
 			exportDataBundle.setCreditNotes(new HashSet<>(creditNotes));
-			String exportFileName =  messageSource.getMessage("export.filename", null, "data", locale);
+			String exportFileName =  ReportUtils.cutFileName(String.format(messageSource.getMessage("share.creditnote.filename", null, "data", locale),
+					ReportUtils.convertToASCII(Business.findBusiness(businessID).getName())));
 			downloadSharedDocs(businessID, token, startDate, endDate, response, locale, exportFileName, exportDataBundle);
 		}
 	}
