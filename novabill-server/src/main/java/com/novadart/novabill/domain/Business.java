@@ -72,7 +72,8 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @NamedQueries({
 	@NamedQuery(name = "business.allUnpaidInvoicesDueDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.paymentDueDate and i.paymentDueDate <= :endDate and i.business.id = :bizID order by i.paymentDueDate, i.documentID"),
 	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID"),
-	@NamedQuery(name = "business.allInvoicesCreationDateInDateRange", query = "select i from Invoice i where :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID")
+	@NamedQuery(name = "business.allInvoicesCreationDateInDateRange", query = "select i from Invoice i where :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID"),
+	@NamedQuery(name = "business.allCreditNotesCreationDateInDateRange", query = "select c from CreditNote c where :startDate <= c.accountingDocumentDate and c.accountingDocumentDate <= :endDate and c.business.id = :bizID order by c.accountingDocumentDate, c.documentID")
 })
 public class Business implements Serializable, Taxable {
 
@@ -313,6 +314,13 @@ public class Business implements Serializable, Taxable {
     
     public static List<Invoice> getAllInvoicesCreationDateInRange(Long businessID, Date startDate, Date endDate){
     	return entityManager().createNamedQuery("business.allInvoicesCreationDateInDateRange", Invoice.class).
+    			setParameter("bizID", businessID).
+    			setParameter("startDate", startDate == null? createDateFromString("1-1-1970"): startDate).
+    			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();
+    }
+    
+    public static List<CreditNote> getAllCreditNotesCreationDateInRange(Long businessID, Date startDate, Date endDate){
+    	return entityManager().createNamedQuery("business.allCreditNotesCreationDateInDateRange", CreditNote.class).
     			setParameter("bizID", businessID).
     			setParameter("startDate", startDate == null? createDateFromString("1-1-1970"): startDate).
     			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();
