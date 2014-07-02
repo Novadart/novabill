@@ -5,12 +5,12 @@ angular.module('novabill-frontend.directives', [])
 /*
  * Share Invoice Widget
  */
-.directive('nShareInvoice', ['nConstantsFrontend', function factory(nConstantsFrontend){
+.directive('nShareDoc', ['nConstantsFrontend', function factory(nConstantsFrontend){
 
 	return {
-		templateUrl: nConstantsFrontend.url.htmlFragmentUrl('/directives/n-share-invoice.html'),
+		templateUrl: nConstantsFrontend.url.htmlFragmentUrl('/directives/n-share-doc.html'),
 		scope: { 
-			invoice : '='
+			doc : '='
 		},
 		controller : ['$scope', function($scope){
 

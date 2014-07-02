@@ -13,7 +13,16 @@ angular.module('novabill-frontend.ajax', ['novabill-frontend.constants'])
 	return {
 		
 		getInvoices : function(businessID, token, startDate, endDate, onSuccess){
-			var url = baseUrl + 'share/{businessID}/filter?token={token}&startDate={startDate}&endDate={endDate}'
+			var url = baseUrl + 'share/{businessID}/invoices/filter?token={token}&startDate={startDate}&endDate={endDate}'
+				.replace('{businessID}', businessID)
+				.replace('{token}', token)
+				.replace('{startDate}', startDate)
+				.replace('{endDate}', endDate);
+			$http.get(url).success( onSuccess );
+		},
+		
+		getCreditNotes : function(businessID, token, startDate, endDate, onSuccess){
+			var url = baseUrl + 'share/{businessID}/creditnotes/filter?token={token}&startDate={startDate}&endDate={endDate}'
 				.replace('{businessID}', businessID)
 				.replace('{token}', token)
 				.replace('{startDate}', startDate)

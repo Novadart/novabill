@@ -13,7 +13,7 @@
 		        <label class="control-label col-md-4" style="text-align: right;">{{'PAYMENTS_STATUS_START_DATE' | translate}}</label>
 		        <div class="col-md-8">
 		           <p class="input-group input-medium">
-		             <input ng-disabled="loading" type="text" class="form-control"
+		             <input ng-disabled="isLoading()" type="text" class="form-control"
 		                readonly="readonly" 
 		                datepicker-popup="dd MMMM yyyy" 
 		                ng-model="startDate" 
@@ -21,7 +21,7 @@
 		                datepicker-options="dateOptions"
 		                show-button-bar="false" />
 		             <span class="input-group-btn">
-		               <button ng-disabled="loading" class="btn btn-default" ng-click="openStartDate($event)">
+		               <button ng-disabled="isLoading()" class="btn btn-default" ng-click="openStartDate($event)">
 		                    <i class="glyphicon glyphicon-calendar"></i>
 		               </button>
 		             </span>
@@ -33,7 +33,7 @@
 		        <label class="control-label col-md-4" style="text-align: right;">{{'PAYMENTS_STATUS_END_DATE' | translate}}</label>
 		        <div class="col-md-8">
 		           <p class="input-group input-medium">
-		             <input ng-disabled="loading" type="text" class="form-control"
+		             <input ng-disabled="isLoading()" type="text" class="form-control"
 		                readonly="readonly" 
 		                datepicker-popup="dd MMMM yyyy" 
 		                ng-model="endDate" 
@@ -41,7 +41,7 @@
 		                datepicker-options="dateOptions"
 		                show-button-bar="false" />
 		             <span class="input-group-btn">
-		               <button ng-disabled="loading" class="btn btn-default" ng-click="openEndDate($event)">
+		               <button ng-disabled="isLoading()" class="btn btn-default" ng-click="openEndDate($event)">
 		                    <i class="glyphicon glyphicon-calendar"></i>
 		               </button>
 		             </span>
@@ -50,22 +50,51 @@
 		    </div>
 		</div>
 		<div class="col-md-5 col-md-offset-1">
-		   <a  ng-disabled="loading" href="javascript:void(0);" class="btn red col-md-5" ng-click="clear()">
+		   <a  ng-disabled="isLoading()" href="javascript:void(0);" class="btn red col-md-5" ng-click="clear()">
 		       {{'CLEAR' | translate}} <i class="fa fa-eraser"></i>
-		   </a>
-		   <a  ng-show="invoices && invoices.length > 0" href="javascript:void(0);" class="btn default col-md-5 col-md-offset-1" ng-click="print()">
-		       {{'DOWNLOAD' | translate}} <i class="fa fa-download"></i>
 		   </a>
 		</div>
 		<!--/span-->
     </div>
 		
 		<div class="row results">
-		    <div class="col-md-12" infinite-scroll="loadMoreInvoices()">
-		        <img class="spinner" ng-show="loading" src="frontend_assets/img/ajax-loading.gif">
-		        <p class="no-data-message text-center text-info" ng-show="invoices && invoices.length===0">{{'NO_DATA' | translate}}</p>
-		        <n-share-invoice invoice="inv" ng-repeat="inv in invoices"></n-share-invoice>
-		    </div>
+            <div class="col-md-12" infinite-scroll="loadMoreInvoices()">		
+			  <tabset>
+				    <tab>
+				         <tab-heading>
+	                        {{'INVOICES' | translate}}
+	                    </tab-heading>
+	                    <div class="container-fluid">
+	                        <div class="text-right" style="padding: 10px;">
+			                     <a  ng-show="invoices && invoices.length > 0" href="javascript:void(0);" class="btn default" ng-click="download('invoices')">
+			                           {{'DOWNLOAD' | translate}} <i class="fa fa-download"></i>
+			                      </a>
+			                 </div>
+	                       <img class="spinner" ng-show="isLoading()" src="frontend_assets/img/ajax-loading.gif">
+	                       <p class="no-data-message text-center text-info" ng-show="invoices && invoices.length===0">{{'NO_DATA' | translate}}</p>
+	                       <n-share-doc doc="inv" ng-repeat="inv in invoices"></n-share-doc>
+	                                            
+	                    </div>
+				    </tab>
+				    
+				    <tab>
+                         <tab-heading>
+                            {{'CREDIT_NOTES' | translate}}
+                        </tab-heading>
+                        <div class="container-fluid">
+                            <div class="text-right" style="padding: 10px;">
+                                 <a  ng-show="creditNotes && creditNotes.length > 0" href="javascript:void(0);" class="btn default" ng-click="download('creditnotes')">
+                                       {{'DOWNLOAD' | translate}} <i class="fa fa-download"></i>
+                                  </a>
+                             </div>
+                           <img class="spinner" ng-show="isLoading()" src="frontend_assets/img/ajax-loading.gif">
+                           <p class="no-data-message text-center text-info" ng-show="creditNotes && creditNotes.length===0">{{'NO_DATA' | translate}}</p>
+                           <n-share-doc doc="cn" ng-repeat="cn in creditNotes"></n-share-doc>
+                                                
+                        </div>
+                    </tab>
+			  </tabset>
+		  </div>
 		</div>
 
 
