@@ -117,7 +117,7 @@ angular.module('novabill-frontend.share', ['novabill-frontend.ajax', 'novabill-f
 		var sd = $scope.startDate != null ? $scope.formatDate($scope.startDate) : ''; 
 		var ed = $scope.endDate != null ? $scope.formatDate($scope.endDate) : '';
 		
-		var url = nConstantsFrontend.conf.baseUrl + 'share/{businessID}/'+docsType+'/download?token={token}&startDate={startDate}&endDate={endDate}'
+		var url = (nConstantsFrontend.conf.baseUrl + 'share/{businessID}/'+docsType+'/download?token={token}&startDate={startDate}&endDate={endDate}')
 		.replace('{businessID}', nQueryParams.businessID)
 		.replace('{token}', nQueryParams.token)
 		.replace('{startDate}', sd)
