@@ -385,7 +385,8 @@ angular.module('novabill.directives.dialogs',
 /*
  * Edit Sharing Permit Dialog
  */
-.factory('nEditSharingPermitDialog', ['nConstants', '$modal', function (nConstants, $modal){
+.factory('nEditSharingPermitDialog', ['nConstants', '$modal', '$sce', '$filter',
+                                      function (nConstants, $modal, $sce, $filter){
 
 	return {
 		open : function( sharingPermit, invalidEmail ) {
@@ -400,6 +401,8 @@ angular.module('novabill.directives.dialogs',
 					$scope.sharingPermit = sharingPermit;
 					$scope.invalidEmail = invalidEmail;
 					$scope.sendEmail = 'false';
+					
+					$scope.dialogInfo = $sce.trustAsHtml( $filter('translate')('SHARING_PERMIT_DIALOG_INFO') );
 
 					$scope.save = function(){
 						$modalInstance.close({

@@ -4,6 +4,8 @@
 		<h4 class="modal-title">{{'SHARING_PERMIT' | translate}}</h4>
 	</div>
 	<div class="modal-body">
+	   <alert type="info" ng-bind-html="dialogInfo"></alert>
+	
 		<form name="form" role="form" style="margin-top: 20px;" novalidate>
 
 			<div class="form-group" ng-class="{'has-error': form.description.$dirty && form.description.$invalid, 'has-success': form.description.$dirty && form.description.$valid}">

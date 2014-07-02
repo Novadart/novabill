@@ -43,7 +43,7 @@ body {
 <hr>
 <br>
 <p><strong>${businessName}</strong> ha attivato la condivisione di alcuni suoi dati con te.<p>
-<p>Per accedere ai dati apri <a target="_blank" href="${shareRequestUrl}">questo link</a> e inserisci i dati richiesti.</p>
+<p>Per accedere ai dati apri <a target="_blank" href="${shareRequestUrl}">questo link</a> e inserisci le informazioni richieste.</p>
 <p>Alternativamente, puoi copiare e incollare nella barra degli indirizzi del tuo browser (il programma che usi per navigare in internet) l'url sottostante:</p>
 
 <p><em>${shareRequestUrl}</em></p>
