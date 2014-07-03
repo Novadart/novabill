@@ -214,7 +214,8 @@
                                                     
                                                     <em>${shareRequestUrl}</em><br>
                                                     <br>
-                                                    <br>
+                                                    Se hai necessità di contattare ${businessName} puoi rispondere direttamente a questa e-mail.
+                                                    <br><br>
                                                     Grazie<br> 
                                                     Il team di Novabill
                                                 </div>
