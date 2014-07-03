@@ -29,6 +29,7 @@ angular.module('novabill-frontend.share', ['novabill-frontend.ajax', 'novabill-f
 	};
 	
 	var loadedInvoices = [];
+	var loadedCreditNotes = [];
 	var PARTITION = 50;
 	var firstLoad = true;
 	
@@ -39,32 +40,57 @@ angular.module('novabill-frontend.share', ['novabill-frontend.ajax', 'novabill-f
 	var HIDDEN_IFRAME = angular.element('<iframe style="display: none;"></iframe>');
 	angular.element($document[0].body).append(HIDDEN_IFRAME);
 	
-	function formatDate(date){
+	$scope.formatDate = function(date){
 		var formatedDate = date.getFullYear() + '-' + ('0'+(date.getMonth()+1)).slice(-2) + '-' + ('0'+date.getDate()).slice(-2);
 		return formatedDate;
-	}
+	};
 	
-	function loadInvoices(startDate, endDate){
-		$scope.loading = true;
+	$scope.isLoading = function(){
+		return $scope.loadingInvoices || $scope.loadingCreditNotes;
+	};
+	
+	$scope.loadDocs = function(startDate, endDate){
+		$scope.loadingInvoices = true;
+		$scope.loadingCreditNotes = true;
 		$scope.invoices = null;
+		$scope.creditNotes = null;
 		
 		nAjaxFrontend.getInvoices(nQueryParams.businessID, nQueryParams.token, 
-				startDate != null ? formatDate(startDate) : '', 
-				endDate != null ? formatDate(endDate) : '', 
+				startDate != null ? $scope.formatDate(startDate) : '', 
+				endDate != null ? $scope.formatDate(endDate) : '', 
 				function(invoices){
 					
 					firstLoad = false;
 					loadedInvoices = invoices;
 					$scope.invoices = loadedInvoices.slice(0, 15);
-					$scope.loading = false;
+					$scope.loadingInvoices = false;
 					
 		});
-	}
+		
+		nAjaxFrontend.getCreditNotes(nQueryParams.businessID, nQueryParams.token, 
+				startDate != null ? $scope.formatDate(startDate) : '', 
+				endDate != null ? $scope.formatDate(endDate) : '', 
+				function(notes){
+					
+					firstLoad = false;
+					loadedCreditNotes = notes;
+					$scope.creditNotes = loadedCreditNotes.slice(0, 15);
+					$scope.loadingCreditNotes = false;
+					
+		});
+	};
 	
 	$scope.loadMoreInvoices = function(){
 		if($scope.invoices){
 			var currentIndex = $scope.invoices.length;
 			$scope.invoices = $scope.invoices.concat(loadedInvoices.slice(currentIndex, currentIndex+PARTITION));
+		}
+	};
+	
+	$scope.loadMoreCreditNotes = function(){
+		if($scope.creditNotes){
+			var currentIndex = $scope.creditNotes.length;
+			$scope.creditNotes = $scope.creditNotes.concat(loadedCreditNotes.slice(currentIndex, currentIndex+PARTITION));
 		}
 	};
 	
@@ -84,14 +110,14 @@ angular.module('novabill-frontend.share', ['novabill-frontend.ajax', 'novabill-f
 		$scope.startDate = DEFAULT_START_DATE;
 		$scope.endDate = DEFAULT_END_DATE;
 		$scope.invoices = null;
-		loadInvoices(DEFAULT_START_DATE, DEFAULT_END_DATE);
+		$scope.loadDocs(DEFAULT_START_DATE, DEFAULT_END_DATE);
 	};
 	
-	$scope.print = function(){
-		var sd = $scope.startDate != null ? formatDate($scope.startDate) : ''; 
-		var ed = $scope.endDate != null ? formatDate($scope.endDate) : '';
+	$scope.download = function(docsType){
+		var sd = $scope.startDate != null ? $scope.formatDate($scope.startDate) : ''; 
+		var ed = $scope.endDate != null ? $scope.formatDate($scope.endDate) : '';
 		
-		var url = nConstantsFrontend.conf.baseUrl + 'share/{businessID}/download?token={token}&startDate={startDate}&endDate={endDate}'
+		var url = (nConstantsFrontend.conf.baseUrl + 'share/{businessID}/'+docsType+'/download?token={token}&startDate={startDate}&endDate={endDate}')
 		.replace('{businessID}', nQueryParams.businessID)
 		.replace('{token}', nQueryParams.token)
 		.replace('{startDate}', sd)
@@ -102,13 +128,13 @@ angular.module('novabill-frontend.share', ['novabill-frontend.ajax', 'novabill-f
 
 	$scope.$watch('startDate', function(newValue, oldValue){
 		if(!firstLoad){
-			loadInvoices(newValue, $scope.endDate);
+			$scope.loadDocs(newValue, $scope.endDate);
 		}
 	});
 	
 	$scope.$watch('endDate', function(newValue, oldValue){
 		if(!firstLoad){
-			loadInvoices($scope.startDate, newValue);
+			$scope.loadDocs($scope.startDate, newValue);
 		}
 	});
 

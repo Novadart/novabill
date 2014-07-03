@@ -10,8 +10,11 @@
 		<div class="col-md-6 col-md-offset-3">
 			<div class="well">
 				<h4 class="block">Condivisione dei Dati</h4>
-				<p>Inserire qui il proprio <strong>indirizzo email</strong> e la <strong>partita IVA</strong> dell'azienda che ha autorizzato la condivisione dei propri dati con te.</p>
-				<p>Dopo aver verificato la correttezza dei dati, ti verrà inviata una email contenente le istruzioni per accedere ai documenti.</p>
+				<p>Da questa pagina potrai avere accesso ai dati che gli utenti Novabill hanno deciso di condividere con te.<br>
+				Ogni volta che avrai necessità di accedere a tali dati dovrai prima passare per questa pagina.</p>
+				<p>Inserisci qui sotto il <strong>tuo indirizzo email</strong> e la <strong>partita IVA</strong> dell'azienda che ha autorizzato la condivisione dei propri dati con te.</p>
+				<p>Dopo aver verificato la correttezza dei dati, ti verrà inviata una email contenente una URL temporanea per accedere ai documenti.<br>
+				Nel caso non ricevessi l'email, ti consigliamo di controllare nella cartella spam ed eventualmente riprovare.</p>
 				<p>Grazie</p>
 			</div>
 
