@@ -177,10 +177,16 @@ angular.module('novabill.directives.forms',
 				
 				BusinessLogo.upload($files[0], function(result, status, headers, config) {
 					
+					if(status === 413){
+						$scope.errorMessage = $filter('translate')('LOGO_UPLOAD_ERROR_ILLEGAL_SIZE');
+						$scope.refreshLogoUrl();
+						$scope.showUploadForm = false;
+						return;
+					}
+					
 					var res = result.indexOf('<pre>') != -1 ? result.charAt(5) : result;
 					switch (parseInt(res)) {
 					case 0:
-						$scope.showUploadForm = false;
 						break;
 
 					default:
@@ -198,7 +204,12 @@ angular.module('novabill.directives.forms',
 						break;
 					}
 					$scope.refreshLogoUrl();
+					$scope.showUploadForm = false;
 					
+				}, function(error){
+					$scope.errorMessage = $filter('translate')('LOGO_UPLOAD_ERROR_ILLEGAL_REQUEST');
+					$scope.refreshLogoUrl();
+					$scope.showUploadForm = false;
 				});
 
 			};

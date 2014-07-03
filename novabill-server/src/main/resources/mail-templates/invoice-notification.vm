@@ -171,12 +171,14 @@
                                                 <div class="textdark">
                                                     ${message}
                                                     <p style="text-align:center;">
-                                                    <strong>
-                                                        <a target="_blank" href="${invoiceUrl}">Clicca qui</a> per scaricare la fattura.
-                                                    </strong>
-                                                    <br><br>
-                                                    <span style="font-size: small;">Alternativamente copia e incolla questa URL nel tuo browser ${invoiceUrl}<span>
+                                                        <strong>
+                                                            <a target="_blank" href="${invoiceUrl}">Clicca qui</a> per scaricare la fattura.
+                                                        </strong>
                                                     </p>
+                                                    <br>
+                                                    <span style="font-size: small;">Alternativamente copia e incolla questa URL nel tuo browser:<br> ${invoiceUrl}<span>
+                                                    <br><br>
+                                                    Per contattare il mittente della fattura puoi rispondere direttamente a questa e-mail.
                                                 </div>
                                             </td>
                                         </tr>

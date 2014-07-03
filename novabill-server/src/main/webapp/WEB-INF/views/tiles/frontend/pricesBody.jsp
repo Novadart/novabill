@@ -33,7 +33,7 @@
                 <div class="col-md-5 col-md-offset-1">
                     <div class="pricing">
                         <div class="pricing-head">
-                            <h3>Standard <span>Per aziende o professionisti senza grosse pretese</span></h3>
+                            <h3>Standard <span>Per aziende o professionisti che necessitano di funzionalità di base</span></h3>
                             <h4><i>€</i>0<i>,00</i> <span>Al Mese</span></h4>
                         </div>
                         <ul class="pricing-content feats-list list-unstyled">
