@@ -150,7 +150,7 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 					$http({
 						method : 'DELETE',
 						url : nConstants.conf.logoUrl
-					}).success( successFn );
+					}).success( successFn ).error( failureFn );
 				}
 			};
 
