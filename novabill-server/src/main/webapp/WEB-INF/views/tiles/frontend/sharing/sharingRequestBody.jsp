@@ -14,7 +14,7 @@
 				Ogni volta che avrai necessità di accedere a tali dati dovrai prima passare per questa pagina.</p>
 				<p>Inserisci qui sotto il <strong>tuo indirizzo email</strong> e la <strong>partita IVA</strong> dell'azienda che ha autorizzato la condivisione dei propri dati con te.</p>
 				<p>Dopo aver verificato la correttezza dei dati, ti verrà inviata una email contenente una URL temporanea per accedere ai documenti.<br>
-				Nel caso non ricevessi l'email, ti consigliamo di controllare nella cartella spam ed eventualmente riprovare.</p>
+				Nel caso non ricevessi l'email, ti consigliamo di controllare i tuoi filtri sulla posta in arrivo ed eventualmente riprovare.</p>
 				<p>Grazie</p>
 			</div>
 
