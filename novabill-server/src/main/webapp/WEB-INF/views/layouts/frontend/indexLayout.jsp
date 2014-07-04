@@ -45,6 +45,7 @@
    <!-- END THEME STYLES -->
    
    <link href="${frontendAssetsUrl}/plugins/cookieCuttr/cookiecuttr.css" rel="stylesheet" type="text/css"/>
+   <link href="${frontendAssetsUrl}/plugins/iealert/css/style.css" rel="stylesheet" type="text/css"/>
 
    <link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
 	
@@ -251,12 +252,28 @@
     <script type="text/javascript" src="${frontendAssetsUrl}/plugins/countdown/plugin/jquery.countdown-it.js"></script>
     
     <script src="${frontendAssetsUrl}/scripts/app.js"></script>
-    <script src="${frontendAssetsUrl}/scripts/index.js"></script>    
+    <script src="${frontendAssetsUrl}/scripts/index.js"></script>
+    <script src="${frontendAssetsUrl}/plugins/iealert/iealert.min.js" type="text/javascript"></script>
+    
     <script type="text/javascript">
-        jQuery(document).ready(function() {
+        $(function() {
             App.init();    
             App.initBxSlider();
-            Index.initRevolutionSlider();                    
+            Index.initRevolutionSlider();
+            
+            if(!$.cookie('ie_alert_shown_public')){
+            	$("body").iealert({
+                    support:"ie8",
+                    title:"Il tuo browser è vecchio e insicuro e non è supportato da Novabill",
+                    text:"Non è sicuro utilizzare questo browser per lavorare su dati sensibili.<br>Per favore premi sul pulsante 'Aggiorna' qui sotto e installa una versione più recente di Internet Explorer o uno dei browser alternativi suggeriti.<br><br>Grazie",
+                    upgradeTitle:"Aggiorna",
+                    upgradeLink:"http://browsehappy.com/",
+                    overlayClose:false,
+                    closeBtn: true
+                });
+
+                $.cookie('ie_alert_shown_public', 'true', { path: '/' });
+            }
         });
         
         $(function(){

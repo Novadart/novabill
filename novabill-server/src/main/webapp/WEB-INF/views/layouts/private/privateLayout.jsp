@@ -70,6 +70,7 @@
 <link href="${privateAssetsUrl}/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="${privateAssetsUrl}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="${privateAssetsUrl}/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
+<link href="${frontendAssetsUrl}/plugins/iealert/css/style.css" rel="stylesheet" type="text/css"/>
 <!-- END GLOBAL MANDATORY STYLES -->
 
 <!-- BEGIN THEME STYLES -->
@@ -312,12 +313,28 @@ window.onerror = function(message, source, line, column) {
 	
 	<script src="${gwtUrl}" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/scripts/app.js" type="text/javascript"></script>
+	<script src="${frontendAssetsUrl}/plugins/iealert/iealert.min.js" type="text/javascript"></script>
 	
 	<tiles:insertAttribute name="javascript" />
 	
 	
 	<script type="text/javascript">
-	$(App.init);
+	$(function(){
+		if(!$.cookie('ie_alert_shown')){
+			$("body").iealert({
+				support:"ie8",
+	            title:"Il tuo browser è vecchio e insicuro e non è supportato da Novabill",
+	            text:"Non è sicuro utilizzare questo browser per lavorare su dati sensibili.<br>Per favore premi sul pulsante 'Aggiorna' qui sotto e installa una versione più recente di Internet Explorer o uno dei browser alternativi suggeriti.<br><br><span style='font-weight:bold;'>Se utilizzi questo browser Novabill non funzionerà correttamente</span><br><br>Grazie",
+	            upgradeTitle:"Aggiorna",
+	            upgradeLink:"http://browsehappy.com/",
+	            overlayClose:false,
+	            closeBtn: true
+			});
+			
+			$.cookie('ie_alert_shown', 'true', { path: '/' });
+		}
+		App.init();
+	});
 	
 	$('#logoutLi').click(function(){
         $('#logoutForm').submit();
