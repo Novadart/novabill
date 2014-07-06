@@ -3,7 +3,7 @@
 angular.module('novabill.directives', 
 		['novabill.directives.validation', 'novabill.directives.dialogs', 
 		 'novabill.utils', 'novabill.translations', 
-		 'novabill.calc', 'novabill.constants', 'ngSanitize', 'ngAnimate'])
+		 'novabill.calc', 'novabill.constants', 'ngSanitize', 'ngAnimate', 'ui.bootstrap'])
 
 /*
  * Invoice widget
@@ -485,10 +485,10 @@ angular.module('novabill.directives',
 		              function($scope, $rootScope, nCalc, $filter, nConfirmDialog, nAjax){
 			$scope.PRICE_TYPE = nConstants.priceType;
 			$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
-
+			
 			// making a copy because we want to drop changes in case they are not saved remotely
 			$scope.price = angular.copy( $scope.commodity.prices[$scope.priceListName]);
-
+ 
 			function updatePriceInfo(price){
 
 				$scope.priceValue = nCalc.calculatePriceForCommodity($scope.commodity, $scope.priceListName).toString();

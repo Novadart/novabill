@@ -56,13 +56,12 @@
                     </div>
                 </div>
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">
-                    <div class="dashboard-stat yellow total" ng-mouseenter="mouseOverTotal=true" ng-mouseleave="mouseOverTotal=false">
-                        <div class="visual" ng-click="mouseOverTotal=!mouseOverTotal" >
+                    <div class="dashboard-stat yellow total" >
+                        <div class="visual" >
                             <i class="fa fa-bar-chart-o"></i>
                         </div>
                         <div class="details" >
-                            <img ng-show="!mouseOverTotal" class="hand" src="../private_assets/img/hand.png">
-                            <div ng-show="mouseOverTotal" class="number">
+                            <div class="number">
                                 <span ng-show="!plusTax">{{stats.totalBeforeTaxesForYear | currency}}</span>
                                 <span ng-show="plusTax">{{stats.totalAfterTaxesForYear | currency}}</span>
                                 <label style=""><input type="checkbox" ng-model="plusTax"> + {{'TAX' | translate}}</label>
