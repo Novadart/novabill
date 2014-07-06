@@ -22,8 +22,8 @@
 						<tr ng-repeat="c in commodities" ng-class="{product: !c.service, service: c.service}"
 							ng-click="selectCommodity(c)">
 							<td width="70%"><span class="label label-sm label-default">{{c.sku}}</span> {{c.description}}</td>
-							<td width="30%" style="text-align: right;"><n-commodity-price commodity="c" price-list-name="priceList.name"
-									read-only="true"></n-commodity-price></td>
+							<td width="30%" style="text-align: right;">
+							 <n-commodity-price commodity="c" price-list-name="priceList.name"	read-only="true"></n-commodity-price></td>
 						</tr>
 
 					</tbody>
