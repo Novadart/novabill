@@ -94,7 +94,9 @@
 		</band>
 		<band height="320" splitType="Stretch">
 			<textField isStretchWithOverflow="true" isBlankWhenNull="true">
-				<reportElement uuid="3328b22d-5804-4f73-9ddd-e5ddfd2d8234" positionType="Float" x="8" y="25" width="160" height="70" forecolor="#333333"/>
+				<reportElement uuid="3328b22d-5804-4f73-9ddd-e5ddfd2d8234" positionType="Float" x="8" y="25" width="160" height="70" forecolor="#333333">
+					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font fontName="Open Sans Light" size="8" isBold="false"/>
 					<paragraph lineSpacing="Single"/>
@@ -126,24 +128,28 @@
 				<textFieldExpression><![CDATA[com.novadart.novabill.report.ReportUtils.join("\n",
     $F{document.client.name},
     com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.address}),
-    com.novadart.novabill.report.ReportUtils.join(", ",
-        com.novadart.novabill.report.ReportUtils.join(" ",
-            com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.postcode}),
-            com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.city}),
-            com.novadart.novabill.report.ReportUtils.transformIfNotBlank("(%s)", $F{document.client.province})
-        ),
-        $F{document.client.country}
+    com.novadart.novabill.report.ReportUtils.join(" ",
+        com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.postcode}),
+        com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.city}),
+        com.novadart.novabill.report.ReportUtils.join(", ",
+            com.novadart.novabill.report.ReportUtils.transformIfNotBlank("(%s)", $F{document.client.province}),
+            com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.client.country})
+        )
     )
 )]]></textFieldExpression>
 			</textField>
 			<line>
-				<reportElement uuid="550be4f8-6d43-4e41-9821-62da9a71684a" x="8" y="20" width="160" height="1" forecolor="#666666"/>
+				<reportElement uuid="550be4f8-6d43-4e41-9821-62da9a71684a" x="8" y="20" width="160" height="1" forecolor="#666666">
+					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
+				</reportElement>
 				<graphicElement>
 					<pen lineWidth="0.15" lineColor="#CCCCCC"/>
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement uuid="e9c5054b-67ac-41db-804b-b649cd5ad9f8" x="8" y="0" width="160" height="20"/>
+				<reportElement uuid="e9c5054b-67ac-41db-804b-b649cd5ad9f8" x="8" y="0" width="160" height="20">
+					<printWhenExpression><![CDATA[!$F{document.incognito}]]></printWhenExpression>
+				</reportElement>
 				<textElement>
 					<font fontName="Open Sans Light"/>
 				</textElement>
