@@ -103,7 +103,9 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 
 		BigDecimal total = BigDecimal.ZERO;
 		for (AccountingDocumentItemDTO i : items) {
-			total = total.add(i.getQuantity());
+			if(i.getQuantity() != null){
+				total = total.add(i.getQuantity());
+			}
 		}
 
 		BigDecimal roundedTotal = total.setScale(0, RoundingMode.CEILING);
