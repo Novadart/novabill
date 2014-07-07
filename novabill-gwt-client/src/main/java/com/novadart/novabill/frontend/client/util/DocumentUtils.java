@@ -21,14 +21,14 @@ public class DocumentUtils {
 		AccountingDocumentItemDTO ii = new AccountingDocumentItemDTO();
 
 		try {
-			ii.setSku(sku.isEmpty() ? null : sku);
+			ii.setSku(sku);
 			ii.setDescription(description);
 			ii.setPrice(CalcUtils.parseCurrency(price));
 			ii.setQuantity(CalcUtils.parseValue(quantity));
 			ii.setWeight(weight != null && !weight.isEmpty() ? CalcUtils.parseValue(weight) : null);
 			ii.setUnitOfMeasure(unitOfMeasure);
 			ii.setTax(CalcUtils.parseValue(tax));
-			ii.setDiscount(discount.isEmpty() ? BigDecimal.ZERO : CalcUtils.parseValue(discount));
+			ii.setDiscount(discount == null || discount.isEmpty() ? BigDecimal.ZERO : CalcUtils.parseValue(discount));
 		} catch (NumberFormatException ex) {
 			return null;
 		}
