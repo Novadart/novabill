@@ -28,6 +28,16 @@ public class Endpoint {
 	
 	@Size(max = 3)
 	private String country;
+	
+	public Endpoint copy(Client client){
+		companyName = client.getName();
+		street = client.getAddress();
+		postcode = client.getPostcode();
+		city = client.getCity();
+		province = client.getProvince();
+		country = client.getCountry();
+		return this;
+	}
 
 	public String getCompanyName() {
 		return companyName;
