@@ -6,7 +6,7 @@
 				    class="label label-sm"
 				    ng-class="{'label-success': record.operationType===OPERATION_TYPE.CREATE,
 				               'label-danger': record.operationType===OPERATION_TYPE.DELETE,
-				               'label-info': record.operationType===OPERATION_TYPE.UPDATE||record.operationType===OPERATION_TYPE.SET_PAYED}">
+				               'label-info': record.operationType===OPERATION_TYPE.UPDATE||record.operationType===OPERATION_TYPE.SET_PAYED||record.operationType===OPERATION_TYPE.EMAIL}">
 					<i ng-if="record.entityType === ENTITY_TYPE.CLIENT" class="fa fa-user"></i>
 					<i ng-if="record.entityType === ENTITY_TYPE.COMMODITY" class="fa fa-th"></i>
 					<i ng-if="record.entityType === ENTITY_TYPE.INVOICE" class="fa fa-file"></i>

@@ -847,6 +847,11 @@ angular.module('novabill.directives',
 					$scope.description = tr('LR_INVOICE_DELETE',
 							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
 					break;
+					
+				case nConstants.logRecord.operationType.EMAIL:
+					$scope.description = tr('LR_INVOICE_EMAIL',
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
+					break;
 
 				default:
 					break;
@@ -967,7 +972,7 @@ angular.module('novabill.directives',
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
 					$scope.description = tr('LR_SHARING_PERMIT_CREATE',
-							'{sharingPermitDesc: "'+ $sanitize(details.sharingPermitDesc) +'"}');
+							'{sharingPermitDesc: "'+ $sanitize(details.sharingPermitDesc) +'", link: "'+nConstants.url.share()+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
