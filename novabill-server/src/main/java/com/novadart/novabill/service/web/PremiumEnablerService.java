@@ -191,7 +191,9 @@ public class PremiumEnablerService {
 		item.setDiscount(planDesc.getDiscount());
 		item.setDescription(planDesc.getItemName());
 		item.setTax(planDesc.getTax());
-		item.setTotal(planDesc.getTotalWithoutTax());
+		item.setTotalBeforeTax(planDesc.getTotalWithoutTax());
+		item.setTotalTax(planDesc.getTotalTax());
+		item.setTotal(planDesc.getTotalAfterTax());
 		invoice.getAccountingDocumentItems().add(item);
 		
 		invoice.setTotalBeforeTax(planDesc.getTotalWithoutTax());
