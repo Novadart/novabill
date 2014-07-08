@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,18 +26,18 @@ public class ClientAddress implements Serializable {
 
 	private static final long serialVersionUID = 122436824066012394L;
 
-	@NotBlank
+	@NotEmpty
 	@Trimmed
 	@Size(max = 50)
 	private String name;
 	
-	@NotBlank
+	@NotEmpty
 	@Trimmed
 	@Size(max = 255)
 	private String companyName;
 	
 	@Size(max = 255)
-	@NotBlank
+	@NotEmpty
 	@Trimmed
 	private String address;
 	
@@ -49,12 +49,11 @@ public class ClientAddress implements Serializable {
 	@Trimmed
 	private String city;
 	
-//	@NotBlank
 	@Size(max = 100)
 	@Trimmed
 	private String province;
 	
-	@NotBlank
+	@NotEmpty
 	@Size(max = 3)
 	@Trimmed
 	private String country;

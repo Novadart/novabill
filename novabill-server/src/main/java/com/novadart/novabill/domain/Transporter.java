@@ -14,7 +14,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -26,14 +26,14 @@ public class Transporter implements Serializable {
 
 	private static final long serialVersionUID = -291082261687056423L;
 	
-	@NotBlank
+	@NotEmpty
 	@Trimmed
 	@Size(max = 50)
 	private String name;
 	
 	@Size(max = 255)
 	@Trimmed
-	@NotBlank
+	@NotEmpty
 	private String description;
 
 	@ManyToOne

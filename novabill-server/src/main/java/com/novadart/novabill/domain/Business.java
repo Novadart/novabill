@@ -51,7 +51,7 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -80,32 +80,32 @@ public class Business implements Serializable, Taxable {
 	private static final long serialVersionUID = 261999997691744944L;
 	
 	@Size(max = 255)
-	@NotBlank
+	@NotEmpty
 	@Trimmed
     private String name;
 
     @Size(max = 255)
-    @NotBlank
+    @NotEmpty
     @Trimmed
     private String address;
 
     @Size(max = 10)
-    @NotBlank
+    @NotEmpty
     @Trimmed
     private String postcode;
 
     @Size(max = 60)
-    @NotBlank
+    @NotEmpty
     @Trimmed
     private String city;
 
     @Size(max = 100)
-    //@NotNull
     @Trimmed
     private String province;
 
     @Size(max = 3)
     @Trimmed
+    @NotEmpty
     private String country;
 
     @Size(max = com.novadart.novabill.domain.Email.EMAIL_MAX_LENGTH)
@@ -131,13 +131,13 @@ public class Business implements Serializable, Taxable {
 
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
-    @NotBlank
+    @NotEmpty
     @Trimmed
     private String vatID;
     
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
-    @NotBlank
+    @NotEmpty
     @Trimmed
     private String ssn;
 

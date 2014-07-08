@@ -19,7 +19,7 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,7 +39,7 @@ import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 public class PaymentType {
 	
 	@Size(max = 255)
-	@NotBlank
+	@NotEmpty
 	@Trimmed
 	private String name;
 	

@@ -24,6 +24,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -43,7 +44,7 @@ public class Principal implements UserDetails {
 	
 	private static final long serialVersionUID = -2652502773566344511L;
 	
-	@NotBlank
+	@NotEmpty
 	@Email
 	@Size(max = com.novadart.novabill.domain.Email.EMAIL_MAX_LENGTH)
 	@Trimmed
