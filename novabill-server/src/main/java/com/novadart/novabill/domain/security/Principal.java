@@ -23,7 +23,6 @@ import javax.persistence.UniqueConstraint;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -74,6 +73,10 @@ public class Principal implements UserDetails {
 		creationTime = registration.getCreationTime();
 	}
 	
+	@Deprecated
+	public void setPasswordNonHashed(String password){
+		this.password = password;
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
