@@ -462,7 +462,7 @@ public class Business implements Serializable, Taxable {
 	}
     
     public Client findClientByVatIDOrSsn(String vatIDOrSsn) {
-    	String sql = "select c from Client c where c.business.id = :id and c.vatID = :vatIDOrSsn or c.ssn = :vatIDOrSsn";
+    	String sql = "select c from Client c where c.business.id = :id and (c.vatID = :vatIDOrSsn or c.ssn = :vatIDOrSsn)";
     	List<Client> r = entityManager.createQuery(sql, Client.class).setParameter("id", getId()).setParameter("vatIDOrSsn", vatIDOrSsn).getResultList();
 		return r.size() == 0? null: r.get(0);
     }
