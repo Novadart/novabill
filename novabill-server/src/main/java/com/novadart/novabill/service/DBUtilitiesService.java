@@ -451,8 +451,12 @@ public class DBUtilitiesService {
 			business.getSettings().setEmailSubject(BusinessServiceImpl.EMAIL_SUBJECT);
 			Principal principal = business.getPrincipals().iterator().next();
 			business.getSettings().setEmailReplyTo(StringUtils.isBlank(business.getEmail())? principal.getUsername(): business.getEmail());
-			premiumEnabledService.enablePremiumForNMonths(business, 12);
+			if(business.getId().equals(1106) || business.getId().equals(2862))
+				premiumEnabledService.enablePremiumForNMonths(business, 7);
+			else
+				premiumEnabledService.enablePremiumForNMonths(business, 6);
 		}
+		
 	}
 	
 	@Scheduled(fixedDelay = 31_536_000_730l)
