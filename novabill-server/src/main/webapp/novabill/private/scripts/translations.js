@@ -265,6 +265,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		TRANSPORT_DOCUMENT_AREADY_IN_INVOICE_ALERT : 'Documenti già inclusi in fatture precedenti',
 		TRANSPORT_DOCUMENT : 'Documento di Trasporto',
 		TRANSPORT_DOCUMENTS : 'Documenti di Trasporto',
+		TRANSPORTER : 'Vettore',
 		TRANSPORTERS_LIST : 'Lista Vettori',
 		TYPE : 'Tipo',
 		UNIT_OF_MEASURE : 'Unità di Misura',
