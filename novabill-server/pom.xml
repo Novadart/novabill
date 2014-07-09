@@ -610,46 +610,6 @@
 			</build>
 		</profile>
 		<profile>
-			<id>nb</id>
-			<build>
-				<filters>
-					<filter>profiles/nb.properties</filter>
-				</filters>
-				<plugins>
-					<plugin>
-						<groupId>ro.isdc.wro4j</groupId>
-						<artifactId>wro4j-maven-plugin</artifactId>
-						<configuration>
-							<wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
-							<destinationFolder>${project.build.directory}/${project.build.finalName}/novabill-min/</destinationFolder>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>compile</phase>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-war-plugin</artifactId>
-						<configuration>
-							<classifier>nb</classifier>
-							<warSourceExcludes>
-								novabill/private/css/**,
-								novabill/private/scripts/**,
-								novabill/frontend/css/**,
-								novabill/frontend/scripts/**,
-								novabill-deps/**
-							</warSourceExcludes>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
 			<id>autobuild</id>
 			<build>
 				<filters>
