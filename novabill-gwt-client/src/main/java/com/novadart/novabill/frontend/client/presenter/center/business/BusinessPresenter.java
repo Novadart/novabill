@@ -53,15 +53,13 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 			validationOk = false;
 		}
 
-		for (ValidatedTextBox v : new ValidatedTextBox[]{getView().getAddress(), getView().getCity(), 
+		for (ValidatedTextBox v : new ValidatedTextBox[]{getView().getAddress(), getView().getCity(), getView().getProvince(),
 				getView().getPostcode(), getView().getPhone(), getView().getEmail(), getView().getMobile(), getView().getFax(), getView().getWeb()}) {
 			v.validate();
 			validationOk = validationOk && v.isValid();
 		}
 		getView().getName().validate();
 		validationOk = validationOk && getView().getName().isValid();
-		getView().getProvince().validate();
-		validationOk = validationOk && getView().getProvince().isValid();
 		getView().getCountry().validate();
 		validationOk = validationOk && getView().getCountry().isValid();
 		return validationOk;
@@ -115,7 +113,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 			b.setSsn(getView().getSsn().getText());
 			b.setVatID(getView().getVatID().getText());
 			b.setCity(getView().getCity().getText());
-			b.setProvince(getView().getProvince().getSelectedItemText());
+			b.setProvince(getView().getProvince().getText());
 			b.setCountry(getView().getCountry().getSelectedItemValue());
 			b.setPostcode(getView().getPostcode().getText());
 			b.setPhone(getView().getPhone().getText());
@@ -158,7 +156,7 @@ public class BusinessPresenter extends AbstractPresenter<BusinessView> implement
 		getView().getVatID().setText(b.getVatID());
 		getView().getAddress().setText(b.getAddress());
 		getView().getCity().setText(b.getCity());
-		getView().getProvince().setSelectedItem(b.getProvince());
+		getView().getProvince().setText(b.getProvince());
 		getView().getCountry().setSelectedItemByValue(b.getCountry());
 		getView().getPostcode().setText(b.getPostcode());
 		getView().getPhone().setText(b.getPhone());

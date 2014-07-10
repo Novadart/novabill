@@ -3,9 +3,11 @@
 	xmlns:context="http://www.springframework.org/schema/context"
 	xmlns:mvc="http://www.springframework.org/schema/mvc" xmlns:p="http://www.springframework.org/schema/p"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-3.2.xsd     
 	http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.2.xsd     
-	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd">
+	http://www.springframework.org/schema/mvc http://www.springframework.org/schema/mvc/spring-mvc-3.2.xsd
+	http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 	<context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
 
@@ -16,6 +18,8 @@
 	</context:component-scan>
 
 	<mvc:annotation-driven />
+	
+	<security:global-method-security pre-post-annotations="enabled"/>
 
 	<mvc:resources location="/frontend_assets/css/" mapping="/frontend_assets/css/**" />
 	<mvc:resources location="/frontend_assets/fonts/" mapping="/frontend_assets/fonts/**" />
@@ -38,22 +42,10 @@
 	<mvc:interceptors>
 		<mvc:interceptor>
 			<mvc:mapping path="/private/**" />
+			<mvc:exclude-mapping path="/private/ajax/**"/>
 			<bean class="com.novadart.novabill.interceptor.AccountBootstrapInterceptor" />
 		</mvc:interceptor>
 	</mvc:interceptors>
-
-	<!-- <mvc:view-controller path="/login" /> -->
-	<!-- <mvc:view-controller path="/uncaughtException" />
-		<mvc:view-controller path="/resourceNotFound" />
-		<mvc:view-controller path="/dataAccessFailure" />
-		<mvc:view-controller path="/registrationCompleted" />
-		<mvc:view-controller path="/passwordRecoveryCommenced" />
-		<mvc:view-controller path="/tos" /> -->
-	<!-- <mvc:view-controller path="/privacyPolicy" /> --> <!-- Not needed, currently we're using iubenda.com -->
-	<!-- <mvc:view-controller path="/premiumInfo"/> -->
-
-	<!-- TEST view -->
-	<mvc:view-controller path="/resolutionTest" />
 
 	<bean
 		class="org.springframework.context.support.ReloadableResourceBundleMessageSource"
@@ -90,10 +82,10 @@
 	<bean class="org.springframework.web.servlet.view.UrlBasedViewResolver"
 		id="tilesViewResolver">
 		<property name="viewClass"
-			value="org.springframework.web.servlet.view.tiles2.TilesView" />
+			value="org.springframework.web.servlet.view.tiles3.TilesView" />
 	</bean>
 
-	<bean class="org.springframework.web.servlet.view.tiles2.TilesConfigurer"
+	<bean class="org.springframework.web.servlet.view.tiles3.TilesConfigurer"
 		id="tilesConfigurer">
 		<property name="definitions">
 			<list>
@@ -104,8 +96,8 @@
 		</property>
 	</bean>
 
-	<bean class="com.novadart.novabill.aspect.XsrfAspect"
-		factory-method="aspectOf">
-	</bean>
+<!-- 	<bean class="com.novadart.novabill.aspect.XsrfAspect" -->
+<!-- 		factory-method="aspectOf"> -->
+<!-- 	</bean> -->
 
 </beans>

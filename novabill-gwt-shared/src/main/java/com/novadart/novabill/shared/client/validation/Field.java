@@ -13,7 +13,7 @@ public enum Field {
 	accountingDocumentItems_totalBeforeTax, accountingDocumentItems_totalTax, accountingDocumentItems_total, accountingDocumentItems_price,
 	
 	//Invoice fields
-	paymentDueDate, payed, paymentTypeName,
+	paymentDueDate, payed, paymentTypeName, paymentDeltaType, createdFromTransportDocuments, seenByClient,
 	
 	//Estimation
 	limitations, validTill,
@@ -28,7 +28,7 @@ public enum Field {
 	transporter, transportationResponsibility, tradeZone, transportStartDate, numberOfPackages, cause, appearanceOfTheGoods,
 	
 	//Business and Client fields
-	name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatID, ssn, 
+	name, address, postcode, city, province, country, email, phone, mobile, fax, web, vatID, ssn, defaultPriceList,
 	
 	//Client contact fields 
 	contact_firstName, contact_lastName, contact_email, contact_phone, contact_fax, contact_mobile, contact_note,
@@ -47,5 +47,9 @@ public enum Field {
 	
 	//Business settings
 	settings_defaultLayoutType, settings_priceDisplayInDocsMonolithic, settings_incognitoEnabled, settings_invoiceFooterNote,
-	settings_creditNoteFooterNote, settings_estimationFooterNote, settings_transportDocumentFooterNote
+	settings_creditNoteFooterNote, settings_estimationFooterNote, settings_transportDocumentFooterNote,
+	emailSubject, emailText, emailReplyTo,
+	
+	//Email
+	to, from, subject, text, replyTo, message
 }

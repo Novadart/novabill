@@ -4,6 +4,5 @@
 <spring:url value="/frontend_assets" var="frontendAssetsUrl" />
 
 <!-- BEGIN PAGE LEVEL PLUGIN STYLES --> 
-<link href="${frontendAssetsUrl}/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" /> 
 <link href="${frontendAssetsUrl}/css/pages/page500.css" rel="stylesheet" type="text/css"/>             
 <!-- END PAGE LEVEL PLUGIN STYLES -->

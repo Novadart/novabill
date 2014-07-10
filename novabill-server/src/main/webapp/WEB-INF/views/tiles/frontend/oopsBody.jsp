@@ -9,12 +9,11 @@
         <div class="row breadcrumbs">
             <div class="container">
                 <div class="col-md-4 col-sm-4">
-                    <h1>500 Page</h1>
+                    <h1>Oops!</h1>
                 </div>
                 <div class="col-md-8 col-sm-8">
                     <ul class="pull-right breadcrumb">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="">Pages</a></li>
+                        <li><a href="${homeUrl}">Home</a></li>
                         <li class="active">500</li>
                     </ul>
                 </div>
@@ -30,10 +29,10 @@
                     500
                 </div>
                 <div class="details">
-                    <h3>Oops!  Something went wrong.</h3>
+                    <h3>Oops! Qualcosa non ha funzionato a dovere.</h3>
                     <p>
-                        We are fixing it!<br>
-                        Please come back in a while.<br><br>
+                        Ci stiamo lavorando!<br>
+                        Per favore riprova più tardi.<br><br>
                     </p>
                 </div>
             </div>

@@ -2,12 +2,7 @@
 	pageEncoding="UTF-8"%>
 	
 	
-<div class="page-content">
+<div class="page-content" ng-app="novabill.settings">
     <div ng-view></div>
+    <toaster-container toaster-options="{'time-out': 0, 'position-class': 'toast-top-right', 'close-button':true}"></toaster-container>
 </div>
-
-<script type="text/javascript">
-function onGWTLoaded(){
-    angular.bootstrap(document, ['novabill.settings']);
-}
-</script>	

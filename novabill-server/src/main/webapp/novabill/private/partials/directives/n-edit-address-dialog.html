@@ -1,0 +1,325 @@
+<div class="n-edit-address-dialog">
+    <div class="modal-header">
+        <button type="button" class="close" data-dismiss="modal" aria-hidden="true" ng-click="cancel()">&times;</button>
+        <h4 class="modal-title">{{'ADDRESS' | translate}}</h4>
+    </div>
+    <div class="modal-body">
+        <form name="form" role="form" novalidate>
+
+            <div ng-show="!$parent.address.isLegalAddress" class="form-group" ng-class="{'has-error': form.name.$dirty && form.name.$invalid, 'has-success': form.name.$dirty && form.name.$valid}">
+                <label style="font-weight: bold;" class="control-label" for="id">{{'NAME' | translate}} *</label> 
+                <input  type="text" name="name" maxlength="50" ng-model="$parent.address.name" class="form-control" placeholder="{{'ADDRESS_NAME_PLACEHOLDER' | translate}}" ng-required="!$parent.address.isLegalAddress">
+                <div ng-show="form.name.$dirty && form.name.$invalid">
+                    <span class="text-danger" ng-show="form.name.$error.required">{{'VALIDATION_REQUIRED' | translate}}</span> 
+                </div>
+            </div>
+            
+            <hr ng-show="!$parent.address.isLegalAddress">
+            
+            <div class="form-group" ng-class="{'has-error': form.companyName.$dirty && form.companyName.$invalid, 'has-success': form.companyName.$dirty && form.companyName.$valid}">
+                <label class="control-label" for="companyName">{{'COMPANY_NAME' | translate}} *</label> 
+                <input  type="text" name="companyName" maxlength="255" ng-model="$parent.address.companyName" class="form-control" placeholder="{{'COMPANY_NAME_PLACEHOLDER' | translate}}" required>
+                <div ng-show="form.companyName.$dirty && form.companyName.$invalid">
+                    <span class="text-danger" ng-show="form.companyName.$error.required">{{'VALIDATION_REQUIRED' | translate}}</span> 
+                </div>
+            </div>
+            
+            <div class="form-group" ng-class="{'has-error': form.address.$dirty && form.address.$invalid, 'has-success': form.address.$dirty && form.address.$valid}">
+                <label class="control-label" for="address">{{'ADDRESS' | translate}} *</label> 
+                <input  type="text" name="address" maxlength="255" ng-model="$parent.address.address" class="form-control" placeholder="{{'ADDRESS_PLACEHOLDER' | translate}}" required>
+                <div ng-show="form.address.$dirty && form.address.$invalid">
+                    <span class="text-danger" ng-show="form.address.$error.required">{{'VALIDATION_REQUIRED' | translate}}</span> 
+                </div>
+            </div>
+            
+            <div class="form-group" ng-class="{'has-error': form.postcode.$dirty && form.postcode.$invalid, 'has-success': form.postcode.$dirty && form.postcode.$valid}">
+                <label class="control-label" for="postcode">{{'POSTCODE' | translate}}</label> 
+                <input  type="text" name="postcode" maxlength="10" ng-model="$parent.address.postcode" class="form-control" placeholder="{{'POSTCODE_PLACEHOLDER' | translate}}">
+            </div>
+            
+            <div class="form-group" ng-class="{'has-error': form.city.$dirty && form.city.$invalid, 'has-success': form.city.$dirty && form.city.$valid}">
+                <label class="control-label" for="city">{{'CITY' | translate}}</label> 
+                <input  type="text" name="city" maxlength="60" ng-model="$parent.address.city" class="form-control" placeholder="{{'CITY_PLACEHOLDER' | translate}}">
+            </div>
+            
+            <div class="form-group" ng-class="{'has-error': form.province.$dirty && form.province.$invalid, 'has-success': form.province.$dirty && form.province.$valid}">
+                <label class="control-label" for="province">{{'PROVINCE' | translate}}</label>
+                <input  type="text" name="province" maxlength="100" ng-model="$parent.address.province" class="form-control" placeholder="{{'PROVINCE_PLACEHOLDER' | translate}}">
+            </div>
+            
+            <div class="form-group" ng-class="{'has-error': form.country.$dirty && form.country.$invalid, 'has-success': form.country.$dirty && form.country.$valid}">
+                <label class="control-label" for="country">{{'COUNTRY' | translate}} *</label> 
+                <select  class="form-control" name="country" ng-model="$parent.address.country" ng-change="onCountryChange()" required>
+					<option value="AF">Afghanistan</option>
+					<option value="AL">Albania</option>
+					<option value="DZ">Algeria</option>
+					<option value="AD">Andorra</option>
+					<option value="AO">Angola</option>
+					<option value="AI">Anguilla</option>
+					<option value="AQ">Antartide</option>
+					<option value="AG">Antigua e Barbuda</option>
+					<option value="AN">Antille Olandesi</option>
+					<option value="SA">Arabia Saudita</option>
+					<option value="AR">Argentina</option>
+					<option value="AM">Armenia</option>
+					<option value="AW">Aruba</option>
+					<option value="AU">Australia</option>
+					<option value="AT">Austria</option>
+					<option value="AZ">Azerbaigian</option>
+					<option value="BS">Bahamas</option>
+					<option value="BH">Bahrein</option>
+					<option value="BD">Bangladesh</option>
+					<option value="BB">Barbados</option>
+					<option value="BE">Belgio</option>
+					<option value="BZ">Belize</option>
+					<option value="BJ">Benin</option>
+					<option value="BM">Bermuda</option>
+					<option value="BT">Bhutan</option>
+					<option value="BY">Bielorussia</option>
+					<option value="BO">Bolivia</option>
+					<option value="BA">Bosnia Erzegovina</option>
+					<option value="BW">Botswana</option>
+					<option value="BQ">Bonaire, Sint Eustatius, and Saba</option>
+					<option value="BR">Brasile</option>
+					<option value="BN">Brunei</option>
+					<option value="BG">Bulgaria</option>
+					<option value="BF">Burkina Faso</option>
+					<option value="BI">Burundi</option>
+					<option value="KH">Cambogia</option>
+					<option value="CM">Camerun</option>
+					<option value="CA">Canada</option>
+					<option value="CV">Capo Verde</option>
+					<option value="EA">Ceuta e Melilla</option>
+					<option value="TD">Ciad</option>
+					<option value="CL">Cile</option>
+					<option value="CN">Cina</option>
+					<option value="CY">Cipro</option>
+					<option value="CO">Colombia</option>
+					<option value="KM">Comore</option>
+					<option value="CG">Congo</option>
+					<option value="KP">Corea del Nord</option>
+					<option value="KR">Corea del Sud</option>
+					<option value="CI">Costa d’Avorio</option>
+					<option value="CR">Costa Rica</option>
+					<option value="HR">Croazia</option>
+					<option value="CU">Cuba</option>
+					<option value="CW">Curaçao</option>
+					<option value="DK">Danimarca</option>
+					<option value="DG">Diego Garcia</option>
+					<option value="DM">Dominica</option>
+					<option value="EC">Ecuador</option>
+					<option value="EG">Egitto</option>
+					<option value="SV">El Salvador</option>
+					<option value="AE">Emirati Arabi Uniti</option>
+					<option value="ER">Eritrea</option>
+					<option value="EE">Estonia</option>
+					<option value="ET">Etiopia</option>
+					<option value="RU">Federazione Russa</option>
+					<option value="FJ">Figi</option>
+					<option value="PH">Filippine</option>
+					<option value="FI">Finlandia</option>
+					<option value="FR">Francia</option>
+					<option value="FX">Francia metropolitana</option>
+					<option value="GA">Gabon</option>
+					<option value="GM">Gambia</option>
+					<option value="GE">Georgia</option>
+					<option value="GS">Georgia del Sud e Isole Sandwich del	Sud</option>
+					<option value="DE">Germania</option>
+					<option value="GH">Ghana</option>
+					<option value="JM">Giamaica</option>
+					<option value="JP">Giappone</option>
+					<option value="GI">Gibilterra</option>
+					<option value="DJ">Gibuti</option>
+					<option value="JO">Giordania</option>
+					<option value="GR">Grecia</option>
+					<option value="GD">Grenada</option>
+					<option value="GL">Groenlandia</option>
+					<option value="GP">Guadalupa</option>
+					<option value="GU">Guam</option>
+					<option value="GT">Guatemala</option>
+					<option value="GG">Guernsey</option>
+					<option value="GF">Guiana Francese</option>
+					<option value="GN">Guinea</option>
+					<option value="GW">Guinea-Bissau</option>
+					<option value="GQ">Guinea Equatoriale</option>
+					<option value="GY">Guyana</option>
+					<option value="HT">Haiti</option>
+					<option value="HN">Honduras</option>
+					<option value="HK">Hong-Kong</option>
+					<option value="IN">India</option>
+					<option value="ID">Indonesia</option>
+					<option value="IR">Iran</option>
+					<option value="IQ">Iraq</option>
+					<option value="IE">Irlanda</option>
+					<option value="IS">Islanda</option>
+					<option value="BV">Isola Bouvet</option>
+					<option value="AC">Isola di Ascensione</option>
+					<option value="CX">Isola di Christmas</option>
+					<option value="CP">Isola di Clipperton</option>
+					<option value="IM">Isola di Man</option>
+					<option value="NF">Isola Norfolk</option>
+					<option value="AX">Isole Aland</option>
+					<option value="IC">Isole Canarie</option>
+					<option value="KY">Isole Cayman</option>
+					<option value="CC">Isole Cocos</option>
+					<option value="CK">Isole Cook</option>
+					<option value="FK">Isole Falkland</option>
+					<option value="FO">Isole Faroe</option>
+					<option value="HM">Isole Heard ed Isole McDonald</option>
+					<option value="MP">Isole Marianne Settentrionali</option>
+					<option value="MH">Isole Marshall</option>
+					<option value="UM">Isole Minori lontane dagli Stati Uniti</option>
+					<option value="SB">Isole Solomon</option>
+					<option value="TC">Isole Turks e Caicos</option>
+					<option value="VI">Isole Vergini Americane</option>
+					<option value="VG">Isole Vergini Britanniche</option>
+					<option value="IL">Israele</option>
+					<option value="IT">Italia</option>
+					<option value="JE">Jersey</option>
+					<option value="KZ">Kazakistan</option>
+					<option value="KE">Kenya</option>
+					<option value="KG">Kirghizistan</option>
+					<option value="KI">Kiribati</option>
+					<option value="KW">Kuwait</option>
+					<option value="LA">Laos</option>
+					<option value="LS">Lesotho</option>
+					<option value="LV">Lettonia</option>
+					<option value="LB">Libano</option>
+					<option value="LR">Liberia</option>
+					<option value="LY">Libia</option>
+					<option value="LI">Liechtenstein</option>
+					<option value="LT">Lituania</option>
+					<option value="LU">Lussemburgo</option>
+					<option value="MO">Macao</option>
+					<option value="MG">Madagascar</option>
+					<option value="MW">Malawi</option>
+					<option value="MV">Maldive</option>
+					<option value="MY">Malesia</option>
+					<option value="ML">Mali</option>
+					<option value="MT">Malta</option>
+					<option value="MA">Marocco</option>
+					<option value="MQ">Martinica</option>
+					<option value="MR">Mauritania</option>
+					<option value="MU">Mauritius</option>
+					<option value="YT">Mayotte</option>
+					<option value="MX">Messico</option>
+					<option value="FM">Micronesia</option>
+					<option value="MD">Moldavia</option>
+					<option value="MC">Monaco</option>
+					<option value="MN">Mongolia</option>
+					<option value="ME">Montenegro</option>
+					<option value="MS">Montserrat</option>
+					<option value="MZ">Mozambico</option>
+					<option value="MM">Myanmar</option>
+					<option value="NA">Namibia</option>
+					<option value="NR">Nauru</option>
+					<option value="NP">Nepal</option>
+					<option value="NI">Nicaragua</option>
+					<option value="NE">Niger</option>
+					<option value="NG">Nigeria</option>
+					<option value="NU">Niue</option>
+					<option value="NO">Norvegia</option>
+					<option value="NC">Nuova Caledonia</option>
+					<option value="NZ">Nuova Zelanda</option>
+					<option value="QO">Oceania lontana</option>
+					<option value="OM">Oman</option>
+					<option value="NL">Paesi Bassi</option>
+					<option value="PK">Pakistan</option>
+					<option value="PW">Palau</option>
+					<option value="PA">Panama</option>
+					<option value="PG">Papua Nuova Guinea</option>
+					<option value="PY">Paraguay</option>
+					<option value="PE">Perù</option>
+					<option value="PN">Pitcairn</option>
+					<option value="PF">Polinesia Francese</option>
+					<option value="PL">Polonia</option>
+					<option value="PT">Portogallo</option>
+					<option value="PR">Portorico</option>
+					<option value="QA">Qatar</option>
+					<option value="GB">Regno Unito</option>
+					<option value="CZ">Repubblica Ceca</option>
+					<option value="CF">Repubblica Centrafricana</option>
+					<option value="CD">Repubblica Democratica del Congo</option>
+					<option value="MK">Repubblica di Macedonia</option>
+					<option value="DO">Repubblica Dominicana</option>
+					<option value="RE">Réunion</option>
+					<option value="RO">Romania</option>
+					<option value="RW">Ruanda</option>
+					<option value="EH">Sahara Occidentale</option>
+					<option value="KN">Saint Kitts e Nevis</option>
+					<option value="LC">Saint Lucia</option>
+					<option value="MF">Saint Martin</option>
+					<option value="PM">Saint Pierre e Miquelon</option>
+					<option value="VC">Saint Vincent e Grenadines</option>
+					<option value="WS">Samoa</option>
+					<option value="AS">Samoa Americane</option>
+					<option value="BL">San Bartolomeo</option>
+					<option value="SM">San Marino</option>
+					<option value="SH">Sant’Elena</option>
+					<option value="ST">Sao Tomé e Príncipe</option>
+					<option value="SN">Senegal</option>
+					<option value="RS">Serbia</option>
+					<option value="CS">Serbia e Montenegro</option>
+					<option value="SC">Seychelles</option>
+					<option value="SL">Sierra Leone</option>
+					<option value="SG">Singapore</option>
+					<option value="SY">Siria</option>
+					<option value="SK">Slovacchia</option>
+					<option value="SI">Slovenia</option>
+					<option value="SO">Somalia</option>
+					<option value="ES">Spagna</option>
+					<option value="LK">Sri Lanka</option>
+					<option value="SS">South Sudan</option>
+					<option value="US">Stati Uniti</option>
+					<option value="ZA">Sudafrica</option>
+					<option value="SD">Sudan</option>
+					<option value="SR">Suriname</option>
+					<option value="SJ">Svalbard e Jan Mayen</option>
+					<option value="SE">Svezia</option>
+					<option value="CH">Svizzera</option>
+					<option value="SZ">Swaziland</option>
+					<option value="SX">Sint Maarten</option>
+					<option value="TJ">Tagikistan</option>
+					<option value="TH">Tailandia</option>
+					<option value="TW">Taiwan</option>
+					<option value="TZ">Tanzania</option>
+					<option value="TF">Territori australi francesi</option>
+					<option value="IO">Territorio Britannico dell’Oceano Indiano</option>
+					<option value="PS">Territori palestinesi</option>
+					<option value="TL">Timor Est</option>
+					<option value="TG">Togo</option>
+					<option value="TK">Tokelau</option>
+					<option value="TO">Tonga</option>
+					<option value="TT">Trinidad e Tobago</option>
+					<option value="TA">Tristan da Cunha</option>
+					<option value="TN">Tunisia</option>
+					<option value="TR">Turchia</option>
+					<option value="TM">Turkmenistan</option>
+					<option value="TV">Tuvalu</option>
+					<option value="UA">Ucraina</option>
+					<option value="UG">Uganda</option>
+					<option value="HU">Ungheria</option>
+					<option value="EU">Unione Europea</option>
+					<option value="UY">Uruguay</option>
+					<option value="UZ">Uzbekistan</option>
+					<option value="VU">Vanuatu</option>
+					<option value="VA">Vaticano</option>
+					<option value="VE">Venezuela</option>
+					<option value="VN">Vietnam</option>
+					<option value="WF">Wallis e Futuna</option>
+					<option value="YE">Yemen</option>
+					<option value="ZM">Zambia</option>
+					<option value="ZW">Zimbabwe</option>
+				</select>
+            </div>
+            
+        </form>
+        <br>
+        <span>* Obbligatorio</span>
+    </div>
+
+    <div class="modal-footer">
+        <button type="button" class="btn green" ng-disabled="form.$invalid" ng-click="save()">{{'CONTINUE' | translate}}</button>
+        <button type="button" class="btn" data-dismiss="modal" ng-click="cancel()">{{'CANCEL' | translate}}</button>
+    </div>
+</div>

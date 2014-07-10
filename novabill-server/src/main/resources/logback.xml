@@ -11,9 +11,9 @@
 
 	<appender name="FILE"
 		class="ch.qos.logback.core.rolling.RollingFileAppender">
-		<file>${log.file.value}</file>
+		<file>${mvn.log.file}</file>
 		<rollingPolicy class="ch.qos.logback.core.rolling.TimeBasedRollingPolicy">
-			<fileNamePattern>${log.fileNamePattern.value}</fileNamePattern>
+			<fileNamePattern>${mvn.log.fileNamePattern}</fileNamePattern>
 			<!-- By not setting maxHistory logs are kept indefinitely -->
 		</rollingPolicy>
 		
@@ -24,9 +24,9 @@
 		</encoder>
 	</appender>
 
-	<logger name="com.novadart.novabill" level="${log.com.novadart.novabill.value}" />
+	<logger name="com.novadart.novabill" level="${mvn.log.com.novadart.novabill}" />
 
-	<root level="${log.root.value}">
+	<root level="${mvn.log.root}">
 		<appender-ref ref="STDOUT" />
 		<appender-ref ref="FILE" />
 	</root>

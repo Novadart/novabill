@@ -26,11 +26,11 @@ public abstract class NotificationDialog<T> extends Dialog {
 	@UiField HTML message;
 	@UiField FlowPanel buttons;
 	
-	private final NotificationCallback<T> onClose;
+	private final NotificationCallback onClose;
 	
-	public NotificationDialog(NotificationCallback<T> onClose) {
+	public NotificationDialog(NotificationCallback onClose) {
 		super(GlobalBundle.INSTANCE.dialog());
-		setScrollWindowOnTop(false);
+		setScrollWindowOnTop(true);
 		setAutoHideEnabled(false);
 		setWidget(uiBinder.createAndBindUi(this));
 		addButtons(buttons);
@@ -45,7 +45,7 @@ public abstract class NotificationDialog<T> extends Dialog {
 
 	protected abstract void addButtons(FlowPanel buttons);
 	
-	protected abstract T getValue();
+	protected abstract boolean getValue();
 	
 	@Override
 	protected void onUnload() {

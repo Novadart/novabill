@@ -9,7 +9,7 @@
 
 	<context-param>
 		<param-name>spring.profiles.active</param-name>
-		<param-value>${spring.profiles.active.value}</param-value>
+		<param-value>${mvn.spring.profiles.active}</param-value>
 	</context-param>
 	<context-param>
 		<param-name>defaultHtmlEscape</param-name>
@@ -75,7 +75,7 @@
 	</filter-mapping>
 
 	<session-config>
-		<session-timeout>60</session-timeout>
+		<session-timeout>480</session-timeout>
 		<tracking-mode>COOKIE</tracking-mode>
 	</session-config>
 
@@ -125,7 +125,7 @@
 	</servlet-mapping>
 
 
- 	<error-page>
+	<error-page>
 		<exception-type>java.lang.Exception</exception-type>
 		<location>/oops</location>
 	</error-page>
@@ -133,5 +133,16 @@
 		<error-code>404</error-code>
 		<location>/page-not-found</location>
 	</error-page>
+	<error-page>
+		<error-code>400</error-code>
+		<location>/page-not-found</location>
+	</error-page>
+
+	<jsp-config>
+		<jsp-property-group>
+			<url-pattern>*.jsp</url-pattern>
+			<trim-directive-whitespaces>true</trim-directive-whitespaces>
+		</jsp-property-group>
+	</jsp-config>
 
 </web-app>

@@ -1,0 +1,14 @@
+<div class="well well-small price-list" ng-class="{'default-price-list': priceList.name === DEFAULT_PRICELIST_NAME}" ng-click="openUrl()">
+
+	<span class="name">{{priceList.name | nReplaceReservedWord:'DEFAULT_PRICE_LIST'}}</span>
+
+	<div ng-show="priceList.name!==DEFAULT_PRICELIST_NAME" class="options btn-group pull-right">
+		<a class="btn blue btn-sm dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#"> <i
+			class="fa fa-ellipsis-horizontal"></i> {{'OPTIONS' | translate}} <i class="fa fa-angle-down"></i>
+		</a>
+		<ul class="dropdown-menu" ng-class="{'bottom-up': bottomUpMenu}">
+			<li><a href="javascript:void(0);" ng-click="stopProp($event); clone()">{{'CLONE' | translate}}</a></li>
+		</ul>
+	</div>
+
+</div>

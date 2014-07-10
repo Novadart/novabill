@@ -1,0 +1,22 @@
+[
+	{
+		"hostedButtonID": "${mvn.paypal.hostedButtonIDOneYear}",
+		"totalAfterTax": "73.20",
+		"totalWithoutTax": "60.00",
+		"tax": "22.00",
+		"discount": "0.00",
+		"totalTax": "13.20",
+		"itemName": "Piano Novabill Premium - 1 Anno",
+		"payedPeriodInMonths": 12
+	},
+	{
+		"hostedButtonID": "${mvn.paypal.hostedButtonIDTwoYears}",
+		"totalAfterTax": "139.08",
+		"totalWithoutTax": "114.00",
+		"tax": "22.00",
+		"discount": "0.00",
+		"totalTax": "25.08",
+		"itemName": "Piano Novabill Premium - 2 Anni",
+		"payedPeriodInMonths": 24
+	}
+]

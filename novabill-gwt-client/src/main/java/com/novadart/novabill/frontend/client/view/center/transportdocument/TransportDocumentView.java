@@ -4,6 +4,7 @@ import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.CheckBox;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
+import com.google.gwt.user.client.ui.ListBox;
 import com.novadart.gwtshared.client.textbox.RichTextArea;
 import com.novadart.gwtshared.client.textbox.RichTextBox;
 import com.novadart.gwtshared.client.validation.widget.ValidatedDateBox;
@@ -16,17 +17,13 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 	
 	public static interface Presenter extends DocumentView.Presenter {
 		
-		void onFromCountryChange();
-		
-		void onToCountryChange();
-		
 		void onFromAddressButtonDefaultCLicked();
-		
-		void onToAddressButtonDefaultChange();
 		
 		void onCountItemsCLicked();
 
 		void onTotalWeightCalcClicked();
+
+		void onLoadTransporterAddressChange();
 	}
 	
 	
@@ -38,7 +35,7 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 
 	RichTextBox getFromAddrCity();
 
-	ValidatedListBox getFromAddrProvince();
+	RichTextBox getFromAddrProvince();
 
 	ValidatedListBox getFromAddrCountry();
 
@@ -49,6 +46,8 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 	ValidatedTextBox getTotalWeight();
 
 	ValidatedTextArea getTransporter();
+	
+	ListBox getLoadTransporterAddress();
 
 	ValidatedDateBox getTransportStartDate();
 
@@ -66,13 +65,9 @@ public interface TransportDocumentView extends DocumentView<TransportDocumentVie
 
 	CheckBox getSetFromAddress();
 
-	CheckBox getSetToAddress();
-
 	Button getCountItems();
 
 	HorizontalPanel getFromAddressContainer();
-
-	HorizontalPanel getToAddressContainer();
 
 	Label getReadonlyWarning();
 	

@@ -1,0 +1,32 @@
+.transport-documents .new-transport-document,
+.transport-documents .new-transporter {
+    margin-top: 10px;
+    margin-left: 16px;
+}
+
+.transport-documents .n-year-selector {
+	margin-right: 16px;
+}
+
+
+.transport-documents div.transport-documents {
+	margin-top: 20px;
+}
+
+.transport-documents div.transporters {
+    margin-top: 20px;
+}
+
+.transport-documents .transport-documents .spinner {
+    margin: 0 auto;
+    display: block;
+}
+
+.transport-documents .transporters .spinner {
+    margin: 0 auto;
+    display: block;
+}
+
+.transport-documents .transport-documents {
+	margin-bottom: 80px;
+}

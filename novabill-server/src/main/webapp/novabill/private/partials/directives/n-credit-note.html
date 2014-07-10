@@ -1,0 +1,22 @@
+<div class="well well-small document-well creditNote" ng-click="openUrl()">
+    <strong class="documentId">{{creditNote.documentID}}</strong> 
+    <i class="spacer">&nbsp;</i>
+    <span class="date">{{creditNote.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
+    <span class="clientName">{{creditNote.client.name}}</span>
+    
+    <a href="javascript:void(0);" ng-click="stopProp($event); download()" class="print btn btn-sm default pull-right"><i class="fa fa-download"></i></a>
+    
+    <a href="javascript:void(0);" ng-click="stopProp($event); print()" class="print btn btn-sm default pull-right"><i class="fa fa-print"></i></a>
+    
+    <div class="options btn-group pull-right" ng-click="stopProp($event)">
+        <a class="btn blue btn-sm dropdown-toggle" data-toggle="dropdown" href="#">
+            <i class="fa fa-ellipsis-horizontal"></i>
+            {{'OPTIONS' | translate}}
+            <i class="fa fa-angle-down"></i>
+        </a>
+        <ul class="dropdown-menu" ng-class="{'bottom-up': bottomUpMenu}">
+            <li ><a href="javascript:void(0);" ng-click="remove()" ><i class="fa fa-trash-o"></i>{{'DELETE' | translate}}</a></li>
+        </ul>
+    </div>
+    
+</div>

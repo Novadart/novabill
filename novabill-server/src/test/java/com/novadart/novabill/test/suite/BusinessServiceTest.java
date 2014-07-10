@@ -6,7 +6,6 @@ import static org.junit.Assert.assertTrue;
 
 import java.lang.reflect.InvocationTargetException;
 import java.math.BigDecimal;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -22,6 +21,7 @@ import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.AccessDeniedException;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -29,14 +29,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.BusinessStatsDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -48,7 +49,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 @ContextConfiguration(locations = "classpath*:gwt-business-test-config.xml")
 @Transactional
 @ActiveProfiles("dev")
-public class BusinessServiceTest extends GWTServiceTest {
+public class BusinessServiceTest extends ServiceTest {
 	
 	@Autowired
 	private BusinessGwtService businessGwtService;
@@ -58,6 +59,9 @@ public class BusinessServiceTest extends GWTServiceTest {
 	
 	@Resource(name = "totalsAfterTax")
 	protected HashMap<String, String> totalsAfterTax;
+	
+	@Autowired
+	private SimpleValidator validator;
 	
 	@Override
 	@Before
@@ -86,7 +90,6 @@ public class BusinessServiceTest extends GWTServiceTest {
 		assertEquals(new Long(authenticatedPrincipal.getBusiness().getClients().size()), new Long(stats.getClientsCount()));
 		assertEquals(new Long(businessGwtService.countInvoicesForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR))), new Long(stats.getInvoicesCountForYear()));
 		assertEquals(businessGwtService.getTotalsForYear(authenticatedPrincipal.getId(), Calendar.getInstance().get(Calendar.YEAR)).getSecond(), stats.getTotalAfterTaxesForYear());
-		assertEquals(stats.getInvoiceCountsPerMonth(), Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, authenticatedPrincipal.getBusiness().getId() == 1? 24: 1, 0, 0));
 	}
 	
 	@Test(expected = DataAccessException.class)
@@ -161,7 +164,7 @@ public class BusinessServiceTest extends GWTServiceTest {
 	@Test
 	public void updateAuthorizedTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		authenticatedPrincipal.getBusiness().setName("Kick ass company");
-		businessGwtService.update(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		businessGwtService.update(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		assertEquals("Kick ass company", Business.findBusiness(authenticatedPrincipal.getBusiness().getId()).getName());
 	}
 	
@@ -172,7 +175,7 @@ public class BusinessServiceTest extends GWTServiceTest {
 			BeanUtils.setProperty(business, key, StringUtils.leftPad("1", 1000, '1'));
 		}
 		try{
-			businessGwtService.update(BusinessDTOFactory.toDTO(business));
+			businessGwtService.update(BusinessDTOTransformer.toDTO(business));
 		}catch(ValidationException e){
 			Set<Field> expected = new HashSet<Field>(validationFieldsMap.values());
 			Set<Field> actual= new HashSet<Field>();
@@ -190,7 +193,7 @@ public class BusinessServiceTest extends GWTServiceTest {
 		boolean validationError = false;
 		boolean containsError = false;
 		try {
-			businessGwtService.update(BusinessDTOFactory.toDTO(business));
+			businessGwtService.update(BusinessDTOTransformer.toDTO(business));
 		} catch (ValidationException e) {
 			validationError = true;
 			for(ErrorObject er: e.getErrors())
@@ -205,7 +208,7 @@ public class BusinessServiceTest extends GWTServiceTest {
 	@Test(expected = ValidationException.class)
 	public void updateAuthorizedValidationErrorTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException{
 		authenticatedPrincipal.getBusiness().setName(StringUtils.leftPad("1", 1000, '1'));
-		businessGwtService.update(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		businessGwtService.update(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 	}
 	
 	@Test
@@ -304,25 +307,25 @@ public class BusinessServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+	public void addAuthorizedTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 
 									com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		authenticatedPrincipal.setBusiness(null);
 		Business business = TestUtils.createBusiness();
-		business.setId(businessGwtService.add(BusinessDTOFactory.toDTO(business)));
+		business.setId(businessGwtService.add(BusinessDTOTransformer.toDTO(business)));
 		Business.entityManager().flush();
 		Business actualBusiness = Principal.findPrincipal(authenticatedPrincipal.getId()).getBusiness();
 		assertTrue(EqualsBuilder.reflectionEquals(business, actualBusiness, "version", "paymentTypes",
 				"nonFreeAccountExpirationTime", "items", "accounts" , "invoices", "estimations", "creditNotes",
 				"transportDocuments", "clients", "principals", "priceLists", "settings"));
-		assertTrue(EqualsBuilder.reflectionEquals(business.getSettings(), actualBusiness.getSettings()));
+		assertEquals(LayoutType.DENSE, actualBusiness.getSettings().getDefaultLayoutType());
 	}
 	
 	@Test
-	public void addAuthorizedDefaultLayoutTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+	public void addAuthorizedDefaultLayoutTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 
 									com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		authenticatedPrincipal.setBusiness(null);
 		Business business = TestUtils.createBusiness();
-		BusinessDTO businessDTO = BusinessDTOFactory.toDTO(business);
+		BusinessDTO businessDTO = BusinessDTOTransformer.toDTO(business);
 		businessDTO.getSettings().setDefaultLayoutType(null);
 		business.setId(businessGwtService.add(businessDTO));
 		Business.entityManager().flush();
@@ -331,18 +334,18 @@ public class BusinessServiceTest extends GWTServiceTest {
 	} 
 	
 	@Test(expected = DataAccessException.class)
-	public void addNullTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+	public void addNullTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 
 								com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		businessGwtService.add(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void addNotNullIDTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+	public void addNotNullIDTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 
 										com.novadart.novabill.shared.client.exception.CloneNotSupportedException{
 		authenticatedPrincipal.setBusiness(null);
 		Business business = TestUtils.createBusiness();
 		business.setId(1l);
-		businessGwtService.add(BusinessDTOFactory.toDTO(business));
+		businessGwtService.add(BusinessDTOTransformer.toDTO(business));
 	}
 	
 	private <T extends AccountingDocument> Set<Integer> extractYears(Set<T> docs){
@@ -360,5 +363,35 @@ public class BusinessServiceTest extends GWTServiceTest {
 		assertTrue(new HashSet<>(businessService.getEstimationYears(business.getId())) .equals(extractYears(business.getEstimations())));
 		assertTrue(new HashSet<>(businessService.getTransportDocumentYears(business.getId())) .equals(extractYears(business.getTransportDocuments())));
 	}
+	
+	@Test(expected = ValidationException.class)
+	public void nullTaxableFieldsAddTest() throws ValidationException{
+		Business business = TestUtils.createBusiness();
+		business.setVatID(null);
+		business.setSsn(null);
+		validator.validate(business);
+	}
+	
+	@Test(expected = ValidationException.class)
+	public void blankTaxableFieldsAddTest() throws ValidationException{
+		Business business = TestUtils.createBusiness();
+		business.setVatID("");
+		business.setSsn("    ");
+		validator.validate(business);
+	}
 
+	@Test
+	public void setDefaultLayoutTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		businessService.setDefaultLayout(businessID, LayoutType.TIDY);
+		Business.entityManager().flush();
+		assertEquals(LayoutType.TIDY, Business.findBusiness(businessID).getSettings().getDefaultLayoutType());
+	}
+	
+	@Test(expected = AccessDeniedException.class)
+	public void setDefaultLayoutUnauthorizedTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
+		Long businessID = getUnathorizedBusinessID();
+		businessService.setDefaultLayout(businessID, LayoutType.TIDY);
+	}
+	
 }

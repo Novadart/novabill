@@ -9,12 +9,11 @@
         <div class="row breadcrumbs">
             <div class="container">
                 <div class="col-md-4 col-sm-4">
-                    <h1>Page Not Found</h1>
+                    <h1>Risorsa non Disponibile</h1>
                 </div>
                 <div class="col-md-8 col-sm-8">
                     <ul class="pull-right breadcrumb">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="">Pages</a></li>
+                        <li><a href="${homeUrl}">Home</a></li>
                         <li class="active">404</li>
                     </ul>
                 </div>
@@ -30,10 +29,10 @@
                   404
                </div>
                <div class="details">
-                  <h3>Oops!  You're lost.</h3>
+                  <h3>Oops!</h3>
                   <p>
-                     We can not find the page you're looking for.<br>
-                     <a href="${homeUrl}">Return home</a> 
+                     Sembra che ciò che stai cercando non sia più disponibile!<br>
+                     <a href="${homeUrl}">Ritorna alla Home</a> 
                   </p>
                </div>
             </div>

@@ -1,5 +1,7 @@
 package com.novadart.novabill.shared.client.dto;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class BusinessDTO implements IsSerializable {
@@ -32,10 +34,9 @@ public class BusinessDTO implements IsSerializable {
 	
 	private String ssn;
 	
-	private boolean premium;
-	
 	private SettingsDTO settings;
 
+	@JsonSerialize(using=ToStringSerializer.class)
 	public Long getId() {
 		return id;
 	}
@@ -146,14 +147,6 @@ public class BusinessDTO implements IsSerializable {
 
 	public void setSsn(String ssn) {
 		this.ssn = ssn;
-	}
-
-	public boolean isPremium() {
-		return premium;
-	}
-
-	public void setPremium(boolean premium) {
-		this.premium = premium;
 	}
 
 	public SettingsDTO getSettings() {

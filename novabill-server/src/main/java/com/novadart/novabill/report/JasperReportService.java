@@ -10,7 +10,9 @@ import java.util.Map;
 import java.util.PropertyResourceBundle;
 import java.util.ResourceBundle;
 import java.util.Set;
+
 import javax.annotation.PostConstruct;
+
 import net.sf.jasperreports.engine.JRException;
 import net.sf.jasperreports.engine.JRParameter;
 import net.sf.jasperreports.engine.JasperCompileManager;
@@ -21,6 +23,7 @@ import net.sf.jasperreports.engine.JasperReport;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 import net.sf.jasperreports.engine.design.JasperDesign;
 import net.sf.jasperreports.engine.xml.JRXmlLoader;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.context.ResourceLoaderAware;

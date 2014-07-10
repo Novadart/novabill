@@ -37,11 +37,7 @@ public class ModifyCreditNotePresenter extends AbstractCreditNotePresenter {
 		getView().getToAddrCity().setText(loc.getCity());
 		getView().getToAddrCompanyName().setText(loc.getCompanyName());
 		getView().getToAddrPostCode().setText(loc.getPostcode());
-		if("IT".equalsIgnoreCase(loc.getCountry())){
-			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
-		} else {
-			getView().getToAddrProvince().setEnabled(false);
-		} 
+		getView().getToAddrProvince().setText(loc.getProvince());
 		getView().getToAddrStreetName().setText(loc.getStreet());
 		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
 		getView().getSetToAddress().setValue(true);
@@ -65,10 +61,10 @@ public class ModifyCreditNotePresenter extends AbstractCreditNotePresenter {
 			return;
 		}
 
-		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 					final CreditNoteDTO cn = createCreditNote(getCreditNote());
 
@@ -79,10 +75,10 @@ public class ModifyCreditNotePresenter extends AbstractCreditNotePresenter {
 
 						@Override
 						public void onSuccess(Void result) {
-							Notification.showMessage(I18N.INSTANCE.creditNoteUpdateSuccess(), new NotificationCallback<Void>() {
+							Notification.showMessage(I18N.INSTANCE.creditNoteUpdateSuccess(), new NotificationCallback() {
 
 								@Override
-								public void onNotificationClosed(Void value) {
+								public void onNotificationClosed(boolean value) {
 									getView().getCreateDocument().showLoader(false);
 									BridgeUtils.invokeJSCallback(Boolean.TRUE, getCallback());
 								}

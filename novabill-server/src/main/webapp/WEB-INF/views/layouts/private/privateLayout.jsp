@@ -1,3 +1,4 @@
+<%@page import="com.novadart.novabill.domain.security.RoleType"%>
 <%@page import="com.novadart.novabill.shared.client.data.PriceListConstants"%>
 <%@page import="com.novadart.novabill.web.mvc.Urls"%>
 <%@page import="com.novadart.novabill.domain.security.Principal"%>
@@ -8,6 +9,7 @@
 <%@ taglib uri="http://tiles.apache.org/tags-tiles" prefix="tiles"%>
 <%@ taglib prefix="spring" uri="http://www.springframework.org/tags"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags"%>
+<%@ taglib uri="http://htmlcompressor.googlecode.com/taglib/compressor" prefix="compress" %>
 
 <spring:url var="logoutUrl" value="/resources/logout" />
 
@@ -28,6 +30,10 @@
 <spring:url var="priceListsUrl" value="/private/price-lists/" />
 <spring:url var="paymentsUrl" value="/private/payments/" />
 <spring:url var="settingsUrl" value="/private/settings/" />
+<spring:url var="shareUrl" value="/private/share/" />
+<spring:url var="clientUiErrorUrl" value="/private/ajax/clientuierror" />
+
+<spring:url var="premiumUrl" value="/private/premium" />
 
 <spring:url var="clientsBaseUrl" value="<%=Urls.PRIVATE_CLIENTS%>" />
 
@@ -38,6 +44,8 @@
 	Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
 	Business business = principal.getBusiness();
 %>
+
+<compress:html enabled="${mvn.tiles.minify.html}" compressJavaScript="${mvn.tiles.minify.html}" compressCss="${mvn.tiles.minify.html}"> 
 
 <!DOCTYPE html>
 <!--[if IE 8]> <html lang="en" class="ie8 no-js"> <![endif]-->
@@ -55,10 +63,14 @@
 <meta content="" name="description" />
 <meta content="" name="author" />
 <meta name="MobileOptimized" content="320">
+<meta name="_csrf" content="${_csrf.token}"/>
+<meta name="_csrf_header" content="${_csrf.headerName}"/>
+
 <!-- BEGIN GLOBAL MANDATORY STYLES -->
 <link href="${privateAssetsUrl}/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
 <link href="${privateAssetsUrl}/plugins/bootstrap/css/bootstrap.min.css" rel="stylesheet" type="text/css" />
 <link href="${privateAssetsUrl}/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css" />
+<link href="${frontendAssetsUrl}/plugins/iealert/css/style.css" rel="stylesheet" type="text/css"/>
 <!-- END GLOBAL MANDATORY STYLES -->
 
 <!-- BEGIN THEME STYLES -->
@@ -68,12 +80,42 @@
 <link href="${privateAssetsUrl}/css/plugins.css" rel="stylesheet" type="text/css" />
 <link href="${privateAssetsUrl}/css/pages/tasks.css" rel="stylesheet" type="text/css" />
 <link href="${privateAssetsUrl}/css/themes/default.css" rel="stylesheet" type="text/css" id="style_color" />
-<link href="${privateAssetsUrl}/css/custom.css" rel="stylesheet" type="text/css" />
 <!-- END THEME STYLES -->
 
 <tiles:insertAttribute name="css" />
 
+<tiles:insertAttribute  ignore="true" name="cssExtra" />
+
 <link rel="shortcut icon" href="${frontendAssetsUrl}/img/favicon.png" />
+
+<!-- Load jQuery -->
+<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+<script>window.jQuery || document.write('<script src="${privateAssetsUrl}/plugins/jquery-1.10.2.min.js"><\/script>');</script>
+
+<script type="text/javascript">
+window.onerror = function(message, source, line, column) {
+	var escape = function(x) { return x.replace('\\', '\\\\').replace('\"', '\\"'); };
+    var XHR = window.XMLHttpRequest || function() {
+        try { return new ActiveXObject("Msxml3.XMLHTTP"); } catch (e0) {}
+        try { return new ActiveXObject("Msxml2.XMLHTTP.6.0"); } catch (e1) {}
+        try { return new ActiveXObject("Msxml2.XMLHTTP.3.0"); } catch (e2) {}
+        try { return new ActiveXObject("Msxml2.XMLHTTP"); } catch (e3) {}
+        try { return new ActiveXObject("Microsoft.XMLHTTP"); } catch (e4) {}
+    };
+    var xhr = new XHR();
+    xhr.open('POST', '${clientUiErrorUrl}', true);
+    xhr.setRequestHeader('Content-type', 'application/json');
+    xhr.setRequestHeader('${_csrf.headerName}', '${_csrf.token}');
+    xhr.send('{ ' + 
+        '"message": "' + escape(message || '') + '",' + 
+        '"source": "' + escape(source || '') + '",' + 
+        '"url": "' + escape(window.location.href) + '",' + 
+        '"line": "' + (line || 0) + '",' + 
+        '"column": "' + (column || 0) + '"' + 
+    '}');
+};
+
+</script>
 </head>
 <!-- END HEAD -->
 <!-- BEGIN BODY -->
@@ -88,7 +130,6 @@
 			<!-- BEGIN LOGO -->
 			<a class="navbar-brand" href="${dashboardUrl}"> 
 		      <img src="${frontendAssetsUrl}/img/logo_thin_white.png" alt="logo" class="img-responsive" />
-				<img src="${privateAssetsUrl}/img/beta-small-w.png" alt="" style="position: relative; bottom: 10px; right: 49px; float: right;" />
 			</a>
 			<!-- END LOGO -->
 			<!-- BEGIN RESPONSIVE MENU TOGGLER -->
@@ -98,19 +139,35 @@
 			<!-- END RESPONSIVE MENU TOGGLER -->
 			<!-- BEGIN TOP NAVIGATION MENU -->
 			<ul class="nav navbar-nav pull-right">
+			     
+			    <sec:authorize ifAnyGranted="ROLE_BUSINESS_FREE">
+                    <li><a style="color: white; position: relative; bottom: 5px;" href="${premiumUrl}">PREMIUM</a></li>
+			    </sec:authorize>
+			
 				<!-- BEGIN USER LOGIN DROPDOWN -->
 				<li class="dropdown user"><a href="#" class="dropdown-toggle" data-toggle="dropdown" data-hover="dropdown"
-					data-close-others="true"> <span class="btn btn-sm dark"><%=business.getName()%></span> <i
+					data-close-others="true"> <span class="btn btn-sm dark"><%=business != null ? business.getName() : "Menu"%></span> <i
 						class="fa fa-angle-down"></i>
 				</a>
 					<ul class="dropdown-menu">
-						<li><a href="${settingsUrl}"><i class="fa fa-user"></i> Impostazioni</a></li>
+						<li><a href="${settingsUrl}"><i class="fa fa-gears"></i> Impostazioni</a></li>
+						<li class="divider"></li>
+						<li><a target="_blank" href="http://novabill.uservoice.com/"><i class="fa fa-question"></i> Area Supporto</a></li>
 						<li class="divider"></li>
 						<li><a href="javascript:;" id="trigger_fullscreen"><i class="fa fa-move"></i> Schermo Intero</a></li>
-						<li><a href="${logoutUrl}"><i class="fa fa-key"></i> Esci</a></li>
+						<li id="logoutLi">
+							<form id="logoutForm" action="${logoutUrl}" method="post">
+								<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+    						    <a href="javascript:;"><i class="fa fa-key"></i>
+    						      <input id="logoutButton" style="background: none; border: none; outline: none;" type="submit" value="Esci">
+   						        </a>	
+							</form>
+						</li>
 					</ul></li>
 				<!-- END USER LOGIN DROPDOWN -->
 			</ul>
+			
+			
 			<!-- END TOP NAVIGATION MENU -->
 		</div>
 		<!-- END TOP NAVIGATION BAR -->
@@ -119,6 +176,7 @@
 	<div class="clearfix"></div>
 	<!-- BEGIN CONTAINER -->
 	<div class="page-container">
+	   
 		<!-- BEGIN SIDEBAR -->
 		<div class="page-sidebar navbar-collapse collapse">
 			<!-- BEGIN SIDEBAR MENU -->
@@ -156,7 +214,7 @@
                 </a></li>
                 
 				<li class="<%=PAGES.TRANSPORT_DOCUMENTS.equals(activePage) ? "active" : "" %>"><a
-					href="${transportDocumentsUrl}"> <i class="fa fa-file"></i> <span class="title">Documenti di Trasporto</span> <% if(PAGES.TRANSPORT_DOCUMENTS.equals(activePage)) { %>
+					href="${transportDocumentsUrl}"> <i class="fa fa-file"></i> <span class="title">DDT</span> <% if(PAGES.TRANSPORT_DOCUMENTS.equals(activePage)) { %>
 						<span class="selected"></span> <%} %>
 				</a></li>
 
@@ -194,6 +252,11 @@
 						class="fa fa-briefcase"></i> <span class="title">Pagamenti</span> <% if(PAGES.PAYMENTS.equals(activePage)) { %> <span
 						class="selected"></span> <%} %>
 				</a></li>
+				
+				<li class="<%=PAGES.SHARE.equals(activePage) ? "active last" : "last" %>"><a href="${shareUrl}"> <i
+                        class="fa fa-group"></i> <span class="title">Condivisione</span> <% if(PAGES.SHARE.equals(activePage)) { %> <span
+                        class="selected"></span> <%} %>
+                </a></li>
 
 			</ul>
 			<!-- END SIDEBAR MENU -->
@@ -208,7 +271,7 @@
 	<!-- END CONTAINER -->
 	<!-- BEGIN FOOTER -->
 	<div class="footer">
-		<div class="footer-inner">2013 &copy; Novadart.</div>
+		<div class="footer-inner">2014 &copy; Novadart.</div>
 		<div class="footer-tools">
 			<span class="go-top"> <i class="fa fa-angle-up"></i>
 			</span>
@@ -217,9 +280,13 @@
 	<!-- END FOOTER -->
 	<!-- BEGIN JAVASCRIPTS(Load javascripts at bottom, this will reduce page load time) -->
 	
-	   <script>
+	<script>
     var NovabillConf = {
             businessId : '<%=business.getId()%>',
+         	businessName : '<%=business.getName()%>',
+         	principalEmail : '<%=principal.getUsername()%>',
+         	principalCreationDate : <%=principal.getCreationTime()%>,
+            premium : <%=principal.getGrantedRoles().contains(RoleType.ROLE_BUSINESS_PREMIUM)%>,
             defaultPriceListName : '<%=PriceListConstants.DEFAULT%>',
             basePath : '${basePath}',
             version : '<tiles:insertAttribute name="novabill.version" />'
@@ -227,9 +294,6 @@
     </script>
     
     <!-- BEGIN CORE PLUGINS -->
-	<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
-	<script>window.jQuery || document.write('<script src="${privateAssetsUrl}/plugins/jquery-1.10.2.min.js"><\/script>');</script>
-	
 	
 	<!--[if lt IE 9]>
 	<script src="${privateAssetsUrl}/plugins/respond.min.js"></script>
@@ -249,16 +313,82 @@
 	
 	<script src="${gwtUrl}" type="text/javascript"></script>
 	<script src="${privateAssetsUrl}/scripts/app.js" type="text/javascript"></script>
+	<script src="${frontendAssetsUrl}/plugins/iealert/iealert.min.js" type="text/javascript"></script>
 	
 	<tiles:insertAttribute name="javascript" />
 	
 	
 	<script type="text/javascript">
-	$(App.init);
+	$(function(){
+		if(!$.cookie('ie_alert_shown')){
+			$("body").iealert({
+				support:"ie8",
+	            title:"Il tuo browser è vecchio e insicuro e non è supportato da Novabill",
+	            text:"Non è sicuro utilizzare questo browser per lavorare su dati sensibili.<br>Per favore premi sul pulsante 'Aggiorna' qui sotto e installa una versione più recente di Internet Explorer o uno dei browser alternativi suggeriti.<br><br><span style='font-weight:bold;'>Se utilizzi questo browser Novabill non funzionerà correttamente</span><br><br>Grazie",
+	            upgradeTitle:"Aggiorna",
+	            upgradeLink:"http://browsehappy.com/",
+	            overlayClose:false,
+	            closeBtn: true
+			});
+			
+			$.cookie('ie_alert_shown', 'true', { path: '/' });
+		}
+		App.init();
+	});
+	
+	$('#logoutLi').click(function(){
+        $('#logoutForm').submit();
+    });
 	</script>
 	
 	<tiles:insertAttribute name="javascriptExtra" ignore="true" />
 	
+        <script>
+    // Include the UserVoice JavaScript SDK (only needed once on a page)
+    UserVoice=window.UserVoice||[];(function(){var uv=document.createElement('script');uv.type='text/javascript';uv.async=true;uv.src='//widget.uservoice.com/qijZFrEigj9IF6UL4zLtNw.js';var s=document.getElementsByTagName('script')[0];s.parentNode.insertBefore(uv,s)})();
+    
+    //
+    // UserVoice Javascript SDK developer documentation:
+    // https://www.uservoice.com/o/javascript-sdk
+    //
+    
+    // Set colors
+    UserVoice.push(['set', {
+      accent_color: '#448dd6',
+      trigger_color: 'white',
+      trigger_background_color: 'rgba(46, 49, 51, 0.6)'
+    }]);
+    
+    // Identify the user and pass traits
+    // To enable, replace sample data with actual user traits and uncomment the line
+    UserVoice.push(['identify', {
+      email:      '<%=principal.getUsername()%>', // User’s email address
+      //name:       'John Doe', // User’s real name
+      //created_at: 1364406966, // Unix timestamp for the date the user signed up
+      //id:         123, // Optional: Unique id of the user (if set, this should not change)
+      //type:       'Owner', // Optional: segment your users by type
+      //account: {
+      //  id:           123, // Optional: associate multiple users with a single account
+      //  name:         'Acme, Co.', // Account name
+      //  created_at:   1364406966, // Unix timestamp for the date the account was created
+      //  monthly_rate: 9.99, // Decimal; monthly rate of the account
+      //  ltv:          1495.00, // Decimal; lifetime value of the account
+      //  plan:         'Enhanced' // Plan name for the account
+      //}
+    }]);
+    
+    // Add default trigger to the bottom-right corner of the window:
+    UserVoice.push(['addTrigger', { mode: 'contact', trigger_position: 'bottom-left' }]);
+    
+    // Or, use your own custom trigger:
+    //UserVoice.push(['addTrigger', '#id', { mode: 'contact' }]);
+    
+    // Autoprompt for Satisfaction and SmartVote (only displayed under certain conditions)
+    UserVoice.push(['autoprompt', {}]);
+    </script>
+    
 </body>
 <!-- END BODY -->
 </html>
+
+</compress:html>

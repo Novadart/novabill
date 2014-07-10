@@ -1301,6 +1301,10 @@ Copyright
 	display: inline-block;
 }
 
+.copyright .social-footer li.datashare i {
+    color: #FFF;
+}
+
 .copyright .social-footer li i:hover {
 	color: #fff;
     transition:all 0.3s ease-in-out;

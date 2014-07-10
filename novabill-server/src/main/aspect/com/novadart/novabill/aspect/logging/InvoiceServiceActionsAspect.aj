@@ -16,6 +16,7 @@ import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
+import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
 
 public aspect InvoiceServiceActionsAspect extends DBLoggerAspect {
 	
@@ -25,16 +26,19 @@ public aspect InvoiceServiceActionsAspect extends DBLoggerAspect {
 	private static final Logger LOGGER = LoggerFactory.getLogger(InvoiceServiceActionsAspect.class);
 	
 	pointcut add(InvoiceDTO invoiceDTO) : 
-		execution(public Long com.novadart.novabill.web.gwt.InvoiceGwtController.add(..)) && args(invoiceDTO);
+		execution(public Long com.novadart.novabill.service.web.InvoiceServiceImpl.add(..)) && args(invoiceDTO);
 	
 	pointcut remove(Long businessID, Long clientID, Long id) : 
-		execution(public void com.novadart.novabill.web.gwt.InvoiceGwtController.remove(..)) && args(businessID, clientID, id);
+		execution(public void com.novadart.novabill.service.web.InvoiceServiceImpl.remove(..)) && args(businessID, clientID, id);
 	
 	pointcut update(InvoiceDTO invoiceDTO) : 
-		execution(public void com.novadart.novabill.web.gwt.InvoiceGwtController.update(..)) && args(invoiceDTO);
+		execution(public void com.novadart.novabill.service.web.InvoiceServiceImpl.update(..)) && args(invoiceDTO);
 	
 	pointcut setPayed(Long businessID, Long clientID, Long id, Boolean value) : 
-		execution(public void com.novadart.novabill.web.gwt.InvoiceGwtController.setPayed(..)) && args(businessID, clientID, id, value);
+		execution(public void com.novadart.novabill.service.web.InvoiceServiceImpl.setPayed(..)) && args(businessID, clientID, id, value);
+	
+	pointcut email(Long businessID, Long id, EmailDTO emailDTO) : 
+		execution(public boolean com.novadart.novabill.service.web.InvoiceServiceImpl.email(..)) && args(businessID, id, emailDTO);
 	
 	after(InvoiceDTO invoiceDTO) returning (Long id) : add(invoiceDTO){
 		Long time = System.currentTimeMillis();
@@ -75,6 +79,15 @@ public aspect InvoiceServiceActionsAspect extends DBLoggerAspect {
 		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, invoice.getClient().getName(),
 				DOCUMENT_ID, invoice.getDocumentID().toString(), PAYED_STATUS, Boolean.toString(value));
 		logActionInDB(businessID, EntityType.INVOICE, OperationType.SET_PAYED, id, time, details);
+	}
+	
+	after(Long businessID, Long id, EmailDTO emailDTO) returning : email(businessID, id, emailDTO){
+		Long time = System.currentTimeMillis();
+		LOGGER.info("[{}, emailInvoice, {}, id: {}, replyTo: {}]",
+				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), id, emailDTO.getReplyTo()});
+		Invoice invoice = Invoice.findInvoice(id);
+		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, invoice.getClient().getName(), DOCUMENT_ID, invoice.getDocumentID().toString(), REPLY_TO, emailDTO.getReplyTo());
+		logActionInDB(invoice.getBusiness().getId(), EntityType.INVOICE, OperationType.EMAIL, id, time, details);
 	}
 
 }

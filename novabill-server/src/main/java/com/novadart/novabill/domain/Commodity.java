@@ -32,7 +32,7 @@ import org.hibernate.search.annotations.FullTextFilterDefs;
 import org.hibernate.search.annotations.Indexed;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -57,7 +57,7 @@ public class Commodity implements Serializable {
 	
 	private static final long serialVersionUID = 4265058605330997015L;
 	
-	@NotBlank
+	@NotEmpty
 	@Size(max = 50)
 	@Trimmed
 	private String sku;
@@ -78,6 +78,7 @@ public class Commodity implements Serializable {
     
     private boolean service;
     
+    @Column(name = "weight", precision = 19, scale = 3)
     private BigDecimal weight;
     
     public Commodity shallowCopy(){

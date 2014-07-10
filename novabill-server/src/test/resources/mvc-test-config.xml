@@ -14,9 +14,4 @@
     <import resource="classpath:/META-INF/spring/applicationContext-security.xml"/>
     <import resource="classpath*:webmvc-config.xml"/>
     
-    <util:map map-class="java.util.HashMap" id="userPasswordMap" key-type="java.lang.String" value-type="java.lang.String">
-    	<entry key="giordano.battilana@novadart.com" value="novadart"/>
-    	<entry key="risto.gligorov@novadart.com" value="novadart"/>
-    </util:map>
-    
 </beans>

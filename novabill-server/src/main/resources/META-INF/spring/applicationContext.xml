@@ -17,7 +17,7 @@
 	http://www.springframework.org/schema/cache
 	http://www.springframework.org/schema/cache/spring-cache-3.2.xsd
 	http://www.springframework.org/schema/security
-	http://www.springframework.org/schema/security/spring-security-3.1.xsd">
+	http://www.springframework.org/schema/security/spring-security-3.2.xsd">
 
 	<context:property-placeholder location="classpath*:META-INF/spring/*.properties" />
 
@@ -82,15 +82,16 @@
 			<value>
 				resource.loader=class
 				class.resource.loader.class=org.apache.velocity.runtime.resource.loader.ClasspathResourceLoader
+				input.encoding=UTF-8
+				output.encoding=UTF-8
 			</value>
 		</property>
 	</bean>
 
 	<bean class="com.novadart.novabill.aspect.MailAspect"
 		factory-method="aspectOf">
-		<property name="mailSender" ref="mailSender" />
 		<property name="velocityEngine" ref="velocityEngine" />
-		<property name="from" value="${smtp.mail.registration_completed_sender}" />
+		<property name="from" value="${default.sender}" />
 	</bean>
 
 	<bean class="com.novadart.novabill.aspect.logging.LoginLogoutAspect"
@@ -111,6 +112,7 @@
 			</list>
 		</property>
 		<property name="loggingOn" value="true"/>
+		<property name="ignoreExceptions" value="${ignore.exceptions}"/>
 	</bean>
 
 	<bean
@@ -126,7 +128,7 @@
 	</bean>
 	
 	<bean
-		class="com.novadart.novabill.aspect.logging.AccountUpgradeAspect"
+		class="com.novadart.novabill.aspect.logging.PremiumUpgradeAspect"
 		factory-method="aspectOf">
 		<property name="sendEmail" value="${notification.accountUpgrade}" />
 		<property name="emailAddresses">
@@ -150,9 +152,21 @@
 	</bean>
 	
 	<bean
-		class="com.novadart.novabill.aspect.logging.ValidationAspect"
+		class="com.novadart.novabill.aspect.logging.ValidationErrorAspect"
 		factory-method="aspectOf">
 		<property name="sendEmail" value="${notification.validationError}" />
+		<property name="emailAddresses">
+			<list>
+				<value>giordano.battilana@novadart.com</value>
+				<value>risto.gligorov@novadart.com</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean
+		class="com.novadart.novabill.aspect.logging.ClientUIAspect"
+		factory-method="aspectOf">
+		<property name="sendEmail" value="${notification.clientUIError}" />
 		<property name="emailAddresses">
 			<list>
 				<value>giordano.battilana@novadart.com</value>
@@ -197,9 +211,13 @@
 		factory-method="aspectOf">
 	</bean>
 	
+	<bean class="com.novadart.novabill.aspect.logging.SharingPermitServiceActionsAspect"
+	    factory-method="aspectOf">
+	</bean>
+	
 	<bean class="com.novadart.novabill.aspect.CachingAspect"
 		factory-method="aspectOf">
-		<property name="ehcacheDiskStore" value="${ehcache.diskStore}"/>
+		<property name="ehcacheDiskStore" value="${mvn.ehcache.diskStore}"/>
 	</bean>
 	
 	<bean id="businessServiceImpl" class="com.novadart.novabill.service.web.BusinessServiceImpl">
@@ -211,8 +229,8 @@
 			destroy-method="close" id="dataSource">
 			<property name="driverClassName" value="org.postgresql.Driver" />
 			<property name="url" value="jdbc:postgresql://localhost/${mvn.db.name}" />
-			<property name="username" value="${dbuser}" />
-			<property name="password" value="${dbpassword}" />
+			<property name="username" value="${mvn.db.user}" />
+			<property name="password" value="${mvn.db.password}" />
 			<property name="testOnBorrow" value="true" />
 			<property name="testOnReturn" value="true" />
 			<property name="testWhileIdle" value="true" />

@@ -39,7 +39,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,41 +74,41 @@ public class Client implements Serializable, Taxable {
 	
 	@Field(name = FTSNamespace.NAME)
 	@Size(max = 255)
-	@NotBlank
+	@NotEmpty
 	@Trimmed
     private String name;
 
 	@Field(name = FTSNamespace.ADDRESS)
     @Size(max = 255)
-	@NotBlank(groups = {HeavyClient.class})
+	@NotEmpty(groups = {HeavyClient.class})
 	@Trimmed
     private String address;
 
 	@Field(name = FTSNamespace.POSTCODE)
     @Size(max = 10)
-	@NotBlank(groups = {HeavyClient.class})
+	@NotEmpty(groups = {HeavyClient.class})
 	@Trimmed
     private String postcode;
 
 	@Field(name = FTSNamespace.CITY)
     @Size(max = 60)
-	@NotBlank(groups = HeavyClient.class)
+	@NotEmpty(groups = HeavyClient.class)
 	@Trimmed
     private String city;
 
 	@Field(name = FTSNamespace.PROVINCE)
-    @Size(max = 2)
+    @Size(max = 100)
 	@Trimmed
     private String province;
 
 	@Field(name = FTSNamespace.COUNTRY)
     @Size(max = 3)
-	@NotBlank(groups = {HeavyClient.class})
+	@NotEmpty(groups = {HeavyClient.class})
 	@Trimmed
     private String country;
 
 	@Field(name = FTSNamespace.EMAIL)
-    @Size(max = 255)
+    @Size(max = com.novadart.novabill.domain.Email.EMAIL_MAX_LENGTH)
     @Email
     @Trimmed
     private String email;
@@ -238,11 +238,17 @@ public class Client implements Serializable, Taxable {
     			entityManager.createQuery(String.format(queryTemplate, "TransportDocument"), Long.class).setParameter("clientId", clientID).getSingleResult() != 0;
     }
     
+	public Taxable findByVatID(String vatID) {
+    	String sql = "select c from Client c where c.vatID = :id or c.ssn = :id";
+    	List<Client> r = entityManager.createQuery(sql, Client.class).setParameter("id", vatID).getResultList();
+		return r.size() == 0? null: r.get(0);
+	}
+    
     /*
      * Getters and setters
      * */
     
-    public String getName() {
+	public String getName() {
         return this.name;
     }
     
@@ -514,6 +520,7 @@ public class Client implements Serializable, Taxable {
     @Column(name = "version")
     private Integer version;
     
+    @Override
     public Long getId() {
         return this.id;
     }

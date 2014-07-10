@@ -2,7 +2,9 @@ package com.novadart.novabill.test.suite;
 
 import static org.junit.Assert.assertTrue;
 
+import java.io.UnsupportedEncodingException;
 import java.math.BigDecimal;
+import java.security.NoSuchAlgorithmException;
 import java.text.ParseException;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -35,20 +37,21 @@ import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.TransportDocument;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
-import com.novadart.novabill.domain.dto.factory.ClientAddressDTOFactory;
-import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
-import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
-import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
-import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
-import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
-import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
-import com.novadart.novabill.domain.dto.factory.TransporterDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.ClientAddressDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.CommodityDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.CreditNoteDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.EstimationDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PaymentTypeDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PriceDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PriceListDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.TransportDocumentDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.TransporterDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.BusinessService;
+import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
@@ -62,9 +65,9 @@ import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -78,13 +81,14 @@ import com.novadart.novabill.shared.client.facade.PaymentTypeGwtService;
 import com.novadart.novabill.shared.client.facade.PriceListGwtService;
 import com.novadart.novabill.shared.client.facade.TransportDocumentGwtService;
 import com.novadart.novabill.shared.client.facade.TransporterGwtService;
+import com.novadart.novabill.web.mvc.ajax.dto.EmailDTO;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:caching-test-config.xml")
 @Transactional
 @ActiveProfiles("dev")
-public class CachingTest extends GWTServiceTest {
+public class CachingTest extends ServiceTest {
 	
 	@Resource(name = "testPL")
 	private HashMap<String, String> testPL;
@@ -123,6 +127,9 @@ public class CachingTest extends GWTServiceTest {
 	private TransporterGwtService transporterService;
 	
 	@Autowired
+	private InvoiceService invoiceAjaxService;
+	
+	@Autowired
 	private CacheManager cacheManager;
 	
 	@Override
@@ -135,7 +142,7 @@ public class CachingTest extends GWTServiceTest {
 		cacheManager.getCache(CachingAspect.ESTIMATION_CACHE).flush();
 		cacheManager.getCache(CachingAspect.CREDITNOTE_CACHE).flush();
 		cacheManager.getCache(CachingAspect.TRANSPORTDOCUMENT_CACHE).flush();
-		cacheManager.getCache(CachingAspect.BUSINESS_CACHE).flush();
+		//cacheManager.getCache(CachingAspect.BUSINESS_CACHE).flush();
 		cacheManager.getCache(CachingAspect.PAYMENTTYPE_CACHE).flush();
 		cacheManager.getCache(CachingAspect.COMMODITY_CACHE).flush();
 		cacheManager.getCache(CachingAspect.PRICELIST_CACHE).flush();
@@ -146,9 +153,7 @@ public class CachingTest extends GWTServiceTest {
 	
 	@Test
 	public void businessGetTest() throws NotAuthenticatedException, DataAccessException{
-		BusinessDTO business = businessGwtService.get(authenticatedPrincipal.getBusiness().getId());
-		BusinessDTO cachedBusiness = businessGwtService.get(authenticatedPrincipal.getBusiness().getId());
-		assertTrue(business == cachedBusiness);
+		assertTrue(Business.findBusiness(authenticatedPrincipal.getBusiness().getId()) == Business.findBusiness(authenticatedPrincipal.getBusiness().getId()));
 	}
 	
 	@Test
@@ -156,7 +161,7 @@ public class CachingTest extends GWTServiceTest {
 		BusinessDTO business1 = businessGwtService.get(authenticatedPrincipal.getBusiness().getId());
 		Business biz = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
 		biz.setName("Test name");
-		businessGwtService.update(BusinessDTOFactory.toDTO(biz));
+		businessGwtService.update(BusinessDTOTransformer.toDTO(biz));
 		BusinessDTO business2 = businessGwtService.get(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(business1 != business2);
 	}
@@ -180,11 +185,11 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void  clientAddCacheTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+	public void  clientAddCacheTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException{
 		Set<ClientDTO> clients = new HashSet<ClientDTO>(businessGwtService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		Integer count = businessGwtService.countClients(authenticatedPrincipal.getBusiness().getId());
 		Client client = TestUtils.createClient();
-		clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(client));
+		clientService.add(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(client));
 		HashSet<ClientDTO> notCachedClients = new HashSet<ClientDTO>(businessGwtService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		Integer notCachedCount = businessGwtService.countClients(authenticatedPrincipal.getBusiness().getId());
 		assertTrue(notCachedCount.equals(count + 1));
@@ -205,7 +210,7 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void  clientUpdateCacheTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, NoSuchObjectException{
+	public void  clientUpdateCacheTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, NoSuchObjectException{
 		Set<ClientDTO> clients = new HashSet<ClientDTO>(businessGwtService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		Integer count = businessGwtService.countClients(authenticatedPrincipal.getBusiness().getId());
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
@@ -218,7 +223,7 @@ public class CachingTest extends GWTServiceTest {
 		assertTrue(estimations == businessService.getEstimations(authenticatedPrincipal.getBusiness().getId(), 2013));
 		assertTrue(credNotes == businessService.getCreditNotes(authenticatedPrincipal.getBusiness().getId(), 2013));
 		assertTrue(tranDocs == businessService.getTransportDocuments(authenticatedPrincipal.getBusiness().getId(), 2013));
-		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOFactory.toDTO(client));
+		clientService.update(authenticatedPrincipal.getBusiness().getId(), ClientDTOTransformer.toDTO(client));
 		Set<ClientDTO> notCachedClients = new HashSet<ClientDTO>(businessGwtService.getClients(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!clients.equals(notCachedClients));
 		Integer cachedCount = businessGwtService.countClients(authenticatedPrincipal.getBusiness().getId());
@@ -261,7 +266,7 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void invoiceAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, ParseException, DataIntegrityException{
+	public void invoiceAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, ParseException, DataIntegrityException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
 		Set<InvoiceDTO> result = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(businessID, getYear()));
@@ -269,9 +274,9 @@ public class CachingTest extends GWTServiceTest {
 		BigDecimal totals = businessGwtService.getTotalsForYear(businessID, new Integer(testProps.get("year"))).getSecond();
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		InvoiceDTO invDTO = InvoiceDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class), true);
-		invDTO.setClient(ClientDTOFactory.toDTO(client));
-		invDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		InvoiceDTO invDTO = InvoiceDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextInvoiceDocumentID(), Invoice.class), true);
+		invDTO.setClient(ClientDTOTransformer.toDTO(client));
+		invDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		invoiceService.add(invDTO);
 		
 		Set<InvoiceDTO> nonCachedResult = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear()));
@@ -285,7 +290,7 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void invoiceUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, DataIntegrityException{
+	public void invoiceUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, DataIntegrityException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
 		Set<InvoiceDTO> result = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(businessID, getYear()));
@@ -294,7 +299,7 @@ public class CachingTest extends GWTServiceTest {
 		
 		Invoice inv = authenticatedPrincipal.getBusiness().getInvoicesForYear(getYear()).iterator().next();
 		inv.setNote("Temporary note for this invoice");
-		invoiceService.update(InvoiceDTOFactory.toDTO(inv, true));
+		invoiceService.update(InvoiceDTOTransformer.toDTO(inv, true));
 		Invoice.entityManager().flush();
 		
 		Set<InvoiceDTO> nonCachedResult = new HashSet<InvoiceDTO>(businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear()));
@@ -307,7 +312,7 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void invoiceSetPayedCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void invoiceSetPayedCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
 		List<InvoiceDTO> result = businessGwtService.getInvoices(businessID, getYear());
@@ -333,7 +338,62 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void invoiceUpdateFailCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void invoicemarkViewedByClientCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<Integer> invYears = businessService.getInvoceYears(businessID);
+		List<InvoiceDTO> result = businessGwtService.getInvoices(businessID, getYear());
+		Integer countClients = businessGwtService.countClients(businessID);
+		Integer countInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
+		
+		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
+		Long id = null;
+		for(Invoice inv: Client.findClient(clientID).getInvoices())
+			if(inv.getAccountingDocumentYear().equals(getYear())){
+				id = inv.getId();
+				break;
+			}
+		invoiceAjaxService.markViewedByClient(businessID, id, System.currentTimeMillis());
+		
+		List<InvoiceDTO> nonCachedResult = businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear());
+		Integer nonCachedCountClients = businessGwtService.countClients(businessID);
+		Integer nonCachedCountInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
+		assertTrue(result != nonCachedResult);
+		assertTrue(countClients.equals(nonCachedCountClients));
+		assertTrue(countInvsYear.equals(nonCachedCountInvsYear));
+		assertTrue(invYears == businessService.getInvoceYears(businessID));
+	}
+	
+	@Test
+	public void invoiceEmailToClientCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, NoSuchAlgorithmException, UnsupportedEncodingException{
+		Long businessID = authenticatedPrincipal.getBusiness().getId();
+		List<Integer> invYears = businessService.getInvoceYears(businessID);
+		List<InvoiceDTO> result = businessGwtService.getInvoices(businessID, getYear());
+		Integer countClients = businessGwtService.countClients(businessID);
+		Integer countInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
+		EmailDTO emailDTO = new EmailDTO();
+		emailDTO.setTo("foo@bar.com");
+		emailDTO.setReplyTo("foo@bar.it");
+		emailDTO.setSubject("Test subject");
+		emailDTO.setMessage("Test message");
+		Long clientID = new Long(testProps.get("clientWithInvoicesID"));
+		Long id = null;
+		for(Invoice inv: Client.findClient(clientID).getInvoices())
+			if(inv.getAccountingDocumentYear().equals(getYear())){
+				id = inv.getId();
+				break;
+			}
+		invoiceAjaxService.email(businessID, id, emailDTO);
+		List<InvoiceDTO> nonCachedResult = businessGwtService.getInvoices(authenticatedPrincipal.getBusiness().getId(), getYear());
+		Integer nonCachedCountClients = businessGwtService.countClients(businessID);
+		Integer nonCachedCountInvsYear = businessGwtService.countInvoicesForYear(businessID, new Integer(testProps.get("year")));
+		assertTrue(result != nonCachedResult);
+		assertTrue(countClients.equals(nonCachedCountClients));
+		assertTrue(countInvsYear.equals(nonCachedCountInvsYear));
+		assertTrue(invYears == businessService.getInvoceYears(businessID));
+	}
+	
+	@Test
+	public void invoiceUpdateFailCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> invYears = businessService.getInvoceYears(businessID);
 		List<InvoiceDTO> result = businessGwtService.getInvoices(businessID, getYear());
@@ -344,7 +404,7 @@ public class CachingTest extends GWTServiceTest {
 		try {
 			Invoice inv = authenticatedPrincipal.getBusiness().getInvoices().iterator().next();
 			inv.setPayed(null);
-			invoiceService.update(InvoiceDTOFactory.toDTO(inv, true));
+			invoiceService.update(InvoiceDTOTransformer.toDTO(inv, true));
 			Invoice.entityManager().flush();
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -384,15 +444,15 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void creditNoteAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, ParseException{
+	public void creditNoteAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, ParseException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> credYears = businessService.getCreditNoteYears(businessID);
 		List<CreditNoteDTO> result = businessGwtService.getCreditNotes(businessID, getYear());
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		CreditNoteDTO credNoteDTO = CreditNoteDTOFactory.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class), true);
-		credNoteDTO.setClient(ClientDTOFactory.toDTO(client));
-		credNoteDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		CreditNoteDTO credNoteDTO = CreditNoteDTOTransformer.toDTO(TestUtils.createInvOrCredNote(authenticatedPrincipal.getBusiness().getNextCreditNoteDocumentID(), CreditNote.class), true);
+		credNoteDTO.setClient(ClientDTOTransformer.toDTO(client));
+		credNoteDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		creditNoteService.add(credNoteDTO);
 		CreditNote.entityManager().flush();
 		
@@ -403,14 +463,14 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void creditNoteUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void creditNoteUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> credYears = businessService.getCreditNoteYears(businessID);
 		List<CreditNoteDTO> result = businessGwtService.getCreditNotes(businessID, getYear());
 		
 		CreditNote credNote = authenticatedPrincipal.getBusiness().getCreditNotes().iterator().next();
 		credNote.setNote("Temporary note for this credit note");
-		creditNoteService.update(CreditNoteDTOFactory.toDTO(credNote, true));
+		creditNoteService.update(CreditNoteDTOTransformer.toDTO(credNote, true));
 		CreditNote.entityManager().flush();
 		
 		List<CreditNoteDTO> nonCachedResult = businessGwtService.getCreditNotes(businessID, getYear());
@@ -441,15 +501,15 @@ public class CachingTest extends GWTServiceTest {
 	} 
 	
 	@Test
-	public void estimationAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, ParseException{
+	public void estimationAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, ParseException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> estYears = businessService.getEstimationYears(businessID);
 		List<EstimationDTO> result = businessGwtService.getEstimations(businessID, getYear());
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		EstimationDTO estimationDTO = EstimationDTOFactory.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
-		estimationDTO.setClient(ClientDTOFactory.toDTO(client));
-		estimationDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		EstimationDTO estimationDTO = EstimationDTOTransformer.toDTO(TestUtils.createEstimation(authenticatedPrincipal.getBusiness().getNextEstimationDocumentID()), true);
+		estimationDTO.setClient(ClientDTOTransformer.toDTO(client));
+		estimationDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		estimationService.add(estimationDTO);
 		
 		List<EstimationDTO> nonCachedResult = businessGwtService.getEstimations(businessID, getYear());
@@ -459,14 +519,14 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void estimationUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException{
+	public void estimationUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> estYears = businessService.getEstimationYears(businessID);
 		List<EstimationDTO> result = businessGwtService.getEstimations(businessID, getYear());
 		
 		Estimation estimation = authenticatedPrincipal.getBusiness().getEstimations().iterator().next();
 		estimation.setNote("Temporary note for this estimation");
-		estimationService.update(EstimationDTOFactory.toDTO(estimation, true));
+		estimationService.update(EstimationDTOTransformer.toDTO(estimation, true));
 		Estimation.entityManager().flush();
 		
 		List<EstimationDTO> nonCachedResult = businessGwtService.getEstimations(businessID, getYear());
@@ -497,15 +557,15 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void transDocAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, ParseException{
+	public void transDocAddCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, ParseException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> tranYears = businessService.getTransportDocumentYears(businessID);
 		List<TransportDocumentDTO> result = businessGwtService.getTransportDocuments(businessID, getYear());
 		
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
-		TransportDocumentDTO transDocDTO = TransportDocumentDTOFactory.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
-		transDocDTO.setClient(ClientDTOFactory.toDTO(client));
-		transDocDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		TransportDocumentDTO transDocDTO = TransportDocumentDTOTransformer.toDTO(TestUtils.createTransportDocument(authenticatedPrincipal.getBusiness().getNextTransportDocDocumentID()), true);
+		transDocDTO.setClient(ClientDTOTransformer.toDTO(client));
+		transDocDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		transDocService.add(transDocDTO);
 		TransportDocument.entityManager().flush();
 		
@@ -516,14 +576,14 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void transDocUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, AuthorizationException, InstantiationException, IllegalAccessException, DataIntegrityException{
+	public void transDocUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, ValidationException, FreeUserAccessForbiddenException, InstantiationException, IllegalAccessException, DataIntegrityException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<Integer> tranYears = businessService.getTransportDocumentYears(businessID);
 		List<TransportDocumentDTO> result = businessGwtService.getTransportDocuments(businessID, getYear());
 		
 		TransportDocument transDoc = authenticatedPrincipal.getBusiness().getTransportDocuments().iterator().next();
 		transDoc.setNote("Temporary note for this transport document");
-		transDocService.update(TransportDocumentDTOFactory.toDTO(transDoc, true));
+		transDocService.update(TransportDocumentDTOTransformer.toDTO(transDoc, true));
 		TransportDocument.entityManager().flush();
 		
 		List<TransportDocumentDTO> nonCachedResult = businessGwtService.getTransportDocuments(businessID, getYear());
@@ -596,10 +656,10 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void  paymentTypeAddCacheTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException{
+	public void  paymentTypeAddCacheTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException{
 		Set<PaymentTypeDTO> paymentTypes = new HashSet<PaymentTypeDTO>(businessGwtService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
-		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(TestUtils.createPaymentType());
-		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOTransformer.toDTO(TestUtils.createPaymentType());
+		paymentTypeDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		paymentTypeService.add(paymentTypeDTO);
 		HashSet<PaymentTypeDTO> notCachedPaymentTypes = new HashSet<PaymentTypeDTO>(businessGwtService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(notCachedPaymentTypes.size() == paymentTypes.size() + 1);
@@ -607,12 +667,12 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void  paymentTypeUpdateCacheTest() throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, NoSuchObjectException{
+	public void  paymentTypeUpdateCacheTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, NoSuchObjectException{
 		Set<PaymentTypeDTO> paymentTypes = new HashSet<PaymentTypeDTO>(businessGwtService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
 		PaymentType paymentType = authenticatedPrincipal.getBusiness().getPaymentTypes().iterator().next();
 		paymentType.setName("Updated test payment type name");
-		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(paymentType);
-		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOTransformer.toDTO(paymentType);
+		paymentTypeDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		paymentTypeService.update(paymentTypeDTO);
 		Set<PaymentTypeDTO> notCachedPaymentTypes = new HashSet<PaymentTypeDTO>(businessGwtService.getPaymentTypes(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!paymentTypes.equals(notCachedPaymentTypes));
@@ -638,12 +698,13 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void transporterAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException {
+	public void transporterAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException {
 		Set<TransporterDTO> transporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
 		TransporterDTO transporterDTO = new TransporterDTO();
+		transporterDTO.setName("Jason");
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		transporterService.add(transporterDTO);
 		Set<TransporterDTO> nonCachedTransporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!transporters.equals(nonCachedTransporters));
@@ -651,10 +712,10 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void transporterUpdateCache() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, NoSuchObjectException {
+	public void transporterUpdateCache() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, NoSuchObjectException {
 		Set<TransporterDTO> transporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
-		TransporterDTO transDTO = TransporterDTOFactory.toDTO(authenticatedPrincipal.getBusiness().getTransporters().iterator().next());
-		transDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		TransporterDTO transDTO = TransporterDTOTransformer.toDTO(authenticatedPrincipal.getBusiness().getTransporters().iterator().next());
+		transDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		transporterService.update(transDTO);
 		Set<TransporterDTO> nonCachedTransporters = new HashSet<TransporterDTO>(businessGwtService.getTransporters(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(!transporters.equals(nonCachedTransporters));
@@ -662,17 +723,17 @@ public class CachingTest extends GWTServiceTest {
 	}
 
 	@Test
-	public void commodityGetAllCacheTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void commodityGetAllCacheTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
 		Set<CommodityDTO> cachedCommodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
 		assertTrue(commodities.equals(cachedCommodities));
 	}
 	
 	@Test
-	public void commodityAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, NoSuchObjectException{
+	public void commodityAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, NoSuchObjectException{
 		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
-		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		CommodityDTO commodityDTO = CommodityDTOTransformer.toDTO(TestUtils.createCommodity());
+		commodityDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		TestUtils.setDefaultPrice(commodityDTO, new BigDecimal("19.95"));
 		Long id = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
 		PriceListDTO resultOne = priceListService.get(id);
@@ -685,20 +746,20 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void commodityUpdateCacheTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
-		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+	public void commodityUpdateCacheTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
+		CommodityDTO commodityDTO = CommodityDTOTransformer.toDTO(TestUtils.createCommodity());
+		commodityDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		TestUtils.setDefaultPrice(commodityDTO, new BigDecimal("19.95"));
 		Long id = commodityService.add(commodityDTO);
 		Commodity.entityManager().flush();
 		Set<CommodityDTO> commodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
 		Commodity commodity = Commodity.findCommodity(id);
 		commodity.setDescription("New description");
-		commodityDTO = CommodityDTOFactory.toDTO(commodity);
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		commodityDTO = CommodityDTOTransformer.toDTO(commodity);
+		commodityDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		
 		Map<String, PriceDTO> prices = new HashMap<>();
-		prices.put(PriceListConstants.DEFAULT, PriceDTOFactory.toDTO(commodity.getPrices().iterator().next()));
+		prices.put(PriceListConstants.DEFAULT, PriceDTOTransformer.toDTO(commodity.getPrices().iterator().next()));
 		commodityDTO.setPrices(prices);
 
 		Long plid = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
@@ -712,9 +773,9 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void commodityRemoveCacheTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
-		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+	public void commodityRemoveCacheTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
+		CommodityDTO commodityDTO = CommodityDTOTransformer.toDTO(TestUtils.createCommodity());
+		commodityDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		TestUtils.setDefaultPrice(commodityDTO, new BigDecimal("19.95"));
 		Long id = commodityService.add(commodityDTO);
 		Commodity.entityManager().flush();
@@ -730,9 +791,9 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void commodityAddOrRemovePriceTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
-		CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(TestUtils.createCommodity());
-		commodityDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+	public void commodityAddOrRemovePriceTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
+		CommodityDTO commodityDTO = CommodityDTOTransformer.toDTO(TestUtils.createCommodity());
+		commodityDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		TestUtils.setDefaultPrice(commodityDTO, new BigDecimal("19.95"));
 		Long id = commodityService.add(commodityDTO);
 		Commodity.entityManager().flush();
@@ -743,7 +804,7 @@ public class CachingTest extends GWTServiceTest {
 		price.setPriceValue(new BigDecimal("199.95"));
 		Long plid = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
 		PriceListDTO resultOne = priceListService.get(plid);
-		commodityService.addOrUpdatePrice(business.getId(), PriceDTOFactory.toDTO(price));
+		commodityService.addOrUpdatePrice(business.getId(), PriceDTOTransformer.toDTO(price));
 		Commodity.entityManager().flush();
 		assertTrue(resultOne != priceListService.get(plid));
 		//Set<CommodityDTO> nonCachedCommodities = new HashSet<CommodityDTO>(businessGwtService.getCommodities(authenticatedPrincipal.getBusiness().getId()));
@@ -767,13 +828,13 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void priceListUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException, NoSuchObjectException{
+	public void priceListUpdateCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException, NoSuchObjectException{
 		Long id = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<PriceListDTO> resultAll = priceListService.getAll(businessID);
 		PriceListDTO resultOne = priceListService.get(id);
-		PriceListDTO pl = PriceListDTOFactory.toDTO(PriceList.findPriceList(id), null);
-		pl.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		PriceListDTO pl = PriceListDTOTransformer.toDTO(PriceList.findPriceList(id), null);
+		pl.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		priceListService.update(pl);
 		assertTrue(resultAll != priceListService.getAll(businessID));
 		assertTrue(resultOne != priceListService.get(id));
@@ -781,9 +842,9 @@ public class CachingTest extends GWTServiceTest {
 	
 	
 	@Test(expected = DataAccessException.class)
-	public void priceListRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, ValidationException, AuthorizationException{
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+	public void priceListRemoveCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, ValidationException, FreeUserAccessForbiddenException{
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = priceListService.add(priceListDTO);
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<PriceListDTO> resultAll = priceListService.getAll(businessID);
@@ -796,7 +857,7 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void priceListCloneCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, ValidationException, AuthorizationException{
+	public void priceListCloneCacheTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, DataIntegrityException, ValidationException, FreeUserAccessForbiddenException{
 		Long id = Long.parseLong(testPL.get(authenticatedPrincipal.getUsername()));
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<PriceListDTO> resultAll = priceListService.getAll(businessID);
@@ -807,21 +868,21 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void priceListAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException{
+	public void priceListAddCacheTest() throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException{
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		List<PriceListDTO> resultAll = priceListService.getAll(businessID);
-		PriceListDTO priceListDTO = PriceListDTOFactory.toDTO(TestUtils.createPriceList(), null);
-		priceListDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PriceListDTO priceListDTO = PriceListDTOTransformer.toDTO(TestUtils.createPriceList(), null);
+		priceListDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		priceListService.add(priceListDTO);
 		assertTrue(resultAll != priceListService.getAll(businessID));
 	}
 	
 	@Test
-	public void priceListAddOrUpdateCacheTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, AuthorizationException{
+	public void priceListAddOrUpdateCacheTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, FreeUserAccessForbiddenException{
 		Long id = authenticatedPrincipal.getBusiness().getPriceLists().iterator().next().getId();
 		Long businessID = authenticatedPrincipal.getBusiness().getId();
 		PriceListDTO resultOne = priceListService.get(id);
-		PriceDTO priceDTO = PriceDTOFactory.toDTO(PriceList.findPriceList(id).getPrices().iterator().next());
+		PriceDTO priceDTO = PriceDTOTransformer.toDTO(PriceList.findPriceList(id).getPrices().iterator().next());
 		commodityService.addOrUpdatePrice(businessID, priceDTO);
 		assertTrue(resultOne != priceListService.get(id));
 	}
@@ -853,14 +914,14 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void addClientAddressTest() throws NotAuthenticatedException, DataAccessException, AuthorizationException, ValidationException{
+	public void addClientAddressTest() throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException, ValidationException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		addClientAddress(client);
 		Long clientID = client.getId();
 		List<ClientAddressDTO> uncachedRes = clientService.getClientAddresses(clientID);
 		assertTrue(uncachedRes == clientService.getClientAddresses(clientID));
-		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(TestUtils.createClientAddress());
-		clientAddressDTO.setClient(ClientDTOFactory.toDTO(client));
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOTransformer.toDTO(TestUtils.createClientAddress());
+		clientAddressDTO.setClient(ClientDTOTransformer.toDTO(client));
 		clientService.addClientAddress(clientAddressDTO);
 		assertTrue(uncachedRes != clientService.getClientAddresses(clientID));
 	}
@@ -877,14 +938,14 @@ public class CachingTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void updateClientAddressTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, AuthorizationException, ValidationException{
+	public void updateClientAddressTest() throws NotAuthenticatedException, DataAccessException, NoSuchObjectException, FreeUserAccessForbiddenException, ValidationException{
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
 		Long clientAddressID = addClientAddress(client).getId();
 		Long clientID = client.getId();
 		List<ClientAddressDTO> uncachedRes = clientService.getClientAddresses(clientID);
 		assertTrue(uncachedRes == clientService.getClientAddresses(clientID));
-		ClientAddressDTO clientAddressDTO = ClientAddressDTOFactory.toDTO(ClientAddress.findClientAddress(clientAddressID));
-		clientAddressDTO.setClient(ClientDTOFactory.toDTO(client));
+		ClientAddressDTO clientAddressDTO = ClientAddressDTOTransformer.toDTO(ClientAddress.findClientAddress(clientAddressID));
+		clientAddressDTO.setClient(ClientDTOTransformer.toDTO(client));
 		clientService.updateClientAddress(clientAddressDTO);
 		assertTrue(uncachedRes != clientService.getClientAddresses(clientID));
 	}

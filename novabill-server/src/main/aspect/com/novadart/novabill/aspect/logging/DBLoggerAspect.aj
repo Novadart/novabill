@@ -2,8 +2,7 @@ package com.novadart.novabill.aspect.logging;
 
 import java.util.Map;
 
-import org.codehaus.jackson.map.ObjectMapper;
-
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.shared.client.data.EntityType;
@@ -22,6 +21,10 @@ public abstract aspect DBLoggerAspect {
 	public static final String PRICE_LIST_NAME = "priceListName";
 	
 	public static final String PAYED_STATUS = "payedStatus";
+	
+	public static final String SHARING_PERMIT_DESC = "sharingPermitDesc";
+	
+	public static final String REPLY_TO = "replyTo";
 	
 	private String toJsonString(Map<String, String> jsonObject) {
 		ObjectMapper mapper = new ObjectMapper();

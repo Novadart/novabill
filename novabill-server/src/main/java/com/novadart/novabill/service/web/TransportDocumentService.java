@@ -18,8 +18,8 @@ import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.domain.dto.DTOUtils.Predicate;
-import com.novadart.novabill.domain.dto.factory.AccountingDocumentItemDTOFactory;
-import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.AccountingDocumentItemDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.TransportDocumentDTOTransformer;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.AccountingDocumentValidator;
 import com.novadart.novabill.service.validator.Groups.HeavyClient;
@@ -27,7 +27,7 @@ import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -55,7 +55,7 @@ public class TransportDocumentService {
 		TransportDocument transDoc = TransportDocument.findTransportDocument(id);
 		if(transDoc == null)
 			throw new NoSuchObjectException();
-		return TransportDocumentDTOFactory.toDTO(transDoc, true);
+		return TransportDocumentDTOTransformer.toDTO(transDoc, true);
 	}
 	
 	private static class EqualsClientIDPredicate implements Predicate<TransportDocumentDTO>{
@@ -83,9 +83,9 @@ public class TransportDocumentService {
 	@PreAuthorize("#transportDocDTO?.business?.id == principal.business.id and " +
 		  	  	  "T(com.novadart.novabill.domain.Client).findClient(#transportDocDTO?.client?.id)?.business?.id == principal.business.id and " +
 		  	  	  "#transportDocDTO != null and #transportDocDTO.id == null")
-	public Long add(TransportDocumentDTO transportDocDTO) throws NotAuthenticatedException, DataAccessException, AuthorizationException, ValidationException {
+	public Long add(TransportDocumentDTO transportDocDTO) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException, ValidationException {
 		TransportDocument transportDoc = new TransportDocument();
-		TransportDocumentDTOFactory.copyFromDTO(transportDoc, transportDocDTO, true);
+		TransportDocumentDTOTransformer.copyFromDTO(transportDoc, transportDocDTO, true);
 		validator.validate(TransportDocument.class, transportDoc);
 		Client client = Client.findClient(transportDocDTO.getClient().getId());
 		simpleValidator.validate(client, HeavyClient.class);
@@ -124,11 +124,11 @@ public class TransportDocumentService {
 			throw new NoSuchObjectException();
 		if(persistedTransportDoc.getInvoice() != null)
 			throw new DataIntegrityException();
-		TransportDocumentDTOFactory.copyFromDTO(persistedTransportDoc, transportDocDTO, false);
+		TransportDocumentDTOTransformer.copyFromDTO(persistedTransportDoc, transportDocDTO, false);
 		persistedTransportDoc.getAccountingDocumentItems().clear();
 		for(AccountingDocumentItemDTO itemDTO: transportDocDTO.getItems()){
 			AccountingDocumentItem item = new AccountingDocumentItem();
-			AccountingDocumentItemDTOFactory.copyFromDTO(item, itemDTO);
+			AccountingDocumentItemDTOTransformer.copyFromDTO(item, itemDTO);
 			item.setAccountingDocument(persistedTransportDoc);
 			persistedTransportDoc.getAccountingDocumentItems().add(item);
 		}

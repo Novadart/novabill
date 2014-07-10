@@ -6,7 +6,7 @@ import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -20,9 +20,9 @@ public interface PaymentTypeGwtService extends RemoteService {
 	
 	public PaymentTypeDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
 	
-	public Long add(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException;
+	public Long add(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException;
 	
-	public void update(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException;
+	public void update(PaymentTypeDTO paymentTypeDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException;
 	
 	public void remove(Long businessID, Long id)  throws NotAuthenticatedException, DataAccessException;
 

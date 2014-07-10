@@ -8,7 +8,7 @@ import com.google.gwt.user.server.rpc.XsrfProtect;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -23,18 +23,18 @@ public interface CommodityGwtService extends RemoteService {
 	
 	public CommodityDTO get(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	
-	public Long add(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException;
+	public Long add(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException;
 	
-	public void update(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException;
+	public void update(CommodityDTO commodityDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException;
 	
 	public void remove(Long businessID, Long id) throws NotAuthenticatedException, DataAccessException;
 	
 	public PageDTO<CommodityDTO> searchCommodities(Long businessID, String query, int start, int offset) throws InvalidArgumentException, NotAuthenticatedException, DataAccessException;
 	
-	public Long addOrUpdatePrice(Long businessID, PriceDTO priceDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException;
+	public Long addOrUpdatePrice(Long businessID, PriceDTO priceDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException;
 	
 	public void removePrice(Long businessID, Long priceListID, Long commodityID) throws NotAuthenticatedException, DataAccessException, UnsupportedOperationException;
 	
-	public List<Long> addOrUpdatePrices(Long businessID, List<PriceDTO> priceDTOs) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException;
+	public List<Long> addOrUpdatePrices(Long businessID, List<PriceDTO> priceDTOs) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException;
 	
 }

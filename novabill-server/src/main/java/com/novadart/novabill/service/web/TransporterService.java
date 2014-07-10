@@ -8,13 +8,15 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Transporter;
-import com.novadart.novabill.domain.dto.factory.TransporterDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.TransporterDTOTransformer;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -49,9 +51,10 @@ public class TransporterService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#transporterDTO?.business?.id == principal.business.id and " +
 	  	  	  	  "#transporterDTO != null and #transporterDTO.id == null")
-	public Long add(TransporterDTO transporterDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
+	@Restrictions(checkers = {PremiumChecker.class})
+	public Long add(TransporterDTO transporterDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException {
 		Transporter transporter = new Transporter();
-		TransporterDTOFactory.copyFromDTO(transporter, transporterDTO);
+		TransporterDTOTransformer.copyFromDTO(transporter, transporterDTO);
 		Business business = Business.findBusiness(transporterDTO.getBusiness().getId());
 		transporter.setBusiness(business);
 		validator.validate(transporter);
@@ -64,11 +67,11 @@ public class TransporterService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#transporterDTO?.business?.id == principal.business.id and " +
 	  	  	  	  "#transporterDTO?.id != null")
-	public void update(TransporterDTO transporterDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+	public void update(TransporterDTO transporterDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException {
 		Transporter persistedTransporter = Transporter.findTransporter(transporterDTO.getId());
 		if(persistedTransporter == null)
 			throw new NoSuchObjectException();
-		TransporterDTOFactory.copyFromDTO(persistedTransporter, transporterDTO);
+		TransporterDTOTransformer.copyFromDTO(persistedTransporter, transporterDTO);
 		validator.validate(persistedTransporter);
 	}
 	

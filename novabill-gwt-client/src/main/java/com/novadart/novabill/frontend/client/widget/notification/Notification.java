@@ -1,48 +1,27 @@
 package com.novadart.novabill.frontend.client.widget.notification;
 
-import com.google.gwt.safehtml.shared.SafeHtml;
-import com.novadart.novabill.frontend.client.widget.notification.impl.ConfirmDialog;
-import com.novadart.novabill.frontend.client.widget.notification.impl.MessageDialog;
 
 
 public class Notification {
 	
 	public static void showMessage(String message){
-		showMessage(message, new NotificationCallback<Void>() {
+		showMessage(message, new NotificationCallback() {
 			@Override
-			public void onNotificationClosed(Void value) {}
+			public void onNotificationClosed(boolean value) {}
 		});
 	}
 	
-	public static void showMessage(SafeHtml message){
-		showMessage(message, new NotificationCallback<Void>() {
-			@Override
-			public void onNotificationClosed(Void value) {}
+	public static native void showMessage(String message, NotificationCallback callback)/*-{
+		$wnd.Angular_Dialogs.alert(message, function(){
+			callback.@com.novadart.novabill.frontend.client.widget.notification.NotificationCallback::onNotificationClosed(Z)(true);
 		});
-	}
+	}-*/;
 	
-	public static void showMessage(String message, NotificationCallback<Void> onClose){
-		MessageDialog md = new MessageDialog(onClose);
-		md.setMessage(message);
-		md.center();
-	}
+	public static native void showConfirm(String message, NotificationCallback callback)/*-{
+		$wnd.Angular_Dialogs.confirm(message, function(value){
+			callback.@com.novadart.novabill.frontend.client.widget.notification.NotificationCallback::onNotificationClosed(Z)(value);
+		});
+	}-*/;
 	
-	public static void showMessage(SafeHtml message, NotificationCallback<Void> onClose){
-		MessageDialog md = new MessageDialog(onClose);
-		md.setMessage(message);
-		md.center();
-	}
-
-	public static void showConfirm(String message, NotificationCallback<Boolean> onClose){
-		ConfirmDialog cd = new ConfirmDialog(onClose);
-		cd.setMessage(message);
-		cd.center();
-	}
-	
-	public static void showConfirm(SafeHtml message, NotificationCallback<Boolean> onClose){
-		ConfirmDialog cd = new ConfirmDialog(onClose);
-		cd.setMessage(message);
-		cd.center();
-	}
 	
 }

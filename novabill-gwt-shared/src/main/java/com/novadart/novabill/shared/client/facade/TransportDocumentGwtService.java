@@ -7,7 +7,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -22,7 +22,7 @@ public interface TransportDocumentGwtService extends RemoteService {
 	
 	public List<TransportDocumentDTO> getAllForClient(Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, NoSuchObjectException;
 	
-	public Long add(TransportDocumentDTO transportDocDTO) throws NotAuthenticatedException, DataAccessException, AuthorizationException, ValidationException;
+	public Long add(TransportDocumentDTO transportDocDTO) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException, ValidationException;
 	
 	public void remove(Long businessID, Long clientID, Long id) throws DataAccessException, NotAuthenticatedException, NoSuchObjectException;
 	

@@ -1,0 +1,47 @@
+<div class="well well-small document-well invoice" ng-class="{'payed' : invoice.payed, 'not-payed' : !invoice.payed, 'expired' : expired}" ng-click="openUrl()">
+	<strong class="documentId">{{invoice.documentID}}</strong> 
+	<i ng-if="invoice.emailedToClient && !invoice.seenByClientTime" tooltip="{{'EMAIL_SENT' | translate}}" class="email-status fa fa-envelope-o"></i>
+	<i ng-if="invoice.seenByClientTime" tooltip="{{'EMAIL_SEEN_BY_CLIENT_AT' | translate}} {{invoice.seenByClientTime | date:'dd/MM/yyyy HH:mm'}}" class="email-status fa fa-inbox"></i>
+	<i ng-if="!invoice.emailedToClient && !invoice.seenByClientTime" class="spacer">&nbsp;</i>
+	<span class="date">{{invoice.accountingDocumentDate | date:"dd MMMM yyyy" }}</span> 
+	<span class="clientName">{{invoice.client.name}}</span>
+	
+	<a href="javascript:void(0);" ng-click="stopProp($event); download()" class="print btn btn-sm default pull-right"><i class="fa fa-download"></i></a>
+	
+	<a href="javascript:void(0);" ng-click="stopProp($event); print()" class="print btn btn-sm default pull-right"><i class="fa fa-print"></i></a>
+	
+	<div class="options btn-group pull-right" ng-click="stopProp($event)">
+		<a class="btn blue btn-sm dropdown-toggle" data-hover="dropdown" data-toggle="dropdown" href="#">
+	       	<i class="fa fa-ellipsis-horizontal"></i>
+		      {{'OPTIONS' | translate}}
+			<i class="fa fa-angle-down"></i>
+		</a>
+		<ul class="dropdown-menu" ng-class="{'bottom-up': bottomUpMenu}">
+			<li><a href="javascript:void(0);" ng-click="clone()">{{'CLONE' | translate}}</a></li>
+			<li><a href="javascript:void(0);" ng-click="createCreditNote()">{{'CREATE_CREDIT_NOTE' | translate}}</a></li>
+			<li class="divider"></li>
+			<li><a href="javascript:void(0);" ng-click="sendEmailToClient()"><i class="fa fa-envelope-o"></i> {{'SEND_EMAIL_TO_CLIENT' | translate}}</a> </li>
+			<li class="divider"></li>
+			<li><a href="javascript:void(0);" ng-click="togglePayed()">
+			     <i ng-class="{'fa-check-square-o': invoice.payed, 'fa-square-o': !invoice.payed}" class="fa" ></i> {{'TOGGLE_PAYED' | translate}}</a></li>
+			<li class="divider"></li>
+			<li ><a href="javascript:void(0);" ng-click="remove()" ><i class="fa fa-trash-o"></i>{{'DELETE' | translate}}</a></li>
+		</ul>
+	</div>
+	
+	<table class="pull-right payment-details">
+        <tr>
+            <td style="text-align: right;">{{'TOTAL' | translate}}</td><td><strong class="value">{{invoice.total | currency}}</strong></td>
+        </tr>
+        <tr>
+            <td style="text-align: right;">{{'PAYMENT_EXPIRATION' | translate}}</td><td><strong class="value">{{invoice.paymentDueDate | date:"dd MMMM yyyy"}}</strong></td>
+        </tr>      
+    </table>
+    
+    <div class="pull-right payment-status">
+        <span class="payed" ng-if="invoice.payed">{{'PAYED' | translate}}</span>
+        <span class="not-payed" ng-if="!invoice.payed && !expired">{{'NOT_PAYED' | translate}}</span>
+        <span class="expired" ng-if="!invoice.payed && expired">{{'PAYMENT_EXPIRED' | translate}}</span>
+    </div>
+	
+</div>

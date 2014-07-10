@@ -59,7 +59,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) RichTextBox fromAddrStreetName;
 	@UiField(provided=true) RichTextBox fromAddrPostCode;
 	@UiField(provided=true) RichTextBox fromAddrCity;
-	@UiField(provided=true) ValidatedListBox fromAddrProvince;
+	@UiField(provided=true) RichTextBox fromAddrProvince;
 	@UiField(provided=true) ValidatedListBox fromAddrCountry;
 	@UiField Button fromAddrButtonDefault;
 
@@ -69,13 +69,14 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	@UiField(provided=true) RichTextBox toAddrStreetName;
 	@UiField(provided=true) RichTextBox toAddrPostCode;
 	@UiField(provided=true) RichTextBox toAddrCity;
-	@UiField(provided=true) ValidatedListBox toAddrProvince;
+	@UiField(provided=true) RichTextBox toAddrProvince;
 	@UiField(provided=true) ValidatedListBox toAddrCountry;
 	@UiField ListBox toAddrButtonDefault;
 
 	@UiField(provided=true) ValidatedTextBox numberOfPackages;
 	@UiField(provided=true) ValidatedTextBox totalWeight;
 	@UiField(provided=true) com.novadart.gwtshared.client.validation.widget.ValidatedTextArea transporter;
+	@UiField ListBox loadTransporterAddress;
 
 	@UiField(provided=true) ValidatedDateBox transportStartDate;
 	@UiField(provided=true) ValidatedListBox hour;
@@ -144,7 +145,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		fromAddrPostCode.addStyleName(CSS.box());
 		fromAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address());
 		fromAddrStreetName.addStyleName(CSS.box());
-		fromAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
+		fromAddrProvince = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.province());
+		fromAddrProvince.addStyleName(CSS.box());
 		fromAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
 		toAddrCity = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.city(),ValidationKit.DEFAULT);
@@ -161,7 +163,8 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddrPostCode.addStyleName(CSS.box());
 		toAddrStreetName = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.address(),ValidationKit.DEFAULT);
 		toAddrStreetName.addStyleName(CSS.box());
-		toAddrProvince = LocaleWidgets.createProvinceListBox(I18N.INSTANCE.province());
+		toAddrProvince = new RichTextBox(GlobalBundle.INSTANCE.richTextBoxCss(), I18N.INSTANCE.province());
+		toAddrProvince.addStyleName(CSS.box());
 		toAddrCountry = LocaleWidgets.createCountryListBox(I18N.INSTANCE.country());
 
 		String str;
@@ -234,16 +237,6 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		toAddressContainer.setVisible(e.getValue());
 	}
 
-	@UiHandler("fromAddrCountry")
-	void onFromCountryChange(ChangeEvent event){
-		presenter.onFromCountryChange();
-	}
-
-	@UiHandler("toAddrCountry")
-	void onToCountryChange(ChangeEvent event){
-		presenter.onToCountryChange();
-	}
-
 	@UiFactory
 	I18N getI18N(){
 		return I18N.INSTANCE;
@@ -263,7 +256,11 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 	void onToAddressButtonDefaultChange(ChangeEvent e){
 		presenter.onToAddressButtonDefaultChange();
 	}
-
+	
+	@UiHandler("loadTransporterAddress")
+	void onLoadTransporterAddressChange(ChangeEvent e){
+		presenter.onLoadTransporterAddressChange();
+	}
 
 	@UiHandler("createTransportDocument")
 	void onCreateTransportDocumentClicked(ClickEvent e){
@@ -366,6 +363,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		numberOfPackages.setEnabled(!value);
 		totalWeight.setEnabled(!value);
 		transporter.setEnabled(!value);
+		loadTransporterAddress.setEnabled(!value);
 
 		appearanceOfTheGoods.setEnabled(!value);
 		cause.setEnabled(!value);
@@ -447,7 +445,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return fromAddrCity;
 	}
 
-	public ValidatedListBox getFromAddrProvince() {
+	public RichTextBox getFromAddrProvince() {
 		return fromAddrProvince;
 	}
 
@@ -475,7 +473,7 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 		return toAddrCity;
 	}
 
-	public ValidatedListBox getToAddrProvince() {
+	public RichTextBox getToAddrProvince() {
 		return toAddrProvince;
 	}
 
@@ -497,6 +495,10 @@ public class TransportDocumentViewImpl extends AccountDocument implements Transp
 
 	public com.novadart.gwtshared.client.validation.widget.ValidatedTextArea getTransporter() {
 		return transporter;
+	}
+	
+	public ListBox getLoadTransporterAddress() {
+		return loadTransporterAddress;
 	}
 
 	public ValidatedDateBox getTransportStartDate() {

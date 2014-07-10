@@ -1,0 +1,33 @@
+<div class="container-fluid price-lists">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<h3 class="page-title">{{'PRICE_LISTS' | translate}}</h3>
+			<ul class="breadcrumb">
+				<li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
+				<li><span>{{'PRICE_LISTS' | translate}}</span></li>
+			</ul>
+			
+			<n-premium-alert></n-premium-alert>
+			
+			<button n-premium-check type="button" class="btn green new-price-list" ng-enabled="PREMIUM" ng-click="newPriceList()">{{'NEW_PRICE_LIST' | translate}}</button>
+			
+			<div class="price-list-filter input-icon left">
+                <i class="fa fa-search"></i> <input type="text" n-premium-check class="form-control input-large" autofocus="autofocus" type="text"
+                    placeholder="{{'FILTER' | translate}}..." ng-model="query">
+            </div>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<n-price-list ng-repeat="pl in priceLists | filter:priceListFilter" price-list="pl"></n-price-list>
+
+		</div>
+	</div>
+	
+</div>

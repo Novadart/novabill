@@ -1,11 +1,15 @@
 package com.novadart.novabill.test.suite;
 
-import static org.mockito.Mockito.*;
-import static org.junit.Assert.*;
+import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import java.io.UnsupportedEncodingException;
 import java.security.NoSuchAlgorithmException;
+import java.util.Date;
 import java.util.HashMap;
+
 import javax.annotation.Resource;
 
 import org.junit.Test;
@@ -27,9 +31,11 @@ import com.novadart.novabill.domain.EmailPasswordHolder;
 import com.novadart.novabill.domain.ForgotPassword;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.TokenGenerator;
+import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.ForgotPasswordValidator;
 import com.novadart.novabill.web.mvc.ForgotPasswordController;
 import com.novadart.novabill.web.mvc.PasswordRecoveryController;
+import com.novadart.novabill.web.mvc.Urls;
 
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -37,13 +43,16 @@ import com.novadart.novabill.web.mvc.PasswordRecoveryController;
 @Transactional
 @DirtiesContext
 @ActiveProfiles("dev")
-public class ForgotPasswordRecoveryTest {
+public class ForgotPasswordRecoveryTest extends AuthenticatedTest{
 
 	@Resource(name = "userPasswordMap")
 	protected HashMap<String, String> userPasswordMap;
 	
 	@Autowired
 	private ForgotPasswordValidator validator;
+	
+	@Autowired
+	private UtilsService utilsService;
 	
 	private ForgotPasswordController initForgotPasswordController(String token, String passwordRecoveryUrlPattern, int passwordRecoveryPeriod) throws SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, NoSuchAlgorithmException{
 		ForgotPasswordController controller = new ForgotPasswordController();
@@ -77,14 +86,22 @@ public class ForgotPasswordRecoveryTest {
 		return controller;
 	}
 	
+	private void dropForgotPasswords(){
+		for(ForgotPassword fp: ForgotPassword.findAllForgotPasswords())
+			fp.remove();
+		ForgotPassword.entityManager().flush();
+	}
+	
 	@Test
 	public void defaultForgotPasswordRecoveryFlow() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
-		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "new password";
+		dropForgotPasswords();
+		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "N3w password$";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -94,45 +111,49 @@ public class ForgotPasswordRecoveryTest {
 		String passwordRecoveryView = recoveryController.setupForm(email, token, model);
 		forgotPassword = (ForgotPassword)model.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, newPassword, newPassword);
-		String passwordRecoverySuccessView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class));
+		String passwordRecoverySuccessView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), mock(Model.class));
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView);
-		assertEquals("passwordRecovery", passwordRecoveryView);
-		assertEquals("passwordRecoverySuccess", passwordRecoverySuccessView);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView);
+		assertEquals("frontend.passwordRecovery", passwordRecoveryView);
+		assertEquals("redirect:" + Urls.PUBLIC_PASSWORD_RECOVERY_OK, passwordRecoverySuccessView);
 		
 		Principal persistedPrincipal = Principal.findByUsername(email);
-		Principal tempPrincipal = new Principal();
-		tempPrincipal.setCreationTime(persistedPrincipal.getCreationTime());
-		tempPrincipal.setPassword(newPassword); //force hashing
-		assertEquals(tempPrincipal.getPassword(), persistedPrincipal.getPassword());
+		assertTrue(utilsService.isPasswordValid(persistedPrincipal.getPassword(), newPassword));
 	}
 	
 	@Test
 	public void forgotPasswordNonExistingEmail() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropForgotPasswords();
 		String token = "1", email = "foo@bar.com";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
-		assertEquals("forgotPassword", forgotPasswordView);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
+		assertEquals("frontend.forgotPassword", forgotPasswordView);
 	}
 	
 	@Test
 	public void forgotPasswordEmailNull() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException{
+		dropForgotPasswords();
 		String token = "1";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, null);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
-		assertEquals("forgotPassword", forgotPasswordView);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
+		assertEquals("frontend.forgotPassword", forgotPasswordView);
 	}
 	
 	@Test
 	public void forgotPasswordPasswordMismatch() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropForgotPasswords();
 		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "new password1", confirmNewPassword = "new password2";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -141,21 +162,24 @@ public class ForgotPasswordRecoveryTest {
 		String passwordRecoveryView = recoveryController.setupForm(email, token, model);
 		forgotPassword = (ForgotPassword)model.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, newPassword, confirmNewPassword);
-		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class));
+		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), mock(Model.class));
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView);
-		assertEquals("passwordRecovery", passwordRecoveryView);
-		assertEquals("passwordRecovery", backTopasswordRecoveryView);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView);
+		assertEquals("frontend.passwordRecovery", passwordRecoveryView);
+		assertEquals("frontend.passwordRecovery", backTopasswordRecoveryView);
 	}
 	
 	@Test
 	public void forgotPasswordPasswordNull() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropForgotPasswords();
 		String token = "1", email = userPasswordMap.keySet().iterator().next();
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -164,21 +188,24 @@ public class ForgotPasswordRecoveryTest {
 		String passwordRecoveryView = recoveryController.setupForm(email, token, model);
 		forgotPassword = (ForgotPassword)model.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, null, null);
-		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class));
+		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), mock(Model.class));
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView);
-		assertEquals("passwordRecovery", passwordRecoveryView);
-		assertEquals("passwordRecovery", backTopasswordRecoveryView);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView);
+		assertEquals("frontend.passwordRecovery", passwordRecoveryView);
+		assertEquals("frontend.passwordRecovery", backTopasswordRecoveryView);
 	}
 	
 	@Test
 	public void forgotPasswordPasswordTooLong() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropForgotPasswords();
 		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "looooooooooooong password";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -187,22 +214,25 @@ public class ForgotPasswordRecoveryTest {
 		String passwordRecoveryView = recoveryController.setupForm(email, token, model);
 		forgotPassword = (ForgotPassword)model.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, newPassword, newPassword);
-		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class));
+		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), mock(Model.class));
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView);
-		assertEquals("passwordRecovery", passwordRecoveryView);
-		assertEquals("passwordRecovery", backTopasswordRecoveryView);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView);
+		assertEquals("frontend.passwordRecovery", passwordRecoveryView);
+		assertEquals("frontend.passwordRecovery", backTopasswordRecoveryView);
 	}
 	
 	
 	@Test
 	public void forgotPasswordPasswordTooShort() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropForgotPasswords();
 		String token = "1", email = userPasswordMap.keySet().iterator().next(), newPassword = "pass";
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -211,42 +241,49 @@ public class ForgotPasswordRecoveryTest {
 		String passwordRecoveryView = recoveryController.setupForm(email, token, model);
 		forgotPassword = (ForgotPassword)model.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, newPassword, newPassword);
-		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class));
+		String backTopasswordRecoveryView = recoveryController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), mock(Model.class));
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView);
-		assertEquals("passwordRecovery", passwordRecoveryView);
-		assertEquals("passwordRecovery", backTopasswordRecoveryView);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView);
+		assertEquals("frontend.passwordRecovery", passwordRecoveryView);
+		assertEquals("frontend.passwordRecovery", backTopasswordRecoveryView);
 	}
 	
 	
 	@Test
 	public void forgotPasswordExpiredRequest() throws SecurityException, IllegalArgumentException, NoSuchAlgorithmException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
+		dropForgotPasswords();
 		String token = "1", email = userPasswordMap.keySet().iterator().next();
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token, "%s%s", 0); //expires immediately
 		ForgotPassword forgotPassword = initForgotPassword(token, email);
 		
+		forgotPassword.setExpirationDate(new Date(System.currentTimeMillis() - 1_000_000));
+		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
 		PasswordRecoveryController recoveryController = initPasswordRecoveryController();
 		String passwordRecoveryView = recoveryController.setupForm(email, token, mock(Model.class));
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView);
-		assertEquals("invalidForgotPasswordRequest", passwordRecoveryView);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView);
+		assertEquals("frontend.passwordRecoveryFailure", passwordRecoveryView);
 	}
 	
 	@Test
 	public void twoForgotPasswordRequestsSameEmail() throws NoSuchAlgorithmException, SecurityException, IllegalArgumentException, NoSuchFieldException, IllegalAccessException, UnsupportedEncodingException, CloneNotSupportedException{
-		String token1 = "1", token2 = "2", email = userPasswordMap.keySet().iterator().next(), password1 = "password1", password2 = "password2";
+		dropForgotPasswords();
+		String token1 = "1", token2 = "2", email = userPasswordMap.keySet().iterator().next(), password1 = "Password1$", password2 = "Password2$";
 
 		//First forgot password
 		ForgotPasswordController forgotPasswordController = initForgotPasswordController(token1, "%S%S", 24);
 		ForgotPassword forgotPassword = initForgotPassword(token1, email);
 		
 		SimpleSmtpServer smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView1 = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView1 = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -255,7 +292,8 @@ public class ForgotPasswordRecoveryTest {
 		forgotPassword = initForgotPassword(token2, email);
 		
 		smtpServer = SimpleSmtpServer.start(2525);
-		String forgotPasswordView2 = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"), mock(SessionStatus.class), null);
+		String forgotPasswordView2 = forgotPasswordController.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
+				mock(SessionStatus.class), null, mock(Model.class));
 		smtpServer.stop();
 		assertTrue(smtpServer.getReceivedEmailSize() == 1);
 		
@@ -273,37 +311,32 @@ public class ForgotPasswordRecoveryTest {
 		forgotPassword = (ForgotPassword)model1.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, password1, password1);
 		String passwordRecoverySuccessView1 = passwordRecoveryController1.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
-				mock(SessionStatus.class));
+				mock(SessionStatus.class), mock(Model.class));
 		
 		Principal.entityManager().flush();
 		
 		Principal persistedPrincipal = Principal.findByUsername(email);
-		Principal tempPrincipal = new Principal();
-		tempPrincipal.setCreationTime(persistedPrincipal.getCreationTime());
-		tempPrincipal.setPassword(password1); //force hashing
-		assertEquals(tempPrincipal.getPassword(), persistedPrincipal.getPassword());
+		assertTrue(utilsService.isPasswordValid(persistedPrincipal.getPassword(), password1));
 		
 		//Submitting first password recovery form
 		forgotPassword = (ForgotPassword)model2.asMap().get("forgotPassword");
 		setPasswordsToPrivateFields(forgotPassword, password2, password2);
 		String passwordRecoverySuccessView2 = passwordRecoveryController2.processSubmit(forgotPassword, new BeanPropertyBindingResult(forgotPassword, "forgotPassword"),
-				mock(SessionStatus.class));
+				mock(SessionStatus.class), mock(Model.class));
 		
 		Principal.entityManager().flush();
 		
 		persistedPrincipal = Principal.findByUsername(email);
-		tempPrincipal = new Principal();
-		tempPrincipal.setCreationTime(persistedPrincipal.getCreationTime());
-		tempPrincipal.setPassword(password2); //force hashing
-		assertEquals(tempPrincipal.getPassword(), persistedPrincipal.getPassword());
+		assertTrue(utilsService.isPasswordValid(persistedPrincipal.getPassword(), password2));
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView1);
-		assertEquals("passwordRecovery", passwordRecoverView1);
-		assertEquals("passwordRecoverySuccess", passwordRecoverySuccessView1);
 		
-		assertEquals("redirect:/passwordRecoveryCommenced", forgotPasswordView2);
-		assertEquals("passwordRecovery", passwordRecoverView2);
-		assertEquals("passwordRecoverySuccess", passwordRecoverySuccessView2);
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView1);
+		assertEquals("frontend.passwordRecovery", passwordRecoverView1);
+		assertEquals("redirect:" + Urls.PUBLIC_PASSWORD_RECOVERY_OK, passwordRecoverySuccessView1);
+		
+		assertEquals("redirect:/forgot-password-ok", forgotPasswordView2);
+		assertEquals("frontend.passwordRecovery", passwordRecoverView2);
+		assertEquals("redirect:" + Urls.PUBLIC_PASSWORD_RECOVERY_OK, passwordRecoverySuccessView2);
 		
 	}
 	

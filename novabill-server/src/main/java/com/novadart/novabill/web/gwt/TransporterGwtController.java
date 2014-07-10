@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.service.web.TransporterService;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -23,7 +23,7 @@ public class TransporterGwtController extends AbstractGwtController implements T
 	private TransporterService transporterService;
 
 	@Override
-	public Long add(TransporterDTO transporterDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
+	public Long add(TransporterDTO transporterDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException {
 		return transporterService.add(transporterDTO);
 	}
 
@@ -33,7 +33,7 @@ public class TransporterGwtController extends AbstractGwtController implements T
 	}
 	
 	@Override
-	public void update(TransporterDTO transporterDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+	public void update(TransporterDTO transporterDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException {
 		transporterService.update(transporterDTO);
 	}
 

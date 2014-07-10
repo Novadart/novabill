@@ -23,16 +23,14 @@ import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
 import com.novadart.novabill.shared.client.facade.BusinessGwtService;
 import com.novadart.novabill.shared.client.tuple.Pair;
-import com.novadart.novabill.web.mvc.BusinessLogoController;
-import com.novadart.novabill.web.mvc.ExportController;
-import com.novadart.novabill.web.mvc.PDFController;
+import com.novadart.novabill.web.mvc.XsrfTokenSessionFieldNames;
 
 @HandleGWTServiceAccessDenied
 public class BusinessGwtController extends AbstractGwtController implements BusinessGwtService {
@@ -78,12 +76,12 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 
 	@Override
 	public String generatePDFToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException {
-		return URLEncoder.encode(generateToken(PDFController.TOKENS_SESSION_FIELD), "UTF-8");
+		return URLEncoder.encode(generateToken(XsrfTokenSessionFieldNames.PDF_GENERATION_TOKENS_SESSION_FIELD), "UTF-8");
 	}
 
 	@Override
 	public String generateExportToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException {
-		return URLEncoder.encode(generateToken(ExportController.TOKENS_SESSION_FIELD), "UTF-8");
+		return URLEncoder.encode(generateToken(XsrfTokenSessionFieldNames.EXPORT_DATA_TOKENS_SESSION_FIELD), "UTF-8");
 	}
 
 	@Override
@@ -126,18 +124,14 @@ public class BusinessGwtController extends AbstractGwtController implements Busi
 		return businessService.get(businessID);
 	}
 
-	@Override
-	public Long updateNotesBitMask(Long notesBitMask) throws NotAuthenticatedException, DataAccessException {
-		return businessService.updateNotesBitMask(notesBitMask);
-	}
 
 	@Override
 	public String generateLogoOpToken() throws NotAuthenticatedException, NoSuchAlgorithmException, UnsupportedEncodingException, DataAccessException {
-		return URLEncoder.encode(generateToken(BusinessLogoController.TOKENS_SESSION_FIELD), "UTF-8");
+		return URLEncoder.encode(generateToken(XsrfTokenSessionFieldNames.BUSINESS_LOGO_TOKENS_SESSION_FIELD), "UTF-8");
 	}
 
 	@Override
-	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 
 			com.novadart.novabill.shared.client.exception.CloneNotSupportedException {
 		return businessService.add(businessDTO);
 	}

@@ -29,7 +29,6 @@ import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Transient;
 import javax.validation.Valid;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 import org.apache.commons.lang.StringUtils;
@@ -52,10 +51,10 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
-import com.novadart.novabill.annotation.TaxFieldsNotNull;
 import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
@@ -70,45 +69,46 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @Configurable
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
-@TaxFieldsNotNull
 @NamedQueries({
 	@NamedQuery(name = "business.allUnpaidInvoicesDueDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.paymentDueDate and i.paymentDueDate <= :endDate and i.business.id = :bizID order by i.paymentDueDate, i.documentID"),
-	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID")
+	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID"),
+	@NamedQuery(name = "business.allInvoicesCreationDateInDateRange", query = "select i from Invoice i where :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID"),
+	@NamedQuery(name = "business.allCreditNotesCreationDateInDateRange", query = "select c from CreditNote c where :startDate <= c.accountingDocumentDate and c.accountingDocumentDate <= :endDate and c.business.id = :bizID order by c.accountingDocumentDate, c.documentID")
 })
 public class Business implements Serializable, Taxable {
 
 	private static final long serialVersionUID = 261999997691744944L;
 	
 	@Size(max = 255)
-	@NotNull
+	@NotEmpty
 	@Trimmed
     private String name;
 
     @Size(max = 255)
-    @NotNull
+    @NotEmpty
     @Trimmed
     private String address;
 
     @Size(max = 10)
-    @NotNull
+    @NotEmpty
     @Trimmed
     private String postcode;
 
     @Size(max = 60)
-    @NotNull
+    @NotEmpty
     @Trimmed
     private String city;
 
-    @Size(max = 2)
-    //@NotNull
+    @Size(max = 100)
     @Trimmed
     private String province;
 
     @Size(max = 3)
     @Trimmed
+    @NotEmpty
     private String country;
 
-    @Size(max = 255)
+    @Size(max = com.novadart.novabill.domain.Email.EMAIL_MAX_LENGTH)
     @Email
     @Trimmed
     private String email;
@@ -131,11 +131,13 @@ public class Business implements Serializable, Taxable {
 
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
+    @NotEmpty
     @Trimmed
     private String vatID;
     
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
+    @NotEmpty
     @Trimmed
     private String ssn;
 
@@ -144,37 +146,43 @@ public class Business implements Serializable, Taxable {
     private Settings settings = new Settings();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Commodity> commodities = new HashSet<Commodity>();
+    private Set<Commodity> commodities = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<BankAccount> accounts = new HashSet<BankAccount>();
+    private Set<BankAccount> accounts = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Invoice> invoices = new HashSet<Invoice>();
+    private Set<Invoice> invoices = new HashSet<>();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Estimation> estimations = new HashSet<Estimation>();
+    private Set<Estimation> estimations = new HashSet<>();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<CreditNote> creditNotes = new HashSet<CreditNote>();
+    private Set<CreditNote> creditNotes = new HashSet<>();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<TransportDocument> transportDocuments = new HashSet<TransportDocument>();
+    private Set<TransportDocument> transportDocuments = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Client> clients = new HashSet<Client>();
+    private Set<Client> clients = new HashSet<>();
 
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Principal> principals = new HashSet<Principal>();
+    private Set<Principal> principals = new HashSet<>();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<PaymentType> paymentTypes = new HashSet<PaymentType>();
+    private Set<PaymentType> paymentTypes = new HashSet<>();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<PriceList> priceLists = new HashSet<PriceList>();
+    private Set<PriceList> priceLists = new HashSet<>();
     
     @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
-    private Set<Transporter> transporters = new HashSet<Transporter>();
+    private Set<Transporter> transporters = new HashSet<>();
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+    private Set<SharingPermit> sharingPermits = new HashSet<>();
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+    private Set<Notification> notifications = new HashSet<>();
     
     public List<Invoice> getAllInvoicesInRange(int start, int length){
     	String query = "select invoice from Invoice invoice where invoice.business.id = :id order by invoice.accountingDocumentYear desc, invoice.documentID desc";
@@ -285,7 +293,7 @@ public class Business implements Serializable, Taxable {
     			.setParameter("id", documentID).getResultList();
     }
     
-    private Date createDateFromString(String dateString){
+    private static Date createDateFromString(String dateString){
     	DateFormat dateFormat = new SimpleDateFormat("dd-MM-yyyy");
     	try {
 			return dateFormat.parse(dateString);
@@ -300,6 +308,20 @@ public class Business implements Serializable, Taxable {
     	String namedQuery = FilteringDateType.PAYMENT_DUEDATE.equals(filteringDateType)? "business.allUnpaidInvoicesDueDateInDateRange": "business.allUnpaidInvoicesCreationDateInDateRange";
     	return entityManager().createNamedQuery(namedQuery, Invoice.class).
     			setParameter("bizID", getId()).
+    			setParameter("startDate", startDate == null? createDateFromString("1-1-1970"): startDate).
+    			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();
+    }
+    
+    public static List<Invoice> getAllInvoicesCreationDateInRange(Long businessID, Date startDate, Date endDate){
+    	return entityManager().createNamedQuery("business.allInvoicesCreationDateInDateRange", Invoice.class).
+    			setParameter("bizID", businessID).
+    			setParameter("startDate", startDate == null? createDateFromString("1-1-1970"): startDate).
+    			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();
+    }
+    
+    public static List<CreditNote> getAllCreditNotesCreationDateInRange(Long businessID, Date startDate, Date endDate){
+    	return entityManager().createNamedQuery("business.allCreditNotesCreationDateInDateRange", CreditNote.class).
+    			setParameter("bizID", businessID).
     			setParameter("startDate", startDate == null? createDateFromString("1-1-1970"): startDate).
     			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();
     }
@@ -424,6 +446,26 @@ public class Business implements Serializable, Taxable {
     	return getAccountingDocumentForYear(getTransportDocuments().iterator(), year);
     }
     
+    public static Business findBusinessByVatIDIfSharingPermit(String vatID, String email){
+    	String sql = "select b from Business b join fetch b.sharingPermits p where upper(b.vatID) = upper(:vatID) and upper(p.email) = upper(:email)";
+    	List<Business> r = entityManager().createQuery(sql, Business.class).
+    			setParameter("vatID", vatID).
+    			setParameter("email", email).getResultList();
+    	return r.size() == 0? null: r.get(0);
+    }
+    
+    @Override
+	public Taxable findByVatID(String vatID) {
+    	String sql = "select b from Business b where b.vatID = :id or b.ssn = :id";
+    	List<Business> r = entityManager.createQuery(sql, Business.class).setParameter("id", vatID).getResultList();
+		return r.size() == 0? null: r.get(0);
+	}
+    
+    public Client findClientByVatIDOrSsn(String vatIDOrSsn) {
+    	String sql = "select c from Client c where c.business.id = :id and (c.vatID = :vatIDOrSsn or c.ssn = :vatIDOrSsn)";
+    	List<Client> r = entityManager.createQuery(sql, Client.class).setParameter("id", getId()).setParameter("vatIDOrSsn", vatIDOrSsn).getResultList();
+		return r.size() == 0? null: r.get(0);
+    }
     
 
 	/*
@@ -614,6 +656,22 @@ public class Business implements Serializable, Taxable {
 		this.paymentTypes = paymentTypes;
 	}
 	
+	public Set<SharingPermit> getSharingPermits() {
+		return sharingPermits;
+	}
+
+	public void setSharingPermits(Set<SharingPermit> sharingPermits) {
+		this.sharingPermits = sharingPermits;
+	}
+
+	public Set<Notification> getNotifications() {
+		return notifications;
+	}
+
+	public void setNotifications(Set<Notification> notifications) {
+		this.notifications = notifications;
+	}
+
 	public Set<Transporter> getTransporters() {
 		return transporters;
 	}

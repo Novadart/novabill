@@ -8,7 +8,7 @@ import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 import com.google.gwt.user.server.rpc.XsrfProtect;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -24,9 +24,9 @@ public interface PriceListGwtService extends RemoteService {
 	
 	public PriceListDTO get(Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException;
 	
-	public Long add(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException;
+	public Long add(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException;
 	
-	public void update(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException;
+	public void update(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException;
 	
 	public void remove(Long businessID, Long id)  throws NotAuthenticatedException, DataAccessException, DataIntegrityException;
 	

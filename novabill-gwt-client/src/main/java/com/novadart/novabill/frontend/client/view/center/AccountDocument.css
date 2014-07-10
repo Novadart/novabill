@@ -73,6 +73,7 @@ input[type=text].box {
 	margin-bottom: 0.5em;
 }
 
+.transporterBox .loadDefaultsButton,
 .addressBox .loadDefaultsButton {
 	margin: 0 0 0 3em;
 }

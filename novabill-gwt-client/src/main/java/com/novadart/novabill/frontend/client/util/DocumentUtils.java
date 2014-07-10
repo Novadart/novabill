@@ -17,18 +17,18 @@ public class DocumentUtils {
 	public static DateTimeFormat DOCUMENT_DATE_FORMAT = DateTimeFormat.getFormat("dd MMMM yyyy");
 
 	public static AccountingDocumentItemDTO createAccountingDocumentItem(String sku, String description, String price, 
-			String quantity, String weight, String unitOfMeasure, BigDecimal tax, String discount){
+			String quantity, String weight, String unitOfMeasure, String tax, String discount){
 		AccountingDocumentItemDTO ii = new AccountingDocumentItemDTO();
 
 		try {
-			ii.setSku(sku.isEmpty() ? null : sku);
+			ii.setSku(sku);
 			ii.setDescription(description);
 			ii.setPrice(CalcUtils.parseCurrency(price));
 			ii.setQuantity(CalcUtils.parseValue(quantity));
 			ii.setWeight(weight != null && !weight.isEmpty() ? CalcUtils.parseValue(weight) : null);
 			ii.setUnitOfMeasure(unitOfMeasure);
-			ii.setTax(tax);
-			ii.setDiscount(discount.isEmpty() ? BigDecimal.ZERO : CalcUtils.parseValue(discount));
+			ii.setTax(CalcUtils.parseValue(tax));
+			ii.setDiscount(discount == null || discount.isEmpty() ? BigDecimal.ZERO : CalcUtils.parseValue(discount));
 		} catch (NumberFormatException ex) {
 			return null;
 		}
@@ -69,7 +69,6 @@ public class DocumentUtils {
 				|| isEmpty(client.getCountry())
 				|| isEmpty(client.getName())
 				|| isEmpty(client.getPostcode())
-				|| ("IT".equalsIgnoreCase(client.getCountry()) && isEmpty(client.getProvince()))
 				|| (isEmpty(client.getSsn()) && isEmpty(client.getVatID()) ) ){
 			
 			ClientDialog clientDialog = new ClientDialog(Configuration.getBusiness().getId(), true, callback);

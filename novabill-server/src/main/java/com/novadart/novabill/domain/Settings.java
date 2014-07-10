@@ -8,6 +8,9 @@ import javax.persistence.Embeddable;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.validator.constraints.Email;
+
+import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.shared.client.data.LayoutType;
 
 @Embeddable
@@ -38,11 +41,28 @@ public class Settings implements Serializable {
     @Size(max = 300)
     private String transportDocumentFooterNote;
     
+    @Size(max = 78)
+    @Trimmed
+    private String emailSubject;
+    
+    @Size(max = 1000)
+    private String emailText;
+    
+    @Email
+    @Trimmed
+    private String emailReplyTo;
+    
     public Long getNonFreeExpirationDelta(TimeUnit timeUnit){
     	Long now = System.currentTimeMillis();
     	if(nonFreeAccountExpirationTime == null || nonFreeAccountExpirationTime < now)
     		return null;
-    	return timeUnit.convert(nonFreeAccountExpirationTime, TimeUnit.MILLISECONDS);
+    	return timeUnit.convert(nonFreeAccountExpirationTime - now, TimeUnit.MILLISECONDS);
+    }
+    
+    public void addNonFreeAccountExpirationTime(TimeUnit timeUnit, Long duration){
+    	Long now = System.currentTimeMillis();
+    	Long startTime = (nonFreeAccountExpirationTime == null || nonFreeAccountExpirationTime < now)? now: nonFreeAccountExpirationTime;
+    	nonFreeAccountExpirationTime = startTime + TimeUnit.MILLISECONDS.convert(duration, timeUnit);
     }
     
 	public LayoutType getDefaultLayoutType() {
@@ -107,6 +127,30 @@ public class Settings implements Serializable {
 
 	public void setTransportDocumentFooterNote(String transportDocumentFooterNote) {
 		this.transportDocumentFooterNote = transportDocumentFooterNote;
+	}
+
+	public String getEmailSubject() {
+		return emailSubject;
+	}
+
+	public void setEmailSubject(String emailSubject) {
+		this.emailSubject = emailSubject;
+	}
+
+	public String getEmailText() {
+		return emailText;
+	}
+
+	public void setEmailText(String emailText) {
+		this.emailText = emailText;
+	}
+
+	public String getEmailReplyTo() {
+		return emailReplyTo;
+	}
+
+	public void setEmailReplyTo(String emailReplyTo) {
+		this.emailReplyTo = emailReplyTo;
 	}
 	
 }

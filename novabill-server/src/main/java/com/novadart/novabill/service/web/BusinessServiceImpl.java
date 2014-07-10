@@ -1,9 +1,10 @@
 package com.novadart.novabill.service.web;
 
 import java.math.BigDecimal;
+import java.math.RoundingMode;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -12,28 +13,37 @@ import java.util.Set;
 
 import javax.annotation.PostConstruct;
 
+import org.apache.commons.lang3.StringUtils;
+import org.apache.commons.lang3.time.DateUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.AccountingDocument;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.LogRecord;
+import com.novadart.novabill.domain.Notification;
 import com.novadart.novabill.domain.PaymentType;
 import com.novadart.novabill.domain.PriceList;
+import com.novadart.novabill.domain.Settings;
+import com.novadart.novabill.domain.SharingPermit;
 import com.novadart.novabill.domain.Transporter;
 import com.novadart.novabill.domain.dto.DTOUtils;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
-import com.novadart.novabill.domain.dto.factory.ClientDTOFactory;
-import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
-import com.novadart.novabill.domain.dto.factory.LogRecordDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
-import com.novadart.novabill.domain.dto.factory.TransporterDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.ClientDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.CommodityDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.LogRecordDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.NotificationDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PaymentTypeDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PriceListDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.SharingPermitDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.TransporterDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.SimpleValidator;
@@ -47,14 +57,16 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.LogRecordDTO;
+import com.novadart.novabill.shared.client.dto.NotificationDTO;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
+import com.novadart.novabill.shared.client.dto.SharingPermitDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -72,6 +84,10 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	private MessageSource messageSource;
 	
 	private Map<Locale, PaymentType[]> paymentTypes;
+	
+	public static final String EMAIL_SUBJECT = "Invio Fattura n. $NumeroFattura del $DataFattura";
+	
+	public static final String EMAIL_TEXT = "Spettabile $NomeCliente,\n\ncon la presente trasmettiamo la nostra fattura nr. $NumeroFattura del $DataFattura in formato PDF.\nIl documento è scaricabile alla pagina web sotto indicata.\n\nCordiali saluti,\n$RagioneSocialeAzienda";
 	
 	@PostConstruct
 	public void init(){
@@ -120,7 +136,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		stats.setTotalBeforeTaxesForYear(totals.getFirst());
 		stats.setTotalAfterTaxesForYear(totals.getSecond());
 		stats.setLogRecords(self().getLogRecords(businessID, 90));
-		stats.setInvoiceCountsPerMonth(self().getInvoiceMonthCounts(businessID));
+		stats.setInvoiceTotalsPerMonth(self().getInvoiceMonthTotals(businessID));
 		return stats;
 	}
 	
@@ -154,7 +170,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@PreAuthorize("#businessDTO?.id == principal.business.id")
 	public void update(BusinessDTO businessDTO) throws DataAccessException, NoSuchObjectException, ValidationException {
 		Business business = Business.findBusiness(businessDTO.getId());
-		BusinessDTOFactory.copyFromDTO(business, businessDTO);
+		BusinessDTOTransformer.copyFromDTO(business, businessDTO);
 		validator.validate(business);
 	}
 	
@@ -188,7 +204,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Set<Client> clients = Business.findBusiness(businessID).getClients();
 		List<ClientDTO> clientDTOs = new ArrayList<ClientDTO>(clients.size());
 		for(Client client: clients)
-			clientDTOs.add(ClientDTOFactory.toDTO(client));
+			clientDTOs.add(ClientDTOTransformer.toDTO(client));
 		return clientDTOs;
 	}
 	
@@ -198,7 +214,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Set<Commodity> commodities = Business.findBusiness(businessID).getCommodities();
 		List<CommodityDTO> commodityDTOs = new ArrayList<CommodityDTO>(commodities.size());
 		for(Commodity commodity: commodities)
-			commodityDTOs.add(CommodityDTOFactory.toDTO(commodity));
+			commodityDTOs.add(CommodityDTOTransformer.toDTO(commodity));
 		return commodityDTOs;
 	}
 	
@@ -209,7 +225,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Set<PriceList> priceLists = Business.findBusiness(businessID).getPriceLists();
 		List<PriceListDTO> priceListDTOs = new ArrayList<>(priceLists.size());
 		for(PriceList priceList: priceLists)
-			priceListDTOs.add(PriceListDTOFactory.toDTO(priceList, null));
+			priceListDTOs.add(PriceListDTOTransformer.toDTO(priceList, null));
 		return priceListDTOs;
 	}
 
@@ -219,7 +235,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Set<PaymentType> paymentTypes = Business.findBusiness(businessID).getPaymentTypes();
 		List<PaymentTypeDTO> paymentTypeDTOs = new ArrayList<PaymentTypeDTO>(paymentTypes.size());
 		for(PaymentType paymentType: paymentTypes)
-			paymentTypeDTOs.add(PaymentTypeDTOFactory.toDTO(paymentType));
+			paymentTypeDTOs.add(PaymentTypeDTOTransformer.toDTO(paymentType));
 		return paymentTypeDTOs;
 	}
 	
@@ -229,30 +245,40 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		Set<Transporter> transporters = Business.findBusiness(businessID).getTransporters();
 		List<TransporterDTO> transporterDTOs = new ArrayList<>(transporters.size());
 		for(Transporter transporter: transporters)
-			transporterDTOs.add(TransporterDTOFactory.toDTO(transporter));
+			transporterDTOs.add(TransporterDTOTransformer.toDTO(transporter));
 		return transporterDTOs;
+	}
+	
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<SharingPermitDTO> getSharingPermits(Long businessID) throws NotAuthenticatedException, DataAccessException {
+		Set<SharingPermit> sharingPermits = Business.findBusiness(businessID).getSharingPermits();
+		List<SharingPermitDTO> sharingPermitDTOs = new ArrayList<>(sharingPermits.size());
+		for(SharingPermit sharingPermit: sharingPermits)
+			sharingPermitDTOs.add(SharingPermitDTOTransformer.toDTO(sharingPermit));
+		return sharingPermitDTOs;
 	}
 	
 	@PreAuthorize("#businessID == principal.business.id")
 	public BusinessDTO get(Long businessID) throws NotAuthenticatedException, DataAccessException {
-		return BusinessDTOFactory.toDTO(Business.findBusiness(businessID));
+		return BusinessDTOTransformer.toDTO(Business.findBusiness(businessID));
 	}
 
-	@Transactional(readOnly = false)
-	public Long updateNotesBitMask(Long notesBitMask) throws NotAuthenticatedException, DataAccessException {
-		Principal authenticatedPrincipal = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId());
-		authenticatedPrincipal.setNotesBitMask(notesBitMask);
-		return authenticatedPrincipal.merge().getNotesBitMask();
+	private void setDefaultsForNewBusiness(Business business) {
+		Settings settings = business.getSettings(); 
+		settings.setDefaultLayoutType(LayoutType.DENSE);
+		settings.setEmailReplyTo(StringUtils.isBlank(business.getEmail())? utilsService.getAuthenticatedPrincipalDetails().getUsername(): business.getEmail());
+		settings.setEmailSubject(EMAIL_SUBJECT);
+		settings.setEmailText(EMAIL_TEXT);
 	}
-
+	
 	@PreAuthorize("principal.business == null and #businessDTO != null and #businessDTO.id == null")
 	@Transactional(readOnly = false)
-	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException, 
+	public Long add(BusinessDTO businessDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException, 
 													com.novadart.novabill.shared.client.exception.CloneNotSupportedException {
 		Business business = new Business();
-		BusinessDTOFactory.copyFromDTO(business, businessDTO);
-		if(businessDTO.getSettings().getDefaultLayoutType() == null)
-			business.getSettings().setDefaultLayoutType(LayoutType.DENSE);
+		BusinessDTOTransformer.copyFromDTO(business, businessDTO);
+		setDefaultsForNewBusiness(business);
 		validator.validate(business);
 		Locale locale = LocaleContextHolder.getLocale();
 		for(PaymentType pType: paymentTypes.containsKey(locale)? paymentTypes.get(locale): paymentTypes.get(Locale.ITALIAN)){
@@ -303,24 +329,55 @@ public abstract class BusinessServiceImpl implements BusinessService {
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
 	public List<LogRecordDTO> getLogRecords(Long businessID, Integer numberOfDays) throws NotAuthenticatedException, DataAccessException {
-		Long threshold = System.currentTimeMillis() - (numberOfDays * 24L * 60L * 60L * 1000L) ;
+		Long threshold = DateUtils.truncate(new Date(System.currentTimeMillis()), Calendar.HOUR).getTime() - (numberOfDays * 24L * 60L * 60L * 1000L) ;
 		List<LogRecordDTO> result = new ArrayList<>();
 		for(LogRecord lg: LogRecord.fetchAllSince(businessID, threshold))
-			result.add(LogRecordDTOFactory.toDTO(lg));
+			result.add(LogRecordDTOTransformer.toDTO(lg));
 		return result;
 	}
 
 	@Override
 	@PreAuthorize("#businessID == principal.business.id")
-	public List<Integer> getInvoiceMonthCounts(Long businessID) throws NotAuthenticatedException, DataAccessException {
+	public List<BigDecimal> getInvoiceMonthTotals(Long businessID) throws NotAuthenticatedException, DataAccessException {
 		Calendar cal = Calendar.getInstance();
-		List<Integer> counts = Arrays.asList(0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0);
+		List<BigDecimal> totals = new ArrayList<>(12);
+		for(int i = 0; i < 12; ++ i) totals.add(new BigDecimal("0.00"));
 		for(InvoiceDTO invoice: self().getInvoices(businessID, cal.get(Calendar.YEAR))){
 			cal.setTime(invoice.getAccountingDocumentDate());
 			int month = cal.get(Calendar.MONTH); 
-			counts.set(month, counts.get(month) + 1);
+			totals.set(month, totals.get(month).add(invoice.getTotal()));
 		}
-		return counts;
+		for(BigDecimal total: totals)
+			total.setScale(2, RoundingMode.HALF_UP);
+		return totals;
 	}
-	
+
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	@Transactional(readOnly = false)
+	@Restrictions(checkers = {PremiumChecker.class})
+	public void setDefaultLayout(Long businessID, LayoutType layoutType) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
+		Business.findBusiness(businessID).getSettings().setDefaultLayoutType(layoutType);
+	}
+
+	@Override
+	@PreAuthorize("#businessID == principal.business.id")
+	public List<NotificationDTO> getNotifications(Long businessID) {
+		List<Notification> notifications = Notification.getUnseenNotificationsForBusiness(businessID); 
+		List<NotificationDTO> result = new ArrayList<>(notifications.size());
+		for(Notification n: notifications)
+			result.add(NotificationDTOTransformer.toDTO(n));
+		return result;
+	}
+
+	@Override
+	@PreAuthorize("#businessID == principal.business.id and " +
+				  "T(com.novadart.novabill.domain.Notification).findNotification(#id)?.business?.id == #businessID")
+	@Transactional(readOnly = false)
+	public void markNotificationAsSeen(Long businessID, Long id) {
+		Notification notification = Notification.findNotification(id);
+		notification.setSeen(true);
+		notification.merge();
+	}
+
 }

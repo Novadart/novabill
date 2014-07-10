@@ -45,17 +45,9 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	
 	AutoBean<AccountingDocumentItem> makeAccountingDocumentItem();
 	
-	AutoBean<Commodity> makeCommodity();
-	
-	AutoBean<CommodityList> makeCommodityList();
-
-	AutoBean<Price> makePrice();
-	
-	AutoBean<PricesMap> makePricesMap();
-	
 	AutoBean<LogRecordList> makeLogRecordList();
 	
-	AutoBean<InvoiceCountsPerMonthList> makeInvoiceCountsPerMonthList();
+	AutoBean<InvoiceTotalsPerMonthList> makeInvoiceTotalsPerMonthList();
 	
 	AutoBean<LogRecord> makeLogRecord();
 	
@@ -64,16 +56,6 @@ public interface AutoBeanMaker extends AutoBeanFactory {
 	AutoBean<StringList> makeStringList();
 	
 	AutoBean<LongList> makeLongList();
-	
-	AutoBean<PricesList> makePricesList();
-	
-	AutoBean<PriceList> makePriceList();
-	
-	AutoBean<PriceListList> makePriceListList();
-	
-	AutoBean<ModifyPriceList.CommodityPrice> makeCommodityPrice();
-	
-	AutoBean<ModifyPriceList> makeModifyPriceList();
 	
 	AutoBean<Pair> makePair();
 	

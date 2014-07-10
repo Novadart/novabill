@@ -14,10 +14,10 @@ import com.novadart.novabill.domain.CreditNote;
 import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.TransportDocument;
-import com.novadart.novabill.domain.dto.factory.CreditNoteDTOFactory;
-import com.novadart.novabill.domain.dto.factory.EstimationDTOFactory;
-import com.novadart.novabill.domain.dto.factory.InvoiceDTOFactory;
-import com.novadart.novabill.domain.dto.factory.TransportDocumentDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.CreditNoteDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.EstimationDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.InvoiceDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.TransportDocumentDTOTransformer;
 import com.novadart.novabill.shared.client.dto.AccountingDocumentDTO;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
@@ -46,28 +46,28 @@ public class DTOUtils {
 	public static ToDTOConverter<InvoiceDTO, Invoice> invoiceDTOConverter = new ToDTOConverter<InvoiceDTO, Invoice>(){
 		@Override
 		public InvoiceDTO toDTO(Invoice doc, boolean copyItems){
-			return InvoiceDTOFactory.toDTO(doc, copyItems);
+			return InvoiceDTOTransformer.toDTO(doc, copyItems);
 		}
 	};
 	
 	public static ToDTOConverter<CreditNoteDTO, CreditNote> creditNoteDTOConverter = new ToDTOConverter<CreditNoteDTO, CreditNote>(){
 		@Override
 		public CreditNoteDTO toDTO(CreditNote doc, boolean copyItems){
-			return CreditNoteDTOFactory.toDTO(doc, copyItems);
+			return CreditNoteDTOTransformer.toDTO(doc, copyItems);
 		}
 	};
 	
 	public static ToDTOConverter<EstimationDTO, Estimation> estimationDTOConverter = new ToDTOConverter<EstimationDTO, Estimation>() {
 		@Override
 		public EstimationDTO toDTO(Estimation doc, boolean copyItems) {
-			return EstimationDTOFactory.toDTO(doc, copyItems);
+			return EstimationDTOTransformer.toDTO(doc, copyItems);
 		}
 	};
 	
 	public static ToDTOConverter<TransportDocumentDTO, TransportDocument> transportDocDTOConverter = new ToDTOConverter<TransportDocumentDTO, TransportDocument>() {
 		@Override
 		public TransportDocumentDTO toDTO(TransportDocument doc, boolean copyItems) {
-			return TransportDocumentDTOFactory.toDTO((TransportDocument)doc, copyItems);
+			return TransportDocumentDTOTransformer.toDTO((TransportDocument)doc, copyItems);
 		}
 	};
 	/*

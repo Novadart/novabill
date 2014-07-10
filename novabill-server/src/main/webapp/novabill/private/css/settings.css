@@ -1,0 +1,42 @@
+.settings .button-save {
+	margin: 40px auto 20px;
+	display: block;
+}
+
+.settings .spinner {
+    margin: 0 auto;
+    display: block;
+}
+
+.settings .tab-pane {
+	padding: 20px 20px 40px;
+}
+
+.settings input[type=checkbox]{
+	width: 16px;
+	height: 16px;
+	cursor: pointer;
+}
+
+.settings label {
+	cursor: pointer;
+}
+
+.settings .new-share {
+	margin-bottom: 20px;
+}
+
+.settings .preview-title {
+	position: absolute; 
+	top: -20px; 
+	font-weight: bold;
+}
+
+.settings .preview-area {
+	border: 1px solid #DDD;
+	padding: 5px 10px;
+}
+
+.settings .readonly {
+	padding-top: 5px;
+}

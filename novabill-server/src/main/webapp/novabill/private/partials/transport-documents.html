@@ -1,0 +1,97 @@
+<div class="container-fluid transport-documents">
+	<div class="row">
+		<div class="col-md-12">
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<h3 class="page-title">{{'TRANSPORT_DOCUMENTS' | translate}}</h3>
+			<ul class="breadcrumb">
+				<li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
+				<li><span>{{'TRANSPORT_DOCUMENTS' | translate}}</span></li>
+			</ul>
+			<!-- END PAGE TITLE & BREADCRUMB-->
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row">
+	
+	   <div class="col-md-12" >
+	   
+	       <tabset class="tabbable-custom">
+                <tab select="onTabChange('transportdocuments')" active="activeTab.transportdocuments">
+                    <tab-heading>
+                        <i class="fa fa-file"></i> {{'TRANSPORT_DOCUMENTS' | translate}}
+                    </tab-heading>
+                    
+                    <div class="container-fluid">
+                          <div class="row">
+                            <button type="button" class="btn green new-transport-document" ng-click="newTransportDocumentClick()">{{'NEW_TRANSPORT_DOCUMENT' | translate}}</button>
+	
+	                        <n-year-selector class="pull-right" document-type="transportDocuments" callback="loadTransportDocuments(year)"></n-year-selector>
+	
+	                        <div class="clearfix"></div>
+	                        
+	                        <div class="col-md-12" infinite-scroll="loadMoreTransportDocuments()">
+	        
+	                          <div class="transport-documents">
+	                                <img class="spinner" ng-show="transportDocuments==null" src="../../private_assets/img/ajax-loading.gif">
+	                                <p class="no-data-message text-center text-info" ng-show="transportDocuments && transportDocuments.length===0">{{'NO_DATA' | translate}}</p>
+	                                <n-transport-document transport-document="td" bottom-up-menu="!$first && $last" ng-repeat="td in transportDocuments"></n-transport-document>
+	                            </div>
+	                            
+	                        </div>
+                          </div>
+                    </div>
+                </tab>
+                
+                <tab select="onTabChange('transporters')" active="activeTab.transporters">
+                    <tab-heading>
+                        <i class="fa fa-truck"></i> {{'TRANSPORTERS_LIST' | translate}}
+                    </tab-heading>
+                        <div class="container-fluid">
+                          <div class="row">
+                            <n-premium-alert></n-premium-alert>
+                        
+		                        <button type="button" n-premium-check class="btn green new-transporter" ng-click="newTransporter()">{{'NEW_TRANSPORTER' | translate}}</button>
+		
+		                        <div class="clearfix"></div>
+		                        
+		                        <div class="col-md-12">
+		        
+		                        <div class="transporters">
+		                           <img class="spinner" ng-show="transporters==null" src="../../private_assets/img/ajax-loading.gif">
+		                           <p class="no-data-message text-center text-info" ng-show="transporters && transporters.length===0">{{'NO_DATA' | translate}}</p>
+		                            
+		                            
+		                           <div class="well" style="position: relative;" ng-repeat="t in transporters">
+		                                <div style="text-transform: uppercase; font-weight: bold; font-size: larger;">{{t.name}}</div>
+		                                <div>{{t.description}}</div>
+		    
+		                                <div  style="position: absolute; right: 20px; bottom: 15px;">
+		                                    <a href="javascript: void(0)" ng-click="editTransporter(t)" class="btn btn-sm blue">
+		                                        <i class="fa fa-edit"></i>
+		                                        {{'EDIT' | translate}}</a> 
+		                                    <a href="javascript: void(0)" ng-click="removeTransporter(t)" class="btn btn-sm red">
+		                                        <i class="fa fa-trash-o"></i> 
+		                                        {{'DELETE' | translate}}
+		                                    </a>
+		                                </div>
+		                           </div> 
+		                           
+		                        </div>
+		                            
+		                        </div>
+                
+                         </div>
+                                    
+                            </div>
+                </tab>
+                
+          </tabset>
+            
+			
+		</div>
+		
+	</div>
+
+</div>

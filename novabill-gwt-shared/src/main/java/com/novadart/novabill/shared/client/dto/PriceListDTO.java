@@ -2,6 +2,8 @@ package com.novadart.novabill.shared.client.dto;
 
 import java.util.List;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.gwt.user.client.rpc.IsSerializable;
 
 public class PriceListDTO implements IsSerializable {
@@ -14,6 +16,7 @@ public class PriceListDTO implements IsSerializable {
 	
 	private List<CommodityDTO> commodities;
 	
+	@JsonSerialize(using=ToStringSerializer.class)
 	public Long getId() {
 		return id;
 	}

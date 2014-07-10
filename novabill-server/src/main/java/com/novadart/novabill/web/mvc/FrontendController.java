@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class FrontendController {
 
 	public static enum PAGES {
-		HOME, PRICES, BLOG, ABOUT, CONTACT
+		HOME, PRICES, ABOUT, SECURITY
 	}
 	
 	@RequestMapping(value = Urls.PUBLIC_HOME, method = RequestMethod.GET)
@@ -18,29 +18,23 @@ public class FrontendController {
 		return "frontend.index";
 	}
 
-//	@RequestMapping(value = Urls.PUBLIC_CONTACT, method = RequestMethod.GET)
-//	public String contact(Model model){
-//		model.addAttribute("activePage", PAGES.CONTACT);
-//		model.addAttribute("pageName", "Contact Us");
-//		return "frontend.contact";
-//	}
-	
-//	@RequestMapping(value = Urls.PUBLIC_ABOUT, method = RequestMethod.GET)
-//	public String about(Model model){
-//		model.addAttribute("activePage", PAGES.ABOUT);
-//		model.addAttribute("pageName", "About");
-//		return "frontend.about";
-//	}
+	@RequestMapping(value = Urls.PUBLIC_ABOUT, method = RequestMethod.GET)
+	public String about(Model model){
+		model.addAttribute("activePage", PAGES.ABOUT);
+		model.addAttribute("pageName", "Chi Siamo");
+		return "frontend.about";
+	}
 
-//	@RequestMapping(value = Urls.PUBLIC_PRICES, method = RequestMethod.GET)
-//	public String prices(Model model){
-//		model.addAttribute("activePage", PAGES.PRICES);
-//		model.addAttribute("pageName", "Prices");
-//		return "frontend.prices";
-//	}
-//	
+	@RequestMapping(value = Urls.PUBLIC_PRICES, method = RequestMethod.GET)
+	public String prices(Model model){
+		model.addAttribute("activePage", PAGES.PRICES);
+		model.addAttribute("pageName", "Quanto Costa?");
+		return "frontend.prices";
+	}
+	
 	@RequestMapping(value = Urls.PUBLIC_PAGE_NOT_FOUND, method = RequestMethod.GET)
-	public String pageNotFound(){
+	public String pageNotFound(Model model){
+		model.addAttribute("pageName", "Risorsa non Disponibile");
 		return "frontend.pageNotFound";
 	}
 	
@@ -54,6 +48,17 @@ public class FrontendController {
 	public String tos(Model model){
 		model.addAttribute("pageName", "Termini e Condizioni");
 		return "frontend.tos";
+	}
+	
+	@RequestMapping(value = Urls.PUBLIC_TOS_MINIMAL, method = RequestMethod.GET)
+	public String tosMinimal(Model model){
+		return "frontend.tosMinimal";
+	}
+	
+	@RequestMapping(value = Urls.PUBLIC_PAYPAL_RETURN_PAGE, method = RequestMethod.GET)
+	public String paypalreturnPage(Model model){
+		model.addAttribute("pageName", "Attivazione Premium");
+		return "frontend.paypalReturnPage";
 	}
 	
 	

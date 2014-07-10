@@ -1,18 +1,20 @@
 package com.novadart.novabill.web.mvc;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
 
-import org.codehaus.jackson.JsonGenerationException;
-import org.codehaus.jackson.map.JsonMappingException;
-import org.codehaus.jackson.map.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.novadart.novabill.domain.Business;
+import com.fasterxml.jackson.core.JsonGenerationException;
+import com.fasterxml.jackson.databind.JsonMappingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
@@ -27,7 +29,7 @@ public class PrivateController {
 	private final ObjectMapper mapper = new ObjectMapper();
 	
 	public static enum PAGES {
-		DASHBOARD, CLIENTS, COMMODITIES, PRICE_LISTS, PAYMENTS, SETTINGS, INVOICES, ESTIMATIONS, TRANSPORT_DOCUMENTS, CREDIT_NOTES
+		DASHBOARD, CLIENTS, COMMODITIES, PRICE_LISTS, PAYMENTS, SETTINGS, INVOICES, ESTIMATIONS, TRANSPORT_DOCUMENTS, CREDIT_NOTES, PREMIUM, SHARE
 	}
 
 
@@ -53,42 +55,38 @@ public class PrivateController {
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_INVOICES, method = RequestMethod.GET)
-	public ModelAndView invoices() throws JsonGenerationException, JsonMappingException, IOException{
+	public ModelAndView invoices() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.invoices");
 		mav.addObject("activePage", PAGES.INVOICES);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Business business = principal.getBusiness();
-		mav.addObject("invoiceYears", mapper.writeValueAsString(business.getInvoiceYears()));
+		mav.addObject("invoiceYears", mapper.writeValueAsString(businessService.getInvoceYears(principal.getBusiness().getId())));
 		return mav;
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_ESTIMATIONS, method = RequestMethod.GET)
-	public ModelAndView estimations() throws JsonGenerationException, JsonMappingException, IOException{
+	public ModelAndView estimations() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.estimations");
 		mav.addObject("activePage", PAGES.ESTIMATIONS);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Business business = principal.getBusiness();
-		mav.addObject("estimationYears", mapper.writeValueAsString(business.getEstimationYears()));
+		mav.addObject("estimationYears", mapper.writeValueAsString(businessService.getEstimationYears(principal.getBusiness().getId())));
 		return mav;
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_TRANSPORT_DOCUMENTS, method = RequestMethod.GET)
-	public ModelAndView transportDocuments() throws JsonGenerationException, JsonMappingException, IOException{
+	public ModelAndView transportDocuments() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.transportDocuments");
 		mav.addObject("activePage", PAGES.TRANSPORT_DOCUMENTS);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Business business = principal.getBusiness();
-		mav.addObject("transportDocumentYears", mapper.writeValueAsString(business.getTransportDocumentYears()));
+		mav.addObject("transportDocumentYears", mapper.writeValueAsString(businessService.getTransportDocumentYears(principal.getBusiness().getId())));
 		return mav;
 	}
 	
 	@RequestMapping(value = Urls.PRIVATE_DOCS_CREDIT_NOTES, method = RequestMethod.GET)
-	public ModelAndView creditNotes() throws JsonGenerationException, JsonMappingException, IOException{
+	public ModelAndView creditNotes() throws JsonGenerationException, JsonMappingException, IOException, NotAuthenticatedException, DataAccessException{
 		ModelAndView mav = new ModelAndView("private.creditNotes");
 		mav.addObject("activePage", PAGES.CREDIT_NOTES);
 		Principal principal = (Principal) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-		Business business = principal.getBusiness();
-		mav.addObject("creditNoteYears", mapper.writeValueAsString(business.getCreditNoteYears()));
+		mav.addObject("creditNoteYears", mapper.writeValueAsString(businessService.getCreditNoteYears(principal.getBusiness().getId())));
 		return mav;
 	}
 	
@@ -113,6 +111,12 @@ public class PrivateController {
 		return mav;
 	}
 	
+	@RequestMapping(value = Urls.PRIVATE_HELLO, method = RequestMethod.GET)
+	public ModelAndView hello(){
+		ModelAndView mav = new ModelAndView("private.hello");
+		return mav;
+	}
+	
 	@RequestMapping(value = Urls.PRIVATE_SETTINGS, method = RequestMethod.GET)
 	public ModelAndView settings(){
 		ModelAndView mav = new ModelAndView("private.settings");
@@ -120,10 +124,18 @@ public class PrivateController {
 		return mav;
 	}
 	
-	@RequestMapping(value = Urls.PRIVATE_FIRST_RUN, method = RequestMethod.GET)
-	public ModelAndView firstRun(){
-		ModelAndView mav = new ModelAndView("private.firstrun");
+	@RequestMapping(value = Urls.PRIVATE_SHARE, method = RequestMethod.GET)
+	public ModelAndView share(){
+		ModelAndView mav = new ModelAndView("private.share");
+		mav.addObject("activePage", PAGES.SHARE);
 		return mav;
 	}
-
+	
+	@RequestMapping(value = Urls.PRIVATE_PRINT_PDF, method = RequestMethod.GET)
+	public ModelAndView printPdf(@RequestParam String pdfUrl) throws UnsupportedEncodingException{
+		ModelAndView mav = new ModelAndView("private.printPDF");
+		mav.addObject("pdfUrl", URLDecoder.decode(pdfUrl, "UTF-8"));
+		return mav;
+	}
+	
 }

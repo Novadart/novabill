@@ -8,8 +8,8 @@ import com.novadart.novabill.annotation.HandleGWTServiceAccessDenied;
 import com.novadart.novabill.service.web.CreditNoteService;
 import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -39,7 +39,7 @@ public class CreditNoteGwtController extends AbstractGwtController implements Cr
 		return creditNoteService.getAllForClientInRange(id, year, start, length);
 	}
 
-	public Long add(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, AuthorizationException {
+	public Long add(CreditNoteDTO creditNoteDTO) throws NotAuthenticatedException, DataAccessException, ValidationException, FreeUserAccessForbiddenException {
 		return creditNoteService.add(creditNoteDTO);
 	}
 

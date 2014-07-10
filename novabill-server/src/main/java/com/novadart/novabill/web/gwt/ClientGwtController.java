@@ -9,9 +9,9 @@ import com.novadart.novabill.service.web.ClientService;
 import com.novadart.novabill.shared.client.dto.ClientAddressDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.PageDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.InvalidArgumentException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -26,11 +26,11 @@ public class ClientGwtController extends AbstractGwtController implements Client
 	@Autowired
 	private ClientService clientService;
 	
-	public void remove(Long businessID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataIntegrityException, DataAccessException {
-		clientService.remove(businessID, id);
+	public boolean remove(Long businessID, Long id) throws NotAuthenticatedException, NoSuchObjectException, DataAccessException {
+		return clientService.remove(businessID, id);
 	}
 
-	public Long add(Long businessID, ClientDTO clientDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException {
+	public Long add(Long businessID, ClientDTO clientDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException {
 		return clientService.add(businessID, clientDTO);
 	}
 
@@ -47,7 +47,7 @@ public class ClientGwtController extends AbstractGwtController implements Client
 	}
 
 	@Override
-	public Long addClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, AuthorizationException, ValidationException, DataAccessException {
+	public Long addClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, FreeUserAccessForbiddenException, ValidationException, DataAccessException {
 		return clientService.addClientAddress(clientAddressDTO);
 	}
 
@@ -62,7 +62,7 @@ public class ClientGwtController extends AbstractGwtController implements Client
 	}
 
 	@Override
-	public void updateClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, NoSuchObjectException, AuthorizationException, ValidationException, DataAccessException {
+	public void updateClientAddress(ClientAddressDTO clientAddressDTO) throws NotAuthenticatedException, NoSuchObjectException, FreeUserAccessForbiddenException, ValidationException, DataAccessException {
 		clientService.updateClientAddress(clientAddressDTO);
 	}
 

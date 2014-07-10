@@ -60,7 +60,7 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 		getView().getFromAddrCity().setText(loc.getCity());
 		getView().getFromAddrCompanyName().setText(loc.getCompanyName());
 		getView().getFromAddrPostCode().setText(loc.getPostcode());
-		getView().getFromAddrProvince().setSelectedItem(loc.getProvince());
+		getView().getFromAddrProvince().setText(loc.getProvince());
 		getView().getFromAddrStreetName().setText(loc.getStreet());
 		getView().getFromAddrCountry().setSelectedItemByValue(loc.getCountry());
 		getView().getSetFromAddress().setValue(true);
@@ -70,11 +70,7 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 		getView().getToAddrCity().setText(loc.getCity());
 		getView().getToAddrCompanyName().setText(loc.getCompanyName());
 		getView().getToAddrPostCode().setText(loc.getPostcode());
-		if("IT".equalsIgnoreCase(loc.getCountry())){
-			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
-		} else {
-			getView().getToAddrProvince().setEnabled(false);
-		} 
+		getView().getToAddrProvince().setText(loc.getProvince());
 		getView().getToAddrStreetName().setText(loc.getStreet());
 		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
 		getView().getSetToAddress().setValue(true);
@@ -93,6 +89,7 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 		// load the button only if readonly
 		if(getTransportDocument().getInvoice() == null){
 			super.onLoad();
+			loadTransporters();
 		}
 	}
 
@@ -103,10 +100,10 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 			return;
 		}
 
-		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.saveModificationsConfirm(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 					getView().getCreateDocument().showLoader(true);
 					getView().setLocked(true);
@@ -130,10 +127,10 @@ public class ModifyTransportDocumentPresenter extends AbstractTransportDocumentP
 						@Override
 						public void onSuccess(Void result) {
 							getView().getCreateDocument().showLoader(false);
-							Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateSuccess(), new NotificationCallback<Void>() {
+							Notification.showMessage(I18N.INSTANCE.transportDocumentUpdateSuccess(), new NotificationCallback() {
 
 								@Override
-								public void onNotificationClosed(Void value) {
+								public void onNotificationClosed(boolean value) {
 									getView().setLocked(false);
 									BridgeUtils.invokeJSCallback(Boolean.TRUE, getCallback());
 								}

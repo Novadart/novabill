@@ -11,21 +11,23 @@ import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
-import com.novadart.novabill.domain.dto.factory.CommodityDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PriceDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PriceListDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.CommodityDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PriceDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PriceListDTOTransformer;
 import com.novadart.novabill.service.UtilsService;
 import com.novadart.novabill.service.validator.PriceListValidator;
 import com.novadart.novabill.shared.client.data.PriceListConstants;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.PriceDTO;
 import com.novadart.novabill.shared.client.dto.PriceListDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -58,29 +60,30 @@ public class PriceListService {
 		List<CommodityDTO> commodities = new ArrayList<>(defautPLPrices.size());
 		Map<String, Map<String, PriceDTO>> commoditiesPricesMap = new HashMap<>();
 		for(Price price: defautPLPrices){
-			CommodityDTO commodityDTO = CommodityDTOFactory.toDTO(price.getCommodity());
+			CommodityDTO commodityDTO = CommodityDTOTransformer.toDTO(price.getCommodity());
 			Map<String, PriceDTO> commodityPrices = new HashMap<>();
-			commodityPrices.put(PriceListConstants.DEFAULT, PriceDTOFactory.toDTO(price));
+			commodityPrices.put(PriceListConstants.DEFAULT, PriceDTOTransformer.toDTO(price));
 			commodityDTO.setPrices(commodityPrices);
 			commoditiesPricesMap.put(price.getCommodity().getSku(), commodityPrices);
 			commodities.add(commodityDTO);
 		}
 		if(defaultPL.getId() == id)
-			return PriceListDTOFactory.toDTO(defaultPL, commodities);
+			return PriceListDTOTransformer.toDTO(defaultPL, commodities);
 		PriceList priceList = PriceList.findPriceList(id);
 		for(Map<String, PriceDTO> commPricesMap: commoditiesPricesMap.values())
 			commPricesMap.put(priceList.getName(), new PriceDTO(commPricesMap.get(PriceListConstants.DEFAULT).getCommodityID(), priceList.getId()));
 		for(Price price: Price.findPricesForPriceList(priceList.getId()))
-			commoditiesPricesMap.get(price.getCommodity().getSku()).put(priceList.getName(), PriceDTOFactory.toDTO(price));
-		return PriceListDTOFactory.toDTO(priceList, commodities);
+			commoditiesPricesMap.get(price.getCommodity().getSku()).put(priceList.getName(), PriceDTOTransformer.toDTO(price));
+		return PriceListDTOTransformer.toDTO(priceList, commodities);
 	}
 	
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#priceListDTO?.business?.id == principal.business.id and " +
 		  	  	  "#priceListDTO != null and #priceListDTO.id == null")
-	public Long add(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
+	@Restrictions(checkers = {PremiumChecker.class})
+	public Long add(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException {
 		PriceList priceList = new PriceList();
-		PriceListDTOFactory.copyFromDTO(priceList, priceListDTO);
+		PriceListDTOTransformer.copyFromDTO(priceList, priceListDTO);
 		Business business = Business.findBusiness(priceListDTO.getBusiness().getId());
 		priceList.setBusiness(business);
 		validator.validate(priceList, true);
@@ -93,14 +96,14 @@ public class PriceListService {
 	@Transactional(readOnly = false, rollbackFor = {ValidationException.class})
 	@PreAuthorize("#priceListDTO?.business?.id == principal.business.id and " +
 	  	  	  	  "#priceListDTO?.id != null")
-	public void update(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+	public void update(PriceListDTO priceListDTO) throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException {
 		PriceList persistedPriceList = PriceList.findPriceList(priceListDTO.getId());
 		if(persistedPriceList == null)
 			throw new NoSuchObjectException();
 		PriceList copy = persistedPriceList.shallowCopy();
-		PriceListDTOFactory.copyFromDTO(copy, priceListDTO);
+		PriceListDTOTransformer.copyFromDTO(copy, priceListDTO);
 		validator.validate(copy, !persistedPriceList.getName().equals(priceListDTO.getName()));
-		PriceListDTOFactory.copyFromDTO(persistedPriceList, priceListDTO);
+		PriceListDTOTransformer.copyFromDTO(persistedPriceList, priceListDTO);
 	}
 	
 	private void preRemove(PriceList priceList){
@@ -139,7 +142,7 @@ public class PriceListService {
 		}
 		for(Price price: Price.findPricesForPriceList(id)) {
 			Pair<String, PriceDTO> pair = result.get(commMap.get(price.getCommodity().getId()));
-			pair.setSecond(PriceDTOFactory.toDTO(price));
+			pair.setSecond(PriceDTOTransformer.toDTO(price));
 		}
 		return result;
 	}

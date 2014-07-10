@@ -5,18 +5,16 @@ xsi:schemaLocation="http://java.sun.com/xml/ns/persistence http://java.sun.com/x
         <provider>org.hibernate.ejb.HibernatePersistence</provider>
         <properties>
             <property name="hibernate.dialect" value="org.hibernate.dialect.PostgreSQLDialect"/>
-            <!-- value="create" to build a new database on each run; value="update" to modify an existing database; value="create-drop" means the same as "create" but also drops tables when Hibernate closes; value="validate" makes no changes to the database -->
-            <property name="hibernate.hbm2ddl.auto" value="${hibernate.hbm2ddl.auto.value}"/>
+            <property name="hibernate.hbm2ddl.auto" value="${mvn.hibernate.hbm2ddl.auto}"/>
             <property name="hibernate.ejb.naming_strategy" value="org.hibernate.cfg.ImprovedNamingStrategy"/>
             <property name="hibernate.connection.charSet" value="UTF-8"/>
-            <property name="hibernate.show_sql" value="${hibernate.show_sql.value}"/>
-            <property name="hibernate.search.default.indexBase" value="${hibernate.search.default.indexBase.value}"/>
-            <property name="hibernate.hbm2ddl.import_files" value="${hibernate.hbm2ddl.import_files.value}"/>
+            <property name="hibernate.show_sql" value="${mvn.hibernate.show_sql}"/>
+            <property name="hibernate.search.default.indexBase" value="${mvn.hibernate.search.default.indexBase}"/>
+            <property name="hibernate.hbm2ddl.import_files" value="${mvn.hibernate.hbm2ddl.import_files}"/>
             <property name="hibernate.cache.region.factory_class" value="org.hibernate.cache.ehcache.EhCacheRegionFactory"/>
             <property name="hibernate.cache.use_second_level_cache" value="true"/>
-            <!-- Uncomment the following two properties for JBoss only -->
-            <!-- property name="hibernate.validator.apply_to_ddl" value="false" /-->
-            <!-- property name="hibernate.validator.autoregister_listeners" value="false" /-->
+            <property name="hibernate.max_fetch_depth" value="1"/>
+            <property name="hibernate.cache.use_query_cache" value="true"/>
         </properties>
     </persistence-unit>
 </persistence>

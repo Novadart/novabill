@@ -175,7 +175,8 @@
 								<g:Label styleName="{style.businessLabel}" text="{i18n.province} *"></g:Label>
 							</g:customCell>
 							<g:customCell>
-								<v:ValidatedListBox ui:field="province"></v:ValidatedListBox>
+							    <v:ValidatedTextBox styleName="{style.validatedBox}"
+                                    ui:field="province" maxLength="100"></v:ValidatedTextBox>
 							</g:customCell>
 						</g:row>
 						<g:row>

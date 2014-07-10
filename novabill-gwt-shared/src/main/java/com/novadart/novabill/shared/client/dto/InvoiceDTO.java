@@ -18,6 +18,10 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
     
 	private boolean createdFromTransportDocuments;
 	
+	private Long seenByClientTime;
+	
+	private boolean emailedToClient;
+	
     private List<Long> transportDocumentIDs;
     
 	public PaymentDateType getPaymentDateGenerator() {
@@ -89,5 +93,25 @@ public class InvoiceDTO extends AbstractInvoiceDTO implements IsSerializable {
 			boolean createdFromTransportDocuments) {
 		this.createdFromTransportDocuments = createdFromTransportDocuments;
 	}
-    
+
+
+	public Long getSeenByClientTime() {
+		return seenByClientTime;
+	}
+
+
+	public void setSeenByClientTime(Long seenByClientTime) {
+		this.seenByClientTime = seenByClientTime;
+	}
+
+
+	public boolean isEmailedToClient() {
+		return emailedToClient;
+	}
+
+
+	public void setEmailedToClient(boolean emailedToClient) {
+		this.emailedToClient = emailedToClient;
+	}
+
 }

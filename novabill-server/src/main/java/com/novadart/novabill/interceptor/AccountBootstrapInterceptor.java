@@ -22,20 +22,20 @@ public class AccountBootstrapInterceptor implements HandlerInterceptor {
 		if(principal.getBusiness() == null){
 
 			// check if the url we are loading is already the one for first run
-			if ( !requestURI.contains("/private/firstrun/")) {
+			if ( !requestURI.contains("/private/hello/")) {
 
-				String newURI = "/private/firstrun/";
-				request.getRequestDispatcher(newURI).forward(request, response);
-
+				String newURI = "/private/hello/";
+				response.sendRedirect(request.getServletContext().getContextPath()+newURI);
+				return false;
 			}
 
 		} else {
-
-			if (requestURI.contains("/private/firstrun/")) {
+			
+			if ( requestURI.contains("/private/hello/")) {
 
 				String newURI = "/private/";
-				request.getRequestDispatcher(newURI).forward(request, response);
-				
+				response.sendRedirect(request.getServletContext().getContextPath()+newURI);
+				return false;
 			}
 		}
 
@@ -57,7 +57,6 @@ public class AccountBootstrapInterceptor implements HandlerInterceptor {
 		// TODO Auto-generated method stub
 
 	}
-
 
 
 }

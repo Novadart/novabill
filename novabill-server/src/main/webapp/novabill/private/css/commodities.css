@@ -1,0 +1,53 @@
+.commodities .commodities-filter {
+	margin: 20px 0;
+}
+
+.commodities-detail .type {
+	position: relative;
+    top: 2px;
+    right: 10px;
+}
+
+.commodities-detail .page-header {
+	padding-left: 10px;
+}
+
+.commodities-detail .page-header.service {
+    border-left: 2px solid #428bca;
+}
+
+.commodities-detail .page-header.product {
+    border-left: 2px solid #3cc051;
+}
+
+.commodities-detail table.table td{
+}
+
+.commodities-detail table.details tbody {
+	font-size: 13px;
+}
+
+.commodities-detail tr.defaultPriceList {
+	font-size: 13px;
+	font-weight: bold;
+}
+
+.commodities-detail tr.defaultPriceList.service {
+	color: #428bca;
+}
+
+.commodities-detail tr.defaultPriceList.product {
+    color: #3cc051;
+}
+
+.commodities-detail tr.priceList {
+    font-size: 13px;
+}
+
+.commodities-detail tr.priceList td {
+	padding: 20px 8px;
+}
+
+.commodities-detail tr.defaultPriceList td {
+    padding: 20px 8px;
+}

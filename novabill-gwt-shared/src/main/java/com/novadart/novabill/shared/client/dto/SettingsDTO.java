@@ -18,6 +18,14 @@ public class SettingsDTO implements IsSerializable {
     private String estimationFooterNote;
     
     private String transportDocumentFooterNote;
+    
+    private String emailSubject;
+    
+    private String emailText;
+    
+    private String emailReplyTo;
+    
+    private Long nonFreeAccountExpirationTime;
 
 	public LayoutType getDefaultLayoutType() {
 		return defaultLayoutType;
@@ -74,5 +82,36 @@ public class SettingsDTO implements IsSerializable {
 	public void setTransportDocumentFooterNote(String transportDocumentFooterNote) {
 		this.transportDocumentFooterNote = transportDocumentFooterNote;
 	}
+
+	public String getEmailSubject() {
+		return emailSubject;
+	}
+
+	public void setEmailSubject(String emailSubject) {
+		this.emailSubject = emailSubject;
+	}
+
+	public String getEmailText() {
+		return emailText;
+	}
+
+	public void setEmailText(String emailText) {
+		this.emailText = emailText;
+	}
+
+	public String getEmailReplyTo() {
+		return emailReplyTo;
+	}
+
+	public void setEmailReplyTo(String emailReplyTo) {
+		this.emailReplyTo = emailReplyTo;
+	}
 	
+	public Long getNonFreeAccountExpirationTime() {
+		return nonFreeAccountExpirationTime;
+	}
+
+	public void setNonFreeAccountExpirationTime(Long nonFreeAccountExpirationTime) {
+		this.nonFreeAccountExpirationTime = nonFreeAccountExpirationTime;
+	}
 }

@@ -28,7 +28,6 @@ import com.novadart.novabill.service.validator.ForgotPasswordValidator;
 import com.novadart.novabill.service.validator.ForgotPasswordValidator.ValidationType;
 
 @Controller
-@RequestMapping("/forgot-password")
 @SessionAttributes("forgotPassword")
 @MailMixin
 public class ForgotPasswordController {
@@ -57,11 +56,20 @@ public class ForgotPasswordController {
 		dataBinder.setDisallowedFields("id");
 	}
 	
-	@RequestMapping(method = RequestMethod.GET)
+	@RequestMapping(value = Urls.PUBLIC_FORGOT_PASSWORD, method = RequestMethod.GET)
 	public String setupForm(Model model){
 		ForgotPassword forgotPassword = new ForgotPassword(DEFAULT_PASSWORD, DEFAULT_PASSWORD);
 		model.addAttribute("forgotPassword", forgotPassword);
-		return "forgotPassword";
+		model.addAttribute("pageName", "Password Reset");
+		return "frontend.forgotPassword";
+	}
+	
+	@RequestMapping(value = Urls.PUBLIC_FORGOT_PASSWORD_OK, method = RequestMethod.GET)
+	public String setupPasswordRecoveryOk(Model model){
+		ForgotPassword forgotPassword = new ForgotPassword(DEFAULT_PASSWORD, DEFAULT_PASSWORD);
+		model.addAttribute("forgotPassword", forgotPassword);
+		model.addAttribute("pageName", "Password Reset");
+		return "frontend.forgotPasswordOk";
 	}
 	
 	private void sendActivationMail(ForgotPassword forgotPassword, Locale locale) throws UnsupportedEncodingException{
@@ -73,12 +81,15 @@ public class ForgotPasswordController {
 		sendMessage(forgotPassword.getEmail(), messageSource.getMessage("password.recovery.notification", null, locale), templateVars, "mail-templates/password-recovery-notification.vm");
 	}
 	
-	@RequestMapping(method = RequestMethod.POST)
-	public String processSubmit(@ModelAttribute("forgotPassword") ForgotPassword forgotPassword, BindingResult result, SessionStatus status, Locale locale)
+	@RequestMapping(value = Urls.PUBLIC_FORGOT_PASSWORD, method = RequestMethod.POST)
+	public String processSubmit(@ModelAttribute("forgotPassword") ForgotPassword forgotPassword, BindingResult result, 
+			SessionStatus status, Locale locale, Model model)
 			throws NoSuchAlgorithmException, UnsupportedEncodingException{
 		validator.validate(forgotPassword, result, ValidationType.VALIDATE_ONLY_IF_EMAIL_IN_DB);
-		if(result.hasErrors())
-			return "forgotPassword";
+		if(result.hasErrors()) {
+			model.addAttribute("pageName", "Password Reset");
+			return "frontend.forgotPassword";
+		}
 		else{
 			forgotPassword.setActivationToken(tokenGenerator.generateToken());
 			forgotPassword.setCreationTime(Principal.findByUsername(forgotPassword.getEmail()).getCreationTime());
@@ -87,7 +98,7 @@ public class ForgotPasswordController {
 			forgotPassword.setExpirationDate(new Date(System.currentTimeMillis() + passwordRecoveryPeriod * MILLISECS_PER_HOUR));
 			sendActivationMail(forgotPassword.merge(), locale);
 			status.setComplete();
-			return "redirect:/passwordRecoveryCommenced";
+			return "redirect:" + Urls.PUBLIC_FORGOT_PASSWORD_OK;
 		}
 	}
 

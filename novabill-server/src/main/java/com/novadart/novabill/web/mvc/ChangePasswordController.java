@@ -18,7 +18,7 @@ import com.novadart.novabill.service.validator.ChangePasswordValidator;
 import com.novadart.novabill.web.mvc.command.ChangePassword;
 
 @Controller
-@RequestMapping("/private/change-password")
+@RequestMapping(Urls.PRIVATE_CHANGE_PASSWORD)
 @SessionAttributes("changePassword")
 public class ChangePasswordController {
 	
@@ -38,7 +38,7 @@ public class ChangePasswordController {
 		ChangePassword changePassword = new ChangePassword();
 		changePassword.setEmail(utilsService.getAuthenticatedPrincipalDetails().getUsername());
 		model.addAttribute("changePassword", changePassword);
-		return "changePassword";
+		return "private.changePassword";
 	}
 
 	@Transactional(readOnly = false)
@@ -46,12 +46,12 @@ public class ChangePasswordController {
 	public String processSubmit(@ModelAttribute("changePassword") ChangePassword changePassword, BindingResult result, SessionStatus status){
 		validator.validate(changePassword, result);
 		if(result.hasErrors())
-			return "changePassword";
+			return "private.changePassword";
 		else{
 			Principal principal = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId());
 			principal.setPassword(changePassword.getNewPassword());
 			status.setComplete();
-			return "redirect:/private";
+			return "redirect:/private/";
 		}
 	}
 

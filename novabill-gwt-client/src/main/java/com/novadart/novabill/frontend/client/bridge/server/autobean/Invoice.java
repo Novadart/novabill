@@ -25,6 +25,14 @@ public interface Invoice {
 
 	public void setTransportDocumentIDs(LongList list);
 	
+	public Long getSeenByClientTime();
+
+	public void setSeenByClientTime(Long seenByClient);
+	
+	public boolean isEmailedToClient();
+
+	public void setEmailedToClient(boolean emailedToClient);
+	
 	/*
 	 * AbstractInvoiceDTO interface
 	 */

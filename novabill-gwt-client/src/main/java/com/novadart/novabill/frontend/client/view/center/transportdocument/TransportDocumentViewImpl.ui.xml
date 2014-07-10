@@ -88,8 +88,10 @@
 						<g:Label styleName="{s.label}" text="{i18n.transporter}"></g:Label>
 					</g:customCell>
 					<g:customCell>
-						<v:ValidatedTextArea styleName="{s.box} {s.note}"
-							visibleLines="3" ui:field="transporter" />
+					   <g:HorizontalPanel  styleName="{s.transporterBox}">
+					       <v:ValidatedTextArea styleName="{s.box} {s.note}" visibleLines="3" ui:field="transporter" />
+					       <g:ListBox styleName="{s.loadDefaultsButton}" ui:field="loadTransporterAddress"></g:ListBox>
+					   </g:HorizontalPanel>
 					</g:customCell>
 				</g:row>
 				<g:row>
@@ -164,7 +166,7 @@
 										<textbox:RichTextBox ui:field="fromAddrCity" maxLength="60" />
 									</g:customCell>
 									<g:customCell>
-										<v:ValidatedListBox styleName="{s.box}"	ui:field="fromAddrProvince" />
+									   <textbox:RichTextBox ui:field="fromAddrProvince" maxLength="100" />
 									</g:customCell>
 								</g:row>
 								<g:row>
@@ -205,7 +207,7 @@
 										<textbox:RichTextBox ui:field="toAddrCity" maxLength="60" />
 									</g:customCell>
 									<g:customCell>
-										<v:ValidatedListBox styleName="{s.box}" ui:field="toAddrProvince" />
+									   <textbox:RichTextBox ui:field="toAddrProvince" maxLength="100" />
 									</g:customCell>
 								</g:row>
 								<g:row>

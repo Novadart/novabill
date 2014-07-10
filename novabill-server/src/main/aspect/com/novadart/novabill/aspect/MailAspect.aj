@@ -3,18 +3,17 @@ package com.novadart.novabill.aspect;
 import java.util.Map;
 
 import javax.mail.MessagingException;
-import javax.mail.internet.MimeMessage;
-
 import org.apache.commons.lang3.CharEncoding;
 import org.apache.velocity.app.VelocityEngine;
-import org.springframework.mail.javamail.MimeMessageHelper;
+import org.springframework.mail.MailSendException;
 import org.springframework.ui.velocity.VelocityEngineUtils;
 
 import com.novadart.novabill.annotation.MailMixin;
+import com.novadart.novabill.domain.Email;
+import com.novadart.novabill.domain.EmailStatus;
 
 privileged aspect MailAspect {
 	
-	private org.springframework.mail.javamail.JavaMailSender mailSender;
 	private VelocityEngine velocityEngine;
 	private String from;
 
@@ -22,9 +21,6 @@ privileged aspect MailAspect {
 		this.from = from;
 	}
 
-	public void setMailSender(org.springframework.mail.javamail.JavaMailSender mailSender) {
-		this.mailSender = mailSender;
-	}
 	
 	public void setVelocityEngine(VelocityEngine velocityEngine) {
 		this.velocityEngine = velocityEngine;
@@ -33,25 +29,44 @@ privileged aspect MailAspect {
 	declare parents : @MailMixin * implements MailSender;
 
 
-	public void MailSender.sendMessage(String[] to, String subject, Map<String, Object> model, String templateLocation){
+	public boolean MailSender.sendMessage(String[] to, String from, String replyTo, String subject, Map<String, Object> model, String templateLocation, boolean retry,
+			byte[] attachment, String attachmentName){
 		MailAspect thisAspect = MailAspect.aspectOf();
-		MimeMessage mimeMessage = thisAspect.mailSender.createMimeMessage();
-		MimeMessageHelper messageHelper = new MimeMessageHelper(mimeMessage);
+		Email email = null;
 		try {
-			messageHelper.setTo(to);
-			messageHelper.setFrom(thisAspect.from);
-			messageHelper.setSubject(subject);
 			String text = VelocityEngineUtils.mergeTemplateIntoString(thisAspect.velocityEngine, templateLocation, 
 					CharEncoding.UTF_8, model);
-			messageHelper.setText(text, true);
-			thisAspect.mailSender.send(mimeMessage);
-		} catch (MessagingException e) {
-			throw new RuntimeException(e);
+			email = new Email(to, from == null? thisAspect.from: from, subject, text, replyTo, attachment, attachmentName);
+			email.send();
+			return true;
+		} catch (MessagingException | MailSendException e) {
+			if(retry) {
+				email.setTries(1);
+				email.setStatus(EmailStatus.PENDING);
+				email.persist();
+			}
+			return false;
 		}
 	}
 	
-	public void MailSender.sendMessage(String to, String subject, Map<String, Object> model, String templateLocation){
-		sendMessage(new String[]{to}, subject, model, templateLocation);
+	public boolean MailSender.sendMessage(String to, String replyTo, String subject, Map<String, Object> model, String templateLocation, boolean retry){
+		return sendMessage(new String[]{to}, null, replyTo, subject, model, templateLocation, retry, null, null);
+	}
+	
+	public boolean MailSender.sendMessage(String to, String from, String replyTo, String subject, Map<String, Object> model, String templateLocation, boolean retry){
+		return sendMessage(new String[]{to}, from, replyTo, subject, model, templateLocation, retry, null, null);
+	}
+	
+	public boolean MailSender.sendMessage(String[] to, String subject, Map<String, Object> model, String templateLocation){
+		return sendMessage(to, null, null, subject, model, templateLocation, true, null, null);
+	}
+	
+	public boolean MailSender.sendMessage(String to, String subject, Map<String, Object> model, String templateLocation){
+		return sendMessage(new String[]{to}, null, null, subject, model, templateLocation, true, null, null);
+	}
+	
+	public boolean MailSender.sendMessage(String to, String subject, Map<String, Object> model, String templateLocation, byte[] attachment, String attachmentName){
+		return sendMessage(new String[]{to}, null, null, subject, model, templateLocation, true, attachment, attachmentName);
 	}
 	
 }

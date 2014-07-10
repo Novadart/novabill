@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>novabill</artifactId>
 		<groupId>com.novadart.novabill</groupId>
-		<version>2.5.6</version>
+		<version>3.0</version>
 	</parent>
 	<artifactId>novabill-server</artifactId>
 	<packaging>war</packaging>
@@ -20,28 +20,16 @@
 			<artifactId>novabill-android-shared</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>${project.groupId}</groupId>
-			<artifactId>novabill-gwt-client</artifactId>
-			<scope>runtime</scope>
-			<type>war</type>
-		</dependency>
-		<dependency>
 			<groupId>com.novadart.utils</groupId>
 			<artifactId>novadart-utils</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>org.apache.httpcomponents</groupId>
-			<artifactId>httpclient</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
-				</exclusion>
-			</exclusions>
+			<groupId>com.google.guava</groupId>
+			<artifactId>guava</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>net.sf.flexjson</groupId>
-			<artifactId>flexjson</artifactId>
+			<groupId>org.apache.httpcomponents</groupId>
+			<artifactId>httpclient</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.aspectj</groupId>
@@ -65,6 +53,11 @@
 			<artifactId>jcl-over-slf4j</artifactId>
 			<scope>runtime</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>log4j-over-slf4j</artifactId>
+			<scope>runtime</scope>
+		</dependency>
 
 		<dependency>
 			<groupId>javax.servlet</groupId>
@@ -76,28 +69,23 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-core</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-context</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>postgresql</groupId>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-context-support</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.postgresql</groupId>
 			<artifactId>postgresql</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-core</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>org.hibernate.javax.persistence</groupId>
-			<artifactId>hibernate-jpa-2.0-api</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -130,6 +118,10 @@
 		<dependency>
 			<groupId>org.springframework</groupId>
 			<artifactId>spring-orm</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-tx</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>commons-pool</groupId>
@@ -174,12 +166,21 @@
 			<scope>provided</scope>
 		</dependency>
 		<dependency>
+			<groupId>com.googlecode.htmlcompressor</groupId>
+			<artifactId>htmlcompressor</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.yahoo.platform.yui</groupId>
+			<artifactId>yuicompressor</artifactId>
+		</dependency>
+		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.apache.tiles</groupId>
 			<artifactId>tiles-jsp</artifactId>
+			<scope>runtime</scope>
 		</dependency>
 		<dependency>
 			<groupId>com.google.gwt</groupId>
@@ -207,20 +208,26 @@
 			<scope>runtime</scope>
 		</dependency>
 		<dependency>
-			<groupId>org.codehaus.jackson</groupId>
-			<artifactId>jackson-mapper-asl</artifactId>
-		</dependency>
-		<dependency>
-			<groupId>com.fasterxml.jackson.core</groupId>
-			<artifactId>jackson-databind</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>commons-io</groupId>
 			<artifactId>commons-io</artifactId>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-search</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>org.hibernate</groupId>
+			<artifactId>hibernate-search-engine</artifactId>
+			<exclusions>
+				<exclusion>
+					<artifactId>jackson-mapper-asl</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>jackson-core-asl</artifactId>
+					<groupId>org.codehaus.jackson</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>org.hibernate</groupId>
@@ -266,17 +273,16 @@
 			<artifactId>dumbster</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>org.glassfish.web</groupId>
+			<artifactId>el-impl</artifactId>
+			<scope>test</scope>
+		</dependency>
 
 		<!-- JasperReports -->
 		<dependency>
 			<groupId>net.sf.jasperreports</groupId>
 			<artifactId>jasperreports</artifactId>
-			<exclusions>
-				<exclusion>
-					<artifactId>commons-logging</artifactId>
-					<groupId>commons-logging</groupId>
-				</exclusion>
-			</exclusions>
 		</dependency>
 		<dependency>
 			<groupId>com.novadart.jasperreports.fonts</groupId>
@@ -285,11 +291,54 @@
 		<dependency>
 			<groupId>com.lowagie</groupId>
 			<artifactId>itext</artifactId>
+			<!-- Both already included as version 1.38 -->
+			<exclusions>
+				<exclusion>
+					<artifactId>bcmail-jdk14</artifactId>
+					<groupId>bouncycastle</groupId>
+				</exclusion>
+				<exclusion>
+					<artifactId>bcprov-jdk14</artifactId>
+					<groupId>bouncycastle</groupId>
+				</exclusion>
+			</exclusions>
 		</dependency>
 
 		<dependency>
-			<groupId>com.healthmarketscience.jackcess</groupId>
-			<artifactId>jackcess</artifactId>
+			<groupId>com.novadart.jasperreports.fonts</groupId>
+			<artifactId>fonts-open-sans</artifactId>
+		</dependency>
+
+		<!-- Jackson -->
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-core</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-annotations</artifactId>
+		</dependency>
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<!-- Disabled dependencies -->
+		<dependency>
+			<groupId>commons-logging</groupId>
+			<artifactId>commons-logging</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>servlet-api</artifactId>
+			<scope>provided</scope>
+		</dependency>
+		<dependency>
+			<groupId>${project.groupId}</groupId>
+			<artifactId>novabill-gwt-client</artifactId>
+			<scope>runtime</scope>
+			<type>war</type>
 		</dependency>
 
 	</dependencies>
@@ -309,12 +358,21 @@
 				<configuration>
 					<warSourceExcludes>
 						**/rpc/**,
+						WEB-INF/views/layouts/frontend/indexLayout.jsp,
+						WEB-INF/views/layouts/frontend/subPageLayout.jsp,
+						WEB-INF/views/layouts/frontend/subPageMinimalLayout.jsp,
 						WEB-INF/views/layouts/private/privateLayout.jsp,
+						WEB-INF/views/layouts/private/privateHelloLayout.jsp,
+						WEB-INF/views/layouts/private/printPDF.jsp,
 						WEB-INF/views/tiles/frontend/analytics.jsp,
-						WEB-INF/views/tiles/wro4j/minifiedCSS.jsp,
-						WEB-INF/views/tiles/wro4j/minifiedJS.jsp,
+						WEB-INF/views/tiles/private/analytics.jsp,
+						WEB-INF/views/tiles/wro4j/private/minifiedCSS.jsp,
+						WEB-INF/views/tiles/wro4j/private/minifiedJS.jsp,
+						WEB-INF/views/tiles/wro4j/frontend/minifiedCSS.jsp,
+						WEB-INF/views/tiles/wro4j/frontend/minifiedJS.jsp,
 						WEB-INF/web.xml,
-						WEB-INF/views/private-tiles-defs.xml
+						WEB-INF/views/private-tiles-defs.xml,
+						WEB-INF/views/frontend-tiles-defs.xml
 					</warSourceExcludes>
 					<webResources>
 						<resource>
@@ -323,11 +381,20 @@
 							<targetPath>WEB-INF</targetPath>
 							<includes>
 								<include>web.xml</include>
+								<include>views/layouts/frontend/indexLayout.jsp</include>
+								<include>views/layouts/frontend/subPageLayout.jsp</include>
+								<include>views/layouts/frontend/subPageMinimalLayout.jsp</include>
 								<include>views/layouts/private/privateLayout.jsp</include>
+								<include>views/layouts/private/privateHelloLayout.jsp</include>
+								<include>views/layouts/private/printPDF.jsp</include>
 								<include>views/tiles/frontend/analytics.jsp</include>
+								<include>views/tiles/private/analytics.jsp</include>
 								<include>views/private-tiles-defs.xml</include>
-								<include>views/tiles/wro4j/minifiedCSS.jsp</include>
-								<include>views/tiles/wro4j/minifiedJS.jsp</include>
+								<include>views/frontend-tiles-defs.xml</include>
+								<include>views/tiles/wro4j/private/minifiedCSS.jsp</include>
+								<include>views/tiles/wro4j/private/minifiedJS.jsp</include>
+								<include>views/tiles/wro4j/frontend/minifiedCSS.jsp</include>
+								<include>views/tiles/wro4j/frontend/minifiedJS.jsp</include>
 							</includes>
 						</resource>
 					</webResources>
@@ -374,8 +441,8 @@
 						<source>${project.basedir}/src/main/webapp/novabill-deps/angular/i18n/angular-locale_it-it.js</source>
 						<source>${project.basedir}/src/main/webapp/novabill-deps/angular-translate.min.js</source>
 					</preloadSources>
-					<jsSrcDir>${project.basedir}/src/main/webapp/novabill/scripts</jsSrcDir>
-					<jsTestSrcDir>${project.basedir}/src/test/webapp/novabill/scripts</jsTestSrcDir>
+					<jsSrcDir>${project.basedir}/src/main/webapp/novabill/private/scripts</jsSrcDir>
+					<jsTestSrcDir>${project.basedir}/src/test/webapp/novabill/private/scripts</jsTestSrcDir>
 					<specIncludes>
 						<include>*Spec.js</include>
 					</specIncludes>
@@ -442,31 +509,44 @@
 					<contextFile>${basedir}/tomcat/context.xml</contextFile>
 				</configuration>
 			</plugin>
-
-			<!-- IDE -->
-			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-eclipse-plugin</artifactId>
-				<configuration>
-					<wtpversion>2.0</wtpversion>
-					<additionalBuildcommands>
-						<buildCommand>
-							<name>org.springframework.ide.eclipse.core.springbuilder</name>
-						</buildCommand>
-						<buildCommand>
-							<name>org.eclipse.ajdt.core.ajbuilder</name>
-							<arguments>
-								<aspectPath>org.springframework.aspects</aspectPath>
-							</arguments>
-						</buildCommand>
-					</additionalBuildcommands>
-					<additionalProjectnatures>
-						<projectnature>org.eclipse.ajdt.ui.ajnature</projectnature>
-						<projectnature>org.springframework.ide.eclipse.core.springnature</projectnature>
-					</additionalProjectnatures>
-				</configuration>
-			</plugin>
 		</plugins>
+		<pluginManagement>
+			<plugins>
+				<!--This plugin's configuration is used to store Eclipse m2e settings 
+					only. It has no influence on the Maven build itself. -->
+				<plugin>
+					<groupId>org.eclipse.m2e</groupId>
+					<artifactId>lifecycle-mapping</artifactId>
+					<version>1.0.0</version>
+					<configuration>
+						<lifecycleMappingMetadata>
+							<pluginExecutions>
+								<pluginExecution>
+									<pluginExecutionFilter>
+										<groupId>
+											org.apache.maven.plugins
+										</groupId>
+										<artifactId>
+											maven-compiler-plugin
+										</artifactId>
+										<versionRange>
+											[3.1,)
+										</versionRange>
+										<goals>
+											<goal>compile</goal>
+											<goal>testCompile</goal>
+										</goals>
+									</pluginExecutionFilter>
+									<action>
+										<ignore></ignore>
+									</action>
+								</pluginExecution>
+							</pluginExecutions>
+						</lifecycleMappingMetadata>
+					</configuration>
+				</plugin>
+			</plugins>
+		</pluginManagement>
 	</build>
 	<profiles>
 		<profile>
@@ -518,46 +598,10 @@
 						<configuration>
 							<classifier>stage</classifier>
 							<warSourceExcludes>
-								novabill/css/**,
-								novabill/scripts/**,
-								novabill-deps/**
-							</warSourceExcludes>
-						</configuration>
-					</plugin>
-				</plugins>
-			</build>
-		</profile>
-		<profile>
-			<id>nb</id>
-			<build>
-				<filters>
-					<filter>profiles/nb.properties</filter>
-				</filters>
-				<plugins>
-					<plugin>
-						<groupId>ro.isdc.wro4j</groupId>
-						<artifactId>wro4j-maven-plugin</artifactId>
-						<configuration>
-							<wroManagerFactory>ro.isdc.wro.maven.plugin.manager.factory.ConfigurableWroManagerFactory</wroManagerFactory>
-							<destinationFolder>${project.build.directory}/${project.build.finalName}/novabill-min/</destinationFolder>
-						</configuration>
-						<executions>
-							<execution>
-								<phase>compile</phase>
-								<goals>
-									<goal>run</goal>
-								</goals>
-							</execution>
-						</executions>
-					</plugin>
-					<plugin>
-						<groupId>org.apache.maven.plugins</groupId>
-						<artifactId>maven-war-plugin</artifactId>
-						<configuration>
-							<classifier>nb</classifier>
-							<warSourceExcludes>
-								novabill/css/**,
-								novabill/scripts/**,
+								novabill/private/css/**,
+								novabill/private/scripts/**,
+								novabill/frontend/css/**,
+								novabill/frontend/scripts/**,
 								novabill-deps/**
 							</warSourceExcludes>
 						</configuration>
@@ -611,8 +655,10 @@
 						<configuration>
 							<classifier>production</classifier>
 							<warSourceExcludes>
-								novabill/css/**,
-								novabill/scripts/**,
+								novabill/private/css/**,
+								novabill/private/scripts/**,
+								novabill/frontend/css/**,
+								novabill/frontend/scripts/**,
 								novabill-deps/**
 							</warSourceExcludes>
 						</configuration>

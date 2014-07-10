@@ -36,7 +36,6 @@ import com.novadart.novabill.shared.client.dto.CreditNoteDTO;
 import com.novadart.novabill.shared.client.dto.EstimationDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
-import com.novadart.novabill.shared.client.exception.DataIntegrityException;
 
 public class ClientPresenter extends AbstractPresenter<ClientView> implements ClientView.Presenter {
 
@@ -247,34 +246,29 @@ public class ClientPresenter extends AbstractPresenter<ClientView> implements Cl
 
 	@Override
 	public void onCancelClientClicked() {
-		Notification.showConfirm(I18N.INSTANCE.confirmClientDeletion(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.confirmClientDeletion(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 
 					getView().getCancelClient().showLoader(true);
 					getView().setLocked(true);
-					ServerFacade.INSTANCE.getClientService().remove(Configuration.getBusinessId(), client.getId(), new ManagedAsyncCallback<Void>() {
+					ServerFacade.INSTANCE.getClientService().remove(Configuration.getBusinessId(), client.getId(), 
+							new ManagedAsyncCallback<Boolean>() {
 
 						@Override
-						public void onSuccess(Void result) {
+						public void onSuccess(Boolean result) {
 							getView().getCancelClient().showLoader(false);
-							getEventBus().fireEvent(new ClientDeleteEvent(client));
-							goTo(new HomePlace());
-							getView().setLocked(false);
-						}
-
-						@Override
-						public void onFailure(Throwable caught) {
-							getView().getCancelClient().showLoader(false);
-							if(caught instanceof DataIntegrityException){
-								Notification.showMessage(I18N.INSTANCE.errorClientCancelation());
+							if(result){
+								getEventBus().fireEvent(new ClientDeleteEvent(client));
+								goTo(new HomePlace());
 							} else {
-								super.onFailure(caught);
+								Notification.showMessage(I18N.INSTANCE.errorClientCancelation());
 							}
 							getView().setLocked(false);
 						}
+
 					});
 				}
 			}

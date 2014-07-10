@@ -25,7 +25,6 @@ import com.novadart.novabill.domain.Price;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.Transporter;
-import com.novadart.novabill.domain.UpgradeToken;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
 
@@ -106,7 +105,8 @@ public class ToStringMethodsTest {
 		Transporter transporter = new Transporter();
 		transporter.setId(1l);
 		transporter.setDescription("Test desc.");
-		assertEquals(String.format("<id: %d, desc: %s>", 1l, transporter.getDescription()), transporter.toString());
+		transporter.setName("Jason");
+		assertEquals(String.format("<id: %d, name: %s, desc: %s>", 1l, transporter.getName(), transporter.getDescription()), transporter.toString());
 	}
 	
 	@Test
@@ -121,7 +121,7 @@ public class ToStringMethodsTest {
 	public void noArgConToStringTest() throws InstantiationException, IllegalAccessException{
 		for(Class<?> cls: new Class<?>[]{Business.class, Invoice.class, AccountingDocumentItem.class, BankAccount.class, Client.class,
 				ClientAddress.class, Commodity.class, Logo.class, LogRecord.class, PaymentType.class, PesistentLogin.class, Price.class,
-				PriceList.class, Registration.class, Transporter.class, UpgradeToken.class}){
+				PriceList.class, Registration.class, Transporter.class}){
 			cls.newInstance().toString();
 		}
 	}

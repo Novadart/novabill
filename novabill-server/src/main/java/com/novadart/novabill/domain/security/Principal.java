@@ -20,9 +20,10 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.persistence.UniqueConstraint;
-import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.GrantedAuthority;
@@ -31,6 +32,7 @@ import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.Hash;
+import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Registration;
 
@@ -41,7 +43,10 @@ public class Principal implements UserDetails {
 	
 	private static final long serialVersionUID = -2652502773566344511L;
 	
+	@NotEmpty
 	@Email
+	@Size(max = com.novadart.novabill.domain.Email.EMAIL_MAX_LENGTH)
+	@Trimmed
 	private String username;
 	
 	private String password;
@@ -53,9 +58,6 @@ public class Principal implements UserDetails {
 	private Date lastLogin;
 	
 	private boolean enabled = true;
-	
-	@NotNull
-	private Long notesBitMask = 0xFFFFFFFFFFFFFFFFl;
 	
 	@ManyToOne
 	private Business business;
@@ -71,6 +73,10 @@ public class Principal implements UserDetails {
 		creationTime = registration.getCreationTime();
 	}
 	
+	@Deprecated
+	public void setPasswordNonHashed(String password){
+		this.password = password;
+	}
 
 	@Override
 	public Collection<? extends GrantedAuthority> getAuthorities() {
@@ -98,7 +104,7 @@ public class Principal implements UserDetails {
 		return this.password;
 	}
 	
-	@Hash(saltMethod = "getCreationTime")
+	@Hash
 	public void setPassword(String password){
 		this.password = password;
 	}
@@ -132,14 +138,6 @@ public class Principal implements UserDetails {
 		this.enabled = enabled;
 	}
 	
-	public Long getNotesBitMask() {
-		return notesBitMask;
-	}
-
-	public void setNotesBitMask(Long notesBitMask) {
-		this.notesBitMask = notesBitMask;
-	}
-
 	public Business getBusiness() {
 		return business;
 	}

@@ -1,0 +1,80 @@
+<div class="container-fluid price-list-detail">
+
+	<div class="row">
+		<div class="col-md-12">
+			<!-- BEGIN PAGE TITLE & BREADCRUMB-->
+			<ul class="breadcrumb">
+				<li><i class="fa fa-dashboard"></i> <a href="../">Dashboard</a></li>
+				<li><a href=".">{{'PRICE_LISTS' | translate}}</a><i class="icon-angle-right"></i></li>
+				<li><span>{{priceList.name | nReplaceReservedWord:'DEFAULT_PRICE_LIST'}}</span></li>
+			</ul>
+
+			<div class="page-header">
+				<h2><strong>{{priceList.name | nReplaceReservedWord:'DEFAULT_PRICE_LIST'}}</strong></h2>
+			</div>
+
+			<div ng-if="DEFAULT_PRICELIST_NAME!==priceList.name" style="height: 28px;" class="col-md-4 col-md-offset-8 col-sm-4 col-sm-offset-8">
+				<div class="pull-right">
+					<a href="javascript: void(0)" ng-disabled="priceList == null" ng-click="editPriceList()" class="btn btn-sm blue">
+						<i class="fa fa-edit"></i>{{'EDIT' | translate}}
+					</a> <a href="javascript: void(0)" ng-disabled="priceList == null" ng-click="removePriceList()" class="btn btn-sm red">
+						<i class="fa fa-trash-o"></i> {{'DELETE' | translate}}
+					</a>
+				</div>
+			</div>
+
+		</div>
+	</div>
+
+	<div class="clearfix"></div>
+
+	<div class="row">
+		<div class="col-md-12">
+
+			<div class="commodity-filter input-icon left">
+				<i class="fa fa-search"></i> <input type="text" class="form-control input-large" autofocus="autofocus" type="text"
+					placeholder="{{'FILTER' | translate}}..." ng-model="query">
+			</div>
+			
+			<div class="btn-group global-actions">
+               <button ng-disabled="selectedCommoditiesCount < 1" class="btn blue dropdown-toggle" type="button" data-toggle="dropdown">
+               {{'SELECTED' | translate}} ({{selectedCommoditiesCount}}) <i class="fa fa-angle-down"></i>
+               </button>
+               <ul class="dropdown-menu" role="menu">
+                    <li><a href="javascript:void(0);" ng-click="showCommodityPriceDialog()">{{'SET_PRICE' | translate}}</a></li>
+               </ul>
+           </div>
+           
+           <a href="javascript:void(0);" class="btn blue select-all" ng-click="selectionButtonClick()">
+            <i class="fa" ng-class="{'fa-reorder': selectedCommoditiesCount == 0, 'fa-ban' : selectedCommoditiesCount > 0}"></i> 
+            <span ng-if="selectedCommoditiesCount == 0">{{'SELECT_ALL' | translate}}</span>
+            <span ng-if="selectedCommoditiesCount > 0">{{'UNSELECT_ALL' | translate}}</span>
+           </a>
+			
+			<div class="table-responsive" infinite-scroll="loadMoreCommodities()">
+			    <img class="spinner" ng-show="commodities==null" style="margin: 0 auto; display: block;" src="../../private_assets/img/ajax-loading.gif">
+				<table class="table">
+					<tbody>
+						<tr class="price-row" ng-class="{product: !com.service, service: com.service}" ng-repeat="com in commodities">
+							<td width="5%">
+								<div class="checkbox">
+									<label> <input type="checkbox" ng-model="selectedCommodities[com.id]" ng-change="onSelectionChange(com.id)"> </label>
+								</div>
+							</td>
+							<td width="10%"><strong>{{com.sku | nReplaceReservedWord}}</strong></td>
+							<td width="45%">{{com.description}}</td>
+							<td width="40%" style="text-align: right;">
+							      <n-commodity-price 
+							         price-list-name="priceList.name" 
+							         commodity="com"></n-commodity-price>
+							</td>
+						</tr>
+
+					</tbody>
+				</table>
+			</div>
+
+		</div>
+	</div>
+	
+</div>

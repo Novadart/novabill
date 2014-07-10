@@ -38,10 +38,10 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 
 	@Override
 	public void onCancelClicked() {
-		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 					BridgeUtils.invokeJSCallback(Boolean.FALSE, getCallback());
 				}
@@ -94,9 +94,7 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 			if(getClient().getVatID()!=null || getClient().getSsn()!=null){
 				getView().getToAddrCity().setText(getClient().getCity());
 				getView().getToAddrPostCode().setText(getClient().getPostcode());
-				if(getClient().getCountry().equalsIgnoreCase("IT")){
-					getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
-				}
+				getView().getToAddrProvince().setText(getClient().getProvince());
 				getView().getToAddrStreetName().setText(getClient().getAddress());
 				getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
 			}
@@ -106,11 +104,7 @@ public abstract class AbstractEstimationPresenter extends DocumentPresenter<Esti
 		loc.setCompanyName(getView().getToAddrCompanyName().getText());
 		loc.setCity(getView().getToAddrCity().getText());
 		loc.setPostcode(getView().getToAddrPostCode().getText());
-		if("IT".equalsIgnoreCase(getView().getToAddrCountry().getSelectedItemValue())){
-			loc.setProvince(getView().getToAddrProvince().getSelectedItemText());
-		} else {
-			loc.setProvince("");
-		}
+		loc.setProvince(getView().getToAddrProvince().getText());
 		loc.setStreet(getView().getToAddrStreetName().getText());
 		
 		if(getView().getToAddrCountry().getSelectedIndex() > 0) {

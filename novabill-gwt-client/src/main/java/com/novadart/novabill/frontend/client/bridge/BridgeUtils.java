@@ -14,16 +14,20 @@ public class BridgeUtils {
 		callback.onSuccess();
 	}-*/;
 	
+	public static void invokeJSCallback(String value, JavaScriptObject callback){
+		invokeJSCallbackOnValue(value, callback);
+	}
+	
 	public static void invokeJSCallback(Integer value, JavaScriptObject callback){
-		invokeJSCallbackOnValue(String.valueOf(value), callback);
+		invokeJSCallback(String.valueOf(value), callback);
 	}
 	
 	public static void invokeJSCallback(Long value, JavaScriptObject callback){
-		invokeJSCallbackOnValue(String.valueOf(value), callback);
+		invokeJSCallback(String.valueOf(value), callback);
 	}
 	
 	public static void invokeJSCallback(Boolean value, JavaScriptObject callback){
-		invokeJSCallbackOnValue(String.valueOf(value), callback);
+		invokeJSCallback(String.valueOf(value), callback);
 	}
 	
 	public static native void invokeJSCallbackOnException(String exName, String value, JavaScriptObject callback)/*-{

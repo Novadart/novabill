@@ -13,7 +13,7 @@ public class ConfirmDialog extends NotificationDialog<Boolean> {
 
 	private Boolean value = false;
 	
-	public ConfirmDialog(NotificationCallback<Boolean> onClose) {
+	public ConfirmDialog(NotificationCallback onClose) {
 		super(onClose);
 	}
 
@@ -45,7 +45,7 @@ public class ConfirmDialog extends NotificationDialog<Boolean> {
 	}
 
 	@Override
-	protected Boolean getValue() {
+	protected boolean getValue() {
 		return value;
 	}
 

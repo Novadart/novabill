@@ -1,9 +1,10 @@
 package com.novadart.novabill.test.suite;
 
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,10 +14,11 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Transporter;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.dto.TransporterDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -25,7 +27,7 @@ import com.novadart.novabill.shared.client.facade.TransporterGwtService;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:gwt-transporter-test-config.xml")
 @Transactional
-public class TransporterServiceTest extends GWTServiceTest{
+public class TransporterServiceTest extends ServiceTest{
 
 	
 	@Autowired
@@ -36,64 +38,72 @@ public class TransporterServiceTest extends GWTServiceTest{
 		assertNotNull(transporterService);
 	}
 	
+	@Override
+	@Before
+	public void authenticate() {
+		authenticatedPrincipal = Principal.findByUsername("giordano.battilana@novadart.com");
+		authenticatePrincipal(authenticatedPrincipal);
+	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	public void addAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
+		transporterDTO.setName("Jason");
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		assertEquals(transporterDesc, Transporter.findTransporter(id).getDescription());
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void addAuthorizedNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	public void addAuthorizedNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
 		transporterService.add(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void addAuthorizedIDNotNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException {
+	public void addAuthorizedIDNotNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException {
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		transporterDTO.setId(1l);
 		transporterService.add(transporterDTO);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void addUnauthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	public void addUnauthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		transporterService.add(transporterDTO);
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void addAuthorizedValidationError1Test() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	public void addAuthorizedValidationError1Test() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = " \t";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		transporterService.add(transporterDTO);
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void addAuthorizedValidationError2Test() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	public void addAuthorizedValidationError2Test() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
 		TransporterDTO transporterDTO = new TransporterDTO();
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		transporterDTO.setDescription(null);
 		transporterService.add(transporterDTO);
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+	public void updateAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException {
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
+		transporterDTO.setName("Jason");
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		transporterDTO.setId(id);
@@ -104,41 +114,42 @@ public class TransporterServiceTest extends GWTServiceTest{
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateUnauthorizedNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	public void updateUnauthorizedNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
 		transporterService.add(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateUnauthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void updateUnauthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		transporterService.update(transporterDTO);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateUnauthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException {
+	public void updateUnauthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException {
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setName("Jason");
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		transporterDTO.setId(id);
 		transporterDTO.setDescription("Updated transporter description");
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		transporterService.update(transporterDTO);
 		Transporter.entityManager().flush();
 		assertEquals("Updated transporter description", Transporter.findTransporter(id).getDescription());
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void updateValidationErrorTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void updateValidationErrorTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		transporterDTO.setId(id);
@@ -147,11 +158,12 @@ public class TransporterServiceTest extends GWTServiceTest{
 	}
 	
 	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setName("Jason");
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		transporterService.remove(authenticatedPrincipal.getBusiness().getId(), id);
@@ -160,38 +172,41 @@ public class TransporterServiceTest extends GWTServiceTest{
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeAuthorizedBizIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	public void removeAuthorizedBizIDNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setName("Jason");
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		transporterService.remove(null, id);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeAuthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	public void removeAuthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
 		transporterService.remove(authenticatedPrincipal.getBusiness().getId(), null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnauthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	public void removeUnauthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
+		transporterDTO.setName("Jason");
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		transporterService.remove(getUnathorizedBusinessID(), id);
 	}
 	
 	@Test
-	public void getAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void getAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		TransporterDTO transporterDTO = new TransporterDTO();
 		String transporterDesc = "Transporter description";
+		transporterDTO.setName("Jason");
 		transporterDTO.setDescription(transporterDesc);
-		transporterDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
+		transporterDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(authenticatedPrincipal.getBusiness().getId())));
 		Long id = transporterService.add(transporterDTO);
 		Transporter.entityManager().flush();
 		TransporterDTO retrieved = transporterService.get(id);
@@ -210,6 +225,7 @@ public class TransporterServiceTest extends GWTServiceTest{
 		Business unauthbiz = Business.findBusiness(getUnathorizedBusinessID());
 		Transporter trans = new Transporter();
 		trans.setDescription("test transporter");
+		trans.setName("Jason");
 		trans.setBusiness(unauthbiz);
 		unauthbiz.getTransporters().add(trans);
 		trans.persist();

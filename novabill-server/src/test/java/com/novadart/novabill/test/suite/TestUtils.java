@@ -21,6 +21,7 @@ import com.novadart.novabill.domain.Estimation;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.PriceList;
 import com.novadart.novabill.domain.Settings;
+import com.novadart.novabill.domain.SharingPermit;
 import com.novadart.novabill.domain.TransportDocument;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.shared.client.data.LayoutType;
@@ -326,6 +327,13 @@ public class TestUtils {
 		paymentType.setPaymentDateDelta(1);
 		paymentType.setPaymentDeltaType(PaymentDeltaType.COMMERCIAL_MONTH);
 		return paymentType;
+	}
+	
+	public static SharingPermit createSharingPermit(){
+		SharingPermit sharingPermit = new SharingPermit();
+		sharingPermit.setEmail("foo@bar.com");
+		sharingPermit.setDescription("Tax advisor");
+		return sharingPermit;
 	}
 	
 	public static <T1, T2 extends T1> void setPrivateField(Class<T1> cls, T2 target, String fieldName, Object value) throws SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException{

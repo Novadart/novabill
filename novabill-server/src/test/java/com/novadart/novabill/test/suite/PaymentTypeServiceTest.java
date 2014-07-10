@@ -12,8 +12,6 @@ import java.util.Map;
 import java.util.Set;
 
 import org.apache.commons.lang3.builder.EqualsBuilder;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
 import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -22,20 +20,22 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.databind.JsonMappingException;
 import com.novadart.novabill.aspect.logging.DBLoggerAspect;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.LogRecord;
 import com.novadart.novabill.domain.PaymentType;
-import com.novadart.novabill.domain.dto.factory.BusinessDTOFactory;
-import com.novadart.novabill.domain.dto.factory.PaymentTypeDTOFactory;
+import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
+import com.novadart.novabill.domain.dto.transformer.PaymentTypeDTOTransformer;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.shared.client.data.EntityType;
 import com.novadart.novabill.shared.client.data.OperationType;
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentTypeDTO;
-import com.novadart.novabill.shared.client.exception.AuthorizationException;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.exception.ValidationException;
@@ -46,7 +46,7 @@ import com.novadart.novabill.shared.client.validation.Field;
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations = "classpath*:gwt-paymenttype-test-config.xml")
 @Transactional
-public class PaymentTypeServiceTest extends GWTServiceTest {
+public class PaymentTypeServiceTest extends ServiceTest {
 	
 	@Autowired
 	private PaymentTypeGwtService paymentTypeService;
@@ -64,12 +64,12 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void addAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, JsonParseException, JsonMappingException, IOException{
-		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(TestUtils.createPaymentType());
-		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+	public void addAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, JsonParseException, JsonMappingException, IOException{
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOTransformer.toDTO(TestUtils.createPaymentType());
+		paymentTypeDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = paymentTypeService.add(paymentTypeDTO);
 		PaymentType.entityManager().flush();
-		PaymentTypeDTO persistedDTO = PaymentTypeDTOFactory.toDTO(PaymentType.findPaymentType(id));
+		PaymentTypeDTO persistedDTO = PaymentTypeDTOTransformer.toDTO(PaymentType.findPaymentType(id));
 		assertTrue(EqualsBuilder.reflectionEquals(paymentTypeDTO, persistedDTO, "id", "business"));
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
 		assertEquals(EntityType.PAYMENT_TYPE, rec.getEntityType());
@@ -81,51 +81,51 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void addAuthorizedInvalidImmediateNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, JsonParseException, JsonMappingException, IOException{
+	public void addAuthorizedInvalidImmediateNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, JsonParseException, JsonMappingException, IOException{
 		PaymentType paymentType = new PaymentType();
 		paymentType.setName("Payment type test name");
 		paymentType.setDefaultPaymentNote("Payment type test defualt note");
 		paymentType.setPaymentDateGenerator(PaymentDateType.IMMEDIATE);
-		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(paymentType);
-		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOTransformer.toDTO(paymentType);
+		paymentTypeDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		paymentTypeService.add(paymentTypeDTO);
 	}
 	
 	@Test(expected = ValidationException.class)
-	public void addAuthorizedInvalidEndOfMonthNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, JsonParseException, JsonMappingException, IOException{
+	public void addAuthorizedInvalidEndOfMonthNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, JsonParseException, JsonMappingException, IOException{
 		PaymentType paymentType = new PaymentType();
 		paymentType.setName("Payment type test name");
 		paymentType.setDefaultPaymentNote("Payment type test defualt note");
 		paymentType.setPaymentDateGenerator(PaymentDateType.END_OF_MONTH);
-		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(paymentType);
-		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOTransformer.toDTO(paymentType);
+		paymentTypeDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		paymentTypeService.add(paymentTypeDTO);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void addUnauthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
-		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(TestUtils.createPaymentType());
-		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
+	public void addUnauthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOTransformer.toDTO(TestUtils.createPaymentType());
+		paymentTypeDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		paymentTypeService.add(paymentTypeDTO);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void addAuthorizedNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
+	public void addAuthorizedNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
 		paymentTypeService.add(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void addAuthorizedIDNotNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
-		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(TestUtils.createPaymentType());
-		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+	public void addAuthorizedIDNotNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOTransformer.toDTO(TestUtils.createPaymentType());
+		paymentTypeDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		paymentTypeDTO.setId(1l);
 		paymentTypeService.add(paymentTypeDTO);
 	}
 	
 	@Test
-	public void addAuthorizedValidationFieldMappingTest() throws NotAuthenticatedException, AuthorizationException, DataAccessException{
+	public void addAuthorizedValidationFieldMappingTest() throws NotAuthenticatedException, FreeUserAccessForbiddenException, DataAccessException{
 		PaymentTypeDTO paymentTypeDTO = new PaymentTypeDTO();
-		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		paymentTypeDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		try{
 			paymentTypeService.add(paymentTypeDTO);
 		}catch (ValidationException e) {
@@ -138,9 +138,9 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 		}
 	}
 	
-	private PaymentTypeDTO addPaymentType() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException{
-		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(TestUtils.createPaymentType());
-		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+	private PaymentTypeDTO addPaymentType() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException{
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOTransformer.toDTO(TestUtils.createPaymentType());
+		paymentTypeDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		paymentTypeDTO.setId(paymentTypeService.add(paymentTypeDTO));
 		PaymentType.entityManager().flush();
 		return paymentTypeDTO;
@@ -155,7 +155,7 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
+	public void removeAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
 		Long paymentTypeID = addPaymentType().getId();
 		PaymentType paymentType = PaymentType.findPaymentType(paymentTypeID);
 		Client client = authenticatedPrincipal.getBusiness().getClients().iterator().next();
@@ -173,29 +173,29 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeUnAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void removeUnAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		Long id = addPaymentType().getId();
 		paymentTypeService.remove(getUnathorizedBusinessID(), id);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeBusinessIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void removeBusinessIDNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		Long id = addPaymentType().getId();
 		paymentTypeService.remove(null, id);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void removeAuthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void removeAuthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		paymentTypeService.remove(getUnathorizedBusinessID(), null);
 	}
 	
 	@Test
-	public void updateAuthorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
+	public void updateAuthorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException, JsonParseException, JsonMappingException, IOException{
 		PaymentTypeDTO paymentTypeDTO = addPaymentType();
 		paymentTypeDTO.setName("Test name!!!");
 		paymentTypeService.update(paymentTypeDTO);
 		PaymentType.entityManager().flush();
-		PaymentTypeDTO persistedDTO = PaymentTypeDTOFactory.toDTO(PaymentType.findPaymentType(paymentTypeDTO.getId()));
+		PaymentTypeDTO persistedDTO = PaymentTypeDTOTransformer.toDTO(PaymentType.findPaymentType(paymentTypeDTO.getId()));
 		assertTrue(EqualsBuilder.reflectionEquals(paymentTypeDTO, persistedDTO, "business"));
 		LogRecord rec = LogRecord.fetchLastN(authenticatedPrincipal.getBusiness().getId(), 1).get(0);
 		assertEquals(EntityType.PAYMENT_TYPE, rec.getEntityType());
@@ -206,20 +206,20 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateUnathorizedTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void updateUnathorizedTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		PaymentTypeDTO paymentTypeDTO = addPaymentType();
 		paymentTypeDTO.setName("Test name!!!");
-		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
+		paymentTypeDTO.setBusiness(BusinessDTOTransformer.toDTO(Business.findBusiness(getUnathorizedBusinessID())));
 		paymentTypeService.update(paymentTypeDTO);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void updateAuthorizedNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		paymentTypeService.update(null);
 	}
 	
 	@Test(expected = DataAccessException.class)
-	public void updateAuthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, AuthorizationException, DataAccessException, NoSuchObjectException{
+	public void updateAuthorizedIDNullTest() throws NotAuthenticatedException, ValidationException, FreeUserAccessForbiddenException, DataAccessException, NoSuchObjectException{
 		PaymentTypeDTO paymentTypeDTO = addPaymentType();
 		paymentTypeDTO.setId(null);
 		paymentTypeService.update(paymentTypeDTO);
@@ -243,13 +243,13 @@ public class PaymentTypeServiceTest extends GWTServiceTest {
 	}
 	
 	@Test
-	public void getAuthorizedTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, AuthorizationException{
+	public void getAuthorizedTest() throws NotAuthenticatedException, NoSuchObjectException, DataAccessException, ValidationException, FreeUserAccessForbiddenException{
 		PaymentType paymentType = TestUtils.createPaymentType();
-		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOFactory.toDTO(paymentType);
-		paymentTypeDTO.setBusiness(BusinessDTOFactory.toDTO(authenticatedPrincipal.getBusiness()));
+		PaymentTypeDTO paymentTypeDTO = PaymentTypeDTOTransformer.toDTO(paymentType);
+		paymentTypeDTO.setBusiness(BusinessDTOTransformer.toDTO(authenticatedPrincipal.getBusiness()));
 		Long id = paymentTypeService.add(paymentTypeDTO);
 		PaymentType.entityManager().flush();
-		assertTrue(EqualsBuilder.reflectionEquals(PaymentTypeDTOFactory.toDTO(paymentType), paymentTypeService.get(id), "id"));
+		assertTrue(EqualsBuilder.reflectionEquals(PaymentTypeDTOTransformer.toDTO(paymentType), paymentTypeService.get(id), "id"));
 	}
 	
 	@Test(expected = DataAccessException.class)

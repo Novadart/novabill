@@ -179,10 +179,10 @@ public class TransportDocumentCellImpl extends QuickViewCell<TransportDocumentDT
 	}
 
 	private void onDeleteClicked(final TransportDocumentDTO transportDocument) {
-		Notification.showConfirm(I18N.INSTANCE.confirmTransportDocumentDeletion(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.confirmTransportDocumentDeletion(), new NotificationCallback() {
 			
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 					ServerFacade.INSTANCE.getTransportdocumentService().remove(Configuration.getBusinessId(), transportDocument.getClient().getId(), transportDocument.getId(), new ManagedAsyncCallback<Void>() {
 

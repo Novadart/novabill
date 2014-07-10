@@ -14,6 +14,8 @@ import com.google.web.bindery.event.shared.EventBus;
 import com.novadart.gwtshared.client.validation.widget.ValidatedWidget;
 import com.novadart.novabill.frontend.client.Configuration;
 import com.novadart.novabill.frontend.client.bridge.BridgeUtils;
+import com.novadart.novabill.frontend.client.facade.ManagedAsyncCallback;
+import com.novadart.novabill.frontend.client.facade.ServerFacade;
 import com.novadart.novabill.frontend.client.i18n.I18N;
 import com.novadart.novabill.frontend.client.presenter.center.DocumentPresenter;
 import com.novadart.novabill.frontend.client.util.CalcUtils;
@@ -25,10 +27,12 @@ import com.novadart.novabill.shared.client.dto.AccountingDocumentItemDTO;
 import com.novadart.novabill.shared.client.dto.BusinessDTO;
 import com.novadart.novabill.shared.client.dto.EndpointDTO;
 import com.novadart.novabill.shared.client.dto.TransportDocumentDTO;
+import com.novadart.novabill.shared.client.dto.TransporterDTO;
 
 public abstract class AbstractTransportDocumentPresenter extends DocumentPresenter<TransportDocumentView> implements TransportDocumentView.Presenter {
 
 	private TransportDocumentDTO transportDocument;
+	private List<TransporterDTO> transporters;
 
 	public AbstractTransportDocumentPresenter(PlaceController placeController, EventBus eventBus, TransportDocumentView view, JavaScriptObject callback) {
 		super(placeController, eventBus, view, callback);
@@ -42,6 +46,44 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		return transportDocument;
 	}
 
+	protected void loadTransporters(){
+		getView().getLoadTransporterAddress().setEnabled(false);
+		getView().getLoadTransporterAddress().clear();
+		ServerFacade.INSTANCE.getBusinessService().getTransporters(Configuration.getBusinessId(), new ManagedAsyncCallback<List<TransporterDTO>>() {
+
+			@Override
+			public void onSuccess(List<TransporterDTO> result) {
+				transporters = result;
+
+				getView().getLoadTransporterAddress().addItem(I18N.INSTANCE.selectTransporter(), "");
+				for (TransporterDTO c : result) {
+					getView().getLoadTransporterAddress().addItem(c.getName(), c.getId().toString());
+				}
+				getView().getLoadTransporterAddress().setEnabled(true);
+
+			}
+		});
+	}
+
+	@Override
+	public void onLoadTransporterAddressChange() {
+		int selectedIndex = getView().getLoadTransporterAddress().getSelectedIndex();
+
+		switch (selectedIndex) {
+		case 0:
+			break;
+
+		default:
+			Long selId = Long.parseLong(getView().getLoadTransporterAddress().getValue(selectedIndex));
+			for (TransporterDTO c : transporters) {
+				if(c.getId().equals(selId)){
+					getView().getTransporter().setText(c.getDescription());
+					break;
+				}
+			}
+			break;
+		}
+	}
 
 	@Override
 	public void onFromAddressButtonDefaultCLicked() {
@@ -49,7 +91,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		getView().getFromAddrCity().setText(b.getCity());
 		getView().getFromAddrCompanyName().setText(b.getName());
 		getView().getFromAddrPostCode().setText(b.getPostcode());
-		getView().getFromAddrProvince().setSelectedItem(b.getProvince());
+		getView().getFromAddrProvince().setText(b.getProvince());
 		getView().getFromAddrStreetName().setText(b.getAddress());
 		getView().getFromAddrCountry().setSelectedItemByValue(b.getCountry());
 	}
@@ -61,7 +103,9 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 
 		BigDecimal total = BigDecimal.ZERO;
 		for (AccountingDocumentItemDTO i : items) {
-			total = total.add(i.getQuantity());
+			if(i.getQuantity() != null){
+				total = total.add(i.getQuantity());
+			}
 		}
 
 		BigDecimal roundedTotal = total.setScale(0, RoundingMode.CEILING);
@@ -78,17 +122,11 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 	}
 
 	@Override
-	public void onFromCountryChange() {
-		getView().getFromAddrProvince().setEnabled(getView().getFromAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT"));
-		getView().getFromAddrProvince().reset();
-	}
-
-	@Override
 	public void onCancelClicked() {
-		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback<Boolean>() {
+		Notification.showConfirm(I18N.INSTANCE.cancelModificationsConfirmation(), new NotificationCallback() {
 
 			@Override
-			public void onNotificationClosed(Boolean value) {
+			public void onNotificationClosed(boolean value) {
 				if(value){
 					BridgeUtils.invokeJSCallback(Boolean.FALSE, getCallback());
 				}
@@ -116,9 +154,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 			getView().getToAddrCity().setText(getClient().getCity());
 			getView().getToAddrCompanyName().setText(getClient().getName());
 			getView().getToAddrPostCode().setText(getClient().getPostcode());
-			if(getClient().getCountry().equalsIgnoreCase("IT")){
-				getView().getToAddrProvince().setSelectedItem(getClient().getProvince());
-			}
+			getView().getToAddrProvince().setText(getClient().getProvince());
 			getView().getToAddrStreetName().setText(getClient().getAddress());
 			getView().getToAddrCountry().setSelectedItemByValue(getClient().getCountry());
 		}
@@ -131,11 +167,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		loc.setCompanyName(getView().getFromAddrCompanyName().getText());
 		loc.setCity(getView().getFromAddrCity().getText());
 		loc.setPostcode(getView().getFromAddrPostCode().getText());
-		if(getView().getFromAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
-			loc.setProvince(getView().getFromAddrProvince().getSelectedItemText());
-		} else {
-			loc.setProvince("");
-		}
+		loc.setProvince(getView().getFromAddrProvince().getText());
 		loc.setStreet(getView().getFromAddrStreetName().getText());
 		loc.setCountry(getView().getFromAddrCountry().getSelectedItemValue());
 		td.setFromEndpoint(loc);
@@ -144,11 +176,7 @@ public abstract class AbstractTransportDocumentPresenter extends DocumentPresent
 		loc.setCompanyName(getView().getToAddrCompanyName().getText());
 		loc.setCity(getView().getToAddrCity().getText());
 		loc.setPostcode(getView().getToAddrPostCode().getText());
-		if(getView().getToAddrCountry().getSelectedItemValue().equalsIgnoreCase("IT")){
-			loc.setProvince(getView().getToAddrProvince().getSelectedItemText());
-		} else {
-			loc.setProvince("");
-		}
+		loc.setProvince(getView().getToAddrProvince().getText());
 		loc.setStreet(getView().getToAddrStreetName().getText());
 		loc.setCountry(getView().getToAddrCountry().getSelectedItemValue());
 		td.setToEndpoint(loc);

@@ -173,14 +173,20 @@ public class Configuration {
 	}-*/;
 	
 	public static void init(final AsyncCallback<Void> callback){
-		ServerFacade.INSTANCE.getBusinessService().get(Long.parseLong(readBusinessId()), new ManagedAsyncCallback<BusinessDTO>() {
-
-			@Override
-			public void onSuccess(BusinessDTO result) {
-				business = result;
-				callback.onSuccess(null);
-			}
-		});
+		Long businessId = Long.parseLong(readBusinessId());
+		
+		if(businessId > 0){
+			ServerFacade.INSTANCE.getBusinessService().get(businessId, new ManagedAsyncCallback<BusinessDTO>() {
+	
+				@Override
+				public void onSuccess(BusinessDTO result) {
+					business = result;
+					callback.onSuccess(null);
+				}
+			});
+		} else {
+			callback.onSuccess(null);
+		}
 	}
 
 	public static void injectCss() {

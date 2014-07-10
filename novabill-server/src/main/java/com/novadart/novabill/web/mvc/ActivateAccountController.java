@@ -1,8 +1,9 @@
 package com.novadart.novabill.web.mvc;
 
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
-import org.apache.commons.lang3.StringUtils;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
@@ -13,6 +14,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
+
 import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
@@ -27,43 +29,48 @@ import com.novadart.novabill.service.UtilsService;
  * an associated business objects are created. 
  */
 @Controller
-@RequestMapping("/activate")
+@RequestMapping(Urls.PUBLIC_ACTIVATE)
 @SessionAttributes({"registration"})
 public class ActivateAccountController {
 	
+	public static final String ACTIVATION_SUCCESS_URL = "forward:/resources/login_check";
+	
 	@Autowired
 	private UtilsService utilsService;
-	
 
 	@RequestMapping(method = RequestMethod.GET)
 	public String setupForm(@RequestParam("email") String email, @RequestParam("token") String token, Model model) throws CloneNotSupportedException{
+		model.addAttribute("pageName", "Attivazione Account");
 		if(Principal.findByUsername(email) != null) //registered user already exists
-			return "invalidActivationRequest";
-		for(Registration registration: Registration.findRegistrations(email, token)){
-			if(registration.getExpirationDate().before(new Date())){ //expired
-				registration.remove();
-				continue;
-			}
-			model.addAttribute("registration", registration.clone());
-			return "activate";
+			return "frontend.invalidActivationRequest";
+		List<Registration> r = Registration.findRegistrations(email, token);
+		if(r.size() != 1)
+			return "frontend.invalidActivationRequest";
+		Registration registration = r.get(0);
+		if(registration.getExpirationDate().before(new Date())){ //expired
+			registration.remove();
+			return "frontend.invalidActivationRequest";
 		}
-		return "invalidActivationRequest";
+		model.addAttribute("pageName", "Attivazione Account");
+		model.addAttribute("registration", registration.clone());
+		return "frontend.activate";
 	}
 	
 	@RequestMapping(method = RequestMethod.POST)
 	@Transactional(readOnly = false)
 	public String processSubmit(@RequestParam("j_username") String j_username, @RequestParam("j_password") String j_password,
 			@ModelAttribute("registration") Registration registration, Model model, SessionStatus status, Locale locale) throws CloneNotSupportedException{
-		if(!StringUtils.equals(utilsService.hash(j_password, registration.getCreationTime()), registration.getPassword())){
+		model.addAttribute("pageName", "Attivazione Account");
+		if(!utilsService.isPasswordValid(registration.getPassword(), j_password)){
 			model.addAttribute("wrongPassword", true);
-			return "activate";
+			return "frontend.activate";
  		}
 		Principal principal = new Principal(registration);
 		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
 		principal.persist();
 		registration.remove();
 		status.setComplete();
-		return "forward:/resources/login_check";
+		return ACTIVATION_SUCCESS_URL;
 	}
 	
 }

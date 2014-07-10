@@ -29,6 +29,12 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 	public NewTransportDocumentPresenter(PlaceController placeController, EventBus eventBus, TransportDocumentView view, JavaScriptObject callback) {
 		super(placeController, eventBus, view, callback);
 	}
+	
+	@Override
+	public void onLoad() {
+		super.onLoad();
+		loadTransporters();
+	}
 
 	public void setDataForNewTransportDocument(ClientDTO client, Long transportDocumentProgressiveId, TransportDocumentDTO document) {
 		setDataForNewTransportDocument(client,transportDocumentProgressiveId);
@@ -51,7 +57,7 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 		getView().getFromAddrCity().setText(loc.getCity());
 		getView().getFromAddrCompanyName().setText(loc.getCompanyName());
 		getView().getFromAddrPostCode().setText(loc.getPostcode());
-		getView().getFromAddrProvince().setSelectedItem(loc.getProvince());
+		getView().getFromAddrProvince().setText(loc.getProvince());
 		getView().getFromAddrStreetName().setText(loc.getStreet());
 		getView().getFromAddrCountry().setSelectedItemByValue(loc.getCountry());
 
@@ -59,7 +65,7 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 		getView().getToAddrCity().setText(loc.getCity());
 		getView().getToAddrCompanyName().setText(loc.getCompanyName());
 		getView().getToAddrPostCode().setText(loc.getPostcode());
-		getView().getToAddrProvince().setSelectedItem(loc.getProvince());
+		getView().getToAddrProvince().setText(loc.getProvince());
 		getView().getToAddrStreetName().setText(loc.getStreet());
 		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
 
@@ -98,10 +104,10 @@ public class NewTransportDocumentPresenter extends AbstractTransportDocumentPres
 			public void onSuccess(Long result) {
 				getView().getCreateDocument().showLoader(false);
 
-				Notification.showMessage(I18N.INSTANCE.transportDocumentCreationSuccess(), new NotificationCallback<Void>() {
+				Notification.showMessage(I18N.INSTANCE.transportDocumentCreationSuccess(), new NotificationCallback() {
 
 					@Override
-					public void onNotificationClosed(Void value) {
+					public void onNotificationClosed(boolean value) {
 						getView().setLocked(false);
 						BridgeUtils.invokeJSCallback(Boolean.TRUE, getCallback());
 					}

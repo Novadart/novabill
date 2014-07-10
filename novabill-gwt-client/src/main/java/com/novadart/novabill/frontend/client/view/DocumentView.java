@@ -24,8 +24,6 @@ public interface DocumentView<P extends DocumentView.Presenter> extends View<P>,
 		
 		void onCancelClicked();
 		
-	    void onToCountryChange();
-
 	    void onToAddressButtonDefaultChange();
 
 	}
@@ -42,7 +40,7 @@ public interface DocumentView<P extends DocumentView.Presenter> extends View<P>,
 
 	RichTextBox getToAddrCity();
 
-	ValidatedListBox getToAddrProvince();
+	RichTextBox getToAddrProvince();
 
 	ValidatedListBox getToAddrCountry();
 

@@ -9,7 +9,6 @@ import com.google.gwt.user.client.ui.AcceptsOneWidget;
 import com.google.web.bindery.autobean.shared.AutoBeanCodex;
 import com.novadart.novabill.frontend.client.ClientFactory;
 import com.novadart.novabill.frontend.client.Configuration;
-import com.novadart.novabill.frontend.client.activity.center.BusinessActivity;
 import com.novadart.novabill.frontend.client.activity.center.CreditNoteActivity;
 import com.novadart.novabill.frontend.client.activity.center.EstimationActivity;
 import com.novadart.novabill.frontend.client.activity.center.InvoiceActivity;
@@ -34,10 +33,7 @@ import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.FromEstimationTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.ModifyTransportDocumentPlace;
 import com.novadart.novabill.frontend.client.place.transportdocument.NewTransportDocumentPlace;
-import com.novadart.novabill.frontend.client.util.PDFUtils;
-import com.novadart.novabill.frontend.client.view.bootstrap.BootstrapDialog;
 import com.novadart.novabill.frontend.client.widget.dialog.client.ClientDialog;
-import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 
 public class UiBridge implements ApiBridge {
@@ -51,14 +47,8 @@ public class UiBridge implements ApiBridge {
 	
 	public native void injectNative()/*-{
 		$wnd.GWT_UI = {
-			// bootstrap
-			bootstrapDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showBootstrapDialog(),
-			
 			// payments
 			showPaymentsPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showPaymentsPage(Ljava/lang/String;),
-			
-			// settings
-			showSettingsPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showSettingsPage(Ljava/lang/String;),
 			
 			// clients			
 			clientDialog : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewClientDialog(Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
@@ -85,25 +75,9 @@ public class UiBridge implements ApiBridge {
 			showNewTransportDocumentPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showNewTransportDocumentPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showModifyTransportDocumentPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showModifyTransportDocumentPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
 			showFromEstimationTransportDocumentPage : @com.novadart.novabill.frontend.client.bridge.UiBridge::showFromEstimationTransportDocumentPage(Ljava/lang/String;Ljava/lang/String;Lcom/google/gwt/core/client/JavaScriptObject;),
-			
-			//pdf
-			generateInvoicePdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateInvoicePdf(Ljava/lang/String;),
-			generateEstimationPdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateEstimationPdf(Ljava/lang/String;),
-			generateCreditNotePdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateCreditNotePdf(Ljava/lang/String;),
-			generateTransportDocumentPdf : @com.novadart.novabill.frontend.client.util.PDFUtils::generateTransportDocumentPdf(Ljava/lang/String;),
-			generatePaymentsProspectPdf : @com.novadart.novabill.frontend.client.bridge.UiBridge::generatePaymentsProspectPdf(Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)
 		};
 	
 	}-*/;
-	
-	
-	/*
-	 * BOOTSTRAP
-	 */
-	public static void showBootstrapDialog(){
-		BootstrapDialog dialog = new BootstrapDialog();
-		dialog.showCentered();
-	}
 	
 	
 	/*
@@ -118,22 +92,11 @@ public class UiBridge implements ApiBridge {
 	
 	
 	/*
-	 * SETTINGS
-	 */
-	public static void showSettingsPage(String wrapperId){
-		AcceptsOneWidget panel = new HTMLWrapper(wrapperId);
-
-		BusinessActivity pa = new BusinessActivity(ClientFactory.INSTANCE);
-		pa.start(panel, null);
-	}
-	
-	
-	/*
 	 * CLIENTS
 	 */
 	public static void showNewClientDialog(String businessId, JavaScriptObject callback){
 		ClientDialog clientDialog = new ClientDialog(Long.parseLong(businessId), callback);
-		clientDialog.showCentered();
+		clientDialog.center();
 	}
 	
 	public static void showModifyClientDialog(final String businessId, String clientId, final JavaScriptObject callback){
@@ -319,16 +282,4 @@ public class UiBridge implements ApiBridge {
 		is.start(panel, null);
 	}
 	
-	/*
-	 * PDF
-	 */
-	
-	public static void generatePaymentsProspectPdf(String filteringDateType, String startDate, String endDate){
-		PDFUtils.generatePaymentsProspectPdf(
-				FilteringDateType.valueOf(filteringDateType),
-				startDate != null ? Long.parseLong(startDate) : null, 
-				endDate != null ? Long.parseLong(endDate) : null
-				);
-	};
-
 }

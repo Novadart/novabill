@@ -2,6 +2,9 @@ package com.novadart.novabill.shared.client.dto;
 
 import java.math.BigDecimal;
 
+
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+import com.fasterxml.jackson.databind.ser.std.ToStringSerializer;
 import com.google.gwt.user.client.rpc.IsSerializable;
 import com.novadart.novabill.shared.client.data.PriceType;
 
@@ -24,6 +27,7 @@ public class PriceDTO implements IsSerializable {
 		this.priceListID = priceListID;
 	}
 
+	@JsonSerialize(using=ToStringSerializer.class)
 	public Long getId() {
 		return id;
 	}
@@ -40,6 +44,7 @@ public class PriceDTO implements IsSerializable {
 		this.priceType = priceType;
 	}
 
+	@JsonSerialize(using=ToStringSerializer.class)
 	public Long getCommodityID() {
 		return commodityID;
 	}
@@ -48,6 +53,7 @@ public class PriceDTO implements IsSerializable {
 		this.commodityID = commodityID;
 	}
 
+	@JsonSerialize(using=ToStringSerializer.class)
 	public Long getPriceListID() {
 		return priceListID;
 	}
@@ -56,6 +62,7 @@ public class PriceDTO implements IsSerializable {
 		this.priceListID = priceListID;
 	}
 
+	@JsonSerialize(using=ToStringSerializer.class)
 	public BigDecimal getPriceValue() {
 		return priceValue;
 	}

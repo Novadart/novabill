@@ -97,11 +97,7 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 		getView().getToAddrCity().setText(loc.getCity());
 		getView().getToAddrCompanyName().setText(loc.getCompanyName());
 		getView().getToAddrPostCode().setText(loc.getPostcode());
-		if("IT".equalsIgnoreCase(loc.getCountry())){
-			getView().getToAddrProvince().setSelectedItem(loc.getProvince());
-		} else {
-			getView().getToAddrProvince().setEnabled(false);
-		} 
+		getView().getToAddrProvince().setText(loc.getProvince());
 		getView().getToAddrStreetName().setText(loc.getStreet());
 		getView().getToAddrCountry().setSelectedItemByValue(loc.getCountry());
 		getView().getSetToAddress().setValue(true);
@@ -166,10 +162,10 @@ public class NewInvoicePresenter extends AbstractInvoicePresenter {
 					@Override
 					public void onSuccess(Long result) {
 						getView().getCreateDocument().showLoader(false);
-						Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess(), new NotificationCallback<Void>() {
+						Notification.showMessage(I18N.INSTANCE.invoiceCreationSuccess(), new NotificationCallback() {
 
 							@Override
-							public void onNotificationClosed(Void value) {
+							public void onNotificationClosed(boolean value) {
 								getView().setLocked(false);
 								BridgeUtils.invokeJSCallback(Boolean.TRUE, getCallback());
 							}

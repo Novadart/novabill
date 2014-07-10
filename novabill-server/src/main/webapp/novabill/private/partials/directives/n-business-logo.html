@@ -1,0 +1,12 @@
+<div class="row">
+    <div class="col-md-12 text-center">
+        <img style="max-width: 300px; max-height: 300px; margin-bottom: 20px;" alt="" ng-src="{{thumbUrl}}">
+    </div>
+    <div class="col-md-12 text-center">
+        <alert type="danger" ng-show="errorMessage!=null">{{errorMessage}}</alert>
+        <button ng-show="!showUploadForm" class="btn blue" ng-click="showUploadForm=true">{{'MODIFY_LOGO' |  translate}}</button>
+        <input style="display: inline;" ng-show="showUploadForm"type="file" ng-file-select="uploadLogo($files)" >
+        <button ng-show="!showUploadForm" class="btn red" ng-click="removeLogo()">{{'REMOVE_LOGO' |  translate}}</button>
+        <button ng-show="showUploadForm" class="btn default" ng-click="showUploadForm=false; errorMessage=null" >{{'CANCEL' |  translate}}</button>
+    </div>
+</div>

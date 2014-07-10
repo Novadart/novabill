@@ -20,7 +20,7 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -33,7 +33,7 @@ import com.novadart.novabill.shared.client.data.PriceListConstants;
 public class PriceList {
 	
 	@Size(max = 255)
-	@NotBlank
+	@NotEmpty
 	@Trimmed
 	private String name;
 	
