@@ -140,6 +140,9 @@ public class Business implements Serializable, Taxable {
     @NotEmpty
     @Trimmed
     private String ssn;
+    
+    @OneToMany(cascade = CascadeType.ALL, fetch = FetchType.LAZY, mappedBy = "business")
+	private Set<LogRecord> logRecords = new HashSet<>();
 
     @Embedded
     @Valid
@@ -688,6 +691,14 @@ public class Business implements Serializable, Taxable {
 		this.priceLists = priceLists;
 	}
     
+	public Set<LogRecord> getLogRecords() {
+		return logRecords;
+	}
+
+	public void setLogRecords(Set<LogRecord> logRecords) {
+		this.logRecords = logRecords;
+	}
+	
     /*
      * End of getters and setters section
      * */

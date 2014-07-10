@@ -55,7 +55,7 @@ public class DeleteAccountController {
 		validator.validate(deleteAccount, result);
 		if(result.hasErrors())
 			return "private.deleteAccount";
-		Principal principal = utilsService.getAuthenticatedPrincipalDetails();
+		Principal principal = Principal.findPrincipal(utilsService.getAuthenticatedPrincipalDetails().getId());
 		if(!utilsService.isPasswordValid(principal.getPassword(), deleteAccount.getPassword())){
 			result.rejectValue("password", "deleteAccount.wrong.password");
 			return "private.deleteAccount";
