@@ -33,40 +33,43 @@
 	                        
 	                        <div class="pricing-footer">
 	                        <br>
-	                            <form action="${paypalAction}" method="post">
-				                    <input type="hidden" name="cmd" value="_s-xclick">
-				                    <input type="hidden" name="hosted_button_id" value="${hostedButtonIDOneYear}">
-				                    <input type="image"
-				                        src="https://www.sandbox.paypal.com/it_IT/i/btn/btn_buynowCC_LG.gif"
-				                        border="0" name="submit"
-				                        alt="PayPal - The safer, easier way to pay online!">
-				                    <img alt="" border="0" src="https://www.sandbox.paypal.com/it_IT/i/scr/pixel.gif" width="1" height="1">
-				                    <input type="hidden" name="return" value="${returnUrl}">
-				                    <input type="hidden" name="custom" value="${email}">
-				                </form>
+									<form action="${paypalAction}" method="post" target="_top">
+										<input type="hidden" name="cmd" value="_s-xclick"> <input
+											type="hidden" name="hosted_button_id" value="${hostedButtonIDOneYear}">
+										<input type="image"
+											src="https://www.paypalobjects.com/it_IT/IT/i/btn/btn_buynowCC_LG.gif"
+											border="0" name="submit"
+											alt="PayPal - Il metodo rapido, affidabile e innovativo per pagare e farsi pagare.">
+										<img alt="" border="0"
+											src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif"
+											width="1" height="1">
+                                        <input type="hidden" name="custom" value="${email}">
+									</form>
 	                        </div>
 	                    </div>
 	                </div>
 	                <div class="col-md-offset-2 col-md-3">
 	                    <div class="pricing hover-effect">
 	                        <div class="pricing-head">
-	                            <span class="label label-danger" style="position: absolute;right: 10px;top: 10px;font-size: larger;">- 5%</span>
+	                            <span class="label label-danger" style="position: absolute;right: 10px;top: 10px;font-size: larger;"><small>SCONTO!</small></span>
 	                            <h3>2 Anni</h3>
 	                            <h4><i>€</i>114<i>.00</i><span>pari a € 4,75 al mese</span></h4>
 	                        </div>
 	                        <div class="pricing-footer">
 	                        <br>
-	                            <form action="${paypalAction}" method="post" target="_top">
-				                    <input type="hidden" name="cmd" value="_s-xclick">
-				                    <input type="hidden" name="hosted_button_id" value="${hostedButtonIDTwoYears}">
-				                    <input type="image"
-				                        src="https://www.sandbox.paypal.com/it_IT/i/btn/btn_buynowCC_LG.gif"
-				                        border="0" name="submit"
-				                        alt="PayPal - The safer, easier way to pay online!">
-				                    <img alt="" border="0" src="https://www.sandbox.paypal.com/it_IT/i/scr/pixel.gif" width="1" height="1">
-				                    <input type="hidden" name="return" value="${returnUrl}">
-				                    <input type="hidden" name="custom" value="${email}">
-				                </form>
+									<form action="${paypalAction}"
+										method="post" target="_top">
+										<input type="hidden" name="cmd" value="_s-xclick"> <input
+											type="hidden" name="hosted_button_id" value="${hostedButtonIDTwoYears}">
+										<input type="image"
+											src="https://www.paypalobjects.com/it_IT/IT/i/btn/btn_buynowCC_LG.gif"
+											border="0" name="submit"
+											alt="PayPal - Il metodo rapido, affidabile e innovativo per pagare e farsi pagare.">
+										<img alt="" border="0"
+											src="https://www.paypalobjects.com/it_IT/i/scr/pixel.gif"
+											width="1" height="1">
+										<input type="hidden" name="custom" value="${email}">
+									</form>
 	                        </div>
 	                    </div>
 	                </div>

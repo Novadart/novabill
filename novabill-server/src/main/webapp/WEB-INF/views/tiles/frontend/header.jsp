@@ -66,7 +66,6 @@
                 <!-- BEGIN LOGO (you can use logo image instead of text)-->
                 <a class="brand logo-v1" href="${indexPageUrl}">
                     <img src="${frontendAssetsUrl}/img/logo_thin.png" id="logoimg" alt="">
-                    <img src="${frontendAssetsUrl}/img/beta-small.png" style="position: relative; top: 10px; right: 2px;" title="beta" alt="">
                 </a>
                 <!-- END LOGO -->
             </div>

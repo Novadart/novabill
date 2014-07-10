@@ -52,6 +52,7 @@ angular.module('novabill.constants', [])
 			exportDwonloadUrl : basePath + 'private/export?clients={c}&invoices={i}&estimations={e}&creditnotes={cn}&transportdocs={t}',
 			invoicesBaseUrl : basePath + 'private/invoices/',
 			logoUrl : basePath +'private/businesses/logo',
+			thumbUrl : basePath +'private/businesses/logo/thumbnail',
 			partialsBaseUrl : basePath + 'novabill/private/partials/',
 			paymentsBaseUrl : basePath + 'private/payments/',
 			pdfDownloadUrl : basePath + 'private/pdf/{document}/{id}?print=false',
@@ -102,7 +103,7 @@ angular.module('novabill.constants', [])
 				entityType : {
 					CLIENT : 'CLIENT', 
 					COMMODITY : 'COMMODITY', 
-					INVOICE : 'INVOICE', 
+					INVOICE : 'INVOICE',
 					ESTIMATION : 'ESTIMATION', 
 					CREDIT_NOTE : 'CREDIT_NOTE', 
 					TRANSPORT_DOCUMENT : 'TRANSPORT_DOCUMENT',
@@ -113,9 +114,10 @@ angular.module('novabill.constants', [])
 
 				operationType : {
 					CREATE : 'CREATE', 
-					UPDATE : 'UPDATE', 
-					DELETE : 'DELETE', 
-					SET_PAYED : 'SET_PAYED'
+					DELETE : 'DELETE',
+					EMAIL : 'EMAIL',
+					SET_PAYED : 'SET_PAYED',
+					UPDATE : 'UPDATE'
 				}
 			},
 
@@ -153,6 +155,8 @@ angular.module('novabill.constants', [])
 				priceListList : function(){ return baseConf.priceListsBaseUrl + '#/'; },
 				priceListDetails : function(priceListId){ return baseConf.priceListsBaseUrl + '#/details/' + priceListId; },
 
+				share : function(){ return baseConf.shareBaseUrl + '#/'; },
+				
 				transportDocumentList : function(){ return baseConf.transportDocumentsBaseUrl + '#/'; },
 				transportDocumentNew : function(clientId){ return baseConf.transportDocumentsBaseUrl + '#/new/' + clientId; },
 				transportDocumentFromEstimation : function(estimationId){ return baseConf.transportDocumentsBaseUrl + '#/from-estimation/' + estimationId; },

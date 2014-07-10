@@ -8,20 +8,20 @@ angular.module('novabill.priceLists.controllers',
 /**
  * PRICE LISTS PAGE CONTROLLER
  */
-.controller('PriceListsCtrl', ['$scope', 'nConstants', 'nSorting', 'nEditPriceListDialog', 'nAjax',
-                               function($scope, nConstants, nSorting, nEditPriceListDialog, nAjax){
+.controller('PriceListsCtrl', ['$scope', 'nConstants', 'nSorting', 'nEditPriceListDialog', 'nAjax', '$filter', 'nRegExp',
+                               function($scope, nConstants, nSorting, nEditPriceListDialog, nAjax, $filter, nRegExp){
 	
 	$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 	$scope.PREMIUM = nConstants.conf.premium;
 	var PriceList = nAjax.PriceList(); 
 	
-	function loadPriceLists(){
+	$scope.loadPriceLists = function(){
 		PriceList.query(function(priceLists){
 			$scope.priceLists = priceLists.sort(nSorting.priceListsComparator);
 		});
 	};
 	
-	function recursiveCreation(wrongPriceList){
+	$scope.recursiveCreation = function(wrongPriceList){
 		var instance = null;
 		
 		if(wrongPriceList){
@@ -34,12 +34,12 @@ angular.module('novabill.priceLists.controllers',
 		
 		instance.result.then(function(priceList){
 			priceList.$save(function(newId){
-				loadPriceLists();
+				$scope.loadPriceLists();
 			}, function(exceptionData){
 				switch(exceptionData.data.error){
 				case nConstants.exception.VALIDATION:
 					if(exceptionData.data.message[0].errorCode === nConstants.validation.NOT_UNIQUE){
-						recursiveCreation(priceList);
+						$scope.recursiveCreation(priceList);
 					}
 					break;
 
@@ -48,13 +48,19 @@ angular.module('novabill.priceLists.controllers',
 				}
 			});
 		});
-	}
-	
-	$scope.newPriceList = function(){
-		recursiveCreation();
 	};
 	
-	loadPriceLists();
+	$scope.priceListFilter = function(pricelist){
+		return $scope.query ? 
+				(nRegExp.reserved_word.test(pricelist.name) ? $filter('translate')('DEFAULT_PRICE_LIST') : pricelist.name).toLowerCase().indexOf( $scope.query ) > -1 :
+					true;
+	};
+	
+	$scope.newPriceList = function(){
+		$scope.recursiveCreation();
+	};
+	
+	$scope.loadPriceLists();
 	
 }])
 

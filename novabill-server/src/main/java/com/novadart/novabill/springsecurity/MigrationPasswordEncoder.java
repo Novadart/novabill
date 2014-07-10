@@ -1,12 +1,15 @@
 package com.novadart.novabill.springsecurity;
 
-import javax.sql.DataSource;
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.security.authentication.encoding.PasswordEncoder;
 import org.springframework.security.authentication.encoding.ShaPasswordEncoder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.novadart.novabill.domain.security.Principal;
 
 @Deprecated
 public class MigrationPasswordEncoder implements PasswordEncoder {
@@ -14,8 +17,8 @@ public class MigrationPasswordEncoder implements PasswordEncoder {
 	@Autowired
 	private ShaPasswordEncoder legacyEncoder;
 	
-	@Autowired
-	private DataSource dataSource;
+	@PersistenceContext
+	private EntityManager em;
 	
 	private BCryptPasswordEncoder bcryptEncoder = new BCryptPasswordEncoder();
 
@@ -25,10 +28,11 @@ public class MigrationPasswordEncoder implements PasswordEncoder {
 	}
 
 	@Override
+	@Transactional
 	public boolean isPasswordValid(String encPass, String rawPass, Object salt) {
 		if(legacyEncoder.isPasswordValid(encPass, rawPass, salt)){
-			JdbcTemplate template = new JdbcTemplate(dataSource);
-			template.update("update principal set password = ? where password = ?", bcryptEncoder.encode(rawPass), encPass);
+			Principal principal = em.createQuery("select p from Principal p where p.password = :p", Principal.class).setParameter("p", encPass).getSingleResult();
+			principal.setPasswordNonHashed(bcryptEncoder.encode(rawPass));
 			return true;
 		}
 		return bcryptEncoder.matches(rawPass, encPass);

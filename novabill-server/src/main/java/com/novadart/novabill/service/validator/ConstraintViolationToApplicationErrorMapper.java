@@ -13,6 +13,7 @@ import javax.validation.constraints.Size;
 import org.apache.commons.lang3.StringUtils;
 import org.hibernate.validator.constraints.Email;
 import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.stereotype.Service;
 
 import com.novadart.novabill.annotation.PaymentDeltaNotNull;
@@ -78,7 +79,7 @@ public class ConstraintViolationToApplicationErrorMapper {
 		List<ErrorObject> errors = new ArrayList<ErrorObject>();
 		for(ConstraintViolation<T> violation: violations){
 			PropertyMappingPair pair = getProperty(violation.getPropertyPath());
-			if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(NotBlank.class))
+			if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(NotEmpty.class))
 				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.BLANK_OR_NULL, pair.getIndexes()));
 			else if(violation.getConstraintDescriptor().getAnnotation().annotationType().equals(NotNull.class))
 				errors.add(new ErrorObject(Field.valueOf(pair.getPropertyName()), ErrorCode.NULL, pair.getIndexes()));

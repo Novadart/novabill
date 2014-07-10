@@ -31,7 +31,7 @@ mvn.smtp.host=localhost
 mvn.smtp.port=2525
 mvn.smtp.username=
 mvn.smtp.password=
-mvn.smtp.mail.registration_completed_sender=no-reply@novabill.it
+mvn.default.sender=no-reply@novabill.it
 
 #
 # Email Notifications
@@ -60,7 +60,7 @@ mvn.rememberme.key=novabillRME
 #in hours
 mvn.registration.expiration=48
 mvn.forgotpassword.expiration=48
-mvn.sharing.expiration=48
+mvn.sharing.expiration=8
 mvn.spring.profiles.active=dev
 mvn.devMode.enabled=true
 mvn.tiles.javascript.definition=expandedJS
@@ -68,6 +68,7 @@ mvn.tiles.css.definition=expandedCSS
 mvn.tiles.minify.html=false
 mvn.invoice.pdf.url=http://localhost:8080/novabill-server/email/invoices?id=%d&token=%s
 mvn.novadart.username=giordano.battilana@novadart.com
+mvn.invoice.pdf.sender=info@novabill.it
 
 #
 # Paypal
@@ -75,6 +76,8 @@ mvn.novadart.username=giordano.battilana@novadart.com
 mvn.paypal.action=https://www.sandbox.paypal.com/cgi-bin/webscr
 mvn.paypal.url=https://www.sandbox.paypal.com/cgi-bin/webscr
 mvn.paypal.email=risto.gligorov-facilitator@novadart.com
+mvn.paypal.hostedButtonIDOneYear=K3N4MW3CAWXJQ
+mvn.paypal.hostedButtonIDTwoYears=UC6FAHQL9E5T2
 
 #
 # Quota

@@ -54,6 +54,9 @@ public class InvoiceServiceImpl implements InvoiceService {
 	@Value("${invoice.pdf.url}")
 	private String invoicePdfUrl;
 	
+	@Value("${invoice.pdf.sender}")
+	private String from;
+	
 	@Autowired
 	private UtilsService utilsService;
 	
@@ -223,8 +226,10 @@ public class InvoiceServiceImpl implements InvoiceService {
 		Map<String, Object> templateVars = new HashMap<String, Object>();
 		templateVars.put("message", emailDTO.getMessage().replaceAll("\n", "<br>"));
 		String url = String.format(invoicePdfUrl, id, URLEncoder.encode(token, "UTF-8"));
+		Business business = Business.findBusiness(businessID);
+		String from = String.format("%s via Novabill <%s>", business.getName(), this.from);
 		templateVars.put("invoiceUrl", url);
-		if(sendMessage(emailDTO.getTo(), emailDTO.getReplyTo(), emailDTO.getSubject(), templateVars, EMAIL_TEMPLATE_LOCATION, false)){
+		if(sendMessage(emailDTO.getTo(), from, emailDTO.getReplyTo(), emailDTO.getSubject(), templateVars, EMAIL_TEMPLATE_LOCATION, false)){
 			Invoice invoice = Invoice.findInvoice(id);
 			invoice.setEmailedToClient(true);
 			invoice.merge();

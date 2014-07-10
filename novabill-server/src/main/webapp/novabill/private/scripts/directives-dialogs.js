@@ -385,7 +385,8 @@ angular.module('novabill.directives.dialogs',
 /*
  * Edit Sharing Permit Dialog
  */
-.factory('nEditSharingPermitDialog', ['nConstants', '$modal', function (nConstants, $modal){
+.factory('nEditSharingPermitDialog', ['nConstants', '$modal', '$sce', '$filter',
+                                      function (nConstants, $modal, $sce, $filter){
 
 	return {
 		open : function( sharingPermit, invalidEmail ) {
@@ -399,12 +400,14 @@ angular.module('novabill.directives.dialogs',
 					
 					$scope.sharingPermit = sharingPermit;
 					$scope.invalidEmail = invalidEmail;
-					$scope.sendEmail = false;
+					$scope.sendEmail = 'false';
+					
+					$scope.dialogInfo = $sce.trustAsHtml( $filter('translate')('SHARING_PERMIT_DIALOG_INFO') );
 
 					$scope.save = function(){
 						$modalInstance.close({
 							sharingPermit : $scope.sharingPermit,
-							sendEmail : $scope.sendEmail
+							sendEmail : $scope.sendEmail !== 'false'
 						});
 					};
 
@@ -495,29 +498,28 @@ angular.module('novabill.directives.dialogs',
 					};
 
 					$scope.newClientClick = function(){
-						if($scope.newClientMode) {
-							var newClient = {
-									name : $scope.query,
-									contact : {}
-							};
-							GWT_Server.client.add(nConstants.conf.businessId, angular.toJson(newClient), {
+						$scope.newClientMode = true;
+						filteredClients = [];
+						$scope.query = '';
+						updateFilteredClients();
+					};
+					
+					$scope.createNewClient = function(){
+						var newClient = {
+								name : $scope.query,
+								contact : {}
+						};
+						GWT_Server.client.add(nConstants.conf.businessId, angular.toJson(newClient), {
 
-								onSuccess : function(newId){
-									$scope.$apply(function(){
-										$modalInstance.close(newId);
-									});
-								},
+							onSuccess : function(newId){
+								$scope.$apply(function(){
+									$modalInstance.close(newId);
+								});
+							},
 
-								onFailure : function(){}
+							onFailure : function(){}
 
-							});
-							
-						} else {
-							$scope.newClientMode = true;
-							filteredClients = [];
-							$scope.query = '';
-							updateFilteredClients();
-						}
+						});
 					};
 
 					$scope.cancelNewClientClick = function(){

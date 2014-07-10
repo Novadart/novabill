@@ -1,6 +1,6 @@
 [
 	{
-		"hostedButtonID": "K3N4MW3CAWXJQ",
+		"hostedButtonID": "${mvn.paypal.hostedButtonIDOneYear}",
 		"totalAfterTax": "73.20",
 		"totalWithoutTax": "60.00",
 		"tax": "22.00",
@@ -10,7 +10,7 @@
 		"payedPeriodInMonths": 12
 	},
 	{
-		"hostedButtonID": "UC6FAHQL9E5T2",
+		"hostedButtonID": "${mvn.paypal.hostedButtonIDTwoYears}",
 		"totalAfterTax": "139.08",
 		"totalWithoutTax": "114.00",
 		"tax": "22.00",

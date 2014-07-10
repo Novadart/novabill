@@ -74,7 +74,7 @@ public class DeleteAccountTest extends AuthenticatedTest {
 		String redirectLogoutView = deleteAccountController.processSubmit(deleteAccount, result, mock(SessionStatus.class));
 		Principal.entityManager().flush();
 		assertEquals("private.deleteAccount", deleteAccountView);
-		assertEquals("redirect:/resources/logout", redirectLogoutView);
+		assertEquals("forward:/resources/logout", redirectLogoutView);
 		assertEquals(null, Principal.findByUsername(username));
 		assertEquals(null, Business.findBusiness(businessID));
 	}

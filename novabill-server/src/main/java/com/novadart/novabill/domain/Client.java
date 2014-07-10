@@ -39,7 +39,7 @@ import org.hibernate.search.annotations.IndexedEmbedded;
 import org.hibernate.search.annotations.TokenFilterDef;
 import org.hibernate.search.annotations.TokenizerDef;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -74,37 +74,36 @@ public class Client implements Serializable, Taxable {
 	
 	@Field(name = FTSNamespace.NAME)
 	@Size(max = 255)
-	@NotBlank
+	@NotEmpty
 	@Trimmed
     private String name;
 
 	@Field(name = FTSNamespace.ADDRESS)
     @Size(max = 255)
-	@NotBlank(groups = {HeavyClient.class})
+	@NotEmpty(groups = {HeavyClient.class})
 	@Trimmed
     private String address;
 
 	@Field(name = FTSNamespace.POSTCODE)
     @Size(max = 10)
-	@NotBlank(groups = {HeavyClient.class})
+	@NotEmpty(groups = {HeavyClient.class})
 	@Trimmed
     private String postcode;
 
 	@Field(name = FTSNamespace.CITY)
     @Size(max = 60)
-	@NotBlank(groups = HeavyClient.class)
+	@NotEmpty(groups = HeavyClient.class)
 	@Trimmed
     private String city;
 
 	@Field(name = FTSNamespace.PROVINCE)
     @Size(max = 100)
-//	@NotBlank(groups = HeavyClient.class)
 	@Trimmed
     private String province;
 
 	@Field(name = FTSNamespace.COUNTRY)
     @Size(max = 3)
-	@NotBlank(groups = {HeavyClient.class})
+	@NotEmpty(groups = {HeavyClient.class})
 	@Trimmed
     private String country;
 

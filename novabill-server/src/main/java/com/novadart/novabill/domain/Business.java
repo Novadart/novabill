@@ -51,7 +51,7 @@ import org.hibernate.search.jpa.FullTextEntityManager;
 import org.hibernate.search.jpa.FullTextQuery;
 import org.hibernate.search.jpa.Search;
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -72,39 +72,40 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @NamedQueries({
 	@NamedQuery(name = "business.allUnpaidInvoicesDueDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.paymentDueDate and i.paymentDueDate <= :endDate and i.business.id = :bizID order by i.paymentDueDate, i.documentID"),
 	@NamedQuery(name = "business.allUnpaidInvoicesCreationDateInDateRange", query = "select i from Invoice i where i.payed = false and :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID"),
-	@NamedQuery(name = "business.allInvoicesCreationDateInDateRange", query = "select i from Invoice i where :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID")
+	@NamedQuery(name = "business.allInvoicesCreationDateInDateRange", query = "select i from Invoice i where :startDate <= i.accountingDocumentDate and i.accountingDocumentDate <= :endDate and i.business.id = :bizID order by i.accountingDocumentDate, i.documentID"),
+	@NamedQuery(name = "business.allCreditNotesCreationDateInDateRange", query = "select c from CreditNote c where :startDate <= c.accountingDocumentDate and c.accountingDocumentDate <= :endDate and c.business.id = :bizID order by c.accountingDocumentDate, c.documentID")
 })
 public class Business implements Serializable, Taxable {
 
 	private static final long serialVersionUID = 261999997691744944L;
 	
 	@Size(max = 255)
-	@NotBlank
+	@NotEmpty
 	@Trimmed
     private String name;
 
     @Size(max = 255)
-    @NotBlank
+    @NotEmpty
     @Trimmed
     private String address;
 
     @Size(max = 10)
-    @NotBlank
+    @NotEmpty
     @Trimmed
     private String postcode;
 
     @Size(max = 60)
-    @NotBlank
+    @NotEmpty
     @Trimmed
     private String city;
 
     @Size(max = 100)
-    //@NotNull
     @Trimmed
     private String province;
 
     @Size(max = 3)
     @Trimmed
+    @NotEmpty
     private String country;
 
     @Size(max = com.novadart.novabill.domain.Email.EMAIL_MAX_LENGTH)
@@ -130,13 +131,13 @@ public class Business implements Serializable, Taxable {
 
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
-    @NotBlank
+    @NotEmpty
     @Trimmed
     private String vatID;
     
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
-    @NotBlank
+    @NotEmpty
     @Trimmed
     private String ssn;
 
@@ -318,6 +319,13 @@ public class Business implements Serializable, Taxable {
     			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();
     }
     
+    public static List<CreditNote> getAllCreditNotesCreationDateInRange(Long businessID, Date startDate, Date endDate){
+    	return entityManager().createNamedQuery("business.allCreditNotesCreationDateInDateRange", CreditNote.class).
+    			setParameter("bizID", businessID).
+    			setParameter("startDate", startDate == null? createDateFromString("1-1-1970"): startDate).
+    			setParameter("endDate", endDate == null? createDateFromString("1-1-2100"): endDate).getResultList();
+    }
+    
     private static interface ClientQueryPreparator{
     	Query prepareQuery(List<String> queryTokens);
     }
@@ -454,7 +462,7 @@ public class Business implements Serializable, Taxable {
 	}
     
     public Client findClientByVatIDOrSsn(String vatIDOrSsn) {
-    	String sql = "select c from Client c where c.business.id = :id and c.vatID = :vatIDOrSsn or c.ssn = :vatIDOrSsn";
+    	String sql = "select c from Client c where c.business.id = :id and (c.vatID = :vatIDOrSsn or c.ssn = :vatIDOrSsn)";
     	List<Client> r = entityManager.createQuery(sql, Client.class).setParameter("id", getId()).setParameter("vatIDOrSsn", vatIDOrSsn).getResultList();
 		return r.size() == 0? null: r.get(0);
     }

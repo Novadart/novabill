@@ -41,7 +41,7 @@ public class Email implements Serializable {
 	
 	public static final int SUBJECT_MAX_LENGTH = 78;
 	
-	public static final int TEXT_MAX_LENGTH = 1500;
+	public static final int TEXT_MAX_LENGTH = 15_000;
 	
 	public static final int EMAIL_MAX_LENGTH = 255;
 	

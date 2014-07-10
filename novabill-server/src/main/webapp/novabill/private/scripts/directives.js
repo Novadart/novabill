@@ -3,7 +3,7 @@
 angular.module('novabill.directives', 
 		['novabill.directives.validation', 'novabill.directives.dialogs', 
 		 'novabill.utils', 'novabill.translations', 
-		 'novabill.calc', 'novabill.constants', 'ngSanitize', 'ngAnimate'])
+		 'novabill.calc', 'novabill.constants', 'ngSanitize', 'ngAnimate', 'ui.bootstrap'])
 
 /*
  * Invoice widget
@@ -63,7 +63,7 @@ angular.module('novabill.directives',
 			};
 
 			$scope.remove = function(){
-				var instance = nConfirmDialog.open( $translate('REMOVAL_QUESTION') );
+				var instance = nConfirmDialog.open( $filter('translate')('REMOVAL_QUESTION') );
 				instance.result.then(function(value){
 					if(value){
 						GWT_Server.invoice.remove(nConstants.conf.businessId, $scope.invoice.client.id, $scope.invoice.id, {
@@ -485,10 +485,10 @@ angular.module('novabill.directives',
 		              function($scope, $rootScope, nCalc, $filter, nConfirmDialog, nAjax){
 			$scope.PRICE_TYPE = nConstants.priceType;
 			$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
-
+			
 			// making a copy because we want to drop changes in case they are not saved remotely
 			$scope.price = angular.copy( $scope.commodity.prices[$scope.priceListName]);
-
+ 
 			function updatePriceInfo(price){
 
 				$scope.priceValue = nCalc.calculatePriceForCommodity($scope.commodity, $scope.priceListName).toString();
@@ -847,6 +847,11 @@ angular.module('novabill.directives',
 					$scope.description = tr('LR_INVOICE_DELETE',
 							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
 					break;
+					
+				case nConstants.logRecord.operationType.EMAIL:
+					$scope.description = tr('LR_INVOICE_EMAIL',
+							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
+					break;
 
 				default:
 					break;
@@ -967,7 +972,7 @@ angular.module('novabill.directives',
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
 					$scope.description = tr('LR_SHARING_PERMIT_CREATE',
-							'{sharingPermitDesc: "'+ $sanitize(details.sharingPermitDesc) +'"}');
+							'{sharingPermitDesc: "'+ $sanitize(details.sharingPermitDesc) +'", link: "'+nConstants.url.share()+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:

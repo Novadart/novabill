@@ -8,6 +8,7 @@ import javax.persistence.PersistenceContext;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
+import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.domain.Business;
@@ -415,13 +416,47 @@ public class DBUtilitiesService {
 	}
 	
 	private void migrate3_0() throws PremiumUpgradeException{
+		//update business set vatid='IT12345678910' where vatid=''    run this query before migration
+		em.createNativeQuery("drop table if exists pay_pal_transactionid").executeUpdate(); //drop pay_pal_transactionid table
+		em.createNativeQuery("drop table if exists upgrade_token").executeUpdate(); //drop upgrade_token table
+		
+		em.createNativeQuery("alter table accounting_document " +
+				"ALTER COLUMN layout_type DROP DEFAULT, " +
+				"ALTER COLUMN to_province TYPE varchar(100)").executeUpdate();
+		
+		em.createNativeQuery("alter table business " +
+				"ALTER COLUMN country SET NOT NULL, " +
+				"ALTER COLUMN province TYPE varchar(100), " +
+				"ALTER COLUMN ssn SET NOT NULL, " +
+				"ALTER COLUMN vatid SET NOT NULL, " +
+				"ALTER COLUMN default_layout_type DROP DEFAULT").executeUpdate();
+		
+		em.createNativeQuery("alter table client ALTER COLUMN province TYPE varchar(100)").executeUpdate();
+		
+		em.createNativeQuery("alter table client_address ALTER COLUMN province TYPE varchar(100), " +
+				"ALTER COLUMN province DROP NOT NULL").executeUpdate();
+		
+		em.createNativeQuery("alter table commodity alter column weight type numeric(19,3)").executeUpdate();
+		
+		em.createNativeQuery("drop table if exists item").executeUpdate();
+		
+		em.createNativeQuery("alter table principal " +
+				"drop column notes_bit_mask, " +
+				"alter column username SET NOT NULL").executeUpdate(); //drop bit_mask column from principal table
+		
+		em.createNativeQuery("alter table transport_document ALTER COLUMN from_province TYPE varchar(100)").executeUpdate();
+		
 		for(Business business: Business.findAllBusinesses()){
 			business.getSettings().setEmailText(BusinessServiceImpl.EMAIL_TEXT);
 			business.getSettings().setEmailSubject(BusinessServiceImpl.EMAIL_SUBJECT);
 			Principal principal = business.getPrincipals().iterator().next();
 			business.getSettings().setEmailReplyTo(StringUtils.isBlank(business.getEmail())? principal.getUsername(): business.getEmail());
-			premiumEnabledService.enablePremiumForNMonths(business, 12);
+			if(business.getId().equals(1106) || business.getId().equals(2862))
+				premiumEnabledService.enablePremiumForNMonths(business, 7);
+			else
+				premiumEnabledService.enablePremiumForNMonths(business, 6);
 		}
+		
 	}
 	
 	@Scheduled(fixedDelay = 31_536_000_730l)

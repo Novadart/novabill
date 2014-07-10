@@ -42,6 +42,7 @@
    <!-- BEGIN PAGE LEVEL PLUGIN STYLES --> 
    <link href="${frontendAssetsUrl}/plugins/fancybox/source/jquery.fancybox.css" rel="stylesheet" /> 
    <link href="${frontendAssetsUrl}/plugins/uniform/css/uniform.default.css" rel="stylesheet" type="text/css"/>
+   <link href="${frontendAssetsUrl}/plugins/iealert/css/style.css" rel="stylesheet" type="text/css"/>
    <!-- END PAGE LEVEL PLUGIN STYLES -->
    
    <tiles:insertAttribute ignore="true" name="head" />
@@ -88,6 +89,7 @@
     <script type="text/javascript" src="${frontendAssetsUrl}/plugins/hover-dropdown.js"></script>
     <script type="text/javascript" src="${frontendAssetsUrl}/plugins/back-to-top.js"></script>    
     <script src="${frontendAssetsUrl}/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script>
+    <script src="${frontendAssetsUrl}/plugins/iealert/iealert.min.js" type="text/javascript"></script>
     <!-- END CORE PLUGINS -->
 
     <script>
@@ -116,7 +118,21 @@
 	<script type="text/javascript">
 	    jQuery(document).ready(function() {    
 	       App.init();
-	       App.initUniform();  
+	       App.initUniform();
+	       
+	       if(!$.cookie('ie_alert_shown_public')){
+		       $("body").iealert({
+		    	   support:"ie8",
+		           title:"Il tuo browser è vecchio e insicuro e non è supportato da Novabill",
+		           text:"Non è sicuro utilizzare questo browser per lavorare su dati sensibili.<br>Per favore premi sul pulsante 'Aggiorna' qui sotto e installa una versione più recente di Internet Explorer o uno dei browser alternativi suggeriti.<br><br>Grazie",
+		           upgradeTitle:"Aggiorna",
+		           upgradeLink:"http://browsehappy.com/",
+		           overlayClose:false,
+		           closeBtn: true
+		       });
+	
+	           $.cookie('ie_alert_shown_public', 'true', { path: '/' });
+	       }
 	    });
 	</script>
 	<!-- END PAGE LEVEL JAVASCRIPTS -->

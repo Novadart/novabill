@@ -1,6 +1,5 @@
 package com.novadart.novabill.paypal;
 
-import java.math.BigDecimal;
 import java.util.Map;
 
 import org.springframework.stereotype.Service;
@@ -10,17 +9,11 @@ public class OneTimePaymentIPNHandlerService extends PayPalIPNHandlerService {
 	
 	private static final String WEB_ACCEPT = "web_accept";
 	
-	private static final String MC_GROSS = "mc_gross";
-	
 	private static final String MC_CURRENCY = "mc_currency";
 	
 	private void handleError(String email, String message){}
 	
 	private boolean checkCurrencyAndAmount(Map<String, String> parametersMap, PaymentPlanDescriptor paymentPlan){
-		if(new BigDecimal(parametersMap.get(MC_GROSS)).compareTo(paymentPlan.getTotalAfterTax()) != 0){
-			handleError(parametersMap.get(CUSTOM), "Amount doesn't match");
-			return false;
-		}
 		if(!parametersMap.get(MC_CURRENCY).equalsIgnoreCase("EUR")){
 			handleError(parametersMap.get(CUSTOM), "Currency doesn't match");
 			return false;

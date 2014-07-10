@@ -26,6 +26,7 @@ import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Endpoint;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.Notification;
 import com.novadart.novabill.domain.dto.transformer.BusinessDTOTransformer;
@@ -191,16 +192,21 @@ public class PremiumEnablerService {
 		item.setDiscount(planDesc.getDiscount());
 		item.setDescription(planDesc.getItemName());
 		item.setTax(planDesc.getTax());
-		item.setTotal(planDesc.getTotalWithoutTax());
+		item.setTotalBeforeTax(planDesc.getTotalWithoutTax());
+		item.setTotalTax(planDesc.getTotalTax());
+		item.setTotal(planDesc.getTotalAfterTax());
 		invoice.getAccountingDocumentItems().add(item);
+		
+		Client client = Client.findClient(clientID);
 		
 		invoice.setTotalBeforeTax(planDesc.getTotalWithoutTax());
 		invoice.setTotal(planDesc.getTotalAfterTax());
 		invoice.setTotalTax(planDesc.getTotalTax());
+		invoice.setToEndpoint(new Endpoint().copy(client));
 		
 		InvoiceDTO invoiceDTO = InvoiceDTOTransformer.toDTO(invoice, true);
 		invoiceDTO.setBusiness(BusinessDTOTransformer.toDTO(novadartBusiness));
-		invoiceDTO.setClient(ClientDTOTransformer.toDTO(Client.findClient(clientID)));
+		invoiceDTO.setClient(ClientDTOTransformer.toDTO(client));
 
 		return invoiceService.add(invoiceDTO);
 	}

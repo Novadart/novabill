@@ -3,15 +3,6 @@
 	cursor: pointer;
 }
 
-.dashboard-stat .details .hand {
-	height: 45px;
-	margin: 7px 0 2px;
-}
-
-.dashboard-stat:HOVER .fa-bar-chart-o {
-	display: none;
-}
-
 .dashboard-stat.total .number {
 	font-size: 20px;
 }

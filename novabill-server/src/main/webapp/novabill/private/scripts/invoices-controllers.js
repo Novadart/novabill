@@ -71,9 +71,13 @@ angular.module('novabill.invoices.controllers',
 
 			GWT_UI.showModifyInvoicePage('invoice-details', $routeParams.invoiceId, {
 				onSuccess : function(bool){
-					$location.path('/');
+					$location.path('/');	
 				},
-				onFailure : function(){}
+				onFailure : function(){
+					$scope.$apply(function(){
+						$location.path('/');	
+					});
+				}
 			});
 			
 			
@@ -91,10 +95,12 @@ angular.module('novabill.invoices.controllers',
 
 			GWT_UI.showNewInvoicePage('invoice-details', $routeParams.clientId, {
 				onSuccess : function(bool){
-					$location.path('/');
+					$location.path('/');	
 				},
 				onFailure : function(){
-					$location.path('/');
+					$scope.$apply(function(){
+						$location.path('/');	
+					});
 				}
 			});
 			
@@ -112,10 +118,13 @@ angular.module('novabill.invoices.controllers',
 
 			GWT_UI.showFromEstimationInvoicePage('invoice-details', $routeParams.estimationId, {
 				onSuccess : function(bool){
-					$location.path('/');
+					$location.path('/');	
+					
 				},
-				onFailure : function(){
-					$location.path('/');
+				onFailure : function(error){
+					$scope.$apply(function(){
+						$location.path('/');	
+					});
 				}
 			});
 			
@@ -132,10 +141,12 @@ angular.module('novabill.invoices.controllers',
 
 			GWT_UI.showFromTransportDocumentListInvoicePage('invoice-details', $routeParams.transportDocumentList, {
 				onSuccess : function(bool){
-					$location.path('/');
+					$location.path('/');	
 				},
 				onFailure : function(){
-					$location.path('/');
+					$scope.$apply(function(){
+						$location.path('/');	
+					});
 				}
 			});
 			
@@ -152,10 +163,12 @@ angular.module('novabill.invoices.controllers',
 
 			GWT_UI.showCloneInvoicePage('invoice-details', $routeParams.clientId, $routeParams.sourceId, {
 				onSuccess : function(bool){
-					$location.path('/');
+					$location.path('/');	
 				},
 				onFailure : function(){
-					$location.path('/');
+					$scope.$apply(function(){
+						$location.path('/');	
+					});
 				}
 			});
 			

@@ -3,31 +3,31 @@ package com.novadart.novabill.web.mvc.ajax.dto;
 import javax.validation.constraints.Size;
 
 import org.hibernate.validator.constraints.Email;
-import org.hibernate.validator.constraints.NotBlank;
+import org.hibernate.validator.constraints.NotEmpty;
 
 import com.novadart.novabill.annotation.Trimmed;
 
 
 public class EmailDTO {
 	
-	@NotBlank
+	@NotEmpty
 	@Trimmed
 	@Email
 	@Size(max = com.novadart.novabill.domain.Email.EMAIL_MAX_LENGTH)
 	private String to;
 	
-	@NotBlank
+	@NotEmpty
 	@Trimmed
 	@Email
 	@Size(max = com.novadart.novabill.domain.Email.EMAIL_MAX_LENGTH)
 	private String replyTo;
 	
-	@NotBlank
+	@NotEmpty
 	@Trimmed
 	@Size(max = com.novadart.novabill.domain.Email.SUBJECT_MAX_LENGTH)
 	private String subject;
 	
-	@NotBlank
+	@NotEmpty
 	@Trimmed
 	@Size(max = com.novadart.novabill.domain.Email.TEXT_MAX_LENGTH)
 	private String message;

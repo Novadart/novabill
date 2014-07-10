@@ -6,12 +6,8 @@
     <br>
     
     <form class="form-inline" name="textOnlyForm" ng-show="textOnly" role="form" novalidate>
-        <script type="text/ng-template" id="itemTemplate.html">
-            <a>[<span bind-html-unsafe="match.label  | typeaheadHighlight:query"></span>] <span bind-html-unsafe="match.model.description | typeaheadHighlight:query"></span></a>
-        </script>
-        
         <div class="form-group">
-            <label for="txt">{{'TEXT' | translate}}</label>
+            <label for="txt">{{'TEXT' | translate}} *</label>
             <textarea
               name="textOnlyDescription"
               style="display: block;"
@@ -37,11 +33,11 @@
 
 	<form class="form-inline" name="form" ng-show="!textOnly" role="form" novalidate>
 	    <script type="text/ng-template" id="itemTemplate.html">
-            <a>[<span bind-html-unsafe="match.label  | typeaheadHighlight:query"></span>] <span bind-html-unsafe="match.model.description | typeaheadHighlight:query"></span></a>
+            <a>[<span bind-html-unsafe="match.label | nReplaceReservedWord:' - ' | typeaheadHighlight:query"></span>] <span bind-html-unsafe="match.model.description | typeaheadHighlight:query"></span></a>
 	    </script>
 		
 		<div class="form-group">
-			<label for="description">{{'DESCRIPTION' | translate}}</label>
+			<label for="description">{{'DESCRIPTION' | translate}} *</label>
 			<textarea
 			  name="description"
 			  style="display: block;"
@@ -66,7 +62,7 @@
 		       ng-show="selectedCommodity !== null" 
 		       type="primary" >
 		       <span class="close" ng-click="reset()">X</span>
-		       <span class="label label-default label-sm" ng-show="selectedCommodity.sku">{{selectedCommodity.sku}}</span> {{selectedCommodity.description}}
+		       <span class="label label-default label-sm" ng-if="!isReservedWord(selectedCommodity.sku)">{{selectedCommodity.sku}}</span> {{selectedCommodity.description}}
 	       </div>
 		</div>
 		<div class="form-group">
@@ -74,7 +70,7 @@
 	        <input name="unitOfMeasure" ng-model="item.unitOfMeasure" type="text" class="form-control input-small" id="unitOfMeasure" >
 	    </div>
 	    <div class="form-group">
-	        <label for="quantity">{{'QUANTITY' | translate}}</label><br>
+	        <label for="quantity">{{'QUANTITY' | translate}} *</label><br>
 	        <input name="quantity" n-smart-float ng-model="item.quantity" type="text" class="form-control input-small" id="quantity" required>
 	        <div ng-show="form.quantity.$dirty && form.quantity.$invalid">
                <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
@@ -88,7 +84,7 @@
            </div>
 	    </div>
 	    <div class="form-group">
-	        <label for="price">{{'PRICE' | translate}}</label><br> 
+	        <label for="price">{{'PRICE' | translate}} *</label><br> 
 	        <input name="price" n-smart-price ng-model="item.price" type="text" class="form-control input-small" id="price" required>
 	        <div ng-show="form.price.$dirty && form.price.$invalid">
                <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
@@ -102,7 +98,7 @@
            </div>
 	    </div>
 	    <div class="form-group">
-	        <label for="tax">{{'VAT' | translate}}</label><br> 
+	        <label for="tax">{{'VAT' | translate}} *</label><br> 
 	        <input name="tax" n-smart-tax ng-model="item.tax" type="text" class="form-control input-small" id="tax" required>
 	        <div ng-show="form.tax.$dirty && form.tax.$invalid">
                <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
@@ -117,10 +113,11 @@
 	            ng-click="addItem()">{{'ADD_TO' | translate}}</button>
 	    </div>
 	</form>
-	
 	<br>
-	<label class="pull-right">
-	    <input type="checkbox" ng-model="explicitDiscountCheck"> {{'EXPLICIT_DISCOUNT_CHECK' | translate}}
-	</label>
-	<br>
+	<small>* {{'VALIDATION_REQUIRED' | translate}}</small>
+	<div class="text-right">   
+        <label ng-show="explicitDiscount !== 'false'">
+            <input type="checkbox" ng-model="explicitDiscountCheck"> <small>{{'EXPLICIT_DISCOUNT_CHECK' | translate}}</small>
+        </label>
+    </div>
 </div>
