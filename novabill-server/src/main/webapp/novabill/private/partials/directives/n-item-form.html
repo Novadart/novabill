@@ -1,6 +1,6 @@
 <div class="n-item-form">
     <label>
-        <input type="checkbox" ng-model="textOnly" ng-click="reset()"> {{'TEXT_ONLY_ITEM' | translate}}
+        <input type="checkbox" ng-model="textOnly"> {{'TEXT_ONLY_ITEM' | translate}}
     </label>
     
     <br>
@@ -9,6 +9,7 @@
         <div class="form-group">
             <label for="txt">{{'TEXT' | translate}} *</label>
             <textarea
+              n-focus-if="focusedInput==='textOnlyDescription'"
               name="textOnlyDescription"
               style="display: block;"
               maxlength="500"
@@ -31,7 +32,7 @@
     </form>
 
 
-	<form class="form-inline" name="form" ng-show="!textOnly" role="form" novalidate>
+	<form class="form-inline" name="form" ng-submit="addItem()" ng-show="!textOnly" role="form" novalidate>
 	    <script type="text/ng-template" id="itemTemplate.html">
             <a>[<span bind-html-unsafe="match.label | nReplaceReservedWord:' - ' | typeaheadHighlight:query"></span>] <span bind-html-unsafe="match.model.description | typeaheadHighlight:query"></span></a>
 	    </script>
@@ -39,7 +40,10 @@
 		<div class="form-group">
 			<label for="description">{{'DESCRIPTION' | translate}} *</label>
 			<textarea
+			  n-focus-if="focusedInput==='description'"
+			  ng-focus="focusedInput='description'"
 			  name="description"
+			  id="description"
 			  style="display: block;"
 			  maxlength="500"
 			  ng-show="selectedCommodity === null"
@@ -52,65 +56,62 @@
 		   <div ng-show="form.description.$dirty && form.description.$invalid">
                <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
            </div>
-		   <button
-		       style="display: block;" 
-		       class="btn btn-xs btn-primary" 
+		   <a class="btn btn-xs btn-primary" 
 		       ng-click="openSelectCommodityDialog()"
-		       ng-show="selectedCommodity === null">{{'ADVANCED_SELECTION' | translate}}...</button>
+		       ng-show="selectedCommodity === null">{{'ADVANCED_SELECTION' | translate}}...</a>
 		   <div
 		       class="autocompletion-selected-commodity form-control-static input-large"
 		       ng-show="selectedCommodity !== null" 
 		       type="primary" >
-		       <span class="close" ng-click="reset()">X</span>
+		       <span class="close" ng-click="resetData();resetForm();">X</span>
 		       <span class="label label-default label-sm" ng-if="!isReservedWord(selectedCommodity.sku)">{{selectedCommodity.sku}}</span> {{selectedCommodity.description}}
 	       </div>
 		</div>
 		<div class="form-group">
 	        <label for="unitOfMeasure">{{'UNIT_OF_MEASURE_SHORT' | translate}}</label><br>
-	        <input name="unitOfMeasure" ng-model="item.unitOfMeasure" type="text" class="form-control input-small" id="unitOfMeasure" >
+	        <input ng-focus="focusedInput='unitOfMeasure'" name="unitOfMeasure" ng-model="item.unitOfMeasure" type="text" class="form-control input-small" id="unitOfMeasure" >
 	    </div>
 	    <div class="form-group">
 	        <label for="quantity">{{'QUANTITY' | translate}} *</label><br>
-	        <input name="quantity" n-smart-float ng-model="item.quantity" type="text" class="form-control input-small" id="quantity" required>
+	        <input ng-focus="focusedInput='quantity'" n-focus-if="focusedInput==='quantity'" name="quantity" n-smart-float ng-model="item.quantity" type="text" class="form-control input-small" id="quantity" required>
 	        <div ng-show="form.quantity.$dirty && form.quantity.$invalid">
                <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
            </div>
 	    </div>
 	    <div class="form-group" ng-show="manageWeight !== 'false'">
 	        <label for="weight">{{'WEIGHT' | translate}}</label> <br>
-	        <input name="weight" n-smart-float ng-model="item.weight" type="text" class="form-control input-small" id="weight">
+	        <input ng-focus="focusedInput='weight'" name="weight" n-smart-float ng-model="item.weight" type="text" class="form-control input-small" id="weight">
 	        <div ng-show="form.weight.$dirty && form.weight.$invalid">
                <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
            </div>
 	    </div>
 	    <div class="form-group">
 	        <label for="price">{{'PRICE' | translate}} *</label><br> 
-	        <input name="price" n-smart-price ng-model="item.price" type="text" class="form-control input-small" id="price" required>
+	        <input ng-focus="focusedInput='price'" name="price" n-smart-price ng-model="item.price" type="text" class="form-control input-small" id="price" required>
 	        <div ng-show="form.price.$dirty && form.price.$invalid">
                <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
            </div>
 	    </div>
 	    <div class="form-group">
 	        <label for="discount">{{'DISCOUNT_OVERPRICING_SHORT' | translate}}</label><br> 
-	        <input name="discount" n-smart-float ng-model="item.discount" type="text" class="form-control input-small" id="discount">
+	        <input ng-focus="focusedInput='discount'" name="discount" n-smart-float ng-model="item.discount" type="text" class="form-control input-small" id="discount">
 	        <div ng-show="form.discount.$dirty && form.discount.$invalid">
                <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
            </div>
 	    </div>
 	    <div class="form-group">
 	        <label for="tax">{{'VAT' | translate}} *</label><br> 
-	        <input name="tax" n-smart-tax ng-model="item.tax" type="text" class="form-control input-small" id="tax" required>
+	        <input ng-focus="focusedInput='tax'" name="tax" n-smart-tax ng-model="item.tax" type="text" class="form-control input-small" id="tax" required>
 	        <div ng-show="form.tax.$dirty && form.tax.$invalid">
                <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
            </div>
 	    </div>
 	    <div class="form-group">
 	        <label>&nbsp;</label><br>
-	        <button
-	            ng-disabled="form.$invalid "
-	            type="button" 
+	        <button ng-disabled="form.$invalid "
+	            type="submit" 
 	            class="btn btn-success" 
-	            ng-click="addItem()">{{'ADD_TO' | translate}}</button>
+	            >{{'ADD_TO' | translate}}</button>
 	    </div>
 	</form>
 	<br>
