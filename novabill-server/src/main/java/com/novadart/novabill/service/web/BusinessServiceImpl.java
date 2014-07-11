@@ -345,7 +345,7 @@ public abstract class BusinessServiceImpl implements BusinessService {
 		for(InvoiceDTO invoice: self().getInvoices(businessID, cal.get(Calendar.YEAR))){
 			cal.setTime(invoice.getAccountingDocumentDate());
 			int month = cal.get(Calendar.MONTH); 
-			totals.set(month, totals.get(month).add(invoice.getTotal()));
+			totals.set(month, totals.get(month).add(invoice.getTotalBeforeTax()));
 		}
 		for(BigDecimal total: totals)
 			total.setScale(2, RoundingMode.HALF_UP);
