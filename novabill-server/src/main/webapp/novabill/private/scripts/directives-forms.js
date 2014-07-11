@@ -18,9 +18,9 @@ angular.module('novabill.directives.forms',
 			manageWeight : '@'
 		},
 		controller : ['$scope', 'nAjax', '$element', 'nSelectCommodityDialog', '$window', 
-		              'nSorting', 'nRegExp', 'nCalc', '$filter', 'nConstants', '$timeout',
+		              'nSorting', 'nRegExp', 'nCalc', '$filter', 'nConstants',
 		              function($scope, nAjax, $element, nSelectCommodityDialog, $window, 
-		            		  nSorting, nRegExp, nCalc, $filter, nConstants, $timeout){
+		            		  nSorting, nRegExp, nCalc, $filter, nConstants){
 			var BatchDataFetcherUtils = nAjax.BatchDataFetcherUtils();
 			$scope.pricelist = null;
 			$scope.commodities = null;
