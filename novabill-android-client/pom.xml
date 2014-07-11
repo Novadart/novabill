@@ -5,7 +5,7 @@
 	<parent>
 		<artifactId>novabill</artifactId>
 		<groupId>com.novadart.novabill</groupId>
-		<version>3.0</version>
+		<version>3.0.1</version>
 	</parent>
 	<artifactId>novabill-android-client</artifactId>
 	<packaging>apk</packaging>
