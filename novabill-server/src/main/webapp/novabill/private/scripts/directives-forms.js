@@ -5,7 +5,6 @@ angular.module('novabill.directives.forms',
 		 'novabill.translations', 'angularFileUpload', 'ui.bootstrap'])
 
 		
-		
 /*
  * Item Form
  */
@@ -19,9 +18,9 @@ angular.module('novabill.directives.forms',
 			manageWeight : '@'
 		},
 		controller : ['$scope', 'nAjax', '$element', 'nSelectCommodityDialog', '$window', 
-		              'nSorting', 'nRegExp', 'nCalc', '$filter', 'nConstants',
+		              'nSorting', 'nRegExp', 'nCalc', '$filter', 'nConstants', '$timeout',
 		              function($scope, nAjax, $element, nSelectCommodityDialog, $window, 
-		            		  nSorting, nRegExp, nCalc, $filter, nConstants){
+		            		  nSorting, nRegExp, nCalc, $filter, nConstants, $timeout){
 			var BatchDataFetcherUtils = nAjax.BatchDataFetcherUtils();
 			$scope.pricelist = null;
 			$scope.commodities = null;
@@ -30,7 +29,6 @@ angular.module('novabill.directives.forms',
 					tax : '22'
 			};
 			$scope.explicitDiscountCheck = $scope.explicitDiscount !== 'false';
-			
 			
 			BatchDataFetcherUtils.fetchSelectCommodityForDocItemOpData({clientID : $scope.clientId}, function(result){
 				$scope.pricelist = result.first;
@@ -63,8 +61,7 @@ angular.module('novabill.directives.forms',
 					$scope.item.discount = '0';
 				}
 				
-				
-				$element.find('#quantity').focus();
+				$scope.setFocusTo('quantity');
 			};
 			
 			$scope.onCommoditySelected = function($item, $model, $label){
@@ -79,25 +76,44 @@ angular.module('novabill.directives.forms',
 					});
 			};
 			
-			$scope.reset = function(){
-				$scope.form.$setPristine();
-				$scope.textOnlyForm.$setPristine();
-				$scope.textOnly = false;
+			$scope.resetData = function(){
 				$scope.selectedCommodity = null;
 				$scope.item = {
 						tax : '22'
 				};
+				$scope.form.$setPristine();
+				$scope.textOnlyForm.$setPristine();
+			};
+			
+			$scope.resetForm = function(){
+				$scope.textOnly = false;
+				$scope.setFocusTo('description');
+			};
+			
+			$scope.setFocusTo = function(inputName){
+				$scope.focusedInput = inputName;
 			};
 			
 			$scope.addTextOnlyItem = function(){
 				$window.Angular_ItemFormInit_callback(true, $scope.item);
-				$scope.reset();
+				$scope.resetData();
+				$scope.resetForm();
 			};
 			
 			$scope.addItem = function(){
 				$window.Angular_ItemFormInit_callback(false, $scope.item);
-				$scope.reset();
+				$scope.resetData();
+				$scope.resetForm();
 			};
+			
+			
+			$scope.$watch('textOnly', function(value){
+				if(value !== undefined){
+					$scope.resetData();
+					$scope.setFocusTo(value ? 'textOnlyDescription' : 'description');
+				}
+			});
+			
 		}],
 		restrict: 'E',
 		replace: true

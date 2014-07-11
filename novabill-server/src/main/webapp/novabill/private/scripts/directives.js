@@ -654,6 +654,23 @@ angular.module('novabill.directives',
 
 
 
+.directive('nFocusIf', ['$timeout', function ($timeout) {
+	return {
+		restrict: 'A',
+		link: function(scope, element, attrs) {
+			scope.$watch(attrs.nFocusIf, function(value, old) {
+				if(value === true) {
+					$timeout(function(){
+						element[0].focus();
+						element[0].select();
+					}, 100);
+				}
+			});
+		}
+	};
+}])
+
+
 .directive('nDivInfiniteScroll', function() {
 	
     return function(scope, elm, attr) {
