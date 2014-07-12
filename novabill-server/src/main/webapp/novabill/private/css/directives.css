@@ -406,5 +406,12 @@
 	min-height: 100px;
 }
  
- 
+.n-item-form .dropdown-menu .active > a {
+	background-color: #428bca !important;
+	color: #FFF !important;
+}
+
+.n-item-form .dropdown-menu li > a {
+    padding-right: 10px;
+}
  
