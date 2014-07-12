@@ -39,6 +39,16 @@ angular.module('novabill.directives.forms',
 				return nRegExp.reserved_word.test(str);
 			};
 			
+			$scope.commodityComparator = function(value, query){
+				if(typeof value === 'string'){
+					var va = value.toLowerCase();
+					var q = (''+query).toLowerCase();
+					return va.substring(0, q.length) === q;
+				} else {
+					return false;
+				}
+			};
+			
 			$scope.applyCommodity = function(comm, pricelistName){
 				$scope.selectedCommodity = comm;
 				
@@ -120,6 +130,20 @@ angular.module('novabill.directives.forms',
 	};
 
 }])
+
+
+.filter('typeaheadHighlightPrefix', function() {
+
+	function escapeRegexp(queryToEscape) {
+		return queryToEscape.replace(/([.?*+^$[\]\\(){}|-])/g, '\\$1');
+	}
+
+	return function(matchItem, query) {
+		var va = ('' + matchItem).toLowerCase();
+		var q = ('' + query).toLowerCase();
+		return (va.substring(0, q.length) === q) ? ('' + matchItem).replace(new RegExp(escapeRegexp(query), 'i'), '<strong>$&</strong>') : matchItem;
+	};
+})
 
 /*
  * Business Form

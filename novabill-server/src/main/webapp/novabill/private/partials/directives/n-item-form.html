@@ -34,7 +34,7 @@
 
 	<form class="form-inline" name="form" ng-submit="addItem()" ng-show="!textOnly" role="form" novalidate>
 	    <script type="text/ng-template" id="itemTemplate.html">
-            <a>[<span bind-html-unsafe="match.label | nReplaceReservedWord:' - ' | typeaheadHighlight:query"></span>] <span bind-html-unsafe="match.model.description | typeaheadHighlight:query"></span></a>
+            <a>[<span bind-html-unsafe="match.label | nReplaceReservedWord:' - ' | typeaheadHighlightPrefix:query"></span>] <span bind-html-unsafe="match.model.description | typeaheadHighlightPrefix:query"></span></a>
 	    </script>
 		
 		<div class="form-group">
@@ -48,7 +48,7 @@
 			  maxlength="500"
 			  ng-show="selectedCommodity === null"
 			  ng-model="item.description" 
-			  typeahead="comm as comm.sku for comm in commodities | filter:$viewValue | limitTo:10"
+			  typeahead="comm as comm.sku for comm in commodities | filter:$viewValue:commodityComparator | limitTo:10"
 			  typeahead-template-url="itemTemplate.html"
 			  typeahead-on-select="onCommoditySelected($item, $model, $label)"
 			  class="form-control input-large" 
