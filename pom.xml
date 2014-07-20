@@ -4,7 +4,7 @@
 	<modelVersion>4.0.0</modelVersion>
 	<groupId>com.novadart.novabill</groupId>
 	<artifactId>novabill</artifactId>
-	<version>3.0.2</version>
+	<version>3.0.3</version>
 	<packaging>pom</packaging>
 
 	<name>Novabill</name>
@@ -56,7 +56,7 @@
 	<modules>
 		<module>novabill-gwt-client</module>
 		<module>novabill-gwt-shared</module>
-		<module>novabill-android-client</module>
+        <module>novabill-android-client</module>
 		<module>novabill-android-shared</module>
 		<!-- <module>novabill-android-it</module> -->
 		<module>novabill-server</module>

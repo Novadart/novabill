@@ -134,21 +134,23 @@
                     | <a href="${tosUrl}">Termini di Servizio</a>
                 </p>
             </div>
-            <div class="col-md-4 col-sm-4">
-                <ul class="social-footer">
-                    <li class="datashare"><a class="btn btn-sm blue" href="${shareAskUrl}"><i class="fa fa-group"></i> Sei un Commercialista?</a></li>
-                </ul>
-                <!-- <ul class="social-footer">
-                    <li><a href="#"><i class="fa fa-facebook"></i></a></li>
-                    <li><a href="#"><i class="fa fa-google-plus"></i></a></li>
-                    <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
+            <div class="col-md-2 col-sm-2">
+                <ul class="social-footer" style="margin-top: 15px;">
+                    <li><a href="https://www.facebook.com/pages/Novabill/831539503531541" target="_blank"><i class="fa fa-facebook"></i></a></li>
+                    <li><a href="https://plus.google.com/102114996050047445767" target="_blank"><i class="fa fa-google-plus"></i></a></li>
+                    <!-- <li><a href="#"><i class="fa fa-dribbble"></i></a></li>
                     <li><a href="#"><i class="fa fa-linkedin"></i></a></li>
                     <li><a href="#"><i class="fa fa-twitter"></i></a></li>
                     <li><a href="#"><i class="fa fa-skype"></i></a></li>
                     <li><a href="#"><i class="fa fa-github"></i></a></li>
                     <li><a href="#"><i class="fa fa-youtube"></i></a></li>
-                    <li><a href="#"><i class="fa fa-dropbox"></i></a></li>
-                </ul> -->                
+                    <li><a href="#"><i class="fa fa-dropbox"></i></a></li> -->
+                </ul>                
+            </div>
+            <div class="col-md-2 col-sm-2">
+                <ul class="social-footer">
+                    <li class="datashare"><a class="btn btn-sm blue" href="${shareAskUrl}"><i class="fa fa-group"></i> Sei un Commercialista?</a></li>
+                </ul>
             </div>
         </div>
     </div>
