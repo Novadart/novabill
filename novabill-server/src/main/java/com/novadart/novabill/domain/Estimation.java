@@ -6,11 +6,14 @@ import java.util.List;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Table;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +25,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
+@javax.persistence.Table(name = "estimation")
+@Table(appliesTo = "estimation",
+	indexes = @Index(columnNames = "business", name = "estimation_business_fkey_index"))
 public class Estimation extends AccountingDocument implements Serializable {
 	
 	private static final long serialVersionUID = 8020837636815686509L;
@@ -37,6 +43,7 @@ public class Estimation extends AccountingDocument implements Serializable {
 	private boolean incognito = false;
 
 	@ManyToOne
+	@JoinColumn(name = "business")
     protected Business business;
 
     @ManyToOne

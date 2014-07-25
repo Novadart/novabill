@@ -11,6 +11,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
@@ -19,6 +20,8 @@ import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Table;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,6 +39,9 @@ import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 @Configurable
 @Entity
 @PaymentDeltaNotNull
+@javax.persistence.Table(name = "payment_type")
+@Table(appliesTo = "payment_type",
+	indexes = @Index(columnNames = "business", name = "payment_type_business_fkey_index"))
 public class PaymentType {
 	
 	@Size(max = 255)
@@ -57,6 +63,7 @@ public class PaymentType {
 	@Column(columnDefinition = "integer default 0")
 	private Integer secondaryPaymentDateDelta;
 	
+	@JoinColumn(name = "business")
 	@ManyToOne
 	private Business business;
 	

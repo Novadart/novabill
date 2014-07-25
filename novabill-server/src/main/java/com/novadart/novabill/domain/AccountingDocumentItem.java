@@ -10,12 +10,15 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Table;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
@@ -30,6 +33,9 @@ import com.novadart.novabill.annotation.Trimmed;
 
 @Configurable
 @Entity
+@javax.persistence.Table(name = "accounting_document_item")
+@Table(appliesTo = "accounting_document_item",
+		indexes = @Index(columnNames = "accounting_document", name = "accoutinting_document_fkey_index"))
 public class AccountingDocumentItem implements Serializable {
 	
 	private static final long serialVersionUID = -1072295560395962907L;
@@ -63,6 +69,7 @@ public class AccountingDocumentItem implements Serializable {
 	@Trimmed
 	private String sku;
     
+    @JoinColumn(name = "accounting_document")
     @ManyToOne
     private AccountingDocument accountingDocument;
     

@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.TypedQuery;
@@ -16,6 +17,8 @@ import javax.validation.constraints.NotNull;
 
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Table;
 import org.hibernate.annotations.Type;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,6 +30,9 @@ import com.novadart.novabill.shared.client.data.OperationType;
 @Entity
 @Configurable
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
+@javax.persistence.Table(name = "log_record")
+@Table(appliesTo = "log_record",
+	indexes = @Index(columnNames = {"business", "time"}, name = "log_record_business_fkey_index"))
 public class LogRecord {
 	
 	@NotNull
@@ -38,12 +44,14 @@ public class LogRecord {
 	@NotNull
 	private Long entityID;
 	
+	@Column(name = "time")
 	@NotNull
 	private Long time;
 	
 	@Type(type = "text")
 	private String details;
 	
+	@JoinColumn(name = "business")
 	@ManyToOne
 	private Business business;
 	

@@ -9,10 +9,13 @@ import javax.persistence.AttributeOverrides;
 import javax.persistence.Column;
 import javax.persistence.Embedded;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.validation.Valid;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Table;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -23,6 +26,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Configurable
 @Entity
+@javax.persistence.Table(name = "transport_document")
+@Table(appliesTo = "transport_document",
+	indexes = @Index(columnNames = "business", name = "transport_document_business_fkey_index"))
 public class TransportDocument extends AccountingDocument implements Serializable {
 
 	private static final long serialVersionUID = 9178463460405596881L;
@@ -63,6 +69,7 @@ public class TransportDocument extends AccountingDocument implements Serializabl
 	private String appearanceOfTheGoods;
 	
 	@ManyToOne
+	@JoinColumn(name = "business")
     protected Business business;
 
     @ManyToOne

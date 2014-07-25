@@ -14,6 +14,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
@@ -24,6 +25,8 @@ import javax.validation.constraints.Size;
 import org.apache.solr.analysis.ASCIIFoldingFilterFactory;
 import org.apache.solr.analysis.LowerCaseFilterFactory;
 import org.apache.solr.analysis.StandardTokenizerFactory;
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Table;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Field;
@@ -53,6 +56,9 @@ filters = {
 })
 @Configurable
 @Entity
+@javax.persistence.Table(name = "commodity")
+@Table(appliesTo = "commodity",
+	indexes = @Index(columnNames = "business", name = "commodity_business_fkey_index"))
 public class Commodity implements Serializable {
 	
 	private static final long serialVersionUID = 4265058605330997015L;
@@ -74,6 +80,7 @@ public class Commodity implements Serializable {
     private BigDecimal tax;
 
     @ManyToOne
+    @JoinColumn(name = "business")
     private Business business;
     
     private boolean service;

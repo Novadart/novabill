@@ -12,6 +12,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
@@ -20,6 +21,7 @@ import javax.persistence.UniqueConstraint;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Index;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
@@ -29,7 +31,9 @@ import com.novadart.novabill.shared.client.data.PriceListConstants;
 
 @Configurable
 @Entity
-@Table(uniqueConstraints = @UniqueConstraint(columnNames = {"name", "id"}))
+@Table(name = "price_list", uniqueConstraints = @UniqueConstraint(columnNames = {"name", "id"}))
+@org.hibernate.annotations.Table(appliesTo = "price_list",
+	indexes = @Index(columnNames = "business", name = "price_list_business_fkey_index"))
 public class PriceList {
 	
 	@Size(max = 255)
@@ -37,6 +41,7 @@ public class PriceList {
 	@Trimmed
 	private String name;
 	
+	@JoinColumn(name = "business")
 	@ManyToOne
 	private Business business;
 	

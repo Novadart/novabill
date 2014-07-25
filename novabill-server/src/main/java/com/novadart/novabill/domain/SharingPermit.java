@@ -8,6 +8,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Table;
@@ -18,6 +19,7 @@ import javax.validation.constraints.Size;
 
 import org.apache.commons.lang3.builder.ReflectionToStringBuilder;
 import org.apache.commons.lang3.builder.ToStringStyle;
+import org.hibernate.annotations.Index;
 import org.hibernate.validator.constraints.Email;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +29,9 @@ import com.novadart.novabill.annotation.Trimmed;
 
 @Entity
 @Configurable
-@Table(uniqueConstraints = {@UniqueConstraint(columnNames = {"email", "business"})})
+@Table(name = "sharing_permit", uniqueConstraints = {@UniqueConstraint(columnNames = {"email", "business"})})
+@org.hibernate.annotations.Table(appliesTo = "sharing_permit",
+	indexes = @Index(columnNames = "business", name = "sharing_permit_business_fkey_index"))
 @SharingPermitEmailBusinessUnique
 public class SharingPermit {
 
@@ -42,6 +46,7 @@ public class SharingPermit {
 	
 	private Long createdOn = System.currentTimeMillis();
 	
+	@JoinColumn(name = "business")
 	@ManyToOne
 	private Business business;
 	

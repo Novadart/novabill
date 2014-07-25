@@ -9,11 +9,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Table;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +25,9 @@ import com.novadart.novabill.annotation.Trimmed;
 
 @Configurable
 @Entity
+@javax.persistence.Table(name = "client_address")
+@Table(appliesTo = "client_address", 
+	indexes = @Index(columnNames = "client", name = "client_address_fkey_index"))
 public class ClientAddress implements Serializable {
 
 	private static final long serialVersionUID = 122436824066012394L;
@@ -58,6 +64,7 @@ public class ClientAddress implements Serializable {
 	@Trimmed
 	private String country;
 
+	@JoinColumn(name = "client")
 	@ManyToOne
 	private Client client;
 	
