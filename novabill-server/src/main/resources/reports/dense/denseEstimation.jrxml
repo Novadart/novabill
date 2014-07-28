@@ -88,6 +88,7 @@
 	<field name="document.toEndpoint.country" class="java.lang.String"/>
 	<field name="document.toEndpoint.companyName" class="java.lang.String"/>
 	<field name="document.business.settings.estimationFooterNote" class="java.lang.String"/>
+	<field name="document.business" class="com.novadart.novabill.domain.Business"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -580,8 +581,8 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 	<pageFooter>
 		<band height="59" splitType="Stretch">
 			<textField>
-				<reportElement uuid="5fe4b5b6-f4e2-49f8-9b76-8531e768d6cf" x="140" y="47" width="274" height="12" forecolor="#646464">
-					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
+				<reportElement uuid="5fe4b5b6-f4e2-49f8-9b76-8531e768d6cf" x="140" y="45" width="274" height="12" forecolor="#646464">
+					<printWhenExpression><![CDATA[com.novadart.novabill.report.ReportUtils.isFreeUser($F{document.business})]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font size="8"/>

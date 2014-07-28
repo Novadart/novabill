@@ -77,6 +77,7 @@
 	<field name="document.business.email" class="java.lang.String"/>
 	<field name="document.business.web" class="java.lang.String"/>
 	<field name="document.business.settings.invoiceFooterNote" class="java.lang.String"/>
+	<field name="document.business" class="com.novadart.novabill.domain.Business"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -512,7 +513,7 @@
 		<band height="60" splitType="Stretch">
 			<textField>
 				<reportElement uuid="6fad50e0-0d89-42c7-a5bd-93a45ee5966e" x="140" y="45" width="274" height="12" forecolor="#646464">
-					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
+					<printWhenExpression><![CDATA[com.novadart.novabill.report.ReportUtils.isFreeUser($F{document.business})]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font fontName="Open Sans Light" size="8"/>

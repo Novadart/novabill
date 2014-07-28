@@ -5,6 +5,7 @@ import java.math.BigDecimal;
 import java.text.DecimalFormat;
 import java.text.NumberFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -17,6 +18,7 @@ import org.apache.lucene.util.Version;
 
 import com.google.common.base.Joiner;
 import com.google.common.base.Strings;
+import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.TransportDocument;
 
 public class ReportUtils {
@@ -79,6 +81,11 @@ public class ReportUtils {
 	
 	public static String cutFileName(String fileName){
 		return fileName.length() <= FILENAME_MAX_LENGTH ? fileName : fileName.substring(0, FILENAME_MAX_LENGTH);
+	}
+	
+	public static boolean isFreeUser(Business business) {
+		Long premiumExpirationTime = business.getSettings().getNonFreeAccountExpirationTime();
+		return premiumExpirationTime == null || premiumExpirationTime < new Date().getTime();
 	}
 
 }

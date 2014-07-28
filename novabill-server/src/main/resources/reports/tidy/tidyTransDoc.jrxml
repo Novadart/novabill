@@ -95,6 +95,7 @@
 	<field name="document.totalWeight" class="java.lang.String"/>
 	<field name="document.appearanceOfTheGoods" class="java.lang.String"/>
 	<field name="document.business.settings.transportDocumentFooterNote" class="java.lang.String"/>
+	<field name="document.business" class="com.novadart.novabill.domain.Business"/>
 	<background>
 		<band splitType="Stretch"/>
 	</background>
@@ -509,7 +510,7 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 		<band height="60" splitType="Stretch">
 			<textField>
 				<reportElement uuid="d1a3a801-bbe3-4ef0-ad74-a0c81e880529" x="140" y="45" width="274" height="12" forecolor="#646464">
-					<printWhenExpression><![CDATA[$F{document.client.id}!=37]]></printWhenExpression>
+					<printWhenExpression><![CDATA[com.novadart.novabill.report.ReportUtils.isFreeUser($F{document.business})]]></printWhenExpression>
 				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font fontName="Open Sans Light" size="8"/>
@@ -581,7 +582,9 @@ com.novadart.novabill.report.ReportUtils.transformIfNotBlank("%s", $F{document.t
 				</graphicElement>
 			</line>
 			<textField>
-				<reportElement uuid="337f39a5-f5d4-4e61-8912-88074b32d6f5" x="140" y="98" width="274" height="12" forecolor="#646464"/>
+				<reportElement uuid="337f39a5-f5d4-4e61-8912-88074b32d6f5" x="140" y="98" width="274" height="12" forecolor="#646464">
+					<printWhenExpression><![CDATA[com.novadart.novabill.report.ReportUtils.isFreeUser($F{document.business})]]></printWhenExpression>
+				</reportElement>
 				<textElement textAlignment="Center" markup="html">
 					<font fontName="Open Sans Light" size="8"/>
 				</textElement>
