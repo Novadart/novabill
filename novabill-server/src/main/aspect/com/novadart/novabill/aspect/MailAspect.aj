@@ -69,4 +69,8 @@ privileged aspect MailAspect {
 		return sendMessage(new String[]{to}, null, null, subject, model, templateLocation, true, attachment, attachmentName);
 	}
 	
+	public boolean MailSender.sendMessage(String to, String subject, Map<String, Object> model, String templateLocation, boolean retry){
+		return sendMessage(new String[]{to}, null, null, subject, model, templateLocation, retry, null, null);
+	}
+	
 }
