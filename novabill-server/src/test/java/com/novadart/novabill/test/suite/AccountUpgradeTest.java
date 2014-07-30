@@ -48,6 +48,7 @@ import com.novadart.novabill.service.periodic.PremiumDisablerService;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.service.web.InvoiceService;
 import com.novadart.novabill.service.web.PremiumEnablerService;
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.NotificationType;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
@@ -191,6 +192,7 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 	@Test
 	public void disableExpiredAccountsTest(){
 		Business business = Business.findBusiness(authenticatedPrincipal.getBusiness().getId());
+		business.getSettings().setDefaultLayoutType(LayoutType.TIDY);
 		business.getSettings().setNonFreeAccountExpirationTime(System.currentTimeMillis() - 100); //set in past
 		business.flush();
 		
@@ -208,6 +210,7 @@ public class AccountUpgradeTest extends AuthenticatedTest {
 		business = Business.findBusiness(business.getId());
 		assertEquals(1, business.getNotifications().size());
 		assertEquals(NotificationType.PREMIUM_DOWNGRADE, business.getNotifications().iterator().next().getType());
+		assertEquals(LayoutType.DENSE, business.getSettings().getDefaultLayoutType());
 	}
 	
 	
