@@ -46,7 +46,7 @@
                             <form:password path="password" cssClass="form-control placeholder-no-fix password" autocomplete="off" 
                                 id="register_password" placeholder="Password"
                                 data-toggle="popover" data-placement="left" 
-                                data-content="La password deve essere lunga almeno 8 caratteri.<br><br>La password dovrebbe contenere almeno un carattere maiuscolo, un carattere minuscolo, un numero e un carattere speciale come : , / % $ ! . # @ *<br>Scegliere una buona password è fondamentale per la sicurezza dei tuoi dati."/>
+                                data-content="La password deve essere lunga almeno 8 caratteri.<br><br><small style='font-style:italic;'><b>Consiglio</b> - per una password sicura includi:<ul><li>caratteri sia maiuscoli che minuscoli</li><li>almeno un numero</li><li>almeno un carattere speciale come : , / % $ ! . # @ *</li></ul></small>"/>
                             <span class="text-danger"><form:errors path="password" /> </span>
                         </div>
                     </div>
