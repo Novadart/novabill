@@ -17,6 +17,7 @@ import com.novadart.novabill.domain.Business;
 import com.novadart.novabill.domain.Notification;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
+import com.novadart.novabill.shared.client.data.LayoutType;
 import com.novadart.novabill.shared.client.dto.NotificationType;
 
 
@@ -82,6 +83,7 @@ public class PremiumDisablerService implements PeriodicService {
 		principal.getGrantedRoles().remove(RoleType.ROLE_BUSINESS_PREMIUM);
 		principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
 		principal.getBusiness().getSettings().setNonFreeAccountExpirationTime(null);
+		principal.getBusiness().getSettings().setDefaultLayoutType(LayoutType.DENSE);
 	}
 
 }

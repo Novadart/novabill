@@ -26,7 +26,9 @@ privileged aspect PremiumUpgradeAspect extends AbstractLogEventEmailSenderAspect
 		call(private void com.novadart.novabill.paypal.OneTimePaymentIPNHandlerService.handleError(..)) && args(email, message);
 	
 	after(Business business, int numberOfMonths) returning: upgrade(business, numberOfMonths){
-		handleEvent(LOGGER, String.format("Account upgrade for %d months", numberOfMonths), business.getEmail(), new Date(System.currentTimeMillis()), null);
+		Map<String, Object> vars = new HashMap<>();
+		vars.put("VatID", business.getVatID());
+		handleEvent(LOGGER, String.format("Account upgrade for %d months", numberOfMonths), business.getEmail(), new Date(System.currentTimeMillis()), vars);
 	}
 	
 	after() throwing(PremiumUpgradeException ex): premiumUpgradeError(){
@@ -36,6 +38,7 @@ privileged aspect PremiumUpgradeAspect extends AbstractLogEventEmailSenderAspect
 			vars.put("Payment platform", ex.getPaymentPlatform());
 			vars.put("Transaction id", ex.getTransactionID());
 			vars.put("Username", ex.getUsername());
+			vars.put("VatID", ex.getVatID());
 			handleEvent(LOGGER, "Premium upgrade error", "N/A", new Date(System.currentTimeMillis()), vars);
 		}
 	}

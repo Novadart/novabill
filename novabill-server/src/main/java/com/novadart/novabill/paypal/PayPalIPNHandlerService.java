@@ -41,13 +41,14 @@ public abstract class PayPalIPNHandlerService {
 			return;
 		String email = parametersMap.get(CUSTOM);
 		Business business = principalDetailsService.loadUserByUsername(email).getBusiness();
-		premiumEnablerService.enablePremiumForNMonths(business, paymentPlans.getPayPalPaymentPlanDescriptor(parametersMap.get(ITEM_NAME)).getPayedPeriodInMonths());
 		try {
+			premiumEnablerService.enablePremiumForNMonths(business, paymentPlans.getPayPalPaymentPlanDescriptor(parametersMap.get(ITEM_NAME)).getPayedPeriodInMonths());
 			premiumEnablerService.notifyAndInvoiceBusiness(business, paymentPlans.getPayPalPaymentPlanDescriptor(parametersMap.get(ITEM_NAME)).getItemName(), email);
 		} catch (PremiumUpgradeException e) {
 			e.setUsername(email);
 			e.setTransactionID(parametersMap.get(TRANSACTION_ID));
 			e.setPaymentPlatform(PAYPAL);
+			e.setVatID(business.getVatID());
 			throw e;
 		}
 		postProcess(parametersMap);

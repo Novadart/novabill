@@ -48,8 +48,8 @@ public class EmailPasswordHolderValidator {
 			errors.rejectValue("password", "registration.password.lenght", new Object[]{MIN_PASSWORD_LENGTH, MAX_PASSWORD_LENGTH}, null);
 		if(!StringUtils.equals(emailPasswordHolder.getPassword(), emailPasswordHolder.getConfirmPassword()))				
 			errors.rejectValue("confirmPassword", "registration.password.mismatch");
-		if(!isPasswordStrong(emailPasswordHolder.getPassword()))
-			errors.rejectValue("password", "registration.password.strength");
+		//if(!isPasswordStrong(emailPasswordHolder.getPassword()))
+		//	errors.rejectValue("password", "registration.password.strength");
 	}
 
 }
