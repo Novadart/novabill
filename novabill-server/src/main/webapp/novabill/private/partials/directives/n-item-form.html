@@ -40,26 +40,40 @@
 		<div class="form-group">
 			<label for="description">{{'DESCRIPTION' | translate}} *</label>
 			<textarea
+			  ng-if="PREMIUM"
+              n-focus-if="focusedInput==='description'"
+              ng-focus="focusedInput='description'"
+              name="description"
+              id="description"
+              style="display: block;"
+              maxlength="500"
+              ng-show="selectedCommodity === null"
+              ng-model="item.description" 
+              typeahead="comm as comm.sku for comm in commodities | filter:$viewValue:commodityComparator | limitTo:10"
+              typeahead-template-url="itemTemplate.html"
+              typeahead-on-select="onCommoditySelected($item, $model, $label)"
+              class="form-control input-large" 
+              id="description" required></textarea>
+			<textarea
+			  ng-if="!PREMIUM"
 			  n-focus-if="focusedInput==='description'"
 			  ng-focus="focusedInput='description'"
 			  name="description"
 			  id="description"
 			  style="display: block;"
 			  maxlength="500"
-			  ng-show="selectedCommodity === null"
 			  ng-model="item.description" 
-			  typeahead="comm as comm.sku for comm in commodities | filter:$viewValue:commodityComparator | limitTo:10"
-			  typeahead-template-url="itemTemplate.html"
-			  typeahead-on-select="onCommoditySelected($item, $model, $label)"
 			  class="form-control input-large" 
 			  id="description" required></textarea>
 		   <div ng-show="form.description.$dirty && form.description.$invalid">
                <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
            </div>
-		   <a class="btn btn-xs btn-primary" 
+		   <a class="btn btn-xs btn-primary"
+		       ng-if="PREMIUM"
 		       ng-click="openSelectCommodityDialog()"
 		       ng-show="selectedCommodity === null">{{'ADVANCED_SELECTION' | translate}}...</a>
 		   <div
+		       ng-if="PREMIUM"
 		       class="autocompletion-selected-commodity form-control-static input-large"
 		       ng-show="selectedCommodity !== null" 
 		       type="primary" >

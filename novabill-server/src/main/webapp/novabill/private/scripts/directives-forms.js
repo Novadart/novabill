@@ -22,6 +22,7 @@ angular.module('novabill.directives.forms',
 		              function($scope, nAjax, $element, nSelectCommodityDialog, $window, 
 		            		  nSorting, nRegExp, nCalc, $filter, nConstants){
 			var BatchDataFetcherUtils = nAjax.BatchDataFetcherUtils();
+			$scope.PREMIUM = nConstants.conf.premium;
 			$scope.pricelist = null;
 			$scope.commodities = null;
 			$scope.selectedCommodity = null;
