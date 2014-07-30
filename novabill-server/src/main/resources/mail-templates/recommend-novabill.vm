@@ -203,14 +203,14 @@
                                                 <h2 class="h2">Buongiorno</h2>
                                                 <br />
                                                 <div class="textdark">
-                                                    Ricevi questa email perché ${businessName} pensa che potresti essere interessato a conoscere e magari utilizzare Novabill.
+                                                    Ricevi questa email perché <strong>${businessName}</strong> utilizza il nostro servizio e pensa che potrebbe essere utile anche per te.
                                                     <br>
                                                     <br>
                                                     Novabill è un servizio online per la gestione della contabilità, studiato per piccole imprese e professionisti.<br>
                                                     Il nostro obiettivo è quello di fornire un servizio semplice, sicuro e robusto per gestire i tuoi documenti.
                                                     <br>
                                                     <br>
-                                                    Vieni a trovarci su <a target="_blank" href="https://www.novabill.it">www.novabill.it</a>
+                                                    Vieni a trovarci su <a target="_blank" href="https://www.novabill.it">www.novabill.it</a> e crea in pochi secondi un account gratuito.
                                                     <br>
                                                     <br>
                                                     Grazie<br> 
