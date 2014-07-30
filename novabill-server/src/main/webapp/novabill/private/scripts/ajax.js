@@ -258,6 +258,25 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 			);
 		},
 		
+		
+		
+		/*
+		 * Recommend novabill resource
+		 */
+		RecommendNovabill : function() {
+			return {
+				
+				email: function(params, successFn, failureFn){
+					$http({
+						method : 'POST',
+						url : baseUrl + 'recommend',
+						data : params.payload
+					}).success( successFn ).error( failureFn );
+				}
+				
+			};
+		},
+		
 
 
 		/*
@@ -298,25 +317,7 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 						}
 					}
 			);
-		},
-		
-		/*
-		 * Recommend novabill resource
-		 */
-		RecommendNovabill : function() {
-			return {
-				
-				email: function(params, successFn, failureFn){
-					$http({
-						method : 'POST',
-						url : baseUrl + 'recommend',
-						data : params.payload
-					}).success( successFn ).failure( failureFn );
-				}
-				
-				
-			};
 		}
-
+		
 	};
 }]);

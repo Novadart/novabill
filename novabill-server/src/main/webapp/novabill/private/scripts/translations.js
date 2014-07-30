@@ -212,6 +212,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		PROVINCE_PLACEHOLDER : 'esempio: Milano',
 		QUANTITY : 'Quantità',
 		RECENT_ACTIVITIES : 'Attività recenti',
+		RECOMMEND_NOVABILL : 'Raccomanda Novabill',
 		REMOVAL_QUESTION : 'Eliminare definitivamente {{data}}?',
 		REMOVE_LOGO : 'Rimuovi Logo',
 		SAVE_CHANGES : 'Salva Modifiche',
@@ -287,10 +288,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		WEBSITE_PLACEHOLDER : 'esempio: www.example.com',
 		WEIGHT : 'Peso (kg)',
 		WEIGHT_PLACEHOLDER : 'esempio: 2',
-		TOTAL_INVOICING : 'Fatturato',
-		RECOMMEND_NOVABILL : 'Recommend Novabill',
-		SEND_NOTIFICATION_SUCCESS : 'Notification send',
-		SEND_NOTIFICATION_FAILURE : 'Notification failed'
+		TOTAL_INVOICING : 'Fatturato'
 		
 	  });
 
