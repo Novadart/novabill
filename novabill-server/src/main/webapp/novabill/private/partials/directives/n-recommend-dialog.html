@@ -4,11 +4,10 @@
         <h4 class="modal-title">{{'RECOMMEND_NOVABILL' | translate}}</h4>
     </div>
     <div class="modal-body">
-        <n-premium-alert></n-premium-alert>
         <form name="form" role="form" novalidate>
             
             <div class="form-group" ng-class="{'has-error': form.toAddress.$dirty && form.toAddress.$invalid, 'has-success': form.toAddress.$dirty && form.toAddress.$valid}">
-                <label n-premium-check class="control-label" for="toAddress">{{'EMAIL_TO_ADDRESS' | translate}} *</label> 
+                <label n-premium-check class="control-label" for="toAddress">{{'EMAIL' | translate}} *</label> 
                 <input n-premium-check type="email" name="toAddress" maxlength="255" ng-model="$parent.data.to" class="form-control" placeholder="{{'EMAIL_PLACEHOLDER' | translate}}" required>
                 <div ng-show="form.toAddress.$dirty && form.toAddress.$invalid">
                     <span class="text-danger" ng-show="form.toAddress.$error.required">{{'VALIDATION_REQUIRED' | translate}}</span> 
@@ -19,7 +18,7 @@
     </div>
 
     <div class="modal-footer">
-        <button n-premium-check type="button" class="btn green" ng-disabled="form.$invalid" ng-click="save()">{{'CONTINUE' | translate}}</button>
+        <button type="button" class="btn green" ng-disabled="form.$invalid" ng-click="save()">{{'CONTINUE' | translate}}</button>
         <button type="button" class="btn" data-dismiss="modal" ng-click="cancel()">{{'CANCEL' | translate}}</button>
     </div>
 </div>

@@ -40,8 +40,9 @@ public class RecommendByEmailController {
 	public boolean recommendByEmail(@RequestBody RecommendByMailDTO recommendByMailDTO) throws ValidationException{
 		validator.validate(recommendByMailDTO);
 		Map<String, Object> templateVars = new HashMap<String, Object>();
-		templateVars.put("businessName", Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()).getName());
-		return sendMessage(recommendByMailDTO.getTo(), "Try Novabill", templateVars, EMAIL_TEMPLATE_LOCATION, false);
+		String businessName = Business.findBusiness(utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId()).getName();
+		templateVars.put("businessName", businessName);
+		return sendMessage(recommendByMailDTO.getTo(), businessName + " ti invita a provare Novabill", templateVars, EMAIL_TEMPLATE_LOCATION, false);
 	}
 
 }

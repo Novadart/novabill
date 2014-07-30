@@ -775,7 +775,7 @@ angular.module('novabill.directives.dialogs',
 
 
 /*
- * Send Email Dialog
+ * Recommend By Email Dialog
  */
 .factory('nRecommendByEmailDialog', ['nConstants', '$modal', function (nConstants, $modal){
 
@@ -784,7 +784,7 @@ angular.module('novabill.directives.dialogs',
 
 			return $modal.open({
 
-				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-send-email-dialog.html'),
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-recommend-dialog.html'),
 
 				controller: ['$scope', '$modalInstance', '$filter',
 				             function($scope, $modalInstance, $filter){
