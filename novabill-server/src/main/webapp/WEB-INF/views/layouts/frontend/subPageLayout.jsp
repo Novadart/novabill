@@ -90,6 +90,7 @@
     <script type="text/javascript" src="${frontendAssetsUrl}/plugins/back-to-top.js"></script>    
     <script src="${frontendAssetsUrl}/plugins/uniform/jquery.uniform.min.js" type="text/javascript" ></script>
     <script src="${frontendAssetsUrl}/plugins/iealert/iealert.min.js" type="text/javascript"></script>
+    <script src="${frontendAssetsUrl}/plugins/jquery.pwstrength.bootstrap/src/pwstrength.js" type="text/javascript"></script>
     <!-- END CORE PLUGINS -->
 
     <script>
