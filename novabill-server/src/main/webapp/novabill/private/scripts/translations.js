@@ -287,7 +287,10 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		WEBSITE_PLACEHOLDER : 'esempio: www.example.com',
 		WEIGHT : 'Peso (kg)',
 		WEIGHT_PLACEHOLDER : 'esempio: 2',
-		TOTAL_INVOICING : 'Fatturato'
+		TOTAL_INVOICING : 'Fatturato',
+		RECOMMEND_NOVABILL : 'Recommend Novabill',
+		SEND_NOTIFICATION_SUCCESS : 'Notification send',
+		SEND_NOTIFICATION_FAILURE : 'Notification failed'
 		
 	  });
 

@@ -777,6 +777,29 @@ angular.module('novabill.directives',
 }])
 
 
+.directive('nRecommendDialog', ['nConstants', function(nConstants) {
+	
+    return {
+    	templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-recommend-dialog.html'),
+		scope: {},
+		controller : ['$scope', function($scope){
+			$scope.recommendNovabill = function(){
+				var instance = nRecommendByEmailDialog.open();
+				instance.result.then(function(data){
+					var RecommendNovabill = nAjax.RecommendNovabill();
+					RecommendNovabill.email(data, function(){
+						nAlertDialog.open($filter('translate')('SEND_NOTIFICATION_SUCCESS'));
+						}, function(){
+							nAlertDialog.open($filter('translate')('SEND_NOTIFICATION_FAILURE'));
+						});
+				});
+			};
+		}],
+		restrict: 'E',
+		replace: true
+    };
+}])
+
 
 /*
  * Log Record Widget
