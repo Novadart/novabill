@@ -36,7 +36,7 @@
         <session-management session-fixation-protection="migrateSession">
             <concurrency-control max-sessions="100" expired-url="/login"/>
         </session-management>
-        <remember-me key="${mvn.rememberme.key}" token-validity-seconds="345600" data-source-ref="dataSource"/>
+        <remember-me key="${mvn.rememberme.key}" token-validity-seconds="604800" data-source-ref="dataSource"/>
         <csrf request-matcher-ref="csrfSecurityRequestMatcher"/>
     </http>
     <!-- Configure Authentication mechanism -->

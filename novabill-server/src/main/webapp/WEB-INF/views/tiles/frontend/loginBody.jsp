@@ -45,7 +45,7 @@
 
                     <div class="row margin-top-20">
                         <div class="col-md-6 col-sm-6">
-                            <div class="checkbox-list"><label class="checkbox"><input type="checkbox" name="_spring_security_remember_me"> Ricordami<br/><span style="font-size: small;">(selezionare solo se il pc è proprio)</span></label></div>                        
+                            <div class="checkbox-list"><label class="checkbox"><input type="checkbox" name="_spring_security_remember_me"> Ricordami per 7 giorni<br/><span style="font-size: small;">(selezionare solo se il pc è proprio)</span></label></div>                        
                         </div>
                         <div class="col-md-6 col-sm-6">
                             <button type="submit" class="btn theme-btn pull-right">Invia</button>                        
