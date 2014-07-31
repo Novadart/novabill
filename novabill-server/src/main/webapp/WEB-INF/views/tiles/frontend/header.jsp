@@ -6,6 +6,7 @@
 <spring:url var="indexPageUrl" value="/" />
 <spring:url var="logoutUrl" value="/resources/logout" />
 <spring:url var="aboutPageUrl" value="/about" />
+<spring:url var="featuresPageUrl" value="/features" />
 <spring:url var="securityPageUrl" value="/security" />
 <spring:url var="pricesPageUrl" value="/prices" />
 <spring:url var="privatePageUrl" value="/private/" />
@@ -74,6 +75,7 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li class="<%=PAGES.HOME.equals(activePage) ? "active" : "" %>"><a href="${indexPageUrl}">Home</a></li>
+                    <li class="<%=PAGES.FEATURES.equals(activePage) ? "active" : "" %>"><a href="${featuresPageUrl}">Funzionalità</a></li>
                     <li class="<%=PAGES.PRICES.equals(activePage) ? "active" : "" %>"><a href="${pricesPageUrl}">Quanto costa?</a></li>
                     <li class="<%=PAGES.ABOUT.equals(activePage) ? "active" : "" %>"><a href="${aboutPageUrl}">Chi Siamo</a></li>
                     <sec:authorize access="isAuthenticated()">
