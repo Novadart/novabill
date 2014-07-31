@@ -29,7 +29,7 @@ public aspect ValidationErrorAspect extends AbstractLogEventEmailSenderAspect {
 			Map<String, Object> vars = new HashMap<String, Object>();
 			vars.put("object", ex.getObjectRepr());
 			vars.put("errors", String.format("{%s}", StringUtils.join(ex.getErrors(), ", ")));
-			String principal = utilsService.isAuthenticated()? utilsService.getAuthenticatedPrincipalDetails().getUsername(): "N/A" ;
+			String principal = utilsService.getAuthenticatedPrincipalDetails().getUsername();
 			handleEvent(LOGGER, "JSR-303 validation error", principal, new Date(System.currentTimeMillis()), vars);
 		}
 	}
