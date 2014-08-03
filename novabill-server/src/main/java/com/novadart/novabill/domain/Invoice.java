@@ -9,11 +9,14 @@ import javax.persistence.CascadeType;
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Table;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -28,6 +31,9 @@ import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 
 @Configurable
 @Entity
+@javax.persistence.Table(name = "invoice")
+@Table(appliesTo = "invoice",
+	indexes = @Index(columnNames = "business", name = "invoice_business_fkey_index"))
 public class Invoice extends AbstractInvoice implements Serializable {
 	
 	private static final long serialVersionUID = 3369941491294470750L;
@@ -54,6 +60,7 @@ public class Invoice extends AbstractInvoice implements Serializable {
 	private boolean emailedToClient = false;
 
     @ManyToOne
+    @JoinColumn(name = "business")
     protected Business business;
 
     @ManyToOne

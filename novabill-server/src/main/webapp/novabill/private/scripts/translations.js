@@ -212,6 +212,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		PROVINCE_PLACEHOLDER : 'esempio: Milano',
 		QUANTITY : 'Quantità',
 		RECENT_ACTIVITIES : 'Attività recenti',
+		RECOMMEND_NOVABILL : 'Raccomanda Novabill',
 		REMOVAL_QUESTION : 'Eliminare definitivamente {{data}}?',
 		REMOVE_LOGO : 'Rimuovi Logo',
 		SAVE_CHANGES : 'Salva Modifiche',

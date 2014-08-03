@@ -81,6 +81,7 @@
 	
 	<definition name="private.changePassword" extends="private.layout">
         <put-attribute name="body" value="/WEB-INF/views/tiles/private/changePasswordBody.jsp" />
+        <put-attribute name="javascriptExtra" value="/WEB-INF/views/tiles/private/changePasswordExtraJS.jsp" />
     </definition>
     
 	<definition name="private.deleteAccount" extends="private.layout">

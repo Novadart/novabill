@@ -150,7 +150,7 @@ angular.module('novabill.constants', [])
 
 				htmlFragmentUrl : this.url.htmlFragmentUrl,
 
-				paymentList : function(){ return baseConf.paymentsBaseUrl + '#/'; },
+				paymentList : function(){ return baseConf.paymentsBaseUrl + '#/?tab=paymenttypes'; },
 
 				priceListList : function(){ return baseConf.priceListsBaseUrl + '#/'; },
 				priceListDetails : function(priceListId){ return baseConf.priceListsBaseUrl + '#/details/' + priceListId; },

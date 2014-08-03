@@ -44,9 +44,9 @@
                         <div class="input-icon">
                             <i class="fa fa-lock"></i> 
                             <form:password path="password" cssClass="form-control placeholder-no-fix password" autocomplete="off" 
-                                id="register_password" placeholder="Password" 
+                                id="register_password" placeholder="Password"
                                 data-toggle="popover" data-placement="left" 
-                                data-content="La password deve contenere almeno un carattere maiuscolo, un carattere minuscolo, un numero e un carattere speciale come : , / % $ ! . # @ *<br><br>Scegliere una buona password è fondamentale per la sicurezza dei tuoi dati."/>
+                                data-content="La password deve essere lunga almeno 8 caratteri.<br><br><small style='font-style:italic;'><b>Consiglio</b> - per una password sicura includi:<ul><li>caratteri sia maiuscoli che minuscoli</li><li>almeno un numero</li><li>almeno un carattere speciale come : , / % $ ! . # @ *</li></ul></small>"/>
                             <span class="text-danger"><form:errors path="password" /> </span>
                         </div>
                     </div>
@@ -54,6 +54,30 @@
                     $(function(){
                         $('input.password').popover({
                             html : true
+                        });
+                        
+                        
+                        var initialized = false;
+                        var input = $("#register_password");
+
+                        input.keydown(function () {
+                            if (initialized === false) {
+                                // set base options
+                                input.pwstrength({
+                                    raisePower: 1.4,
+                                    minChar: 8,
+                                    verdicts: ["!!", "Ok ma debole", "Discretamente Sicura", "Abbastanza Sicura", "Sicura"],
+                                    scores: [17, 26, 40, 50, 60]
+                                });
+
+                                // add your own rule to calculate the password strength
+                                input.pwstrength("addRule", "demoRule", function (options, word, score) {
+                                    return word.match(/[a-z].[0-9]/) && score;
+                                }, 10, true);
+
+                                // set as initialized 
+                                initialized = true;
+                            }
                         });
                     });
                     </script>

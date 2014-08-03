@@ -50,7 +50,7 @@ notifica.</p>
 <ol>
     <li>L'utente utilizza Novabill "a proprio rischio e pericolo". Novabill è offerto "così com'è" e Novadart non offre alcuna garanzia sul corretto funzionamento
     del servizio e della sua raggiungibilità e disponibilità (uptime) nel tempo.</li>
-    <li>Non c'è un supporto tecnico ufficiale per Novabill, tuttavia gli utenti possono inviare le proprie domande a <a href="mailto:support@novabill.it">supporto@novabill.it</a>
+    <li>Non c'è un supporto tecnico ufficiale per Novabill, tuttavia gli utenti possono inviare le proprie domande a <a href="mailto:info@novabill.it">info@novabill.it</a>
     o utilizzare il modulo per l'invio di Feedback presente nelle pagine di Novabill.</li>
     <li>Non puoi modificare Novabill in alcun modo o rimuovere la sua associazione a Novadart</li>
     <li>Sebbene ci riserviamo il diritto di farlo, Novadart non ha alcun obbligo di rimuovere contenuto o account contenenti informazioni inappropriate, illegali o in qualsiasi
@@ -64,5 +64,5 @@ notifica.</p>
 </ol>
 
 <h2>Domande</h2>
-<p>Eventuali domande sui Termini di Servizio possono essere inviate a <a href="mailto:support@novabill.it">support@novabill.it</a>.</p>
+<p>Eventuali domande sui Termini di Servizio possono essere inviate a <a href="mailto:info@novabill.it">info@novabill.it</a>.</p>
 </div>

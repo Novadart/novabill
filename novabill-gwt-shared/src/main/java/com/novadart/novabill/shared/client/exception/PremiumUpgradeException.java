@@ -9,7 +9,8 @@ public class PremiumUpgradeException extends Exception {
 	private String transactionID;
 	
 	private String paymentPlatform;
-
+	
+	private String vatID;
 	
 	public PremiumUpgradeException() {
 		super();
@@ -41,6 +42,14 @@ public class PremiumUpgradeException extends Exception {
 
 	public void setPaymentPlatform(String paymentPlatform) {
 		this.paymentPlatform = paymentPlatform;
+	}
+	
+	public String getVatID() {
+		return vatID;
+	}
+
+	public void setVatID(String vatID) {
+		this.vatID = vatID;
 	}
 
 }

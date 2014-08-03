@@ -9,11 +9,14 @@ import javax.persistence.EntityManager;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.Size;
 
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Table;
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
@@ -22,6 +25,9 @@ import com.novadart.novabill.annotation.Trimmed;
 
 @Configurable
 @Entity
+@javax.persistence.Table(name = "transporter")
+@Table(appliesTo = "transporter",
+	indexes = @Index(columnNames = "business", name = "transporter_business_fkey_index"))
 public class Transporter implements Serializable {
 
 	private static final long serialVersionUID = -291082261687056423L;
@@ -36,6 +42,7 @@ public class Transporter implements Serializable {
 	@NotEmpty
 	private String description;
 
+	@JoinColumn(name = "business")
 	@ManyToOne
 	private Business business;
 	

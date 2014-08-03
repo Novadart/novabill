@@ -35,8 +35,14 @@
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/aboutBody.jsp" />
     </definition>
     
-    <definition name="frontend.security" extends="frontend.subPageLayout">
+    <!-- <definition name="frontend.security" extends="frontend.subPageLayout">
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/securityBody.jsp" />
+    </definition> -->
+    
+    <definition name="frontend.features" extends="frontend.subPageLayout">
+       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/featuresBody.jsp" />
+       <put-attribute name="cssExtra" value="/WEB-INF/views/tiles/frontend/featuresCss.jsp" />
+       <put-attribute name="javascriptExtra" value="/WEB-INF/views/tiles/frontend/featuresJs.jsp" />
     </definition>
     
     <definition name="frontend.prices" extends="frontend.subPageLayout">

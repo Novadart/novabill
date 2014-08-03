@@ -3,7 +3,11 @@ package com.novadart.novabill.domain;
 import java.io.Serializable;
 import java.util.List;
 import javax.persistence.Entity;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Table;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -14,11 +18,15 @@ import org.springframework.transaction.annotation.Transactional;
 
 @Entity
 @Configurable
+@javax.persistence.Table(name = "credit_note")
+@Table(appliesTo = "credit_note",
+	indexes = @Index(columnNames = "business", name = "credit_note_business_fkey_index"))
 public class CreditNote extends AbstractInvoice implements Serializable {
 
 	private static final long serialVersionUID = -6394611948337345685L;
 	
 	@ManyToOne
+	@JoinColumn(name = "business")
     protected Business business;
 
     @ManyToOne

@@ -774,6 +774,38 @@ angular.module('novabill.directives.dialogs',
 }])
 
 
+/*
+ * Recommend By Email Dialog
+ */
+.factory('nRecommendByEmailDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+	return {
+		open : function() {
+
+			return $modal.open({
+
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-recommend-dialog.html'),
+
+				controller: ['$scope', '$modalInstance', '$filter',
+				             function($scope, $modalInstance, $filter){
+					
+					$scope.data = {};
+					
+					$scope.save = function(){
+						$modalInstance.close({
+							payload : $scope.data
+						});
+					};
+
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+					};
+				}]
+			});
+		}
+	};
+}])
+
 
 /*
  * Exposing few dialogs used by GWT

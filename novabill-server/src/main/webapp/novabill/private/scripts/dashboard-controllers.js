@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('novabill.dashboard.controllers', 
-		['novabill.directives', 'novabill.constants', 'novabill.translations', 'novabill.ajax'])
+		['novabill.directives', 'novabill.directives.dialogs', 'novabill.constants', 'novabill.translations', 'novabill.ajax'])
 
 
 /**
  * DASHBOARD CONTROLLER
  */
-.controller('DashboardCtrl', ['$scope', 'nConstants', '$filter', 'nAjax', 
-                              function($scope, nConstants, $filter, nAjax){
+.controller('DashboardCtrl', ['$scope', 'nConstants', '$filter', 'nAjax', 'nRecommendByEmailDialog', 'nAlertDialog',
+                              function($scope, nConstants, $filter, nAjax, nRecommendByEmailDialog, nAlertDialog){
 
 	var Business = nAjax.Business();
 
@@ -114,7 +114,19 @@ angular.module('novabill.dashboard.controllers',
 			$scope.logRecords = $scope.logRecords.concat(loadedLogRecords.slice(currentIndex, currentIndex+PARTITION));
 		}
 	};
-
+	
+	$scope.recommendNovabill = function(){
+		var instance = nRecommendByEmailDialog.open();
+		instance.result.then(function(data){
+			var RecommendNovabill = nAjax.RecommendNovabill();
+			RecommendNovabill.email(data, function(){
+				nAlertDialog.open($filter('translate')('SEND_EMAIL_TO_CLIENT_SUCCESS'));
+			}, function(){
+				nAlertDialog.open($filter('translate')('SEND_EMAIL_TO_CLIENT_FAILURE'));
+			});
+		});
+	};
+	
 	Business.getStats(function(stats){
 		$scope.stats = stats;
 		loadedLogRecords = stats.logRecords;

@@ -14,12 +14,17 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Version;
 import javax.validation.constraints.NotNull;
 
+import org.hibernate.annotations.Index;
+import org.hibernate.annotations.Table;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
 
 @Entity
 @Configurable
+@javax.persistence.Table(name = "logo")
+@Table(appliesTo = "logo",
+	indexes = @Index(columnNames = "businessid", name = "logo_business_fkey_index"))
 public class Logo {
 	
 	public static enum LogoFormat{
@@ -39,6 +44,7 @@ public class Logo {
     private byte[] data;
     
     @NotNull
+    @Column(name = "businessid")
     private Long businessID;
 
     public static Logo getLogoByBusinessID(Long businessID){

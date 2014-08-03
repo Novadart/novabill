@@ -777,7 +777,6 @@ angular.module('novabill.directives',
 }])
 
 
-
 /*
  * Log Record Widget
  */

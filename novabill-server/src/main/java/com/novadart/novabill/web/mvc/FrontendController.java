@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 public class FrontendController {
 
 	public static enum PAGES {
-		HOME, PRICES, ABOUT, SECURITY
+		HOME, PRICES, ABOUT, SECURITY, FEATURES
 	}
 	
 	@RequestMapping(value = Urls.PUBLIC_HOME, method = RequestMethod.GET)
@@ -23,6 +23,13 @@ public class FrontendController {
 		model.addAttribute("activePage", PAGES.ABOUT);
 		model.addAttribute("pageName", "Chi Siamo");
 		return "frontend.about";
+	}
+	
+	@RequestMapping(value = Urls.PUBLIC_FEATURES, method = RequestMethod.GET)
+	public String features(Model model){
+		model.addAttribute("activePage", PAGES.FEATURES);
+		model.addAttribute("pageName", "Funzionalità");
+		return "frontend.features";
 	}
 
 	@RequestMapping(value = Urls.PUBLIC_PRICES, method = RequestMethod.GET)

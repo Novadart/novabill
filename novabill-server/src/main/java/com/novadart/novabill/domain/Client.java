@@ -16,6 +16,7 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 import javax.persistence.OneToMany;
 import javax.persistence.PersistenceContext;
@@ -29,6 +30,8 @@ import org.apache.solr.analysis.LowerCaseFilterFactory;
 import org.apache.solr.analysis.StandardTokenizerFactory;
 import org.hibernate.annotations.Cache;
 import org.hibernate.annotations.CacheConcurrencyStrategy;
+import org.hibernate.annotations.Table;
+import org.hibernate.annotations.Index;
 import org.hibernate.search.annotations.Analyzer;
 import org.hibernate.search.annotations.AnalyzerDef;
 import org.hibernate.search.annotations.Field;
@@ -68,6 +71,9 @@ import com.novadart.utils.fts.TermValueFilterFactory;
 @Entity
 @Cache(usage = CacheConcurrencyStrategy.READ_WRITE)
 @TaxFieldsNotNull(groups = {HeavyClient.class})
+@javax.persistence.Table(name = "client")
+@Table(appliesTo = "client",
+	indexes = @Index(columnNames = "business", name = "client_business_fkey_index"))
 public class Client implements Serializable, Taxable {
 	
 	private static final long serialVersionUID = 8383909226336873374L;
@@ -179,6 +185,7 @@ public class Client implements Serializable, Taxable {
     
     @ManyToOne
     @IndexedEmbedded
+    @JoinColumn(name = "business")
     private Business business;
     
     public List<Invoice> getSortedInvoices(){
