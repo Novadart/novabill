@@ -229,6 +229,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		Business business = Business.findBusiness(businessID);
 		String from = String.format("%s via Novabill <%s>", business.getName(), this.from);
 		templateVars.put("invoiceUrl", url);
+		templateVars.put("businessReplyTo", emailDTO.getReplyTo());
 		if(sendMessage(emailDTO.getTo(), from, emailDTO.getReplyTo(), emailDTO.getSubject(), templateVars, EMAIL_TEMPLATE_LOCATION, false)){
 			Invoice invoice = Invoice.findInvoice(id);
 			invoice.setEmailedToClient(true);

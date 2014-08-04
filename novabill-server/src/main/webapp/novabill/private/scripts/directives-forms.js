@@ -31,10 +31,12 @@ angular.module('novabill.directives.forms',
 			};
 			$scope.explicitDiscountCheck = $scope.explicitDiscount !== 'false';
 			
-			BatchDataFetcherUtils.fetchSelectCommodityForDocItemOpData({clientID : $scope.clientId}, function(result){
-				$scope.pricelist = result.first;
-				$scope.commodities = $scope.pricelist.commodities.sort( nSorting.descriptionComparator );
-			});
+			if($scope.PREMIUM) {
+				BatchDataFetcherUtils.fetchSelectCommodityForDocItemOpData({clientID : $scope.clientId}, function(result){
+					$scope.pricelist = result.first;
+					$scope.commodities = $scope.pricelist.commodities.sort( nSorting.descriptionComparator );
+				});
+			}
 			
 			$scope.isReservedWord = function(str){
 				return nRegExp.reserved_word.test(str);
