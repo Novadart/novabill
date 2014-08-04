@@ -6,6 +6,10 @@
 <spring:url var="homeUrl" value="/" />
 <spring:url var="invoicePdfUrl" value="${pdfUrl}" />
 
+<script type="text/javascript">
+window.skipIEAlert = true;
+</script>
+
 <div class="page-container">
   
         <!-- BEGIN BREADCRUMBS -->   
