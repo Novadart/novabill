@@ -51,7 +51,7 @@ server {
         expires -1;
     }
     
-    # Needed because IE fails to download a PDF otherwise
+    # Needed otherwise PDF download fails in IE
     location /pdf/ {
         proxy_pass          http://localhost:8080/pdf/;
         proxy_set_header    X-Forwarded-Host $host;
