@@ -39,7 +39,7 @@
                         <br>
                         <br>
                         <br>
-                        <a class="btn btn-success btn-lg" href="${invoicePdfUrl}">Scarica la Fattura</a>
+                        <a class="btn btn-success btn-lg"  href="${invoicePdfUrl}">Scarica la Fattura</a>
                         <%} else { %>
                         <br>
                         <p class="alert alert-warning">
