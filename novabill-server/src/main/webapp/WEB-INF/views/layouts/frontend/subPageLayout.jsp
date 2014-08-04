@@ -121,7 +121,7 @@
 	       App.init();
 	       App.initUniform();
 	       
-	       if(!$.cookie('ie_alert_shown_public')){
+	       if(!window.skipIEAlert && !$.cookie('ie_alert_shown_public')){
 		       $("body").iealert({
 		    	   support:"ie8",
 		           title:"Il tuo browser è vecchio e insicuro e non è supportato da Novabill",
