@@ -34,7 +34,7 @@ public class ForgotPasswordController {
 	
 	private static final String DEFAULT_PASSWORD = "password";
 	
-	private static final Long MILLISECS_PER_HOUR = 60 * 1000l;
+	private static final Long MILLISECS_PER_HOUR = 3_600_000l;
 	
 	@Autowired
 	private ForgotPasswordValidator validator;

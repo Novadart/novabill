@@ -27,7 +27,10 @@
         <div class="container " style="margin-bottom: 150px; margin-top: 150px;"> <!-- margin-bottom-40 -->
           <div class="row">
             <div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3 alert alert-info">
-                Controlla la tua casella email per completare la registrazione e attivare l'account. Grazie.
+                Controlla la tua casella email per completare la registrazione e attivare l'account.<br/><br/>
+                Se l'email non dovesse arrivare entro qualche minuto, ti consigliamo di verificare se il messaggio non sia stato scartato accidentalmente dal tuo client di posta.
+                <br/><br/>
+                Grazie e buon lavoro
             </div>
           </div>
         </div>
