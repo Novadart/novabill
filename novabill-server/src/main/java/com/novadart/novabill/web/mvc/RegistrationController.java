@@ -43,7 +43,7 @@ import com.novadart.novabill.service.validator.RegistrationValidator;
 @MailMixin
 public class RegistrationController{
 	
-	private static final Long MILLISECS_PER_HOUR = 60 * 1000l;
+	private static final Long MILLISECS_PER_HOUR = 3600 * 1000L;
 	
 	@Autowired
 	private RegistrationValidator validator;
