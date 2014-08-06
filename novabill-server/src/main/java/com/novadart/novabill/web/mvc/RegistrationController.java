@@ -43,7 +43,7 @@ import com.novadart.novabill.service.validator.RegistrationValidator;
 @MailMixin
 public class RegistrationController{
 	
-	private static final Long MILLISECS_PER_HOUR = 60 * 1000l;
+	private static final Long MILLISECS_PER_HOUR = 3_600_000l;
 	
 	@Autowired
 	private RegistrationValidator validator;
@@ -57,8 +57,8 @@ public class RegistrationController{
 	@Value("${activation.url.pattern}")
 	private String activationUrlPattern;
 	
-	@Value("${activation.period}")
-	private Integer activationPeriod;
+	@Value("${registration.expiration}")
+	private Integer registrationExpiration;
 	
 	private static final String EMAIL_TEMPLATE_LOCATION = "mail-templates/activation-notification.vm";
 	
@@ -79,7 +79,7 @@ public class RegistrationController{
 		String activationLink = String.format(activationUrlPattern,
 				URLEncoder.encode(registration.getEmail(), "UTF-8"), URLEncoder.encode(registration.getActivationToken(), "UTF-8"));
 		templateVars.put("activationLink", activationLink);
-		templateVars.put("activationPeriod", activationPeriod);
+		templateVars.put("activationPeriod", registrationExpiration);
 		sendMessage(registration.getEmail(), messageSource.getMessage("activation.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
 	}
 	
@@ -97,7 +97,7 @@ public class RegistrationController{
 			registration.setPassword(rawRassword); //force hashing
 			registration.setConfirmPassword(rawRassword); //force hashing
 			registration.setActivationToken(tokenGenerator.generateToken());
-			registration.setExpirationDate(new Date(System.currentTimeMillis() + activationPeriod * MILLISECS_PER_HOUR));
+			registration.setExpirationDate(new Date(System.currentTimeMillis() + registrationExpiration * MILLISECS_PER_HOUR));
 			sendActivationMail(registration.merge(), locale);
 			status.setComplete();
 			return "redirect:"+Urls.PUBLIC_REGISTRATION_COMPLETE;
