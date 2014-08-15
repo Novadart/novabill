@@ -178,7 +178,7 @@
                                                     <br>
                                                     <span style="font-size: small;">Alternativamente copia e incolla questa URL nel tuo browser:<br> ${invoiceUrl}<span>
                                                     <br><br>
-                                                    Per contattare il mittente della fattura puoi rispondere direttamente a questa e-mail.
+                                                    Se hai bisogno di contattare il mittente della fattura puoi scrivere a <a href="mailto:${businessReplyTo}"><i>${businessReplyTo}</i></a>
                                                 </div>
                                             </td>
                                         </tr>

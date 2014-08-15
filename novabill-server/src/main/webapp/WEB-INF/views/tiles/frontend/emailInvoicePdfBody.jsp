@@ -6,6 +6,10 @@
 <spring:url var="homeUrl" value="/" />
 <spring:url var="invoicePdfUrl" value="${pdfUrl}" />
 
+<script type="text/javascript">
+window.skipIEAlert = true;
+</script>
+
 <div class="page-container">
   
         <!-- BEGIN BREADCRUMBS -->   
@@ -39,7 +43,7 @@
                         <br>
                         <br>
                         <br>
-                        <a class="btn btn-success btn-lg" href="${invoicePdfUrl}">Scarica la Fattura</a>
+                        <a class="btn btn-success btn-lg"  href="${invoicePdfUrl}">Scarica la Fattura</a>
                         <%} else { %>
                         <br>
                         <p class="alert alert-warning">

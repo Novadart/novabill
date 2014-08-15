@@ -28,7 +28,9 @@
          
          <div class="row">
              <div class="col-md-5">
-                 <img class="img-responsive" src="${frontendAssetsUrl}/img/features/fatture.png">
+                <a href="${frontendAssetsUrl}/img/features/fatture.png" data-lightbox="image-1" data-title="">
+                    <img class="img-responsive img-thumbnail" src="${frontendAssetsUrl}/img/features/fatture.png">
+                </a>
              </div>
 
              <div class="col-md-7 text-left">
@@ -52,7 +54,9 @@
              </div>
              
              <div class="col-md-5">
-                 <img class="img-responsive" src="${frontendAssetsUrl}/img/features/listini.png">
+                <a href="${frontendAssetsUrl}/img/features/listini.png" data-lightbox="image-2" data-title="">
+                    <img class="img-responsive img-thumbnail" src="${frontendAssetsUrl}/img/features/listini.png">
+                </a>
              </div>
 
          </div>
@@ -63,7 +67,9 @@
          
          <div class="row">
              <div class="col-md-5">
-                 <img class="img-responsive" src="${frontendAssetsUrl}/img/features/pagamenti.png">
+                <a href="${frontendAssetsUrl}/img/features/pagamenti.png" data-lightbox="image-3" data-title="">
+                    <img class="img-responsive img-thumbnail" src="${frontendAssetsUrl}/img/features/pagamenti.png">
+                </a>
              </div>
 
              <div class="col-md-7">
@@ -85,7 +91,9 @@
              </div>
              
              <div class="col-md-5">
-                 <img class="img-responsive" src="${frontendAssetsUrl}/img/features/statistiche.png">
+                <a href="${frontendAssetsUrl}/img/features/statistiche.png" data-lightbox="image-4" data-title="">
+                    <img class="img-responsive img-thumbnail" src="${frontendAssetsUrl}/img/features/statistiche.png">
+                </a>
              </div>
 
          </div>

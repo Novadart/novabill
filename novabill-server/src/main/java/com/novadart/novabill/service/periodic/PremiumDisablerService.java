@@ -7,6 +7,8 @@ import java.util.Map;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.scheduling.annotation.Async;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -25,11 +27,13 @@ import com.novadart.novabill.shared.client.dto.NotificationType;
 @MailMixin
 public class PremiumDisablerService implements PeriodicService {
 	
+	private static final Logger logger = LoggerFactory.getLogger(PremiumDisablerService.class);
+	
 	@PersistenceContext
 	private EntityManager entityManager; 
 	
 	@Override
-	@Scheduled(cron = "* 0 0 3 * *") //run once a day at 3 AM
+	@Scheduled(cron = "0 0 3 * * ?") //run once a day at 3 AM
 	public void runTasks(){
 		disableExpiredAccounts();
 		notifySoonToExpireAccounts(30);
@@ -53,6 +57,7 @@ public class PremiumDisablerService implements PeriodicService {
 			model.put("expired", false);
 			model.put("days", days);
 			sendMessage(principal.getUsername(), "Il tuo piano Premium sta per scadere", model, "mail-templates/premium-expiration-notification.vm");
+			logger.info("Send {}-days expiration notification to principal {}", days, principal.getUsername());
 		}
 	}
 	
@@ -76,6 +81,7 @@ public class PremiumDisablerService implements PeriodicService {
 			model.put("expired", true);
 			sendMessage(principal.getUsername(), "Il tuo piano Premium è scaduto", model, "mail-templates/premium-expiration-notification.vm");
 			createNotification(principal.getBusiness());
+			logger.info("Disabled expired account of principal {} with VATID {}", principal.getUsername(), principal.getBusiness().getVatID());
 		}
 	}
 	

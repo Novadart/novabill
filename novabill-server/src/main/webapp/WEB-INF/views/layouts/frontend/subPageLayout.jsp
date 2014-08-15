@@ -21,8 +21,8 @@
     <meta charset="utf-8" />
     <title>Novabill | <%=pageName%></title>
     <meta content="width=device-width, initial-scale=1.0" name="viewport" />
-    <meta content="" name="description" />
-    <meta content="" name="author" />
+    <meta content="Novabill è un servizio online per la gestione della contabilità, studiato per piccole imprese e professionisti." name="description" />
+    <meta content="Novadart" name="author" />
 
    <!-- BEGIN GLOBAL MANDATORY STYLES -->          
    <link href="${frontendAssetsUrl}/plugins/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css"/>
@@ -121,7 +121,7 @@
 	       App.init();
 	       App.initUniform();
 	       
-	       if(!$.cookie('ie_alert_shown_public')){
+	       if(!window.skipIEAlert && !$.cookie('ie_alert_shown_public')){
 		       $("body").iealert({
 		    	   support:"ie8",
 		           title:"Il tuo browser è vecchio e insicuro e non è supportato da Novabill",
