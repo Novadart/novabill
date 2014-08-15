@@ -88,22 +88,6 @@
 	<definition name="frontend.register" extends="frontend.subPageLayout" >
        <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/registerBody.jsp" />
     </definition>
-    
-    <definition name="frontend.registrationCompleted" extends="frontend.subPageLayout" >
-       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/registrationCompleteBody.jsp" />
-    </definition>
-	
-	
-	<!-- Account Activation -->
-	
-	<definition name="frontend.activate" extends="frontend.subPageLayout" >
-       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/activateBody.jsp" />
-    </definition>
-    
-    <definition name="frontend.invalidActivationRequest" extends="frontend.subPageLayout" >
-       <put-attribute name="body" value="/WEB-INF/views/tiles/frontend/invalidActivationRequestBody.jsp" />
-    </definition>
-	
 	
 	<!-- Error pages -->
 	

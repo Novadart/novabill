@@ -9,25 +9,21 @@ public interface Urls {
 	public static final String PUBLIC_PRICES = "/prices";
 	public static final String PUBLIC_PAGE_NOT_FOUND = "/page-not-found";
 	public static final String PUBLIC_EXCEPTION = "/oops";
-	public static final String PUBLIC_ACTIVATE = "/activate";
 	public static final String PUBLIC_LOGIN = "/login";
 	public static final String PUBLIC_FORGOT_PASSWORD = "/forgot-password";
 	public static final String PUBLIC_FORGOT_PASSWORD_OK = "/forgot-password-ok";
 	public static final String PUBLIC_PASSWORD_RECOVERY = "/password-recovery";
 	public static final String PUBLIC_PASSWORD_RECOVERY_OK = "/password-recovery-ok";
 	public static final String PUBLIC_REGISTER = "/register";
-	public static final String PUBLIC_REGISTRATION_COMPLETE = "/registration-complete";
 	public static final String PUBLIC_TOS = "/tos";
 	public static final String PUBLIC_TOS_MINIMAL = "/tos-minimal";
 	public static final String PUBLIC_PAYPAL_RETURN_PAGE = "/paypal-return-page";
-	
 	public static final String PUBLIC_SHARE_REQUEST = "/share-ask";
 	public static final String PUBLIC_SHARE_SHARE = "/share";
 	public static final String PUBLIC_SHARE_THANKS = "/share-thanks";
-	
 	public static final String PUBLIC_EMAIL_INVOICES = "/email/invoices";
-	
 	public static final String PUBLIC_PAYPAL_IPN_LISTENER = "/paypal-ipn-listener";
+	public static final String PUBLIC_LOGIN_CHECK = "/resources/login_check"; 
 	
 	// Private Urls	
 	public static final String PRIVATE_HOME = "/private/";
