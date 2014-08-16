@@ -2,7 +2,7 @@
 <html xmlns="http://www.w3.org/1999/xhtml">
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
-        <title>Novabill - Attivazione Account</title>
+        <title>Novabill - Benvenuto</title>
         <style type="text/css">
             #outlook a{padding:0;} /* Force Outlook to provide a "view in browser" button. */
             body{width:100% !important; margin:0;} 
@@ -200,19 +200,23 @@
                                     <table border="0" cellpadding="20" cellspacing="0" width="100%">
                                         <tr>
                                             <td valign="top">
-                                                <h2 class="h2">Novabill - Attivazione Account</h2>
+                                                <h2 class="h2">Benvenuto!</h2>
                                                 <br />
                                                 <div class="textdark">
-                                                    Per concludere la procedura di registrazione e attivare il tuo account, per favore premi su <a target="_blank" href="${activationLink}">questo link</a><br><br>
-                                                    Alternativamente, puoi copiare e incollare nella barra degli indirizzi del tuo browser l'url sottostante:<br>
-                                                    
-                                                    <em>${activationLink}</em>
-                                                    <br><br>
-                                                    <u>Nota</u>: dovrai attivare il tuo account entro le prossime ${activationPeriod} ore.
+                                                    Ti diamo il benvenuto su Novabill.<br>
+                                                    L'indirizzo e-mail usato per la registrazione è ${registrationEmail}<br>
+                                                    Accedi subito al tuo spazio di lavoro all'indirizzo <a href="https://www.novabill.it/private/">https://www.novabill.it/private/</a>.                                         
                                                     <br>
                                                     <br>
                                                     Grazie<br> 
                                                     Il team di Novabill
+                                                    
+                                                    <br/>
+                                                    <br/>
+                                                    <br/>
+                                                    <small>
+                                                    NOTA: se non fossi stato tu a effettuare la registrazione, puoi accedere alla pagina <a href="https://www.novabill.it/forgot-password">https://www.novabill.it/forgot-password</a> per cambiare la password di accesso e modificare o cancellare l'account.
+                                                    </small>
                                                 </div>
                                             </td>
                                         </tr>

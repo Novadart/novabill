@@ -723,9 +723,10 @@ angular.module('novabill.directives.dialogs',
 				size : 'lg',
 				keyboard : false,
 				backdrop : 'static',
-				controller: ['$scope', '$modalInstance',
-				             function($scope, $modalInstance){
+				controller: ['$scope', '$modalInstance', '$sce', '$filter',
+				             function($scope, $modalInstance, $sce, $filter){
 
+					$scope.helloAlert = $sce.trustAsHtml( $filter('translate')('HELLO_DIALOG_ALERT') );
 					$scope.business = business;
 
 					$scope.businessUpdateCallback = function(){

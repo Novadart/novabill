@@ -3,14 +3,13 @@ package com.novadart.novabill.web.mvc;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.security.NoSuchAlgorithmException;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.Locale;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -24,70 +23,51 @@ import org.springframework.web.bind.support.SessionStatus;
 
 import com.novadart.novabill.annotation.MailMixin;
 import com.novadart.novabill.domain.Registration;
-import com.novadart.novabill.service.TokenGenerator;
+import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.service.validator.RegistrationValidator;
 
 /*
  * RegistrationController controller class handles the process of creating registration request.
  * It provides method that renders the registration form and the subsequent processing of the 
- * form submit. The processing includes validation of the form data, generation of activation 
- * token, sending an email containing a link to activate the account and storing the registration
- * in the DB. Both the stored registration object and the sent link contain the token which is
- * used to cross-reference them. The registration has expiration period specified by the
- * activation period field.
- * Note: More than one registration objects with the same email address can be stored in the DB
- * at the same time.
+ * form submit. The processing includes validation of the form data and upon successful
+ * validation creation of principal object.
  */
 @Controller
 @SessionAttributes("registration")
 @MailMixin
 public class RegistrationController{
-	
-	private static final Long MILLISECS_PER_HOUR = 3_600_000l;
-	
+
 	@Autowired
 	private RegistrationValidator validator;
 	
-	@Autowired
-	private MessageSource messageSource;
-	
-	@Autowired
-	private TokenGenerator tokenGenerator;
-	
-	@Value("${activation.url.pattern}")
-	private String activationUrlPattern;
-	
-	@Value("${registration.expiration}")
-	private Integer registrationExpiration;
-	
-	private static final String EMAIL_TEMPLATE_LOCATION = "mail-templates/activation-notification.vm";
-	
+	private static final String EMAIL_TEMPLATE_LOCATION = "mail-templates/registration-complete-notification.vm";
+
 	@InitBinder
 	public void setAllowedFields(WebDataBinder dataBinder) {
 		dataBinder.setDisallowedFields("id");
 	}
-	
+
 	@RequestMapping(value = Urls.PUBLIC_REGISTER, method = RequestMethod.GET)
 	public String login(Model model){
 		model.addAttribute("pageName", "Registrazione");
 		model.addAttribute("registration", new Registration());
 		return "frontend.register";
 	}
-	
-	private void sendActivationMail(Registration registration, Locale locale) throws UnsupportedEncodingException{
+
+
+	private void sendRegistrationCompletedMail(Registration registration, Locale locale) throws UnsupportedEncodingException{
 		Map<String, Object> templateVars = new HashMap<String, Object>();
-		String activationLink = String.format(activationUrlPattern,
-				URLEncoder.encode(registration.getEmail(), "UTF-8"), URLEncoder.encode(registration.getActivationToken(), "UTF-8"));
-		templateVars.put("activationLink", activationLink);
-		templateVars.put("activationPeriod", registrationExpiration);
-		sendMessage(registration.getEmail(), messageSource.getMessage("activation.notification", null, locale), templateVars, EMAIL_TEMPLATE_LOCATION);
+		templateVars.put("registrationEmail", registration.getEmail());
+		sendMessage(registration.getEmail(), "Benvenuto in Novabill", templateVars, EMAIL_TEMPLATE_LOCATION);
 	}
-	
+
 	@RequestMapping(value = Urls.PUBLIC_REGISTER, method = RequestMethod.POST)
-	public String processSubmit(@ModelAttribute("registration") Registration registration, BindingResult result, SessionStatus status, Locale locale, Model model)
-			throws NoSuchAlgorithmException, UnsupportedEncodingException{
+	public String processSubmit(@ModelAttribute("registration") Registration registration, BindingResult result,
+			SessionStatus status, Locale locale, Model model, HttpServletRequest request)
+					throws NoSuchAlgorithmException, UnsupportedEncodingException{
 		validator.validate(registration, result);
-		
+
 		if(result.hasErrors()) {
 			model.addAttribute("pageName", "Registrazione");
 			model.addAttribute("registration", registration);
@@ -95,19 +75,14 @@ public class RegistrationController{
 		} else{
 			String rawRassword = registration.getPassword();
 			registration.setPassword(rawRassword); //force hashing
-			registration.setConfirmPassword(rawRassword); //force hashing
-			registration.setActivationToken(tokenGenerator.generateToken());
-			registration.setExpirationDate(new Date(System.currentTimeMillis() + registrationExpiration * MILLISECS_PER_HOUR));
-			sendActivationMail(registration.merge(), locale);
+			Principal principal = new Principal(registration);
+			principal.getGrantedRoles().add(RoleType.ROLE_BUSINESS_FREE);
+			principal.persist();
 			status.setComplete();
-			return "redirect:"+Urls.PUBLIC_REGISTRATION_COMPLETE;
+			sendRegistrationCompletedMail(registration, locale);
+			return "forward:"+Urls.PUBLIC_LOGIN_CHECK + String.format("?j_username=%s&j_password=%s", URLEncoder.encode(registration.getEmail(), "UTF-8"), rawRassword);
 		}
 	}
-	
-	@RequestMapping(value = Urls.PUBLIC_REGISTRATION_COMPLETE, method = RequestMethod.GET)
-	public String registrationComplete(Model model){
-		model.addAttribute("pageName", "Registrazione Completata");
-		return "frontend.registrationCompleted";
-	}
+
 
 }

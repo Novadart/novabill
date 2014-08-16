@@ -116,7 +116,7 @@
 	</bean>
 
 	<bean
-		class="com.novadart.novabill.aspect.logging.RegistrationActivationAspect"
+		class="com.novadart.novabill.aspect.logging.RegistrationAspect"
 		factory-method="aspectOf">
 		<property name="sendEmail" value="${notification.registration}" />
 		<property name="emailAddresses">

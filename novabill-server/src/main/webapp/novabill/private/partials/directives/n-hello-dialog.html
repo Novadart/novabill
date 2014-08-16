@@ -5,9 +5,7 @@
 	</div>
 	<div class="modal-body">
 	   <div class="col-md-8 col-md-offset-2">
-            <div class="alert alert-info">
-	           {{'HELLO_DIALOG_ALERT' | translate}}
-	        </div>                          
+            <div class="alert alert-info text-center" ng-bind-html="helloAlert"></div>                          
        </div>
 	   
 	   <n-business-form callback="businessUpdateCallback()" business="business"></n-business-form>
