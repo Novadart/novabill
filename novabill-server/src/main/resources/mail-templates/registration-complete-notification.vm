@@ -200,12 +200,12 @@
                                     <table border="0" cellpadding="20" cellspacing="0" width="100%">
                                         <tr>
                                             <td valign="top">
-                                                <h2 class="h2">Novabill - Benvenuto!</h2>
+                                                <h2 class="h2">Benvenuto!</h2>
                                                 <br />
                                                 <div class="textdark">
-                                                    Grazie per esserti registrato su Novabill.<br/>
-                                                    Ti sei registrato utilizzando l'indirizzo e-mail ${registrationEmail}
-                                                                                                       
+                                                    Grazie per esserti registrato su Novabill.<br>
+                                                    Ti sei registrato utilizzando l'indirizzo e-mail ${registrationEmail}<br>
+                                                    Accedi subito al tuo spazio di lavoro all'indirizzo <a href="https://www.novabill.it/private/">https://www.novabill.it/private/</a>                                                    
                                                     <br>
                                                     <br>
                                                     Grazie<br> 
