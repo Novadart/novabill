@@ -200,12 +200,12 @@
                                     <table border="0" cellpadding="20" cellspacing="0" width="100%">
                                         <tr>
                                             <td valign="top">
-                                                <h2 class="h2">Novabill - Benvenuto!</h2>
+                                                <h2 class="h2">Benvenuto!</h2>
                                                 <br />
                                                 <div class="textdark">
-                                                    Grazie per esserti registrato su Novabill.<br/>
-                                                    Ti sei registrato utilizzando l'indirizzo e-mail ${registrationEmail}
-                                                                                                       
+                                                    Ti diamo il benvenuto su Novabill.<br>
+                                                    L'indirizzo e-mail usato per la registrazione è ${registrationEmail}<br>
+                                                    Accedi subito al tuo spazio di lavoro all'indirizzo <a href="https://www.novabill.it/private/">https://www.novabill.it/private/</a>.                                         
                                                     <br>
                                                     <br>
                                                     Grazie<br> 
@@ -215,7 +215,7 @@
                                                     <br/>
                                                     <br/>
                                                     <small>
-                                                    NOTA: Se non fossi stato tu a registrarti puoi accedere alla pagina <a href="https://www.novabill.it/forgot-password">https://www.novabill.it/forgot-password</a> per cambiare la password di accesso e modificare o cancellare il tuo account.
+                                                    NOTA: se non fossi stato tu a effettuare la registrazione, puoi accedere alla pagina <a href="https://www.novabill.it/forgot-password">https://www.novabill.it/forgot-password</a> per cambiare la password di accesso e modificare o cancellare l'account.
                                                     </small>
                                                 </div>
                                             </td>
