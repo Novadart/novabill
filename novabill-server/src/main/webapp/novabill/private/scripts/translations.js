@@ -105,7 +105,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		FAX : 'Fax',
 		FAX_PLACEHOLDER : 'esempio: 987 32322323',
 		FILTER : 'Filtra',
-		HELLO_DIALOG_ALERT : 'Per favore completa le informazioni sulla tua azienda',
+		HELLO_DIALOG_ALERT : '<h4>Grazie per esserti registrato<h4/>Per favore completa le informazioni sulla tua azienda e inizia subito a usare Novabill.',
 		HELLO_DIALOG_TITLE : 'Benvenuto!',
 		INFO : 'Informazioni',
 		INSERT_CLIENT_NAME : 'Ragione sociale del nuovo cliente',
