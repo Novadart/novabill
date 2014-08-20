@@ -11,6 +11,8 @@ public class BIGeneralStatsDTO {
 	private Map<Integer, BigDecimal[]> totalsPerMonths;
 	
 	private Pair<BigDecimal, BigDecimal> totals;
+	
+	private Pair<Integer, Integer> clientsVsReturningClients;
 
 	public Map<Integer, BigDecimal[]> getTotalsPerMonths() {
 		return totalsPerMonths;
@@ -27,5 +29,16 @@ public class BIGeneralStatsDTO {
 	public void setTotals(Pair<BigDecimal, BigDecimal> totals) {
 		this.totals = totals;
 	}
+
+	public Pair<Integer, Integer> getClientsVsReturningClients() {
+		return clientsVsReturningClients;
+	}
+
+	public void setClientsVsReturningClients(
+			Pair<Integer, Integer> clientsVsReturningClients) {
+		this.clientsVsReturningClients = clientsVsReturningClients;
+	}
+	
+	
 	
 }

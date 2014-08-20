@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Calendar;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +22,7 @@ import com.novadart.novabill.shared.client.dto.BIGeneralStatsDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
+import com.novadart.novabill.shared.client.tuple.Pair;
 
 @Controller
 @RestExceptionProcessingMixin
@@ -30,11 +32,11 @@ public class BusinessStatsController {
 	@Autowired
 	private BusinessService businessService;
 	
-	private BigDecimal[] computeTotalsPerMonthsForYear(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException{
+	private BigDecimal[] computeTotalsPerMonthsForYear(List<InvoiceDTO> invoices) throws NotAuthenticatedException, DataAccessException{
 		Calendar cal = Calendar.getInstance();
 		BigDecimal[] totals = new BigDecimal[12];
 		for(int i = 0; i < 12; ++i) totals[i] = new BigDecimal("0.00");
-		for(InvoiceDTO invoice: businessService.getInvoices(businessID, year)){
+		for(InvoiceDTO invoice: invoices){
 			cal.setTime(invoice.getAccountingDocumentDate());
 			int month = cal.get(Calendar.MONTH); 
 			totals[month] = totals[month].add(invoice.getTotalBeforeTax());
@@ -43,11 +45,26 @@ public class BusinessStatsController {
 		return totals;
 	}
 	
-	private Map<Integer, BigDecimal[]> computeTotalsPerMonths(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+	private Map<Integer, BigDecimal[]> computeTotalsPerMonths(Integer year, List<InvoiceDTO> invoices, List<InvoiceDTO> prevInvoices) throws NotAuthenticatedException, DataAccessException {
 		Map<Integer, BigDecimal[]> totalsPerMonths = new HashMap<>();
-		totalsPerMonths.put(year, computeTotalsPerMonthsForYear(businessID, year));
-		totalsPerMonths.put(year - 1, computeTotalsPerMonthsForYear(businessID, year - 1));
+		totalsPerMonths.put(year, computeTotalsPerMonthsForYear(invoices));
+		totalsPerMonths.put(year - 1, computeTotalsPerMonthsForYear(prevInvoices));
 		return totalsPerMonths;
+	}
+	
+	private Integer computeNumberOfReturningClients(List<InvoiceDTO> invoices){
+		Map<Long, Integer> clientInvCount = new HashMap<>();
+		for(InvoiceDTO invoice: invoices) {
+			Long clientID = invoice.getClient().getId();
+			if(clientInvCount.containsKey(clientID))
+				clientInvCount.put(clientID, clientInvCount.get(clientID) + 1);
+			else
+				clientInvCount.put(clientID, 1);
+		}
+		int returningClientsCount = 0;
+		for(Integer cnt: clientInvCount.values())
+			if(cnt > 1) returningClientsCount += 1;
+		return returningClientsCount;
 	}
 	
 	@RequestMapping(value = "/genstats/{year}", method = RequestMethod.GET)
@@ -55,8 +72,10 @@ public class BusinessStatsController {
 	@ResponseStatus(value = HttpStatus.OK)
 	public BIGeneralStatsDTO getGeneralBIStats(@PathVariable Long businessID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException {
 		BIGeneralStatsDTO generalStatsDTO = new BIGeneralStatsDTO();
-		generalStatsDTO.setTotalsPerMonths(computeTotalsPerMonths(businessID, year));
+		List<InvoiceDTO> invoices = businessService.getInvoices(businessID, year);
+		generalStatsDTO.setTotalsPerMonths(computeTotalsPerMonths(year, invoices, businessService.getInvoices(businessID, year - 1)));
 		generalStatsDTO.setTotals(businessService.getTotalsForYear(businessID, year));
+		generalStatsDTO.setClientsVsReturningClients(new Pair<Integer, Integer>(businessService.getClients(businessID).size(), computeNumberOfReturningClients(invoices)));
 		return generalStatsDTO;
 	}
 	
