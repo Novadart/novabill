@@ -2,7 +2,10 @@ package com.novadart.novabill.web.mvc.ajax;
 
 import java.math.BigDecimal;
 import java.math.RoundingMode;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -19,6 +22,7 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.dto.BIGeneralStatsDTO;
+import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -67,15 +71,40 @@ public class BusinessStatsController {
 		return returningClientsCount;
 	}
 	
+	private List<Pair<ClientDTO, BigDecimal>> computeClientRankingByRevenue(List<InvoiceDTO> invoices, List<ClientDTO> clients) {
+		Map<Long, BigDecimal> clientRevenues = new HashMap<>();
+		for(InvoiceDTO invoice: invoices) {
+			Long clientID = invoice.getClient().getId();
+			if(clientRevenues.containsKey(clientID))
+				clientRevenues.put(clientID, clientRevenues.get(clientID).add(invoice.getTotal()));
+			else
+				clientRevenues.put(clientID, invoice.getTotal());
+		}
+		List<Pair<ClientDTO, BigDecimal>> result = new ArrayList<>(clients.size());
+		for(ClientDTO client: clients) {
+			Long clientID = client.getId();
+			result.add(new Pair<>(client, clientRevenues.containsKey(clientID)? clientRevenues.get(clientID): new BigDecimal("0.00")));
+		}
+		Collections.sort(result, new Comparator<Pair<ClientDTO, BigDecimal>>() {
+			@Override
+			public int compare(Pair<ClientDTO, BigDecimal> o1, Pair<ClientDTO, BigDecimal> o2) {
+				return o2.getSecond().compareTo(o1.getSecond());
+			}
+		});
+		return result;
+	}
+	
 	@RequestMapping(value = "/genstats/{year}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
 	public BIGeneralStatsDTO getGeneralBIStats(@PathVariable Long businessID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException {
 		BIGeneralStatsDTO generalStatsDTO = new BIGeneralStatsDTO();
 		List<InvoiceDTO> invoices = businessService.getInvoices(businessID, year);
+		List<ClientDTO> clients = businessService.getClients(businessID);
 		generalStatsDTO.setTotalsPerMonths(computeTotalsPerMonths(year, invoices, businessService.getInvoices(businessID, year - 1)));
 		generalStatsDTO.setTotals(businessService.getTotalsForYear(businessID, year));
-		generalStatsDTO.setClientsVsReturningClients(new Pair<Integer, Integer>(businessService.getClients(businessID).size(), computeNumberOfReturningClients(invoices)));
+		generalStatsDTO.setClientsVsReturningClients(new Pair<Integer, Integer>(clients.size(), computeNumberOfReturningClients(invoices)));
+		generalStatsDTO.setClientRankingByRevenue(computeClientRankingByRevenue(invoices, clients));
 		return generalStatsDTO;
 	}
 	
