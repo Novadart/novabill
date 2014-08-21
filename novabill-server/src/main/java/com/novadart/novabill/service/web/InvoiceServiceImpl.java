@@ -227,7 +227,7 @@ public class InvoiceServiceImpl implements InvoiceService {
 		templateVars.put("message", emailDTO.getMessage().replaceAll("\n", "<br>"));
 		String url = String.format(invoicePdfUrl, id, URLEncoder.encode(token, "UTF-8"));
 		Business business = Business.findBusiness(businessID);
-		String from = String.format("%s via Novabill <%s>", business.getName(), this.from);
+		String from = String.format("%s via %s", business.getName(), this.from);
 		templateVars.put("invoiceUrl", url);
 		templateVars.put("businessReplyTo", emailDTO.getReplyTo());
 		if(sendMessage(emailDTO.getTo(), from, emailDTO.getReplyTo(), emailDTO.getSubject(), templateVars, EMAIL_TEMPLATE_LOCATION, false)){
