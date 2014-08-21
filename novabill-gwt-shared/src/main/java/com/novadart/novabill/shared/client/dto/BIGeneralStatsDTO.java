@@ -1,6 +1,7 @@
 package com.novadart.novabill.shared.client.dto;
 
 import java.math.BigDecimal;
+import java.util.List;
 import java.util.Map;
 
 import com.novadart.novabill.shared.client.tuple.Pair;
@@ -13,6 +14,8 @@ public class BIGeneralStatsDTO {
 	private Pair<BigDecimal, BigDecimal> totals;
 	
 	private Pair<Integer, Integer> clientsVsReturningClients;
+	
+	private List<Pair<ClientDTO, BigDecimal>> clientRankingByRevenue;
 
 	public Map<Integer, BigDecimal[]> getTotalsPerMonths() {
 		return totalsPerMonths;
@@ -38,7 +41,13 @@ public class BIGeneralStatsDTO {
 			Pair<Integer, Integer> clientsVsReturningClients) {
 		this.clientsVsReturningClients = clientsVsReturningClients;
 	}
-	
-	
+
+	public List<Pair<ClientDTO, BigDecimal>> getClientRankingByRevenue() {
+		return clientRankingByRevenue;
+	}
+
+	public void setClientRankingByRevenue(List<Pair<ClientDTO, BigDecimal>> clientRankingByRevenue) {
+		this.clientRankingByRevenue = clientRankingByRevenue;
+	}
 	
 }
