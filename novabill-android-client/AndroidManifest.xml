@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="3002000" android:versionName="3.2" package="com.novadart.novabill.android">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" android:versionCode="3002001" android:versionName="3.2.1" package="com.novadart.novabill.android">
 
     <uses-sdk android:minSdkVersion="8" android:targetSdkVersion="17"/>
 
