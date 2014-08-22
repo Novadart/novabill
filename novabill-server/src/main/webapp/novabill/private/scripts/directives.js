@@ -96,8 +96,8 @@ angular.module('novabill.directives',
 				var instance = nSendEmailDialog.open($scope.invoice);
 				instance.result.then(function(data){
 					var InvoiceUtils = nAjax.InvoiceUtils();
-					InvoiceUtils.email(data, function(){
-						nAlertDialog.open($filter('translate')('SEND_EMAIL_TO_CLIENT_SUCCESS'));
+					InvoiceUtils.email(data, function(result){
+						nAlertDialog.open($filter('translate')(result==='true' ? 'SEND_EMAIL_TO_CLIENT_SUCCESS' : 'SEND_EMAIL_TO_CLIENT_FAILURE'));
 					}, function(){
 						nAlertDialog.open($filter('translate')('SEND_EMAIL_TO_CLIENT_FAILURE'));
 					});

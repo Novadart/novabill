@@ -218,7 +218,7 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 						method : 'POST',
 						url : baseUrl + 'businesses/'+ businessId +'/invoices/'+ params.invoiceID +'/email',
 						data : params.payload
-					}).success( successFn );
+					}).success( successFn ).error( failureFn );
 				}
 				
 				
