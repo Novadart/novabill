@@ -1,8 +1,11 @@
 package com.novadart.novabill.domain;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 import java.util.Set;
 
 import javax.persistence.CascadeType;
@@ -71,6 +74,15 @@ public class Invoice extends AbstractInvoice implements Serializable {
     
     public static Long countInvocesForClient(Long id){
     	return countForClient(Invoice.class, id);
+    }
+    
+    public static Map<String, BigDecimal> getCommodityRevenueDistrbution(Long businessID){
+		String sql = "select i.sku, sum(i.totalBeforeTax * (100 + i.tax) / 100) from Invoice inv join inv.accountingDocumentItems i where i.sku <> '' and inv.business.id = :bid group by i.sku";
+		List<Object[]> rows = entityManager().createQuery(sql, Object[].class).setParameter("bid", businessID).getResultList();
+		Map<String, BigDecimal> commodityRevenue = new HashMap<>(rows.size());
+		for(Object[] row: rows)
+			commodityRevenue.put((String)row[0], (BigDecimal)row[1]);
+		return commodityRevenue;
     }
     
     /*

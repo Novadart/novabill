@@ -16,6 +16,8 @@ public class BIGeneralStatsDTO {
 	private Pair<Integer, Integer> clientsVsReturningClients;
 	
 	private List<Pair<ClientDTO, BigDecimal>> clientRankingByRevenue;
+	
+	private List<Pair<CommodityDTO, BigDecimal>> commodityRankingByRevenue;
 
 	public Map<Integer, BigDecimal[]> getTotalsPerMonths() {
 		return totalsPerMonths;
@@ -48,6 +50,14 @@ public class BIGeneralStatsDTO {
 
 	public void setClientRankingByRevenue(List<Pair<ClientDTO, BigDecimal>> clientRankingByRevenue) {
 		this.clientRankingByRevenue = clientRankingByRevenue;
+	}
+
+	public List<Pair<CommodityDTO, BigDecimal>> getCommodityRankingByRevenue() {
+		return commodityRankingByRevenue;
+	}
+
+	public void setCommodityRankingByRevenue(List<Pair<CommodityDTO, BigDecimal>> commodityRankingByRevenue) {
+		this.commodityRankingByRevenue = commodityRankingByRevenue;
 	}
 	
 }

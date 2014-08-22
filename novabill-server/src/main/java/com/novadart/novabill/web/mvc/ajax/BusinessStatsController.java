@@ -20,9 +20,11 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
+import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.service.web.BusinessService;
 import com.novadart.novabill.shared.client.dto.BIGeneralStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
+import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
@@ -45,7 +47,8 @@ public class BusinessStatsController {
 			int month = cal.get(Calendar.MONTH); 
 			totals[month] = totals[month].add(invoice.getTotalBeforeTax());
 		}
-		for(int i = 0; i < 12; ++i) totals[i].setScale(2, RoundingMode.HALF_UP);
+		for(int i = 0; i < 12; ++i)
+			totals[i] = totals[i].setScale(2, RoundingMode.HALF_UP);
 		return totals;
 	}
 	
@@ -83,11 +86,27 @@ public class BusinessStatsController {
 		List<Pair<ClientDTO, BigDecimal>> result = new ArrayList<>(clients.size());
 		for(ClientDTO client: clients) {
 			Long clientID = client.getId();
-			result.add(new Pair<>(client, clientRevenues.containsKey(clientID)? clientRevenues.get(clientID): new BigDecimal("0.00")));
+			result.add(new Pair<>(client, clientRevenues.containsKey(clientID)? clientRevenues.get(clientID).setScale(2, RoundingMode.HALF_UP): new BigDecimal("0.00")));
 		}
 		Collections.sort(result, new Comparator<Pair<ClientDTO, BigDecimal>>() {
 			@Override
 			public int compare(Pair<ClientDTO, BigDecimal> o1, Pair<ClientDTO, BigDecimal> o2) {
+				return o2.getSecond().compareTo(o1.getSecond());
+			}
+		});
+		return result;
+	}
+	
+	private List<Pair<CommodityDTO, BigDecimal>> computeCommodityRankingByRevenue(Long businessID, List<CommodityDTO> commodities) {
+		Map<String, BigDecimal> commodityRevenues = Invoice.getCommodityRevenueDistrbution(businessID);
+		List<Pair<CommodityDTO, BigDecimal>> result = new ArrayList<>(commodities.size());
+		for(CommodityDTO commodity: commodities) {
+			String sku = commodity.getSku();
+			result.add(new Pair<>(commodity, commodityRevenues.containsKey(sku)? commodityRevenues.get(sku).setScale(2, RoundingMode.HALF_UP): new BigDecimal("0.00")));
+		}
+		Collections.sort(result, new Comparator<Pair<CommodityDTO, BigDecimal>>() {
+			@Override
+			public int compare(Pair<CommodityDTO, BigDecimal> o1, Pair<CommodityDTO, BigDecimal> o2) {
 				return o2.getSecond().compareTo(o1.getSecond());
 			}
 		});
@@ -105,6 +124,7 @@ public class BusinessStatsController {
 		generalStatsDTO.setTotals(businessService.getTotalsForYear(businessID, year));
 		generalStatsDTO.setClientsVsReturningClients(new Pair<Integer, Integer>(clients.size(), computeNumberOfReturningClients(invoices)));
 		generalStatsDTO.setClientRankingByRevenue(computeClientRankingByRevenue(invoices, clients));
+		generalStatsDTO.setCommodityRankingByRevenue(computeCommodityRankingByRevenue(businessID, businessService.getCommodities(businessID)));
 		return generalStatsDTO;
 	}
 	
