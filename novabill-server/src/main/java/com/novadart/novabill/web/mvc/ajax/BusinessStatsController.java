@@ -21,7 +21,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 
 import com.novadart.novabill.annotation.RestExceptionProcessingMixin;
 import com.novadart.novabill.domain.Invoice;
+import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.service.web.BusinessService;
+import com.novadart.novabill.shared.client.dto.BIClientStatsDTO;
 import com.novadart.novabill.shared.client.dto.BIGeneralStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
@@ -126,6 +128,35 @@ public class BusinessStatsController {
 		generalStatsDTO.setClientRankingByRevenue(computeClientRankingByRevenue(invoices, clients));
 		generalStatsDTO.setCommodityRankingByRevenue(computeCommodityRankingByRevenue(businessID, businessService.getCommodities(businessID)));
 		return generalStatsDTO;
+	}
+	
+	@RequestMapping(value = "/clientstats/{clientID}/{year}", method = RequestMethod.GET)
+	@ResponseBody
+	@ResponseStatus(value = HttpStatus.OK)
+	public BIClientStatsDTO getClientBIStats(@PathVariable Long businessID, @PathVariable Long clientID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException{
+		BIClientStatsDTO clientStatsDTO = new BIClientStatsDTO();
+		List<Invoice> invoices = Invoice.getAllInvoicesForClient(businessID, clientID);
+		BigDecimal totalBeforeTaxes = new BigDecimal("0.00");
+		BigDecimal totalBeforeTaxesCurrentYear = new BigDecimal("0.00");
+		Map<Integer, List<Invoice>> invoicesPerYears = new HashMap<>();
+		for(Invoice inv: invoices){
+			totalBeforeTaxes = totalBeforeTaxes.add(inv.getTotalBeforeTax());
+			Integer invYear = inv.getAccountingDocumentYear();
+			if(invYear.equals(year))
+				totalBeforeTaxesCurrentYear = totalBeforeTaxesCurrentYear.add(inv.getTotalBeforeTax());
+			if(!invoicesPerYears.containsKey(invYear))
+				invoicesPerYears.put(invYear, new ArrayList<Invoice>());
+			invoicesPerYears.get(invYear).add(inv);
+		}
+		Map<Integer, BigDecimal[]> totalsPerMonths = new HashMap<>();
+		for(Integer y: invoicesPerYears.keySet())
+			totalsPerMonths.put(y, computeTotalsPerMonthsForYear(DTOUtils.toDTOList(invoicesPerYears.get(y), DTOUtils.invoiceDTOConverter, false)));
+		if(invoices.size() > 0)
+			clientStatsDTO.setFirstInvoiceDate(invoices.get(0).getAccountingDocumentDate());
+		clientStatsDTO.setTotalBeforeTaxes(totalBeforeTaxes.setScale(2, RoundingMode.HALF_UP));
+		clientStatsDTO.setTotalBeforeTaxesCurrentYear(totalBeforeTaxesCurrentYear.setScale(2, RoundingMode.HALF_UP));
+		clientStatsDTO.setTotalsPerMonths(totalsPerMonths);
+		return clientStatsDTO;
 	}
 	
 	

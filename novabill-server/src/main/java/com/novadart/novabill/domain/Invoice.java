@@ -85,6 +85,17 @@ public class Invoice extends AbstractInvoice implements Serializable {
 		return commodityRevenue;
     }
     
+    /**
+     * Returns all invoices for client ordered by accountingDocumentDate 
+     */
+    public static List<Invoice> getAllInvoicesForClient(Long businessID, Long clientID){
+    	String sql = "select i from Invoice i where i.business.id = :bid and i.client.id = :cid order by i.accountingDocumentDate";
+    	return entityManager().createQuery(sql, Invoice.class).
+    			setParameter("bid", businessID).
+    			setParameter("cid", clientID).
+    			setHint("org.hibernate.cacheable", Boolean.TRUE).getResultList();
+    }
+    
     /*
      * Getters and setters
      * */
