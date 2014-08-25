@@ -48,6 +48,8 @@
 <script src="${novabillCoreUrl}/scripts/settings-controllers.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/share.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/share-controllers.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/stats.js" type="text/javascript"></script>
+<script src="${novabillCoreUrl}/scripts/stats-controllers.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/payments.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/payments-controllers.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/hello.js" type="text/javascript"></script>

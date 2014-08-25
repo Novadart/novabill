@@ -1,0 +1,21 @@
+<div class="n-monthly-statistics col-md-1" ng-class="{'disabled':disabled}" >
+
+    <div class="chrome text-center" popover-placement="bottom" popover="{{prevYear}}" popover-trigger="mouseenter">
+	    <h4 class="month">
+	        {{ monthName }}
+	    </h4>
+	    <div class="stats" style="height: 150px; position: relative;">
+	       <div style="position: absolute; bottom: 0; width: 100%;">
+		       <span>{{value | currency}}</span>
+		       <br /><br />
+		       <div ng-style="barStyle" class="bar">
+		           <i class="fa" ng-class="{'fa-chevron-up':diff>0, 'fa-chevron-down':diff<0, 'fa-minus':diff==0}">
+			           <br> 
+	                   {{percentVariation}}
+		           </i>
+		       </div>
+	       </div>
+	    </div>
+    </div>    
+
+</div>

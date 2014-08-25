@@ -64,6 +64,7 @@ angular.module('novabill.constants', [])
 			publicShareBaseUrl : basePath + 'share?businessID='+businessId+'&token=preview',
 			settingsBaseUrl : basePath + 'private/settings/',
 			shareBaseUrl : basePath + 'private/share/',
+			statsBaseUrl : basePath + 'private/stats/',
 			transportDocumentsBaseUrl : basePath + 'private/transport-documents/'
 	};
 

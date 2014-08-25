@@ -1010,4 +1010,67 @@ angular.module('novabill.directives',
 		replace: true
 	};
 
+}])
+
+
+
+.directive('nMonthlyStatistics', ['nConstants', function(nConstants){
+	return {
+		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-monthly-statistics.html'),
+		scope: { 
+			month : '=', //string
+			year : '=', //string
+			value : '=', //string
+			pastValue : '=' //string
+		},
+		controller : ['$scope', 'nConstants', '$filter',
+		              function($scope, nConstants, $filter){
+			var d = new Date();
+			var curYear = d.getFullYear().toString();
+			var curMonth = d.getMonth();
+			var month = parseInt( $scope.month );
+			
+			$scope.disabled = (curYear === $scope.year && month > curMonth);
+			$scope.monthName = $filter('translate')( nConstants.months[ month ] );
+			$scope.diff = 0;
+			
+			if($scope.pastValue === '0' || $scope.disabled){
+				
+				if($scope.value === '0' || $scope.disabled){
+					
+					$scope.diff = 0;
+					$scope.percentVariation = '';
+					$scope.barStyle = {backgroundColor : ($scope.disabled ? '#969696' : 'grey'), height : '30px', lineHeight : '30px'};
+					
+				} else {
+					
+					$scope.diff = +1;
+					$scope.percentVariation = '';
+					$scope.barStyle = {backgroundColor : 'green', height : '80px', lineHeight : '80px'};
+					
+				}
+				
+			} else {
+				
+				var value = new BigNumber( $scope.value );
+				var pastValue = new BigNumber( $scope.pastValue );
+				$scope.diff = parseFloat( value.dividedBy(pastValue).minus(new BigNumber('1')).times(new BigNumber('100')).toFixed(2) );
+				
+				var barHeight = 20 + ( ($scope.diff > 100 || $scope.diff < -100) ? 60 : ( parseInt(Math.abs($scope.diff) / 20) * 10 + 10 ) );
+				var barColor = $scope.diff == 0 ? 'grey' : ($scope.diff > 0 ? 'green' : 'red');
+				
+				$scope.percentVariation = ($scope.diff > 0 ? '+'+$scope.diff.toString() : $scope.diff.toString()) +'%';
+				$scope.barStyle = {backgroundColor : barColor, height : barHeight+'px', lineHeight : barHeight+'px'};
+				
+			}
+			
+			var prevYear = parseInt($scope.year)-1;
+			$scope.prevYear = $filter('translate')('STATS_INVOICING_PREV_YEAR', {
+				year : prevYear,
+				amount : $filter('currency')($scope.pastValue)
+			});	
+		}],
+		restrict: 'E',
+		replace: true
+	};
 }]);
