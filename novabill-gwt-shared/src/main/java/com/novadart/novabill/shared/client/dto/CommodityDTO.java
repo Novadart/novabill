@@ -60,7 +60,6 @@ public class CommodityDTO implements IsSerializable {
 		this.unitOfMeasure = unitOfMeasure;
 	}
 
-	@JsonSerialize(using=ToStringSerializer.class)
 	public BigDecimal getTax() {
 		return tax;
 	}
@@ -77,7 +76,6 @@ public class CommodityDTO implements IsSerializable {
 		this.service = service;
 	}
 
-	@JsonSerialize(using=ToStringSerializer.class)
 	public BigDecimal getWeight() {
 		return weight;
 	}
