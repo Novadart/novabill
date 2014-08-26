@@ -81,13 +81,16 @@ public aspect InvoiceServiceActionsAspect extends DBLoggerAspect {
 		logActionInDB(businessID, EntityType.INVOICE, OperationType.SET_PAYED, id, time, details);
 	}
 	
-	after(Long businessID, Long id, EmailDTO emailDTO) returning : email(businessID, id, emailDTO){
-		Long time = System.currentTimeMillis();
-		LOGGER.info("[{}, emailInvoice, {}, id: {}, replyTo: {}]",
-				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), id, emailDTO.getReplyTo()});
-		Invoice invoice = Invoice.findInvoice(id);
-		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, invoice.getClient().getName(), DOCUMENT_ID, invoice.getDocumentID().toString(), REPLY_TO, emailDTO.getReplyTo());
-		logActionInDB(invoice.getBusiness().getId(), EntityType.INVOICE, OperationType.EMAIL, id, time, details);
+	after(Long businessID, Long id, EmailDTO emailDTO) returning (boolean status) : email(businessID, id, emailDTO){
+		if(status){
+			Long time = System.currentTimeMillis();
+			LOGGER.info("[{}, emailInvoice, {}, id: {}, replyTo: {}]", new Object[] {utilsService.getAuthenticatedPrincipalDetails().getUsername(),
+					new Date(time), id, emailDTO.getReplyTo() });
+			Invoice invoice = Invoice.findInvoice(id);
+			Map<String, String> details = ImmutableMap.of(CLIENT_NAME, invoice.getClient().getName(), DOCUMENT_ID, invoice.getDocumentID().toString(),
+					REPLY_TO, emailDTO.getReplyTo());
+			logActionInDB(invoice.getBusiness().getId(), EntityType.INVOICE, OperationType.EMAIL, id, time, details);
+		}
 	}
 
 }
