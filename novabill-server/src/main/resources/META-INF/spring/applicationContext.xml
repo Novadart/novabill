@@ -107,8 +107,7 @@
 		<property name="sendEmail" value="${notification.exception}" />
 		<property name="emailAddresses">
 			<list>
-				<value>giordano.battilana@novadart.com</value>
-				<value>risto.gligorov@novadart.com</value>
+				<value>notification@novabill.it</value>
 			</list>
 		</property>
 		<property name="loggingOn" value="true"/>
@@ -121,8 +120,7 @@
 		<property name="sendEmail" value="${notification.registration}" />
 		<property name="emailAddresses">
 			<list>
-				<value>giordano.battilana@novadart.com</value>
-				<value>risto.gligorov@novadart.com</value>
+				<value>notification@novabill.it</value>
 			</list>
 		</property>
 	</bean>
@@ -132,9 +130,8 @@
 		factory-method="aspectOf">
 		<property name="sendEmail" value="${notification.accountUpgrade}" />
 		<property name="emailAddresses">
-				<list>
-				<value>giordano.battilana@novadart.com</value>
-				<value>risto.gligorov@novadart.com</value>
+		    <list>
+				<value>notification@novabill.it</value>
 			</list>
 		</property>
 	</bean>
@@ -145,8 +142,7 @@
 		<property name="sendEmail" value="${notification.feedback}" />
 		<property name="emailAddresses">
 			<list>
-				<value>giordano.battilana@novadart.com</value>
-				<value>risto.gligorov@novadart.com</value>
+				<value>notification@novabill.it</value>
 			</list>
 		</property>
 	</bean>
@@ -157,8 +153,7 @@
 		<property name="sendEmail" value="${notification.validationError}" />
 		<property name="emailAddresses">
 			<list>
-				<value>giordano.battilana@novadart.com</value>
-				<value>risto.gligorov@novadart.com</value>
+				<value>notification@novabill.it</value>
 			</list>
 		</property>
 	</bean>
@@ -169,8 +164,7 @@
 		<property name="sendEmail" value="${notification.clientUIError}" />
 		<property name="emailAddresses">
 			<list>
-				<value>giordano.battilana@novadart.com</value>
-				<value>risto.gligorov@novadart.com</value>
+				<value>notification@novabill.it</value>
 			</list>
 		</property>
 	</bean>
