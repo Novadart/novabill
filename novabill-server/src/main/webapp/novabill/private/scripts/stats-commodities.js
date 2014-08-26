@@ -1,6 +1,6 @@
 'use strict';
 
-angular.module("novabill.stats", ['novabill.stats.controllers', 'novabill.constants', 'ngRoute', 'novabill.utils',
+angular.module("novabill.stats.commodities", ['novabill.stats.controllers', 'novabill.constants', 'ngRoute', 'novabill.utils',
                                      'novabill.notifications'])
 
 .config(['$routeProvider', 'nConstantsProvider', 'nAnalyticsProvider',
@@ -11,8 +11,12 @@ angular.module("novabill.stats", ['novabill.stats.controllers', 'novabill.consta
 	$routeProvider
 
 	.when('/', {
-		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/stats.html'),
-		controller: 'StatsCtrl',
+		redirectTo: '/' + new Date().getFullYear()
+	})
+	
+	.when('/:year', {
+		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/stats-commodities.html'),
+		controller: 'StatsCommoditiesCtrl',
 		reloadOnSearch : false
 	})
 	

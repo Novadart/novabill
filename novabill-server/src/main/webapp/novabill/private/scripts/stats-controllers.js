@@ -4,27 +4,15 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 
 
 /**
- * STATS PAGE CONTROLLER
+ * GENERAL STATS PAGE CONTROLLER
  */
-.controller('StatsCtrl', ['$scope', 'nConstants', 'nAjax', '$location',
-                          function($scope, nConstants, nAjax, $location){
+.controller('StatsGeneralCtrl', ['$scope', 'nConstants', 'nAjax', '$location', '$routeParams',
+                          function($scope, nConstants, nAjax, $location, $routeParams){
 
-	var year = new Date().getFullYear();
+	var year = parseInt( $routeParams.year );
 	var prevYear = year-1;
 	$scope.year = year.toString();
-
-	$scope.onTabChange = function(token){
-		$location.search('tab',token);
-	};
-
-	$scope.activeTab = {
-			general : false,
-			clients : false,
-			commodities : false
-	};
-	$scope.activeTab[$location.search().tab] = true;
-
-
+	
 	var Stats = nAjax.Stats();
 	Stats.genStats({year : $scope.year}, function(stats){
 
@@ -40,8 +28,64 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 		$scope.totalsPerMonths = tpm;
 	});
 
+}])
 
 
+
+/**
+ * CLIENTS STATS PAGE CONTROLLER
+ */
+.controller('StatsClientsCtrl', ['$scope', 'nConstants', 'nAjax', '$location', '$routeParams',
+                          function($scope, nConstants, nAjax, $location, $routeParams){
+
+	var year = parseInt( $routeParams.year );
+	var prevYear = year-1;
+	$scope.year = year.toString();
+	
+	var Stats = nAjax.Stats();
+	Stats.genStats({year : $scope.year}, function(stats){
+
+		var tpm = [];
+		var prevYearStr = prevYear.toString();
+		for(var i=0; i<12; i++){
+			tpm.push({
+				month: i.toString(), 
+				value: stats.totalsPerMonths[year][i].toString(), 
+				pastValue: stats.totalsPerMonths[prevYearStr][i].toString()
+			});
+		}
+		$scope.totalsPerMonths = tpm;
+	});
+
+}])
+
+
+
+
+/**
+ * COMMODITIES STATS PAGE CONTROLLER
+ */
+.controller('StatsCommoditiesCtrl', ['$scope', 'nConstants', 'nAjax', '$location', '$routeParams',
+                          function($scope, nConstants, nAjax, $location, $routeParams){
+
+	var year = parseInt( $routeParams.year );
+	var prevYear = year-1;
+	$scope.year = year.toString();
+
+	var Stats = nAjax.Stats();
+	Stats.genStats({year : $scope.year}, function(stats){
+
+		var tpm = [];
+		var prevYearStr = prevYear.toString();
+		for(var i=0; i<12; i++){
+			tpm.push({
+				month: i.toString(), 
+				value: stats.totalsPerMonths[year][i].toString(), 
+				pastValue: stats.totalsPerMonths[prevYearStr][i].toString()
+			});
+		}
+		$scope.totalsPerMonths = tpm;
+	});
 
 }]);
 

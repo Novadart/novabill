@@ -30,7 +30,9 @@
 <spring:url var="priceListsUrl" value="/private/price-lists/" />
 <spring:url var="paymentsUrl" value="/private/payments/" />
 <spring:url var="settingsUrl" value="/private/settings/" />
-<spring:url var="statisticsUrl" value="/private/stats/" />
+<spring:url var="statisticsGeneralUrl" value="/private/stats/" />
+<spring:url var="statisticsClientsUrl" value="/private/stats/clients/" />
+<spring:url var="statisticsCommoditiesUrl" value="/private/stats/commodities/" />
 <spring:url var="shareUrl" value="/private/share/" />
 <spring:url var="clientUiErrorUrl" value="/private/ajax/clientuierror" />
 
@@ -256,12 +258,25 @@ window.onerror = function(message, source, line, column) {
 				    </a>
 				</li>
 				
-				<li class="<%=PAGES.STATISTICS.equals(activePage) ? "active" : "" %>">
-                    <a href="${statisticsUrl}"> <i
-                        class="fa fa-bar-chart-o"></i> <span class="title">Statistiche</span> <% if(PAGES.STATISTICS.equals(activePage)) { %> <span
-                        class="selected"></span> <%} %>
+                <li class="<%=PAGES.STATISTICS_GENERAL.equals(activePage) || PAGES.STATISTICS_CLIENTS.equals(activePage) || PAGES.STATISTICS_COMMODITIES.equals(activePage)? "active" : "" %>">
+                    <a href="javascript:;">
+                    <i class="fa fa-bar-chart-o"></i> 
+                    <span class="title">Statistiche</span>                  
+                    <span class="arrow "></span>
                     </a>
+                    <ul class="sub-menu">
+                        <li class="<%=PAGES.STATISTICS_GENERAL.equals(activePage) ? "active" : "" %>" >
+                            <a href="${statisticsGeneralUrl}"><i class="fa fa-dashboard"></i> Generali</a>
+                        </li>
+                        <li class="<%=PAGES.STATISTICS_CLIENTS.equals(activePage) ? "active" : "" %>">
+                            <a href="${statisticsClientsUrl}"><i class="fa fa-user"></i> Clienti</a>
+                        </li>
+                        <li class="<%=PAGES.STATISTICS_COMMODITIES.equals(activePage) ? "active" : "" %>">
+                            <a href="${statisticsCommoditiesUrl}"><i class="fa fa-th"></i> Articoli</a>
+                        </li>
+                    </ul>
                 </li>
+                
 				
 				<li>
                     <div class="spacer" style="margin: 20px 0;"></div>

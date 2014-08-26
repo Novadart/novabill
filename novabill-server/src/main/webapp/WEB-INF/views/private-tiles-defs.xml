@@ -70,8 +70,16 @@
         <put-attribute name="body" value="/WEB-INF/views/tiles/private/shareBody.jsp" />
     </definition>
     
-    <definition name="private.statistics" extends="private.layout">
-        <put-attribute name="body" value="/WEB-INF/views/tiles/private/statisticsBody.jsp" />
+    <definition name="private.statistics.general" extends="private.layout">
+        <put-attribute name="body" value="/WEB-INF/views/tiles/private/statisticsGeneralBody.jsp" />
+    </definition>
+    
+    <definition name="private.statistics.clients" extends="private.layout">
+        <put-attribute name="body" value="/WEB-INF/views/tiles/private/statisticsClientsBody.jsp" />
+    </definition>
+    
+    <definition name="private.statistics.commodities" extends="private.layout">
+        <put-attribute name="body" value="/WEB-INF/views/tiles/private/statisticsCommoditiesBody.jsp" />
     </definition>
 	
 	<definition name="private.hello" extends="private.hello.layout"></definition>
