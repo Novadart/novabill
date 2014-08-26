@@ -29,7 +29,7 @@ public class PrivateController {
 	private final ObjectMapper mapper = new ObjectMapper();
 	
 	public static enum PAGES {
-		DASHBOARD, CLIENTS, COMMODITIES, PRICE_LISTS, PAYMENTS, SETTINGS, INVOICES, ESTIMATIONS, TRANSPORT_DOCUMENTS, CREDIT_NOTES, PREMIUM, SHARE
+		DASHBOARD, CLIENTS, COMMODITIES, PRICE_LISTS, PAYMENTS, SETTINGS, INVOICES, ESTIMATIONS, TRANSPORT_DOCUMENTS, CREDIT_NOTES, PREMIUM, SHARE, STATISTICS
 	}
 
 
@@ -128,6 +128,13 @@ public class PrivateController {
 	public ModelAndView share(){
 		ModelAndView mav = new ModelAndView("private.share");
 		mav.addObject("activePage", PAGES.SHARE);
+		return mav;
+	}
+	
+	@RequestMapping(value = Urls.PRIVATE_STATISTICS, method = RequestMethod.GET)
+	public ModelAndView stats(){
+		ModelAndView mav = new ModelAndView("private.statistics");
+		mav.addObject("activePage", PAGES.STATISTICS);
 		return mav;
 	}
 	

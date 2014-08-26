@@ -30,6 +30,7 @@
 <spring:url var="priceListsUrl" value="/private/price-lists/" />
 <spring:url var="paymentsUrl" value="/private/payments/" />
 <spring:url var="settingsUrl" value="/private/settings/" />
+<spring:url var="statisticsUrl" value="/private/stats/" />
 <spring:url var="shareUrl" value="/private/share/" />
 <spring:url var="clientUiErrorUrl" value="/private/ajax/clientuierror" />
 
@@ -248,10 +249,23 @@ window.onerror = function(message, source, line, column) {
 					<div class="spacer" style="margin: 20px 0;"></div>
 				</li>
 
-				<li class="<%=PAGES.PAYMENTS.equals(activePage) ? "active last" : "last" %>"><a href="${paymentsUrl}"> <i
+				<li class="<%=PAGES.PAYMENTS.equals(activePage) ? "active" : "" %>">
+				    <a href="${paymentsUrl}"> <i
 						class="fa fa-briefcase"></i> <span class="title">Pagamenti</span> <% if(PAGES.PAYMENTS.equals(activePage)) { %> <span
 						class="selected"></span> <%} %>
-				</a></li>
+				    </a>
+				</li>
+				
+				<li class="<%=PAGES.STATISTICS.equals(activePage) ? "active" : "" %>">
+                    <a href="${statisticsUrl}"> <i
+                        class="fa fa-bar-chart-o"></i> <span class="title">Statistiche</span> <% if(PAGES.STATISTICS.equals(activePage)) { %> <span
+                        class="selected"></span> <%} %>
+                    </a>
+                </li>
+				
+				<li>
+                    <div class="spacer" style="margin: 20px 0;"></div>
+                </li>
 				
 				<li class="<%=PAGES.SHARE.equals(activePage) ? "active last" : "last" %>"><a href="${shareUrl}"> <i
                         class="fa fa-group"></i> <span class="title">Condivisione</span> <% if(PAGES.SHARE.equals(activePage)) { %> <span
