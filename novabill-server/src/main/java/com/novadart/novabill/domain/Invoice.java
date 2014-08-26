@@ -2,6 +2,7 @@ package com.novadart.novabill.domain;
 
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.List;
@@ -25,6 +26,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.shared.client.dto.PaymentDateType;
 import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
+import com.novadart.novabill.shared.client.tuple.Triple;
 
 
 /*
@@ -76,9 +78,12 @@ public class Invoice extends AbstractInvoice implements Serializable {
     	return countForClient(Invoice.class, id);
     }
     
-    public static Map<String, BigDecimal> getCommodityRevenueDistrbution(Long businessID){
-		String sql = "select i.sku, sum(i.totalBeforeTax * (100 + i.tax) / 100) from Invoice inv join inv.accountingDocumentItems i where i.sku <> '' and inv.business.id = :bid group by i.sku";
-		List<Object[]> rows = entityManager().createQuery(sql, Object[].class).setParameter("bid", businessID).getResultList();
+    public static Map<String, BigDecimal> getCommodityRevenueDistrbutionForYear(Long businessID, Integer year){
+		String sql = "select i.sku, sum(i.totalBeforeTax) from Invoice inv join inv.accountingDocumentItems i " +
+					 "where i.sku <> '' and inv.business.id = :bid and inv.accountingDocumentYear = :year group by i.sku";
+		List<Object[]> rows = entityManager().createQuery(sql, Object[].class).
+								setParameter("bid", businessID).
+								setParameter("year", year).getResultList();
 		Map<String, BigDecimal> commodityRevenue = new HashMap<>(rows.size());
 		for(Object[] row: rows)
 			commodityRevenue.put((String)row[0], (BigDecimal)row[1]);
@@ -93,7 +98,28 @@ public class Invoice extends AbstractInvoice implements Serializable {
     	return entityManager().createQuery(sql, Invoice.class).
     			setParameter("bid", businessID).
     			setParameter("cid", clientID).
-    			setHint("org.hibernate.cacheable", Boolean.TRUE).getResultList();
+    			getResultList();
+    }
+    
+    
+    /**
+     * Returns list of triples where each triple is comprised of
+     * 1st - sku of commodity
+     * 2nd - total before taxes invoiced for this commodity type for the given year
+     * 3rd - total quantity invoiced for this commodity type for the given year
+     * The list is ordered on the second argument - total before taxes
+     */
+    public static List<Triple<String, BigDecimal, BigDecimal>> getCommodityRevenueStatsForClientForYear(Long businessID, Long clientID, Integer year){
+		String sql = "select i.sku, sum(i.totalBeforeTax) as rev, sum(i.quantity) from Invoice inv join inv.accountingDocumentItems i " +
+					 "where i.sku <> '' and inv.business.id = :bid and inv.client.id = :cid and inv.accountingDocumentYear = :year group by i.sku order by rev";
+		List<Object[]> rows = entityManager().createQuery(sql, Object[].class).
+								setParameter("bid", businessID).
+								setParameter("cid", clientID).
+								setParameter("year", year).getResultList();
+		List<Triple<String, BigDecimal, BigDecimal>> commodityRevenue = new ArrayList<>(rows.size());
+		for(Object[] row: rows)
+			commodityRevenue.add(new Triple<>((String)row[0], (BigDecimal)row[1], (BigDecimal)row[2]));
+		return commodityRevenue;
     }
     
     /*
