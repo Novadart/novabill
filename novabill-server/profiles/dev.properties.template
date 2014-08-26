@@ -43,6 +43,7 @@ mvn.notification.accountUpgrade=true
 mvn.notification.feedback=true
 mvn.notification.clientUIError=true
 mvn.ignore.exceptions=java.lang.Exception
+mvn.notification.deleteAccount=true
 
 #
 # Application Configuration

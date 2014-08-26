@@ -209,6 +209,16 @@
 	    factory-method="aspectOf">
 	</bean>
 	
+	<bean class="com.novadart.novabill.aspect.logging.DeleteAccountAspect"
+	    factory-method="aspectOf">
+		<property name="sendEmail" value="${notification.deleteAccount}" />
+		<property name="emailAddresses">
+			<list>
+				<value>notification@novabill.it</value>
+			</list>
+		</property>
+	</bean>
+	
 	<bean class="com.novadart.novabill.aspect.CachingAspect"
 		factory-method="aspectOf">
 		<property name="ehcacheDiskStore" value="${mvn.ehcache.diskStore}"/>
