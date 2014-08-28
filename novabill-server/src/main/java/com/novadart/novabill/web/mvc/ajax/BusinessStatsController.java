@@ -16,6 +16,7 @@ import com.novadart.novabill.shared.client.dto.BIClientStatsDTO;
 import com.novadart.novabill.shared.client.dto.BICommodityStatsDTO;
 import com.novadart.novabill.shared.client.dto.BIGeneralStatsDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
 @Controller
@@ -30,21 +31,21 @@ public class BusinessStatsController {
 	@RequestMapping(value = "/genstats/{year}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public BIGeneralStatsDTO getGeneralBIStats(@PathVariable Long businessID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException {
+	public BIGeneralStatsDTO getGeneralBIStats(@PathVariable Long businessID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		return businessStatsService.getGeneralBIStats(businessID, year);
 	}
 	
 	@RequestMapping(value = "/clientstats/{clientID}/{year}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public BIClientStatsDTO getClientBIStats(@PathVariable Long businessID, @PathVariable Long clientID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException{
+	public BIClientStatsDTO getClientBIStats(@PathVariable Long businessID, @PathVariable Long clientID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
 		return businessStatsService.getClientBIStats(businessID, clientID, year);
 	}
 	
 	@RequestMapping(value = "/commoditystats/{year}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public BICommodityStatsDTO getCommodityBIStats(@PathVariable Long businessID, @PathVariable Integer year, @RequestParam String sku){
+	public BICommodityStatsDTO getCommodityBIStats(@PathVariable Long businessID, @PathVariable Integer year, @RequestParam String sku) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
 		return businessStatsService.getCommodityBIStats(businessID, sku, year);
 	}
 	

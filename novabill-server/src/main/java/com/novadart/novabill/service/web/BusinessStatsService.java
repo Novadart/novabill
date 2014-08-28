@@ -12,8 +12,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import com.novadart.novabill.annotation.Restrictions;
+import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.DTOUtils;
@@ -24,6 +27,7 @@ import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
+import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.shared.client.tuple.Triple;
@@ -113,7 +117,10 @@ public class BusinessStatsService {
 		return result;
 	}
 	
-	public BIGeneralStatsDTO getGeneralBIStats(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException {
+	
+	@PreAuthorize("#businessID == principal.business.id")
+	@Restrictions(checkers = {PremiumChecker.class})
+	public BIGeneralStatsDTO getGeneralBIStats(Long businessID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException {
 		BIGeneralStatsDTO generalStatsDTO = new BIGeneralStatsDTO();
 		List<InvoiceDTO> invoices = businessService.getInvoices(businessID, year);
 		List<ClientDTO> clients = businessService.getClients(businessID);
@@ -137,7 +144,10 @@ public class BusinessStatsService {
 		return r;
 	}
 	
-	public BIClientStatsDTO getClientBIStats(Long businessID, Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException{
+	
+	@PreAuthorize("#businessID == principal.business.id")
+	@Restrictions(checkers = {PremiumChecker.class})
+	public BIClientStatsDTO getClientBIStats(Long businessID, Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
 		BIClientStatsDTO clientStatsDTO = new BIClientStatsDTO();
 		List<Invoice> invoices = Invoice.getAllInvoicesForClient(businessID, clientID);
 		BigDecimal totalBeforeTaxes = new BigDecimal("0.00");
@@ -166,12 +176,51 @@ public class BusinessStatsService {
 		return clientStatsDTO;
 	}
 	
-	public BICommodityStatsDTO getCommodityBIStats(Long businessID, String sku, Integer year){
+	private void updateClientStatsForCommodity(AccountingDocumentItem item, Map<Long, Pair<BigDecimal, BigDecimal>> clientStats){
+		Long clientID = item.getAccountingDocument().getClient().getId();
+		if(!clientStats.containsKey(clientID))
+			clientStats.put(clientID, new Pair<>(item.getTotalBeforeTax(), item.getQuantity()));
+		else{
+			Pair<BigDecimal, BigDecimal> currVal = clientStats.get(clientID);
+			clientStats.put(clientID, new Pair<>(currVal.getFirst().add(item.getTotalBeforeTax()), currVal.getSecond().add(item.getQuantity())));
+		}
+	}
+	
+	private List<Triple<ClientDTO, BigDecimal, BigDecimal>> enrichClientStatsForCommodityWithClientData(Map<Long, Pair<BigDecimal, BigDecimal>> clientStats,
+			Map<Long, ClientDTO> clientMap) {
+		List<Triple<ClientDTO, BigDecimal, BigDecimal>> result = new ArrayList<>(clientStats.size());
+		for(Long clientID: clientStats.keySet()) {
+			Pair<BigDecimal, BigDecimal> stats = clientStats.get(clientID);
+			result.add(new Triple<>(clientMap.get(clientID),
+					stats.getFirst().setScale(2, RoundingMode.HALF_UP), stats.getSecond().setScale(2, RoundingMode.HALF_UP)));
+		}
+		Collections.sort(result, new Comparator<Triple<ClientDTO, BigDecimal, BigDecimal>>() {
+			@Override
+			public int compare(Triple<ClientDTO, BigDecimal, BigDecimal> o1, Triple<ClientDTO, BigDecimal, BigDecimal> o2) {
+				return o2.getSecond().compareTo(o1.getSecond());
+			}
+		});
+		return result;
+	}
+	
+	private Map<Long, ClientDTO> computeClientMap(List<ClientDTO> clients) {
+		Map<Long, ClientDTO> clientMap = new HashMap<>(clients.size());
+		for(ClientDTO clientDTO: clients)
+			clientMap.put(clientDTO.getId(), clientDTO);
+		return clientMap;
+	}
+	
+	@PreAuthorize("#businessID == principal.business.id")
+	@Restrictions(checkers = {PremiumChecker.class})
+	public BICommodityStatsDTO getCommodityBIStats(Long businessID, String sku, Integer year) throws NotAuthenticatedException,
+				DataAccessException, FreeUserAccessForbiddenException {
 		BICommodityStatsDTO commodityStatsDTO = new BICommodityStatsDTO();
 		List<Invoice> invoices = Invoice.getAllInvoicesContainingCommodity(businessID, sku);
 		BigDecimal total = new BigDecimal("0.00");
 		BigDecimal totalCurrentYear = new BigDecimal("0.00");
 		Map<Integer, BigDecimal[]> totalsPerMonths = new HashMap<>();
+		Map<Long, Pair<BigDecimal, BigDecimal>> clientStatsCurrentYear = new HashMap<>();
+		Map<Long, Pair<BigDecimal, BigDecimal>> clientStatsPrevYear = new HashMap<>();
 		for(Invoice invoice: invoices){
 			for(AccountingDocumentItem item: invoice.getAccountingDocumentItems()){
 				if(sku.equals(item.getSku())){
@@ -186,6 +235,10 @@ public class BusinessStatsService {
 					BigDecimal[] totalsPerMonthsPerYear = totalsPerMonths.get(invoice.getAccountingDocumentYear());
 					int month = extractMonthFromDate(invoice.getAccountingDocumentDate());
 					totalsPerMonthsPerYear[month] = totalsPerMonthsPerYear[month].add(item.getTotalBeforeTax());
+					if(item.getAccountingDocument().getAccountingDocumentYear().equals(year))
+						updateClientStatsForCommodity(item, clientStatsCurrentYear);
+					if(item.getAccountingDocument().getAccountingDocumentYear().equals(year - 1))
+						updateClientStatsForCommodity(item, clientStatsPrevYear);
 				}
 			}
 		}
@@ -194,6 +247,9 @@ public class BusinessStatsService {
 		commodityStatsDTO.setTotalBeforeTaxes(total.setScale(2, RoundingMode.HALF_UP));
 		commodityStatsDTO.setTotalBeforeTaxesCurrentYear(totalCurrentYear.setScale(2, RoundingMode.HALF_UP));
 		commodityStatsDTO.setTotalsPerMonths(totalsPerMonths);
+		Map<Long, ClientDTO> clientMap = computeClientMap(businessService.getClients(businessID));
+		commodityStatsDTO.setClientStatsForCurrentYear(enrichClientStatsForCommodityWithClientData(clientStatsCurrentYear, clientMap));
+		commodityStatsDTO.setClientStatsForPrevYear(enrichClientStatsForCommodityWithClientData(clientStatsPrevYear, clientMap));
 		return commodityStatsDTO;
 	}
 
