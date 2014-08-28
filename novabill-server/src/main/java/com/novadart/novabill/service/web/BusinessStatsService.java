@@ -6,6 +6,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,9 +14,11 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.shared.client.dto.BIClientStatsDTO;
+import com.novadart.novabill.shared.client.dto.BICommodityStatsDTO;
 import com.novadart.novabill.shared.client.dto.BIGeneralStatsDTO;
 import com.novadart.novabill.shared.client.dto.ClientDTO;
 import com.novadart.novabill.shared.client.dto.CommodityDTO;
@@ -31,13 +34,17 @@ public class BusinessStatsService {
 	@Autowired
 	private BusinessService businessService;
 	
-	private BigDecimal[] computeTotalsPerMonthsForYear(List<InvoiceDTO> invoices) throws NotAuthenticatedException, DataAccessException{
+	private int extractMonthFromDate(Date date){
 		Calendar cal = Calendar.getInstance();
+		cal.setTime(date);
+		return cal.get(Calendar.MONTH);
+	}
+	
+	private BigDecimal[] computeTotalsPerMonthsForYear(List<InvoiceDTO> invoices) throws NotAuthenticatedException, DataAccessException{
 		BigDecimal[] totals = new BigDecimal[12];
 		for(int i = 0; i < 12; ++i) totals[i] = new BigDecimal("0.00");
 		for(InvoiceDTO invoice: invoices){
-			cal.setTime(invoice.getAccountingDocumentDate());
-			int month = cal.get(Calendar.MONTH); 
+			int month = extractMonthFromDate(invoice.getAccountingDocumentDate()); 
 			totals[month] = totals[month].add(invoice.getTotalBeforeTax());
 		}
 		for(int i = 0; i < 12; ++i)
@@ -157,6 +164,37 @@ public class BusinessStatsService {
 		clientStatsDTO.setCommodityStatsForCurrentYear(computeCommodityRevenueStatsForClientForYear(businessID, clientID, year, businessService.getCommodities(businessID)));
 		clientStatsDTO.setCommodityStatsForPrevYear(computeCommodityRevenueStatsForClientForYear(businessID, clientID, year - 1, businessService.getCommodities(businessID)));
 		return clientStatsDTO;
+	}
+	
+	public BICommodityStatsDTO getCommodityBIStats(Long businessID, String sku, Integer year){
+		BICommodityStatsDTO commodityStatsDTO = new BICommodityStatsDTO();
+		List<Invoice> invoices = Invoice.getAllInvoicesContainingCommodity(businessID, sku);
+		BigDecimal total = new BigDecimal("0.00");
+		BigDecimal totalCurrentYear = new BigDecimal("0.00");
+		Map<Integer, BigDecimal[]> totalsPerMonths = new HashMap<>();
+		for(Invoice invoice: invoices){
+			for(AccountingDocumentItem item: invoice.getAccountingDocumentItems()){
+				if(sku.equals(item.getSku())){
+					total = total.add(item.getTotalBeforeTax());
+					if(invoice.getAccountingDocumentYear().equals(year))
+						totalCurrentYear = totalCurrentYear.add(item.getTotalBeforeTax());
+					if(!totalsPerMonths.containsKey(invoice.getAccountingDocumentYear())){
+						BigDecimal[] totalsPerMonthsPerYear = new BigDecimal[12];
+						for(int i = 0; i < 12; ++i) totalsPerMonthsPerYear[i] = new BigDecimal("0.00");
+						totalsPerMonths.put(invoice.getAccountingDocumentYear(), totalsPerMonthsPerYear);
+					}
+					BigDecimal[] totalsPerMonthsPerYear = totalsPerMonths.get(invoice.getAccountingDocumentYear());
+					int month = extractMonthFromDate(invoice.getAccountingDocumentDate());
+					totalsPerMonthsPerYear[month] = totalsPerMonthsPerYear[month].add(item.getTotalBeforeTax());
+				}
+			}
+		}
+		for(BigDecimal[] totalsPerMonthsPerYear: totalsPerMonths.values())
+			for(int i = 0; i < 12; ++i) totalsPerMonthsPerYear[i] = totalsPerMonthsPerYear[i].setScale(2, RoundingMode.HALF_UP);
+		commodityStatsDTO.setTotalBeforeTaxes(total.setScale(2, RoundingMode.HALF_UP));
+		commodityStatsDTO.setTotalBeforeTaxesCurrentYear(totalCurrentYear.setScale(2, RoundingMode.HALF_UP));
+		commodityStatsDTO.setTotalsPerMonths(totalsPerMonths);
+		return commodityStatsDTO;
 	}
 
 }

@@ -122,6 +122,21 @@ public class Invoice extends AbstractInvoice implements Serializable {
 		return commodityRevenue;
     }
     
+    /**
+     * Returns all invoices that contain given commodity identified by sku. Invoices are sorted by creation date. 
+     */
+    public static List<Invoice> getAllInvoicesContainingCommodity(Long businessID, String sku){
+    	try {
+			String sql = "select inv from Invoice inv join inv.accountingDocumentItems i where i.sku = :sku and inv.business.id = :bid order by inv.accountingDocumentDate";
+			return entityManager().createQuery(sql, Invoice.class).
+					setParameter("bid", businessID).
+					setParameter("sku", sku).getResultList();
+		} catch (Exception e) {
+			e.printStackTrace();
+			throw e;
+		}
+    }
+    
     /*
      * Getters and setters
      * */
