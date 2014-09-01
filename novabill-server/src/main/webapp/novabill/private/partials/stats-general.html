@@ -1,4 +1,4 @@
-<div class="container-fluid settings">
+<div class="container-fluid statistics-general">
 	<div class="row">
 		<div class="col-md-12">
 
@@ -15,15 +15,152 @@
 	<div class="clearfix"></div>
 
 	<div class="row">
-		<div class="col-md-12">
-		  <n-premium-alert></n-premium-alert>
-		  
-		  <n-monthly-statistics 
-		      month="mVal.month" year="year" value="mVal.value" past-value="mVal.pastValue" 
-		      ng-repeat="mVal in totalsPerMonths">
-	      </n-monthly-statistics>
-		  		
-		</div>
+	   <n-premium-alert></n-premium-alert>
+	  
+	   <n-monthly-statistics 
+	      month="mVal.month" year="year" value="mVal.value" past-value="mVal.pastValue" 
+	      ng-repeat="mVal in totalsPerMonths">
+       </n-monthly-statistics>
 	</div>
+	
+	<div class="row" style="margin-top: 50px;">
+
+        <div class="col-md-4">
+            <div class="panel panel-default">
+	            <div class="panel-heading">
+	                <h3 class="panel-title">Fatturato {{year}}</h3>
+	            </div>
+				<div class="panel-body">
+					<form class="form-horizontal" role="form">
+						<div class="form-body">
+							<div class="form-group">
+								<label class="col-md-4 control-label"><strong>Totale</strong></label>
+								<div class="col-md-8">
+									<p class="form-control-static"><strong>{{totals.totalBeforeTaxes | currency}}</strong></p>
+								</div>
+							</div>
+							<div class="form-group">
+                                <label class="col-md-4 control-label">IVA</label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static">{{totals.totalTaxes | currency}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Totale IVA incl.</label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static">{{totals.totalAfterTaxes | currency}}</p>
+                                </div>
+                            </div>
+                        </div>
+					</form>
+				</div>
+			</div>
+        </div>
+		
+		<div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Clients</h3>
+                </div>
+                <div class="panel-body">
+                     <form class="form-horizontal" role="form">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Numero Totale</label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static">{{clients.totalCount}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Attivi quest'anno</label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static">{{clients.returning}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">&nbsp;</label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static">&nbsp;</p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+		
+		<div class="col-md-4">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Commodities</h3>
+                </div>
+                <div class="panel-body">
+                     <form class="form-horizontal" role="form">
+                        <div class="form-body">
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Numero Totale</label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static">{{commodities.totalCount}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Servizi</label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static">{{commodities.services}}</p>
+                                </div>
+                            </div>
+                            <div class="form-group">
+                                <label class="col-md-4 control-label">Prodotti</label>
+                                <div class="col-md-8">
+                                    <p class="form-control-static">{{commodities.products}}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+
+
+	</div>
+	
+	
+	<div class="row" style="margin-top: 50px;">
+	
+	   <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Clienti ordinati per fatturato</h3>
+                </div>
+                <div class="panel-body">
+                
+                    <div class="ranking-entry" ng-repeat="data in ranks.clients">
+                        <div class="total">{{data.second | currency}}</div>
+                        <a class="entity-name" href="javascript:;">{{data.first.name}}</a>
+                     </div>
+                     
+                </div>
+            </div>
+        </div>
+        
+        
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">Articoli ordinati per fatturato</h3>
+                </div>
+                <div class="panel-body">
+                     
+                     <div class="ranking-entry" ng-repeat="data in ranks.commodities">
+                        <div class="total">{{data.second | currency}}</div>
+                        <a class="entity-name" href="javascript:;">{{data.first.description}}</a>
+                     </div>
+                     
+                </div>
+            </div>
+        </div>
+	
+	</div>
+	
 
 </div>

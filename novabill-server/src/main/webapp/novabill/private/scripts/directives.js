@@ -1029,14 +1029,16 @@ angular.module('novabill.directives',
 			var curYear = d.getFullYear().toString();
 			var curMonth = d.getMonth();
 			var month = parseInt( $scope.month );
+			var value = new BigNumber( $scope.value );
+			var pastValue = new BigNumber( $scope.pastValue );
 			
 			$scope.disabled = (curYear === $scope.year && month > curMonth);
 			$scope.monthName = $filter('translate')( nConstants.months[ month ] );
 			$scope.diff = 0;
 			
-			if($scope.pastValue === '0' || $scope.disabled){
+			if(pastValue.isZero() || $scope.disabled){
 				
-				if($scope.value === '0' || $scope.disabled){
+				if(value.isZero() || $scope.disabled){
 					
 					$scope.diff = 0;
 					$scope.percentVariation = '';
@@ -1052,8 +1054,6 @@ angular.module('novabill.directives',
 				
 			} else {
 				
-				var value = new BigNumber( $scope.value );
-				var pastValue = new BigNumber( $scope.pastValue );
 				$scope.diff = parseFloat( value.dividedBy(pastValue).minus(new BigNumber('1')).times(new BigNumber('100')).toFixed(2) );
 				
 				var barHeight = 20 + ( ($scope.diff > 100 || $scope.diff < -100) ? 60 : ( parseInt(Math.abs($scope.diff) / 20) * 10 + 10 ) );
