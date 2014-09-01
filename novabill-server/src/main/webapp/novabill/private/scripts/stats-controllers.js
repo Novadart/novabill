@@ -9,24 +9,62 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 .controller('StatsGeneralCtrl', ['$scope', 'nConstants', 'nAjax', '$location', '$routeParams',
                           function($scope, nConstants, nAjax, $location, $routeParams){
 
+	var Stats = nAjax.Stats();
 	var year = parseInt( $routeParams.year );
 	var prevYear = year-1;
 	$scope.year = year.toString();
 	
-	var Stats = nAjax.Stats();
-	Stats.genStats({year : $scope.year}, function(stats){
+	$scope.loadStats = function(year){
+		Stats.genStats({year : year}, function(stats){
 
-		var tpm = [];
-		var prevYearStr = prevYear.toString();
-		for(var i=0; i<12; i++){
-			tpm.push({
-				month: i.toString(), 
-				value: stats.totalsPerMonths[year][i].toString(), 
-				pastValue: stats.totalsPerMonths[prevYearStr][i].toString()
-			});
-		}
-		$scope.totalsPerMonths = tpm;
-	});
+			// calculate totals per months
+			var tpm = [];
+			var prevYearStr = prevYear.toString();
+			for(var i=0; i<12; i++){
+				tpm.push({
+					month: i.toString(), 
+					value: stats.totalsPerMonths[year][i].toString(), 
+					pastValue: stats.totalsPerMonths[prevYearStr][i].toString()
+				});
+			}
+			$scope.totalsPerMonths = tpm;
+			
+			// calculate totals
+			var totalBeforeTaxes = stats.totals.first;
+			var totalAfterTaxes = stats.totals.second;
+			var totalTaxes = ( new BigNumber(totalAfterTaxes).minus(new BigNumber(totalBeforeTaxes)) ).toString();
+			
+			
+			$scope.totals = {
+					totalBeforeTaxes : totalBeforeTaxes,
+					totalTaxes : totalTaxes,
+					totalAfterTaxes : totalAfterTaxes
+			};
+			
+			// calculate clients stats
+			$scope.clients = {
+					totalCount : stats.clientsVsReturningClients.first,
+					returning : stats.clientsVsReturningClients.second
+			};
+			
+			// calculate commodities stats
+			$scope.commodities = {
+					totalCount : 123,
+					services : 11,
+					products : 112
+			};
+			
+			// rankings
+			$scope.ranks = {
+					clients : stats.clientRankingByRevenue,
+					commodities : stats.commodityRankingByRevenue
+			};
+			
+		});
+	};
+	
+	
+	$scope.loadStats( $scope.year );
 
 }])
 
@@ -43,19 +81,6 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 	$scope.year = year.toString();
 	
 	var Stats = nAjax.Stats();
-	Stats.genStats({year : $scope.year}, function(stats){
-
-		var tpm = [];
-		var prevYearStr = prevYear.toString();
-		for(var i=0; i<12; i++){
-			tpm.push({
-				month: i.toString(), 
-				value: stats.totalsPerMonths[year][i].toString(), 
-				pastValue: stats.totalsPerMonths[prevYearStr][i].toString()
-			});
-		}
-		$scope.totalsPerMonths = tpm;
-	});
 
 }])
 
@@ -73,19 +98,6 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 	$scope.year = year.toString();
 
 	var Stats = nAjax.Stats();
-	Stats.genStats({year : $scope.year}, function(stats){
-
-		var tpm = [];
-		var prevYearStr = prevYear.toString();
-		for(var i=0; i<12; i++){
-			tpm.push({
-				month: i.toString(), 
-				value: stats.totalsPerMonths[year][i].toString(), 
-				pastValue: stats.totalsPerMonths[prevYearStr][i].toString()
-			});
-		}
-		$scope.totalsPerMonths = tpm;
-	});
 
 }]);
 
