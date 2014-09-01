@@ -15,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Service;
 
+import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.AccountingDocumentItem;
@@ -78,7 +79,7 @@ public class BusinessStatsService {
 		return returningClientsCount;
 	}
 	
-	private List<Pair<ClientDTO, BigDecimal>> computeClientRankingByRevenue(List<InvoiceDTO> invoices, List<ClientDTO> clients) {
+	private List<Map<String, Object>> computeClientRankingByRevenue(List<InvoiceDTO> invoices, List<ClientDTO> clients) {
 		Map<Long, BigDecimal> clientRevenues = new HashMap<>();
 		for(InvoiceDTO invoice: invoices) {
 			Long clientID = invoice.getClient().getId();
@@ -87,31 +88,42 @@ public class BusinessStatsService {
 			else
 				clientRevenues.put(clientID, invoice.getTotalBeforeTax());
 		}
-		List<Pair<ClientDTO, BigDecimal>> result = new ArrayList<>(clients.size());
+		List<Map<String, Object>> result = new ArrayList<>(clients.size());
 		for(ClientDTO client: clients) {
 			Long clientID = client.getId();
-			result.add(new Pair<>(client, clientRevenues.containsKey(clientID)? clientRevenues.get(clientID).setScale(2, RoundingMode.HALF_UP): new BigDecimal("0.00")));
+			Map<String, Object> el = new HashMap<>();
+			el.put("id", clientID);
+			el.put("name", client.getName());
+			el.put("revenue", clientRevenues.containsKey(clientID)? clientRevenues.get(clientID).setScale(2, RoundingMode.HALF_UP): new BigDecimal("0.00"));
+			result.add(el);
 		}
-		Collections.sort(result, new Comparator<Pair<ClientDTO, BigDecimal>>() {
+		Collections.sort(result, new Comparator<Map<String, Object>>() {
 			@Override
-			public int compare(Pair<ClientDTO, BigDecimal> o1, Pair<ClientDTO, BigDecimal> o2) {
-				return o2.getSecond().compareTo(o1.getSecond());
+			public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+				BigDecimal rev1 = (BigDecimal)o1.get("revenue"), rev2 = (BigDecimal)o2.get("revenue");
+				return rev2.compareTo(rev1);
 			}
 		});
 		return result;
 	}
 	
-	private List<Pair<CommodityDTO, BigDecimal>> computeCommodityRankingByRevenue(Long businessID, Integer year, List<CommodityDTO> commodities) {
+	private List<Map<String, Object>> computeCommodityRankingByRevenue(Long businessID, Integer year, List<CommodityDTO> commodities) {
 		Map<String, BigDecimal> commodityRevenues = Invoice.getCommodityRevenueDistrbutionForYear(businessID, year);
-		List<Pair<CommodityDTO, BigDecimal>> result = new ArrayList<>(commodities.size());
+		List<Map<String, Object>> result = new ArrayList<>(commodities.size());
 		for(CommodityDTO commodity: commodities) {
+			Map<String, Object> el = new HashMap<>();
 			String sku = commodity.getSku();
-			result.add(new Pair<>(commodity, commodityRevenues.containsKey(sku)? commodityRevenues.get(sku).setScale(2, RoundingMode.HALF_UP): new BigDecimal("0.00")));
+			el.put("sku", sku);
+			el.put("id", commodity.getId());
+			el.put("description", commodity.getDescription());
+			el.put("revenue", commodityRevenues.containsKey(sku)? commodityRevenues.get(sku).setScale(2, RoundingMode.HALF_UP): new BigDecimal("0.00"));
+			result.add(el);
 		}
-		Collections.sort(result, new Comparator<Pair<CommodityDTO, BigDecimal>>() {
+		Collections.sort(result, new Comparator<Map<String, Object>>() {
 			@Override
-			public int compare(Pair<CommodityDTO, BigDecimal> o1, Pair<CommodityDTO, BigDecimal> o2) {
-				return o2.getSecond().compareTo(o1.getSecond());
+			public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+				BigDecimal rev1 = (BigDecimal)o1.get("revenue"), rev2 = (BigDecimal)o2.get("revenue");
+				return rev2.compareTo(rev1);
 			}
 		});
 		return result;
@@ -125,8 +137,9 @@ public class BusinessStatsService {
 		List<InvoiceDTO> invoices = businessService.getInvoices(businessID, year);
 		List<ClientDTO> clients = businessService.getClients(businessID);
 		generalStatsDTO.setTotalsPerMonths(computeTotalsPerMonths(year, invoices, businessService.getInvoices(businessID, year - 1)));
-		generalStatsDTO.setTotals(businessService.getTotalsForYear(businessID, year));
-		generalStatsDTO.setClientsVsReturningClients(new Pair<Integer, Integer>(clients.size(), computeNumberOfReturningClients(invoices)));
+		Pair<BigDecimal, BigDecimal> totals = businessService.getTotalsForYear(businessID, year);
+		generalStatsDTO.setTotals(ImmutableMap.of("totalBeforeTax", totals.getFirst(), "totalAfterTax", totals.getSecond()));
+		generalStatsDTO.setClientsVsReturningClients(ImmutableMap.of("numberOfClients", clients.size(), "numberOfReturningClients", computeNumberOfReturningClients(invoices)));
 		generalStatsDTO.setClientRankingByRevenue(computeClientRankingByRevenue(invoices, clients));
 		generalStatsDTO.setCommodityRankingByRevenue(computeCommodityRankingByRevenue(businessID, year, businessService.getCommodities(businessID)));
 		return generalStatsDTO;

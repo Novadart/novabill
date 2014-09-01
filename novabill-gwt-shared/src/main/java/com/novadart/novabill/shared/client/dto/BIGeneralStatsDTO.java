@@ -4,20 +4,18 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-import com.novadart.novabill.shared.client.tuple.Pair;
-
 
 public class BIGeneralStatsDTO {
 	
 	private Map<Integer, BigDecimal[]> totalsPerMonths;
 	
-	private Pair<BigDecimal, BigDecimal> totals;
+	private Map<String, BigDecimal> totals;
 	
-	private Pair<Integer, Integer> clientsVsReturningClients;
+	private Map<String, Integer> clientsVsReturningClients;
 	
-	private List<Pair<ClientDTO, BigDecimal>> clientRankingByRevenue;
+	private List<Map<String, Object>> clientRankingByRevenue;
 	
-	private List<Pair<CommodityDTO, BigDecimal>> commodityRankingByRevenue;
+	private List<Map<String, Object>> commodityRankingByRevenue;
 
 	public Map<Integer, BigDecimal[]> getTotalsPerMonths() {
 		return totalsPerMonths;
@@ -27,36 +25,35 @@ public class BIGeneralStatsDTO {
 		this.totalsPerMonths = totalsPerMonth;
 	}
 
-	public Pair<BigDecimal, BigDecimal> getTotals() {
+	public Map<String, BigDecimal> getTotals() {
 		return totals;
 	}
 
-	public void setTotals(Pair<BigDecimal, BigDecimal> totals) {
+	public void setTotals(Map<String, BigDecimal> totals) {
 		this.totals = totals;
 	}
 
-	public Pair<Integer, Integer> getClientsVsReturningClients() {
+	public Map<String, Integer> getClientsVsReturningClients() {
 		return clientsVsReturningClients;
 	}
 
-	public void setClientsVsReturningClients(
-			Pair<Integer, Integer> clientsVsReturningClients) {
+	public void setClientsVsReturningClients(Map<String, Integer> clientsVsReturningClients) {
 		this.clientsVsReturningClients = clientsVsReturningClients;
 	}
-
-	public List<Pair<ClientDTO, BigDecimal>> getClientRankingByRevenue() {
+	
+	public List<Map<String, Object>> getClientRankingByRevenue() {
 		return clientRankingByRevenue;
 	}
 
-	public void setClientRankingByRevenue(List<Pair<ClientDTO, BigDecimal>> clientRankingByRevenue) {
+	public void setClientRankingByRevenue(List<Map<String, Object>> clientRankingByRevenue) {
 		this.clientRankingByRevenue = clientRankingByRevenue;
 	}
 
-	public List<Pair<CommodityDTO, BigDecimal>> getCommodityRankingByRevenue() {
+	public List<Map<String, Object>> getCommodityRankingByRevenue() {
 		return commodityRankingByRevenue;
 	}
 
-	public void setCommodityRankingByRevenue(List<Pair<CommodityDTO, BigDecimal>> commodityRankingByRevenue) {
+	public void setCommodityRankingByRevenue(List<Map<String, Object>> commodityRankingByRevenue) {
 		this.commodityRankingByRevenue = commodityRankingByRevenue;
 	}
 	
