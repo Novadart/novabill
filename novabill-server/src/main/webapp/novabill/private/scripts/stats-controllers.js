@@ -30,8 +30,8 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 			$scope.totalsPerMonths = tpm;
 			
 			// calculate totals
-			var totalBeforeTaxes = stats.totals.first;
-			var totalAfterTaxes = stats.totals.second;
+			var totalBeforeTaxes = stats.totals.totalBeforeTax;
+			var totalAfterTaxes = stats.totals.totalAfterTax;
 			var totalTaxes = ( new BigNumber(totalAfterTaxes).minus(new BigNumber(totalBeforeTaxes)) ).toString();
 			
 			
@@ -43,8 +43,8 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 			
 			// calculate clients stats
 			$scope.clients = {
-					totalCount : stats.clientsVsReturningClients.first,
-					returning : stats.clientsVsReturningClients.second
+					totalCount : stats.clientsVsReturningClients.numberOfClients,
+					returning : stats.clientsVsReturningClients.numberOfReturningClients
 			};
 			
 			// calculate commodities stats

@@ -135,8 +135,8 @@
                 <div class="panel-body">
                 
                     <div class="ranking-entry" ng-repeat="data in ranks.clients">
-                        <div class="total">{{data.second | currency}}</div>
-                        <a class="entity-name" href="javascript:;">{{data.first.name}}</a>
+                        <div class="total">{{data.revenue | currency}}</div>
+                        <a class="entity-name" href="javascript:;">{{data.name}}</a>
                      </div>
                      
                 </div>
@@ -152,8 +152,8 @@
                 <div class="panel-body">
                      
                      <div class="ranking-entry" ng-repeat="data in ranks.commodities">
-                        <div class="total">{{data.second | currency}}</div>
-                        <a class="entity-name" href="javascript:;">{{data.first.description}}</a>
+                        <div class="total">{{data.revenue | currency}}</div>
+                        <a class="entity-name" href="javascript:;">{{data.description}}</a>
                      </div>
                      
                 </div>
