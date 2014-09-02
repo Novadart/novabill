@@ -145,15 +145,24 @@ public class BusinessStatsService {
 		return generalStatsDTO;
 	}
 	
-	private List<Triple<CommodityDTO, BigDecimal, BigDecimal>> computeCommodityRevenueStatsForClientForYear(Long businessID, Long clientID, Integer year, List<CommodityDTO> commodities) {
+	private List<Map<String, Object>> computeCommodityRevenueStatsForClientForYear(Long businessID, Long clientID, Integer year, List<CommodityDTO> commodities) {
 		Map<String, CommodityDTO> commodityMap = new HashMap<>(commodities.size());
 		for(CommodityDTO commodity: commodities)
 			commodityMap.put(commodity.getSku(), commodity);
 		List<Triple<String, BigDecimal, BigDecimal>> commodityStats = Invoice.getCommodityRevenueStatsForClientForYear(businessID, clientID, year);
-		List<Triple<CommodityDTO, BigDecimal, BigDecimal>> r = new ArrayList<>(commodityStats.size());
-		for(Triple<String, BigDecimal, BigDecimal> s: commodityStats)
-			if(commodityMap.containsKey(s.getFirst()))
-				r.add(new Triple<>(commodityMap.get(s.getFirst()), s.getSecond(), s.getThird()));
+		List<Map<String, Object>> r = new ArrayList<>(commodityStats.size());
+		for(Triple<String, BigDecimal, BigDecimal> s: commodityStats){
+			CommodityDTO commodity = commodityMap.get(s.getFirst());
+			if(commodity != null){
+				Map<String, Object> el = new HashMap<>();
+				el.put("id", commodity.getId());
+				el.put("sku", commodity.getSku());
+				el.put("description", commodity.getDescription());
+				el.put("totalBeforeTaxes", s.getSecond());
+				el.put("quantity", s.getThird());
+				r.add(el);
+			}
+		}
 		return r;
 	}
 	
@@ -199,18 +208,24 @@ public class BusinessStatsService {
 		}
 	}
 	
-	private List<Triple<ClientDTO, BigDecimal, BigDecimal>> enrichClientStatsForCommodityWithClientData(Map<Long, Pair<BigDecimal, BigDecimal>> clientStats,
+	private List<Map<String, Object>> enrichClientStatsForCommodityWithClientData(Map<Long, Pair<BigDecimal, BigDecimal>> clientStats,
 			Map<Long, ClientDTO> clientMap) {
-		List<Triple<ClientDTO, BigDecimal, BigDecimal>> result = new ArrayList<>(clientStats.size());
+		List<Map<String, Object>> result = new ArrayList<>(clientStats.size());
 		for(Long clientID: clientStats.keySet()) {
 			Pair<BigDecimal, BigDecimal> stats = clientStats.get(clientID);
-			result.add(new Triple<>(clientMap.get(clientID),
-					stats.getFirst().setScale(2, RoundingMode.HALF_UP), stats.getSecond().setScale(2, RoundingMode.HALF_UP)));
+			Map<String, Object> el = new HashMap<>();
+			ClientDTO client = clientMap.get(clientID);
+			el.put("id", clientID);
+			el.put("name", client.getName());
+			el.put("revenue", stats.getFirst().setScale(2, RoundingMode.HALF_UP));
+			el.put("quantity", stats.getSecond().setScale(2, RoundingMode.HALF_UP));
+			result.add(el);
 		}
-		Collections.sort(result, new Comparator<Triple<ClientDTO, BigDecimal, BigDecimal>>() {
+		Collections.sort(result, new Comparator<Map<String, Object>>() {
 			@Override
-			public int compare(Triple<ClientDTO, BigDecimal, BigDecimal> o1, Triple<ClientDTO, BigDecimal, BigDecimal> o2) {
-				return o2.getSecond().compareTo(o1.getSecond());
+			public int compare(Map<String, Object> o1, Map<String, Object> o2) {
+				BigDecimal rev1 = (BigDecimal)o1.get("revenue"), rev2 = (BigDecimal)o2.get("revenue");
+				return rev2.compareTo(rev1);
 			}
 		});
 		return result;

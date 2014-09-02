@@ -4,8 +4,6 @@ import java.math.BigDecimal;
 import java.util.List;
 import java.util.Map;
 
-import com.novadart.novabill.shared.client.tuple.Triple;
-
 public class BICommodityStatsDTO {
 	
 	private BigDecimal totalBeforeTaxes;
@@ -14,9 +12,9 @@ public class BICommodityStatsDTO {
 	
 	private Map<Integer, BigDecimal[]> totalsPerMonths;
 	
-	private List<Triple<ClientDTO, BigDecimal, BigDecimal>> clientStatsForCurrentYear;
+	private List<Map<String, Object>> clientStatsForCurrentYear;
 	
-	private List<Triple<ClientDTO, BigDecimal, BigDecimal>> clientStatsForPrevYear;
+	private List<Map<String, Object>> clientStatsForPrevYear;
 	
 	public BigDecimal getTotalBeforeTaxes() {
 		return totalBeforeTaxes;
@@ -43,22 +41,21 @@ public class BICommodityStatsDTO {
 		this.totalsPerMonths = totalsPerMonths;
 	}
 
-	public List<Triple<ClientDTO, BigDecimal, BigDecimal>> getClientStatsForCurrentYear() {
+	public List<Map<String, Object>> getClientStatsForCurrentYear() {
 		return clientStatsForCurrentYear;
 	}
 
-	public void setClientStatsForCurrentYear(
-			List<Triple<ClientDTO, BigDecimal, BigDecimal>> clientStatsForCurrentYear) {
+	public void setClientStatsForCurrentYear(List<Map<String, Object>> clientStatsForCurrentYear) {
 		this.clientStatsForCurrentYear = clientStatsForCurrentYear;
 	}
 
-	public List<Triple<ClientDTO, BigDecimal, BigDecimal>> getClientStatsForPrevYear() {
+	public List<Map<String, Object>> getClientStatsForPrevYear() {
 		return clientStatsForPrevYear;
 	}
 
-	public void setClientStatsForPrevYear(
-			List<Triple<ClientDTO, BigDecimal, BigDecimal>> clientStatsForPrevYear) {
+	public void setClientStatsForPrevYear(List<Map<String, Object>> clientStatsForPrevYear) {
 		this.clientStatsForPrevYear = clientStatsForPrevYear;
 	}
+
 
 }

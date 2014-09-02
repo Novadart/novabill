@@ -5,8 +5,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import com.novadart.novabill.shared.client.tuple.Triple;
-
 public class BIClientStatsDTO {
 
 	private Date firstInvoiceDate;
@@ -17,9 +15,9 @@ public class BIClientStatsDTO {
 	
 	private Map<Integer, BigDecimal[]> totalsPerMonths;
 	
-	private List<Triple<CommodityDTO, BigDecimal, BigDecimal>> commodityStatsForCurrentYear;
+	private List<Map<String, Object>> commodityStatsForCurrentYear;
 	
-	private List<Triple<CommodityDTO, BigDecimal, BigDecimal>> commodityStatsForPrevYear;
+	private List<Map<String, Object>> commodityStatsForPrevYear;
 
 	public Date getFirstInvoiceDate() {
 		return firstInvoiceDate;
@@ -53,20 +51,19 @@ public class BIClientStatsDTO {
 		this.totalsPerMonths = totalsPerMonths;
 	}
 
-	public List<Triple<CommodityDTO, BigDecimal, BigDecimal>> getCommodityStatsForCurrentYear() {
+	public List<Map<String, Object>> getCommodityStatsForCurrentYear() {
 		return commodityStatsForCurrentYear;
 	}
 
-	public void setCommodityStatsForCurrentYear(
-			List<Triple<CommodityDTO, BigDecimal, BigDecimal>> commodityStatsForCurrentYear) {
+	public void setCommodityStatsForCurrentYear(List<Map<String, Object>> commodityStatsForCurrentYear) {
 		this.commodityStatsForCurrentYear = commodityStatsForCurrentYear;
 	}
 
-	public List<Triple<CommodityDTO, BigDecimal, BigDecimal>> getCommodityStatsForPrevYear() {
+	public List<Map<String, Object>> getCommodityStatsForPrevYear() {
 		return commodityStatsForPrevYear;
 	}
 
-	public void setCommodityStatsForPrevYear(List<Triple<CommodityDTO, BigDecimal, BigDecimal>> commodityStatsForPrevYear) {
+	public void setCommodityStatsForPrevYear(List<Map<String, Object>> commodityStatsForPrevYear) {
 		this.commodityStatsForPrevYear = commodityStatsForPrevYear;
 	}
 
