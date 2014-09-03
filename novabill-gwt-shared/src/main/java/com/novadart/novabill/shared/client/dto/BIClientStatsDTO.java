@@ -1,7 +1,6 @@
 package com.novadart.novabill.shared.client.dto;
 
 import java.math.BigDecimal;
-import java.util.Date;
 import java.util.List;
 import java.util.Map;
 

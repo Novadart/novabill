@@ -1,6 +1,7 @@
 package com.novadart.novabill.service;
 
 import java.io.IOException;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
@@ -30,7 +31,7 @@ import com.novadart.novabill.shared.client.dto.PaymentDeltaType;
 import com.novadart.novabill.shared.client.exception.PremiumUpgradeException;
 
 
-//@Service
+@Service
 public class DBUtilitiesService {
 	
 //	private String blmDBPath = "/tmp/DATI.mdb";
@@ -459,6 +460,22 @@ public class DBUtilitiesService {
 		
 	}
 	
+	public void migrate3_3(){
+		for(Client client: Client.findAllClients()){
+			Set<Invoice> invs = client.getInvoices();
+			if(invs.size() == 0){
+				client.setCreationTime(client.getBusiness().getPrincipals().iterator().next().getCreationTime());
+			}else{
+				long time = System.currentTimeMillis();
+				for(Invoice i: invs){
+					if(time > i.getAccountingDocumentDate().getTime())
+						time = i.getAccountingDocumentDate().getTime();
+				}
+				client.setCreationTime(time);
+			}
+		}
+	}
+	
 	@Scheduled(fixedDelay = 31_536_000_730l)
 	@Transactional(readOnly = false)
 	public void run() throws com.novadart.novabill.shared.client.exception.CloneNotSupportedException, SecurityException, NoSuchFieldException, IllegalArgumentException, IllegalAccessException, IOException, PremiumUpgradeException{
@@ -476,7 +493,8 @@ public class DBUtilitiesService {
 		//fixPaymentTypes();
 		//fixInvoices();
 		//migrate2_5();
-		migrate3_0();
+		//migrate3_0();
+		migrate3_3();
 	}
 	
 }
