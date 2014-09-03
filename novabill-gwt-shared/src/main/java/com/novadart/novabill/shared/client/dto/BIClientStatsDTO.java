@@ -7,24 +7,22 @@ import java.util.Map;
 
 public class BIClientStatsDTO {
 
-	private Date firstInvoiceDate;
-	
 	private BigDecimal totalBeforeTaxes;
-	
-	private BigDecimal totalBeforeTaxesCurrentYear;
 	
 	private Map<Integer, BigDecimal[]> totalsPerMonths;
 	
 	private List<Map<String, Object>> commodityStatsForCurrentYear;
 	
 	private List<Map<String, Object>> commodityStatsForPrevYear;
+	
+	private Long creationTime;
 
-	public Date getFirstInvoiceDate() {
-		return firstInvoiceDate;
+	public Long getCreationTime() {
+		return creationTime;
 	}
 
-	public void setFirstInvoiceDate(Date firstInvoiceDate) {
-		this.firstInvoiceDate = firstInvoiceDate;
+	public void setCreationTime(Long creationTime) {
+		this.creationTime = creationTime;
 	}
 
 	public BigDecimal getTotalBeforeTaxes() {
@@ -33,14 +31,6 @@ public class BIClientStatsDTO {
 
 	public void setTotalBeforeTaxes(BigDecimal totalBeforeTaxes) {
 		this.totalBeforeTaxes = totalBeforeTaxes;
-	}
-
-	public BigDecimal getTotalBeforeTaxesCurrentYear() {
-		return totalBeforeTaxesCurrentYear;
-	}
-
-	public void setTotalBeforeTaxesCurrentYear(BigDecimal totalBeforeTaxesCurrentYear) {
-		this.totalBeforeTaxesCurrentYear = totalBeforeTaxesCurrentYear;
 	}
 
 	public Map<Integer, BigDecimal[]> getTotalsPerMonths() {

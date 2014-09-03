@@ -155,6 +155,8 @@ public class Client implements Serializable, Taxable {
     @Size(max = 1500)
 	private String note;
     
+    private Long creationTime = System.currentTimeMillis();
+    
     @AttributeOverrides({
     	@AttributeOverride(name = "firstName", column = @Column(name = "contact_first_name")),
     	@AttributeOverride(name = "lastName", column = @Column(name = "contact_last_name")),
@@ -381,6 +383,14 @@ public class Client implements Serializable, Taxable {
 
 	public void setNote(String note) {
 		this.note = note;
+	}
+
+	public Long getCreationTime() {
+		return creationTime;
+	}
+
+	public void setCreationTime(Long creationTime) {
+		this.creationTime = creationTime;
 	}
 
 	public Contact getContact() {

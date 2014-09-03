@@ -3,6 +3,7 @@ package com.novadart.novabill.service.web;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
@@ -19,8 +20,8 @@ import com.google.common.collect.ImmutableMap;
 import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.AccountingDocumentItem;
+import com.novadart.novabill.domain.Client;
 import com.novadart.novabill.domain.Invoice;
-import com.novadart.novabill.domain.dto.DTOUtils;
 import com.novadart.novabill.shared.client.dto.BIClientStatsDTO;
 import com.novadart.novabill.shared.client.dto.BICommodityStatsDTO;
 import com.novadart.novabill.shared.client.dto.BIGeneralStatsDTO;
@@ -29,6 +30,7 @@ import com.novadart.novabill.shared.client.dto.CommodityDTO;
 import com.novadart.novabill.shared.client.dto.InvoiceDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 import com.novadart.novabill.shared.client.tuple.Pair;
 import com.novadart.novabill.shared.client.tuple.Triple;
@@ -39,15 +41,18 @@ public class BusinessStatsService {
 	@Autowired
 	private BusinessService businessService;
 	
+	@Autowired
+	private InvoiceService invoiceService;
+	
 	private int extractMonthFromDate(Date date){
 		Calendar cal = Calendar.getInstance();
 		cal.setTime(date);
 		return cal.get(Calendar.MONTH);
 	}
 	
-	private BigDecimal[] computeTotalsPerMonthsForYear(List<InvoiceDTO> invoices) throws NotAuthenticatedException, DataAccessException{
+	private BigDecimal[] computeTotalsPerMonths(List<InvoiceDTO> invoices) throws NotAuthenticatedException, DataAccessException{
 		BigDecimal[] totals = new BigDecimal[12];
-		for(int i = 0; i < 12; ++i) totals[i] = new BigDecimal("0.00");
+		for(int i = 0; i < 12; ++i) totals[i] = BigDecimal.ZERO;
 		for(InvoiceDTO invoice: invoices){
 			int month = extractMonthFromDate(invoice.getAccountingDocumentDate()); 
 			totals[month] = totals[month].add(invoice.getTotalBeforeTax());
@@ -59,8 +64,8 @@ public class BusinessStatsService {
 	
 	private Map<Integer, BigDecimal[]> computeTotalsPerMonths(Integer year, List<InvoiceDTO> invoices, List<InvoiceDTO> prevInvoices) throws NotAuthenticatedException, DataAccessException {
 		Map<Integer, BigDecimal[]> totalsPerMonths = new HashMap<>();
-		totalsPerMonths.put(year, computeTotalsPerMonthsForYear(invoices));
-		totalsPerMonths.put(year - 1, computeTotalsPerMonthsForYear(prevInvoices));
+		totalsPerMonths.put(year, computeTotalsPerMonths(invoices));
+		totalsPerMonths.put(year - 1, computeTotalsPerMonths(prevInvoices));
 		return totalsPerMonths;
 	}
 	
@@ -94,7 +99,7 @@ public class BusinessStatsService {
 			Map<String, Object> el = new HashMap<>();
 			el.put("id", clientID);
 			el.put("name", client.getName());
-			el.put("revenue", clientRevenues.containsKey(clientID)? clientRevenues.get(clientID).setScale(2, RoundingMode.HALF_UP): new BigDecimal("0.00"));
+			el.put("revenue", clientRevenues.containsKey(clientID)? clientRevenues.get(clientID).setScale(2, RoundingMode.HALF_UP): BigDecimal.ZERO);
 			result.add(el);
 		}
 		Collections.sort(result, new Comparator<Map<String, Object>>() {
@@ -116,7 +121,7 @@ public class BusinessStatsService {
 			el.put("sku", sku);
 			el.put("id", commodity.getId());
 			el.put("description", commodity.getDescription());
-			el.put("revenue", commodityRevenues.containsKey(sku)? commodityRevenues.get(sku).setScale(2, RoundingMode.HALF_UP): new BigDecimal("0.00"));
+			el.put("revenue", commodityRevenues.containsKey(sku)? commodityRevenues.get(sku).setScale(2, RoundingMode.HALF_UP): BigDecimal.ZERO);
 			result.add(el);
 		}
 		Collections.sort(result, new Comparator<Map<String, Object>>() {
@@ -169,30 +174,12 @@ public class BusinessStatsService {
 	
 	@PreAuthorize("#businessID == principal.business.id")
 	@Restrictions(checkers = {PremiumChecker.class})
-	public BIClientStatsDTO getClientBIStats(Long businessID, Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
+	public BIClientStatsDTO getClientBIStats(Long businessID, Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException, NoSuchObjectException{
 		BIClientStatsDTO clientStatsDTO = new BIClientStatsDTO();
-		List<Invoice> invoices = Invoice.getAllInvoicesForClient(businessID, clientID);
-		BigDecimal totalBeforeTaxes = new BigDecimal("0.00");
-		BigDecimal totalBeforeTaxesCurrentYear = new BigDecimal("0.00");
-		Map<Integer, List<Invoice>> invoicesPerYears = new HashMap<>();
-		for(Invoice inv: invoices){
-			totalBeforeTaxes = totalBeforeTaxes.add(inv.getTotalBeforeTax());
-			Integer invYear = inv.getAccountingDocumentYear();
-			if(invYear.equals(year))
-				totalBeforeTaxesCurrentYear = totalBeforeTaxesCurrentYear.add(inv.getTotalBeforeTax());
-			if(!invoicesPerYears.containsKey(invYear))
-				invoicesPerYears.put(invYear, new ArrayList<Invoice>());
-			invoicesPerYears.get(invYear).add(inv);
-		}
-		Map<Integer, BigDecimal[]> totalsPerMonths = new HashMap<>();
-		for(Integer y: invoicesPerYears.keySet())
-			totalsPerMonths.put(y, computeTotalsPerMonthsForYear(DTOUtils.toDTOList(invoicesPerYears.get(y), DTOUtils.invoiceDTOConverter, false)));
-		
-		if(invoices.size() > 0)
-			clientStatsDTO.setFirstInvoiceDate(invoices.get(0).getAccountingDocumentDate());
-		clientStatsDTO.setTotalBeforeTaxes(totalBeforeTaxes.setScale(2, RoundingMode.HALF_UP));
-		clientStatsDTO.setTotalBeforeTaxesCurrentYear(totalBeforeTaxesCurrentYear.setScale(2, RoundingMode.HALF_UP));
-		clientStatsDTO.setTotalsPerMonths(totalsPerMonths);
+		clientStatsDTO.setCreationTime(Client.findClient(clientID).getCreationTime());
+		clientStatsDTO.setTotalBeforeTaxes(Invoice.getTotalBeforeTaxesForClient(businessID, clientID).setScale(2, RoundingMode.HALF_UP));
+		clientStatsDTO.setTotalsPerMonths(ImmutableMap.of(year, computeTotalsPerMonths(invoiceService.getAllForClient(clientID, year)),
+														  year - 1, computeTotalsPerMonths(invoiceService.getAllForClient(clientID, year - 1))));
 		clientStatsDTO.setCommodityStatsForCurrentYear(computeCommodityRevenueStatsForClientForYear(businessID, clientID, year, businessService.getCommodities(businessID)));
 		clientStatsDTO.setCommodityStatsForPrevYear(computeCommodityRevenueStatsForClientForYear(businessID, clientID, year - 1, businessService.getCommodities(businessID)));
 		return clientStatsDTO;
@@ -238,28 +225,27 @@ public class BusinessStatsService {
 		return clientMap;
 	}
 	
+	
+	
 	@PreAuthorize("#businessID == principal.business.id")
 	@Restrictions(checkers = {PremiumChecker.class})
 	public BICommodityStatsDTO getCommodityBIStats(Long businessID, String sku, Integer year) throws NotAuthenticatedException,
 				DataAccessException, FreeUserAccessForbiddenException {
 		BICommodityStatsDTO commodityStatsDTO = new BICommodityStatsDTO();
-		List<Invoice> invoices = Invoice.getAllInvoicesContainingCommodity(businessID, sku);
-		BigDecimal total = new BigDecimal("0.00");
-		BigDecimal totalCurrentYear = new BigDecimal("0.00");
-		Map<Integer, BigDecimal[]> totalsPerMonths = new HashMap<>();
+		List<Invoice> invoices = Invoice.getAllInvoicesContainingCommodityForYears(businessID, sku, Arrays.asList(year - 1, year));
+		BigDecimal total = BigDecimal.ZERO;
+		BigDecimal totalCurrentYear = BigDecimal.ZERO;
 		Map<Long, Pair<BigDecimal, BigDecimal>> clientStatsCurrentYear = new HashMap<>();
 		Map<Long, Pair<BigDecimal, BigDecimal>> clientStatsPrevYear = new HashMap<>();
+		Map<Integer, BigDecimal[]> totalsPerMonths = ImmutableMap.of(year - 1, new BigDecimal[12], year, new BigDecimal[12]);
+		Arrays.fill(totalsPerMonths.get(year - 1), BigDecimal.ZERO);
+		Arrays.fill(totalsPerMonths.get(year), BigDecimal.ZERO);
 		for(Invoice invoice: invoices){
 			for(AccountingDocumentItem item: invoice.getAccountingDocumentItems()){
 				if(sku.equals(item.getSku())){
 					total = total.add(item.getTotalBeforeTax());
 					if(invoice.getAccountingDocumentYear().equals(year))
 						totalCurrentYear = totalCurrentYear.add(item.getTotalBeforeTax());
-					if(!totalsPerMonths.containsKey(invoice.getAccountingDocumentYear())){
-						BigDecimal[] totalsPerMonthsPerYear = new BigDecimal[12];
-						for(int i = 0; i < 12; ++i) totalsPerMonthsPerYear[i] = new BigDecimal("0.00");
-						totalsPerMonths.put(invoice.getAccountingDocumentYear(), totalsPerMonthsPerYear);
-					}
 					BigDecimal[] totalsPerMonthsPerYear = totalsPerMonths.get(invoice.getAccountingDocumentYear());
 					int month = extractMonthFromDate(invoice.getAccountingDocumentDate());
 					totalsPerMonthsPerYear[month] = totalsPerMonthsPerYear[month].add(item.getTotalBeforeTax());

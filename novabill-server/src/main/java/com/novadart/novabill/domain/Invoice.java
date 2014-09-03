@@ -123,18 +123,25 @@ public class Invoice extends AbstractInvoice implements Serializable {
     }
     
     /**
-     * Returns all invoices that contain given commodity identified by sku. Invoices are sorted by creation date. 
+     * Returns all invoices for given years that contain given commodity identified by sku. Invoices are sorted by creation date. 
      */
-    public static List<Invoice> getAllInvoicesContainingCommodity(Long businessID, String sku){
-    	try {
-			String sql = "select inv from Invoice inv join inv.accountingDocumentItems i where i.sku = :sku and inv.business.id = :bid order by inv.accountingDocumentDate";
-			return entityManager().createQuery(sql, Invoice.class).
-					setParameter("bid", businessID).
-					setParameter("sku", sku).getResultList();
-		} catch (Exception e) {
-			e.printStackTrace();
-			throw e;
-		}
+    public static List<Invoice> getAllInvoicesContainingCommodityForYears(Long businessID, String sku, List<Integer> years){
+		String sql = "select inv from Invoice inv join inv.accountingDocumentItems i " +
+				"where i.sku = :sku and inv.business.id = :bid and inv.accountingDocumentYear in (:years) order by inv.accountingDocumentDate";
+		return entityManager().createQuery(sql, Invoice.class).
+				setParameter("bid", businessID).
+				setParameter("sku", sku).
+				setParameter("years", years).getResultList();
+    }
+    
+    /**
+     * Returns the total before taxes for given client 
+     */
+    public static BigDecimal getTotalBeforeTaxesForClient(Long businessID, Long clientID) {
+    	String sql = "select sum(i.totalBeforeTax) from Invoice i where i.business.id = :bid and i.client.id = :cid";
+    	return entityManager().createQuery(sql, BigDecimal.class).
+    			setParameter("bid", businessID).
+    			setParameter("cid", clientID).getSingleResult();
     }
     
     /*

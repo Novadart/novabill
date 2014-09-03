@@ -17,6 +17,7 @@ import com.novadart.novabill.shared.client.dto.BICommodityStatsDTO;
 import com.novadart.novabill.shared.client.dto.BIGeneralStatsDTO;
 import com.novadart.novabill.shared.client.exception.DataAccessException;
 import com.novadart.novabill.shared.client.exception.FreeUserAccessForbiddenException;
+import com.novadart.novabill.shared.client.exception.NoSuchObjectException;
 import com.novadart.novabill.shared.client.exception.NotAuthenticatedException;
 
 @Controller
@@ -38,7 +39,7 @@ public class BusinessStatsController {
 	@RequestMapping(value = "/clientstats/{clientID}/{year}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public BIClientStatsDTO getClientBIStats(@PathVariable Long businessID, @PathVariable Long clientID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
+	public BIClientStatsDTO getClientBIStats(@PathVariable Long businessID, @PathVariable Long clientID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException, NoSuchObjectException{
 		return businessStatsService.getClientBIStats(businessID, clientID, year);
 	}
 	
