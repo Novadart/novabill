@@ -98,7 +98,7 @@
                     <input class="form-control" type="text" name="phone" maxlength="25" ng-model="business.phone" 
                         placeholder="{{'TELEPHONE_PLACEHOLDER' | translate}}">
                     <div ng-show="form.phone.$dirty && form.phone.$invalid">
-                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
                     </div>
                 </div> 
             </div>
@@ -109,7 +109,7 @@
                     <input class="form-control" type="text" name="mobile" maxlength="25" ng-model="business.mobile" 
                         placeholder="{{'MOBILE_PLACEHOLDER' | translate}}">
                     <div ng-show="form.mobile.$dirty && form.mobile.$invalid">
-                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
                     </div>
                 </div> 
             </div>
@@ -117,10 +117,10 @@
             <div class="form-group" ng-class="{'has-error': form.email.$dirty && form.email.$invalid, 'has-success': form.email.$dirty && form.email.$valid}">
                 <label class="col-md-4 control-label" for="email">{{'EMAIL' | translate}}</label>
                 <div class="col-md-8">
-                    <input class="form-control" type="text" name="email" maxlength="255" ng-model="business.email" 
+                    <input class="form-control" type="email" name="email" maxlength="255" ng-model="business.email" 
                         placeholder="{{'EMAIL_PLACEHOLDER' | translate}}">
                     <div ng-show="form.email.$dirty && form.email.$invalid">
-                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
                     </div>
                 </div> 
             </div>
@@ -131,7 +131,7 @@
                     <input class="form-control" type="text" name="fax" maxlength="25" ng-model="business.fax" 
                         placeholder="{{'FAX_PLACEHOLDER' | translate}}">
                     <div ng-show="form.fax.$dirty && form.fax.$invalid">
-                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
                     </div>
                 </div> 
             </div>
@@ -142,7 +142,7 @@
                     <input class="form-control" type="text" name="web" maxlength="255" ng-model="business.web" 
                         placeholder="{{'WEBSITE_PLACEHOLDER' | translate}}">
                     <div ng-show="form.web.$dirty && form.web.$invalid">
-                        <span class="text-danger">{{'VALIDATION_REQUIRED' | translate}}</span>
+                        <span class="text-danger">{{'VALIDATION_INVALID_VALUE' | translate}}</span>
                     </div>
                 </div> 
             </div>
