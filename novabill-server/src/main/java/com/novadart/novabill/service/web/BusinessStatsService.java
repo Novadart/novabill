@@ -119,6 +119,7 @@ public class BusinessStatsService {
 			Map<String, Object> el = new HashMap<>();
 			String sku = commodity.getSku();
 			el.put("sku", sku);
+			el.put("service", commodity.isService());
 			el.put("id", commodity.getId());
 			el.put("description", commodity.getDescription());
 			el.put("revenue", commodityRevenues.containsKey(sku)? commodityRevenues.get(sku).setScale(2, RoundingMode.HALF_UP): BigDecimal.ZERO);

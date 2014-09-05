@@ -158,6 +158,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		MODIFY_INVOICE: 'Modifica Fattura',
 		MODIFY_LOGO: 'Modifica Logo',
 		MODIFY_TRANSPORT_DOCUMENT: 'Modifica Documento di Trasporto',
+		MONTH : 'Mese',
 		NAME : 'Nome',
 		NAME_PLACEHOLDER : 'esempio: Listino Clienti Abituali',
 		NEW_ADDRESS: 'Nuovo Indirizzo',
@@ -211,6 +212,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		PRICE_LISTS : 'Listini',
 		PRICE_LIST_NAME : 'Nome listino',
 		PRODUCT : 'Prodotto',
+		PRODUCTS : 'Prodotti',
 		PROVINCE : 'Provincia',
 		PROVINCE_PLACEHOLDER : 'esempio: Milano',
 		QUANTITY : 'Quantità',
@@ -228,6 +230,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		SEND_EMAIL_TO_CLIENT_SUCCESS : 'Email inviata correttamente.',
 		SEND_EMAIL_TO_CLIENT_FAILURE : 'C\'è stato un problema durante l\'invio dell\'email. Per favore riprovare più tardi.',
 		SERVICE : 'Servizio',
+		SERVICES : 'Servizi',
 		SET_PRICE : 'Imposta Prezzo',
 		SETTINGS : 'Impostazioni',
 		SKU : 'Codice',
@@ -248,6 +251,8 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		SSN_PLACEHOLDER : 'esempio: AAABBB11A99H443P o 07643520567',
 		STATISTICS_AND_MORE : 'statistiche e novità',
 		STATS_CLIENTS : 'Clienti',
+		STATS_CLIENTS_RETURNING : 'Tornati nel {{year}}',
+		STATS_CLIENTS_NOT_RETURNING : 'Non tornati nel {{year}}',
 		STATS_COMMODITIES : 'Articoli',
 		STATS_GENERAL : 'Generali',
 		STATS_INVOICING_PREV_YEAR : 'Anno {{year}}: {{amount}}',
@@ -269,7 +274,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		TODAY : 'Oggi',
 		TOGGLE_PAYED : 'Incassata',
 		TOTAL : 'Totale',
-		TOTAL_BEFORE_TAXES : 'Fatturato',
+		TOTAL_AFTER_TAXES : 'Totale IVA incl.',
 		TRANSPORT_DOCUMENT_AREADY_IN_INVOICE_ALERT : 'Documenti già inclusi in fatture precedenti',
 		TRANSPORT_DOCUMENT : 'Documento di Trasporto',
 		TRANSPORT_DOCUMENTS : 'Documenti di Trasporto',
@@ -295,7 +300,8 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		WEBSITE_PLACEHOLDER : 'esempio: www.example.com',
 		WEIGHT : 'Peso (kg)',
 		WEIGHT_PLACEHOLDER : 'esempio: 2',
-		TOTAL_INVOICING : 'Fatturato'
+		TOTAL_INVOICING : 'Fatturato',
+		TOTAL_INVOICING_BEFORE_TAXES : 'Fatturato IVA escl.'
 		
 	  });
 

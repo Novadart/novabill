@@ -11,10 +11,10 @@ angular.module("novabill.stats.clients", ['novabill.stats.controllers', 'novabil
 	$routeProvider
 
 	.when('/', {
-		redirectTo: '/' + new Date().getFullYear()
+		redirectTo: '/0/' + new Date().getFullYear()
 	})
 	
-	.when('/:year', {
+	.when('/:clientID/:year', {
 		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/stats-clients.html'),
 		controller: 'StatsClientsCtrl',
 		reloadOnSearch : false

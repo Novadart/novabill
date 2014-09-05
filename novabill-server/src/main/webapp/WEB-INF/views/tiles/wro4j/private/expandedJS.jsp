@@ -17,6 +17,7 @@
 <script src="${novabillDepsUrl}/ng-infinite-scroll.min.js"></script>
 <script src="${novabillDepsUrl}/stacktracejs-0.6.0/stacktrace.js"></script>
 <script src="${novabillDepsUrl}/AngularJS-Toaster-0.4.7/toaster.js"></script>
+<script src="${novabillDepsUrl}/ng-google-chart-0.0.11.js"></script>
 
 <script src="${novabillCoreUrl}/scripts/logging.js" type="text/javascript"></script>
 <script src="${novabillCoreUrl}/scripts/ajax.js" type="text/javascript"></script>

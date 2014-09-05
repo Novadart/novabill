@@ -305,10 +305,24 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 		Stats : function() {
 			return {
 				
-				genStats: function(params, successFn, failureFn){
+				getGeneralBIStats: function(params, successFn, failureFn){
 					$http({
 						method : 'GET',
 						url : baseUrl + 'businesses/' + businessId + '/bizintel/genstats/' + params.year
+					}).success( successFn ).error( failureFn );
+				},
+				
+				getClientBIStats: function(params, successFn, failureFn){
+					$http({
+						method : 'GET',
+						url : baseUrl + 'businesses/' + businessId + '/bizintel/clientstats/' + params.clientID + '/' + params.year
+					}).success( successFn ).error( failureFn );
+				},
+				
+				getCommodityBIStats: function(params, successFn, failureFn){
+					$http({
+						method : 'GET',
+						url : baseUrl + 'businesses/' + businessId + '/bizintel/commoditystats/' + params.year
 					}).success( successFn ).error( failureFn );
 				}
 				

@@ -1,4 +1,4 @@
-<div class="container-fluid settings">
+<div class="container-fluid statistics statistics-clients">
 	<div class="row">
 		<div class="col-md-12">
 
@@ -15,11 +15,11 @@
 	<div class="clearfix"></div>
 
 	<div class="row">
-		<div class="col-md-12">
-		  <n-premium-alert></n-premium-alert>
-		  
-		  		
-		</div>
-	</div>
+	   <div class="col-md-12">
+	       <n-premium-alert></n-premium-alert>
+	      
+	        <select class="form-control pull-left input-large" ng-model="selectedClient" ng-options="cl.id as cl.name for cl in clients"></select>
+        </div>
+    </div>
 
 </div>

@@ -1,13 +1,13 @@
-.statistics-general .ranking-entry {
+.statistics .ranking-entry {
 	padding: 5px 10px;
 }
 
-.statistics-general .ranking-entry .total {
+.statistics .ranking-entry .total {
     display: inline-block;
     width: 150px;
     text-align: right;
 }
 
-.statistics-general .ranking-entry .entity-name {
+.statistics .ranking-entry .entity-name {
     padding: 5px 10px;
 }
