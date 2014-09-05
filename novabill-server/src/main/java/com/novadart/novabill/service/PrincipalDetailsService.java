@@ -22,8 +22,8 @@ public class PrincipalDetailsService implements UserDetailsService{
 		
 		String query = "select principal from Principal principal" +
 				" left join fetch principal.grantedRoles" +
-				" where principal.username=?1";
-		List<Principal> resultList = entityManager.createQuery(query, Principal.class).setParameter(1, username).getResultList();
+				" where lower(principal.username)=?1";
+		List<Principal> resultList = entityManager.createQuery(query, Principal.class).setParameter(1, username.toLowerCase()).getResultList();
 		if(resultList == null || resultList.size() == 0)
 			throw new UsernameNotFoundException(String.format("Principal with username %s not found!", username));
 		return resultList.get(0);
