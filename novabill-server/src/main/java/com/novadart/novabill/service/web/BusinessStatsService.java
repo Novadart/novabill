@@ -178,7 +178,8 @@ public class BusinessStatsService {
 	public BIClientStatsDTO getClientBIStats(Long businessID, Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException, NoSuchObjectException{
 		BIClientStatsDTO clientStatsDTO = new BIClientStatsDTO();
 		clientStatsDTO.setCreationTime(Client.findClient(clientID).getCreationTime());
-		clientStatsDTO.setTotalBeforeTaxes(Invoice.getTotalBeforeTaxesForClient(businessID, clientID).setScale(2, RoundingMode.HALF_UP));
+		BigDecimal totalBeforeTaxesForClient = Invoice.getTotalBeforeTaxesForClient(businessID, clientID);
+		clientStatsDTO.setTotalBeforeTaxes((totalBeforeTaxesForClient == null? BigDecimal.ZERO: totalBeforeTaxesForClient).setScale(2, RoundingMode.HALF_UP));
 		clientStatsDTO.setTotalsPerMonths(ImmutableMap.of(year, computeTotalsPerMonths(invoiceService.getAllForClient(clientID, year)),
 														  year - 1, computeTotalsPerMonths(invoiceService.getAllForClient(clientID, year - 1))));
 		clientStatsDTO.setCommodityStatsForCurrentYear(computeCommodityRevenueStatsForClientForYear(businessID, clientID, year, businessService.getCommodities(businessID)));
