@@ -110,6 +110,14 @@ public class Commodity implements Serializable {
     			setFirstResult(0).setMaxResults(1).getResultList().size() == 1;
     }
     
+    public static boolean skuExists(Long businessID, String sku){
+    	String sql = "select c from Commodity c where c.business.id = :id and c.sku = :sku";
+    	return entityManager().createQuery(sql, Commodity.class).
+    			setParameter("id", businessID).
+    			setParameter("sku", sku).
+    			setFirstResult(0).setMaxResults(1).getResultList().size() == 1;
+    }
+    
     public static String generateSku(){
     	return PriceListConstants.GENERATED_SKUS_PREFIX + System.currentTimeMillis();
     }
