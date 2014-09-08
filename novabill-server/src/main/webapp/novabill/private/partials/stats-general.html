@@ -115,7 +115,9 @@
                 </div>
                 <div class="panel-body">
                 
-                    <div class="table-responsive">
+                    <p class="no-data-message text-center text-info" ng-show="ranks.clients && ranks.clients.length===0">{{'NO_DATA' | translate}}</p>
+                
+                    <div class="table-responsive" ng-show="ranks.clients && ranks.clients.length > 0">
 	                    <table class="table table-hover">
 	                        <thead>
 	                            <tr>
@@ -144,7 +146,9 @@
                 </div>
                 <div class="panel-body">
                 
-                    <div class="table-responsive">
+                    <p class="no-data-message text-center text-info" ng-show="ranks.commodities && ranks.commodities.length===0">{{'NO_DATA' | translate}}</p>
+                
+                    <div class="table-responsive" ng-show="ranks.commodities && ranks.commodities.length > 0">
                         <table class="table table-hover">
                             <thead>
                                 <tr>

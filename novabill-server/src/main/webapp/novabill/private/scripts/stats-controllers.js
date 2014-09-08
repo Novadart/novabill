@@ -47,7 +47,10 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 						title: $filter('translate')('INVOICING_PER_MONTH'),
 						displayExactValues: true,
 						vAxis: {
-							title: $filter('translate')('TOTAL_INVOICING_BEFORE_TAXES')
+							title: $filter('translate')('TOTAL_INVOICING_BEFORE_TAXES'),
+							viewWindow:{ 
+								min: 0 
+							}
 						},
 						hAxis: {
 							title: $filter('translate')('MONTH')
@@ -150,11 +153,13 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 /**
  * CLIENTS STATS PAGE CONTROLLER
  */
-.controller('StatsClientsCtrl', ['$scope', 'nConstants', 'nAjax', '$location', '$routeParams', 'nSorting',
-                                 function($scope, nConstants, nAjax, $location, $routeParams, nSorting){
+.controller('StatsClientsCtrl', ['$scope', 'nConstants', 'nAjax', '$location', '$routeParams', 'nSorting', '$filter',
+                                 function($scope, nConstants, nAjax, $location, $routeParams, nSorting, $filter){
 
 	var year = parseInt( $routeParams.year );
+	var prevYear = year-1;
 	$scope.year = year.toString();
+	$scope.commodities = [];
 
 	var clientID = $routeParams.clientID;
 
@@ -165,18 +170,53 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 		Stats.getClientBIStats({clientID : clientID, year : year}, function(stats){
 
 			// calculate totals per months
-			var tpm = [];
-//			var prevYearStr = prevYear.toString();
-//			for(var i=0; i<12; i++){
-//			tpm.push({
-//			month: i.toString(), 
-//			value: stats.totalsPerMonths[year][i].toString(), 
-//			pastValue: stats.totalsPerMonths[prevYearStr][i].toString()
-//			});
-//			}
-//			$scope.totalsPerMonths = tpm;
+			var rows = [];
+			var prevYearStr = prevYear.toString();
+			for(var i=0; i<12; i++){
+				rows.push({
+					c : [
+					     {v: $filter('translate')(nConstants.months[i])},
+					     {v: stats.totalsPerMonths[year][i]},
+					     {v: stats.totalsPerMonths[prevYearStr][i]}
+					     ]
+				});
+			}
 
+			$scope.totalsPerMonthsChart = {
+					type: "ColumnChart",
+					displayed: true,
+					data: {
+						cols: [
+						       { id: 'month', label: $filter('translate')('MONTH'), type: 'string'},
+						       { id: 'invoicing-cur', label: $scope.year, type: 'number'},
+						       { id: 'invoicing-past', label: prevYearStr, type: 'number'}
+						       ],
+						       rows: rows
+					},
+					options: {
+						title: $filter('translate')('INVOICING_PER_MONTH'),
+						displayExactValues: true,
+						vAxis: {
+							title: $filter('translate')('TOTAL_INVOICING_BEFORE_TAXES'),
+							viewWindow:{ 
+								min: 0 
+							}
+						},
+						hAxis: {
+							title: $filter('translate')('MONTH')
+						}
+					},
+			};
 
+			
+			// calculate totals
+			$scope.clientDetails = {
+					timestamp : stats.creationTime,
+					totalBeforeTaxes : stats.totalBeforeTaxes
+			};
+			
+			// commodities ranking
+			$scope.commodities = stats.commodityStatsForCurrentYear;
 
 		});
 	};
@@ -204,11 +244,13 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 			}
 		}
 
-		$scope.loadStats( clientID, $scope.year );
+		$scope.loadStats( $scope.selectedClient, $scope.year );
 
 	});
 
-
+	$scope.openCommodityStats = function(commodityID){
+		$window.location.assign( nConstants.url.statsCommodities(commodityID, $scope.year) );
+	};
 
 }])
 
@@ -218,14 +260,105 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 /**
  * COMMODITIES STATS PAGE CONTROLLER
  */
-.controller('StatsCommoditiesCtrl', ['$scope', 'nConstants', 'nAjax', '$location', '$routeParams',
-                                     function($scope, nConstants, nAjax, $location, $routeParams){
+.controller('StatsCommoditiesCtrl', ['$scope', 'nConstants', 'nAjax', '$location', '$routeParams', 'nSorting', '$filter',
+                                     function($scope, nConstants, nAjax, $location, $routeParams, nSorting, $filter){
 
 	var year = parseInt( $routeParams.year );
 	var prevYear = year-1;
 	$scope.year = year.toString();
+	$scope.commodities = [];
+
+	var commodityID = $routeParams.commodityID;
 
 	var Stats = nAjax.Stats();
+	var Commodity = nAjax.Commodity(); 
+
+	$scope.loadStats = function(commodityID, year){
+		Stats.getCommodityBIStats({commodityID : commodityID, year : year}, function(stats){
+
+			// calculate totals per months
+			var rows = [];
+			var prevYearStr = prevYear.toString();
+			for(var i=0; i<12; i++){
+				rows.push({
+					c : [
+					     {v: $filter('translate')(nConstants.months[i])},
+					     {v: stats.totalsPerMonths[year][i]},
+					     {v: stats.totalsPerMonths[prevYearStr][i]}
+					     ]
+				});
+			}
+
+			$scope.totalsPerMonthsChart = {
+					type: "ColumnChart",
+					displayed: true,
+					data: {
+						cols: [
+						       { id: 'month', label: $filter('translate')('MONTH'), type: 'string'},
+						       { id: 'invoicing-cur', label: $scope.year, type: 'number'},
+						       { id: 'invoicing-past', label: prevYearStr, type: 'number'}
+						       ],
+						       rows: rows
+					},
+					options: {
+						title: $filter('translate')('INVOICING_PER_MONTH'),
+						displayExactValues: true,
+						vAxis: {
+							title: $filter('translate')('TOTAL_INVOICING_BEFORE_TAXES'),
+							viewWindow:{ 
+								min: 0 
+							}
+						},
+						hAxis: {
+							title: $filter('translate')('MONTH')
+						}
+					},
+			};
+
+			
+			// calculate totals
+			$scope.commodityDetails = {
+					totalBeforeTaxes : stats.totalBeforeTaxesCurrentYear
+			};
+			
+			// commodities ranking
+			$scope.clients = stats.clientStatsForCurrentYear;
+
+		});
+	};
+
+	// if clientID is provided we can load the stats already, otherwise we'll load them once we got the clients list
+
+	Commodity.query(function(commodities){
+		$scope.commodities = commodities.sort( nSorting.descriptionComparator );
+
+		if(commodityID !== '0'){
+
+			$scope.selectedCommodity = parseInt( commodityID );
+
+		} else {
+			if($scope.commodities.length > 0){
+
+				// if user didn't select any client, pick the first one in the row
+				$scope.selectedCommodity = $scope.commodities[0].id;
+
+			} else {
+
+				// in this case there are no clients and we can't load anything
+				//TODO display some message
+				return;
+			}
+		}
+
+		$scope.loadStats( $scope.selectedCommodity, $scope.year );
+
+	});
+	
+	
+	$scope.openClientStats = function(clientID){
+		$window.location.assign( nConstants.url.statsClients(clientID, $scope.year) );
+	};
+
 
 }]);
 

@@ -3,7 +3,7 @@
 angular.module('novabill.directives', 
 		['novabill.directives.validation', 'novabill.directives.dialogs', 
 		 'novabill.utils', 'novabill.translations', 
-		 'novabill.calc', 'novabill.constants', 'ngSanitize', 'ngAnimate', 'ui.bootstrap'])
+		 'novabill.calc', 'novabill.constants', 'ngSanitize', 'ui.bootstrap'])
 
 /*
  * Invoice widget
@@ -318,7 +318,8 @@ angular.module('novabill.directives',
 		scope: { 
 			commodity : '='
 		},
-		controller : ['$scope', 'nConstants', 'nRegExp', function($scope, nConstants, nRegExp){
+		controller : ['$scope', 'nConstants', 'nRegExp', '$window', 
+		              function($scope, nConstants, nRegExp, $window){
 			
 			$scope.printSku = function(){
 				if( !nRegExp.reserved_word.test($scope.commodity.sku)){
@@ -487,7 +488,7 @@ angular.module('novabill.directives',
 		              function($scope, $rootScope, nCalc, $filter, nConfirmDialog, nAjax){
 			$scope.PRICE_TYPE = nConstants.priceType;
 			$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
-			
+			$scope.readOnly = false;
 			// making a copy because we want to drop changes in case they are not saved remotely
 			$scope.price = angular.copy( $scope.commodity.prices[$scope.priceListName]);
  

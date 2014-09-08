@@ -14,12 +14,74 @@
 
 	<div class="clearfix"></div>
 
-	<div class="row">
-		<div class="col-md-12">
-		  <n-premium-alert></n-premium-alert>
-		  
-		  		
-		</div>
-	</div>
+    <div class="row">
+       <div class="col-md-12">
+           <n-premium-alert></n-premium-alert>
+       
+           <select class="form-control pull-right input-large" 
+               ng-change
+               ng-model="selectedCommodity" 
+               ng-options="c.id as c.description for c in commodities"></select>
+           
+           <div class="clearfix"></div>
+           
+           <form class="form-horizontal" role="form">
+               <div class="form-body">
+                   <div class="form-group">
+                       <label class="col-md-2 control-label">{{'TOTAL_INVOICING_BEFORE_TAXES' | translate}} {{year}}</label>
+                       <div class="col-md-10">
+                           <p class="form-control-static">{{commodityDetails.totalBeforeTaxes | currency}}</p>
+                       </div>
+                   </div>
+               </div>
+           </form>
+       
+        </div>
+    </div>
+    
+    
+    <div class="row" style="margin-top: 50px;">
+       <div class="col-md-12">
+       
+           <div google-chart chart="totalsPerMonthsChart"></div>
+           
+       </div>
+    </div>
+    
+    
+    <div class="row" style="margin-top: 50px;">
+       <div class="col-md-12">
+       
+           <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <h3 class="panel-title">{{'STATS_CLIENTS_FOR_COMMODITIES_SORTED_BY_INVOICING' | translate}}</h3>
+                </div>
+                <div class="panel-body">
+                
+                    <div class="table-responsive">
+                        <p class="no-data-message text-center text-info" ng-show="clients.length===0">{{'NO_DATA' | translate}}</p>
+                        <table class="table table-hover" ng-show="clients">
+                            <thead>
+                                <tr>
+                                    <th>{{'DESCRIPTION' | translate}}</th>
+                                    <th>{{'TOTAL_INVOICING_BEFORE_TAXES' | translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in commodities">
+                                    <td><a href="javascript:;" ng-click="openClientStats(data.id)">{{data.description}}</a></td>
+                                    <td>{{data.revenue | currency}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                     
+                </div>
+            </div>
+        </div>
+           
+       </div>
+    </div>
 
 </div>
