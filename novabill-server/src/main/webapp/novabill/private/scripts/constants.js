@@ -158,6 +158,10 @@ angular.module('novabill.constants', [])
 
 				share : function(){ return baseConf.shareBaseUrl + '#/'; },
 				
+				statsGeneral : function(year){ return baseConf.statsBaseUrl + '#/' + year; },
+				statsClients : function(clientID, year){ return baseConf.statsBaseUrl + 'clients/#/' +clientID + '/' + year; },
+				statsCommodities : function(commodityID, year){ return baseConf.statsBaseUrl + 'commodities/#/' + commodityID + '/' + year; },
+				
 				transportDocumentList : function(){ return baseConf.transportDocumentsBaseUrl + '#/'; },
 				transportDocumentNew : function(clientId){ return baseConf.transportDocumentsBaseUrl + '#/new/' + clientId; },
 				transportDocumentFromEstimation : function(estimationId){ return baseConf.transportDocumentsBaseUrl + '#/from-estimation/' + estimationId; },

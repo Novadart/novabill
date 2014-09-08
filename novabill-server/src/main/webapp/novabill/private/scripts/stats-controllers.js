@@ -6,8 +6,10 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 /**
  * GENERAL STATS PAGE CONTROLLER
  */
-.controller('StatsGeneralCtrl', ['$scope', 'nConstants', 'nAjax', '$location', '$routeParams', '$filter',
-                                 function($scope, nConstants, nAjax, $location, $routeParams, $filter){
+.controller('StatsGeneralCtrl', ['$scope', 'nConstants', 'nAjax', '$window', 
+                                 '$routeParams', '$filter', '$location',
+                                 function($scope, nConstants, nAjax, $window,
+                                		 $routeParams, $filter, $location){
 
 	var Stats = nAjax.Stats();
 	var year = parseInt( $routeParams.year );
@@ -130,7 +132,14 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 
 		});
 	};
+	
+	$scope.openClientStats = function(clientID){
+		$window.location.assign( nConstants.url.statsClients(clientID, $scope.year) );
+	};
 
+	$scope.openCommodityStats = function(commodityID){
+		$window.location.assign( nConstants.url.statsCommodities(commodityID, $scope.year) );
+	};
 
 	$scope.loadStats( $scope.year );
 

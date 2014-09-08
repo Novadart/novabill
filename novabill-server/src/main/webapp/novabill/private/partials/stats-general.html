@@ -115,11 +115,23 @@
                 </div>
                 <div class="panel-body">
                 
-                    <div class="ranking-entry" ng-repeat="data in ranks.clients">
-                        <div class="total">{{data.revenue | currency}}</div>
-                        <a class="entity-name" href="javascript:;">{{data.name}}</a>
-                     </div>
-                     
+                    <div class="table-responsive">
+	                    <table class="table table-hover">
+	                        <thead>
+	                            <tr>
+	                                <th>{{'NAME' | translate}}</th>
+	                                <th>{{'TOTAL_INVOICING_BEFORE_TAXES' | translate}}</th>
+	                            </tr>
+	                        </thead>
+	                        <tbody>
+	                            <tr ng-repeat="data in ranks.clients">
+	                                <td><a href="javascript:;" ng-click="openClientStats(data.id)">{{data.name}}</a></td>
+	                                <td>{{data.revenue | currency}}</td>
+	                            </tr>
+	                        </tbody>
+	                    </table>
+	                </div>
+                
                 </div>
             </div>
         </div>
@@ -131,11 +143,23 @@
                     <h3 class="panel-title">{{'STATS_COMMODITIES_SORTED_BY_INVOICING' | translate}}</h3>
                 </div>
                 <div class="panel-body">
-                     
-                     <div class="ranking-entry" ng-repeat="data in ranks.commodities">
-                        <div class="total">{{data.revenue | currency}}</div>
-                        <a class="entity-name" href="javascript:;">{{data.description}}</a>
-                     </div>
+                
+                    <div class="table-responsive">
+                        <table class="table table-hover">
+                            <thead>
+                                <tr>
+                                    <th>{{'DESCRIPTION' | translate}}</th>
+                                    <th>{{'TOTAL_INVOICING_BEFORE_TAXES' | translate}}</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr ng-repeat="data in ranks.commodities">
+                                    <td><a href="javascript:;" ng-click="openCommodityStats(data.id)">{{data.description}}</a></td>
+                                    <td>{{data.revenue | currency}}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                      
                 </div>
             </div>

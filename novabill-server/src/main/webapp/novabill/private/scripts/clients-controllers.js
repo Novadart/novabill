@@ -157,8 +157,10 @@ angular.module('novabill.clients.controllers',
 		/**
 		 * CLIENT DETAILS PAGE CONTROLLER
 		 */
-		.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope', 'nConstants', '$filter', 'nAlertDialog', 'nConfirmDialog', 'nEditAddressDialog', 'nSorting',
-		                                  function($scope, $route, $routeParams, $location, $rootScope, nConstants, $filter, nAlertDialog, nConfirmDialog, nEditAddressDialog, nSorting) {
+		.controller('ClientDetailsCtrl', ['$scope', '$route', '$routeParams', '$location', '$rootScope', 
+		                                  'nConstants', '$filter', 'nAlertDialog', 'nConfirmDialog', 'nEditAddressDialog', 'nSorting',
+		                                  function($scope, $route, $routeParams, $location, $rootScope, 
+		                                		  nConstants, $filter, nAlertDialog, nConfirmDialog, nEditAddressDialog, nSorting) {
 
 			$scope.onTabChange = function(token){
 				$location.search('tab',token);

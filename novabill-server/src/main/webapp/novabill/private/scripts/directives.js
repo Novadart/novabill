@@ -17,9 +17,9 @@ angular.module('novabill.directives',
 			invoice : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$rootScope', '$element', 'nAjax', 'nAlertDialog', '$filter',
+		controller : ['$scope', '$rootScope', '$element', 'nAjax', 'nAlertDialog', '$filter', '$window',
 		              'nConfirmDialog', 'nSelectClientDialog', 'nDownload', 'nSendEmailDialog',
-		              function($scope, $rootScope, $element, nAjax, nAlertDialog, $filter,
+		              function($scope, $rootScope, $element, nAjax, nAlertDialog, $filter, $window,
 		            		  nConfirmDialog, nSelectClientDialog, nDownload, nSendEmailDialog){
 
 			function isExpired(){
@@ -47,7 +47,7 @@ angular.module('novabill.directives',
 			};
 			
 			$scope.openUrl = function() {
-				window.location.assign( nConstants.url.invoiceDetails($scope.invoice.id) );
+				$window.location.assign( nConstants.url.invoiceDetails($scope.invoice.id) );
 			};
 
 			$scope.stopProp = function($event){
@@ -81,7 +81,7 @@ angular.module('novabill.directives',
 				var instance = nSelectClientDialog.open();
 				instance.result.then(
 						function (clientId) {
-							window.location.assign(nConstants.url.invoiceClone(clientId, $scope.invoice.id));
+							$window.location.assign(nConstants.url.invoiceClone(clientId, $scope.invoice.id));
 						},
 						function () {
 						}
@@ -89,7 +89,7 @@ angular.module('novabill.directives',
 			};
 
 			$scope.createCreditNote = function(id){
-				window.location.assign(nConstants.url.creditNoteFromInvoice($scope.invoice.id));
+				$window.location.assign(nConstants.url.creditNoteFromInvoice($scope.invoice.id));
 			};
 			
 			$scope.sendEmailToClient = function(){
@@ -126,11 +126,11 @@ angular.module('novabill.directives',
 			estimation : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$rootScope', '$translate', 'nSelectClientDialog', 'nConfirmDialog', 'nDownload',
-		              function($scope, $element, $rootScope, $translate, nSelectClientDialog, nConfirmDialog, nDownload){
+		controller : ['$scope', '$element', '$rootScope', '$translate', 'nSelectClientDialog', 'nConfirmDialog', 'nDownload', '$window',
+		              function($scope, $element, $rootScope, $translate, nSelectClientDialog, nConfirmDialog, nDownload, $window){
 
 			$scope.openUrl = function() {
-				window.location.assign( nConstants.url.estimationDetails($scope.estimation.id) );
+				$window.location.assign( nConstants.url.estimationDetails($scope.estimation.id) );
 			};
 
 			$scope.stopProp = function($event){
@@ -163,7 +163,7 @@ angular.module('novabill.directives',
 				var instance = nSelectClientDialog.open();
 				instance.result.then(
 						function (clientId) {
-							window.location.assign(nConstants.url.estimationClone(clientId, $scope.estimation.id));
+							$window.location.assign(nConstants.url.estimationClone(clientId, $scope.estimation.id));
 						},
 						function () {
 						}
@@ -171,11 +171,11 @@ angular.module('novabill.directives',
 			};
 
 			$scope.convertToInvoice = function(id){
-				window.location.assign(nConstants.url.invoiceFromEstimation($scope.estimation.id));
+				$window.location.assign(nConstants.url.invoiceFromEstimation($scope.estimation.id));
 			};
 			
 			$scope.convertToTransportDocument = function(id){
-				window.location.assign(nConstants.url.transportDocumentFromEstimation($scope.estimation.id));
+				$window.location.assign(nConstants.url.transportDocumentFromEstimation($scope.estimation.id));
 			};
 
 			//activate the dropdown
@@ -200,13 +200,15 @@ angular.module('novabill.directives',
 			transportDocument : '=',
 			bottomUpMenu : '='
 		},
-		controller : ['$scope', '$element', '$translate', 'nConstants', 'nConfirmDialog', 'nSelectTransportDocumentsDialog', '$rootScope', 'nDownload',
-		              function($scope, $element, $translate, nConstants, nConfirmDialog, nSelectTransportDocumentsDialog, $rootScope, nDownload){
+		controller : ['$scope', '$element', '$translate', 'nConstants', 'nConfirmDialog', '$window', 
+		              'nSelectTransportDocumentsDialog', '$rootScope', 'nDownload',
+		              function($scope, $element, $translate, nConstants, nConfirmDialog, $window,
+		            		  nSelectTransportDocumentsDialog, $rootScope, nDownload){
 
 			$scope.invoiceRefUrl = $scope.transportDocument.invoice ? nConstants.url.invoiceDetails($scope.transportDocument.invoice) : null;
 			
 			$scope.openUrl = function() {
-				window.location.assign( nConstants.url.transportDocumentDetails( $scope.transportDocument.id ) );
+				$window.location.assign( nConstants.url.transportDocumentDetails( $scope.transportDocument.id ) );
 			};
 
 			$scope.stopProp = function($event){
@@ -265,7 +267,7 @@ angular.module('novabill.directives',
 		              function($scope, $rootScope, $element, $translate, nConfirmDialog, nDownload){
 
 			$scope.openUrl = function() {
-				window.location.assign( nConstants.url.creditNoteDetails( $scope.creditNote.id ) );
+				$window.location.assign( nConstants.url.creditNoteDetails( $scope.creditNote.id ) );
 			};
 
 			$scope.stopProp = function($event){
@@ -327,7 +329,7 @@ angular.module('novabill.directives',
 			};
 			
 			$scope.openUrl = function(){
-				window.location.assign( nConstants.url.commodityDetails($scope.commodity.id) );
+				$window.location.assign( nConstants.url.commodityDetails($scope.commodity.id) );
 			};
 
 		}],
@@ -354,7 +356,7 @@ angular.module('novabill.directives',
 			$scope.DEFAULT_PRICELIST_NAME = nConstants.conf.defaultPriceListName;
 			
 			$scope.openUrl = function(){
-				window.location.assign( nConstants.url.priceListDetails($scope.priceList.id) );
+				$window.location.assign( nConstants.url.priceListDetails($scope.priceList.id) );
 			};
 			
 			$scope.stopProp = function($event){
@@ -1010,67 +1012,4 @@ angular.module('novabill.directives',
 		replace: true
 	};
 
-}])
-
-
-
-.directive('nMonthlyStatistics', ['nConstants', function(nConstants){
-	return {
-		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-monthly-statistics.html'),
-		scope: { 
-			month : '=', //string
-			year : '=', //string
-			value : '=', //string
-			pastValue : '=' //string
-		},
-		controller : ['$scope', 'nConstants', '$filter',
-		              function($scope, nConstants, $filter){
-			var d = new Date();
-			var curYear = d.getFullYear().toString();
-			var curMonth = d.getMonth();
-			var month = parseInt( $scope.month );
-			var value = new BigNumber( $scope.value );
-			var pastValue = new BigNumber( $scope.pastValue );
-			
-			$scope.disabled = (curYear === $scope.year && month > curMonth);
-			$scope.monthName = $filter('translate')( nConstants.months[ month ] );
-			$scope.diff = 0;
-			
-			if(pastValue.isZero() || $scope.disabled){
-				
-				if(value.isZero() || $scope.disabled){
-					
-					$scope.diff = 0;
-					$scope.percentVariation = '';
-					$scope.barStyle = {backgroundColor : ($scope.disabled ? '#969696' : 'grey'), height : '30px', lineHeight : '30px'};
-					
-				} else {
-					
-					$scope.diff = +1;
-					$scope.percentVariation = '';
-					$scope.barStyle = {backgroundColor : 'green', height : '80px', lineHeight : '80px'};
-					
-				}
-				
-			} else {
-				
-				$scope.diff = parseFloat( value.dividedBy(pastValue).minus(new BigNumber('1')).times(new BigNumber('100')).toFixed(2) );
-				
-				var barHeight = 20 + ( ($scope.diff > 100 || $scope.diff < -100) ? 60 : ( parseInt(Math.abs($scope.diff) / 20) * 10 + 10 ) );
-				var barColor = $scope.diff == 0 ? 'grey' : ($scope.diff > 0 ? 'green' : 'red');
-				
-				$scope.percentVariation = ($scope.diff > 0 ? '+'+$scope.diff.toString() : $scope.diff.toString()) +'%';
-				$scope.barStyle = {backgroundColor : barColor, height : barHeight+'px', lineHeight : barHeight+'px'};
-				
-			}
-			
-			var prevYear = parseInt($scope.year)-1;
-			$scope.prevYear = $filter('translate')('STATS_INVOICING_PREV_YEAR', {
-				year : prevYear,
-				amount : $filter('currency')($scope.pastValue)
-			});	
-		}],
-		restrict: 'E',
-		replace: true
-	};
 }]);

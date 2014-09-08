@@ -11,10 +11,10 @@ angular.module("novabill.stats.commodities", ['novabill.stats.controllers', 'nov
 	$routeProvider
 
 	.when('/', {
-		redirectTo: '/' + new Date().getFullYear()
+		redirectTo: '/0/' + new Date().getFullYear()
 	})
 	
-	.when('/:year', {
+	.when('/:commodityID/:year', {
 		templateUrl: nConstantsProvider.url.htmlFragmentUrl('/stats-commodities.html'),
 		controller: 'StatsCommoditiesCtrl',
 		reloadOnSearch : false
