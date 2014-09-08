@@ -173,7 +173,8 @@ public class BusinessStatsService {
 	}
 	
 	
-	@PreAuthorize("#businessID == principal.business.id")
+	@PreAuthorize("#businessID == principal.business.id and " + 
+				  "T(com.novadart.novabill.domain.Client).findClient(#clientID)?.business?.id == #businessID")
 	@Restrictions(checkers = {PremiumChecker.class})
 	public BIClientStatsDTO getClientBIStats(Long businessID, Long clientID, Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException, NoSuchObjectException{
 		BIClientStatsDTO clientStatsDTO = new BIClientStatsDTO();
@@ -229,7 +230,8 @@ public class BusinessStatsService {
 	
 	
 	
-	@PreAuthorize("#businessID == principal.business.id")
+	@PreAuthorize("#businessID == principal.business.id and " +
+			      "T(com.novadart.novabill.domain.Commodity).skuExists(#businessID, #sku)")
 	@Restrictions(checkers = {PremiumChecker.class})
 	public BICommodityStatsDTO getCommodityBIStats(Long businessID, String sku, Integer year) throws NotAuthenticatedException,
 				DataAccessException, FreeUserAccessForbiddenException {
