@@ -19,9 +19,9 @@
            <n-premium-alert></n-premium-alert>
        
            <select class="form-control pull-right input-large" 
-               ng-change
-               ng-model="selectedCommodity" 
-               ng-options="c.id as c.description for c in commodities"></select>
+               ng-change="commodityChanged()"
+               ng-model="selectedSku" 
+               ng-options="c.sku as c.description for c in commodities"></select>
            
            <div class="clearfix"></div>
            
@@ -65,12 +65,14 @@
                             <thead>
                                 <tr>
                                     <th>{{'DESCRIPTION' | translate}}</th>
+                                    <th>{{'QUANTITY' | translate}}</th>
                                     <th>{{'TOTAL_INVOICING_BEFORE_TAXES' | translate}}</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr ng-repeat="data in commodities">
-                                    <td><a href="javascript:;" ng-click="openClientStats(data.id)">{{data.description}}</a></td>
+                                <tr ng-repeat="data in clients">
+                                    <td><a href="javascript:;" ng-click="openClientStats(data.id)">{{data.name}}</a></td>
+                                    <td>{{data.quantity | number}}</td>
                                     <td>{{data.revenue | currency}}</td>
                                 </tr>
                             </tbody>

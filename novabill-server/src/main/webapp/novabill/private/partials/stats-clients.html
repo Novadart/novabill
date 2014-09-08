@@ -19,7 +19,7 @@
 	       <n-premium-alert></n-premium-alert>
 	   
 	       <select class="form-control pull-right input-large" 
-	           ng-change
+	           ng-change="clientChanged()"
 	           ng-model="selectedClient" 
 	           ng-options="cl.id as cl.name for cl in clients"></select>
 	       
@@ -71,13 +71,15 @@
                             <thead>
                                 <tr>
                                     <th>{{'DESCRIPTION' | translate}}</th>
+                                    <th>{{'QUANTITY' | translate}}</th>
                                     <th>{{'TOTAL_INVOICING_BEFORE_TAXES' | translate}}</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr ng-repeat="data in commodities">
-                                    <td><a href="javascript:;" ng-click="openCommodityStats(data.id)">{{data.description}}</a></td>
-                                    <td>{{data.revenue | currency}}</td>
+                                    <td><a href="javascript:;" ng-click="openCommodityStats(data.sku)">{{data.description}}</a></td>
+                                    <td>{{data.quantity | number}}</td>
+                                    <td>{{data.totalBeforeTaxes | currency}}</td>
                                 </tr>
                             </tbody>
                         </table>
