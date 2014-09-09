@@ -139,6 +139,7 @@ public class CommodityServiceTest extends ServiceTest {
 		assertEquals(OperationType.DELETE, rec.getOperationType());
 		Map<String, String> details = parseLogRecordDetailsJson(rec.getDetails());
 		assertEquals(desc, details.get(DBLoggerAspect.COMMODITY_NAME));
+		assertEquals(true, rec.isReferringToDeletedEntity());
 	}
 	
 	@Test(expected = DataAccessException.class)

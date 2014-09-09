@@ -1,5 +1,6 @@
 package com.novadart.novabill.aspect.logging;
 
+import java.util.Arrays;
 import java.util.Map;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -36,11 +37,15 @@ public abstract aspect DBLoggerAspect {
 	}
 	
 	protected void logActionInDB(Long businessID, EntityType entityType, OperationType opType, Long entityID, Long time, Map<String, String> details){
+		boolean isDeleteOp = OperationType.DELETE.equals(opType);
 		LogRecord record = new LogRecord(entityType, opType, entityID, time);
+		record.setReferringToDeletedEntity(isDeleteOp);
 		if(details != null)
 			record.setDetails(toJsonString(details));
 		record.setBusiness(Business.findBusiness(businessID));
-		record.persist();
+		Long logRecID = record.merge().getId();
+		if(isDeleteOp)
+			LogRecord.markAsReferringToDeletedEntity(businessID, entityID, entityType, Arrays.asList(logRecID));
 	}
 	
 	protected void logActionInDB(Long businessID, EntityType entityType, OperationType opType, Long entityID, Long time){

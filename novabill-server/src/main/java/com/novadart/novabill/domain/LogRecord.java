@@ -1,5 +1,6 @@
 package com.novadart.novabill.domain;
 
+import java.util.Arrays;
 import java.util.List;
 
 import javax.persistence.Column;
@@ -51,6 +52,9 @@ public class LogRecord {
 	@Type(type = "text")
 	private String details;
 	
+	@Column(columnDefinition = "boolean default false")
+	private boolean referringToDeletedEntity = false;
+	
 	@JoinColumn(name = "business")
 	@ManyToOne
 	private Business business;
@@ -75,6 +79,16 @@ public class LogRecord {
 		query.setHint("org.hibernate.cacheable", true);
 		return query.setParameter("bizID", businessID).setParameter("threshold", threshold).getResultList();
 	}
+	
+	public static void markAsReferringToDeletedEntity(Long businessID, Long entityID, EntityType entityType, List<Long> excludeIDs) {
+		String sql = "update LogRecord lr set lr.referringToDeletedEntity = true where lr.business.id = :bid and lr.entityID = :eid and lr.entityType = :et and lr.id not in (:exids)";
+		entityManager().createQuery(sql).
+			setParameter("bid", businessID).
+			setParameter("eid", entityID).
+			setParameter("et", entityType).
+			setParameter("exids", entityID == null? Arrays.asList(): entityID).executeUpdate();
+	}
+	
 	
 	/*
 	 * Getters and setters
@@ -122,6 +136,14 @@ public class LogRecord {
 	
 	public Business getBusiness() {
 		return business;
+	}
+
+	public boolean isReferringToDeletedEntity() {
+		return referringToDeletedEntity;
+	}
+
+	public void setReferringToDeletedEntity(boolean referringToDeletedEntity) {
+		this.referringToDeletedEntity = referringToDeletedEntity;
 	}
 
 	public void setBusiness(Business business) {

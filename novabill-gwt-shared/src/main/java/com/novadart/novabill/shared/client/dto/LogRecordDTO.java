@@ -17,6 +17,8 @@ public class LogRecordDTO implements IsSerializable{
 	private Long time;
 	
 	private String details;
+	
+	private Boolean referringToDeletedEntity;
 
 	public EntityType getEntityType() {
 		return entityType;
@@ -57,6 +59,14 @@ public class LogRecordDTO implements IsSerializable{
 
 	public void setDetails(String details) {
 		this.details = details;
+	}
+
+	public Boolean getReferringToDeletedEntity() {
+		return referringToDeletedEntity;
+	}
+
+	public void setReferringToDeletedEntity(Boolean referringToDeletedEntity) {
+		this.referringToDeletedEntity = referringToDeletedEntity;
 	}
 	
 }
