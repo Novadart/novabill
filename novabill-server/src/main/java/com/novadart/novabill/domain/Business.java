@@ -57,6 +57,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.security.Principal;
+import com.novadart.novabill.service.validator.Groups.HeavyBusiness;
 import com.novadart.novabill.shared.client.data.FilteringDateType;
 import com.novadart.novabill.shared.client.dto.PageDTO;
 import com.novadart.utils.fts.TermValueFilterFactory;
@@ -85,17 +86,17 @@ public class Business implements Serializable, Taxable {
     private String name;
 
     @Size(max = 255)
-    @NotEmpty
+    @NotEmpty(groups = {HeavyBusiness.class})
     @Trimmed
     private String address;
 
     @Size(max = 10)
-    @NotEmpty
+    @NotEmpty(groups = {HeavyBusiness.class})
     @Trimmed
     private String postcode;
 
     @Size(max = 60)
-    @NotEmpty
+    @NotEmpty(groups = {HeavyBusiness.class})
     @Trimmed
     private String city;
 
@@ -105,7 +106,7 @@ public class Business implements Serializable, Taxable {
 
     @Size(max = 3)
     @Trimmed
-    @NotEmpty
+    @NotEmpty(groups = {HeavyBusiness.class})
     private String country;
 
     @Size(max = com.novadart.novabill.domain.Email.EMAIL_MAX_LENGTH)
@@ -131,13 +132,13 @@ public class Business implements Serializable, Taxable {
 
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.VAT_ID_REGEX)
-    @NotEmpty
+    @NotEmpty(groups = {HeavyBusiness.class})
     @Trimmed
     private String vatID;
     
     @Size(max = 25)
     //@Pattern(regexp = RegularExpressionConstants.SSN_REGEX)
-    @NotEmpty
+    @NotEmpty(groups = {HeavyBusiness.class})
     @Trimmed
     private String ssn;
     
