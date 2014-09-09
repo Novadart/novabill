@@ -17,9 +17,6 @@ public class PeriodicPurgerService implements PeriodicService {
 	
 	private static final Logger logger = LoggerFactory.getLogger(PeriodicPurgerService.class);
 	
-	@Value("${registration.expiration}")
-	private Long registrationExpiration;
-	
 	@Value("${forgotpassword.expiration}")
 	private Long forgotPasswordExpiration;
 	
@@ -32,19 +29,8 @@ public class PeriodicPurgerService implements PeriodicService {
 	@Override
 	@Scheduled(cron = "0 0 3 * * ?")// once a day at 3 am
 	public void runTasks(){
-		purgeExpiredRegistration();
 		purgeExpiredForgotPasswordRequest();
 		purgeExpiredSharingTokens();
-	}
-	
-	@Async
-	@Transactional
-	private void purgeExpiredRegistration(){
-		String query = "delete from Registration r where r.creationTime < :threshold";
-		int affectedRows = entityManager.createQuery(query)
-			.setParameter("threshold", System.currentTimeMillis() -  registrationExpiration * MILLIS_IN_HOUR)
-			.executeUpdate();
-		logger.info("{} rows deleted from Registration", affectedRows);
 	}
 	
 	@Async

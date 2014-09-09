@@ -16,6 +16,7 @@ import org.apache.commons.lang3.builder.ToStringStyle;
 import org.springframework.beans.factory.annotation.Configurable;
 import org.springframework.transaction.annotation.Transactional;
 
+
 @Configurable
 @Entity
 public class DocumentAccessToken {
@@ -68,7 +69,7 @@ public class DocumentAccessToken {
     transient EntityManager entityManager;
     
     public static final EntityManager entityManager() {
-        EntityManager em = new Registration().entityManager;
+        EntityManager em = new DocumentAccessToken().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }

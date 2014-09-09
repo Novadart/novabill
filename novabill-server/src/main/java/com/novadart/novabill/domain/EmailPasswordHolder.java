@@ -126,7 +126,7 @@ public class EmailPasswordHolder {
     transient EntityManager entityManager;
     
     public static final EntityManager entityManager() {
-        EntityManager em = new Registration().entityManager;
+        EntityManager em = new EmailPasswordHolder().entityManager;
         if (em == null) throw new IllegalStateException("Entity manager has not been injected (is the Spring Aspects JAR configured as an AJC/AJDT aspects library?)");
         return em;
     }

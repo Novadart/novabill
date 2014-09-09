@@ -34,7 +34,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.novadart.novabill.annotation.Hash;
 import com.novadart.novabill.annotation.Trimmed;
 import com.novadart.novabill.domain.Business;
-import com.novadart.novabill.domain.Registration;
+import com.novadart.novabill.web.mvc.command.Registration;
 
 @Table(uniqueConstraints = @UniqueConstraint(columnNames = {"username"}))
 @Configurable

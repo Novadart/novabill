@@ -56,7 +56,6 @@ mvn.password.recovery.url.pattern=http://localhost:8080/novabill-server/password
 mvn.password.recovery.period=24
 mvn.rememberme.key=novabillRME
 #in hours
-mvn.registration.expiration=24
 mvn.forgotpassword.expiration=48
 mvn.sharing.expiration=8
 mvn.spring.profiles.active=dev

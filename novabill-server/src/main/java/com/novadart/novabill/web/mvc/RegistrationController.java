@@ -22,10 +22,10 @@ import org.springframework.web.bind.annotation.SessionAttributes;
 import org.springframework.web.bind.support.SessionStatus;
 
 import com.novadart.novabill.annotation.MailMixin;
-import com.novadart.novabill.domain.Registration;
 import com.novadart.novabill.domain.security.Principal;
 import com.novadart.novabill.domain.security.RoleType;
 import com.novadart.novabill.service.validator.RegistrationValidator;
+import com.novadart.novabill.web.mvc.command.Registration;
 
 /*
  * RegistrationController controller class handles the process of creating registration request.
