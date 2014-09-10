@@ -1003,6 +1003,28 @@ angular.module('novabill.directives',
 					break;
 				}
 				break;
+				
+			case nConstants.logRecord.entityType.TRANSPORTER:
+				switch ($scope.record.operationType) {
+				case nConstants.logRecord.operationType.CREATE:
+					$scope.description = tr('LR_TRANSPORTER_CREATE',
+							'{transporterName: "'+ $sanitize(details.transporterName) +'", link: "'+nConstants.url.transporters()+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.UPDATE:
+					$scope.description = tr('LR_TRANSPORTER_UPDATE',
+							'{transporterName: "'+ $sanitize(details.transporterName) +'", link: "'+nConstants.url.transporters()+'"}');
+					break;
+
+				case nConstants.logRecord.operationType.DELETE:
+					$scope.description = tr('LR_TRANSPORTER_DELETE',
+							'{transporterName: "'+ $sanitize(details.transporterName) +'"}');
+					break;
+
+				default:
+					break;
+				}
+				break;
 
 			default:
 				break;

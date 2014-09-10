@@ -110,7 +110,8 @@ angular.module('novabill.constants', [])
 					TRANSPORT_DOCUMENT : 'TRANSPORT_DOCUMENT',
 					PAYMENT_TYPE : 'PAYMENT_TYPE',
 					PRICE_LIST : 'PRICE_LIST',
-					SHARING_PERMIT : 'SHARING_PERMIT'
+					SHARING_PERMIT : 'SHARING_PERMIT',
+					TRANSPORTER : 'TRANSPORTER'
 				},
 
 				operationType : {
@@ -165,7 +166,9 @@ angular.module('novabill.constants', [])
 				transportDocumentList : function(){ return baseConf.transportDocumentsBaseUrl + '#/'; },
 				transportDocumentNew : function(clientId){ return baseConf.transportDocumentsBaseUrl + '#/new/' + clientId; },
 				transportDocumentFromEstimation : function(estimationId){ return baseConf.transportDocumentsBaseUrl + '#/from-estimation/' + estimationId; },
-				transportDocumentDetails : function(transportDocumentId){ return baseConf.transportDocumentsBaseUrl + '#/details/' + transportDocumentId; }
+				transportDocumentDetails : function(transportDocumentId){ return baseConf.transportDocumentsBaseUrl + '#/details/' + transportDocumentId; },
+				
+				transporters : function(){ return baseConf.transportDocumentsBaseUrl + '#/?tab=transporters'; }
 
 			},
 
