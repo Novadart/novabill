@@ -802,13 +802,21 @@ angular.module('novabill.directives',
 			case nConstants.logRecord.entityType.CLIENT:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
-					$scope.description = tr('LR_CLIENT_CREATE',
-							'{clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.clientDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_CLIENT_CREATE_DEL',
+								'{clientName: "'+ $sanitize(details.clientName) +'"}');
+					else
+						$scope.description = tr('LR_CLIENT_CREATE',
+								'{clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.clientDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
-					$scope.description = tr('LR_CLIENT_UPDATE',
-							'{clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.clientDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_CLIENT_UPDATE_DEL',
+								'{clientName: "'+ $sanitize(details.clientName) +'"}');
+					else
+						$scope.description = tr('LR_CLIENT_UPDATE',
+								'{clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.clientDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
@@ -824,13 +832,21 @@ angular.module('novabill.directives',
 			case nConstants.logRecord.entityType.COMMODITY:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
-					$scope.description = tr('LR_COMMODITY_CREATE',
-							'{commodityName : "'+ $sanitize(details.commodityName)	+'", link : "'+nConstants.url.commodityDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_COMMODITY_CREATE_DEL',
+								'{commodityName : "'+ $sanitize(details.commodityName) +'"}');
+					else
+						$scope.description = tr('LR_COMMODITY_CREATE',
+								'{commodityName : "'+ $sanitize(details.commodityName)	+'", link : "'+nConstants.url.commodityDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
-					$scope.description = tr('LR_COMMODITY_UPDATE',
-							'{commodityName : "'+ $sanitize(details.commodityName)	+'", link : "'+nConstants.url.commodityDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_COMMODITY_UPDATE_DEL',
+								'{commodityName : "'+ $sanitize(details.commodityName)	+'"}');
+					else
+						$scope.description = tr('LR_COMMODITY_UPDATE',
+								'{commodityName : "'+ $sanitize(details.commodityName)	+'", link : "'+nConstants.url.commodityDetails( $scope.record.entityID )+'"}');
 					break;
 
 
@@ -848,18 +864,30 @@ angular.module('novabill.directives',
 			case nConstants.logRecord.entityType.INVOICE:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
-					$scope.description = tr('LR_INVOICE_CREATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_INVOICE_CREATE_DEL',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
+					else
+						$scope.description = tr('LR_INVOICE_CREATE',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
-					$scope.description = tr('LR_INVOICE_UPDATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_INVOICE_UPDATE_DEL',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
+					else
+						$scope.description = tr('LR_INVOICE_UPDATE',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.SET_PAYED:
-					$scope.description = tr( details.payedStatus==='true' ? 'LR_INVOICE_SET_PAYED_TRUE' : 'LR_INVOICE_SET_PAYED_FALSE',
-							'{documentID: "'+ details.documentID + '", clientName: "'+ $sanitize(details.clientName) + '", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr( details.payedStatus==='true' ? 'LR_INVOICE_SET_PAYED_TRUE_DEL' : 'LR_INVOICE_SET_PAYED_FALSE_DEL',
+								'{documentID: "'+ details.documentID + '", clientName: "'+ $sanitize(details.clientName) +'"}');
+					else
+						$scope.description = tr( details.payedStatus==='true' ? 'LR_INVOICE_SET_PAYED_TRUE' : 'LR_INVOICE_SET_PAYED_FALSE',
+								'{documentID: "'+ details.documentID + '", clientName: "'+ $sanitize(details.clientName) + '", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
@@ -868,8 +896,12 @@ angular.module('novabill.directives',
 					break;
 					
 				case nConstants.logRecord.operationType.EMAIL:
-					$scope.description = tr('LR_INVOICE_EMAIL',
-							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_INVOICE_EMAIL_DEL',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
+					else
+						$scope.description = tr('LR_INVOICE_EMAIL',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.invoiceDetails( $scope.record.entityID )+'"}');
 					break;
 
 				default:
@@ -880,13 +912,21 @@ angular.module('novabill.directives',
 			case nConstants.logRecord.entityType.ESTIMATION:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
-					$scope.description = tr('LR_ESTIMATION_CREATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.estimationDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_ESTIMATION_CREATE_DEL',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
+					else
+						$scope.description = tr('LR_ESTIMATION_CREATE',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.estimationDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
-					$scope.description = tr('LR_ESTIMATION_UPDATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.estimationDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_ESTIMATION_UPDATE_DEL',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
+					else
+						$scope.description = tr('LR_ESTIMATION_UPDATE',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.estimationDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
@@ -902,13 +942,21 @@ angular.module('novabill.directives',
 			case nConstants.logRecord.entityType.CREDIT_NOTE:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
-					$scope.description = tr('LR_CREDIT_NOTE_CREATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.creditNoteDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_CREDIT_NOTE_CREATE_DEL',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
+					else
+						$scope.description = tr('LR_CREDIT_NOTE_CREATE',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.creditNoteDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
-					$scope.description = tr('LR_CREDIT_NOTE_UPDATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.creditNoteDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_CREDIT_NOTE_UPDATE_DEL',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
+					else
+						$scope.description = tr('LR_CREDIT_NOTE_UPDATE',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.creditNoteDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
@@ -924,13 +972,21 @@ angular.module('novabill.directives',
 			case nConstants.logRecord.entityType.TRANSPORT_DOCUMENT:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
-					$scope.description = tr('LR_TRANSPORT_DOCUMENT_CREATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.transportDocumentDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_TRANSPORT_DOCUMENT_CREATE_DEL',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
+					else
+						$scope.description = tr('LR_TRANSPORT_DOCUMENT_CREATE',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.transportDocumentDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
-					$scope.description = tr('LR_TRANSPORT_DOCUMENT_UPDATE',
-							'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.transportDocumentDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_TRANSPORT_DOCUMENT_UPDATE_DEL',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'"}');
+					else
+						$scope.description = tr('LR_TRANSPORT_DOCUMENT_UPDATE',
+								'{documentID: "'+details.documentID+'", clientName: "'+ $sanitize(details.clientName) +'", link: "'+nConstants.url.transportDocumentDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
@@ -946,13 +1002,21 @@ angular.module('novabill.directives',
 			case nConstants.logRecord.entityType.PRICE_LIST:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
-					$scope.description = tr('LR_PRICE_LIST_CREATE',
-							'{priceListName: "'+ $sanitize(details.priceListName) +'", link: "'+nConstants.url.priceListDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_PRICE_LIST_CREATE_DEL',
+								'{priceListName: "'+ $sanitize(details.priceListName) +'"}');
+					else
+						$scope.description = tr('LR_PRICE_LIST_CREATE',
+								'{priceListName: "'+ $sanitize(details.priceListName) +'", link: "'+nConstants.url.priceListDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
-					$scope.description = tr('LR_PRICE_LIST_UPDATE',
-							'{priceListName: "'+ $sanitize(details.priceListName) +'", link: "'+nConstants.url.priceListDetails( $scope.record.entityID )+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_PRICE_LIST_UPDATE_DEL',
+								'{priceListName: "'+ $sanitize(details.priceListName) +'"}');
+					else
+						$scope.description = tr('LR_PRICE_LIST_UPDATE',
+								'{priceListName: "'+ $sanitize(details.priceListName) +'", link: "'+nConstants.url.priceListDetails( $scope.record.entityID )+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
@@ -968,13 +1032,21 @@ angular.module('novabill.directives',
 			case nConstants.logRecord.entityType.PAYMENT_TYPE:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
-					$scope.description = tr('LR_PAYMENT_TYPE_CREATE',
-							'{paymentName: "'+ $sanitize(details.paymentTypeName) +'", link: "'+nConstants.url.paymentList()+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_PAYMENT_TYPE_CREATE_DEL',
+								'{paymentName: "'+ $sanitize(details.paymentTypeName) +'"}');
+					else
+						$scope.description = tr('LR_PAYMENT_TYPE_CREATE',
+								'{paymentName: "'+ $sanitize(details.paymentTypeName) +'", link: "'+nConstants.url.paymentList()+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
-					$scope.description = tr('LR_PAYMENT_TYPE_UPDATE',
-							'{paymentName: "'+ $sanitize(details.paymentTypeName) +'", link: "'+nConstants.url.paymentList()+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_PAYMENT_TYPE_UPDATE_DEL',
+								'{paymentName: "'+ $sanitize(details.paymentTypeName) +'"}');
+					else
+						$scope.description = tr('LR_PAYMENT_TYPE_UPDATE',
+								'{paymentName: "'+ $sanitize(details.paymentTypeName) +'", link: "'+nConstants.url.paymentList()+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
@@ -990,8 +1062,12 @@ angular.module('novabill.directives',
 			case nConstants.logRecord.entityType.SHARING_PERMIT:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
-					$scope.description = tr('LR_SHARING_PERMIT_CREATE',
-							'{sharingPermitDesc: "'+ $sanitize(details.sharingPermitDesc) +'", link: "'+nConstants.url.share()+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_SHARING_PERMIT_CREATE_DEL',
+								'{sharingPermitDesc: "'+ $sanitize(details.sharingPermitDesc) +'"}');
+					else
+						$scope.description = tr('LR_SHARING_PERMIT_CREATE',
+								'{sharingPermitDesc: "'+ $sanitize(details.sharingPermitDesc) +'", link: "'+nConstants.url.share()+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:
@@ -1007,13 +1083,21 @@ angular.module('novabill.directives',
 			case nConstants.logRecord.entityType.TRANSPORTER:
 				switch ($scope.record.operationType) {
 				case nConstants.logRecord.operationType.CREATE:
-					$scope.description = tr('LR_TRANSPORTER_CREATE',
-							'{transporterName: "'+ $sanitize(details.transporterName) +'", link: "'+nConstants.url.transporters()+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_TRANSPORTER_CREATE_DEL',
+								'{transporterName: "'+ $sanitize(details.transporterName) +'"}');
+					else
+						$scope.description = tr('LR_TRANSPORTER_CREATE',
+								'{transporterName: "'+ $sanitize(details.transporterName) +'", link: "'+nConstants.url.transporters()+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.UPDATE:
-					$scope.description = tr('LR_TRANSPORTER_UPDATE',
-							'{transporterName: "'+ $sanitize(details.transporterName) +'", link: "'+nConstants.url.transporters()+'"}');
+					if($scope.record.referringToDeletedEntity)
+						$scope.description = tr('LR_TRANSPORTER_UPDATE_DEL',
+								'{transporterName: "'+ $sanitize(details.transporterName) +'"}');
+					else
+						$scope.description = tr('LR_TRANSPORTER_UPDATE',
+								'{transporterName: "'+ $sanitize(details.transporterName) +'", link: "'+nConstants.url.transporters()+'"}');
 					break;
 
 				case nConstants.logRecord.operationType.DELETE:

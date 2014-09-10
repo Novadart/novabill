@@ -80,6 +80,7 @@ public class LogRecord {
 		return query.setParameter("bizID", businessID).setParameter("threshold", threshold).getResultList();
 	}
 	
+	@Transactional(readOnly = false)
 	public static void markAsReferringToDeletedEntity(Long businessID, Long entityID, EntityType entityType, List<Long> excludeIDs) {
 		String sql = "update LogRecord lr set lr.referringToDeletedEntity = true where lr.business.id = :bid and lr.entityID = :eid and lr.entityType = :et and lr.id not in (:exids)";
 		entityManager().createQuery(sql).

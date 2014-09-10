@@ -27,10 +27,10 @@ public aspect ClientServiceActionsAspect extends DBLoggerAspect {
 		execution(public Long com.novadart.novabill.service.web.ClientService.add(..)) && args(businessID, clientDTO);
 	
 	pointcut remove(Long businessID, Long id) :
-		execution(public boolean com.novadart.novabill.web.gwt.ClientGwtController.remove(..)) && args(businessID, id);
+		execution(public boolean com.novadart.novabill.service.web.ClientService.remove(..)) && args(businessID, id);
 	
 	pointcut update(Long businessID, ClientDTO clientDTO) :
-		execution(public void com.novadart.novabill.web.gwt.ClientGwtController.update(..)) && args(businessID, clientDTO);
+		execution(public void com.novadart.novabill.service.web.ClientService.update(..)) && args(businessID, clientDTO);
 	
 	after(Long businessID, ClientDTO clientDTO) returning (Long id) : add(businessID, clientDTO){
 		Long time = System.currentTimeMillis();
