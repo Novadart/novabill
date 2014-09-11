@@ -283,7 +283,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		STATS_CLIENTS : 'Clienti',
 		STATS_CLIENTS_FOR_COMMODITIES_SORTED_BY_INVOICING : 'Clienti che hanno acquistato l\'articolo, ordinati per fatturato (IVA escl.)',
 		STATS_CLIENTS_RETURNING : 'Tornati nel {{year}}',
-		STATS_CLIENTS_NOT_RETURNING : 'Non tornati nel {{year}}',
+		STATS_CLIENTS_NOT_RETURNING : 'Non ancora tornati nel {{year}}',
 		STATS_CLIENTS_SORTED_BY_INVOICING : 'Clienti ordinati per fatturato (IVA escl.)',
 		STATS_COMMODITIES : 'Articoli',
 		STATS_COMMODITIES_FOR_CLIENT_SORTED_BY_INVOICING : 'Articoli acquistati dal cliente ordinati per fatturato (IVA escl.)',
