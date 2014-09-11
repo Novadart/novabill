@@ -20,8 +20,8 @@
        
            <select n-premium-check class="form-control pull-right input-large" 
                ng-change="commodityChanged()"
-               ng-model="selectedSku" 
-               ng-options="c.sku as c.description for c in commodities"></select>
+               ng-model="selectedCommodityID" 
+               ng-options="c.id as c.description for c in commodities"></select>
            
            <div class="clearfix"></div>
            

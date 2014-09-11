@@ -78,7 +78,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="data in commodities">
-                                    <td><a href="javascript:;" ng-click="openCommodityStats(data.sku)">{{data.description}}</a></td>
+                                    <td><a href="javascript:;" ng-click="openCommodityStats(data.id)">{{data.description}}</a></td>
                                     <td>{{data.quantity | number}}</td>
                                     <td>{{data.totalBeforeTaxes | currency}}</td>
                                 </tr>
