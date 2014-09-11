@@ -158,7 +158,7 @@
                             </thead>
                             <tbody>
                                 <tr ng-repeat="data in ranks.commodities">
-                                    <td><a href="javascript:;" ng-click="openCommodityStats(data.sku)">{{data.description}}</a></td>
+                                    <td><a href="javascript:;" ng-click="openCommodityStats(data.id)">{{data.description}}</a></td>
                                     <td>{{data.revenue | currency}}</td>
                                 </tr>
                             </tbody>

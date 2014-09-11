@@ -157,7 +157,8 @@ angular.module('novabill.directives.forms',
 		templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-business-form.html'),
 		scope: { 
 			business : '=',
-			callback : '&'
+			callback : '&',
+			fullValidation : '='
 		},
 		controller : ['$scope', 
 		              function($scope){

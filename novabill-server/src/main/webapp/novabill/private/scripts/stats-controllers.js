@@ -140,8 +140,8 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 		$window.location.assign( nConstants.url.statsClients(clientID, $scope.year) );
 	};
 
-	$scope.openCommodityStats = function(sku){
-		$window.location.assign( nConstants.url.statsCommodities(sku, $scope.year) );
+	$scope.openCommodityStats = function(commodityID){
+		$window.location.assign( nConstants.url.statsCommodities(commodityID, $scope.year) );
 	};
 
 	$scope.loadStats( $scope.year );
@@ -248,8 +248,8 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 
 	});
 
-	$scope.openCommodityStats = function(sku){
-		$window.location.assign( nConstants.url.statsCommodities(sku, $scope.year) );
+	$scope.openCommodityStats = function(commodityID){
+		$window.location.assign( nConstants.url.statsCommodities(commodityID, $scope.year) );
 	};
 	
 	$scope.clientChanged = function(clientID){
@@ -272,13 +272,13 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 	$scope.year = year.toString();
 	$scope.commodities = [];
 
-	var sku = $routeParams.sku;
+	var commodityID = $routeParams.commodityID;
 
 	var Stats = nAjax.Stats();
 	var Commodity = nAjax.Commodity(); 
 
-	$scope.loadStats = function(sku, year){
-		Stats.getCommodityBIStats({sku : sku, year : year}, function(stats){
+	$scope.loadStats = function(commodityID, year){
+		Stats.getCommodityBIStats({commodityID : commodityID, year : year}, function(stats){
 
 			// calculate totals per months
 			var rows = [];
@@ -322,7 +322,8 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 			
 			// calculate totals
 			$scope.commodityDetails = {
-					totalBeforeTaxes : stats.totalBeforeTaxesCurrentYear
+					totalBeforeTaxes : stats.totalBeforeTaxes,
+					totalBeforeTaxesCurrentYear : stats.totalBeforeTaxesCurrentYear
 			};
 			
 			// commodities ranking
@@ -336,15 +337,15 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 	Commodity.query(function(commodities){
 		$scope.commodities = commodities.sort( nSorting.descriptionComparator );
 
-		if(sku !== '0'){
+		if(commodityID !== '0'){
 
-			$scope.selectedSku = sku;
+			$scope.selectedCommodityID = commodityID;
 
 		} else {
 			if($scope.commodities.length > 0){
 
 				// if user didn't select any client, pick the first one in the row
-				$scope.selectedSku = $scope.commodities[0].sku;
+				$scope.selectedCommodityID = $scope.commodities[0].id;
 
 			} else {
 
@@ -354,7 +355,7 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 			}
 		}
 
-		$scope.loadStats( $scope.selectedSku, $scope.year );
+		$scope.loadStats( $scope.selectedCommodityID, $scope.year );
 
 	});
 	
@@ -363,8 +364,8 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 		$window.location.assign( nConstants.url.statsClients(clientID, $scope.year) );
 	};
 
-	$scope.commodityChanged = function(clientID){
-		$location.path('/' + $scope.selectedSku + '/' + $scope.year);
+	$scope.commodityChanged = function(){
+		$location.path('/' + $scope.selectedCommodityID + '/' + $scope.year);
 	};
 
 }]);

@@ -141,16 +141,16 @@ public class BusinessLogoController {
 	@RequestMapping(method = RequestMethod.POST)
 	@ResponseBody
 	@Transactional(readOnly = false)
-	public String uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws UnsupportedImageFormatException {
+	public int uploadLogo(HttpServletRequest request, @RequestParam("file") MultipartFile file) throws UnsupportedImageFormatException {
 		if(!ServletFileUpload.isMultipartContent(request))
-			return String.valueOf(LogoUploadStatus.ILLEGAL_REQUEST.ordinal());
+			return LogoUploadStatus.ILLEGAL_REQUEST.ordinal();
 		if(file == null)
-			return String.valueOf(LogoUploadStatus.ILLEGAL_REQUEST.ordinal());
+			return LogoUploadStatus.ILLEGAL_REQUEST.ordinal();
 		if(file.getSize() > LOGO_SIZE_LIMIT)
-			return String.valueOf(LogoUploadStatus.ILLEGAL_SIZE.ordinal());
+			return LogoUploadStatus.ILLEGAL_SIZE.ordinal();
 		String contentType = file.getContentType(); 
 		if(!contentType.startsWith("image"))
-			return String.valueOf(LogoUploadStatus.ILLEGAL_PAYLOAD.ordinal());
+			return LogoUploadStatus.ILLEGAL_PAYLOAD.ordinal();
 		String subtype = contentType.substring(contentType.lastIndexOf('/') + 1);
 		Long businessID = utilsService.getAuthenticatedPrincipalDetails().getBusiness().getId();
 		clearLogo(businessID);
@@ -170,16 +170,16 @@ public class BusinessLogoController {
 			logo.persist();
 			ImageUtils.resizeConvertImage(inFile, logoThumbnailWidth, logoThumbnailHeight, getThumbnailFile(businessID), logoThumbnailQuality);
 		} catch (IOException e) {
-			return String.valueOf(LogoUploadStatus.INTERNAL_ERROR.ordinal());
+			return LogoUploadStatus.INTERNAL_ERROR.ordinal();
 		} catch (InterruptedException e) {
-			return String.valueOf(LogoUploadStatus.INTERNAL_ERROR.ordinal());
+			return LogoUploadStatus.INTERNAL_ERROR.ordinal();
 		} catch (IM4JavaException e) {
-			return String.valueOf(LogoUploadStatus.INTERNAL_ERROR.ordinal());
+			return LogoUploadStatus.INTERNAL_ERROR.ordinal();
 		}finally{
 			if(inFile != null) inFile.delete();
 			if(outFile != null) outFile.delete();
 		}
-		return String.valueOf(LogoUploadStatus.OK.ordinal());
+		return LogoUploadStatus.OK.ordinal();
 	}
 	
 	public void clearLogo(Long businessID){
