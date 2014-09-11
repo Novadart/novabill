@@ -69,22 +69,33 @@ public class CreditNoteActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(final Pair<Long, ClientDTO> result) {
-				DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond(), new AsyncCallback<ClientDTO>() {
+				DocumentUtils.showBusinessDialogIfBusinessInformationNotComplete(new AsyncCallback<Void>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
 					}
 
 					@Override
-					public void onSuccess(ClientDTO newClient) {
-						NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view, getCallback());
-						p.setDataForNewCreditNote(newClient, result.getFirst());
-						p.go(panel);
-						
+					public void onSuccess(Void vo) {
+						DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond(), new AsyncCallback<ClientDTO>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
+							}
+
+							@Override
+							public void onSuccess(ClientDTO newClient) {
+								NewCreditNotePresenter p = new NewCreditNotePresenter(getClientFactory().getPlaceController(), 
+										getClientFactory().getEventBus(), view, getCallback());
+								p.setDataForNewCreditNote(newClient, result.getFirst());
+								p.go(panel);
+								
+							}
+						});
 					}
 				});
+				
 			}
 		});
 	}

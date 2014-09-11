@@ -16,6 +16,7 @@ import com.novadart.novabill.frontend.client.place.invoice.FromTransportDocument
 import com.novadart.novabill.frontend.client.place.invoice.InvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.ModifyInvoicePlace;
 import com.novadart.novabill.frontend.client.place.invoice.NewInvoicePlace;
+import com.novadart.novabill.frontend.client.presenter.center.creditnote.NewCreditNotePresenter;
 import com.novadart.novabill.frontend.client.presenter.center.invoice.ModifyInvoicePresenter;
 import com.novadart.novabill.frontend.client.presenter.center.invoice.NewInvoicePresenter;
 import com.novadart.novabill.frontend.client.util.DocumentUtils;
@@ -80,24 +81,34 @@ public class InvoiceActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(final Triple<Long,ClientDTO,PaymentTypeDTO> result) {
-				DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond(), new AsyncCallback<ClientDTO>() {
+				DocumentUtils.showBusinessDialogIfBusinessInformationNotComplete(new AsyncCallback<Void>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
 					}
 
 					@Override
-					public void onSuccess(final ClientDTO newClient) {
-						getClientFactory().getInvoiceView(false, new InvoiceViewCallback() {
+					public void onSuccess(Void vo) {
+						DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond(), new AsyncCallback<ClientDTO>() {
 
 							@Override
-							public void onSuccess(InvoiceView view) {
-								NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-										getClientFactory().getEventBus(), view, getCallback());
-								p.setDataForNewInvoice(newClient, result.getFirst(), result.getThird());
-								p.go(panel);
+							public void onFailure(Throwable caught) {
+								BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
+							}
 
+							@Override
+							public void onSuccess(final ClientDTO newClient) {
+								getClientFactory().getInvoiceView(false, new InvoiceViewCallback() {
+
+									@Override
+									public void onSuccess(InvoiceView view) {
+										NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
+												getClientFactory().getEventBus(), view, getCallback());
+										p.setDataForNewInvoice(newClient, result.getFirst(), result.getThird());
+										p.go(panel);
+
+									}
+								});
 							}
 						});
 					}
@@ -111,28 +122,38 @@ public class InvoiceActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(final Triple<Long, EstimationDTO, PaymentTypeDTO> result) {
-				DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond().getClient(), new AsyncCallback<ClientDTO>() {
+				DocumentUtils.showBusinessDialogIfBusinessInformationNotComplete(new AsyncCallback<Void>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
 					}
 
 					@Override
-					public void onSuccess(final ClientDTO newClient) {
-						getClientFactory().getInvoiceView(false, new InvoiceViewCallback() {
+					public void onSuccess(Void vo) {
+						DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond().getClient(), new AsyncCallback<ClientDTO>() {
 
 							@Override
-							public void onSuccess(InvoiceView view) {
-								result.getSecond().setClient(newClient);
-								NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-										getClientFactory().getEventBus(), view, getCallback());
-								p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
-								p.go(panel);
+							public void onFailure(Throwable caught) {
+								BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
+							}
 
+							@Override
+							public void onSuccess(final ClientDTO newClient) {
+								getClientFactory().getInvoiceView(false, new InvoiceViewCallback() {
+
+									@Override
+									public void onSuccess(InvoiceView view) {
+										result.getSecond().setClient(newClient);
+										NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
+												getClientFactory().getEventBus(), view, getCallback());
+										p.setDataForNewInvoice(result.getFirst(), result.getSecond(), result.getThird());
+										p.go(panel);
+
+									}
+								});
+								
 							}
 						});
-						
 					}
 				});
 			}
@@ -192,23 +213,33 @@ public class InvoiceActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(final Triple<Long, ClientDTO, InvoiceDTO> result) {
-				DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond(), new AsyncCallback<ClientDTO>() {
+				DocumentUtils.showBusinessDialogIfBusinessInformationNotComplete(new AsyncCallback<Void>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
 					}
 
 					@Override
-					public void onSuccess(final ClientDTO newClient) {
-						getClientFactory().getInvoiceView(false, new InvoiceViewCallback() {
+					public void onSuccess(Void vo) {
+						DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond(), new AsyncCallback<ClientDTO>() {
 
 							@Override
-							public void onSuccess(InvoiceView view) {
-								NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
-										getClientFactory().getEventBus(), view, getCallback());
-								p.setDataForNewInvoice(newClient, result.getFirst(), result.getThird());
-								p.go(panel);
+							public void onFailure(Throwable caught) {
+								BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
+							}
+
+							@Override
+							public void onSuccess(final ClientDTO newClient) {
+								getClientFactory().getInvoiceView(false, new InvoiceViewCallback() {
+
+									@Override
+									public void onSuccess(InvoiceView view) {
+										NewInvoicePresenter p = new NewInvoicePresenter(getClientFactory().getPlaceController(), 
+												getClientFactory().getEventBus(), view, getCallback());
+										p.setDataForNewInvoice(newClient, result.getFirst(), result.getThird());
+										p.go(panel);
+									}
+								});
 							}
 						});
 					}

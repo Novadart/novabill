@@ -1,14 +1,14 @@
 <div class="n-hello-dialog">
-	<div class="modal-header">
-	   <img src="../../frontend_assets/img/logo_thin.png" alt="logo" class="img-responsive" />
-	   <h2 class="modal-title text-center">{{'HELLO_DIALOG_TITLE' | translate}}</h2>
+	<div class="modal-header text-center">
+	   <img src="../../frontend_assets/img/logo_thin.png" style="margin: 0 auto;" alt="logo" class="img-responsive" />
+	   <h2 class="modal-title">{{'HELLO_DIALOG_TITLE' | translate}}</h2>
 	</div>
 	<div class="modal-body">
 	   <div class="col-md-8 col-md-offset-2">
             <div class="alert alert-info text-center" ng-bind-html="helloAlert"></div>                          
        </div>
-	   
-	   <n-business-form callback="businessUpdateCallback()" business="business"></n-business-form>
+       
+	   <n-business-form callback="businessUpdateCallback()" business="business" full-validation="false"></n-business-form>
 	</div>
 
 </div>

@@ -18,12 +18,13 @@
 	   <div class="col-md-12">
 	       <n-premium-alert></n-premium-alert>
 	   
-	       <select class="form-control pull-right input-large" 
+	       <select n-premium-check class="form-control pull-right input-large" 
 	           ng-change="clientChanged()"
 	           ng-model="selectedClient" 
 	           ng-options="cl.id as cl.name for cl in clients"></select>
 	       
            <div class="clearfix"></div>
+           
            
            <form class="form-horizontal" role="form">
                <div class="form-body">

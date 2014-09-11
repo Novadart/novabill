@@ -33,6 +33,44 @@ angular.module('novabill.directives.dialogs',
 }])
 
 
+
+/*
+ * Edit Business Dialog
+ */
+.factory('nBusinessDialog', ['nConstants', '$modal', function (nConstants, $modal){
+
+	return {
+		open : function( business, callback ) {
+
+			return $modal.open({
+
+				templateUrl: nConstants.url.htmlFragmentUrl('/directives/n-business-dialog.html'),
+				size : 'lg',
+				keyboard : false,
+				backdrop : 'static',
+				controller: ['$scope', '$modalInstance', '$sce', '$filter', 'nAjax', '$location',
+				             function($scope, $modalInstance, $sce, $filter, nAjax, $location){
+
+					$scope.business = business;
+
+					$scope.businessUpdateCallback = function(){
+						$modalInstance.dismiss();
+						callback();
+					};
+					
+					$scope.cancel = function(){
+						$modalInstance.dismiss();
+						$location.path('/');
+					};
+
+				}]
+			});
+		}
+	};
+}])
+
+
+
 /*
  * Edit Address Dialog
  */
@@ -732,10 +770,6 @@ angular.module('novabill.directives.dialogs',
 					$scope.businessUpdateCallback = function(){
 						callback();
 					};
-					
-					$scope.ok = function(){
-						$modalInstance.close();
-					};
 
 				}]
 			});
@@ -811,9 +845,25 @@ angular.module('novabill.directives.dialogs',
 /*
  * Exposing few dialogs used by GWT
  */
-.run(['nAlertDialog', 'nConfirmDialog', 'nSelectCommodityDialog', '$window', '$rootScope', '$compile',
-      function(nAlertDialog, nConfirmDialog, nSelectCommodityDialog, $window, $rootScope, $compile){
+.run(['nAlertDialog', 'nConfirmDialog', 'nBusinessDialog', '$window', '$rootScope', '$compile', 'nAjax',
+      function(nAlertDialog, nConfirmDialog, nBusinessDialog, $window, $rootScope, $compile, nAjax){
 	$window.Angular_Dialogs = {
+			
+			business : function(callback){
+				
+				var Business = nAjax.Business();
+				
+				Business.get(function(business){
+				
+					var instance = nBusinessDialog.open(business, callback);
+					instance.result.then(function(){
+						callback();
+					});
+					
+				});
+				
+			},
+			
 			
 			confirm : function(message, callback){
 				var instance = nConfirmDialog.open(message);
@@ -831,11 +881,8 @@ angular.module('novabill.directives.dialogs',
 						callback();
 					}
 				});
-			},
-			
-			selectCommodityDialog : function(clientId){
-				return nSelectCommodityDialog.open(clientId);
 			}
+			
 			
 	};
 	

@@ -322,7 +322,8 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 			
 			// calculate totals
 			$scope.commodityDetails = {
-					totalBeforeTaxes : stats.totalBeforeTaxesCurrentYear
+					totalBeforeTaxes : stats.totalBeforeTaxes,
+					totalBeforeTaxesCurrentYear : stats.totalBeforeTaxesCurrentYear
 			};
 			
 			// commodities ranking

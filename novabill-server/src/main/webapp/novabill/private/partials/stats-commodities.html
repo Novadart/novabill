@@ -18,7 +18,7 @@
        <div class="col-md-12">
            <n-premium-alert></n-premium-alert>
        
-           <select class="form-control pull-right input-large" 
+           <select n-premium-check class="form-control pull-right input-large" 
                ng-change="commodityChanged()"
                ng-model="selectedSku" 
                ng-options="c.sku as c.description for c in commodities"></select>
@@ -31,6 +31,12 @@
                        <label class="col-md-2 control-label">{{'TOTAL_INVOICING_BEFORE_TAXES' | translate}} {{year}}</label>
                        <div class="col-md-10">
                            <p class="form-control-static">{{commodityDetails.totalBeforeTaxes | currency}}</p>
+                       </div>
+                   </div>
+                   <div class="form-group">
+                       <label class="col-md-2 control-label">{{'TOTAL_INVOICING_BEFORE_TAXES_OVERALL' | translate}}</label>
+                       <div class="col-md-10">
+                           <p class="form-control-static">{{commodityDetails.totalBeforeTaxesCurrentYear | currency}}</p>
                        </div>
                    </div>
                </div>

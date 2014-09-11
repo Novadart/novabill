@@ -79,20 +79,30 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(final Pair<Long, ClientDTO> result) {
-				DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond(), new AsyncCallback<ClientDTO>() {
+				DocumentUtils.showBusinessDialogIfBusinessInformationNotComplete(new AsyncCallback<Void>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
 					}
 
 					@Override
-					public void onSuccess(ClientDTO newClient) {
-						NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view, getCallback());
-						p.setDataForNewTransportDocument(newClient, result.getFirst());
-						p.go(panel);
-						
+					public void onSuccess(Void vo) {
+						DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond(), new AsyncCallback<ClientDTO>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
+							}
+
+							@Override
+							public void onSuccess(ClientDTO newClient) {
+								NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+										getClientFactory().getEventBus(), view, getCallback());
+								p.setDataForNewTransportDocument(newClient, result.getFirst());
+								p.go(panel);
+								
+							}
+						});
 					}
 				});
 			}
@@ -105,20 +115,30 @@ public class TransportDocumentActivity extends AbstractCenterActivity {
 
 			@Override
 			public void onSuccess(final Pair<Long, EstimationDTO> result) {
-				DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond().getClient(), new AsyncCallback<ClientDTO>() {
+				DocumentUtils.showBusinessDialogIfBusinessInformationNotComplete(new AsyncCallback<Void>() {
 
 					@Override
 					public void onFailure(Throwable caught) {
-						BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
 					}
 
 					@Override
-					public void onSuccess(final ClientDTO newClient) {
-						result.getSecond().setClient(newClient);
-						NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
-								getClientFactory().getEventBus(), view, getCallback());
-						p.setDataForNewTransportDocument(newClient, result.getFirst(), result.getSecond());
-						p.go(panel);
+					public void onSuccess(Void vo) {
+						DocumentUtils.showClientDialogIfClientInformationNotComplete(result.getSecond().getClient(), new AsyncCallback<ClientDTO>() {
+
+							@Override
+							public void onFailure(Throwable caught) {
+								BridgeUtils.invokeJSCallbackOnException(caught.getClass().getName(), "", getCallback());
+							}
+
+							@Override
+							public void onSuccess(final ClientDTO newClient) {
+								result.getSecond().setClient(newClient);
+								NewTransportDocumentPresenter p = new NewTransportDocumentPresenter(getClientFactory().getPlaceController(), 
+										getClientFactory().getEventBus(), view, getCallback());
+								p.setDataForNewTransportDocument(newClient, result.getFirst(), result.getSecond());
+								p.go(panel);
+							}
+						});
 					}
 				});
 			}
