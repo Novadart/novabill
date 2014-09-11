@@ -322,7 +322,7 @@ angular.module('novabill.ajax', ['ngResource', 'angularFileUpload', 'novabill.lo
 				getCommodityBIStats: function(params, successFn, failureFn){
 					$http({
 						method : 'GET',
-						url : baseUrl + 'businesses/' + businessId + '/bizintel/commoditystats/' + params.year + '?sku=' + params.commodityID
+						url : baseUrl + 'businesses/' + businessId + '/bizintel/commoditystats/' + params.commodityID + '/' + params.year
 					}).success( successFn ).error( failureFn );
 				}
 				
