@@ -21,6 +21,7 @@ import com.novadart.novabill.annotation.Restrictions;
 import com.novadart.novabill.authorization.PremiumChecker;
 import com.novadart.novabill.domain.AccountingDocumentItem;
 import com.novadart.novabill.domain.Client;
+import com.novadart.novabill.domain.Commodity;
 import com.novadart.novabill.domain.Invoice;
 import com.novadart.novabill.shared.client.dto.BIClientStatsDTO;
 import com.novadart.novabill.shared.client.dto.BICommodityStatsDTO;
@@ -231,10 +232,11 @@ public class BusinessStatsService {
 	
 	
 	@PreAuthorize("#businessID == principal.business.id and " +
-			      "T(com.novadart.novabill.domain.Commodity).skuExists(#businessID, #sku)")
+			      "T(com.novadart.novabill.domain.Commodity).findCommodity(#commodityID)?.business?.id == #businessID")
 	@Restrictions(checkers = {PremiumChecker.class})
-	public BICommodityStatsDTO getCommodityBIStats(Long businessID, String sku, Integer year) throws NotAuthenticatedException,
+	public BICommodityStatsDTO getCommodityBIStats(Long businessID, Long commodityID, Integer year) throws NotAuthenticatedException,
 				DataAccessException, FreeUserAccessForbiddenException {
+		String sku = Commodity.findCommodity(commodityID).getSku();
 		BICommodityStatsDTO commodityStatsDTO = new BICommodityStatsDTO();
 		List<Invoice> invoices = Invoice.getAllInvoicesContainingCommodityForYears(businessID, sku, Arrays.asList(year - 1, year));
 		BigDecimal total = BigDecimal.ZERO;

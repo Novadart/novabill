@@ -6,7 +6,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.ResponseStatus;
 
@@ -43,11 +42,11 @@ public class BusinessStatsController {
 		return businessStatsService.getClientBIStats(businessID, clientID, year);
 	}
 	
-	@RequestMapping(value = "/commoditystats/{year}", method = RequestMethod.GET)
+	@RequestMapping(value = "/commoditystats/{commodityID}/{year}", method = RequestMethod.GET)
 	@ResponseBody
 	@ResponseStatus(value = HttpStatus.OK)
-	public BICommodityStatsDTO getCommodityBIStats(@PathVariable Long businessID, @PathVariable Integer year, @RequestParam String sku) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
-		return businessStatsService.getCommodityBIStats(businessID, sku, year);
+	public BICommodityStatsDTO getCommodityBIStats(@PathVariable Long businessID, @PathVariable Long commodityID, @PathVariable Integer year) throws NotAuthenticatedException, DataAccessException, FreeUserAccessForbiddenException{
+		return businessStatsService.getCommodityBIStats(businessID, commodityID, year);
 	}
 	
 	
