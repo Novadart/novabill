@@ -508,6 +508,7 @@ angular.module('novabill.directives.dialogs',
 				             function($scope, nConstants, nSorting, $filter, $modalInstance, nAjax){
 
 					var loadedClients = new Array();
+					$scope.loadedClientsCount = -1;
 					var filteredClients = new Array();
 					$scope.allowNewClient = allowNewClient;
 
@@ -534,12 +535,31 @@ angular.module('novabill.directives.dialogs',
 							$scope.clients = $scope.clients.concat(filteredClients.slice(currentIndex, currentIndex+30));
 						}
 					};
+					
+					$scope.loadClients = function(){
+						nAjax.Business().getClients(function(clients){
+							loadedClients = clients.sort( nSorting.clientsComparator );
+							$scope.loadedClientsCount = clients.length;
+							updateFilteredClients();
+						});
+					};
 
 					$scope.newClientClick = function(){
 						$scope.newClientMode = true;
 						filteredClients = [];
 						$scope.query = '';
 						updateFilteredClients();
+					};
+					
+					$scope.addClientClick = function(){
+						GWT_UI.clientDialog(nConstants.conf.businessId, {
+
+							onSuccess : function() {
+								$scope.loadClients();
+							},
+
+							onFailure : function() {}
+						});
 					};
 					
 					$scope.createNewClient = function(){
@@ -573,11 +593,8 @@ angular.module('novabill.directives.dialogs',
 						$modalInstance.dismiss();
 					};
 
-					nAjax.Business().getClients(function(clients){
-						loadedClients = clients.sort( nSorting.clientsComparator );
-						updateFilteredClients();
-					});
-
+					$scope.loadClients();
+					
 				}]
 			});
 

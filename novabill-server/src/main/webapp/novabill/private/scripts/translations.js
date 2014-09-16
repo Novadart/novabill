@@ -252,6 +252,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		REMOVE_LOGO : 'Rimuovi Logo',
 		SAVE_CHANGES : 'Salva Modifiche',
 		SELECT_CLIENT : 'Seleziona un Cliente',
+		SELECT_CLIENT_ALERT : 'Non hai clienti, vuoi aggiungerne uno?',
 		SELECT_COMMODITY : 'Seleziona un Articolo',
 		SELECT_ALL : 'Seleziona Tutti',
 		SELECTED : 'Selezionati',
