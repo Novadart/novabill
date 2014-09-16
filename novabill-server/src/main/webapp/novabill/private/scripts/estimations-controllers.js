@@ -6,12 +6,22 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 /**
  * ESTIMATIONS PAGE CONTROLLER
  */
-.controller('EstimationCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog',
-                               function($scope, $location, nConstants, nSelectClientDialog){
+.controller('EstimationCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', '$filter',
+                               function($scope, $location, nConstants, nSelectClientDialog, $filter){
 	var selectedYear = String(new Date().getFullYear());
 	var loadedEstimations = [];
+	var filteredEstimations = [];
 	var PARTITION = 50;
 
+	function updateFilteredEstimations(){
+		filteredEstimations = $filter('filter')(loadedEstimations, $scope.query);
+		$scope.estimations = filteredEstimations.slice(0, 15);
+	}
+	
+	$scope.$watch('query', function(newValue, oldValue){
+		updateFilteredEstimations();
+	});
+	
 	$scope.loadEstimations = function(year) {
 		selectedYear = year;
 
@@ -19,7 +29,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 			onSuccess : function(page){
 				$scope.$apply(function(){
 					loadedEstimations = page.items;
-					$scope.estimations = loadedEstimations.slice(0, 15);
+					updateFilteredEstimations();
 				});
 			},
 
@@ -30,7 +40,7 @@ angular.module('novabill.estimations.controllers', ['novabill.utils', 'novabill.
 	$scope.loadMoreEstimations = function(){
 		if($scope.estimations){
 			var currentIndex = $scope.estimations.length;
-			$scope.estimations = $scope.estimations.concat(loadedEstimations.slice(currentIndex, currentIndex+PARTITION));
+			$scope.estimations = $scope.estimations.concat(filteredEstimations.slice(currentIndex, currentIndex+PARTITION));
 		}
 	};
 
