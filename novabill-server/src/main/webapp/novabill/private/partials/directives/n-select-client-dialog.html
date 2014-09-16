@@ -28,7 +28,7 @@
         </form>
         <div class="similar-clients-message" ng-show="allowNewClient && newClientMode">{{'SIMILAR_CLIENTS' | translate}}</div>
 
-        <div class="text-center text-muted" ng-show="!newClientMode && $parent.loadedClientsCount === 0">
+        <div class="text-center text-muted" ng-show="!allowNewClient && !newClientMode && loadedClientsCount === 0">
             <br />
             <br />
             <br />
