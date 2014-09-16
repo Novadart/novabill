@@ -163,6 +163,8 @@ angular.module('novabill.constants', [])
 				statsClients : function(clientID, year){ return baseConf.statsBaseUrl + 'clients/#/' +clientID + '/' + year; },
 				statsCommodities : function(commodityID, year){ return baseConf.statsBaseUrl + 'commodities/#/' + commodityID + '/' + year; },
 				
+				settingsBusiness : function(year){ return baseConf.settingsBaseUrl + '#/'; }, 
+				
 				transportDocumentList : function(){ return baseConf.transportDocumentsBaseUrl + '#/'; },
 				transportDocumentNew : function(clientId){ return baseConf.transportDocumentsBaseUrl + '#/new/' + clientId; },
 				transportDocumentFromEstimation : function(estimationId){ return baseConf.transportDocumentsBaseUrl + '#/from-estimation/' + estimationId; },

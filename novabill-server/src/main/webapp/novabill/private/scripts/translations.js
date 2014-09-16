@@ -31,6 +31,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		ADD_TO : 'Aggiungi',
 		ADVANCED_SELECTION : 'Selezione avanzata',
 		ALERT_MISSING_BUSINESS_INFO : 'Per favore completa le informazioni sulla tua azienda',
+		ALERT_MISSING_BUSINESS_INFO_DASHBOARD : 'Le informazioni sulla tua azienda sono incomplete. <a href="{{link}}">Clicca qui</a> per completarle.',
 		BUSINESS_DIALOG_TITLE : 'Completa le informazioni',
 		BUSINESS_OPTION_EMAIL_PREVIEW : 'Anteprima di esempio',
 		BUSINESS_OPTION_EMAIL_REPLY_TO : 'Indirizzo e-mail per le risposte',

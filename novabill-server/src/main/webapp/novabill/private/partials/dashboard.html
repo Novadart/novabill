@@ -2,6 +2,7 @@
 	<!-- BEGIN PAGE HEADER-->
             <div class="row">
                 <div class="col-md-12">
+
                     <!-- BEGIN PAGE TITLE & BREADCRUMB-->           
                     <h3 class="page-title">
                         Dashboard  <small>{{'STATISTICS_AND_MORE' | translate}}</small>
@@ -22,6 +23,13 @@
                 </div>
             </div>
             <!-- END PAGE HEADER-->
+            
+             <div ng-show="incompleteBusinessAlert" class="col-md-8 col-md-offset-2 alert alert-warning alert-dismissable text-center">
+                 <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                 <span ng-bind-html="incompleteBusinessAlert"></span>
+             </div>
+            
+            
             <!-- BEGIN DASHBOARD STATS -->
             <div class="row">
                 <div class="col-lg-3 col-md-3 col-sm-6 col-xs-12">

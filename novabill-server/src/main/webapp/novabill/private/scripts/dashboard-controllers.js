@@ -137,6 +137,13 @@ angular.module('novabill.dashboard.controllers',
 		    height: '300px'
 		});
 	});
+	
+	Business.get({id : nConstants.conf.businessId}, function(business){
+		if( !business.vatID || !business.ssn || !business.address || !business.city || !business.postcode 
+				|| !business.province || !business.country){
+			$scope.incompleteBusinessAlert = $filter('translate')('ALERT_MISSING_BUSINESS_INFO_DASHBOARD', {link : nConstants.url.settingsBusiness()});
+		}
+	});
 
 }]);
 
