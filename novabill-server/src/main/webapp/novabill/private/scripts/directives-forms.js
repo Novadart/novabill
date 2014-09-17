@@ -158,7 +158,7 @@ angular.module('novabill.directives.forms',
 		scope: { 
 			business : '=',
 			callback : '&',
-			fullValidation : '='
+			fieldsToShow : '@' // one of 'all', 'mandatory' or 'companyName'
 		},
 		controller : ['$scope', 
 		              function($scope){
