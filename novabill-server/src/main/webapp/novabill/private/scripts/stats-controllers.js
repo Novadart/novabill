@@ -153,8 +153,8 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 /**
  * CLIENTS STATS PAGE CONTROLLER
  */
-.controller('StatsClientsCtrl', ['$scope', 'nConstants', 'nAjax', '$location', '$routeParams', 'nSorting', '$filter',
-                                 function($scope, nConstants, nAjax, $location, $routeParams, nSorting, $filter){
+.controller('StatsClientsCtrl', ['$scope', 'nConstants', 'nAjax', '$location', '$routeParams', 'nSorting', '$filter', '$window',
+                                 function($scope, nConstants, nAjax, $location, $routeParams, nSorting, $filter, $window){
 
 	var year = parseInt( $routeParams.year );
 	var prevYear = year-1;
