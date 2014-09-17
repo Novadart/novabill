@@ -7,11 +7,21 @@ angular.module('novabill.creditNotes.controllers',
 		/**
 		 * CREDIT NOTES PAGE CONTROLLER
 		 */
-		.controller('CreditNoteCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', 
-		                               function($scope, $location, nConstants, nSelectClientDialog){
+		.controller('CreditNoteCtrl', ['$scope', '$location', 'nConstants', 'nSelectClientDialog', '$filter', 
+		                               function($scope, $location, nConstants, nSelectClientDialog, $filter){
 			var selectedYear = String(new Date().getFullYear());
 			var loadedCreditNotes = [];
+			var filteredCreditNotes = [];
 			var PARTITION = 50;
+			
+			function updateFilteredCreditNotes(){
+				filteredCreditNotes = $filter('filter')(loadedCreditNotes, $scope.query);
+				$scope.creditNotes = filteredCreditNotes.slice(0, 15);
+			}
+			
+			$scope.$watch('query', function(newValue, oldValue){
+				updateFilteredCreditNotes();
+			});
 
 			$scope.loadCreditNotes = function(year) {
 				selectedYear = year;
@@ -20,7 +30,7 @@ angular.module('novabill.creditNotes.controllers',
 					onSuccess : function(page){
 						$scope.$apply(function(){
 							loadedCreditNotes = page.items;
-							$scope.creditNotes = loadedCreditNotes.slice(0, 15);
+							updateFilteredCreditNotes();
 						});
 					},
 
@@ -31,7 +41,7 @@ angular.module('novabill.creditNotes.controllers',
 			$scope.loadMoreCreditNotes = function(){
 				if($scope.invoices){
 					var currentIndex = $scope.creditNotes.length;
-					$scope.creditNotes = $scope.creditNotes.concat(loadedCreditNotes.slice(currentIndex, currentIndex+PARTITION));
+					$scope.creditNotes = $scope.creditNotes.concat(filteredCreditNotes.slice(currentIndex, currentIndex+PARTITION));
 				}
 			};
 

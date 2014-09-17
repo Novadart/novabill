@@ -8,11 +8,14 @@ angular.module('novabill.transportDocuments.controllers',
 		 /**
 		  * TRANSPORT DOCUMENTS PAGE CONTROLLER
 		  */
-		 .controller('TransportDocumentCtrl', ['$scope', '$location', '$filter', 'nConstants', 'nSelectClientDialog', 'nEditTransporterDialog', 'nConfirmDialog', 'nAjax',
-		                                       function($scope, $location, $filter, nConstants, nSelectClientDialog, nEditTransporterDialog, nConfirmDialog, nAjax){
+		 .controller('TransportDocumentCtrl', ['$scope', '$location', '$filter', 'nConstants', 'nSelectClientDialog', 
+		                                       'nEditTransporterDialog', 'nConfirmDialog', 'nAjax',
+		                                       function($scope, $location, $filter, nConstants, nSelectClientDialog, 
+		                                    		   nEditTransporterDialog, nConfirmDialog, nAjax){
 			 var selectedYear = String(new Date().getFullYear());
 			 var Transporter = nAjax.Transporter();
 			 var loadedTransportDocuments = [];
+			 var filteredTransportDocuments = [];
 			 var PARTITION = 50;
 
 			 $scope.onTabChange = function(token){
@@ -30,6 +33,15 @@ angular.module('novabill.transportDocuments.controllers',
 					 $scope.transporters = transporters;
 				 });
 			 };
+			 
+			 function updateFilteredTransportDocuments(){
+				 filteredTransportDocuments = $filter('filter')(loadedTransportDocuments, $scope.query);
+				 $scope.transportDocuments = filteredTransportDocuments.slice(0, 15);
+			 }
+			
+		     $scope.$watch('query', function(newValue, oldValue){
+		    	 updateFilteredTransportDocuments();
+			 });
 
 			 $scope.loadTransportDocuments = function(year) {
 				 selectedYear = year;
@@ -38,7 +50,7 @@ angular.module('novabill.transportDocuments.controllers',
 					 onSuccess : function(page){
 						 $scope.$apply(function(){
 							 loadedTransportDocuments = page.items;
-							 $scope.transportDocuments = loadedTransportDocuments.slice(0, 15);
+							 updateFilteredTransportDocuments();
 						 });
 					 },
 
@@ -49,7 +61,7 @@ angular.module('novabill.transportDocuments.controllers',
 			 $scope.loadMoreTransportDocuments = function(){
 				 if($scope.transportDocuments){
 					 var currentIndex = $scope.transportDocuments.length;
-					 $scope.transportDocuments = $scope.transportDocuments.concat(loadedTransportDocuments.slice(currentIndex, currentIndex+PARTITION));
+					 $scope.transportDocuments = $scope.transportDocuments.concat(filteredTransportDocuments.slice(currentIndex, currentIndex+PARTITION));
 				 }
 			 };
 
