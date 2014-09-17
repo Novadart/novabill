@@ -111,7 +111,7 @@ public class Invoice extends AbstractInvoice implements Serializable {
      */
     public static List<Triple<String, BigDecimal, BigDecimal>> getCommodityRevenueStatsForClientForYear(Long businessID, Long clientID, Integer year){
 		String sql = "select i.sku, sum(i.totalBeforeTax) as rev, sum(i.quantity) from Invoice inv join inv.accountingDocumentItems i " +
-					 "where i.sku <> '' and inv.business.id = :bid and inv.client.id = :cid and inv.accountingDocumentYear = :year group by i.sku order by rev";
+					 "where i.sku <> '' and inv.business.id = :bid and inv.client.id = :cid and inv.accountingDocumentYear = :year group by i.sku order by rev desc";
 		List<Object[]> rows = entityManager().createQuery(sql, Object[].class).
 								setParameter("bid", businessID).
 								setParameter("cid", clientID).
