@@ -461,6 +461,13 @@ public class DBUtilitiesService {
 	}
 	
 	public void migrate3_3(){
+		em.createNativeQuery("alter table business " +
+				"alter column address drop not null, " +
+				"alter column postcode drop not null, " +
+				"alter column city drop not null, " +
+				"alter column country drop not null, " +
+				"alter column vatid drop not null, " +
+				"alter column ssn drop not null").executeUpdate();
 		for(Client client: Client.findAllClients()){
 			Set<Invoice> invs = client.getInvoices();
 			if(invs.size() == 0){

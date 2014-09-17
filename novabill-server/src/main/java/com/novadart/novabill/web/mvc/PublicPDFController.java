@@ -59,7 +59,7 @@ public class PublicPDFController extends PDFController {
 		Invoice invoice = Invoice.findInvoice(id);
 		invoiceService.markViewedByClient(invoice.getBusiness().getId(), id, System.currentTimeMillis());
 		createInvoiceDownloadedNotification(invoice,
-				String.format(messageSource.getMessage("invoices.downloaded.notification", null, locale), invoice.getClient().getName(), id));
+				String.format(messageSource.getMessage("invoices.downloaded.notification", null, locale), invoice.getClient().getName(), invoice.getDocumentID()));
 		return result;
 	}
 	
