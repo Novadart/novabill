@@ -127,6 +127,38 @@
                                  <img src="${frontendAssetsUrl}/img/sliders/revolution/man-winner.png" alt="Image 1">
                             </div>
                         </li>
+                        
+                        
+                        <!-- THE THIRD SLIDE -->
+                        <li data-transition="fade" data-slotamount="8" data-masterspeed="700" data-delay="9400" data-thumb="assets/img/sliders/revolution/thumbs/thumb2.jpg">
+                            <img src="${frontendAssetsUrl}/img/sliders/revolution/bg3.jpg" alt="">
+                            <div class="caption lfl slide_item_left" 
+                                 data-x="20" 
+                                 data-y="95" 
+                                 data-speed="400" 
+                                 data-start="1500" 
+                                 data-easing="easeOutBack">
+                                 <a data-toggle="lightbox" data-width="853" href="https://www.youtube.com/watch?v=a490oulaMX0"><img src="${frontendAssetsUrl}/img/sliders/revolution/video.png" alt="Image 1"></a>
+                            </div>
+                            <div class="caption lfr slide_title"
+                                 data-x="580"
+                                 data-y="100"
+                                 data-speed="400"
+                                 data-start="2000"
+                                 data-easing="easeOutExpo">
+                                 Provare Novabill è facile
+                            </div>
+                            <div class="caption lfr slide_desc"
+                                 data-x="580"
+                                 data-y="170"
+                                 data-speed="400"
+                                 data-start="2500"
+                                 data-easing="easeOutExpo">
+                                 Guarda questo breve video che ti permette di fare un rapido tour senza doverti registrare.<br/>
+                                 Puoi iniziare a usare Novabill in meno di 1 minuto.
+                            </div>
+                        </li> 
+                        
                 </ul>
                 <div class="tp-bannertimer tp-bottom"></div>
             </div>
@@ -250,12 +282,18 @@
     <script type="text/javascript" src="${frontendAssetsUrl}/plugins/bxslider/jquery.bxslider.min.js"></script>
     <script type="text/javascript" src="${frontendAssetsUrl}/plugins/countdown/jquery.countdown.js"></script>
     <script type="text/javascript" src="${frontendAssetsUrl}/plugins/countdown/plugin/jquery.countdown-it.js"></script>
+    <script type="text/javascript" src="${frontendAssetsUrl}/plugins/ekko-lightbox-3.1.4.min.js"></script>
     
     <script src="${frontendAssetsUrl}/scripts/app.js"></script>
     <script src="${frontendAssetsUrl}/scripts/index.js"></script>
     <script src="${frontendAssetsUrl}/plugins/iealert/iealert.min.js" type="text/javascript"></script>
     
     <script type="text/javascript">
+	    $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+	        event.preventDefault();
+	        $(this).ekkoLightbox();
+	    }); 
+    
         $(function() {
             App.init();    
             App.initBxSlider();
