@@ -6,6 +6,7 @@
 
 <script src="${novabillDepsUrl}/angular/angular.js"></script>
 <script src="${novabillDepsUrl}/angular/angular-route.js"></script>
+<script src="${novabillDepsUrl}/angular/angular-cookies.js"></script>
 <script src="${novabillDepsUrl}/angular/angular-sanitize.js"></script>
 <script src="${novabillDepsUrl}/angular/angular-animate.js"></script>
 <script src="${novabillDepsUrl}/angular/angular-resource.js"></script>

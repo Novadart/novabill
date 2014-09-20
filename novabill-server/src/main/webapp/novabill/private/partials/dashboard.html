@@ -28,7 +28,13 @@
                  <button type="button" class="close" data-dismiss="alert" aria-hidden="true"></button>
                  <span ng-bind-html="incompleteBusinessAlert"></span>
              </div>
-            
+             
+             <div ng-show="showFirstRunAlert" class="col-md-8 col-md-offset-2 alert alert-info alert-dismissable text-center">
+                 <button type="button" ng-click="closeFirstRunAlert()" class="close" data-dismiss="alert" aria-hidden="true"></button>
+                 <h3>{{'ALERT_FIRST_RUN_VIDEO' | translate}}</h3>
+                 <br>
+                 <iframe width="640" height="360" src="//www.youtube.com/embed/qWv0UQ3Q3Dk" frameborder="0" allowfullscreen></iframe>
+             </div>
             
             <!-- BEGIN DASHBOARD STATS -->
             <div class="row">

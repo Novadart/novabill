@@ -30,6 +30,7 @@ angular.module("novabill.translations", ['pascalprecht.translate'])
 		ADDRESSES_MANAGEMENT : 'Gestione Indirizzi',
 		ADD_TO : 'Aggiungi',
 		ADVANCED_SELECTION : 'Selezione avanzata',
+		ALERT_FIRST_RUN_VIDEO : 'Guarda come creare il tuo primo cliente e la prima fattura',
 		ALERT_MISSING_BUSINESS_INFO : 'Per favore completa le informazioni sulla tua azienda',
 		ALERT_MISSING_BUSINESS_INFO_DASHBOARD : 'Le informazioni sulla tua azienda sono incomplete. <a href="{{link}}">Clicca qui</a> per completarle.',
 		BUSINESS_DIALOG_TITLE : 'Completa le informazioni',

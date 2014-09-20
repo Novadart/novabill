@@ -138,7 +138,7 @@
                                  data-speed="400" 
                                  data-start="1500" 
                                  data-easing="easeOutBack">
-                                 <a data-toggle="lightbox" data-width="853" href="https://www.youtube.com/watch?v=a490oulaMX0"><img src="${frontendAssetsUrl}/img/sliders/revolution/video.png" alt="Image 1"></a>
+                                 <a data-toggle="lightbox" data-width="853" href="https://www.youtube.com/watch?v=qWv0UQ3Q3Dk"><img src="${frontendAssetsUrl}/img/sliders/revolution/video.png" alt="Image 1"></a>
                             </div>
                             <div class="caption lfr slide_title"
                                  data-x="580"

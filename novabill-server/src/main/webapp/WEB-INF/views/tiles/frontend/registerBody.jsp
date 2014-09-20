@@ -32,7 +32,7 @@
 			<div class="col-md-6 col-md-offset-3 col-sm-6 col-sm-offset-3">
 			    <form:form action="${registerUrl}" modelAttribute="registration" cssClass="register-form" method="post" 
 			               novalidate="novalidate" style="display: block;">
-			        <h3>Inserisci i tuoi dati <small style="margin-left: 10px;">(Dubbi? guarda il <a data-toggle="lightbox" data-width="853" href="https://www.youtube.com/watch?v=a490oulaMX0">video di esempio</a>)</small></h3>
+			        <h3>Inserisci i tuoi dati <small style="margin-left: 10px;">(Dubbi? guarda il <a data-toggle="lightbox" data-width="853" href="https://www.youtube.com/watch?v=qWv0UQ3Q3Dk">video di esempio</a>)</small></h3>
                     <div class="form-group">
                         <!--ie8, ie9 does not support html5 placeholder, so we just show field title for that-->
                         <label class="control-label visible-ie8 visible-ie9">La tua e-mail</label>
