@@ -44,11 +44,12 @@ public aspect ClientServiceActionsAspect extends DBLoggerAspect {
 	boolean around(Long businessID, Long id) : remove(businessID, id){
 		Client client = Client.findClient(id);
 		boolean result = proceed(businessID, id);
-		Long time = System.currentTimeMillis();
-		LOGGER.info("[{}, removeClient, {}, businessID: {}, id: {}]",
-				new Object[]{utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), businessID, id});
-		Map<String, String> details = ImmutableMap.of(CLIENT_NAME, client.getName());
-		logActionInDB(businessID, EntityType.CLIENT, OperationType.DELETE, id, time, details);
+		if(result){
+			Long time = System.currentTimeMillis();
+			LOGGER.info("[{}, removeClient, {}, businessID: {}, id: {}]", new Object[] {utilsService.getAuthenticatedPrincipalDetails().getUsername(), new Date(time), businessID, id});
+			Map<String, String> details = ImmutableMap.of(CLIENT_NAME, client.getName());
+			logActionInDB(businessID, EntityType.CLIENT, OperationType.DELETE, id, time, details);
+		}
 		return result;
 	}
 	
