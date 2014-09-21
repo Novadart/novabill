@@ -55,7 +55,7 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 						hAxis: {
 							title: $filter('translate')('MONTH')
 						}
-					},
+					}
 			};
 
 			// calculate totals
@@ -77,13 +77,13 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 					data: {
 						cols: [
 						       { id: 'set', label: 'Clients Set', type: 'string'},
-						       { id: 'value', label: 'Value', type: 'number'},
+						       { id: 'value', label: 'Value', type: 'number'}
 						       ],
 						rows: [
 						       { c: [{v: $filter('translate')('STATS_CLIENTS_RETURNING', {year : $scope.year})}, 
 						             {v: stats.clientsVsReturningClients.numberOfReturningClients}] },
 						       { c: [{v: $filter('translate')('STATS_CLIENTS_NOT_RETURNING', {year : $scope.year})}, 
-						             {v: stats.clientsVsReturningClients.numberOfClients - stats.clientsVsReturningClients.numberOfReturningClients}] },
+						             {v: stats.clientsVsReturningClients.numberOfClients - stats.clientsVsReturningClients.numberOfReturningClients}] }
 						       ]	
 						},
 						options : {
@@ -110,13 +110,13 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 					data: {
 						cols: [
 						       { id: 'set', label: 'Commodities Set', type: 'string'},
-						       { id: 'value', label: 'Value', type: 'number'},
+						       { id: 'value', label: 'Value', type: 'number'}
 						       ],
 						rows: [
 						       { c: [{v: $filter('translate')('SERVICES')}, 
 						             {v: servicesCount}] },
 						       { c: [{v: $filter('translate')('PRODUCTS')}, 
-						             {v: commoditiesCount - servicesCount}] },
+						             {v: commoditiesCount - servicesCount}] }
 						       ]	
 						},
 						options : {
@@ -205,7 +205,7 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 						hAxis: {
 							title: $filter('translate')('MONTH')
 						}
-					},
+					}
 			};
 
 			
@@ -316,7 +316,7 @@ angular.module('novabill.stats.controllers', ['novabill.directives', 'novabill.t
 						hAxis: {
 							title: $filter('translate')('MONTH')
 						}
-					},
+					}
 			};
 
 			
